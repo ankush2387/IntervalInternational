@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="4G8-VU-KwH">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--Post Launch View Controller-->
+        <scene sceneID="8AA-io-mnq">
+            <objects>
+                <viewController id="4G8-VU-KwH" customClass="PostLaunchViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="YEB-16-uo8"/>
+                        <viewControllerLayoutGuide type="bottom" id="7fZ-ms-TW8"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="t0N-ba-x1y">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mzR-n3-whT">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Interval_Splash_Logo " translatesAutoresizingMaskIntoConstraints="NO" id="DlG-Od-pan">
+                                <rect key="frame" x="216" y="278" width="168" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="168" id="KxL-5b-kDu"/>
+                                    <constraint firstAttribute="height" constant="44" id="ljI-qe-Y3L"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="DlG-Od-pan" firstAttribute="centerX" secondItem="t0N-ba-x1y" secondAttribute="centerX" id="6vK-0a-nCU"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="mzR-n3-whT" secondAttribute="trailing" constant="-20" id="Bg2-Ky-WO7"/>
+                            <constraint firstItem="DlG-Od-pan" firstAttribute="centerY" secondItem="t0N-ba-x1y" secondAttribute="centerY" id="BsR-hS-E9g"/>
+                            <constraint firstItem="7fZ-ms-TW8" firstAttribute="top" secondItem="mzR-n3-whT" secondAttribute="bottom" id="Hmd-Fi-tQb"/>
+                            <constraint firstItem="mzR-n3-whT" firstAttribute="leading" secondItem="t0N-ba-x1y" secondAttribute="leadingMargin" constant="-20" id="Mfc-D6-usf"/>
+                            <constraint firstItem="mzR-n3-whT" firstAttribute="top" secondItem="YEB-16-uo8" secondAttribute="bottom" constant="-20" id="QXe-qg-Avx"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <segue destination="yVT-yT-PI2" kind="show" identifier="LoginIPhone" id="7BE-df-Phn"/>
+                        <segue destination="ahr-OR-pXh" kind="show" identifier="LoginIPad" id="f9o-u6-LYM"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZBo-ca-gPO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="484" y="407"/>
+        </scene>
+        <!--LoginIPhone-->
+        <scene sceneID="XmB-5c-uHc">
+            <objects>
+                <viewControllerPlaceholder storyboardName="LoginIPhone" id="yVT-yT-PI2" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Tcv-kr-Agm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="992.5" y="305"/>
+        </scene>
+        <!--LoginIPad-->
+        <scene sceneID="Moj-Rl-9TA">
+            <objects>
+                <viewControllerPlaceholder storyboardName="LoginIPad" id="ahr-OR-pXh" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sNu-az-IYL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="985" y="502"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Interval_Splash_Logo " width="337" height="85"/>
+    </resources>
+</document>

@@ -1,0 +1,732 @@
+//
+//  AddDebitOrCreditCardViewController.swift
+//  IntervalApp
+//
+//  Created by Chetu on 19/11/16.
+//  Copyright © 2016 Interval International. All rights reserved.
+//
+
+import UIKit
+import IntervalUIKit
+import DarwinSDK
+import SVProgressHUD
+
+//***** Custom delegate method declaration *****//
+protocol AddDebitOrCreditCardViewControllerDelegate {
+    func newCreditCardAdded()
+}
+
+class AddDebitOrCreditCardViewController: UIViewController {
+    
+    //***** Custom cell delegate to access the delegate method *****//
+    var delegate: AddDebitOrCreditCardViewControllerDelegate?
+    
+    //Outlets
+    @IBOutlet weak var cardDetailTBLview: UITableView!
+    
+    //Class variables
+    var requiredSectionIntTBLview = 2
+    var pickerBaseView:UIView!
+    var pickerView:UIPickerView!
+    var datePickerView:UIDatePicker!
+    var hideStatus = false
+    var dropDownSelectionRow = -1
+    var dropDownSelectionSection = -1
+    var saveCardCheckBoxChecked = false
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+       
+       modalTransitionStyle = .flipHorizontal
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    //function to reset previous filled card information when booking completed.
+    func resetCreditCardDetails() {
+        
+        Constant.GetawaySearchResultCardFormDetailData.nameOnCard = ""
+        Constant.GetawaySearchResultCardFormDetailData.cardNumber = ""
+        Constant.GetawaySearchResultCardFormDetailData.cardType = ""
+        Constant.GetawaySearchResultCardFormDetailData.address1 = ""
+        Constant.GetawaySearchResultCardFormDetailData.address2 = ""
+        Constant.GetawaySearchResultCardFormDetailData.pinCode = ""
+        Constant.GetawaySearchResultCardFormDetailData.city = ""
+        Constant.GetawaySearchResultCardFormDetailData.state = ""
+        Constant.GetawaySearchResultCardFormDetailData.country = ""
+        Constant.GetawaySearchResultCardFormDetailData.expDate = nil
+        Constant.GetawaySearchResultCardFormDetailData.cvv = ""
+        
+    }
+    
+    // function called when add new card button pressed to validate new card details.
+    func addCardButtonPressed(_ sender:IUIKButton) {
+        
+        if(Constant.GetawaySearchResultCardFormDetailData.nameOnCard != "" && Constant.GetawaySearchResultCardFormDetailData.cardNumber != "" && Constant.GetawaySearchResultCardFormDetailData.cardType != "" && Constant.GetawaySearchResultCardFormDetailData.expDate != nil && Constant.GetawaySearchResultCardFormDetailData.cvv != "" && Constant.GetawaySearchResultCardFormDetailData.address1 != "" && Constant.GetawaySearchResultCardFormDetailData.address2 != "" && Constant.GetawaySearchResultCardFormDetailData.country != "" && Constant.GetawaySearchResultCardFormDetailData.city != "" && Constant.GetawaySearchResultCardFormDetailData.state != "" && Constant.GetawaySearchResultCardFormDetailData.pinCode != "") {
+            
+            var isNewCard = true
+            
+            for creditCard in Constant.MyClassConstants.memberCreditCardList {
+                
+                let cardNumber = creditCard.cardNumber!
+                let last4 = cardNumber.substring(from:(cardNumber.index((cardNumber.endIndex), offsetBy: -4)))
+                let enteredCardLastDigit = Constant.GetawaySearchResultCardFormDetailData.cardNumber.substring(from:(Constant.GetawaySearchResultCardFormDetailData.cardNumber.index((Constant.GetawaySearchResultCardFormDetailData.cardNumber.endIndex), offsetBy: -4)))
+                
+                if(last4 == enteredCardLastDigit) {
+                        isNewCard = false
+                }
+            }
+           
+            if(isNewCard) {
+                let newCreditCard = Creditcard()
+                newCreditCard.cardHolderName = Constant.GetawaySearchResultCardFormDetailData.nameOnCard
+                newCreditCard.cardNumber = Constant.GetawaySearchResultCardFormDetailData.cardNumber
+                let myDateFormatter = DateFormatter()
+                myDateFormatter.dateFormat = Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.dateTimeFormat
+                let dateString = myDateFormatter.string(from: Constant.GetawaySearchResultCardFormDetailData.expDate!)
+                newCreditCard.expirationDate = dateString
+                newCreditCard.cvv = Constant.GetawaySearchResultCardFormDetailData.cvv
+                
+                let billingAdrs = Address()
+                billingAdrs.street1 = Constant.GetawaySearchResultCardFormDetailData.address1
+                billingAdrs.street2 = Constant.GetawaySearchResultCardFormDetailData.address2
+                billingAdrs.city = Constant.GetawaySearchResultCardFormDetailData.city
+                
+                let country = Country()
+                country.countryCode = "USA"
+                
+                billingAdrs.country = country
+                billingAdrs.zip = Constant.GetawaySearchResultCardFormDetailData.pinCode
+                billingAdrs.territory = "FL"
+                
+                newCreditCard.billingAddress = billingAdrs
+                newCreditCard.typeCode = Helper.cardNameMapping(cardName: Constant.GetawaySearchResultCardFormDetailData.cardType)
+                newCreditCard.autoRenew = false
+                newCreditCard.preferredCardIndicator = false
+                if(saveCardCheckBoxChecked){
+                    newCreditCard.saveCardIndicator = true
+                }else{
+                    newCreditCard.saveCardIndicator = false
+                }
+                
+                //API call to tokenize new credit card.
+                Helper.addServiceCallBackgroundView(view: self.view)
+                SVProgressHUD.show()
+                CreditCardTokenizeClient.tokenize(UserContext.sharedInstance.accessToken, creditCardNumber: newCreditCard.cardNumber!, onSuccess: {(response) in
+                    
+                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    SVProgressHUD.dismiss()
+                    Constant.MyClassConstants.selectedCreditCard.removeAll()
+                    newCreditCard.creditcardId = 0
+                    newCreditCard.cardNumber = response.cardToken!
+                    Constant.MyClassConstants.selectedCreditCard.append(newCreditCard)
+                    self.resetCreditCardDetails()
+                    self.dismiss(animated: false, completion: nil)
+                    self.delegate?.newCreditCardAdded()
+                    
+                    }, onError: {(error) in
+                        
+                        Helper.removeServiceCallBackgroundView(view: self.view)
+                        SVProgressHUD.dismiss()
+                       
+                })
+            }
+            else {
+                
+                SimpleAlert.alert(self, title:Constant.MyClassConstants.newCardalertTitle, message: Constant.MyClassConstants.newCardalertMess)
+            }
+           
+                                                   
+                                                    
+        }
+        else {
+            SimpleAlert.alert(self, title: Constant.MyClassConstants.newCardalertTitle, message: Constant.MyClassConstants.alertReqFieldMsg)
+        }
+    }
+    
+    // function to enable and disable save this card option with checkbox
+    func saveNewCreditCardPressed(_ sender:IUIKCheckbox) {
+        
+        if(self.saveCardCheckBoxChecked == false) {
+            
+            self.saveCardCheckBoxChecked = true
+        }
+        else {
+            
+            self.saveCardCheckBoxChecked = false
+        }
+    }
+    
+    func dateSelectedFromDatePicker(_ sender:UIDatePicker) {
+        
+    }
+    
+    //function called when picker view done button pressed.
+    func dropDownButtonPressed(_ sender:IUIKButton) {
+        
+        self.dropDownSelectionRow = sender.tag
+        self.dropDownSelectionSection = Int(sender.accessibilityValue!)!
+        if(self.dropDownSelectionSection == 0 && self.dropDownSelectionRow == 3) {
+            
+            if(self.hideStatus == false) {
+                
+                self.hideStatus = true
+                showDatePickerView()
+            }
+            else {
+                
+                self.hideStatus = false
+                hideDatePickerView()
+            }
+
+        }
+        else {
+          
+            if(self.hideStatus == false) {
+                
+                self.hideStatus = true
+                showPickerView()
+                self.pickerView.reloadAllComponents()
+            }
+            else {
+                
+                self.hideStatus = false
+                hidePickerView()
+            }
+        }
+        
+        
+        
+    }
+    
+    // function to create date picker view when drop down button pressed.
+    func createDatePicker() {
+        
+        pickerBaseView = UIView(frame: CGRect(x: 0, y: self.view.frame.size.height - 200, width: self.view.frame.size.width, height: 200))
+        self.pickerBaseView.backgroundColor = UIColor.darkGray
+        let doneButton = UIButton(frame: CGRect(x: pickerBaseView.frame.size.width - 60, y: 5, width: 50, height: 50))
+        doneButton.setTitle(Constant.AlertPromtMessages.done, for: .normal)
+        doneButton.addTarget(self, action: #selector(AddDebitOrCreditCardViewController.pickerDoneButtonPressed(_:)), for: .touchUpInside)
+        
+        self.datePickerView = UIDatePicker(frame: CGRect(x: 0, y: 50, width: pickerBaseView.frame.size.width, height: pickerBaseView.frame.size.height - 60))
+        self.datePickerView.datePickerMode = .date
+        self.datePickerView.addTarget(self, action: #selector(AddDebitOrCreditCardViewController.dateSelectedFromDatePicker(_:)), for: UIControlEvents.valueChanged)
+        self.pickerBaseView.addSubview(doneButton)
+        self.pickerBaseView.addSubview(datePickerView)
+        
+        self.view.addSubview(pickerBaseView)
+    }
+    
+    // function to create picker view when drop down button pressed.
+    func createPickerView() {
+        
+        pickerBaseView = UIView(frame: CGRect(x: 0, y: self.view.frame.size.height - 200, width: self.view.frame.size.width, height: 200))
+        self.pickerBaseView.backgroundColor = UIColor.darkGray
+        let doneButton = UIButton(frame: CGRect(x: pickerBaseView.frame.size.width - 60, y: 5, width: 50, height: 50))
+        doneButton.setTitle(Constant.AlertPromtMessages.done, for: .normal)
+        doneButton.addTarget(self, action: #selector(AddDebitOrCreditCardViewController.pickerDoneButtonPressed(_:)), for: .touchUpInside)
+        
+        pickerView = UIPickerView(frame: CGRect(x: 0, y: 50, width: pickerBaseView.frame.size.width, height: pickerBaseView.frame.size.height - 60))
+        self.pickerBaseView.addSubview(doneButton)
+        self.pickerBaseView.addSubview(pickerView)
+        pickerView.delegate = self
+        pickerView.dataSource = self
+        
+        self.view.addSubview(pickerBaseView)
+    }
+    
+    // function to create picker view when drop down button pressed.
+    func showDatePickerView() {
+
+        self.hideStatus = true
+        self.createDatePicker()
+    }
+    
+    //function to hide date picker view.
+    func hideDatePickerView() {
+        
+        self.hideStatus = false
+        self.pickerBaseView.isHidden = true
+    }
+    
+    //function to show picker view.
+    func showPickerView() {
+        
+        self.hideStatus = true
+        self.createPickerView()
+    }
+    
+    //function to hide picker view.
+    func hidePickerView() {
+        self.hideStatus = false
+        self.pickerBaseView.isHidden = true
+    }
+    
+    //function called when picker view done button pressed.
+    func pickerDoneButtonPressed(_ sender:UIButton) {
+        
+        self.hideStatus = false
+        self.pickerBaseView.isHidden = true
+        if(datePickerView != nil) {
+            
+            Constant.GetawaySearchResultCardFormDetailData.expDate = datePickerView.date
+        }
+       
+        let indexPath = NSIndexPath(row: self.dropDownSelectionRow, section: self.dropDownSelectionSection)
+        self.cardDetailTBLview.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
+    }
+
+    //function to dismiss current controller on cancel button pressed.
+    @IBAction func cancelButtonPressed(_ sender: AnyObject) {
+         self.dismiss(animated: true, completion: nil)
+    }
+  
+}
+
+
+//Extension class starts from here
+
+
+// extension class for implementing delegate methods of table view.
+extension AddDebitOrCreditCardViewController:UITableViewDelegate {
+    
+    
+}
+
+// extension class for implementing data source methods of table view.
+extension AddDebitOrCreditCardViewController:UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        
+        return self.requiredSectionIntTBLview
+        
+    }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if(section == 0) {
+            
+            return 6
+        }
+        else {
+            return 7
+        }
+    }
+    
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        
+        if(section == 0) {
+            
+            return 60
+        }
+        else {
+            
+            return 0
+        }
+        
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        
+        if(section == 0) {
+            let headerView = UIView(frame: CGRect(x: 0, y: 0, width: cardDetailTBLview.frame.size.width, height: 60))
+            
+            headerView.backgroundColor = UIColor(red: 170.0/255.0, green: 206.0/255.0, blue: 230.0/255.0, alpha: 1.0)
+            let headerLabel = UILabel()
+            headerLabel.frame = CGRect(x: 20, y: 5, width: cardDetailTBLview.frame.size.width - 40, height: 50)
+            headerLabel.text = Constant.MyClassConstants.addressStringForCardDetailSection
+            headerLabel.numberOfLines = 2
+            
+            headerView.addSubview(headerLabel)
+            
+            return headerView
+        }
+        else {
+            
+            return nil
+        }
+        
+    }
+    
+    @objc(tableView:heightForRowAtIndexPath:) func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        if(UIDevice.current.userInterfaceIdiom == .pad) {
+            
+            if(indexPath.section == 0) {
+                
+                if(indexPath.row == 5) {
+                    
+                    return 80
+                }
+                else if(indexPath.row == 0) {
+                    return 90
+                }
+                else {
+                    
+                    return 60
+                }
+            }
+            else {
+                
+                if(indexPath.row == 6) {
+                    
+                    return 80
+                }
+                else {
+                    
+                    return 60
+                }
+                
+            }
+        }
+        else {
+            if(indexPath.section == 0) {
+                
+                if(indexPath.row == 5) {
+                    
+                    return 60
+                }
+                else if(indexPath.row == 0) {
+                    
+                    return 75
+                }
+                else {
+                    
+                    return 50
+                }
+            }
+            else {
+                
+                if(indexPath.row == 6) {
+                    
+                    return 70
+                }
+                else {
+                    
+                    return 50
+                }
+                
+            }
+        }
+    }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if(indexPath.section == 0) {
+            
+            if(indexPath.row == 0 || indexPath.row == 1 || indexPath.row == 4) {
+                
+                  let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.guestTextFieldCell, for: indexPath) as! GuestTextFieldCell
+                cell.nameTF.text = ""
+                if(indexPath.row == 0) {
+                    
+                    if(Constant.GetawaySearchResultCardFormDetailData.nameOnCard == "") {
+                        cell.nameTF.placeholder = Constant.textFieldTitles.nameOnCard
+                    }
+                    else {
+                        
+                        cell.nameTF.placeholder = Constant.GetawaySearchResultCardFormDetailData.nameOnCard
+                    }
+                }
+                else if(indexPath.row == 1){
+                    
+                     if(Constant.GetawaySearchResultCardFormDetailData.cardNumber == "") {
+                        cell.nameTF.placeholder = Constant.textFieldTitles.cardNumber
+                     }
+                     else {
+                        
+                        cell.nameTF.placeholder = Constant.GetawaySearchResultCardFormDetailData.cardNumber
+                    }
+                    
+                }
+                else if(indexPath.row == 3) {
+                    
+                                  }
+                else {
+                   
+                     if(Constant.GetawaySearchResultCardFormDetailData.cvv == "") {
+                        cell.nameTF.placeholder = Constant.textFieldTitles.cvv
+                    }
+                     else {
+                        
+                        cell.nameTF.placeholder = Constant.GetawaySearchResultCardFormDetailData.cvv
+                    }
+                }
+                cell.nameTF.tag = indexPath.row
+                cell.nameTF.accessibilityValue = "\(indexPath.section)"
+                cell.borderView.layer.borderColor = UIColor(red: 233.0/255.0, green: 233.0/255.0, blue: 235.0/255.0, alpha: 1.0).cgColor
+                cell.borderView.layer.borderWidth = 2
+                cell.borderView.layer.cornerRadius = 5
+                cell.selectionStyle = .none
+
+                
+                return cell
+            }
+            else if(indexPath.row == 5) {
+                
+                  let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.saveCardOptionCell, for: indexPath) as! SaveCardOptionCell
+                
+                
+                if(self.saveCardCheckBoxChecked == false) {
+                    
+                    cell.saveThisCardCheckBox.checked = false
+                }
+                else {
+                    
+                    cell.saveThisCardCheckBox.checked = true
+                }
+
+                cell.saveThisCardCheckBox.addTarget(self, action: #selector(AddDebitOrCreditCardViewController.saveNewCreditCardPressed(_:)), for: .touchUpInside)
+                
+                return cell
+            }
+            else {
+                
+                
+                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.dropDownListCell, for: indexPath) as! DropDownListCell
+                
+                if(indexPath.row == 3) {
+                    
+                    if(Constant.GetawaySearchResultCardFormDetailData.expDate == nil) {
+                        
+                        cell.selectedTextLabel.text = Constant.textFieldTitles.expirationDate
+                    }
+                    else {
+                        
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateStyle = DateFormatter.Style.short
+                        
+                        let strDate = dateFormatter.string(from: Constant.GetawaySearchResultCardFormDetailData.expDate!)
+                        cell.selectedTextLabel.text = strDate
+                    }
+                    cell.selectedTextLabel.textColor = UIColor.lightGray
+
+                }
+                else {
+                    
+                    if(Constant.GetawaySearchResultCardFormDetailData.cardType == "") {
+                        cell.selectedTextLabel.text = Constant.textFieldTitles.type
+                    }
+                    else {
+                        
+                        cell.selectedTextLabel.text = Constant.GetawaySearchResultCardFormDetailData.cardType
+                    }
+                }
+                
+               
+                cell.selectedTextLabel.textColor = UIColor(red: 199.0/255.0, green: 199.0/255.0, blue: 205.0/255.0, alpha: 1.0)
+                cell.dropDownButton.tag = indexPath.row
+                cell.dropDownButton.accessibilityValue = "\(indexPath.section)"
+                cell.dropDownButton.addTarget(self, action: #selector(AddDebitOrCreditCardViewController.dropDownButtonPressed(_:)), for: .touchUpInside)
+                cell.borderView.layer.borderColor = UIColor(red: 233.0/255.0, green: 233.0/255.0, blue: 235.0/255.0, alpha: 1.0).cgColor
+                cell.borderView.layer.borderWidth = 2
+                cell.borderView.layer.cornerRadius = 5
+                cell.selectionStyle = .none
+
+
+                
+                return cell
+            }
+          
+        }
+        else {
+                
+            if(indexPath.row == 0 || indexPath.row == 4) {
+                
+                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.dropDownListCell, for: indexPath) as! DropDownListCell
+                
+                
+                if(indexPath.row == 0) {
+                    
+                     if(Constant.GetawaySearchResultCardFormDetailData.country == "") {
+                        cell.selectedTextLabel.text = Constant.textFieldTitles.guestFormSelectCountryPlaceholder
+                    }
+                     else {
+                        
+                        cell.selectedTextLabel.text = Constant.GetawaySearchResultCardFormDetailData.country
+                    }
+                }
+                else {
+                    
+                    if(Constant.GetawaySearchResultCardFormDetailData.state == "") {
+                     
+                        cell.selectedTextLabel.text = Constant.textFieldTitles.guestFormSelectState
+                    }
+                    else {
+                        
+                        cell.selectedTextLabel.text = Constant.GetawaySearchResultCardFormDetailData.state
+                    }
+                }
+                cell.selectedTextLabel.textColor = UIColor(red: 199.0/255.0, green: 199.0/255.0, blue: 205.0/255.0, alpha: 1.0)
+                cell.dropDownButton.tag = indexPath.row
+                cell.dropDownButton.accessibilityValue = "\(indexPath.section)"
+                cell.dropDownButton.addTarget(self, action: #selector(AddDebitOrCreditCardViewController.dropDownButtonPressed(_:)), for: .touchUpInside)
+                cell.borderView.layer.borderColor = UIColor(red: 233.0/255.0, green: 233.0/255.0, blue: 235.0/255.0, alpha: 1.0).cgColor
+                cell.borderView.layer.borderWidth = 2
+                cell.borderView.layer.cornerRadius = 5
+                cell.selectionStyle = .none
+
+
+                
+                return cell
+                
+            }
+            else if(indexPath.row == 6) {
+                
+                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.addYourCardButtonCell, for: indexPath) as! AddYourCardButtonCell
+                
+                cell.addYourCardButton.addTarget(self, action: #selector(AddDebitOrCreditCardViewController.addCardButtonPressed(_:)), for: .touchUpInside)
+                return cell
+            }
+            else {
+                
+                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.guestTextFieldCell, for: indexPath) as! GuestTextFieldCell
+                cell.nameTF.text = ""
+                if(indexPath.row == 1) {
+                   
+                    if(Constant.GetawaySearchResultCardFormDetailData.address1 == "") {
+                        
+                       cell.nameTF.placeholder = Constant.textFieldTitles.guestFormAddress1
+                    }
+                    else {
+                        cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.address1
+                    }
+                  
+                }
+                else if(indexPath.row == 2) {
+                    
+                    
+                    if(Constant.GetawaySearchResultCardFormDetailData.address2 == "") {
+                        
+                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormAddress2
+                    }
+                    else {
+                        cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.address2
+                    }
+
+                }
+                else if(indexPath.row == 3) {
+                    
+                    if(Constant.GetawaySearchResultCardFormDetailData.city == "") {
+                        
+                        cell.nameTF.placeholder = Constant.textFieldTitles.guestFormCity
+                    }
+                    else {
+                        cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.city
+                    }
+                }
+                else {
+                    
+                    if(Constant.GetawaySearchResultCardFormDetailData.pinCode == "") {
+                        
+                        cell.nameTF.placeholder = Constant.textFieldTitles.guestFormPostalCode
+                    }
+                    else {
+                        cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.pinCode
+                    }
+                }
+                cell.nameTF.tag = indexPath.row
+                cell.nameTF.accessibilityValue = "\(indexPath.section)"
+                cell.borderView.layer.borderColor = UIColor(red: 233.0/255.0, green: 233.0/255.0, blue: 235.0/255.0, alpha: 1.0).cgColor
+                cell.borderView.layer.borderWidth = 2
+                cell.borderView.layer.cornerRadius = 5
+                cell.selectionStyle = .none
+
+                
+                return cell
+
+            }
+            
+            
+        }
+    }
+}
+
+
+//implementing delegate methods of picker view.
+extension AddDebitOrCreditCardViewController:UIPickerViewDelegate {
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        
+        if(self.dropDownSelectionSection == 0) {
+           
+            let creditCardType = Constant.MyClassConstants.allowedCreditCardType[row]
+            return creditCardType.name
+        }
+        else {
+            
+            if(self.dropDownSelectionRow == 0) {
+                
+                return Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row]
+            }
+            else {
+                
+                return Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row]
+            }
+
+        }
+            }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        
+        
+        
+        if(self.dropDownSelectionSection == 0) {
+            
+            if(self.dropDownSelectionRow == 2) {
+                
+               let cardType = Constant.MyClassConstants.allowedCreditCardType[row]
+                Constant.GetawaySearchResultCardFormDetailData.cardType = cardType.name!
+                
+            }
+            else {
+                
+                
+            }
+        }
+        else {
+            
+             if(self.dropDownSelectionRow == 0) {
+                
+                 Constant.GetawaySearchResultCardFormDetailData.country = Constant.GetawaySearchResultCardFormDetailData.countryListArray[row]
+             }
+             else {
+                
+                Constant.GetawaySearchResultCardFormDetailData.state = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row]
+            }
+            
+        }
+    }
+}
+
+
+// implementing data source methods for picker view.
+extension AddDebitOrCreditCardViewController:UIPickerViewDataSource {
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        
+        return 1
+    }
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        
+        
+        if(self.dropDownSelectionSection == 0) {
+            
+            return Constant.MyClassConstants.allowedCreditCardType.count
+        }
+        else {
+            
+            if(self.dropDownSelectionRow == 0) {
+                return Constant.GetawaySearchResultGuestFormDetailData.countryListArray.count
+            }
+            else {
+                return Constant.GetawaySearchResultGuestFormDetailData.stateListArray.count
+            }
+
+        }
+    }
+}
+
+

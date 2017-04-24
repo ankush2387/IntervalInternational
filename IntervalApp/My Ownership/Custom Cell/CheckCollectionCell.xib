@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CheckCell" id="OXu-WR-ag5" customClass="TdiCollectionViewCell" customModule="IntervalApp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="272" height="60"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="272" height="60"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4mM-v5-EoR">
+                        <rect key="frame" x="0.0" y="35" width="272" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="dGM-iK-S8N"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mjR-qC-tOu" customClass="IUIKCheckbox" customModule="IntervalUIKit">
+                        <rect key="frame" x="121" y="5" width="30" height="30"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="30" id="O8O-XA-bFK"/>
+                            <constraint firstAttribute="height" constant="30" id="Q3c-Lm-YBk"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="checkmarkColor">
+                                <color key="value" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="checkedFillColor">
+                                <color key="value" red="1" green="0.45882352939999999" blue="0.2274509804" alpha="1" colorSpace="calibratedRGB"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="uncheckedFillColor">
+                                <color key="value" red="0.83529411760000005" green="0.83529411760000005" blue="0.83529411760000005" alpha="1" colorSpace="calibratedRGB"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="filled" value="YES"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="checkmarkSize">
+                                <real key="value" value="6"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="round" value="YES"/>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="checked" value="NO"/>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bGH-ru-UgS">
+                        <rect key="frame" x="0.0" y="59" width="272" height="1"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="VL8-Rt-Pww"/>
+                        </constraints>
+                    </view>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xRT-uL-55W">
+                        <rect key="frame" x="0.0" y="0.0" width="272" height="60"/>
+                    </button>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="xRT-uL-55W" secondAttribute="bottom" id="0F2-hB-Z8A"/>
+                <constraint firstItem="xRT-uL-55W" firstAttribute="top" secondItem="OXu-WR-ag5" secondAttribute="top" id="AMc-Zc-LJ7"/>
+                <constraint firstAttribute="bottom" secondItem="bGH-ru-UgS" secondAttribute="bottom" id="HKO-Qa-mpM"/>
+                <constraint firstAttribute="trailing" secondItem="4mM-v5-EoR" secondAttribute="trailing" id="Koo-Db-3uy"/>
+                <constraint firstItem="mjR-qC-tOu" firstAttribute="centerX" secondItem="OXu-WR-ag5" secondAttribute="centerX" id="Ma1-G1-I2K"/>
+                <constraint firstItem="bGH-ru-UgS" firstAttribute="leading" secondItem="OXu-WR-ag5" secondAttribute="leading" id="Zlq-cF-iDP"/>
+                <constraint firstAttribute="trailing" secondItem="bGH-ru-UgS" secondAttribute="trailing" id="fIb-cJ-oXx"/>
+                <constraint firstItem="xRT-uL-55W" firstAttribute="leading" secondItem="OXu-WR-ag5" secondAttribute="leading" id="iKB-F3-iia"/>
+                <constraint firstAttribute="bottom" secondItem="4mM-v5-EoR" secondAttribute="bottom" constant="5" id="ov3-2G-Pu0"/>
+                <constraint firstItem="4mM-v5-EoR" firstAttribute="leading" secondItem="OXu-WR-ag5" secondAttribute="leading" id="sRk-a6-DRg"/>
+                <constraint firstAttribute="trailing" secondItem="xRT-uL-55W" secondAttribute="trailing" id="ubt-rw-7xo"/>
+                <constraint firstItem="4mM-v5-EoR" firstAttribute="top" secondItem="mjR-qC-tOu" secondAttribute="bottom" id="zc4-Pe-jnA"/>
+            </constraints>
+            <size key="customSize" width="272" height="86"/>
+            <connections>
+                <outlet property="checkBoxView" destination="mjR-qC-tOu" id="NXQ-wL-VAQ"/>
+                <outlet property="checkButton" destination="xRT-uL-55W" id="C24-OP-pYc"/>
+                <outlet property="contentLabel" destination="4mM-v5-EoR" id="iRF-od-ILB"/>
+                <outlet property="lineImage" destination="bGH-ru-UgS" id="bOF-Ng-4Wh"/>
+            </connections>
+            <point key="canvasLocation" x="-84" y="47"/>
+        </collectionViewCell>
+    </objects>
+</document>

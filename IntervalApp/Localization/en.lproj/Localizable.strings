@@ -1,0 +1,162 @@
+/*
+ Localizable.strings
+ IntervalApp
+ 
+ Created by Chetuiwk1601 on 4/13/16.
+ Copyright © 2016 Interval International. All rights reserved.
+ */
+
+//LoginiPhoneStoryBoard constants
+Select_Membership = "Select Membership";
+Home;
+User_Name = "User Name";
+Password;
+Enable_Touch_Id = "Enable Touch Id";
+Sign_In = "Sign In";
+Help;
+Resort_Directory = "Resort Directory";
+Favorites;
+Interval_HD = "Interval HD";
+Magazines;
+Join_Today = "Join Today";
+User_ID = "Login ID";
+Privacy/Legal;
+
+//Side Menu
+Search_Vacation = "Search Vacations";
+Upcoming_Trips = "Upcoming Trips";
+Getaway_Alerts = "Getaway Alerts";
+Ownership/Units;
+Resort_Directory = "Resort Directory";
+Sign_Out = "Sign Out";
+Privacy_Info = "2015 Interval International. Privacy/Legal";
+
+//Controller Titles
+My_Membership = "My Membership";
+Vacation_Search = "Vacation Search";
+My_Ownership/Units = "My Ownership/Units";
+My_Upcoming_Trips = "My Upcoming Trips";
+Trip_Details = "Trip Details";
+Accomodation_Certificates = "Accomodation Certificates";
+Pick_Date = "Pick Date";
+Join_Today = "Join Today";
+Bedroom_Size = "Bedroom Size";
+Club_Resort = "Club Resort";
+Float_Details = "Float Details";
+Available_Point_Tool = "Available Point Tool";
+Search_Result = "Search Result";
+Pick_Destination = "Pick Destination";
+Privacy/Legal =  "Privacy/Legal";
+
+//Segment Conrol Items
+All;
+Getaways;
+TOP_GETAWAYS = "TOP 10 : Getaways";
+
+//dashboardTableViewControllerHeaderText
+Plan_a_Vacation = "Plan a Vacation";
+
+//buttonTitles
+Detail;
+Add;
+Delete;
+
+
+//MyClassConstants
+Where_do_you_want_to_go = "Where do you want to go?";
+Check_in_closest_to = "Check in closest to?";
+Who_is_travelling = "Who is travelling?";
+What_do_you_want_to_trade = "What do you want to trade?";
+T_D_I = "TDI?";
+
+//Dict
+Lodge_at_Sea_Island_Golf_Club_Georgia = "Lodge at Sea Island Golf Club Georgia";
+Stephanie_Inn_Hotel_Cannon_Beach_Oregon = "Stephanie Inn Hotel Cannon Beach Oregon";
+LAuberge_Carmel_California ="L’Auberge Carmel California";
+Inn_at_Palmetto_Bluff_a_Montage_Resort_South_Carolina = "Inn at Palmetto Bluff a Montage Resort South Carolina";
+White_Elephant_Hotel_Nantucket_Massachusetts = "White Elephant Hotel Nantucket Massachusetts";
+Four_Seasons_Resort_Residences_Vail_Colorado = "Four Seasons Resort & Residences Vail Colorado";
+
+//Alerts
+Login_Failed = "Login Failed";
+Cancel;
+OK;
+Done;
+About_Touch_Id = "About Touch Id";
+Call_your_resort = "Call your resort";
+Dont_have_your_resort_details = "Don't have your \n resort details?";
+Check_in_date = "Check in date";
+
+//Strings in storyboard
+//Destination
+
+Unit_Details = "Unit Details";
+Bedroom_Full_Kitchen = "Bedroom,Full Kitchen";
+Sleeps_total_private = "Sleeps 6 total,4 private";
+Important_Advertisement = "Important Advertisement";
+General_Advertisement = "General Advertisement";
+
+//Membership, Ownership
+Contact_Name = "Contact Name";
+Active;
+Login_ID = "Login ID";
+Email;
+Membership;
+Gold;
+Silver;
+Platinum;
+Member_Number = "Member Number";
+Member_Since = "Member Since";
+Place_Name = "Place Name";
+Place_Address = "Place Address";
+Place_Code = "Place Code";
+Switch_Membership = "Switch Membership";
+Avalable_Points_Tool = "Avalable Points Tool";
+Club_Interval_Gold_Points = "Club Interval Gold Points";
+Available_Poits_as_of_Today = "Available Poits as of Today";
+Deposit_for_a_Free_Exchange = "Deposit for a Free Exchange";
+Save_Float_Details = "Save Float Details";
+Dont_have_your_resort_details = "Don't have your resort details";
+Call_your_resort = "Call your resort";
+Please_provide_the_following_Unit_Details = "Please provide the following Unit Details";
+Select_a_Club_Resort = "Select a Club Resort:";
+Reservation_Number = "Reservation Number:";
+Unit_Number = "Unit Number";
+Check_in_days = "Valid check-in days:Sun Sat";
+
+//My Upcoming Trip
+View_Trip_Details = "View Trip Details";
+GETAWAYS = "GETAWAYS";
+Check_in_Date = "Check-In Date";
+Check_Out_Date = "Check-Out Date";
+Unit_Details = "Unit Details";
+Additional_Products = "Additional Products";
+Guest_Certificate = "Guest Certificate";
+Payment = "Payment";
+Visa_Card = "Visa Card";
+Purchased_on = "Purchased on";
+Expires_on = "Expires on";
+Purchase_Trip_Protection = "Purchase Trip Protection";
+Arriving_key = "If arriving after the scheduled check-in date/time indicated, contact the resort for instructions. For an explanation of the Cancellation Policy, see the Terms and Conditions. This Purchase is final and non-refundable. ";
+//Vacation Search
+Search = "Search";
+Certificate = "Certificates";
+Accomodation_Certs = "Accomodation Certs";
+Travel_Window_Starts = "Travel Window Starts";
+Travel_Window_Ends = "Travel Window Ends";
+Use_Accommodation_Certificate = "Use Accommodation Certificate";
+Use_to_trade_into = "Use to trade into";
+Expires_in = "Expires in";
+Bedroom_info = "One bedroom units are suitable for 2 adults and and 2 children only. The living room accomodation consist of a small double convertable sofa";
+Adults = "Adults";
+Children = "Children";
+Age = "Age";
+Destination = "Choose Eligible Destinations (upto 6)";
+Choose_window = "Choose Travel Window";
+Detail = "Detail";
+Full_kitchen = "Full Kitchen";
+Search_vacation = "Search Vacations";
+Search_both = "Search Both";
+Getaways = "Getaways";
+Exchange = "Exchange";
+Relinquishment_Select = "Relinquishment Selection";

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SlideAgreeButtonCell" rowHeight="130" id="KGk-i7-Jjw" customClass="SlideAgreeButtonCell" customModule="IntervalApp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="130"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="129.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dC8-dm-qZf" customClass="IUIKButton" customModule="IntervalUIKit">
+                        <rect key="frame" x="27" y="70" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="0.96078431369999995" green="0.38823529410000002" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
+                        <state key="normal" title="Agree and Pay">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="5"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XKR-f4-kf2">
+                        <rect key="frame" x="27" y="70" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="541-Xy-8HR" customClass="MMSlidingButton" customModule="IntervalApp" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="64.5" width="375" height="65"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="65" id="KKg-1j-Uag"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="dragPointColor">
+                                <color key="value" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="buttonColor">
+                                <color key="value" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="image" keyPath="imageName" value="Double-arrow-right"/>
+                            <userDefinedRuntimeAttribute type="color" keyPath="buttonTextColor">
+                                <color key="value" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="dragPointTextColor">
+                                <color key="value" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="buttonUnlockedTextColor">
+                                <color key="value" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="buttonUnlockedColor">
+                                <color key="value" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I acknowledge and agree that the Mendatory Resort Fee will be payble to the resort." lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="295" translatesAutoresizingMaskIntoConstraints="NO" id="fuc-xz-FvL">
+                        <rect key="frame" x="59" y="13" width="295" height="43.5"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dlN-DL-iL6">
+                        <rect key="frame" x="16" y="18" width="30" height="33.5"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="30" id="AyN-Bu-PMv"/>
+                        </constraints>
+                        <state key="normal" image="InfoIcon"/>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailingMargin" secondItem="541-Xy-8HR" secondAttribute="trailing" constant="-8" id="8Hq-lJ-gpg"/>
+                    <constraint firstItem="541-Xy-8HR" firstAttribute="top" secondItem="dlN-DL-iL6" secondAttribute="bottom" constant="13" id="JE3-ON-ZwO"/>
+                    <constraint firstItem="fuc-xz-FvL" firstAttribute="leading" secondItem="dlN-DL-iL6" secondAttribute="trailing" constant="13" id="K4l-2z-J2H"/>
+                    <constraint firstItem="541-Xy-8HR" firstAttribute="top" secondItem="fuc-xz-FvL" secondAttribute="bottom" constant="8" id="KeX-39-1tU"/>
+                    <constraint firstItem="fuc-xz-FvL" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="5" id="Mxf-Tv-ehS"/>
+                    <constraint firstItem="541-Xy-8HR" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="-8" id="QSf-HK-Cm9"/>
+                    <constraint firstItem="dlN-DL-iL6" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="8" id="RHE-Zu-zga"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="541-Xy-8HR" secondAttribute="bottom" constant="-8" id="SnM-gj-dZB"/>
+                    <constraint firstItem="dlN-DL-iL6" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="10" id="Ypu-Eq-uxF"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="fuc-xz-FvL" secondAttribute="trailing" constant="13" id="ysd-4V-1Id"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="agreeAndPayButton" destination="dC8-dm-qZf" id="shn-PU-EQ0"/>
+                <outlet property="sliderView" destination="541-Xy-8HR" id="nW2-Mv-JSb"/>
+            </connections>
+            <point key="canvasLocation" x="14.5" y="-90"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="Double-arrow-right" width="128" height="128"/>
+        <image name="InfoIcon" width="33" height="33"/>
+    </resources>
+</document>

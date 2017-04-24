@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="HeaderCell" id="CY7-Aw-xmV" customClass="TdiCollectionViewCell" customModule="IntervalApp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="200" height="60"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="200" height="60"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="InfoIcon" translatesAutoresizingMaskIntoConstraints="NO" id="aEL-mY-zYD">
+                        <rect key="frame" x="160" y="15" width="30" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="B05-sd-HvD"/>
+                            <constraint firstAttribute="width" constant="30" id="mqO-Fl-oh7"/>
+                        </constraints>
+                    </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xco-TV-hiB">
+                        <rect key="frame" x="0.0" y="59" width="200" height="1"/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="6GF-K8-Rwx"/>
+                        </constraints>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oG6-xn-kcY">
+                        <rect key="frame" x="199" y="0.0" width="1" height="60"/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="1" id="geE-9N-6kU"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wVc-j3-Xs6">
+                        <rect key="frame" x="0.0" y="21" width="160" height="17.5"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="xco-TV-hiB" secondAttribute="bottom" id="1Es-wX-eQx"/>
+                <constraint firstItem="oG6-xn-kcY" firstAttribute="top" secondItem="CY7-Aw-xmV" secondAttribute="top" id="AfI-4g-HzO"/>
+                <constraint firstItem="xco-TV-hiB" firstAttribute="leading" secondItem="CY7-Aw-xmV" secondAttribute="leading" id="K7i-Sa-9WN"/>
+                <constraint firstAttribute="trailing" secondItem="aEL-mY-zYD" secondAttribute="trailing" constant="10" id="NfU-xe-2D2"/>
+                <constraint firstAttribute="trailing" secondItem="xco-TV-hiB" secondAttribute="trailing" id="SHH-1m-kiu"/>
+                <constraint firstAttribute="trailing" secondItem="oG6-xn-kcY" secondAttribute="trailing" id="avf-gm-Dw0"/>
+                <constraint firstItem="aEL-mY-zYD" firstAttribute="centerY" secondItem="CY7-Aw-xmV" secondAttribute="centerY" id="jax-IW-E23"/>
+                <constraint firstItem="aEL-mY-zYD" firstAttribute="leading" secondItem="wVc-j3-Xs6" secondAttribute="trailing" id="n4G-hV-Tpr"/>
+                <constraint firstItem="wVc-j3-Xs6" firstAttribute="centerY" secondItem="CY7-Aw-xmV" secondAttribute="centerY" id="rzD-Ob-7C2"/>
+                <constraint firstAttribute="bottom" secondItem="oG6-xn-kcY" secondAttribute="bottom" id="sVy-Mi-f6t"/>
+                <constraint firstItem="wVc-j3-Xs6" firstAttribute="leading" secondItem="CY7-Aw-xmV" secondAttribute="leading" id="ycO-Fh-0Zt"/>
+            </constraints>
+            <size key="customSize" width="191" height="69"/>
+            <connections>
+                <outlet property="contentLabel" destination="wVc-j3-Xs6" id="Shg-iV-S4Y"/>
+                <outlet property="horizontalLineImage" destination="oG6-xn-kcY" id="GEm-yM-RLZ"/>
+                <outlet property="lineImage" destination="xco-TV-hiB" id="0Xy-a8-VcY"/>
+            </connections>
+            <point key="canvasLocation" x="171" y="46"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="InfoIcon" width="33" height="33"/>
+    </resources>
+</document>
