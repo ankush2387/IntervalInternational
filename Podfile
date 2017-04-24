@@ -3,7 +3,7 @@ use_frameworks!
 
 target 'IntervalApp' do
 	pod 'DarwinSDK', :git => 'https://bitbucket.iilg.com/scm/iimob/darwin-sdk-ios.git', branch: 'develop'
-	pod 'IntervalUIKit', :git => 'https://bitbucket.org/intervalintl/intervaluikit-ios.git', branch: 'develop'
+	pod 'IntervalUIKit', :git => 'https://bitbucket.iilg.com/scm/iimob/interval-uikit-ios.git', branch: 'develop'
 	pod 'Alamofire', :git=>'https://github.com/Alamofire/Alamofire.git', :tag => '4.0.0'
 	pod 'FSCalendar' , '~>2.1.1'
 	pod 'CVCalendar', :git=>'https://github.com/Mozharovsky/CVCalendar', :tag => '1.4.0'
