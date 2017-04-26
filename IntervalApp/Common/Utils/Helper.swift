@@ -746,8 +746,13 @@ public class Helper{
         
         if(Constant.MyClassConstants.isLoginSuccessfull) {
             UserClient.getFavoriteResorts(UserContext.sharedInstance.accessToken, onSuccess: { (response) in
+
+               Constant.MyClassConstants.favoritesResortArray.removeAll()
                 
-                Constant.MyClassConstants.favoritesResortCodeArray = [response]
+                for resortcode in [response][0] {
+                    
+                    Constant.MyClassConstants.favoritesResortCodeArray.add(resortcode)
+                }
                 
             })
             { (error) in
