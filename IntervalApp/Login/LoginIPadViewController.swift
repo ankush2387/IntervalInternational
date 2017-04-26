@@ -385,7 +385,10 @@ class LoginIPadViewController: UIViewController
         UserClient.getFavoriteResorts(UserContext.sharedInstance.accessToken, onSuccess: { (response) in
                                         
                 Constant.MyClassConstants.favoritesResortArray.removeAll()
-                Constant.MyClassConstants.favoritesResortCodeArray = response as! NSMutableArray
+            for resortcode in [response][0] {
+                
+                Constant.MyClassConstants.favoritesResortCodeArray.add(resortcode)
+            }
                                         
         })
         { (error) in
