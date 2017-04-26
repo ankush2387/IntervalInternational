@@ -25,11 +25,11 @@ class DashboardIPadTableViewController: UITableViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(reloadBadgeView), name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadTopDestinations), name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadUpcomingTrip), name: NSNotification.Name(rawValue:Constant.notificationNames.reloadTripDetailsNotification), object: nil)
-
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-      //***** Remove added notifications. *****//
+        //***** Remove added notifications. *****//
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue:Constant.notificationNames.reloadTripDetailsNotification), object: nil)
@@ -39,7 +39,7 @@ class DashboardIPadTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         UserClient.getUpcomingTrips(UserContext.sharedInstance.accessToken, onSuccess: {(upComingTrips) in
-           logger.debug(upComingTrips)
+            logger.debug(upComingTrips)
             Constant.MyClassConstants.upcomingTripsArray = upComingTrips
             self.homeTableView.reloadData()
             Helper.removeServiceCallBackgroundView(view: self.view)
@@ -49,7 +49,7 @@ class DashboardIPadTableViewController: UITableViewController {
             SVProgressHUD.dismiss()
             print(error)
         })
-
+        
         
         Helper.getTopDeals(senderVC: self)
         
@@ -89,7 +89,7 @@ class DashboardIPadTableViewController: UITableViewController {
         let navController = UINavigationController(rootViewController: resultController!)
         self.present(navController, animated:true, completion: nil)
     }
-
+    
     
     //***** Function called when notification for getaway alerts is fired. *****//
     func reloadBadgeView(){
@@ -107,13 +107,13 @@ class DashboardIPadTableViewController: UITableViewController {
     
     func searchVacationButtonPressed(_ sender:IUIKButton) {
         
-       self.performSegue(withIdentifier: Constant.segueIdentifiers.searchVacation, sender: nil)
+        self.performSegue(withIdentifier: Constant.segueIdentifiers.searchVacation, sender: nil)
         
-//        let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.myUpcomingTripIpad, bundle: nil)
-//        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.upcomingTripsViewController) as! UpComingTripDetailIPadViewController
-//        self.present(viewController, animated: true, completion: nil)
+        //        let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.myUpcomingTripIpad, bundle: nil)
+        //        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.upcomingTripsViewController) as! UpComingTripDetailIPadViewController
+        //        self.present(viewController, animated: true, completion: nil)
     }
-
+    
     
     
     //***** function to call trip list screen when view all trip button pressed *****//
@@ -131,7 +131,7 @@ class DashboardIPadTableViewController: UITableViewController {
     }
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         
-       self.homeTableView.reloadData()
+        self.homeTableView.reloadData()
         
     }
     
@@ -154,7 +154,7 @@ class DashboardIPadTableViewController: UITableViewController {
         }
         else {
             
-           return 2
+            return 2
         }
         
     }
@@ -206,7 +206,7 @@ class DashboardIPadTableViewController: UITableViewController {
         headerView.backgroundColor = IUIKColorPalette.titleBackdrop.color
         
         let titleLabel = UILabel()
-       titleLabel.text = Constant.MyClassConstants.headerArray[section]
+        titleLabel.text = Constant.MyClassConstants.headerArray[section]
         titleLabel.textAlignment = NSTextAlignment.center
         titleLabel.sizeToFit()
         titleLabel.frame = CGRect(x: 20, y: headerView.frame.height/2 - titleLabel.frame.height/2, width: titleLabel.frame.width, height: titleLabel.frame.height)
@@ -315,7 +315,7 @@ class DashboardIPadTableViewController: UITableViewController {
             for subview in cell.subviews {
                 subview.removeFromSuperview()
             }
-
+            
             
             if(indexPath.section == 3) {
                 if(!showExchange){
@@ -368,7 +368,7 @@ class DashboardIPadTableViewController: UITableViewController {
             cell.addSubview(homeTableCollectionView)
             return cell
         }
-       
+        
     }
     //***** Search vacation button action *****//
     func  searchVactionPressed(_ sender:AnyObject) {
@@ -436,7 +436,7 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
             
             let formatedCheckOutDate = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents1.weekday!)) \(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!)). \(myComponents1.day!), \(myComponents1.year!)"
             
-
+            
             
             cell.resortAvailabilityLabel.text = "\(formatedCheckInDate) - \(formatedCheckOutDate)"
             
@@ -447,7 +447,7 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
                 if (error != nil) {
                     cell.iconImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                 }
-                }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+            }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
             
             if(cell.gradientView.layer.sublayers != nil) {
                 for layer in cell.gradientView.layer.sublayers!{
@@ -549,16 +549,16 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
                 cell.backgroundColor = UIColor.white
                 cell.addSubview(centerView)
                 
-              
+                
+            }
+            return cell
         }
-              return cell
-      }
         
     }
 }
 
 //extension DashboardIPadTableViewController:UICollectionViewDelegateFlowLayout {
-//    
+//
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
 //        if(collectionView.tag == 1) {
 //            return UIEdgeInsetsMake(0, 0, 0, 0)
@@ -567,11 +567,11 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
 //            return UIEdgeInsetsMake(0, 0, 0, 0)
 //        }
 //    }
-//    
+//
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
 //        return 0
 //    }
-//    
+//
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
 //        if(collectionView.tag == 1) {
 //            return 20
@@ -580,7 +580,7 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
 //            return 2
 //        }
 //    }
-//    
+//
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 //        if(collectionView.tag == 1) {
 //            return CGSize(width: Constant.MyClassConstants.runningDeviceWidth!/2-50 , height: Constant.MyClassConstants.runningDeviceWidth!/3-60)

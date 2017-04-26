@@ -530,7 +530,7 @@ public class Helper{
                     }else{
                         
                         Constant.MyClassConstants.whatToTradeArray.add(openWk.pProgram)
-                         Constant.MyClassConstants.relinquishmentIdArray.add(openWk.pProgram[0].relinquishmentId)
+                        Constant.MyClassConstants.relinquishmentIdArray.add(openWk.pProgram[0].relinquishmentId)
                         Constant.MyClassConstants.relinquishmentAvailablePointsProgram = Int((openWk.pProgram[0].availablePoints))
                     }
                 }
@@ -687,11 +687,11 @@ public class Helper{
             Helper.removeServiceCallBackgroundView(view: senderVC.view)
             SVProgressHUD.dismiss()
         },
-                                          onError: {(error) in
-                                            Helper.removeServiceCallBackgroundView(view: senderVC.view)
-                                            SVProgressHUD.dismiss()
-                                            SimpleAlert.alert(senderVC, title:Constant.AlertErrorMessages.errorString, message: error.description)
-                                            
+                                   onError: {(error) in
+                                    Helper.removeServiceCallBackgroundView(view: senderVC.view)
+                                    SVProgressHUD.dismiss()
+                                    SimpleAlert.alert(senderVC, title:Constant.AlertErrorMessages.errorString, message: error.description)
+                                    
         })
     }
     
@@ -746,7 +746,7 @@ public class Helper{
         
         if(Constant.MyClassConstants.isLoginSuccessfull) {
             UserClient.getFavoriteResorts(UserContext.sharedInstance.accessToken, onSuccess: { (response) in
-               
+                
                 Constant.MyClassConstants.favoritesResortCodeArray = [response]
                 
             })
@@ -764,7 +764,7 @@ public class Helper{
         
         if(Constant.MyClassConstants.favoritesResortCodeArray.contains(resortCode)) {
             
-                status = true
+            status = true
         }
         return status
     }
@@ -989,7 +989,7 @@ public class Helper{
         if let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
             buildVersion += ".\(build)"
         }
-
+        
         if (Config.sharedInstance.getEnvironment() != Environment.production && Config.sharedInstance.getEnvironment() != Environment.production_dns) {
             let env = Config.sharedInstance.get(.Environment, defaultValue: "NONE").uppercased();
             buildVersion += " (\(env))"
@@ -1191,7 +1191,7 @@ public class Helper{
             Helper.removeServiceCallBackgroundView(view: senderViewController.view)
             SVProgressHUD.dismiss()
             SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
-
+            
         }
     }
     //Common function to add notifications.
@@ -1218,7 +1218,7 @@ public class Helper{
         default:
             return ""
         }
-
+        
         
     }
     static func removeStoredGuestFormDetials() {
@@ -1258,7 +1258,7 @@ public class Helper{
             return ""
         }
     }
-
+    
 }
 
 

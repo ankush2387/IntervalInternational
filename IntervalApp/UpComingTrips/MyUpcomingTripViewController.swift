@@ -8,6 +8,8 @@
 
 import UIKit
 import IntervalUIKit
+import SVProgressHUD
+import DarwinSDK
 
 class MyUpcomingTripViewController: UIViewController{
     
@@ -72,6 +74,7 @@ extension MyUpcomingTripViewController:UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.upComingTripCell, for: indexPath) as! UpComingTripCell
         let upComingTrip = Constant.MyClassConstants.upcomingTripsArray[indexPath.section]
         cell.headerLabel.text = "Confirmation #\(upComingTrip.exchangeNumber!)"
+        Constant.MyClassConstants.transactionNumber = "\(upComingTrip.exchangeNumber!)"
         cell.headerStatusLabel.text = upComingTrip.exchangeStatus!
         cell.resortType.text = upComingTrip.type!
         cell.resortImageView.backgroundColor = UIColor.lightGray
@@ -104,6 +107,24 @@ extension MyUpcomingTripViewController:UITableViewDataSource {
         Helper.addLinearGradientToView(view: cell.resortNameBaseView, colour: UIColor.white, transparntToOpaque: true, vertical: false)
         
         return cell
+    }
+    
+    @IBAction func viewTripDetailsClicked(_ sender:UIButton){
+        Helper.addServiceCallBackgroundView(view: self.view)
+        SVProgressHUD.show()
+        ExchangeClient.getExchangeTripDetails(UserContext.sharedInstance.accessToken, confirmationNumber: Constant.MyClassConstants.transactionNumber, onSuccess: { (exchangeResponse) in
+            
+            
+            Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails = exchangeResponse
+            Helper.removeServiceCallBackgroundView(view: self.view)
+            SVProgressHUD.dismiss()
+        self.performSegue(withIdentifier:Constant.segueIdentifiers.upcomingDetailSegue, sender:nil)
+        }) { (error) in
+            Helper.removeServiceCallBackgroundView(view: self.view)
+            SVProgressHUD.dismiss()
+            SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+            
+        }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {

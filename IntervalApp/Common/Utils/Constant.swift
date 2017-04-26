@@ -325,7 +325,7 @@ class Constant: NSObject {
         static var selectedCreditCard = [Creditcard]()
         static var guestCertificate:GuestCertificate!
         static var allowedCurrencies = [String]()
-
+        
         
         //Relinquishment selection screen response arrays
         static var relinquishmentAvalableToolSelectedDate:Date!
@@ -393,8 +393,11 @@ class Constant: NSObject {
         static var resortCodeForClub = "EVC"
         static var matrixType = ""
         static var checkBoxTag = 0
-
-    }    
+        static var segmentFirstString = "First"
+        static var segmentSecondString = "Second"
+        static var segmentThirdString = "Third"
+        
+    }
     struct CommonStringIdentifiers {
         static var floatWeek = "FLOAT_WEEK"
         static var pointWeek = "POINTS_WEEK"
@@ -543,7 +546,7 @@ class Constant: NSObject {
         static var reloadTableNotification = "reloadTable"
         static var reloadRegionNotification = "reloadRegionTable"
         static var reloadTripDetailsNotification = "reloadDetails"
-
+        
     }
     
     //***** common  structure to provide all dynamic controller button titles *****//
@@ -684,6 +687,8 @@ class Constant: NSObject {
         static var clubPointCell = "cell1"
         static var checkBoxCell = "cell2"
         static var featuredCell = "FeaturedCell"
+        static var checkCell = "CheckCell"
+        static var headerCell = "HeaderCell"
     }
     
     //***** common  structure to provide all storyboard names *****//
@@ -753,7 +758,7 @@ class Constant: NSObject {
         static var clubPointsSelectionViewController = "clubpointselectionPageviewcontroller"
         static var upcomingTripsViewController = "UpComingTripDetailController"
         static var tripDetailsViewController = "TripDetailsNavigationController"
-
+        
         
     }
     
@@ -1072,6 +1077,7 @@ class Constant: NSObject {
         static var PolicyWebviewSegue = "privacyPolicyWebviewSegue"
         static var detailSegue = "detailSegue"
         static var searchVacation = "searchVacation"
+        static var upcomingDetailSegue = "UpComingTripDetailSegue"
     }
     
     //***** common  structure to provide all actionSheetAttributedString *****//

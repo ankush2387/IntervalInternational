@@ -144,16 +144,16 @@ class VacationSearchViewController: UIViewController {
         self.SegmentIndex = sender.selectedSegmentIndex
         Constant.MyClassConstants.vacationSearchSelectedSegmentIndex = sender.selectedSegmentIndex
         self.searchVacationTableView.reloadData()
-       /* if(self.SegmentIndex == 1) {
-            self.searchVacationTableView.deleteSections(IndexSet(integer:1), with: UITableViewRowAnimation.automatic)
-            let delayTime = DispatchTime.now() + Double(Int64(1 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-            DispatchQueue.main.asyncAfter(deadline: delayTime) {
-                self.searchVacationTableView.reloadData()
-            }
-        }
-        else {
-            self.searchVacationTableView.reloadData()
-        }*/
+        /* if(self.SegmentIndex == 1) {
+         self.searchVacationTableView.deleteSections(IndexSet(integer:1), with: UITableViewRowAnimation.automatic)
+         let delayTime = DispatchTime.now() + Double(Int64(1 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+         DispatchQueue.main.asyncAfter(deadline: delayTime) {
+         self.searchVacationTableView.reloadData()
+         }
+         }
+         else {
+         self.searchVacationTableView.reloadData()
+         }*/
         
     }
     
@@ -179,7 +179,7 @@ class VacationSearchViewController: UIViewController {
     
     //***** Add location pressed action to show map screen with list of location to select *****//
     func addRelinquishmentSectionButtonPressed(_ sender:IUIKButton) {
-        /*Helper.addServiceCallBackgroundView(view: self.view)
+        Helper.addServiceCallBackgroundView(view: self.view)
         SVProgressHUD.show()
         Constant.MyClassConstants.matrixDataArray.removeAllObjects()
         DirectoryClient.getResortClubPointsChart(UserContext.sharedInstance.accessToken, resortCode:  Constant.MyClassConstants.resortCodeForClub, onSuccess:{ (ClubPointsChart) in
@@ -219,42 +219,42 @@ class VacationSearchViewController: UIViewController {
             Helper.removeServiceCallBackgroundView(view: self.view)
             SVProgressHUD.dismiss()
             print(error.description)
-        })*/
+        })
         
-                SVProgressHUD.show()
-                Helper.addServiceCallBackgroundView(view: self.view)
-                ExchangeClient.getMyUnits(UserContext.sharedInstance.accessToken, onSuccess: { (Relinquishments) in
-        
-                    Constant.MyClassConstants.relinquishmentDeposits = Relinquishments.deposits
-                    Constant.MyClassConstants.relinquishmentOpenWeeks = Relinquishments.openWeeks
-        
-        
-                    if(Relinquishments.pointsProgram != nil){
-                        Constant.MyClassConstants.relinquishmentProgram = Relinquishments.pointsProgram!
-        
-                        if (Relinquishments.pointsProgram!.availablePoints != nil) {
-                            Constant.MyClassConstants.relinquishmentAvailablePointsProgram = Relinquishments.pointsProgram!.availablePoints!
-                        }
-        
-                    }
-        
-        
-                    SVProgressHUD.dismiss()
-                    Helper.removeServiceCallBackgroundView(view: self.view)
-                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-                    let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.relinquishmentSelectionViewController) as! RelinquishmentSelectionViewController
-        
-                    let transitionManager = TransitionManager()
-                    self.navigationController?.transitioningDelegate = transitionManager
-                    self.navigationController!.pushViewController(viewController, animated: true)
-        
-                }, onError: {(error) in
-                    
-                    print(error.description)
-                    SVProgressHUD.dismiss()
-                    Helper.removeServiceCallBackgroundView(view: self.view)
-                    
-                })
+        /*SVProgressHUD.show()
+         Helper.addServiceCallBackgroundView(view: self.view)
+         ExchangeClient.getMyUnits(UserContext.sharedInstance.accessToken, onSuccess: { (Relinquishments) in
+         
+         Constant.MyClassConstants.relinquishmentDeposits = Relinquishments.deposits
+         Constant.MyClassConstants.relinquishmentOpenWeeks = Relinquishments.openWeeks
+         
+         
+         if(Relinquishments.pointsProgram != nil){
+         Constant.MyClassConstants.relinquishmentProgram = Relinquishments.pointsProgram!
+         
+         if (Relinquishments.pointsProgram!.availablePoints != nil) {
+         Constant.MyClassConstants.relinquishmentAvailablePointsProgram = Relinquishments.pointsProgram!.availablePoints!
+         }
+         
+         }
+         
+         
+         SVProgressHUD.dismiss()
+         Helper.removeServiceCallBackgroundView(view: self.view)
+         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.relinquishmentSelectionViewController) as! RelinquishmentSelectionViewController
+         
+         let transitionManager = TransitionManager()
+         self.navigationController?.transitioningDelegate = transitionManager
+         self.navigationController!.pushViewController(viewController, animated: true)
+         
+         }, onError: {(error) in
+         
+         print(error.description)
+         SVProgressHUD.dismiss()
+         Helper.removeServiceCallBackgroundView(view: self.view)
+         
+         })*/
         
     }
     
@@ -306,7 +306,7 @@ extension VacationSearchViewController:UICollectionViewDataSource {
         resortFlaxImageView.backgroundColor = UIColor.lightGray
         
         print((deal.image?.url!)!)
-
+        
         if(self.SegmentIndex == 0 || self.SegmentIndex == 1) {
             
             resortFlaxImageView.setImageWith(URL(string: (deal.image?.url!)!), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
@@ -431,19 +431,19 @@ extension VacationSearchViewController:UITableViewDelegate {
         let headerTextLabel = UILabel(frame: CGRect(x: 15, y: 5, width: self.view.bounds.width - 30, height: 50))
         
         if(self.SegmentIndex != 1) {
-           
-                headerView.backgroundColor = IUIKColorPalette.tertiary1.color
-                headerTextLabel.text = Constant.MyClassConstants.fourSegmentHeaderTextArray[section]
-                headerTextLabel.textColor = IUIKColorPalette.primaryText.color
-                headerView.addSubview(headerTextLabel)
-                return headerView
+            
+            headerView.backgroundColor = IUIKColorPalette.tertiary1.color
+            headerTextLabel.text = Constant.MyClassConstants.fourSegmentHeaderTextArray[section]
+            headerTextLabel.textColor = IUIKColorPalette.primaryText.color
+            headerView.addSubview(headerTextLabel)
+            return headerView
         }
         else {
-                headerView.backgroundColor = IUIKColorPalette.tertiary1.color
-                headerTextLabel.text = Constant.MyClassConstants.threeSegmentHeaderTextArray[section]
-                headerTextLabel.textColor = IUIKColorPalette.primaryText.color
-                headerView.addSubview(headerTextLabel)
-                return headerView
+            headerView.backgroundColor = IUIKColorPalette.tertiary1.color
+            headerTextLabel.text = Constant.MyClassConstants.threeSegmentHeaderTextArray[section]
+            headerTextLabel.textColor = IUIKColorPalette.primaryText.color
+            headerView.addSubview(headerTextLabel)
+            return headerView
         }
         
     }
@@ -1067,25 +1067,25 @@ extension VacationSearchViewController:UITableViewDataSource {
                 }
                 
                 
-                    //***** Creating collectionview and  layout for collectionView to show getaways and flexchange images on it *****//
-                    
-                    let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-                    layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-                    layout.itemSize = CGSize(width:280, height: 220 )
-                    layout.minimumInteritemSpacing = 1.0
-                    layout.minimumLineSpacing = 10.0
-                    layout.scrollDirection = .vertical
-                    getawayCollectionView = UICollectionView(frame: CGRect(x: 0, y: 40, width: self.view.bounds.width, height: CGFloat(Constant.MyClassConstants.topDeals.count) * 280 ), collectionViewLayout: layout)
-                    
-                    getawayCollectionView.register(CustomCollectionCell.self, forCellWithReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cell)
-                    getawayCollectionView.backgroundColor = UIColor.clear
-                    getawayCollectionView.delegate = self
-                    getawayCollectionView.dataSource = self
-                    getawayCollectionView.tag = 2
-                    getawayCollectionView.isScrollEnabled = true
-                    cell.backgroundColor = UIColor(red: 240.0/255.0, green: 239.0/255.0, blue: 244.0/255.0, alpha: 1.0)
-                    cell.addSubview(getawayCollectionView)
-                    
+                //***** Creating collectionview and  layout for collectionView to show getaways and flexchange images on it *****//
+                
+                let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+                layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+                layout.itemSize = CGSize(width:280, height: 220 )
+                layout.minimumInteritemSpacing = 1.0
+                layout.minimumLineSpacing = 10.0
+                layout.scrollDirection = .vertical
+                getawayCollectionView = UICollectionView(frame: CGRect(x: 0, y: 40, width: self.view.bounds.width, height: CGFloat(Constant.MyClassConstants.topDeals.count) * 280 ), collectionViewLayout: layout)
+                
+                getawayCollectionView.register(CustomCollectionCell.self, forCellWithReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cell)
+                getawayCollectionView.backgroundColor = UIColor.clear
+                getawayCollectionView.delegate = self
+                getawayCollectionView.dataSource = self
+                getawayCollectionView.tag = 2
+                getawayCollectionView.isScrollEnabled = true
+                cell.backgroundColor = UIColor(red: 240.0/255.0, green: 239.0/255.0, blue: 244.0/255.0, alpha: 1.0)
+                cell.addSubview(getawayCollectionView)
+                
                 
                 return cell
             }else {

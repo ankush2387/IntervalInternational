@@ -188,9 +188,9 @@ class CreateAlertViewController: UIViewController {
                             
                             for selectedSize in Constant.MyClassConstants.alertSelectedUnitSizeArray {
                                 
-                               
+                                
                                 let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: selectedSize as! String )
-                               self.anlyticsBedroomSize =  self.anlyticsBedroomSize.appending(bedroomSize)
+                                self.anlyticsBedroomSize =  self.anlyticsBedroomSize.appending(bedroomSize)
                                 let selectedUnitSize = UnitSize(rawValue: selectedSize as! String)
                                 unitsizearray.append(selectedUnitSize!)
                             }
@@ -200,7 +200,7 @@ class CreateAlertViewController: UIViewController {
                             
                             for unitsize in Constant.MyClassConstants.bedRoomSize {
                                 let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: unitsize )
-                               self.anlyticsBedroomSize =  self.anlyticsBedroomSize.appending("\(bedroomSize), ")
+                                self.anlyticsBedroomSize =  self.anlyticsBedroomSize.appending("\(bedroomSize), ")
                                 let selectedUnitSize = UnitSize(rawValue: unitsize )
                                 unitsizearray.append(selectedUnitSize!)
                             }
@@ -224,7 +224,7 @@ class CreateAlertViewController: UIViewController {
                             ]
                             
                             ADBMobile.trackAction("Event52", data: userInfo)
-
+                            
                             SVProgressHUD.dismiss()
                             
                             Constant.MyClassConstants.getawayAlertsArray.insert(rentalAlert, at: Constant.MyClassConstants.getawayAlertsArray.count)

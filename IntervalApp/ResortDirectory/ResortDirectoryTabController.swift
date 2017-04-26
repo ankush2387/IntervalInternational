@@ -49,7 +49,7 @@ class ResortDirectoryTabController: UITabBarController {
     }
     override func viewWillAppear(_ animated: Bool) {
         //***** Register notification for this class to call the specific method when notification fired *****//
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadView), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
+        //NotificationCenter.default.addObserver(self, selector: #selector(reloadView), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
         
         if(Constant.MyClassConstants.sideMenuOptionSelected == Constant.MyClassConstants.favoritesFunctionalityCheck) {
             

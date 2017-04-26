@@ -293,7 +293,7 @@ class EditMyAlertIpadViewController: UIViewController {
                             
                             for resort in Constant.MyClassConstants.alertSelectedResorts {
                                 
-                               deststr = deststr.appending("\(resort.resortName!), ")
+                                deststr = deststr.appending("\(resort.resortName!), ")
                             }
                             
                             // omniture tracking with event 53
@@ -313,7 +313,7 @@ class EditMyAlertIpadViewController: UIViewController {
                             SimpleAlert.alertTodismissController(self, title:Constant.AlertPromtMessages.editAlertTitle , message: Constant.AlertMessages.editAlertMessage)
                             
                             
-                            })
+                        })
                         { (error) in
                             
                             SVProgressHUD.dismiss()
