@@ -537,11 +537,11 @@ extension SearchResultViewController:UITableViewDataSource {
             cell.resortName.text = Constant.MyClassConstants.resortsArray[indexPath.section].resortName
             cell.delegate = self
             let resortAddress = Constant.MyClassConstants.resortsArray[indexPath.section].address
-            if let city = resortAddress?.city! {
+            if let city = resortAddress?.cityName! {
                 
                 cell.resortCountry.text = city
             }
-            if let Country = resortAddress?.country?.countryName! {
+            if let Country = resortAddress?.countryCode! {
                 
                 cell.resortCountry.text = cell.resortCountry.text?.appending(", \(Country)")
             }

@@ -135,7 +135,7 @@ extension ResortFavoritesTableViewCell:UICollectionViewDataSource {
 //        if(resort.tier != nil && cell.tierImageView != nil){
 //            cell.tierImageView.image = UIImage(named:tierImage)
 //        }
-        if let city = resort.address?.city {
+        if let city = resort.address?.cityName {
             
             cell.regionAreaLabel.text = "\(city)"
             

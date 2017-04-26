@@ -368,11 +368,11 @@ class GoogleMapViewController: UIViewController {
                     let Membership = UserContext.sharedInstance.selectedMembership
                     let desList = DestinationList()
                     desList.aoid = dict.aoiId
-                    desList.countryCode = dict.countryCode
+                    desList.countryCode = (dict.address?.countryCode)!
                     desList.destinationId = dict.destinationId
                     desList.destinationName = dict.destinationName
                     
-                    if let teriCode = dict.territoryCode {
+                    if let teriCode = dict.address?.territoryCode {
                         desList.territorrycode = teriCode
                     }
                     else {
@@ -408,12 +408,12 @@ class GoogleMapViewController: UIViewController {
                 let storedata = RealmLocalStorage()
                 let Membership = UserContext.sharedInstance.selectedMembership
                 let resortList = ResortList()
-                resortList.resortCityName = (address?.city)!
+                resortList.resortCityName = (address?.cityName)!
                 resortList.resortCode = dict.resortCode!
                 resortList.thumbnailurl = dict.images[0].url!
                 resortList.resortName = "\(dict.resortName!) - \(dict.resortCode!)"
                 
-                resortList.territorrycode = (address?.territory)!
+                resortList.territorrycode = (address?.territoryCode)!
                 Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(dict.resortCode!)
                 storedata.resorts.append(resortList)
                 storedata.membeshipNumber = Membership!.memberNumber!
@@ -685,7 +685,7 @@ class GoogleMapViewController: UIViewController {
                 
                 resortbyMap.resortCode = object.resortCode!
                 resortbyMap.resortName = object.resortName!
-                resortbyMap.territorrycode = (object.address?.territory)!
+                resortbyMap.territorrycode = (object.address?.territoryCode)!
                 resortList.resortArray.append(resortbyMap)
             }
             Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(Constant.MyClassConstants.resortsArray[0].resortCode!)
@@ -1388,7 +1388,7 @@ extension GoogleMapViewController:UICollectionViewDataSource {
         resortNameGradientView.addSubview(resortNameLabel)
         
         let resortCountryLabel = UILabel(frame: CGRect(x: 20, y: 20, width: cell.contentView.frame.width - 20, height: 20))
-        resortCountryLabel.text = resort.address?.city
+        resortCountryLabel.text = resort.address?.cityName
         resortCountryLabel.textColor = UIColor.black
         resortCountryLabel.font = UIFont(name:Constant.fontName.helveticaNeue,size: 14)
         resortNameGradientView.addSubview(resortCountryLabel)
@@ -1599,11 +1599,11 @@ extension GoogleMapViewController:UITableViewDataSource {
                 cell.tag = indexPath.section
                 let dicValue = Constant.MyClassConstants.destinations![indexPath.row]
                 cell.resortLocationName.text = dicValue.destinationName
-                guard (dicValue.territoryCode.characters.count > 0)
+                guard ((dicValue.address?.territoryCode?.characters.count)! > 0)
                     else{
                         return cell
                 }
-                cell.resortCodeLabel.text =  dicValue.territoryCode!
+                cell.resortCodeLabel.text =  dicValue.address?.territoryCode!
                 
                 return cell
                 
@@ -1635,7 +1635,7 @@ extension GoogleMapViewController:UITableViewDataSource {
                 let dicValue = Constant.MyClassConstants.resorts![indexPath.row]
                 cell.resortLocationName.text = dicValue.resortName
                 
-                cell.resortCityName.text = dicValue.address?.city
+                cell.resortCityName.text = dicValue.address?.cityName
                 cell.resortCode.text = String(utf8String: dicValue.resortCode!)!
                 return cell
             }
@@ -1698,7 +1698,7 @@ extension GoogleMapViewController:UITableViewDataSource {
             }
             cell.resortName.text = resortDetails.resortName
             let resortAddress = resortDetails.address!
-            cell.resortCountry.text = resortAddress.city //resortAddress.country?.countryName
+            cell.resortCountry.text = resortAddress.cityName //resortAddress.country?.countryName
             cell.resortCode.text = resortDetails.resortCode
             cell.delegate = self
             

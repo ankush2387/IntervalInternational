@@ -79,7 +79,7 @@ class SignInPreLoginViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(SignInPreLoginViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
-       // NotificationCenter.default.addObserver(self, selector: #selector(reloadView), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
+        //NotificationCenter.default.addObserver(self, selector: #selector(reloadView), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
         
         let authenticationContext = LAContext()
         

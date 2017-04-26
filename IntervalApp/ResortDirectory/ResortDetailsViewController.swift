@@ -285,11 +285,11 @@ class ResortDetailsViewController: UIViewController {
             let storedata = RealmLocalStorage()
             let Membership = UserContext.sharedInstance.selectedMembership
             let resortList = ResortList()
-            resortList.resortCityName = (address?.city)!
+            resortList.resortCityName = (address?.cityName)!
             resortList.resortCode = dict.resortCode!
             resortList.thumbnailurl = dict.images[0].url!
             resortList.resortName = "\(dict.resortName!) - \(dict.resortCode!)"
-            resortList.territorrycode = (address?.territory)!
+            resortList.territorrycode = (address?.territoryCode)!
             storedata.resorts.append(resortList)
             storedata.membeshipNumber = Membership!.memberNumber!
             try! realm.write {
@@ -708,7 +708,7 @@ extension ResortDetailsViewController:UITableViewDataSource {
                 cell.resortCollectionView.collectionViewLayout.invalidateLayout()
                 cell.resortCollectionView.reloadData()
                 cell.resortName.text = Constant.MyClassConstants.resortsDescriptionArray.resortName
-                cell.resortAddress.text = Constant.MyClassConstants.resortsDescriptionArray.address?.city
+                cell.resortAddress.text = Constant.MyClassConstants.resortsDescriptionArray.address?.cityName
                 cell.resortCode.text = Constant.MyClassConstants.resortsDescriptionArray.resortCode
                 let imageStr = Helper.getTierImageName(tier: Constant.MyClassConstants.resortsDescriptionArray.tier!)
                 cell.tierImageView.image = UIImage(named: imageStr)

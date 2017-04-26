@@ -179,7 +179,7 @@ class VacationSearchViewController: UIViewController {
     
     //***** Add location pressed action to show map screen with list of location to select *****//
     func addRelinquishmentSectionButtonPressed(_ sender:IUIKButton) {
-        Helper.addServiceCallBackgroundView(view: self.view)
+        /*Helper.addServiceCallBackgroundView(view: self.view)
         SVProgressHUD.show()
         Constant.MyClassConstants.matrixDataArray.removeAllObjects()
         DirectoryClient.getResortClubPointsChart(UserContext.sharedInstance.accessToken, resortCode:  Constant.MyClassConstants.resortCodeForClub, onSuccess:{ (ClubPointsChart) in
@@ -219,42 +219,42 @@ class VacationSearchViewController: UIViewController {
             Helper.removeServiceCallBackgroundView(view: self.view)
             SVProgressHUD.dismiss()
             print(error.description)
-        })
+        })*/
         
-        //        SVProgressHUD.show()
-        //        Helper.addServiceCallBackgroundView(view: self.view)
-        //        ExchangeClient.getMyUnits(UserContext.sharedInstance.accessToken, onSuccess: { (Relinquishments) in
-        //
-        //            Constant.MyClassConstants.relinquishmentDeposits = Relinquishments.deposits
-        //            Constant.MyClassConstants.relinquishmentOpenWeeks = Relinquishments.openWeeks
-        //
-        //
-        //            if(Relinquishments.pointsProgram != nil){
-        //                Constant.MyClassConstants.relinquishmentProgram = Relinquishments.pointsProgram!
-        //
-        //                if (Relinquishments.pointsProgram!.availablePoints != nil) {
-        //                    Constant.MyClassConstants.relinquishmentAvailablePointsProgram = Relinquishments.pointsProgram!.availablePoints!
-        //                }
-        //
-        //            }
-        //
-        //
-        //            SVProgressHUD.dismiss()
-        //            Helper.removeServiceCallBackgroundView(view: self.view)
-        //            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-        //            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.relinquishmentSelectionViewController) as! RelinquishmentSelectionViewController
-        //
-        //            let transitionManager = TransitionManager()
-        //            self.navigationController?.transitioningDelegate = transitionManager
-        //            self.navigationController!.pushViewController(viewController, animated: true)
-        //
-        //        }, onError: {(error) in
-        //            
-        //            print(error.description)
-        //            SVProgressHUD.dismiss()
-        //            Helper.removeServiceCallBackgroundView(view: self.view)
-        //            
-        //        })
+                SVProgressHUD.show()
+                Helper.addServiceCallBackgroundView(view: self.view)
+                ExchangeClient.getMyUnits(UserContext.sharedInstance.accessToken, onSuccess: { (Relinquishments) in
+        
+                    Constant.MyClassConstants.relinquishmentDeposits = Relinquishments.deposits
+                    Constant.MyClassConstants.relinquishmentOpenWeeks = Relinquishments.openWeeks
+        
+        
+                    if(Relinquishments.pointsProgram != nil){
+                        Constant.MyClassConstants.relinquishmentProgram = Relinquishments.pointsProgram!
+        
+                        if (Relinquishments.pointsProgram!.availablePoints != nil) {
+                            Constant.MyClassConstants.relinquishmentAvailablePointsProgram = Relinquishments.pointsProgram!.availablePoints!
+                        }
+        
+                    }
+        
+        
+                    SVProgressHUD.dismiss()
+                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                    let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.relinquishmentSelectionViewController) as! RelinquishmentSelectionViewController
+        
+                    let transitionManager = TransitionManager()
+                    self.navigationController?.transitioningDelegate = transitionManager
+                    self.navigationController!.pushViewController(viewController, animated: true)
+        
+                }, onError: {(error) in
+                    
+                    print(error.description)
+                    SVProgressHUD.dismiss()
+                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    
+                })
         
     }
     
@@ -339,7 +339,7 @@ extension VacationSearchViewController:UICollectionViewDataSource {
             centerView.addSubview(unitLabel)
             
             let priceLabel = UILabel(frame: CGRect(x: 10, y: 30, width: centerView.frame.size.width - 20, height: 20))
-            priceLabel.text = "From " + String(describing: deal.price!.price) + " Wk."
+            priceLabel.text = "From " + String(describing: deal.price!.fromPrice) + " Wk."
             priceLabel.numberOfLines = 2
             priceLabel.textAlignment = NSTextAlignment.center
             priceLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
@@ -523,8 +523,8 @@ extension VacationSearchViewController:UITableViewDelegate {
                     let resort = Resort()
                     resort.resortName = resortsToShow.resortName
                     resort.resortCode = resortsToShow.resortCode
-                    resort.address?.city = resortsToShow.resortCityName
-                    resort.address?.territory = resortsToShow.territorrycode
+                    resort.address?.cityName = resortsToShow.resortCityName
+                    resort.address?.territoryCode = resortsToShow.territorrycode
                     
                     resortsArray.add(resort)
                     

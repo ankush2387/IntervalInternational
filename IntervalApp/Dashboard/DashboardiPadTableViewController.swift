@@ -419,8 +419,8 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
             let upcomingTrip = Constant.MyClassConstants.upcomingTripsArray[indexPath.row]
             
             cell.resortTitleLabel.text = upcomingTrip.resort!.resortName
-            cell.resortAddressLabel.text = "\(upcomingTrip.resort!.address!.city!), \(upcomingTrip.resort!.address!.country!.countryCode!)"
-            cell.resortCodeLabel.text = upcomingTrip.resort!.address!.country?.countryCode!
+            cell.resortAddressLabel.text = "\(upcomingTrip.resort!.address!.cityName!), \(upcomingTrip.resort!.address!.countryCode!)"
+            cell.resortCodeLabel.text = upcomingTrip.resort!.address!.countryCode!
             
             let checkInDate = Helper.convertStringToDate(dateString:upcomingTrip.unit!.checkInDate!, format: Constant.MyClassConstants.dateFormat1)
             
@@ -533,7 +533,7 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
                 centerView.addSubview(unitLabel)
                 
                 let priceLabel = UILabel(frame: CGRect(x: 10, y: 30, width: centerView.frame.size.width - 20, height: 20))
-                priceLabel.text = "From " + String(describing: topTenDeals.price!.price) + " Wk."
+                priceLabel.text = "From " + String(describing: topTenDeals.price!.fromPrice) + " Wk."
                 priceLabel.numberOfLines = 2
                 priceLabel.textAlignment = NSTextAlignment.center
                 priceLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)

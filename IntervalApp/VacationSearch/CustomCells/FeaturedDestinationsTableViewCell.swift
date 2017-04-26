@@ -40,7 +40,7 @@ extension FeaturedDestinationsTableViewCell:UICollectionViewDataSource {
         let deal = Constant.MyClassConstants.topDeals[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.cellIdentifiers.featuredCell, for: indexPath) as! FeaturedDestinationsCell
         cell.titleLabelDestination.text = deal.header
-        cell.priceLabelDestination.text = "From " + String(describing: deal.price?.price) + " Wk."
+        cell.priceLabelDestination.text = "From " + String(describing: deal.price?.fromPrice) + " Wk."
         cell.unitLabelDestination.text = deal.details
         
 		cell.imageViewDestination.setImageWith(URL(string: (deal.image?.url!)!), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in

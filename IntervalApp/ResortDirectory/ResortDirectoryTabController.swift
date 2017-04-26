@@ -84,7 +84,7 @@ class ResortDirectoryTabController: UITabBarController {
     
     //***** Remove added notifications. *****//
     override func viewWillDisappear(_ animated: Bool) {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
+        //NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
     }
     
     //***** Method called when navigaton back button pressed to dismis current controller from stack *****//

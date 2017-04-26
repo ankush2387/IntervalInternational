@@ -3,7 +3,7 @@
 //  IntervalApp
 //
 //  Created by Chetu on 08/02/16.
-//  Copyright © 2016 Interval International. All rights reserved.
+//  Copyright 2016 Interval International. All rights reserved.
 //
 
 import UIKit

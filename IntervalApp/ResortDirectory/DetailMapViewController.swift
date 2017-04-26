@@ -47,7 +47,7 @@ class DetailMapViewController: UIViewController {
             let marker = GMSMarker()
             marker.position = position
             marker.title = Constant.MyClassConstants.resortsDescriptionArray.resortName
-            marker.snippet = Constant.MyClassConstants.resortsDescriptionArray.address?.city
+            marker.snippet = Constant.MyClassConstants.resortsDescriptionArray.address?.cityName
             marker.isFlat = true
             marker.icon = UIImage(named:Constant.assetImageNames.pinSelectedImage)
             marker.appearAnimation = GMSMarkerAnimation.pop

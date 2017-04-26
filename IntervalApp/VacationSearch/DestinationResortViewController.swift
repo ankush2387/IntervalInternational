@@ -166,7 +166,7 @@ extension DestinationResortViewController:UITableViewDataSource {
             }
             cell.resortImageView?.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
             cell.resortName?.text = Constant.MyClassConstants.viewResponse.resort?.resortName
-            cell.resortAddress?.text = Constant.MyClassConstants.viewResponse.resort?.address?.city?.appending(", ").appending((Constant.MyClassConstants.viewResponse.resort?.address?.territory!)!)
+            cell.resortAddress?.text = Constant.MyClassConstants.viewResponse.resort?.address?.cityName?.appending(", ").appending((Constant.MyClassConstants.viewResponse.resort?.address?.territoryCode!)!)
             cell.resortCode?.text = Constant.MyClassConstants.viewResponse.resort?.resortCode
             
             return cell

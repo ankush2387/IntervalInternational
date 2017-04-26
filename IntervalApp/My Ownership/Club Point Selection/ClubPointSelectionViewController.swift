@@ -399,12 +399,16 @@ class ClubPointSelectionViewController: UIViewController {
     }
     
     //Function called when segment control value change
-    
     @IBAction func segmentControlValueChanged(_ sender: UISegmentedControl){
         Constant.MyClassConstants.pointMatrixDictionary.removeAllObjects()
         Constant.MyClassConstants.pointMatrixDictionary.addEntries(from: Constant.MyClassConstants.matrixDataArray[sender.selectedSegmentIndex] as! [AnyHashable : Any])
         self.mapClubIntervalPoints(index: 0)
         createClubsCollectionView()
+    }
+    
+    //Function called when done button is clicked.
+    @IBAction func doneButtonClicked(_ sender:IUIKButton){
+        
     }
     
     //MARK:Text Attributes with font size

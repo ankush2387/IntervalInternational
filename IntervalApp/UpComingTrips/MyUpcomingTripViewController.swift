@@ -77,7 +77,7 @@ extension MyUpcomingTripViewController:UITableViewDataSource {
         cell.resortImageView.backgroundColor = UIColor.lightGray
         cell.resortImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
         cell.resortNameLabel.text = upComingTrip.resort!.resortName
-        cell.resortLocationLabel.text = "\(upComingTrip.resort!.address!.city!), \(upComingTrip.resort!.address!.country!.countryCode!)"
+        cell.resortLocationLabel.text = "\(upComingTrip.resort!.address!.cityName!), \(upComingTrip.resort!.address!.countryCode!)"
         cell.resortCodeLabel.text = upComingTrip.resort!.resortCode
         
         let checkInDate = Helper.convertStringToDate(dateString:upComingTrip.unit!.checkInDate!, format: Constant.MyClassConstants.dateFormat)

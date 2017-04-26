@@ -265,7 +265,7 @@ class DashboardTableViewController: UITableViewController {
             let upcomingTrip  =  Constant.MyClassConstants.upcomingTripsArray[indexPath.row]
             
             cell.resortNameLabel.text = upcomingTrip.resort!.resortName
-            cell.resortLocationLabel.text = "\(upcomingTrip.resort!.address!.city!), \(upcomingTrip.resort!.address!.country!.countryCode!)"
+            cell.resortLocationLabel.text = "\(upcomingTrip.resort!.address!.cityName!), \(upcomingTrip.resort!.address!.countryCode!)"
             let upcomingTripDate = Helper.convertStringToDate(dateString: upcomingTrip.unit!.checkInDate!, format: Constant.MyClassConstants.dateFormat)
             cell.dayDateLabel.text = Helper.getWeekDay(dateString: upcomingTripDate as NSDate, getValue: Constant.MyClassConstants.date)
             
@@ -495,7 +495,7 @@ extension DashboardTableViewController:UICollectionViewDataSource {
             centerView.addSubview(unitLabel)
             
             let priceLabel = UILabel(frame: CGRect(x: 10, y: 30, width: centerView.frame.size.width - 20, height: 20))
-            priceLabel.text = "From " + String(describing: topTenDeals.price!.price) + " Wk."
+            priceLabel.text = "From " + String(describing: topTenDeals.price!.fromPrice) + " Wk."
             priceLabel.numberOfLines = 2
             priceLabel.textAlignment = NSTextAlignment.center
             priceLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)

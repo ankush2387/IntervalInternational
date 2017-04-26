@@ -736,7 +736,7 @@ extension VacationSearchIPadViewController:UICollectionViewDataSource {
             centerView.addSubview(unitLabel)
             
             let priceLabel = UILabel(frame: CGRect(x: 10, y: 30, width: centerView.frame.size.width - 20, height: 20))
-            priceLabel.text = "From " + String(describing: topTenDeals.price!.price) + " Wk."
+            priceLabel.text = "From " + String(describing: topTenDeals.price!.fromPrice) + " Wk."
             priceLabel.numberOfLines = 2
             priceLabel.textAlignment = NSTextAlignment.center
             priceLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
@@ -780,8 +780,8 @@ extension VacationSearchIPadViewController:WereWantToGoTableViewCellDelegate {
                     let resort = Resort()
                     resort.resortName = resortsToShow.resortName
                     resort.resortCode = resortsToShow.resortCode
-                    resort.address?.city = resortsToShow.resortCityName
-                    resort.address?.territory = resortsToShow.territorrycode
+                    resort.address?.cityName = resortsToShow.resortCityName
+                    resort.address?.territoryCode = resortsToShow.territorrycode
                     
                     resortsArray.add(resort)
                     
