@@ -3,7 +3,7 @@
 //  IntervalApp
 //
 //  Created by Chetuiwk1601 on 3/18/16.
-//  Copyright © 2016 Interval International. All rights reserved.
+//  Copyright 2016 Interval International. All rights reserved.
 //
 
 import Foundation
@@ -530,7 +530,7 @@ public class Helper{
                     }else{
                         
                         Constant.MyClassConstants.whatToTradeArray.add(openWk.pProgram)
-                         Constant.MyClassConstants.relinquishmentIdArray.add(openWk.pProgram[0].relinquishmentId)
+                        Constant.MyClassConstants.relinquishmentIdArray.add(openWk.pProgram[0].relinquishmentId)
                         Constant.MyClassConstants.relinquishmentAvailablePointsProgram = Int((openWk.pProgram[0].availablePoints))
                     }
                 }
@@ -558,10 +558,10 @@ public class Helper{
                 for destination in destinations  {
                     let dest = AreaOfInfluenceDestination()
                     dest.aoiId = destination.aoid
-                    dest.countryCode = destination.countryCode
+                    dest.address?.countryCode = destination.countryCode
                     dest.destinationId = destination.destinationId
                     dest.destinationName = destination.destinationName
-                    dest.territoryCode = destination.territorrycode
+                    dest.address?.territoryCode = destination.territorrycode
                     influenceDestList.append(dest)
                 }
             }
@@ -589,9 +589,9 @@ public class Helper{
                     let reosrt = Resort()
                     reosrt.resortName = resot.resortName
                     reosrt.resortCode = resot.resortCode
-                    reosrt.address?.city = resot.resortCityName
-                    reosrt.address?.territory = resot.territorrycode
-                    reosrt.address?.country?.countryCode = resot.countryCode
+                    reosrt.address?.cityName = resot.resortCityName
+                    reosrt.address?.territoryCode = resot.territorrycode
+                    reosrt.address?.countryCode = resot.countryCode
                     influenceResortList.append(reosrt)
                 }
             }
@@ -687,11 +687,11 @@ public class Helper{
             Helper.removeServiceCallBackgroundView(view: senderVC.view)
             SVProgressHUD.dismiss()
         },
-                                          onError: {(error) in
-                                            Helper.removeServiceCallBackgroundView(view: senderVC.view)
-                                            SVProgressHUD.dismiss()
-                                            SimpleAlert.alert(senderVC, title:Constant.AlertErrorMessages.errorString, message: error.description)
-                                            
+                                   onError: {(error) in
+                                    Helper.removeServiceCallBackgroundView(view: senderVC.view)
+                                    SVProgressHUD.dismiss()
+                                    SimpleAlert.alert(senderVC, title:Constant.AlertErrorMessages.errorString, message: error.description)
+                                    
         })
     }
     
@@ -746,8 +746,13 @@ public class Helper{
         
         if(Constant.MyClassConstants.isLoginSuccessfull) {
             UserClient.getFavoriteResorts(UserContext.sharedInstance.accessToken, onSuccess: { (response) in
-               
-                Constant.MyClassConstants.favoritesResortCodeArray = [response]
+
+               Constant.MyClassConstants.favoritesResortArray.removeAll()
+                
+                for resortcode in [response][0] {
+                    
+                    Constant.MyClassConstants.favoritesResortCodeArray.add(resortcode)
+                }
                 
             })
             { (error) in
@@ -764,7 +769,7 @@ public class Helper{
         
         if(Constant.MyClassConstants.favoritesResortCodeArray.contains(resortCode)) {
             
-                status = true
+            status = true
         }
         return status
     }
@@ -989,7 +994,7 @@ public class Helper{
         if let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
             buildVersion += ".\(build)"
         }
-
+        
         if (Config.sharedInstance.getEnvironment() != Environment.production && Config.sharedInstance.getEnvironment() != Environment.production_dns) {
             let env = Config.sharedInstance.get(.Environment, defaultValue: "NONE").uppercased();
             buildVersion += " (\(env))"
@@ -1191,7 +1196,7 @@ public class Helper{
             Helper.removeServiceCallBackgroundView(view: senderViewController.view)
             SVProgressHUD.dismiss()
             SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
-
+            
         }
     }
     //Common function to add notifications.
@@ -1218,7 +1223,7 @@ public class Helper{
         default:
             return ""
         }
-
+        
         
     }
     static func removeStoredGuestFormDetials() {
@@ -1258,7 +1263,7 @@ public class Helper{
             return ""
         }
     }
-
+    
 }
 
 

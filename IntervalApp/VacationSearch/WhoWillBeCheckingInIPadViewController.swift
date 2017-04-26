@@ -203,16 +203,12 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             
             let guestAddress = Address()
             
-            guestAddress.street1 = "11023 SW 40 ST"
-            guestAddress.city = "MIAMI"
-            guestAddress.zip = "33176"
+            guestAddress.addrLine1 = "11023 SW 40 ST"
+            guestAddress.cityName = "MIAMI"
+            guestAddress.zipCode = "33176"
             guestAddress.addressType = "Home"
-            guestAddress.territory = "FL"
-            
-            let country = Country()
-            country.countryCode = "USA"
-            
-            guestAddress.country = country
+            guestAddress.territoryCode = "FL"
+            guestAddress.countryCode = "USA"
             
             var phoneNumbers = [Phone]()
             let homePhoneNo = Phone()

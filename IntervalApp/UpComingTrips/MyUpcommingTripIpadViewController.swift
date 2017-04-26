@@ -255,8 +255,8 @@ extension MyUpcommingTripIpadViewController:UICollectionViewDataSource {
             cell.headerLabel.text = "Confirmation #\(upcomingTrip.exchangeNumber!)"
             cell.headerStatusLabel.text = upcomingTrip.exchangeStatus!
             cell.resortNameLabel.text = upcomingTrip.resort!.resortName
-            cell.resortLocationLabel.text = "\(upcomingTrip.resort!.address!.city!), \(upcomingTrip.resort!.address!.country!.countryCode!)"
-            cell.resortCodeLabel.text = upcomingTrip.resort!.address!.country!.countryCode!
+            cell.resortLocationLabel.text = "\(upcomingTrip.resort!.address!.cityName!), \(upcomingTrip.resort!.address!.countryCode!)"
+            cell.resortCodeLabel.text = upcomingTrip.resort!.address!.countryCode!
             let checkInDate = Helper.convertStringToDate(dateString:upcomingTrip.unit!.checkInDate!, format: Constant.MyClassConstants.dateFormat)
             
             let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)

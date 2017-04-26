@@ -46,7 +46,7 @@
                             </userDefinedRuntimeAttribute>
                             <userDefinedRuntimeAttribute type="boolean" keyPath="filled" value="YES"/>
                             <userDefinedRuntimeAttribute type="number" keyPath="checkmarkSize">
-                                <real key="value" value="6"/>
+                                <real key="value" value="3"/>
                             </userDefinedRuntimeAttribute>
                             <userDefinedRuntimeAttribute type="boolean" keyPath="round" value="YES"/>
                             <userDefinedRuntimeAttribute type="boolean" keyPath="checked" value="NO"/>

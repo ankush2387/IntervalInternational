@@ -547,11 +547,11 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
             }
             cell.resortNameLabel.text = Constant.MyClassConstants.resortsArray[indexPath.section].resortName
             let resortAddress = Constant.MyClassConstants.resortsArray[indexPath.section].address!
-            if let city = resortAddress.city {
+            if let city = resortAddress.cityName {
                 
                 cell.resortLocation.text = city
             }
-            if let Country = resortAddress.country?.countryName {
+            if let Country = resortAddress.countryCode {
                 cell.resortLocation.text = cell.resortLocation.text?.appending(", \(Country)")
             }
             

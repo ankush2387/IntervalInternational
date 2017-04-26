@@ -1095,11 +1095,17 @@
                                             <constraint firstItem="MQB-1d-q7X" firstAttribute="leading" secondItem="i24-cj-DZL" secondAttribute="trailing" constant="6" id="yXI-wE-Taf"/>
                                             <constraint firstAttribute="width" constant="145" id="zMo-rT-heV"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="3"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="clipsToBounds" value="YES"/>
+                                        </userDefinedRuntimeAttributes>
                                     </view>
                                     <button opaque="NO" tag="101" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zdS-gi-HUg" customClass="IUIKButton" customModule="IntervalUIKit">
                                         <rect key="frame" x="0.0" y="0.0" width="140" height="50"/>
                                         <connections>
-                                            <action selector="loadClubData:" destination="Pt8-IU-mcP" eventType="touchUpInside" id="COp-VN-UD5"/>
+                                            <action selector="secondbuttonpressed:" destination="Pt8-IU-mcP" eventType="touchUpInside" id="Br1-By-3ml"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -1186,12 +1192,18 @@
                                             <constraint firstItem="p4f-jk-H6d" firstAttribute="leading" secondItem="2R4-gZ-2a5" secondAttribute="trailing" constant="-1" id="ikd-5P-Qc7"/>
                                             <constraint firstItem="7tE-U1-rRl" firstAttribute="leading" secondItem="dvY-3T-hZu" secondAttribute="trailing" constant="-2" id="wp6-rN-jjn"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="3"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="clipsToBounds" value="YES"/>
+                                        </userDefinedRuntimeAttributes>
                                     </view>
                                     <button opaque="NO" tag="100" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Vd-Dc-j3g" customClass="IUIKButton" customModule="IntervalUIKit">
                                         <rect key="frame" x="0.0" y="0.0" width="140" height="50"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
-                                            <action selector="loadClubData:" destination="Pt8-IU-mcP" eventType="touchUpInside" id="5GZ-vX-YZz"/>
+                                            <action selector="firstbuttonpressed:" destination="Pt8-IU-mcP" eventType="touchUpInside" id="ZpV-b6-exY"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -1288,6 +1300,8 @@
                         <outlet property="endmonthsecondbtn" destination="x1X-hv-08K" id="15R-aQ-ALy"/>
                         <outlet property="firstTravelWindowConstraint" destination="vYY-zf-ICF" id="Mcr-SQ-IdP"/>
                         <outlet property="firsttravelwindowbtn" destination="1Vd-Dc-j3g" id="Wxm-k1-1Hj"/>
+                        <outlet property="indisefirstview" destination="2vH-be-yiX" id="pI5-h4-LfB"/>
+                        <outlet property="insidesecondview" destination="h4d-Zm-8iA" id="T8d-wp-L44"/>
                         <outlet property="pageControl" destination="aE2-sw-9ZO" id="oqp-p5-WZo"/>
                         <outlet property="secondTravelWindowConstraint" destination="KZV-uM-ibp" id="pKE-gW-Dy7"/>
                         <outlet property="secondView" destination="GxX-RA-NIH" id="adE-lf-IRl"/>

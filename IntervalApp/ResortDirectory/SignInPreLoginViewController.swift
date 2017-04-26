@@ -79,7 +79,7 @@ class SignInPreLoginViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(SignInPreLoginViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
-       // NotificationCenter.default.addObserver(self, selector: #selector(reloadView), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadView), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
         
         let authenticationContext = LAContext()
         
@@ -121,7 +121,11 @@ class SignInPreLoginViewController: UIViewController {
     }
     
     func reloadView(){
-        self.dismiss(animated: true, completion: nil)
+        let vc = ResortDirectoryViewController()
+        let favoritesVC = FevoritesResortController()
+        self.dismiss(animated: true) { 
+            favoritesVC.viewWillAppear(true)
+        }
     }
     
     

@@ -293,7 +293,7 @@ class EditMyAlertIpadViewController: UIViewController {
                             
                             for resort in Constant.MyClassConstants.alertSelectedResorts {
                                 
-                               deststr = deststr.appending("\(resort.resortName!), ")
+                                deststr = deststr.appending("\(resort.resortName!), ")
                             }
                             
                             // omniture tracking with event 53
@@ -313,7 +313,7 @@ class EditMyAlertIpadViewController: UIViewController {
                             SimpleAlert.alertTodismissController(self, title:Constant.AlertPromtMessages.editAlertTitle , message: Constant.AlertMessages.editAlertMessage)
                             
                             
-                            })
+                        })
                         { (error) in
                             
                             SVProgressHUD.dismiss()
@@ -455,7 +455,7 @@ extension EditMyAlertIpadViewController:UICollectionViewDataSource {
             
             let destName = (object as! AreaOfInfluenceDestination).destinationName
             
-            let terocode = (object as! AreaOfInfluenceDestination).territoryCode
+            let terocode = (object as! AreaOfInfluenceDestination).address?.territoryCode
             cell.lblTitle.text = "\(destName!), \(terocode!)"
         }
         
@@ -568,7 +568,7 @@ extension EditMyAlertIpadViewController:UITableViewDataSource {
                 
                 let destName = (object as! AreaOfInfluenceDestination).destinationName
                 
-                let terocode = (object as! AreaOfInfluenceDestination).territoryCode
+                let terocode = (object as! AreaOfInfluenceDestination).address?.territoryCode
                 //cell.whereTogoTextLabel.text = "\(destName!), \(terocode!)"
             }
             cell.selectionStyle = UITableViewCellSelectionStyle.none

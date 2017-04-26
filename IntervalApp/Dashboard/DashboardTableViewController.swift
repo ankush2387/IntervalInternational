@@ -33,7 +33,7 @@ class DashboardTableViewController: UITableViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(reloadTopDestinations), name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadUpcomingTrip), name: NSNotification.Name(rawValue:Constant.notificationNames.reloadTripDetailsNotification), object: nil)
-       self.getNumberOfSections()
+        self.getNumberOfSections()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -45,10 +45,11 @@ class DashboardTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-      
+        
         
         UserClient.getUpcomingTrips(UserContext.sharedInstance.accessToken, onSuccess: {(upComingTrips) in
             Constant.MyClassConstants.upcomingTripsArray = upComingTrips
+            print(Constant.MyClassConstants.upcomingTripsArray)
             self.getNumberOfSections()
             NotificationCenter.default.post(name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: self)
             Helper.removeServiceCallBackgroundView(view: self.view)
@@ -79,10 +80,10 @@ class DashboardTableViewController: UITableViewController {
     //***** Function called when notification for upcoming trips details is fired. *****//
     func reloadUpcomingTrip(){
         if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.confirmationNumber != nil){
-        let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.myUpcomingTripIphone, bundle: nil)
-        let resultController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.upcomingTripsViewController) as? UpComingTripDetailController
-        let navController = UINavigationController(rootViewController: resultController!)
-        self.present(navController, animated:true, completion: nil)
+            let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.myUpcomingTripIphone, bundle: nil)
+            let resultController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.upcomingTripsViewController) as? UpComingTripDetailController
+            let navController = UINavigationController(rootViewController: resultController!)
+            self.present(navController, animated:true, completion: nil)
         }
     }
     
@@ -106,7 +107,7 @@ class DashboardTableViewController: UITableViewController {
             self.dashboardArray.add(Constant.dashboardTableScreenReusableIdentifiers.search)
             self.dashboardArray.add(Constant.dashboardTableScreenReusableIdentifiers.exchange)
             if((Constant.MyClassConstants.topDeals.count) > 0){
-            self.dashboardArray.add(Constant.dashboardTableScreenReusableIdentifiers.getaway)
+                self.dashboardArray.add(Constant.dashboardTableScreenReusableIdentifiers.getaway)
             }
         }
         if(!showExchange && !showGetaways){
@@ -119,7 +120,7 @@ class DashboardTableViewController: UITableViewController {
         if(showGetaways){
             self.dashboardArray.add(Constant.dashboardTableScreenReusableIdentifiers.search)
             if((Constant.MyClassConstants.topDeals.count) > 0){
-            self.dashboardArray.add(Constant.dashboardTableScreenReusableIdentifiers.getaway)
+                self.dashboardArray.add(Constant.dashboardTableScreenReusableIdentifiers.getaway)
             }
         }
     }
@@ -131,9 +132,9 @@ class DashboardTableViewController: UITableViewController {
         Helper.removeServiceCallBackgroundView(view: self.view)
         SVProgressHUD.dismiss()
         /*if(showExchange || showGetaways && homeTableCollectionView != nil){
-          homeTableCollectionView.reloadData()
-          SVProgressHUD.dismiss()
-        }*/
+         homeTableCollectionView.reloadData()
+         SVProgressHUD.dismiss()
+         }*/
     }
     
     //***** MARK: - Table view delegate methods *****//
@@ -208,9 +209,9 @@ class DashboardTableViewController: UITableViewController {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-       
+        
         return dashboardArray.count
-
+        
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -265,7 +266,7 @@ class DashboardTableViewController: UITableViewController {
             let upcomingTrip  =  Constant.MyClassConstants.upcomingTripsArray[indexPath.row]
             
             cell.resortNameLabel.text = upcomingTrip.resort!.resortName
-            cell.resortLocationLabel.text = "\(upcomingTrip.resort!.address!.city!), \(upcomingTrip.resort!.address!.country!.countryCode!)"
+            cell.resortLocationLabel.text = "\(upcomingTrip.resort!.address!.cityName!), \(upcomingTrip.resort!.address!.countryCode!)"
             let upcomingTripDate = Helper.convertStringToDate(dateString: upcomingTrip.unit!.checkInDate!, format: Constant.MyClassConstants.dateFormat)
             cell.dayDateLabel.text = Helper.getWeekDay(dateString: upcomingTripDate as NSDate, getValue: Constant.MyClassConstants.date)
             
@@ -398,10 +399,10 @@ class DashboardTableViewController: UITableViewController {
         //let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.upcomingTripsViewController) as! UpComingTripDetailController
         //self.present(viewController, animated: true, completion: nil)
         
-//        
-//        let resultController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.upcomingTripsViewController) as? UpComingTripDetailController
-//        let navController = UINavigationController(rootViewController: resultController!) // Creating a navigation controller with resultController at the root of the navigation stack.
-//        self.present(navController, animated:true, completion: nil)
+        //
+        //        let resultController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.upcomingTripsViewController) as? UpComingTripDetailController
+        //        let navController = UINavigationController(rootViewController: resultController!) // Creating a navigation controller with resultController at the root of the navigation stack.
+        //        self.present(navController, animated:true, completion: nil)
     }
 }
 
@@ -434,13 +435,13 @@ extension DashboardTableViewController:UICollectionViewDataSource {
         for subview in cell.subviews {
             subview.removeFromSuperview()
         }
-
+        
         
         let topTenDeals = Constant.MyClassConstants.topDeals[indexPath.row]
         let resortFlaxImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: 180) )
         resortFlaxImageView.backgroundColor = UIColor.lightGray
         let rentalDeal:RentalDeal = Constant.MyClassConstants.topDeals[indexPath.row]
-      
+        
         
         resortFlaxImageView.setImageWith(URL(string: (rentalDeal.image!.url)!), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
             if (error != nil) {
@@ -495,7 +496,7 @@ extension DashboardTableViewController:UICollectionViewDataSource {
             centerView.addSubview(unitLabel)
             
             let priceLabel = UILabel(frame: CGRect(x: 10, y: 30, width: centerView.frame.size.width - 20, height: 20))
-            priceLabel.text = "From " + String(describing: topTenDeals.price!.price) + " Wk."
+            priceLabel.text = "From " + String(describing: topTenDeals.price!.fromPrice) + " Wk."
             priceLabel.numberOfLines = 2
             priceLabel.textAlignment = NSTextAlignment.center
             priceLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
@@ -507,10 +508,10 @@ extension DashboardTableViewController:UICollectionViewDataSource {
             cell.layer.borderWidth = 1.0
             cell.layer.cornerRadius = 7
             cell.layer.masksToBounds = true
-
+            
             
             cell.addSubview(centerView)
- 
+            
         }
         
         

@@ -601,7 +601,7 @@ extension CheckOutViewController:UITableViewDataSource {
             cell.resortDetailsButton.addTarget(self, action: #selector(self.resortDetailsClicked(_:)), for: .touchUpInside)
             cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.relinquishmentImage)
             cell.resortName?.text = Constant.MyClassConstants.viewResponse.resort?.resortName
-            cell.resortAddress?.text = Constant.MyClassConstants.viewResponse.resort?.address?.city?.appending(", ").appending((Constant.MyClassConstants.viewResponse.resort?.address?.territory!)!)
+            cell.resortAddress?.text = Constant.MyClassConstants.viewResponse.resort?.address?.cityName?.appending(", ").appending((Constant.MyClassConstants.viewResponse.resort?.address?.territoryCode!)!)
             cell.resortCode?.text = Constant.MyClassConstants.viewResponse.resort?.resortCode
             cell.selectionStyle = .none
             

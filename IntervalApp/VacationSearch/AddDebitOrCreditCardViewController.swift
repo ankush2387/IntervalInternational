@@ -91,16 +91,13 @@ class AddDebitOrCreditCardViewController: UIViewController {
                 newCreditCard.cvv = Constant.GetawaySearchResultCardFormDetailData.cvv
                 
                 let billingAdrs = Address()
-                billingAdrs.street1 = Constant.GetawaySearchResultCardFormDetailData.address1
-                billingAdrs.street2 = Constant.GetawaySearchResultCardFormDetailData.address2
-                billingAdrs.city = Constant.GetawaySearchResultCardFormDetailData.city
+                billingAdrs.addrLine1 = Constant.GetawaySearchResultCardFormDetailData.address1
+                billingAdrs.addrLine2 = Constant.GetawaySearchResultCardFormDetailData.address2
+                billingAdrs.cityName = Constant.GetawaySearchResultCardFormDetailData.city
                 
-                let country = Country()
-                country.countryCode = "USA"
-                
-                billingAdrs.country = country
-                billingAdrs.zip = Constant.GetawaySearchResultCardFormDetailData.pinCode
-                billingAdrs.territory = "FL"
+                billingAdrs.countryCode = "USA"
+                billingAdrs.zipCode = Constant.GetawaySearchResultCardFormDetailData.pinCode
+                billingAdrs.territoryCode = "FL"
                 
                 newCreditCard.billingAddress = billingAdrs
                 newCreditCard.typeCode = Helper.cardNameMapping(cardName: Constant.GetawaySearchResultCardFormDetailData.cardType)

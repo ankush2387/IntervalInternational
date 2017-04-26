@@ -131,15 +131,10 @@ class CreateActionSheet: UITableViewController {
             
   UserClient.getFavoriteResorts(UserContext.sharedInstance.accessToken, onSuccess: { (response) in
     Constant.MyClassConstants.favoritesResortArray.removeAll()
-    
-    print(response)
-    
-    
-    for resortcode in [response] {
+    for resortcode in [response][0] {
         
-        print(resortcode)
+       Constant.MyClassConstants.favoritesResortCodeArray.add(resortcode)
     }
-        Constant.MyClassConstants.favoritesResortCodeArray = response as! NSMutableArray
              NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
                                         
     })

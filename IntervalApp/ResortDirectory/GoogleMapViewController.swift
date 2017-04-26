@@ -288,13 +288,13 @@ class GoogleMapViewController: UIViewController {
             
         }
         else {
-        
+            
             Constant.MyClassConstants.isgetResortFromGoogleSearch = true
             self.googleMapSearchBar.resignFirstResponder()
             self.googleMapSearchBar.showsCancelButton = false
             Helper.addServiceCallBackgroundView(view: self.view)
             SVProgressHUD.show()
-             DirectoryClient.getResortsWithinGeoArea(UserContext.sharedInstance.accessToken, geoArea: Constant.MyClassConstants.destinations![sender.tag].geoArea, onSuccess: { (response) in
+            DirectoryClient.getResortsWithinGeoArea(UserContext.sharedInstance.accessToken, geoArea: Constant.MyClassConstants.destinations![sender.tag].geoArea, onSuccess: { (response) in
                 print(response)
                 Constant.MyClassConstants.resortsArray.removeAll()
                 Constant.MyClassConstants.resortsArray = response
@@ -318,7 +318,7 @@ class GoogleMapViewController: UIViewController {
                 
                 SVProgressHUD.dismiss()
                 Helper.removeServiceCallBackgroundView(view: self.view)
-                })
+            })
             { (error) in
                 SVProgressHUD.dismiss()
                 Helper.removeServiceCallBackgroundView(view: self.view)
@@ -368,11 +368,11 @@ class GoogleMapViewController: UIViewController {
                     let Membership = UserContext.sharedInstance.selectedMembership
                     let desList = DestinationList()
                     desList.aoid = dict.aoiId
-                    desList.countryCode = dict.countryCode
+                    desList.countryCode = (dict.address?.countryCode)!
                     desList.destinationId = dict.destinationId
                     desList.destinationName = dict.destinationName
                     
-                    if let teriCode = dict.territoryCode {
+                    if let teriCode = dict.address?.territoryCode {
                         desList.territorrycode = teriCode
                     }
                     else {
@@ -408,12 +408,12 @@ class GoogleMapViewController: UIViewController {
                 let storedata = RealmLocalStorage()
                 let Membership = UserContext.sharedInstance.selectedMembership
                 let resortList = ResortList()
-                resortList.resortCityName = (address?.city)!
+                resortList.resortCityName = (address?.cityName)!
                 resortList.resortCode = dict.resortCode!
                 resortList.thumbnailurl = dict.images[0].url!
                 resortList.resortName = "\(dict.resortName!) - \(dict.resortCode!)"
                 
-                resortList.territorrycode = (address?.territory)!
+                resortList.territorrycode = (address?.territoryCode)!
                 Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(dict.resortCode!)
                 storedata.resorts.append(resortList)
                 storedata.membeshipNumber = Membership!.memberNumber!
@@ -471,7 +471,7 @@ class GoogleMapViewController: UIViewController {
             
             Constant.MyClassConstants.resortsArray = response
             if(response.count > 0){
-            self.updateMapWithMarkers()
+                self.updateMapWithMarkers()
             }
             if(Constant.RunningDevice.deviceIdiom == .pad && !self.hideSideView && self.containerView.isHidden == true){
                 
@@ -685,7 +685,7 @@ class GoogleMapViewController: UIViewController {
                 
                 resortbyMap.resortCode = object.resortCode!
                 resortbyMap.resortName = object.resortName!
-                resortbyMap.territorrycode = (object.address?.territory)!
+                resortbyMap.territorrycode = (object.address?.territoryCode)!
                 resortList.resortArray.append(resortbyMap)
             }
             Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(Constant.MyClassConstants.resortsArray[0].resortCode!)
@@ -738,9 +738,9 @@ class GoogleMapViewController: UIViewController {
                 self.mapSideView.frame = CGRect(x: 0, y: self.mapSideView.frame.origin.y, width: self.mapSideView.frame.size.width, height: self.mapSideView.frame.size.height)
                 self.draggingView.frame = CGRect(x: self.mapSideView.frame.size.width, y:self.draggingView.frame.origin.y, width: self.draggingView.frame.size.width, height: self.draggingView.frame.size.height)
                 
-                }, completion: { _ in
-                    
-                    self.dragButton.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi * 2))
+            }, completion: { _ in
+                
+                self.dragButton.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi * 2))
             })
         }else{
             self.view.endEditing(true)
@@ -749,9 +749,9 @@ class GoogleMapViewController: UIViewController {
                 
                 self.mapSideView.frame = CGRect(x: -self.mapSideView.frame.size.width, y: self.mapSideView.frame.origin.y, width: self.mapSideView.frame.size.width, height: self.mapSideView.frame.size.height)
                 self.draggingView.frame = CGRect(x: 0, y:self.draggingView.frame.origin.y, width:self.draggingView.frame.size.width, height: self.draggingView.frame.size.height)
-                }, completion: { _ in
-                    
-                    self.dragButton.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
+            }, completion: { _ in
+                
+                self.dragButton.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
             })
         }
     }
@@ -800,7 +800,7 @@ class GoogleMapViewController: UIViewController {
                 self.listView.frame = CGRect(x: 0, y:UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - (64+50))
                 
             }
-            }, completion: { _ in
+        }, completion: { _ in
         })
     }
     
@@ -817,12 +817,12 @@ class GoogleMapViewController: UIViewController {
         UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn ,animations: {
             
             self.hideSideView = true
-            }, completion: { _ in
-                
-                self.mapSideView.frame = CGRect(x: -self.mapSideView.frame.size.width, y: self.mapSideView.frame.origin.y, width: self.mapSideView.frame.size.width, height: self.mapSideView.frame.size.height)
-                self.draggingView.frame = CGRect(x: 0, y:self.draggingView.frame.origin.y, width:self.draggingView.frame.size.width, height: self.draggingView.frame.size.height)
-                self.containerView.frame = CGRect(x: -self.containerView.frame.size.width, y: self.containerView.frame.origin.y, width: self.containerView.frame.size.width, height: self.containerView.frame.size.height)
-                self.dragButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI))
+        }, completion: { _ in
+            
+            self.mapSideView.frame = CGRect(x: -self.mapSideView.frame.size.width, y: self.mapSideView.frame.origin.y, width: self.mapSideView.frame.size.width, height: self.mapSideView.frame.size.height)
+            self.draggingView.frame = CGRect(x: 0, y:self.draggingView.frame.origin.y, width:self.draggingView.frame.size.width, height: self.draggingView.frame.size.height)
+            self.containerView.frame = CGRect(x: -self.containerView.frame.size.width, y: self.containerView.frame.origin.y, width: self.containerView.frame.size.width, height: self.containerView.frame.size.height)
+            self.dragButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI))
         })
         
     }
@@ -845,8 +845,8 @@ class GoogleMapViewController: UIViewController {
                 self.resortView.frame = CGRect(x: 0, y: self.view.frame.height - (self.bottomResortHeight + 50), width: self.view.frame.width, height: self.bottomResortHeight)
                 
                 self.view.bringSubview(toFront: self.resortView)
-                }, completion: { _ in
-                    
+            }, completion: { _ in
+                
             })
             self.view.bringSubview(toFront: self.resortView)
         }else{
@@ -879,8 +879,8 @@ class GoogleMapViewController: UIViewController {
                 
                 self.resortView.frame = CGRect(x: 0, y: self.view.frame.height - (self.bottomResortHeight + 50), width: self.view.frame.width, height: self.bottomResortHeight)
                 
-                }, completion: { _ in
-                    
+            }, completion: { _ in
+                
             })
             let topSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes(sender:)))
             let bottomSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes(sender:)))
@@ -901,8 +901,8 @@ class GoogleMapViewController: UIViewController {
         UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn ,animations: {
             self.resortView.frame = CGRect(x: 0, y: self.view.frame.height, width: self.view.frame.width, height: self.bottomResortHeight)
             
-            }, completion: { _ in
-                
+        }, completion: { _ in
+            
         })
         
     }
@@ -935,8 +935,8 @@ class GoogleMapViewController: UIViewController {
                 self.mapSideView.frame = CGRect(x: -self.mapSideView.frame.size.width, y: self.mapSideView.frame.origin.y, width: self.mapSideView.frame.size.width, height: self.mapSideView.frame.size.height)
                 self.draggingView.frame = CGRect(x: 0, y: self.draggingView.frame.origin.y, width: self.draggingView.frame.size.width, height: self.draggingView.frame.size.height)
                 
-                }, completion: { _ in
-                    self.dragButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI))
+            }, completion: { _ in
+                self.dragButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI))
             })
             
         }else if (sender.direction == .right){
@@ -946,7 +946,7 @@ class GoogleMapViewController: UIViewController {
             self.view.bringSubview(toFront: self.containerView)
             UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn ,animations: {
                 self.containerView.frame = CGRect(x: 0, y: self.containerView.frame.origin.y, width: self.containerView.frame.size.width, height: self.self.containerView.frame.size.height)
-                }, completion: { _ in
+            }, completion: { _ in
             })
         }
         
@@ -957,9 +957,9 @@ class GoogleMapViewController: UIViewController {
             UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn ,animations: {
                 self.containerView.frame = CGRect(x: -self.containerView.frame.size.width, y: self.containerView.frame.origin.y, width: self.containerView.frame.size.width, height: self.containerView.frame.size.height)
                 
-                }, completion: { _ in
-                    self.containerView.isHidden = true
-                    self.mapView.selectedMarker = nil
+            }, completion: { _ in
+                self.containerView.isHidden = true
+                self.mapView.selectedMarker = nil
             })
         }else{
             updateMapMarkers()
@@ -983,13 +983,13 @@ class GoogleMapViewController: UIViewController {
                     self.mapSideView.frame = CGRect(x: 0, y: self.mapSideView.frame.origin.y, width: self.mapSideView.frame.size.width, height: self.mapSideView.frame.size.height)
                     self.draggingView.frame = CGRect(x: self.mapSideView.frame.size.width, y:self.draggingView.frame.origin.y, width: self.draggingView.frame.size.width, height: self.draggingView.frame.size.height)
                     
-                    }, completion: { _ in
-                        
-                        self.mapTableView.isHidden = false
-                        self.mapSideView.isHidden = false
-                        self.draggingView.isHidden = false
-                        self.containerView.isHidden = true
-                        self.alertView.isHidden = true
+                }, completion: { _ in
+                    
+                    self.mapTableView.isHidden = false
+                    self.mapSideView.isHidden = false
+                    self.draggingView.isHidden = false
+                    self.containerView.isHidden = true
+                    self.alertView.isHidden = true
                 })
             }
             else {
@@ -1007,14 +1007,14 @@ class GoogleMapViewController: UIViewController {
                 self.draggingView.isHidden = false
                 self.containerView.isHidden = true
                 UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn ,animations: {
-                
+                    
                     if(self.mapView.camera.zoom >= 10){
                         self.mapTableView.isHidden = false
                     }else{
                         self.alertView.isHidden = false
                     }
-                    }, completion: { _ in
-                        
+                }, completion: { _ in
+                    
                 })
             }
         }
@@ -1104,8 +1104,8 @@ class GoogleMapViewController: UIViewController {
                 }
             }
             
-            }, completion: { _ in
-                self.searchDisplayTableView.isHidden = false
+        }, completion: { _ in
+            self.searchDisplayTableView.isHidden = false
         })
         
     }
@@ -1118,8 +1118,8 @@ class GoogleMapViewController: UIViewController {
             self.searchDisplayTableView.frame = CGRect(x: 0, y: UIScreen.main.bounds.height, width: UIScreen.main.bounds.width,  height: UIScreen.main.bounds.height - 152)
             
             
-            }, completion: { _ in
-                self.searchDisplayTableView.isHidden = true
+        }, completion: { _ in
+            self.searchDisplayTableView.isHidden = true
         })
         
         
@@ -1338,7 +1338,7 @@ extension GoogleMapViewController:UICollectionViewDataSource {
             if (error != nil) {
                 resortImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
             }
-            }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+        }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
         
         cell.addSubview(resortImageView)
         
@@ -1388,7 +1388,7 @@ extension GoogleMapViewController:UICollectionViewDataSource {
         resortNameGradientView.addSubview(resortNameLabel)
         
         let resortCountryLabel = UILabel(frame: CGRect(x: 20, y: 20, width: cell.contentView.frame.width - 20, height: 20))
-        resortCountryLabel.text = resort.address?.city
+        resortCountryLabel.text = resort.address?.cityName
         resortCountryLabel.textColor = UIColor.black
         resortCountryLabel.font = UIFont(name:Constant.fontName.helveticaNeue,size: 14)
         resortNameGradientView.addSubview(resortCountryLabel)
@@ -1400,10 +1400,10 @@ extension GoogleMapViewController:UICollectionViewDataSource {
         resortNameGradientView.addSubview(resortCodeLabel)
         
         if(resort.tier != nil){
-        let tearImageView = UIImageView(frame: CGRect(x: 55, y: 42, width: 16, height: 16))
-        let tierImageName = Helper.getTierImageName(tier: resort.tier!)
-        tearImageView.image = UIImage(named: tierImageName)
-        resortNameGradientView.addSubview(tearImageView)
+            let tearImageView = UIImageView(frame: CGRect(x: 55, y: 42, width: 16, height: 16))
+            let tierImageName = Helper.getTierImageName(tier: resort.tier!)
+            tearImageView.image = UIImage(named: tierImageName)
+            resortNameGradientView.addSubview(tearImageView)
         }
         
         return cell
@@ -1458,17 +1458,17 @@ extension GoogleMapViewController:UITableViewDelegate {
                     }
                     DirectoryClient.getResortsWithinGeoArea(Constant.MyClassConstants.systemAccessToken, geoArea: Constant.MyClassConstants.destinations![indexPath.row].geoArea, onSuccess: { (response) in
                         if(response.count > 0){
-                        Constant.MyClassConstants.resortsArray.removeAll()
-                        Constant.MyClassConstants.resortsArray = response
-                        Constant.MyClassConstants.googleMarkerArray.removeAll()
-                        let resort = Constant.MyClassConstants.resortsArray[0]
-                        let location = CLLocation.init(latitude: (resort.coordinates?.latitude)!, longitude: (resort.coordinates?.longitude)!)
-                        
-                        self.displaySearchedResort(location: location)
-                    }
+                            Constant.MyClassConstants.resortsArray.removeAll()
+                            Constant.MyClassConstants.resortsArray = response
+                            Constant.MyClassConstants.googleMarkerArray.removeAll()
+                            let resort = Constant.MyClassConstants.resortsArray[0]
+                            let location = CLLocation.init(latitude: (resort.coordinates?.latitude)!, longitude: (resort.coordinates?.longitude)!)
+                            
+                            self.displaySearchedResort(location: location)
+                        }
                         SVProgressHUD.dismiss()
                         Helper.removeServiceCallBackgroundView(view: self.view)
-                        })
+                    })
                     { (error) in
                         SVProgressHUD.dismiss()
                         Helper.removeServiceCallBackgroundView(view: self.view)
@@ -1599,11 +1599,11 @@ extension GoogleMapViewController:UITableViewDataSource {
                 cell.tag = indexPath.section
                 let dicValue = Constant.MyClassConstants.destinations![indexPath.row]
                 cell.resortLocationName.text = dicValue.destinationName
-                guard (dicValue.territoryCode.characters.count > 0)
+                guard ((dicValue.address?.territoryCode?.characters.count)! > 0)
                     else{
                         return cell
                 }
-                cell.resortCodeLabel.text =  dicValue.territoryCode!
+                cell.resortCodeLabel.text =  dicValue.address?.territoryCode!
                 
                 return cell
                 
@@ -1635,7 +1635,7 @@ extension GoogleMapViewController:UITableViewDataSource {
                 let dicValue = Constant.MyClassConstants.resorts![indexPath.row]
                 cell.resortLocationName.text = dicValue.resortName
                 
-                cell.resortCityName.text = dicValue.address?.city
+                cell.resortCityName.text = dicValue.address?.cityName
                 cell.resortCode.text = String(utf8String: dicValue.resortCode!)!
                 return cell
             }
@@ -1698,7 +1698,7 @@ extension GoogleMapViewController:UITableViewDataSource {
             }
             cell.resortName.text = resortDetails.resortName
             let resortAddress = resortDetails.address!
-            cell.resortCountry.text = resortAddress.city //resortAddress.country?.countryName
+            cell.resortCountry.text = resortAddress.cityName //resortAddress.country?.countryName
             cell.resortCode.text = resortDetails.resortCode
             cell.delegate = self
             
@@ -1796,7 +1796,7 @@ extension GoogleMapViewController:SearchResultContentTableCellDelegate{
             else {
                 sender.isSelected = false
             }
-
+            
         }else{
             Constant.MyClassConstants.btnTag = sender.tag
             self.performSegue(withIdentifier: Constant.segueIdentifiers.preLoginSegue, sender: self)

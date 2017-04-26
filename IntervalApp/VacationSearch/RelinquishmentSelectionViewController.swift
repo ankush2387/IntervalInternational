@@ -68,9 +68,11 @@ class RelinquishmentSelectionViewController: UIViewController {
             }
             
         }
+        if(Constant.MyClassConstants.relinquishmentIdArray.count > 0){
         if(Constant.MyClassConstants.relinquishmentIdArray.contains(self.relinquishmentPointsProgramArray[0].relinquishmentId!))
         {
             self.relinquishmentPointsProgramArray.remove(at: 0)
+        }
         }
         if(self.requiredNumberOfSection() == 0) {
             

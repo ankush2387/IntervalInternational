@@ -68,7 +68,7 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
         
         
     }
-
+    
     
     func getVacationSearchDetails() {
         
@@ -185,31 +185,31 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
             for subview in (cell?.subviews)! {
                 subview.removeFromSuperview()
             }
-        
-                if(!showExchange){
-                    let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: (cell?.contentView.frame.width)! - 20, height: 20))
-                    resortImageNameLabel.text = "TOP 10 GETAWAYS"
-                    
-                    resortImageNameLabel.textColor = UIColor.black
-                    resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
-                    cell?.addSubview(resortImageNameLabel)
-                }else{
-                    let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: (cell?.contentView.frame.width)! - 20, height: 20))
-                    resortImageNameLabel.text = Constant.segmentControlItems.flexchangeLabelText
-                    resortImageNameLabel.textColor = UIColor.black
-                    resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
-                    cell?.addSubview(resortImageNameLabel)
-                    
-                }
-
-        
-                
+            
+            if(!showExchange){
                 let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: (cell?.contentView.frame.width)! - 20, height: 20))
-                resortImageNameLabel.text = Constant.segmentControlItems.getawaysLabelText
+                resortImageNameLabel.text = "TOP 10 GETAWAYS"
                 
                 resortImageNameLabel.textColor = UIColor.black
                 resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
                 cell?.addSubview(resortImageNameLabel)
+            }else{
+                let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: (cell?.contentView.frame.width)! - 20, height: 20))
+                resortImageNameLabel.text = Constant.segmentControlItems.flexchangeLabelText
+                resortImageNameLabel.textColor = UIColor.black
+                resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
+                cell?.addSubview(resortImageNameLabel)
+                
+            }
+            
+            
+            
+            let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: (cell?.contentView.frame.width)! - 20, height: 20))
+            resortImageNameLabel.text = Constant.segmentControlItems.getawaysLabelText
+            
+            resortImageNameLabel.textColor = UIColor.black
+            resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
+            cell?.addSubview(resortImageNameLabel)
             
             
             //***** Creating collectionview and  layout for collectionView to show getaways and flexchange images on it *****//
@@ -238,7 +238,7 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
             cell?.addSubview(homeTableCollectionView)
             
             return cell!
-
+            
         }else{
             switch (indexPath as NSIndexPath).row {
             case 0:
@@ -455,11 +455,11 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
         //            self.navigationController!.pushViewController(viewController, animated: true)
         //
         //        }, onError: {(error) in
-        //            
+        //
         //            print(error.description)
         //            SVProgressHUD.dismiss()
         //            Helper.removeServiceCallBackgroundView(view: self.view)
-        //            
+        //
         //        })
     }
     
@@ -736,7 +736,7 @@ extension VacationSearchIPadViewController:UICollectionViewDataSource {
             centerView.addSubview(unitLabel)
             
             let priceLabel = UILabel(frame: CGRect(x: 10, y: 30, width: centerView.frame.size.width - 20, height: 20))
-            priceLabel.text = "From " + String(describing: topTenDeals.price!.price) + " Wk."
+            priceLabel.text = "From " + String(describing: topTenDeals.price!.fromPrice) + " Wk."
             priceLabel.numberOfLines = 2
             priceLabel.textAlignment = NSTextAlignment.center
             priceLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
@@ -780,8 +780,8 @@ extension VacationSearchIPadViewController:WereWantToGoTableViewCellDelegate {
                     let resort = Resort()
                     resort.resortName = resortsToShow.resortName
                     resort.resortCode = resortsToShow.resortCode
-                    resort.address?.city = resortsToShow.resortCityName
-                    resort.address?.territory = resortsToShow.territorrycode
+                    resort.address?.cityName = resortsToShow.resortCityName
+                    resort.address?.territoryCode = resortsToShow.territorrycode
                     
                     resortsArray.add(resort)
                     
