@@ -59,7 +59,7 @@ class ResortDetails: NSObject,UITableViewDataSource,UITableViewDelegate {
         }
         cell.resortName.text = resortDetails.resortName
         let resortAddress = resortDetails.address!
-        cell.resortCountry.text = resortAddress.city //resortAddress.country?.countryName
+        cell.resortCountry.text = resortAddress.cityName
         cell.resortCode.text = resortDetails.resortCode
         let tierImageName = Helper.getTierImageName(tier: resortDetails.tier!)
         cell.tierImageView.image = UIImage(named:tierImageName)

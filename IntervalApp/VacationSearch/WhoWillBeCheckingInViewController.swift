@@ -338,17 +338,13 @@ class WhoWillBeCheckingInViewController: UIViewController {
             
             let guestAddress = Address()
             
-            guestAddress.street1 = Constant.GetawaySearchResultGuestFormDetailData.address1
-            guestAddress.street2 = Constant.GetawaySearchResultGuestFormDetailData.address2
-            guestAddress.city = Constant.GetawaySearchResultGuestFormDetailData.city
-            guestAddress.zip = Constant.GetawaySearchResultGuestFormDetailData.pinCode
+            guestAddress.addrLine1 = Constant.GetawaySearchResultGuestFormDetailData.address1
+            guestAddress.addrLine2 = Constant.GetawaySearchResultGuestFormDetailData.address2
+            guestAddress.cityName = Constant.GetawaySearchResultGuestFormDetailData.city
+            guestAddress.zipCode = Constant.GetawaySearchResultGuestFormDetailData.pinCode
             guestAddress.addressType = "Home"
-            guestAddress.territory = "FL"
-            
-            let country = Country()
-            country.countryCode = "USA"
-            
-            guestAddress.country = country
+            guestAddress.territoryCode = "FL"
+            guestAddress.countryCode = "USA"
             
             var phoneNumbers = [Phone]()
             let homePhoneNo = Phone()

@@ -98,6 +98,7 @@ class ResortDirectoryViewController: UIViewController {
         let appearance = UITabBarItem.appearance()
         let attributes: [String: AnyObject] = [NSFontAttributeName:UIFont(name: Constant.fontName.helveticaNeue, size: 15)!, NSForegroundColorAttributeName: IUIKColorPalette.primary1.color]
         appearance.setTitleTextAttributes(attributes, for: UIControlState())
+        setNavigationBar()
         
     }
     
@@ -109,6 +110,20 @@ class ResortDirectoryViewController: UIViewController {
         
         self.tabBarController?.tabBar.isHidden = false
         
+        //***** adding notifications so that it invock the specific method when the notification is fired *****//
+        NotificationCenter.default.addObserver(self, selector: #selector(helpClicked), name: NSNotification.Name(rawValue: Constant.notificationNames.showHelp), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadView), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadTable), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadTableNotification), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(closeButtonClicked), name: NSNotification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadRegionTable), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadRegionNotification), object: nil)
+        setNavigationBar()
+    }
+    
+    func setNavigationBar(){
         //***** handle hamberger menu button for prelogin and post login case *****//
         if((UserContext.sharedInstance.accessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
             
@@ -142,6 +157,7 @@ class ResortDirectoryViewController: UIViewController {
             menuButton.tintColor = UIColor.white
             self.navigationItem.leftBarButtonItem = menuButton
         }
+        
         if (resortTableView != nil) {
             
             resortTableView.reloadData()
@@ -150,18 +166,6 @@ class ResortDirectoryViewController: UIViewController {
             
             resortCollectionView.reloadData()
         }
-        
-        //***** adding notifications so that it invock the specific method when the notification is fired *****//
-        NotificationCenter.default.addObserver(self, selector: #selector(helpClicked), name: NSNotification.Name(rawValue: Constant.notificationNames.showHelp), object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadView), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadTable), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadTableNotification), object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(closeButtonClicked), name: NSNotification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadRegionTable), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadRegionNotification), object: nil)
-        
     }
     
     //**** Remove added observers ****//
@@ -171,6 +175,7 @@ class ResortDirectoryViewController: UIViewController {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadTableNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadRegionNotification), object: nil)*/
+        setNavigationBar()
     }
     
     //*****Function for back button press.*****//
@@ -559,7 +564,7 @@ extension ResortDirectoryViewController:UITableViewDataSource {
             cell.resortName.text = resort.resortName
             
             cell.delegate = self
-            cell.resortCountry.text = resort.address?.city!
+            //cell.resortCountry.text = resort.address?.cityName!
             cell.resortCode.text = resort.resortCode
             return cell
             

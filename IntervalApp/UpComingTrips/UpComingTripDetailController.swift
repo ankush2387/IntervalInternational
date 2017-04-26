@@ -310,7 +310,7 @@ extension UpComingTripDetailController:UITableViewDataSource {
                     }
                     
                     cell.resortNameLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.resortName
-                    cell.resortCodeLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address?.country?.countryCode!
+                    cell.resortCodeLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address?.countryCode!
                     cell.bedRoomKitechenType.text =  "\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.unitSize!) \(Helper.getKitchenEnums(kitchenType: (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit?.kitchenType)!))"
                     
                     cell.sleepsTotalOrPrivate.text = "Sleeps \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.publicSleepCapacity) total, \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.privateSleepCapacity) Private"
@@ -358,11 +358,11 @@ extension UpComingTripDetailController:UITableViewDataSource {
                 }
             }
             Helper.addLinearGradientToView(view: cell.resortNameBaseView, colour: UIColor.white, transparntToOpaque: true, vertical: false)
-            guard let countryString = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address?.country?.countryName, !countryString.isEmpty else {
-                cell.resortLocationLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address?.city!
+            guard let countryString = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address?.countryCode, !countryString.isEmpty else {
+                cell.resortLocationLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address?.cityName!
                 return cell
             }
-            cell.resortLocationLabel.text = "\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address?.city!), \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address?.country?.countryName!)"
+            cell.resortLocationLabel.text = "\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address?.cityName!), \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address?.countryCode!)"
             return cell
         }else if(indexPath.section == 1) {
             
@@ -393,8 +393,8 @@ extension UpComingTripDetailController:UITableViewDataSource {
             {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.resortCell, for: indexPath) as! UpComingTripCell
                 cell.resortNameLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment!.deposit!.resort!.resortName
-                cell.resortLocationLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment!.deposit?.resort!.address!.city
-                cell.resortCodeLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment!.deposit?.resort!.address!.territory
+                cell.resortLocationLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment!.deposit?.resort!.address!.cityName
+                cell.resortCodeLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment!.deposit?.resort!.address!.territoryCode
                 
                 cell.backgroundColor = IUIKColorPalette.contentBackground.color
                 return cell

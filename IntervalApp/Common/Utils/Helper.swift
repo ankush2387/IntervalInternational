@@ -3,7 +3,7 @@
 //  IntervalApp
 //
 //  Created by Chetuiwk1601 on 3/18/16.
-//  Copyright © 2016 Interval International. All rights reserved.
+//  Copyright 2016 Interval International. All rights reserved.
 //
 
 import Foundation
@@ -558,10 +558,10 @@ public class Helper{
                 for destination in destinations  {
                     let dest = AreaOfInfluenceDestination()
                     dest.aoiId = destination.aoid
-                    dest.countryCode = destination.countryCode
+                    dest.address?.countryCode = destination.countryCode
                     dest.destinationId = destination.destinationId
                     dest.destinationName = destination.destinationName
-                    dest.territoryCode = destination.territorrycode
+                    dest.address?.territoryCode = destination.territorrycode
                     influenceDestList.append(dest)
                 }
             }
@@ -589,9 +589,9 @@ public class Helper{
                     let reosrt = Resort()
                     reosrt.resortName = resot.resortName
                     reosrt.resortCode = resot.resortCode
-                    reosrt.address?.city = resot.resortCityName
-                    reosrt.address?.territory = resot.territorrycode
-                    reosrt.address?.country?.countryCode = resot.countryCode
+                    reosrt.address?.cityName = resot.resortCityName
+                    reosrt.address?.territoryCode = resot.territorrycode
+                    reosrt.address?.countryCode = resot.countryCode
                     influenceResortList.append(reosrt)
                 }
             }
