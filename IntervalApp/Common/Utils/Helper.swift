@@ -424,7 +424,20 @@ public class Helper{
             requiredMemberNumber = membernumber
         }
         let realmLocalStorage = realm.objects(RealmLocalStorage.self).filter("membeshipNumber == '\(requiredMemberNumber)'")
-        return realmLocalStorage
+        if(realmLocalStorage.count > 0) {
+            return realmLocalStorage
+        }
+        else {
+            
+            let realm = try! Realm()
+            let allDest = realm.objects(AllAvailableDestination.self)
+            for obj in allDest {
+                print(obj.destination)
+                Constant.MyClassConstants.whereTogoContentArray.add(obj.destination)
+            }
+            return realmLocalStorage
+        }
+
     }
     static func getLocalStorageWherewanttoTrade() -> Results <OpenWeeksStorage> {
         
@@ -436,8 +449,10 @@ public class Helper{
             requiredMemberNumber = membernumber
         }
         let realmLocalStorage = realm.objects(OpenWeeksStorage.self).filter("membeshipNumber == '\(requiredMemberNumber)'")
+        
         return realmLocalStorage
-    }
+        
+          }
     //***** function to get all destination class objects from Realm storage *****//
     static func getLocalStorageAllDest() -> Results<AllAvailableDestination>{
         
@@ -1263,7 +1278,24 @@ public class Helper{
             return ""
         }
     }
-    
+    static func selectedSegment(index:Int) -> String {
+        
+        switch index {
+        case 0:
+            return "Search Both"
+            
+        case 1:
+            return "Getaways"
+            
+        case 2:
+            return "Exchange"
+        default:
+            return ""
+        }
+
+        
+    }
+
 }
 
 

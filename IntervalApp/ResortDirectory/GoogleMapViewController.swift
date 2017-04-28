@@ -272,7 +272,7 @@ class GoogleMapViewController: UIViewController {
     
     func resortShowMapPressedAtIndex(sender:UIButton) {
         
-        
+           Constant.MyClassConstants.destinationOrResortSelectedBy = Constant.omnitureCommonString.mapSelection
         self.hidePopUpView()
         
         let senderButton = sender
@@ -328,6 +328,8 @@ class GoogleMapViewController: UIViewController {
     //***** Method called when destination or resort selected from  *****//
     func destinationSelectedAtIndex(sender:UIButton) {
         
+        
+         Constant.MyClassConstants.destinationOrResortSelectedBy = Constant.omnitureCommonString.typedSelection
         if(self.sourceController != "" && self.sourceController == Constant.MyClassConstants.createAlert || self.sourceController == Constant.MyClassConstants.editAlert) {
             let senderButton = sender
             
@@ -354,6 +356,7 @@ class GoogleMapViewController: UIViewController {
             
         }
         else {
+            
             
             let senderButton = sender
             let realm = try! Realm()
@@ -664,6 +667,7 @@ class GoogleMapViewController: UIViewController {
         if(Constant.MyClassConstants.runningFunctionality == "ResortDirectory"){
             self.navigationController?.dismiss(animated: true, completion: nil)
         }else{
+             Constant.MyClassConstants.selectionType = -1
             _ = self.navigationController?.popViewController(animated: true)
         }
         
@@ -1024,11 +1028,13 @@ class GoogleMapViewController: UIViewController {
     func selectAllDestinations(){
         if(Constant.MyClassConstants.whereTogoContentArray.count > 0) {
             
+            SimpleAlert.searchAlert(self, title: Constant.AlertMessages.searchAlertTitle, message: Constant.AlertMessages.searchAlertMessage)
         }
         else {
             Helper.deleteObjectFromAllDest()
             let allavailabledest = AllAvailableDestination()
             allavailabledest.destination = Constant.MyClassConstants.allDestinations
+            Constant.MyClassConstants.whereTogoContentArray.add(Constant.MyClassConstants.allDestinations)
             let realm = try! Realm()
             try! realm.write {
                 realm.add(allavailabledest)
@@ -1050,8 +1056,10 @@ class GoogleMapViewController: UIViewController {
         let allavailabledest = AllAvailableDestination()
         allavailabledest.destination = Constant.MyClassConstants.allDestinations
         try! realm.write {
+            print(allavailabledest.destination)
             realm.add(allavailabledest)
         }
+        Constant.MyClassConstants.destinationOrResortSelectedBy = Constant.omnitureCommonString.allDestination
         Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
         Constant.MyClassConstants.realmStoredDestIdOrCodeArray.removeAllObjects()
         Constant.MyClassConstants.whereTogoContentArray.add(Constant.MyClassConstants.allDestinations)

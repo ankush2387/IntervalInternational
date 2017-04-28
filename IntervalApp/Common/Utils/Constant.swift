@@ -76,8 +76,10 @@ class Constant: NSObject {
         static var alertOriginationPoint:String!
         static var loginOriginationPoint:String!
         static var loginType:String!
-        
+        static var selectedDestinationNames:String = ""
         static var addressStringForCardDetailSection = "Address"
+        static var destinationOrResortSelectedBy:String = ""
+        static var selectionType = -1
         
         //global variable to hold advisement type text
         static var advisementTypeStringaArray = ["Important Advisements","General Advisements","Additional Advisements"]
@@ -1475,6 +1477,9 @@ class Constant: NSObject {
         static var enableTouchId = "Enable Touch ID"
         static var preloginChooseMemberShip = "Pre-Login Choose Membership"
         static var vactionSearch = "Vacation Search"
+        static var allDestination = "All Destination"
+        static var typedSelection = "Typed Selection"
+        static var mapSelection = "Map Selection"
     }
     
     //Omniture Evars
