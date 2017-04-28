@@ -57,7 +57,7 @@ class ResortByMap:Object {
 
 class AllAvailableDestination:Object {
     
-     var destination = ""
+     dynamic var destination = ""
 }
 
 class TradeLocalData:Object {
