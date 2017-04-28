@@ -14,6 +14,7 @@ class BedroomSizeViewController: UIViewController {
     
     //***** Outlets *****//
     @IBOutlet weak var bedroomSizeTableView: UITableView!
+    @IBOutlet weak var titleLabel: UILabel!
     
     //***** Class variables *****//
     var selectionChanged = false
@@ -57,7 +58,7 @@ class BedroomSizeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.titleLabel.text = "Select master or lock-off portion"
         if(Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count == 0) {
             Constant.MyClassConstants.bedRoomSizeSelectedIndexArray = [0,1,2,3,4]
             self.localArrayToHoldSelection = [0,1,2,3,4]

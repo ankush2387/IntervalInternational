@@ -27,11 +27,13 @@ class RelinquishmentSelectionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         
-        
+        self.relinquishmentTableview.estimatedRowHeight = 200
         self.relinquishmentPointsProgramArray.append(Constant.MyClassConstants.relinquishmentProgram)
         
         relinquishmentOpenWeeksArray.removeAll()
+
         for fixed_week_type in Constant.MyClassConstants.relinquishmentOpenWeeks{
            
             if(fixed_week_type.weekNumber != Constant.CommonStringIdentifiers.floatWeek){
@@ -262,7 +264,23 @@ class RelinquishmentSelectionViewController: UIViewController {
                 realm.add(storedata)
             }
             
+            _ = self.navigationController?.popViewController(animated: true)
+            
         }else{
+            if((relinquishmentOpenWeeksArray[sender.tag - 1].unit?.lockOffUnits.count)! > 0){
+                var mainStoryboard = UIStoryboard()
+                if(Constant.RunningDevice.deviceIdiom == .pad) {
+                    mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIpad, bundle: nil)
+                }
+                else {
+                    mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
+                }
+                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.bedroomSizeViewController) as! BedroomSizeViewController
+                
+                let transitionManager = TransitionManager()
+                self.navigationController?.transitioningDelegate = transitionManager
+                self.navigationController!.present(viewController, animated: true, completion: nil)
+            }else{
             Constant.MyClassConstants.relinquishmentSelectedWeek = relinquishmentOpenWeeksArray[sender.tag - 1]
             Constant.MyClassConstants.whatToTradeArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek)
             Constant.MyClassConstants.relinquishmentIdArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!)
@@ -287,8 +305,9 @@ class RelinquishmentSelectionViewController: UIViewController {
             try! realm.write {
                 realm.add(storedata)
             }
+           _ = self.navigationController?.popViewController(animated: true)
+          }
         }
-        _ = self.navigationController?.popViewController(animated: true)
     }
     
 }
@@ -299,13 +318,14 @@ extension RelinquishmentSelectionViewController:UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        if(indexPath.section == 0 && Constant.MyClassConstants.relinquishmentProgram.availablePoints != 0) {
+        /*if(indexPath.section == 0 && Constant.MyClassConstants.relinquishmentProgram.availablePoints != 0) {
                 return 152
         }else if(indexPath.section == 0){
             return 0
         }else {
             return 80
-        }
+        }*/
+        return UITableViewAutomaticDimension
     }
     
     //***** Implementing header and footer cell for all sections  *****//
@@ -330,7 +350,8 @@ extension RelinquishmentSelectionViewController:UITableViewDelegate {
               
                   headerTextLabel.text = Constant.ownershipViewController.intervalWeeksSectionHeaderTitle
             }
-            headerTextLabel.textColor = IUIKColorPalette.primaryText.color
+            headerTextLabel.textColor = UIColor.darkGray
+            headerTextLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15)
             headerView.addSubview(headerTextLabel)
             return headerView
         }
@@ -420,19 +441,13 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
             cell.availablePointToolButton.addTarget(self, action: #selector(RelinquishmentSelectionViewController.availablePointToolButtonPressed(_:)), for: .touchUpInside)
             cell.addAvailablePointButton.addTarget(self, action:  #selector(RelinquishmentSelectionViewController.addAvailablePoinButtonPressed(_:)), for: .touchUpInside)
             cell.addAvailablePointButton.tag = indexPath.section + indexPath.row
-            var availablePointsNumber = 0
-            
             if (Constant.MyClassConstants.relinquishmentProgram.availablePoints != nil) {
-                availablePointsNumber = Constant.MyClassConstants.relinquishmentProgram.availablePoints!
+                let largeNumber = Constant.MyClassConstants.relinquishmentProgram.availablePoints!
+                let numberFormatter = NumberFormatter()
+                numberFormatter.numberStyle = NumberFormatter.Style.decimal
+                let formattedString = numberFormatter.string(for: largeNumber)
+                cell.availablePointValueLabel.text = formattedString
             }
-            
-            
-//            let numberFormatter = NumberFormatter()
-//            numberFormatter.numberStyle = .decimal
-//            
-//            let availablePoints = numberFormatter.string(from: availablePointsNumber)
-            
-            cell.availablePointValueLabel.text = "\(availablePointsNumber)"
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             return cell
         }
@@ -451,6 +466,7 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
             }
             let units = openWeek.unit
             cell.resortName.text = openWeek.resort?.resortName!
+            //cell.resortName.text = "Westwood"
             var bedroomSize = ""
             var kitchenType = ""
             
@@ -465,8 +481,13 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
             
             cell.bedroomSizeAndKitchenClient.text = "\(bedroomSize) \(kitchenType)"
             let totalSleep = "Sleeps " + String((units?.publicSleepCapacity)! + (units?.privateSleepCapacity)!)
-            let privateSleep = " Total, " + (String(describing: units!.privateSleepCapacity)) + " Private"
+            let privateSleep = " total, " + (String(describing: units!.privateSleepCapacity)) + " Private"
             cell.totalSleepAndPrivate.text = "\(totalSleep) \(privateSleep)"
+            
+            if (units?.lockOffUnits.count) != 0{
+                cell.bedroomSizeAndKitchenClient.text = ""
+                cell.totalSleepAndPrivate.text = "Lock off capable."
+            }
             
             cell.yearLabel.text = "\(openWeek.relinquishmentYear!)"
             
@@ -500,7 +521,7 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
             }
             else {
                 
-                cell.dayAndDateLabel.text = ""
+                cell.dayAndDateLabel.text = " "
             }
             cell.totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: openWeek.weekNumber!))"
             
