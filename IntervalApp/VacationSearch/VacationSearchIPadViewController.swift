@@ -428,39 +428,39 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
         
         
         
-        //        SVProgressHUD.show()
-        //        Helper.addServiceCallBackgroundView(view: self.view)
-        //        ExchangeClient.getMyUnits(UserContext.sharedInstance.accessToken, onSuccess: { (Relinquishments) in
-        //
-        //            DarwinSDK.logger.debug(Relinquishments)
-        //            Constant.MyClassConstants.relinquishmentDeposits = Relinquishments.deposits
-        //            Constant.MyClassConstants.relinquishmentOpenWeeks = Relinquishments.openWeeks
-        //
-        //            if(Relinquishments.pointsProgram != nil){
-        //                Constant.MyClassConstants.relinquishmentProgram = Relinquishments.pointsProgram!
-        //
-        //                if (Relinquishments.pointsProgram!.availablePoints != nil) {
-        //                    Constant.MyClassConstants.relinquishmentAvailablePointsProgram = Relinquishments.pointsProgram!.availablePoints!
-        //                }
-        //
-        //            }
-        //
-        //            SVProgressHUD.dismiss()
-        //            Helper.removeServiceCallBackgroundView(view: self.view)
-        //            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-        //            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.relinquishmentSelectionViewController) as! RelinquishmentSelectionViewController
-        //
-        //            let transitionManager = TransitionManager()
-        //            self.navigationController?.transitioningDelegate = transitionManager
-        //            self.navigationController!.pushViewController(viewController, animated: true)
-        //
-        //        }, onError: {(error) in
-        //
-        //            print(error.description)
-        //            SVProgressHUD.dismiss()
-        //            Helper.removeServiceCallBackgroundView(view: self.view)
-        //
-        //        })
+//                SVProgressHUD.show()
+//                Helper.addServiceCallBackgroundView(view: self.view)
+//                ExchangeClient.getMyUnits(UserContext.sharedInstance.accessToken, onSuccess: { (Relinquishments) in
+//        
+//                    DarwinSDK.logger.debug(Relinquishments)
+//                    Constant.MyClassConstants.relinquishmentDeposits = Relinquishments.deposits
+//                    Constant.MyClassConstants.relinquishmentOpenWeeks = Relinquishments.openWeeks
+//        
+//                    if(Relinquishments.pointsProgram != nil){
+//                        Constant.MyClassConstants.relinquishmentProgram = Relinquishments.pointsProgram!
+//        
+//                        if (Relinquishments.pointsProgram!.availablePoints != nil) {
+//                            Constant.MyClassConstants.relinquishmentAvailablePointsProgram = Relinquishments.pointsProgram!.availablePoints!
+//                        }
+//        
+//                    }
+//        
+//                    SVProgressHUD.dismiss()
+//                    Helper.removeServiceCallBackgroundView(view: self.view)
+//                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+//                    let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.relinquishmentSelectionViewController) as! RelinquishmentSelectionViewController
+//        
+//                    let transitionManager = TransitionManager()
+//                    self.navigationController?.transitioningDelegate = transitionManager
+//                    self.navigationController!.pushViewController(viewController, animated: true)
+//        
+//                }, onError: {(error) in
+//        
+//                    print(error.description)
+//                    SVProgressHUD.dismiss()
+//                    Helper.removeServiceCallBackgroundView(view: self.view)
+//        
+//                })
     }
     
     @IBAction func featuredDestinationsPressed(_ sender: AnyObject){

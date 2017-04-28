@@ -288,8 +288,7 @@ class CreateAlertViewController: UIViewController {
     //***** function to call calendar screen to select travel end date *****//
     @IBAction func travelEndDateCalendarIconPressed(_ sender:AnyObject) {
         
-        
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle:     nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as! CalendarViewController
         viewController.requestedDateWindow = Constant.MyClassConstants.end
         let transitionManager = TransitionManager()
@@ -303,7 +302,8 @@ class CreateAlertViewController: UIViewController {
         
         var mainStoryboard = UIStoryboard()
         if(Constant.RunningDevice.deviceIdiom == .pad) {
-            mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIpad, bundle: nil)
+            //mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIpad, bundle: nil)
+            mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
         }
         else {
             mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)

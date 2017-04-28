@@ -493,6 +493,7 @@ extension LoginIPadViewController {
 	fileprivate func performStandardLogin(_ username:String, password:String)
 	{
 		// login button pressed, confirm user sign-in
+        Constant.MyClassConstants.loginOriginationPoint = Constant.omnitureCommonString.signInPage
 		Helper.loginButtonPressed(sender: self, userName: username, password: password, completionHandler: { (success) in
 			if (success) {
 				// let the login process continue
@@ -511,6 +512,7 @@ extension LoginIPadViewController {
 			if (success)
 			{
 				// save off credentials and authenticate user
+                Constant.MyClassConstants.loginOriginationPoint = Constant.omnitureCommonString.signInPage
 				self.touchID.saveAuthenticationInfo(username, password: password, completionHandler: { (success) in
 					if (success) {
 						
