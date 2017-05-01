@@ -385,82 +385,82 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
     
     @IBAction func addWhereToTradePressed(_ sender: IUIKButton){
         
-        
-        Constant.MyClassConstants.matrixDataArray.removeAllObjects()
-        DirectoryClient.getResortClubPointsChart(UserContext.sharedInstance.accessToken, resortCode:  "EVC", onSuccess:{ (ClubPointsChart) in
-            
-            if(ClubPointsChart.matrices[0].description == Constant.MyClassConstants.matrixTypeSingle){
-                Constant.MyClassConstants.showSegment = false
-            }else{
-                Constant.MyClassConstants.showSegment = true
-            }
-            //if(ClubPointsChart.matrices[0].description == Constant.MyClassConstants.matrixTypeSingle || ClubPointsChart.matrices[0].description == Constant.MyClassConstants.matrixTypePremium){
-            for matrices in ClubPointsChart.matrices {
-                let pointsDictionary = NSMutableDictionary()
-                for grids in matrices.grids {
-                    
-                    Constant.MyClassConstants.fromdatearray.add(grids.fromDate!)
-                    Constant.MyClassConstants.todatearray.add(grids.toDate!)
-                    
-                    for rows in grids.rows
-                    {
-                        print(rows.units[0].clubPoints)
-                        Constant.MyClassConstants.labelarray.add(rows.label!)
-                    }
-                    let dictKey = "\(grids.fromDate!) - \(grids.toDate!)"
-                    pointsDictionary.setObject(grids.rows, forKey: String(describing: dictKey) as NSCopying)
-                }
-                Constant.MyClassConstants.matrixDataArray.add(pointsDictionary)
-            }
-            //}
-            
-            
-            let storyboard = UIStoryboard(name: Constant.storyboardNames.ownershipIpad, bundle: nil)
-            let clubPointselectionViewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.clubPointSelectionViewController)as? ClubPointSelectionViewController
-            self.navigationController?.pushViewController(clubPointselectionViewController!, animated: true)
-            
-        }, onError:{ (error) in
-            
-            Helper.removeServiceCallBackgroundView(view: self.view)
-            SVProgressHUD.dismiss()
-            print(error.description)
-        })
-        
-        
-        
-//                SVProgressHUD.show()
-//                Helper.addServiceCallBackgroundView(view: self.view)
-//                ExchangeClient.getMyUnits(UserContext.sharedInstance.accessToken, onSuccess: { (Relinquishments) in
 //        
-//                    DarwinSDK.logger.debug(Relinquishments)
-//                    Constant.MyClassConstants.relinquishmentDeposits = Relinquishments.deposits
-//                    Constant.MyClassConstants.relinquishmentOpenWeeks = Relinquishments.openWeeks
-//        
-//                    if(Relinquishments.pointsProgram != nil){
-//                        Constant.MyClassConstants.relinquishmentProgram = Relinquishments.pointsProgram!
-//        
-//                        if (Relinquishments.pointsProgram!.availablePoints != nil) {
-//                            Constant.MyClassConstants.relinquishmentAvailablePointsProgram = Relinquishments.pointsProgram!.availablePoints!
-//                        }
-//        
+//        Constant.MyClassConstants.matrixDataArray.removeAllObjects()
+//        DirectoryClient.getResortClubPointsChart(UserContext.sharedInstance.accessToken, resortCode:  "EVC", onSuccess:{ (ClubPointsChart) in
+//            
+//            if(ClubPointsChart.matrices[0].description == Constant.MyClassConstants.matrixTypeSingle){
+//                Constant.MyClassConstants.showSegment = false
+//            }else{
+//                Constant.MyClassConstants.showSegment = true
+//            }
+//            //if(ClubPointsChart.matrices[0].description == Constant.MyClassConstants.matrixTypeSingle || ClubPointsChart.matrices[0].description == Constant.MyClassConstants.matrixTypePremium){
+//            for matrices in ClubPointsChart.matrices {
+//                let pointsDictionary = NSMutableDictionary()
+//                for grids in matrices.grids {
+//                    
+//                    Constant.MyClassConstants.fromdatearray.add(grids.fromDate!)
+//                    Constant.MyClassConstants.todatearray.add(grids.toDate!)
+//                    
+//                    for rows in grids.rows
+//                    {
+//                        print(rows.units[0].clubPoints)
+//                        Constant.MyClassConstants.labelarray.add(rows.label!)
 //                    }
+//                    let dictKey = "\(grids.fromDate!) - \(grids.toDate!)"
+//                    pointsDictionary.setObject(grids.rows, forKey: String(describing: dictKey) as NSCopying)
+//                }
+//                Constant.MyClassConstants.matrixDataArray.add(pointsDictionary)
+//            }
+//            //}
+//            
+//            
+//            let storyboard = UIStoryboard(name: Constant.storyboardNames.ownershipIpad, bundle: nil)
+//            let clubPointselectionViewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.clubPointSelectionViewController)as? ClubPointSelectionViewController
+//            self.navigationController?.pushViewController(clubPointselectionViewController!, animated: true)
+//            
+//        }, onError:{ (error) in
+//            
+//            Helper.removeServiceCallBackgroundView(view: self.view)
+//            SVProgressHUD.dismiss()
+//            print(error.description)
+//        })
 //        
-//                    SVProgressHUD.dismiss()
-//                    Helper.removeServiceCallBackgroundView(view: self.view)
-//                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-//                    let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.relinquishmentSelectionViewController) as! RelinquishmentSelectionViewController
-//        
-//                    let transitionManager = TransitionManager()
-//                    self.navigationController?.transitioningDelegate = transitionManager
-//                    self.navigationController!.pushViewController(viewController, animated: true)
-//        
-//                }, onError: {(error) in
-//        
-//                    print(error.description)
-//                    SVProgressHUD.dismiss()
-//                    Helper.removeServiceCallBackgroundView(view: self.view)
-//        
-//                })
+        
+        
+                SVProgressHUD.show()
+                Helper.addServiceCallBackgroundView(view: self.view)
+                ExchangeClient.getMyUnits(UserContext.sharedInstance.accessToken, onSuccess: { (Relinquishments) in
+        
+                    DarwinSDK.logger.debug(Relinquishments)
+                    Constant.MyClassConstants.relinquishmentDeposits = Relinquishments.deposits
+                    Constant.MyClassConstants.relinquishmentOpenWeeks = Relinquishments.openWeeks
+        
+                    if(Relinquishments.pointsProgram != nil){
+                        Constant.MyClassConstants.relinquishmentProgram = Relinquishments.pointsProgram!
+        
+                        if (Relinquishments.pointsProgram!.availablePoints != nil) {
+                            Constant.MyClassConstants.relinquishmentAvailablePointsProgram = Relinquishments.pointsProgram!.availablePoints!
+                        }
+        
+                    }
+        
+                    SVProgressHUD.dismiss()
+                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                    let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.relinquishmentSelectionViewController) as! RelinquishmentSelectionViewController
+        
+                    let transitionManager = TransitionManager()
+                    self.navigationController?.transitioningDelegate = transitionManager
+                    self.navigationController!.pushViewController(viewController, animated: true)
+        
+                }, onError: {(error) in
+        
+                    print(error.description)
+                    SVProgressHUD.dismiss()
+                    Helper.removeServiceCallBackgroundView(view: self.view)
+        
+                })
     }
     
     @IBAction func featuredDestinationsPressed(_ sender: AnyObject){
