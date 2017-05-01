@@ -204,7 +204,7 @@ class VacationSearchViewController: UIViewController {
     //***** Add location pressed action to show map screen with list of location to select *****//
     func addRelinquishmentSectionButtonPressed(_ sender:IUIKButton) {
         
-        Helper.addServiceCallBackgroundView(view: self.view)
+        /*Helper.addServiceCallBackgroundView(view: self.view)
         SVProgressHUD.show()
         Constant.MyClassConstants.matrixDataArray.removeAllObjects()
         DirectoryClient.getResortClubPointsChart(UserContext.sharedInstance.accessToken, resortCode:  Constant.MyClassConstants.resortCodeForClub, onSuccess:{ (ClubPointsChart) in
@@ -246,9 +246,9 @@ class VacationSearchViewController: UIViewController {
             Helper.removeServiceCallBackgroundView(view: self.view)
             SVProgressHUD.dismiss()
             print(error.description)
-        })
+        })*/
         
-        /*SVProgressHUD.show()
+        SVProgressHUD.show()
          Helper.addServiceCallBackgroundView(view: self.view)
          ExchangeClient.getMyUnits(UserContext.sharedInstance.accessToken, onSuccess: { (Relinquishments) in
          
@@ -281,7 +281,7 @@ class VacationSearchViewController: UIViewController {
          SVProgressHUD.dismiss()
          Helper.removeServiceCallBackgroundView(view: self.view)
          
-         })*/
+         })
         
     }
     

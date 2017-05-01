@@ -681,6 +681,7 @@ class Constant: NSObject {
         static var confirmationControllerTitle = NSLocalizedString("Confirmation", comment: "")
         static var intervalHDiPadControllerTitle =  NSLocalizedString("IntervalHDIpadPlayerViewController", comment: "")
         static var clubpointselection = NSLocalizedString("Club Point Selection", comment: "")
+        static var selectedControllerTitle = ""
     }
     
     //***** Common structure for custom cell identifiers ******//

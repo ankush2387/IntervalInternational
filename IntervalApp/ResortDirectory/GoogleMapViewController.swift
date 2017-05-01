@@ -689,7 +689,9 @@ class GoogleMapViewController: UIViewController {
                 
                 resortbyMap.resortCode = object.resortCode!
                 resortbyMap.resortName = object.resortName!
-                resortbyMap.territorrycode = (object.address?.territoryCode)!
+                if let territoryCode = object.address?.territoryCode{
+                  resortbyMap.territorrycode = territoryCode
+                }
                 resortList.resortArray.append(resortbyMap)
             }
             Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(Constant.MyClassConstants.resortsArray[0].resortCode!)

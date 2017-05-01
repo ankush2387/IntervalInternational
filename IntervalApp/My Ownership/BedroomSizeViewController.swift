@@ -58,18 +58,22 @@ class BedroomSizeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.titleLabel.text = "Select master or lock-off portion"
-        if(Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count == 0) {
-            Constant.MyClassConstants.bedRoomSizeSelectedIndexArray = [0,1,2,3,4]
-            self.localArrayToHoldSelection = [0,1,2,3,4]
-        }
-        else {
-            for index in Constant.MyClassConstants.bedRoomSizeSelectedIndexArray{
-                self.localArrayToHoldSelection.add(index as! Int)
+        if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController){
+            
+        }else{
+            if(Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count == 0) {
+                Constant.MyClassConstants.bedRoomSizeSelectedIndexArray = [0,1,2,3,4]
+                self.localArrayToHoldSelection = [0,1,2,3,4]
+            }
+            else {
+                for index in Constant.MyClassConstants.bedRoomSizeSelectedIndexArray{
+                    self.localArrayToHoldSelection.add(index as! Int)
+                }
             }
         }
+       
         // Do any additional setup after loading the view.
-        self.title = Constant.ControllerTitles.bedroomSizeViewController
+        //titleLabel.text = Constant.ControllerTitles.bedroomSizeViewController
         let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(self.menuBackButtonPressed(_:)))
         menuButton.tintColor = UIColor.white
         
@@ -143,7 +147,24 @@ class BedroomSizeViewController: UIViewController {
                     Constant.MyClassConstants.bedRoomSizeSelectedIndexArray = self.localArrayToHoldSelection
                 }
             }
-            self.dismiss(animated: true, completion: nil)
+            
+            if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController){
+                self.dismiss(animated: true, completion: nil)
+                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as! SWRevealViewController
+                
+                //***** creating animation transition to show custom transition animation *****//
+                let transition: CATransition = CATransition()
+                let timeFunc : CAMediaTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+                transition.duration = 0.50
+                transition.timingFunction = timeFunc
+                transition.type = kCATransitionPush
+                transition.subtype = kCATransitionFromRight
+                viewController.view.layer.add(transition, forKey: Constant.MyClassConstants.switchToView)
+                UIApplication.shared.keyWindow?.rootViewController = viewController
+            }else{
+                self.dismiss(animated: true, completion: nil)
+            }
         }
         else {
             SimpleAlert.alert(self, title: Constant.AlertPromtMessages.bedRoomSizeTitle, message: Constant.AlertMessages.bedroomSizeAlertMessage)
@@ -163,12 +184,25 @@ extension BedroomSizeViewController : UITableViewDataSource{
     /** Implementaion of UITableViewDataSource Methods */
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Constant.MyClassConstants.bedRoomSize.count
+        
+        if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController){
+            return Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count
+        }else{
+            return Constant.MyClassConstants.bedRoomSize.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell   = tableView.dequeueReusableCell(withIdentifier: Constant.bedroomSizeViewController.bedroomsizeCellIdentifier) as? BedroomSizeTableViewCell
+        
+        if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController){
+            
+            cell?.bedroomSizelabel.text = Helper.getBedroomNumbers(bedroomType:Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as! String)
+            cell?.selectionStyle = UITableViewCellSelectionStyle.none
+            return cell!
+            
+        }else{
         if (Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count != 0) {
             var match = false
             for index in Constant.MyClassConstants.bedRoomSizeSelectedIndexArray {
@@ -203,7 +237,7 @@ extension BedroomSizeViewController : UITableViewDataSource{
         cell?.selectionStyle = UITableViewCellSelectionStyle.none
         return cell!
         
-        
+        }
     }
     
 }
@@ -212,6 +246,6 @@ extension BedroomSizeViewController : UITableViewDataSource{
 extension BedroomSizeViewController : UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70
+        return 60
     }
 }
