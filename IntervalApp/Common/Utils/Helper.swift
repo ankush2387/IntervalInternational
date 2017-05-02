@@ -490,6 +490,7 @@ public class Helper{
                 let destination = obj.destinations
                 for destname in destination {
                     Constant.MyClassConstants.whereTogoContentArray.add("\(destname.destinationName), \(destname.territorrycode)")
+                    Constant.MyClassConstants.selectedDestinationNames = Constant.MyClassConstants.selectedDestinationNames.appending("\(destname.destinationName) \(destname.territorrycode) ,")
                     Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(destname.destinationId)
                     
                     Constant.MyClassConstants.vacationSearchDestinationArray.add(destname.destinationName)
@@ -499,6 +500,7 @@ public class Helper{
                     if(resortname.resortArray.count == 0) {
                         Constant.MyClassConstants.whereTogoContentArray.add(resortname.resortName)
                         Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(resortname.resortCode)
+                         Constant.MyClassConstants.selectedDestinationNames = Constant.MyClassConstants.selectedDestinationNames.appending("\(resortname.resortCode) ,")
                     }
                     else {
                         Constant.MyClassConstants.whereTogoContentArray.add(resortname.resortArray)

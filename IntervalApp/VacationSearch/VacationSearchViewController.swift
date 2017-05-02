@@ -183,6 +183,7 @@ class VacationSearchViewController: UIViewController {
     //***** Calendar icon pressed action to present calendar controller *****//
     func calendarIconClicked(_ sender:IUIKButton) {
         
+        ADBMobile.trackAction(Constant.omnitureEvents.event66, data: nil)
         self.performSegue(withIdentifier: Constant.segueIdentifiers.CalendarViewSegue, sender: nil)
     }
     
@@ -517,6 +518,7 @@ extension VacationSearchViewController:UITableViewDelegate {
                        Helper.deleteObjectFromAllDest()
                     }
                     if(Constant.MyClassConstants.whereTogoContentArray.count > 0) {
+                         ADBMobile.trackAction(Constant.omnitureEvents.event7, data: nil)
                         Constant.MyClassConstants.whereTogoContentArray.removeObject(at: (indexPath as NSIndexPath).row)
                     }
                     tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
@@ -592,6 +594,7 @@ extension VacationSearchViewController:UITableViewDelegate {
                 
                 if(Constant.MyClassConstants.whatToTradeArray.count > 0){
                     
+                    ADBMobile.trackAction(Constant.omnitureEvents.event43, data: nil)
                     Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
                     Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: indexPath.row)
                 }
@@ -1209,6 +1212,7 @@ extension VacationSearchViewController:WhoIsTravelingCellDelegate {
     
     func adultChanged(_ value:Int) {
         
+        ADBMobile.trackAction(Constant.omnitureEvents.event67, data: nil)
         //***** updating adult counter increment and decrement
         self.adultCounter = value
         if defaults.object(forKey: Constant.MyClassConstants.adultCounterString) != nil {
@@ -1225,6 +1229,8 @@ extension VacationSearchViewController:WhoIsTravelingCellDelegate {
         self.searchVacationTableView.reloadData()
     }
     func childrenChanged(_ value:Int) {
+        
+        ADBMobile.trackAction(Constant.omnitureEvents.event67, data: nil)
         
         //***** updating children counter increment and decrement
         self.childCounter = value
@@ -1250,7 +1256,7 @@ extension VacationSearchViewController:WhoIsTravelingCellDelegate {
 extension VacationSearchViewController:SearchTableViewCellDelegate {
     func searchButtonClicked(_ sender : IUIKButton) {
         
-        
+           ADBMobile.trackAction(Constant.omnitureEvents.event1, data: nil)
         if (self.SegmentIndex == 1 && (Helper.getAllDestinationFromLocalStorage().count>0 || Helper.getAllResortsFromLocalStorage().count>0)) {
             
             sender.isEnabled = false
@@ -1283,6 +1289,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             searchDateRequest.resorts = Helper.getAllResortsFromLocalStorage()
             if Reachability.isConnectedToNetwork() == true {
                 
+                ADBMobile.trackAction(Constant.omnitureEvents.event9, data: nil)
                 SVProgressHUD.show()
                 Helper.addServiceCallBackgroundView(view: self.view)
                 RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: searchDateRequest, onSuccess:{ (searchDates) in
@@ -1308,6 +1315,8 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                         Helper.removeServiceCallBackgroundView(view: self.view)
                         SimpleAlert.alert(self, title: Constant.AlertErrorMessages.noResultError, message: Constant.AlertMessages.noResultMessage)
                     }else {
+                        
+                        ADBMobile.trackAction(Constant.omnitureEvents.event18, data: nil)
                         var calendar = Calendar.current
                         calendar.timeZone = TimeZone(secondsFromGMT: 0)!
                         let result = Constant.MyClassConstants.checkInDates.contains(Constant.MyClassConstants.vacationSearchShowDate)
@@ -1325,6 +1334,27 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                             Constant.MyClassConstants.showAlert = true
                             SVProgressHUD.dismiss()
                             Helper.removeServiceCallBackgroundView(view: self.view)
+                            
+                           
+                            
+                            // omniture tracking with event 9
+                            let userInfo: [String: Any] = [
+                                Constant.omnitureCommonString.listItem: Constant.MyClassConstants.selectedDestinationNames,
+                                Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch,
+                                Constant.omnitureEvars.eVar19 : Constant.MyClassConstants.vacationSearchShowDate,
+                                Constant.omnitureEvars.eVar23 : Constant.omnitureCommonString.primaryAlternateDateAvailable,
+                                Constant.omnitureEvars.eVar26 : "",
+                                Constant.omnitureEvars.eVar28: "" ,
+                                Constant.omnitureEvars.eVar33: "" ,
+                                Constant.omnitureEvars.eVar34: "\(self.adultCounter):\(self.childCounter)" ,
+                                Constant.omnitureEvars.eVar36: "" ,
+                                Constant.omnitureEvars.eVar39: "" ,
+                                Constant.omnitureEvars.eVar45: "\(Constant.MyClassConstants.vacationSearchShowDate)-\(Date())",
+                                Constant.omnitureEvars.eVar47: "\(Constant.MyClassConstants.checkInDates.count)" ,
+                                 Constant.omnitureEvars.eVar53: "\(Constant.MyClassConstants.resortsArray.count)"
+                            ]
+                            
+                            ADBMobile.trackAction(Constant.omnitureEvents.event9, data: userInfo)
                             self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
                         }else {
                             

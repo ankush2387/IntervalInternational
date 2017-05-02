@@ -1481,6 +1481,16 @@ class Constant: NSObject {
         static var allDestination = "All Destination"
         static var typedSelection = "Typed Selection"
         static var mapSelection = "Map Selection"
+        static var listItem = "s.list1"
+        static var alert = "Alerts"
+        static var primarySearchDateAvailable = "Primary – Search Date Available"
+        static var primaryAlternateDateAvailable = "Primary – Alternative Date Available"
+        static var primaryAndAoiSearchDateAvailable = "Primary & AOI – Search Date Available"
+        static var primaryAndAoiAlternateDateAvailable = "Primary & AOI – Alternative Date Available "
+        static var aoiOnlySearchDateAvailable = "AOI Only – Search Date Available"
+        static var aoiOnlyAlternateDateAvailable = "AOI Only – Alternative Date Available"
+        static var noAvailability = "No Availability"
+        
     }
     
     //Omniture Evars

@@ -172,7 +172,8 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     
     
     //***** Function called when view results for an active alerts is clicked ****//
-    func viewResultsClicked(_ sender:AnyObject){
+    func viewResultsClicked(_ sender:AnyObject) {
+        
         Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.getawayAlerts
         Constant.MyClassConstants.resortCodesArray = Constant.MyClassConstants.alertsResortCodeDictionary.value(forKey: String(sender.tag)) as! [String]
         Constant.MyClassConstants.checkInDates = self.alertsSearchDates.value(forKey: String(sender.tag)) as! [Date]
@@ -237,6 +238,8 @@ extension GetawayAlertsIPhoneViewController:UITableViewDelegate {
                 
                 self.alertName = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].name
                 self.alertId = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId
+//               Constant.MyClassConstants.alertWindowStartDate = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].earliestCheckInDate
+//               Constant.MyClassConstants.alertWindowStartDate = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].latestCheckInDate
                 Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.removeAllObjects()
                 self.performSegue(withIdentifier: Constant.segueIdentifiers.editAlertSegue, sender: self)
                 

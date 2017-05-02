@@ -239,8 +239,8 @@ class EditMyAlertIpadViewController: UIViewController {
                         SVProgressHUD.show()
                         let rentalAlert = RentalAlert()
                         rentalAlert.alertId = self.alertId
-                        rentalAlert.earliestCheckInDate = ""
-                        rentalAlert.latestCheckInDate = ""
+                        rentalAlert.earliestCheckInDate = Helper.convertDateToString(date: Constant.MyClassConstants.alertWindowStartDate, format: Constant.MyClassConstants.dateFormat)
+                        rentalAlert.latestCheckInDate = Helper.convertDateToString(date: Constant.MyClassConstants.alertWindowEndDate, format: Constant.MyClassConstants.dateFormat)
                         rentalAlert.name = nameTextField.text!
                         if(self.alertStatusButton.isOn) {
                             
@@ -298,17 +298,17 @@ class EditMyAlertIpadViewController: UIViewController {
                             
                             // omniture tracking with event 53
                             let userInfo: [String: Any] = [
-                                "eVar43" : " - \(Date())",
+                                Constant.omnitureEvars.eVar43 : " - \(Date())",
                                 "s.list1": deststr,
-                                "eVar41" : "Alerts",
-                                "eVar57" : Constant.MyClassConstants.alertWindowStartDate,
-                                "eVar58" : Constant.MyClassConstants.alertWindowEndDate,
-                                "eVar59" : self.anlyticsBedroomSize,
-                                "eVar60" : Constant.MyClassConstants.alertOriginationPoint,
-                                "eVar69" : "Yes"
+                                Constant.omnitureEvars.eVar41 : "Alerts",
+                                Constant.omnitureEvars.eVar57 : Constant.MyClassConstants.alertWindowStartDate,
+                                Constant.omnitureEvars.eVar58 : Constant.MyClassConstants.alertWindowEndDate,
+                                Constant.omnitureEvars.eVar59 : self.anlyticsBedroomSize,
+                                Constant.omnitureEvars.eVar60 : Constant.MyClassConstants.alertOriginationPoint,
+                                Constant.omnitureEvars.eVar69 : Constant.AlertPromtMessages.yes
                             ]
                             
-                            ADBMobile.trackAction("Event53", data: userInfo)
+                            ADBMobile.trackAction(Constant.omnitureEvents.event53, data: userInfo)
                             
                             SimpleAlert.alertTodismissController(self, title:Constant.AlertPromtMessages.editAlertTitle , message: Constant.AlertMessages.editAlertMessage)
                             
@@ -316,6 +316,13 @@ class EditMyAlertIpadViewController: UIViewController {
                         })
                         { (error) in
                             
+                            // omniture tracking with event 53
+                            let userInfo: [String: Any] = [
+                                Constant.omnitureEvars.eVar41 : "Alerts",
+                                Constant.omnitureEvars.eVar69 : Constant.AlertPromtMessages.no
+                            ]
+                            
+                            ADBMobile.trackAction(Constant.omnitureEvents.event53, data: userInfo)
                             SVProgressHUD.dismiss()
                             SimpleAlert.alert(self, title:Constant.AlertPromtMessages.editAlertTitle , message: error.description)
                             

@@ -214,16 +214,16 @@ class CreateAlertViewController: UIViewController {
                                 deststr = deststr.appending("\(dest.destinationName), ")
                             }
                             let userInfo: [String: Any] = [
-                                "eVar43" : " - \(Date())",
-                                "s.list1": deststr,
-                                "eVar41" : "Alerts",
-                                "eVar57" : Constant.MyClassConstants.alertWindowStartDate,
-                                "eVar58" : Constant.MyClassConstants.alertWindowEndDate,
-                                "eVar59" : self.anlyticsBedroomSize,
-                                "eVar60" : Constant.MyClassConstants.alertOriginationPoint
+                                Constant.omnitureEvars.eVar43 : " - \(Date())",
+                                Constant.omnitureCommonString.listItem: deststr,
+                                Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.alert,
+                                Constant.omnitureEvars.eVar57 : Constant.MyClassConstants.alertWindowStartDate,
+                                Constant.omnitureEvars.eVar58 : Constant.MyClassConstants.alertWindowEndDate,
+                                Constant.omnitureEvars.eVar59 : self.anlyticsBedroomSize,
+                                Constant.omnitureEvars.eVar60 : Constant.MyClassConstants.alertOriginationPoint
                             ]
                             
-                            ADBMobile.trackAction("Event52", data: userInfo)
+                            ADBMobile.trackAction(Constant.omnitureEvents.event52, data: userInfo)
                             
                             SVProgressHUD.dismiss()
                             
