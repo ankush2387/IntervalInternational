@@ -20,6 +20,7 @@ class RelinquishmentSelectionViewController: UIViewController {
     var intervalOpenWeeksArray = [OpenWeek]()
     var openWkToRemoveArray:NSMutableArray!
     var requiredSection = 0
+    var masterUnitSize = ""
     
     //Outlets
     @IBOutlet weak var relinquishmentTableview: UITableView!
@@ -140,6 +141,7 @@ class RelinquishmentSelectionViewController: UIViewController {
         if((intervalOpenWeeksArray[sender.tag].unit?.lockOffUnits.count)! > 0){
             Constant.ControllerTitles.bedroomSizeViewController = Constant.MyClassConstants.relinquishmentTitle
             Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.relinquishmentSelectionViewController
+            masterUnitSize = "\(Helper.getBedroomNumbers(bedroomType: (intervalOpenWeeksArray[sender.tag].unit!.unitSize)!)), \(Helper.getKitchenEnums(kitchenType: (intervalOpenWeeksArray[sender.tag].unit!.kitchenType)!)) Sleeps \(String(describing: intervalOpenWeeksArray[sender.tag].unit!.publicSleepCapacity))"
             getUnitSize((intervalOpenWeeksArray[sender.tag].unit?.lockOffUnits)!)
             
             Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.relinquishmentSelectionViewController
@@ -147,26 +149,6 @@ class RelinquishmentSelectionViewController: UIViewController {
             Constant.MyClassConstants.whatToTradeArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek)
             Constant.MyClassConstants.relinquishmentIdArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!)
             
-            //Realm local storage for selected relinquishment
-            let storedata = OpenWeeksStorage()
-            let Membership = UserContext.sharedInstance.selectedMembership
-            let relinquishmentList = TradeLocalData()
-            
-            let selectedOpenWeek = OpenWeeks()
-            selectedOpenWeek.weekNumber = Constant.MyClassConstants.relinquishmentSelectedWeek.weekNumber!
-            selectedOpenWeek.relinquishmentID = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!
-            selectedOpenWeek.relinquishmentYear = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentYear!
-            let resort = ResortList()
-            resort.resortName = (Constant.MyClassConstants.relinquishmentSelectedWeek.resort?.resortName)!
-            
-            selectedOpenWeek.resort.append(resort)
-            relinquishmentList.openWeeks.append(selectedOpenWeek)
-            storedata.openWeeks.append(relinquishmentList)
-            storedata.membeshipNumber = Membership!.memberNumber!
-            let realm = try! Realm()
-            try! realm.write {
-                realm.add(storedata)
-            }
             var mainStoryboard = UIStoryboard()
             if(Constant.RunningDevice.deviceIdiom == .pad) {
                 mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIpad, bundle: nil)
@@ -175,7 +157,7 @@ class RelinquishmentSelectionViewController: UIViewController {
                 mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
             }
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.bedroomSizeViewController) as! BedroomSizeViewController
-            
+            viewController.delegate = self
             Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.relinquishmentSelectionViewController
             let transitionManager = TransitionManager()
             self.navigationController?.transitioningDelegate = transitionManager
@@ -311,31 +293,11 @@ class RelinquishmentSelectionViewController: UIViewController {
         }else{
             if((relinquishmentOpenWeeksArray[sender.tag - 1].unit?.lockOffUnits.count)! > 0){
                 Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.relinquishmentSelectionViewController
+                masterUnitSize = "\(Helper.getBedroomNumbers(bedroomType: (relinquishmentOpenWeeksArray[sender.tag - 1].unit!.unitSize)!)), \(Helper.getKitchenEnums(kitchenType: (relinquishmentOpenWeeksArray[sender.tag - 1].unit!.kitchenType)!)) Sleeps \(String(describing: relinquishmentOpenWeeksArray[sender.tag - 1].unit!.publicSleepCapacity))"
                 getUnitSize((relinquishmentOpenWeeksArray[sender.tag - 1].unit?.lockOffUnits)!)
-                
                 Constant.MyClassConstants.relinquishmentSelectedWeek = relinquishmentOpenWeeksArray[sender.tag - 1]
                 Constant.MyClassConstants.whatToTradeArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek)
                 Constant.MyClassConstants.relinquishmentIdArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!)
-                //Realm local storage for selected relinquishment
-                let storedata = OpenWeeksStorage()
-                let Membership = UserContext.sharedInstance.selectedMembership
-                let relinquishmentList = TradeLocalData()
-                
-                let selectedOpenWeek = OpenWeeks()
-                selectedOpenWeek.weekNumber = Constant.MyClassConstants.relinquishmentSelectedWeek.weekNumber!
-                selectedOpenWeek.relinquishmentID = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!
-                selectedOpenWeek.relinquishmentYear = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentYear!
-                let resort = ResortList()
-                resort.resortName = (Constant.MyClassConstants.relinquishmentSelectedWeek.resort?.resortName)!
-                
-                selectedOpenWeek.resort.append(resort)
-                relinquishmentList.openWeeks.append(selectedOpenWeek)
-                storedata.openWeeks.append(relinquishmentList)
-                storedata.membeshipNumber = Membership!.memberNumber!
-                let realm = try! Realm()
-                try! realm.write {
-                    realm.add(storedata)
-                }
                 
                 var mainStoryboard = UIStoryboard()
                 if(Constant.RunningDevice.deviceIdiom == .pad) {
@@ -345,7 +307,7 @@ class RelinquishmentSelectionViewController: UIViewController {
                     mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
                 }
                 let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.bedroomSizeViewController) as! BedroomSizeViewController
-                
+                viewController.delegate = self
                 let transitionManager = TransitionManager()
                 self.navigationController?.transitioningDelegate = transitionManager
                 self.navigationController!.present(viewController, animated: true, completion: nil)
@@ -388,6 +350,7 @@ class RelinquishmentSelectionViewController: UIViewController {
             
             Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.add(unitString)
         }
+        Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.add(masterUnitSize)
     }
 }
 
@@ -611,3 +574,43 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
     }
 }
 
+extension RelinquishmentSelectionViewController:BedroomSizeViewControllerDelegate {
+    
+    func doneButtonClicked() {
+        //Realm local storage for selected relinquishment
+        let storedata = OpenWeeksStorage()
+        let Membership = UserContext.sharedInstance.selectedMembership
+        let relinquishmentList = TradeLocalData()
+        
+        let selectedOpenWeek = OpenWeeks()
+        selectedOpenWeek.weekNumber = Constant.MyClassConstants.relinquishmentSelectedWeek.weekNumber!
+        selectedOpenWeek.relinquishmentID = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!
+        selectedOpenWeek.relinquishmentYear = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentYear!
+        let resort = ResortList()
+        resort.resortName = (Constant.MyClassConstants.relinquishmentSelectedWeek.resort?.resortName)!
+        
+        selectedOpenWeek.resort.append(resort)
+        relinquishmentList.openWeeks.append(selectedOpenWeek)
+        storedata.openWeeks.append(relinquishmentList)
+        storedata.membeshipNumber = Membership!.memberNumber!
+        let realm = try! Realm()
+        try! realm.write {
+            realm.add(storedata)
+        }
+        
+        // Open vacation search view controller
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as! SWRevealViewController
+        
+        //***** creating animation transition to show custom transition animation *****//
+        let transition: CATransition = CATransition()
+        let timeFunc : CAMediaTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        transition.duration = 0.50
+        transition.timingFunction = timeFunc
+        transition.type = kCATransitionPush
+        transition.subtype = kCATransitionFromRight
+        viewController.view.layer.add(transition, forKey: Constant.MyClassConstants.switchToView)
+        UIApplication.shared.keyWindow?.rootViewController = viewController
+    }
+    
+}

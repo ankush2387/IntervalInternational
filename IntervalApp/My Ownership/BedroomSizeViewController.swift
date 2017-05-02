@@ -10,7 +10,15 @@ import UIKit
 import IntervalUIKit
 import DarwinSDK
 
+//***** custom delegate method declaration *****//
+protocol BedroomSizeViewControllerDelegate {
+    func doneButtonClicked()
+}
+
 class BedroomSizeViewController: UIViewController {
+    
+    //***** Custom cell delegate to access the delegate method *****//
+    var delegate: BedroomSizeViewControllerDelegate?
     
     //***** Outlets *****//
     @IBOutlet weak var bedroomSizeTableView: UITableView!
@@ -24,6 +32,8 @@ class BedroomSizeViewController: UIViewController {
     @IBAction func bedroomSizeCheckboxIsTapped(_ sender:AnyObject) {
         
         let checkBox:IUIKCheckbox = sender as! IUIKCheckbox
+        let cellForCheckBox = checkBox.superview?.superview as! UITableViewCell
+        cellForCheckBox.isUserInteractionEnabled = false
         self.selectionChanged = true
         if(self.localArrayToHoldSelection.count == 0) {
             self.localArrayToHoldSelection.add(sender.tag)
@@ -52,7 +62,6 @@ class BedroomSizeViewController: UIViewController {
                 self.localArrayToHoldSelection.add(sender.tag)
                 checkBox.isSelected = true
             }
-            
         }
     }
     
@@ -109,7 +118,6 @@ class BedroomSizeViewController: UIViewController {
     
     @IBAction func doneButtonPressed(_ sender:AnyObject) {
         
-        
         if(localArrayToHoldSelection.count != 0) {
             
             if(self.selectionChanged ) {
@@ -150,22 +158,9 @@ class BedroomSizeViewController: UIViewController {
             }
             
             if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController){
-                self.dismiss(animated: true, completion: nil)
-                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as! SWRevealViewController
-                
-                //***** creating animation transition to show custom transition animation *****//
-                let transition: CATransition = CATransition()
-                let timeFunc : CAMediaTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-                transition.duration = 0.50
-                transition.timingFunction = timeFunc
-                transition.type = kCATransitionPush
-                transition.subtype = kCATransitionFromRight
-                viewController.view.layer.add(transition, forKey: Constant.MyClassConstants.switchToView)
-                UIApplication.shared.keyWindow?.rootViewController = viewController
-            }else{
-                self.dismiss(animated: true, completion: nil)
+                delegate?.doneButtonClicked()
             }
+                self.dismiss(animated: true, completion: nil)
         }
         else {
             SimpleAlert.alert(self, title: Constant.AlertPromtMessages.bedRoomSizeTitle, message: Constant.AlertMessages.bedroomSizeAlertMessage)
