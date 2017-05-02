@@ -1556,17 +1556,18 @@
                                             <rect key="frame" x="0.0" y="0.0" width="580" height="70"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5bB-JQ-Bkz">
-                                                    <rect key="frame" x="20" y="23" width="490" height="26"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5bB-JQ-Bkz">
+                                                    <rect key="frame" x="20" y="23" width="495" height="26"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dJ7-Ik-c4b" customClass="IUIKCheckbox" customModule="IntervalUIKit">
-                                                    <rect key="frame" x="520" y="15" width="40" height="41"/>
+                                                    <rect key="frame" x="530" y="20.5" width="30" height="30"/>
                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="40" id="YzJ-dk-N7y"/>
+                                                        <constraint firstAttribute="width" constant="30" id="faw-Xw-kno"/>
+                                                        <constraint firstAttribute="height" constant="30" id="yav-zz-bAS"/>
                                                     </constraints>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="round" value="YES"/>
@@ -1590,13 +1591,12 @@
                                                 </view>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailingMargin" secondItem="dJ7-Ik-c4b" secondAttribute="trailing" constant="12" id="7hg-E9-A9u"/>
-                                                <constraint firstItem="dJ7-Ik-c4b" firstAttribute="leading" secondItem="5bB-JQ-Bkz" secondAttribute="trailing" constant="10" id="AXj-f1-w1Q"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="5bB-JQ-Bkz" secondAttribute="bottom" constant="13" id="biO-VL-odC"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="dJ7-Ik-c4b" secondAttribute="trailing" constant="12" id="iGo-Xm-NJB"/>
                                                 <constraint firstItem="5bB-JQ-Bkz" firstAttribute="top" secondItem="F2b-g7-DUh" secondAttribute="topMargin" constant="15" id="iay-yB-j9A"/>
+                                                <constraint firstItem="dJ7-Ik-c4b" firstAttribute="leading" secondItem="5bB-JQ-Bkz" secondAttribute="trailing" constant="15" id="uoB-QZ-rwY"/>
                                                 <constraint firstItem="5bB-JQ-Bkz" firstAttribute="leading" secondItem="F2b-g7-DUh" secondAttribute="leadingMargin" constant="12" id="w7w-vD-2gl"/>
-                                                <constraint firstItem="dJ7-Ik-c4b" firstAttribute="top" secondItem="F2b-g7-DUh" secondAttribute="topMargin" constant="7" id="w9s-Mc-Q3D"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="dJ7-Ik-c4b" secondAttribute="bottom" constant="6" id="wLP-ZP-c7L"/>
+                                                <constraint firstItem="dJ7-Ik-c4b" firstAttribute="centerY" secondItem="F2b-g7-DUh" secondAttribute="centerY" id="zIF-PI-hYG"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>

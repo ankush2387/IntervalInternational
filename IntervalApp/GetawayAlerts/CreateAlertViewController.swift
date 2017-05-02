@@ -450,8 +450,8 @@ extension CreateAlertViewController:UICollectionViewDataSource {
             
             let destName = (object as! AreaOfInfluenceDestination).destinationName
             
-            let terocode = (object as! AreaOfInfluenceDestination).address?.territoryCode
-            cell.lblTitle.text = "\(destName!), \(terocode!)"
+            let terocode = (object as! AreaOfInfluenceDestination).address!.territoryCode!
+            cell.lblTitle.text = "\(destName!), \(terocode)"
             
         }
         
@@ -612,8 +612,8 @@ extension CreateAlertViewController:UITableViewDataSource {
                 
                 let destName = (object as! AreaOfInfluenceDestination).destinationName!
                 
-                let terocode = (object as! AreaOfInfluenceDestination).address?.territoryCode!
-                cell.whereTogoTextLabel.text = "\(destName), \(terocode)"
+                let terocode = (object as! AreaOfInfluenceDestination).address!.territoryCode!
+                cell.whereTogoTextLabel.text = "\(destName), \(String(describing: terocode))"
             }
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             

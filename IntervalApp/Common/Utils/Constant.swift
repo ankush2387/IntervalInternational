@@ -203,8 +203,8 @@ class Constant: NSObject {
         
         static let sidemenuIntervalInternationalCorporationLabel = NSLocalizedString("2015 Interval International. Privacy/Legal", comment: "")
         static let noRelinquishmentavailable = NSLocalizedString("No Relinquishment available", comment: "")
-        
-        
+        static let relinquishmentTitle = NSLocalizedString("Select master or lock-off portion", comment: "")
+    
         static var selectedIndex:Int!
         static var vacationSearchContentPagerRunningIndex  = 0
         static var vacationSearchShowDate:Date!

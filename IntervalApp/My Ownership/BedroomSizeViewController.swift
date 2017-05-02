@@ -58,6 +58,7 @@ class BedroomSizeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.bedroomSizeTableView.estimatedRowHeight = 60
         if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController){
             
         }else{
@@ -198,7 +199,7 @@ extension BedroomSizeViewController : UITableViewDataSource{
         
         if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController){
             
-            cell?.bedroomSizelabel.text = Helper.getBedroomNumbers(bedroomType:Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as! String)
+            cell?.bedroomSizelabel.text = Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as! String
             cell?.selectionStyle = UITableViewCellSelectionStyle.none
             return cell!
             
@@ -246,6 +247,6 @@ extension BedroomSizeViewController : UITableViewDataSource{
 extension BedroomSizeViewController : UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return UITableViewAutomaticDimension
     }
 }

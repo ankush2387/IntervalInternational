@@ -1310,9 +1310,10 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     }else {
                         var calendar = Calendar.current
                         calendar.timeZone = TimeZone(secondsFromGMT: 0)!
-                        let result = Constant.MyClassConstants.checkInDates.filter { calendar.isDate($0, equalTo: Constant.MyClassConstants.vacationSearchShowDate, toGranularity:.day) }
+                        let result = Constant.MyClassConstants.checkInDates.contains(Constant.MyClassConstants.vacationSearchShowDate)
+                        print(result,Constant.MyClassConstants.vacationSearchShowDate)
                         
-                        if result.count == 0{
+                        if !result{
                             
                             Constant.MyClassConstants.resortsArray.removeAll()
                             Constant.MyClassConstants.checkInDates.insert(Constant.MyClassConstants.vacationSearchShowDate, at: 0)
@@ -1325,8 +1326,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                             SVProgressHUD.dismiss()
                             Helper.removeServiceCallBackgroundView(view: self.view)
                             self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
-                        }
-                        else {
+                        }else {
                             
                             if let dateToSelect = Constant.MyClassConstants.checkInDates.index(of: Constant.MyClassConstants.vacationSearchShowDate) {
                                 Constant.MyClassConstants.searchResultCollectionViewScrollToIndex = dateToSelect + 1
