@@ -32,8 +32,6 @@ class BedroomSizeViewController: UIViewController {
     @IBAction func bedroomSizeCheckboxIsTapped(_ sender:AnyObject) {
         
         let checkBox:IUIKCheckbox = sender as! IUIKCheckbox
-        let cellForCheckBox = checkBox.superview?.superview as! UITableViewCell
-        cellForCheckBox.isUserInteractionEnabled = false
         self.selectionChanged = true
         if(self.localArrayToHoldSelection.count == 0) {
             self.localArrayToHoldSelection.add(sender.tag)
@@ -63,6 +61,50 @@ class BedroomSizeViewController: UIViewController {
                 checkBox.isSelected = true
             }
         }
+        print(localArrayToHoldSelection)
+        
+        let arrayTableCells = NSMutableArray()
+        for checkTableCell in bedroomSizeTableView.subviews{
+            for checkCellsTableCell in checkTableCell.subviews{
+                if (checkCellsTableCell.isKind(of: UITableViewCell.self)){
+                    let tableCell = checkCellsTableCell as? UITableViewCell
+                    arrayTableCells.add(tableCell!)
+                }
+            }
+        }
+        if(sender.tag == Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count - 1){
+                for tblCell in arrayTableCells{
+                    let masterCell = tblCell as! UITableViewCell
+                    if(masterCell.tag != sender.tag + 100){
+                        masterCell.backgroundColor = UIColor.white
+                        masterCell.isUserInteractionEnabled = true
+                    }else{
+                        masterCell.backgroundColor = IUIKColorPalette.titleBackdrop.color
+                        masterCell.isUserInteractionEnabled = false
+                    }
+                }
+            }else{
+                for tblCell in arrayTableCells{
+                    let masterCell = tblCell as! UITableViewCell
+                    if(masterCell.tag - 100 == Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count - 1){
+                        masterCell.backgroundColor = UIColor.white
+                        masterCell.isUserInteractionEnabled = true
+                    }else{
+                        print(localArrayToHoldSelection)
+                        for (ind,index) in localArrayToHoldSelection.enumerated(){
+                            let checkBox:IUIKCheckbox = self.view.viewWithTag(index as! Int) as! IUIKCheckbox
+                            if(ind < localArrayToHoldSelection.count - 1){
+                                checkBox.checked = false
+                            }
+                        }
+                        if(localArrayToHoldSelection.count > 1){
+                            localArrayToHoldSelection.removeObject(at: 0)
+                        }
+                        masterCell.backgroundColor = IUIKColorPalette.titleBackdrop.color
+                        masterCell.isUserInteractionEnabled = false
+                    }
+                }
+            }
     }
     
     override func viewDidLoad() {
@@ -194,8 +236,11 @@ extension BedroomSizeViewController : UITableViewDataSource{
         
         if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController){
             
-            cell?.bedroomSizelabel.text = Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as! String
+            cell?.bedroomSizelabel.text = Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as? String
             cell?.selectionStyle = UITableViewCellSelectionStyle.none
+            cell?.checkBoxButton.tag = indexPath.row
+            cell?.tag = indexPath.row + 100
+            cell?.checkBoxButton.tag = indexPath.row + 1000
             return cell!
             
         }else{

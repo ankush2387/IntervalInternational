@@ -576,7 +576,11 @@ extension EditMyAlertIpadViewController:UITableViewDataSource {
                 let destName = (object as! AreaOfInfluenceDestination).destinationName
                 
                 let terocode = (object as! AreaOfInfluenceDestination).address?.territoryCode
-                //cell.whereTogoTextLabel.text = "\(destName!), \(terocode!)"
+                if destName != nil && terocode != nil{
+                    cell.whereTogoTextLabel.text = "\(destName!), \(terocode!)"
+                }else{
+                    cell.whereTogoTextLabel.text = ""
+                }
             }
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             
