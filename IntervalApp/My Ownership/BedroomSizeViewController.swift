@@ -23,6 +23,7 @@ class BedroomSizeViewController: UIViewController {
     //***** Outlets *****//
     @IBOutlet weak var bedroomSizeTableView: UITableView!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var doneButton: UIButton!
     
     //***** Class variables *****//
     var selectionChanged = false
@@ -76,9 +77,11 @@ class BedroomSizeViewController: UIViewController {
                     let masterCell = tblCell as! UITableViewCell
                     if(masterCell.tag - 100 != sender.tag - 1000){
                         if(sender.checked){
+                            doneButton.isEnabled = true
                             masterCell.backgroundColor = IUIKColorPalette.titleBackdrop.color
                             masterCell.isUserInteractionEnabled = false
                         }else{
+                            doneButton.isEnabled = false
                             masterCell.backgroundColor = UIColor.white
                             masterCell.isUserInteractionEnabled = true
                         }
@@ -93,9 +96,11 @@ class BedroomSizeViewController: UIViewController {
                     let masterCell = tblCell as! UITableViewCell
                     if(masterCell.tag - 100 == Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count - 1){
                         if(sender.checked){
+                            doneButton.isEnabled = true
                             masterCell.backgroundColor = IUIKColorPalette.titleBackdrop.color
                             masterCell.isUserInteractionEnabled = false
                         }else{
+                            doneButton.isEnabled = false
                             masterCell.backgroundColor = UIColor.white
                             masterCell.isUserInteractionEnabled = true
                         }
@@ -154,20 +159,7 @@ class BedroomSizeViewController: UIViewController {
                 }
             }
         }
-       
-        // Do any additional setup after loading the view.
-        //titleLabel.text = Constant.ControllerTitles.bedroomSizeViewController
-        let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(self.menuBackButtonPressed(_:)))
-        menuButton.tintColor = UIColor.white
-        
-        self.navigationItem.leftBarButtonItem = menuButton
-        
-        //***** creating and adding right bar button for Done option button *****//
-        let doneButton = UIBarButtonItem(title: Constant.AlertPromtMessages.done, style: .plain, target: self, action: #selector(self.doneButtonPressed(_
-            :)))
-        doneButton.tintColor = UIColor.white
-        self.navigationItem.rightBarButtonItem = doneButton
-        
+        doneButton.isEnabled = false
         self.bedroomSizeTableView.reloadData()
     }
     /**
@@ -193,7 +185,7 @@ class BedroomSizeViewController: UIViewController {
         
         if(localArrayToHoldSelection.count != 0) {
             
-            if(self.selectionChanged ) {
+            /*if(self.selectionChanged ) {
                 
                 if(localArrayToHoldSelection.count == 5) {
                     Constant.MyClassConstants.selectedBedRoomSize = Constant.MyClassConstants.allBedrommSizes
@@ -228,7 +220,7 @@ class BedroomSizeViewController: UIViewController {
                     Constant.MyClassConstants.selectedBedRoomSize = selectedBedroomsizes
                     Constant.MyClassConstants.bedRoomSizeSelectedIndexArray = self.localArrayToHoldSelection
                 }
-            }
+            }*/
             
             if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController){
                 delegate?.doneButtonClicked()
@@ -236,7 +228,11 @@ class BedroomSizeViewController: UIViewController {
                 self.dismiss(animated: true, completion: nil)
         }
         else {
-            SimpleAlert.alert(self, title: Constant.AlertPromtMessages.bedRoomSizeTitle, message: Constant.AlertMessages.bedroomSizeAlertMessage)
+            if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController){
+                SimpleAlert.alert(self, title: Constant.AlertPromtMessages.bedRoomSizeTitle, message: Constant.AlertMessages.bedroomSizeAlertMessage)
+            }else{
+                SimpleAlert.alert(self, title: Constant.AlertPromtMessages.bedRoomSizeTitle, message: Constant.AlertMessages.bedroomSizeAlertMessage)
+            }
         }
         
     }

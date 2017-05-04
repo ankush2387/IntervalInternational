@@ -1635,6 +1635,7 @@
                     <size key="freeformSize" width="600" height="1200"/>
                     <connections>
                         <outlet property="bedroomSizeTableView" destination="Q9t-5J-6T3" id="G2Q-Xr-C6v"/>
+                        <outlet property="doneButton" destination="SWI-H9-egv" id="tUq-bw-ZeF"/>
                         <outlet property="titleLabel" destination="OBf-0Q-OoA" id="ipV-VW-lCE"/>
                     </connections>
                 </viewController>
