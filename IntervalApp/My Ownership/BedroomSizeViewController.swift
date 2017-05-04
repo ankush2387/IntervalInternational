@@ -61,7 +61,6 @@ class BedroomSizeViewController: UIViewController {
                 checkBox.isSelected = true
             }
         }
-        print(localArrayToHoldSelection)
         
         let arrayTableCells = NSMutableArray()
         for checkTableCell in bedroomSizeTableView.subviews{
@@ -72,39 +71,71 @@ class BedroomSizeViewController: UIViewController {
                 }
             }
         }
-        if(sender.tag == Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count - 1){
+        if(sender.tag - 1000 == Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count - 1){
                 for tblCell in arrayTableCells{
                     let masterCell = tblCell as! UITableViewCell
-                    if(masterCell.tag != sender.tag + 100){
+                    if(masterCell.tag - 100 != sender.tag - 1000){
+                        if(sender.checked){
+                            masterCell.backgroundColor = IUIKColorPalette.titleBackdrop.color
+                            masterCell.isUserInteractionEnabled = false
+                        }else{
+                            masterCell.backgroundColor = UIColor.white
+                            masterCell.isUserInteractionEnabled = true
+                        }
+                    }else{
                         masterCell.backgroundColor = UIColor.white
                         masterCell.isUserInteractionEnabled = true
-                    }else{
-                        masterCell.backgroundColor = IUIKColorPalette.titleBackdrop.color
-                        masterCell.isUserInteractionEnabled = false
+                        changeLabelColor(checkBox: sender as! IUIKCheckbox, masterCell: masterCell, checkState: sender.checked)
                     }
                 }
             }else{
                 for tblCell in arrayTableCells{
                     let masterCell = tblCell as! UITableViewCell
                     if(masterCell.tag - 100 == Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count - 1){
-                        masterCell.backgroundColor = UIColor.white
-                        masterCell.isUserInteractionEnabled = true
+                        if(sender.checked){
+                            masterCell.backgroundColor = IUIKColorPalette.titleBackdrop.color
+                            masterCell.isUserInteractionEnabled = false
+                        }else{
+                            masterCell.backgroundColor = UIColor.white
+                            masterCell.isUserInteractionEnabled = true
+                        }
                     }else{
-                        print(localArrayToHoldSelection)
                         for (ind,index) in localArrayToHoldSelection.enumerated(){
                             let checkBox:IUIKCheckbox = self.view.viewWithTag(index as! Int) as! IUIKCheckbox
                             if(ind < localArrayToHoldSelection.count - 1){
                                 checkBox.checked = false
-                            }
+                              }
                         }
                         if(localArrayToHoldSelection.count > 1){
                             localArrayToHoldSelection.removeObject(at: 0)
                         }
-                        masterCell.backgroundColor = IUIKColorPalette.titleBackdrop.color
-                        masterCell.isUserInteractionEnabled = false
+                        if(masterCell.tag - 100 == sender.tag - 1000){
+                           changeLabelColor(checkBox: checkBox, masterCell: masterCell, checkState: sender.checked)
+                        }else{
+                           changeLabelColor(checkBox: checkBox, masterCell: masterCell, checkState: false)
+                        }
                     }
                 }
             }
+    }
+    
+    // Function to change label colors on checkbox selection
+    func changeLabelColor(checkBox:IUIKCheckbox, masterCell:UITableViewCell, checkState:Bool){
+        for labels in masterCell.contentView.subviews{
+            if(labels .isKind(of: UILabel.self)){
+                let titleLabel = labels as? UILabel
+                if(checkState){
+                    titleLabel?.textColor = UIColor.orange
+                }else{
+                    titleLabel?.textColor = UIColor.black
+                }
+            }
+        }
+    }
+    
+    //Function to change table cell color
+    func changeTableCellColor(){
+        
     }
     
     override func viewDidLoad() {
