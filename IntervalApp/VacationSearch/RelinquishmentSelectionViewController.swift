@@ -599,8 +599,18 @@ extension RelinquishmentSelectionViewController:BedroomSizeViewControllerDelegat
         }
         
         // Open vacation search view controller
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as! SWRevealViewController
+        var viewcontroller:UIViewController
+        if (Constant.RunningDevice.deviceIdiom == .phone) {
+            
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+            viewcontroller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as! SWRevealViewController
+        }
+        else{
+            
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+            viewcontroller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as! SWRevealViewController
+        }
+
         
         //***** creating animation transition to show custom transition animation *****//
         let transition: CATransition = CATransition()
@@ -609,8 +619,8 @@ extension RelinquishmentSelectionViewController:BedroomSizeViewControllerDelegat
         transition.timingFunction = timeFunc
         transition.type = kCATransitionPush
         transition.subtype = kCATransitionFromRight
-        viewController.view.layer.add(transition, forKey: Constant.MyClassConstants.switchToView)
-        UIApplication.shared.keyWindow?.rootViewController = viewController
+        viewcontroller.view.layer.add(transition, forKey: Constant.MyClassConstants.switchToView)
+        UIApplication.shared.keyWindow?.rootViewController = viewcontroller
     }
     
 }
