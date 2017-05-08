@@ -91,14 +91,14 @@ class ResortDetailsViewController: UIViewController {
         ADBMobile.trackState(Constant.omnitureEvars.eVar44, data: nil)
         
         // omniture tracking with event 35
-        let userInfo: [String: String] = [
-            Constant.omnitureCommonString.productItem : Constant.MyClassConstants.resortsDescriptionArray.resortCode!,
-            Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch
-        ]
-        
-        ADBMobile.trackAction(Constant.omnitureEvents.event35, data: userInfo)
-
-        
+        if(Constant.MyClassConstants.resortsDescriptionArray.resortCode != nil){
+            let userInfo: [String: String] = [
+                Constant.omnitureCommonString.productItem : Constant.MyClassConstants.resortsDescriptionArray.resortCode!,
+                Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch
+            ]
+            
+            ADBMobile.trackAction(Constant.omnitureEvents.event35, data: userInfo)
+        }
         self.startIndex = Constant.MyClassConstants.vacationSearchContentPagerRunningIndex
         self.resortDescriptionArrayContainer.add(Constant.MyClassConstants.resortsDescriptionArray)
     }

@@ -485,9 +485,7 @@ extension ResortDirectoryViewController:UITableViewDataSource {
         }
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         if(tableView.tag == 4){
-            resort = Constant.MyClassConstants.resortDirectoryResortArray[indexPath.row]
             if((indexPath as NSIndexPath).row == 0){
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.favoritesCellIdentifier, for: indexPath) as! ResortFavoritesTableViewCell
                 
@@ -517,6 +515,7 @@ extension ResortDirectoryViewController:UITableViewDataSource {
                 }
                 return cell
             }else{
+                resort = Constant.MyClassConstants.resortDirectoryResortArray[indexPath.row - 1]
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.resortDirectoryResortCell, for: indexPath) as! ResortFavoritesTableViewCell
                 cell.favoritesCollectionView.reloadData()
                 cell.delegate = self

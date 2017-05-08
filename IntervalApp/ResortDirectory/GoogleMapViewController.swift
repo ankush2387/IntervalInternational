@@ -664,7 +664,7 @@ class GoogleMapViewController: UIViewController {
     //***** This function called when navigation back button pressed *****//
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
         
-        if(Constant.MyClassConstants.runningFunctionality == "ResortDirectory"){
+        if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.resortDirectoryTitle){
             self.navigationController?.dismiss(animated: true, completion: nil)
         }else{
              Constant.MyClassConstants.selectionType = -1
@@ -1456,7 +1456,9 @@ extension GoogleMapViewController:UITableViewDelegate {
         if(self.sourceController != Constant.MyClassConstants.createAlert && self.sourceController != Constant.MyClassConstants.editAlert && self.sourceController != Constant.MyClassConstants.vacationSearch) {
             
             if(tableView.tag == 1) {
-                
+                if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.resortDirectoryTitle){
+                    self.hidePopUpView()
+                }
                 if(indexPath.section == 1) {
                     
                     let selectedResort = Constant.MyClassConstants.resorts![indexPath.row]
@@ -1470,9 +1472,6 @@ extension GoogleMapViewController:UITableViewDelegate {
                     Constant.MyClassConstants.isgetResortFromGoogleSearch = true
                     Helper.addServiceCallBackgroundView(view: self.view)
                     SVProgressHUD.show()
-                    if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.resortFunctionalityCheck){
-                        self.hidePopUpView()
-                    }
                     DirectoryClient.getResortsWithinGeoArea(Constant.MyClassConstants.systemAccessToken, geoArea: Constant.MyClassConstants.destinations![indexPath.row].geoArea, onSuccess: { (response) in
                         if(response.count > 0){
                             Constant.MyClassConstants.resortsArray.removeAll()

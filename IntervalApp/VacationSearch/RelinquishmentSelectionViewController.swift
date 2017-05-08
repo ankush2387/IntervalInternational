@@ -195,7 +195,6 @@ class RelinquishmentSelectionViewController: UIViewController {
         }
     }
     func addClubPointButtonPressed(_ sender:IUIKButton) {
-         print(Constant.MyClassConstants.relinquishmentSelectedWeek.resort!)
          /*Helper.addServiceCallBackgroundView(view: self.view)
          SVProgressHUD.show()
          Constant.MyClassConstants.matrixDataArray.removeAllObjects()
