@@ -372,6 +372,22 @@ public class Helper{
                 removeServiceCallBackgroundView(view: senderVC.view)
                 if(senderVC is VacationSearchViewController || senderVC is VacationSearchIPadViewController ) {
                     
+                    // omniture tracking with event 33
+                    let userInfo: [String: Any] = [
+                        Constant.omnitureCommonString.listItem: Constant.MyClassConstants.selectedDestinationNames,
+                        Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch,
+                        Constant.omnitureEvars.eVar23 : Constant.omnitureCommonString.primaryAlternateDateAvailable,
+                        Constant.omnitureEvars.eVar36: "\(Helper.omnitureSegmentSearchType(index:  Constant.MyClassConstants.searchForSegmentIndex))-\(Constant.MyClassConstants.resortsArray.count)" ,
+                        Constant.omnitureEvars.eVar39: "" ,
+                        Constant.omnitureEvars.eVar48: "",
+                        Constant.omnitureEvars.eVar53: "\(Constant.MyClassConstants.resortsArray.count)",
+                        Constant.omnitureEvars.eVar54: ""
+                    ]
+                    
+                    ADBMobile.trackAction(Constant.omnitureEvents.event33, data: userInfo)
+
+                    
+                    
                     senderVC.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
                 }else if (senderVC is GetawayAlertsIPhoneViewController){
                     
@@ -1295,6 +1311,23 @@ public class Helper{
             return ""
         }
 
+        
+    }
+    static func omnitureSegmentSearchType(index:Int) -> String {
+        
+        switch index {
+        case 0:
+            return "Both"
+            
+        case 1:
+            return "GW"
+            
+        case 2:
+            return "EX"
+        default:
+            return ""
+        }
+        
         
     }
 

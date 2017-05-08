@@ -1299,7 +1299,6 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                             Helper.removeServiceCallBackgroundView(view: self.view)
                             
                            
-                            
                             // omniture tracking with event 9
                             let userInfo: [String: Any] = [
                                 Constant.omnitureCommonString.listItem: Constant.MyClassConstants.selectedDestinationNames,
@@ -1310,11 +1309,12 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                 Constant.omnitureEvars.eVar28: "" ,
                                 Constant.omnitureEvars.eVar33: "" ,
                                 Constant.omnitureEvars.eVar34: "\(self.adultCounter):\(self.childCounter)" ,
-                                Constant.omnitureEvars.eVar36: "" ,
+                                Constant.omnitureEvars.eVar36:"\(Helper.omnitureSegmentSearchType(index:  Constant.MyClassConstants.searchForSegmentIndex))-\(Constant.MyClassConstants.resortsArray.count)" ,
                                 Constant.omnitureEvars.eVar39: "" ,
                                 Constant.omnitureEvars.eVar45: "\(Constant.MyClassConstants.vacationSearchShowDate)-\(Date())",
                                 Constant.omnitureEvars.eVar47: "\(Constant.MyClassConstants.checkInDates.count)" ,
-                                 Constant.omnitureEvars.eVar53: "\(Constant.MyClassConstants.resortsArray.count)"
+                                Constant.omnitureEvars.eVar53: "\(Constant.MyClassConstants.resortsArray.count)",
+                                Constant.omnitureEvars.eVar61:Constant.MyClassConstants.searchOriginationPoint,
                             ]
                             
                             ADBMobile.trackAction(Constant.omnitureEvents.event9, data: userInfo)

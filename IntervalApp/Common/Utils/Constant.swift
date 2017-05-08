@@ -80,6 +80,8 @@ class Constant: NSObject {
         static var addressStringForCardDetailSection = "Address"
         static var destinationOrResortSelectedBy:String = ""
         static var selectionType = -1
+        static var searchOriginationPoint:String!
+        static var searchForSegmentIndex = 0
         
         //global variable to hold advisement type text
         static var advisementTypeStringaArray = ["Important Advisements","General Advisements","Additional Advisements"]
@@ -1491,6 +1493,7 @@ class Constant: NSObject {
         static var aoiOnlySearchDateAvailable = "AOI Only – Search Date Available"
         static var aoiOnlyAlternateDateAvailable = "AOI Only – Alternative Date Available"
         static var noAvailability = "No Availability"
+        static var productItem = "s.products"
         
     }
     
