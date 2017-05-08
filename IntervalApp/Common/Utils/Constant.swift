@@ -720,6 +720,7 @@ class Constant: NSObject {
         static var magazinesIpad = "MagazinesIpad"
         static var signInPreLoginController = "SignInPreLoginViewController"
         static var signInPreLoginViewControlleriPad = "SignInPreLoginViewControllerIPad"
+        static var availableDestinationsIphone = "AvailableDestinationsIphone"
         
     }
     

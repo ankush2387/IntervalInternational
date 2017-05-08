@@ -288,7 +288,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PL5-9L-87x">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="101"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="108"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qbD-mC-D0R">
                                         <rect key="frame" x="20" y="10" width="80" height="80"/>
@@ -332,17 +332,17 @@
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="pJE-ge-u3Z" secondAttribute="trailing" constant="4" id="2OW-QS-Qr4"/>
                                     <constraint firstItem="pJE-ge-u3Z" firstAttribute="leading" secondItem="rM5-eS-7Iu" secondAttribute="trailing" constant="-16" id="2yL-p5-Wzu"/>
-                                    <constraint firstAttribute="bottom" secondItem="fLq-oC-BNl" secondAttribute="bottom" constant="-8" id="3X6-V0-XXr"/>
+                                    <constraint firstAttribute="bottom" secondItem="fLq-oC-BNl" secondAttribute="bottom" constant="-1" id="3X6-V0-XXr"/>
                                     <constraint firstItem="qbD-mC-D0R" firstAttribute="top" secondItem="PL5-9L-87x" secondAttribute="top" constant="10" id="7gG-tj-o9h"/>
-                                    <constraint firstAttribute="bottom" secondItem="pJE-ge-u3Z" secondAttribute="bottom" constant="11" id="Ct2-68-kad"/>
+                                    <constraint firstAttribute="bottom" secondItem="pJE-ge-u3Z" secondAttribute="bottom" constant="18" id="Ct2-68-kad"/>
                                     <constraint firstItem="rM5-eS-7Iu" firstAttribute="top" secondItem="PL5-9L-87x" secondAttribute="top" constant="25" id="Dlp-vQ-RRt"/>
-                                    <constraint firstAttribute="height" constant="101" id="JbX-EK-HiT"/>
+                                    <constraint firstAttribute="height" constant="108" id="JbX-EK-HiT"/>
                                     <constraint firstItem="pJE-ge-u3Z" firstAttribute="top" secondItem="PL5-9L-87x" secondAttribute="top" constant="10" id="UJ0-8B-2JY"/>
                                     <constraint firstItem="qbD-mC-D0R" firstAttribute="leading" secondItem="PL5-9L-87x" secondAttribute="leading" constant="20" id="XxU-dZ-gfp"/>
                                     <constraint firstItem="fLq-oC-BNl" firstAttribute="leading" secondItem="PL5-9L-87x" secondAttribute="leading" id="jo8-VZ-JZt"/>
                                     <constraint firstItem="rM5-eS-7Iu" firstAttribute="leading" secondItem="qbD-mC-D0R" secondAttribute="trailing" constant="-30" id="oSA-TC-Ex3"/>
-                                    <constraint firstAttribute="bottom" secondItem="rM5-eS-7Iu" secondAttribute="bottom" constant="56" id="qQ5-zu-IXU"/>
-                                    <constraint firstAttribute="bottom" secondItem="qbD-mC-D0R" secondAttribute="bottom" constant="11" id="xue-3H-DIW"/>
+                                    <constraint firstAttribute="bottom" secondItem="rM5-eS-7Iu" secondAttribute="bottom" constant="63" id="qQ5-zu-IXU"/>
+                                    <constraint firstAttribute="bottom" secondItem="qbD-mC-D0R" secondAttribute="bottom" constant="18" id="xue-3H-DIW"/>
                                     <constraint firstAttribute="trailing" secondItem="fLq-oC-BNl" secondAttribute="trailing" id="y4z-zj-l9o"/>
                                 </constraints>
                             </view>
@@ -439,6 +439,7 @@
                     <size key="freeformSize" width="600" height="1200"/>
                     <connections>
                         <outlet property="bedroomSizeTableView" destination="eYe-r0-WPe" id="7ff-Ob-cIS"/>
+                        <outlet property="doneButton" destination="pJE-ge-u3Z" id="Xx8-Bu-ytb"/>
                         <outlet property="titleLabel" destination="rM5-eS-7Iu" id="hFj-c2-SWc"/>
                     </connections>
                 </viewController>
