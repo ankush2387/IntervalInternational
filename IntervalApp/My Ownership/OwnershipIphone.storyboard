@@ -1556,6 +1556,15 @@
                                             <rect key="frame" x="0.0" y="0.0" width="580" height="70"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="acx-np-bcc">
+                                                    <rect key="frame" x="5" y="5" width="570" height="60"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <integer key="value" value="4"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5bB-JQ-Bkz">
                                                     <rect key="frame" x="20" y="23" width="507" height="26"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
@@ -1591,15 +1600,20 @@
                                                 </view>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="acx-np-bcc" firstAttribute="leading" secondItem="F2b-g7-DUh" secondAttribute="leading" constant="5" id="5XB-sR-sPn"/>
+                                                <constraint firstAttribute="bottom" secondItem="acx-np-bcc" secondAttribute="bottom" constant="5" id="BMG-Mt-jrc"/>
+                                                <constraint firstItem="acx-np-bcc" firstAttribute="top" secondItem="F2b-g7-DUh" secondAttribute="top" constant="5" id="VZI-dC-IQx"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="5bB-JQ-Bkz" secondAttribute="bottom" constant="13" id="biO-VL-odC"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="dJ7-Ik-c4b" secondAttribute="trailing" constant="10" id="iGo-Xm-NJB"/>
                                                 <constraint firstItem="5bB-JQ-Bkz" firstAttribute="top" secondItem="F2b-g7-DUh" secondAttribute="topMargin" constant="15" id="iay-yB-j9A"/>
+                                                <constraint firstAttribute="trailing" secondItem="acx-np-bcc" secondAttribute="trailing" constant="5" id="qYU-2g-R5F"/>
                                                 <constraint firstItem="dJ7-Ik-c4b" firstAttribute="leading" secondItem="5bB-JQ-Bkz" secondAttribute="trailing" constant="5" id="uoB-QZ-rwY"/>
                                                 <constraint firstItem="5bB-JQ-Bkz" firstAttribute="leading" secondItem="F2b-g7-DUh" secondAttribute="leadingMargin" constant="12" id="w7w-vD-2gl"/>
                                                 <constraint firstItem="dJ7-Ik-c4b" firstAttribute="centerY" secondItem="F2b-g7-DUh" secondAttribute="centerY" id="zIF-PI-hYG"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="backgroundCellView" destination="acx-np-bcc" id="YNK-xc-VJt"/>
                                             <outlet property="bedroomSizelabel" destination="5bB-JQ-Bkz" id="zNV-7e-x7t"/>
                                             <outlet property="checkBoxButton" destination="dJ7-Ik-c4b" id="uqw-z4-Yuo"/>
                                         </connections>

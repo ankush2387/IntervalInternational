@@ -100,8 +100,10 @@ class RelinquishmentSelectionViewController: UIViewController {
     }
     func requiredNumberOfSection() -> Int{
         
-        if(self.relinquishmentPointsProgramArray[0].availablePoints != nil) {
+        if(self.relinquishmentPointsProgramArray.count > 0) {
+            if (self.relinquishmentPointsProgramArray[0].availablePoints != nil){
             self.requiredSection = self.requiredSection + 1
+            }
             
         }
         
@@ -193,8 +195,53 @@ class RelinquishmentSelectionViewController: UIViewController {
         }
     }
     func addClubPointButtonPressed(_ sender:IUIKButton) {
+         print(Constant.MyClassConstants.relinquishmentSelectedWeek.resort!)
+         /*Helper.addServiceCallBackgroundView(view: self.view)
+         SVProgressHUD.show()
+         Constant.MyClassConstants.matrixDataArray.removeAllObjects()
+         DirectoryClient.getResortClubPointsChart(UserContext.sharedInstance.accessToken, resortCode:  (Constant.MyClassConstants.relinquishmentSelectedWeek.resort?.resortCode)!, onSuccess:{ (ClubPointsChart) in
+         
+         Constant.MyClassConstants.selectionType = 1
+         Helper.removeServiceCallBackgroundView(view: self.view)
+         SVProgressHUD.dismiss()
+         Constant.MyClassConstants.matrixType = ClubPointsChart.type!
+         Constant.MyClassConstants.matrixDescription =
+         ClubPointsChart.matrices[0].description!
+         if(Constant.MyClassConstants.matrixDescription == Constant.MyClassConstants.matrixTypeSingle || Constant.MyClassConstants.matrixDescription == Constant.MyClassConstants.matrixTypeColor){
+         Constant.MyClassConstants.showSegment = false
+         }else{
+         Constant.MyClassConstants.showSegment = true
+         }
+         for matrices in ClubPointsChart.matrices {
+         let pointsDictionary = NSMutableDictionary()
+         for grids in matrices.grids {
+         
+         Constant.MyClassConstants.fromdatearray.add(grids.fromDate!)
+         Constant.MyClassConstants.todatearray.add(grids.toDate!)
+         
+         for rows in grids.rows
+         {
+         Constant.MyClassConstants.labelarray.add(rows.label!)
+         }
+         let dictKey = "\(grids.fromDate!) - \(grids.toDate!)"
+         pointsDictionary.setObject(grids.rows, forKey: String(describing: dictKey) as NSCopying)
+         }
+         Constant.MyClassConstants.matrixDataArray.add(pointsDictionary)
+         }
+         
+         let storyboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
+         let clubPointselectionViewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.clubPointSelectionViewController)as? ClubPointSelectionViewController
+         self.navigationController?.pushViewController(clubPointselectionViewController!, animated: true)
+         
+         }, onError:{ (error) in
+         
+         Helper.removeServiceCallBackgroundView(view: self.view)
+         SVProgressHUD.dismiss()
+         print(error.description)
+         })*/
         
-        Constant.MyClassConstants.relinquishmentSelectedWeek = pointOpenWeeksArray[sender.tag]
+        
+        /*Constant.MyClassConstants.relinquishmentSelectedWeek = pointOpenWeeksArray[sender.tag]
         
         if(Constant.MyClassConstants.relinquishmentSelectedWeek.pointsMatrix == false) {
             
@@ -259,7 +306,7 @@ class RelinquishmentSelectionViewController: UIViewController {
             })
             
             
-        }
+        }*/
         
         
     }
@@ -615,10 +662,8 @@ extension RelinquishmentSelectionViewController:BedroomSizeViewControllerDelegat
         //***** creating animation transition to show custom transition animation *****//
         let transition: CATransition = CATransition()
         let timeFunc : CAMediaTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-        transition.duration = 0.50
+        transition.duration = 0.0
         transition.timingFunction = timeFunc
-        transition.type = kCATransitionPush
-        transition.subtype = kCATransitionFromRight
         viewcontroller.view.layer.add(transition, forKey: Constant.MyClassConstants.switchToView)
         UIApplication.shared.keyWindow?.rootViewController = viewcontroller
     }

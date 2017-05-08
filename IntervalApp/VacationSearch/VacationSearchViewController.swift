@@ -204,52 +204,7 @@ class VacationSearchViewController: UIViewController {
     
     //***** Add location pressed action to show map screen with list of location to select *****//
     func addRelinquishmentSectionButtonPressed(_ sender:IUIKButton) {
-        
-        /*Helper.addServiceCallBackgroundView(view: self.view)
-        SVProgressHUD.show()
-        Constant.MyClassConstants.matrixDataArray.removeAllObjects()
-        DirectoryClient.getResortClubPointsChart(UserContext.sharedInstance.accessToken, resortCode:  Constant.MyClassConstants.resortCodeForClub, onSuccess:{ (ClubPointsChart) in
-            
-             Constant.MyClassConstants.selectionType = 1
-            Helper.removeServiceCallBackgroundView(view: self.view)
-            SVProgressHUD.dismiss()
-            Constant.MyClassConstants.matrixType = ClubPointsChart.type!
-            Constant.MyClassConstants.matrixDescription =
-                ClubPointsChart.matrices[0].description!
-            if(Constant.MyClassConstants.matrixDescription == Constant.MyClassConstants.matrixTypeSingle || Constant.MyClassConstants.matrixDescription == Constant.MyClassConstants.matrixTypeColor){
-                Constant.MyClassConstants.showSegment = false
-            }else{
-                Constant.MyClassConstants.showSegment = true
-            }
-            for matrices in ClubPointsChart.matrices {
-                let pointsDictionary = NSMutableDictionary()
-                for grids in matrices.grids {
-                    
-                    Constant.MyClassConstants.fromdatearray.add(grids.fromDate!)
-                    Constant.MyClassConstants.todatearray.add(grids.toDate!)
-                    
-                    for rows in grids.rows
-                    {
-                        Constant.MyClassConstants.labelarray.add(rows.label!)
-                    }
-                    let dictKey = "\(grids.fromDate!) - \(grids.toDate!)"
-                    pointsDictionary.setObject(grids.rows, forKey: String(describing: dictKey) as NSCopying)
-                }
-                Constant.MyClassConstants.matrixDataArray.add(pointsDictionary)
-            }
-            
-            let storyboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
-            let clubPointselectionViewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.clubPointSelectionViewController)as? ClubPointSelectionViewController
-            self.navigationController?.pushViewController(clubPointselectionViewController!, animated: true)
-            
-        }, onError:{ (error) in
-            
-            Helper.removeServiceCallBackgroundView(view: self.view)
-            SVProgressHUD.dismiss()
-            print(error.description)
-        })*/
-        
-        SVProgressHUD.show()
+         SVProgressHUD.show()
          Helper.addServiceCallBackgroundView(view: self.view)
          ExchangeClient.getMyUnits(UserContext.sharedInstance.accessToken, onSuccess: { (Relinquishments) in
          
@@ -411,7 +366,7 @@ extension VacationSearchViewController:UITableViewDelegate {
                     return 70
                 }
                 else {
-                    return 70
+                    return 60
                 }
             case 2:
                 return 80
@@ -728,7 +683,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                         addLocationButton.layer.cornerRadius = 6
                         addLocationButton.layer.borderWidth = 2
                         addLocationButton.addTarget(self, action: #selector(VacationSearchViewController.addLocationInSection0Pressed(_:)), for: .touchUpInside)
-                        
+                        cell.backgroundColor = UIColor.clear
                         cell.addSubview(addLocationButton)
                         
                         return cell
@@ -785,7 +740,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                         }
                         
                         cell.selectionStyle = UITableViewCellSelectionStyle.none
-                        
+                        cell.backgroundColor = UIColor.clear
                         return cell
                     }
                 }
@@ -812,7 +767,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                         addLocationButton.addTarget(self, action: #selector(VacationSearchViewController.addRelinquishmentSectionButtonPressed(_:)), for: .touchUpInside)
                         
                         cell.addSubview(addLocationButton)
-                        
+                        cell.backgroundColor = UIColor.clear
                         return cell
                     }
                     else {
@@ -848,6 +803,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                         }
                         
                         cell.selectionStyle = UITableViewCellSelectionStyle.none
+                        cell.backgroundColor = UIColor.clear
                         return cell
                     }
                 }
@@ -867,6 +823,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                 cell.dateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \(myComponents.year!)"
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 cell.calendarIconButton!.addTarget(self, action: #selector(VacationSearchIPadViewController.calendarIconClicked(_:)), for: .touchUpInside)
+                cell.backgroundColor = UIColor.clear
                 return cell
             }
             else if((indexPath as NSIndexPath).section == 3){
@@ -877,6 +834,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                 cell.childCounterLabel.text = String(self.childCounter)
                 cell.delegate = self
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
+                cell.backgroundColor = UIColor.clear
                 return cell
                 
                 
@@ -949,6 +907,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.SearchVacationCell, for: indexPath) as! SearchTableViewCell
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 cell.delegate = self
+                cell.backgroundColor = UIColor.clear
                 return cell
                 
             }
@@ -975,6 +934,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                     addLocationButton.layer.cornerRadius = 4
                     addLocationButton.layer.borderWidth = 2
                     cell.addSubview(addLocationButton)
+                    cell.backgroundColor = UIColor.clear
                     addLocationButton.addTarget(self, action: #selector(VacationSearchViewController.addLocationInSection0Pressed(_:)), for: .touchUpInside)
                     return cell
                 }
@@ -1031,7 +991,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                     }
                     
                     cell.selectionStyle = UITableViewCellSelectionStyle.none
-                    
+                    cell.backgroundColor = UIColor.clear
                     return cell
                 }
                 
@@ -1052,6 +1012,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                 cell.calendarIconButton.addTarget(self, action: #selector(VacationSearchViewController.calendarIconClicked(_:)), for: .touchUpInside)
                 
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
+                cell.backgroundColor = UIColor.clear
                 return cell
             }else if((indexPath as NSIndexPath).section == 2) {
                 
@@ -1062,6 +1023,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                 cell.childCounterLabel.text = String(self.childCounter)
                 cell.delegate = self
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
+                cell.backgroundColor = UIColor.clear
                 return cell
                 
             }else if((indexPath as NSIndexPath).section == 4) {
@@ -1126,6 +1088,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.SearchVacationCell, for: indexPath) as! SearchTableViewCell
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 cell.delegate = self
+                cell.backgroundColor = UIColor.clear
                 return cell
             }
         }

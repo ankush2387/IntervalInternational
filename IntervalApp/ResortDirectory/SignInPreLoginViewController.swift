@@ -121,11 +121,11 @@ class SignInPreLoginViewController: UIViewController {
     }
     
     func reloadView(){
-        let vc = ResortDirectoryViewController()
+        /*let vc = ResortDirectoryViewController()
         let favoritesVC = FevoritesResortController()
         self.dismiss(animated: true) { 
             favoritesVC.viewWillAppear(true)
-        }
+        }*/
     }
     
     

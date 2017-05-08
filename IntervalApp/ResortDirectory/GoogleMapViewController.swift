@@ -1344,12 +1344,19 @@ extension GoogleMapViewController:UICollectionViewDataSource {
         let resortImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: cell.contentView.frame.height) )
         resortImageView.backgroundColor = UIColor.lightGray
         
+        if(resort.images.count > 1){
         resortImageView.setImageWith(URL(string: resort.images[resort.images.count-1].url!), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
             if (error != nil) {
                 resortImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
             }
         }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
-        
+        }else{
+            resortImageView.setImageWith(URL(string: resort.images[resort.images.count].url!), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
+                if (error != nil) {
+                    resortImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
+                }
+            }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+        }
         cell.addSubview(resortImageView)
         
         

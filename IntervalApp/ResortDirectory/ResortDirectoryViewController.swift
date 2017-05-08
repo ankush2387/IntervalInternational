@@ -126,7 +126,6 @@ class ResortDirectoryViewController: UIViewController {
     func setNavigationBar(){
         //***** handle hamberger menu button for prelogin and post login case *****//
         if((UserContext.sharedInstance.accessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
-            
             if(self.navigationController?.viewControllers.count > 1) {
                 
                 let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(ResortDirectoryViewController.menuBackButtonPressed(_:)))
@@ -180,10 +179,10 @@ class ResortDirectoryViewController: UIViewController {
     
     //*****Function for back button press.*****//
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
-        
+        setNavigationBar()
         if(self.navigationController?.viewControllers.count == 1) {
             
-            self.navigationController?.dismiss(animated: true, completion: nil)
+            //self.navigationController?.dismiss(animated: true, completion: nil)
         }
         else {
             
@@ -193,6 +192,7 @@ class ResortDirectoryViewController: UIViewController {
     func reloadView() {
         if(self.resortTableView != nil){
             resortTableView.reloadData()
+            setNavigationBar()
         }
     }
     func reloadTable() {
@@ -605,9 +605,15 @@ extension ResortDirectoryViewController:ResortDirectoryResortCellDelegate {
     
     func favoritesButtonSelectedAtIndex(_ index: Int) {
         
-        let storyboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
+       /* let storyboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginController)
-        self.present(viewController, animated: true, completion: nil)
+        self.present(viewController, animated: true, completion: nil)*/
+        
+        
+        let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.iphone, bundle: nil)
+        let resultController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginController) as? SignInPreLoginViewController
+        let navController = UINavigationController(rootViewController: resultController!)
+        self.present(navController, animated:true, completion: nil)
         
     }
 }
