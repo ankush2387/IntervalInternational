@@ -381,6 +381,8 @@ class DashboardTableViewController: UITableViewController {
     //***** Search vacation button action *****//
     func  searchVactionPressed(_ sender:AnyObject) {
         
+        Constant.MyClassConstants.searchOriginationPoint = "Home Dashboard"
+        
         let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.sideMenuTitles.sideMenuInitialController) as! SWRevealViewController
         self.present(viewController, animated: true, completion: nil)

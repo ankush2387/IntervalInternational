@@ -51,6 +51,21 @@ class WhoWillBeCheckingInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        // omniture tracking with event 37
+        
+        let userInfo: [String: String] = [
+            Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch,
+            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.vacationSearchCheckingIn,
+            Constant.omnitureCommonString.products : Constant.MyClassConstants.selectedResort.resortCode!,
+            Constant.omnitureEvars.eVar37 : Helper.selectedSegment(index: Constant.MyClassConstants.searchForSegmentIndex),
+            Constant.omnitureEvars.eVar39 : "",
+        ]
+        
+        ADBMobile.trackAction(Constant.omnitureEvents.event37, data: userInfo)
+
+        
+        
         self.proceedToCheckoutButton.isEnabled = false
         self.proceedToCheckoutButton.alpha = 0.5
         Constant.startTimer()
