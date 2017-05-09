@@ -355,6 +355,30 @@ public class Helper{
         }
     }
     
+    //***** Common function for user Favorites resort API call after successfull call *****//
+    static func getUserFavorites(){
+        UserClient.getFavoriteResorts(Constant.MyClassConstants.systemAccessToken, onSuccess: { (response) in
+            Constant.MyClassConstants.favoritesResortArray.removeAll()
+            for resortcode in [response][0] {
+                Constant.MyClassConstants.favoritesResortCodeArray.add(resortcode)
+            }
+            NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
+            
+        })
+        { (error) in
+        }
+    }
+    
+    //**** Common function to get upcoming trips. ****//
+   static func getUpcomingTripsForUser(){
+        UserClient.getUpcomingTrips(UserContext.sharedInstance.accessToken, onSuccess: {(upComingTrips) in
+            Constant.MyClassConstants.upcomingTripsArray = upComingTrips
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: self)
+        }, onError: {(error) in
+        })
+    }
+
+
     //***** common function that contains API call for  searchResorts with todate and resort code *****//
     static func resortDetailsClicked(toDate: NSDate, senderVC : UIViewController) {
         

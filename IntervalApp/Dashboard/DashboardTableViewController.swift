@@ -44,18 +44,7 @@ class DashboardTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        UserClient.getUpcomingTrips(UserContext.sharedInstance.accessToken, onSuccess: {(upComingTrips) in
-            Constant.MyClassConstants.upcomingTripsArray = upComingTrips
-            self.getNumberOfSections()
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: self)
-            Helper.removeServiceCallBackgroundView(view: self.view)
-            SVProgressHUD.dismiss()
-        }, onError: {(error) in
-            Helper.removeServiceCallBackgroundView(view: self.view)
-            SVProgressHUD.dismiss()
-        })
-        
+        self.getNumberOfSections()
         Helper.getTopDeals(senderVC: self)
         //***** Set general Nav attributes *****//
         self.title = Constant.ControllerTitles.dashboardTableViewController

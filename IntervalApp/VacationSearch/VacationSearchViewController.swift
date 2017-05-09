@@ -1314,7 +1314,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                 Constant.omnitureEvars.eVar45: "\(Constant.MyClassConstants.vacationSearchShowDate)-\(Date())",
                                 Constant.omnitureEvars.eVar47: "\(Constant.MyClassConstants.checkInDates.count)" ,
                                 Constant.omnitureEvars.eVar53: "\(Constant.MyClassConstants.resortsArray.count)",
-                                Constant.omnitureEvars.eVar61:Constant.MyClassConstants.searchOriginationPoint,
+                                //Constant.omnitureEvars.eVar61:Constant.MyClassConstants.searchOriginationPoint,
                             ]
                             
                             ADBMobile.trackAction(Constant.omnitureEvents.event9, data: userInfo)

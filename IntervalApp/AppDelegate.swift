@@ -47,12 +47,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             secret: config.get( .DarwinSecretKey ),
             logger:logger)
         
-            //  getAccess token API call for obtain sys access token
+            //  GetAccess token API call for obtain sys access token
             AuthProviderClient.getClientAccessToken( { (accessToken) in
                 // Got an access token!  Save it for later use.
                 //UserContext.sharedInstance.accessToken = accessToken
                 Constant.MyClassConstants.systemAccessToken = accessToken
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.accessTokenAlertNotification), object: nil)
+                //Get user favorites.
+                Helper.getUserFavorites()
                 },
                 onError:{ (error) in
                 SimpleAlert.alert((self.window?.rootViewController)!, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
