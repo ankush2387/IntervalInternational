@@ -214,16 +214,16 @@ class CreateAlertViewController: UIViewController {
                                 deststr = deststr.appending("\(dest.destinationName), ")
                             }
                             let userInfo: [String: Any] = [
-                                "eVar43" : " - \(Date())",
-                                "s.list1": deststr,
-                                "eVar41" : "Alerts",
-                                "eVar57" : Constant.MyClassConstants.alertWindowStartDate,
-                                "eVar58" : Constant.MyClassConstants.alertWindowEndDate,
-                                "eVar59" : self.anlyticsBedroomSize,
-                                "eVar60" : Constant.MyClassConstants.alertOriginationPoint
+                                Constant.omnitureEvars.eVar43 : " - \(Date())",
+                                Constant.omnitureCommonString.listItem: deststr,
+                                Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.alert,
+                                Constant.omnitureEvars.eVar57 : Constant.MyClassConstants.alertWindowStartDate,
+                                Constant.omnitureEvars.eVar58 : Constant.MyClassConstants.alertWindowEndDate,
+                                Constant.omnitureEvars.eVar59 : self.anlyticsBedroomSize,
+                                Constant.omnitureEvars.eVar60 : Constant.MyClassConstants.alertOriginationPoint
                             ]
                             
-                            ADBMobile.trackAction("Event52", data: userInfo)
+                            ADBMobile.trackAction(Constant.omnitureEvents.event52, data: userInfo)
                             
                             SVProgressHUD.dismiss()
                             
@@ -288,8 +288,7 @@ class CreateAlertViewController: UIViewController {
     //***** function to call calendar screen to select travel end date *****//
     @IBAction func travelEndDateCalendarIconPressed(_ sender:AnyObject) {
         
-        
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle:     nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as! CalendarViewController
         viewController.requestedDateWindow = Constant.MyClassConstants.end
         let transitionManager = TransitionManager()
@@ -303,7 +302,8 @@ class CreateAlertViewController: UIViewController {
         
         var mainStoryboard = UIStoryboard()
         if(Constant.RunningDevice.deviceIdiom == .pad) {
-            mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIpad, bundle: nil)
+            //mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIpad, bundle: nil)
+            mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
         }
         else {
             mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
@@ -450,8 +450,8 @@ extension CreateAlertViewController:UICollectionViewDataSource {
             
             let destName = (object as! AreaOfInfluenceDestination).destinationName
             
-            let terocode = (object as! AreaOfInfluenceDestination).address?.territoryCode
-            cell.lblTitle.text = "\(destName!), \(terocode!)"
+            let terocode = (object as! AreaOfInfluenceDestination).address!.territoryCode!
+            cell.lblTitle.text = "\(destName!), \(terocode)"
             
         }
         
@@ -612,8 +612,8 @@ extension CreateAlertViewController:UITableViewDataSource {
                 
                 let destName = (object as! AreaOfInfluenceDestination).destinationName!
                 
-                let terocode = (object as! AreaOfInfluenceDestination).address?.territoryCode!
-                cell.whereTogoTextLabel.text = "\(destName), \(terocode)"
+                let terocode = (object as! AreaOfInfluenceDestination).address!.territoryCode!
+                cell.whereTogoTextLabel.text = "\(destName), \(String(describing: terocode))"
             }
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             

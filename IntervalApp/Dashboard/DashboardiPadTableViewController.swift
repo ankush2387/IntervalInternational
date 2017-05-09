@@ -38,19 +38,6 @@ class DashboardIPadTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        UserClient.getUpcomingTrips(UserContext.sharedInstance.accessToken, onSuccess: {(upComingTrips) in
-            logger.debug(upComingTrips)
-            Constant.MyClassConstants.upcomingTripsArray = upComingTrips
-            self.homeTableView.reloadData()
-            Helper.removeServiceCallBackgroundView(view: self.view)
-            SVProgressHUD.dismiss()
-        }, onError: {(error) in
-            Helper.removeServiceCallBackgroundView(view: self.view)
-            SVProgressHUD.dismiss()
-            print(error)
-        })
-        
-        
         Helper.getTopDeals(senderVC: self)
         
         //***** Set general Nav attributes *****//

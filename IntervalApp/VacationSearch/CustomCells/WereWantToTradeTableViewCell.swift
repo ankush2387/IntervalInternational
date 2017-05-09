@@ -119,9 +119,9 @@ extension WereWantToTradeTableViewCell:UICollectionViewDataSource {
                 return cell
         
     }
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width/3 , height: collectionView.frame.height - 25)
-    }
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize {
+//        return CGSize(width: collectionView.frame.width/3 , height: collectionView.frame.height - 25)
+//    }
 
 }
 

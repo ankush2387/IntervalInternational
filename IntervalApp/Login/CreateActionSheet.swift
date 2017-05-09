@@ -126,22 +126,7 @@ class CreateActionSheet: UITableViewController {
     Constant.MyClassConstants.signInRequestedController.performSegue(withIdentifier: Constant.segueIdentifiers.dashboradSegueIdentifier, sender: nil)
                                         
     }
-                                    
-//***** Favorites resort API call after successfull call *****//
-            
-  UserClient.getFavoriteResorts(UserContext.sharedInstance.accessToken, onSuccess: { (response) in
-    Constant.MyClassConstants.favoritesResortArray.removeAll()
-    for resortcode in [response][0] {
-        
-       Constant.MyClassConstants.favoritesResortCodeArray.add(resortcode)
-    }
-             NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
-                                        
-    })
-    { (error) in
-                                        
-}
-                                    
+
     //***** Getaway Alerts API call after successfull login *****//
     RentalClient.getAlerts(UserContext.sharedInstance.accessToken, onSuccess: { (response) in
         Constant.MyClassConstants.getawayAlertsArray = response
@@ -151,6 +136,11 @@ class CreateActionSheet: UITableViewController {
         }) { (error) in
                                         
     }
+    //Get user favorites.
+    Helper.getUserFavorites()
+      
+    //***** Get upcoming trips for user *****//
+    Helper.getUpcomingTripsForUser()
 },
     onError:{(error) in
         SVProgressHUD.dismiss()

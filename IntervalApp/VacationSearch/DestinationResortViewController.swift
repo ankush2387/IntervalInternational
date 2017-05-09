@@ -21,6 +21,16 @@ class DestinationResortViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // omniture tracking with evar44
+        ADBMobile.trackState(Constant.omnitureEvars.eVar44, data: nil)
+        
+        // omniture tracking with event 35
+        let userInfo: [String: String] = [
+            Constant.omnitureCommonString.productItem : (Constant.MyClassConstants.viewResponse.resort?.resortCode!)!,
+            Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch
+        ]
+        
+        ADBMobile.trackAction(Constant.omnitureEvents.event35, data: userInfo)
         amenitiesString = Constant.MyClassConstants.onsiteString.appending(Constant.MyClassConstants.nearbyString)
         // Do any additional setup after loading the view.
         

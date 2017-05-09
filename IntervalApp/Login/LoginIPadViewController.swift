@@ -378,25 +378,10 @@ class LoginIPadViewController: UIViewController
         
         UserClient.putSessionsUser(context.accessToken, member: context.selectedMembership!,
         onSuccess:{
-                                    
-        //***** Done!  Segue to the Home page *****//
-        // self.performSegueWithIdentifier(Constant.segueIdentifiers.dashboradSegueIdentifier, sender: nil)
-        //***** favorites resort API call after successfull call *****//
-        UserClient.getFavoriteResorts(UserContext.sharedInstance.accessToken, onSuccess: { (response) in
-                                        
-                Constant.MyClassConstants.favoritesResortArray.removeAll()
-            for resortcode in [response][0] {
-                
-                Constant.MyClassConstants.favoritesResortCodeArray.add(resortcode)
-            }
-                                        
-        })
-        { (error) in
-                                        
-                                        
-        }
-                                    
-                                    
+        //***** Favorites resort API call after successfull call *****//
+        Helper.getUserFavorites()
+        //***** Get upcoming trips for user API call after successfull call *****//
+        Helper.getUpcomingTripsForUser()
         //***** Getaway Alerts API call after successfull login *****//
         RentalClient.getAlerts(UserContext.sharedInstance.accessToken, onSuccess: { (response) in
                                         
@@ -422,7 +407,7 @@ class LoginIPadViewController: UIViewController
                                     
     },
             onError:{(error) in
-            SimpleAlert.alert(self, title:Constant.AlertErrorMessages.loginFailed, message: "\(Constant.AlertPromtMessages.membershipFailureMessage) \(context.selectedMembership?.memberNumber)")
+            SimpleAlert.alert(self, title:Constant.AlertErrorMessages.loginFailed, message: "\(Constant.AlertPromtMessages.membershipFailureMessage) \(String(describing: context.selectedMembership?.memberNumber))")
             }
         )
     }
@@ -493,6 +478,7 @@ extension LoginIPadViewController {
 	fileprivate func performStandardLogin(_ username:String, password:String)
 	{
 		// login button pressed, confirm user sign-in
+        Constant.MyClassConstants.loginOriginationPoint = Constant.omnitureCommonString.signInPage
 		Helper.loginButtonPressed(sender: self, userName: username, password: password, completionHandler: { (success) in
 			if (success) {
 				// let the login process continue
@@ -511,6 +497,7 @@ extension LoginIPadViewController {
 			if (success)
 			{
 				// save off credentials and authenticate user
+                Constant.MyClassConstants.loginOriginationPoint = Constant.omnitureCommonString.signInPage
 				self.touchID.saveAuthenticationInfo(username, password: password, completionHandler: { (success) in
 					if (success) {
 						

@@ -36,7 +36,8 @@ class AddDebitOrCreditCardViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+        
+       ADBMobile.trackAction(Constant.omnitureEvents.event57, data: nil)
        modalTransitionStyle = .flipHorizontal
     }
 
@@ -114,6 +115,7 @@ class AddDebitOrCreditCardViewController: UIViewController {
                 SVProgressHUD.show()
                 CreditCardTokenizeClient.tokenize(UserContext.sharedInstance.accessToken, creditCardNumber: newCreditCard.cardNumber!, onSuccess: {(response) in
                     
+                    ADBMobile.trackAction(Constant.omnitureEvents.event59, data: nil)
                     Helper.removeServiceCallBackgroundView(view: self.view)
                     SVProgressHUD.dismiss()
                     Constant.MyClassConstants.selectedCreditCard.removeAll()

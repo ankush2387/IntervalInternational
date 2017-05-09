@@ -20,27 +20,29 @@ class RelinquishmentSelectionViewController: UIViewController {
     var intervalOpenWeeksArray = [OpenWeek]()
     var openWkToRemoveArray:NSMutableArray!
     var requiredSection = 0
+    var masterUnitSize = ""
     
     //Outlets
     @IBOutlet weak var relinquishmentTableview: UITableView!
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         
+        self.relinquishmentTableview.estimatedRowHeight = 200
         self.relinquishmentPointsProgramArray.append(Constant.MyClassConstants.relinquishmentProgram)
         
         relinquishmentOpenWeeksArray.removeAll()
+        
         for fixed_week_type in Constant.MyClassConstants.relinquishmentOpenWeeks{
-           
+            
             if(fixed_week_type.weekNumber != Constant.CommonStringIdentifiers.floatWeek){
                 
                 if(fixed_week_type.weekNumber == Constant.CommonStringIdentifiers.pointWeek) {
                     
                     if(!(Constant.MyClassConstants.relinquishmentIdArray.contains(fixed_week_type.relinquishmentId!))) {
                         pointOpenWeeksArray.append(fixed_week_type)
-                        }
+                    }
                     else {
                         
                     }
@@ -49,12 +51,12 @@ class RelinquishmentSelectionViewController: UIViewController {
                 else if(fixed_week_type.pointsProgramCode != ""){
                     
                     if(!(Constant.MyClassConstants.relinquishmentIdArray.contains(fixed_week_type.relinquishmentId!))) {
-                         relinquishmentOpenWeeksArray.append(fixed_week_type)
+                        relinquishmentOpenWeeksArray.append(fixed_week_type)
                     }
                     else {
                         
                     }
-                   
+                    
                 }
                 else {
                     
@@ -62,23 +64,21 @@ class RelinquishmentSelectionViewController: UIViewController {
                         self.intervalOpenWeeksArray.append(fixed_week_type)
                     }
                     else {
-                        
                     }
                 }
             }
-            
         }
-        if(Constant.MyClassConstants.relinquishmentIdArray.count > 0){
-        if(Constant.MyClassConstants.relinquishmentIdArray.contains(self.relinquishmentPointsProgramArray[0].relinquishmentId!))
-        {
-            self.relinquishmentPointsProgramArray.remove(at: 0)
-        }
+        if(Constant.MyClassConstants.relinquishmentIdArray.count > 0 && self.relinquishmentPointsProgramArray[0].relinquishmentId != nil){
+            if(Constant.MyClassConstants.relinquishmentIdArray.contains(self.relinquishmentPointsProgramArray[0].relinquishmentId!))
+            {
+                self.relinquishmentPointsProgramArray.remove(at: 0)
+            }
         }
         if(self.requiredNumberOfSection() == 0) {
             
             SimpleAlert.alert(self, title:Constant.ControllerTitles.relinquishmentSelectiongControllerTitle , message: Constant.MyClassConstants.noRelinquishmentavailable)
         }
-
+        
         
         if(self.relinquishmentTableview != nil) {
             relinquishmentTableview.reloadData()
@@ -100,8 +100,10 @@ class RelinquishmentSelectionViewController: UIViewController {
     }
     func requiredNumberOfSection() -> Int{
         
-        if(self.relinquishmentPointsProgramArray[0].availablePoints != nil) {
+        if(self.relinquishmentPointsProgramArray.count > 0) {
+            if (self.relinquishmentPointsProgramArray[0].availablePoints != nil){
             self.requiredSection = self.requiredSection + 1
+            }
             
         }
         
@@ -111,7 +113,7 @@ class RelinquishmentSelectionViewController: UIViewController {
         }
         if(pointOpenWeeksArray.count > 0) {
             
-             self.requiredSection = self.requiredSection + 1
+            self.requiredSection = self.requiredSection + 1
         }
         if(intervalOpenWeeksArray.count > 0) {
             self.requiredSection = self.requiredSection + 1
@@ -137,133 +139,34 @@ class RelinquishmentSelectionViewController: UIViewController {
     }
     
     func addIntervalWeekButtonPressed(_ sender:IUIKButton) {
-        
-        Constant.MyClassConstants.relinquishmentSelectedWeek = intervalOpenWeeksArray[sender.tag]
-        Constant.MyClassConstants.whatToTradeArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek)
-        Constant.MyClassConstants.relinquishmentIdArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!)
-        
-        //Realm local storage for selected relinquishment
-        let storedata = OpenWeeksStorage()
-        let Membership = UserContext.sharedInstance.selectedMembership
-        let relinquishmentList = TradeLocalData()
-        
-        let selectedOpenWeek = OpenWeeks()
-        selectedOpenWeek.weekNumber = Constant.MyClassConstants.relinquishmentSelectedWeek.weekNumber!
-        selectedOpenWeek.relinquishmentID = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!
-        selectedOpenWeek.relinquishmentYear = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentYear!
-        let resort = ResortList()
-        resort.resortName = (Constant.MyClassConstants.relinquishmentSelectedWeek.resort?.resortName)!
-        
-        selectedOpenWeek.resort.append(resort)
-        relinquishmentList.openWeeks.append(selectedOpenWeek)
-        storedata.openWeeks.append(relinquishmentList)
-        storedata.membeshipNumber = Membership!.memberNumber!
-        let realm = try! Realm()
-        try! realm.write {
-            realm.add(storedata)
-        }
-        
-        _ = self.navigationController?.popViewController(animated: true)
-    }
-    func addClubPointButtonPressed(_ sender:IUIKButton) {
-       
-         Constant.MyClassConstants.relinquishmentSelectedWeek = pointOpenWeeksArray[sender.tag]
-        
-        if(Constant.MyClassConstants.relinquishmentSelectedWeek.pointsMatrix == false) {
-            
-         Constant.MyClassConstants.whatToTradeArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek)
-        Constant.MyClassConstants.relinquishmentIdArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!)
-            
-        //Realm local storage for selected relinquishment
-        let storedata = OpenWeeksStorage()
-        let Membership = UserContext.sharedInstance.selectedMembership
-        let relinquishmentList = TradeLocalData()
-        
-        let selectedOpenWeek = OpenWeeks()
-        selectedOpenWeek.weekNumber = Constant.MyClassConstants.relinquishmentSelectedWeek.weekNumber!
-            selectedOpenWeek.relinquishmentID = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!
-        selectedOpenWeek.relinquishmentYear = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentYear!
-        let resort = ResortList()
-        resort.resortName = (Constant.MyClassConstants.relinquishmentSelectedWeek.resort?.resortName)!
-        
-        selectedOpenWeek.resort.append(resort)
-        relinquishmentList.openWeeks.append(selectedOpenWeek)
-        storedata.openWeeks.append(relinquishmentList)
-        storedata.membeshipNumber = Membership!.memberNumber!
-        let realm = try! Realm()
-        try! realm.write {
-            realm.add(storedata)
-        }
-            _ = self.navigationController?.popViewController(animated: true)
-        }
-        else {
-           // Helper.addServiceCallBackgroundView(view: self.view)
-           //SVProgressHUD.show()
-            print(Constant.MyClassConstants.relinquishmentSelectedWeek.resort!.resortCode!)
-            DirectoryClient.getResortClubPointsChart(UserContext.sharedInstance.accessToken, resortCode:  (Constant.MyClassConstants.relinquishmentSelectedWeek.resort!.resortCode!), onSuccess:{ (ClubPointsChart) in
 
-                
-                for matrices in ClubPointsChart.matrices {
-                    
-                    for grids in matrices.grids {
-                        
-                        Constant.MyClassConstants.fromdatearray.add(grids.fromDate!)
-                        Constant.MyClassConstants.todatearray.add(grids.toDate!)
-                        
-                        for rows in grids.rows
-                        {
-                            Constant.MyClassConstants.labelarray.add(rows.label!)
-                        }
-                    }
-                    
-                    print(Constant.MyClassConstants.fromdatearray)
-                    print(Constant.MyClassConstants.labelarray)
-                }
-                
-                
-                let storyboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
-                let clubPointselectionViewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.clubPointSelectionViewController)as? ClubPointSelectionViewController
-                self.navigationController?.pushViewController(clubPointselectionViewController!, animated: true)
+        if((intervalOpenWeeksArray[sender.tag].unit?.lockOffUnits.count)! > 0){
+            Constant.ControllerTitles.bedroomSizeViewController = Constant.MyClassConstants.relinquishmentTitle
+            Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.relinquishmentSelectionViewController
+            masterUnitSize = "\(Helper.getBedroomNumbers(bedroomType: (intervalOpenWeeksArray[sender.tag].unit!.unitSize)!)), \(Helper.getKitchenEnums(kitchenType: (intervalOpenWeeksArray[sender.tag].unit!.kitchenType)!)) Sleeps \(String(describing: intervalOpenWeeksArray[sender.tag].unit!.publicSleepCapacity))"
+            getUnitSize((intervalOpenWeeksArray[sender.tag].unit?.lockOffUnits)!)
             
-            }, onError:{ (error) in
+            Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.relinquishmentSelectionViewController
+            Constant.MyClassConstants.relinquishmentSelectedWeek = intervalOpenWeeksArray[sender.tag]
+            Constant.MyClassConstants.whatToTradeArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek)
+            Constant.MyClassConstants.relinquishmentIdArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!)
             
-                Helper.removeServiceCallBackgroundView(view: self.view)
-                SVProgressHUD.dismiss()
-                print(error.description)
-            })
-            
-            
-        }
-        
-
-    }
-    func addAvailablePoinButtonPressed(_ sender:IUIKButton) {
-        if(sender.tag == 0){
-            
-        Constant.MyClassConstants.whatToTradeArray.add(Constant.MyClassConstants.relinquishmentProgram)
-               Constant.MyClassConstants.relinquishmentIdArray.add(Constant.MyClassConstants.relinquishmentProgram.relinquishmentId!)
-            //Realm local storage for selected relinquishment
-            let storedata = OpenWeeksStorage()
-            let Membership = UserContext.sharedInstance.selectedMembership
-            let relinquishmentList = TradeLocalData()
-            let rlmPProgram = rlmPointsProgram()
-            
-            rlmPProgram.availablePoints = Constant.MyClassConstants.relinquishmentProgram.availablePoints!
-            rlmPProgram.code = Constant.MyClassConstants.relinquishmentProgram.code!
-           
-            rlmPProgram.relinquishmentId = Constant.MyClassConstants.relinquishmentProgram.relinquishmentId!
-           
-            relinquishmentList.pProgram.append(rlmPProgram)
-            storedata.openWeeks.append(relinquishmentList)
-            storedata.membeshipNumber = Membership!.memberNumber!
-            
-            let realm = try! Realm()
-            try! realm.write {
-                realm.add(storedata)
+            var mainStoryboard = UIStoryboard()
+            if(Constant.RunningDevice.deviceIdiom == .pad) {
+                mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIpad, bundle: nil)
             }
-            
+            else {
+                mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
+            }
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.bedroomSizeViewController) as! BedroomSizeViewController
+            viewController.delegate = self
+            Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.relinquishmentSelectionViewController
+            let transitionManager = TransitionManager()
+            self.navigationController?.transitioningDelegate = transitionManager
+            self.navigationController!.present(viewController, animated: true, completion: nil)
         }else{
-            Constant.MyClassConstants.relinquishmentSelectedWeek = relinquishmentOpenWeeksArray[sender.tag - 1]
+            Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.relinquishmentSelectionViewController
+            Constant.MyClassConstants.relinquishmentSelectedWeek = intervalOpenWeeksArray[sender.tag]
             Constant.MyClassConstants.whatToTradeArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek)
             Constant.MyClassConstants.relinquishmentIdArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!)
             
@@ -287,10 +190,214 @@ class RelinquishmentSelectionViewController: UIViewController {
             try! realm.write {
                 realm.add(storedata)
             }
+            
+            _ = self.navigationController?.popViewController(animated: true)
         }
-        _ = self.navigationController?.popViewController(animated: true)
+    }
+    func addClubPointButtonPressed(_ sender:IUIKButton) {
+         /*Helper.addServiceCallBackgroundView(view: self.view)
+         SVProgressHUD.show()
+         Constant.MyClassConstants.matrixDataArray.removeAllObjects()
+         DirectoryClient.getResortClubPointsChart(UserContext.sharedInstance.accessToken, resortCode:  (Constant.MyClassConstants.relinquishmentSelectedWeek.resort?.resortCode)!, onSuccess:{ (ClubPointsChart) in
+         
+         Constant.MyClassConstants.selectionType = 1
+         Helper.removeServiceCallBackgroundView(view: self.view)
+         SVProgressHUD.dismiss()
+         Constant.MyClassConstants.matrixType = ClubPointsChart.type!
+         Constant.MyClassConstants.matrixDescription =
+         ClubPointsChart.matrices[0].description!
+         if(Constant.MyClassConstants.matrixDescription == Constant.MyClassConstants.matrixTypeSingle || Constant.MyClassConstants.matrixDescription == Constant.MyClassConstants.matrixTypeColor){
+         Constant.MyClassConstants.showSegment = false
+         }else{
+         Constant.MyClassConstants.showSegment = true
+         }
+         for matrices in ClubPointsChart.matrices {
+         let pointsDictionary = NSMutableDictionary()
+         for grids in matrices.grids {
+         
+         Constant.MyClassConstants.fromdatearray.add(grids.fromDate!)
+         Constant.MyClassConstants.todatearray.add(grids.toDate!)
+         
+         for rows in grids.rows
+         {
+         Constant.MyClassConstants.labelarray.add(rows.label!)
+         }
+         let dictKey = "\(grids.fromDate!) - \(grids.toDate!)"
+         pointsDictionary.setObject(grids.rows, forKey: String(describing: dictKey) as NSCopying)
+         }
+         Constant.MyClassConstants.matrixDataArray.add(pointsDictionary)
+         }
+         
+         let storyboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
+         let clubPointselectionViewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.clubPointSelectionViewController)as? ClubPointSelectionViewController
+         self.navigationController?.pushViewController(clubPointselectionViewController!, animated: true)
+         
+         }, onError:{ (error) in
+         
+         Helper.removeServiceCallBackgroundView(view: self.view)
+         SVProgressHUD.dismiss()
+         print(error.description)
+         })*/
+        
+        
+        /*Constant.MyClassConstants.relinquishmentSelectedWeek = pointOpenWeeksArray[sender.tag]
+        
+        if(Constant.MyClassConstants.relinquishmentSelectedWeek.pointsMatrix == false) {
+            
+            Constant.MyClassConstants.whatToTradeArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek)
+            Constant.MyClassConstants.relinquishmentIdArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!)
+            
+            //Realm local storage for selected relinquishment
+            let storedata = OpenWeeksStorage()
+            let Membership = UserContext.sharedInstance.selectedMembership
+            let relinquishmentList = TradeLocalData()
+            
+            let selectedOpenWeek = OpenWeeks()
+            selectedOpenWeek.weekNumber = Constant.MyClassConstants.relinquishmentSelectedWeek.weekNumber!
+            selectedOpenWeek.relinquishmentID = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!
+            selectedOpenWeek.relinquishmentYear = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentYear!
+            let resort = ResortList()
+            resort.resortName = (Constant.MyClassConstants.relinquishmentSelectedWeek.resort?.resortName)!
+            
+            selectedOpenWeek.resort.append(resort)
+            relinquishmentList.openWeeks.append(selectedOpenWeek)
+            storedata.openWeeks.append(relinquishmentList)
+            storedata.membeshipNumber = Membership!.memberNumber!
+            let realm = try! Realm()
+            try! realm.write {
+                realm.add(storedata)
+            }
+            _ = self.navigationController?.popViewController(animated: true)
+        }
+        else {
+            // Helper.addServiceCallBackgroundView(view: self.view)
+            //SVProgressHUD.show()
+            DirectoryClient.getResortClubPointsChart(UserContext.sharedInstance.accessToken, resortCode:  (Constant.MyClassConstants.relinquishmentSelectedWeek.resort!.resortCode!), onSuccess:{ (ClubPointsChart) in
+                
+                
+                for matrices in ClubPointsChart.matrices {
+                    
+                    for grids in matrices.grids {
+                        
+                        Constant.MyClassConstants.fromdatearray.add(grids.fromDate!)
+                        Constant.MyClassConstants.todatearray.add(grids.toDate!)
+                        
+                        for rows in grids.rows
+                        {
+                            Constant.MyClassConstants.labelarray.add(rows.label!)
+                        }
+                    }
+                    
+                    print(Constant.MyClassConstants.fromdatearray)
+                    print(Constant.MyClassConstants.labelarray)
+                }
+                
+                
+                let storyboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
+                let clubPointselectionViewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.clubPointSelectionViewController)as? ClubPointSelectionViewController
+                self.navigationController?.pushViewController(clubPointselectionViewController!, animated: true)
+                
+            }, onError:{ (error) in
+                
+                Helper.removeServiceCallBackgroundView(view: self.view)
+                SVProgressHUD.dismiss()
+                print(error.description)
+            })
+            
+            
+        }*/
+        
+        
+    }
+    func addAvailablePoinButtonPressed(_ sender:IUIKButton) {
+        if(sender.tag == 0){
+            
+            Constant.MyClassConstants.whatToTradeArray.add(Constant.MyClassConstants.relinquishmentProgram)
+            Constant.MyClassConstants.relinquishmentIdArray.add(Constant.MyClassConstants.relinquishmentProgram.relinquishmentId!)
+            //Realm local storage for selected relinquishment
+            let storedata = OpenWeeksStorage()
+            let Membership = UserContext.sharedInstance.selectedMembership
+            let relinquishmentList = TradeLocalData()
+            let rlmPProgram = rlmPointsProgram()
+            
+            rlmPProgram.availablePoints = Constant.MyClassConstants.relinquishmentProgram.availablePoints!
+            rlmPProgram.code = Constant.MyClassConstants.relinquishmentProgram.code!
+            
+            rlmPProgram.relinquishmentId = Constant.MyClassConstants.relinquishmentProgram.relinquishmentId!
+            
+            relinquishmentList.pProgram.append(rlmPProgram)
+            storedata.openWeeks.append(relinquishmentList)
+            storedata.membeshipNumber = Membership!.memberNumber!
+            
+            let realm = try! Realm()
+            try! realm.write {
+                realm.add(storedata)
+            }
+            
+            _ = self.navigationController?.popViewController(animated: true)
+            
+        }else{
+            if((relinquishmentOpenWeeksArray[sender.tag - 1].unit?.lockOffUnits.count)! > 0){
+                Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.relinquishmentSelectionViewController
+                masterUnitSize = "\(Helper.getBedroomNumbers(bedroomType: (relinquishmentOpenWeeksArray[sender.tag - 1].unit!.unitSize)!)), \(Helper.getKitchenEnums(kitchenType: (relinquishmentOpenWeeksArray[sender.tag - 1].unit!.kitchenType)!)) Sleeps \(String(describing: relinquishmentOpenWeeksArray[sender.tag - 1].unit!.publicSleepCapacity))"
+                getUnitSize((relinquishmentOpenWeeksArray[sender.tag - 1].unit?.lockOffUnits)!)
+                Constant.MyClassConstants.relinquishmentSelectedWeek = relinquishmentOpenWeeksArray[sender.tag - 1]
+                Constant.MyClassConstants.whatToTradeArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek)
+                Constant.MyClassConstants.relinquishmentIdArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!)
+                
+                var mainStoryboard = UIStoryboard()
+                if(Constant.RunningDevice.deviceIdiom == .pad) {
+                    mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIpad, bundle: nil)
+                }
+                else {
+                    mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
+                }
+                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.bedroomSizeViewController) as! BedroomSizeViewController
+                viewController.delegate = self
+                let transitionManager = TransitionManager()
+                self.navigationController?.transitioningDelegate = transitionManager
+                self.navigationController!.present(viewController, animated: true, completion: nil)
+            }else{
+                Constant.MyClassConstants.relinquishmentSelectedWeek = relinquishmentOpenWeeksArray[sender.tag - 1]
+                Constant.MyClassConstants.whatToTradeArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek)
+                Constant.MyClassConstants.relinquishmentIdArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!)
+                
+                //Realm local storage for selected relinquishment
+                let storedata = OpenWeeksStorage()
+                let Membership = UserContext.sharedInstance.selectedMembership
+                let relinquishmentList = TradeLocalData()
+                
+                let selectedOpenWeek = OpenWeeks()
+                selectedOpenWeek.weekNumber = Constant.MyClassConstants.relinquishmentSelectedWeek.weekNumber!
+                selectedOpenWeek.relinquishmentID = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!
+                selectedOpenWeek.relinquishmentYear = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentYear!
+                let resort = ResortList()
+                resort.resortName = (Constant.MyClassConstants.relinquishmentSelectedWeek.resort?.resortName)!
+                
+                selectedOpenWeek.resort.append(resort)
+                relinquishmentList.openWeeks.append(selectedOpenWeek)
+                storedata.openWeeks.append(relinquishmentList)
+                storedata.membeshipNumber = Membership!.memberNumber!
+                let realm = try! Realm()
+                try! realm.write {
+                    realm.add(storedata)
+                }
+                _ = self.navigationController?.popViewController(animated: true)
+            }
+        }
     }
     
+    func getUnitSize(_ unitSize:[InventoryUnit]) {
+        Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.removeAllObjects()
+        let unitSizeRelinquishment = unitSize
+        var unitString = ""
+        for unit in unitSizeRelinquishment{
+            unitString = "\(Helper.getBedroomNumbers(bedroomType: unit.unitSize!)), \(Helper.getKitchenEnums(kitchenType: unit.kitchenType!)) Sleeps \(unit.publicSleepCapacity)"
+            
+            Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.add(unitString)
+        }
+        Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.add(masterUnitSize)
+    }
 }
 
 extension RelinquishmentSelectionViewController:UITableViewDelegate {
@@ -298,14 +405,7 @@ extension RelinquishmentSelectionViewController:UITableViewDelegate {
     //***** UITableview delegate methods definition here *****//
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
-        if(indexPath.section == 0 && Constant.MyClassConstants.relinquishmentProgram.availablePoints != 0) {
-                return 152
-        }else if(indexPath.section == 0){
-            return 0
-        }else {
-            return 80
-        }
+        return UITableViewAutomaticDimension
     }
     
     //***** Implementing header and footer cell for all sections  *****//
@@ -320,17 +420,18 @@ extension RelinquishmentSelectionViewController:UITableViewDelegate {
             
             headerView.backgroundColor = IUIKColorPalette.tertiary1.color
             if(section == 0) {
-            headerTextLabel.text = Constant.ownershipViewController.clubIntervalGoldWeeksSectionHeaderTitle
+                headerTextLabel.text = Constant.ownershipViewController.clubIntervalGoldWeeksSectionHeaderTitle
             }
             else if(section == 2){
                 
-                 headerTextLabel.text = Constant.ownershipViewController.clubPointsSectionHeaderTitle
+                headerTextLabel.text = Constant.ownershipViewController.clubPointsSectionHeaderTitle
             }
             else {
-              
-                  headerTextLabel.text = Constant.ownershipViewController.intervalWeeksSectionHeaderTitle
+                
+                headerTextLabel.text = Constant.ownershipViewController.intervalWeeksSectionHeaderTitle
             }
-            headerTextLabel.textColor = IUIKColorPalette.primaryText.color
+            headerTextLabel.textColor = UIColor.darkGray
+            headerTextLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15)
             headerView.addSubview(headerTextLabel)
             return headerView
         }
@@ -354,10 +455,10 @@ extension RelinquishmentSelectionViewController:UITableViewDelegate {
             
         case 2:
             if(self.pointOpenWeeksArray.count > 0) {
-               return 30
+                return 30
             }
             else {
-               return 0
+                return 0
             }
             
         case 3:
@@ -367,14 +468,11 @@ extension RelinquishmentSelectionViewController:UITableViewDelegate {
             else {
                 return 0
             }
-
+            
         default:
             return 0
         }
-        
     }
-    
-    
 }
 
 extension RelinquishmentSelectionViewController:UITableViewDataSource {
@@ -392,10 +490,10 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
             
         case 0:
             if (self.relinquishmentPointsProgramArray.count == 1 && self.relinquishmentPointsProgramArray[0].availablePoints == nil) {
-               return 0
+                return 0
             }
             else{
-               return self.relinquishmentPointsProgramArray.count
+                return self.relinquishmentPointsProgramArray.count
             }
             
         case 1:
@@ -420,19 +518,13 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
             cell.availablePointToolButton.addTarget(self, action: #selector(RelinquishmentSelectionViewController.availablePointToolButtonPressed(_:)), for: .touchUpInside)
             cell.addAvailablePointButton.addTarget(self, action:  #selector(RelinquishmentSelectionViewController.addAvailablePoinButtonPressed(_:)), for: .touchUpInside)
             cell.addAvailablePointButton.tag = indexPath.section + indexPath.row
-            var availablePointsNumber = 0
-            
             if (Constant.MyClassConstants.relinquishmentProgram.availablePoints != nil) {
-                availablePointsNumber = Constant.MyClassConstants.relinquishmentProgram.availablePoints!
+                let largeNumber = Constant.MyClassConstants.relinquishmentProgram.availablePoints!
+                let numberFormatter = NumberFormatter()
+                numberFormatter.numberStyle = NumberFormatter.Style.decimal
+                let formattedString = numberFormatter.string(for: largeNumber)
+                cell.availablePointValueLabel.text = formattedString
             }
-            
-            
-//            let numberFormatter = NumberFormatter()
-//            numberFormatter.numberStyle = .decimal
-//            
-//            let availablePoints = numberFormatter.string(from: availablePointsNumber)
-            
-            cell.availablePointValueLabel.text = "\(availablePointsNumber)"
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             return cell
         }
@@ -442,15 +534,16 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
             
             var openWeek:OpenWeek!
             if(indexPath.section == 1 ) {
-            
-                 openWeek = relinquishmentOpenWeeksArray[indexPath.row]
+                
+                openWeek = relinquishmentOpenWeeksArray[indexPath.row]
             }
             else {
-               
-                  openWeek = intervalOpenWeeksArray[indexPath.row]
+                
+                openWeek = intervalOpenWeeksArray[indexPath.row]
             }
             let units = openWeek.unit
             cell.resortName.text = openWeek.resort?.resortName!
+            //cell.resortName.text = "Westwood"
             var bedroomSize = ""
             var kitchenType = ""
             
@@ -465,14 +558,19 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
             
             cell.bedroomSizeAndKitchenClient.text = "\(bedroomSize) \(kitchenType)"
             let totalSleep = "Sleeps " + String((units?.publicSleepCapacity)! + (units?.privateSleepCapacity)!)
-            let privateSleep = " Total, " + (String(describing: units!.privateSleepCapacity)) + " Private"
+            let privateSleep = " total, " + (String(describing: units!.privateSleepCapacity)) + " Private"
             cell.totalSleepAndPrivate.text = "\(totalSleep) \(privateSleep)"
+            
+            if (units?.lockOffUnits.count) != 0{
+                cell.bedroomSizeAndKitchenClient.text = "Lock off capable."
+                cell.totalSleepAndPrivate.text = ""
+            }
             
             cell.yearLabel.text = "\(openWeek.relinquishmentYear!)"
             
             if(indexPath.section == 1) {
-            cell.addButton.tag = indexPath.row + indexPath.section
-            cell.addButton.addTarget(self, action:  #selector(RelinquishmentSelectionViewController.addAvailablePoinButtonPressed(_:)), for: .touchUpInside)
+                cell.addButton.tag = indexPath.row + indexPath.section
+                cell.addButton.addTarget(self, action:  #selector(RelinquishmentSelectionViewController.addAvailablePoinButtonPressed(_:)), for: .touchUpInside)
             }
             else {
                 
@@ -500,7 +598,7 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
             }
             else {
                 
-                cell.dayAndDateLabel.text = ""
+                cell.dayAndDateLabel.text = " "
             }
             cell.totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: openWeek.weekNumber!))"
             
@@ -519,8 +617,54 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             return cell
         }
-       
+    }
+}
+
+extension RelinquishmentSelectionViewController:BedroomSizeViewControllerDelegate {
+    
+    func doneButtonClicked() {
+        //Realm local storage for selected relinquishment
+        let storedata = OpenWeeksStorage()
+        let Membership = UserContext.sharedInstance.selectedMembership
+        let relinquishmentList = TradeLocalData()
+        
+        let selectedOpenWeek = OpenWeeks()
+        selectedOpenWeek.weekNumber = Constant.MyClassConstants.relinquishmentSelectedWeek.weekNumber!
+        selectedOpenWeek.relinquishmentID = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!
+        selectedOpenWeek.relinquishmentYear = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentYear!
+        let resort = ResortList()
+        resort.resortName = (Constant.MyClassConstants.relinquishmentSelectedWeek.resort?.resortName)!
+        
+        selectedOpenWeek.resort.append(resort)
+        relinquishmentList.openWeeks.append(selectedOpenWeek)
+        storedata.openWeeks.append(relinquishmentList)
+        storedata.membeshipNumber = Membership!.memberNumber!
+        let realm = try! Realm()
+        try! realm.write {
+            realm.add(storedata)
+        }
+        
+        // Open vacation search view controller
+        var viewcontroller:UIViewController
+        if (Constant.RunningDevice.deviceIdiom == .phone) {
+            
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+            viewcontroller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as! SWRevealViewController
+        }
+        else{
+            
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+            viewcontroller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as! SWRevealViewController
+        }
+
+        
+        //***** creating animation transition to show custom transition animation *****//
+        let transition: CATransition = CATransition()
+        let timeFunc : CAMediaTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        transition.duration = 0.0
+        transition.timingFunction = timeFunc
+        viewcontroller.view.layer.add(transition, forKey: Constant.MyClassConstants.switchToView)
+        UIApplication.shared.keyWindow?.rootViewController = viewcontroller
     }
     
 }
-

@@ -40,7 +40,6 @@ class ResortDetailsViewController: UIViewController {
     fileprivate var resortDescriptionArrayContainer:NSMutableArray = []
     fileprivate var placeSelectionMainDictionary = [Int:[Int:Bool]]()
     fileprivate var tappedButtonDictionary = [Int:Bool]()
-    fileprivate let countryArray = ["a","a","a","a"]
     fileprivate let moreNavArray = ["Share via email","Share via text","Tweet","Facebook","Pinterest"]
     
     var senderViewController : String? = ""
@@ -87,6 +86,19 @@ class ResortDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // omniture tracking with evar44
+        ADBMobile.trackState(Constant.omnitureEvars.eVar44, data: nil)
+        
+        // omniture tracking with event 35
+        if(Constant.MyClassConstants.resortsDescriptionArray.resortCode != nil){
+            let userInfo: [String: String] = [
+                Constant.omnitureCommonString.productItem : Constant.MyClassConstants.resortsDescriptionArray.resortCode!,
+                Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch
+            ]
+            
+            ADBMobile.trackAction(Constant.omnitureEvents.event35, data: userInfo)
+        }
         self.startIndex = Constant.MyClassConstants.vacationSearchContentPagerRunningIndex
         self.resortDescriptionArrayContainer.add(Constant.MyClassConstants.resortsDescriptionArray)
     }
@@ -132,6 +144,13 @@ class ResortDetailsViewController: UIViewController {
             self.headerTextForShowingResortCounter.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
             
             self.tableViewResorts.reloadData()
+            // omniture tracking with event 35
+            let userInfo: [String: String] = [
+                Constant.omnitureCommonString.productItem : Constant.MyClassConstants.resortsDescriptionArray.resortCode!,
+                Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch
+            ]
+            
+            ADBMobile.trackAction(Constant.omnitureEvents.event35, data: userInfo)
         }
         else {
             if(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex == 1){
@@ -216,6 +235,13 @@ class ResortDetailsViewController: UIViewController {
                     SVProgressHUD.dismiss()
                     Helper.removeServiceCallBackgroundView(view: self.view)
                     self.tableViewResorts.reloadData()
+                    // omniture tracking with event 35
+                    let userInfo: [String: String] = [
+                        Constant.omnitureCommonString.productItem : Constant.MyClassConstants.resortsDescriptionArray.resortCode!,
+                        Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch
+                    ]
+                    
+                    ADBMobile.trackAction(Constant.omnitureEvents.event35, data: userInfo)
                     })
                 { (error) in
                     SVProgressHUD.dismiss()
@@ -887,20 +913,53 @@ extension ResortDetailsViewController:UITableViewDataSource {
     }
     
     func favoritesButtonClicked(_ sender:UIButton){
-        if(UserContext.sharedInstance.accessToken == nil) {
+        if(UserContext.sharedInstance.accessToken != nil) {
             
-            let storyboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
-            let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginController)
-            self.present(viewController, animated: true, completion: nil)
-        }
-        else {
-            if(sender.isSelected == true) {
-                sender.isSelected = false
+            if (sender.isSelected == false){
+                
+                SVProgressHUD.show()
+                Helper.addServiceCallBackgroundView(view: self.view)
+                UserClient.addFavoriteResort(UserContext.sharedInstance.accessToken, resortCode: Constant.MyClassConstants.resortsDescriptionArray.resortCode!, onSuccess: {(response) in
+                    
+                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    SVProgressHUD.dismiss()
+                    sender.isSelected = true
+                    Constant.MyClassConstants.favoritesResortCodeArray.add(Constant.MyClassConstants.resortsDescriptionArray.resortCode!)
+                    self.tableViewResorts.reloadData()
+                     ADBMobile.trackAction(Constant.omnitureEvents.event48, data: nil)
+                }, onError: {(error) in
+                    SVProgressHUD.dismiss()
+                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    print(error)
+                })
             }
             else {
-                sender.isSelected = true
+                SVProgressHUD.show()
+                Helper.addServiceCallBackgroundView(view: self.view)
+                UserClient.removeFavoriteResort(UserContext.sharedInstance.accessToken, resortCode: Constant.MyClassConstants.resortsDescriptionArray.resortCode!, onSuccess: {(response) in
+                    
+                  
+                    sender.isSelected = false
+                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    SVProgressHUD.dismiss()
+                    Constant.MyClassConstants.favoritesResortCodeArray.remove(Constant.MyClassConstants.resortsDescriptionArray.resortCode!)
+                    self.tableViewResorts.reloadData()
+                    ADBMobile.trackAction(Constant.omnitureEvents.event51, data: nil)
+                }, onError: {(error) in
+                    
+                    SVProgressHUD.dismiss()
+                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    print(error)
+                })
+                
             }
+            
+          
         }
+        else {
+            let storyboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
+            let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginController)
+            self.present(viewController, animated: true, completion: nil)        }
         
     }
 }

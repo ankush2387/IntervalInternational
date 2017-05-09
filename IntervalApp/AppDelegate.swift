@@ -47,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             secret: config.get( .DarwinSecretKey ),
             logger:logger)
         
-            //  getAccess token API call for obtain sys access token
+            //  GetAccess token API call for obtain sys access token
             AuthProviderClient.getClientAccessToken( { (accessToken) in
                 // Got an access token!  Save it for later use.
                 //UserContext.sharedInstance.accessToken = accessToken

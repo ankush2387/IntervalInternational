@@ -96,6 +96,7 @@ class SideMenuiPadTableViewController: UIViewController, UITableViewDataSource {
         Constant.MyClassConstants.favoritesResortArray.removeAll()
         //Remove all saved alerts for a user.
         Constant.MyClassConstants.getawayAlertsArray.removeAll()
+        Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
         let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.loginIPad, bundle: nil)
         let nav1 = UINavigationController()
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.loginViewControllerIPad) as! LoginIPadViewController

@@ -12,7 +12,7 @@ class BedroomSizeTableViewCell: UITableViewCell {
 
     //Outlets
     @IBOutlet weak var bedroomSizelabel: UILabel!
-    
+    @IBOutlet weak var backgroundCellView: UIView!
     @IBOutlet weak var checkBoxButton: IUIKCheckbox!
     
     override func awakeFromNib() {

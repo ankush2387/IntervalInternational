@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="SLC-cM-ne5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="SLC-cM-ne5">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -408,7 +408,7 @@
                         <segue destination="IVo-Qs-kOc" kind="presentation" identifier="dashboardSegue" id="yVB-DD-cdl"/>
                         <segue destination="khZ-jz-hRb" kind="show" identifier="webviewSegue" id="MXp-VE-3ma"/>
                         <segue destination="vaB-Bz-9Kg" kind="show" identifier="privacyPolicySegue" action="showDetailViewController:sender:" id="pVA-wB-6RW"/>
-                        <segue destination="NLJ-iy-Tz3" kind="presentation" identifier="resortDirectorySegue" id="HEI-f9-3jY"/>
+                        <segue destination="NLJ-iy-Tz3" kind="show" identifier="resortDirectorySegue" id="HEI-f9-3jY"/>
                         <segue destination="fHs-aP-7EZ" kind="show" identifier="intervalHDSegue" id="IGD-Q4-5Yx"/>
                         <segue destination="c7C-9M-LLy" kind="show" identifier="magazinesSegue" id="RZg-QA-2PF"/>
                         <segue destination="G93-FL-OMe" kind="show" identifier="confirmationSegue" id="mY2-tK-9g6"/>
@@ -573,7 +573,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="vaB-Bz-9Kg" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="0xK-fI-ilV">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="0xK-fI-ilV">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -591,7 +591,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="khZ-jz-hRb" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="DGp-sj-2Ex">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="DGp-sj-2Ex">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

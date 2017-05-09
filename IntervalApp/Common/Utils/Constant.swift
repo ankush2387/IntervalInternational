@@ -76,8 +76,12 @@ class Constant: NSObject {
         static var alertOriginationPoint:String!
         static var loginOriginationPoint:String!
         static var loginType:String!
-        
+        static var selectedDestinationNames:String = ""
         static var addressStringForCardDetailSection = "Address"
+        static var destinationOrResortSelectedBy:String = ""
+        static var selectionType = -1
+        static var searchOriginationPoint = "Default"
+        static var searchForSegmentIndex = 0
         
         //global variable to hold advisement type text
         static var advisementTypeStringaArray = ["Important Advisements","General Advisements","Additional Advisements"]
@@ -201,8 +205,8 @@ class Constant: NSObject {
         
         static let sidemenuIntervalInternationalCorporationLabel = NSLocalizedString("2015 Interval International. Privacy/Legal", comment: "")
         static let noRelinquishmentavailable = NSLocalizedString("No Relinquishment available", comment: "")
-        
-        
+        static let relinquishmentTitle = NSLocalizedString("Select master or lock-off portion", comment: "")
+    
         static var selectedIndex:Int!
         static var vacationSearchContentPagerRunningIndex  = 0
         static var vacationSearchShowDate:Date!
@@ -679,6 +683,7 @@ class Constant: NSObject {
         static var confirmationControllerTitle = NSLocalizedString("Confirmation", comment: "")
         static var intervalHDiPadControllerTitle =  NSLocalizedString("IntervalHDIpadPlayerViewController", comment: "")
         static var clubpointselection = NSLocalizedString("Club Point Selection", comment: "")
+        static var selectedControllerTitle = ""
     }
     
     //***** Common structure for custom cell identifiers ******//
@@ -717,6 +722,7 @@ class Constant: NSObject {
         static var magazinesIpad = "MagazinesIpad"
         static var signInPreLoginController = "SignInPreLoginViewController"
         static var signInPreLoginViewControlleriPad = "SignInPreLoginViewControllerIPad"
+        static var availableDestinationsIphone = "AvailableDestinationsIphone"
         
     }
     
@@ -1015,6 +1021,9 @@ class Constant: NSObject {
         static var termsConditionsCell = "TermsAndConditionsCell"
         static var checkOutCell = "CheckoutCell"
         static var clubPointCell = "ClubPointCell"
+        static var tdiCollectionViewCell = "TdiCollectionViewCell"
+        static var unitSizeTdiCollectionViewCell = "UnitSizeTdiCollectionViewCell"
+        static var tdiTableViewCell = "TdiTableViewCell"
     }
     
     //***** Common structure for font names and type *****//
@@ -1208,6 +1217,7 @@ class Constant: NSObject {
             static let clubIntervalGoldpointLabelText = "Club Interval Gold points"
             static let availablePointsToolbuttonTitle = "Avalable Points Tool"
             
+            
         }
         //AvailablePointTableViewCell
         struct clubIntervalAvailableGoldPointTableViewCell {
@@ -1252,6 +1262,12 @@ class Constant: NSObject {
             
             static let memberCardInfoLabelText = "Interval Membership"
             static let switchMembershipButtonTitle = "Switch Membership"
+            static let placeCode = "placecode"
+            static let placeAddress = "placeaddress"
+            static let placeName = "placename"
+            static let bedroomDetail = "bedroomdetail"
+            static let weekNumber = "weeknumber"
+            
         }
         //ownerShipDetailTableViewCell
         struct ownerShipDetailTableViewCell{
@@ -1262,6 +1278,9 @@ class Constant: NSObject {
         }
         
     }
+    
+   
+    
     //***** Availabel Destination viewcontroller *****//
     struct availableDestinationsTableViewController {
         static let availableDestinationCountryOrContinentsTableViewCell = "continentsorcountrycell"
@@ -1475,6 +1494,23 @@ class Constant: NSObject {
         static var enableTouchId = "Enable Touch ID"
         static var preloginChooseMemberShip = "Pre-Login Choose Membership"
         static var vactionSearch = "Vacation Search"
+        static var allDestination = "All Destination"
+        static var typedSelection = "Typed Selection"
+        static var mapSelection = "Map Selection"
+        static var listItem = "s.list1"
+        static var alert = "Alerts"
+        static var primarySearchDateAvailable = "Primary – Search Date Available"
+        static var primaryAlternateDateAvailable = "Primary – Alternative Date Available"
+        static var primaryAndAoiSearchDateAvailable = "Primary & AOI – Search Date Available"
+        static var primaryAndAoiAlternateDateAvailable = "Primary & AOI – Alternative Date Available "
+        static var aoiOnlySearchDateAvailable = "AOI Only – Search Date Available"
+        static var aoiOnlyAlternateDateAvailable = "AOI Only – Alternative Date Available"
+        static var noAvailability = "No Availability"
+        static var productItem = "s.products"
+        static var vacationSearchCheckingIn = "Vacation search - Checking In"
+        static var products = "Products"
+        static var vacationSearchPaymentInformation = "Vacation Search - Payment Information"
+        
     }
     
     //Omniture Evars

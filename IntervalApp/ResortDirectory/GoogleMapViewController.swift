@@ -272,7 +272,7 @@ class GoogleMapViewController: UIViewController {
     
     func resortShowMapPressedAtIndex(sender:UIButton) {
         
-        
+           Constant.MyClassConstants.destinationOrResortSelectedBy = Constant.omnitureCommonString.mapSelection
         self.hidePopUpView()
         
         let senderButton = sender
@@ -328,6 +328,8 @@ class GoogleMapViewController: UIViewController {
     //***** Method called when destination or resort selected from  *****//
     func destinationSelectedAtIndex(sender:UIButton) {
         
+        
+         Constant.MyClassConstants.destinationOrResortSelectedBy = Constant.omnitureCommonString.typedSelection
         if(self.sourceController != "" && self.sourceController == Constant.MyClassConstants.createAlert || self.sourceController == Constant.MyClassConstants.editAlert) {
             let senderButton = sender
             
@@ -354,6 +356,7 @@ class GoogleMapViewController: UIViewController {
             
         }
         else {
+            
             
             let senderButton = sender
             let realm = try! Realm()
@@ -661,9 +664,10 @@ class GoogleMapViewController: UIViewController {
     //***** This function called when navigation back button pressed *****//
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
         
-        if(Constant.MyClassConstants.runningFunctionality == "ResortDirectory"){
+        if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.resortDirectoryTitle){
             self.navigationController?.dismiss(animated: true, completion: nil)
         }else{
+             Constant.MyClassConstants.selectionType = -1
             _ = self.navigationController?.popViewController(animated: true)
         }
         
@@ -685,7 +689,9 @@ class GoogleMapViewController: UIViewController {
                 
                 resortbyMap.resortCode = object.resortCode!
                 resortbyMap.resortName = object.resortName!
-                resortbyMap.territorrycode = (object.address?.territoryCode)!
+                if let territoryCode = object.address?.territoryCode{
+                  resortbyMap.territorrycode = territoryCode
+                }
                 resortList.resortArray.append(resortbyMap)
             }
             Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(Constant.MyClassConstants.resortsArray[0].resortCode!)
@@ -922,7 +928,7 @@ class GoogleMapViewController: UIViewController {
                 
                 let selectedResort = Constant.MyClassConstants.resortsArray[index]
                 Constant.MyClassConstants.isgetResortFromGoogleSearch = false
-                Helper.getFavoriteResorts()
+                Helper.getUserFavorites()
                 Helper.getResortWithResortCode(code: selectedResort.resortCode!,viewcontroller:self)
             }
         }
@@ -1024,11 +1030,13 @@ class GoogleMapViewController: UIViewController {
     func selectAllDestinations(){
         if(Constant.MyClassConstants.whereTogoContentArray.count > 0) {
             
+            SimpleAlert.searchAlert(self, title: Constant.AlertMessages.searchAlertTitle, message: Constant.AlertMessages.searchAlertMessage)
         }
         else {
             Helper.deleteObjectFromAllDest()
             let allavailabledest = AllAvailableDestination()
             allavailabledest.destination = Constant.MyClassConstants.allDestinations
+            Constant.MyClassConstants.whereTogoContentArray.add(Constant.MyClassConstants.allDestinations)
             let realm = try! Realm()
             try! realm.write {
                 realm.add(allavailabledest)
@@ -1050,8 +1058,10 @@ class GoogleMapViewController: UIViewController {
         let allavailabledest = AllAvailableDestination()
         allavailabledest.destination = Constant.MyClassConstants.allDestinations
         try! realm.write {
+            print(allavailabledest.destination)
             realm.add(allavailabledest)
         }
+        Constant.MyClassConstants.destinationOrResortSelectedBy = Constant.omnitureCommonString.allDestination
         Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
         Constant.MyClassConstants.realmStoredDestIdOrCodeArray.removeAllObjects()
         Constant.MyClassConstants.whereTogoContentArray.add(Constant.MyClassConstants.allDestinations)
@@ -1334,12 +1344,19 @@ extension GoogleMapViewController:UICollectionViewDataSource {
         let resortImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: cell.contentView.frame.height) )
         resortImageView.backgroundColor = UIColor.lightGray
         
+        if(resort.images.count > 1){
         resortImageView.setImageWith(URL(string: resort.images[resort.images.count-1].url!), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
             if (error != nil) {
                 resortImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
             }
         }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
-        
+        }else{
+            resortImageView.setImageWith(URL(string: resort.images[resort.images.count].url!), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
+                if (error != nil) {
+                    resortImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
+                }
+            }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+        }
         cell.addSubview(resortImageView)
         
         
@@ -1439,7 +1456,9 @@ extension GoogleMapViewController:UITableViewDelegate {
         if(self.sourceController != Constant.MyClassConstants.createAlert && self.sourceController != Constant.MyClassConstants.editAlert && self.sourceController != Constant.MyClassConstants.vacationSearch) {
             
             if(tableView.tag == 1) {
-                
+                if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.resortDirectoryTitle){
+                    self.hidePopUpView()
+                }
                 if(indexPath.section == 1) {
                     
                     let selectedResort = Constant.MyClassConstants.resorts![indexPath.row]
@@ -1453,9 +1472,6 @@ extension GoogleMapViewController:UITableViewDelegate {
                     Constant.MyClassConstants.isgetResortFromGoogleSearch = true
                     Helper.addServiceCallBackgroundView(view: self.view)
                     SVProgressHUD.show()
-                    if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.resortFunctionalityCheck){
-                        self.hidePopUpView()
-                    }
                     DirectoryClient.getResortsWithinGeoArea(Constant.MyClassConstants.systemAccessToken, geoArea: Constant.MyClassConstants.destinations![indexPath.row].geoArea, onSuccess: { (response) in
                         if(response.count > 0){
                             Constant.MyClassConstants.resortsArray.removeAll()

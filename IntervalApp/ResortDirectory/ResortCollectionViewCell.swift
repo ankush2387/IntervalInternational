@@ -30,7 +30,7 @@ class ResortCollectionViewCell: UICollectionViewCell {
         
        
         super.awakeFromNib()
-          NotificationCenter.default.addObserver(self, selector: #selector(loginNotification), name: NSNotification.Name(rawValue: "reloadFavoritesTab"), object: nil)
+          NotificationCenter.default.addObserver(self, selector: #selector(loginNotification), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
         let height:NSLayoutConstraint = NSLayoutConstraint(item: pageControl, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 70)
         
         //self.pageControl = PageControl(activeImage: UIImage(named: "selected")!, inactiveImage: UIImage(named: "unselected")!)

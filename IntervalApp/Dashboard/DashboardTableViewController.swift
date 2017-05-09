@@ -44,21 +44,7 @@ class DashboardTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        
-        UserClient.getUpcomingTrips(UserContext.sharedInstance.accessToken, onSuccess: {(upComingTrips) in
-            Constant.MyClassConstants.upcomingTripsArray = upComingTrips
-            print(Constant.MyClassConstants.upcomingTripsArray)
-            self.getNumberOfSections()
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: self)
-            Helper.removeServiceCallBackgroundView(view: self.view)
-            SVProgressHUD.dismiss()
-        }, onError: {(error) in
-            Helper.removeServiceCallBackgroundView(view: self.view)
-            SVProgressHUD.dismiss()
-        })
-        
+        self.getNumberOfSections()
         Helper.getTopDeals(senderVC: self)
         //***** Set general Nav attributes *****//
         self.title = Constant.ControllerTitles.dashboardTableViewController
@@ -131,10 +117,6 @@ class DashboardTableViewController: UITableViewController {
         self.homeTableView.reloadData()
         Helper.removeServiceCallBackgroundView(view: self.view)
         SVProgressHUD.dismiss()
-        /*if(showExchange || showGetaways && homeTableCollectionView != nil){
-         homeTableCollectionView.reloadData()
-         SVProgressHUD.dismiss()
-         }*/
     }
     
     //***** MARK: - Table view delegate methods *****//
@@ -284,7 +266,7 @@ class DashboardTableViewController: UITableViewController {
             }
             
             let searchVacation = IUIKButton()
-            searchVacation.frame = CGRect(x: 10, y: 15, width: self.view.frame.width - 20, height: 50)
+            searchVacation.frame = CGRect(x: 10, y: 10, width: self.view.frame.width - 20, height: 50)
             searchVacation.backgroundColor =  UIColor(red: 240/255.0, green: 111/255.0, blue: 54/255.0, alpha: 1.0)
             searchVacation.setTitle(Constant.buttonTitles.searchVacation, for: UIControlState.normal)
             searchVacation.addTarget(self, action:#selector(DashboardTableViewController.searchVactionPressed(_:)), for:UIControlEvents.touchUpInside)
@@ -387,6 +369,8 @@ class DashboardTableViewController: UITableViewController {
     }
     //***** Search vacation button action *****//
     func  searchVactionPressed(_ sender:AnyObject) {
+        
+        Constant.MyClassConstants.searchOriginationPoint = "Home Dashboard"
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.sideMenuTitles.sideMenuInitialController) as! SWRevealViewController

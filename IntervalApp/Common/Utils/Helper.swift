@@ -355,6 +355,30 @@ public class Helper{
         }
     }
     
+    //***** Common function for user Favorites resort API call after successfull call *****//
+    static func getUserFavorites(){
+        UserClient.getFavoriteResorts(UserContext.sharedInstance.accessToken, onSuccess: { (response) in
+            Constant.MyClassConstants.favoritesResortArray.removeAll()
+            for resortcode in [response][0] {
+                Constant.MyClassConstants.favoritesResortCodeArray.add(resortcode)
+            }
+            NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
+            
+        })
+        { (error) in
+        }
+    }
+    
+    //**** Common function to get upcoming trips. ****//
+   static func getUpcomingTripsForUser(){
+        UserClient.getUpcomingTrips(UserContext.sharedInstance.accessToken, onSuccess: {(upComingTrips) in
+            Constant.MyClassConstants.upcomingTripsArray = upComingTrips
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: self)
+        }, onError: {(error) in
+        })
+    }
+
+
     //***** common function that contains API call for  searchResorts with todate and resort code *****//
     static func resortDetailsClicked(toDate: NSDate, senderVC : UIViewController) {
         
@@ -371,6 +395,22 @@ public class Helper{
                 SVProgressHUD.dismiss()
                 removeServiceCallBackgroundView(view: senderVC.view)
                 if(senderVC is VacationSearchViewController || senderVC is VacationSearchIPadViewController ) {
+                    
+                    // omniture tracking with event 33
+                    let userInfo: [String: Any] = [
+                        Constant.omnitureCommonString.listItem: Constant.MyClassConstants.selectedDestinationNames,
+                        Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch,
+                        Constant.omnitureEvars.eVar23 : Constant.omnitureCommonString.primaryAlternateDateAvailable,
+                        Constant.omnitureEvars.eVar36: "\(Helper.omnitureSegmentSearchType(index:  Constant.MyClassConstants.searchForSegmentIndex))-\(Constant.MyClassConstants.resortsArray.count)" ,
+                        Constant.omnitureEvars.eVar39: "" ,
+                        Constant.omnitureEvars.eVar48: "",
+                        Constant.omnitureEvars.eVar53: "\(Constant.MyClassConstants.resortsArray.count)",
+                        Constant.omnitureEvars.eVar54: ""
+                    ]
+                    
+                    ADBMobile.trackAction(Constant.omnitureEvents.event33, data: userInfo)
+
+                    
                     
                     senderVC.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
                 }else if (senderVC is GetawayAlertsIPhoneViewController){
@@ -424,7 +464,20 @@ public class Helper{
             requiredMemberNumber = membernumber
         }
         let realmLocalStorage = realm.objects(RealmLocalStorage.self).filter("membeshipNumber == '\(requiredMemberNumber)'")
-        return realmLocalStorage
+        if(realmLocalStorage.count > 0) {
+            return realmLocalStorage
+        }
+        else {
+            
+            let realm = try! Realm()
+            let allDest = realm.objects(AllAvailableDestination.self)
+            for obj in allDest {
+                print(obj.destination)
+                Constant.MyClassConstants.whereTogoContentArray.add(obj.destination)
+            }
+            return realmLocalStorage
+        }
+
     }
     static func getLocalStorageWherewanttoTrade() -> Results <OpenWeeksStorage> {
         
@@ -436,8 +489,10 @@ public class Helper{
             requiredMemberNumber = membernumber
         }
         let realmLocalStorage = realm.objects(OpenWeeksStorage.self).filter("membeshipNumber == '\(requiredMemberNumber)'")
+        
         return realmLocalStorage
-    }
+        
+          }
     //***** function to get all destination class objects from Realm storage *****//
     static func getLocalStorageAllDest() -> Results<AllAvailableDestination>{
         
@@ -475,6 +530,7 @@ public class Helper{
                 let destination = obj.destinations
                 for destname in destination {
                     Constant.MyClassConstants.whereTogoContentArray.add("\(destname.destinationName), \(destname.territorrycode)")
+                    Constant.MyClassConstants.selectedDestinationNames = Constant.MyClassConstants.selectedDestinationNames.appending("\(destname.destinationName) \(destname.territorrycode) ,")
                     Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(destname.destinationId)
                     
                     Constant.MyClassConstants.vacationSearchDestinationArray.add(destname.destinationName)
@@ -484,6 +540,7 @@ public class Helper{
                     if(resortname.resortArray.count == 0) {
                         Constant.MyClassConstants.whereTogoContentArray.add(resortname.resortName)
                         Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(resortname.resortCode)
+                         Constant.MyClassConstants.selectedDestinationNames = Constant.MyClassConstants.selectedDestinationNames.appending("\(resortname.resortCode) ,")
                     }
                     else {
                         Constant.MyClassConstants.whereTogoContentArray.add(resortname.resortArray)
@@ -739,28 +796,6 @@ public class Helper{
             
         })
         return value
-    }
-    
-    /***** Function to get the list of favorites Resorts*****/
-    static func getFavoriteResorts() {
-        
-        if(Constant.MyClassConstants.isLoginSuccessfull) {
-            UserClient.getFavoriteResorts(UserContext.sharedInstance.accessToken, onSuccess: { (response) in
-
-               Constant.MyClassConstants.favoritesResortArray.removeAll()
-                
-                for resortcode in [response][0] {
-                    
-                    Constant.MyClassConstants.favoritesResortCodeArray.add(resortcode)
-                }
-                
-            })
-            { (error) in
-                
-                
-            }
-        }
-        
     }
     
     //***** Function to check is resrt is favorites or not *****//
@@ -1263,7 +1298,41 @@ public class Helper{
             return ""
         }
     }
-    
+    static func selectedSegment(index:Int) -> String {
+        
+        switch index {
+        case 0:
+            return "Search Both"
+            
+        case 1:
+            return "Getaways"
+            
+        case 2:
+            return "Exchange"
+        default:
+            return ""
+        }
+
+        
+    }
+    static func omnitureSegmentSearchType(index:Int) -> String {
+        
+        switch index {
+        case 0:
+            return "Both"
+            
+        case 1:
+            return "GW"
+            
+        case 2:
+            return "EX"
+        default:
+            return ""
+        }
+        
+        
+    }
+
 }
 
 

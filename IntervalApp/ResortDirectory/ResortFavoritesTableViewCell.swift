@@ -99,8 +99,8 @@ extension ResortFavoritesTableViewCell:UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.customCellNibNames.resortDetailCell, for: indexPath) as! ResortDirectoryCollectionViewCell
         if(resort.images.count > 0) {
             
-            if let stirngUrl = resort.images[0].url {
-                let url = URL(string:stirngUrl)
+            if let stringUrl = resort.images[2].url {
+                let url = URL(string:stringUrl)
                 cell.resortImageView.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
             }
         }
@@ -119,7 +119,7 @@ extension ResortFavoritesTableViewCell:UICollectionViewDataSource {
         Helper.addLinearGradientToView(view: cell.resortNameGradientView, colour: UIColor.white, transparntToOpaque: true, vertical: false)
         cell.backgroundColor = IUIKColorPalette.contentBackground.color
         cell.favoriteButton.tag = indexPath.row
-        let status = true //Helper.isResrotFavorite(resortCode: resort.resortCode!)
+        let status = Helper.isResrotFavorite(resortCode: resort.resortCode!)
         if(status) {
             cell.favoriteButton.isSelected = true
         }
@@ -131,10 +131,10 @@ extension ResortFavoritesTableViewCell:UICollectionViewDataSource {
         }
         cell.regionNameLabel.text = resort.resortName
         cell.regionResortCode.text = resort.resortCode
-//        let tierImage = Helper.getTierImageName(tier: resort.tier!)
-//        if(resort.tier != nil && cell.tierImageView != nil){
-//            cell.tierImageView.image = UIImage(named:tierImage)
-//        }
+        let tierImage = Helper.getTierImageName(tier: resort.tier!)
+        if(resort.tier != nil && cell.tierImageView != nil){
+            cell.tierImageView.image = UIImage(named:tierImage)
+        }
         if let city = resort.address?.cityName {
             
             cell.regionAreaLabel.text = "\(city)"

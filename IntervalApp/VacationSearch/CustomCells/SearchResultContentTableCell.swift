@@ -39,8 +39,7 @@ class SearchResultContentTableCell: UITableViewCell {
     }
     
     @IBAction func feboriteButtonPressed(_ sender: UIButton) {
-       
-            self.delegate?.favoriteButtonClicked(sender)
+       self.delegate?.favoriteButtonClicked(sender)
         
     }
 }

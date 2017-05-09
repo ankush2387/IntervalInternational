@@ -17,7 +17,7 @@ class FloatDetailViewController: UIViewController {
      */
     @IBAction func floatCancelButtonIsTapped(_ sender: UIButton) {
         //self.navigationController?.popViewControllerAnimated(true)
-        let storyboard = UIStoryboard(name: "AvailableDestinationsIphone", bundle: nil)
+        let storyboard = UIStoryboard(name: Constant.storyboardNames.availableDestinationsIphone , bundle: nil)
         let viewController = storyboard.instantiateInitialViewController()
         UIApplication.shared.keyWindow?.rootViewController = viewController
     }

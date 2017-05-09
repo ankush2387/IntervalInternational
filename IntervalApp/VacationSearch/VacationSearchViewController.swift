@@ -29,7 +29,7 @@ class VacationSearchViewController: UIViewController {
     var adultCounter = 2
     var SegmentIndex = 0
     let headerCellIndexPath = NSMutableArray()
-    let destinationOrResort = Helper.getLocalStorageWherewanttoGo()
+    var destinationOrResort = Helper.getLocalStorageWherewanttoGo()
     let allDest = Helper.getLocalStorageAllDest()
     var datePickerPopupView:UIView?
     let defaults = UserDefaults.standard
@@ -40,10 +40,31 @@ class VacationSearchViewController: UIViewController {
     var showGetaways = true
     
     override func viewWillAppear(_ animated: Bool) {
+        
         self.navigationController?.isNavigationBarHidden = false
+      
+        self.searchVacationTableView.reloadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        
+        if(Constant.MyClassConstants.selectionType == 0) {
+            
+            // omniture tracking with event 64
+            let userInfo: [String: Any] = [
+                Constant.omnitureEvars.eVar25 : Constant.MyClassConstants.destinationOrResortSelectedBy,
+               
+            ]
+            Constant.MyClassConstants.selectionType = -1
+            ADBMobile.trackAction(Constant.omnitureEvents.event64, data: userInfo)
+        }
+        else if(Constant.MyClassConstants.selectionType == 1){
+            
+             Constant.MyClassConstants.selectionType = -1
+            ADBMobile.trackAction(Constant.omnitureEvents.event65, data: nil)
+        }
+        
+        destinationOrResort = Helper.getLocalStorageWherewanttoGo()
         self.getVacationSearchDetails()
         
         if let rvc = self.revealViewController() {
@@ -73,13 +94,18 @@ class VacationSearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        var isPrePopulatedData =  Constant.AlertPromtMessages.no
         
-        //ADBMobile.trackState(Constant.omnitureEvars.eVar44, data: Constant.omnitureCommonString.vactionSearch)
-        
+        if(Constant.MyClassConstants.whereTogoContentArray.count > 0 || Constant.MyClassConstants.whatToTradeArray.count > 0) {
+            
+            isPrePopulatedData = Constant.AlertPromtMessages.yes
+            
+        }
         // omniture tracking with event 87
-        let userInfo: [String: String] = [
-            Constant.omnitureEvars.eVar20 : Constant.omnitureCommonString.signIn,
-            Constant.omnitureEvars.eVar21 : "\(TouchID.isTouchIDAvailable() ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no)"
+        let userInfo: [String: Any] = [
+            Constant.omnitureEvars.eVar20 : isPrePopulatedData,
+            Constant.omnitureEvars.eVar21 : Constant.MyClassConstants.selectedDestinationNames,
+            Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch
         ]
         
         ADBMobile.trackAction(Constant.omnitureEvents.event87, data: userInfo)
@@ -143,29 +169,28 @@ class VacationSearchViewController: UIViewController {
     @IBAction func searchVacationSelectedSegment(_ sender: UISegmentedControl) {
         self.SegmentIndex = sender.selectedSegmentIndex
         Constant.MyClassConstants.vacationSearchSelectedSegmentIndex = sender.selectedSegmentIndex
+        
+        // omniture tracking with event 63
+        let userInfo: [String: Any] = [
+            Constant.omnitureEvars.eVar24 : Helper.selectedSegment(index: sender.selectedSegmentIndex)
+        ]
+        
+        ADBMobile.trackAction(Constant.omnitureEvents.event63, data: userInfo)
         self.searchVacationTableView.reloadData()
-        /* if(self.SegmentIndex == 1) {
-         self.searchVacationTableView.deleteSections(IndexSet(integer:1), with: UITableViewRowAnimation.automatic)
-         let delayTime = DispatchTime.now() + Double(Int64(1 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-         DispatchQueue.main.asyncAfter(deadline: delayTime) {
-         self.searchVacationTableView.reloadData()
-         }
-         }
-         else {
-         self.searchVacationTableView.reloadData()
-         }*/
         
     }
     
     //***** Calendar icon pressed action to present calendar controller *****//
     func calendarIconClicked(_ sender:IUIKButton) {
         
+        ADBMobile.trackAction(Constant.omnitureEvents.event66, data: nil)
         self.performSegue(withIdentifier: Constant.segueIdentifiers.CalendarViewSegue, sender: nil)
     }
     
     //***** Add location pressed action to show map screen with list of location to select *****//
     func addLocationInSection0Pressed(_ sender:IUIKButton) {
         
+        Constant.MyClassConstants.selectionType = 0
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.resortDirectoryViewController) as! GoogleMapViewController
         viewController.sourceController = Constant.MyClassConstants.vacationSearch
@@ -179,49 +204,7 @@ class VacationSearchViewController: UIViewController {
     
     //***** Add location pressed action to show map screen with list of location to select *****//
     func addRelinquishmentSectionButtonPressed(_ sender:IUIKButton) {
-        Helper.addServiceCallBackgroundView(view: self.view)
-        SVProgressHUD.show()
-        Constant.MyClassConstants.matrixDataArray.removeAllObjects()
-        DirectoryClient.getResortClubPointsChart(UserContext.sharedInstance.accessToken, resortCode:  Constant.MyClassConstants.resortCodeForClub, onSuccess:{ (ClubPointsChart) in
-            Helper.removeServiceCallBackgroundView(view: self.view)
-            SVProgressHUD.dismiss()
-            Constant.MyClassConstants.matrixType = ClubPointsChart.type!
-            Constant.MyClassConstants.matrixDescription =
-                ClubPointsChart.matrices[0].description!
-            if(Constant.MyClassConstants.matrixDescription == Constant.MyClassConstants.matrixTypeSingle || Constant.MyClassConstants.matrixDescription == Constant.MyClassConstants.matrixTypeColor){
-                Constant.MyClassConstants.showSegment = false
-            }else{
-                Constant.MyClassConstants.showSegment = true
-            }
-            for matrices in ClubPointsChart.matrices {
-                let pointsDictionary = NSMutableDictionary()
-                for grids in matrices.grids {
-                    
-                    Constant.MyClassConstants.fromdatearray.add(grids.fromDate!)
-                    Constant.MyClassConstants.todatearray.add(grids.toDate!)
-                    
-                    for rows in grids.rows
-                    {
-                        Constant.MyClassConstants.labelarray.add(rows.label!)
-                    }
-                    let dictKey = "\(grids.fromDate!) - \(grids.toDate!)"
-                    pointsDictionary.setObject(grids.rows, forKey: String(describing: dictKey) as NSCopying)
-                }
-                Constant.MyClassConstants.matrixDataArray.add(pointsDictionary)
-            }
-            
-            let storyboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
-            let clubPointselectionViewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.clubPointSelectionViewController)as? ClubPointSelectionViewController
-            self.navigationController?.pushViewController(clubPointselectionViewController!, animated: true)
-            
-        }, onError:{ (error) in
-            
-            Helper.removeServiceCallBackgroundView(view: self.view)
-            SVProgressHUD.dismiss()
-            print(error.description)
-        })
-        
-        /*SVProgressHUD.show()
+         SVProgressHUD.show()
          Helper.addServiceCallBackgroundView(view: self.view)
          ExchangeClient.getMyUnits(UserContext.sharedInstance.accessToken, onSuccess: { (Relinquishments) in
          
@@ -254,7 +237,7 @@ class VacationSearchViewController: UIViewController {
          SVProgressHUD.dismiss()
          Helper.removeServiceCallBackgroundView(view: self.view)
          
-         })*/
+         })
         
     }
     
@@ -383,7 +366,7 @@ extension VacationSearchViewController:UITableViewDelegate {
                     return 70
                 }
                 else {
-                    return 70
+                    return 60
                 }
             case 2:
                 return 80
@@ -487,9 +470,10 @@ extension VacationSearchViewController:UITableViewDelegate {
                         }
                     }
                     else {
-                        realm.delete(self.allDest)
+                       Helper.deleteObjectFromAllDest()
                     }
                     if(Constant.MyClassConstants.whereTogoContentArray.count > 0) {
+                         ADBMobile.trackAction(Constant.omnitureEvents.event7, data: nil)
                         Constant.MyClassConstants.whereTogoContentArray.removeObject(at: (indexPath as NSIndexPath).row)
                     }
                     tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
@@ -565,6 +549,7 @@ extension VacationSearchViewController:UITableViewDelegate {
                 
                 if(Constant.MyClassConstants.whatToTradeArray.count > 0){
                     
+                    ADBMobile.trackAction(Constant.omnitureEvents.event43, data: nil)
                     Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
                     Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: indexPath.row)
                 }
@@ -698,7 +683,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                         addLocationButton.layer.cornerRadius = 6
                         addLocationButton.layer.borderWidth = 2
                         addLocationButton.addTarget(self, action: #selector(VacationSearchViewController.addLocationInSection0Pressed(_:)), for: .touchUpInside)
-                        
+                        cell.backgroundColor = UIColor.clear
                         cell.addSubview(addLocationButton)
                         
                         return cell
@@ -750,11 +735,12 @@ extension VacationSearchViewController:UITableViewDataSource {
                         }
                             
                         else {
+                            print(Constant.MyClassConstants.whereTogoContentArray[indexPath.row] as! String)
                             cell.whereTogoTextLabel.text = Constant.MyClassConstants.whereTogoContentArray[(indexPath as NSIndexPath).row] as? String
                         }
                         
                         cell.selectionStyle = UITableViewCellSelectionStyle.none
-                        
+                        cell.backgroundColor = UIColor.clear
                         return cell
                     }
                 }
@@ -781,7 +767,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                         addLocationButton.addTarget(self, action: #selector(VacationSearchViewController.addRelinquishmentSectionButtonPressed(_:)), for: .touchUpInside)
                         
                         cell.addSubview(addLocationButton)
-                        
+                        cell.backgroundColor = UIColor.clear
                         return cell
                     }
                     else {
@@ -817,6 +803,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                         }
                         
                         cell.selectionStyle = UITableViewCellSelectionStyle.none
+                        cell.backgroundColor = UIColor.clear
                         return cell
                     }
                 }
@@ -836,6 +823,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                 cell.dateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \(myComponents.year!)"
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 cell.calendarIconButton!.addTarget(self, action: #selector(VacationSearchIPadViewController.calendarIconClicked(_:)), for: .touchUpInside)
+                cell.backgroundColor = UIColor.clear
                 return cell
             }
             else if((indexPath as NSIndexPath).section == 3){
@@ -846,6 +834,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                 cell.childCounterLabel.text = String(self.childCounter)
                 cell.delegate = self
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
+                cell.backgroundColor = UIColor.clear
                 return cell
                 
                 
@@ -918,6 +907,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.SearchVacationCell, for: indexPath) as! SearchTableViewCell
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 cell.delegate = self
+                cell.backgroundColor = UIColor.clear
                 return cell
                 
             }
@@ -931,6 +921,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                 if(Constant.MyClassConstants.whereTogoContentArray.count == 0 || (indexPath as NSIndexPath).row == Constant.MyClassConstants.whereTogoContentArray.count) {
                     
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cellIdentifier, for: indexPath)
+                    
                     cell.selectionStyle = UITableViewCellSelectionStyle.none
                     for subview in cell.subviews {
                         subview.removeFromSuperview()
@@ -943,6 +934,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                     addLocationButton.layer.cornerRadius = 4
                     addLocationButton.layer.borderWidth = 2
                     cell.addSubview(addLocationButton)
+                    cell.backgroundColor = UIColor.clear
                     addLocationButton.addTarget(self, action: #selector(VacationSearchViewController.addLocationInSection0Pressed(_:)), for: .touchUpInside)
                     return cell
                 }
@@ -994,11 +986,12 @@ extension VacationSearchViewController:UITableViewDataSource {
                     }
                         
                     else {
+                         print(Constant.MyClassConstants.whereTogoContentArray[indexPath.row] as! String)
                         cell.whereTogoTextLabel.text = Constant.MyClassConstants.whereTogoContentArray[(indexPath as NSIndexPath).row] as? String
                     }
                     
                     cell.selectionStyle = UITableViewCellSelectionStyle.none
-                    
+                    cell.backgroundColor = UIColor.clear
                     return cell
                 }
                 
@@ -1019,6 +1012,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                 cell.calendarIconButton.addTarget(self, action: #selector(VacationSearchViewController.calendarIconClicked(_:)), for: .touchUpInside)
                 
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
+                cell.backgroundColor = UIColor.clear
                 return cell
             }else if((indexPath as NSIndexPath).section == 2) {
                 
@@ -1029,6 +1023,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                 cell.childCounterLabel.text = String(self.childCounter)
                 cell.delegate = self
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
+                cell.backgroundColor = UIColor.clear
                 return cell
                 
             }else if((indexPath as NSIndexPath).section == 4) {
@@ -1093,6 +1088,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.SearchVacationCell, for: indexPath) as! SearchTableViewCell
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 cell.delegate = self
+                cell.backgroundColor = UIColor.clear
                 return cell
             }
         }
@@ -1179,6 +1175,7 @@ extension VacationSearchViewController:WhoIsTravelingCellDelegate {
     
     func adultChanged(_ value:Int) {
         
+        ADBMobile.trackAction(Constant.omnitureEvents.event67, data: nil)
         //***** updating adult counter increment and decrement
         self.adultCounter = value
         if defaults.object(forKey: Constant.MyClassConstants.adultCounterString) != nil {
@@ -1195,6 +1192,8 @@ extension VacationSearchViewController:WhoIsTravelingCellDelegate {
         self.searchVacationTableView.reloadData()
     }
     func childrenChanged(_ value:Int) {
+        
+        ADBMobile.trackAction(Constant.omnitureEvents.event67, data: nil)
         
         //***** updating children counter increment and decrement
         self.childCounter = value
@@ -1220,7 +1219,7 @@ extension VacationSearchViewController:WhoIsTravelingCellDelegate {
 extension VacationSearchViewController:SearchTableViewCellDelegate {
     func searchButtonClicked(_ sender : IUIKButton) {
         
-        
+           ADBMobile.trackAction(Constant.omnitureEvents.event1, data: nil)
         if (self.SegmentIndex == 1 && (Helper.getAllDestinationFromLocalStorage().count>0 || Helper.getAllResortsFromLocalStorage().count>0)) {
             
             sender.isEnabled = false
@@ -1253,6 +1252,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             searchDateRequest.resorts = Helper.getAllResortsFromLocalStorage()
             if Reachability.isConnectedToNetwork() == true {
                 
+                ADBMobile.trackAction(Constant.omnitureEvents.event9, data: nil)
                 SVProgressHUD.show()
                 Helper.addServiceCallBackgroundView(view: self.view)
                 RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: searchDateRequest, onSuccess:{ (searchDates) in
@@ -1278,11 +1278,15 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                         Helper.removeServiceCallBackgroundView(view: self.view)
                         SimpleAlert.alert(self, title: Constant.AlertErrorMessages.noResultError, message: Constant.AlertMessages.noResultMessage)
                     }else {
-                        var calendar = Calendar.current
-                        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
-                        let result = Constant.MyClassConstants.checkInDates.filter { calendar.isDate($0, equalTo: Constant.MyClassConstants.vacationSearchShowDate, toGranularity:.day) }
                         
-                        if result.count == 0{
+                        ADBMobile.trackAction(Constant.omnitureEvents.event18, data: nil)
+                        let vacationSearchDateString = Helper.convertDateToString(date: Constant.MyClassConstants.vacationSearchShowDate, format: Constant.MyClassConstants.dateFormat)
+                        let datesStringArray = NSMutableArray()
+                        for searchDate in Constant.MyClassConstants.checkInDates{
+                            let searchedDate = Helper.convertDateToString(date: searchDate, format: Constant.MyClassConstants.dateFormat)
+                            datesStringArray.add(searchedDate)
+                        }
+                        if (!datesStringArray.contains(vacationSearchDateString)){
                             
                             Constant.MyClassConstants.resortsArray.removeAll()
                             Constant.MyClassConstants.checkInDates.insert(Constant.MyClassConstants.vacationSearchShowDate, at: 0)
@@ -1294,9 +1298,29 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                             Constant.MyClassConstants.showAlert = true
                             SVProgressHUD.dismiss()
                             Helper.removeServiceCallBackgroundView(view: self.view)
+                            
+                           
+                            // omniture tracking with event 9
+                            let userInfo: [String: Any] = [
+                                Constant.omnitureCommonString.listItem: Constant.MyClassConstants.selectedDestinationNames,
+                                Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch,
+                                Constant.omnitureEvars.eVar19 : Constant.MyClassConstants.vacationSearchShowDate,
+                                Constant.omnitureEvars.eVar23 : Constant.omnitureCommonString.primaryAlternateDateAvailable,
+                                Constant.omnitureEvars.eVar26 : "",
+                                Constant.omnitureEvars.eVar28: "" ,
+                                Constant.omnitureEvars.eVar33: "" ,
+                                Constant.omnitureEvars.eVar34: "\(self.adultCounter):\(self.childCounter)" ,
+                                Constant.omnitureEvars.eVar36:"\(Helper.omnitureSegmentSearchType(index:  Constant.MyClassConstants.searchForSegmentIndex))-\(Constant.MyClassConstants.resortsArray.count)" ,
+                                Constant.omnitureEvars.eVar39: "" ,
+                                Constant.omnitureEvars.eVar45: "\(Constant.MyClassConstants.vacationSearchShowDate)-\(Date())",
+                                Constant.omnitureEvars.eVar47: "\(Constant.MyClassConstants.checkInDates.count)" ,
+                                Constant.omnitureEvars.eVar53: "\(Constant.MyClassConstants.resortsArray.count)",
+                                Constant.omnitureEvars.eVar61:Constant.MyClassConstants.searchOriginationPoint,
+                            ]
+                            
+                            ADBMobile.trackAction(Constant.omnitureEvents.event9, data: userInfo)
                             self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
-                        }
-                        else {
+                        }else {
                             
                             if let dateToSelect = Constant.MyClassConstants.checkInDates.index(of: Constant.MyClassConstants.vacationSearchShowDate) {
                                 Constant.MyClassConstants.searchResultCollectionViewScrollToIndex = dateToSelect + 1
