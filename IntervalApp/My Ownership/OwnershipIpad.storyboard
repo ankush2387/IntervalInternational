@@ -357,6 +357,10 @@
                                             <rect key="frame" x="0.0" y="0.0" width="412" height="101"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gZ7-1a-Jyq">
+                                                    <rect key="frame" x="0.0" y="0.0" width="404" height="101"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vHW-WB-DuG">
                                                     <rect key="frame" x="20" y="23" width="322" height="57"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="25"/>
@@ -391,16 +395,21 @@
                                                 </view>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="gZ7-1a-Jyq" secondAttribute="trailing" id="9kh-Iq-x4a"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="gZ7-1a-Jyq" secondAttribute="bottom" constant="-8" id="CJF-LG-0Uy"/>
+                                                <constraint firstItem="gZ7-1a-Jyq" firstAttribute="leading" secondItem="zmt-0E-pDV" secondAttribute="leadingMargin" constant="-8" id="D1f-LL-B2R"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="bwe-HO-IaN" secondAttribute="trailing" constant="12" id="EJ8-5k-3mS"/>
                                                 <constraint firstItem="vHW-WB-DuG" firstAttribute="top" secondItem="zmt-0E-pDV" secondAttribute="topMargin" constant="15" id="Tgj-XX-Nvj"/>
                                                 <constraint firstItem="bwe-HO-IaN" firstAttribute="leading" secondItem="vHW-WB-DuG" secondAttribute="trailing" constant="10" id="VUY-NG-K0W"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="bwe-HO-IaN" secondAttribute="bottom" constant="6" id="gxc-Ut-aTh"/>
                                                 <constraint firstItem="bwe-HO-IaN" firstAttribute="top" secondItem="zmt-0E-pDV" secondAttribute="topMargin" constant="7" id="qp1-ay-d4x"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="vHW-WB-DuG" secondAttribute="bottom" constant="13" id="sw2-3L-dFF"/>
+                                                <constraint firstItem="gZ7-1a-Jyq" firstAttribute="top" secondItem="zmt-0E-pDV" secondAttribute="topMargin" constant="-8" id="t7N-Tu-6mR"/>
                                                 <constraint firstItem="vHW-WB-DuG" firstAttribute="leading" secondItem="zmt-0E-pDV" secondAttribute="leadingMargin" constant="12" id="vok-88-2kH"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="backgroundCellView" destination="gZ7-1a-Jyq" id="C2N-LC-Bqa"/>
                                             <outlet property="bedroomSizelabel" destination="vHW-WB-DuG" id="cMu-R9-V8T"/>
                                             <outlet property="checkBoxButton" destination="bwe-HO-IaN" id="j3o-Yh-BSi"/>
                                         </connections>

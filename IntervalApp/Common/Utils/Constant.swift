@@ -1217,6 +1217,7 @@ class Constant: NSObject {
             static let clubIntervalGoldpointLabelText = "Club Interval Gold points"
             static let availablePointsToolbuttonTitle = "Avalable Points Tool"
             
+            
         }
         //AvailablePointTableViewCell
         struct clubIntervalAvailableGoldPointTableViewCell {
@@ -1261,6 +1262,12 @@ class Constant: NSObject {
             
             static let memberCardInfoLabelText = "Interval Membership"
             static let switchMembershipButtonTitle = "Switch Membership"
+            static let placeCode = "placecode"
+            static let placeAddress = "placeaddress"
+            static let placeName = "placename"
+            static let bedroomDetail = "bedroomdetail"
+            static let weekNumber = "weeknumber"
+            
         }
         //ownerShipDetailTableViewCell
         struct ownerShipDetailTableViewCell{
@@ -1271,6 +1278,9 @@ class Constant: NSObject {
         }
         
     }
+    
+   
+    
     //***** Availabel Destination viewcontroller *****//
     struct availableDestinationsTableViewController {
         static let availableDestinationCountryOrContinentsTableViewCell = "continentsorcountrycell"

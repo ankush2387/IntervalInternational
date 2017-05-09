@@ -49,11 +49,11 @@ class OwnerShipDetailTableViewCell: UITableViewCell {
         unitdetailLabel.text = Constant.memberShipViewController.ownerShipDetailTableViewCell.unitdetailLabelText
         weekDetailLabel.text = Constant.memberShipViewController.ownerShipDetailTableViewCell.weekDetailLabelText
         
-        placeNameLabel.text = membershipDetailDictionary["placename"] ?? ""
-        placeAddressLabel.text = membershipDetailDictionary["placeaddress"] ?? ""
-        placeCode.text = membershipDetailDictionary["placecode"] ?? ""
-        bedroomDetailLabel.text = membershipDetailDictionary["bedroomdetail"] ?? ""
-        weekNumberLabel.text = membershipDetailDictionary["weeknumber"] ?? ""
+        placeNameLabel.text = membershipDetailDictionary[Constant.memberShipViewController.membershipDetailTableViewCell.placeName] ?? ""
+        placeAddressLabel.text = membershipDetailDictionary[Constant.memberShipViewController.membershipDetailTableViewCell.placeAddress] ?? ""
+        placeCode.text = membershipDetailDictionary[Constant.memberShipViewController.membershipDetailTableViewCell.placeCode] ?? ""
+        bedroomDetailLabel.text = membershipDetailDictionary[Constant.memberShipViewController.membershipDetailTableViewCell.bedroomDetail] ?? ""
+        weekNumberLabel.text = membershipDetailDictionary[Constant.memberShipViewController.membershipDetailTableViewCell.weekNumber] ?? ""
         
         
     }
