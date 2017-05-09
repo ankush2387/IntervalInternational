@@ -53,8 +53,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 //UserContext.sharedInstance.accessToken = accessToken
                 Constant.MyClassConstants.systemAccessToken = accessToken
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.accessTokenAlertNotification), object: nil)
-                //Get user favorites.
-                Helper.getUserFavorites()
                 },
                 onError:{ (error) in
                 SimpleAlert.alert((self.window?.rootViewController)!, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)

@@ -357,7 +357,7 @@ public class Helper{
     
     //***** Common function for user Favorites resort API call after successfull call *****//
     static func getUserFavorites(){
-        UserClient.getFavoriteResorts(Constant.MyClassConstants.systemAccessToken, onSuccess: { (response) in
+        UserClient.getFavoriteResorts(UserContext.sharedInstance.accessToken, onSuccess: { (response) in
             Constant.MyClassConstants.favoritesResortArray.removeAll()
             for resortcode in [response][0] {
                 Constant.MyClassConstants.favoritesResortCodeArray.add(resortcode)
@@ -796,28 +796,6 @@ public class Helper{
             
         })
         return value
-    }
-    
-    /***** Function to get the list of favorites Resorts*****/
-    static func getFavoriteResorts() {
-        
-        if(Constant.MyClassConstants.isLoginSuccessfull) {
-            UserClient.getFavoriteResorts(UserContext.sharedInstance.accessToken, onSuccess: { (response) in
-
-               Constant.MyClassConstants.favoritesResortArray.removeAll()
-                
-                for resortcode in [response][0] {
-                    
-                    Constant.MyClassConstants.favoritesResortCodeArray.add(resortcode)
-                }
-                
-            })
-            { (error) in
-                
-                
-            }
-        }
-        
     }
     
     //***** Function to check is resrt is favorites or not *****//

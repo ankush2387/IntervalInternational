@@ -1280,12 +1280,13 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     }else {
                         
                         ADBMobile.trackAction(Constant.omnitureEvents.event18, data: nil)
-                        var calendar = Calendar.current
-                        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
-                        let result = Constant.MyClassConstants.checkInDates.contains(Constant.MyClassConstants.vacationSearchShowDate)
-                        print(result,Constant.MyClassConstants.vacationSearchShowDate)
-                        
-                        if !result{
+                        let vacationSearchDateString = Helper.convertDateToString(date: Constant.MyClassConstants.vacationSearchShowDate, format: Constant.MyClassConstants.dateFormat)
+                        let datesStringArray = NSMutableArray()
+                        for searchDate in Constant.MyClassConstants.checkInDates{
+                            let searchedDate = Helper.convertDateToString(date: searchDate, format: Constant.MyClassConstants.dateFormat)
+                            datesStringArray.add(searchedDate)
+                        }
+                        if (!datesStringArray.contains(vacationSearchDateString)){
                             
                             Constant.MyClassConstants.resortsArray.removeAll()
                             Constant.MyClassConstants.checkInDates.insert(Constant.MyClassConstants.vacationSearchShowDate, at: 0)
@@ -1314,7 +1315,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                 Constant.omnitureEvars.eVar45: "\(Constant.MyClassConstants.vacationSearchShowDate)-\(Date())",
                                 Constant.omnitureEvars.eVar47: "\(Constant.MyClassConstants.checkInDates.count)" ,
                                 Constant.omnitureEvars.eVar53: "\(Constant.MyClassConstants.resortsArray.count)",
-                                //Constant.omnitureEvars.eVar61:Constant.MyClassConstants.searchOriginationPoint,
+                                Constant.omnitureEvars.eVar61:Constant.MyClassConstants.searchOriginationPoint,
                             ]
                             
                             ADBMobile.trackAction(Constant.omnitureEvents.event9, data: userInfo)

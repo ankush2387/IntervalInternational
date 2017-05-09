@@ -136,7 +136,9 @@ class CreateActionSheet: UITableViewController {
         }) { (error) in
                                         
     }
-            
+    //Get user favorites.
+    Helper.getUserFavorites()
+      
     //***** Get upcoming trips for user *****//
     Helper.getUpcomingTripsForUser()
 },

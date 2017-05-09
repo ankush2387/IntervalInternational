@@ -383,7 +383,7 @@ extension ResortDirectoryViewController:UITableViewDelegate {
                 resort = Constant.MyClassConstants.resortDirectoryResortArray[indexPath.row]
                 let selectedResort = Constant.MyClassConstants.resortDirectoryResortArray[indexPath.row]
                 Constant.MyClassConstants.isgetResortFromGoogleSearch = false
-                Helper.getFavoriteResorts()
+                Helper.getUserFavorites()
                 if(selectedResort.resortCode != nil) {
                     
                    Helper.getResortWithResortCode(code: selectedResort.resortCode!,viewcontroller:self)

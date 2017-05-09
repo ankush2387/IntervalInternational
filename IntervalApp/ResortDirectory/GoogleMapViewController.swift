@@ -928,7 +928,7 @@ class GoogleMapViewController: UIViewController {
                 
                 let selectedResort = Constant.MyClassConstants.resortsArray[index]
                 Constant.MyClassConstants.isgetResortFromGoogleSearch = false
-                Helper.getFavoriteResorts()
+                Helper.getUserFavorites()
                 Helper.getResortWithResortCode(code: selectedResort.resortCode!,viewcontroller:self)
             }
         }

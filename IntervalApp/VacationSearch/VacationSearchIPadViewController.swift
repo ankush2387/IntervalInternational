@@ -607,10 +607,13 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                         SimpleAlert.alert(self, title: Constant.AlertErrorMessages.noResultError, message: Constant.AlertMessages.noResultMessage)
                     }
                     else {
-                        var calendar = Calendar.current
-                        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
-                        let result = Constant.MyClassConstants.checkInDates.filter { calendar.isDate($0, equalTo: Constant.MyClassConstants.vacationSearchShowDate, toGranularity:.day) }
-                        if result.count == 0{
+                        let vacationSearchDateString = Helper.convertDateToString(date: Constant.MyClassConstants.vacationSearchShowDate, format: Constant.MyClassConstants.dateFormat)
+                        let datesStringArray = NSMutableArray()
+                        for searchDate in Constant.MyClassConstants.checkInDates{
+                            let searchedDate = Helper.convertDateToString(date: searchDate, format: Constant.MyClassConstants.dateFormat)
+                            datesStringArray.add(searchedDate)
+                        }
+                        if (!datesStringArray.contains(vacationSearchDateString)){
                             
                             Constant.MyClassConstants.resortsArray.removeAll()
                             Constant.MyClassConstants.checkInDates.insert(Constant.MyClassConstants.vacationSearchShowDate, at: 0)
