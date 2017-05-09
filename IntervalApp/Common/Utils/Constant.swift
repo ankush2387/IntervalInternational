@@ -1021,6 +1021,9 @@ class Constant: NSObject {
         static var termsConditionsCell = "TermsAndConditionsCell"
         static var checkOutCell = "CheckoutCell"
         static var clubPointCell = "ClubPointCell"
+        static var tdiCollectionViewCell = "TdiCollectionViewCell"
+        static var unitSizeTdiCollectionViewCell = "UnitSizeTdiCollectionViewCell"
+        static var tdiTableViewCell = "TdiTableViewCell"
     }
     
     //***** Common structure for font names and type *****//

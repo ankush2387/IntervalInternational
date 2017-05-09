@@ -126,7 +126,7 @@ extension ClubPointPageItemViewController:UITableViewDataSource{
         
         
      
-     let  cell =  tableView.dequeueReusableCell(withIdentifier: "TdiTableViewCell") as? TdiTableViewCell
+     let  cell =  tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.tdiTableViewCell) as? TdiTableViewCell
 //       
 //        let checkboxTagsArray = ClubPointPageItemViewController.checkBoxDictionaryWithpageNumber[pageItemIndex]
 //        
@@ -197,14 +197,14 @@ extension ClubPointPageItemViewController:UICollectionViewDataSource{
       
         
         if (collectionView.tag == 0) {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TdiCollectionViewCell", for: indexPath)as! TdiCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier:Constant.vacationSearchScreenReusableIdentifiers.tdiCollectionViewCell, for: indexPath)as! TdiCollectionViewCell
             
             return cell
 
         }
         else {
            
-            let cell1 = collectionView.dequeueReusableCell(withReuseIdentifier: "UnitSizeTdiCollectionViewCell", for: indexPath)as! UnitSizeTdiCollectionViewCell
+            let cell1 = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.vacationSearchScreenReusableIdentifiers.unitSizeTdiCollectionViewCell, for: indexPath)as! UnitSizeTdiCollectionViewCell
             
             return cell1
 
