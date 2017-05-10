@@ -148,6 +148,15 @@ class BedroomSizeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // omniture tracking with event 68
+        
+        let userInfo: [String: String] = [
+            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.simpleLockOffUnitOptions,
+            ]
+        ADBMobile.trackAction(Constant.omnitureEvents.event68, data: userInfo)
+
+        
         self.bedroomSizeTableView.estimatedRowHeight = 60
         if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController){
             

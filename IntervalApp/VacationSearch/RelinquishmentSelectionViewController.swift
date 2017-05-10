@@ -36,6 +36,7 @@ class RelinquishmentSelectionViewController: UIViewController {
         
         for fixed_week_type in Constant.MyClassConstants.relinquishmentOpenWeeks{
             
+            
             if(fixed_week_type.weekNumber != Constant.CommonStringIdentifiers.floatWeek){
                 
                 if(fixed_week_type.weekNumber == Constant.CommonStringIdentifiers.pointWeek) {
@@ -92,6 +93,17 @@ class RelinquishmentSelectionViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = menuButton
         
         // Do any additional setup after loadingvare view.
+        
+        // omniture tracking with event 61
+        
+        let userInfo: [String: String] = [
+            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.vacationSearchRelinquishmentSelect,
+            Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vacationSearch,
+            Constant.omnitureEvars.eVar35 : "CIGPoints-\(Constant.MyClassConstants.relinquishmentProgram.availablePoints! > 0 ?  Constant.omnitureCommonString.available : Constant.omnitureCommonString.notAvailable )):ClubPoints–\(pointOpenWeeksArray.count > 0 ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no ): Fixed Open- \(relinquishmentOpenWeeksArray.count) : Float Open- \(intervalOpenWeeksArray.count) : Unredeemed -\(Constant.MyClassConstants.relinquishmentProgram.availablePoints!): Pending Request-\(0)"
+        ]
+
+        
+        ADBMobile.trackAction(Constant.omnitureEvents.event61, data: userInfo)
     }
     
     override func didReceiveMemoryWarning() {
