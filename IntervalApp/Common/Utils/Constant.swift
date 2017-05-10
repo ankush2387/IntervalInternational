@@ -1510,7 +1510,12 @@ class Constant: NSObject {
         static var vacationSearchCheckingIn = "Vacation search - Checking In"
         static var products = "Products"
         static var vacationSearchPaymentInformation = "Vacation Search - Payment Information"
-        
+        static var vacationSearchRelinquishmentSelect = "Vacation Search - Relinquishment Select"
+        static var vacationSearch = "Vacation Search"
+        static var available = "Available"
+        static var notAvailable = "Not Available"
+        static var clubPointsSelection = "Club Points Selection"
+        static var simpleLockOffUnitOptions = "Simple Lock-Off Unit Options"
     }
     
     //Omniture Evars
