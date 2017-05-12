@@ -361,6 +361,7 @@ class DashboardTableViewController: UITableViewController {
     //***** View all trip button action *****//
     func viewAllTripButtonPressed(_ sender:IUIKButton) {
         
+        Constant.MyClassConstants.upcomingOriginationPoint = Constant.omnitureCommonString.homeDashboard
         let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.myUpcomingTripIphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.sideMenuTitles.sideMenuInitialController) as! SWRevealViewController
         
@@ -370,7 +371,7 @@ class DashboardTableViewController: UITableViewController {
     //***** Search vacation button action *****//
     func  searchVactionPressed(_ sender:AnyObject) {
         
-        Constant.MyClassConstants.searchOriginationPoint = "Home Dashboard"
+        Constant.MyClassConstants.searchOriginationPoint = Constant.omnitureCommonString.homeDashboard
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.sideMenuTitles.sideMenuInitialController) as! SWRevealViewController

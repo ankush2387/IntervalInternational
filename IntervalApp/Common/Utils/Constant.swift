@@ -75,6 +75,7 @@ class Constant: NSObject {
         
         static var alertOriginationPoint:String!
         static var loginOriginationPoint:String!
+        static var upcomingOriginationPoint : String!
         static var loginType:String!
         static var selectedDestinationNames:String = ""
         static var addressStringForCardDetailSection = "Address"
@@ -1516,6 +1517,10 @@ class Constant: NSObject {
         static var notAvailable = "Not Available"
         static var clubPointsSelection = "Club Points Selection"
         static var simpleLockOffUnitOptions = "Simple Lock-Off Unit Options"
+        static var noTrips = "NO Trips"
+        static var sideMenu = "Side Menu"
+        static var homeDashboard = "Home Dashboard"
+        static var cigPoints = "CIGPoints"
     }
     
     //Omniture Evars

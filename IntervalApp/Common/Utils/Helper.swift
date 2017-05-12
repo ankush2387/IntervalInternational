@@ -725,6 +725,14 @@ public class Helper{
         return returnDate.day!
     }
     
+    static func getUpcommingcheckinDatesDiffrence(date:Date) -> Int{
+        
+        let cal = NSCalendar.current
+        
+        let returnDate = cal.dateComponents(Set<Calendar.Component>([.day]), from: date, to: Constant.MyClassConstants.todaysDate as Date)
+        
+          return returnDate.day!
+    }
     //***** common function that returns date difference for two years between todate and fromdate *****//
     static func getDifferenceOfDatesAhead() -> Int{
         let cal = NSCalendar.current
@@ -786,7 +794,7 @@ public class Helper{
         DirectoryClient.getResortsByArea(UserContext.sharedInstance.accessToken, areaCode: areaCode, onSuccess: {(response) in
             Constant.MyClassConstants.resortDirectoryResortArray = response
             print(response[0].images)
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reloadRegionTable"), object: nil)
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadRegionNotification), object: nil)
             value = true
             
         }, onError: {(error) in

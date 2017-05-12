@@ -28,7 +28,7 @@ class RelinquishmentSelectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+ 
         self.relinquishmentTableview.estimatedRowHeight = 200
         self.relinquishmentPointsProgramArray.append(Constant.MyClassConstants.relinquishmentProgram)
         
@@ -94,12 +94,12 @@ class RelinquishmentSelectionViewController: UIViewController {
         
         // Do any additional setup after loadingvare view.
         
-        // omniture tracking with event 61
+        // Omniture tracking with event 61
         
         let userInfo: [String: String] = [
             Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.vacationSearchRelinquishmentSelect,
             Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vacationSearch,
-            Constant.omnitureEvars.eVar35 : "CIGPoints-\(Constant.MyClassConstants.relinquishmentProgram.availablePoints! > 0 ?  Constant.omnitureCommonString.available : Constant.omnitureCommonString.notAvailable )):ClubPoints–\(pointOpenWeeksArray.count > 0 ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no ): Fixed Open- \(relinquishmentOpenWeeksArray.count) : Float Open- \(intervalOpenWeeksArray.count) : Unredeemed -\(Constant.MyClassConstants.relinquishmentProgram.availablePoints!): Pending Request-\(0)"
+            Constant.omnitureEvars.eVar35 : "\(Constant.omnitureCommonString.cigPoints)\(Constant.MyClassConstants.relinquishmentProgram.availablePoints! > 0 ?  Constant.omnitureCommonString.available : Constant.omnitureCommonString.notAvailable ):ClubPoints–\(pointOpenWeeksArray.count > 0 ? Constant.omnitureCommonString.available : Constant.omnitureCommonString.notAvailable ): Fixed Open- \(relinquishmentOpenWeeksArray.count) : Float Open- \(intervalOpenWeeksArray.count) : Unredeemed -\(Constant.MyClassConstants.relinquishmentProgram.availablePoints!): Pending Request-\(0)"
         ]
 
         

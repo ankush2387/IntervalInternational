@@ -155,7 +155,7 @@ extension SideMenuTableViewController:UITableViewDelegate {
         }
         else if(indexPath.row == 5) {
             
-            Constant.MyClassConstants.alertOriginationPoint = "Side Menu"
+            Constant.MyClassConstants.alertOriginationPoint = Constant.omnitureCommonString.sideMenu
         }
         else {
             
@@ -165,6 +165,7 @@ extension SideMenuTableViewController:UITableViewDelegate {
         
         if(smi.storyboardId?.characters.count != 0 && (indexPath as NSIndexPath).row != SideMenuTableViewController.SideMenuItems.count - 1) {
             
+            Constant.MyClassConstants.upcomingOriginationPoint = Constant.omnitureCommonString.sideMenu
             /*if((indexPath as NSIndexPath).row == 4){
                 let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.myUpcomingTripIphone, bundle: nil)
                 let resultController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.upcomingTripsViewController) as? UpComingTripDetailController
@@ -183,6 +184,8 @@ extension SideMenuTableViewController:UITableViewDelegate {
                 transition.subtype = kCATransitionFromRight
                 viewController.view.layer.add(transition, forKey: Constant.MyClassConstants.switchToView)
                 UIApplication.shared.keyWindow?.rootViewController = viewController
+            
+            
             //}
         }
         else {

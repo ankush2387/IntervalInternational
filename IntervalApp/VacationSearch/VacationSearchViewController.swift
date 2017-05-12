@@ -851,7 +851,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                 if(indexPath.section == 5) {
                     if(!showExchange){
                         let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: cell.contentView.frame.width - 20, height: 20))
-                        resortImageNameLabel.text = "TOP 10 GETAWAYS"
+                        resortImageNameLabel.text = Constant.segmentControlItems.getawaysLabelText
                         
                         resortImageNameLabel.textColor = UIColor.black
                         resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
@@ -1037,7 +1037,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                 if(indexPath.section == 4) {
                     if(!showExchange){
                         let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: cell.contentView.frame.width - 20, height: 20))
-                        resortImageNameLabel.text = "TOP 10 GETAWAYS"
+                        resortImageNameLabel.text = Constant.segmentControlItems.getawaysLabelText
                         
                         resortImageNameLabel.textColor = UIColor.black
                         resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)

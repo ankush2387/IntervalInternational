@@ -58,6 +58,18 @@ class UpComingTripDetailController: UIViewController {
         
         self.navigationItem.rightBarButtonItem = moreButton
         
+        
+        // Omniture tracking with event 74
+        
+        let userInfo: [String: String] = [
+            
+            Constant.omnitureEvars.eVar55 : "\(getdatediffrence())",
+            Constant.omnitureEvars.eVar56 : ""
+
+        ]
+        ADBMobile.trackAction(Constant.omnitureEvents.event74, data: userInfo)
+
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -485,7 +497,7 @@ extension UpComingTripDetailController:UITableViewDataSource {
                 if((Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.cruise!.cabin!.travelParty!.children) > 0){
                     cell.travellingWithLabel.text = "\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.cruise!.cabin!.travelParty!.adults) Adults, \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.cruise!.cabin!.travelParty!.children) Children "
                 }
-                cell.cabinNumber.text = "\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.cruise!.cabin!.number)!"
+                cell.cabinNumber.text = "\(String(describing: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.cruise!.cabin!.number))!"
                 cell.cabinDetails.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.cruise!.cabin!.details!
                 cell.transactionDate.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.transactionDate!
                 
@@ -624,6 +636,25 @@ extension UpComingTripDetailController:UITableViewDataSource {
         }else{
             return 0
         }
+    }
+    
+    // *** Get date diffrence for between checkindate and current date to send with omniture events.
+    func getdatediffrence()-> Int {
+        var checkDate :Int
+        
+        if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.confirmationNumber != nil) {
+            
+        checkDate  = Helper.getUpcommingcheckinDatesDiffrence(date: Helper.convertStringToDate(dateString:(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise?.cabin?.sailingDate!)!, format: Constant.MyClassConstants.dateFormat))
+        
+        }
+        
+        else{
+            
+            checkDate = Helper.getUpcommingcheckinDatesDiffrence(date: Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment!.accommodationCertificate!.travelWindow!.fromDate!, format: Constant.MyClassConstants.dateFormat1))
+        }
+        
+        
+     return checkDate
     }
 }
 
