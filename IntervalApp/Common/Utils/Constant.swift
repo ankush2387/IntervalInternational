@@ -23,7 +23,7 @@ class Constant: NSObject {
         static var deviceIdiom = UIDevice().userInterfaceIdiom
     }
     
-    //GetawaySearchResultGuestFormDetailData
+    //Getaways SearchResult CardFormDetail Data
     struct GetawaySearchResultGuestFormDetailData {
         
         static var countryListArray = ["Canada","USA","India","Austrelia","South Africa"]
@@ -83,6 +83,8 @@ class Constant: NSObject {
         static var selectionType = -1
         static var searchOriginationPoint = "Default"
         static var searchForSegmentIndex = 0
+        static var checkoutInsurencePurchased = "No"
+        static var checkoutPromotionPurchased = ""
         
         //global variable to hold advisement type text
         static var advisementTypeStringaArray = ["Important Advisements","General Advisements","Additional Advisements"]
@@ -349,11 +351,14 @@ class Constant: NSObject {
         static var indexSlideButton : Int = 0
         static var onsiteDictKey = "Onsite"
         static var nearbyDictKey = "Nearby"
+        static var status = "true"
         
         static var inventoryPrice = [InventoryPrice]()
         static var selectedResort = Resort()
         
         static var paymentMethodTitle = "Payment Method"
+        static var webViewGetElementById = "document.getElementById('WASCInsuranceOfferOption0').checked == true;"
+        static var webViewGetElementById1 = "document.getElementById('WASCInsuranceOfferOption1').checked == true;"
         static var paymentInfo = "Select your payment method"
         static var verifying = "Verifying..."
         static var insurance = "Insurance"
@@ -361,6 +366,9 @@ class Constant: NSObject {
         static var exchangeFeeTitle = "Exchange Fee"
         static var getawayFee = "Getaway Fee"
         static var taxesTitle = "Taxes"
+        static var emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        static var selfMatches = "SELF MATCHES %@"
+        static var endingIn = "ending in"
         
         static var enableTaxes = false
         static var enableGuestCertificate = false
@@ -1522,6 +1530,7 @@ class Constant: NSObject {
         static var homeDashboard = "Home Dashboard"
         static var cigPoints = "CIGPoints"
         static var clubPoints = "ClubPoints"
+        static var confirmation = "Vacation Search – Transaction Completed"
     }
     
     //Omniture Evars

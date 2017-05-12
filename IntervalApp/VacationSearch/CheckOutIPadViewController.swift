@@ -143,19 +143,19 @@ class CheckOutIPadViewController: UIViewController {
             confirmationDelivery.emailAddress = self.emailTextToEnter
             confirmationDelivery.updateProfile = false
             
-            let jsStringAccept = "document.getElementById('WASCInsuranceOfferOption0').checked == true;"
-            let jsStringReject = "document.getElementById('WASCInsuranceOfferOption1').checked == true;"
+            let jsStringAccept = Constant.MyClassConstants.webViewGetElementById
+            let jsStringReject = Constant.MyClassConstants.webViewGetElementById1
             
             var strAccept:String = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringAccept)!
             var strReject:String = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringReject)!
             
             if(!isTripProtectionEnabled){
-                strAccept = "true"
-                strReject = "true"
+                strAccept = Constant.MyClassConstants.status
+                strReject = Constant.MyClassConstants.status
             }
 
             
-            if((isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && (strAccept == "true" || strReject == "true") && Constant.MyClassConstants.selectedCreditCard.count > 0){
+            if((isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && (strAccept == Constant.MyClassConstants.status || strReject == Constant.MyClassConstants.status) && Constant.MyClassConstants.selectedCreditCard.count > 0){
                 
                 let continueToPayRequest = RentalProcessRecapContinueToPayRequest.init()
                 continueToPayRequest.confirmationDelivery = confirmationDelivery
@@ -228,7 +228,7 @@ class CheckOutIPadViewController: UIViewController {
         
         let dispatchTime = DispatchTime.now() + 0.5
         DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
-            let jsString = "document.getElementById('WASCInsuranceOfferOption0').checked == true;"
+            let jsString = Constant.MyClassConstants.webViewGetElementById
             
             let str:String = self.cellWebView.stringByEvaluatingJavaScript(from: jsString)!
             
@@ -348,9 +348,9 @@ class CheckOutIPadViewController: UIViewController {
     //***** Function to check if the email entered by user is an valid email address. *****//
     func isValidEmail(testStr:String) -> Bool {
         
-        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        let emailRegEx = Constant.MyClassConstants.emailRegex
         
-        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        let emailTest = NSPredicate(format:Constant.MyClassConstants.selfMatches, emailRegEx)
         return emailTest.evaluate(with: testStr)
     }
     
@@ -813,7 +813,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                     let cardNumber = creditcard.cardNumber!
                     let last4 = cardNumber.substring(from:(cardNumber.index((cardNumber.endIndex), offsetBy: -4)))
                     let cardType = Helper.cardTypeCodeMapping(cardType: (creditcard.typeCode!))
-                    selectPamentMethodLabel.text = "\(cardType) ending in \(last4)"
+                    selectPamentMethodLabel.text = "\(cardType) \(Constant.MyClassConstants.endingIn) \(last4)"
                 }
                 else {
                     selectPamentMethodLabel.text = Constant.MyClassConstants.paymentInfo
@@ -901,7 +901,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         
         if(section != 0 && section < 8 && tableView.tag == 3) {
-            print(section)
+            
             if(section == 1 && !self.isPromotionsEnabled){
                 return 0
             }else if(section == 2 && !self.isExchangeOptionEnabled){
@@ -923,13 +923,13 @@ extension CheckOutIPadViewController:UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         
         if(section != 0 && section < 8 && tableView.tag == 3) {
-            print(section)
+            
             let headerView = UIView(frame: CGRect(x: 0, y: 0, width: checkoutTableView.frame.size.width, height: 50))
             headerView.backgroundColor = IUIKColorPalette.titleBackdrop.color
             let headerLabel = UILabel()
             headerLabel.frame = CGRect(x: 20, y: 10, width: checkoutTableView.frame.size.width - 40, height: 30)
             headerLabel.text  = Constant.MyClassConstants.checkOutScreenHeaderIPadTextArray[section]
-            print(headerLabel.text)
+            
             headerView.addSubview(headerLabel)
             if(section == 6 || section == 7){
                 headerView.backgroundColor = UIColor(colorLiteralRed: 205/255, green: 204/255, blue: 208/255, alpha: 1.0)
