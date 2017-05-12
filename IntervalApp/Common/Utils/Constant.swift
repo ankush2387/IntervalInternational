@@ -1521,6 +1521,7 @@ class Constant: NSObject {
         static var sideMenu = "Side Menu"
         static var homeDashboard = "Home Dashboard"
         static var cigPoints = "CIGPoints"
+        static var clubPoints = "ClubPoints"
     }
     
     //Omniture Evars
