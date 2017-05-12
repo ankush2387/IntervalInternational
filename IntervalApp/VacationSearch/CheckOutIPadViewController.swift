@@ -95,6 +95,22 @@ class CheckOutIPadViewController: UIViewController {
             return
         }
         showInsurance = true
+        
+        
+        // omniture tracking with event 38
+        let userInfo: [String: String] = [
+            Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch,
+            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.vacationSearchPaymentInformation,
+            Constant.omnitureCommonString.products : Constant.MyClassConstants.selectedResort.resortCode!,
+            Constant.omnitureEvars.eVar37 : Helper.selectedSegment(index: Constant.MyClassConstants.searchForSegmentIndex),
+            Constant.omnitureEvars.eVar39 : "",
+            Constant.omnitureEvars.eVar49 : "",
+            Constant.omnitureEvars.eVar52 : "\((UserContext.sharedInstance.contact?.creditcards?.count)! > 0 ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no)",
+            Constant.omnitureEvars.eVar72 : "\(self.showInsurance ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no)",
+            
+        ]
+        
+        ADBMobile.trackAction(Constant.omnitureEvents.event37, data: userInfo)
     }
     
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {

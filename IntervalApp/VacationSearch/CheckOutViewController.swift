@@ -73,7 +73,6 @@ class CheckOutViewController: UIViewController {
         self.updateResortHoldingTime()
         
         // omniture tracking with event 38
-        
         let userInfo: [String: String] = [
             Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch,
             Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.vacationSearchPaymentInformation,
@@ -319,11 +318,13 @@ class CheckOutViewController: UIViewController {
             if(str == "true" && !self.tripRequestInProcess){
                 self.tripRequestInProcess = true
                 self.isTripProtectionEnabled = true
+                Constant.MyClassConstants.checkoutInsurencePurchased = Constant.AlertPromtMessages.yes
                 self.addTripProtection(shouldAddTripProtection: true)
                 
             }else if(str == "false" && !self.tripRequestInProcess){
                 self.tripRequestInProcess = true
                 self.isTripProtectionEnabled = false
+                Constant.MyClassConstants.checkoutInsurencePurchased = Constant.AlertPromtMessages.no
                 self.addTripProtection(shouldAddTripProtection: false)
             }
             self.checkoutOptionTBLview.reloadSections(IndexSet(integer: 6), with:.automatic)

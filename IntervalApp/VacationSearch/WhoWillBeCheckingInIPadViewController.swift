@@ -49,6 +49,19 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         menuButton.tintColor = UIColor.white
         self.navigationItem.leftBarButtonItem = menuButton
         
+        
+        
+        // omniture tracking with event 37
+        let userInfo: [String: String] = [
+            Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch,
+            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.vacationSearchCheckingIn,
+            Constant.omnitureCommonString.products : Constant.MyClassConstants.selectedResort.resortCode!,
+            Constant.omnitureEvars.eVar37 : Helper.selectedSegment(index: Constant.MyClassConstants.searchForSegmentIndex),
+            Constant.omnitureEvars.eVar39 : "",
+            ]
+        
+        ADBMobile.trackAction(Constant.omnitureEvents.event37, data: userInfo)
+        
     }
     
     //Function to display alert on timer time over
