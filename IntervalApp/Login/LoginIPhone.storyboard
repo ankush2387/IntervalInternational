@@ -408,7 +408,7 @@
                         <segue destination="IVo-Qs-kOc" kind="presentation" identifier="dashboardSegue" id="yVB-DD-cdl"/>
                         <segue destination="khZ-jz-hRb" kind="show" identifier="webviewSegue" id="MXp-VE-3ma"/>
                         <segue destination="vaB-Bz-9Kg" kind="show" identifier="privacyPolicySegue" action="showDetailViewController:sender:" id="pVA-wB-6RW"/>
-                        <segue destination="NLJ-iy-Tz3" kind="show" identifier="resortDirectorySegue" id="HEI-f9-3jY"/>
+                        <segue destination="NLJ-iy-Tz3" kind="presentation" identifier="resortDirectorySegue" id="HEI-f9-3jY"/>
                         <segue destination="fHs-aP-7EZ" kind="show" identifier="intervalHDSegue" id="IGD-Q4-5Yx"/>
                         <segue destination="c7C-9M-LLy" kind="show" identifier="magazinesSegue" id="RZg-QA-2PF"/>
                         <segue destination="G93-FL-OMe" kind="show" identifier="confirmationSegue" id="mY2-tK-9g6"/>
@@ -432,7 +432,7 @@
                 <viewControllerPlaceholder storyboardName="Confirmation" id="G93-FL-OMe" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d1K-mj-K2r" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1360" y="695"/>
+            <point key="canvasLocation" x="792" y="882"/>
         </scene>
         <!--IntervalHDPhone-->
         <scene sceneID="08V-Ha-TuE">
@@ -440,7 +440,7 @@
                 <viewControllerPlaceholder storyboardName="IntervalHDPhone" id="fHs-aP-7EZ" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xb6-Mv-leY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1011.5" y="824"/>
+            <point key="canvasLocation" x="1102" y="824"/>
         </scene>
         <!--Iphone-->
         <scene sceneID="aCo-v5-q91">
@@ -448,7 +448,7 @@
                 <viewControllerPlaceholder storyboardName="Iphone" id="NLJ-iy-Tz3" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OKc-Ot-96k" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="542" y="824"/>
+            <point key="canvasLocation" x="518" y="824"/>
         </scene>
         <!--Privacy Legal View Controller-->
         <scene sceneID="kFS-pX-zcI">

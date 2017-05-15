@@ -89,9 +89,9 @@ class SignInPreLoginViewController: UIViewController {
         hasTouchID =  authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
         if(!(hasTouchID)) {
             
-            self.touchIdImageView.isHidden = true
+           /* self.touchIdImageView.isHidden = true
             self.enableTouchIdTextLabel.isHidden = true
-            self.enableTouchIdButton.isHidden = true
+            self.enableTouchIdButton.isHidden = true*/
         }
         self.userIdTF.delegate = self
         self.passwordTF.delegate = self

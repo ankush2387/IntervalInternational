@@ -43,8 +43,15 @@ class ResortList:Object {
     dynamic var resortCityName = ""
     dynamic var countryCode = ""
     dynamic var territorrycode = ""
+    var units = InventoryUnit()
+    var unitDetails = List<ResortUnitDetails>()
     var resortArray = List<ResortByMap>()
 }
+class ResortUnitDetails:Object {
+    dynamic var kitchenType = ""
+    dynamic var unitSize = ""
+}
+
 class ResortByMap:Object {
     
     dynamic var resortName = ""

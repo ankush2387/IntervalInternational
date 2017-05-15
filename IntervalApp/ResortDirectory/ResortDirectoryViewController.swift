@@ -51,6 +51,7 @@ class ResortDirectoryViewController: UIViewController {
             self.containerView.isHidden = true
             Constant.MyClassConstants.btnTag = -1
         }
+        setNavigationBar()
         
     }
     
@@ -125,6 +126,7 @@ class ResortDirectoryViewController: UIViewController {
     
     func setNavigationBar(){
         //***** handle hamberger menu button for prelogin and post login case *****//
+        print("------> self.navigationController?.viewControllers.count", self.navigationController?.viewControllers.count)
         if((UserContext.sharedInstance.accessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
             if(self.navigationController?.viewControllers.count > 1) {
                 
@@ -169,25 +171,26 @@ class ResortDirectoryViewController: UIViewController {
     
     //**** Remove added observers ****//
     override func viewDidDisappear(_ animated: Bool) {
-       /* NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.showHelp), object: nil)
+        /*NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.showHelp), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadTableNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadRegionNotification), object: nil)*/
-        setNavigationBar()
     }
     
     //*****Function for back button press.*****//
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
-        setNavigationBar()
+        print("------> self.navigationController?.viewControllers.count", self.navigationController?.viewControllers.count)
         if(self.navigationController?.viewControllers.count == 1) {
-            
-            //self.navigationController?.dismiss(animated: true, completion: nil)
+            if((UserContext.sharedInstance.accessToken) == nil && !Constant.MyClassConstants.isLoginSuccessfull){
+                _ = self.navigationController?.popViewController(animated: false)
+            }
         }
         else {
-            
+            _ = self.navigationController?.popViewController(animated: false)
+            //self.navigationController?.dismiss(animated: true, completion: nil)
         }
-        _ = self.navigationController?.popViewController(animated: true)
+        setNavigationBar()
     }
     func reloadView() {
         if(self.resortTableView != nil){
@@ -214,7 +217,7 @@ class ResortDirectoryViewController: UIViewController {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.loginIPhone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.webViewController)
         
-        //***** creating animation transition to show custom transition animation *****//
+        //***** Creating animation transition to show custom transition animation *****//
         let transition: CATransition = CATransition()
         let timeFunc : CAMediaTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         transition.duration = 0.25
@@ -296,7 +299,6 @@ class ResortDirectoryViewController: UIViewController {
 extension ResortDirectoryViewController:UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
        
         if(tableView.tag == 0){
             let region = Constant.MyClassConstants.resortDirectoryRegionArray[indexPath.row]
@@ -727,10 +729,7 @@ extension ResortDirectoryViewController:SearchResultContentTableCellDelegate {
             })
         { (error) in
             SVProgressHUD.dismiss()
-            
         }
     }
-    
-    
 }
 

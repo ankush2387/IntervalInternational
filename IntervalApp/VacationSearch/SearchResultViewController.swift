@@ -393,7 +393,7 @@ extension SearchResultViewController:UITableViewDelegate {
                 Constant.MyClassConstants.imagesArray.removeAllObjects()
                 let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
                 for imgStr in imagesArray {
-                    if(imgStr.size == Constant.MyClassConstants.imageSize) {
+                    if(imgStr.size!.caseInsensitiveCompare(Constant.MyClassConstants.imageSize) == ComparisonResult.orderedSame) {
                         
                         Constant.MyClassConstants.imagesArray.add(imgStr.url!)
                     }
@@ -521,7 +521,7 @@ extension SearchResultViewController:UITableViewDataSource {
                     
                     let imagesArray = Constant.MyClassConstants.resortsArray[indexPath.section].images
                     for imgStr in imagesArray {
-                        if(imgStr.size == Constant.MyClassConstants.imageSize) {
+                        if(imgStr.size!.caseInsensitiveCompare(Constant.MyClassConstants.imageSize) == ComparisonResult.orderedSame) {
                             
                             url = URL(string: imgStr.url!)!
                             break

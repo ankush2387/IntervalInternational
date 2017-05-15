@@ -96,11 +96,10 @@ extension ResortDirectoryResortCell:UICollectionViewDataSource {
         if((indexPath as NSIndexPath).row % 2 == 0){
             cell.backgroundColor = UIColor.green
         }
-        
 		if(Constant.MyClassConstants.imagesArray.count > 0){
 			cell.imgView.setImageWith(URL(string: Constant.MyClassConstants.imagesArray[(indexPath as NSIndexPath).row] as! String), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
 				if (error != nil) {
-					cell.imgView.image = UIImage(named: "NoImageIcon")
+					cell.imgView.image = UIImage(named: Constant.MyClassConstants.noImage)
 				}
 				}, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
 		}

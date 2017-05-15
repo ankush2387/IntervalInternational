@@ -96,10 +96,16 @@ class RelinquishmentSelectionViewController: UIViewController {
         
         // Omniture tracking with event 61
         
+        var cigPoints:Int? = Constant.MyClassConstants.relinquishmentProgram.availablePoints
+        if(Constant.MyClassConstants.relinquishmentProgram.availablePoints == nil){
+            cigPoints = 0
+        }
+
+        
         let userInfo: [String: String] = [
             Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.vacationSearchRelinquishmentSelect,
             Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vacationSearch,
-            Constant.omnitureEvars.eVar35 : "\(Constant.omnitureCommonString.cigPoints)\(Constant.MyClassConstants.relinquishmentProgram.availablePoints! > 0 ?  Constant.omnitureCommonString.available : Constant.omnitureCommonString.notAvailable ): \(Constant.omnitureCommonString.clubPoints) \(pointOpenWeeksArray.count > 0 ? Constant.omnitureCommonString.available : Constant.omnitureCommonString.notAvailable ): Fixed Open- \(relinquishmentOpenWeeksArray.count) : Float Open- \(intervalOpenWeeksArray.count) : Unredeemed -\(Constant.MyClassConstants.relinquishmentProgram.availablePoints!): Pending Request-\(0)"
+            Constant.omnitureEvars.eVar35 : "\(Constant.omnitureCommonString.cigPoints)\(cigPoints! > 0 ?  Constant.omnitureCommonString.available : Constant.omnitureCommonString.notAvailable ): \(Constant.omnitureCommonString.clubPoints) \(pointOpenWeeksArray.count > 0 ? Constant.omnitureCommonString.available : Constant.omnitureCommonString.notAvailable ): Fixed Open- \(relinquishmentOpenWeeksArray.count) : Float Open- \(intervalOpenWeeksArray.count) : Unredeemed -\(cigPoints!): Pending Request-\(0)"
         ]
 
         
@@ -207,7 +213,8 @@ class RelinquishmentSelectionViewController: UIViewController {
         }
     }
     func addClubPointButtonPressed(_ sender:IUIKButton) {
-         /*Helper.addServiceCallBackgroundView(view: self.view)
+        Constant.MyClassConstants.relinquishmentSelectedWeek = pointOpenWeeksArray[sender.tag]
+         Helper.addServiceCallBackgroundView(view: self.view)
          SVProgressHUD.show()
          Constant.MyClassConstants.matrixDataArray.removeAllObjects()
          DirectoryClient.getResortClubPointsChart(UserContext.sharedInstance.accessToken, resortCode:  (Constant.MyClassConstants.relinquishmentSelectedWeek.resort?.resortCode)!, onSuccess:{ (ClubPointsChart) in
@@ -249,10 +256,13 @@ class RelinquishmentSelectionViewController: UIViewController {
          Helper.removeServiceCallBackgroundView(view: self.view)
          SVProgressHUD.dismiss()
          print(error.description)
-         })*/
+         })
         
         
-        /*Constant.MyClassConstants.relinquishmentSelectedWeek = pointOpenWeeksArray[sender.tag]
+        
+        
+        
+       /* Constant.MyClassConstants.relinquishmentSelectedWeek = pointOpenWeeksArray[sender.tag]
         
         if(Constant.MyClassConstants.relinquishmentSelectedWeek.pointsMatrix == false) {
             
@@ -284,6 +294,8 @@ class RelinquishmentSelectionViewController: UIViewController {
         else {
             // Helper.addServiceCallBackgroundView(view: self.view)
             //SVProgressHUD.show()
+            
+            print(Constant.MyClassConstants.relinquishmentSelectedWeek.resort!)
             DirectoryClient.getResortClubPointsChart(UserContext.sharedInstance.accessToken, resortCode:  (Constant.MyClassConstants.relinquishmentSelectedWeek.resort!.resortCode!), onSuccess:{ (ClubPointsChart) in
                 
                 
@@ -315,10 +327,7 @@ class RelinquishmentSelectionViewController: UIViewController {
                 SVProgressHUD.dismiss()
                 print(error.description)
             })
-            
-            
         }*/
-        
         
     }
     func addAvailablePoinButtonPressed(_ sender:IUIKButton) {
