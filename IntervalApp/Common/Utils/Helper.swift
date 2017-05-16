@@ -411,7 +411,6 @@ public class Helper{
                     ADBMobile.trackAction(Constant.omnitureEvents.event33, data: userInfo)
 
                     
-                    
                     senderVC.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
                 }else if (senderVC is GetawayAlertsIPhoneViewController){
                     

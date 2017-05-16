@@ -192,6 +192,9 @@ class Constant: NSObject {
         static var getawayAlertsArray = [RentalAlert]()
         static var upcomingTripsArray = [UpcomingTrip]()
         static var activeAlertsArray:NSMutableArray = []
+        static var membershipdetails = [Membership]()
+        static var memberdetailsarray:NSMutableArray = []
+        static var memberNumber: String!
         
         static var whereTogoContentArray:NSMutableArray = []
         static var whatToTradeArray:NSMutableArray = []
@@ -345,6 +348,7 @@ class Constant: NSObject {
         static var  relinquishmentProgram = PointsProgram()
         static var  relinquishmentSelectedWeek = OpenWeek()
         static var  clubPointResortsArray = [Resort]()
+        
         
         static var onsiteString : String! = "Nearby" + "\n"
         static var nearbyString : String!  = "On-Site" + "\n"
