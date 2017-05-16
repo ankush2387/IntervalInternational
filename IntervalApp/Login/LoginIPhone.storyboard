@@ -408,7 +408,7 @@
                         <segue destination="IVo-Qs-kOc" kind="presentation" identifier="dashboardSegue" id="yVB-DD-cdl"/>
                         <segue destination="khZ-jz-hRb" kind="show" identifier="webviewSegue" id="MXp-VE-3ma"/>
                         <segue destination="vaB-Bz-9Kg" kind="show" identifier="privacyPolicySegue" action="showDetailViewController:sender:" id="pVA-wB-6RW"/>
-                        <segue destination="NLJ-iy-Tz3" kind="presentation" identifier="resortDirectorySegue" id="HEI-f9-3jY"/>
+                        <segue destination="NLJ-iy-Tz3" kind="show" identifier="resortDirectorySegue" id="HEI-f9-3jY"/>
                         <segue destination="fHs-aP-7EZ" kind="show" identifier="intervalHDSegue" id="IGD-Q4-5Yx"/>
                         <segue destination="c7C-9M-LLy" kind="show" identifier="magazinesSegue" id="RZg-QA-2PF"/>
                         <segue destination="G93-FL-OMe" kind="show" identifier="confirmationSegue" id="mY2-tK-9g6"/>

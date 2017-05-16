@@ -643,7 +643,7 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
 
 extension RelinquishmentSelectionViewController:BedroomSizeViewControllerDelegate {
     
-    func doneButtonClicked() {
+    func doneButtonClicked(selectedUnitsArray:NSMutableArray) {
         //Realm local storage for selected relinquishment
         let storedata = OpenWeeksStorage()
         let Membership = UserContext.sharedInstance.selectedMembership
@@ -655,6 +655,11 @@ extension RelinquishmentSelectionViewController:BedroomSizeViewControllerDelegat
         selectedOpenWeek.relinquishmentYear = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentYear!
         let resort = ResortList()
         resort.resortName = (Constant.MyClassConstants.relinquishmentSelectedWeek.resort?.resortName)!
+        
+        let resortUnitDetails = ResortUnitDetails()
+        resortUnitDetails.unitSize = ""
+        resortUnitDetails.kitchenType = ""
+        
         
         selectedOpenWeek.resort.append(resort)
         relinquishmentList.openWeeks.append(selectedOpenWeek)

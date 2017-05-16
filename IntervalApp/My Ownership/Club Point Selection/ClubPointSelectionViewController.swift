@@ -790,7 +790,6 @@ extension ClubPointSelectionViewController:UICollectionViewDelegateFlowLayout {
                     }else{
                         return CGSize(width: (collectionView.frame.size.width)/2, height: 70.0)
                     }
-                    
                 }
                 else{
                     
