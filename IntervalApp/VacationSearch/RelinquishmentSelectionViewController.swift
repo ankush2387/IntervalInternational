@@ -29,10 +29,7 @@ class RelinquishmentSelectionViewController: UIViewController {
         super.viewDidLoad()
     
         self.relinquishmentTableview.estimatedRowHeight = 200
-        if(Constant.MyClassConstants.relinquishmentProgram.relinquishmentId != nil){
         self.relinquishmentPointsProgramArray.append(Constant.MyClassConstants.relinquishmentProgram)
-        
-        }
         
         relinquishmentOpenWeeksArray.removeAll()
         

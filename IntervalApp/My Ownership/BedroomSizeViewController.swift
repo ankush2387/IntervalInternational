@@ -129,6 +129,7 @@ class BedroomSizeViewController: UIViewController {
                 }
             }
         }*/
+        
     }
     
     // Function to change label colors on checkbox selection

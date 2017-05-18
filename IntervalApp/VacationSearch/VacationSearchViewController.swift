@@ -211,9 +211,7 @@ class VacationSearchViewController: UIViewController {
          
          Constant.MyClassConstants.relinquishmentDeposits = Relinquishments.deposits
          Constant.MyClassConstants.relinquishmentOpenWeeks = Relinquishments.openWeeks
-        print(Constant.MyClassConstants.relinquishmentOpenWeeks.count)
-         
-         
+            
          if(Relinquishments.pointsProgram != nil){
          Constant.MyClassConstants.relinquishmentProgram = Relinquishments.pointsProgram!
          
