@@ -109,6 +109,7 @@ class SideMenuTableViewController: UIViewController
         UserContext.sharedInstance.signOut()
         //Remove all favorites for a user.
         Constant.MyClassConstants.favoritesResortArray.removeAll()
+        
         //Remove all saved alerts for a user.
         Constant.MyClassConstants.getawayAlertsArray.removeAll()
         Constant.MyClassConstants.isLoginSuccessfull = false

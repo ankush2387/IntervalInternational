@@ -553,6 +553,7 @@ extension VacationSearchViewController:UITableViewDelegate {
                     ADBMobile.trackAction(Constant.omnitureEvents.event43, data: nil)
                     Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
                     Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: indexPath.row)
+                    Constant.MyClassConstants.relinquishmentUnitsArray.removeObject(at: indexPath.row)
                 }
                 
                 if(storedData.count > 0) {
