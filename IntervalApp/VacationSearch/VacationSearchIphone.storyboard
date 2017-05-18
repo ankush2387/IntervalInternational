@@ -948,49 +948,56 @@
                                 <rect key="frame" x="0.0" y="120" width="375" height="498"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="WhereToGoContentCell" rowHeight="70" id="dEL-aE-MxM" customClass="WhereToGoContentCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="70"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="WhereToGoContentCell" rowHeight="45" id="dEL-aE-MxM" customClass="WhereToGoContentCell" customModule="IntervalApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dEL-aE-MxM" id="2PT-tx-LZQ">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="45"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7BN-Vg-Sxf">
-                                                    <rect key="frame" x="20" y="0.0" width="335" height="53"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="53" id="ha0-82-nHB"/>
-                                                    </constraints>
+                                                    <rect key="frame" x="20" y="5" width="335" height="0.0"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="or" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="crz-Kf-sfL">
-                                                    <rect key="frame" x="169.5" y="49" width="36" height="24"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="749" text="or" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="crz-Kf-sfL">
+                                                    <rect key="frame" x="170" y="25.5" width="36" height="11.5"/>
                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="24" id="AmM-1c-T2Y"/>
                                                         <constraint firstAttribute="width" constant="36" id="NhW-Mm-0aA"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                     <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.61568627450980395" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qY2-4j-Pas">
+                                                    <rect key="frame" x="20" y="5" width="335" height="17.5"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="7BN-Vg-Sxf" firstAttribute="top" secondItem="2PT-tx-LZQ" secondAttribute="topMargin" constant="-8" id="Cka-WY-O8N"/>
+                                                <constraint firstItem="crz-Kf-sfL" firstAttribute="top" secondItem="qY2-4j-Pas" secondAttribute="bottom" constant="3" id="2XS-cv-1op"/>
+                                                <constraint firstItem="qY2-4j-Pas" firstAttribute="top" secondItem="7BN-Vg-Sxf" secondAttribute="bottom" id="82S-4e-6fq"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="qY2-4j-Pas" secondAttribute="trailing" constant="12" id="ASY-Sl-utd"/>
+                                                <constraint firstItem="qY2-4j-Pas" firstAttribute="leading" secondItem="2PT-tx-LZQ" secondAttribute="leadingMargin" constant="12" id="CNE-kd-JyY"/>
+                                                <constraint firstItem="7BN-Vg-Sxf" firstAttribute="top" secondItem="2PT-tx-LZQ" secondAttribute="topMargin" constant="-3" id="Cka-WY-O8N"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="crz-Kf-sfL" secondAttribute="bottom" id="QQO-oN-SDU"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="7BN-Vg-Sxf" secondAttribute="trailing" constant="12" id="Uob-qi-j4U"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="crz-Kf-sfL" secondAttribute="bottom" constant="-11" id="YVp-g2-uJT"/>
+                                                <constraint firstItem="crz-Kf-sfL" firstAttribute="centerX" secondItem="7BN-Vg-Sxf" secondAttribute="centerX" id="Yl4-rf-qr3"/>
                                                 <constraint firstItem="7BN-Vg-Sxf" firstAttribute="leading" secondItem="2PT-tx-LZQ" secondAttribute="leadingMargin" constant="12" id="kYS-ch-oAo"/>
-                                                <constraint firstItem="crz-Kf-sfL" firstAttribute="centerX" secondItem="2PT-tx-LZQ" secondAttribute="centerX" id="sSy-6l-wg9"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="bedroomLabel" destination="qY2-4j-Pas" id="Dvh-Ag-NJp"/>
                                             <outlet property="sepratorOr" destination="crz-Kf-sfL" id="tai-uT-yiy"/>
                                             <outlet property="whereTogoTextLabel" destination="7BN-Vg-Sxf" id="ZRY-CQ-u6m"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CaledarDateCell" id="7H9-Wa-LZP" customClass="CaledarDateCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="98" width="375" height="82"/>
+                                        <rect key="frame" x="0.0" y="73" width="375" height="82"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7H9-Wa-LZP" id="UeN-v0-imE">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="82"/>
@@ -1053,7 +1060,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SearchVacationCell" rowHeight="73" id="Rro-U7-ra0" customClass="SearchTableViewCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="180" width="375" height="73"/>
+                                        <rect key="frame" x="0.0" y="155" width="375" height="73"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Rro-U7-ra0" id="llQ-bc-yq9">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="73"/>
@@ -1090,7 +1097,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CellIdentifier" rowHeight="50" id="blX-Di-7Qx">
-                                        <rect key="frame" x="0.0" y="253" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="228" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="blX-Di-7Qx" id="BDR-sA-oFq">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
@@ -1128,7 +1135,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ha8-FK-015" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2352.8000000000002" y="-437.63118440779613"/>
+            <point key="canvasLocation" x="2353" y="-565"/>
         </scene>
         <!--Search Result View Controller-->
         <scene sceneID="k1O-ca-Pdt">

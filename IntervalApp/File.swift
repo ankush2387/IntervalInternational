@@ -44,7 +44,6 @@ class ResortList:Object {
     dynamic var countryCode = ""
     dynamic var territorrycode = ""
     var units = InventoryUnit()
-    var unitDetails = List<ResortUnitDetails>()
     var resortArray = List<ResortByMap>()
 }
 class ResortUnitDetails:Object {
@@ -88,7 +87,9 @@ class OpenWeeks:Object {
     dynamic var exchangeStatus = ""
     dynamic var weekNumber = ""
     dynamic var relinquishmentYear = 0
+    dynamic var isLockOff = false
     var resort = List<ResortList>()
+    var unitDetails = List<ResortUnitDetails>()
     //dynamic var units = [InventoryUnit]()
 }
 

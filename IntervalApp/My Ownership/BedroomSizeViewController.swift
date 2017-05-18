@@ -29,27 +29,19 @@ class BedroomSizeViewController: UIViewController {
     //***** Class variables *****//
     var selectionChanged = false
     internal var localArrayToHoldSelection = NSMutableArray()
+    //internal var userSelectedUnitsArray = [String]()
     
     //***** function to determine the selection of bedroom size *****//
     @IBAction func bedroomSizeCheckboxIsTapped(_ sender:AnyObject) {
         
         let checkBox:IUIKCheckbox = sender as! IUIKCheckbox
-        
-        if(sender.tag == 1000){
-            checkBox.isSelected = true
-        }
-        else{
-            checkBox.isSelected = false
-        }
-        
+       
         self.selectionChanged = true
         if(self.localArrayToHoldSelection.count == 0) {
             self.localArrayToHoldSelection.add(sender.tag)
             checkBox.isSelected = true
             doneButton.isEnabled = true
-        }
-        
-        else {
+        }else {
             var flag = true
             let tempArray:NSMutableArray = NSMutableArray()
             for index in self.localArrayToHoldSelection {
@@ -73,8 +65,9 @@ class BedroomSizeViewController: UIViewController {
                 checkBox.isSelected = true
             }
         }
+        //changeLabelColor(checkBox: checkBox, masterCell: sender.superview, checkState: sender.checked)
         
-        let arrayTableCells = NSMutableArray()
+        /*let arrayTableCells = NSMutableArray()
         for checkTableCell in bedroomSizeTableView.subviews{
             for checkCellsTableCell in checkTableCell.subviews{
                 if (checkCellsTableCell.isKind(of: UITableViewCell.self)){
@@ -82,8 +75,9 @@ class BedroomSizeViewController: UIViewController {
                     arrayTableCells.add(tableCell!)
                 }
             }
-        }
-        if(sender.tag - 1000 == Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count - 1){
+        }*/
+        
+        /* if(sender.tag - 1000 == Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count - 1){
             for tblCell in arrayTableCells{
                 let masterCell = tblCell as! UITableViewCell
                 let backgroundView = self.view.viewWithTag(masterCell.tag - 100 + 10)
@@ -134,7 +128,7 @@ class BedroomSizeViewController: UIViewController {
                     }
                 }
             }
-        }
+        }*/
     }
     
     // Function to change label colors on checkbox selection
@@ -158,6 +152,9 @@ class BedroomSizeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        Constant.MyClassConstants.userSelectedStringArray.removeAll()
+        // Function to get unit details saved in database
+        self.getSaveUnitDetails()
         
         // omniture tracking with event 68
         
@@ -181,7 +178,7 @@ class BedroomSizeViewController: UIViewController {
                 }
             }
         }
-        doneButton.isEnabled = false
+        doneButton.isEnabled = true
         self.bedroomSizeTableView.reloadData()
     }
     /**
@@ -207,6 +204,16 @@ class BedroomSizeViewController: UIViewController {
         
         _ = self.navigationController?.popViewController(animated: true)
     }
+    
+    // Function to get unit details saved in database
+    func getSaveUnitDetails(){
+        for unitDetails in Constant.MyClassConstants.userSelectedUnitsArray{
+            let unit:List<ResortUnitDetails> = unitDetails as! List<ResortUnitDetails>
+            let unitDetailString = "\(unit[0].unitSize),\(unit[0].kitchenType)"
+            Constant.MyClassConstants.userSelectedStringArray.append(unitDetailString)
+        }
+    }
+
     
     //***** function to dismis the current controller and  pass the selected data in previous controller *****//
     
@@ -289,11 +296,20 @@ extension BedroomSizeViewController : UITableViewDataSource{
         if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController){
             
             cell?.bedroomSizelabel.text = Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as? String
+            cell?.checkBoxButton.tag = indexPath.row + 1000
+           if(Constant.MyClassConstants.userSelectedStringArray.contains(Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as! String)){
+            if(!localArrayToHoldSelection.contains(cell?.checkBoxButton.tag))
+            {
+                localArrayToHoldSelection.add(cell?.checkBoxButton.tag)
+            }
+                cell?.checkBoxButton.checked = true
+            }else{
+                cell?.checkBoxButton.checked = false
+            }
             cell?.selectionStyle = UITableViewCellSelectionStyle.none
-            cell?.checkBoxButton.tag = indexPath.row
             cell?.tag = indexPath.row + 100
             cell?.backgroundCellView.tag = indexPath.row + 10
-            cell?.checkBoxButton.tag = indexPath.row + 1000
+            
             return cell!
             
         }else{

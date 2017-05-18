@@ -14,6 +14,7 @@ class WhereToGoContentCell: UITableViewCell {
     @IBOutlet weak var sepratorView: UIView!
     @IBOutlet weak var sepratorOr: UILabel!
     @IBOutlet weak var whereTogoTextLabel: UILabel!
+    @IBOutlet weak var bedroomLabel: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()

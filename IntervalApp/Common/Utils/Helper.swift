@@ -563,6 +563,8 @@ public class Helper{
     static func InitializeOpenWeeksFromLocalStorage () {
         Constant.MyClassConstants.relinquishmentIdArray.removeAllObjects()
         Constant.MyClassConstants.whatToTradeArray.removeAllObjects()
+        Constant.MyClassConstants.idUnitsRelinquishmentDictionary.removeAllObjects()
+        Constant.MyClassConstants.relinquishmentUnitsArray.removeAllObjects()
         let realm = try! Realm()
         let Membership = UserContext.sharedInstance.selectedMembership
         let SelectedMembershipNumber = Membership?.memberNumber
@@ -579,8 +581,15 @@ public class Helper{
                         
                         for object in openWk.openWeeks {
                             
+                            let tempDict = NSMutableDictionary()
                             Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
+                            
                             Constant.MyClassConstants.whatToTradeArray.add(object)
+                            Constant.MyClassConstants.idUnitsRelinquishmentDictionary.setValue(object.unitDetails, forKey: object.relinquishmentID)
+                            tempDict.setValue(object.unitDetails, forKey: object.relinquishmentID)
+                            Constant.MyClassConstants.relinquishmentUnitsArray.add(tempDict)
+                            print(object.unitDetails.count, Constant.MyClassConstants.idUnitsRelinquishmentDictionary, Constant.MyClassConstants.relinquishmentUnitsArray)
+                            
                         }
                         
                     }else{

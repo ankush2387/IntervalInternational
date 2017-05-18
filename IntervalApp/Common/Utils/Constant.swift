@@ -338,16 +338,21 @@ class Constant: NSObject {
         
         
         //Relinquishment selection screen response arrays
-        static var relinquishmentAvalableToolSelectedDate:Date!
+        static var  relinquishmentAvalableToolSelectedDate:Date!
         
-        static var onsiteArray = NSMutableArray()
-        static var nearbyArray = NSMutableArray()
+        static var  onsiteArray = NSMutableArray()
+        static var  nearbyArray = NSMutableArray()
         static var  relinquishmentIdArray = NSMutableArray()
+        static var  relinquishmentUnitsArray = NSMutableArray()
+        static var  idUnitsRelinquishmentDictionary = NSMutableDictionary()
+        static var  userSelectedUnitsArray = NSMutableArray()
+        static var  senderRelinquishmentID = ""
         static var  relinquishmentDeposits = [Deposit]()
         static var  relinquishmentOpenWeeks = [OpenWeek]()
         static var  relinquishmentProgram = PointsProgram()
         static var  relinquishmentSelectedWeek = OpenWeek()
         static var  clubPointResortsArray = [Resort]()
+        static var  userSelectedStringArray = [String]()
         
         
         static var onsiteString : String! = "Nearby" + "\n"
