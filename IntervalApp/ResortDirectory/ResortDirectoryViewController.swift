@@ -126,7 +126,8 @@ class ResortDirectoryViewController: UIViewController {
     
     func setNavigationBar(){
         //***** handle hamberger menu button for prelogin and post login case *****//
-        print("------> self.navigationController?.viewControllers.count", self.navigationController?.viewControllers.count)
+      
+        print("------> self.navigationController?.viewControllers.count", self.navigationController?.viewControllers.count as Any)
         if((UserContext.sharedInstance.accessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
             if(self.navigationController?.viewControllers.count > 1) {
                 
@@ -180,7 +181,7 @@ class ResortDirectoryViewController: UIViewController {
     
     //*****Function for back button press.*****//
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
-        print("------> self.navigationController?.viewControllers.count", self.navigationController?.viewControllers.count)
+        print("------> self.navigationController?.viewControllers.count", self.navigationController?.viewControllers.count as Any)
         if(self.navigationController?.viewControllers.count == 1) {
             if((UserContext.sharedInstance.accessToken) == nil && !Constant.MyClassConstants.isLoginSuccessfull){
                 _ = self.navigationController?.popViewController(animated: false)
@@ -638,7 +639,6 @@ extension ResortDirectoryViewController:SearchResultContentTableCellDelegate {
                SVProgressHUD.show()
                 Helper.addServiceCallBackgroundView(view: self.view)
                 UserClient.addFavoriteResort(UserContext.sharedInstance.accessToken, resortCode: Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!, onSuccess: {(response) in
-                    
                     print(response)
                     SVProgressHUD.dismiss()
                     Helper.removeServiceCallBackgroundView(view: self.view)
@@ -674,7 +674,24 @@ extension ResortDirectoryViewController:SearchResultContentTableCellDelegate {
         else {
             
             Constant.MyClassConstants.btnTag = sender.tag
-            self.performSegue(withIdentifier: Constant.segueIdentifiers.preLoginSegue, sender: self)
+            
+//            let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.iphone, bundle: nil)
+//            let viewController = mainStoryboard.instantiateViewController (withIdentifier: "preLoginSegue") as! SignInPreLoginViewController
+            
+//            self.navigationController!.pushViewController(viewController, animated: true)
+            
+            //   self.performSegue(withIdentifier: Constant.segueIdentifiers.preLoginSegue, sender: nil)
+            
+
+            let SB2 = UIStoryboard(name: Constant.storyboardNames.iphone, bundle:nil)
+            let nvc = SB2.instantiateViewController(withIdentifier: "preLoginSegue") as! UINavigationController
+            let vc : UIViewController = SB2.instantiateViewController(withIdentifier: "preLoginSegue")
+            nvc.pushViewController(vc, animated: true)
+            
+            
+     
+            
+            
         }
     }
     func unfavoriteButtonClicked(_ sender:UIButton){

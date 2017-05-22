@@ -81,11 +81,23 @@ extension WereWantToTradeTableViewCell:UICollectionViewDataSource {
                         
                         let weekNumber = Constant.getWeekNumber(weekType: ((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeek).weekNumber)!)
                         cell.lblTitle.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeek).resort!.resortName!), \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeek).relinquishmentYear!) Week \(weekNumber)"
+                        
+
                     }
                     else if((object as AnyObject).isKind(of: OpenWeeks.self)) {
                         
                         let weekNumber = Constant.getWeekNumber(weekType: ((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).weekNumber))
                         cell.lblTitle.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).resort[0].resortName), \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).relinquishmentYear) Week \(weekNumber)"
+                        
+                        if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff){
+                            cell.bedroomNumber.isHidden = false
+                            
+                            let resortList = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).unitDetails
+                            print((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).resort[0].resortName, resortList.count)
+                            cell.bedroomNumber.text = resortList[0].unitSize
+                        }
+                        
+                        
                     }
                     else {
                         
@@ -132,8 +144,11 @@ extension WereWantToTradeTableViewCell:WhereToGoCollectionViewCellDelegate {
         let storedData = Helper.getLocalStorageWherewanttoTrade()
         if(Constant.MyClassConstants.whatToTradeArray.count > 0){
             
+            
+            
             Constant.MyClassConstants.whatToTradeArray.removeObject(at: Index)
             Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: Index)
+            Constant.MyClassConstants.relinquishmentUnitsArray.removeObject(at: Index )
         }
 
         if(storedData.count > 0) {
