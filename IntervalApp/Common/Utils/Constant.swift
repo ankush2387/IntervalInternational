@@ -86,6 +86,15 @@ class Constant: NSObject {
         static var checkoutInsurencePurchased = "No"
         static var checkoutPromotionPurchased = ""
         
+        //upcoming trip type counter value
+        static var exchangeCounter = 0
+        static var getawayCounter = 0
+        static var shortStayCounter = 0
+        static var acomodationCertificateCounter = 0
+        static var flightCounter = 0
+        static var carRentalCounter = 0
+        static var isEvent2Ready = 0
+        
         //global variable to hold advisement type text
         static var advisementTypeStringaArray = ["Important Advisements","General Advisements","Additional Advisements"]
         
@@ -1542,6 +1551,15 @@ class Constant: NSObject {
         static var cigPoints = "CIGPoints"
         static var clubPoints = "ClubPoints"
         static var confirmation = "Vacation Search – Transaction Completed"
+        static var exchage = "EX"
+        static var getaway = "GW"
+        static var acomodationCertificate = "AC"
+        static var shortStay = "SS"
+        static var flightBooking = "FB"
+        static var toorBooking = "TB"
+        static var carRental = "CR"
+        static var notApplicable = "NA"
+        static var resortDirectoryHome = "Resort Directory Home"
     }
     
     //Omniture Evars
@@ -1755,5 +1773,16 @@ class Constant: NSObject {
         static var event100 = "Event100"
         
     }
+    
+    // structure for productCode ImageNames
+    struct productCodeImageNames {
+        
+        static var basic = "BSC"
+        static var cig = "CIG"
+        static var gold = "GLD"
+        static var platinum = "PLT"
+    }
 }
+
+
 

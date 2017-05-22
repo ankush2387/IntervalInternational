@@ -373,8 +373,26 @@ public class Helper{
    static func getUpcomingTripsForUser(){
         UserClient.getUpcomingTrips(UserContext.sharedInstance.accessToken, onSuccess: {(upComingTrips) in
             Constant.MyClassConstants.upcomingTripsArray = upComingTrips
+            
+            for trip in upComingTrips { if((trip.type) != nil) {
+                
+                print(trip.type as Any)
+                
+                }
+            }
+            Constant.MyClassConstants.isEvent2Ready = Constant.MyClassConstants.isEvent2Ready + 1
+
+            if(Constant.MyClassConstants.isEvent2Ready > 1) {	 	               sendOmnitureTrackCallForEvent2()
+            }
+            
             NotificationCenter.default.post(name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: self)
         }, onError: {(error) in
+            
+            Constant.MyClassConstants.isEvent2Ready = Constant.MyClassConstants.isEvent2Ready + 1
+            
+            if(Constant.MyClassConstants.isEvent2Ready > 1) {	 	               sendOmnitureTrackCallForEvent2()
+            }
+
         })
     }
 

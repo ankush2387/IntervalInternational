@@ -211,6 +211,19 @@ class GoogleMapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // condition check to send resort directory
+        if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.resortFunctionalityCheck) {
+            
+            // omniture tracking with event 40
+            let userInfo: [String: String] = [
+                Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.resortDirectoryHome,
+                ]
+            
+            ADBMobile.trackAction(Constant.omnitureEvents.event40, data: userInfo)
+            
+        }
+        
+        
         mapView.delegate = self
         mapView.animate(toZoom: 8)
         
