@@ -110,6 +110,9 @@ class SideMenuTableViewController: UIViewController
         //Remove all favorites for a user.
         Constant.MyClassConstants.favoritesResortArray.removeAll()
         
+        //Remove available points for relinquishment program
+        Constant.MyClassConstants.relinquishmentProgram = PointsProgram()
+        
         //Remove all saved alerts for a user.
         Constant.MyClassConstants.getawayAlertsArray.removeAll()
         Constant.MyClassConstants.isLoginSuccessfull = false

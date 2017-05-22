@@ -300,6 +300,7 @@ class CreateAlertViewController: UIViewController {
     //***** function to call bedroom size screen to select bedroom size *****//
     @IBAction func selectRoomSizePressed(_ sender:AnyObject) {
         
+        Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.createAlertViewController
         var mainStoryboard = UIStoryboard()
         if(Constant.RunningDevice.deviceIdiom == .pad) {
             //mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIpad, bundle: nil)

@@ -783,6 +783,7 @@ class Constant: NSObject {
         static var clubPointsSelectionViewController = "clubpointselectionPageviewcontroller"
         static var upcomingTripsViewController = "UpComingTripDetailController"
         static var tripDetailsViewController = "TripDetailsNavigationController"
+        static var createAlertViewController = "CreateAlertViewController"
         
         
     }
