@@ -1560,6 +1560,7 @@ class Constant: NSObject {
         static var carRental = "CR"
         static var notApplicable = "NA"
         static var resortDirectoryHome = "Resort Directory Home"
+      
     }
     
     //Omniture Evars

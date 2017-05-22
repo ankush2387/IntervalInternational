@@ -44,6 +44,14 @@ class DashboardTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // omniture tracking with event40
+        let userInfo: [String: String] = [
+            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.homeDashboard
+        ]
+
+        ADBMobile.trackState( Constant.omnitureEvents.event40, data: userInfo)
+        
         self.getNumberOfSections()
         Helper.getTopDeals(senderVC: self)
         //***** Set general Nav attributes *****//

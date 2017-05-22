@@ -308,6 +308,7 @@ extension ResortDirectoryViewController:UITableViewDelegate {
             
             if(region.regions.count > 0) {
                 Constant.MyClassConstants.resortDirectorySubRegionArray = region.regions
+                
                 self.performSegue(withIdentifier: Constant.segueIdentifiers.subRegionSegue, sender: nil)
             }
             else {
@@ -318,6 +319,7 @@ extension ResortDirectoryViewController:UITableViewDelegate {
                     Helper.removeServiceCallBackgroundView(view: self.view)
                     Constant.MyClassConstants.resortDirectoryAreaListArray = response
                     self.showAreaDetails()
+                     Helper.trackOmnitureCallForPageView(name: "\(Constant.MyClassConstants.resortDirectoryTitle) \(region.regionName!)")
                     
                     }, onError: {(error) in
                         SVProgressHUD.dismiss()
@@ -338,6 +340,7 @@ extension ResortDirectoryViewController:UITableViewDelegate {
                 Helper.removeServiceCallBackgroundView(view: self.view)
                 Constant.MyClassConstants.resortDirectoryAreaListArray = response
                 self.showAreaDetails()
+                  Helper.trackOmnitureCallForPageView(name: "\(Constant.MyClassConstants.resortDirectoryTitle) \(subregion.regionName!)")
                 
                 }, onError: {(error) in
                     SVProgressHUD.dismiss()
@@ -372,6 +375,7 @@ extension ResortDirectoryViewController:UITableViewDelegate {
                 
                 SVProgressHUD.dismiss()
                 Helper.removeServiceCallBackgroundView(view: self.view)
+                 Helper.trackOmnitureCallForPageView(name: "\(Constant.MyClassConstants.resortDirectoryTitle) \(area.areaName!)")
                  self.performSegue(withIdentifier: Constant.segueIdentifiers.resortByAreaSegue, sender: nil)
                 
             }, onError: {(error) in

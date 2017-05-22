@@ -755,7 +755,7 @@ public class Helper{
         
         let cal = NSCalendar.current
         
-        let returnDate = cal.dateComponents(Set<Calendar.Component>([.day]), from: date, to: Constant.MyClassConstants.todaysDate as Date)
+        let returnDate = cal.dateComponents(Set<Calendar.Component>([.day]), from: Constant.MyClassConstants.todaysDate, to: date)
         
           return returnDate.day!
     }
@@ -1365,6 +1365,16 @@ public class Helper{
         }
         
         
+    }
+    static func trackOmnitureCallForPageView(name:String) {
+        
+        // omniture tracking with event 40
+        let userInfo: [String: String] = [
+            Constant.omnitureEvars.eVar44 : name
+            ]
+        
+        ADBMobile.trackAction(Constant.omnitureEvents.event40, data: userInfo)
+
     }
 
 }
