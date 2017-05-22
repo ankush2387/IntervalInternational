@@ -184,7 +184,8 @@ class ResortDirectoryViewController: UIViewController {
         print("------> self.navigationController?.viewControllers.count", self.navigationController?.viewControllers.count as Any)
         if(self.navigationController?.viewControllers.count == 1) {
             if((UserContext.sharedInstance.accessToken) == nil && !Constant.MyClassConstants.isLoginSuccessfull){
-                _ = self.navigationController?.popViewController(animated: false)
+                //_ = self.navigationController?.popViewController(animated: false)
+                self.navigationController?.dismiss(animated: true, completion: nil)
             }
         }
         else {
@@ -680,18 +681,12 @@ extension ResortDirectoryViewController:SearchResultContentTableCellDelegate {
             
 //            self.navigationController!.pushViewController(viewController, animated: true)
             
-            //   self.performSegue(withIdentifier: Constant.segueIdentifiers.preLoginSegue, sender: nil)
+               self.performSegue(withIdentifier: Constant.segueIdentifiers.preLoginSegue, sender: nil)
             
 
-            let SB2 = UIStoryboard(name: Constant.storyboardNames.iphone, bundle:nil)
-            let nvc = SB2.instantiateViewController(withIdentifier: "preLoginSegue") as! UINavigationController
-            let vc : UIViewController = SB2.instantiateViewController(withIdentifier: "preLoginSegue")
-            nvc.pushViewController(vc, animated: true)
-            
-            
-     
-            
-            
+            /*let SB2 = UIStoryboard(name: Constant.storyboardNames.iphone, bundle:nil)
+            let nvc = SB2.instantiateViewController(withIdentifier: "preLoginSegue2") as! UINavigationController
+            UIApplication.shared.keyWindow?.rootViewController = nvc*/
         }
     }
     func unfavoriteButtonClicked(_ sender:UIButton){

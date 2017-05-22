@@ -59,6 +59,11 @@ class SignInPreLoginViewController: UIViewController {
     var activeTF:UITextField!
     var scrollView = UIScrollView()
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = true
+        self.tabBarController?.tabBar.isHidden = true
+    }
+    
     override func viewDidLoad(){
         super.viewDidLoad()
         
@@ -120,6 +125,11 @@ class SignInPreLoginViewController: UIViewController {
         self.view.endEditing(true)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = false
+        self.tabBarController?.tabBar.isHidden = false
+    }
+    
     func reloadView(){
         /*let vc = ResortDirectoryViewController()
         let favoritesVC = FevoritesResortController()
@@ -164,7 +174,8 @@ class SignInPreLoginViewController: UIViewController {
     //***** Method called when close button pressed to dismis the current controller from stack *****//
     @IBAction func closeButtonPressed(_ sender: AnyObject) {
         
-        self.dismiss(animated: true, completion: nil)
+        //self.dismiss(animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: true)
     }
     
     //***** Method called when sign in button pressed from prelogin screen *****//

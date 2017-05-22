@@ -109,6 +109,7 @@ class SideMenuTableViewController: UIViewController
         UserContext.sharedInstance.signOut()
         //Remove all favorites for a user.
         Constant.MyClassConstants.favoritesResortArray.removeAll()
+        Constant.MyClassConstants.favoritesResortCodeArray.removeAllObjects()
         
         //Remove available points for relinquishment program
         Constant.MyClassConstants.relinquishmentProgram = PointsProgram()

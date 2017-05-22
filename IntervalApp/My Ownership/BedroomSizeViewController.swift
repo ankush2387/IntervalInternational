@@ -64,7 +64,9 @@ class BedroomSizeViewController: UIViewController {
                 checkBox.isSelected = true
             }
         }
-        self.changeLabelColor(checkBox: checkBox)
+        if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController){
+            self.changeLabelColor(checkBox: checkBox)
+        }
     }
     
     // Function to change label colors on checkbox selection
@@ -106,7 +108,9 @@ class BedroomSizeViewController: UIViewController {
                 }
             }
         }
-        doneButton.isEnabled = false
+        if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController){
+            doneButton.isEnabled = false
+        }
         self.bedroomSizeTableView.reloadData()
     }
     /**
@@ -189,6 +193,7 @@ class BedroomSizeViewController: UIViewController {
                         Constant.MyClassConstants.bedRoomSizeSelectedIndexArray = self.localArrayToHoldSelection
                     }
                 }
+                self.dismiss(animated: true, completion: nil)
             }
         }
         else {
