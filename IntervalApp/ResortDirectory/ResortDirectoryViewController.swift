@@ -611,12 +611,7 @@ extension ResortDirectoryViewController:UITableViewDataSource {
 extension ResortDirectoryViewController:ResortDirectoryResortCellDelegate {
     
     func favoritesButtonSelectedAtIndex(_ index: Int) {
-        
-       /* let storyboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
-        let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginController)
-        self.present(viewController, animated: true, completion: nil)*/
-        
-        
+
         let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.iphone, bundle: nil)
         let resultController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginController) as? SignInPreLoginViewController
         let navController = UINavigationController(rootViewController: resultController!)
@@ -679,18 +674,7 @@ extension ResortDirectoryViewController:SearchResultContentTableCellDelegate {
         else {
             
             Constant.MyClassConstants.btnTag = sender.tag
-            
-//            let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.iphone, bundle: nil)
-//            let viewController = mainStoryboard.instantiateViewController (withIdentifier: "preLoginSegue") as! SignInPreLoginViewController
-            
-//            self.navigationController!.pushViewController(viewController, animated: true)
-            
-               self.performSegue(withIdentifier: Constant.segueIdentifiers.preLoginSegue, sender: nil)
-            
-
-            /*let SB2 = UIStoryboard(name: Constant.storyboardNames.iphone, bundle:nil)
-            let nvc = SB2.instantiateViewController(withIdentifier: "preLoginSegue2") as! UINavigationController
-            UIApplication.shared.keyWindow?.rootViewController = nvc*/
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.preLoginSegue, sender: nil)
         }
     }
     func unfavoriteButtonClicked(_ sender:UIButton){
