@@ -307,13 +307,14 @@ class GoogleMapViewController: UIViewController {
                 }
                 self.navigationItem.rightBarButtonItem!.isEnabled = true
                 Constant.MyClassConstants.googleMarkerArray.removeAll()
-                
+                if(Constant.MyClassConstants.resortsArray.count > 0){
                 let resort = Constant.MyClassConstants.resortsArray[0]
                 let location = CLLocation.init(latitude: (resort.coordinates?.latitude)!, longitude: (resort.coordinates?.longitude)!)
                 
                 self.displaySearchedResort(location: location)
                 if(self.mapTableView != nil){
                     self.mapTableView.reloadData()
+                }
                 }
                 
                 SVProgressHUD.dismiss()

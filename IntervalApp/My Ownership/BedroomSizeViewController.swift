@@ -52,7 +52,6 @@ class BedroomSizeViewController: UIViewController {
                     tempArray.add(objectAt)
                     flag = false
                     checkBox.isSelected = false
-                    
                 }
             }
             let indexSet = NSMutableIndexSet()
@@ -65,90 +64,18 @@ class BedroomSizeViewController: UIViewController {
                 checkBox.isSelected = true
             }
         }
-        //changeLabelColor(checkBox: checkBox, masterCell: sender.superview, checkState: sender.checked)
-        
-        /*let arrayTableCells = NSMutableArray()
-        for checkTableCell in bedroomSizeTableView.subviews{
-            for checkCellsTableCell in checkTableCell.subviews{
-                if (checkCellsTableCell.isKind(of: UITableViewCell.self)){
-                    let tableCell = checkCellsTableCell as? UITableViewCell
-                    arrayTableCells.add(tableCell!)
-                }
-            }
-        }*/
-        
-        /* if(sender.tag - 1000 == Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count - 1){
-            for tblCell in arrayTableCells{
-                let masterCell = tblCell as! UITableViewCell
-                let backgroundView = self.view.viewWithTag(masterCell.tag - 100 + 10)
-                if(masterCell.tag - 100 != sender.tag - 1000){
-                    if(sender.checked){
-                        doneButton.isEnabled = true
-                        backgroundView?.backgroundColor = IUIKColorPalette.titleBackdrop.color
-                       // masterCell.isUserInteractionEnabled = false
-                    }else{
-                        doneButton.isEnabled = false
-                       // backgroundView?.backgroundColor = UIColor.white
-                        masterCell.isUserInteractionEnabled = true
-                    }
-                }else{
-                     backgroundView?.backgroundColor = UIColor.white
-                    //masterCell.isUserInteractionEnabled = true
-                    changeLabelColor(checkBox: sender as! IUIKCheckbox, masterCell: masterCell, checkState: sender.checked)
-                }
-            }
-        }else{
-            for tblCell in arrayTableCells{
-                let masterCell = tblCell as! UITableViewCell
-                let backgroundView = self.view.viewWithTag(masterCell.tag - 100 + 10)
-                if(masterCell.tag - 100 == Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count - 1){
-                    if(sender.checked){
-                        doneButton.isEnabled = true
-                        backgroundView?.backgroundColor = IUIKColorPalette.titleBackdrop.color
-                       // masterCell.isUserInteractionEnabled = false
-                    }else{
-                        doneButton.isEnabled = false
-                        backgroundView?.backgroundColor = UIColor.white
-                       // masterCell.isUserInteractionEnabled = true
-                    }
-                }else{
-                    for (ind,index) in localArrayToHoldSelection.enumerated(){
-                        let checkBox:IUIKCheckbox = self.view.viewWithTag(index as! Int) as! IUIKCheckbox
-                        if(ind < localArrayToHoldSelection.count - 1){
-                            checkBox.checked = false
-                        }
-                    }
-                    if(localArrayToHoldSelection.count > 1){
-                        localArrayToHoldSelection.removeObject(at: 0)
-                    }
-                    if(masterCell.tag - 100 == sender.tag - 1000){
-                        changeLabelColor(checkBox: checkBox, masterCell: masterCell, checkState: sender.checked)
-                    }else{
-                        changeLabelColor(checkBox: checkBox, masterCell: masterCell, checkState: false)
-                    }
-                }
-            }
-        }*/
-        
+        self.changeLabelColor(checkBox: checkBox)
     }
     
     // Function to change label colors on checkbox selection
-    func changeLabelColor(checkBox:IUIKCheckbox, masterCell:UITableViewCell, checkState:Bool){
-        for labels in masterCell.contentView.subviews{
-            if(labels .isKind(of: UILabel.self)){
-                let titleLabel = labels as? UILabel
-                if(checkState){
-                    titleLabel?.textColor = UIColor.orange
-                }else{
-                    titleLabel?.textColor = UIColor.black
-                }
-            }
-        }
-    }
-    
-    //Function to change table cell color
-    func changeTableCellColor(){
+    func changeLabelColor(checkBox:IUIKCheckbox){
         
+        let checkedLabel = self.view.viewWithTag(checkBox.tag%10 + 100) as! UILabel
+        if(checkBox.checked){
+            checkedLabel.textColor = UIColor.orange
+        }else{
+            checkedLabel.textColor = UIColor.black
+        }
     }
     
     override func viewDidLoad() {
@@ -179,7 +106,7 @@ class BedroomSizeViewController: UIViewController {
                 }
             }
         }
-        doneButton.isEnabled = true
+        doneButton.isEnabled = false
         self.bedroomSizeTableView.reloadData()
     }
     /**
@@ -299,17 +226,18 @@ extension BedroomSizeViewController : UITableViewDataSource{
             cell?.bedroomSizelabel.text = Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as? String
             cell?.checkBoxButton.tag = indexPath.row + 1000
            if(Constant.MyClassConstants.userSelectedStringArray.contains(Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as! String)){
-            if(!localArrayToHoldSelection.contains(cell?.checkBoxButton.tag))
+            if(!localArrayToHoldSelection.contains(cell?.checkBoxButton.tag as Any))
             {
-                localArrayToHoldSelection.add(cell?.checkBoxButton.tag)
+                localArrayToHoldSelection.add(cell?.checkBoxButton.tag as Any)
+                doneButton.isEnabled = true
+                cell?.bedroomSizelabel.textColor = UIColor.orange
             }
                 cell?.checkBoxButton.checked = true
             }else{
                 cell?.checkBoxButton.checked = false
             }
             cell?.selectionStyle = UITableViewCellSelectionStyle.none
-            cell?.tag = indexPath.row + 100
-            cell?.backgroundCellView.tag = indexPath.row + 10
+            cell?.bedroomSizelabel.tag = indexPath.row + 100
             
             return cell!
             
