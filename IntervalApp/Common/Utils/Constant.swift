@@ -793,7 +793,7 @@ class Constant: NSObject {
         static var upcomingTripsViewController = "UpComingTripDetailController"
         static var tripDetailsViewController = "TripDetailsNavigationController"
         static var createAlertViewController = "CreateAlertViewController"
-        
+        static var signInPreLoginViewController = "SignInPreLoginViewController"
         
     }
     
