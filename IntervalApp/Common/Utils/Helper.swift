@@ -357,6 +357,7 @@ public class Helper{
     
     //***** Common function for user Favorites resort API call after successfull call *****//
     static func getUserFavorites(){
+        if(UserContext.sharedInstance.accessToken != nil){
         UserClient.getFavoriteResorts(UserContext.sharedInstance.accessToken, onSuccess: { (response) in
             Constant.MyClassConstants.favoritesResortArray.removeAll()
             for resortcode in [response][0] {
@@ -366,6 +367,7 @@ public class Helper{
             
         })
         { (error) in
+        }
         }
     }
     
@@ -1000,11 +1002,12 @@ public class Helper{
         addServiceCallBackgroundView(view: viewcontroller.view)
         SVProgressHUD.show()
         DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: code, onSuccess: { (response) in
-            
+    
             Constant.MyClassConstants.resortsDescriptionArray = response
             Constant.MyClassConstants.imagesArray.removeAllObjects()
             let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
             for imgStr in imagesArray {
+                print(imgStr.url!)
                 if(imgStr.size == Constant.MyClassConstants.imageSize) {
                     
                     Constant.MyClassConstants.imagesArray.add(imgStr.url!)
@@ -1028,11 +1031,7 @@ public class Helper{
                     })
                 }
                 else {
-                    
-                    let storyboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
-                    let viewController = storyboard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortVC) as! ResortDetailsViewController
-                    viewController.senderViewController = Constant.MyClassConstants.searchResult
-                    viewcontroller.present(viewController, animated: true, completion: nil)
+                    viewcontroller.performSegue(withIdentifier: Constant.segueIdentifiers.resortDetailsSegue, sender: self)
                 }
             }
             else {

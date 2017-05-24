@@ -678,7 +678,13 @@ class GoogleMapViewController: UIViewController {
             self.navigationController?.dismiss(animated: true, completion: nil)
         }else{
              Constant.MyClassConstants.selectionType = -1
-            _ = self.navigationController?.popViewController(animated: true)
+            if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.resortFunctionalityCheck){
+                self.dismiss(animated: true, completion: nil)
+            }else{
+                 _ = self.navigationController?.popViewController(animated: true)
+            }
+           
+            
         }
         
     }
@@ -851,12 +857,10 @@ class GoogleMapViewController: UIViewController {
     //***** Method to create bottom resort view in collection view and pop up with custom animation *****//
     func createBottomResortView(marker :GMSMarker) {
         
-        if(resortCollectionView != nil){
+        if(resortCollectionView != nil && Constant.MyClassConstants.resortsArray.count > 0){
             resortCollectionView.reloadData()
             self.resortView.isHidden = false
             
-            let indexPath = IndexPath(row: self.mapView.selectedMarker?.userData as! Int, section: 0)
-            resortCollectionView.scrollToItem(at: indexPath, at: .left, animated: true)
             UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn ,animations: {
                 self.resortView.frame = CGRect(x: 0, y: self.view.frame.height - (self.bottomResortHeight + 50), width: self.view.frame.width, height: self.bottomResortHeight)
                 
@@ -886,8 +890,6 @@ class GoogleMapViewController: UIViewController {
             resortCollectionView.delegate = self
             resortCollectionView.dataSource = self
             resortCollectionView.isPagingEnabled = true
-            let indexPath = IndexPath(row: marker.userData as! Int, section: 0)
-            resortCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: UICollectionViewScrollPosition.centeredHorizontally)
             resortView.addSubview(resortCollectionView)
             
             /*** Subtracting tab bar default height - 49 ****/
@@ -929,13 +931,6 @@ class GoogleMapViewController: UIViewController {
         if (sender.direction == .up) {
             
             if(Constant.MyClassConstants.systemAccessToken != nil) {
-                
-                if(self.resortCollectionView != nil){
-                    
-                    Constant.MyClassConstants.collectionVwCurrentIndex = self.mapView.selectedMarker?.userData as! Int
-                    index = self.mapView.selectedMarker?.userData as! Int
-                }
-                
                 let selectedResort = Constant.MyClassConstants.resortsArray[index]
                 Constant.MyClassConstants.isgetResortFromGoogleSearch = false
                 Helper.getUserFavorites()
@@ -1137,12 +1132,17 @@ class GoogleMapViewController: UIViewController {
             
             self.searchDisplayTableView.frame = CGRect(x: 0, y: UIScreen.main.bounds.height, width: UIScreen.main.bounds.width,  height: UIScreen.main.bounds.height - 152)
             
-            
         }, completion: { _ in
             self.searchDisplayTableView.isHidden = true
         })
-        
-        
+    }
+    
+    //***** Function to get collection view visible index. *****//
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        for collectionCell in resortCollectionView.visibleCells{
+            let indexPath = resortCollectionView.indexPath(for: collectionCell)
+            index = (indexPath?.item)!
+        }
     }
     
     //***** Show screen in landscape/potrait mode. *****//
@@ -1355,13 +1355,27 @@ extension GoogleMapViewController:UICollectionViewDataSource {
         resortImageView.backgroundColor = UIColor.lightGray
         
         if(resort.images.count > 1){
-        resortImageView.setImageWith(URL(string: resort.images[resort.images.count-1].url!), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
+            var url = URL(string: "")
+            let imagesArray = resort.images
+            for imgStr in imagesArray {
+                if(imgStr.size == Constant.MyClassConstants.imageSize) {
+                    url = URL(string: imgStr.url!)!
+                    break
+                }
+            }
+            
+        resortImageView.setImageWith(url , completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
             if (error != nil) {
                 resortImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
             }
         }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
         }else{
-            resortImageView.setImageWith(URL(string: resort.images[resort.images.count].url!), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
+            var imageURL = ""
+            if(resort.images.count > 0){
+             imageURL = resort.images[resort.images.count].url!
+            }
+            
+            resortImageView.setImageWith(URL(string: imageURL), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
                 if (error != nil) {
                     resortImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                 }

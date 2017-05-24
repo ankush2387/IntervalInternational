@@ -220,7 +220,8 @@ class Constant: NSObject {
         
         static let sidemenuIntervalInternationalCorporationLabel = NSLocalizedString("2015 Interval International. Privacy/Legal", comment: "")
         static let noRelinquishmentavailable = NSLocalizedString("No Relinquishment available", comment: "")
-        static let relinquishmentTitle = NSLocalizedString("Select master or lock-off portion", comment: "")
+        static let relinquishmentTitle = NSLocalizedString("Select all or any lock-off portion", comment: "")
+        static let bedroomTitle = NSLocalizedString("Choose Bedrooms", comment: "")
     
         static var selectedIndex:Int!
         static var vacationSearchContentPagerRunningIndex  = 0
@@ -272,7 +273,7 @@ class Constant: NSObject {
         static var bedRoomSizeSelectedIndexArray:NSMutableArray = []
         static var amenitiesDictionary = NSMutableDictionary()
         static var advisementsDictionary = NSMutableDictionary()
-        static var imageSize = "large"
+        static var imageSize = "LARGE"
         static var imageSizeXL = "XLARGE"
         static var noImage = "NoImageIcon"
         static var logoMenuImage = "LogoMenu"

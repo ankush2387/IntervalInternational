@@ -47,6 +47,8 @@ class ResortDetailsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
+        self.navigationController?.isNavigationBarHidden = true
+        self.tabBarController?.tabBar.isHidden = true
         // Notification to perform vacation search after user pre-login
         NotificationCenter.default.addObserver(self, selector: #selector(showVacationSearch), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
         
@@ -115,6 +117,11 @@ class ResortDetailsViewController: UIViewController {
                 
             }
         }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = false
+        self.tabBarController?.tabBar.isHidden = false
     }
     
     override func didReceiveMemoryWarning() {
@@ -283,7 +290,8 @@ class ResortDetailsViewController: UIViewController {
             
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
         }else{
-            self.dismiss(animated: true, completion: nil)
+            self.navigationController?.popViewController(animated: true)
+            //self.dismiss(animated: true, completion: nil)
         }
     }
     

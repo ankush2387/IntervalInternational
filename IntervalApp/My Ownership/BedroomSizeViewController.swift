@@ -96,7 +96,7 @@ class BedroomSizeViewController: UIViewController {
         
         self.bedroomSizeTableView.estimatedRowHeight = 60
         if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController){
-            
+            self.titleLabel.text = Constant.MyClassConstants.relinquishmentTitle
         }else{
             if(Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count == 0) {
                 Constant.MyClassConstants.bedRoomSizeSelectedIndexArray = [0,1,2,3,4]
@@ -107,6 +107,7 @@ class BedroomSizeViewController: UIViewController {
                     self.localArrayToHoldSelection.add(index as! Int)
                 }
             }
+            self.titleLabel.text = Constant.MyClassConstants.bedroomTitle
         }
         if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController){
             doneButton.isEnabled = false

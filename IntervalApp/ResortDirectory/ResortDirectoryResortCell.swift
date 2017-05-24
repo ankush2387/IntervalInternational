@@ -52,19 +52,19 @@ class ResortDirectoryResortCell: UITableViewCell {
 //***** custom cell favorites button action implementation *****//
     @IBAction func favirotesButtonPressed(_ sender: AnyObject) {
         
-        /*if(fevoriteButton.selected == false) {
+        if(fevoriteButton.isSelected == false) {
         
             if(UserContext.sharedInstance.accessToken == nil ) {
                self.delegate?.favoritesButtonSelectedAtIndex(sender.tag)
             }
             else {
                 
-                fevoriteButton.selected = true
+                fevoriteButton.isSelected = true
             }
         }
         else {
-            fevoriteButton.selected = false
-        }*/
+            fevoriteButton.isSelected = false
+        }
     }
 //***** method called when the added notification reloadFavoritesTab fired from other classes *****//
     func loginNotification() {
