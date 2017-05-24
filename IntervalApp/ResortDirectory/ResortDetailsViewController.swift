@@ -89,9 +89,7 @@ class ResortDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // omniture tracking with evar44
-        ADBMobile.trackState(Constant.omnitureEvars.eVar44, data: nil)
-        
+       
         // omniture tracking with event 35
         if(Constant.MyClassConstants.resortsDescriptionArray.resortCode != nil){
             let userInfo: [String: String] = [

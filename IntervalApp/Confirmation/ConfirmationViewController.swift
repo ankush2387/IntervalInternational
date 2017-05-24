@@ -26,7 +26,11 @@ class ConfirmationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        // omniture tracking with event 40
+        let pageView: [String: String] = [
+            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.confirmation
+        ]
+        ADBMobile.trackAction(Constant.omnitureEvents.event40, data: pageView)
         
         self.title = Constant.ControllerTitles.confirmationControllerTitle
         if let rvc = self.revealViewController() {
@@ -57,7 +61,6 @@ class ConfirmationViewController: UIViewController {
         
         //Omniture tracking calls for conformation screen with event
         let userInfo: [String: String] = [
-            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.confirmation,
             Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch ,
             Constant.omnitureCommonString.productItem : Constant.MyClassConstants.selectedResort.resortCode! ,
             Constant.omnitureEvars.eVar13 :"\(String(describing: Constant.MyClassConstants.continueToPayResponse.view?.fees?.rental?.confirmationNumber))",

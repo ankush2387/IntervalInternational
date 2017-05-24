@@ -47,14 +47,19 @@ class CreateAlertViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // omniture tracking with event 40
+        let pageView: [String: String] = [
+            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.createAnAlert
+        ]
+        ADBMobile.trackAction(Constant.omnitureEvents.event40, data: pageView)
+
         
         // omniture tracking with event 50
         let userInfo: [String: String] = [
-            "eVar44" : "Create an Alert",
-            "eVar41" : "Alerts"
+            Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.alert
         ]
         
-        ADBMobile.trackAction("Event50", data: userInfo)
+        ADBMobile.trackAction(Constant.omnitureEvents.event50, data: userInfo)
         
         
         //**** Check for iPhone 4s and iPhone 5s to align travel window start and end date *****//

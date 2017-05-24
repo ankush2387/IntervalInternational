@@ -37,6 +37,14 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        // omniture tracking with event 40
+        let pageView: [String: String] = [
+            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.vacationSearchCheckingIn,
+            ]
+        ADBMobile.trackAction(Constant.omnitureEvents.event40, data: pageView)
+        
+        
         NotificationCenter.default.addObserver(self, selector: #selector(updateResortHoldingTime), name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(enableGuestFormCheckout), name: NSNotification.Name(rawValue: Constant.notificationNames.enableGuestFormCheckout), object: nil)
@@ -54,7 +62,6 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         // omniture tracking with event 37
         let userInfo: [String: String] = [
             Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch,
-            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.vacationSearchCheckingIn,
             Constant.omnitureCommonString.products : Constant.MyClassConstants.selectedResort.resortCode!,
             Constant.omnitureEvars.eVar37 : Helper.selectedSegment(index: Constant.MyClassConstants.searchForSegmentIndex),
             Constant.omnitureEvars.eVar39 : "",
