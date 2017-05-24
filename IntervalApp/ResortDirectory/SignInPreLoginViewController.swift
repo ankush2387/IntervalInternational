@@ -59,6 +59,11 @@ class SignInPreLoginViewController: UIViewController {
     var activeTF:UITextField!
     var scrollView = UIScrollView()
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = true
+        self.tabBarController?.tabBar.isHidden = true
+    }
+    
     override func viewDidLoad(){
         super.viewDidLoad()
         
@@ -89,9 +94,9 @@ class SignInPreLoginViewController: UIViewController {
         hasTouchID =  authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
         if(!(hasTouchID)) {
             
-            self.touchIdImageView.isHidden = true
+           /* self.touchIdImageView.isHidden = true
             self.enableTouchIdTextLabel.isHidden = true
-            self.enableTouchIdButton.isHidden = true
+            self.enableTouchIdButton.isHidden = true*/
         }
         self.userIdTF.delegate = self
         self.passwordTF.delegate = self
@@ -118,6 +123,11 @@ class SignInPreLoginViewController: UIViewController {
     //***** Check for frame orientation *****//
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         self.view.endEditing(true)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = false
+        self.tabBarController?.tabBar.isHidden = false
     }
     
     func reloadView(){
@@ -164,7 +174,8 @@ class SignInPreLoginViewController: UIViewController {
     //***** Method called when close button pressed to dismis the current controller from stack *****//
     @IBAction func closeButtonPressed(_ sender: AnyObject) {
         
-        self.dismiss(animated: true, completion: nil)
+        //self.dismiss(animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: true)
     }
     
     //***** Method called when sign in button pressed from prelogin screen *****//

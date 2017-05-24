@@ -182,6 +182,14 @@ class ClubPointSelectionViewController: UIViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        
+        // omniture tracking with event 40
+        let pageView: [String: String] = [
+            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.clubPointsSelection
+        ]
+        ADBMobile.trackAction(Constant.omnitureEvents.event40, data: pageView)
+
         doneButton.isHidden = true
         buttonSelectedString = Constant.MyClassConstants.segmentFirstString
         if(Constant.RunningDevice.deviceIdiom == .pad){
@@ -243,7 +251,7 @@ class ClubPointSelectionViewController: UIViewController {
         layout1.minimumInteritemSpacing = 0.0
         layout1.scrollDirection = .horizontal
         if(clubIntervalValuesCollectionView == nil){
-            clubIntervalValuesCollectionView = UICollectionView(frame: CGRect(x: 80, y: 0, width: UIScreen.main.bounds.width - 80 , height: 5 * 70), collectionViewLayout: layout1)
+            clubIntervalValuesCollectionView = UICollectionView(frame: CGRect(x: 80, y: 0, width: Int(UIScreen.main.bounds.width - 80) , height: (Constant.MyClassConstants.clubIntervalDictionary.allKeys.count * 70) + 50), collectionViewLayout: layout1)
             clubIntervalValuesCollectionView.register(UINib(nibName:Constant.customCellNibNames.clubPointsCell, bundle: nil), forCellWithReuseIdentifier:Constant.loginScreenReusableIdentifiers.cell)
             
             clubIntervalValuesCollectionView.showsHorizontalScrollIndicator = false
@@ -256,12 +264,12 @@ class ClubPointSelectionViewController: UIViewController {
             clubIntervalValuesCollectionView.isScrollEnabled = true
             clubPoinScrollVw.addSubview(clubIntervalValuesCollectionView)
         }else{
-            clubIntervalValuesCollectionView.frame = CGRect(x: 80, y: 0, width: UIScreen.main.bounds.width - 80 , height: 5 * 70)
+            clubIntervalValuesCollectionView.frame = CGRect(x: 80, y: 0, width: Int(UIScreen.main.bounds.width - 80) , height: (Constant.MyClassConstants.clubIntervalDictionary.allKeys.count * 70) + 50)
             clubIntervalValuesCollectionView.reloadData()
         }
         
         if(labelsCollectionView == nil){
-            labelsCollectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 80 , height: 5 * 70), collectionViewLayout: layout)
+            labelsCollectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 80 , height: (Constant.MyClassConstants.clubIntervalDictionary.allKeys.count * 70) + 50), collectionViewLayout: layout)
             
             labelsCollectionView.register(UINib(nibName: Constant.customCellNibNames.clubPointsCell, bundle: nil), forCellWithReuseIdentifier:Constant.loginScreenReusableIdentifiers.cell)
             labelsCollectionView.register(UINib(nibName: Constant.customCellNibNames.headerCell, bundle: nil), forCellWithReuseIdentifier:Constant.reUsableIdentifiers.clubHeaderCell)
@@ -272,7 +280,7 @@ class ClubPointSelectionViewController: UIViewController {
             labelsCollectionView.backgroundColor = UIColor.white
             clubPoinScrollVw.addSubview(labelsCollectionView)
         }else{
-            labelsCollectionView.frame = CGRect(x: 0, y: 0, width: 80 , height: 5 * 70)
+            labelsCollectionView.frame = CGRect(x: 0, y: 0, width: 80 , height: (Constant.MyClassConstants.clubIntervalDictionary.allKeys.count * 70) + 50)
             labelsCollectionView.reloadData()
         }
         
@@ -638,11 +646,7 @@ extension ClubPointSelectionViewController:UICollectionViewDataSource{
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if(collectionView.tag == 70){
-            return Constant.MyClassConstants.clubIntervalDictionary.allKeys.count + 1
-        }else{
-            return Constant.MyClassConstants.clubIntervalDictionary.allKeys.count + 1
-        }
+        return Constant.MyClassConstants.clubIntervalDictionary.allKeys.count + 1
     }
     
     
@@ -781,7 +785,11 @@ extension ClubPointSelectionViewController:UICollectionViewDelegateFlowLayout {
                 }
             }else{
                 if(Constant.RunningDevice.deviceIdiom == .phone){
-                    return CGSize(width: (collectionView.frame.size.width)/2, height: 70.0)
+                    if(indexPath.row == 0){
+                        return CGSize(width: (collectionView.frame.size.width)/2, height: 50.0)
+                    }else{
+                        return CGSize(width: (collectionView.frame.size.width)/2, height: 70.0)
+                    }
                 }
                 else{
                     

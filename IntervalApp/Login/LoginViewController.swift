@@ -61,10 +61,14 @@ class LoginViewController: UIViewController
         super.viewDidLoad()
         
         
-        // omniture tracking with event 68
+        // omniture tracking with event 40
+        let pageView: [String: String] = [
+            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.signIn
+        ]
+        ADBMobile.trackAction(Constant.omnitureEvents.event40, data: pageView)
         
+        // omniture tracking with event 68
         let userInfo: [String: String] = [
-            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.signIn,
             Constant.omnitureEvars.eVar12 : "\(TouchID.isTouchIDAvailable() ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no)"
         ]
     

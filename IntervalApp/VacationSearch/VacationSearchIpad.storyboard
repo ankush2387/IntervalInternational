@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="5vv-7r-MH2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="5vv-7r-MH2">
     <device id="ipad9_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -652,30 +652,38 @@
                                                                                 <rect key="frame" x="0.0" y="0.0" width="190" height="100"/>
                                                                             </imageView>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Key West FL" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="220" translatesAutoresizingMaskIntoConstraints="NO" id="PpU-bx-Vaf">
-                                                                                <rect key="frame" x="0.0" y="29" width="190" height="49"/>
+                                                                                <rect key="frame" x="0.0" y="26" width="190" height="46"/>
+                                                                                <constraints>
+                                                                                    <constraint firstAttribute="height" constant="46" id="qPg-pL-HEm"/>
+                                                                                </constraints>
                                                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
-                                                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                                <nil key="textColor"/>
+                                                                                <nil key="highlightedColor"/>
+                                                                            </label>
+                                                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sdy-5H-0Fo">
+                                                                                <rect key="frame" x="8" y="73" width="174" height="17.5"/>
+                                                                                <constraints>
+                                                                                    <constraint firstAttribute="height" constant="17.5" id="qe5-qe-c31"/>
+                                                                                </constraints>
+                                                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                                                                <nil key="textColor"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                         </subviews>
                                                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <constraints>
-                                                                            <constraint firstItem="PpU-bx-Vaf" firstAttribute="leading" secondItem="jAn-Ux-jQ0" secondAttribute="leading" id="9aP-lQ-TRo"/>
-                                                                            <constraint firstItem="PpU-bx-Vaf" firstAttribute="height" secondItem="jAn-Ux-jQ0" secondAttribute="height" multiplier="0.45" id="C7G-x8-GG8">
-                                                                                <variation key="heightClass=regular-widthClass=regular" constant="4"/>
-                                                                            </constraint>
+                                                                            <constraint firstItem="PpU-bx-Vaf" firstAttribute="trailing" secondItem="0b7-dy-YhI" secondAttribute="trailing" id="3qJ-ZM-ZMx"/>
                                                                             <constraint firstAttribute="trailing" secondItem="0b7-dy-YhI" secondAttribute="trailing" id="F7T-gR-lGu">
                                                                                 <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
                                                                             </constraint>
-                                                                            <constraint firstItem="PpU-bx-Vaf" firstAttribute="centerY" secondItem="jAn-Ux-jQ0" secondAttribute="centerY" id="Ofo-i4-9Ri">
-                                                                                <variation key="heightClass=regular-widthClass=regular" constant="3.5"/>
-                                                                            </constraint>
+                                                                            <constraint firstItem="PpU-bx-Vaf" firstAttribute="top" secondItem="jAn-Ux-jQ0" secondAttribute="top" constant="26" id="Hmj-1z-RCp"/>
+                                                                            <constraint firstItem="PpU-bx-Vaf" firstAttribute="leading" secondItem="0b7-dy-YhI" secondAttribute="leading" id="MuM-gK-K6m"/>
+                                                                            <constraint firstAttribute="bottom" secondItem="Sdy-5H-0Fo" secondAttribute="bottom" constant="9.5" id="NZE-DC-BfP"/>
                                                                             <constraint firstItem="0b7-dy-YhI" firstAttribute="leading" secondItem="jAn-Ux-jQ0" secondAttribute="leading" id="ZVL-zy-asq"/>
                                                                             <constraint firstItem="0b7-dy-YhI" firstAttribute="top" secondItem="jAn-Ux-jQ0" secondAttribute="top" id="eMo-sS-tl9"/>
+                                                                            <constraint firstItem="Sdy-5H-0Fo" firstAttribute="leading" secondItem="jAn-Ux-jQ0" secondAttribute="leading" constant="8" id="jDa-HF-WhW"/>
+                                                                            <constraint firstAttribute="trailing" secondItem="Sdy-5H-0Fo" secondAttribute="trailing" constant="8" id="mQW-D3-3zq"/>
                                                                             <constraint firstAttribute="bottom" secondItem="0b7-dy-YhI" secondAttribute="bottom" id="yxF-aI-r5K">
-                                                                                <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
-                                                                            </constraint>
-                                                                            <constraint firstAttribute="trailing" secondItem="PpU-bx-Vaf" secondAttribute="trailing" id="zYu-iK-RLx">
                                                                                 <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
                                                                             </constraint>
                                                                         </constraints>
@@ -690,10 +698,6 @@
                                                                                 <exclude reference="ZVL-zy-asq"/>
                                                                                 <exclude reference="eMo-sS-tl9"/>
                                                                                 <exclude reference="yxF-aI-r5K"/>
-                                                                                <exclude reference="9aP-lQ-TRo"/>
-                                                                                <exclude reference="C7G-x8-GG8"/>
-                                                                                <exclude reference="Ofo-i4-9Ri"/>
-                                                                                <exclude reference="zYu-iK-RLx"/>
                                                                             </mask>
                                                                         </variation>
                                                                         <variation key="heightClass=regular-widthClass=regular">
@@ -702,10 +706,6 @@
                                                                                 <include reference="ZVL-zy-asq"/>
                                                                                 <include reference="eMo-sS-tl9"/>
                                                                                 <include reference="yxF-aI-r5K"/>
-                                                                                <include reference="9aP-lQ-TRo"/>
-                                                                                <include reference="C7G-x8-GG8"/>
-                                                                                <include reference="Ofo-i4-9Ri"/>
-                                                                                <include reference="zYu-iK-RLx"/>
                                                                             </mask>
                                                                         </variation>
                                                                     </view>
@@ -803,6 +803,7 @@
                                                                 </mask>
                                                             </variation>
                                                             <connections>
+                                                                <outlet property="bedroomNumber" destination="Sdy-5H-0Fo" id="Par-ku-XUH"/>
                                                                 <outlet property="deletebutton" destination="D1X-82-YRa" id="viV-bU-vpq"/>
                                                                 <outlet property="imgView" destination="0b7-dy-YhI" id="1Bq-3o-mDR"/>
                                                                 <outlet property="lblTitle" destination="PpU-bx-Vaf" id="Rex-xs-h6l"/>
@@ -3696,7 +3697,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YYU-n7-Ox1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4327" y="3930"/>
+            <point key="canvasLocation" x="4129" y="3871"/>
         </scene>
         <!--Add Debit Or Credit Card View Controller-->
         <scene sceneID="16m-J4-vw7">
@@ -3971,7 +3972,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y4U-nQ-uX4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4690.625" y="3786.9140624999995"/>
+            <point key="canvasLocation" x="6455" y="3919"/>
         </scene>
         <!--Destination Resort View Controller-->
         <scene sceneID="vMR-D7-dFM">
@@ -3982,7 +3983,7 @@
                         <viewControllerLayoutGuide type="bottom" id="eSZ-FK-Dat"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="q0Z-GI-P7H">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1500"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RU4-ms-tnh">
@@ -4037,7 +4038,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="170" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="UQr-UE-QNt">
-                                <rect key="frame" x="30" y="60" width="708" height="964"/>
+                                <rect key="frame" x="30" y="60" width="708" height="1391"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ViewDetailsTBLcell" rowHeight="130" id="nh8-hF-3hI" customClass="ViewDetailsTBLcell" customModule="IntervalApp" customModuleProvider="target">
@@ -5963,6 +5964,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="hgo-Jq-z8A"/>
-        <segue reference="sel-eD-RNr"/>
+        <segue reference="5di-wX-yoy"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -95,6 +95,7 @@ class VacationSearchViewController: UIViewController {
         super.viewDidLoad()
         
         var isPrePopulatedData =  Constant.AlertPromtMessages.no
+        self.searchVacationTableView.estimatedRowHeight = 100
         
         if(Constant.MyClassConstants.whereTogoContentArray.count > 0 || Constant.MyClassConstants.whatToTradeArray.count > 0) {
             
@@ -210,8 +211,7 @@ class VacationSearchViewController: UIViewController {
          
          Constant.MyClassConstants.relinquishmentDeposits = Relinquishments.deposits
          Constant.MyClassConstants.relinquishmentOpenWeeks = Relinquishments.openWeeks
-         
-         
+            
          if(Relinquishments.pointsProgram != nil){
          Constant.MyClassConstants.relinquishmentProgram = Relinquishments.pointsProgram!
          
@@ -357,13 +357,12 @@ extension VacationSearchViewController:UITableViewDelegate {
             case 0 :
                 if((indexPath as NSIndexPath).row < Constant.MyClassConstants.whereTogoContentArray.count) {
                     return 70
-                }
-                else {
+                }else {
                     return 60
                 }
             case 1:
-                if((indexPath as NSIndexPath).row < Constant.MyClassConstants.checkInClosestContentArray.count) {
-                    return 70
+                if((indexPath as NSIndexPath).row < Constant.MyClassConstants.whatToTradeArray.count) {
+                    return UITableViewAutomaticDimension
                 }
                 else {
                     return 60
@@ -381,8 +380,7 @@ extension VacationSearchViewController:UITableViewDelegate {
                 return 70
                 
             }
-        }
-        else {
+        }else {
             
             //***** Return height according to section cell requirement *****//
             switch((indexPath as NSIndexPath).section) {
@@ -395,6 +393,7 @@ extension VacationSearchViewController:UITableViewDelegate {
                 }
             case 1:
                 return 80
+                //return UITableViewAutomaticDimension
             case 2:
                 return 120
             case 4:
@@ -552,6 +551,7 @@ extension VacationSearchViewController:UITableViewDelegate {
                     ADBMobile.trackAction(Constant.omnitureEvents.event43, data: nil)
                     Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
                     Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: indexPath.row)
+                    Constant.MyClassConstants.relinquishmentUnitsArray.removeObject(at: indexPath.row)
                 }
                 
                 if(storedData.count > 0) {
@@ -789,6 +789,14 @@ extension VacationSearchViewController:UITableViewDataSource {
                             cell.whereTogoTextLabel.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeek).resort!.resortName!), \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeek).relinquishmentYear!) Week \(weekNumber)"
                         }else if((object as AnyObject).isKind(of: OpenWeeks.self)){
                             let weekNumber = Constant.getWeekNumber(weekType: ((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).weekNumber))
+                            print((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff)
+                            if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff){
+                                cell.bedroomLabel.isHidden = false
+                                
+                                let resortList = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).unitDetails
+                                print((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).resort[0].resortName, resortList.count)
+                                cell.bedroomLabel.text = resortList[0].unitSize
+                            }
                             cell.whereTogoTextLabel.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).resort[0].resortName), \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).relinquishmentYear) Week \(weekNumber)"
                         }else{
                             
@@ -851,7 +859,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                 if(indexPath.section == 5) {
                     if(!showExchange){
                         let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: cell.contentView.frame.width - 20, height: 20))
-                        resortImageNameLabel.text = "TOP 10 GETAWAYS"
+                        resortImageNameLabel.text = Constant.segmentControlItems.getawaysLabelText
                         
                         resortImageNameLabel.textColor = UIColor.black
                         resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
@@ -1037,7 +1045,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                 if(indexPath.section == 4) {
                     if(!showExchange){
                         let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: cell.contentView.frame.width - 20, height: 20))
-                        resortImageNameLabel.text = "TOP 10 GETAWAYS"
+                        resortImageNameLabel.text = Constant.segmentControlItems.getawaysLabelText
                         
                         resortImageNameLabel.textColor = UIColor.black
                         resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)

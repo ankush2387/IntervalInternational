@@ -117,15 +117,19 @@ class CreateActionSheet: UITableViewController {
         if(contact!.memberships!.count > 1) {
             Constant.MyClassConstants.signInRequestedController.dismiss(animated: true, completion: nil)
         }
-    if(Constant.MyClassConstants.signInRequestedController.isKind(of:SignInPreLoginViewController.self)) {
-                                        
-        Constant.MyClassConstants.signInRequestedController.dismiss(animated: true, completion: nil)
+            
+        if(Constant.MyClassConstants.signInRequestedController.isKind(of:SignInPreLoginViewController.self)) {
+         Constant.MyClassConstants.signInRequestedController.navigationController?.popViewController(animated: true)
+            
         NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
     }
     else {
-    Constant.MyClassConstants.signInRequestedController.performSegue(withIdentifier: Constant.segueIdentifiers.dashboradSegueIdentifier, sender: nil)
-                                        
+         Constant.MyClassConstants.signInRequestedController.performSegue(withIdentifier: Constant.segueIdentifiers.dashboradSegueIdentifier, sender: nil)
     }
+            
+    //***** Get upcoming trips for user *****//
+    Helper.getUpcomingTripsForUser()
+
 
     //***** Getaway Alerts API call after successfull login *****//
     RentalClient.getAlerts(UserContext.sharedInstance.accessToken, onSuccess: { (response) in
@@ -139,9 +143,7 @@ class CreateActionSheet: UITableViewController {
     //Get user favorites.
     Helper.getUserFavorites()
       
-    //***** Get upcoming trips for user *****//
-    Helper.getUpcomingTripsForUser()
-},
+  },
     onError:{(error) in
         SVProgressHUD.dismiss()
         Constant.MyClassConstants.signInRequestedController.dismiss(animated: true, completion: nil)
@@ -204,9 +206,20 @@ class CreateActionSheet: UITableViewController {
                     self.getStatusForAllAlerts()
                 }else{
                     NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
+                    
+                    Constant.MyClassConstants.isEvent2Ready = Constant.MyClassConstants.isEvent2Ready + 1
+                    if(Constant.MyClassConstants.isEvent2Ready > 1) {
+                        
+                        sendOmnitureTrackCallForEvent2()
+                    }
                 }
                 }){ (error) in
-                
+                    
+                    Constant.MyClassConstants.isEvent2Ready = Constant.MyClassConstants.isEvent2Ready + 1
+                    if(Constant.MyClassConstants.isEvent2Ready > 1) {
+                        
+                        sendOmnitureTrackCallForEvent2()
+                    }
             }
            }
         }else {
@@ -215,4 +228,94 @@ class CreateActionSheet: UITableViewController {
     }
 }
 
+// function to send omniture tracking event2
+func sendOmnitureTrackCallForEvent2() {
+    
+    let Product = UserContext.sharedInstance.selectedMembership?.getProductWithHighestTier()
+    
+    // omniture tracking with event 2
+    let userInfo = NSMutableDictionary()
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar1 : (UserContext.sharedInstance.selectedMembership?.memberNumber!) as Any])
+    
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar3 : "\(Product!.productCode!)-\(UserContext.sharedInstance.selectedMembership!.membershipTypeCode!)"])
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar4 : ""])
+    
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar5 : Constant.MyClassConstants.loginOriginationPoint])
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar6 :""])
+    
+    switch Product!.productCode! {
+        
+    case Constant.productCodeImageNames.basic:
+        userInfo.addEntries(from: [Constant.omnitureEvars.eVar7 :Helper.getUpcommingcheckinDatesDiffrence(date: (Product?.expirationDate!)!)])
+        
+        
+    case Constant.productCodeImageNames.cig:
+        userInfo.addEntries(from: [Constant.omnitureEvars.eVar8 :Helper.getUpcommingcheckinDatesDiffrence(date: (Product?.expirationDate!)!)])
+        
+    case Constant.productCodeImageNames.gold:
+        userInfo.addEntries(from: [Constant.omnitureEvars.eVar9 :Helper.getUpcommingcheckinDatesDiffrence(date: (Product?.expirationDate!)!)])
+        
+    case Constant.productCodeImageNames.platinum:
+        userInfo.addEntries(from: [Constant.omnitureEvars.eVar10 :Helper.getUpcommingcheckinDatesDiffrence(date: (Product?.expirationDate!)!)])
+        
+    default:
+        break
+    }
+    
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar11 :Constant.MyClassConstants.activeAlertsArray.count])
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar14 :""])
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar16 :(UserContext.sharedInstance.contact?.memberships?.count)! > 0 ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no])
+    var tripTypeString = ""
+    if(Constant.MyClassConstants.exchangeCounter > 0) {
+        tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.exchage)-\(Constant.MyClassConstants.exchangeCounter)")
+    }
+    else {
+        tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.exchage)-\(Constant.omnitureCommonString.notAvailable)")
+    }
+    
+    if(Constant.MyClassConstants.getawayCounter > 0) {
+        tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.getaway)-\(Constant.MyClassConstants.getawayCounter)")
+    }
+    else {
+        tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.getaway)-\(Constant.omnitureCommonString.notAvailable)")
+    }
+    
+    if(Constant.MyClassConstants.shortStayCounter > 0) {
+        tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.shortStay)-\(Constant.MyClassConstants.shortStayCounter)")
+    }
+    else {
+        tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.shortStay)-\(Constant.omnitureCommonString.notAvailable)")
+    }
+    
+    if(Constant.MyClassConstants.acomodationCertificateCounter > 0) {
+        tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.acomodationCertificate)-\(Constant.MyClassConstants.acomodationCertificateCounter)")
+    }
+    else {
+        tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.acomodationCertificate)-\(Constant.omnitureCommonString.notAvailable)")
+    }
+    
+    if(Constant.MyClassConstants.flightCounter > 0) {
+        tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.flightBooking)-\(Constant.MyClassConstants.flightCounter)")
+    }
+    else {
+        tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.flightBooking)-\(Constant.omnitureCommonString.notAvailable)")
+    }
+    
+    if(Constant.MyClassConstants.carRentalCounter > 0) {
+        tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.carRental)-\(Constant.MyClassConstants.carRentalCounter)")
+    }
+    else {
+        tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.carRental)-\(Constant.omnitureCommonString.notAvailable)")
+    }
+    
+    
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar17 :tripTypeString])
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar27 :UserContext.sharedInstance.contact?.contactId as Any])
+    
+    print(userInfo)
+    
+    
+    ADBMobile.trackAction(Constant.omnitureEvents.event2, data: userInfo as! [AnyHashable : Any])
+
+}
 

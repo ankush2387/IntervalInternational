@@ -19,6 +19,7 @@ class MyUpcomingTripViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.title = Constant.ControllerTitles.myUpcomingTripViewController
         
         //***** Setup the hamburger menu.  This will reveal the side menu. *****//
@@ -33,6 +34,16 @@ class MyUpcomingTripViewController: UIViewController{
             self.view.addGestureRecognizer( rvc.panGestureRecognizer())
             self.myUpcommingTBL.reloadData()
         }
+        
+        // Omniture tracking with event 73
+        let noTrips:Int? = Int(Constant.omnitureCommonString.noTrips)
+       
+        let userInfo: [String: String] = [
+            
+            Constant.omnitureEvars.eVar18 : Constant.MyClassConstants.upcomingOriginationPoint,
+            Constant.omnitureEvars.eVar31 : "\(String(describing: Constant.MyClassConstants.upcomingTripsArray.count > 0 ? Constant.MyClassConstants.upcomingTripsArray.count : noTrips))\(Constant.omnitureEvars.eVar18)"
+        ]
+        ADBMobile.trackAction(Constant.omnitureEvents.event73, data: userInfo)
     }
     
     override func didReceiveMemoryWarning() {
@@ -113,7 +124,6 @@ extension MyUpcomingTripViewController:UITableViewDataSource {
         Helper.addServiceCallBackgroundView(view: self.view)
         SVProgressHUD.show()
         ExchangeClient.getExchangeTripDetails(UserContext.sharedInstance.accessToken, confirmationNumber: Constant.MyClassConstants.transactionNumber, onSuccess: { (exchangeResponse) in
-            
             
             Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails = exchangeResponse
             Helper.removeServiceCallBackgroundView(view: self.view)

@@ -52,19 +52,19 @@ class ResortDirectoryResortCell: UITableViewCell {
 //***** custom cell favorites button action implementation *****//
     @IBAction func favirotesButtonPressed(_ sender: AnyObject) {
         
-        /*if(fevoriteButton.selected == false) {
+        if(fevoriteButton.isSelected == false) {
         
             if(UserContext.sharedInstance.accessToken == nil ) {
                self.delegate?.favoritesButtonSelectedAtIndex(sender.tag)
             }
             else {
                 
-                fevoriteButton.selected = true
+                fevoriteButton.isSelected = true
             }
         }
         else {
-            fevoriteButton.selected = false
-        }*/
+            fevoriteButton.isSelected = false
+        }
     }
 //***** method called when the added notification reloadFavoritesTab fired from other classes *****//
     func loginNotification() {
@@ -96,11 +96,10 @@ extension ResortDirectoryResortCell:UICollectionViewDataSource {
         if((indexPath as NSIndexPath).row % 2 == 0){
             cell.backgroundColor = UIColor.green
         }
-        
 		if(Constant.MyClassConstants.imagesArray.count > 0){
 			cell.imgView.setImageWith(URL(string: Constant.MyClassConstants.imagesArray[(indexPath as NSIndexPath).row] as! String), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
 				if (error != nil) {
-					cell.imgView.image = UIImage(named: "NoImageIcon")
+					cell.imgView.image = UIImage(named: Constant.MyClassConstants.noImage)
 				}
 				}, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
 		}

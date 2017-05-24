@@ -83,15 +83,13 @@ class SideMenuTableViewController: UIViewController
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        
-        // omniture tracking with event 71
+    
+        // omniture tracking with event 40
         let userInfo: [String: String] = [
-            "eVar44" : "Side Menu Appeared"
+            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.sideMenuAppeared
         ]
         
-        ADBMobile.trackAction("Event71", data: userInfo)
+        ADBMobile.trackAction(Constant.omnitureEvents.event40, data: userInfo)
 
         
         let cellNib = UINib(nibName:Constant.customCellNibNames.memberCell, bundle: nil)
@@ -109,6 +107,11 @@ class SideMenuTableViewController: UIViewController
         UserContext.sharedInstance.signOut()
         //Remove all favorites for a user.
         Constant.MyClassConstants.favoritesResortArray.removeAll()
+        Constant.MyClassConstants.favoritesResortCodeArray.removeAllObjects()
+        
+        //Remove available points for relinquishment program
+        Constant.MyClassConstants.relinquishmentProgram = PointsProgram()
+        
         //Remove all saved alerts for a user.
         Constant.MyClassConstants.getawayAlertsArray.removeAll()
         Constant.MyClassConstants.isLoginSuccessfull = false
@@ -155,7 +158,7 @@ extension SideMenuTableViewController:UITableViewDelegate {
         }
         else if(indexPath.row == 5) {
             
-            Constant.MyClassConstants.alertOriginationPoint = "Side Menu"
+            Constant.MyClassConstants.alertOriginationPoint = Constant.omnitureCommonString.sideMenu
         }
         else {
             
@@ -165,6 +168,7 @@ extension SideMenuTableViewController:UITableViewDelegate {
         
         if(smi.storyboardId?.characters.count != 0 && (indexPath as NSIndexPath).row != SideMenuTableViewController.SideMenuItems.count - 1) {
             
+            Constant.MyClassConstants.upcomingOriginationPoint = Constant.omnitureCommonString.sideMenu
             /*if((indexPath as NSIndexPath).row == 4){
                 let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.myUpcomingTripIphone, bundle: nil)
                 let resultController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.upcomingTripsViewController) as? UpComingTripDetailController
@@ -183,6 +187,8 @@ extension SideMenuTableViewController:UITableViewDelegate {
                 transition.subtype = kCATransitionFromRight
                 viewController.view.layer.add(transition, forKey: Constant.MyClassConstants.switchToView)
                 UIApplication.shared.keyWindow?.rootViewController = viewController
+            
+            
             //}
         }
         else {

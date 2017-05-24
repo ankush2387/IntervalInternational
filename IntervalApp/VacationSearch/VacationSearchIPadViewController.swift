@@ -188,7 +188,7 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
             
             if(!showExchange){
                 let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: (cell?.contentView.frame.width)! - 20, height: 20))
-                resortImageNameLabel.text = "TOP 10 GETAWAYS"
+                resortImageNameLabel.text = Constant.segmentControlItems.getawaysLabelText
                 
                 resortImageNameLabel.textColor = UIColor.black
                 resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)

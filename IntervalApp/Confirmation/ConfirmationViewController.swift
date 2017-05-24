@@ -26,7 +26,11 @@ class ConfirmationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        // omniture tracking with event 40
+        let pageView: [String: String] = [
+            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.confirmation
+        ]
+        ADBMobile.trackAction(Constant.omnitureEvents.event40, data: pageView)
         
         self.title = Constant.ControllerTitles.confirmationControllerTitle
         if let rvc = self.revealViewController() {
@@ -55,8 +59,27 @@ class ConfirmationViewController: UIViewController {
         let dateString = dateFormatter.string(from: Date())
         transactionDate.text = dateString
         
+        //Omniture tracking calls for conformation screen with event
+        let userInfo: [String: String] = [
+            Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch ,
+            Constant.omnitureCommonString.productItem : Constant.MyClassConstants.selectedResort.resortCode! ,
+            Constant.omnitureEvars.eVar13 :"\(String(describing: Constant.MyClassConstants.continueToPayResponse.view?.fees?.rental?.confirmationNumber))",
+            Constant.omnitureEvars.eVar22 : "\(17 - Constant.holdingTime)",
+            Constant.omnitureEvars.eVar29 : Helper.convertDateToString(date: Constant.MyClassConstants.vacationSearchShowDate, format: Constant.MyClassConstants.dateFormat)  ,
+            Constant.omnitureEvars.eVar30 : "" ,
+            Constant.omnitureEvars.eVar37 : Helper.selectedSegment(index: Constant.MyClassConstants.searchForSegmentIndex) ,
+            Constant.omnitureEvars.eVar39 : "" ,
+            Constant.omnitureEvars.eVar40 : "" ,
+            Constant.omnitureEvars.eVar42 : "" ,
+            Constant.omnitureEvars.eVar62 : "\(Helper.getDifferenceOfDates())" ,
+            Constant.omnitureEvars.eVar63 : "\((UserContext.sharedInstance.contact?.creditcards?.count)! > 0 ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no)" ,
+            Constant.omnitureEvars.eVar73 : Constant.MyClassConstants.checkoutInsurencePurchased,
+            Constant.omnitureEvars.eVar77 : Constant.MyClassConstants.checkoutPromotionPurchased
+            
+        ]
+        //ADBMobile.trackAction(Constant.omnitureEvents., data: userInfo)
         
-        // Do any additional setup after loading the view.
+        
     }
     
     //***** Function called when view trip details button is pressed. ******//

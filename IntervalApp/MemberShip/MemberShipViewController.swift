@@ -36,6 +36,23 @@ class MemberShipViewController: UIViewController {
         self.title = Constant.ControllerTitles.memberShipViewController
         
         self.displayMenuButton()
+        
+        UserClient.getCurrentProfile(UserContext.sharedInstance.accessToken, onSuccess: { (membership) in
+            
+           Constant.MyClassConstants.membershipdetails = membership.memberships!
+           
+             for memberdetails  in Constant.MyClassConstants.membershipdetails{
+                
+                 Constant.MyClassConstants.memberNumber =  memberdetails.memberNumber
+            }
+        
+        },
+                                     
+         onError: {(error) in
+            
+       
+        })
+        
        // Update Membership Dictionary
         memberDetailDictionary.updateValue("Alex Redendo", forKey: "contactname")
         memberDetailDictionary.updateValue("ARedendo", forKey: "loginid")
@@ -198,6 +215,7 @@ extension MemberShipViewController:UITableViewDataSource{
             cell.membershipName.text = Product?.productName
             cell.memberImageView.image = UIImage(named: productcode!)
             
+            
             cell.delegate = self
 
             return cell
@@ -215,7 +233,7 @@ extension MemberShipViewController:UITableViewDataSource{
             membershipCell?.switchMembershipButton.isHidden = true
                 }
             membershipCell?.getCell(self.memberDetailDictionary)
-            
+            membershipCell?.contactNameLabel.text = Constant.MyClassConstants.memberNumber
             return membershipCell!
         }
         

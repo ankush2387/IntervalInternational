@@ -52,13 +52,20 @@ class EditMyAlertIpadViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        // omniture tracking with event 40
+        let pageView: [String: String] = [
+            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.editAnAlert
+        ]
+        ADBMobile.trackAction(Constant.omnitureEvents.event40, data: pageView)
+        
         // omniture tracking with event 76
         let userInfo: [String: String] = [
-            "eVar44" : "Edit an Alert",
-            "eVar41" : "Alerts"
+           
+            Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.alert
         ]
         
-        ADBMobile.trackAction("Event76", data: userInfo)
+        ADBMobile.trackAction(Constant.omnitureEvents.event76, data: userInfo)
         
         //**** Check for iPhone 4s and iPhone 5s to align travel window start and end date *****//
         if(UIScreen.main.bounds.width == 320){
@@ -299,8 +306,8 @@ class EditMyAlertIpadViewController: UIViewController {
                             // omniture tracking with event 53
                             let userInfo: [String: Any] = [
                                 Constant.omnitureEvars.eVar43 : " - \(Date())",
-                                "s.list1": deststr,
-                                Constant.omnitureEvars.eVar41 : "Alerts",
+                                Constant.omnitureCommonString.listItem: deststr,
+                                Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.alert,
                                 Constant.omnitureEvars.eVar57 : Constant.MyClassConstants.alertWindowStartDate,
                                 Constant.omnitureEvars.eVar58 : Constant.MyClassConstants.alertWindowEndDate,
                                 Constant.omnitureEvars.eVar59 : self.anlyticsBedroomSize,
@@ -318,7 +325,7 @@ class EditMyAlertIpadViewController: UIViewController {
                             
                             // omniture tracking with event 53
                             let userInfo: [String: Any] = [
-                                Constant.omnitureEvars.eVar41 : "Alerts",
+                                Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.alert,
                                 Constant.omnitureEvars.eVar69 : Constant.AlertPromtMessages.no
                             ]
                             
@@ -463,7 +470,11 @@ extension EditMyAlertIpadViewController:UICollectionViewDataSource {
             let destName = (object as! AreaOfInfluenceDestination).destinationName
             
             let terocode = (object as! AreaOfInfluenceDestination).address?.territoryCode
-            cell.lblTitle.text = "\(destName!), \(terocode!)"
+            if destName != nil && terocode != nil{
+                cell.lblTitle.text = "\(destName!), \(terocode!)"
+            }else{
+                cell.lblTitle.text = ""
+            }
         }
         
         cell.deletebutton.tag = indexPath.row

@@ -1650,7 +1650,7 @@
                     <connections>
                         <outlet property="bedroomSizeTableView" destination="Q9t-5J-6T3" id="G2Q-Xr-C6v"/>
                         <outlet property="doneButton" destination="SWI-H9-egv" id="tUq-bw-ZeF"/>
-                        <outlet property="titleLabel" destination="OBf-0Q-OoA" id="ipV-VW-lCE"/>
+                        <outlet property="titleLabel" destination="EUG-aQ-GiU" id="5oq-E9-Y7O"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="K5k-P6-aTb" userLabel="First Responder" sceneMemberID="firstResponder"/>

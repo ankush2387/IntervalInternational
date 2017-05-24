@@ -357,6 +357,7 @@ public class Helper{
     
     //***** Common function for user Favorites resort API call after successfull call *****//
     static func getUserFavorites(){
+        if(UserContext.sharedInstance.accessToken != nil){
         UserClient.getFavoriteResorts(UserContext.sharedInstance.accessToken, onSuccess: { (response) in
             Constant.MyClassConstants.favoritesResortArray.removeAll()
             for resortcode in [response][0] {
@@ -367,14 +368,33 @@ public class Helper{
         })
         { (error) in
         }
+        }
     }
     
     //**** Common function to get upcoming trips. ****//
    static func getUpcomingTripsForUser(){
         UserClient.getUpcomingTrips(UserContext.sharedInstance.accessToken, onSuccess: {(upComingTrips) in
             Constant.MyClassConstants.upcomingTripsArray = upComingTrips
+            
+            for trip in upComingTrips { if((trip.type) != nil) {
+                
+                print(trip.type as Any)
+                
+                }
+            }
+            Constant.MyClassConstants.isEvent2Ready = Constant.MyClassConstants.isEvent2Ready + 1
+
+            if(Constant.MyClassConstants.isEvent2Ready > 1) {	 	               sendOmnitureTrackCallForEvent2()
+            }
+            
             NotificationCenter.default.post(name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: self)
         }, onError: {(error) in
+            
+            Constant.MyClassConstants.isEvent2Ready = Constant.MyClassConstants.isEvent2Ready + 1
+            
+            if(Constant.MyClassConstants.isEvent2Ready > 1) {	 	               sendOmnitureTrackCallForEvent2()
+            }
+
         })
     }
 
@@ -410,7 +430,6 @@ public class Helper{
                     
                     ADBMobile.trackAction(Constant.omnitureEvents.event33, data: userInfo)
 
-                    
                     
                     senderVC.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
                 }else if (senderVC is GetawayAlertsIPhoneViewController){
@@ -564,6 +583,8 @@ public class Helper{
     static func InitializeOpenWeeksFromLocalStorage () {
         Constant.MyClassConstants.relinquishmentIdArray.removeAllObjects()
         Constant.MyClassConstants.whatToTradeArray.removeAllObjects()
+        Constant.MyClassConstants.idUnitsRelinquishmentDictionary.removeAllObjects()
+        Constant.MyClassConstants.relinquishmentUnitsArray.removeAllObjects()
         let realm = try! Realm()
         let Membership = UserContext.sharedInstance.selectedMembership
         let SelectedMembershipNumber = Membership?.memberNumber
@@ -580,8 +601,15 @@ public class Helper{
                         
                         for object in openWk.openWeeks {
                             
+                            let tempDict = NSMutableDictionary()
                             Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
+                            
                             Constant.MyClassConstants.whatToTradeArray.add(object)
+                            Constant.MyClassConstants.idUnitsRelinquishmentDictionary.setValue(object.unitDetails, forKey: object.relinquishmentID)
+                            tempDict.setValue(object.unitDetails, forKey: object.relinquishmentID)
+                            Constant.MyClassConstants.relinquishmentUnitsArray.add(tempDict)
+                            print(object.unitDetails.count, Constant.MyClassConstants.idUnitsRelinquishmentDictionary, Constant.MyClassConstants.relinquishmentUnitsArray)
+                            
                         }
                         
                     }else{
@@ -725,6 +753,14 @@ public class Helper{
         return returnDate.day!
     }
     
+    static func getUpcommingcheckinDatesDiffrence(date:Date) -> Int{
+        
+        let cal = NSCalendar.current
+        
+        let returnDate = cal.dateComponents(Set<Calendar.Component>([.day]), from: Constant.MyClassConstants.todaysDate, to: date)
+        
+          return returnDate.day!
+    }
     //***** common function that returns date difference for two years between todate and fromdate *****//
     static func getDifferenceOfDatesAhead() -> Int{
         let cal = NSCalendar.current
@@ -786,7 +822,7 @@ public class Helper{
         DirectoryClient.getResortsByArea(UserContext.sharedInstance.accessToken, areaCode: areaCode, onSuccess: {(response) in
             Constant.MyClassConstants.resortDirectoryResortArray = response
             print(response[0].images)
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reloadRegionTable"), object: nil)
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadRegionNotification), object: nil)
             value = true
             
         }, onError: {(error) in
@@ -966,11 +1002,12 @@ public class Helper{
         addServiceCallBackgroundView(view: viewcontroller.view)
         SVProgressHUD.show()
         DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: code, onSuccess: { (response) in
-            
+    
             Constant.MyClassConstants.resortsDescriptionArray = response
             Constant.MyClassConstants.imagesArray.removeAllObjects()
             let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
             for imgStr in imagesArray {
+                print(imgStr.url!)
                 if(imgStr.size == Constant.MyClassConstants.imageSize) {
                     
                     Constant.MyClassConstants.imagesArray.add(imgStr.url!)
@@ -994,11 +1031,7 @@ public class Helper{
                     })
                 }
                 else {
-                    
-                    let storyboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
-                    let viewController = storyboard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortVC) as! ResortDetailsViewController
-                    viewController.senderViewController = Constant.MyClassConstants.searchResult
-                    viewcontroller.present(viewController, animated: true, completion: nil)
+                    viewcontroller.performSegue(withIdentifier: Constant.segueIdentifiers.resortDetailsSegue, sender: self)
                 }
             }
             else {
@@ -1331,6 +1364,16 @@ public class Helper{
         }
         
         
+    }
+    static func trackOmnitureCallForPageView(name:String) {
+        
+        // omniture tracking with event 40
+        let userInfo: [String: String] = [
+            Constant.omnitureEvars.eVar44 : name
+            ]
+        
+        ADBMobile.trackAction(Constant.omnitureEvents.event40, data: userInfo)
+
     }
 
 }

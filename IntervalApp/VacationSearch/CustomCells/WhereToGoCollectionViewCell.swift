@@ -26,6 +26,7 @@ class WhereToGoCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var imgView: UIImageView!
     @IBOutlet weak var lblTitle: UILabel!
+    @IBOutlet weak var bedroomNumber: UILabel!
     
     @IBOutlet weak var tradeDeleteButton: IUIKButton!
    

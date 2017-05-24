@@ -141,10 +141,8 @@ extension ResortDirectoryTabController:UITabBarControllerDelegate {
                 
             }
             else {
-                self.performSegue(withIdentifier: Constant.segueIdentifiers.segueSignInForPreLogin, sender: nil)
-                
+                //self.performSegue(withIdentifier: Constant.segueIdentifiers.segueSignInForPreLogin, sender: self)
             }
-            
         }
     }
 }

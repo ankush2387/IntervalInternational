@@ -23,7 +23,7 @@ class Constant: NSObject {
         static var deviceIdiom = UIDevice().userInterfaceIdiom
     }
     
-    //GetawaySearchResultGuestFormDetailData
+    //Getaways SearchResult CardFormDetail Data
     struct GetawaySearchResultGuestFormDetailData {
         
         static var countryListArray = ["Canada","USA","India","Austrelia","South Africa"]
@@ -75,6 +75,7 @@ class Constant: NSObject {
         
         static var alertOriginationPoint:String!
         static var loginOriginationPoint:String!
+        static var upcomingOriginationPoint : String!
         static var loginType:String!
         static var selectedDestinationNames:String = ""
         static var addressStringForCardDetailSection = "Address"
@@ -82,6 +83,17 @@ class Constant: NSObject {
         static var selectionType = -1
         static var searchOriginationPoint = "Default"
         static var searchForSegmentIndex = 0
+        static var checkoutInsurencePurchased = "No"
+        static var checkoutPromotionPurchased = ""
+        
+        //upcoming trip type counter value
+        static var exchangeCounter = 0
+        static var getawayCounter = 0
+        static var shortStayCounter = 0
+        static var acomodationCertificateCounter = 0
+        static var flightCounter = 0
+        static var carRentalCounter = 0
+        static var isEvent2Ready = 0
         
         //global variable to hold advisement type text
         static var advisementTypeStringaArray = ["Important Advisements","General Advisements","Additional Advisements"]
@@ -189,6 +201,9 @@ class Constant: NSObject {
         static var getawayAlertsArray = [RentalAlert]()
         static var upcomingTripsArray = [UpcomingTrip]()
         static var activeAlertsArray:NSMutableArray = []
+        static var membershipdetails = [Membership]()
+        static var memberdetailsarray:NSMutableArray = []
+        static var memberNumber: String!
         
         static var whereTogoContentArray:NSMutableArray = []
         static var whatToTradeArray:NSMutableArray = []
@@ -205,7 +220,8 @@ class Constant: NSObject {
         
         static let sidemenuIntervalInternationalCorporationLabel = NSLocalizedString("2015 Interval International. Privacy/Legal", comment: "")
         static let noRelinquishmentavailable = NSLocalizedString("No Relinquishment available", comment: "")
-        static let relinquishmentTitle = NSLocalizedString("Select master or lock-off portion", comment: "")
+        static let relinquishmentTitle = NSLocalizedString("Select all or any lock-off portion", comment: "")
+        static let bedroomTitle = NSLocalizedString("Choose Bedrooms", comment: "")
     
         static var selectedIndex:Int!
         static var vacationSearchContentPagerRunningIndex  = 0
@@ -257,7 +273,7 @@ class Constant: NSObject {
         static var bedRoomSizeSelectedIndexArray:NSMutableArray = []
         static var amenitiesDictionary = NSMutableDictionary()
         static var advisementsDictionary = NSMutableDictionary()
-        static var imageSize = "large"
+        static var imageSize = "LARGE"
         static var imageSizeXL = "XLARGE"
         static var noImage = "NoImageIcon"
         static var logoMenuImage = "LogoMenu"
@@ -332,27 +348,36 @@ class Constant: NSObject {
         
         
         //Relinquishment selection screen response arrays
-        static var relinquishmentAvalableToolSelectedDate:Date!
+        static var  relinquishmentAvalableToolSelectedDate:Date!
         
-        static var onsiteArray = NSMutableArray()
-        static var nearbyArray = NSMutableArray()
+        static var  onsiteArray = NSMutableArray()
+        static var  nearbyArray = NSMutableArray()
         static var  relinquishmentIdArray = NSMutableArray()
+        static var  relinquishmentUnitsArray = NSMutableArray()
+        static var  idUnitsRelinquishmentDictionary = NSMutableDictionary()
+        static var  userSelectedUnitsArray = NSMutableArray()
+        static var  senderRelinquishmentID = ""
         static var  relinquishmentDeposits = [Deposit]()
         static var  relinquishmentOpenWeeks = [OpenWeek]()
         static var  relinquishmentProgram = PointsProgram()
         static var  relinquishmentSelectedWeek = OpenWeek()
         static var  clubPointResortsArray = [Resort]()
+        static var  userSelectedStringArray = [String]()
+        
         
         static var onsiteString : String! = "Nearby" + "\n"
         static var nearbyString : String!  = "On-Site" + "\n"
         static var indexSlideButton : Int = 0
         static var onsiteDictKey = "Onsite"
         static var nearbyDictKey = "Nearby"
+        static var status = "true"
         
         static var inventoryPrice = [InventoryPrice]()
         static var selectedResort = Resort()
         
         static var paymentMethodTitle = "Payment Method"
+        static var webViewGetElementById = "document.getElementById('WASCInsuranceOfferOption0').checked == true;"
+        static var webViewGetElementById1 = "document.getElementById('WASCInsuranceOfferOption1').checked == true;"
         static var paymentInfo = "Select your payment method"
         static var verifying = "Verifying..."
         static var insurance = "Insurance"
@@ -360,6 +385,9 @@ class Constant: NSObject {
         static var exchangeFeeTitle = "Exchange Fee"
         static var getawayFee = "Getaway Fee"
         static var taxesTitle = "Taxes"
+        static var emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        static var selfMatches = "SELF MATCHES %@"
+        static var endingIn = "ending in"
         
         static var enableTaxes = false
         static var enableGuestCertificate = false
@@ -484,7 +512,8 @@ class Constant: NSObject {
         static var editAlertEmptyWidowStartDateMessage = NSLocalizedString("Please select window start date. ", comment: "")
         static var editAlertEmptyWidowEndDateMessage = NSLocalizedString("Please select window End date. ", comment: "")
         static var editAlertdetinationrequiredMessage = NSLocalizedString("Please select at least one destination or resort. ", comment: "")
-        static var bedroomSizeAlertMessage = NSLocalizedString("Please select at least one bedroom size. ", comment: "")
+        //static var bedroomSizeAlertMessage = NSLocalizedString("Please select at least one bedroom size. ", comment: "")
+        static var bedroomSizeAlertMessage = NSLocalizedString("Please select at least one master or lock-off portion. ", comment: "")
         static var feesAlertMessage = NSLocalizedString("Slide to agree to fees. ", comment:"")
         static var insuranceSelectionMessage = NSLocalizedString("Select trip protection or choose \("\"No I decline coverage.\"")", comment: "")
         static var paymentSelectionMessage = NSLocalizedString("Please select any payment method. ", comment:"")
@@ -764,7 +793,8 @@ class Constant: NSObject {
         static var clubPointsSelectionViewController = "clubpointselectionPageviewcontroller"
         static var upcomingTripsViewController = "UpComingTripDetailController"
         static var tripDetailsViewController = "TripDetailsNavigationController"
-        
+        static var createAlertViewController = "CreateAlertViewController"
+        static var signInPreLoginViewController = "SignInPreLoginViewController"
         
     }
     
@@ -1510,7 +1540,31 @@ class Constant: NSObject {
         static var vacationSearchCheckingIn = "Vacation search - Checking In"
         static var products = "Products"
         static var vacationSearchPaymentInformation = "Vacation Search - Payment Information"
-        
+        static var vacationSearchRelinquishmentSelect = "Vacation Search - Relinquishment Select"
+        static var vacationSearch = "Vacation Search"
+        static var available = "Available"
+        static var notAvailable = "Not Available"
+        static var clubPointsSelection = "Club Points Selection"
+        static var simpleLockOffUnitOptions = "Simple Lock-Off Unit Options"
+        static var noTrips = "NO Trips"
+        static var sideMenu = "Side Menu"
+        static var homeDashboard = "Home Dashboard"
+        static var cigPoints = "CIGPoints"
+        static var clubPoints = "ClubPoints"
+        static var confirmation = "Vacation Search – Transaction Completed"
+        static var exchage = "EX"
+        static var getaway = "GW"
+        static var acomodationCertificate = "AC"
+        static var shortStay = "SS"
+        static var flightBooking = "FB"
+        static var toorBooking = "TB"
+        static var carRental = "CR"
+        static var notApplicable = "NA"
+        static var resortDirectoryHome = "Resort Directory Home"
+        static var createAnAlert = "Create an Alert"
+        static var editAnAlert = "Edit an Alert"
+        static var sideMenuAppeared = "Side Menu Appeared"
+      
     }
     
     //Omniture Evars
@@ -1724,5 +1778,16 @@ class Constant: NSObject {
         static var event100 = "Event100"
         
     }
+    
+    // structure for productCode ImageNames
+    struct productCodeImageNames {
+        
+        static var basic = "BSC"
+        static var cig = "CIG"
+        static var gold = "GLD"
+        static var platinum = "PLT"
+    }
 }
+
+
 

@@ -432,7 +432,7 @@
                 <viewControllerPlaceholder storyboardName="Confirmation" id="G93-FL-OMe" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d1K-mj-K2r" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1360" y="695"/>
+            <point key="canvasLocation" x="792" y="882"/>
         </scene>
         <!--IntervalHDPhone-->
         <scene sceneID="08V-Ha-TuE">
@@ -440,7 +440,7 @@
                 <viewControllerPlaceholder storyboardName="IntervalHDPhone" id="fHs-aP-7EZ" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xb6-Mv-leY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1011.5" y="824"/>
+            <point key="canvasLocation" x="1102" y="824"/>
         </scene>
         <!--Iphone-->
         <scene sceneID="aCo-v5-q91">
@@ -448,7 +448,7 @@
                 <viewControllerPlaceholder storyboardName="Iphone" id="NLJ-iy-Tz3" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OKc-Ot-96k" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="542" y="824"/>
+            <point key="canvasLocation" x="518" y="824"/>
         </scene>
         <!--Privacy Legal View Controller-->
         <scene sceneID="kFS-pX-zcI">
@@ -573,7 +573,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="vaB-Bz-9Kg" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="0xK-fI-ilV">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="0xK-fI-ilV">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -591,7 +591,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="khZ-jz-hRb" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="DGp-sj-2Ex">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="DGp-sj-2Ex">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

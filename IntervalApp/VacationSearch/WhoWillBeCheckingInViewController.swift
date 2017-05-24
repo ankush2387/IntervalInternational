@@ -52,11 +52,17 @@ class WhoWillBeCheckingInViewController: UIViewController {
         super.viewDidLoad()
         
         
-        // omniture tracking with event 37
+        // omniture tracking with event 40
+        let pageView: [String: String] = [
+            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.vacationSearchCheckingIn,
+            ]
+        ADBMobile.trackAction(Constant.omnitureEvents.event40, data: pageView)
+
         
+        
+        // omniture tracking with event 37
         let userInfo: [String: String] = [
             Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch,
-            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.vacationSearchCheckingIn,
             Constant.omnitureCommonString.products : Constant.MyClassConstants.selectedResort.resortCode!,
             Constant.omnitureEvars.eVar37 : Helper.selectedSegment(index: Constant.MyClassConstants.searchForSegmentIndex),
             Constant.omnitureEvars.eVar39 : "",
@@ -227,7 +233,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
               
                 SVProgressHUD.dismiss()
                 Helper.removeServiceCallBackgroundView(view: self.view)
-                SimpleAlert.alert(self, title: "Who will be checking in", message: Constant.AlertMessages.operationFailedMessage)
+                SimpleAlert.alert(self, title: Constant.ControllerTitles.whoWillBeCheckingInControllerTitle, message: Constant.AlertMessages.operationFailedMessage)
         })
         
        
@@ -387,8 +393,8 @@ class WhoWillBeCheckingInViewController: UIViewController {
             SVProgressHUD.dismiss()
             Helper.removeServiceCallBackgroundView(view: self.view)
             Constant.MyClassConstants.continueToCheckoutResponse = response
-            DarwinSDK.logger.debug("Promo codes are : \(response.view?.promoCodes)")
-            DarwinSDK.logger.debug("Response is : \(response.view?.fees) , -------->\(response)")
+            DarwinSDK.logger.debug("Promo codes are : \(String(describing: response.view?.promoCodes))")
+            DarwinSDK.logger.debug("Response is : \(String(describing: response.view?.fees)) , -------->\(response)")
             Constant.MyClassConstants.allowedCreditCardType = (response.view?.allowedCreditCardTypes)!
             Constant.MyClassConstants.rentalFees = [(response.view?.fees)!]
             if(Int((response.view?.fees?.rental?.rentalPrice?.tax)!) != 0){

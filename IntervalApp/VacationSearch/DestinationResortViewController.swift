@@ -21,8 +21,12 @@ class DestinationResortViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // omniture tracking with evar44
-        ADBMobile.trackState(Constant.omnitureEvars.eVar44, data: nil)
+        
+        // omniture tracking with event 40
+        let pageView: [String: String] = [
+            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.createAnAlert
+        ]
+        ADBMobile.trackAction(Constant.omnitureEvents.event40, data: pageView)
         
         // omniture tracking with event 35
         let userInfo: [String: String] = [

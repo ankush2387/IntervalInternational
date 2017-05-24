@@ -46,6 +46,19 @@ class UpComingTripDetailIPadViewController: UIViewController {
         
         self.requiredRowsForAdditionalProducts()
         self.requiredRowsForRelinquishment()
+        
+        
+        // Omniture tracking with event 74
+        
+        let userInfo: [String: String] = [
+            
+            Constant.omnitureEvars.eVar18 : Constant.MyClassConstants.upcomingOriginationPoint,
+            Constant.omnitureEvars.eVar55 : ""
+
+        ]
+        ADBMobile.trackAction(Constant.omnitureEvents.event74, data: userInfo)
+
+        
     }
     
     //***** Function to get dynamic rows for additional products section. ******//
