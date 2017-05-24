@@ -463,7 +463,11 @@ extension EditMyAlertIpadViewController:UICollectionViewDataSource {
             let destName = (object as! AreaOfInfluenceDestination).destinationName
             
             let terocode = (object as! AreaOfInfluenceDestination).address?.territoryCode
-            cell.lblTitle.text = "\(destName!), \(terocode!)"
+            if destName != nil && terocode != nil{
+                cell.lblTitle.text = "\(destName!), \(terocode!)"
+            }else{
+                cell.lblTitle.text = ""
+            }
         }
         
         cell.deletebutton.tag = indexPath.row
