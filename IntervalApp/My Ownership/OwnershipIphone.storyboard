@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -1724,18 +1723,18 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="370"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BackgroundImgLogin-C" translatesAutoresizingMaskIntoConstraints="NO" id="nJ1-Ly-48P">
-                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="300"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sanci_main01_r" translatesAutoresizingMaskIntoConstraints="NO" id="nJ1-Ly-48P">
+                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="330"/>
                                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" secondItem="nJ1-Ly-48P" secondAttribute="height" multiplier="2:1" id="sFj-eK-ecR"/>
+                                                        <constraint firstAttribute="height" constant="330" id="Xv8-VS-i4E"/>
                                                     </constraints>
                                                 </imageView>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1jc-vO-2Ld">
-                                                    <rect key="frame" x="0.0" y="240" width="600" height="100"/>
+                                                    <rect key="frame" x="0.0" y="270" width="600" height="100"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Breckenridge, Colorado" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rHr-Tx-jsC">
-                                                            <rect key="frame" x="15" y="32" width="160" height="18"/>
+                                                            <rect key="frame" x="15" y="32" width="242" height="18"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="15"/>
                                                             <nil key="highlightedColor"/>
@@ -1748,7 +1747,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Grand Timber Lodge" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kjd-X5-NIN">
-                                                            <rect key="frame" x="15" y="8" width="173" height="22"/>
+                                                            <rect key="frame" x="15" y="8" width="231" height="22"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="18"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1762,12 +1761,8 @@
                                                 </view>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="nJ1-Ly-48P" firstAttribute="top" secondItem="StW-wS-Vwk" secondAttribute="top" id="KvA-y8-RhP"/>
-                                                <constraint firstAttribute="trailing" secondItem="nJ1-Ly-48P" secondAttribute="trailing" id="Rub-f7-Gay"/>
                                                 <constraint firstItem="nJ1-Ly-48P" firstAttribute="top" secondItem="StW-wS-Vwk" secondAttribute="top" id="WhR-f9-AQZ"/>
                                                 <constraint firstAttribute="bottom" secondItem="nJ1-Ly-48P" secondAttribute="bottom" constant="40" id="cGq-qM-UGj"/>
-                                                <constraint firstItem="nJ1-Ly-48P" firstAttribute="leading" secondItem="StW-wS-Vwk" secondAttribute="leading" id="jDG-4w-tVa"/>
-                                                <constraint firstItem="1jc-vO-2Ld" firstAttribute="top" secondItem="StW-wS-Vwk" secondAttribute="top" priority="999" constant="270" id="kYd-Vg-raO"/>
                                                 <constraint firstItem="nJ1-Ly-48P" firstAttribute="leading" secondItem="StW-wS-Vwk" secondAttribute="leading" id="l0A-2e-ICm"/>
                                                 <constraint firstItem="1jc-vO-2Ld" firstAttribute="leading" secondItem="StW-wS-Vwk" secondAttribute="leading" id="pZV-ev-gIi"/>
                                                 <constraint firstAttribute="bottom" secondItem="1jc-vO-2Ld" secondAttribute="bottom" id="qu9-LW-TTa"/>
@@ -1913,9 +1908,9 @@ EFJlc2VydmF0aW9uIERldGFpbHM
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </textField>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XwG-cp-maQ">
-                                                    <rect key="frame" x="522" y="125" width="40" height="40"/>
-                                                    <color key="backgroundColor" red="0.94117647059999998" green="0.43529411759999997" blue="0.21176470589999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DropArrowIcon" translatesAutoresizingMaskIntoConstraints="NO" id="XwG-cp-maQ">
+                                                    <rect key="frame" x="537" y="125" width="40" height="40"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="40" id="FN0-ke-B7N"/>
                                                     </constraints>
@@ -1946,7 +1941,7 @@ EFJlc2VydmF0aW9uIERldGFpbHM
                                                 <constraint firstAttribute="trailing" secondItem="Bve-cu-CqR" secondAttribute="trailing" id="7Ay-yV-hkR"/>
                                                 <constraint firstItem="N2o-CF-nd4" firstAttribute="top" secondItem="Bve-cu-CqR" secondAttribute="bottom" constant="5" id="8TL-IE-KfD"/>
                                                 <constraint firstItem="SHJ-cf-VIm" firstAttribute="top" secondItem="N2o-CF-nd4" secondAttribute="bottom" constant="5" id="B9c-hj-uML"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="XwG-cp-maQ" secondAttribute="trailing" constant="30" id="E1l-z5-DRb"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="XwG-cp-maQ" secondAttribute="trailing" constant="15" id="E1l-z5-DRb"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="N2o-CF-nd4" secondAttribute="trailing" constant="17" id="JiH-zK-4tl"/>
                                                 <constraint firstItem="llG-zK-HMT" firstAttribute="leading" secondItem="ZEx-vr-fik" secondAttribute="leadingMargin" constant="17" id="OFS-09-bDu"/>
                                                 <constraint firstItem="llG-zK-HMT" firstAttribute="top" secondItem="FbP-L8-jcU" secondAttribute="bottom" constant="5" id="TPS-lZ-EGN"/>
@@ -2226,7 +2221,7 @@ EFJlc2VydmF0aW9uIERldGFpbHM
         </scene>
     </scenes>
     <resources>
-        <image name="BackgroundImgLogin-C" width="375" height="667"/>
+        <image name="DropArrowIcon" width="33" height="33"/>
         <image name="ForwardArrowIcon" width="33" height="33"/>
         <image name="OfferIcon" width="33" height="33"/>
         <image name="close" width="32" height="32"/>

@@ -95,26 +95,6 @@ extension FloatDetailViewController : UITableViewDataSource{
 extension FloatDetailViewController : UITableViewDelegate{
 	/**Height of Row at index path */
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		/*var rowHeight:CGFloat = 100
-		switch (indexPath as NSIndexPath).row{
-		case 0:
-			rowHeight = 100
-		case 1:
-			rowHeight = 300
-		case 2:
-			rowHeight = 105
-		case 3:
-			rowHeight = 90
-		case 4:
-			rowHeight = 120
-		case 5:
-			rowHeight = 80
-		case 6:
-			rowHeight = 130
-		default :
-			rowHeight = 100
-		}
-		return rowHeight*/
         return UITableViewAutomaticDimension
 	}
 	
