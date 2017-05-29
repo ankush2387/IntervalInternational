@@ -1561,6 +1561,9 @@ class Constant: NSObject {
         static var carRental = "CR"
         static var notApplicable = "NA"
         static var resortDirectoryHome = "Resort Directory Home"
+        static var createAnAlert = "Create an Alert"
+        static var editAnAlert = "Edit an Alert"
+        static var sideMenuAppeared = "Side Menu Appeared"
       
     }
     

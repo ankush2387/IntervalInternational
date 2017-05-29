@@ -182,13 +182,13 @@ class ClubPointSelectionViewController: UIViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        // omniture tracking with event 68
         
-        let userInfo: [String: String] = [
-            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.clubPointsSelection,
+        
+        // omniture tracking with event 40
+        let pageView: [String: String] = [
+            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.clubPointsSelection
         ]
-        
-        ADBMobile.trackAction(Constant.omnitureEvents.event68, data: userInfo)
+        ADBMobile.trackAction(Constant.omnitureEvents.event40, data: pageView)
 
         doneButton.isHidden = true
         buttonSelectedString = Constant.MyClassConstants.segmentFirstString

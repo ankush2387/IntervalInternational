@@ -52,11 +52,17 @@ class WhoWillBeCheckingInViewController: UIViewController {
         super.viewDidLoad()
         
         
-        // omniture tracking with event 37
+        // omniture tracking with event 40
+        let pageView: [String: String] = [
+            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.vacationSearchCheckingIn,
+            ]
+        ADBMobile.trackAction(Constant.omnitureEvents.event40, data: pageView)
+
         
+        
+        // omniture tracking with event 37
         let userInfo: [String: String] = [
             Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch,
-            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.vacationSearchCheckingIn,
             Constant.omnitureCommonString.products : Constant.MyClassConstants.selectedResort.resortCode!,
             Constant.omnitureEvars.eVar37 : Helper.selectedSegment(index: Constant.MyClassConstants.searchForSegmentIndex),
             Constant.omnitureEvars.eVar39 : "",

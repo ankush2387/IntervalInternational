@@ -28,6 +28,13 @@ class RelinquishmentSelectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // omniture tracking with event 40
+        let pageView: [String: String] = [
+            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.vacationSearchRelinquishmentSelect
+        ]
+        ADBMobile.trackAction(Constant.omnitureEvents.event40, data: pageView)
+        
+        
         self.relinquishmentTableview.estimatedRowHeight = 200
         self.relinquishmentPointsProgramArray.append(Constant.MyClassConstants.relinquishmentProgram)
         
@@ -116,7 +123,6 @@ class RelinquishmentSelectionViewController: UIViewController {
         
         
         let userInfo: [String: String] = [
-            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.vacationSearchRelinquishmentSelect,
             Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vacationSearch,
             Constant.omnitureEvars.eVar35 : "\(Constant.omnitureCommonString.cigPoints)\(cigPoints! > 0 ?  Constant.omnitureCommonString.available : Constant.omnitureCommonString.notAvailable ): \(Constant.omnitureCommonString.clubPoints) \(pointOpenWeeksArray.count > 0 ? Constant.omnitureCommonString.available : Constant.omnitureCommonString.notAvailable ): Fixed Open- \(relinquishmentOpenWeeksArray.count) : Float Open- \(intervalOpenWeeksArray.count) : Unredeemed -\(cigPoints!): Pending Request-\(0)"
         ]

@@ -89,9 +89,7 @@ class ResortDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // omniture tracking with evar44
-        ADBMobile.trackState(Constant.omnitureEvars.eVar44, data: nil)
-        
+       
         // omniture tracking with event 35
         if(Constant.MyClassConstants.resortsDescriptionArray.resortCode != nil){
             let userInfo: [String: String] = [
@@ -518,8 +516,27 @@ extension ResortDetailsViewController:UITableViewDelegate {
                             if((indexPath as NSIndexPath).section == 3){
                                 return 50
                             }else if((indexPath as NSIndexPath).section == 4){
-                                print(CGFloat (count * 20))
-                                return CGFloat (count * 20)
+                                
+                                let count = nearbyArray.count + onsiteArray.count
+                                if(count>0){
+                                    if((indexPath as NSIndexPath).section == 3){
+                                        return 50
+                                    }else if((indexPath as NSIndexPath).section == 4){
+                                        if(count == 1){
+                                            return CGFloat (count * 20 + 60)
+                                        }else{
+                                            return CGFloat (count * 20 + 120)
+                                        }
+                                        
+                                    }else if((indexPath as NSIndexPath).section == 5){
+                                        return 80
+                                    }else{
+                                        return 600
+                                    }
+                                    
+                                }else{
+                                    return 60
+                                }
                             }else if((indexPath as NSIndexPath).section == 5){
                                 return 80
                             }else{
@@ -831,7 +848,11 @@ extension ResortDetailsViewController:UITableViewDataSource {
                         }else if((indexPath as NSIndexPath).section == 4){
                             availableCountryCell?.infoLabel.isHidden = false
                             availableCountryCell?.infoLabel.numberOfLines = 0
-                            availableCountryCell?.infoLabel.text = amenityOnsiteString + "\n\n" + amenityNearbyString
+                            if(nearbyArray.count>0){
+                                availableCountryCell?.infoLabel.text = amenityOnsiteString + "\n\n" + amenityNearbyString
+                            }else{
+                                availableCountryCell?.infoLabel.text = amenityNearbyString
+                            }
                         }
                         else if ((indexPath as NSIndexPath).section == 6){
                             availableCountryCell?.tdiImageView.backgroundColor = UIColor.lightGray

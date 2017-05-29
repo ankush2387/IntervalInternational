@@ -83,15 +83,13 @@ class SideMenuTableViewController: UIViewController
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        
-        // omniture tracking with event 71
+    
+        // omniture tracking with event 40
         let userInfo: [String: String] = [
-            "eVar44" : "Side Menu Appeared"
+            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.sideMenuAppeared
         ]
         
-        ADBMobile.trackAction("Event71", data: userInfo)
+        ADBMobile.trackAction(Constant.omnitureEvents.event40, data: userInfo)
 
         
         let cellNib = UINib(nibName:Constant.customCellNibNames.memberCell, bundle: nil)
