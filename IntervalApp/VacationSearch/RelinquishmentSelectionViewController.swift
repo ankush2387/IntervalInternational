@@ -43,7 +43,7 @@ class RelinquishmentSelectionViewController: UIViewController {
         for fixed_week_type in Constant.MyClassConstants.relinquishmentOpenWeeks{
             
             
-            if(fixed_week_type.weekNumber != Constant.CommonStringIdentifiers.floatWeek){
+           // if(fixed_week_type.weekNumber != Constant.CommonStringIdentifiers.floatWeek){
                 
                 if(fixed_week_type.weekNumber == Constant.CommonStringIdentifiers.pointWeek) {
                     
@@ -87,7 +87,9 @@ class RelinquishmentSelectionViewController: UIViewController {
                         }
                     }
                 }
-            }
+            /*}else{
+                print(fixed_week_type.weekNumber, fixed_week_type.relinquishmentId, fixed_week_type.unit?.lockOffUnits.count)
+            }*/
         }
         if(Constant.MyClassConstants.relinquishmentIdArray.count > 0 && self.relinquishmentPointsProgramArray[0].relinquishmentId != nil){
             if(Constant.MyClassConstants.relinquishmentIdArray.contains(self.relinquishmentPointsProgramArray[0].relinquishmentId!))
@@ -538,8 +540,10 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
             
             var openWeek:OpenWeek!
             if(indexPath.section == 1 ) {
-                
                 openWeek = relinquishmentOpenWeeksArray[indexPath.row]
+                if(openWeek.weekNumber != Constant.CommonStringIdentifiers.floatWeek){
+                    
+                }
             }
             else {
                 
@@ -598,12 +602,15 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                 
                 cell.dayAndDateLabel.text = month.uppercased()
                 
-            }
-            else {
+            }else {
                 
                 cell.dayAndDateLabel.text = " "
             }
             cell.totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: openWeek.weekNumber!))"
+            if(openWeek.weekNumber == Constant.CommonStringIdentifiers.floatWeek){
+                cell.yearLabel.text = "Float"
+                cell.totalWeekLabel.text = "\(openWeek.relinquishmentYear!)"
+            }
             
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             return cell

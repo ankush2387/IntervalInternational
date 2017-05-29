@@ -649,6 +649,11 @@ class Constant: NSObject {
         static var expirationDate = NSLocalizedString("Select Expiration Date", comment: "")
         static var cvv = NSLocalizedString("CVV", comment: "")
         static var country = NSLocalizedString("Country", comment: "")
+        //Ownership text field placeholder
+        static var reservationNumber = NSLocalizedString("Reservation Number", comment: "")
+        static var unitNumber = NSLocalizedString("Unit Number", comment: "")
+        static var numberOfBedrooms = NSLocalizedString("Number of Bedrooms", comment: "")
+        static var checkInDate = NSLocalizedString("Check-in Date", comment: "")
         
         //Payment selection view controller
         
