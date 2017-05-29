@@ -849,19 +849,27 @@ public class Helper{
     static func getResortsWithLatLongForShowingOnMap(request:GeoArea) -> Bool {
         var value:Bool = false
         DirectoryClient.getResortsWithinGeoArea(UserContext.sharedInstance.accessToken, geoArea: request, onSuccess: { (response) in
-            
             Constant.MyClassConstants.resortsArray = response
             value = true
             
         }) { (error) in
-            
             value = false
         }
-        
-        
-        
         return value
-        
+    }
+    
+    /***** Get club resort API call for float details ******/
+    
+    static func getResortsByClubFloatDetails(resortCode:String){
+        DirectoryClient.getResortsByClub(UserContext.sharedInstance.accessToken, clubCode: resortCode, onSuccess: { (_ resorts: [Resort]) in
+            
+            Constant.MyClassConstants.clubFloatResorts = resorts
+            
+            
+        }) { (error) in
+            
+
+        }
     }
     
     /***** common function for adding uivew as a pop up with some mesage *****/

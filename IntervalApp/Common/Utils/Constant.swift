@@ -428,6 +428,7 @@ class Constant: NSObject {
         static var segmentFirstString = "First"
         static var segmentSecondString = "Second"
         static var segmentThirdString = "Third"
+        static var clubFloatResorts = [Resort]()
         
     }
     struct CommonStringIdentifiers {
@@ -780,6 +781,7 @@ class Constant: NSObject {
         static var accomodationCertsDetailController = "AccomodationCertsDetailController"
         static var certificateTabBarViewController = "VacationSearchTabBarController"
         static var ownershipViewController = "OwnershipViewController"
+        static var floatViewController = "FloatDetailViewController"
         static var resortDirectoryViewController = "ResortDirectoryViewController"
         static var webViewController = "WebViewController"
         static var calendarViewController = "CalendarViewController"
@@ -1010,6 +1012,8 @@ class Constant: NSObject {
         static var whoIsTravelingCell = "WhoIsTravelingCell"
         static var SearchVacationCell = "SearchVacationCell"
         static var relinquishmentSelectionOpenWeeksCell = "RelinquishmentSelectionOpenWeeksCell"
+        static var floatWeekUnsavedCell = "FloatUnsavedCell"
+        static var floatWeekSavedCell = "FloatSavedCell"
         static var relinquishmentSelectionCIGCell = "RelinquishmentSelectionCIGCell"
         static var destinationCell = "destinationCell"
         static var resortCell = "resortsCell"

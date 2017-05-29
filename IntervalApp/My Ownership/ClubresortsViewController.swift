@@ -87,10 +87,11 @@ extension ClubresortsViewController:UITableViewDataSource{
     
     /** Number of Rows In Sections */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return clubresortArrayOfDictionary.count
+        return Constant.MyClassConstants.clubFloatResorts.count
     }
     /** Cell For Row At IndexPath */
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let resort = Constant.MyClassConstants.clubFloatResorts[indexPath.row]
         let cell  = tableView.dequeueReusableCell(withIdentifier: Constant.clubresortsViewController.clubresortcellIdentifier) as? ClubresortTableViewCell
         if currentCheckedIndex != nil{
             if (indexPath as NSIndexPath).row == currentCheckedIndex!{
@@ -104,6 +105,8 @@ extension ClubresortsViewController:UITableViewDataSource{
         else{
             cell?.getCell(clubresortArrayOfDictionary[(indexPath as NSIndexPath).row],index: (indexPath as NSIndexPath).row)
         }
+        
+        cell?.clubresortNameLabel.text = "\(resort.resortName!) . \(resort.resortCode!)"
 
         
         return cell!

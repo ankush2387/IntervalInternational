@@ -50,12 +50,12 @@ class ClubresortTableViewCell: UITableViewCell {
      - returns : No value is return
      */
     fileprivate func updateCellComponent(){
-        if let clubresortname = clubresortDictionary["clubresortname"]{
+       /* if let clubresortname = clubresortDictionary["clubresortname"]{
             clubresortNameLabel.text = clubresortname
         }
         if let clubresoravailabilty = clubresortDictionary["clubresoravailabilty"]{
             clubresortAvailabilitylabel.text = clubresoravailabilty
-        }
+        }*/
         
     }
     override func setSelected(_ selected: Bool, animated: Bool) {

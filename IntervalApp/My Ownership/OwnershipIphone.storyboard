@@ -902,35 +902,35 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="1200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="57" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="PB5-GP-umP">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="57" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="PB5-GP-umP">
                                 <rect key="frame" x="0.0" y="24" width="600" height="1176"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="ClubresortTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="clubresortcell" rowHeight="57" id="nyd-ck-UuE" customClass="ClubresortTableViewCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="600" height="57"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="ClubresortTableViewCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="clubresortcell" rowHeight="50" id="nyd-ck-UuE" customClass="ClubresortTableViewCell" customModule="IntervalApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="600" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nyd-ck-UuE" id="zpK-DX-Kw8">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="56.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cibola Vista Resort and Spa • CIR" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k0a-rJ-Crt">
-                                                    <rect key="frame" x="8" y="8" width="528" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <rect key="frame" x="10" y="5" width="272.5" height="21"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Valid check-in days:Sun Sat" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yjn-Ut-D4v">
-                                                    <rect key="frame" x="8" y="29" width="528" height="18"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
+                                                    <rect key="frame" x="10" y="26" width="187.5" height="15.5"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" horizontalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="reH-XU-Akc" customClass="IUIKCheckbox" customModule="IntervalUIKit">
-                                                    <rect key="frame" x="544" y="8" width="40" height="40"/>
+                                                    <rect key="frame" x="540" y="10" width="30" height="30"/>
                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="40" id="VY8-YF-L9W"/>
-                                                        <constraint firstAttribute="width" constant="40" id="lvA-jl-aQz"/>
+                                                        <constraint firstAttribute="height" constant="30" id="BbA-oZ-IEN"/>
+                                                        <constraint firstAttribute="width" constant="30" id="dRB-v9-YIf"/>
                                                     </constraints>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="round" value="YES"/>
@@ -945,7 +945,7 @@
                                                             <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         </userDefinedRuntimeAttribute>
                                                         <userDefinedRuntimeAttribute type="color" keyPath="checkedFillColor">
-                                                            <color key="value" red="1" green="0.59999999999999998" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <color key="value" red="0.94117647059999998" green="0.43529411759999997" blue="0.21176470589999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         </userDefinedRuntimeAttribute>
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="checked" value="NO"/>
                                                         <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
@@ -958,15 +958,14 @@
                                                 </view>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="reH-XU-Akc" firstAttribute="centerY" secondItem="zpK-DX-Kw8" secondAttribute="centerY" id="3E5-2Q-pJ2"/>
-                                                <constraint firstItem="yjn-Ut-D4v" firstAttribute="top" secondItem="k0a-rJ-Crt" secondAttribute="bottom" id="BXb-9S-5K0"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="yjn-Ut-D4v" secondAttribute="bottom" constant="1" id="CXY-vq-nPi"/>
-                                                <constraint firstItem="yjn-Ut-D4v" firstAttribute="leading" secondItem="k0a-rJ-Crt" secondAttribute="leading" id="Jch-pj-VcM"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="reH-XU-Akc" secondAttribute="trailing" constant="8" id="KSj-ra-ACg"/>
-                                                <constraint firstItem="reH-XU-Akc" firstAttribute="leading" secondItem="k0a-rJ-Crt" secondAttribute="trailing" constant="8" symbolic="YES" id="Q41-qt-l6m"/>
-                                                <constraint firstItem="yjn-Ut-D4v" firstAttribute="trailing" secondItem="k0a-rJ-Crt" secondAttribute="trailing" id="UqA-Cs-ITU"/>
-                                                <constraint firstAttribute="topMargin" secondItem="k0a-rJ-Crt" secondAttribute="top" id="Y8I-4m-c7T"/>
-                                                <constraint firstAttribute="leadingMargin" secondItem="k0a-rJ-Crt" secondAttribute="leading" id="h6d-Ts-wbw"/>
+                                                <constraint firstItem="k0a-rJ-Crt" firstAttribute="top" secondItem="zpK-DX-Kw8" secondAttribute="top" constant="5" id="Dyv-Ji-rOw"/>
+                                                <constraint firstItem="yjn-Ut-D4v" firstAttribute="top" secondItem="k0a-rJ-Crt" secondAttribute="bottom" id="MV9-Lz-0UD"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="reH-XU-Akc" secondAttribute="bottom" constant="1.5" id="PyL-8D-Tvz"/>
+                                                <constraint firstItem="reH-XU-Akc" firstAttribute="top" secondItem="zpK-DX-Kw8" secondAttribute="topMargin" constant="2" id="U5T-nC-E1l"/>
+                                                <constraint firstItem="yjn-Ut-D4v" firstAttribute="leading" secondItem="zpK-DX-Kw8" secondAttribute="leadingMargin" constant="2" id="ai9-o6-5w8"/>
+                                                <constraint firstItem="k0a-rJ-Crt" firstAttribute="leading" secondItem="zpK-DX-Kw8" secondAttribute="leading" constant="10" id="dzx-7P-gbP"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="reH-XU-Akc" secondAttribute="trailing" constant="22" id="jF1-Zb-5B5"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="yjn-Ut-D4v" secondAttribute="bottom" id="slU-I3-tTO"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -1660,7 +1659,7 @@
         <!--Float Detail View Controller-->
         <scene sceneID="fvS-Zm-tiz">
             <objects>
-                <viewController id="XVn-Fp-la9" customClass="FloatDetailViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FloatDetailViewController" id="XVn-Fp-la9" customClass="FloatDetailViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="7jt-go-EpS"/>
                         <viewControllerLayoutGuide type="bottom" id="AQy-Dh-fpL"/>
