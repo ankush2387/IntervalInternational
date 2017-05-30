@@ -593,6 +593,10 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
             
             cell.yearLabel.text = "\(openWeek.relinquishmentYear!)"
             
+            cell.yearLabel.text = "\(openWeek.relinquishmentYear!)"
+            cell.yearLabel.textColor =  UIColor.orange
+            
+            
             if(indexPath.section == 1) {
                 cell.addButton.tag = indexPath.row + indexPath.section
                 cell.addButton.addTarget(self, action:  #selector(RelinquishmentSelectionViewController.addAvailablePoinButtonPressed(_:)), for: .touchUpInside)
@@ -628,6 +632,8 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
             if(openWeek.weekNumber == Constant.CommonStringIdentifiers.floatWeek){
                 cell.yearLabel.text = "Float"
                 cell.totalWeekLabel.text = "\(openWeek.relinquishmentYear!)"
+                cell.totalWeekLabel.textColor = UIColor.orange
+                cell.yearLabel.textColor =  UIColor.lightGray
             }
             
             cell.selectionStyle = UITableViewCellSelectionStyle.none
