@@ -860,15 +860,31 @@ public class Helper{
     
     /***** Get club resort API call for float details ******/
     
-    static func getResortsByClubFloatDetails(resortCode:String){
+    static func getResortsByClubFloatDetails(resortCode:String, senderViewController:UIViewController, floatResortDetails:Resort){
         DirectoryClient.getResortsByClub(UserContext.sharedInstance.accessToken, clubCode: resortCode, onSuccess: { (_ resorts: [Resort]) in
             
             Constant.MyClassConstants.clubFloatResorts = resorts
-            
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.floatViewController) as! FloatDetailViewController
+            viewController.floatResortDetails = floatResortDetails
+            let transitionManager = TransitionManager()
+            senderViewController.navigationController?.transitioningDelegate = transitionManager
+            /*self.navigationController!.present(viewController, animated: true, completion: {
+             })*/
+            senderViewController.navigationController?.pushViewController(viewController, animated: true)
             
         }) { (error) in
             
 
+        }
+    }
+    
+    /***** Get check-in dates API to show in calendar ******/
+    static func getCheckInDatesForCalendar(){
+        DirectoryClient.getResortCalendars(UserContext.sharedInstance.accessToken, resortCode: "", year: 0, onSuccess: { (resortCalendar: [ResortCalendar]) in
+            print(resortCalendar)
+        }) { (error) in
+            print(error)
         }
     }
     

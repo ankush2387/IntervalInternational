@@ -32,9 +32,13 @@ class ReservationTableViewCell: UITableViewCell {
         for (index,textField) in registrationTextFieldsCollection.enumerated(){
             textField.placeholder = placeholderArray[index]
             textField.layer.borderColor = UIColor.lightGray.cgColor
-            let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 15))
-            textField.leftView = paddingView
+            let paddingViewLeft = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 15))
+            textField.leftView = paddingViewLeft
             textField.leftViewMode = .always
+            
+            let paddingViewRight = UIView(frame: CGRect(x: textField.frame.size.width - 35, y: 0, width: 35, height: 15))
+            textField.rightView = paddingViewRight
+            textField.rightViewMode = .always
         }
     }
 

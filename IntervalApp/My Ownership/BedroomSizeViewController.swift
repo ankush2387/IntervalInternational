@@ -157,7 +157,6 @@ class BedroomSizeViewController: UIViewController {
             if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController){
                 delegate?.doneButtonClicked(selectedUnitsArray:localArrayToHoldSelection)
             }else{
-                
                 if(self.selectionChanged ) {
                     
                     if(localArrayToHoldSelection.count == 5) {
@@ -193,6 +192,9 @@ class BedroomSizeViewController: UIViewController {
                         Constant.MyClassConstants.selectedBedRoomSize = selectedBedroomsizes
                         Constant.MyClassConstants.bedRoomSizeSelectedIndexArray = self.localArrayToHoldSelection
                     }
+                }
+                if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController){
+                    delegate?.doneButtonClicked(selectedUnitsArray:localArrayToHoldSelection)
                 }
                 self.dismiss(animated: true, completion: nil)
             }

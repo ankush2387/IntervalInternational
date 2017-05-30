@@ -178,9 +178,6 @@ class RelinquishmentSelectionViewController: UIViewController {
     }
     
     func addIntervalWeekButtonPressed(_ sender:IUIKButton) {
-        
-        Helper.getResortsByClubFloatDetails(resortCode:(intervalOpenWeeksArray[sender.tag].resort?.resortCode!)!)
-
         if((intervalOpenWeeksArray[sender.tag].unit?.lockOffUnits.count)! > 0){
             Constant.ControllerTitles.bedroomSizeViewController = Constant.MyClassConstants.relinquishmentTitle
             Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.relinquishmentSelectionViewController
@@ -255,7 +252,6 @@ class RelinquishmentSelectionViewController: UIViewController {
         }
     }
     func addClubPointButtonPressed(_ sender:IUIKButton) {
-        Helper.getResortsByClubFloatDetails(resortCode: (Constant.MyClassConstants.relinquishmentSelectedWeek.resort?.resortCode)!)
         Constant.MyClassConstants.relinquishmentSelectedWeek = pointOpenWeeksArray[sender.tag]
         Helper.addServiceCallBackgroundView(view: self.view)
         SVProgressHUD.show()
@@ -302,7 +298,6 @@ class RelinquishmentSelectionViewController: UIViewController {
         })
     }
     func addAvailablePoinButtonPressed(_ sender:IUIKButton) {
-        Helper.getResortsByClubFloatDetails(resortCode: (relinquishmentOpenWeeksArray[sender.tag - 1].resort?.resortCode)!)
         if(sender.tag == 0){
             
             Constant.MyClassConstants.whatToTradeArray.add(Constant.MyClassConstants.relinquishmentProgram)
@@ -399,14 +394,7 @@ class RelinquishmentSelectionViewController: UIViewController {
     }
     
     func addClubFloatWeek(_ sender:IUIKButton){
-        Helper.getResortsByClubFloatDetails(resortCode: (relinquishmentOpenWeeksArray[sender.tag - 1].resort?.resortCode)!)
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.floatViewController) as! FloatDetailViewController
-        
-        let transitionManager = TransitionManager()
-        self.navigationController?.transitioningDelegate = transitionManager
-        self.navigationController!.pushViewController(viewController, animated: true)
-
+        Helper.getResortsByClubFloatDetails(resortCode:(relinquishmentOpenWeeksArray[sender.tag - 1].resort?.resortCode!)!, senderViewController: self, floatResortDetails: relinquishmentOpenWeeksArray[sender.tag - 1].resort!)
     }
     
     func getUnitSize(_ unitSize:[InventoryUnit]) {
@@ -557,7 +545,7 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
             }
             var cell = RelinquishmentSelectionOpenWeeksCell()
             if(openWeek.weekNumber == Constant.CommonStringIdentifiers.floatWeek){
-                cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.floatWeekSavedCell, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
+                cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.floatWeekUnsavedCell, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
                 cell.resortName.text = "\(openWeek.resort!.resortName!)/\(openWeek.resort!.resortCode!)"
                 cell.totalWeekLabel.text = "\(openWeek.relinquishmentYear!)"
                 cell.addButton.tag = indexPath.row + indexPath.section

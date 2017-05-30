@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DarwinSDK
 
 class FloatDetailViewController: UIViewController {
     
@@ -14,13 +15,13 @@ class FloatDetailViewController: UIViewController {
     
     @IBOutlet weak var floatDetailsTableView:UITableView!
     
+    weak var floatResortDetails = Resort()
     /**
      PopcurrentViewcontroller from NavigationController
      - parameter sender: UIButton reference.
      - returns : No return.
      */
     @IBAction func floatCancelButtonIsTapped(_ sender: UIButton) {
-        //self.navigationController?.popViewControllerAnimated(true)
         let storyboard = UIStoryboard(name: Constant.storyboardNames.availableDestinationsIphone , bundle: nil)
         let viewController = storyboard.instantiateInitialViewController()
         UIApplication.shared.keyWindow?.rootViewController = viewController
@@ -45,11 +46,43 @@ class FloatDetailViewController: UIViewController {
         
         _ = self.navigationController?.popViewController(animated: true)
     }
+    
+    // Select bedroom button action
+    @IBAction func bedroomButtonTapped(_ sender:UIButton){
+        Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.floatViewController
+        var mainStoryboard = UIStoryboard()
+        if(Constant.RunningDevice.deviceIdiom == .pad) {
+            mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIpad, bundle: nil)
+        }
+        else {
+            mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
+        }
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.bedroomSizeViewController) as! BedroomSizeViewController
+        viewController.delegate = self
+        let transitionManager = TransitionManager()
+        self.navigationController?.transitioningDelegate = transitionManager
+        self.navigationController!.present(viewController, animated: true, completion: nil)
+    }
+    
+    // Select check - in date action
+    @IBAction func selectCheckInDate(){
+        Helper.getCheckInDatesForCalendar()
+        var mainStoryboard = UIStoryboard()
+        if(Constant.RunningDevice.deviceIdiom == .pad) {
+            mainStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+        }
+        else {
+            mainStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        }
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as! CalendarViewController
+        let transitionManager = TransitionManager()
+        self.navigationController?.transitioningDelegate = transitionManager
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
 
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        
     }
 }
 /** Extension for tableview data source */
@@ -72,7 +105,8 @@ extension FloatDetailViewController : UITableViewDataSource{
             return resortcallCell!
         case 1:
             vacationdetailcell = tableView.dequeueReusableCell(withIdentifier: Constant.floatDetailViewController.vacationdetailcellIdentifier) as? ResortDirectoryResortCell
-            vacationdetailcell!.getCell()
+            vacationdetailcell!.getCell(resortDetails: floatResortDetails!)
+
             return vacationdetailcell!
         case 2:
             selectClubresortcell = tableView.dequeueReusableCell(withIdentifier: Constant.floatDetailViewController.selectclubcellIdentifier)
@@ -91,7 +125,7 @@ extension FloatDetailViewController : UITableViewDataSource{
         }
     }
 }
-/** Extension for table view delegate */
+/** Extension for table view delegate **/
 extension FloatDetailViewController : UITableViewDelegate{
 	/**Height of Row at index path */
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -104,4 +138,18 @@ extension FloatDetailViewController : UITableViewDelegate{
             self.performSegue(withIdentifier: Constant.floatDetailViewController.clubresortviewcontrollerIdentifier, sender: self)
         }
     }
+}
+/** Extension for done button in Bedroom Size Selection **/
+extension FloatDetailViewController : BedroomSizeViewControllerDelegate{
+    
+    func doneButtonClicked(selectedUnitsArray:NSMutableArray){
+        let bedroomTextField = self.view.viewWithTag(3) as! UITextField!
+        var bedroomString = ""
+        for index in selectedUnitsArray{
+            bedroomString = "\(bedroomString)\(UnitSize.forDisplay[index as! Int].friendlyName()), "
+            bedroomTextField!.text = ""
+            bedroomTextField!.text = bedroomString
+        }
+    }
+
 }
