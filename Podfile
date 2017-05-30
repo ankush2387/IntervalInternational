@@ -14,6 +14,7 @@ target 'IntervalApp' do
  	pod 'SwiftyJSON', :git=>'https://github.com/IBM-Swift/SwiftyJSON'
  	pod 'XCGLogger', :git=>'https://github.com/DaveWoodCom/XCGLogger.git', branch: 'swift_3.0'
     pod 'Brightcove-Player-SDK'
+    pod "HockeySDK"
 end
 
 post_install do |installer|
