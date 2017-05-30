@@ -100,6 +100,8 @@ class Constant: NSObject {
         
         //Relinquishment available points program
         static var relinquishmentAvailablePointsProgram = 0
+        
+      
         //global variable to hold stepper Adult current value
         static var stepperAdultCurrentValue = 2
         
@@ -348,7 +350,14 @@ class Constant: NSObject {
         
         
         //Relinquishment selection screen response arrays
+        
+        //Relinquishment selection date for float and avaialable tool
         static var  relinquishmentAvalableToolSelectedDate:Date!
+        static var  relinquishmentFloatDetialSelectedDate:Date!
+        static var  relinquishmentFloatDetialMinDate:Date!
+        static var  relinquishmentFloatDetialMaxDate:Date!
+        static var  floatDetailsCalendarDateArray = [Date]()
+        static var relinquishmentFlaotWeek = "RelinquishmentFloatWeek"
         
         static var  onsiteArray = NSMutableArray()
         static var  nearbyArray = NSMutableArray()
