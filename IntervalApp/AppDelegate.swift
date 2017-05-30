@@ -13,6 +13,7 @@ import DarwinSDK
 import IntervalUIKit
 import XCGLogger
 import GoogleMaps
+import HockeySDK
 
 
 // Global instance of logger
@@ -62,6 +63,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Apply general appearance rules
         IUIKitManager.updateAppearance()
         GMSServices.provideAPIKey(Constant.MyClassConstants.googleMapKey)
+        
+        //Distribution through HockeyApp
+        BITHockeyManager.shared().configure(withIdentifier: "bde61378ac204256b1e52748bd34f688")
+        BITHockeyManager.shared().start()
+        BITHockeyManager.shared().authenticator.authenticateInstallation()
         return true
     }
 
