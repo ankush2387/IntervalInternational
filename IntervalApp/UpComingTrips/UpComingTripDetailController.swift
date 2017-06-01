@@ -171,6 +171,19 @@ class UpComingTripDetailController: UIViewController {
             Constant.MyClassConstants.checkInClosestContentArray.removeAllObjects()
             Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
             Constant.MyClassConstants.realmStoredDestIdOrCodeArray.removeAllObjects()
+            
+            //check if device can send email messages
+            if MFMailComposeViewController.canSendMail() {
+                let mailComposerVC = MFMailComposeViewController()
+                mailComposerVC.mailComposeDelegate = self
+                mailComposerVC.navigationBar.tintColor = UIColor.white
+                mailComposerVC.setSubject("Upcoming Trip Details")
+                let message = self.formatMessageforComposer()
+                mailComposerVC.setMessageBody(message, isHTML: false)
+                self.present(mailComposerVC, animated: true, completion: nil)
+            } else{
+                SimpleAlert.alert(self, title: "Error", message: "This device is not able/configured to send Email Messages")
+            }
         }
         actionSheetController.addAction(resetMySearchAction)
         //***** Create and add help *****//
@@ -731,5 +744,19 @@ extension UpComingTripDetailController: MFMessageComposeViewControllerDelegate {
     }
 }
 
-
-
+extension UpComingTripDetailController: MFMailComposeViewControllerDelegate{
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        //display alert message if message fails to be sent.
+        switch result.rawValue {
+        case MFMailComposeResult.failed.rawValue:
+            SimpleAlert.alert(self, title: "Error", message: "The Email could not be sent. Please try again.")
+            break
+        default:
+            print("Email Result: \(result.rawValue)")
+            break
+        }
+        
+        //dissmis MailComposer
+        self.dismiss(animated: true, completion: nil)
+    }
+}
