@@ -22,9 +22,11 @@ class ClubresortsViewController: UIViewController {
     */
     @IBAction func clubselectedIstapped(_ sender: AnyObject) {
         guard let currentCheckedIndex = self.currentCheckedIndex else{
+            Constant.MyClassConstants.savedClubFloatResort = Constant.MyClassConstants.clubFloatResorts[sender.tag].resortName!
             isbedroomSizeCheckboxchecked = true
             self.currentCheckedIndex = sender.tag
             clubresortTableView.reloadData()
+            self.navigationController?.popViewController(animated: true)
             return
         }
         if currentCheckedIndex == sender.tag{

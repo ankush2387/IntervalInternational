@@ -438,6 +438,7 @@ class Constant: NSObject {
         static var segmentSecondString = "Second"
         static var segmentThirdString = "Third"
         static var clubFloatResorts = [Resort]()
+        static var savedClubFloatResort = ""
         
     }
     struct CommonStringIdentifiers {

@@ -783,7 +783,7 @@ public class Helper{
                                    onError: {(error) in
                                     Helper.removeServiceCallBackgroundView(view: senderVC.view)
                                     SVProgressHUD.dismiss()
-                                    SimpleAlert.alert(senderVC, title:Constant.AlertErrorMessages.errorString, message: error.description)
+                                    SimpleAlert.alert(senderVC, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                                     
         })
     }
@@ -875,14 +875,46 @@ public class Helper{
             
         }) { (error) in
             
-
+            // SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+            
+            
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.floatViewController) as! FloatDetailViewController
+            viewController.floatResortDetails = floatResortDetails
+            let transitionManager = TransitionManager()
+            senderViewController.navigationController?.transitioningDelegate = transitionManager
+            /*self.navigationController!.present(viewController, animated: true, completion: {
+             })*/
+            senderViewController.navigationController?.pushViewController(viewController, animated: true)
         }
     }
     
     /***** Get check-in dates API to show in calendar ******/
-    static func getCheckInDatesForCalendar(){
-        DirectoryClient.getResortCalendars(UserContext.sharedInstance.accessToken, resortCode: "", year: 0, onSuccess: { (resortCalendar: [ResortCalendar]) in
-            print(resortCalendar)
+    static func getCheckInDatesForCalendar(senderViewController:UIViewController, resortCode:String, relinquishmentYear:Int){
+        DirectoryClient.getResortCalendars(UserContext.sharedInstance.accessToken, resortCode: resortCode, year: relinquishmentYear, onSuccess: { (resortCalendar: [ResortCalendar]) in
+            
+            if(resortCalendar.count > 0){
+            Constant.MyClassConstants.relinquishmentFloatDetialMinDate = self.convertStringToDate(dateString: resortCalendar[0].checkInDate!, format: Constant.MyClassConstants.dateFormat)
+            Constant.MyClassConstants.relinquishmentFloatDetialMaxDate = self.convertStringToDate(dateString: (resortCalendar.last?.checkInDate!)!, format: Constant.MyClassConstants.dateFormat)
+            for calendarDetails in resortCalendar{
+               print(calendarDetails.checkInDate!)
+               Constant.MyClassConstants.floatDetailsCalendarDateArray.append((Helper.convertStringToDate(dateString: calendarDetails.checkInDate!, format: Constant.MyClassConstants.dateFormat)))
+            }
+            
+            var mainStoryboard = UIStoryboard()
+            if(Constant.RunningDevice.deviceIdiom == .pad) {
+                mainStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+            }
+            else {
+                mainStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+            }
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as! CalendarViewController
+            viewController.requestedController = Constant.MyClassConstants.relinquishmentFlaotWeek
+            let transitionManager = TransitionManager()
+            senderViewController.navigationController?.transitioningDelegate = transitionManager
+            senderViewController.navigationController?.pushViewController(viewController, animated: true)
+        }
+        
         }) { (error) in
             print(error)
         }

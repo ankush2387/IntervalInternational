@@ -12,6 +12,7 @@ class ReservationTableViewCell: UITableViewCell {
     
     //Outlets
     @IBOutlet var registrationTextFieldsCollection: [UITextField]!
+    @IBOutlet var selectResortLabel: UILabel!
     let placeholderArray = [Constant.textFieldTitles.reservationNumber, Constant.textFieldTitles.unitNumber, Constant.textFieldTitles.numberOfBedrooms, Constant.textFieldTitles.checkInDate]
 
     override func awakeFromNib() {

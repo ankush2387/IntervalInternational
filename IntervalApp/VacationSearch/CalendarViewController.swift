@@ -21,8 +21,6 @@ class CalendarViewController: UIViewController {
     var requestedController = ""
     
     var dateArray = [Date]()
-    var dateStringArray = ["2017-06-15","2017-06-22","2017-06-28","2017-07-15","2017-07-24"]
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -206,7 +204,7 @@ extension CalendarViewController:FSCalendarDelegateAppearance {
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
         
          if(self.requestedController == Constant.MyClassConstants.relinquishmentFlaotWeek) {
-            
+            print(date)
             if(Constant.MyClassConstants.floatDetailsCalendarDateArray.contains(date)) {
                 
                 return UIColor.darkText

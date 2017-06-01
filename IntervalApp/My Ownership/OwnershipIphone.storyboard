@@ -913,18 +913,6 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cibola Vista Resort and Spa • CIR" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k0a-rJ-Crt">
-                                                    <rect key="frame" x="20" y="5" width="272.5" height="21"/>
-                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Valid check-in days:Sun Sat" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yjn-Ut-D4v">
-                                                    <rect key="frame" x="23" y="26" width="187.5" height="15.5"/>
-                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                                 <view contentMode="scaleToFill" horizontalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="reH-XU-Akc" customClass="IUIKCheckbox" customModule="IntervalUIKit">
                                                     <rect key="frame" x="542" y="10" width="30" height="30"/>
                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -956,21 +944,33 @@
                                                         <action selector="clubselectedIstapped:" destination="Sh6-Fo-46v" eventType="valueChanged" id="yHj-2e-k3p"/>
                                                     </connections>
                                                 </view>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WC4-jz-IN4">
+                                                    <rect key="frame" x="10" y="49" width="590" height="1"/>
+                                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="1" id="yBr-yu-9qm"/>
+                                                    </constraints>
+                                                </view>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cibola Vista Resort and Spa • CIR" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k0a-rJ-Crt">
+                                                    <rect key="frame" x="20" y="17" width="227" height="17.5"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="k0a-rJ-Crt" firstAttribute="top" secondItem="zpK-DX-Kw8" secondAttribute="top" constant="5" id="Dyv-Ji-rOw"/>
-                                                <constraint firstItem="yjn-Ut-D4v" firstAttribute="top" secondItem="k0a-rJ-Crt" secondAttribute="bottom" id="MV9-Lz-0UD"/>
+                                                <constraint firstItem="WC4-jz-IN4" firstAttribute="leading" secondItem="zpK-DX-Kw8" secondAttribute="leading" constant="10" id="8A6-oV-RJV"/>
+                                                <constraint firstItem="k0a-rJ-Crt" firstAttribute="leading" secondItem="zpK-DX-Kw8" secondAttribute="leadingMargin" constant="12" id="BuV-8G-tsi"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="reH-XU-Akc" secondAttribute="bottom" constant="1.5" id="PyL-8D-Tvz"/>
+                                                <constraint firstAttribute="trailing" secondItem="WC4-jz-IN4" secondAttribute="trailing" id="T8b-hZ-aXy"/>
                                                 <constraint firstItem="reH-XU-Akc" firstAttribute="top" secondItem="zpK-DX-Kw8" secondAttribute="topMargin" constant="2" id="U5T-nC-E1l"/>
-                                                <constraint firstItem="yjn-Ut-D4v" firstAttribute="leading" secondItem="zpK-DX-Kw8" secondAttribute="leadingMargin" constant="15" id="ai9-o6-5w8"/>
-                                                <constraint firstItem="k0a-rJ-Crt" firstAttribute="leading" secondItem="zpK-DX-Kw8" secondAttribute="leading" constant="20" id="dzx-7P-gbP"/>
+                                                <constraint firstItem="k0a-rJ-Crt" firstAttribute="centerY" secondItem="reH-XU-Akc" secondAttribute="centerY" id="VqI-27-0uS"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="reH-XU-Akc" secondAttribute="trailing" constant="20" id="jF1-Zb-5B5"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="yjn-Ut-D4v" secondAttribute="bottom" id="slU-I3-tTO"/>
+                                                <constraint firstAttribute="bottom" secondItem="WC4-jz-IN4" secondAttribute="bottom" id="rG8-U5-PIf"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="clubResortCheckbox" destination="reH-XU-Akc" id="A3v-57-RVm"/>
-                                            <outlet property="clubresortAvailabilitylabel" destination="yjn-Ut-D4v" id="6nr-Ml-ha0"/>
                                             <outlet property="clubresortNameLabel" destination="k0a-rJ-Crt" id="FGu-el-gHl"/>
                                         </connections>
                                     </tableViewCell>
@@ -1315,7 +1315,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5jd-rn-rLN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5831.25" y="-798.59154929577471"/>
+            <point key="canvasLocation" x="5756" y="-756"/>
         </scene>
         <!--Page View Controller-->
         <scene sceneID="7SQ-R1-toL">
@@ -1679,12 +1679,23 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="70"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zgX-pc-lX0">
-                                                    <rect key="frame" x="539" y="15" width="46" height="40"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zgX-pc-lX0" customClass="IUIKButton" customModule="IntervalUIKit">
+                                                    <rect key="frame" x="555" y="20" width="30" height="30"/>
+                                                    <color key="backgroundColor" red="0.94117647059999998" green="0.43529411759999997" blue="0.21176470589999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="40" id="I3F-b3-U0A"/>
+                                                        <constraint firstAttribute="height" constant="30" id="I3F-b3-U0A"/>
                                                     </constraints>
-                                                    <state key="normal" title="Button"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                            <integer key="value" value="15"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                            <real key="value" value="4"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                            <color key="value" red="0.94117647059999998" green="0.43529411759999997" blue="0.21176470589999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Call your resort." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IJT-qs-oIE">
                                                     <rect key="frame" x="15" y="33" width="110" height="18"/>
@@ -1702,7 +1713,7 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="IJT-qs-oIE" firstAttribute="leading" secondItem="ezj-iT-L2z" secondAttribute="leadingMargin" constant="7" id="4Hm-jQ-f7w"/>
-                                                <constraint firstItem="zgX-pc-lX0" firstAttribute="top" secondItem="ezj-iT-L2z" secondAttribute="topMargin" constant="7" id="HO1-WT-QBe"/>
+                                                <constraint firstItem="zgX-pc-lX0" firstAttribute="top" secondItem="ezj-iT-L2z" secondAttribute="topMargin" constant="12" id="HO1-WT-QBe"/>
                                                 <constraint firstItem="EAO-Km-3U2" firstAttribute="leading" secondItem="ezj-iT-L2z" secondAttribute="leadingMargin" constant="7" id="UKH-gO-gmK"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="zgX-pc-lX0" secondAttribute="trailing" constant="7" id="UiD-KP-QGX"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="IJT-qs-oIE" secondAttribute="bottom" constant="11" id="ZeA-1s-oPV"/>
@@ -1711,7 +1722,6 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="callresortbutton" destination="zgX-pc-lX0" id="7O9-Zd-fgx"/>
                                             <outlet property="donothaveresortLabel" destination="EAO-Km-3U2" id="vTh-AD-9Sd"/>
                                         </connections>
                                     </tableViewCell>
@@ -1722,7 +1732,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="370"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sanci_main01_r" translatesAutoresizingMaskIntoConstraints="NO" id="nJ1-Ly-48P">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NoImageIcon" translatesAutoresizingMaskIntoConstraints="NO" id="nJ1-Ly-48P">
                                                     <rect key="frame" x="0.0" y="0.0" width="600" height="330"/>
                                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
@@ -1777,7 +1787,7 @@
                                             <outlet property="resortNameGradientView" destination="1jc-vO-2Ld" id="Iu1-jt-efU"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="selectclubcell" rowHeight="70" id="iGs-BI-kgY">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="selectclubcell" rowHeight="70" id="iGs-BI-kgY" customClass="ReservationTableViewCell" customModule="IntervalApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="468" width="600" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iGs-BI-kgY" id="ixo-oC-RiR">
@@ -1826,6 +1836,9 @@
                                                 <constraint firstItem="DcI-Cp-HvQ" firstAttribute="top" secondItem="F5f-sQ-0Bj" secondAttribute="bottom" constant="4" id="t5D-BI-6g1"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="selectResortLabel" destination="aFz-kJ-1fF" id="7hi-Zo-zHe"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="registrationNumbercell" rowHeight="223" id="hdY-k9-cIs" customClass="ReservationTableViewCell" customModule="IntervalApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="538" width="600" height="223"/>
@@ -2241,6 +2254,7 @@ EFJlc2VydmF0aW9uIERldGFpbHM
     <resources>
         <image name="DropArrowIcon" width="33" height="33"/>
         <image name="ForwardArrowIcon" width="33" height="33"/>
+        <image name="NoImageIcon" width="64" height="64"/>
         <image name="OfferIcon" width="33" height="33"/>
         <image name="close" width="32" height="32"/>
         <image name="sanci_main01_r" width="1200" height="550"/>

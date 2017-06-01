@@ -27,6 +27,10 @@ class FloatDetailViewController: UIViewController {
         UIApplication.shared.keyWindow?.rootViewController = viewController
     }
     
+    override func viewWillAppear(_ animated: Bool){
+        floatDetailsTableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         floatDetailsTableView.estimatedRowHeight = 200
@@ -43,7 +47,7 @@ class FloatDetailViewController: UIViewController {
      - returns : No value is return
      */
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
-        
+        Constant.MyClassConstants.savedClubFloatResort = ""
         _ = self.navigationController?.popViewController(animated: true)
     }
     
@@ -66,18 +70,7 @@ class FloatDetailViewController: UIViewController {
     
     // Select check - in date action
     @IBAction func selectCheckInDate(){
-        Helper.getCheckInDatesForCalendar()
-        var mainStoryboard = UIStoryboard()
-        if(Constant.RunningDevice.deviceIdiom == .pad) {
-            mainStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-        }
-        else {
-            mainStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-        }
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as! CalendarViewController
-        let transitionManager = TransitionManager()
-        self.navigationController?.transitioningDelegate = transitionManager
-        self.navigationController?.pushViewController(viewController, animated: true)
+        Helper.getCheckInDatesForCalendar(senderViewController: self, resortCode: floatResortDetails!.resortCode!, relinquishmentYear: 2018)
     }
 
     
@@ -95,7 +88,7 @@ extension FloatDetailViewController : UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var  resortcallCell:CallYourResortTableViewCell?
         var vacationdetailcell:ResortDirectoryResortCell?
-        var selectClubresortcell:UITableViewCell?
+        var selectClubresortcell:ReservationTableViewCell!
         var registrationNumbercell:ReservationTableViewCell!
         var saveandcancelCell:FloatSaveAndCancelButtonTableViewCell?
         switch (indexPath as NSIndexPath).row{
@@ -109,7 +102,10 @@ extension FloatDetailViewController : UITableViewDataSource{
 
             return vacationdetailcell!
         case 2:
-            selectClubresortcell = tableView.dequeueReusableCell(withIdentifier: Constant.floatDetailViewController.selectclubcellIdentifier)
+            selectClubresortcell = tableView.dequeueReusableCell(withIdentifier: Constant.floatDetailViewController.selectclubcellIdentifier) as! ReservationTableViewCell
+            if(Constant.MyClassConstants.savedClubFloatResort != ""){
+                selectClubresortcell.selectResortLabel.text = Constant.MyClassConstants.savedClubFloatResort
+            }
             return selectClubresortcell!
         case 3:
             registrationNumbercell = tableView.dequeueReusableCell(withIdentifier: Constant.floatDetailViewController.registrationNumbercellIdentifier) as! ReservationTableViewCell

@@ -35,10 +35,6 @@ class CallYourResortTableViewCell: UITableViewCell {
     - returns : No return value
     */
     fileprivate func setPropertiesTocellComponenet(){
-        
-        callresortbutton.layer.cornerRadius = 8
-        callresortbutton.tintColor = UIColor.white
-        callresortbutton.backgroundColor = UIColor.green
         donothaveresortLabel.textColor = UIColor(rgb: IUIKColorPalette.secondaryText.rawValue)
     }
     /**

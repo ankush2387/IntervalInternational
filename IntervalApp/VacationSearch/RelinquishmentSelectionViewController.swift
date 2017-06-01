@@ -394,7 +394,13 @@ class RelinquishmentSelectionViewController: UIViewController {
     }
     
     func addClubFloatWeek(_ sender:IUIKButton){
-        Helper.getResortsByClubFloatDetails(resortCode:(relinquishmentOpenWeeksArray[sender.tag - 1].resort?.resortCode!)!, senderViewController: self, floatResortDetails: relinquishmentOpenWeeksArray[sender.tag - 1].resort!)
+        if(relinquishmentOpenWeeksArray.count > 0){
+            Helper.getResortsByClubFloatDetails(resortCode:(relinquishmentOpenWeeksArray[sender.tag - 1].resort?.resortCode!)!, senderViewController: self, floatResortDetails: relinquishmentOpenWeeksArray[sender.tag - 1].resort!)
+        }else if(intervalOpenWeeksArray.count > 0){
+            Helper.getResortsByClubFloatDetails(resortCode:(intervalOpenWeeksArray[sender.tag - 1].resort?.resortCode!)!, senderViewController: self, floatResortDetails: intervalOpenWeeksArray[sender.tag - 1].resort!)
+        }else{
+            
+        }
     }
     
     func getUnitSize(_ unitSize:[InventoryUnit]) {
@@ -543,12 +549,17 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
             else {
                 openWeek = intervalOpenWeeksArray[indexPath.row]
             }
+            
             var cell = RelinquishmentSelectionOpenWeeksCell()
             if(openWeek.weekNumber == Constant.CommonStringIdentifiers.floatWeek){
                 cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.floatWeekUnsavedCell, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
                 cell.resortName.text = "\(openWeek.resort!.resortName!)/\(openWeek.resort!.resortCode!)"
                 cell.totalWeekLabel.text = "\(openWeek.relinquishmentYear!)"
-                cell.addButton.tag = indexPath.row + indexPath.section
+                if(indexPath.section == 1){
+                  cell.addButton.tag = indexPath.row + indexPath.section
+                }else{
+                  cell.addButton.tag = indexPath.row + 1
+                }
                 cell.addButton.addTarget(self, action:  #selector(RelinquishmentSelectionViewController.addClubFloatWeek(_:)), for: .touchUpInside)
                 return cell
             }else{

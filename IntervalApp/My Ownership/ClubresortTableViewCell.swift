@@ -32,6 +32,13 @@ class ClubresortTableViewCell: UITableViewCell {
         self.clubresortDictionary = clubresortdictionary
         clubResortCheckbox.tag = index
         clubResortCheckbox.checked = isChecked
+        if(isChecked || Constant.MyClassConstants.savedClubFloatResort == Constant.MyClassConstants.clubFloatResorts[index].resortName!){
+            clubresortNameLabel.textColor = UIColor.orange
+            clubResortCheckbox.checked = true
+        }else{
+            clubresortNameLabel.textColor = UIColor.black
+            clubResortCheckbox.checked = false
+        }
     }
     /**
      Apply properties to cell components
@@ -40,7 +47,7 @@ class ClubresortTableViewCell: UITableViewCell {
      */
     fileprivate func setPropertiesToCellElements(){
         clubresortNameLabel.textColor = UIColor(rgb: IUIKColorPalette.primary1.rawValue)
-        clubresortAvailabilitylabel.textColor = UIColor(rgb: IUIKColorPalette.primary1.rawValue)
+        //clubresortAvailabilitylabel.textColor = UIColor(rgb: IUIKColorPalette.primary1.rawValue)
 
     }
 
