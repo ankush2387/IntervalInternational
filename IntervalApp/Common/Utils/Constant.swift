@@ -439,7 +439,8 @@ class Constant: NSObject {
         static var segmentThirdString = "Third"
         static var clubFloatResorts = [Resort]()
         static var savedClubFloatResort = ""
-        
+        static var savedBedroom = ""
+         static var buttontitle = ""
     }
     struct CommonStringIdentifiers {
         static var floatWeek = "FLOAT_WEEK"
@@ -1807,6 +1808,11 @@ class Constant: NSObject {
         static var gold = "GLD"
         static var platinum = "PLT"
     }
+    struct  buttonId {
+        static var bedroomselection = "Bedroomtapped"
+        static var resortSelection  = "ResortSelect"
+    }
+
 }
 
 

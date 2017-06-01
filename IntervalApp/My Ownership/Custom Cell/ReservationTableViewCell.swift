@@ -30,6 +30,7 @@ class ReservationTableViewCell: UITableViewCell {
      - returns : No return value
      */
     fileprivate func setPropertiesTocellComponenet(){
+        
         for (index,textField) in registrationTextFieldsCollection.enumerated(){
             textField.placeholder = placeholderArray[index]
             textField.layer.borderColor = UIColor.lightGray.cgColor
@@ -40,7 +41,12 @@ class ReservationTableViewCell: UITableViewCell {
             let paddingViewRight = UIView(frame: CGRect(x: textField.frame.size.width - 35, y: 0, width: 35, height: 15))
             textField.rightView = paddingViewRight
             textField.rightViewMode = .always
+            if(textField.tag == 3){
+                textField.text =   Constant.MyClassConstants.savedBedroom
+            }
         }
+        
+    
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

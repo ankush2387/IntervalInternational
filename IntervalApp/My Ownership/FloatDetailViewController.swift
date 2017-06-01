@@ -69,19 +69,23 @@ class FloatDetailViewController: UIViewController {
     
     // Select bedroom button action
     @IBAction func bedroomButtonTapped(_ sender:UIButton){
-        Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.floatViewController
-        var mainStoryboard = UIStoryboard()
-        if(Constant.RunningDevice.deviceIdiom == .pad) {
-            mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIpad, bundle: nil)
-        }
-        else {
-            mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
-        }
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.bedroomSizeViewController) as! BedroomSizeViewController
-        viewController.delegate = self
-        let transitionManager = TransitionManager()
-        self.navigationController?.transitioningDelegate = transitionManager
-        self.navigationController!.present(viewController, animated: true, completion: nil)
+//        Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.floatViewController
+//        var mainStoryboard = UIStoryboard()
+//        if(Constant.RunningDevice.deviceIdiom == .pad) {
+//            mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIpad, bundle: nil)
+//        }
+//        else {
+//            mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
+//        }
+//        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.bedroomSizeViewController) as! BedroomSizeViewController
+//        viewController.delegate = self
+//        let transitionManager = TransitionManager()
+//        self.navigationController?.transitioningDelegate = transitionManager
+//        self.navigationController!.present(viewController, animated: true, completion: nil)
+        
+        self.performSegue(withIdentifier: Constant.floatDetailViewController.clubresortviewcontrollerIdentifier, sender: self)
+                Constant.MyClassConstants.buttontitle = Constant.buttonId.bedroomselection
+
     }
     
     // Select check - in date action
@@ -226,6 +230,7 @@ extension FloatDetailViewController : UITableViewDelegate{
         if (indexPath as NSIndexPath).row == 2
         {
             self.performSegue(withIdentifier: Constant.floatDetailViewController.clubresortviewcontrollerIdentifier, sender: self)
+            Constant.MyClassConstants.buttontitle =  Constant.buttonId.resortSelection
         }
     }
 }
