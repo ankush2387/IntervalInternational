@@ -861,38 +861,35 @@ public class Helper{
     /***** Get club resort API call for float details ******/
     
     static func getResortsByClubFloatDetails(resortCode:String, senderViewController:UIViewController, floatResortDetails:Resort){
+        SVProgressHUD.show()
+        self.addServiceCallBackgroundView(view: senderViewController.view)
         DirectoryClient.getResortsByClub(UserContext.sharedInstance.accessToken, clubCode: resortCode, onSuccess: { (_ resorts: [Resort]) in
-            
+            SVProgressHUD.dismiss()
+            self.removeServiceCallBackgroundView(view: senderViewController.view)
             Constant.MyClassConstants.clubFloatResorts = resorts
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.floatViewController) as! FloatDetailViewController
             viewController.floatResortDetails = floatResortDetails
             let transitionManager = TransitionManager()
             senderViewController.navigationController?.transitioningDelegate = transitionManager
-            /*self.navigationController!.present(viewController, animated: true, completion: {
-             })*/
             senderViewController.navigationController?.pushViewController(viewController, animated: true)
             
         }) { (error) in
             
-            // SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
-            
-            
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
-            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.floatViewController) as! FloatDetailViewController
-            viewController.floatResortDetails = floatResortDetails
-            let transitionManager = TransitionManager()
-            senderViewController.navigationController?.transitioningDelegate = transitionManager
-            /*self.navigationController!.present(viewController, animated: true, completion: {
-             })*/
-            senderViewController.navigationController?.pushViewController(viewController, animated: true)
+            SVProgressHUD.dismiss()
+            self.removeServiceCallBackgroundView(view: senderViewController.view)
+             SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
         }
     }
     
     /***** Get check-in dates API to show in calendar ******/
     static func getCheckInDatesForCalendar(senderViewController:UIViewController, resortCode:String, relinquishmentYear:Int){
+        SVProgressHUD.show()
+        self.addServiceCallBackgroundView(view: senderViewController.view)
         DirectoryClient.getResortCalendars(UserContext.sharedInstance.accessToken, resortCode: resortCode, year: relinquishmentYear, onSuccess: { (resortCalendar: [ResortCalendar]) in
             
+            SVProgressHUD.dismiss()
+            self.removeServiceCallBackgroundView(view: senderViewController.view)
             if(resortCalendar.count > 0){
             Constant.MyClassConstants.relinquishmentFloatDetialMinDate = self.convertStringToDate(dateString: resortCalendar[0].checkInDate!, format: Constant.MyClassConstants.dateFormat)
             Constant.MyClassConstants.relinquishmentFloatDetialMaxDate = self.convertStringToDate(dateString: (resortCalendar.last?.checkInDate!)!, format: Constant.MyClassConstants.dateFormat)
@@ -913,10 +910,15 @@ public class Helper{
             let transitionManager = TransitionManager()
             senderViewController.navigationController?.transitioningDelegate = transitionManager
             senderViewController.navigationController?.pushViewController(viewController, animated: true)
-        }
+            }else{
+                SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.noDatesMessage)
+            }
         
         }) { (error) in
-            print(error)
+            
+            SVProgressHUD.dismiss()
+            self.removeServiceCallBackgroundView(view: senderViewController.view)
+            SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
         }
     }
     
@@ -1430,6 +1432,14 @@ public class Helper{
         
         ADBMobile.trackAction(Constant.omnitureEvents.event40, data: userInfo)
 
+    }
+    
+    static func showProgressBar(){
+        
+    }
+    
+    static func hideProgrssBar(){
+        
     }
 
 }

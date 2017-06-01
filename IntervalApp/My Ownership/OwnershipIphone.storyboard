@@ -1680,14 +1680,16 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zgX-pc-lX0" customClass="IUIKButton" customModule="IntervalUIKit">
-                                                    <rect key="frame" x="555" y="20" width="30" height="30"/>
+                                                    <rect key="frame" x="545" y="10" width="40" height="40"/>
                                                     <color key="backgroundColor" red="0.94117647059999998" green="0.43529411759999997" blue="0.21176470589999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="30" id="I3F-b3-U0A"/>
+                                                        <constraint firstAttribute="height" constant="40" id="I3F-b3-U0A"/>
+                                                        <constraint firstAttribute="width" constant="40" id="ICG-8r-cpx"/>
                                                     </constraints>
+                                                    <inset key="titleEdgeInsets" minX="0.0" minY="1" maxX="0.0" maxY="0.0"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                            <integer key="value" value="15"/>
+                                                            <integer key="value" value="20"/>
                                                         </userDefinedRuntimeAttribute>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
                                                             <real key="value" value="4"/>
@@ -1696,6 +1698,9 @@
                                                             <color key="value" red="0.94117647059999998" green="0.43529411759999997" blue="0.21176470589999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="callYourResortTappedWith_sender:" destination="XVn-Fp-la9" eventType="touchUpInside" id="5ru-Zr-BR0"/>
+                                                    </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Call your resort." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IJT-qs-oIE">
                                                     <rect key="frame" x="15" y="33" width="110" height="18"/>
@@ -1713,7 +1718,7 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="IJT-qs-oIE" firstAttribute="leading" secondItem="ezj-iT-L2z" secondAttribute="leadingMargin" constant="7" id="4Hm-jQ-f7w"/>
-                                                <constraint firstItem="zgX-pc-lX0" firstAttribute="top" secondItem="ezj-iT-L2z" secondAttribute="topMargin" constant="12" id="HO1-WT-QBe"/>
+                                                <constraint firstItem="zgX-pc-lX0" firstAttribute="top" secondItem="ezj-iT-L2z" secondAttribute="topMargin" constant="2" id="HO1-WT-QBe"/>
                                                 <constraint firstItem="EAO-Km-3U2" firstAttribute="leading" secondItem="ezj-iT-L2z" secondAttribute="leadingMargin" constant="7" id="UKH-gO-gmK"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="zgX-pc-lX0" secondAttribute="trailing" constant="7" id="UiD-KP-QGX"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="IJT-qs-oIE" secondAttribute="bottom" constant="11" id="ZeA-1s-oPV"/>
@@ -2015,6 +2020,9 @@ EFJlc2VydmF0aW9uIERldGFpbHM
                                                             <real key="value" value="4"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="saveFloatDetails" destination="XVn-Fp-la9" eventType="touchUpInside" id="1c7-XK-AMa"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>

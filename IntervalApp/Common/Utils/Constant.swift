@@ -543,6 +543,7 @@ class Constant: NSObject {
         static var vactionSearchDateMessage = NSLocalizedString("No match found. Please select another date.", comment: "")
         static var userInterestMessage = NSLocalizedString("How's about you go favorite some resorts and when you come back they will be here all warm and toasty waiting for you!", comment: "")
         static var goGetMessage = NSLocalizedString("Go on Get! ", comment: "")
+        static var noDatesMessage = NSLocalizedString("No Dates availabel", comment: "")
     }
     
     //***** common  structure to provide alert promt button titles *****//

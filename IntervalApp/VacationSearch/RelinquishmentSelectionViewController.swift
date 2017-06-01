@@ -396,8 +396,10 @@ class RelinquishmentSelectionViewController: UIViewController {
     func addClubFloatWeek(_ sender:IUIKButton){
         if(relinquishmentOpenWeeksArray.count > 0){
             Helper.getResortsByClubFloatDetails(resortCode:(relinquishmentOpenWeeksArray[sender.tag - 1].resort?.resortCode!)!, senderViewController: self, floatResortDetails: relinquishmentOpenWeeksArray[sender.tag - 1].resort!)
+            Constant.MyClassConstants.relinquishmentSelectedWeek = relinquishmentOpenWeeksArray[sender.tag - 1]
         }else if(intervalOpenWeeksArray.count > 0){
             Helper.getResortsByClubFloatDetails(resortCode:(intervalOpenWeeksArray[sender.tag - 1].resort?.resortCode!)!, senderViewController: self, floatResortDetails: intervalOpenWeeksArray[sender.tag - 1].resort!)
+            Constant.MyClassConstants.relinquishmentSelectedWeek = intervalOpenWeeksArray[sender.tag - 1]
         }else{
             
         }

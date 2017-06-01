@@ -7,7 +7,10 @@
 //
 
 import UIKit
+import IntervalUIKit
 import DarwinSDK
+import Realm
+import RealmSwift
 
 class FloatDetailViewController: UIViewController {
     
@@ -16,6 +19,7 @@ class FloatDetailViewController: UIViewController {
     @IBOutlet weak var floatDetailsTableView:UITableView!
     
     weak var floatResortDetails = Resort()
+    weak var unitDetails = InventoryUnit()
     /**
      PopcurrentViewcontroller from NavigationController
      - parameter sender: UIButton reference.
@@ -33,6 +37,7 @@ class FloatDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        unitDetails = Constant.MyClassConstants.relinquishmentSelectedWeek.unit!
         floatDetailsTableView.estimatedRowHeight = 200
         self.title = Constant.ControllerTitles.floatDetailViewController
         let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(FloatDetailViewController.menuBackButtonPressed(_:)))
@@ -49,6 +54,17 @@ class FloatDetailViewController: UIViewController {
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
         Constant.MyClassConstants.savedClubFloatResort = ""
         _ = self.navigationController?.popViewController(animated: true)
+    }
+    
+    // Call your resort button action
+    @IBAction func callYourResortTapped(_sender: IUIKButton){
+        if let url = URL(string: "tel://\(floatResortDetails!.phone!)") {
+            if #available(iOS 10, *) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            } else {
+                UIApplication.shared.openURL(url as URL)
+            }
+        }
     }
     
     // Select bedroom button action
@@ -71,6 +87,84 @@ class FloatDetailViewController: UIViewController {
     // Select check - in date action
     @IBAction func selectCheckInDate(){
         Helper.getCheckInDatesForCalendar(senderViewController: self, resortCode: floatResortDetails!.resortCode!, relinquishmentYear: 2018)
+    }
+    
+    //Save Float Details
+    @IBAction func saveFloatDetails(){
+        let indexPath = IndexPath(row: 3, section: 0)
+        var reservationNumber = ""
+        var unitNumber = "#309"
+        var noOfBedrooms = ""
+        
+        for subView in (self.floatDetailsTableView.cellForRow(at: indexPath)?.contentView.subviews)!{
+            if(subView.isKind(of: UITextField.self )){
+                let tf = subView as! UITextField
+                if(tf.tag == 1){
+                    reservationNumber = tf.text!
+                }else if(tf.tag == 2){
+                    unitNumber = tf.text!
+                }else{
+                    noOfBedrooms = tf.text!
+                }
+            }
+        }
+        
+        //Realm local storage for selected relinquishment
+        let storedata = OpenWeeksStorage()
+        let Membership = UserContext.sharedInstance.selectedMembership
+        let relinquishmentList = TradeLocalData()
+        
+        let selectedOpenWeek = OpenWeeks()
+        selectedOpenWeek.isFloat=true
+        selectedOpenWeek.weekNumber = Constant.MyClassConstants.relinquishmentSelectedWeek.weekNumber!
+        selectedOpenWeek.relinquishmentID = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!
+        selectedOpenWeek.relinquishmentYear = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentYear!
+        let resort = ResortList()
+        resort.resortName = (floatResortDetails?.resortName)!
+        
+        let floatDetails = ResortFloatDetails()
+        floatDetails.reservationNumber = reservationNumber
+        floatDetails.unitNumber = unitNumber
+        floatDetails.unitSize = noOfBedrooms
+        selectedOpenWeek.floatDetails.append(floatDetails)
+        
+        let unitDetails = ResortUnitDetails()
+        unitDetails.kitchenType = (Helper.getKitchenEnums(kitchenType: (self.unitDetails?.kitchenType!)!))
+        unitDetails.unitSize = (Helper.getBedroomNumbers(bedroomType: (self.unitDetails?.unitSize!)!))//(self.unitDetails?.unitSize!)!
+        selectedOpenWeek.unitDetails.append(unitDetails)
+        
+        selectedOpenWeek.resort.append(resort)
+        relinquishmentList.openWeeks.append(selectedOpenWeek)
+        storedata.openWeeks.append(relinquishmentList)
+        storedata.membeshipNumber = Membership!.memberNumber!
+        let realm = try! Realm()
+        try! realm.write {
+            realm.add(storedata)
+        }
+        
+        
+        // Open vacation search view controller
+        var viewcontroller:UIViewController
+        if (Constant.RunningDevice.deviceIdiom == .phone) {
+            
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+            viewcontroller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as! SWRevealViewController
+        }
+        else{
+            
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+            viewcontroller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as! SWRevealViewController
+        }
+        
+        
+        //***** creating animation transition to show custom transition animation *****//
+        let transition: CATransition = CATransition()
+        let timeFunc : CAMediaTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        transition.duration = 0.0
+        transition.timingFunction = timeFunc
+        viewcontroller.view.layer.add(transition, forKey: Constant.MyClassConstants.switchToView)
+        UIApplication.shared.keyWindow?.rootViewController = viewcontroller
+        
     }
 
     
@@ -142,7 +236,7 @@ extension FloatDetailViewController : BedroomSizeViewControllerDelegate{
         let bedroomTextField = self.view.viewWithTag(3) as! UITextField!
         var bedroomString = ""
         for index in selectedUnitsArray{
-            bedroomString = "\(bedroomString)\(UnitSize.forDisplay[index as! Int].friendlyName()), "
+            bedroomString = "\(bedroomString)\(UnitSize.forDisplay[index as! Int].friendlyName()) "
             bedroomTextField!.text = ""
             bedroomTextField!.text = bedroomString
         }

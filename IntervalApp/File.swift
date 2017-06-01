@@ -50,6 +50,12 @@ class ResortUnitDetails:Object {
     dynamic var kitchenType = ""
     dynamic var unitSize = ""
 }
+class ResortFloatDetails:Object{
+    dynamic var reservationNumber = ""
+    dynamic var unitNumber = ""
+    dynamic var unitSize = ""
+    dynamic var checkInDate = ""
+}
 
 class ResortByMap:Object {
     
@@ -88,8 +94,10 @@ class OpenWeeks:Object {
     dynamic var weekNumber = ""
     dynamic var relinquishmentYear = 0
     dynamic var isLockOff = false
+    dynamic var isFloat = false
     var resort = List<ResortList>()
     var unitDetails = List<ResortUnitDetails>()
+    var floatDetails = List<ResortFloatDetails>()
     //dynamic var units = [InventoryUnit]()
 }
 
