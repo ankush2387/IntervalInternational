@@ -10,6 +10,7 @@ import UIKit
 import IntervalUIKit
 import SDWebImage
 import DarwinSDK
+import MessageUI
 
 class UpComingTripDetailIPadViewController: UIViewController {
 
@@ -147,6 +148,18 @@ class UpComingTripDetailIPadViewController: UIViewController {
         actionSheetController.addAction(resetMySearchAction)
         //***** Create and add help *****//
         let helpAction: UIAlertAction = UIAlertAction(title: Constant.buttonTitles.textTripTitle, style: .default) { action -> Void in
+            //check if device can send text messages
+            if MFMessageComposeViewController.canSendText() {
+                let messageComposerVC = MFMessageComposeViewController()
+                messageComposerVC.messageComposeDelegate = self
+                
+                messageComposerVC.navigationBar.titleTextAttributes = ["NSForegroundColorAttributeName" : UIColor.black]
+                let message = self.formatMessageforComposer()
+                messageComposerVC.body = message
+                self.present(messageComposerVC, animated: true, completion: nil)
+            } else {
+                SimpleAlert.alert(self, title: "Error", message: "This device is not able/configured to send Text Messages")
+            }
         }
         actionSheetController.addAction(helpAction)
         
@@ -681,3 +694,63 @@ extension UpComingTripDetailIPadViewController:UITableViewDataSource {
     }
 }
 
+extension UpComingTripDetailIPadViewController: MFMessageComposeViewControllerDelegate {
+    
+    func formatMessageforComposer() -> String {
+        //format message to be sent for text and Email
+        var message = ""
+        var location = ""
+        //confirmation Number
+        if let confirmationNum = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.confirmationNumber {
+            message.append("Confirmation #: \(confirmationNum)\n")
+        }
+        //transaction Type
+        let transactionType = ExchangeTransactionType.fromName(name: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.exchangeTransactionType!).friendlyNameForUpcomingTrip()
+        message.append("TransactionType: \(transactionType)\n")
+        //Resort Name
+        if let name = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.resortName {
+            message.append("Resort: \(name)\n")
+        }
+        //city Name
+        if let cityName = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address!.cityName {
+            location = "\(cityName), "
+        }
+        //Country Code
+        if let countryCode = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address!.countryCode {
+            location.append("\(countryCode)")
+        }
+        message.append("Location: \(location)\n")
+        
+        //format checkIn Date
+        let checkInDate = Helper.convertStringToDate(dateString:Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.checkInDate!, format: Constant.MyClassConstants.dateFormat)
+        let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
+        let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkInDate)
+        let formatedCheckInDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!))/\(myComponents.day!)/\(myComponents.year!)"
+        
+        message.append("CheckIn: \(formatedCheckInDate)\n")
+        
+        //format CheckOut Date
+        let checkOutDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.checkOutDate!, format: Constant.MyClassConstants.dateFormat1)
+        let myComponents1 = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkOutDate)
+        let formatedCheckOutDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!))/\(myComponents1.day!)/\(myComponents1.year!)"
+        message.append("CheckOut: \(formatedCheckOutDate)\n")
+        
+        return message
+    }
+    
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        //display alert message if message fails to be sent.
+        switch result.rawValue {
+        case MessageComposeResult.failed.rawValue:
+            SimpleAlert.alert(self, title: "Error", message: "The text message could not be sent. Please try again.")
+            break
+        default:
+            print("Text Result: \(result.rawValue)")
+            break
+        }
+        
+        //dissmis Text Composer
+        self.dismiss(animated: true, completion: nil)
+
+    }
+}
