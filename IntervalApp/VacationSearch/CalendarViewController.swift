@@ -69,6 +69,8 @@ extension CalendarViewController:FSCalendarDelegate {
         else if(self.requestedController == Constant.MyClassConstants.relinquishmentFlaotWeek) {
             
             Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate = date
+            
+            _ = self.navigationController?.popViewController(animated: true)
         }
         else {
             
@@ -98,7 +100,7 @@ extension CalendarViewController:FSCalendarDelegate {
     func calendar(_ calendar: FSCalendar, shouldSelect date: Date) -> Bool {
         
         
-        if(self.dateArray.contains(date)) {
+        if(Constant.MyClassConstants.floatDetailsCalendarDateArray.contains(date)) {
             
             return true
         }

@@ -440,7 +440,16 @@ class Constant: NSObject {
         static var clubFloatResorts = [Resort]()
         static var savedClubFloatResort = ""
         static var savedBedroom = ""
-         static var buttontitle = ""
+        static var buttontitle = ""
+        
+        //Reservation Attributes
+        static var resortClubAttribute = "RESORT_CLUB"
+        static var resortReservationAttribute = "RESERVATION_NUMBER"
+        static var checkInDateAttribute =   "CHECK_IN_DATE"
+        static var unitNumberAttribute = "UNIT_NUMBER"
+        static var resortDetailsAttribute = "RESORT_DETAILS"
+        static var saveAttribute = "SAVE_DETAILS"
+        static var callResortAttribute = "CALL_DETAILS"
     }
     struct CommonStringIdentifiers {
         static var floatWeek = "FLOAT_WEEK"

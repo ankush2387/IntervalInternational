@@ -123,7 +123,7 @@ extension ClubresortsViewController:UITableViewDataSource{
         
         if (Constant.MyClassConstants.buttontitle == Constant.buttonId.bedroomselection) {
            
-             cell?.clubresortNameLabel.text = UnitSize.forDisplay[indexPath.row].rawValue
+            cell?.clubresortNameLabel.text = "\(UnitSize.forDisplay[indexPath.row].friendlyName()) "
            
                    }
         else if( Constant.MyClassConstants.buttontitle == Constant.buttonId.resortSelection){

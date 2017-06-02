@@ -1874,7 +1874,7 @@ EFJlc2VydmF0aW9uIERldGFpbHM
                                                         <constraint firstAttribute="trailing" secondItem="vMD-bu-zsX" secondAttribute="trailing" constant="15" id="sRo-1Y-REA"/>
                                                     </constraints>
                                                 </view>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="N2o-CF-nd4">
+                                                <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="N2o-CF-nd4">
                                                     <rect key="frame" x="25" y="35" width="550" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="40" id="ZCO-Wi-jd8"/>
@@ -1890,8 +1890,11 @@ EFJlc2VydmF0aW9uIERldGFpbHM
                                                             <integer key="value" value="4"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="XVn-Fp-la9" id="Gk9-1F-Bi6"/>
+                                                    </connections>
                                                 </textField>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SHJ-cf-VIm">
+                                                <textField opaque="NO" clipsSubviews="YES" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SHJ-cf-VIm">
                                                     <rect key="frame" x="25" y="80" width="550" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="40" id="5NM-uj-s1N"/>
@@ -1907,6 +1910,9 @@ EFJlc2VydmF0aW9uIERldGFpbHM
                                                             <real key="value" value="0.5"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="XVn-Fp-la9" id="Y4G-we-kxH"/>
+                                                    </connections>
                                                 </textField>
                                                 <textField opaque="NO" clipsSubviews="YES" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FbP-L8-jcU">
                                                     <rect key="frame" x="25" y="125" width="550" height="40"/>
@@ -1924,6 +1930,9 @@ EFJlc2VydmF0aW9uIERldGFpbHM
                                                             <real key="value" value="0.5"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="XVn-Fp-la9" id="C9q-Mm-S0k"/>
+                                                    </connections>
                                                 </textField>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DropArrowIcon" translatesAutoresizingMaskIntoConstraints="NO" id="XwG-cp-maQ">
                                                     <rect key="frame" x="537" y="125" width="40" height="40"/>
@@ -1954,6 +1963,9 @@ EFJlc2VydmF0aW9uIERldGFpbHM
                                                             <real key="value" value="0.5"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="XVn-Fp-la9" id="wKt-Jv-RAb"/>
+                                                    </connections>
                                                 </textField>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zts-G6-hWS">
                                                     <rect key="frame" x="25" y="180" width="550" height="30"/>
@@ -2035,6 +2047,101 @@ EFJlc2VydmF0aW9uIERldGFpbHM
                                         <color key="backgroundColor" red="0.94509803921568625" green="0.94509803921568625" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <outlet property="saveFloatDetailButton" destination="gL9-zu-v85" id="d5S-q7-WFE"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Check" rowHeight="80" id="A33-C4-BJq" customClass="ReservationTableViewCell" customModule="IntervalApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="851" width="600" height="80"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="A33-C4-BJq" id="Evh-Ta-PqN">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="80"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aue-v7-gEt">
+                                                    <rect key="frame" x="25" y="5" width="550" height="70"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reservation Number" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9F5-ew-fmf">
+                                                            <rect key="frame" x="0.0" y="0.0" width="550" height="30"/>
+                                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5Np-5p-OfL">
+                                                            <rect key="frame" x="0.0" y="30" width="527" height="30"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="30" id="j9f-xA-1u2"/>
+                                                            </constraints>
+                                                            <nil key="textColor"/>
+                                                            <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="15"/>
+                                                            <textInputTraits key="textInputTraits"/>
+                                                        </textField>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstItem="9F5-ew-fmf" firstAttribute="top" secondItem="aue-v7-gEt" secondAttribute="top" id="3CL-Xp-cVG"/>
+                                                        <constraint firstItem="9F5-ew-fmf" firstAttribute="leading" secondItem="aue-v7-gEt" secondAttribute="leading" id="Me6-9G-kQx"/>
+                                                        <constraint firstAttribute="bottom" secondItem="5Np-5p-OfL" secondAttribute="bottom" constant="10" id="QKs-QQ-0Qd"/>
+                                                        <constraint firstAttribute="trailing" secondItem="5Np-5p-OfL" secondAttribute="trailing" constant="23" id="bHD-12-lyD"/>
+                                                        <constraint firstItem="9F5-ew-fmf" firstAttribute="leading" secondItem="5Np-5p-OfL" secondAttribute="leading" id="cD9-bH-SGL"/>
+                                                        <constraint firstItem="5Np-5p-OfL" firstAttribute="top" secondItem="9F5-ew-fmf" secondAttribute="bottom" id="ffG-MW-QeC"/>
+                                                        <constraint firstAttribute="trailing" secondItem="9F5-ew-fmf" secondAttribute="trailing" id="tF7-Y6-60C"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <integer key="value" value="4"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                            <real key="value" value="0.5"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="aue-v7-gEt" firstAttribute="centerY" secondItem="Evh-Ta-PqN" secondAttribute="centerY" id="FM6-aI-KYo"/>
+                                                <constraint firstItem="aue-v7-gEt" firstAttribute="top" secondItem="Evh-Ta-PqN" secondAttribute="topMargin" constant="-3" id="Mnt-rO-ZIU"/>
+                                                <constraint firstItem="aue-v7-gEt" firstAttribute="centerX" secondItem="Evh-Ta-PqN" secondAttribute="centerX" id="iJQ-g7-LRc"/>
+                                                <constraint firstItem="aue-v7-gEt" firstAttribute="leading" secondItem="Evh-Ta-PqN" secondAttribute="leadingMargin" constant="17" id="idB-qY-Xmm"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="resortAttributeLabel" destination="5Np-5p-OfL" id="ZII-aD-Nhi"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="registerTableCell" id="zcl-jG-7pR" customClass="ReservationTableViewCell" customModule="IntervalApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="931" width="600" height="100"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zcl-jG-7pR" id="9Sz-2H-bTd">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="100"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Unit Number" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="U1U-W1-iNR">
+                                                    <rect key="frame" x="25" y="30" width="550" height="40"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="40" id="AlA-px-eBu"/>
+                                                    </constraints>
+                                                    <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.61568627450000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="18"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <integer key="value" value="4"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                            <real key="value" value="0.5"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="XVn-Fp-la9" id="6iv-L3-VCW"/>
+                                                    </connections>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="U1U-W1-iNR" firstAttribute="leading" secondItem="9Sz-2H-bTd" secondAttribute="leadingMargin" constant="17" id="39P-Vy-1Dt"/>
+                                                <constraint firstItem="U1U-W1-iNR" firstAttribute="centerX" secondItem="9Sz-2H-bTd" secondAttribute="centerX" id="4nm-yL-neb"/>
+                                                <constraint firstItem="U1U-W1-iNR" firstAttribute="centerY" secondItem="9Sz-2H-bTd" secondAttribute="centerY" id="sGG-Tu-VqM"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="resortAttributeLabel" destination="U1U-W1-iNR" id="UOO-d3-3O8"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

@@ -867,12 +867,7 @@ public class Helper{
             SVProgressHUD.dismiss()
             self.removeServiceCallBackgroundView(view: senderViewController.view)
             Constant.MyClassConstants.clubFloatResorts = resorts
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
-            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.floatViewController) as! FloatDetailViewController
-            viewController.floatResortDetails = floatResortDetails
-            let transitionManager = TransitionManager()
-            senderViewController.navigationController?.transitioningDelegate = transitionManager
-            senderViewController.navigationController?.pushViewController(viewController, animated: true)
+            self.navigateToViewController(senderViewController: senderViewController, floatResortDetails:floatResortDetails)
             
         }) { (error) in
             
@@ -880,6 +875,16 @@ public class Helper{
             self.removeServiceCallBackgroundView(view: senderViewController.view)
              SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
         }
+    }
+    
+    // Switch to FloatDetailViewController
+    static func navigateToViewController(senderViewController:UIViewController, floatResortDetails:Resort){
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.floatViewController) as! FloatDetailViewController
+        viewController.floatResortDetails = floatResortDetails
+        let transitionManager = TransitionManager()
+        senderViewController.navigationController?.transitioningDelegate = transitionManager
+        senderViewController.navigationController?.pushViewController(viewController, animated: true)
     }
     
     /***** Get check-in dates API to show in calendar ******/

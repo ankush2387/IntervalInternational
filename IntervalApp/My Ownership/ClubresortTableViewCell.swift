@@ -8,6 +8,8 @@
 
 import UIKit
 import IntervalUIKit
+import DarwinSDK
+
 class ClubresortTableViewCell: UITableViewCell {
 
     //Outlets
@@ -32,7 +34,7 @@ class ClubresortTableViewCell: UITableViewCell {
         self.clubresortDictionary = clubresortdictionary
         clubResortCheckbox.tag = index
         clubResortCheckbox.checked = isChecked
-        if(isChecked || Constant.MyClassConstants.savedClubFloatResort == Constant.MyClassConstants.clubFloatResorts[index].resortName!){
+        if(isChecked || Constant.MyClassConstants.savedClubFloatResort == Constant.MyClassConstants.clubFloatResorts[index].resortName! || Constant.MyClassConstants.savedBedroom == UnitSize.forDisplay[index].rawValue){
             clubresortNameLabel.textColor = UIColor.orange
             clubResortCheckbox.checked = true
         }else{
