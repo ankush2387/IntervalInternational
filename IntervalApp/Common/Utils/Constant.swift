@@ -359,6 +359,7 @@ class Constant: NSObject {
         static var  relinquishmentFloatDetialMaxDate:Date!
         static var  floatDetailsCalendarDateArray = [Date]()
         static var relinquishmentFlaotWeek = "RelinquishmentFloatWeek"
+        static var realmOpenWeeksID = NSMutableArray()
         
         static var  onsiteArray = NSMutableArray()
         static var  nearbyArray = NSMutableArray()

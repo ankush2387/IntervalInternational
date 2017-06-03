@@ -601,8 +601,9 @@ public class Helper{
                 for openWk in openWeeks {
                     if(openWk.openWeeks.count > 0){
                         
-                        for (index,object) in openWk.openWeeks.enumerated() {
+                        for object in openWk.openWeeks {
                             
+                            Constant.MyClassConstants.realmOpenWeeksID.add(object.relinquishmentID)
                             let tempDict = NSMutableDictionary()
                             if(object.isFloatRemoved && !object.isFromRelinquishment){
                                 Constant.MyClassConstants.floatRemovedArray.add(object)

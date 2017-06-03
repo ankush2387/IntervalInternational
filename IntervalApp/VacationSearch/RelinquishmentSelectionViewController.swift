@@ -55,7 +55,7 @@ class RelinquishmentSelectionViewController: UIViewController {
                     }
                     
                 }
-                else if(fixed_week_type.pointsProgramCode != ""){
+                else if(fixed_week_type.pointsProgramCode != "") {
                     
                     if(!(Constant.MyClassConstants.relinquishmentIdArray.contains(fixed_week_type.relinquishmentId!)) || fixed_week_type.weekNumber == Constant.CommonStringIdentifiers.floatWeek) {
                             relinquishmentOpenWeeksArray.append(fixed_week_type)
@@ -546,47 +546,70 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
             cell.addAvailablePointButton.addTarget(self, action:  #selector(RelinquishmentSelectionViewController.addAvailablePoinButtonPressed(_:)), for: .touchUpInside)
             cell.addAvailablePointButton.tag = indexPath.section + indexPath.row
             if (Constant.MyClassConstants.relinquishmentProgram.availablePoints != nil) {
+                
                 let largeNumber = Constant.MyClassConstants.relinquishmentProgram.availablePoints!
                 let numberFormatter = NumberFormatter()
                 numberFormatter.numberStyle = NumberFormatter.Style.decimal
                 let formattedString = numberFormatter.string(for: largeNumber)
                 cell.availablePointValueLabel.text = formattedString
             }
+            
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             return cell
         }else if(indexPath.section == 1 || indexPath.section == 3){
+            
             var openWeek:OpenWeek!
             if(indexPath.section == 1 ) {
-                openWeek = relinquishmentOpenWeeksArray[indexPath.row]
-            }
-            else {
-                openWeek = intervalOpenWeeksArray[indexPath.row]
-            }
-    
-            
-            var cell = RelinquishmentSelectionOpenWeeksCell()
-            if(openWeek.weekNumber == Constant.CommonStringIdentifiers.floatWeek){
                 
-                var floatWeek = OpenWeeks()
-                if(Constant.MyClassConstants.floatRemovedArray.count == 0){
-                    cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.floatWeekUnsavedCell, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
-                    cell.resortName.text = "\(openWeek.resort!.resortName!)/\(openWeek.resort!.resortCode!)"
-                    cell.totalWeekLabel.text = "\(openWeek.relinquishmentYear!)"
-                    if(indexPath.section == 1){
-                        cell.addButton.tag = indexPath.row + indexPath.section
-                    }else{
-                        cell.addButton.tag = indexPath.row + 1
-                    }
-                    cell.addButton.addTarget(self, action:  #selector(RelinquishmentSelectionViewController.addClubFloatWeek(_:)), for: .touchUpInside)
-                }else{
-                for openWk in Constant.MyClassConstants.floatRemovedArray{
-                    let openWk1 = openWk as! OpenWeeks
-                   
-                    floatWeek = openWk1
-                    print(floatWeek)
+                openWeek = relinquishmentOpenWeeksArray[indexPath.row]
+                
+                if(openWeek.weekNumber == Constant.CommonStringIdentifiers.floatWeek){
                     
-                    if(floatWeek.isFloatRemoved && !floatWeek.isFromRelinquishment){
-                        cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.floatWeekUnsavedCell, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
+                    if(Constant.MyClassConstants.realmOpenWeeksID.contains(openWeek.relinquishmentId!)) {
+                        
+                        let  cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.floatWeekSavedCell, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
+                        
+                        if(Constant.MyClassConstants.floatRemovedArray.count == 0){
+                            
+                            cell.resortName.text = "\(openWeek.resort!.resortName!)/\(openWeek.resort!.resortCode!)"
+                            cell.totalWeekLabel.text = "\(openWeek.relinquishmentYear!)"
+                            if(indexPath.section == 1){
+                                cell.addButton.tag = indexPath.row + indexPath.section
+                            }else{
+                                cell.addButton.tag = indexPath.row + 1
+                            }
+                            cell.addButton.addTarget(self, action:  #selector(RelinquishmentSelectionViewController.addClubFloatWeek(_:)), for: .touchUpInside)
+                            
+                            return cell
+                            
+                        }
+                        else{
+                            
+                            for openWk in Constant.MyClassConstants.floatRemovedArray{
+                                
+                                let openWk1 = openWk as! OpenWeeks
+                                let floatWeek = openWk1
+                                if(openWeek.relinquishmentId == openWk1.relinquishmentID ) {
+                                    
+                                    print(floatWeek)
+                                    
+                                    cell.resortName.text = "\(openWeek.resort!.resortName!)/\(openWeek.resort!.resortCode!)"
+                                    cell.totalWeekLabel.text = "\(openWeek.relinquishmentYear!)"
+                                    if(indexPath.section == 1){
+                                        cell.addButton.tag = indexPath.row + indexPath.section
+                                    }else{
+                                        cell.addButton.tag = indexPath.row + 1
+                                    }
+                                    cell.addButton.addTarget(self, action:  #selector(RelinquishmentSelectionViewController.addClubFloatWeek(_:)), for: .touchUpInside)
+                                }
+                            }
+                            
+                            return cell
+                        }
+                    }
+                    else {
+                        
+                        let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.floatWeekUnsavedCell, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
                         cell.resortName.text = "\(openWeek.resort!.resortName!)/\(openWeek.resort!.resortCode!)"
                         cell.totalWeekLabel.text = "\(openWeek.relinquishmentYear!)"
                         if(indexPath.section == 1){
@@ -595,21 +618,29 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                             cell.addButton.tag = indexPath.row + 1
                         }
                         cell.addButton.addTarget(self, action:  #selector(RelinquishmentSelectionViewController.addClubFloatWeek(_:)), for: .touchUpInside)
-                    }else{
-                        cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.floatWeekSavedCell, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
+                        
+                        return cell
                     }
+                    
+                }
+                
+                else {
+                    
+                      let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.clubPointCell, for: indexPath) as! clubPointCell
+                    
+                    return cell
                 }
             }
-            
-                return cell
+            else {
                 
-            }else{
-               cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.floatWeekSavedCell, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
-               return cell
+                openWeek = intervalOpenWeeksArray[indexPath.row]
+                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.clubPointCell, for: indexPath) as! clubPointCell
+                
+                return cell
             }
-
-            
-        } else {
+          
+        }
+        else {
             
             let openWeek = pointOpenWeeksArray[indexPath.row]
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.clubPointCell, for: indexPath) as! clubPointCell
