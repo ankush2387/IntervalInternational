@@ -1139,9 +1139,13 @@ class GoogleMapViewController: UIViewController {
     
     //***** Function to get collection view visible index. *****//
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        for collectionCell in resortCollectionView.visibleCells{
-            let indexPath = resortCollectionView.indexPath(for: collectionCell)
-            index = (indexPath?.item)!
+        
+        if(resortCollectionView != nil){
+            
+            for collectionCell in resortCollectionView.visibleCells{
+                let indexPath = resortCollectionView.indexPath(for: collectionCell)
+                index = (indexPath?.item)!
+            }
         }
     }
     
@@ -1489,7 +1493,7 @@ extension GoogleMapViewController:UITableViewDelegate {
                     Constant.MyClassConstants.isgetResortFromGoogleSearch = true
                     Helper.getResortWithResortCode(code: selectedResort.resortCode!, viewcontroller: self)
                     self.googleMapSearchBar.text = ""
-                    
+                    self.hidePopUpView()
                 }
                 else {
                     
@@ -1513,6 +1517,7 @@ extension GoogleMapViewController:UITableViewDelegate {
                         SVProgressHUD.dismiss()
                         Helper.removeServiceCallBackgroundView(view: self.view)
                     }
+                    self.hidePopUpView()
                 }
             }
             else {

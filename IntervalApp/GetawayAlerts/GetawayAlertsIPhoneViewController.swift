@@ -288,7 +288,7 @@ extension GetawayAlertsIPhoneViewController:UITableViewDataSource {
         
         cell.alertStatusButton.tag = Int(Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId!)
         let value = Constant.MyClassConstants.alertsSearchDatesDictionary.value(forKey: String(describing: Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId!))
-        //if(value != nil){
+        if(value != nil){
         var checkInDates = NSArray()
         if(Constant.MyClassConstants.alertsSearchDatesDictionary.count > 0){
            checkInDates = Constant.MyClassConstants.alertsSearchDatesDictionary.value(forKey: String(describing: Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId!)) as! NSArray
@@ -318,7 +318,7 @@ extension GetawayAlertsIPhoneViewController:UITableViewDataSource {
             cell.activityIndicator.isHidden = true
             cell.alertStatusButton.layer.borderColor = UIColor(red: 240.0/255.0, green: 111.0/255.0, blue: 54.0/255.0, alpha: 1.0).cgColor
          }
-        /*}else{
+        }else{
             cell.alertStatusButton.isHidden = false
             cell.alertStatusButton.setTitle(Constant.buttonTitles.nothingYet, for: .normal)
             cell.alertStatusButton.backgroundColor = UIColor(red: 245.0/255.0, green: 245.0/255.0, blue: 245.0/255.0, alpha: 1.0)
@@ -329,7 +329,7 @@ extension GetawayAlertsIPhoneViewController:UITableViewDataSource {
             cell.alertStatusButton.removeTarget(self, action: #selector(self.viewResultsClicked(_:)), for: .touchUpInside)
             cell.alertStatusButton.addTarget(self, action: #selector(self.nothingYetClicked), for: .touchUpInside)
             cell.activityIndicator.isHidden = true
-        }*/
+        }
           return cell
     }
     
