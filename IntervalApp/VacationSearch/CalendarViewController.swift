@@ -100,16 +100,21 @@ extension CalendarViewController:FSCalendarDelegate {
     func calendar(_ calendar: FSCalendar, shouldSelect date: Date) -> Bool {
         
         
-        if(Constant.MyClassConstants.floatDetailsCalendarDateArray.contains(date)) {
+         if(self.requestedController == Constant.MyClassConstants.relinquishment) {
+        
+            if(Constant.MyClassConstants.floatDetailsCalendarDateArray.contains(date)) {
+            
+                return true
+            }
+            else {
+            
+                return false
+            }
+        }
+         else {
             
             return true
         }
-        else {
-            
-            return false
-        }
-        
-        
     }
 
 }
@@ -125,6 +130,8 @@ extension CalendarViewController:FSCalendarDataSource {
         } else {
             
             if(self.requestedDateWindow == Constant.MyClassConstants.start) {
+                
+              
                 
                 if(Constant.MyClassConstants.alertWindowStartDate != nil) {
                     
@@ -219,7 +226,16 @@ extension CalendarViewController:FSCalendarDelegateAppearance {
          }
          else {
             
-            return UIColor.darkText
+            if(date .isLessThanDate(Date())) {
+                return UIColor.lightGray
+            }
+            else if( Constant.MyClassConstants.alertWindowStartDate != nil && date .isLessThanDate( Constant.MyClassConstants.alertWindowStartDate)) {
+                 return UIColor.lightGray
+            }
+            else {
+                return UIColor.darkText
+            }
+
         }
         
     }
@@ -237,7 +253,17 @@ extension CalendarViewController:FSCalendarDelegateAppearance {
             }
         }
         else {
-            return UIColor.darkText
+            if(date .isLessThanDate(Date())) {
+                 return UIColor.lightGray
+            }
+            else if( Constant.MyClassConstants.alertWindowStartDate != nil && date .isLessThanDate( Constant.MyClassConstants.alertWindowStartDate)) {
+                return UIColor.lightGray
+            }
+
+            else {
+                return UIColor.darkText
+            }
+            
         }
         
     }

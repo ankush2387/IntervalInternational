@@ -19,8 +19,10 @@ class IntervalHDCommonControllerForTabs: UIViewController {
     @IBOutlet weak var videoTBLView: UITableView!
     
     var searchResultArray = [Video]()
-    override func viewWillAppear(_ animated: Bool) {
     
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
         //***** Handle hamburgur menu button for prelogin and post login case *****//
         if((UserContext.sharedInstance.accessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
             
@@ -43,6 +45,14 @@ class IntervalHDCommonControllerForTabs: UIViewController {
             self.navigationItem.leftBarButtonItem = menuButton
             
         }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
+        
+        self.searchBar.frame = CGRect(x: 0, y: 64, width: self.view.frame.width, height: 44)
+        self.videoTBLView.frame = CGRect(x: videoTBLView.frame.origin.x, y: 108, width: videoTBLView.frame.width, height:self.videoTBLView.frame.height)
+      
     }
     
     //***** Method for back button *****//
