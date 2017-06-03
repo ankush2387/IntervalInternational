@@ -853,7 +853,7 @@ extension ResortDetailsViewController:UITableViewDataSource {
                             availableCountryCell?.infoLabel.isHidden = false
                             availableCountryCell?.infoLabel.numberOfLines = 0
                             if(nearbyArray.count>0){
-                                availableCountryCell?.infoLabel.text = amenityOnsiteString + "\n\n" + amenityNearbyString
+                                availableCountryCell?.infoLabel.text = amenityOnsiteString + " " + amenityNearbyString
                             }else{
                                 availableCountryCell?.infoLabel.text = amenityNearbyString
                             }
