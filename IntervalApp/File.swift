@@ -95,6 +95,8 @@ class OpenWeeks:Object {
     dynamic var relinquishmentYear = 0
     dynamic var isLockOff = false
     dynamic var isFloat = false
+    dynamic var isFloatRemoved = false
+    dynamic var isFromRelinquishment = false
     var resort = List<ResortList>()
     var unitDetails = List<ResortUnitDetails>()
     var floatDetails = List<ResortFloatDetails>()

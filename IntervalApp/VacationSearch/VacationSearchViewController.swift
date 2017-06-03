@@ -546,25 +546,74 @@ extension VacationSearchViewController:UITableViewDelegate {
             let delete = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.delete) { (action,index) -> Void in
                 let storedData = Helper.getLocalStorageWherewanttoTrade()
                 
-                if(Constant.MyClassConstants.whatToTradeArray.count > 0){
-                    
-                    ADBMobile.trackAction(Constant.omnitureEvents.event43, data: nil)
-                    Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
-                    Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: indexPath.row)
-                    Constant.MyClassConstants.relinquishmentUnitsArray.removeObject(at: indexPath.row)
-                }
-                
                 if(storedData.count > 0) {
                     let realm = try! Realm()
                     try! realm.write {
+                       var floatWeek = OpenWeeks()
+                        for openWk in Constant.MyClassConstants.whatToTradeArray{
+                            let openWk1 = openWk as! OpenWeeks
+                            if(!openWk1.isFloatRemoved){
+                             floatWeek = openWk1
+                            }
+                        }
+                        
                         realm.delete(storedData[indexPath.row])
-                        print(storedData)
+                        
+                        if(Constant.MyClassConstants.whatToTradeArray.count > 0){
+                            
+                            ADBMobile.trackAction(Constant.omnitureEvents.event43, data: nil)
+                            Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
+                            Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: indexPath.row)
+                            Constant.MyClassConstants.relinquishmentUnitsArray.removeObject(at: indexPath.row)
+                        }
+                        
+                        tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+                        let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+                        DispatchQueue.main.asyncAfter(deadline: delayTime) {
+                            
+                            tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
+                            
+                            if(!floatWeek.isFloatRemoved){
+                                //Realm local storage for selected relinquishment
+                                let storedata = OpenWeeksStorage()
+                                let Membership = UserContext.sharedInstance.selectedMembership
+                                let relinquishmentList = TradeLocalData()
+                                
+                                let selectedOpenWeek = OpenWeeks()
+                                selectedOpenWeek.isFloat = true
+                                selectedOpenWeek.isFloatRemoved = true
+                                selectedOpenWeek.isFromRelinquishment = false
+                                selectedOpenWeek.weekNumber = ""
+                                selectedOpenWeek.relinquishmentID = floatWeek.relinquishmentID
+                                selectedOpenWeek.relinquishmentYear = floatWeek.relinquishmentYear
+                                let resort = ResortList()
+                                resort.resortName = (floatWeek.resort[0].resortName)
+                                
+                                let floatDetails = ResortFloatDetails()
+                                floatDetails.reservationNumber = ""
+                                floatDetails.unitNumber = floatWeek.floatDetails[0].unitNumber
+                                floatDetails.unitSize = ""
+                                selectedOpenWeek.floatDetails.append(floatDetails)
+                                
+                                let unitDetails = ResortUnitDetails()
+                                unitDetails.kitchenType = "Limited Kitchen"
+                                unitDetails.unitSize = "Studio"//(self.unitDetails?.unitSize!)!
+                                selectedOpenWeek.unitDetails.append(unitDetails)
+                                
+                                selectedOpenWeek.resort.append(resort)
+                                relinquishmentList.openWeeks.append(selectedOpenWeek)
+                                storedata.openWeeks.append(relinquishmentList)
+                                storedata.membeshipNumber = Membership!.memberNumber!
+                                Constant.MyClassConstants.floatRemovedArray.removeAllObjects()
+                                Constant.MyClassConstants.floatRemovedArray.add(floatWeek)
+                                let realm = try! Realm()
+                                try! realm.write {
+                                    realm.add(storedata)
+                              }
+                            }
+                            
+                        }
                     }
-                }
-                tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
-                let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-                DispatchQueue.main.asyncAfter(deadline: delayTime) {
-                    tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
                 }
             }
             

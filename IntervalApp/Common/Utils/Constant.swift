@@ -209,6 +209,7 @@ class Constant: NSObject {
         
         static var whereTogoContentArray:NSMutableArray = []
         static var whatToTradeArray:NSMutableArray = []
+        static var floatRemovedArray:NSMutableArray = []
         static var pointsArray:NSMutableArray = []
         static var selectedGetawayAlertDestinationArray:NSMutableArray = []
         static var alertSelectedResorts = [Resort]()

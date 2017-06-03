@@ -27,6 +27,7 @@ class RelinquishmentSelectionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(Constant.MyClassConstants.floatRemovedArray)
         
         // omniture tracking with event 40
         let pageView: [String: String] = [
@@ -56,7 +57,7 @@ class RelinquishmentSelectionViewController: UIViewController {
                 }
                 else if(fixed_week_type.pointsProgramCode != ""){
                     
-                    if(!(Constant.MyClassConstants.relinquishmentIdArray.contains(fixed_week_type.relinquishmentId!))) {
+                    if(!(Constant.MyClassConstants.relinquishmentIdArray.contains(fixed_week_type.relinquishmentId!)) || fixed_week_type.weekNumber == Constant.CommonStringIdentifiers.floatWeek) {
                             relinquishmentOpenWeeksArray.append(fixed_week_type)
                     }else if ((fixed_week_type.unit?.lockOffUnits.count)! > 0){
                         let results = Constant.MyClassConstants.relinquishmentIdArray.map({ ($0 as AnyObject).contains(fixed_week_type.relinquishmentId!)})
@@ -561,94 +562,53 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
             else {
                 openWeek = intervalOpenWeeksArray[indexPath.row]
             }
+    
             
             var cell = RelinquishmentSelectionOpenWeeksCell()
             if(openWeek.weekNumber == Constant.CommonStringIdentifiers.floatWeek){
-                cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.floatWeekUnsavedCell, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
-                cell.resortName.text = "\(openWeek.resort!.resortName!)/\(openWeek.resort!.resortCode!)"
-                cell.totalWeekLabel.text = "\(openWeek.relinquishmentYear!)"
-                if(indexPath.section == 1){
-                  cell.addButton.tag = indexPath.row + indexPath.section
+                
+                var floatWeek = OpenWeeks()
+                if(Constant.MyClassConstants.floatRemovedArray.count == 0){
+                    cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.floatWeekUnsavedCell, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
+                    cell.resortName.text = "\(openWeek.resort!.resortName!)/\(openWeek.resort!.resortCode!)"
+                    cell.totalWeekLabel.text = "\(openWeek.relinquishmentYear!)"
+                    if(indexPath.section == 1){
+                        cell.addButton.tag = indexPath.row + indexPath.section
+                    }else{
+                        cell.addButton.tag = indexPath.row + 1
+                    }
+                    cell.addButton.addTarget(self, action:  #selector(RelinquishmentSelectionViewController.addClubFloatWeek(_:)), for: .touchUpInside)
                 }else{
-                  cell.addButton.tag = indexPath.row + 1
+                for openWk in Constant.MyClassConstants.floatRemovedArray{
+                    let openWk1 = openWk as! OpenWeeks
+                   
+                    floatWeek = openWk1
+                    print(floatWeek)
+                    
+                    if(floatWeek.isFloatRemoved && !floatWeek.isFromRelinquishment){
+                        cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.floatWeekUnsavedCell, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
+                        cell.resortName.text = "\(openWeek.resort!.resortName!)/\(openWeek.resort!.resortCode!)"
+                        cell.totalWeekLabel.text = "\(openWeek.relinquishmentYear!)"
+                        if(indexPath.section == 1){
+                            cell.addButton.tag = indexPath.row + indexPath.section
+                        }else{
+                            cell.addButton.tag = indexPath.row + 1
+                        }
+                        cell.addButton.addTarget(self, action:  #selector(RelinquishmentSelectionViewController.addClubFloatWeek(_:)), for: .touchUpInside)
+                    }else{
+                        cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.floatWeekSavedCell, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
+                    }
                 }
-                cell.addButton.addTarget(self, action:  #selector(RelinquishmentSelectionViewController.addClubFloatWeek(_:)), for: .touchUpInside)
+            }
+            
                 return cell
+                
             }else{
-               cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.relinquishmentSelectionOpenWeeksCell, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
+               cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.floatWeekSavedCell, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
+               return cell
             }
 
-            let units = openWeek.unit
-            cell.resortName.text = openWeek.resort?.resortName!
-            var bedroomSize = ""
-            var kitchenType = ""
             
-            if let roomSize = UnitSize(rawValue: (units?.unitSize!)!) {
-                
-                bedroomSize =  Helper.getBrEnums(brType: roomSize.rawValue)
-            }
-            
-            if let kitchenSize = KitchenType(rawValue: (units?.kitchenType!)!) {
-                kitchenType = Helper.getKitchenEnums(kitchenType: kitchenSize.rawValue)
-            }
-            
-            cell.bedroomSizeAndKitchenClient.text = "\(bedroomSize) \(kitchenType)"
-            let totalSleep = "Sleeps " + String((units?.publicSleepCapacity)! + (units?.privateSleepCapacity)!)
-            let privateSleep = " total, " + (String(describing: units!.privateSleepCapacity)) + " Private"
-            cell.totalSleepAndPrivate.text = "\(totalSleep) \(privateSleep)"
-            
-            if (units?.lockOffUnits.count) != 0{
-                cell.bedroomSizeAndKitchenClient.text = "Lock off capable."
-                cell.totalSleepAndPrivate.text = ""
-            }
-            
-            cell.yearLabel.text = "\(openWeek.relinquishmentYear!)"
-            
-            cell.yearLabel.text = "\(openWeek.relinquishmentYear!)"
-            cell.yearLabel.textColor =  UIColor.orange
-            
-            
-            if(indexPath.section == 1) {
-                cell.addButton.tag = indexPath.row + indexPath.section
-                cell.addButton.addTarget(self, action:  #selector(RelinquishmentSelectionViewController.addAvailablePoinButtonPressed(_:)), for: .touchUpInside)
-            }
-            else {
-                
-                cell.addButton.tag = indexPath.row
-                cell.addButton.addTarget(self, action:  #selector(RelinquishmentSelectionViewController.addIntervalWeekButtonPressed(_:)), for: .touchUpInside)
-            }
-            let date = openWeek.checkInDates
-            if(date.count > 0) {
-                
-                let dateString = date[0]
-                let date =  Helper.convertStringToDate(dateString: dateString, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
-                let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: date)
-                let day = myComponents.day!
-                var month = ""
-                if(day < 10) {
-                    month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) 0\(day)"
-                }
-                else {
-                    month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \(day)"
-                }
-                
-                cell.dayAndDateLabel.text = month.uppercased()
-                
-            }else {
-                
-                cell.dayAndDateLabel.text = " "
-            }
-            cell.totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: openWeek.weekNumber!))"
-            if(openWeek.weekNumber == Constant.CommonStringIdentifiers.floatWeek){
-                cell.yearLabel.text = "Float"
-                cell.totalWeekLabel.text = "\(openWeek.relinquishmentYear!)"
-                cell.totalWeekLabel.textColor = UIColor.orange
-                cell.yearLabel.textColor =  UIColor.lightGray
-            }
-            
-            cell.selectionStyle = UITableViewCellSelectionStyle.none
-            return cell
         } else {
             
             let openWeek = pointOpenWeeksArray[indexPath.row]

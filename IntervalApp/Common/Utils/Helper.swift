@@ -511,7 +511,7 @@ public class Helper{
         
         return realmLocalStorage
         
-          }
+    }
     //***** function to get all destination class objects from Realm storage *****//
     static func getLocalStorageAllDest() -> Results<AllAvailableDestination>{
         
@@ -585,6 +585,8 @@ public class Helper{
         Constant.MyClassConstants.whatToTradeArray.removeAllObjects()
         Constant.MyClassConstants.idUnitsRelinquishmentDictionary.removeAllObjects()
         Constant.MyClassConstants.relinquishmentUnitsArray.removeAllObjects()
+        Constant.MyClassConstants.floatRemovedArray.removeAllObjects()
+
         let realm = try! Realm()
         let Membership = UserContext.sharedInstance.selectedMembership
         let SelectedMembershipNumber = Membership?.memberNumber
@@ -599,16 +601,19 @@ public class Helper{
                 for openWk in openWeeks {
                     if(openWk.openWeeks.count > 0){
                         
-                        for object in openWk.openWeeks {
+                        for (index,object) in openWk.openWeeks.enumerated() {
                             
                             let tempDict = NSMutableDictionary()
-                            Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
-                            
-                            Constant.MyClassConstants.whatToTradeArray.add(object)
+                            if(object.isFloatRemoved && !object.isFromRelinquishment){
+                                Constant.MyClassConstants.floatRemovedArray.add(object)
+                            }else if(object.floatDetails.count > 0 && !object.isFloatRemoved && object.isFromRelinquishment){
+                                Constant.MyClassConstants.whatToTradeArray.add(object)
+                                Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
+                            }else{
+                            }
                             Constant.MyClassConstants.idUnitsRelinquishmentDictionary.setValue(object.unitDetails, forKey: object.relinquishmentID)
                             tempDict.setValue(object.unitDetails, forKey: object.relinquishmentID)
                             Constant.MyClassConstants.relinquishmentUnitsArray.add(tempDict)
-                            print(object.unitDetails.count, Constant.MyClassConstants.idUnitsRelinquishmentDictionary, Constant.MyClassConstants.relinquishmentUnitsArray)
                             
                         }
                         
@@ -867,7 +872,8 @@ public class Helper{
             SVProgressHUD.dismiss()
             self.removeServiceCallBackgroundView(view: senderViewController.view)
             Constant.MyClassConstants.clubFloatResorts = resorts
-            self.navigateToViewController(senderViewController: senderViewController, floatResortDetails:floatResortDetails)
+            senderViewController.performSegue(withIdentifier: Constant.floatDetailViewController.clubresortviewcontrollerIdentifier, sender: self)
+
             
         }) { (error) in
             

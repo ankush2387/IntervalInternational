@@ -20,7 +20,7 @@ class FloatDetailViewController: UIViewController {
     
     weak var floatResortDetails = Resort()
     weak var floatUnitDetails = InventoryUnit()
-    var selectedTextField = true
+    var selectedTextField = false
     var floatAttributesArray = NSMutableArray()
     /**
      PopcurrentViewcontroller from NavigationController
@@ -100,7 +100,7 @@ class FloatDetailViewController: UIViewController {
     @IBAction func saveFloatDetails(){
         let indexPath = IndexPath(row: 3, section: 0)
         var reservationNumber = ""
-        var unitNumber = ""
+        var unitNumber = "Unit #307"
         var noOfBedrooms = ""
         
         for subView in (self.floatDetailsTableView.cellForRow(at: indexPath)?.contentView.subviews)!{
@@ -127,6 +127,8 @@ class FloatDetailViewController: UIViewController {
         selectedOpenWeek.weekNumber = Constant.MyClassConstants.relinquishmentSelectedWeek.weekNumber!
         selectedOpenWeek.relinquishmentID = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!
         selectedOpenWeek.relinquishmentYear = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentYear!
+        selectedOpenWeek.isFloatRemoved = false
+        selectedOpenWeek.isFromRelinquishment = true
         let resort = ResortList()
         resort.resortName = (floatResortDetails?.resortName)!
         
@@ -230,18 +232,25 @@ extension FloatDetailViewController : UITableViewDataSource{
             }
             return selectClubresortcell!
         case Constant.MyClassConstants.unitNumberAttribute:
-            if(selectedTextField){
+            /*if(selectedTextField){
                 registrationNumbercell = tableView.dequeueReusableCell(withIdentifier: "registerTableCell") as! ReservationTableViewCell
                 registrationNumbercell.resortAttributeLabel.becomeFirstResponder()
                 selectedTextField = false
                 return registrationNumbercell
-            }else{
+            }else{*/
                 registrationNumbercell = tableView.dequeueReusableCell(withIdentifier: "Check") as! ReservationTableViewCell
+                registrationNumbercell.resortPlaceHolderLabel.text = "Unit Number"
+                if(selectedTextField){
+                    registrationNumbercell.resortPlaceHolderLabel.isHidden = true
+                }else{
+                    registrationNumbercell.resortPlaceHolderLabel.isHidden = false
+                }
+                registrationNumbercell.resortAttributeLabel.delegate = self
                 registrationNumbercell.resortAttributeLabel.becomeFirstResponder()
-                selectedTextField = true
                 //registrationNumbercell.getCell()
                 return registrationNumbercell
-            }
+            //}
+            
         case Constant.MyClassConstants.saveAttribute:
             saveandcancelCell = tableView.dequeueReusableCell(withIdentifier: Constant.floatDetailViewController.saveandcancelcellIdentifier) as? FloatSaveAndCancelButtonTableViewCell
             return saveandcancelCell!
@@ -262,7 +271,7 @@ extension FloatDetailViewController : UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (indexPath as NSIndexPath).row == 2
         {
-            self.performSegue(withIdentifier: Constant.floatDetailViewController.clubresortviewcontrollerIdentifier, sender: self)
+            Helper.getResortsByClubFloatDetails(resortCode:floatResortDetails!.resortCode!, senderViewController:self, floatResortDetails:floatResortDetails!)
             Constant.MyClassConstants.buttontitle =  Constant.buttonId.resortSelection
         }
     }
@@ -286,12 +295,13 @@ extension FloatDetailViewController : BedroomSizeViewControllerDelegate{
 extension FloatDetailViewController : UITextFieldDelegate{
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        //textField.becomeFirstResponder()
+        textField.becomeFirstResponder()
         //selectedTextField = false
         
     }
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         self.floatDetailsTableView.reloadData()
+        //selectedTextField = true
         return true
     }
     func textFieldDidEndEditing(_ textField: UITextField) {
@@ -299,6 +309,7 @@ extension FloatDetailViewController : UITextFieldDelegate{
         textField.resignFirstResponder()
     }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        selectedTextField = false
         textField.resignFirstResponder()
         return true
     }
