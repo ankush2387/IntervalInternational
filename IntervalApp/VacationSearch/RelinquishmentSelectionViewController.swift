@@ -395,7 +395,6 @@ class RelinquishmentSelectionViewController: UIViewController {
     }
     
     func addClubFloatWeek(_ sender:IUIKButton){
-        print(Constant.MyClassConstants.floatRemovedArray)
         if(relinquishmentOpenWeeksArray.count > 0){
             Helper.navigateToViewController(senderViewController: self, floatResortDetails: relinquishmentOpenWeeksArray[sender.tag - 1].resort!)
             Constant.MyClassConstants.relinquishmentSelectedWeek = relinquishmentOpenWeeksArray[sender.tag - 1]

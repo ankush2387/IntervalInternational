@@ -242,14 +242,20 @@ extension FloatDetailViewController : UITableViewDelegate{
         return UITableViewAutomaticDimension
 	}
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 50
+        if(section == 2 || section == 3){
+            return 50
+        }else{
+            return 0
+        }
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
         headerView.backgroundColor = UIColor.lightGray
         
-        let headerText = UILabel()
+        let headerText = UILabel(frame:CGRect(x: 15, y: 0, width: UIScreen.main.bounds.width - 30, height: 50))
+        headerText.font = UIFont(name:Constant.fontName.helveticaNeue, size:15)
+        
         if(section == 2){
             headerText.text = Constant.HeaderViewConstantStrings.resortUnitDetails
         }else{
