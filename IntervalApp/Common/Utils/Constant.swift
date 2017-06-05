@@ -443,6 +443,7 @@ class Constant: NSObject {
         static var savedClubFloatResort = ""
         static var savedBedroom = ""
         static var buttontitle = ""
+        static var resortAttributedString = ""
         
         //Reservation Attributes
         static var resortClubAttribute = "RESORT_CLUB"

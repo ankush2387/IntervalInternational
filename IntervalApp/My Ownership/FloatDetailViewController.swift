@@ -219,7 +219,24 @@ extension FloatDetailViewController : UITableViewDataSource{
         case Constant.MyClassConstants.resortClubAttribute:
             selectClubresortcell = tableView.dequeueReusableCell(withIdentifier: Constant.floatDetailViewController.selectclubcellIdentifier) as! ReservationTableViewCell
             if(Constant.MyClassConstants.savedClubFloatResort != ""){
-                selectClubresortcell.selectResortLabel.text = "\(String(describing: "Select a club resort"))\n\(Constant.MyClassConstants.savedClubFloatResort)"
+                
+          
+                
+                let yourAttributes = [NSForegroundColorAttributeName: UIColor.black, NSFontAttributeName: UIFont.systemFont(ofSize: 15)]
+                let yourOtherAttributes = [NSForegroundColorAttributeName: UIColor.red, NSFontAttributeName: UIFont.systemFont(ofSize: 25)]
+                
+                let partOne = NSMutableAttributedString(string: "Select club or Resort ", attributes: yourAttributes)
+                let partTwo = NSMutableAttributedString(string: Constant.MyClassConstants.savedClubFloatResort, attributes: yourOtherAttributes)
+                
+                let combination = NSMutableAttributedString()
+                
+                combination.append(partOne)
+                combination.append(partTwo)
+             
+                
+                selectClubresortcell.selectResortLabel.attributedText = combination
+                
+                
             }
             return selectClubresortcell!
         case Constant.MyClassConstants.unitNumberAttribute:
