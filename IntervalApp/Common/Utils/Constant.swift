@@ -446,6 +446,7 @@ class Constant: NSObject {
         static var resortAttributedString = ""
         
         //Reservation Attributes
+        static var resortAttributes = "RESORT_ATTRIBUTES"
         static var resortClubAttribute = "RESORT_CLUB"
         static var resortReservationAttribute = "RESERVATION_NUMBER"
         static var checkInDateAttribute =   "CHECK_IN_DATE"
@@ -453,6 +454,11 @@ class Constant: NSObject {
         static var resortDetailsAttribute = "RESORT_DETAILS"
         static var saveAttribute = "SAVE_DETAILS"
         static var callResortAttribute = "CALL_DETAILS"
+        static var noOfBedroomAttribute = "NO_OF_BEDROOMS"
+        static var selectClubResort = "Select club or Resort"
+        
+        //Float week to store information for editing
+        static var selectedFloatWeek = OpenWeeks()
     }
     struct CommonStringIdentifiers {
         static var floatWeek = "FLOAT_WEEK"

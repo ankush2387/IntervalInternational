@@ -395,6 +395,7 @@ class RelinquishmentSelectionViewController: UIViewController {
     }
     
     func addClubFloatWeek(_ sender:IUIKButton){
+        Constant.MyClassConstants.selectedFloatWeek = OpenWeeks()
         if(relinquishmentOpenWeeksArray.count > 0){
             Helper.navigateToViewController(senderViewController: self, floatResortDetails: relinquishmentOpenWeeksArray[sender.tag - 1].resort!)
             Constant.MyClassConstants.relinquishmentSelectedWeek = relinquishmentOpenWeeksArray[sender.tag - 1]
@@ -404,6 +405,20 @@ class RelinquishmentSelectionViewController: UIViewController {
         }else{
             
         }
+        
+        for floatWeek in Constant.MyClassConstants.whatToTradeArray{
+            let floatWeekTraversed = floatWeek as! OpenWeeks
+            if(floatWeekTraversed.isFloat && Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId == floatWeekTraversed.relinquishmentID){
+                Constant.MyClassConstants.selectedFloatWeek = floatWeekTraversed
+            }
+        }
+        for floatWeek in Constant.MyClassConstants.floatRemovedArray{
+            let floatWeekTraversed = floatWeek as! OpenWeeks
+            if(floatWeekTraversed.isFloat && Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId == floatWeekTraversed.relinquishmentID){
+                Constant.MyClassConstants.selectedFloatWeek = floatWeekTraversed
+            }
+        }
+        print(Constant.MyClassConstants.selectedFloatWeek)
     }
     
     func getUnitSize(_ unitSize:[InventoryUnit]) {
@@ -562,7 +577,8 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                         if(Constant.MyClassConstants.floatRemovedArray.count == 0){
                             
                             cell.resortName.text = "\(openWeek.resort!.resortName!)/\(openWeek.resort!.resortCode!)"
-                            cell.totalWeekLabel.text = "\(openWeek.relinquishmentYear!)"
+                            cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType:openWeek.unit!.unitSize!))), \(Helper.getKitchenEnums(kitchenType:openWeek.unit!.kitchenType!))"
+                            cell.totalSleepAndPrivate.text = "Sleeps \(openWeek.unit!.publicSleepCapacity), \(openWeek.unit!.privateSleepCapacity) Private"
                             if(indexPath.section == 1){
                                 cell.addButton.tag = indexPath.row + indexPath.section
                             }else{
