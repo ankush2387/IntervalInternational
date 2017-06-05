@@ -215,6 +215,8 @@ extension FloatDetailViewController : UITableViewDataSource{
         var selectClubresortcell:ReservationTableViewCell!
         var registrationNumbercell:ReservationTableViewCell!
         var saveandcancelCell:FloatSaveAndCancelButtonTableViewCell?
+        var  attributedCell: ReservationTableViewCell
+        
         if(indexPath.section == 3){
             
         }else{
@@ -263,6 +265,13 @@ extension FloatDetailViewController : UITableViewDataSource{
                 
             case Constant.MyClassConstants.noOfBedroomAttribute:
                 registrationNumbercell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.attributesCell) as! ReservationTableViewCell
+                
+                if(Constant.MyClassConstants.savedBedroom != ""){
+                    
+                 registrationNumbercell.resortAttributeLabel.text  = Constant.MyClassConstants.savedBedroom
+                    
+                }
+                
                 if(Constant.MyClassConstants.selectedFloatWeek.floatDetails.count > 0){
                     registrationNumbercell.resortAttributeLabel.text = Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].unitNumber
                 }
@@ -321,6 +330,16 @@ extension FloatDetailViewController : UITableViewDelegate{
         {
             Helper.getResortsByClubFloatDetails(resortCode:floatResortDetails!.resortCode!, senderViewController:self, floatResortDetails:floatResortDetails!)
             Constant.MyClassConstants.buttontitle =  Constant.buttonId.resortSelection
+        }
+        else if(indexPath as NSIndexPath).section == 3{
+            
+            if(indexPath as NSIndexPath).row == 1{
+                
+                Helper.getResortsByClubFloatDetails(resortCode:floatResortDetails!.resortCode!, senderViewController:self, floatResortDetails:floatResortDetails!)
+                Constant.MyClassConstants.buttontitle =  Constant.buttonId.bedroomselection
+    
+                
+            }
         }
     }
 }
