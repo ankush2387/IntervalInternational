@@ -482,6 +482,9 @@ class Constant: NSObject {
         static var exchange = "Exchange"
         static var getaways = "Getaway"
         static var search = "All Available Destinations"
+        static var resortUnitDetails = "Resort Unit Details"
+        static var reservationDetails = "Reservation Details"
+        
     }
     
     //***** common  structure to provide all webview url as string *****//
@@ -968,6 +971,7 @@ class Constant: NSObject {
         static var advisementsCellIdentifier = "AdditionalAdvCell"
         static var clubHeaderCell = "HeaderCell"
         static var checkBoxCell = "CheckCell"
+        static var attributesCell = "attributesTableCell"
     }
     
     //***** common  structure to provide all dashboardTableViewControllerHeaderText *****//

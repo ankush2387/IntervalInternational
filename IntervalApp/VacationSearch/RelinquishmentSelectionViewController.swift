@@ -395,20 +395,11 @@ class RelinquishmentSelectionViewController: UIViewController {
     }
     
     func addClubFloatWeek(_ sender:IUIKButton){
+        print(Constant.MyClassConstants.floatRemovedArray)
         if(relinquishmentOpenWeeksArray.count > 0){
-            /*if(relinquishmentOpenWeeksArray[sender.tag - 1].reservationAttributes.contains(Constant.MyClassConstants.resortClubAttribute)){
-            Helper.getResortsByClubFloatDetails(resortCode:(relinquishmentOpenWeeksArray[sender.tag - 1].resort?.resortCode!)!, senderViewController: self, floatResortDetails: relinquishmentOpenWeeksArray[sender.tag - 1].resort!)
-            }else{
-                Helper.navigateToViewController(senderViewController: self, floatResortDetails: relinquishmentOpenWeeksArray[sender.tag - 1].resort!)
-            }*/
             Helper.navigateToViewController(senderViewController: self, floatResortDetails: relinquishmentOpenWeeksArray[sender.tag - 1].resort!)
             Constant.MyClassConstants.relinquishmentSelectedWeek = relinquishmentOpenWeeksArray[sender.tag - 1]
         }else if(intervalOpenWeeksArray.count > 0){
-            /*if(intervalOpenWeeksArray[sender.tag - 1].reservationAttributes.contains(Constant.MyClassConstants.resortClubAttribute)){
-            Helper.getResortsByClubFloatDetails(resortCode:(intervalOpenWeeksArray[sender.tag - 1].resort?.resortCode!)!, senderViewController: self, floatResortDetails: intervalOpenWeeksArray[sender.tag - 1].resort!)
-            }else{
-                Helper.navigateToViewController(senderViewController: self, floatResortDetails: intervalOpenWeeksArray[sender.tag - 1].resort!)
-            }*/
             Helper.navigateToViewController(senderViewController: self, floatResortDetails: intervalOpenWeeksArray[sender.tag - 1].resort!)
             Constant.MyClassConstants.relinquishmentSelectedWeek = intervalOpenWeeksArray[sender.tag - 1]
         }else{
