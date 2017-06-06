@@ -635,30 +635,33 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                 else {
                     
                       let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.clubPointCell, for: indexPath) as! clubPointCell
-                    
                     return cell
                 }
             }
             else {
                 
                 openWeek = intervalOpenWeeksArray[indexPath.row]
-                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.clubPointCell, for: indexPath) as! clubPointCell
+                let  intervalWeekCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.relinquishmentSelectionOpenWeeksCell, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
                 
-                return cell
+                intervalWeekCell.resortName.text = openWeek.resort?.resortName!
+                intervalWeekCell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType:openWeek.unit!.unitSize!))), \(Helper.getKitchenEnums(kitchenType:openWeek.unit!.kitchenType!))"
+                intervalWeekCell.totalSleepAndPrivate.text = "Sleeps \(openWeek.unit!.publicSleepCapacity), \(openWeek.unit!.privateSleepCapacity) Private"
+                intervalWeekCell.dayAndDateLabel.text = ""
+                intervalWeekCell.yearLabel.text = ""
+                intervalWeekCell.totalWeekLabel.text = ""
+                return intervalWeekCell
             }
           
         }
         else {
             
             let openWeek = pointOpenWeeksArray[indexPath.row]
-            let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.clubPointCell, for: indexPath) as! clubPointCell
+            let  intervalWeekCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.floatWeekSavedCell, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
             
-            cell.nameLabel.text = openWeek.resort?.resortName!
-            cell.yearLabel.text = "\(openWeek.relinquishmentYear!)"
-            cell.addButton.tag = indexPath.row
-            cell.addButton.addTarget(self, action: #selector(RelinquishmentSelectionViewController.addClubPointButtonPressed(_:)), for: .touchUpInside)
-            cell.selectionStyle = UITableViewCellSelectionStyle.none
-            return cell
+            intervalWeekCell.resortName.text = openWeek.resort?.resortName!
+            intervalWeekCell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType:openWeek.unit!.unitSize!))), \(Helper.getKitchenEnums(kitchenType:openWeek.unit!.kitchenType!))"
+            intervalWeekCell.totalSleepAndPrivate.text = "Sleeps \(openWeek.unit!.publicSleepCapacity), \(openWeek.unit!.privateSleepCapacity) Private"
+            return intervalWeekCell
         }
     }
 }
