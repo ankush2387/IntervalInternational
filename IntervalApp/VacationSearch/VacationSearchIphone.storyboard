@@ -1885,7 +1885,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="hBB-OJ-Y0k" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="w8Z-0z-EGh">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="w8Z-0z-EGh">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2368,22 +2368,22 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x3o-wE-Tip">
-                                                    <rect key="frame" x="0.0" y="0.0" width="86" height="81"/>
+                                                    <rect key="frame" x="0.0" y="6" width="86" height="65"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CLUB" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZMd-qT-Imz">
-                                                            <rect key="frame" x="23" y="14.5" width="41" height="18"/>
+                                                            <rect key="frame" x="23" y="5" width="41" height="17"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="15"/>
                                                             <color key="textColor" red="0.65490196079999996" green="0.65490196079999996" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="POINTS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Ue-8C-kiJ">
-                                                            <rect key="frame" x="21" y="33.5" width="47" height="15.5"/>
+                                                            <rect key="frame" x="21" y="23" width="47" height="16"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
                                                             <color key="textColor" red="0.65490196079999996" green="0.65490196079999996" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2018" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oc4-Sp-FMq">
-                                                            <rect key="frame" x="21.5" y="45.5" width="44.5" height="23.5"/>
+                                                            <rect key="frame" x="21.5" y="35.5" width="44.5" height="24"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
                                                             <color key="textColor" red="0.96078431369999995" green="0.38823529410000002" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -2391,12 +2391,21 @@
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstItem="Oc4-Sp-FMq" firstAttribute="centerY" secondItem="x3o-wE-Tip" secondAttribute="centerY" constant="16.5" id="2Ky-5p-lkH"/>
-                                                        <constraint firstItem="8Ue-8C-kiJ" firstAttribute="centerY" secondItem="x3o-wE-Tip" secondAttribute="centerY" id="5yY-Id-0Ur"/>
+                                                        <constraint firstItem="Oc4-Sp-FMq" firstAttribute="centerY" secondItem="x3o-wE-Tip" secondAttribute="centerY" constant="15" id="2Ky-5p-lkH"/>
+                                                        <constraint firstAttribute="trailing" secondItem="8Ue-8C-kiJ" secondAttribute="trailing" constant="18" id="4Jy-nd-OE7"/>
+                                                        <constraint firstItem="8Ue-8C-kiJ" firstAttribute="centerY" secondItem="x3o-wE-Tip" secondAttribute="centerY" constant="-1.5" id="5yY-Id-0Ur"/>
+                                                        <constraint firstItem="8Ue-8C-kiJ" firstAttribute="leading" secondItem="x3o-wE-Tip" secondAttribute="leading" constant="21" id="6KC-6Y-2L5"/>
+                                                        <constraint firstItem="Oc4-Sp-FMq" firstAttribute="leading" secondItem="x3o-wE-Tip" secondAttribute="leading" constant="21.5" id="77d-JJ-g5u"/>
+                                                        <constraint firstAttribute="trailing" secondItem="Oc4-Sp-FMq" secondAttribute="trailing" constant="20" id="Lf3-Xm-8Er"/>
                                                         <constraint firstItem="8Ue-8C-kiJ" firstAttribute="centerX" secondItem="x3o-wE-Tip" secondAttribute="centerX" constant="1" id="SAs-1Z-UOx"/>
+                                                        <constraint firstItem="ZMd-qT-Imz" firstAttribute="top" secondItem="x3o-wE-Tip" secondAttribute="top" constant="5" id="Ti2-0Z-0vV"/>
+                                                        <constraint firstItem="8Ue-8C-kiJ" firstAttribute="top" secondItem="ZMd-qT-Imz" secondAttribute="bottom" constant="1" id="aMP-u9-r0m"/>
+                                                        <constraint firstItem="ZMd-qT-Imz" firstAttribute="leading" secondItem="x3o-wE-Tip" secondAttribute="leading" constant="23" id="bOo-86-DeQ"/>
                                                         <constraint firstItem="Oc4-Sp-FMq" firstAttribute="centerX" secondItem="x3o-wE-Tip" secondAttribute="centerX" id="j2j-R1-eWU"/>
                                                         <constraint firstAttribute="width" constant="86" id="lgt-SA-OsD"/>
-                                                        <constraint firstItem="ZMd-qT-Imz" firstAttribute="centerY" secondItem="x3o-wE-Tip" secondAttribute="centerY" constant="-17.5" id="ofY-6F-z43"/>
+                                                        <constraint firstItem="ZMd-qT-Imz" firstAttribute="centerY" secondItem="x3o-wE-Tip" secondAttribute="centerY" constant="-19" id="ofY-6F-z43"/>
+                                                        <constraint firstAttribute="trailing" secondItem="ZMd-qT-Imz" secondAttribute="trailing" constant="22" id="sHe-pg-9Fe"/>
+                                                        <constraint firstItem="Oc4-Sp-FMq" firstAttribute="top" secondItem="8Ue-8C-kiJ" secondAttribute="bottom" constant="-3.5" id="uAl-pt-DEF"/>
                                                         <constraint firstItem="ZMd-qT-Imz" firstAttribute="centerX" secondItem="x3o-wE-Tip" secondAttribute="centerX" id="zgx-eS-kDu"/>
                                                     </constraints>
                                                 </view>
@@ -2411,9 +2420,9 @@
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="Qpw-FA-Rxs" secondAttribute="bottom" id="65E-Wj-VzS"/>
                                                 <constraint firstAttribute="trailing" secondItem="Qpw-FA-Rxs" secondAttribute="trailing" id="8xO-Tx-DXY"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="x3o-wE-Tip" secondAttribute="bottom" constant="-9" id="BLz-R8-Hou"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="x3o-wE-Tip" secondAttribute="bottom" constant="1" id="BLz-R8-Hou"/>
                                                 <constraint firstItem="U0w-97-xXj" firstAttribute="centerY" secondItem="tzz-3a-6a4" secondAttribute="centerY" id="Faw-Wd-Gec"/>
-                                                <constraint firstItem="x3o-wE-Tip" firstAttribute="top" secondItem="tzz-3a-6a4" secondAttribute="topMargin" constant="-8" id="K9q-aB-oKA"/>
+                                                <constraint firstItem="x3o-wE-Tip" firstAttribute="top" secondItem="tzz-3a-6a4" secondAttribute="topMargin" constant="-2" id="K9q-aB-oKA"/>
                                                 <constraint firstItem="x3o-wE-Tip" firstAttribute="leading" secondItem="tzz-3a-6a4" secondAttribute="leadingMargin" constant="-8" id="L5B-4d-Io9"/>
                                                 <constraint firstItem="U0w-97-xXj" firstAttribute="top" secondItem="tzz-3a-6a4" secondAttribute="topMargin" constant="9" id="PbY-FP-bbk"/>
                                                 <constraint firstItem="s6a-xy-qUm" firstAttribute="leading" secondItem="x3o-wE-Tip" secondAttribute="trailing" constant="8" id="SD6-fr-Vyi"/>
@@ -2468,7 +2477,7 @@
                                                         <constraint firstAttribute="width" constant="86" id="plq-2E-ME0"/>
                                                     </constraints>
                                                 </view>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0q6-Nd-4a9">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0q6-Nd-4a9">
                                                     <rect key="frame" x="94" y="30" width="225" height="20"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
                                                     <nil key="textColor"/>
@@ -2519,10 +2528,10 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Saved" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BJx-aw-Kxn">
-                                                    <rect key="frame" x="16" y="0.0" width="359" height="30"/>
+                                                    <rect key="frame" x="16" y="5" width="359" height="25"/>
                                                     <color key="backgroundColor" red="0.70980392160000005" green="0.87450980389999999" blue="0.47058823529999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="30" id="5uy-pN-zBi"/>
+                                                        <constraint firstAttribute="height" constant="25" id="5uy-pN-zBi"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="15"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2608,7 +2617,7 @@
                                                 <constraint firstItem="dge-v6-M5s" firstAttribute="leading" secondItem="kmO-20-f0u" secondAttribute="trailing" constant="5" id="Btk-Da-7Qn"/>
                                                 <constraint firstItem="dge-v6-M5s" firstAttribute="bottom" secondItem="evI-yC-rTj" secondAttribute="bottomMargin" id="C6t-es-kxy"/>
                                                 <constraint firstAttribute="trailing" secondItem="BJx-aw-Kxn" secondAttribute="trailing" id="DN5-Ui-s3S"/>
-                                                <constraint firstItem="BJx-aw-Kxn" firstAttribute="top" secondItem="evI-yC-rTj" secondAttribute="top" id="Gdv-aX-JLN"/>
+                                                <constraint firstItem="BJx-aw-Kxn" firstAttribute="top" secondItem="evI-yC-rTj" secondAttribute="top" constant="5" id="Gdv-aX-JLN"/>
                                                 <constraint firstItem="kmO-20-f0u" firstAttribute="leading" secondItem="evI-yC-rTj" secondAttribute="leading" id="QHi-lX-zDT"/>
                                                 <constraint firstItem="9AE-FD-Bic" firstAttribute="leading" secondItem="BJx-aw-Kxn" secondAttribute="leading" id="a9K-nO-kYm"/>
                                                 <constraint firstAttribute="trailing" secondItem="kuV-LY-Qan" secondAttribute="trailing" constant="6" id="bLu-s6-CrI"/>
@@ -2658,7 +2667,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="eMV-Px-Ad8" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Zma-bI-0pT">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Zma-bI-0pT">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -4166,7 +4175,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0yH-QX-dYW" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="HRh-g1-Okf">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="HRh-g1-Okf">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -4184,7 +4193,7 @@
             <objects>
                 <navigationController storyboardIdentifier="AccomodationCertsDetailController" automaticallyAdjustsScrollViewInsets="NO" id="6AW-3c-VGG" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="r65-jV-lcs">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="r65-jV-lcs">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -4202,7 +4211,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Wnj-OU-Bqx" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="lsp-Nf-AIz">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="lsp-Nf-AIz">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -5151,7 +5160,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="QCd-cg-p7T" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="FDW-qy-gN2">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="FDW-qy-gN2">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -5169,7 +5178,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="bmL-3i-9ap" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="biQ-JT-fNk">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="biQ-JT-fNk">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -5187,7 +5196,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="UeM-gf-1oQ" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="vSk-wg-ocj">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="vSk-wg-ocj">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

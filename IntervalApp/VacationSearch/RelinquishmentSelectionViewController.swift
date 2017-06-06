@@ -635,6 +635,12 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                 else {
                     
                       let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.clubPointCell, for: indexPath) as! clubPointCell
+                    
+                        cell.nameLabel.text = openWeek.resort?.resortName!
+                        cell.yearLabel.text = "\(String(describing: openWeek.relinquishmentYear!))"
+                        cell.addButton.tag = indexPath.row + 1
+                        cell.addButton.addTarget(self, action: #selector(RelinquishmentSelectionViewController.addClubPointButtonPressed(_:)), for: .touchUpInside)
+                    
                     return cell
                 }
             }
