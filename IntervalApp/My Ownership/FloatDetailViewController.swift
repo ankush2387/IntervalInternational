@@ -295,7 +295,7 @@ extension FloatDetailViewController : UITableViewDataSource{
         var selectClubresortcell:ReservationTableViewCell!
         var registrationNumbercell:ReservationTableViewCell!
         var saveandcancelCell:FloatSaveAndCancelButtonTableViewCell?
-        var  attributedCell: ReservationTableViewCell
+        
         
         switch (floatAttributesArray[indexPath.section] as! String){
         case Constant.MyClassConstants.callResortAttribute:
@@ -381,7 +381,7 @@ extension FloatDetailViewController : UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
-        headerView.backgroundColor = UIColor.lightGray
+        headerView.backgroundColor = UIColor(red: 239.0, green: 239.0, blue: 246.0, alpha: 1.0)
         
         let headerText = UILabel(frame:CGRect(x: 15, y: 0, width: UIScreen.main.bounds.width - 30, height: 50))
         headerText.font = UIFont(name:Constant.fontName.helveticaNeue, size:15)
