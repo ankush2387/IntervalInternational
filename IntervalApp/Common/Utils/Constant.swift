@@ -979,6 +979,7 @@ class Constant: NSObject {
         static var clubHeaderCell = "HeaderCell"
         static var checkBoxCell = "CheckCell"
         static var attributesCell = "attributesTableCell"
+        static var buttonCell = "ButtonTableCell"
     }
     
     //***** common  structure to provide all dashboardTableViewControllerHeaderText *****//

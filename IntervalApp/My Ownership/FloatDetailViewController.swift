@@ -80,8 +80,14 @@ class FloatDetailViewController: UIViewController {
     }
     
     // Select check - in date action
-    @IBAction func selectCheckInDate(){
+    @IBAction func selectCheckInDate(_sender:UIButton){
         Helper.getCheckInDatesForCalendar(senderViewController: self, resortCode: "WPN", relinquishmentYear: 2018)
+    }
+    
+    //Select bedroom
+    func selectBedroom(_sender:UIButton){
+        self.performSegue(withIdentifier: Constant.floatDetailViewController.clubresortviewcontrollerIdentifier, sender: self)
+        Constant.MyClassConstants.buttontitle =  Constant.buttonId.bedroomselection
     }
     
     //Save Float Details
@@ -344,7 +350,7 @@ extension FloatDetailViewController : UITableViewDataSource{
                 return registrationNumbercell
                 
             case Constant.MyClassConstants.noOfBedroomAttribute:
-                registrationNumbercell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.attributesCell) as! ReservationTableViewCell
+                registrationNumbercell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.buttonCell) as! ReservationTableViewCell
                 registrationNumbercell.textFieldView.layer.borderColor = UIColor.gray.cgColor
                 if(Constant.MyClassConstants.savedBedroom != ""){
                     registrationNumbercell.resortAttributeLabel.text  = Constant.MyClassConstants.savedBedroom
@@ -353,10 +359,11 @@ extension FloatDetailViewController : UITableViewDataSource{
                     registrationNumbercell.resortAttributeLabel.text = Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].unitNumber
                 }
                 registrationNumbercell.resortAttributeLabel.placeholder = Constant.textFieldTitles.numberOfBedrooms
+                registrationNumbercell.viewButton.addTarget(self, action: #selector(self.selectBedroom(_sender:)), for: .touchUpInside)
                 return registrationNumbercell
                 
             case Constant.MyClassConstants.checkInDateAttribute:
-                registrationNumbercell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.attributesCell) as! ReservationTableViewCell
+                registrationNumbercell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.buttonCell) as! ReservationTableViewCell
                 registrationNumbercell.textFieldView.layer.borderColor = UIColor.gray.cgColor
                 if(Constant.MyClassConstants.savedBedroom != ""){
                     registrationNumbercell.resortAttributeLabel.text  = Constant.MyClassConstants.savedBedroom
@@ -365,7 +372,10 @@ extension FloatDetailViewController : UITableViewDataSource{
                     registrationNumbercell.resortAttributeLabel.text = Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].unitNumber
                 }
                 registrationNumbercell.resortAttributeLabel.placeholder = Constant.textFieldTitles.checkInDate
-                registrationNumbercell.isUserInteractionEnabled = false
+                if(Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate != nil){
+                    registrationNumbercell.resortAttributeLabel.text = Helper.convertDateToString(date: Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate, format: Constant.MyClassConstants.dateFormat)
+                }
+                registrationNumbercell.viewButton.addTarget(self, action: #selector(self.selectCheckInDate(_sender:)), for: .touchUpInside)
                 return registrationNumbercell
             
             case Constant.MyClassConstants.resortReservationAttribute:
@@ -378,7 +388,6 @@ extension FloatDetailViewController : UITableViewDataSource{
                     registrationNumbercell.resortAttributeLabel.text = Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].unitNumber
                 }
                 registrationNumbercell.resortAttributeLabel.placeholder = Constant.textFieldTitles.reservationNumber
-                //registrationNumbercell.isEditing = false
                 return registrationNumbercell
                 
             default:
@@ -405,9 +414,12 @@ extension FloatDetailViewController : UITableViewDelegate{
         return UITableViewAutomaticDimension
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if(section == 2 || section == 3){
+        if((floatAttributesArray.contains(Constant.MyClassConstants.resortClubAttribute) && section == 3) || (!floatAttributesArray.contains(Constant.MyClassConstants.resortClubAttribute) && section == 2)){
             return 50
-        }else{
+        }else if section == 2{
+            return 50
+        }
+        else{
             return 0
         }
     }
@@ -440,7 +452,7 @@ extension FloatDetailViewController : UITableViewDelegate{
                 
                 
             }else if(indexPath as NSIndexPath).row == 2{
-                selectCheckInDate()
+                //selectCheckInDate()
             }
         }else if (indexPath as NSIndexPath).section == 2
         {

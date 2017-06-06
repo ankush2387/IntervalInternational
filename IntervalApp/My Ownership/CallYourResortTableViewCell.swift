@@ -35,7 +35,6 @@ class CallYourResortTableViewCell: UITableViewCell {
     - returns : No return value
     */
     fileprivate func setPropertiesTocellComponenet(){
-        donothaveresortLabel.textColor = UIColor(rgb: IUIKColorPalette.secondaryText.rawValue)
     }
     /**
      Update cell components text
