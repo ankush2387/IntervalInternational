@@ -226,6 +226,18 @@ class UpComingTripDetailController: UIViewController {
         
         self.upcomingTripDetailTbleview.reloadSections(IndexSet(integer: 1), with:.automatic)
     }
+    
+    func showMapDetail() {
+        guard let _ = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.coordinates else {
+            SimpleAlert.alert(self, title: "Error", message: "Could not load map. Please try again.")
+            return
+        }
+        
+        let storyboard = UIStoryboard(name: "MyUpcomingTripIphone", bundle: nil)
+        let mapDetailsNav = storyboard.instantiateViewController(withIdentifier: "mapDetailNav") as! UINavigationController
+        
+        self.present(mapDetailsNav, animated: true, completion: nil)
+    }
 }
 
 //***** MARK: Extension classes starts from here *****//
@@ -399,6 +411,8 @@ extension UpComingTripDetailController:UITableViewDataSource {
                 return cell
             }
             cell.resortLocationLabel.text = "\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address!.cityName!), \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address!.countryCode!)"
+            
+            cell.showMapDetailButton.addTarget(self, action: #selector(UpComingTripDetailController.showMapDetail), for: .touchUpInside)
             return cell
         }else if(indexPath.section == 1) {
             

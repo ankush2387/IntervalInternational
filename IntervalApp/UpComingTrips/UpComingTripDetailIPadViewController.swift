@@ -207,7 +207,18 @@ class UpComingTripDetailIPadViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+  
+    func didPressMapDetailsButton() {
+        guard let _ = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.coordinates else {
+            SimpleAlert.alert(self, title: "Error", message: "Could not load map. Please try again.")
+            return
+        }
+        
+        let storyboard = UIStoryboard(name: "MyUpcomingTripIphone", bundle: nil)
+        let mapDetailsNav = storyboard.instantiateViewController(withIdentifier: "mapDetailNav") as! UINavigationController
+        
+        self.present(mapDetailsNav, animated: true, completion: nil)
+    }
 }
 
 //***** MARK: Extension classes starts from here *****//
@@ -339,6 +350,8 @@ extension UpComingTripDetailIPadViewController:UITableViewDataSource {
                 }
             }
             Helper.addLinearGradientToView(view: cell.resortNameBaseView, colour: UIColor.white, transparntToOpaque: true, vertical: false)
+            
+            cell.showMapDetailButton.addTarget(self, action: #selector(UpComingTripDetailIPadViewController.didPressMapDetailsButton), for: .touchUpInside)
             return cell
         }else if((indexPath as NSIndexPath).section == 1) {
             
