@@ -55,6 +55,7 @@ class ResortFloatDetails:Object{
     dynamic var unitNumber = ""
     dynamic var unitSize = ""
     dynamic var checkInDate = ""
+    dynamic var clubResortDetails = ""
 }
 
 class ResortByMap:Object {

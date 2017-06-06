@@ -75,8 +75,8 @@ class FloatDetailViewController: UIViewController {
     // Select bedroom button action
     @IBAction func bedroomButtonTapped(_ sender:UIButton){
         self.performSegue(withIdentifier: Constant.floatDetailViewController.clubresortviewcontrollerIdentifier, sender: self)
-                Constant.MyClassConstants.buttontitle = Constant.buttonId.bedroomselection
-
+        Constant.MyClassConstants.buttontitle = Constant.buttonId.bedroomselection
+        
     }
     
     // Select check - in date action
@@ -86,25 +86,103 @@ class FloatDetailViewController: UIViewController {
     
     //Save Float Details
     @IBAction func saveFloatDetails(){
-        let indexPath = IndexPath(row: 3, section: 0)
         var reservationNumber = ""
-        var unitNumber = "Unit #307"
-        var noOfBedrooms = ""
-        
-        for subView in (self.floatDetailsTableView.cellForRow(at: indexPath)?.contentView.subviews)!{
-            if(subView.isKind(of: UITextField.self )){
-                print(subView)
-                let tf = subView as! UITextField
-                if(subView.tag == 1){
-                    reservationNumber = tf.text!
-                }else if(subView.tag == 2){
-                    unitNumber = tf.text!
-                }else{
-                    noOfBedrooms = tf.text!
-                }
-            }
+        var unitNumber = ""
+        var unitSize = ""
+        var checkInDate = ""
+        var tableViewCell = UITableViewCell()
+        if(atrributesRowArray.contains(Constant.MyClassConstants.unitNumberAttribute)){
+            tableViewCell = floatDetailsTableView.cellForRow(at: IndexPath(row: atrributesRowArray.index(of: Constant.MyClassConstants.unitNumberAttribute), section: floatAttributesArray.index(of: Constant.MyClassConstants.resortAttributes)))!
+            
+            unitNumber = getTableViewCellSubviews(tableViewCell:tableViewCell)
         }
         
+        if(atrributesRowArray.contains(Constant.MyClassConstants.noOfBedroomAttribute)){
+            tableViewCell = floatDetailsTableView.cellForRow(at: IndexPath(row: atrributesRowArray.index(of: Constant.MyClassConstants.noOfBedroomAttribute), section: floatAttributesArray.index(of: Constant.MyClassConstants.resortAttributes)))!
+            unitSize = getTableViewCellSubviews(tableViewCell:tableViewCell)
+        }
+        
+        if(atrributesRowArray.contains(Constant.MyClassConstants.checkInDateAttribute)){
+            tableViewCell = floatDetailsTableView.cellForRow(at: IndexPath(row: atrributesRowArray.index(of: Constant.MyClassConstants.checkInDateAttribute), section: floatAttributesArray.index(of: Constant.MyClassConstants.resortAttributes)))!
+            checkInDate = getTableViewCellSubviews(tableViewCell:tableViewCell)
+        }
+        
+        if(atrributesRowArray.contains(Constant.MyClassConstants.resortReservationAttribute)){
+            tableViewCell = floatDetailsTableView.cellForRow(at: IndexPath(row: atrributesRowArray.index(of: Constant.MyClassConstants.resortReservationAttribute), section: floatAttributesArray.index(of: Constant.MyClassConstants.resortAttributes)))!
+            reservationNumber = getTableViewCellSubviews(tableViewCell:tableViewCell)
+        }
+        
+        //Check if float is already saved in database
+        if(Constant.MyClassConstants.floatRemovedArray.count != 0 || Constant.MyClassConstants.whatToTradeArray.contains(Constant.MyClassConstants.selectedFloatWeek)){
+            
+            let storedData = Helper.getLocalStorageWherewanttoTrade()
+            
+            if(storedData.count > 0) {
+                let realm = try! Realm()
+                try! realm.write {
+                    var floatWeek = OpenWeeks()
+                    var floatWeekIndex = -1
+                    for openWk in Constant.MyClassConstants.whatToTradeArray{
+                        let openWk1 = openWk as! OpenWeeks
+                        if(openWk1.relinquishmentID == Constant.MyClassConstants.selectedFloatWeek.relinquishmentID){
+                            floatWeek = openWk1
+                            floatWeekIndex = Constant.MyClassConstants.whatToTradeArray.index(of: Constant.MyClassConstants.selectedFloatWeek)
+                            Constant.MyClassConstants.whatToTradeArray.removeObject(at: floatWeekIndex)
+                        }
+                    }
+                    if(floatWeekIndex < 0){
+                        for openWk in Constant.MyClassConstants.floatRemovedArray{
+                            let openWk1 = openWk as! OpenWeeks
+                            if(openWk1.relinquishmentID == Constant.MyClassConstants.selectedFloatWeek.relinquishmentID){
+                                floatWeek = openWk1
+                                floatWeekIndex = Constant.MyClassConstants.floatRemovedArray.index(of: Constant.MyClassConstants.selectedFloatWeek)
+                                Constant.MyClassConstants.floatRemovedArray.removeObject(at: floatWeekIndex)
+                            }
+                        }
+                    }
+                    
+                    if(floatWeekIndex >= 0){
+                        realm.delete(storedData[floatWeekIndex])
+                    }
+                    
+                    if(Constant.MyClassConstants.whatToTradeArray.count > 0){
+                        
+                        Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: floatWeekIndex)
+                        Constant.MyClassConstants.relinquishmentUnitsArray.removeObject(at: floatWeekIndex)
+                    }
+                    
+                    let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+                    DispatchQueue.main.asyncAfter(deadline: delayTime) {
+                        
+                        if(!floatWeek.isFloatRemoved){
+                            self.addFloatToDatabase(reservationNumber:reservationNumber, unitNumber:unitNumber, unitSize:unitSize, checkInDate:checkInDate)
+                        }
+                    }
+                }
+            }
+        }else{
+            addFloatToDatabase(reservationNumber:reservationNumber, unitNumber:unitNumber, unitSize:unitSize, checkInDate:checkInDate)
+        }
+    }
+    
+    //Fucntion to get subview
+    
+    func getTableViewCellSubviews(tableViewCell:UITableViewCell) -> String{
+        for subView in (tableViewCell.contentView.subviews){
+            if subView .isKind(of: UIView.self){
+                for textField in subView.subviews{
+                    let unitTextField = textField as! UITextField
+                    return unitTextField.text!
+                }
+            }else{
+                return ""
+            }
+        }
+        return ""
+    }
+    
+    //Function to save float week to database
+    func addFloatToDatabase(reservationNumber:String, unitNumber:String, unitSize:String, checkInDate:String){
         //Realm local storage for selected relinquishment
         let storedata = OpenWeeksStorage()
         let Membership = UserContext.sharedInstance.selectedMembership
@@ -123,7 +201,9 @@ class FloatDetailViewController: UIViewController {
         let floatDetails = ResortFloatDetails()
         floatDetails.reservationNumber = reservationNumber
         floatDetails.unitNumber = unitNumber
-        floatDetails.unitSize = noOfBedrooms
+        floatDetails.unitSize = unitSize
+        print(Constant.MyClassConstants.savedClubFloatResort)
+        floatDetails.clubResortDetails = Constant.MyClassConstants.savedClubFloatResort
         selectedOpenWeek.floatDetails.append(floatDetails)
         
         let unitDetails = ResortUnitDetails()
@@ -138,31 +218,31 @@ class FloatDetailViewController: UIViewController {
         let realm = try! Realm()
         try! realm.write {
             realm.add(storedata)
-        }
-        
-        
-        // Open vacation search view controller
-        var viewcontroller:UIViewController
-        if (Constant.RunningDevice.deviceIdiom == .phone) {
             
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-            viewcontroller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as! SWRevealViewController
-        }
-        else{
+            //Pop to vacation search screen
             
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-            viewcontroller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as! SWRevealViewController
+            // Open vacation search view controller
+            var viewcontroller:UIViewController
+            if (Constant.RunningDevice.deviceIdiom == .phone) {
+                
+                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                viewcontroller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as! SWRevealViewController
+            }
+            else{
+                
+                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                viewcontroller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as! SWRevealViewController
+            }
+            
+            
+            //***** creating animation transition to show custom transition animation *****//
+            let transition: CATransition = CATransition()
+            let timeFunc : CAMediaTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+            transition.duration = 0.0
+            transition.timingFunction = timeFunc
+            viewcontroller.view.layer.add(transition, forKey: Constant.MyClassConstants.switchToView)
+            UIApplication.shared.keyWindow?.rootViewController = viewcontroller
         }
-        
-        
-        //***** creating animation transition to show custom transition animation *****//
-        let transition: CATransition = CATransition()
-        let timeFunc : CAMediaTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-        transition.duration = 0.0
-        transition.timingFunction = timeFunc
-        viewcontroller.view.layer.add(transition, forKey: Constant.MyClassConstants.switchToView)
-        UIApplication.shared.keyWindow?.rootViewController = viewcontroller
-        
     }
     
     //Function to get ordered sections
@@ -185,10 +265,10 @@ class FloatDetailViewController: UIViewController {
         if(Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.checkInDateAttribute)){
             atrributesRowArray.add(Constant.MyClassConstants.checkInDateAttribute)
         }
-       
+        
         floatAttributesArray.add(Constant.MyClassConstants.saveAttribute)
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -217,11 +297,6 @@ extension FloatDetailViewController : UITableViewDataSource{
         var saveandcancelCell:FloatSaveAndCancelButtonTableViewCell?
         var  attributedCell: ReservationTableViewCell
         
-        if(indexPath.section == 3){
-            
-        }else{
-            
-        }
         switch (floatAttributesArray[indexPath.section] as! String){
         case Constant.MyClassConstants.callResortAttribute:
             resortcallCell  = tableView.dequeueReusableCell(withIdentifier: Constant.floatDetailViewController.resortcallidentifer) as? CallYourResortTableViewCell
@@ -230,25 +305,25 @@ extension FloatDetailViewController : UITableViewDataSource{
         case Constant.MyClassConstants.resortDetailsAttribute:
             vacationdetailcell = tableView.dequeueReusableCell(withIdentifier: Constant.floatDetailViewController.vacationdetailcellIdentifier) as? ResortDirectoryResortCell
             vacationdetailcell!.getCell(resortDetails: floatResortDetails!)
-
+            
             return vacationdetailcell!
         case Constant.MyClassConstants.resortClubAttribute:
             selectClubresortcell = tableView.dequeueReusableCell(withIdentifier: Constant.floatDetailViewController.selectclubcellIdentifier) as! ReservationTableViewCell
             if(Constant.MyClassConstants.savedClubFloatResort != ""){
-            
-                let yourAttributes = [NSForegroundColorAttributeName: UIColor.black, NSFontAttributeName:UIFont.systemFont(ofSize: 12)]
                 
-                let yourOtherAttributes = [NSForegroundColorAttributeName: UIColor.darkGray, NSFontAttributeName:UIFont.systemFont(ofSize: 12)]
+                let yourAttributes = [NSForegroundColorAttributeName: UIColor.black, NSFontAttributeName:UIFont(name: Constant.fontName.helveticaNeue, size: 15)]
+                
+                let yourOtherAttributes = [NSForegroundColorAttributeName: UIColor.darkGray, NSFontAttributeName:UIFont(name: Constant.fontName.helveticaNeue, size: 15)]
                 
                 let partOne = NSMutableAttributedString(string: Constant.MyClassConstants.selectClubResort, attributes: yourAttributes)
-    
+                
                 let partTwo = NSMutableAttributedString(string: "\n\(Constant.MyClassConstants.savedClubFloatResort)", attributes: yourOtherAttributes)
                 
                 let combination = NSMutableAttributedString()
                 
                 combination.append(partOne)
                 combination.append(partTwo)
-            
+                
                 selectClubresortcell.selectResortLabel.attributedText = combination
             }
             return selectClubresortcell!
@@ -265,13 +340,9 @@ extension FloatDetailViewController : UITableViewDataSource{
                 
             case Constant.MyClassConstants.noOfBedroomAttribute:
                 registrationNumbercell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.attributesCell) as! ReservationTableViewCell
-                
                 if(Constant.MyClassConstants.savedBedroom != ""){
-                    
-                 registrationNumbercell.resortAttributeLabel.text  = Constant.MyClassConstants.savedBedroom
-                    
+                    registrationNumbercell.resortAttributeLabel.text  = Constant.MyClassConstants.savedBedroom
                 }
-                
                 if(Constant.MyClassConstants.selectedFloatWeek.floatDetails.count > 0){
                     registrationNumbercell.resortAttributeLabel.text = Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].unitNumber
                 }
@@ -286,7 +357,7 @@ extension FloatDetailViewController : UITableViewDataSource{
         case Constant.MyClassConstants.saveAttribute:
             saveandcancelCell = tableView.dequeueReusableCell(withIdentifier: Constant.floatDetailViewController.saveandcancelcellIdentifier) as? FloatSaveAndCancelButtonTableViewCell
             return saveandcancelCell!
-        
+            
         default:
             resortcallCell  = tableView.dequeueReusableCell(withIdentifier: Constant.floatDetailViewController.resortcallidentifer) as? CallYourResortTableViewCell
             resortcallCell!.getCell()
@@ -296,10 +367,10 @@ extension FloatDetailViewController : UITableViewDataSource{
 }
 /** Extension for table view delegate **/
 extension FloatDetailViewController : UITableViewDelegate{
-	/**Height of Row at index path */
-	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    /**Height of Row at index path */
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
-	}
+    }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if(section == 2 || section == 3){
             return 50
@@ -324,7 +395,7 @@ extension FloatDetailViewController : UITableViewDelegate{
         headerView.addSubview(headerText)
         return headerView
     }
-	
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (indexPath as NSIndexPath).section == 2
         {
@@ -337,7 +408,7 @@ extension FloatDetailViewController : UITableViewDelegate{
                 
                 Helper.getResortsByClubFloatDetails(resortCode:floatResortDetails!.resortCode!, senderViewController:self, floatResortDetails:floatResortDetails!)
                 Constant.MyClassConstants.buttontitle =  Constant.buttonId.bedroomselection
-    
+                
                 
             }
         }
@@ -355,12 +426,12 @@ extension FloatDetailViewController : BedroomSizeViewControllerDelegate{
             bedroomTextField!.text = bedroomString
         }
     }
-
+    
 }
 
 /** Extension for text field **/
 extension FloatDetailViewController : UITextFieldDelegate{
-
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         //selectedTextField = false
         //textField.resignFirstResponder()

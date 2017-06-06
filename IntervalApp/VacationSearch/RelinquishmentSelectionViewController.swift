@@ -410,12 +410,14 @@ class RelinquishmentSelectionViewController: UIViewController {
             let floatWeekTraversed = floatWeek as! OpenWeeks
             if(floatWeekTraversed.isFloat && Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId == floatWeekTraversed.relinquishmentID){
                 Constant.MyClassConstants.selectedFloatWeek = floatWeekTraversed
+                Constant.MyClassConstants.savedClubFloatResort = floatWeekTraversed.floatDetails[0].clubResortDetails
             }
         }
         for floatWeek in Constant.MyClassConstants.floatRemovedArray{
             let floatWeekTraversed = floatWeek as! OpenWeeks
             if(floatWeekTraversed.isFloat && Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId == floatWeekTraversed.relinquishmentID){
                 Constant.MyClassConstants.selectedFloatWeek = floatWeekTraversed
+                Constant.MyClassConstants.savedClubFloatResort = floatWeekTraversed.floatDetails[0].clubResortDetails
             }
         }
         print(Constant.MyClassConstants.selectedFloatWeek)
@@ -600,7 +602,7 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                                     print(floatWeek)
                                     
                                     cell.resortName.text = "\(openWeek.resort!.resortName!)/\(openWeek.resort!.resortCode!)"
-                                    cell.totalWeekLabel.text = "\(openWeek.relinquishmentYear!)"
+                                    //cell.totalWeekLabel.text = "\(openWeek.relinquishmentYear!)"
                                     if(indexPath.section == 1){
                                         cell.addButton.tag = indexPath.row + indexPath.section
                                     }else{
