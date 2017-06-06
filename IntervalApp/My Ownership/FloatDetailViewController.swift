@@ -335,6 +335,7 @@ extension FloatDetailViewController : UITableViewDataSource{
             switch(atrributesRowArray[indexPath.row] as! String){
             case Constant.MyClassConstants.unitNumberAttribute:
                 registrationNumbercell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.attributesCell) as! ReservationTableViewCell
+                registrationNumbercell.textFieldView.layer.borderColor = UIColor.gray.cgColor
                 if(Constant.MyClassConstants.selectedFloatWeek.floatDetails.count > 0){
                     registrationNumbercell.resortAttributeLabel.text = Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].unitNumber
                 }else{
@@ -356,6 +357,7 @@ extension FloatDetailViewController : UITableViewDataSource{
                 
             case Constant.MyClassConstants.checkInDateAttribute:
                 registrationNumbercell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.attributesCell) as! ReservationTableViewCell
+                registrationNumbercell.textFieldView.layer.borderColor = UIColor.gray.cgColor
                 if(Constant.MyClassConstants.savedBedroom != ""){
                     registrationNumbercell.resortAttributeLabel.text  = Constant.MyClassConstants.savedBedroom
                 }
@@ -363,10 +365,12 @@ extension FloatDetailViewController : UITableViewDataSource{
                     registrationNumbercell.resortAttributeLabel.text = Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].unitNumber
                 }
                 registrationNumbercell.resortAttributeLabel.placeholder = Constant.textFieldTitles.checkInDate
+                registrationNumbercell.isUserInteractionEnabled = false
                 return registrationNumbercell
             
             case Constant.MyClassConstants.resortReservationAttribute:
                 registrationNumbercell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.attributesCell) as! ReservationTableViewCell
+                registrationNumbercell.textFieldView.layer.borderColor = UIColor.gray.cgColor
                 if(Constant.MyClassConstants.savedBedroom != ""){
                     registrationNumbercell.resortAttributeLabel.text  = Constant.MyClassConstants.savedBedroom
                 }
@@ -374,6 +378,7 @@ extension FloatDetailViewController : UITableViewDataSource{
                     registrationNumbercell.resortAttributeLabel.text = Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].unitNumber
                 }
                 registrationNumbercell.resortAttributeLabel.placeholder = Constant.textFieldTitles.reservationNumber
+                //registrationNumbercell.isEditing = false
                 return registrationNumbercell
                 
             default:
