@@ -171,6 +171,11 @@ class FloatDetailViewController: UIViewController {
         }
     }
     
+    //Function to cancel float detail view
+    @IBAction func cancelButtonPressed(_:IUIKButton) {
+        _ = self.navigationController?.popViewController(animated: true)
+    }
+    
     //Fucntion to get subview
     
     func getTableViewCellSubviews(tableViewCell:UITableViewCell) -> String{
@@ -341,7 +346,7 @@ extension FloatDetailViewController : UITableViewDataSource{
             switch(atrributesRowArray[indexPath.row] as! String){
             case Constant.MyClassConstants.unitNumberAttribute:
                 registrationNumbercell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.attributesCell) as! ReservationTableViewCell
-                registrationNumbercell.textFieldView.layer.borderColor = UIColor.gray.cgColor
+                registrationNumbercell.textFieldView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
                 if(Constant.MyClassConstants.selectedFloatWeek.floatDetails.count > 0){
                     registrationNumbercell.resortAttributeLabel.text = Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].unitNumber
                 }else{
@@ -351,7 +356,7 @@ extension FloatDetailViewController : UITableViewDataSource{
                 
             case Constant.MyClassConstants.noOfBedroomAttribute:
                 registrationNumbercell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.buttonCell) as! ReservationTableViewCell
-                registrationNumbercell.textFieldView.layer.borderColor = UIColor.gray.cgColor
+                registrationNumbercell.textFieldView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
                 if(Constant.MyClassConstants.savedBedroom != ""){
                     registrationNumbercell.resortAttributeLabel.text  = Constant.MyClassConstants.savedBedroom
                 }
@@ -364,7 +369,7 @@ extension FloatDetailViewController : UITableViewDataSource{
                 
             case Constant.MyClassConstants.checkInDateAttribute:
                 registrationNumbercell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.buttonCell) as! ReservationTableViewCell
-                registrationNumbercell.textFieldView.layer.borderColor = UIColor.gray.cgColor
+                registrationNumbercell.textFieldView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
                 registrationNumbercell.resortAttributeLabel.placeholder = Constant.textFieldTitles.checkInDate
                 if(Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate != nil){
                     registrationNumbercell.resortAttributeLabel.text = Helper.convertDateToString(date: Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate, format: Constant.MyClassConstants.dateFormat)
@@ -374,7 +379,7 @@ extension FloatDetailViewController : UITableViewDataSource{
             
             case Constant.MyClassConstants.resortReservationAttribute:
                 registrationNumbercell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.attributesCell) as! ReservationTableViewCell
-                registrationNumbercell.textFieldView.layer.borderColor = UIColor.gray.cgColor
+                registrationNumbercell.textFieldView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
                 registrationNumbercell.resortAttributeLabel.placeholder = Constant.textFieldTitles.reservationNumber
                 return registrationNumbercell
                 
@@ -414,12 +419,14 @@ extension FloatDetailViewController : UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
-        headerView.backgroundColor = UIColor(red: 239.0, green: 239.0, blue: 246.0, alpha: 1.0)
+        headerView.backgroundColor = IUIKColorPalette.titleBackdrop.color
         
         let headerText = UILabel(frame:CGRect(x: 15, y: 0, width: UIScreen.main.bounds.width - 30, height: 50))
         headerText.font = UIFont(name:Constant.fontName.helveticaNeue, size:15)
         
-        if(section == 2){
+        if((!floatAttributesArray.contains(Constant.MyClassConstants.resortClubAttribute) && section == 2)){
+            headerText.text = Constant.HeaderViewConstantStrings.reservationDetails
+        }else if(floatAttributesArray.contains(Constant.MyClassConstants.resortClubAttribute) && section == 2){
             headerText.text = Constant.HeaderViewConstantStrings.resortUnitDetails
         }else{
             headerText.text = Constant.HeaderViewConstantStrings.reservationDetails

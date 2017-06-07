@@ -543,6 +543,7 @@ extension VacationSearchViewController:UITableViewDelegate {
         }else{
             
             let delete = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.delete) { (action,index) -> Void in
+                var isFloat = true
                 let storedData = Helper.getLocalStorageWherewanttoTrade()
                 
                 if(storedData.count > 0) {
@@ -553,6 +554,8 @@ extension VacationSearchViewController:UITableViewDelegate {
                             let openWk1 = openWk as! OpenWeeks
                             if(!openWk1.isFloatRemoved){
                              floatWeek = openWk1
+                            }else{
+                              isFloat = false
                             }
                         }
                         
@@ -572,7 +575,7 @@ extension VacationSearchViewController:UITableViewDelegate {
                             
                             tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
                             
-                            if(!floatWeek.isFloatRemoved){
+                            if(!floatWeek.isFloatRemoved && !isFloat){
                                 //Realm local storage for selected relinquishment
                                 let storedata = OpenWeeksStorage()
                                 let Membership = UserContext.sharedInstance.selectedMembership

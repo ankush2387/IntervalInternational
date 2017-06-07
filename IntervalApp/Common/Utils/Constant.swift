@@ -722,7 +722,7 @@ class Constant: NSObject {
         static var vacationSearchDestinationController = NSLocalizedString("Pick Destination", comment: "")
         static var searchResultViewController = NSLocalizedString("Search Results", comment: "")
         static var availablePointToolViewController = NSLocalizedString("Available Point Tool", comment: "")
-        static var floatDetailViewController = NSLocalizedString("Float Details", comment: "")
+        static var floatDetailViewController = NSLocalizedString("Additional Information", comment: "")
         static var clubresortsViewController = NSLocalizedString("Club Resorts", comment: "")
         static var bedroomSizeViewController = NSLocalizedString("Bedroom_Size", comment: "")
         static var loginHelpViewController = NSLocalizedString("Login Help", comment: "")
@@ -1266,7 +1266,7 @@ class Constant: NSObject {
         }
         //FloatSaveAndCancelButtonTableViewCell
         struct floatSaveAndCancelButtonTableViewCell {
-            static let saveFloatDetailButtonTitle = "Save float Details"
+            static let saveFloatDetailButtonTitle = "Save and Complete"
             static let cancelButtonTitle = NSLocalizedString("Cancel", comment:"")
         }
     }

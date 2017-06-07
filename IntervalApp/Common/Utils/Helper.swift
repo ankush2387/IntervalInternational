@@ -605,12 +605,16 @@ public class Helper{
                             
                             Constant.MyClassConstants.realmOpenWeeksID.add(object.relinquishmentID)
                             let tempDict = NSMutableDictionary()
+                            if(object.isFloat){
                             if(object.isFloatRemoved && !object.isFromRelinquishment){
                                 Constant.MyClassConstants.floatRemovedArray.add(object)
                             }else if(object.floatDetails.count > 0 && !object.isFloatRemoved && object.isFromRelinquishment){
                                 Constant.MyClassConstants.whatToTradeArray.add(object)
                                 Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
+                            }
                             }else{
+                                Constant.MyClassConstants.whatToTradeArray.add(object)
+                                Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
                             }
                             Constant.MyClassConstants.idUnitsRelinquishmentDictionary.setValue(object.unitDetails, forKey: object.relinquishmentID)
                             tempDict.setValue(object.unitDetails, forKey: object.relinquishmentID)
