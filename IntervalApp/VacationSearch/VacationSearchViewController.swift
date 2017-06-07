@@ -288,11 +288,10 @@ extension VacationSearchViewController:UICollectionViewDataSource {
         let resortFlaxImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: 180) )
         resortFlaxImageView.backgroundColor = UIColor.lightGray
         
-        print((deal.image?.url!)!)
         
         if(self.SegmentIndex == 0 || self.SegmentIndex == 1) {
             
-            resortFlaxImageView.setImageWith(URL(string: (deal.image?.url!)!), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
+            resortFlaxImageView.setImageWith(URL(string: (deal.image?.url) ?? ""), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
                 if (error != nil) {
                     resortFlaxImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                 }

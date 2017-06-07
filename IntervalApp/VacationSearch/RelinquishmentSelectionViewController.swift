@@ -578,6 +578,14 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                         
                         if(Constant.MyClassConstants.floatRemovedArray.count == 0){
                             
+                            if(cell.savedView.layer.sublayers != nil) {
+                                for layer in cell.savedView.layer.sublayers!{
+                                    if(layer.isKind(of: CAGradientLayer.self)) {
+                                        layer.removeFromSuperlayer()
+                                    }
+                                }
+                            }
+                            Helper.addLinearGradientToView(view: cell.savedView, colour: UIColor.white, transparntToOpaque: true, vertical: false)
                             cell.resortName.text = "\(openWeek.resort!.resortName!)/\(openWeek.resort!.resortCode!)"
                             cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType:openWeek.unit!.unitSize!))), \(Helper.getKitchenEnums(kitchenType:openWeek.unit!.kitchenType!))"
                             cell.totalSleepAndPrivate.text = "Sleeps \(openWeek.unit!.publicSleepCapacity), \(openWeek.unit!.privateSleepCapacity) Private"

@@ -365,12 +365,6 @@ extension FloatDetailViewController : UITableViewDataSource{
             case Constant.MyClassConstants.checkInDateAttribute:
                 registrationNumbercell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.buttonCell) as! ReservationTableViewCell
                 registrationNumbercell.textFieldView.layer.borderColor = UIColor.gray.cgColor
-                if(Constant.MyClassConstants.savedBedroom != ""){
-                    registrationNumbercell.resortAttributeLabel.text  = Constant.MyClassConstants.savedBedroom
-                }
-                if(Constant.MyClassConstants.selectedFloatWeek.floatDetails.count > 0){
-                    registrationNumbercell.resortAttributeLabel.text = Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].unitNumber
-                }
                 registrationNumbercell.resortAttributeLabel.placeholder = Constant.textFieldTitles.checkInDate
                 if(Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate != nil){
                     registrationNumbercell.resortAttributeLabel.text = Helper.convertDateToString(date: Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate, format: Constant.MyClassConstants.dateFormat)
@@ -381,12 +375,6 @@ extension FloatDetailViewController : UITableViewDataSource{
             case Constant.MyClassConstants.resortReservationAttribute:
                 registrationNumbercell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.attributesCell) as! ReservationTableViewCell
                 registrationNumbercell.textFieldView.layer.borderColor = UIColor.gray.cgColor
-                if(Constant.MyClassConstants.savedBedroom != ""){
-                    registrationNumbercell.resortAttributeLabel.text  = Constant.MyClassConstants.savedBedroom
-                }
-                if(Constant.MyClassConstants.selectedFloatWeek.floatDetails.count > 0){
-                    registrationNumbercell.resortAttributeLabel.text = Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].unitNumber
-                }
                 registrationNumbercell.resortAttributeLabel.placeholder = Constant.textFieldTitles.reservationNumber
                 return registrationNumbercell
                 
