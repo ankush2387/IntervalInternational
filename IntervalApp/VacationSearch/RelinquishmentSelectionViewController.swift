@@ -642,14 +642,41 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                 
                 else {
                     
-                      let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.clubPointCell, for: indexPath) as! clubPointCell
+                    let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.relinquishmentSelectionOpenWeeksCell, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
                     
-                        cell.nameLabel.text = openWeek.resort?.resortName!
-                        cell.yearLabel.text = "\(String(describing: openWeek.relinquishmentYear!))"
-                        cell.addButton.tag = indexPath.row + 1
-                        cell.addButton.addTarget(self, action: #selector(RelinquishmentSelectionViewController.addClubPointButtonPressed(_:)), for: .touchUpInside)
+                    cell.resortName.text = "\(openWeek.resort!.resortName!)"
+                    cell.yearLabel.text = "\(openWeek.relinquishmentYear!)"
+                    let date = openWeek.checkInDates
+                    if(date.count > 0) {
+                        
+                        let dateString = date[0]
+                        let date =  Helper.convertStringToDate(dateString: dateString, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
+                        let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
+                        let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: date)
+                        let day = myComponents.day!
+                        var month = ""
+                        if(day < 10) {
+                            month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) 0\(day)"
+                        }
+                        else {
+                            month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \(day)"
+                        }
+                        
+                        cell.dayAndDateLabel.text = month.uppercased()
+                        
+                    }
+                    else {
+                        
+                        cell.dayAndDateLabel.text = ""
+                    }
+                    cell.totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: openWeek.weekNumber!))"
+                    cell.dayAndDateLabel.text = ""
+                    cell.addButton.tag = indexPath.row + 1
+                    
+                    cell.addButton.addTarget(self, action:  #selector(RelinquishmentSelectionViewController.addAvailablePoinButtonPressed(_:)), for: .touchUpInside)
                     
                     return cell
+
                 }
             }
             else {
@@ -670,12 +697,15 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
         else {
             
             let openWeek = pointOpenWeeksArray[indexPath.row]
-            let  intervalWeekCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.floatWeekSavedCell, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
             
-            intervalWeekCell.resortName.text = openWeek.resort?.resortName!
-            intervalWeekCell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType:openWeek.unit!.unitSize!))), \(Helper.getKitchenEnums(kitchenType:openWeek.unit!.kitchenType!))"
-            intervalWeekCell.totalSleepAndPrivate.text = "Sleeps \(openWeek.unit!.publicSleepCapacity), \(openWeek.unit!.privateSleepCapacity) Private"
-            return intervalWeekCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.clubPointCell, for: indexPath) as! clubPointCell
+            
+            cell.nameLabel.text = openWeek.resort?.resortName!
+            cell.yearLabel.text = "\(String(describing: openWeek.relinquishmentYear!))"
+            cell.addButton.tag = indexPath.row
+            cell.addButton.addTarget(self, action: #selector(RelinquishmentSelectionViewController.addClubPointButtonPressed(_:)), for: .touchUpInside)
+            
+            return cell
         }
     }
 }
