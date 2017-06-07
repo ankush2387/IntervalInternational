@@ -1702,8 +1702,8 @@
                                                         <action selector="callYourResortTappedWith_sender:" destination="XVn-Fp-la9" eventType="touchUpInside" id="5ru-Zr-BR0"/>
                                                     </connections>
                                                 </button>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Call your resort." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IJT-qs-oIE">
-                                                    <rect key="frame" x="15" y="33" width="110" height="18"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Call your Resort." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IJT-qs-oIE">
+                                                    <rect key="frame" x="15" y="33" width="115.5" height="18"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="18" id="TXB-Xu-QOt"/>
                                                     </constraints>
@@ -1747,22 +1747,23 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1jc-vO-2Ld">
                                                     <rect key="frame" x="0.0" y="230" width="600" height="100"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Breckenridge, Colorado" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rHr-Tx-jsC">
-                                                            <rect key="frame" x="15" y="32" width="242" height="18"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Breckenridge, Colorado" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rHr-Tx-jsC">
+                                                            <rect key="frame" x="15" y="32" width="570" height="18"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="15"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="GTR" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3pG-So-Jm7">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GTR" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3pG-So-Jm7">
                                                             <rect key="frame" x="15" y="54" width="31" height="18"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="31" id="UL9-8T-oCZ"/>
+                                                                <constraint firstAttribute="height" constant="18" id="WHV-Ma-YUT"/>
+                                                            </constraints>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="15"/>
                                                             <color key="textColor" red="1" green="0.59999999999999998" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Grand Timber Lodge" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kjd-X5-NIN">
-                                                            <rect key="frame" x="15" y="8" width="231" height="22"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Grand Timber Lodge" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kjd-X5-NIN">
+                                                            <rect key="frame" x="15" y="8" width="570" height="22"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="18"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -1770,7 +1771,16 @@
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
+                                                        <constraint firstItem="3pG-So-Jm7" firstAttribute="leading" secondItem="1jc-vO-2Ld" secondAttribute="leading" constant="15" id="0Nt-6y-n3k"/>
                                                         <constraint firstAttribute="height" constant="100" id="9j4-v3-S4A"/>
+                                                        <constraint firstItem="3pG-So-Jm7" firstAttribute="top" secondItem="rHr-Tx-jsC" secondAttribute="bottom" constant="4" id="Ba5-7N-80T"/>
+                                                        <constraint firstItem="rHr-Tx-jsC" firstAttribute="leading" secondItem="1jc-vO-2Ld" secondAttribute="leading" constant="15" id="G8M-Wd-qj1"/>
+                                                        <constraint firstAttribute="trailing" secondItem="kjd-X5-NIN" secondAttribute="trailing" constant="15" id="ILf-3U-Xfg"/>
+                                                        <constraint firstItem="kjd-X5-NIN" firstAttribute="leading" secondItem="1jc-vO-2Ld" secondAttribute="leading" constant="15" id="Lv6-uy-OHb"/>
+                                                        <constraint firstItem="rHr-Tx-jsC" firstAttribute="top" secondItem="kjd-X5-NIN" secondAttribute="bottom" constant="2" id="R1d-Rn-dv1"/>
+                                                        <constraint firstAttribute="trailing" secondItem="rHr-Tx-jsC" secondAttribute="trailing" constant="15" id="WsR-AC-tEn"/>
+                                                        <constraint firstItem="3pG-So-Jm7" firstAttribute="top" secondItem="rHr-Tx-jsC" secondAttribute="bottom" constant="4" id="lT5-fk-oxS"/>
+                                                        <constraint firstItem="kjd-X5-NIN" firstAttribute="top" secondItem="1jc-vO-2Ld" secondAttribute="top" constant="8" id="tqf-Ay-ShA"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>
