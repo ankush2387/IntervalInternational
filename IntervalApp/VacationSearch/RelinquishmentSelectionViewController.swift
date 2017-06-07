@@ -585,7 +585,7 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                                     }
                                 }
                             }
-                            Helper.addLinearGradientToView(view: cell.savedView, colour: UIColor.white, transparntToOpaque: true, vertical: false)
+                            Helper.addGredientColorOnFloatSavedCell(view: cell.savedView)
                             cell.resortName.text = "\(openWeek.resort!.resortName!)/\(openWeek.resort!.resortCode!)"
                             cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType:openWeek.unit!.unitSize!))), \(Helper.getKitchenEnums(kitchenType:openWeek.unit!.kitchenType!))"
                             cell.totalSleepAndPrivate.text = "Sleeps \(openWeek.unit!.publicSleepCapacity), \(openWeek.unit!.privateSleepCapacity) Private"

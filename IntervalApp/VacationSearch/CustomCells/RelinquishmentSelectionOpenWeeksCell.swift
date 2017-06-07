@@ -22,7 +22,7 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
     @IBOutlet weak var resortName: UILabel!
     
     @IBOutlet weak var addButton: IUIKButton!
-    @IBOutlet weak var savedView: UIView!
+    @IBOutlet weak var savedView: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

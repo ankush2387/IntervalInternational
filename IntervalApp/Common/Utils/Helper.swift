@@ -175,20 +175,20 @@ public class Helper{
         let gradientFrame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height)
         gradient.frame = gradientFrame
         
+          let  colours = [
+                colour.cgColor,
+                colour.withAlphaComponent(0.7).cgColor,
+                colour.withAlphaComponent(0.95).cgColor,
+                colour.withAlphaComponent(1).cgColor,
+                colour.withAlphaComponent(1).cgColor,
+                UIColor.clear.cgColor
+            ]
         
-        let colours = [
-            colour.cgColor,
-            colour.withAlphaComponent(0.7).cgColor,
-            colour.withAlphaComponent(0.95).cgColor,
-            colour.withAlphaComponent(1).cgColor,
-            colour.withAlphaComponent(1).cgColor,
-            UIColor.clear.cgColor
-        ]
         
         if transparntToOpaque == true
         {
             gradient.locations = [-0.2,0.25,0.50,0.75]
-            //colours = colours.reverse()
+           
         }
         
         if vertical == true
@@ -196,10 +196,27 @@ public class Helper{
             gradient.startPoint =  CGPoint(x:1.0, y: 0.5)
             gradient.endPoint =  CGPoint(x: 0.5, y: 1.0)
         }
+       
         gradient.colors = colours
         view.layer.insertSublayer(gradient, at: 0)
     }
     
+    // function for float week gredient color view
+   static func addGredientColorOnFloatSavedCell(view:UIView) {
+        
+        let gradient = CAGradientLayer()
+        gradient.frame = view.bounds
+        
+        let colours = [UIColor(red: 175.0/255.0, green: 215.0/255.0, blue: 100.0/255.0, alpha: 1.0).cgColor, UIColor.white.cgColor]
+        
+        gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
+        gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
+    
+        gradient.colors = colours
+        view.layer.insertSublayer(gradient, at: 0)
+
+    }
+
     //***** function to disable interactio with UI when API call is running until we got a response or error by adding new layer *****//
     static func addServiceCallBackgroundView(view:UIView){
         
