@@ -254,7 +254,8 @@ extension BedroomSizeViewController : UITableViewDataSource{
             }
             cell?.selectionStyle = UITableViewCellSelectionStyle.none
             cell?.bedroomSizelabel.tag = indexPath.row + 100
-            
+            let unitDetails = "\(Constant.MyClassConstants.relinquishmentSelectedWeek.unit?.lockOffUnits[indexPath.row].unitNumber), \(Constant.MyClassConstants.relinquishmentSelectedWeek.unit?.lockOffUnits[indexPath.row].kitchenType)"
+            cell?.unitSizeLabel.text = unitDetails
             return cell!
             
         }else{

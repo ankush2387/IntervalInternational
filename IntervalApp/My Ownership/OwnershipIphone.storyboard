@@ -1625,6 +1625,7 @@
                                             <outlet property="backgroundCellView" destination="acx-np-bcc" id="YNK-xc-VJt"/>
                                             <outlet property="bedroomSizelabel" destination="5bB-JQ-Bkz" id="zNV-7e-x7t"/>
                                             <outlet property="checkBoxButton" destination="dJ7-Ik-c4b" id="uqw-z4-Yuo"/>
+                                            <outlet property="unitSizeLabel" destination="sda-0m-fif" id="mEC-kU-wFw"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

@@ -213,13 +213,14 @@ class FloatDetailViewController: UIViewController {
         floatDetails.reservationNumber = reservationNumber
         floatDetails.unitNumber = unitNumber
         floatDetails.unitSize = unitSize
+        floatDetails.checkInDate = checkInDate
         print(Constant.MyClassConstants.savedClubFloatResort)
         floatDetails.clubResortDetails = Constant.MyClassConstants.savedClubFloatResort
         selectedOpenWeek.floatDetails.append(floatDetails)
         
         let unitDetails = ResortUnitDetails()
         unitDetails.kitchenType = (Helper.getKitchenEnums(kitchenType: (self.floatUnitDetails?.kitchenType!)!))
-        unitDetails.unitSize = (Helper.getBedroomNumbers(bedroomType: (self.floatUnitDetails?.unitSize!)!))//(self.unitDetails?.unitSize!)!
+        unitDetails.unitSize = unitSize //(self.unitDetails?.unitSize!)!
         selectedOpenWeek.unitDetails.append(unitDetails)
         
         selectedOpenWeek.resort.append(resort)

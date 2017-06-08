@@ -34,6 +34,7 @@ class ClubresortTableViewCell: UITableViewCell {
         self.clubresortDictionary = clubresortdictionary
         clubResortCheckbox.tag = index
         clubResortCheckbox.checked = isChecked
+        print(Constant.MyClassConstants.savedBedroom)
         if(isChecked || Constant.MyClassConstants.savedClubFloatResort == Constant.MyClassConstants.clubFloatResorts[index].resortName! || Constant.MyClassConstants.savedBedroom == UnitSize.forDisplay[index].rawValue){
             clubresortNameLabel.textColor = UIColor.orange
             clubResortCheckbox.checked = true
