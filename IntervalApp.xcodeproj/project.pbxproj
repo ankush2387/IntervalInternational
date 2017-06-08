@@ -269,6 +269,7 @@
 		DC7EF5151D709F8800E9E360 /* SignInPreLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7EF5041D709F8800E9E360 /* SignInPreLoginViewController.swift */; };
 		DC96F3B81D7F41E500C08F1E /* TouchID.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC96F3B71D7F41E500C08F1E /* TouchID.swift */; };
 		E932C7601EE07FB70083E871 /* UpComingTripMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932C75F1EE07FB70083E871 /* UpComingTripMapViewController.swift */; };
+		E951BC4D1EE71D800070A04B /* AlertHelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E951BC4C1EE71D800070A04B /* AlertHelpViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -557,6 +558,7 @@
 		DC96F3B71D7F41E500C08F1E /* TouchID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchID.swift; sourceTree = "<group>"; };
 		E2CBCD7E8490E488AB822061 /* Pods_IntervalApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IntervalApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E932C75F1EE07FB70083E871 /* UpComingTripMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpComingTripMapViewController.swift; sourceTree = "<group>"; };
+		E951BC4C1EE71D800070A04B /* AlertHelpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertHelpViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1009,6 +1011,7 @@
 				DC27F7BF1DB81B6F00AA374F /* GetawayAlertsIphone.storyboard */,
 				DC27F7C01DB81B6F00AA374F /* GetawayAlertsIPhoneViewController.swift */,
 				DC27F7C11DB81B6F00AA374F /* InfoDetailViewController.swift */,
+				E951BC4C1EE71D800070A04B /* AlertHelpViewController.swift */,
 			);
 			path = GetawayAlerts;
 			sourceTree = "<group>";
@@ -1426,6 +1429,7 @@
 				3A0B25DC1CD241B50080BF3F /* DummyTableViewCell.swift in Sources */,
 				3AC572111E2A2A6500969CF7 /* HeaderCell.swift in Sources */,
 				3AAA5A291C720F4500A5EA6D /* UserContext.swift in Sources */,
+				E951BC4D1EE71D800070A04B /* AlertHelpViewController.swift in Sources */,
 				DC27F7B71DB81B5D00AA374F /* HomeAlertTableViewCell.swift in Sources */,
 				3A3A01431C99BD0B00B7EC37 /* OwnershipFloatTableViewCell.swift in Sources */,
 				DC7BA83E1DB911D600BB0C3B /* MagazinesIPadViewController.swift in Sources */,
