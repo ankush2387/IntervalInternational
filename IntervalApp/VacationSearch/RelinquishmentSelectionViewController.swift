@@ -647,6 +647,7 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                             }
                             Helper.addGredientColorOnFloatSavedCell(view: cell.savedView)
                             cell.resortName.text = "\(openWeek.resort!.resortName!)/\(openWeek.resort!.resortCode!)"
+                            cell.totalWeekLabel.text = "\(openWeek.relinquishmentYear!)"
                             cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType:openWeek.unit!.unitSize!))), \(Helper.getKitchenEnums(kitchenType:openWeek.unit!.kitchenType!))"
                             cell.totalSleepAndPrivate.text = "Sleeps \(openWeek.unit!.publicSleepCapacity), \(openWeek.unit!.privateSleepCapacity) Private"
                             if(indexPath.section == 1){
@@ -670,7 +671,7 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                                     print(floatWeek)
                                     
                                     cell.resortName.text = "\(openWeek.resort!.resortName!)/\(openWeek.resort!.resortCode!)"
-                                    //cell.totalWeekLabel.text = "\(openWeek.relinquishmentYear!)"
+                                    cell.totalWeekLabel.text = "\(openWeek.relinquishmentYear!)"
                                     if(indexPath.section == 1){
                                         cell.addButton.tag = indexPath.row + indexPath.section
                                     }else{

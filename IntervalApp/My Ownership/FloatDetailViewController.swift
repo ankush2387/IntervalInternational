@@ -167,6 +167,7 @@ class FloatDetailViewController: UIViewController {
                 }
             }
         }else{
+            print(unitNumber)
             addFloatToDatabase(reservationNumber:reservationNumber, unitNumber:unitNumber, unitSize:unitSize, checkInDate:checkInDate)
         }
     }
@@ -388,7 +389,7 @@ extension FloatDetailViewController : UITableViewDataSource{
                     let day   = String(describing: myComponents.day!)
                     
                     
-                    registrationNumbercell.resortAttributeLabel.text =     "\(weekDay),\(month). \(" ")\(day)\("th") \(year)"
+                    registrationNumbercell.resortAttributeLabel.text =     "\(weekDay), \(month). \(" ")\(day)\("th") \(year)"
 
 
                     
