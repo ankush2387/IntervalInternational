@@ -114,6 +114,8 @@ class BedroomSizeViewController: UIViewController {
         }
         if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController){
             doneButton.isEnabled = false
+        }else{
+            doneButton.isHidden = true
         }
         self.bedroomSizeTableView.reloadData()
     }
@@ -124,10 +126,7 @@ class BedroomSizeViewController: UIViewController {
      */
     
     override func viewWillAppear(_ animated: Bool) {
-        
 
-        
-        
     }
     
     
@@ -234,6 +233,7 @@ extension BedroomSizeViewController : UITableViewDataSource{
         
         if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController || Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController){
             
+            cell?.backgroundCellView.layer.borderColor = UIColor.white.cgColor
             cell?.bedroomSizelabel.text = Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as? String
             cell?.checkBoxButton.tag = indexPath.row + 1000
            if(Constant.MyClassConstants.userSelectedStringArray.contains(Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as! String)){
@@ -254,7 +254,12 @@ extension BedroomSizeViewController : UITableViewDataSource{
             }
             cell?.selectionStyle = UITableViewCellSelectionStyle.none
             cell?.bedroomSizelabel.tag = indexPath.row + 100
-            let unitDetails = "\(Constant.MyClassConstants.relinquishmentSelectedWeek.unit?.lockOffUnits[indexPath.row].unitNumber), \(Constant.MyClassConstants.relinquishmentSelectedWeek.unit?.lockOffUnits[indexPath.row].kitchenType)"
+            var unitDetails = ""
+            if(indexPath.row < Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count - 1 ){
+            unitDetails = "\(String(describing: Constant.MyClassConstants.relinquishmentSelectedWeek.unit!.lockOffUnits[indexPath.row].unitNumber!)), \(String(describing: Helper.getKitchenEnums(kitchenType: Constant.MyClassConstants.relinquishmentSelectedWeek.unit!.lockOffUnits[indexPath.row].kitchenType!)))"
+            }else{
+                unitDetails = "\(String(describing: Constant.MyClassConstants.relinquishmentSelectedWeek.unit!.unitNumber!)), \(String(describing: Helper.getKitchenEnums(kitchenType: Constant.MyClassConstants.relinquishmentSelectedWeek.unit!.kitchenType!)))"
+            }
             cell?.unitSizeLabel.text = unitDetails
             return cell!
             
@@ -307,11 +312,13 @@ extension BedroomSizeViewController : UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
+        let tableCell = tableView.cellForRow(at: indexPath) as! BedroomSizeTableViewCell
+        tableCell.backgroundCellView.layer.borderColor = UIColor.orange.cgColor
         if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController){
             let selectedBedroom = Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as! String
             let unitArray = selectedBedroom.components(separatedBy: ",")
         Constant.MyClassConstants.savedBedroom = unitArray[0]
+        Constant.MyClassConstants.unitNumberLockOff = (String(describing: Constant.MyClassConstants.relinquishmentSelectedWeek.unit!.lockOffUnits[indexPath.row].unitNumber!))
         delegate?.floatLockOffDetails!(bedroomDetails:Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as! String)
         self.dismiss(animated: false, completion: nil)
         }

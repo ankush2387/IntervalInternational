@@ -906,10 +906,13 @@ public class Helper{
     }
     
     // Switch to FloatDetailViewController
-    static func navigateToViewController(senderViewController:UIViewController, floatResortDetails:Resort){
+    static func navigateToViewController(senderViewController:UIViewController, floatResortDetails:Resort, isFromLockOff:Bool){
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.floatViewController) as! FloatDetailViewController
         viewController.floatResortDetails = floatResortDetails
+        if(isFromLockOff){
+            viewController.isFromLockOff = true
+        }
         let transitionManager = TransitionManager()
         senderViewController.navigationController?.transitioningDelegate = transitionManager
         senderViewController.navigationController?.pushViewController(viewController, animated: true)

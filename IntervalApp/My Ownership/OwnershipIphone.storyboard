@@ -1559,6 +1559,9 @@
                                                     <rect key="frame" x="5" y="5" width="570" height="60"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                            <integer key="value" value="2"/>
+                                                        </userDefinedRuntimeAttribute>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                             <integer key="value" value="4"/>
                                                         </userDefinedRuntimeAttribute>
@@ -1644,14 +1647,14 @@
                         <color key="backgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.94901960784313721" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="EUG-aQ-GiU" firstAttribute="leading" secondItem="5Tp-oI-2fK" secondAttribute="leading" id="9F3-6H-9Nd"/>
-                            <constraint firstItem="IWy-U6-pyv" firstAttribute="top" secondItem="G5j-jY-g9T" secondAttribute="bottom" constant="-20" id="GJl-Cu-noR"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="IWy-U6-pyv" secondAttribute="trailing" constant="-20" id="NIt-bA-hdv"/>
+                            <constraint firstItem="IWy-U6-pyv" firstAttribute="leading" secondItem="5Tp-oI-2fK" secondAttribute="leading" id="FiO-t4-7jU"/>
+                            <constraint firstItem="EUG-aQ-GiU" firstAttribute="top" secondItem="IWy-U6-pyv" secondAttribute="bottom" constant="20" id="Hex-kV-tj7"/>
                             <constraint firstAttribute="trailing" secondItem="EUG-aQ-GiU" secondAttribute="trailing" id="Nxo-Ex-0VJ"/>
                             <constraint firstItem="Q9t-5J-6T3" firstAttribute="top" secondItem="EUG-aQ-GiU" secondAttribute="top" constant="40" id="U7X-dt-w6k"/>
+                            <constraint firstItem="IWy-U6-pyv" firstAttribute="top" secondItem="5Tp-oI-2fK" secondAttribute="top" id="aeM-wH-8qd"/>
+                            <constraint firstAttribute="trailing" secondItem="IWy-U6-pyv" secondAttribute="trailing" id="gkz-Tc-aS2"/>
                             <constraint firstAttribute="trailing" secondItem="Q9t-5J-6T3" secondAttribute="trailing" constant="10" id="hmu-br-BkG"/>
                             <constraint firstItem="eYD-ly-q3l" firstAttribute="top" secondItem="Q9t-5J-6T3" secondAttribute="bottom" constant="20" id="k6S-1l-5yj"/>
-                            <constraint firstItem="EUG-aQ-GiU" firstAttribute="top" secondItem="IWy-U6-pyv" secondAttribute="bottom" constant="20" id="mGi-ca-vJP"/>
-                            <constraint firstItem="IWy-U6-pyv" firstAttribute="leading" secondItem="5Tp-oI-2fK" secondAttribute="leadingMargin" constant="-20" id="nI7-SK-6z8"/>
                             <constraint firstItem="Q9t-5J-6T3" firstAttribute="leading" secondItem="5Tp-oI-2fK" secondAttribute="leading" constant="10" id="ouo-bF-iHf"/>
                         </constraints>
                     </view>

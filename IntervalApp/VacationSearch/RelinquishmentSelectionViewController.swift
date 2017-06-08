@@ -456,10 +456,10 @@ class RelinquishmentSelectionViewController: UIViewController {
         }else{
             
             if(relinquishmentOpenWeeksArray.count > 0){
-                Helper.navigateToViewController(senderViewController: self, floatResortDetails: relinquishmentOpenWeeksArray[sender.tag - 1].resort!)
+                Helper.navigateToViewController(senderViewController: self, floatResortDetails: relinquishmentOpenWeeksArray[sender.tag - 1].resort!, isFromLockOff: false)
                 Constant.MyClassConstants.relinquishmentSelectedWeek = relinquishmentOpenWeeksArray[sender.tag - 1]
             }else if(intervalOpenWeeksArray.count > 0){
-                Helper.navigateToViewController(senderViewController: self, floatResortDetails: intervalOpenWeeksArray[sender.tag - 1].resort!)
+                Helper.navigateToViewController(senderViewController: self, floatResortDetails: intervalOpenWeeksArray[sender.tag - 1].resort!, isFromLockOff: false)
                 Constant.MyClassConstants.relinquishmentSelectedWeek = intervalOpenWeeksArray[sender.tag - 1]
             }else{
                 
@@ -869,7 +869,7 @@ extension RelinquishmentSelectionViewController:BedroomSizeViewControllerDelegat
     }
     
     func floatLockOffDetails(bedroomDetails:String) {
-        Helper.navigateToViewController(senderViewController: self, floatResortDetails: Constant.MyClassConstants.relinquishmentSelectedWeek.resort!)
+        Helper.navigateToViewController(senderViewController: self, floatResortDetails: Constant.MyClassConstants.relinquishmentSelectedWeek.resort!, isFromLockOff: true)
     }
     
 }

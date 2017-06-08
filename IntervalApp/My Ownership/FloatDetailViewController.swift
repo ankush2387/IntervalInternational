@@ -18,6 +18,7 @@ class FloatDetailViewController: UIViewController {
     
     @IBOutlet weak var floatDetailsTableView:UITableView!
     
+    var isFromLockOff = false
     weak var floatResortDetails = Resort()
     weak var floatUnitDetails = InventoryUnit()
     var selectedTextField = false
@@ -36,7 +37,20 @@ class FloatDetailViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool){
-        floatDetailsTableView.reloadData()
+        var section = 2
+        if(Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.resortClubAttribute)){
+            self.floatDetailsTableView.reloadSections(IndexSet(integer: 2), with:.automatic)
+            section = 3
+        }
+        if(Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.noOfBedroomAttribute)){
+            let indexPath = NSIndexPath(row:2, section:section)
+            self.floatDetailsTableView.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
+        }
+        if(Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.checkInDateAttribute)){
+            let indexPath = NSIndexPath(row:3, section:section)
+            self.floatDetailsTableView.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
+        }
+
     }
     
     override func viewDidLoad() {
@@ -271,7 +285,7 @@ class FloatDetailViewController: UIViewController {
         if(Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.resortReservationAttribute)){
             atrributesRowArray.add(Constant.MyClassConstants.resortReservationAttribute)
         }
-        if(Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.unitNumberAttribute)){
+        if(Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.unitNumberAttribute) || isFromLockOff){
             atrributesRowArray.add(Constant.MyClassConstants.unitNumberAttribute)
         }
         atrributesRowArray.add(Constant.MyClassConstants.noOfBedroomAttribute)
@@ -349,7 +363,10 @@ extension FloatDetailViewController : UITableViewDataSource{
             case Constant.MyClassConstants.unitNumberAttribute:
                 registrationNumbercell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.attributesCell) as! ReservationTableViewCell
                 registrationNumbercell.textFieldView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
-                if(Constant.MyClassConstants.selectedFloatWeek.floatDetails.count > 0){
+                registrationNumbercell.resortAttributeLabel.delegate = self
+                if(isFromLockOff){
+                    registrationNumbercell.resortAttributeLabel.text = Constant.MyClassConstants.unitNumberLockOff
+                }else if(Constant.MyClassConstants.selectedFloatWeek.floatDetails.count > 0){
                     registrationNumbercell.resortAttributeLabel.text = Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].unitNumber
                 }else{
                     registrationNumbercell.resortAttributeLabel.placeholder = Constant.textFieldTitles.unitNumber

@@ -460,6 +460,7 @@ class Constant: NSObject {
         
         //Float week to store information for editing
         static var selectedFloatWeek = OpenWeeks()
+        static var unitNumberLockOff = ""
     }
     struct CommonStringIdentifiers {
         static var floatWeek = "FLOAT_WEEK"
