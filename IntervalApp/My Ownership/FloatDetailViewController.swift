@@ -324,18 +324,18 @@ extension FloatDetailViewController : UITableViewDataSource{
             selectClubresortcell = tableView.dequeueReusableCell(withIdentifier: Constant.floatDetailViewController.selectclubcellIdentifier) as! ReservationTableViewCell
             if(Constant.MyClassConstants.savedClubFloatResort != ""){
                 
-                let yourAttributes = [NSForegroundColorAttributeName: UIColor.darkGray, NSFontAttributeName:UIFont(name: Constant.fontName.helveticaNeue, size: 15)]
+                let firstStringAttributes = [NSForegroundColorAttributeName: UIColor.darkGray, NSFontAttributeName:UIFont(name: Constant.fontName.helveticaNeue, size: 15)]
                 
-                let yourOtherAttributes = [NSForegroundColorAttributeName: UIColor.black, NSFontAttributeName:UIFont(name: Constant.fontName.helveticaNeue, size: 15)]
+                let secondStringAttributes = [NSForegroundColorAttributeName: UIColor.black, NSFontAttributeName:UIFont(name: Constant.fontName.helveticaNeue, size: 15)]
                 
-                let partOne = NSMutableAttributedString(string: Constant.MyClassConstants.selectClubResort, attributes: yourAttributes)
+                let placeholderString = NSMutableAttributedString(string: Constant.MyClassConstants.selectClubResort, attributes: firstStringAttributes as Any as? [String : Any])
                 
-                let partTwo = NSMutableAttributedString(string: "\n\(Constant.MyClassConstants.savedClubFloatResort)", attributes: yourOtherAttributes)
+                let textValueString = NSMutableAttributedString(string: "\n\(Constant.MyClassConstants.savedClubFloatResort)", attributes: secondStringAttributes as Any as? [String : Any])
                 
                 let combination = NSMutableAttributedString()
                 
-                combination.append(partOne)
-                combination.append(partTwo)
+                combination.append(placeholderString)
+                combination.append(textValueString)
                 
                 selectClubresortcell.selectResortLabel.attributedText = combination
             }
@@ -377,7 +377,20 @@ extension FloatDetailViewController : UITableViewDataSource{
                     registrationNumbercell.resortAttributeLabel.text = Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].checkInDate
                 }
                 if(Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate != nil){
-                    registrationNumbercell.resortAttributeLabel.text = Helper.convertDateToString(date: Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate, format: Constant.MyClassConstants.dateFormat)
+                    
+                    let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
+                    let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate)
+                    let year = String(describing: myComponents.year!)
+                    
+                    let weekDay = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday!))"
+                    let month =   "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!))"
+                    let day   = String(describing: myComponents.day!)
+                    
+                    
+                    registrationNumbercell.resortAttributeLabel.text =     "\(weekDay),\(month). \(" ")\(day)\("th") \(year)"
+
+
+                    
                 }
                 registrationNumbercell.viewButton.addTarget(self, action: #selector(self.selectCheckInDate(_sender:)), for: .touchUpInside)
                 return registrationNumbercell

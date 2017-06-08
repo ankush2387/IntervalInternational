@@ -34,7 +34,13 @@ class CalendarViewController: UIViewController {
         calendar.scrollDirection = .vertical
         calendar.appearance.caseOptions = [.headerUsesUpperCase,.weekdayUsesUpperCase]
         calendar.delegate = self
-        calendar.select(Constant.MyClassConstants.vacationSearchShowDate as Date)
+        if(Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate == nil){
+            calendar.select(Constant.MyClassConstants.vacationSearchShowDate as Date)
+        }
+        else{
+            calendar.select(Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate as Date)
+        }
+
         calendar.deselect(Date())
         calendar.dataSource = self
        
