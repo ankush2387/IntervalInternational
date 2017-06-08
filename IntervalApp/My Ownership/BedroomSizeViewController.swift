@@ -12,8 +12,9 @@ import DarwinSDK
 import RealmSwift
 
 //***** custom delegate method declaration *****//
-protocol BedroomSizeViewControllerDelegate {
+@objc protocol BedroomSizeViewControllerDelegate {
     func doneButtonClicked(selectedUnitsArray:NSMutableArray)
+    @objc optional func floatLockOffDetails(bedroomDetails:String)
 }
 
 class BedroomSizeViewController: UIViewController {
@@ -97,6 +98,8 @@ class BedroomSizeViewController: UIViewController {
         self.bedroomSizeTableView.estimatedRowHeight = 60
         if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController){
             self.titleLabel.text = Constant.MyClassConstants.relinquishmentTitle
+        }else if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController){
+            self.titleLabel.text = Constant.MyClassConstants.bedroomTitle
         }else{
             if(Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count == 0) {
                 Constant.MyClassConstants.bedRoomSizeSelectedIndexArray = [0,1,2,3,4]
@@ -218,7 +221,7 @@ extension BedroomSizeViewController : UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController){
+        if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController || Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController){
             return Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count
         }else{
             return Constant.MyClassConstants.bedRoomSize.count
@@ -229,7 +232,7 @@ extension BedroomSizeViewController : UITableViewDataSource{
         
         let cell   = tableView.dequeueReusableCell(withIdentifier: Constant.bedroomSizeViewController.bedroomsizeCellIdentifier) as? BedroomSizeTableViewCell
         
-        if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController){
+        if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController || Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController){
             
             cell?.bedroomSizelabel.text = Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as? String
             cell?.checkBoxButton.tag = indexPath.row + 1000
@@ -243,6 +246,11 @@ extension BedroomSizeViewController : UITableViewDataSource{
                 cell?.checkBoxButton.checked = true
             }else{
                 cell?.checkBoxButton.checked = false
+            }
+            if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController){
+                cell?.checkBoxButton.isHidden = true
+            }else{
+                cell?.checkBoxButton.isHidden = false
             }
             cell?.selectionStyle = UITableViewCellSelectionStyle.none
             cell?.bedroomSizelabel.tag = indexPath.row + 100
@@ -286,9 +294,6 @@ extension BedroomSizeViewController : UITableViewDataSource{
             
         }
     }
-    
-
-    
 }
 
 
@@ -300,8 +305,14 @@ extension BedroomSizeViewController : UITableViewDelegate{
         return UITableViewAutomaticDimension
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        
-        
-    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController){
+            let selectedBedroom = Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as! String
+            let unitArray = selectedBedroom.components(separatedBy: ",")
+        Constant.MyClassConstants.savedBedroom = unitArray[0]
+        delegate?.floatLockOffDetails!(bedroomDetails:Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as! String)
+        self.dismiss(animated: false, completion: nil)
+        }
+     }
 }

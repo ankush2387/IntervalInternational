@@ -1564,14 +1564,20 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5bB-JQ-Bkz">
-                                                    <rect key="frame" x="20" y="23" width="507" height="26"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5bB-JQ-Bkz">
+                                                    <rect key="frame" x="20" y="10" width="507" height="25"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="123" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sda-0m-fif">
+                                                    <rect key="frame" x="20" y="35" width="507" height="20"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dJ7-Ik-c4b" customClass="IUIKCheckbox" customModule="IntervalUIKit">
-                                                    <rect key="frame" x="532" y="20.5" width="30" height="30"/>
+                                                    <rect key="frame" x="532" y="20" width="30" height="30"/>
                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="30" id="faw-Xw-kno"/>
@@ -1599,12 +1605,16 @@
                                                 </view>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstAttribute="bottomMargin" secondItem="sda-0m-fif" secondAttribute="bottom" constant="7" id="0Lc-J8-LzO"/>
+                                                <constraint firstItem="sda-0m-fif" firstAttribute="trailing" secondItem="5bB-JQ-Bkz" secondAttribute="trailing" id="5PH-WQ-OwX"/>
                                                 <constraint firstItem="acx-np-bcc" firstAttribute="leading" secondItem="F2b-g7-DUh" secondAttribute="leading" constant="5" id="5XB-sR-sPn"/>
                                                 <constraint firstAttribute="bottom" secondItem="acx-np-bcc" secondAttribute="bottom" constant="5" id="BMG-Mt-jrc"/>
                                                 <constraint firstItem="acx-np-bcc" firstAttribute="top" secondItem="F2b-g7-DUh" secondAttribute="top" constant="5" id="VZI-dC-IQx"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="5bB-JQ-Bkz" secondAttribute="bottom" constant="13" id="biO-VL-odC"/>
+                                                <constraint firstItem="sda-0m-fif" firstAttribute="leading" secondItem="5bB-JQ-Bkz" secondAttribute="leading" id="azS-gY-XB8"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="5bB-JQ-Bkz" secondAttribute="bottom" constant="27" id="biO-VL-odC"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="dJ7-Ik-c4b" secondAttribute="trailing" constant="10" id="iGo-Xm-NJB"/>
-                                                <constraint firstItem="5bB-JQ-Bkz" firstAttribute="top" secondItem="F2b-g7-DUh" secondAttribute="topMargin" constant="15" id="iay-yB-j9A"/>
+                                                <constraint firstItem="5bB-JQ-Bkz" firstAttribute="top" secondItem="F2b-g7-DUh" secondAttribute="topMargin" constant="2" id="iay-yB-j9A"/>
+                                                <constraint firstItem="sda-0m-fif" firstAttribute="top" secondItem="5bB-JQ-Bkz" secondAttribute="bottom" id="l3h-4c-gdA"/>
                                                 <constraint firstAttribute="trailing" secondItem="acx-np-bcc" secondAttribute="trailing" constant="5" id="qYU-2g-R5F"/>
                                                 <constraint firstItem="dJ7-Ik-c4b" firstAttribute="leading" secondItem="5bB-JQ-Bkz" secondAttribute="trailing" constant="5" id="uoB-QZ-rwY"/>
                                                 <constraint firstItem="5bB-JQ-Bkz" firstAttribute="leading" secondItem="F2b-g7-DUh" secondAttribute="leadingMargin" constant="12" id="w7w-vD-2gl"/>
@@ -2089,6 +2099,12 @@ EFJlc2VydmF0aW9uIERldGFpbHM
                                                                 <outlet property="delegate" destination="XVn-Fp-la9" id="XId-E8-lEP"/>
                                                             </connections>
                                                         </textField>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ForwardArrowIcon" translatesAutoresizingMaskIntoConstraints="NO" id="PRa-pa-tKF">
+                                                            <rect key="frame" x="530" y="10" width="30" height="30"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="30" id="8Jm-Yu-hCM"/>
+                                                            </constraints>
+                                                        </imageView>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ico-bz-1xM">
                                                             <rect key="frame" x="0.0" y="0.0" width="580" height="50"/>
                                                         </button>
@@ -2100,14 +2116,17 @@ EFJlc2VydmF0aW9uIERldGFpbHM
                                                         <constraint firstItem="ico-bz-1xM" firstAttribute="leading" secondItem="AjS-eg-a3V" secondAttribute="leading" id="8aG-lx-wJu"/>
                                                         <constraint firstAttribute="trailing" secondItem="ico-bz-1xM" secondAttribute="trailing" id="Jk9-H4-7WO"/>
                                                         <constraint firstItem="ico-bz-1xM" firstAttribute="top" secondItem="AjS-eg-a3V" secondAttribute="top" id="PoT-Dd-m7s"/>
+                                                        <constraint firstAttribute="bottom" secondItem="PRa-pa-tKF" secondAttribute="bottom" constant="10" id="RKv-9h-FQz"/>
+                                                        <constraint firstItem="PRa-pa-tKF" firstAttribute="top" secondItem="AjS-eg-a3V" secondAttribute="top" constant="10" id="Rd0-ZY-Z5G"/>
                                                         <constraint firstAttribute="height" constant="50" id="T7u-tJ-PTx"/>
                                                         <constraint firstItem="PSf-9j-baE" firstAttribute="centerY" secondItem="AjS-eg-a3V" secondAttribute="centerY" id="Zsh-t6-bf8"/>
+                                                        <constraint firstAttribute="trailing" secondItem="PRa-pa-tKF" secondAttribute="trailing" constant="20" id="eOo-xj-QGW"/>
                                                         <constraint firstItem="PSf-9j-baE" firstAttribute="centerX" secondItem="AjS-eg-a3V" secondAttribute="centerX" id="mGp-Oc-UCN"/>
                                                         <constraint firstAttribute="bottom" secondItem="ico-bz-1xM" secondAttribute="bottom" id="yel-RI-q4g"/>
                                                     </constraints>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
-                                                            <integer key="value" value="1"/>
+                                                            <integer key="value" value="2"/>
                                                         </userDefinedRuntimeAttribute>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                             <integer key="value" value="4"/>
@@ -2149,7 +2168,7 @@ EFJlc2VydmF0aW9uIERldGFpbHM
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
                                                             <connections>
-                                                                <outlet property="delegate" destination="XVn-Fp-la9" id="f3I-2k-KUH"/>
+                                                                <outlet property="delegate" destination="XVn-Fp-la9" id="Lz3-Hs-xk8"/>
                                                             </connections>
                                                         </textField>
                                                     </subviews>
@@ -2163,7 +2182,7 @@ EFJlc2VydmF0aW9uIERldGFpbHM
                                                     </constraints>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
-                                                            <integer key="value" value="1"/>
+                                                            <integer key="value" value="2"/>
                                                         </userDefinedRuntimeAttribute>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                             <integer key="value" value="4"/>
@@ -2211,7 +2230,7 @@ EFJlc2VydmF0aW9uIERldGFpbHM
             <objects>
                 <navigationController storyboardIdentifier="ownershipnavigation" automaticallyAdjustsScrollViewInsets="NO" id="4ES-vh-RAq" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="6Rg-8O-31A">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="6Rg-8O-31A">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

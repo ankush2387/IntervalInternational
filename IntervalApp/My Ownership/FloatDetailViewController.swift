@@ -357,20 +357,25 @@ extension FloatDetailViewController : UITableViewDataSource{
             case Constant.MyClassConstants.noOfBedroomAttribute:
                 registrationNumbercell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.buttonCell) as! ReservationTableViewCell
                 registrationNumbercell.textFieldView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
+                if(Constant.MyClassConstants.selectedFloatWeek.floatDetails.count > 0){
+                    registrationNumbercell.resortAttributeLabel.text = Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].unitSize
+                }
                 if(Constant.MyClassConstants.savedBedroom != ""){
                     registrationNumbercell.resortAttributeLabel.text  = Constant.MyClassConstants.savedBedroom
                 }
-                if(Constant.MyClassConstants.selectedFloatWeek.floatDetails.count > 0){
-                    registrationNumbercell.resortAttributeLabel.text = Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].unitNumber
-                }
                 registrationNumbercell.resortAttributeLabel.placeholder = Constant.textFieldTitles.numberOfBedrooms
-                registrationNumbercell.viewButton.addTarget(self, action: #selector(self.selectBedroom(_sender:)), for: .touchUpInside)
+                if(Constant.ControllerTitles.selectedControllerTitle != Constant.storyboardControllerID.floatViewController){
+                    registrationNumbercell.viewButton.addTarget(self, action: #selector(self.selectBedroom(_sender:)), for: .touchUpInside)
+                }
                 return registrationNumbercell
                 
             case Constant.MyClassConstants.checkInDateAttribute:
                 registrationNumbercell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.buttonCell) as! ReservationTableViewCell
                 registrationNumbercell.textFieldView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
                 registrationNumbercell.resortAttributeLabel.placeholder = Constant.textFieldTitles.checkInDate
+                if(Constant.MyClassConstants.selectedFloatWeek.floatDetails.count > 0){
+                    registrationNumbercell.resortAttributeLabel.text = Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].checkInDate
+                }
                 if(Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate != nil){
                     registrationNumbercell.resortAttributeLabel.text = Helper.convertDateToString(date: Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate, format: Constant.MyClassConstants.dateFormat)
                 }
@@ -380,6 +385,9 @@ extension FloatDetailViewController : UITableViewDataSource{
             case Constant.MyClassConstants.resortReservationAttribute:
                 registrationNumbercell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.attributesCell) as! ReservationTableViewCell
                 registrationNumbercell.textFieldView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
+                if(Constant.MyClassConstants.selectedFloatWeek.floatDetails.count > 0){
+                    registrationNumbercell.resortAttributeLabel.text = Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].reservationNumber
+                }
                 registrationNumbercell.resortAttributeLabel.placeholder = Constant.textFieldTitles.reservationNumber
                 return registrationNumbercell
                 

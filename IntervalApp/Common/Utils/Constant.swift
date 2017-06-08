@@ -224,6 +224,7 @@ class Constant: NSObject {
         static let sidemenuIntervalInternationalCorporationLabel = NSLocalizedString("2015 Interval International. Privacy/Legal", comment: "")
         static let noRelinquishmentavailable = NSLocalizedString("No Relinquishment available", comment: "")
         static let relinquishmentTitle = NSLocalizedString("Select all or any lock-off portion", comment: "")
+        static let floatTitle = NSLocalizedString("Select one lock-off portion at a time", comment: "")
         static let bedroomTitle = NSLocalizedString("Choose Bedrooms", comment: "")
     
         static var selectedIndex:Int!

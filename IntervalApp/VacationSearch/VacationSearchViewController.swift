@@ -852,6 +852,8 @@ extension VacationSearchViewController:UITableViewDataSource {
                                 }else{
                                     cell.bedroomLabel.text = "\(resortList[0].unitSize), \(resortList[0].kitchenType)"
                                 }
+                            }else{
+                                cell.bedroomLabel.isHidden = true
                             }
                              cell.whereTogoTextLabel.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).resort[0].resortName), \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).relinquishmentYear)"
                         }else{

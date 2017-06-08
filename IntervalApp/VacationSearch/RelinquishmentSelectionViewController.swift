@@ -25,9 +25,13 @@ class RelinquishmentSelectionViewController: UIViewController {
     //Outlets
     @IBOutlet weak var relinquishmentTableview: UITableView!
     
+    override func viewWillAppear(_ animated: Bool) {
+        Constant.MyClassConstants.savedBedroom = ""
+        Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate = nil
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(Constant.MyClassConstants.floatRemovedArray)
         
         // omniture tracking with event 40
         let pageView: [String: String] = [
@@ -397,30 +401,86 @@ class RelinquishmentSelectionViewController: UIViewController {
     func addClubFloatWeek(_ sender:IUIKButton){
         Constant.MyClassConstants.selectedFloatWeek = OpenWeeks()
         if(relinquishmentOpenWeeksArray.count > 0){
-            Helper.navigateToViewController(senderViewController: self, floatResortDetails: relinquishmentOpenWeeksArray[sender.tag - 1].resort!)
             Constant.MyClassConstants.relinquishmentSelectedWeek = relinquishmentOpenWeeksArray[sender.tag - 1]
         }else if(intervalOpenWeeksArray.count > 0){
-            Helper.navigateToViewController(senderViewController: self, floatResortDetails: intervalOpenWeeksArray[sender.tag - 1].resort!)
             Constant.MyClassConstants.relinquishmentSelectedWeek = intervalOpenWeeksArray[sender.tag - 1]
         }else{
             
         }
-        
-        for floatWeek in Constant.MyClassConstants.whatToTradeArray{
-            let floatWeekTraversed = floatWeek as! OpenWeeks
-            if(floatWeekTraversed.isFloat && Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId == floatWeekTraversed.relinquishmentID){
-                Constant.MyClassConstants.selectedFloatWeek = floatWeekTraversed
-                Constant.MyClassConstants.savedClubFloatResort = floatWeekTraversed.floatDetails[0].clubResortDetails
+        if((Constant.MyClassConstants.relinquishmentSelectedWeek.unit?.lockOffUnits.count)! > 0){
+            Constant.ControllerTitles.bedroomSizeViewController = Constant.MyClassConstants.relinquishmentTitle
+            Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.relinquishmentSelectionViewController
+            masterUnitSize = "\(Helper.getBedroomNumbers(bedroomType: (Constant.MyClassConstants.relinquishmentSelectedWeek.unit!.unitSize)!)), \(Helper.getKitchenEnums(kitchenType: (Constant.MyClassConstants.relinquishmentSelectedWeek.unit!.kitchenType)!)) Sleeps \(String(describing: Constant.MyClassConstants.relinquishmentSelectedWeek.unit!.publicSleepCapacity))"
+            
+            let results = Constant.MyClassConstants.relinquishmentIdArray.map({ ($0 as AnyObject).contains(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!)})
+            
+            Constant.MyClassConstants.senderRelinquishmentID = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!
+            let count = results.filter({ $0 == true }).count
+            
+            if(count > 0){
+                Constant.MyClassConstants.userSelectedUnitsArray.removeAllObjects()
+                for selectedUnits in Constant.MyClassConstants.relinquishmentUnitsArray{
+                    
+                    let selectedDict = selectedUnits as! NSMutableDictionary
+                    if(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId! == selectedDict.allKeys.first as! String){
+                        Constant.MyClassConstants.userSelectedUnitsArray.add(selectedDict.object(forKey: Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!)!)
+                    }
+                    print(Constant.MyClassConstants.userSelectedUnitsArray)
+                }
+            }else{
+                Constant.MyClassConstants.userSelectedUnitsArray.removeAllObjects()
             }
-        }
-        for floatWeek in Constant.MyClassConstants.floatRemovedArray{
-            let floatWeekTraversed = floatWeek as! OpenWeeks
-            if(floatWeekTraversed.isFloat && Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId == floatWeekTraversed.relinquishmentID){
-                Constant.MyClassConstants.selectedFloatWeek = floatWeekTraversed
-                Constant.MyClassConstants.savedClubFloatResort = floatWeekTraversed.floatDetails[0].clubResortDetails
+            getUnitSize((Constant.MyClassConstants.relinquishmentSelectedWeek.unit?.lockOffUnits)!)
+            
+            Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.floatViewController
+            Constant.MyClassConstants.whatToTradeArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek)
+            Constant.MyClassConstants.relinquishmentIdArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!)
+            
+            
+            
+            
+            
+            var mainStoryboard = UIStoryboard()
+            if(Constant.RunningDevice.deviceIdiom == .pad) {
+                mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIpad, bundle: nil)
             }
+            else {
+                mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
+            }
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.bedroomSizeViewController) as! BedroomSizeViewController
+            viewController.delegate = self
+            Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.floatViewController
+            let transitionManager = TransitionManager()
+            self.navigationController?.transitioningDelegate = transitionManager
+            self.navigationController!.present(viewController, animated: true, completion: nil)
+        }else{
+            
+            if(relinquishmentOpenWeeksArray.count > 0){
+                Helper.navigateToViewController(senderViewController: self, floatResortDetails: relinquishmentOpenWeeksArray[sender.tag - 1].resort!)
+                Constant.MyClassConstants.relinquishmentSelectedWeek = relinquishmentOpenWeeksArray[sender.tag - 1]
+            }else if(intervalOpenWeeksArray.count > 0){
+                Helper.navigateToViewController(senderViewController: self, floatResortDetails: intervalOpenWeeksArray[sender.tag - 1].resort!)
+                Constant.MyClassConstants.relinquishmentSelectedWeek = intervalOpenWeeksArray[sender.tag - 1]
+            }else{
+                
+            }
+            
+            for floatWeek in Constant.MyClassConstants.whatToTradeArray{
+                let floatWeekTraversed = floatWeek as! OpenWeeks
+                if(floatWeekTraversed.isFloat && Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId == floatWeekTraversed.relinquishmentID){
+                    Constant.MyClassConstants.selectedFloatWeek = floatWeekTraversed
+                    Constant.MyClassConstants.savedClubFloatResort = floatWeekTraversed.floatDetails[0].clubResortDetails
+                }
+            }
+            for floatWeek in Constant.MyClassConstants.floatRemovedArray{
+                let floatWeekTraversed = floatWeek as! OpenWeeks
+                if(floatWeekTraversed.isFloat && Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId == floatWeekTraversed.relinquishmentID){
+                    Constant.MyClassConstants.selectedFloatWeek = floatWeekTraversed
+                    Constant.MyClassConstants.savedClubFloatResort = floatWeekTraversed.floatDetails[0].clubResortDetails
+                }
+            }
+            print(Constant.MyClassConstants.selectedFloatWeek)
         }
-        print(Constant.MyClassConstants.selectedFloatWeek)
     }
     
     func getUnitSize(_ unitSize:[InventoryUnit]) {
@@ -805,6 +865,10 @@ extension RelinquishmentSelectionViewController:BedroomSizeViewControllerDelegat
         transition.timingFunction = timeFunc
         viewcontroller.view.layer.add(transition, forKey: Constant.MyClassConstants.switchToView)
         UIApplication.shared.keyWindow?.rootViewController = viewcontroller
+    }
+    
+    func floatLockOffDetails(bedroomDetails:String) {
+        Helper.navigateToViewController(senderViewController: self, floatResortDetails: Constant.MyClassConstants.relinquishmentSelectedWeek.resort!)
     }
     
 }
