@@ -37,18 +37,20 @@ class FloatDetailViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool){
+        if(isFromLockOff){
         var section = 2
         if(Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.resortClubAttribute)){
             self.floatDetailsTableView.reloadSections(IndexSet(integer: 2), with:.automatic)
             section = 3
         }
-        if(Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.noOfBedroomAttribute)){
-            let indexPath = NSIndexPath(row:2, section:section)
-            self.floatDetailsTableView.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
-        }
+        let indexPath = NSIndexPath(row:2, section:section)
+        self.floatDetailsTableView.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
         if(Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.checkInDateAttribute)){
             let indexPath = NSIndexPath(row:3, section:section)
             self.floatDetailsTableView.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
+        }
+        }else{
+            self.floatDetailsTableView.reloadData()
         }
 
     }
@@ -95,7 +97,7 @@ class FloatDetailViewController: UIViewController {
     
     // Select check - in date action
     @IBAction func selectCheckInDate(_sender:UIButton){
-        Helper.getCheckInDatesForCalendar(senderViewController: self, resortCode: "WPN", relinquishmentYear: 2018)
+        Helper.getCheckInDatesForCalendar(senderViewController: self, resortCode: (floatResortDetails?.resortCode)!, relinquishmentYear: Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentYear!)
     }
     
     //Select bedroom

@@ -575,7 +575,7 @@ extension VacationSearchViewController:UITableViewDelegate {
                             
                             tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
                             
-                            if(!floatWeek.isFloatRemoved && !isFloat){
+                            if(!floatWeek.isFloatRemoved && isFloat){
                                 //Realm local storage for selected relinquishment
                                 let storedata = OpenWeeksStorage()
                                 let Membership = UserContext.sharedInstance.selectedMembership
@@ -594,12 +594,12 @@ extension VacationSearchViewController:UITableViewDelegate {
                                 let floatDetails = ResortFloatDetails()
                                 floatDetails.reservationNumber = ""
                                 floatDetails.unitNumber = floatWeek.floatDetails[0].unitNumber
-                                floatDetails.unitSize = ""
+                                floatDetails.unitSize = floatWeek.floatDetails[0].unitSize
                                 selectedOpenWeek.floatDetails.append(floatDetails)
                                 
                                 let unitDetails = ResortUnitDetails()
-                                unitDetails.kitchenType = "Limited Kitchen"
-                                unitDetails.unitSize = "Studio"//(self.unitDetails?.unitSize!)!
+                               // unitDetails.kitchenType = (Helper.getKitchenEnums(kitchenType: (floatWeek.resort[0].units.kitchenType!)))
+                                //unitDetails.unitSize = floatWeek.resort[0].units.unitNumber!
                                 selectedOpenWeek.unitDetails.append(unitDetails)
                                 
                                 selectedOpenWeek.resort.append(resort)

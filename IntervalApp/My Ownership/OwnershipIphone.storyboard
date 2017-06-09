@@ -1693,25 +1693,15 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="70"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zgX-pc-lX0" customClass="IUIKButton" customModule="IntervalUIKit">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zgX-pc-lX0" customClass="IUIKButton" customModule="IntervalUIKit">
                                                     <rect key="frame" x="545" y="10" width="40" height="40"/>
-                                                    <color key="backgroundColor" red="0.94117647059999998" green="0.43529411759999997" blue="0.21176470589999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="40" id="I3F-b3-U0A"/>
                                                         <constraint firstAttribute="width" constant="40" id="ICG-8r-cpx"/>
                                                     </constraints>
                                                     <inset key="titleEdgeInsets" minX="0.0" minY="1" maxX="0.0" maxY="0.0"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                            <integer key="value" value="20"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                            <real key="value" value="4"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                            <color key="value" red="0.94117647059999998" green="0.43529411759999997" blue="0.21176470589999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                    </userDefinedRuntimeAttributes>
+                                                    <state key="normal" image="ResortDial-inIcon"/>
                                                     <connections>
                                                         <action selector="callYourResortTappedWith_sender:" destination="XVn-Fp-la9" eventType="touchUpInside" id="5ru-Zr-BR0"/>
                                                     </connections>
@@ -2079,7 +2069,7 @@ EFJlc2VydmF0aW9uIERldGFpbHM
                                             <outlet property="saveFloatDetailButton" destination="gL9-zu-v85" id="d5S-q7-WFE"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ButtonTableCell" rowHeight="60" id="zcl-jG-7pR" customClass="ReservationTableViewCell" customModule="IntervalApp" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ButtonTableCell" rowHeight="60" id="zcl-jG-7pR" customClass="ReservationTableViewCell" customModule="IntervalApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="851" width="600" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zcl-jG-7pR" id="9Sz-2H-bTd">
@@ -2433,6 +2423,7 @@ EFJlc2VydmF0aW9uIERldGFpbHM
         <image name="ForwardArrowIcon" width="33" height="33"/>
         <image name="NoImageIcon" width="64" height="64"/>
         <image name="OfferIcon" width="33" height="33"/>
+        <image name="ResortDial-inIcon" width="30" height="30"/>
         <image name="close" width="32" height="32"/>
         <image name="sanci_main01_r" width="1200" height="550"/>
     </resources>

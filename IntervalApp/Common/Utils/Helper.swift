@@ -647,6 +647,8 @@ public class Helper{
                     }
                 }
             }
+        }else{
+            print("No Data")
         }
     }
     

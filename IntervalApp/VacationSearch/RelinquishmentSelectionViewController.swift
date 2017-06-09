@@ -28,6 +28,7 @@ class RelinquishmentSelectionViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         Constant.MyClassConstants.savedBedroom = ""
         Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate = nil
+        Constant.MyClassConstants.savedClubFloatResort = ""
     }
     
     override func viewDidLoad() {
@@ -61,7 +62,7 @@ class RelinquishmentSelectionViewController: UIViewController {
                 }
                 else if(fixed_week_type.pointsProgramCode != "") {
                     
-                    if(!(Constant.MyClassConstants.relinquishmentIdArray.contains(fixed_week_type.relinquishmentId!)) || fixed_week_type.weekNumber == Constant.CommonStringIdentifiers.floatWeek) {
+                    if(!(Constant.MyClassConstants.relinquishmentIdArray.contains(fixed_week_type.relinquishmentId!))) {
                             relinquishmentOpenWeeksArray.append(fixed_week_type)
                     }else if ((fixed_week_type.unit?.lockOffUnits.count)! > 0){
                         let results = Constant.MyClassConstants.relinquishmentIdArray.map({ ($0 as AnyObject).contains(fixed_week_type.relinquishmentId!)})
@@ -399,7 +400,7 @@ class RelinquishmentSelectionViewController: UIViewController {
     }
     
     func addClubFloatWeek(_ sender:IUIKButton){
-        Constant.MyClassConstants.selectedFloatWeek = OpenWeeks()
+        //Constant.MyClassConstants.selectedFloatWeek = OpenWeeks()
         if(relinquishmentOpenWeeksArray.count > 0){
             Constant.MyClassConstants.relinquishmentSelectedWeek = relinquishmentOpenWeeksArray[sender.tag - 1]
         }else if(intervalOpenWeeksArray.count > 0){
@@ -425,7 +426,6 @@ class RelinquishmentSelectionViewController: UIViewController {
                     if(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId! == selectedDict.allKeys.first as! String){
                         Constant.MyClassConstants.userSelectedUnitsArray.add(selectedDict.object(forKey: Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!)!)
                     }
-                    print(Constant.MyClassConstants.userSelectedUnitsArray)
                 }
             }else{
                 Constant.MyClassConstants.userSelectedUnitsArray.removeAllObjects()
@@ -456,11 +456,11 @@ class RelinquishmentSelectionViewController: UIViewController {
         }else{
             
             if(relinquishmentOpenWeeksArray.count > 0){
-                Helper.navigateToViewController(senderViewController: self, floatResortDetails: relinquishmentOpenWeeksArray[sender.tag - 1].resort!, isFromLockOff: false)
                 Constant.MyClassConstants.relinquishmentSelectedWeek = relinquishmentOpenWeeksArray[sender.tag - 1]
+                Helper.navigateToViewController(senderViewController: self, floatResortDetails: relinquishmentOpenWeeksArray[sender.tag - 1].resort!, isFromLockOff: false)
             }else if(intervalOpenWeeksArray.count > 0){
-                Helper.navigateToViewController(senderViewController: self, floatResortDetails: intervalOpenWeeksArray[sender.tag - 1].resort!, isFromLockOff: false)
                 Constant.MyClassConstants.relinquishmentSelectedWeek = intervalOpenWeeksArray[sender.tag - 1]
+                Helper.navigateToViewController(senderViewController: self, floatResortDetails: intervalOpenWeeksArray[sender.tag - 1].resort!, isFromLockOff: false)
             }else{
                 
             }
