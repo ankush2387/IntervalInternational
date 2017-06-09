@@ -43,6 +43,15 @@ class Constant: NSObject {
         
     }
     
+    //Float additional info textfield variabls
+    struct FloatDetails {
+        
+        static var unitNumber = ""
+        static var reservationNumber = ""
+        static var bedRoomSize = ""
+        static var checkInDate = ""
+    }
+    
     struct RGBColorCode {
         
         static var centerViewRgb = UIColor(red: 176.0/255.0, green: 215.0/255.0, blue: 115.0/255.0, alpha: 1.0)

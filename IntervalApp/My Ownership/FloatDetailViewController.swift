@@ -18,6 +18,10 @@ class FloatDetailViewController: UIViewController {
     
     @IBOutlet weak var floatDetailsTableView:UITableView!
     
+    // variable declaration
+    var isKeyBoardOpen = false
+    var moved: Bool = false
+    var activeField:UITextField?
     var isFromLockOff = false
     weak var floatResortDetails = Resort()
     weak var floatUnitDetails = InventoryUnit()
@@ -37,6 +41,11 @@ class FloatDetailViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool){
+        
+        //adding keyboard notifications
+        NotificationCenter.default.addObserver(self, selector:#selector(keyboardWasShown), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+        
         if(isFromLockOff){
         var section = 2
         if(Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.resortClubAttribute)){
@@ -67,6 +76,62 @@ class FloatDetailViewController: UIViewController {
         getOrderedSections()
         
     }
+    
+    //show keyboard
+    func keyboardWasShown(aNotification: NSNotification) {
+        
+        isKeyBoardOpen = true
+        
+        if(self.moved) {
+            let info = aNotification.userInfo as! [String: AnyObject],
+            kbSize = (info[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue.size,
+            contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: kbSize.height, right: 0)
+            
+            self.floatDetailsTableView.contentInset = contentInsets
+            self.floatDetailsTableView.scrollIndicatorInsets = contentInsets
+            
+            // If active text field is hidden by keyboard, scroll it so it's visible
+            // Your app might not need or want this behavior.
+            var aRect = self.view.frame
+            aRect.size.height -= kbSize.height
+            
+            
+            if !aRect.contains(activeField!.frame.origin) {
+                
+                self.floatDetailsTableView.scrollRectToVisible(activeField!.frame, animated: true)
+                
+            }
+        }
+    }
+    
+    // hiding keyboard
+    func keyboardWillBeHidden(aNotification: NSNotification) {
+        isKeyBoardOpen = false
+        
+        if(self.moved) {
+            self.moved = false
+            let contentInsets = UIEdgeInsets.zero
+            self.floatDetailsTableView.contentInset = contentInsets
+            self.floatDetailsTableView.scrollIndicatorInsets = contentInsets
+        }
+    }
+    
+    //adding done button on keyboard type numberPad
+    func addDoneButtonOnNumpad(textField: UITextField) {
+        
+        let keypadToolbar: UIToolbar = UIToolbar()
+        
+        // add a done button to the numberpad
+        keypadToolbar.items=[
+            UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.done, target: textField, action: #selector(UITextField.resignFirstResponder)),
+            UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: self, action: nil)
+        ]
+        keypadToolbar.sizeToFit()
+        // add a toolbar with a done button above the number pad
+        textField.inputAccessoryView = keypadToolbar
+    }
+
+    
     /**
      Pop up current viewcontroller from Navigation stack
      - parameter sender : UIBarButton Reference
@@ -381,10 +446,18 @@ extension FloatDetailViewController : UITableViewDataSource{
                 if(Constant.MyClassConstants.selectedFloatWeek.floatDetails.count > 0){
                     registrationNumbercell.resortAttributeLabel.text = Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].unitSize
                 }
-                if(Constant.MyClassConstants.savedBedroom != ""){
-                    registrationNumbercell.resortAttributeLabel.text  = Constant.MyClassConstants.savedBedroom
+                
+                
+                if(Constant.FloatDetails.bedRoomSize != ""){
+                    
+                    registrationNumbercell.resortAttributeLabel.text  = Constant.FloatDetails.bedRoomSize
+                    
+                    
                 }
-                registrationNumbercell.resortAttributeLabel.placeholder = Constant.textFieldTitles.numberOfBedrooms
+               
+                    registrationNumbercell.resortAttributeLabel.placeholder = Constant.textFieldTitles.numberOfBedrooms
+                
+                
                 if(Constant.ControllerTitles.selectedControllerTitle != Constant.storyboardControllerID.floatViewController){
                     registrationNumbercell.viewButton.addTarget(self, action: #selector(self.selectBedroom(_sender:)), for: .touchUpInside)
                 }
@@ -517,8 +590,58 @@ extension FloatDetailViewController : BedroomSizeViewControllerDelegate{
 extension FloatDetailViewController : UITextFieldDelegate{
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        //selectedTextField = false
-        //textField.resignFirstResponder()
+        self.activeField?.resignFirstResponder()
+        
         return true
     }
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        self.activeField?.resignFirstResponder()
+    }
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        print(string)
+        if (range.length == 1 && string.characters.count == 0) {
+            print("backspace tapped")
+        }
+        
+            if(textField.tag == 0) {
+                    
+                    if (range.length == 1 && string.characters.count == 0) {
+                    Constant.FloatDetails.reservationNumber.characters.removeLast()
+                    }
+                    else {
+                        Constant.FloatDetails.reservationNumber = "\(textField.text!)\(string)"
+                    }
+                    
+            }else {
+                    
+                    
+                    if (range.length == 1 && string.characters.count == 0) {
+                        Constant.FloatDetails.unitNumber.characters.removeLast()
+                    }
+                    else {
+                        Constant.FloatDetails.unitNumber = "\(textField.text!)\(string)"
+                    }
+                    
+                
+            }
+        
+    }
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        
+            self.activeField = textField
+        
+            if(textField.tag == 0 ) {
+                
+                self.moved = true
+                textField.keyboardType = .numberPad
+                 self.addDoneButtonOnNumpad(textField: textField)
+            }
+            else {
+                self.moved = true
+                textField.keyboardType = .default
+               
+            }
+        }
+
 }
