@@ -1548,7 +1548,7 @@
                                 <rect key="frame" x="10" y="120" width="580" height="1060"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="BedroomSizeTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="bedroomsizeCell" rowHeight="70" id="MIF-2x-eFY" customClass="BedroomSizeTableViewCell" customModule="IntervalApp" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="BedroomSizeTableViewCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="bedroomsizeCell" rowHeight="70" id="MIF-2x-eFY" customClass="BedroomSizeTableViewCell" customModule="IntervalApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="580" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MIF-2x-eFY" id="F2b-g7-DUh">
@@ -1568,13 +1568,13 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5bB-JQ-Bkz">
-                                                    <rect key="frame" x="20" y="10" width="507" height="25"/>
+                                                    <rect key="frame" x="20" y="10" width="440" height="25"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="123" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sda-0m-fif">
-                                                    <rect key="frame" x="20" y="35" width="507" height="20"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sda-0m-fif">
+                                                    <rect key="frame" x="20" y="35" width="440" height="20"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -1606,12 +1606,31 @@
                                                         <action selector="bedroomSizeCheckboxIsTapped:" destination="Caa-O5-ynK" eventType="valueChanged" id="MHB-w4-pHW"/>
                                                     </connections>
                                                 </view>
+                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Info Saved" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nud-LB-IAm">
+                                                    <rect key="frame" x="460" y="25" width="100" height="20"/>
+                                                    <color key="backgroundColor" red="0.32941176470588235" green="0.792156862745098" blue="0.23137254901960785" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="Ha3-j1-oG0"/>
+                                                        <constraint firstAttribute="width" constant="100" id="tRX-Vr-lSP"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="15"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <integer key="value" value="7"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="clipsToBounds" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="bottomMargin" secondItem="sda-0m-fif" secondAttribute="bottom" constant="7" id="0Lc-J8-LzO"/>
                                                 <constraint firstItem="sda-0m-fif" firstAttribute="trailing" secondItem="5bB-JQ-Bkz" secondAttribute="trailing" id="5PH-WQ-OwX"/>
                                                 <constraint firstItem="acx-np-bcc" firstAttribute="leading" secondItem="F2b-g7-DUh" secondAttribute="leading" constant="5" id="5XB-sR-sPn"/>
                                                 <constraint firstAttribute="bottom" secondItem="acx-np-bcc" secondAttribute="bottom" constant="5" id="BMG-Mt-jrc"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="nud-LB-IAm" secondAttribute="trailing" constant="12" id="FjF-Zv-PXL"/>
+                                                <constraint firstItem="nud-LB-IAm" firstAttribute="top" secondItem="F2b-g7-DUh" secondAttribute="topMargin" constant="17" id="P0x-5A-Cv7"/>
                                                 <constraint firstItem="acx-np-bcc" firstAttribute="top" secondItem="F2b-g7-DUh" secondAttribute="top" constant="5" id="VZI-dC-IQx"/>
                                                 <constraint firstItem="sda-0m-fif" firstAttribute="leading" secondItem="5bB-JQ-Bkz" secondAttribute="leading" id="azS-gY-XB8"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="5bB-JQ-Bkz" secondAttribute="bottom" constant="27" id="biO-VL-odC"/>
@@ -1619,7 +1638,7 @@
                                                 <constraint firstItem="5bB-JQ-Bkz" firstAttribute="top" secondItem="F2b-g7-DUh" secondAttribute="topMargin" constant="2" id="iay-yB-j9A"/>
                                                 <constraint firstItem="sda-0m-fif" firstAttribute="top" secondItem="5bB-JQ-Bkz" secondAttribute="bottom" id="l3h-4c-gdA"/>
                                                 <constraint firstAttribute="trailing" secondItem="acx-np-bcc" secondAttribute="trailing" constant="5" id="qYU-2g-R5F"/>
-                                                <constraint firstItem="dJ7-Ik-c4b" firstAttribute="leading" secondItem="5bB-JQ-Bkz" secondAttribute="trailing" constant="5" id="uoB-QZ-rwY"/>
+                                                <constraint firstItem="dJ7-Ik-c4b" firstAttribute="leading" secondItem="5bB-JQ-Bkz" secondAttribute="trailing" constant="72" id="uoB-QZ-rwY"/>
                                                 <constraint firstItem="5bB-JQ-Bkz" firstAttribute="leading" secondItem="F2b-g7-DUh" secondAttribute="leadingMargin" constant="12" id="w7w-vD-2gl"/>
                                                 <constraint firstItem="dJ7-Ik-c4b" firstAttribute="centerY" secondItem="F2b-g7-DUh" secondAttribute="centerY" id="zIF-PI-hYG"/>
                                             </constraints>
@@ -1628,6 +1647,7 @@
                                             <outlet property="backgroundCellView" destination="acx-np-bcc" id="YNK-xc-VJt"/>
                                             <outlet property="bedroomSizelabel" destination="5bB-JQ-Bkz" id="zNV-7e-x7t"/>
                                             <outlet property="checkBoxButton" destination="dJ7-Ik-c4b" id="uqw-z4-Yuo"/>
+                                            <outlet property="infoSavedLabel" destination="nud-LB-IAm" id="hVe-X5-L0t"/>
                                             <outlet property="unitSizeLabel" destination="sda-0m-fif" id="mEC-kU-wFw"/>
                                         </connections>
                                     </tableViewCell>
@@ -1668,7 +1688,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="K5k-P6-aTb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4597.5" y="1166.1971830985915"/>
+            <point key="canvasLocation" x="4596.8000000000002" y="1165.8170914542729"/>
         </scene>
         <!--Float Detail View Controller-->
         <scene sceneID="fvS-Zm-tiz">
@@ -2224,7 +2244,7 @@ EFJlc2VydmF0aW9uIERldGFpbHM
             <objects>
                 <navigationController storyboardIdentifier="ownershipnavigation" automaticallyAdjustsScrollViewInsets="NO" id="4ES-vh-RAq" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="6Rg-8O-31A">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="6Rg-8O-31A">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

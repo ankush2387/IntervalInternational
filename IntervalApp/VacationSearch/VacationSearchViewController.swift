@@ -613,7 +613,6 @@ extension VacationSearchViewController:UITableViewDelegate {
                                     realm.add(storedata)
                               }
                             }
-                            
                         }
                     }
                 }

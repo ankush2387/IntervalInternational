@@ -198,6 +198,7 @@ class Constant: NSObject {
         static var sectionHeaderArray = [NSLocalizedString("Destinations", comment: ""),NSLocalizedString("Resorts", comment: "")]
         
         static var relinquishmentHeaderArray = [NSLocalizedString("Club Interval Gold Weeks", comment: ""),NSLocalizedString("", comment: ""),NSLocalizedString("Club Points", comment: ""),NSLocalizedString("Interval Weeks", comment: ""),NSLocalizedString("Deposited", comment: "")]
+        static var lockOffCapable = NSLocalizedString("Lock Off Capable", comment: "")
         
         static var membershipContactArray = [Contact]()
         static var vacationSearchDestinationArray:NSMutableArray = []
@@ -468,6 +469,7 @@ class Constant: NSObject {
         //Float week to store information for editing
         static var selectedFloatWeek = OpenWeeks()
         static var unitNumberLockOff = ""
+        static var saveLockOffDetailsArray = NSMutableArray()
     }
     struct CommonStringIdentifiers {
         static var floatWeek = "FLOAT_WEEK"

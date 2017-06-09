@@ -242,22 +242,13 @@ extension BedroomSizeViewController : UITableViewDataSource{
             {
                 localArrayToHoldSelection.add(cell?.checkBoxButton.tag as Any)
                 doneButton.isEnabled = true
-                cell?.bedroomSizelabel.textColor = UIColor.orange
+                cell?.bedroomSizelabel.textColor = IUIKColorPalette.secondaryB.color
             }
                 cell?.checkBoxButton.checked = true
             }else{
                 cell?.checkBoxButton.checked = false
             }
             if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController){
-                if(Constant.MyClassConstants.selectedBedRoomSize == cell?.bedroomSizelabel.text){
-                   cell?.backgroundCellView.layer.borderColor = UIColor.orange.cgColor
-                   cell?.unitSizeLabel.textColor = IUIKColorPalette.secondaryB.color
-                   cell?.bedroomSizelabel.textColor = IUIKColorPalette.secondaryB.color
-                }else{
-                    cell?.backgroundCellView.layer.borderColor = UIColor.white.cgColor
-                    cell?.unitSizeLabel.textColor = UIColor.black
-                    cell?.bedroomSizelabel.textColor = UIColor.black
-                }
                 cell?.checkBoxButton.isHidden = true
             }else{
                 cell?.checkBoxButton.isHidden = false
@@ -271,6 +262,21 @@ extension BedroomSizeViewController : UITableViewDataSource{
                 unitDetails = "\(String(describing: Constant.MyClassConstants.relinquishmentSelectedWeek.unit!.unitNumber!)), \(String(describing: Helper.getKitchenEnums(kitchenType: Constant.MyClassConstants.relinquishmentSelectedWeek.unit!.kitchenType!)))"
             }
             cell?.unitSizeLabel.text = unitDetails
+                let setUnitSize = cell?.bedroomSizelabel.text?.components(separatedBy: ",")[0]
+                let setUnitNumber = cell?.unitSizeLabel.text?.components(separatedBy: ",")[0]
+                for selectedUnitDetails in Constant.MyClassConstants.saveLockOffDetailsArray{
+                    if((selectedUnitDetails as! String).components(separatedBy: ",")[0] == setUnitNumber && (selectedUnitDetails as! String).components(separatedBy: ",")[1] == setUnitSize){
+                        cell?.backgroundCellView.layer.borderColor = UIColor.orange.cgColor
+                        cell?.unitSizeLabel.textColor = IUIKColorPalette.secondaryB.color
+                        cell?.bedroomSizelabel.textColor = IUIKColorPalette.secondaryB.color
+                        cell?.infoSavedLabel.isHidden = false
+                    }else{
+                        cell?.infoSavedLabel.isHidden = true
+                        cell?.backgroundCellView.layer.borderColor = UIColor.white.cgColor
+                        cell?.unitSizeLabel.textColor = UIColor.black
+                        cell?.bedroomSizelabel.textColor = UIColor.black
+                    }
+                }
             return cell!
             
         }else{

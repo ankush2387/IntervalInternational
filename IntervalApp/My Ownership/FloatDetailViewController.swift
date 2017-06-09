@@ -192,7 +192,9 @@ class FloatDetailViewController: UIViewController {
         
         var checkInDate = ""
         var tableViewCell = UITableViewCell()
-        
+        if(isFromLockOff){
+            Constant.FloatDetails.unitNumber = Constant.MyClassConstants.unitNumberLockOff
+        }
         if(atrributesRowArray.contains(Constant.MyClassConstants.checkInDateAttribute)){
             tableViewCell = floatDetailsTableView.cellForRow(at: IndexPath(row: atrributesRowArray.index(of: Constant.MyClassConstants.checkInDateAttribute), section: floatAttributesArray.index(of: Constant.MyClassConstants.resortAttributes)))!
             checkInDate = getTableViewCellSubviews(tableViewCell:tableViewCell)
@@ -295,6 +297,9 @@ class FloatDetailViewController: UIViewController {
         
         let selectedOpenWeek = OpenWeeks()
         selectedOpenWeek.isFloat=true
+        if(isFromLockOff){
+            selectedOpenWeek.isLockOff = true
+        }
         selectedOpenWeek.weekNumber = Constant.MyClassConstants.relinquishmentSelectedWeek.weekNumber!
         selectedOpenWeek.relinquishmentID = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!
         selectedOpenWeek.relinquishmentYear = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentYear!
@@ -444,9 +449,7 @@ extension FloatDetailViewController : UITableViewDataSource{
                 registrationNumbercell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.attributesCell) as! ReservationTableViewCell
                 registrationNumbercell.textFieldView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
                 registrationNumbercell.resortAttributeLabel.delegate = self
-                if(isFromLockOff){
-                    registrationNumbercell.resortAttributeLabel.text = Constant.MyClassConstants.unitNumberLockOff
-                }else if(Constant.FloatDetails.unitNumber != ""){
+                if(Constant.FloatDetails.unitNumber != ""){
                     registrationNumbercell.resortAttributeLabel.text = Constant.FloatDetails.unitNumber
                 }else{
                     registrationNumbercell.resortAttributeLabel.placeholder = Constant.textFieldTitles.unitNumber

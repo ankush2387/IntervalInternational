@@ -603,6 +603,7 @@ public class Helper{
         Constant.MyClassConstants.idUnitsRelinquishmentDictionary.removeAllObjects()
         Constant.MyClassConstants.relinquishmentUnitsArray.removeAllObjects()
         Constant.MyClassConstants.floatRemovedArray.removeAllObjects()
+        Constant.MyClassConstants.realmOpenWeeksID.removeAllObjects()
 
         let realm = try! Realm()
         let Membership = UserContext.sharedInstance.selectedMembership
@@ -621,9 +622,9 @@ public class Helper{
                         for object in openWk.openWeeks {
                             
                             Constant.MyClassConstants.realmOpenWeeksID.add(object.relinquishmentID)
-                            let tempDict = NSMutableDictionary()
+                        let tempDict = NSMutableDictionary()
                             if(object.isFloat){
-                            if(object.isFloatRemoved && !object.isFromRelinquishment){
+                            if(object.isFloatRemoved){
                                 Constant.MyClassConstants.floatRemovedArray.add(object)
                             }else if(object.floatDetails.count > 0 && !object.isFloatRemoved && object.isFromRelinquishment){
                                 Constant.MyClassConstants.whatToTradeArray.add(object)

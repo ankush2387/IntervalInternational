@@ -15,6 +15,7 @@ class BedroomSizeTableViewCell: UITableViewCell {
     @IBOutlet weak var backgroundCellView: UIView!
     @IBOutlet weak var checkBoxButton: IUIKCheckbox!
     @IBOutlet weak var unitSizeLabel: UILabel!
+    @IBOutlet weak var infoSavedLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
