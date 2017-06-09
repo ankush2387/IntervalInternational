@@ -66,6 +66,21 @@ class FloatDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if(Constant.MyClassConstants.selectedFloatWeek.floatDetails.count > 0){
+            
+            if(Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].unitNumber != "") {
+            Constant.FloatDetails.unitNumber = Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].unitNumber
+            }
+            if(Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].reservationNumber != "") {
+                Constant.FloatDetails.unitNumber = Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].reservationNumber
+            }
+            if(Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].unitSize != "") {
+                Constant.MyClassConstants.savedBedroom = Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].unitSize
+            }
+        }
+
+        
         floatUnitDetails = Constant.MyClassConstants.relinquishmentSelectedWeek.unit!
         floatDetailsTableView.estimatedRowHeight = 200
         self.title = Constant.ControllerTitles.floatDetailViewController
@@ -139,6 +154,7 @@ class FloatDetailViewController: UIViewController {
      */
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
         Constant.MyClassConstants.savedClubFloatResort = ""
+        self.resetFloatGlobalVariables()
         _ = self.navigationController?.popViewController(animated: true)
     }
     
@@ -173,31 +189,15 @@ class FloatDetailViewController: UIViewController {
     
     //Save Float Details
     @IBAction func saveFloatDetails(){
-        var reservationNumber = ""
-        var unitNumber = ""
-        var unitSize = ""
+        
         var checkInDate = ""
         var tableViewCell = UITableViewCell()
-        if(atrributesRowArray.contains(Constant.MyClassConstants.unitNumberAttribute)){
-            tableViewCell = floatDetailsTableView.cellForRow(at: IndexPath(row: atrributesRowArray.index(of: Constant.MyClassConstants.unitNumberAttribute), section: floatAttributesArray.index(of: Constant.MyClassConstants.resortAttributes)))!
-            
-            unitNumber = getTableViewCellSubviews(tableViewCell:tableViewCell)
-        }
-        
-        if(atrributesRowArray.contains(Constant.MyClassConstants.noOfBedroomAttribute)){
-            tableViewCell = floatDetailsTableView.cellForRow(at: IndexPath(row: atrributesRowArray.index(of: Constant.MyClassConstants.noOfBedroomAttribute), section: floatAttributesArray.index(of: Constant.MyClassConstants.resortAttributes)))!
-            unitSize = getTableViewCellSubviews(tableViewCell:tableViewCell)
-        }
         
         if(atrributesRowArray.contains(Constant.MyClassConstants.checkInDateAttribute)){
             tableViewCell = floatDetailsTableView.cellForRow(at: IndexPath(row: atrributesRowArray.index(of: Constant.MyClassConstants.checkInDateAttribute), section: floatAttributesArray.index(of: Constant.MyClassConstants.resortAttributes)))!
             checkInDate = getTableViewCellSubviews(tableViewCell:tableViewCell)
         }
         
-        if(atrributesRowArray.contains(Constant.MyClassConstants.resortReservationAttribute)){
-            tableViewCell = floatDetailsTableView.cellForRow(at: IndexPath(row: atrributesRowArray.index(of: Constant.MyClassConstants.resortReservationAttribute), section: floatAttributesArray.index(of: Constant.MyClassConstants.resortAttributes)))!
-            reservationNumber = getTableViewCellSubviews(tableViewCell:tableViewCell)
-        }
         
         //Check if float is already saved in database
         if(Constant.MyClassConstants.floatRemovedArray.count != 0 || Constant.MyClassConstants.whatToTradeArray.contains(Constant.MyClassConstants.selectedFloatWeek)){
@@ -241,20 +241,32 @@ class FloatDetailViewController: UIViewController {
                     let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
                     DispatchQueue.main.asyncAfter(deadline: delayTime) {
                         
-                        if(!floatWeek.isFloatRemoved){
-                            self.addFloatToDatabase(reservationNumber:reservationNumber, unitNumber:unitNumber, unitSize:unitSize, checkInDate:checkInDate)
+                        if(!floatWeek.isFloatRemoved) {
+                            self.addFloatToDatabase(reservationNumber: Constant.FloatDetails.reservationNumber, unitNumber:Constant.FloatDetails.unitNumber, unitSize:Constant.MyClassConstants.savedBedroom, checkInDate:checkInDate)
                         }
                     }
                 }
             }
         }else{
-            print(unitNumber)
-            addFloatToDatabase(reservationNumber:reservationNumber, unitNumber:unitNumber, unitSize:unitSize, checkInDate:checkInDate)
+            
+            addFloatToDatabase(reservationNumber:Constant.FloatDetails.reservationNumber, unitNumber:Constant.FloatDetails.unitNumber, unitSize:Constant.MyClassConstants.savedBedroom, checkInDate:checkInDate)
         }
+        
+        
+    }
+    
+    func resetFloatGlobalVariables() {
+        
+        Constant.FloatDetails.reservationNumber = ""
+        Constant.FloatDetails.unitNumber = ""
+        Constant.MyClassConstants.savedBedroom = ""
+        Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate = nil
+
     }
     
     //Function to cancel float detail view
     @IBAction func cancelButtonPressed(_:IUIKButton) {
+        self.resetFloatGlobalVariables()
         _ = self.navigationController?.popViewController(animated: true)
     }
     
@@ -336,6 +348,7 @@ class FloatDetailViewController: UIViewController {
             transition.timingFunction = timeFunc
             viewcontroller.view.layer.add(transition, forKey: Constant.MyClassConstants.switchToView)
             UIApplication.shared.keyWindow?.rootViewController = viewcontroller
+            self.resetFloatGlobalVariables()
         }
     }
     
@@ -433,11 +446,13 @@ extension FloatDetailViewController : UITableViewDataSource{
                 registrationNumbercell.resortAttributeLabel.delegate = self
                 if(isFromLockOff){
                     registrationNumbercell.resortAttributeLabel.text = Constant.MyClassConstants.unitNumberLockOff
-                }else if(Constant.MyClassConstants.selectedFloatWeek.floatDetails.count > 0){
-                    registrationNumbercell.resortAttributeLabel.text = Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].unitNumber
+                }else if(Constant.FloatDetails.unitNumber != ""){
+                    registrationNumbercell.resortAttributeLabel.text = Constant.FloatDetails.unitNumber
                 }else{
                     registrationNumbercell.resortAttributeLabel.placeholder = Constant.textFieldTitles.unitNumber
                 }
+                
+                registrationNumbercell.resortAttributeLabel.tag = 1
                 return registrationNumbercell
                 
             case Constant.MyClassConstants.noOfBedroomAttribute:
@@ -448,14 +463,13 @@ extension FloatDetailViewController : UITableViewDataSource{
                 }
                 
                 
-                if(Constant.FloatDetails.bedRoomSize != ""){
+                if(Constant.MyClassConstants.savedBedroom != ""){
                     
-                    registrationNumbercell.resortAttributeLabel.text  = Constant.FloatDetails.bedRoomSize
-                    
-                    
+                    registrationNumbercell.resortAttributeLabel.text  = Constant.MyClassConstants.savedBedroom
+
                 }
                
-                    registrationNumbercell.resortAttributeLabel.placeholder = Constant.textFieldTitles.numberOfBedrooms
+                registrationNumbercell.resortAttributeLabel.placeholder = Constant.textFieldTitles.numberOfBedrooms
                 
                 
                 if(Constant.ControllerTitles.selectedControllerTitle != Constant.storyboardControllerID.floatViewController){
@@ -496,6 +510,7 @@ extension FloatDetailViewController : UITableViewDataSource{
                     registrationNumbercell.resortAttributeLabel.text = Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].reservationNumber
                 }
                 registrationNumbercell.resortAttributeLabel.placeholder = Constant.textFieldTitles.reservationNumber
+                registrationNumbercell.resortAttributeLabel.tag = 0
                 return registrationNumbercell
                 
             default:
@@ -533,6 +548,7 @@ extension FloatDetailViewController : UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
         let headerView = UIView()
         headerView.backgroundColor = IUIKColorPalette.titleBackdrop.color
         
@@ -606,24 +622,23 @@ extension FloatDetailViewController : UITextFieldDelegate{
         
             if(textField.tag == 0) {
                     
-                    if (range.length == 1 && string.characters.count == 0) {
+                if (range.length == 1 && string.characters.count == 0) {
                     Constant.FloatDetails.reservationNumber.characters.removeLast()
-                    }
-                    else {
-                        Constant.FloatDetails.reservationNumber = "\(textField.text!)\(string)"
-                    }
-                    
-            }else {
-                    
-                    
-                    if (range.length == 1 && string.characters.count == 0) {
-                        Constant.FloatDetails.unitNumber.characters.removeLast()
-                    }
-                    else {
-                        Constant.FloatDetails.unitNumber = "\(textField.text!)\(string)"
-                    }
-                    
+                }
+                else {
+                    Constant.FloatDetails.reservationNumber = "\(textField.text!)\(string)"
+                }
+                return true
                 
+            }else {
+                
+                if (range.length == 1 && string.characters.count == 0) {
+                    Constant.FloatDetails.unitNumber.characters.removeLast()
+                }
+                else {
+                    Constant.FloatDetails.unitNumber = "\(textField.text!)\(string)"
+                }
+                return true
             }
         
     }

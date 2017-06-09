@@ -48,8 +48,6 @@ class Constant: NSObject {
         
         static var unitNumber = ""
         static var reservationNumber = ""
-        static var bedRoomSize = ""
-        static var checkInDate = ""
     }
     
     struct RGBColorCode {
