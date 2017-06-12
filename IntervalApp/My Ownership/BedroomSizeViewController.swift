@@ -83,17 +83,10 @@ class BedroomSizeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         Constant.MyClassConstants.userSelectedStringArray.removeAll()
         // Function to get unit details saved in database
         self.getSaveUnitDetails()
-        
-        // omniture tracking with event 68
-        
-        let userInfo: [String: String] = [
-            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.simpleLockOffUnitOptions,
-            ]
-        ADBMobile.trackAction(Constant.omnitureEvents.event68, data: userInfo)
-
         
         self.bedroomSizeTableView.estimatedRowHeight = 60
         if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController){
@@ -113,8 +106,22 @@ class BedroomSizeViewController: UIViewController {
             self.titleLabel.text = Constant.MyClassConstants.bedroomTitle
         }
         if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController){
+            
             doneButton.isEnabled = false
+            // omniture tracking with event 40
+            let userInfo: [String: String] = [
+                Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.simpleLockOffUnitOptions,
+                ]
+            ADBMobile.trackAction(Constant.omnitureEvents.event40, data: userInfo)
+
+            
         }else if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController){
+            
+            // omniture tracking with event 40
+            let pageView: [String: String] = [
+                Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.lockOffFloatUnitOptions
+            ]
+            ADBMobile.trackAction(Constant.omnitureEvents.event40, data: pageView)
             self.titleLabel.text = Constant.MyClassConstants.floatTitle
             doneButton.isHidden = true
         }

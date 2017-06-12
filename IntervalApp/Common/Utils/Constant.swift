@@ -1619,6 +1619,8 @@ class Constant: NSObject {
         static var createAnAlert = "Create an Alert"
         static var editAnAlert = "Edit an Alert"
         static var sideMenuAppeared = "Side Menu Appeared"
+        static var floatDetails = "Float Details 1"
+        static var lockOffFloatUnitOptions = "Lock Off and Float Unit Options"
       
     }
     

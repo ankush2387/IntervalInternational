@@ -48,7 +48,7 @@ class FloatDetailViewController: UIViewController {
         
         if(isFromLockOff){
         var section = 2
-        if(Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.resortClubAttribute)){
+        if(Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.resortClubAttribute)) {
             self.floatDetailsTableView.reloadSections(IndexSet(integer: 2), with:.automatic)
             section = 3
         }
@@ -66,6 +66,13 @@ class FloatDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // omniture tracking with event 40
+        let pageView: [String: String] = [
+            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.floatDetails
+        ]
+        ADBMobile.trackAction(Constant.omnitureEvents.event40, data: pageView)
+
         
         if(Constant.MyClassConstants.selectedFloatWeek.floatDetails.count > 0){
             
