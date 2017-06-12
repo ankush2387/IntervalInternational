@@ -549,16 +549,19 @@ extension VacationSearchViewController:UITableViewDelegate {
                 if(storedData.count > 0) {
                     let realm = try! Realm()
                     try! realm.write {
-                       var floatWeek = OpenWeeks()
-                        for openWk in Constant.MyClassConstants.whatToTradeArray{
-                            let openWk1 = openWk as! OpenWeeks
-                            if(!openWk1.isFloatRemoved){
-                             floatWeek = openWk1
+                        var floatWeek:OpenWeeks!
+                         let openWk  = Constant.MyClassConstants.whatToTradeArray[indexPath.row] as! OpenWeeks
+                        
+                            print(openWk)
+                            print(Constant.MyClassConstants.whatToTradeArray[indexPath.row])
+    
+                            if(!openWk.isFloatRemoved){
+                             floatWeek = openWk
                             }else{
                               isFloat = false
                             }
-                        }
                         
+                        print(floatWeek)
                         realm.delete(storedData[indexPath.row])
                         
                         if(Constant.MyClassConstants.whatToTradeArray.count > 0){
@@ -575,6 +578,7 @@ extension VacationSearchViewController:UITableViewDelegate {
                             
                             tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
                             
+                            print(floatWeek)
                             if(!floatWeek.isFloatRemoved && isFloat){
                                 //Realm local storage for selected relinquishment
                                 let storedata = OpenWeeksStorage()
@@ -608,6 +612,10 @@ extension VacationSearchViewController:UITableViewDelegate {
                                 storedata.membeshipNumber = Membership!.memberNumber!
                                 Constant.MyClassConstants.floatRemovedArray.removeAllObjects()
                                 Constant.MyClassConstants.floatRemovedArray.add(floatWeek)
+                                
+                                print(storedata)
+                                print(relinquishmentList)
+                                print(selectedOpenWeek)
                                 let realm = try! Realm()
                                 try! realm.write {
                                     realm.add(storedata)

@@ -493,7 +493,11 @@ class RelinquishmentSelectionViewController: UIViewController {
             }
             for floatWeek in Constant.MyClassConstants.floatRemovedArray{
                 let floatWeekTraversed = floatWeek as! OpenWeeks
-                if(floatWeekTraversed.isFloatRemoved && Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId == floatWeekTraversed.relinquishmentID){
+                
+                print(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!)
+                print(floatWeekTraversed.relinquishmentID)
+                print(floatWeekTraversed.isFloatRemoved)
+                if(floatWeekTraversed.isFloatRemoved && Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId! == floatWeekTraversed.relinquishmentID){
                     Constant.MyClassConstants.selectedFloatWeek = floatWeekTraversed
                     Constant.MyClassConstants.savedClubFloatResort = floatWeekTraversed.floatDetails[0].clubResortDetails
                 }
