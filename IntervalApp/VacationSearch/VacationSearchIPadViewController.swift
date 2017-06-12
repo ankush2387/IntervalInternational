@@ -459,6 +459,7 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
                     print(error.description)
                     SVProgressHUD.dismiss()
                     Helper.removeServiceCallBackgroundView(view: self.view)
+                    SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
         
                 })
     }

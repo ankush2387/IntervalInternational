@@ -277,12 +277,12 @@ extension BedroomSizeViewController : UITableViewDataSource{
                         cell?.unitSizeLabel.textColor = IUIKColorPalette.secondaryB.color
                         cell?.bedroomSizelabel.textColor = IUIKColorPalette.secondaryB.color
                         cell?.infoSavedLabel.isHidden = false
-                    }else{
+                    }/*else{
                         cell?.infoSavedLabel.isHidden = true
                         cell?.backgroundCellView.layer.borderColor = UIColor.white.cgColor
                         cell?.unitSizeLabel.textColor = UIColor.black
                         cell?.bedroomSizelabel.textColor = UIColor.black
-                    }
+                    }*/
                 }
             return cell!
             

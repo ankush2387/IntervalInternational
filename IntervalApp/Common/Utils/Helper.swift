@@ -241,8 +241,7 @@ public class Helper{
         Constant.MyClassConstants.signInRequestedController = sender
         if Reachability.isConnectedToNetwork() == true {
             logger.debug("Attempting oauth with \(userName) and \(password)")
-            Helper.addServiceCallBackgroundView(view: sender.view)
-            SVProgressHUD.show()
+            showProgressBar(senderView:sender)
             // Try to do the OAuth Request to obtain an access token
             AuthProviderClient.getAccessToken( userName, password: password,onSuccess:{
                 (accessToken) in
@@ -250,21 +249,16 @@ public class Helper{
                 
                 if(accessToken.token != nil) {
                     // Next, get the contact information.  See how many memberships this user has.
-                    //removeServiceCallBackgroundView(view: sender.view)
-                    //SVProgressHUD.dismiss()
                     UserContext.sharedInstance.accessToken = accessToken
-                    
                     // let the caller UI know the status of the login
                     completionHandler(true)
                 }
                 else {
-                    SVProgressHUD.dismiss()
-                    removeServiceCallBackgroundView(view: sender.view)
+                    hideProgressBar(senderView:sender)
                     SimpleAlert.alert(sender, title:Constant.AlertErrorMessages.tryAgainError, message: Constant.AlertErrorMessages.loginFailedError)
                     completionHandler(false)
                 }
                 // Got an access token!  Save it for later use.
-                
                 // Next, get the contact information.  See how many memberships this user has.
             },
                                                onError:{ (error) in
@@ -423,8 +417,7 @@ public class Helper{
             let searchResortRequest = RentalSearchResortsRequest()
             searchResortRequest.checkInDate = toDate as Date
             searchResortRequest.resortCodes = Constant.MyClassConstants.resortCodesArray
-            SVProgressHUD.show()
-            addServiceCallBackgroundView(view: senderVC.view)
+            showProgressBar(senderView:senderVC)
             RentalClient.searchResorts(UserContext.sharedInstance.accessToken, request: searchResortRequest, onSuccess: { (response) in
                 Constant.MyClassConstants.resortsArray.removeAll()
                 Constant.MyClassConstants.resortsArray = response.resorts
@@ -802,8 +795,7 @@ public class Helper{
     
     //***** common function that contains API call for top 10 deals *****//
     static func getTopDeals(senderVC : UIViewController){
-        Helper.addServiceCallBackgroundView(view: senderVC.view)
-        SVProgressHUD.show()
+        showProgressBar(senderView: senderVC)
         RentalClient.getTop10Deals(UserContext.sharedInstance.accessToken,onSuccess: {(response) in
             Constant.MyClassConstants.topDeals = response
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.refreshTableNotification), object: nil)
@@ -823,8 +815,7 @@ public class Helper{
         
         if(Constant.MyClassConstants.systemAccessToken?.token != nil){
             
-            addServiceCallBackgroundView(view: viewController.view)
-            SVProgressHUD.show()
+            showProgressBar(senderView: viewController)
             
             DirectoryClient.getRegions(Constant.MyClassConstants.systemAccessToken, onSuccess: {(response) in
                 Constant.MyClassConstants.resortDirectoryRegionArray = response[0].regions
@@ -891,19 +882,16 @@ public class Helper{
     /***** Get club resort API call for float details ******/
     
     static func getResortsByClubFloatDetails(resortCode:String, senderViewController:UIViewController, floatResortDetails:Resort){
-        SVProgressHUD.show()
-        self.addServiceCallBackgroundView(view: senderViewController.view)
+        showProgressBar(senderView: senderViewController)
         DirectoryClient.getResortsByClub(UserContext.sharedInstance.accessToken, clubCode: resortCode, onSuccess: { (_ resorts: [Resort]) in
-            SVProgressHUD.dismiss()
-            self.removeServiceCallBackgroundView(view: senderViewController.view)
+            hideProgressBar(senderView: senderViewController)
             Constant.MyClassConstants.clubFloatResorts = resorts
             senderViewController.performSegue(withIdentifier: Constant.floatDetailViewController.clubresortviewcontrollerIdentifier, sender: self)
 
             
         }) { (error) in
             
-            SVProgressHUD.dismiss()
-            self.removeServiceCallBackgroundView(view: senderViewController.view)
+             hideProgressBar(senderView: senderViewController)
              SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
         }
     }
@@ -923,8 +911,7 @@ public class Helper{
     
     /***** Get check-in dates API to show in calendar ******/
     static func getCheckInDatesForCalendar(senderViewController:UIViewController, resortCode:String, relinquishmentYear:Int){
-        SVProgressHUD.show()
-        self.addServiceCallBackgroundView(view: senderViewController.view)
+        showProgressBar(senderView: senderViewController)
         DirectoryClient.getResortCalendars(UserContext.sharedInstance.accessToken, resortCode: resortCode, year: relinquishmentYear, onSuccess: { (resortCalendar: [ResortCalendar]) in
             
             SVProgressHUD.dismiss()
@@ -1096,8 +1083,7 @@ public class Helper{
     
     /***** common function for API call to get resort with resort code *****/
     static func getResortWithResortCode(code:String , viewcontroller:UIViewController) {
-        addServiceCallBackgroundView(view: viewcontroller.view)
-        SVProgressHUD.show()
+        showProgressBar(senderView: viewcontroller)
         DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: code, onSuccess: { (response) in
     
             Constant.MyClassConstants.resortsDescriptionArray = response
@@ -1349,10 +1335,8 @@ public class Helper{
     }
     // Function to get trip details
     static func getTripDetails(senderViewController: UIViewController){
-        Helper.addServiceCallBackgroundView(view: senderViewController.view)
-        SVProgressHUD.show()
+        showProgressBar(senderView:senderViewController)
         ExchangeClient.getExchangeTripDetails(UserContext.sharedInstance.accessToken, confirmationNumber: Constant.MyClassConstants.transactionNumber, onSuccess: { (exchangeResponse) in
-            
             
             Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails = exchangeResponse
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadTripDetailsNotification), object: nil)
@@ -1473,12 +1457,31 @@ public class Helper{
 
     }
     
-    static func showProgressBar(){
-        
+    //Method for navigating to another storyboard
+    static func switchStoryBoard(storyBoardNameIphone:String, storyBoardNameIpad:String, senderViewController:UIViewController){
+        var mainStoryboard = UIStoryboard()
+        if(Constant.RunningDevice.deviceIdiom == .pad) {
+            mainStoryboard = UIStoryboard(name: storyBoardNameIphone, bundle: nil)
+        }
+        else {
+            mainStoryboard = UIStoryboard(name: storyBoardNameIpad, bundle: nil)
+        }
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.bedroomSizeViewController) as! BedroomSizeViewController
+        viewController.delegate = senderViewController as? BedroomSizeViewControllerDelegate
+        Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.floatViewController
+        let transitionManager = TransitionManager()
+        senderViewController.navigationController?.transitioningDelegate = transitionManager
+        senderViewController.navigationController!.present(viewController, animated: true, completion: nil)
     }
     
-    static func hideProgrssBar(){
-        
+    static func showProgressBar(senderView:UIViewController){
+        Helper.addServiceCallBackgroundView(view: senderView.view)
+        SVProgressHUD.show()
+    }
+    
+    static func hideProgressBar(senderView:UIViewController){
+        SVProgressHUD.dismiss()
+        removeServiceCallBackgroundView(view: senderView.view)
     }
 
 }
