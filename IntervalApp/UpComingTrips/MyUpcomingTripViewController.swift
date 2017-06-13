@@ -39,8 +39,9 @@ class MyUpcomingTripViewController: UIViewController{
         let noTrips:Int? = Int(Constant.omnitureCommonString.noTrips)
        
         let userInfo: [String: String] = [
-            
-            Constant.omnitureEvars.eVar18 : Constant.MyClassConstants.upcomingOriginationPoint,
+            Constant.omnitureEvars.eVar18 : "",
+            //TODO (Jhon): error found in iPad with user bwilling
+//            Constant.omnitureEvars.eVar18 : Constant.MyClassConstants.upcomingOriginationPoint,
             Constant.omnitureEvars.eVar31 : "\(String(describing: Constant.MyClassConstants.upcomingTripsArray.count > 0 ? Constant.MyClassConstants.upcomingTripsArray.count : noTrips))\(Constant.omnitureEvars.eVar18)"
         ]
         ADBMobile.trackAction(Constant.omnitureEvents.event73, data: userInfo)

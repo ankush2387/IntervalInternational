@@ -704,11 +704,14 @@ extension UpComingTripDetailController:UITableViewDataSource {
     
     // *** Get date diffrence for between checkindate and current date to send with omniture events.
     func getdatediffrence()-> Int {
-        var checkDate :Int
+        var checkDate :Int = 0
         
         if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.confirmationNumber != nil) {
             
-        checkDate  = Helper.getUpcommingcheckinDatesDiffrence(date: Helper.convertStringToDate(dateString:(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise?.cabin?.sailingDate!)!, format: Constant.MyClassConstants.dateFormat))
+            if let sailingDate = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise?.cabin?.sailingDate {
+            // TODO(Jhon): Error, found nil
+                checkDate  = Helper.getUpcommingcheckinDatesDiffrence(date: Helper.convertStringToDate(dateString:sailingDate, format: Constant.MyClassConstants.dateFormat))
+            }
         
         }
         
