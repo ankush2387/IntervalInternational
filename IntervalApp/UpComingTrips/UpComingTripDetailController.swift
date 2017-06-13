@@ -11,6 +11,7 @@ import IntervalUIKit
 import SDWebImage
 import DarwinSDK
 import MessageUI
+import SVProgressHUD
 
 class UpComingTripDetailController: UIViewController {
     
@@ -238,6 +239,29 @@ class UpComingTripDetailController: UIViewController {
         
         self.present(mapDetailsNav, animated: true, completion: nil)
     }
+    
+    func showWeatherDetail() {
+        guard let resortCode = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.resortCode else { return }
+        SVProgressHUD.show()
+
+        DirectoryClient.getResortWeather(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode, onSuccess: { (response) in
+            if let weatherResponse = response as? ResortWeather {
+                SVProgressHUD.dismiss()
+                
+                let storyboard = UIStoryboard(name: "MyUpcomingTripIphone", bundle: nil)
+                let mapDetailsNav = storyboard.instantiateViewController(withIdentifier: "weatherNav") as! UINavigationController
+                let weatherVC = mapDetailsNav.viewControllers.first as? WeatherViewController
+                weatherVC?.resortWeather = weatherResponse
+                self.present(mapDetailsNav, animated: true, completion: nil)
+            }
+
+
+        }) { (error) in
+            print(error)
+            SVProgressHUD.dismiss()
+            SimpleAlert.alert(self, title: "Error", message: "Something went wrong. Please try again.")
+        }
+    }
 }
 
 //***** MARK: Extension classes starts from here *****//
@@ -413,6 +437,8 @@ extension UpComingTripDetailController:UITableViewDataSource {
             cell.resortLocationLabel.text = "\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address!.cityName!), \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address!.countryCode!)"
             
             cell.showMapDetailButton.addTarget(self, action: #selector(UpComingTripDetailController.showMapDetail), for: .touchUpInside)
+            cell.showWeatherDetailButton.addTarget(self, action: #selector(UpComingTripDetailController.showWeatherDetail), for: .touchUpInside)
+            
             return cell
         }else if(indexPath.section == 1) {
             

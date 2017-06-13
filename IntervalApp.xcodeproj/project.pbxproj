@@ -267,6 +267,8 @@
 		DC96F3B81D7F41E500C08F1E /* TouchID.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC96F3B71D7F41E500C08F1E /* TouchID.swift */; };
 		E932C7601EE07FB70083E871 /* UpComingTripMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932C75F1EE07FB70083E871 /* UpComingTripMapViewController.swift */; };
 		E951BC4D1EE71D800070A04B /* AlertHelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E951BC4C1EE71D800070A04B /* AlertHelpViewController.swift */; };
+		E961268D1EE9EB2A001BA096 /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E961268C1EE9EB2A001BA096 /* WeatherViewController.swift */; };
+		E96126AF1EEB2548001BA096 /* VerticalProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96126AE1EEB2548001BA096 /* VerticalProgressView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -553,6 +555,8 @@
 		E2CBCD7E8490E488AB822061 /* Pods_IntervalApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IntervalApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E932C75F1EE07FB70083E871 /* UpComingTripMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpComingTripMapViewController.swift; sourceTree = "<group>"; };
 		E951BC4C1EE71D800070A04B /* AlertHelpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertHelpViewController.swift; sourceTree = "<group>"; };
+		E961268C1EE9EB2A001BA096 /* WeatherViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherViewController.swift; sourceTree = "<group>"; };
+		E96126AE1EEB2548001BA096 /* VerticalProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VerticalProgressView.swift; path = "../../../../Desktop/MLVerticalProgressView-master/Pod/Classes/VerticalProgressView.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -655,6 +659,7 @@
 				3A932D5C1C886918004BF665 /* PolicyCell.swift */,
 				3A932D5D1C886918004BF665 /* PolicyCell.xib */,
 				E932C75F1EE07FB70083E871 /* UpComingTripMapViewController.swift */,
+				E961268C1EE9EB2A001BA096 /* WeatherViewController.swift */,
 			);
 			path = UpComingTrips;
 			sourceTree = "<group>";
@@ -840,6 +845,7 @@
 		3AAA59F91C720F4500A5EA6D /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				E96126AE1EEB2548001BA096 /* VerticalProgressView.swift */,
 				DC27F7CA1DB8278000AA374F /* CustomTableViewCell.swift */,
 				DC96F3B71D7F41E500C08F1E /* TouchID.swift */,
 				DC7EF4D21D709EBF00E9E360 /* CommonMembership.swift */,
@@ -1327,6 +1333,7 @@
 				3A586CC81DDCA28200EF6756 /* PromotionsDiscountCell.swift in Sources */,
 				DC7BA8311DB911D600BB0C3B /* MagazineCollectionViewCell.swift in Sources */,
 				DC7EF4DB1D709F0400E9E360 /* VacationCollectionViewCell.swift in Sources */,
+				E961268D1EE9EB2A001BA096 /* WeatherViewController.swift in Sources */,
 				087A87561E9519E2009B1387 /* TdiTableViewCell.swift in Sources */,
 				3A3D56891DD33B3300922FA9 /* DestinationResortDetailCell.swift in Sources */,
 				3A476F111CECE07F00607185 /* MoreCell.swift in Sources */,
@@ -1449,6 +1456,7 @@
 				3A892F521CD3902F00AE6F45 /* WhereToGoContentCell.swift in Sources */,
 				DC04BB3C1DB829F100227FF5 /* IntervalHDCollectionViewCell.swift in Sources */,
 				3A3D567D1DD332EB00922FA9 /* WhoWillBeCheckingInIPadViewController.swift in Sources */,
+				E96126AF1EEB2548001BA096 /* VerticalProgressView.swift in Sources */,
 				3AEF710B1DDF1B3400FA076D /* AdvisementsTableViewCell.swift in Sources */,
 				3A40A4601E0C14AA00D86152 /* ConfirmationViewController.swift in Sources */,
 				DC7EF4D01D709EAA00E9E360 /* MyUpcommingTripIpadViewController.swift in Sources */,

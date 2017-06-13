@@ -38,6 +38,7 @@ class UpComingTripCell: UITableViewCell {
     @IBOutlet weak var checkInMonthYearLabel: UILabel!
     @IBOutlet weak var checkOutMonthYearLabel: UILabel!
     @IBOutlet weak var showMapDetailButton: UIButton!
+    @IBOutlet weak var showWeatherDetailButton: UIButton!
     
     @IBOutlet weak var resortFixedWeekLabel: UILabel!
     
