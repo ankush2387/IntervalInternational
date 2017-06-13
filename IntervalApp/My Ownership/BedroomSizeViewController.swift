@@ -349,6 +349,31 @@ extension BedroomSizeViewController : UITableViewDelegate{
             }else{
                 Constant.MyClassConstants.unitNumberLockOff = (String(describing: Constant.MyClassConstants.relinquishmentSelectedWeek.unit!.unitNumber!))
             }
+            
+            
+            
+            
+            
+            
+            for floatWeek in Constant.MyClassConstants.whatToTradeArray{
+                let floatWeekTraversed = floatWeek as! OpenWeeks
+                if(floatWeekTraversed.isFloat && Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId! == floatWeekTraversed.relinquishmentID){
+                    if(Constant.MyClassConstants.unitNumberLockOff == floatWeekTraversed.floatDetails[0].unitNumber){
+                        Constant.MyClassConstants.selectedFloatWeek = floatWeekTraversed
+                        Constant.MyClassConstants.savedClubFloatResort = floatWeekTraversed.floatDetails[0].clubResortDetails
+                    }
+                    
+                }
+            }
+            for floatWeek in Constant.MyClassConstants.floatRemovedArray{
+                let floatWeekTraversed = floatWeek as! OpenWeeks
+                if(floatWeekTraversed.isFloatRemoved && Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId! == floatWeekTraversed.relinquishmentID){
+                    if(Constant.MyClassConstants.unitNumberLockOff == floatWeekTraversed.floatDetails[0].unitNumber){
+                        Constant.MyClassConstants.selectedFloatWeek = floatWeekTraversed
+                        Constant.MyClassConstants.savedClubFloatResort = floatWeekTraversed.floatDetails[0].clubResortDetails
+                    }
+                }
+            }
             delegate?.floatLockOffDetails!(bedroomDetails:Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as! String)
             self.dismiss(animated: false, completion: nil)
         }

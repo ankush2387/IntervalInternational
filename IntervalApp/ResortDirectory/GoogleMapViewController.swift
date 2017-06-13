@@ -1803,7 +1803,11 @@ extension GoogleMapViewController:UISearchBarDelegate {
         if(searchBar.text!.characters.count >= 3) {
             
             DirectoryClient.searchDestinations(Constant.MyClassConstants.systemAccessToken, request: SearchDestinationsRequest.init(query: searchBar.text), onSuccess: { (response) in
-                Constant.MyClassConstants.resorts = response.resorts
+                if(response.resorts.count > 0){
+                    Constant.MyClassConstants.resorts = response.resorts
+                }
+                
+                
                 Constant.MyClassConstants.destinations = response.destinations
                 self.showPopUpView()
                 self.searchDisplayTableView.reloadData()

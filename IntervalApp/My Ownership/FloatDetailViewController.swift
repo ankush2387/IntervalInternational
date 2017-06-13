@@ -45,23 +45,11 @@ class FloatDetailViewController: UIViewController {
         //adding keyboard notifications
         NotificationCenter.default.addObserver(self, selector:#selector(keyboardWasShown), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
-        
-        if(isFromLockOff){
-        var section = 2
-        if(Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.resortClubAttribute)) {
-            self.floatDetailsTableView.reloadSections(IndexSet(integer: 2), with:.automatic)
-            section = 3
-        }
-        let indexPath = NSIndexPath(row:2, section:section)
-        self.floatDetailsTableView.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
-        if(Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.checkInDateAttribute)){
-            let indexPath = NSIndexPath(row:3, section:section)
-            self.floatDetailsTableView.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
-        }
-        }else{
-            self.floatDetailsTableView.reloadData()
-        }
 
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+         self.floatDetailsTableView.reloadData()
     }
     
     override func viewDidLoad() {
@@ -209,7 +197,7 @@ class FloatDetailViewController: UIViewController {
         
         
         //Check if float is already saved in database
-        if(Constant.MyClassConstants.floatRemovedArray.count != 0 || Constant.MyClassConstants.whatToTradeArray.contains(Constant.MyClassConstants.selectedFloatWeek)){
+        if(Constant.MyClassConstants.floatRemovedArray.count != 0){
             
             let storedData = Helper.getLocalStorageWherewanttoTrade()
             
@@ -218,42 +206,45 @@ class FloatDetailViewController: UIViewController {
                 try! realm.write {
                     var floatWeek = OpenWeeks()
                     var floatWeekIndex = -1
-                    for openWk in Constant.MyClassConstants.whatToTradeArray{
-                        let openWk1 = openWk as! OpenWeeks
-                        if(openWk1.relinquishmentID == Constant.MyClassConstants.selectedFloatWeek.relinquishmentID){
-                            floatWeek = openWk1
-                            floatWeekIndex = Constant.MyClassConstants.whatToTradeArray.index(of: Constant.MyClassConstants.selectedFloatWeek)
-                            Constant.MyClassConstants.whatToTradeArray.removeObject(at: floatWeekIndex)
+                    
+                    for (index,object) in storedData.enumerated(){
+                        let openWk1 = object.openWeeks[0].openWeeks[0]
+                        if(openWk1.relinquishmentID == Constant.MyClassConstants.selectedFloatWeek.relinquishmentID && openWk1.isFloatRemoved){
+                            print(index)
+                            floatWeekIndex = index
                         }
                     }
-                    if(floatWeekIndex < 0){
-                        for openWk in Constant.MyClassConstants.floatRemovedArray{
+    
+                        /*for openWk in Constant.MyClassConstants.floatRemovedArray{
                             let openWk1 = openWk as! OpenWeeks
-                            if(openWk1.relinquishmentID == Constant.MyClassConstants.selectedFloatWeek.relinquishmentID){
+                            if(openWk1.relinquishmentID == Constant.MyClassConstants.selectedFloatWeek.relinquishmentID && openWk1.floatDetails[0].unitNumber == Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].unitNumber){
                                 floatWeek = openWk1
                                 floatWeekIndex = Constant.MyClassConstants.floatRemovedArray.index(of: Constant.MyClassConstants.selectedFloatWeek)
-                                Constant.MyClassConstants.floatRemovedArray.removeObject(at: floatWeekIndex)
                             }
                         }
-                    }
                     
                     if(floatWeekIndex >= 0){
-                        realm.delete(storedData[floatWeekIndex])
-                    }
-                    
                     if(Constant.MyClassConstants.whatToTradeArray.count > 0){
-                        
-                        Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: floatWeekIndex)
-                        Constant.MyClassConstants.relinquishmentUnitsArray.removeObject(at: floatWeekIndex)
-                    }
-                    
-                    let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-                    DispatchQueue.main.asyncAfter(deadline: delayTime) {
-                        
-                        if(!floatWeek.isFloatRemoved) {
-                            self.addFloatToDatabase(reservationNumber: Constant.FloatDetails.reservationNumber, unitNumber:Constant.FloatDetails.unitNumber, unitSize:Constant.MyClassConstants.savedBedroom, checkInDate:checkInDate)
+                            
+                            Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: floatWeekIndex)
+                            Constant.MyClassConstants.relinquishmentUnitsArray.removeObject(at: floatWeekIndex)
                         }
-                    }
+                    }*/
+                    
+                        storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFloatRemoved = false
+                        storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFloat = true
+                        storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFromRelinquishment = true
+                        storedData[floatWeekIndex].openWeeks[0].openWeeks[0].floatDetails[0].reservationNumber = Constant.FloatDetails.reservationNumber
+                        storedData[floatWeekIndex].openWeeks[0].openWeeks[0].floatDetails[0].unitNumber = Constant.FloatDetails.unitNumber
+                        storedData[floatWeekIndex].openWeeks[0].openWeeks[0].floatDetails[0].unitSize = Constant.MyClassConstants.savedBedroom
+                        storedData[floatWeekIndex].openWeeks[0].openWeeks[0].floatDetails[0].checkInDate = checkInDate
+                        storedData[floatWeekIndex].openWeeks[0].openWeeks[0].floatDetails[0].clubResortDetails = Constant.MyClassConstants.savedClubFloatResort
+                        if(floatWeek.isLockOff){
+                            storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isLockOff = true
+                        }
+                    //Pop to vacation search screen
+                    popToVacationSearch()
+
                 }
             }
         }else{
@@ -336,32 +327,38 @@ class FloatDetailViewController: UIViewController {
         let realm = try! Realm()
         try! realm.write {
             realm.add(storedata)
-            
             //Pop to vacation search screen
-            
-            // Open vacation search view controller
-            var viewcontroller:UIViewController
-            if (Constant.RunningDevice.deviceIdiom == .phone) {
-                
-                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-                viewcontroller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as! SWRevealViewController
-            }
-            else{
-                
-                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-                viewcontroller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as! SWRevealViewController
-            }
-            
-            
-            //***** creating animation transition to show custom transition animation *****//
-            let transition: CATransition = CATransition()
-            let timeFunc : CAMediaTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-            transition.duration = 0.0
-            transition.timingFunction = timeFunc
-            viewcontroller.view.layer.add(transition, forKey: Constant.MyClassConstants.switchToView)
-            UIApplication.shared.keyWindow?.rootViewController = viewcontroller
-            self.resetFloatGlobalVariables()
+            popToVacationSearch()
         }
+    }
+    
+    //Function to pop to vacation search
+    
+    func popToVacationSearch(){
+        //Pop to vacation search screen
+        
+        // Open vacation search view controller
+        var viewcontroller:UIViewController
+        if (Constant.RunningDevice.deviceIdiom == .phone) {
+            
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+            viewcontroller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as! SWRevealViewController
+        }
+        else{
+            
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+            viewcontroller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as! SWRevealViewController
+        }
+        
+        
+        //***** creating animation transition to show custom transition animation *****//
+        let transition: CATransition = CATransition()
+        let timeFunc : CAMediaTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        transition.duration = 0.0
+        transition.timingFunction = timeFunc
+        viewcontroller.view.layer.add(transition, forKey: Constant.MyClassConstants.switchToView)
+        UIApplication.shared.keyWindow?.rootViewController = viewcontroller
+        self.resetFloatGlobalVariables()
     }
     
     //Function to get ordered sections
@@ -377,7 +374,7 @@ class FloatDetailViewController: UIViewController {
         if(Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.resortReservationAttribute)){
             atrributesRowArray.add(Constant.MyClassConstants.resortReservationAttribute)
         }
-        if(Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.unitNumberAttribute) || isFromLockOff){
+        if(Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.unitNumberAttribute)){
             atrributesRowArray.add(Constant.MyClassConstants.unitNumberAttribute)
         }
         atrributesRowArray.add(Constant.MyClassConstants.noOfBedroomAttribute)

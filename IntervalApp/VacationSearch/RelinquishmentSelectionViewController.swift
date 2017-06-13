@@ -25,6 +25,10 @@ class RelinquishmentSelectionViewController: UIViewController {
     //Outlets
     @IBOutlet weak var relinquishmentTableview: UITableView!
     
+    override func viewDidAppear(_ animated: Bool) {
+        Helper.InitializeOpenWeeksFromLocalStorage()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         Constant.MyClassConstants.savedBedroom = ""
         Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate = nil
@@ -442,8 +446,10 @@ class RelinquishmentSelectionViewController: UIViewController {
                 for selectedUnits in Constant.MyClassConstants.relinquishmentUnitsArray{
                     
                     let selectedDict = selectedUnits as! NSMutableDictionary
+                    print(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!,selectedDict.allKeys.first!,selectedDict)
                     if(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId! == selectedDict.allKeys.first as! String){
                         Constant.MyClassConstants.userSelectedUnitsArray.add(selectedDict.object(forKey: Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!)!)
+                        print(Constant.MyClassConstants.userSelectedUnitsArray)
                     }
                 }
             }else{
@@ -452,12 +458,7 @@ class RelinquishmentSelectionViewController: UIViewController {
             getUnitSize((Constant.MyClassConstants.relinquishmentSelectedWeek.unit?.lockOffUnits)!)
             
             Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.floatViewController
-            Constant.MyClassConstants.whatToTradeArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek)
             Constant.MyClassConstants.relinquishmentIdArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!)
-            
-            
-            
-            
             
             var mainStoryboard = UIStoryboard()
             if(Constant.RunningDevice.deviceIdiom == .pad) {
@@ -486,17 +487,13 @@ class RelinquishmentSelectionViewController: UIViewController {
             
             for floatWeek in Constant.MyClassConstants.whatToTradeArray{
                 let floatWeekTraversed = floatWeek as! OpenWeeks
-                if(floatWeekTraversed.isFloat && Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId == floatWeekTraversed.relinquishmentID){
+                if(floatWeekTraversed.isFloat && Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId! == floatWeekTraversed.relinquishmentID){
                     Constant.MyClassConstants.selectedFloatWeek = floatWeekTraversed
                     Constant.MyClassConstants.savedClubFloatResort = floatWeekTraversed.floatDetails[0].clubResortDetails
                 }
             }
             for floatWeek in Constant.MyClassConstants.floatRemovedArray{
                 let floatWeekTraversed = floatWeek as! OpenWeeks
-                
-                print(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!)
-                print(floatWeekTraversed.relinquishmentID)
-                print(floatWeekTraversed.isFloatRemoved)
                 if(floatWeekTraversed.isFloatRemoved && Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId! == floatWeekTraversed.relinquishmentID){
                     Constant.MyClassConstants.selectedFloatWeek = floatWeekTraversed
                     Constant.MyClassConstants.savedClubFloatResort = floatWeekTraversed.floatDetails[0].clubResortDetails
@@ -511,7 +508,7 @@ class RelinquishmentSelectionViewController: UIViewController {
         let unitSizeRelinquishment = unitSize
         var unitString = ""
         for unit in unitSizeRelinquishment{
-            unitString = "\(Helper.getBedroomNumbers(bedroomType: unit.unitSize!)), \(Helper.getKitchenEnums(kitchenType: unit.kitchenType!)) Sleeps \(unit.publicSleepCapacity)"
+            unitString = "\(Helper.getBedroomNumbers(bedroomType: unit.unitSize!)), Sleeps \(unit.publicSleepCapacity)"
             
             Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.add(unitString)
         }
@@ -654,7 +651,7 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                 openWeek = relinquishmentOpenWeeksArray[indexPath.row]
                 
                 if(openWeek.weekNumber == Constant.CommonStringIdentifiers.floatWeek){
-                    
+                    print(openWeek.relinquishmentId!, Constant.MyClassConstants.realmOpenWeeksID)
                     if(Constant.MyClassConstants.realmOpenWeeksID.contains(openWeek.relinquishmentId!) && openWeek.unit?.lockOffUnits.count == 0) {
                         
                         let  cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.floatWeekSavedCell, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
@@ -696,6 +693,8 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                                     
                                     cell.resortName.text = "\(openWeek.resort!.resortName!)/\(openWeek.resort!.resortCode!)"
                                     cell.totalWeekLabel.text = "\(openWeek.relinquishmentYear!)"
+                                    cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType:openWeek.unit!.unitSize!))), \(Helper.getKitchenEnums(kitchenType:openWeek.unit!.kitchenType!))"
+                                    cell.totalSleepAndPrivate.text = "Sleeps \(openWeek.unit!.publicSleepCapacity), \(openWeek.unit!.privateSleepCapacity) Private"
                                     if(indexPath.section == 1){
                                         cell.addButton.tag = indexPath.row + indexPath.section
                                     }else{

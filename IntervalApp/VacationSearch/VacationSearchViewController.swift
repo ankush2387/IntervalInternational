@@ -552,21 +552,34 @@ extension VacationSearchViewController:UITableViewDelegate {
                     let realm = try! Realm()
                     try! realm.write {
                         
-                
-                        storedData[indexPath.row].openWeeks[0].openWeeks[0].isFloatRemoved = true
-                        storedData[indexPath.row].openWeeks[0].openWeeks[0].isFloat = true
-                        storedData[indexPath.row].openWeeks[0].openWeeks[0].isFromRelinquishment = false
+                    var floatWeekIndex = -1
+                        let dataSelected = Constant.MyClassConstants.whatToTradeArray[indexPath.row] as! OpenWeeks
+                        for (index,object) in storedData.enumerated(){
+                            let openWk1 = object.openWeeks[0].openWeeks[0]
+                            if(openWk1.relinquishmentID == dataSelected.relinquishmentID){
+                                print(index)
+                                floatWeekIndex = index
+                            }
+                        }
+                        
+                        
+                        storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFloatRemoved = true
+                        storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFloat = true
+                        storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFromRelinquishment = false
                         
                         if(Constant.MyClassConstants.whatToTradeArray.count > 0){
                             
                             ADBMobile.trackAction(Constant.omnitureEvents.event43, data: nil)
                             Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
                             Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: indexPath.row)
-                           Constant.MyClassConstants.relinquishmentUnitsArray.removeObject(at: indexPath.row)                        }
+                           Constant.MyClassConstants.relinquishmentUnitsArray.removeObject(at: indexPath.row)
+                        }
                         tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
                         
                         tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
+                        Helper.InitializeOpenWeeksFromLocalStorage()
                     }
+                    
                 }
             }
             

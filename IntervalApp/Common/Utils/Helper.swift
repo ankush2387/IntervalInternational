@@ -591,6 +591,7 @@ public class Helper{
     //***** Function that get all objects of type Open Weeks from Realm storage *****//
     
     static func InitializeOpenWeeksFromLocalStorage () {
+        SVProgressHUD.show()
         Constant.MyClassConstants.relinquishmentIdArray.removeAllObjects()
         Constant.MyClassConstants.whatToTradeArray.removeAllObjects()
         Constant.MyClassConstants.idUnitsRelinquishmentDictionary.removeAllObjects()
@@ -629,8 +630,9 @@ public class Helper{
                             }
                             Constant.MyClassConstants.idUnitsRelinquishmentDictionary.setValue(object.unitDetails, forKey: object.relinquishmentID)
                             tempDict.setValue(object.unitDetails, forKey: object.relinquishmentID)
+                            if(!object.isFloatRemoved){
                             Constant.MyClassConstants.relinquishmentUnitsArray.add(tempDict)
-                            
+                            }
                         }
                         
                     }else{
@@ -644,6 +646,8 @@ public class Helper{
         }else{
             print("No Data")
         }
+        
+        SVProgressHUD.dismiss()
     }
     
     //***** function that returns AreaOfInfluenceDestination list according to selected membership number that send to server for search dates API call *****//
