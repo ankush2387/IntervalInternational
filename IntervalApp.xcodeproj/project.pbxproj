@@ -266,9 +266,9 @@
 		DC7EF5151D709F8800E9E360 /* SignInPreLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7EF5041D709F8800E9E360 /* SignInPreLoginViewController.swift */; };
 		DC96F3B81D7F41E500C08F1E /* TouchID.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC96F3B71D7F41E500C08F1E /* TouchID.swift */; };
 		E932C7601EE07FB70083E871 /* UpComingTripMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932C75F1EE07FB70083E871 /* UpComingTripMapViewController.swift */; };
+		E94FB5EA1EF0609C00314C5D /* VerticalProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94FB5E91EF0609C00314C5D /* VerticalProgressView.swift */; };
 		E951BC4D1EE71D800070A04B /* AlertHelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E951BC4C1EE71D800070A04B /* AlertHelpViewController.swift */; };
 		E961268D1EE9EB2A001BA096 /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E961268C1EE9EB2A001BA096 /* WeatherViewController.swift */; };
-		E96126AF1EEB2548001BA096 /* VerticalProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96126AE1EEB2548001BA096 /* VerticalProgressView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -554,9 +554,9 @@
 		DC96F3B71D7F41E500C08F1E /* TouchID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchID.swift; sourceTree = "<group>"; };
 		E2CBCD7E8490E488AB822061 /* Pods_IntervalApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IntervalApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E932C75F1EE07FB70083E871 /* UpComingTripMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpComingTripMapViewController.swift; sourceTree = "<group>"; };
+		E94FB5E91EF0609C00314C5D /* VerticalProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticalProgressView.swift; sourceTree = "<group>"; };
 		E951BC4C1EE71D800070A04B /* AlertHelpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertHelpViewController.swift; sourceTree = "<group>"; };
 		E961268C1EE9EB2A001BA096 /* WeatherViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherViewController.swift; sourceTree = "<group>"; };
-		E96126AE1EEB2548001BA096 /* VerticalProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VerticalProgressView.swift; path = "../../../../Desktop/MLVerticalProgressView-master/Pod/Classes/VerticalProgressView.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -845,7 +845,7 @@
 		3AAA59F91C720F4500A5EA6D /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				E96126AE1EEB2548001BA096 /* VerticalProgressView.swift */,
+				E94FB5E91EF0609C00314C5D /* VerticalProgressView.swift */,
 				DC27F7CA1DB8278000AA374F /* CustomTableViewCell.swift */,
 				DC96F3B71D7F41E500C08F1E /* TouchID.swift */,
 				DC7EF4D21D709EBF00E9E360 /* CommonMembership.swift */,
@@ -1363,6 +1363,7 @@
 				3AC5720D1E2A278E00969CF7 /* NotesCell.swift in Sources */,
 				3AAA5A3E1C720F4500A5EA6D /* ActionSheetTblCell.swift in Sources */,
 				3A3A012F1C99BD0B00B7EC37 /* BedroomSizeViewController.swift in Sources */,
+				E94FB5EA1EF0609C00314C5D /* VerticalProgressView.swift in Sources */,
 				DC27F7C61DB81B6F00AA374F /* GetawayAlertsIpadViewController.swift in Sources */,
 				3A3BE3ED1CA0441200CDE3AA /* MyOwnershipAvailablePointTooolTableViewCell.swift in Sources */,
 				3A2C728F1DDB2DC900BBF40B /* AdvisementsCell.swift in Sources */,
@@ -1456,7 +1457,6 @@
 				3A892F521CD3902F00AE6F45 /* WhereToGoContentCell.swift in Sources */,
 				DC04BB3C1DB829F100227FF5 /* IntervalHDCollectionViewCell.swift in Sources */,
 				3A3D567D1DD332EB00922FA9 /* WhoWillBeCheckingInIPadViewController.swift in Sources */,
-				E96126AF1EEB2548001BA096 /* VerticalProgressView.swift in Sources */,
 				3AEF710B1DDF1B3400FA076D /* AdvisementsTableViewCell.swift in Sources */,
 				3A40A4601E0C14AA00D86152 /* ConfirmationViewController.swift in Sources */,
 				DC7EF4D01D709EAA00E9E360 /* MyUpcommingTripIpadViewController.swift in Sources */,

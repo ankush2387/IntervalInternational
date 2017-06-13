@@ -53,8 +53,9 @@ class UpComingTripDetailIPadViewController: UIViewController {
         // Omniture tracking with event 74
         
         let userInfo: [String: String] = [
-            
-            Constant.omnitureEvars.eVar18 : Constant.MyClassConstants.upcomingOriginationPoint,
+            Constant.omnitureEvars.eVar18 : "",
+            //TODO (Jhon): error found in iPad with user bwilling
+//            Constant.omnitureEvars.eVar18 : Constant.MyClassConstants.upcomingOriginationPoint,
             Constant.omnitureEvars.eVar55 : ""
 
         ]
