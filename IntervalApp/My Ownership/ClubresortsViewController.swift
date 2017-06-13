@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DarwinSDK
 
 class ClubresortsViewController: UIViewController {
 
@@ -21,10 +22,24 @@ class ClubresortsViewController: UIViewController {
         - returns : No value is return
     */
     @IBAction func clubselectedIstapped(_ sender: AnyObject) {
+        
         guard let currentCheckedIndex = self.currentCheckedIndex else{
+            
+            if (Constant.MyClassConstants.buttontitle == Constant.buttonId.bedroomselection) {
+                
+                Constant.MyClassConstants.savedBedroom = UnitSize.forDisplay[sender.tag].friendlyName()
+                
+            }
+            else if( Constant.MyClassConstants.buttontitle == Constant.buttonId.resortSelection){
+                
+                   Constant.MyClassConstants.savedClubFloatResort = Constant.MyClassConstants.clubFloatResorts[sender.tag].resortName!
+            }
+            
+
             isbedroomSizeCheckboxchecked = true
             self.currentCheckedIndex = sender.tag
             clubresortTableView.reloadData()
+            self.navigationController?.popViewController(animated: true)
             return
         }
         if currentCheckedIndex == sender.tag{
@@ -87,24 +102,51 @@ extension ClubresortsViewController:UITableViewDataSource{
     
     /** Number of Rows In Sections */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return clubresortArrayOfDictionary.count
+        
+        if (Constant.MyClassConstants.buttontitle == Constant.buttonId.bedroomselection) {
+            
+         return  UnitSize.forDisplay.count
+        }
+        else if( Constant.MyClassConstants.buttontitle == Constant.buttonId.resortSelection){
+            
+            return Constant.MyClassConstants.clubFloatResorts.count
+        }
+        return Constant.MyClassConstants.clubFloatResorts.count
+
     }
     /** Cell For Row At IndexPath */
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell  = tableView.dequeueReusableCell(withIdentifier: Constant.clubresortsViewController.clubresortcellIdentifier) as? ClubresortTableViewCell
-        if currentCheckedIndex != nil{
-            if (indexPath as NSIndexPath).row == currentCheckedIndex!{
-                
-                cell?.getCell(clubresortArrayOfDictionary[(indexPath as NSIndexPath).row], index: currentCheckedIndex!, isChecked:isbedroomSizeCheckboxchecked)
+        
+        cell?.clubResortCheckbox.tag = indexPath.row
+        
+        if (Constant.MyClassConstants.buttontitle == Constant.buttonId.bedroomselection) {
+           
+            cell?.clubresortNameLabel.text = "\(UnitSize.forDisplay[indexPath.row].friendlyName()) "
+           
+                   }
+        else if( Constant.MyClassConstants.buttontitle == Constant.buttonId.resortSelection){
+            
+            let resort = Constant.MyClassConstants.clubFloatResorts[indexPath.row]
+
+            if currentCheckedIndex != nil{
+                if (indexPath as NSIndexPath).row == currentCheckedIndex!{
+                    
+                    cell?.getCell(clubresortArrayOfDictionary[(indexPath as NSIndexPath).row], index: currentCheckedIndex!, isChecked:isbedroomSizeCheckboxchecked)
+                }
+                else{
+                    cell?.getCell(clubresortArrayOfDictionary[(indexPath as NSIndexPath).row],index: (indexPath as NSIndexPath).row)
+                }
             }
             else{
                 cell?.getCell(clubresortArrayOfDictionary[(indexPath as NSIndexPath).row],index: (indexPath as NSIndexPath).row)
             }
+            
+            cell?.clubresortNameLabel.text = "\(resort.resortName!) . \(resort.resortCode!)"
+          
         }
-        else{
-            cell?.getCell(clubresortArrayOfDictionary[(indexPath as NSIndexPath).row],index: (indexPath as NSIndexPath).row)
-        }
-
+        
         
         return cell!
     }

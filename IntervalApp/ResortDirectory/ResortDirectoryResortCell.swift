@@ -49,6 +49,23 @@ class ResortDirectoryResortCell: UITableViewCell {
         }
 
     }
+
+    func getCell(resortDetails:Resort){
+        setPropertiesTocellComponenet(resort:resortDetails)
+    }
+    
+    //MARK:set properties to cell component
+    /**
+     Apply Properties to cell components
+     - parameter No parameter:
+     - returns : No return value
+     */
+    fileprivate func setPropertiesTocellComponenet(resort:Resort){
+        Helper.addLinearGradientToView(view: resortNameGradientView, colour: UIColor.white, transparntToOpaque: true, vertical: true)
+        resortName.text = resort.resortName!
+        resortAddress.text = resort.address?.cityName
+        resortCode.text = resort.resortCode!
+    }
 //***** custom cell favorites button action implementation *****//
     @IBAction func favirotesButtonPressed(_ sender: AnyObject) {
         

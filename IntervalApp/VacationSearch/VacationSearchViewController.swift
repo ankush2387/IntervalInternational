@@ -288,11 +288,10 @@ extension VacationSearchViewController:UICollectionViewDataSource {
         let resortFlaxImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: 180) )
         resortFlaxImageView.backgroundColor = UIColor.lightGray
         
-        print((deal.image?.url!)!)
         
         if(self.SegmentIndex == 0 || self.SegmentIndex == 1) {
             
-            resortFlaxImageView.setImageWith(URL(string: (deal.image?.url!)!), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
+            resortFlaxImageView.setImageWith(URL(string: (deal.image?.url) ?? ""), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
                 if (error != nil) {
                     resortFlaxImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                 }
@@ -544,27 +543,43 @@ extension VacationSearchViewController:UITableViewDelegate {
         }else{
             
             let delete = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.delete) { (action,index) -> Void in
+               // var isFloat = true
                 let storedData = Helper.getLocalStorageWherewanttoTrade()
                 
-                if(Constant.MyClassConstants.whatToTradeArray.count > 0){
-                    
-                    ADBMobile.trackAction(Constant.omnitureEvents.event43, data: nil)
-                    Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
-                    Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: indexPath.row)
-                    Constant.MyClassConstants.relinquishmentUnitsArray.removeObject(at: indexPath.row)
-                }
-                
                 if(storedData.count > 0) {
+                    
+                    
                     let realm = try! Realm()
                     try! realm.write {
-                        realm.delete(storedData[indexPath.row])
-                        print(storedData)
+                        
+                    var floatWeekIndex = -1
+                        let dataSelected = Constant.MyClassConstants.whatToTradeArray[indexPath.row] as! OpenWeeks
+                        for (index,object) in storedData.enumerated(){
+                            let openWk1 = object.openWeeks[0].openWeeks[0]
+                            if(openWk1.relinquishmentID == dataSelected.relinquishmentID){
+                                print(index)
+                                floatWeekIndex = index
+                            }
+                        }
+                        
+                        
+                        storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFloatRemoved = true
+                        storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFloat = true
+                        storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFromRelinquishment = false
+                        
+                        if(Constant.MyClassConstants.whatToTradeArray.count > 0){
+                            
+                            ADBMobile.trackAction(Constant.omnitureEvents.event43, data: nil)
+                            Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
+                            Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: indexPath.row)
+                           Constant.MyClassConstants.relinquishmentUnitsArray.removeObject(at: indexPath.row)
+                        }
+                        tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+                        
+                        tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
+                        Helper.InitializeOpenWeeksFromLocalStorage()
                     }
-                }
-                tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
-                let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-                DispatchQueue.main.asyncAfter(deadline: delayTime) {
-                    tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
+                    
                 }
             }
             
@@ -790,14 +805,28 @@ extension VacationSearchViewController:UITableViewDataSource {
                         }else if((object as AnyObject).isKind(of: OpenWeeks.self)){
                             let weekNumber = Constant.getWeekNumber(weekType: ((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).weekNumber))
                             print((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff)
-                            if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff){
+                            if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff || (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isFloat){
                                 cell.bedroomLabel.isHidden = false
                                 
                                 let resortList = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).unitDetails
-                                print((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).resort[0].resortName, resortList.count)
-                                cell.bedroomLabel.text = resortList[0].unitSize
+                                if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isFloat){
+                                    let floatDetails = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).floatDetails
+                                    if(floatDetails[0].showUnitNumber){
+                                       cell.bedroomLabel.text = "\(floatDetails[0].unitSize), \(floatDetails[0].unitNumber), \(resortList[0].kitchenType)"
+                                    }else{
+                                       cell.bedroomLabel.text = "\(floatDetails[0].unitSize), \(resortList[0].kitchenType)"
+                                    }
+                                }else{
+                                    cell.bedroomLabel.text = "\(resortList[0].unitSize), \(resortList[0].kitchenType)"
+                                }
+                            }else{
+                                cell.bedroomLabel.isHidden = true
                             }
-                            cell.whereTogoTextLabel.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).resort[0].resortName), \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).relinquishmentYear) Week \(weekNumber)"
+                            if(weekNumber != ""){
+                                cell.whereTogoTextLabel.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).resort[0].resortName)/ \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).relinquishmentYear), Wk\(weekNumber)"
+                            }else{
+                             cell.whereTogoTextLabel.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).resort[0].resortName)/ \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).relinquishmentYear)"
+                            }
                         }else{
                             
                             let availablePointsNumber = Constant.MyClassConstants.relinquishmentAvailablePointsProgram as NSNumber

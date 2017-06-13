@@ -8,11 +8,11 @@
 
 import UIKit
 import IntervalUIKit
+import DarwinSDK
 class CallYourResortTableViewCell: UITableViewCell {
 
     /** Outlets */
     @IBOutlet weak var callresortbutton: UIButton!
-    
     @IBOutlet weak var donothaveresortLabel: UILabel!
     
     override func awakeFromNib() {
@@ -35,10 +35,6 @@ class CallYourResortTableViewCell: UITableViewCell {
     - returns : No return value
     */
     fileprivate func setPropertiesTocellComponenet(){
-        callresortbutton.layer.cornerRadius = 8
-        callresortbutton.tintColor = UIColor.white
-        callresortbutton.backgroundColor = UIColor.green
-        donothaveresortLabel.textColor = UIColor(rgb: IUIKColorPalette.secondaryText.rawValue)
     }
     /**
      Update cell components text

@@ -8,6 +8,8 @@
 
 import UIKit
 import IntervalUIKit
+import DarwinSDK
+
 class ClubresortTableViewCell: UITableViewCell {
 
     //Outlets
@@ -32,6 +34,14 @@ class ClubresortTableViewCell: UITableViewCell {
         self.clubresortDictionary = clubresortdictionary
         clubResortCheckbox.tag = index
         clubResortCheckbox.checked = isChecked
+        print(Constant.MyClassConstants.savedBedroom)
+        if(isChecked || Constant.MyClassConstants.savedClubFloatResort == Constant.MyClassConstants.clubFloatResorts[index].resortName! || Constant.MyClassConstants.savedBedroom == UnitSize.forDisplay[index].rawValue){
+            clubresortNameLabel.textColor = UIColor.orange
+            clubResortCheckbox.checked = true
+        }else{
+            clubresortNameLabel.textColor = UIColor.black
+            clubResortCheckbox.checked = false
+        }
     }
     /**
      Apply properties to cell components
@@ -40,7 +50,7 @@ class ClubresortTableViewCell: UITableViewCell {
      */
     fileprivate func setPropertiesToCellElements(){
         clubresortNameLabel.textColor = UIColor(rgb: IUIKColorPalette.primary1.rawValue)
-        clubresortAvailabilitylabel.textColor = UIColor(rgb: IUIKColorPalette.primary1.rawValue)
+        //clubresortAvailabilitylabel.textColor = UIColor(rgb: IUIKColorPalette.primary1.rawValue)
 
     }
 
@@ -50,12 +60,12 @@ class ClubresortTableViewCell: UITableViewCell {
      - returns : No value is return
      */
     fileprivate func updateCellComponent(){
-        if let clubresortname = clubresortDictionary["clubresortname"]{
+       /* if let clubresortname = clubresortDictionary["clubresortname"]{
             clubresortNameLabel.text = clubresortname
         }
         if let clubresoravailabilty = clubresortDictionary["clubresoravailabilty"]{
             clubresortAvailabilitylabel.text = clubresoravailabilty
-        }
+        }*/
         
     }
     override func setSelected(_ selected: Bool, animated: Bool) {

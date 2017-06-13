@@ -175,20 +175,20 @@ public class Helper{
         let gradientFrame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height)
         gradient.frame = gradientFrame
         
+          let  colours = [
+                colour.cgColor,
+                colour.withAlphaComponent(0.7).cgColor,
+                colour.withAlphaComponent(0.95).cgColor,
+                colour.withAlphaComponent(1).cgColor,
+                colour.withAlphaComponent(1).cgColor,
+                UIColor.clear.cgColor
+            ]
         
-        let colours = [
-            colour.cgColor,
-            colour.withAlphaComponent(0.7).cgColor,
-            colour.withAlphaComponent(0.95).cgColor,
-            colour.withAlphaComponent(1).cgColor,
-            colour.withAlphaComponent(1).cgColor,
-            UIColor.clear.cgColor
-        ]
         
         if transparntToOpaque == true
         {
             gradient.locations = [-0.2,0.25,0.50,0.75]
-            //colours = colours.reverse()
+           
         }
         
         if vertical == true
@@ -196,10 +196,27 @@ public class Helper{
             gradient.startPoint =  CGPoint(x:1.0, y: 0.5)
             gradient.endPoint =  CGPoint(x: 0.5, y: 1.0)
         }
+       
         gradient.colors = colours
         view.layer.insertSublayer(gradient, at: 0)
     }
     
+    // function for float week gredient color view
+   static func addGredientColorOnFloatSavedCell(view:UIView) {
+        
+        let gradient = CAGradientLayer()
+        gradient.frame = view.bounds
+        
+        let colours = [UIColor(red: 175.0/255.0, green: 215.0/255.0, blue: 100.0/255.0, alpha: 1.0).cgColor, UIColor.white.cgColor]
+        
+        gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
+        gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
+    
+        gradient.colors = colours
+        view.layer.insertSublayer(gradient, at: 0)
+
+    }
+
     //***** function to disable interactio with UI when API call is running until we got a response or error by adding new layer *****//
     static func addServiceCallBackgroundView(view:UIView){
         
@@ -224,8 +241,7 @@ public class Helper{
         Constant.MyClassConstants.signInRequestedController = sender
         if Reachability.isConnectedToNetwork() == true {
             logger.debug("Attempting oauth with \(userName) and \(password)")
-            Helper.addServiceCallBackgroundView(view: sender.view)
-            SVProgressHUD.show()
+            showProgressBar(senderView:sender)
             // Try to do the OAuth Request to obtain an access token
             AuthProviderClient.getAccessToken( userName, password: password,onSuccess:{
                 (accessToken) in
@@ -233,21 +249,16 @@ public class Helper{
                 
                 if(accessToken.token != nil) {
                     // Next, get the contact information.  See how many memberships this user has.
-                    //removeServiceCallBackgroundView(view: sender.view)
-                    //SVProgressHUD.dismiss()
                     UserContext.sharedInstance.accessToken = accessToken
-                    
                     // let the caller UI know the status of the login
                     completionHandler(true)
                 }
                 else {
-                    SVProgressHUD.dismiss()
-                    removeServiceCallBackgroundView(view: sender.view)
+                    hideProgressBar(senderView:sender)
                     SimpleAlert.alert(sender, title:Constant.AlertErrorMessages.tryAgainError, message: Constant.AlertErrorMessages.loginFailedError)
                     completionHandler(false)
                 }
                 // Got an access token!  Save it for later use.
-                
                 // Next, get the contact information.  See how many memberships this user has.
             },
                                                onError:{ (error) in
@@ -406,8 +417,7 @@ public class Helper{
             let searchResortRequest = RentalSearchResortsRequest()
             searchResortRequest.checkInDate = toDate as Date
             searchResortRequest.resortCodes = Constant.MyClassConstants.resortCodesArray
-            SVProgressHUD.show()
-            addServiceCallBackgroundView(view: senderVC.view)
+            showProgressBar(senderView:senderVC)
             RentalClient.searchResorts(UserContext.sharedInstance.accessToken, request: searchResortRequest, onSuccess: { (response) in
                 Constant.MyClassConstants.resortsArray.removeAll()
                 Constant.MyClassConstants.resortsArray = response.resorts
@@ -511,7 +521,7 @@ public class Helper{
         
         return realmLocalStorage
         
-          }
+    }
     //***** function to get all destination class objects from Realm storage *****//
     static func getLocalStorageAllDest() -> Results<AllAvailableDestination>{
         
@@ -581,10 +591,14 @@ public class Helper{
     //***** Function that get all objects of type Open Weeks from Realm storage *****//
     
     static func InitializeOpenWeeksFromLocalStorage () {
+        SVProgressHUD.show()
         Constant.MyClassConstants.relinquishmentIdArray.removeAllObjects()
         Constant.MyClassConstants.whatToTradeArray.removeAllObjects()
         Constant.MyClassConstants.idUnitsRelinquishmentDictionary.removeAllObjects()
         Constant.MyClassConstants.relinquishmentUnitsArray.removeAllObjects()
+        Constant.MyClassConstants.floatRemovedArray.removeAllObjects()
+        Constant.MyClassConstants.realmOpenWeeksID.removeAllObjects()
+
         let realm = try! Realm()
         let Membership = UserContext.sharedInstance.selectedMembership
         let SelectedMembershipNumber = Membership?.memberNumber
@@ -601,15 +615,24 @@ public class Helper{
                         
                         for object in openWk.openWeeks {
                             
-                            let tempDict = NSMutableDictionary()
-                            Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
-                            
-                            Constant.MyClassConstants.whatToTradeArray.add(object)
+                            Constant.MyClassConstants.realmOpenWeeksID.add(object.relinquishmentID)
+                        let tempDict = NSMutableDictionary()
+                            if(object.isFloat){
+                            if(object.isFloatRemoved){
+                                Constant.MyClassConstants.floatRemovedArray.add(object)
+                            }else if(object.floatDetails.count > 0 && !object.isFloatRemoved && object.isFromRelinquishment){
+                                Constant.MyClassConstants.whatToTradeArray.add(object)
+                                Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
+                            }
+                            }else{
+                                Constant.MyClassConstants.whatToTradeArray.add(object)
+                                Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
+                            }
                             Constant.MyClassConstants.idUnitsRelinquishmentDictionary.setValue(object.unitDetails, forKey: object.relinquishmentID)
                             tempDict.setValue(object.unitDetails, forKey: object.relinquishmentID)
+                            if(!object.isFloatRemoved){
                             Constant.MyClassConstants.relinquishmentUnitsArray.add(tempDict)
-                            print(object.unitDetails.count, Constant.MyClassConstants.idUnitsRelinquishmentDictionary, Constant.MyClassConstants.relinquishmentUnitsArray)
-                            
+                            }
                         }
                         
                     }else{
@@ -620,7 +643,11 @@ public class Helper{
                     }
                 }
             }
+        }else{
+            print("No Data")
         }
+        
+        SVProgressHUD.dismiss()
     }
     
     //***** function that returns AreaOfInfluenceDestination list according to selected membership number that send to server for search dates API call *****//
@@ -772,8 +799,7 @@ public class Helper{
     
     //***** common function that contains API call for top 10 deals *****//
     static func getTopDeals(senderVC : UIViewController){
-        Helper.addServiceCallBackgroundView(view: senderVC.view)
-        SVProgressHUD.show()
+        showProgressBar(senderView: senderVC)
         RentalClient.getTop10Deals(UserContext.sharedInstance.accessToken,onSuccess: {(response) in
             Constant.MyClassConstants.topDeals = response
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.refreshTableNotification), object: nil)
@@ -783,7 +809,7 @@ public class Helper{
                                    onError: {(error) in
                                     Helper.removeServiceCallBackgroundView(view: senderVC.view)
                                     SVProgressHUD.dismiss()
-                                    SimpleAlert.alert(senderVC, title:Constant.AlertErrorMessages.errorString, message: error.description)
+                                    SimpleAlert.alert(senderVC, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                                     
         })
     }
@@ -793,8 +819,7 @@ public class Helper{
         
         if(Constant.MyClassConstants.systemAccessToken?.token != nil){
             
-            addServiceCallBackgroundView(view: viewController.view)
-            SVProgressHUD.show()
+            showProgressBar(senderView: viewController)
             
             DirectoryClient.getRegions(Constant.MyClassConstants.systemAccessToken, onSuccess: {(response) in
                 Constant.MyClassConstants.resortDirectoryRegionArray = response[0].regions
@@ -849,19 +874,82 @@ public class Helper{
     static func getResortsWithLatLongForShowingOnMap(request:GeoArea) -> Bool {
         var value:Bool = false
         DirectoryClient.getResortsWithinGeoArea(UserContext.sharedInstance.accessToken, geoArea: request, onSuccess: { (response) in
-            
             Constant.MyClassConstants.resortsArray = response
             value = true
             
         }) { (error) in
-            
             value = false
         }
-        
-        
-        
         return value
+    }
+    
+    /***** Get club resort API call for float details ******/
+    
+    static func getResortsByClubFloatDetails(resortCode:String, senderViewController:UIViewController, floatResortDetails:Resort){
+        showProgressBar(senderView: senderViewController)
+        DirectoryClient.getResortsByClub(UserContext.sharedInstance.accessToken, clubCode: resortCode, onSuccess: { (_ resorts: [Resort]) in
+            hideProgressBar(senderView: senderViewController)
+            Constant.MyClassConstants.clubFloatResorts = resorts
+            senderViewController.performSegue(withIdentifier: Constant.floatDetailViewController.clubresortviewcontrollerIdentifier, sender: self)
+
+            
+        }) { (error) in
+            
+             hideProgressBar(senderView: senderViewController)
+             SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+        }
+    }
+    
+    // Switch to FloatDetailViewController
+    static func navigateToViewController(senderViewController:UIViewController, floatResortDetails:Resort, isFromLockOff:Bool){
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.floatViewController) as! FloatDetailViewController
+        viewController.floatResortDetails = floatResortDetails
+        if(isFromLockOff){
+            viewController.isFromLockOff = true
+        }
+        let transitionManager = TransitionManager()
+        senderViewController.navigationController?.transitioningDelegate = transitionManager
+        senderViewController.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    /***** Get check-in dates API to show in calendar ******/
+    static func getCheckInDatesForCalendar(senderViewController:UIViewController, resortCode:String, relinquishmentYear:Int){
+        showProgressBar(senderView: senderViewController)
+        DirectoryClient.getResortCalendars(UserContext.sharedInstance.accessToken, resortCode: resortCode, year: relinquishmentYear, onSuccess: { (resortCalendar: [ResortCalendar]) in
+            
+            SVProgressHUD.dismiss()
+            self.removeServiceCallBackgroundView(view: senderViewController.view)
+            if(resortCalendar.count > 0){
+            Constant.MyClassConstants.relinquishmentFloatDetialMinDate = self.convertStringToDate(dateString: resortCalendar[0].checkInDate!, format: Constant.MyClassConstants.dateFormat)
+            Constant.MyClassConstants.relinquishmentFloatDetialMaxDate = self.convertStringToDate(dateString: (resortCalendar.last?.checkInDate!)!, format: Constant.MyClassConstants.dateFormat)
+            for calendarDetails in resortCalendar{
+               print(calendarDetails.checkInDate!)
+               Constant.MyClassConstants.floatDetailsCalendarDateArray.append((Helper.convertStringToDate(dateString: calendarDetails.checkInDate!, format: Constant.MyClassConstants.dateFormat)))
+            }
+            
+            var mainStoryboard = UIStoryboard()
+            if(Constant.RunningDevice.deviceIdiom == .pad) {
+                mainStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+            }
+            else {
+                mainStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+            }
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as! CalendarViewController
+            viewController.requestedController = Constant.MyClassConstants.relinquishmentFlaotWeek
+            let transitionManager = TransitionManager()
+            senderViewController.navigationController?.transitioningDelegate = transitionManager
+            senderViewController.navigationController?.pushViewController(viewController, animated: true)
+            }else{
+                SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.noDatesMessage)
+            }
         
+        }) { (error) in
+            
+            SVProgressHUD.dismiss()
+            self.removeServiceCallBackgroundView(view: senderViewController.view)
+            SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+        }
     }
     
     /***** common function for adding uivew as a pop up with some mesage *****/
@@ -999,8 +1087,7 @@ public class Helper{
     
     /***** common function for API call to get resort with resort code *****/
     static func getResortWithResortCode(code:String , viewcontroller:UIViewController) {
-        addServiceCallBackgroundView(view: viewcontroller.view)
-        SVProgressHUD.show()
+        showProgressBar(senderView: viewcontroller)
         DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: code, onSuccess: { (response) in
     
             Constant.MyClassConstants.resortsDescriptionArray = response
@@ -1252,10 +1339,8 @@ public class Helper{
     }
     // Function to get trip details
     static func getTripDetails(senderViewController: UIViewController){
-        Helper.addServiceCallBackgroundView(view: senderViewController.view)
-        SVProgressHUD.show()
+        showProgressBar(senderView:senderViewController)
         ExchangeClient.getExchangeTripDetails(UserContext.sharedInstance.accessToken, confirmationNumber: Constant.MyClassConstants.transactionNumber, onSuccess: { (exchangeResponse) in
-            
             
             Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails = exchangeResponse
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadTripDetailsNotification), object: nil)
@@ -1374,6 +1459,33 @@ public class Helper{
         
         ADBMobile.trackAction(Constant.omnitureEvents.event40, data: userInfo)
 
+    }
+    
+    //Method for navigating to another storyboard
+    static func switchStoryBoard(storyBoardNameIphone:String, storyBoardNameIpad:String, senderViewController:UIViewController){
+        var mainStoryboard = UIStoryboard()
+        if(Constant.RunningDevice.deviceIdiom == .pad) {
+            mainStoryboard = UIStoryboard(name: storyBoardNameIphone, bundle: nil)
+        }
+        else {
+            mainStoryboard = UIStoryboard(name: storyBoardNameIpad, bundle: nil)
+        }
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.bedroomSizeViewController) as! BedroomSizeViewController
+        viewController.delegate = senderViewController as? BedroomSizeViewControllerDelegate
+        Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.floatViewController
+        let transitionManager = TransitionManager()
+        senderViewController.navigationController?.transitioningDelegate = transitionManager
+        senderViewController.navigationController!.present(viewController, animated: true, completion: nil)
+    }
+    
+    static func showProgressBar(senderView:UIViewController){
+        Helper.addServiceCallBackgroundView(view: senderView.view)
+        SVProgressHUD.show()
+    }
+    
+    static func hideProgressBar(senderView:UIViewController){
+        SVProgressHUD.dismiss()
+        removeServiceCallBackgroundView(view: senderView.view)
     }
 
 }

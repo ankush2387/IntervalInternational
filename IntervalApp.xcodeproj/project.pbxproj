@@ -21,10 +21,6 @@
 		3A0B25DA1CD2419C0080BF3F /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0B25D91CD2419C0080BF3F /* WebViewController.swift */; };
 		3A0B25DC1CD241B50080BF3F /* DummyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0B25DB1CD241B50080BF3F /* DummyTableViewCell.swift */; };
 		3A0B25DE1CD2432A0080BF3F /* MembershipIPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A0B25DD1CD2432A0080BF3F /* MembershipIPad.storyboard */; };
-		3A1780B31CDE1A26006D2E44 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A1780B21CDE1A26006D2E44 /* Realm.framework */; };
-		3A1780B41CDE1A26006D2E44 /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3A1780B21CDE1A26006D2E44 /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		3A1780B71CDE1A2F006D2E44 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A1780B61CDE1A2F006D2E44 /* RealmSwift.framework */; };
-		3A1780B81CDE1A2F006D2E44 /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3A1780B61CDE1A2F006D2E44 /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3A1780BA1CDE3038006D2E44 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1780B91CDE3038006D2E44 /* File.swift */; };
 		3A1854F21CA065E800D238CA /* ResortBedroomDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1854F11CA065E800D238CA /* ResortBedroomDetails.swift */; };
 		3A18D7BA1DE05DEC00966472 /* AddDebitOrCreditCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A18D7B91DE05DEC00966472 /* AddDebitOrCreditCardViewController.swift */; };
@@ -33,6 +29,7 @@
 		3A2089DC1E2525C1001AFFD2 /* RelinquishmentSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2089DB1E2525C1001AFFD2 /* RelinquishmentSelectionViewController.swift */; };
 		3A2089DE1E2544D0001AFFD2 /* RelinquishmentSelectionCIGCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2089DD1E2544D0001AFFD2 /* RelinquishmentSelectionCIGCell.swift */; };
 		3A2089E01E2544FF001AFFD2 /* RelinquishmentSelectionOpenWeeksCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2089DF1E2544FF001AFFD2 /* RelinquishmentSelectionOpenWeeksCell.swift */; };
+		3A29B4901EF034E4008995A5 /* ReservationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A29B48F1EF034E4008995A5 /* ReservationTableViewCell.swift */; };
 		3A2C728B1DDB2D8500BBF40B /* ExchangeOptionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C728A1DDB2D8500BBF40B /* ExchangeOptionsCell.swift */; };
 		3A2C728D1DDB2D9A00BBF40B /* PromotionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C728C1DDB2D9A00BBF40B /* PromotionsCell.swift */; };
 		3A2C728F1DDB2DC900BBF40B /* AdvisementsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C728E1DDB2DC900BBF40B /* AdvisementsCell.swift */; };
@@ -279,8 +276,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				3A1780B81CDE1A2F006D2E44 /* RealmSwift.framework in Embed Frameworks */,
-				3A1780B41CDE1A26006D2E44 /* Realm.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -303,8 +298,6 @@
 		3A0B25D91CD2419C0080BF3F /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		3A0B25DB1CD241B50080BF3F /* DummyTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DummyTableViewCell.swift; sourceTree = "<group>"; };
 		3A0B25DD1CD2432A0080BF3F /* MembershipIPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MembershipIPad.storyboard; sourceTree = "<group>"; };
-		3A1780B21CDE1A26006D2E44 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
-		3A1780B61CDE1A2F006D2E44 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = "<group>"; };
 		3A1780B91CDE3038006D2E44 /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		3A1854F11CA065E800D238CA /* ResortBedroomDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResortBedroomDetails.swift; path = ../ResortBedroomDetails.swift; sourceTree = "<group>"; };
 		3A18D7B91DE05DEC00966472 /* AddDebitOrCreditCardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDebitOrCreditCardViewController.swift; sourceTree = "<group>"; };
@@ -313,6 +306,7 @@
 		3A2089DB1E2525C1001AFFD2 /* RelinquishmentSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentSelectionViewController.swift; sourceTree = "<group>"; };
 		3A2089DD1E2544D0001AFFD2 /* RelinquishmentSelectionCIGCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentSelectionCIGCell.swift; sourceTree = "<group>"; };
 		3A2089DF1E2544FF001AFFD2 /* RelinquishmentSelectionOpenWeeksCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentSelectionOpenWeeksCell.swift; sourceTree = "<group>"; };
+		3A29B48F1EF034E4008995A5 /* ReservationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReservationTableViewCell.swift; sourceTree = "<group>"; };
 		3A2C728A1DDB2D8500BBF40B /* ExchangeOptionsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExchangeOptionsCell.swift; sourceTree = "<group>"; };
 		3A2C728C1DDB2D9A00BBF40B /* PromotionsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromotionsCell.swift; sourceTree = "<group>"; };
 		3A2C728E1DDB2DC900BBF40B /* AdvisementsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvisementsCell.swift; sourceTree = "<group>"; };
@@ -569,9 +563,7 @@
 				3AF870241EA6429600056A14 /* libsqlite3.0.tbd in Frameworks */,
 				3AF870251EA6429600056A14 /* libsqlite3.tbd in Frameworks */,
 				3AF870211EA6423700056A14 /* AdobeMobileLibrary.a in Frameworks */,
-				3A1780B31CDE1A26006D2E44 /* Realm.framework in Frameworks */,
 				3AEC48171C7F21BA0044612B /* QuartzCore.framework in Frameworks */,
-				3A1780B71CDE1A2F006D2E44 /* RealmSwift.framework in Frameworks */,
 				CE533D6620FB623EC9811046 /* Pods_IntervalApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -591,8 +583,6 @@
 		26D24CA11C4015290008EF39 = {
 			isa = PBXGroup;
 			children = (
-				3A1780B61CDE1A2F006D2E44 /* RealmSwift.framework */,
-				3A1780B21CDE1A26006D2E44 /* Realm.framework */,
 				26D24CAC1C4015290008EF39 /* IntervalApp */,
 				26D24CAB1C4015290008EF39 /* Products */,
 				6A82DD5366BF4F0E8FBF4A4F /* Frameworks */,
@@ -721,6 +711,7 @@
 				087A87571E951A17009B1387 /* TdiCollectionViewCell.swift */,
 				087A87591E951A2D009B1387 /* UnitSizeTdiCollectionViewCell.swift */,
 				3AF1700E1E96A5840021F393 /* ClubPointsCollectionViewLayout.swift */,
+				3A29B48F1EF034E4008995A5 /* ReservationTableViewCell.swift */,
 				3A8618C71EA679660092A804 /* ClubPoints.xib */,
 				3AA6BC241EA8BD1A00B5DD7F /* CheckCollectionCell.xib */,
 				3AA6BC261EA91CDB00B5DD7F /* HeaderCollectionCell.xib */,
@@ -1242,7 +1233,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		E487CA22C7876FB2B6E5A39D /* [CP] Copy Pods Resources */ = {
@@ -1425,6 +1416,7 @@
 				3A1780BA1CDE3038006D2E44 /* File.swift in Sources */,
 				3AFA86681DF305A300DCAECF /* CheckOutIPadViewController.swift in Sources */,
 				3AAA5A4A1C720F4500A5EA6D /* VacationSearchTabBarController.swift in Sources */,
+				3A29B4901EF034E4008995A5 /* ReservationTableViewCell.swift in Sources */,
 				087A875A1E951A2D009B1387 /* UnitSizeTdiCollectionViewCell.swift in Sources */,
 				3A0B25DC1CD241B50080BF3F /* DummyTableViewCell.swift in Sources */,
 				3AC572111E2A2A6500969CF7 /* HeaderCell.swift in Sources */,

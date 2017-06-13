@@ -109,7 +109,7 @@ class ResortDirectoryViewController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         
-        self.tabBarController?.tabBar.isHidden = false
+         self.tabBarController?.tabBar.isHidden = false
         
         //***** adding notifications so that it invock the specific method when the notification is fired *****//
         NotificationCenter.default.addObserver(self, selector: #selector(helpClicked), name: NSNotification.Name(rawValue: Constant.notificationNames.showHelp), object: nil)

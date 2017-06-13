@@ -1139,9 +1139,13 @@ class GoogleMapViewController: UIViewController {
     
     //***** Function to get collection view visible index. *****//
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        for collectionCell in resortCollectionView.visibleCells{
-            let indexPath = resortCollectionView.indexPath(for: collectionCell)
-            index = (indexPath?.item)!
+        
+        if(resortCollectionView != nil){
+            
+            for collectionCell in resortCollectionView.visibleCells{
+                let indexPath = resortCollectionView.indexPath(for: collectionCell)
+                index = (indexPath?.item)!
+            }
         }
     }
     
@@ -1489,7 +1493,7 @@ extension GoogleMapViewController:UITableViewDelegate {
                     Constant.MyClassConstants.isgetResortFromGoogleSearch = true
                     Helper.getResortWithResortCode(code: selectedResort.resortCode!, viewcontroller: self)
                     self.googleMapSearchBar.text = ""
-                    
+                    self.hidePopUpView()
                 }
                 else {
                     
@@ -1513,6 +1517,7 @@ extension GoogleMapViewController:UITableViewDelegate {
                         SVProgressHUD.dismiss()
                         Helper.removeServiceCallBackgroundView(view: self.view)
                     }
+                    self.hidePopUpView()
                 }
             }
             else {
@@ -1798,7 +1803,11 @@ extension GoogleMapViewController:UISearchBarDelegate {
         if(searchBar.text!.characters.count >= 3) {
             
             DirectoryClient.searchDestinations(Constant.MyClassConstants.systemAccessToken, request: SearchDestinationsRequest.init(query: searchBar.text), onSuccess: { (response) in
-                Constant.MyClassConstants.resorts = response.resorts
+                if(response.resorts.count > 0){
+                    Constant.MyClassConstants.resorts = response.resorts
+                }
+                
+                
                 Constant.MyClassConstants.destinations = response.destinations
                 self.showPopUpView()
                 self.searchDisplayTableView.reloadData()

@@ -43,6 +43,13 @@ class Constant: NSObject {
         
     }
     
+    //Float additional info textfield variabls
+    struct FloatDetails {
+        
+        static var unitNumber = ""
+        static var reservationNumber = ""
+    }
+    
     struct RGBColorCode {
         
         static var centerViewRgb = UIColor(red: 176.0/255.0, green: 215.0/255.0, blue: 115.0/255.0, alpha: 1.0)
@@ -100,6 +107,8 @@ class Constant: NSObject {
         
         //Relinquishment available points program
         static var relinquishmentAvailablePointsProgram = 0
+        
+      
         //global variable to hold stepper Adult current value
         static var stepperAdultCurrentValue = 2
         
@@ -189,6 +198,7 @@ class Constant: NSObject {
         static var sectionHeaderArray = [NSLocalizedString("Destinations", comment: ""),NSLocalizedString("Resorts", comment: "")]
         
         static var relinquishmentHeaderArray = [NSLocalizedString("Club Interval Gold Weeks", comment: ""),NSLocalizedString("", comment: ""),NSLocalizedString("Club Points", comment: ""),NSLocalizedString("Interval Weeks", comment: ""),NSLocalizedString("Deposited", comment: "")]
+        static var lockOffCapable = NSLocalizedString("Lock Off Capable", comment: "")
         
         static var membershipContactArray = [Contact]()
         static var vacationSearchDestinationArray:NSMutableArray = []
@@ -207,6 +217,7 @@ class Constant: NSObject {
         
         static var whereTogoContentArray:NSMutableArray = []
         static var whatToTradeArray:NSMutableArray = []
+        static var floatRemovedArray:NSMutableArray = []
         static var pointsArray:NSMutableArray = []
         static var selectedGetawayAlertDestinationArray:NSMutableArray = []
         static var alertSelectedResorts = [Resort]()
@@ -221,6 +232,7 @@ class Constant: NSObject {
         static let sidemenuIntervalInternationalCorporationLabel = NSLocalizedString("2015 Interval International. Privacy/Legal", comment: "")
         static let noRelinquishmentavailable = NSLocalizedString("No Relinquishment available", comment: "")
         static let relinquishmentTitle = NSLocalizedString("Select all or any lock-off portion", comment: "")
+        static let floatTitle = NSLocalizedString("Select one lock-off portion at a time", comment: "")
         static let bedroomTitle = NSLocalizedString("Choose Bedrooms", comment: "")
     
         static var selectedIndex:Int!
@@ -348,7 +360,15 @@ class Constant: NSObject {
         
         
         //Relinquishment selection screen response arrays
+        
+        //Relinquishment selection date for float and avaialable tool
         static var  relinquishmentAvalableToolSelectedDate:Date!
+        static var  relinquishmentFloatDetialSelectedDate:Date!
+        static var  relinquishmentFloatDetialMinDate:Date!
+        static var  relinquishmentFloatDetialMaxDate:Date!
+        static var  floatDetailsCalendarDateArray = [Date]()
+        static var relinquishmentFlaotWeek = "RelinquishmentFloatWeek"
+        static var realmOpenWeeksID = NSMutableArray()
         
         static var  onsiteArray = NSMutableArray()
         static var  nearbyArray = NSMutableArray()
@@ -428,7 +448,28 @@ class Constant: NSObject {
         static var segmentFirstString = "First"
         static var segmentSecondString = "Second"
         static var segmentThirdString = "Third"
+        static var clubFloatResorts = [Resort]()
+        static var savedClubFloatResort = ""
+        static var savedBedroom = ""
+        static var buttontitle = ""
+        static var resortAttributedString = ""
         
+        //Reservation Attributes
+        static var resortAttributes = "RESORT_ATTRIBUTES"
+        static var resortClubAttribute = "RESORT_CLUB"
+        static var resortReservationAttribute = "RESERVATION_NUMBER"
+        static var checkInDateAttribute =   "CHECK_IN_DATE"
+        static var unitNumberAttribute = "UNIT_NUMBER"
+        static var resortDetailsAttribute = "RESORT_DETAILS"
+        static var saveAttribute = "SAVE_DETAILS"
+        static var callResortAttribute = "CALL_DETAILS"
+        static var noOfBedroomAttribute = "NO_OF_BEDROOMS"
+        static var selectClubResort = "Select club or Resort"
+        
+        //Float week to store information for editing
+        static var selectedFloatWeek = OpenWeeks()
+        static var unitNumberLockOff = ""
+        static var saveLockOffDetailsArray = NSMutableArray()
     }
     struct CommonStringIdentifiers {
         static var floatWeek = "FLOAT_WEEK"
@@ -459,6 +500,9 @@ class Constant: NSObject {
         static var exchange = "Exchange"
         static var getaways = "Getaway"
         static var search = "All Available Destinations"
+        static var resortUnitDetails = "Resort Unit Details"
+        static var reservationDetails = "Reservation Details"
+        
     }
     
     //***** common  structure to provide all webview url as string *****//
@@ -532,6 +576,7 @@ class Constant: NSObject {
         static var vactionSearchDateMessage = NSLocalizedString("No match found. Please select another date.", comment: "")
         static var userInterestMessage = NSLocalizedString("How's about you go favorite some resorts and when you come back they will be here all warm and toasty waiting for you!", comment: "")
         static var goGetMessage = NSLocalizedString("Go on Get! ", comment: "")
+        static var noDatesMessage = NSLocalizedString("No Dates availabel", comment: "")
     }
     
     //***** common  structure to provide alert promt button titles *****//
@@ -649,6 +694,11 @@ class Constant: NSObject {
         static var expirationDate = NSLocalizedString("Select Expiration Date", comment: "")
         static var cvv = NSLocalizedString("CVV", comment: "")
         static var country = NSLocalizedString("Country", comment: "")
+        //Ownership text field placeholder
+        static var reservationNumber = NSLocalizedString("Reservation Number", comment: "")
+        static var unitNumber = NSLocalizedString("Unit Number", comment: "")
+        static var numberOfBedrooms = NSLocalizedString("Number of Bedrooms", comment: "")
+        static var checkInDate = NSLocalizedString("Check-in Date", comment: "")
         
         //Payment selection view controller
         
@@ -683,7 +733,7 @@ class Constant: NSObject {
         static var vacationSearchDestinationController = NSLocalizedString("Pick Destination", comment: "")
         static var searchResultViewController = NSLocalizedString("Search Results", comment: "")
         static var availablePointToolViewController = NSLocalizedString("Available Point Tool", comment: "")
-        static var floatDetailViewController = NSLocalizedString("Float Details", comment: "")
+        static var floatDetailViewController = NSLocalizedString("Additional Information", comment: "")
         static var clubresortsViewController = NSLocalizedString("Club Resorts", comment: "")
         static var bedroomSizeViewController = NSLocalizedString("Bedroom_Size", comment: "")
         static var loginHelpViewController = NSLocalizedString("Login Help", comment: "")
@@ -775,6 +825,7 @@ class Constant: NSObject {
         static var accomodationCertsDetailController = "AccomodationCertsDetailController"
         static var certificateTabBarViewController = "VacationSearchTabBarController"
         static var ownershipViewController = "OwnershipViewController"
+        static var floatViewController = "FloatDetailViewController"
         static var resortDirectoryViewController = "ResortDirectoryViewController"
         static var webViewController = "WebViewController"
         static var calendarViewController = "CalendarViewController"
@@ -938,6 +989,8 @@ class Constant: NSObject {
         static var advisementsCellIdentifier = "AdditionalAdvCell"
         static var clubHeaderCell = "HeaderCell"
         static var checkBoxCell = "CheckCell"
+        static var attributesCell = "attributesTableCell"
+        static var buttonCell = "ButtonTableCell"
     }
     
     //***** common  structure to provide all dashboardTableViewControllerHeaderText *****//
@@ -1005,6 +1058,8 @@ class Constant: NSObject {
         static var whoIsTravelingCell = "WhoIsTravelingCell"
         static var SearchVacationCell = "SearchVacationCell"
         static var relinquishmentSelectionOpenWeeksCell = "RelinquishmentSelectionOpenWeeksCell"
+        static var floatWeekUnsavedCell = "FloatUnsavedCell"
+        static var floatWeekSavedCell = "FloatSavedCell"
         static var relinquishmentSelectionCIGCell = "RelinquishmentSelectionCIGCell"
         static var destinationCell = "destinationCell"
         static var resortCell = "resortsCell"
@@ -1222,7 +1277,7 @@ class Constant: NSObject {
         }
         //FloatSaveAndCancelButtonTableViewCell
         struct floatSaveAndCancelButtonTableViewCell {
-            static let saveFloatDetailButtonTitle = "Save float Details"
+            static let saveFloatDetailButtonTitle = "Save and Complete"
             static let cancelButtonTitle = NSLocalizedString("Cancel", comment:"")
         }
     }
@@ -1564,6 +1619,8 @@ class Constant: NSObject {
         static var createAnAlert = "Create an Alert"
         static var editAnAlert = "Edit an Alert"
         static var sideMenuAppeared = "Side Menu Appeared"
+        static var floatDetails = "Float Details 1"
+        static var lockOffFloatUnitOptions = "Lock Off and Float Unit Options"
       
     }
     
@@ -1787,6 +1844,11 @@ class Constant: NSObject {
         static var gold = "GLD"
         static var platinum = "PLT"
     }
+    struct  buttonId {
+        static var bedroomselection = "Bedroomtapped"
+        static var resortSelection  = "ResortSelect"
+    }
+
 }
 
 

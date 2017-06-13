@@ -117,11 +117,10 @@ class CreateActionSheet: UITableViewController {
         if(contact!.memberships!.count > 1) {
             Constant.MyClassConstants.signInRequestedController.dismiss(animated: true, completion: nil)
         }
-            
-        if(Constant.MyClassConstants.signInRequestedController.isKind(of:SignInPreLoginViewController.self)) {
+          if(Constant.MyClassConstants.signInRequestedController.isKind(of:SignInPreLoginViewController.self)) {
          Constant.MyClassConstants.signInRequestedController.navigationController?.popViewController(animated: true)
             
-        NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
+         NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
     }
     else {
          Constant.MyClassConstants.signInRequestedController.performSegue(withIdentifier: Constant.segueIdentifiers.dashboradSegueIdentifier, sender: nil)
