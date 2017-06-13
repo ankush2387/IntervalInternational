@@ -96,11 +96,21 @@ class GetawayAlertsIPhoneViewController: UIViewController {
         actionSheetController.addAction(searchAllMyAlertsNow)
         //***** Create and add the Reset my search *****//
         let aboutGetawayAlerts: UIAlertAction = UIAlertAction(title: Constant.buttonTitles.aboutGetawayAlerts, style: .default) { action -> Void in
+            let storyboard = UIStoryboard(name: "GetawayAlertsIphone", bundle: nil)
+            let aboutNavigation = storyboard.instantiateViewController(withIdentifier: "AboutHelpNav") as! UINavigationController
             
+            self.present(aboutNavigation, animated: true, completion: nil)
         }
         actionSheetController.addAction(aboutGetawayAlerts)
         //***** Create and add help *****//
         let helpAction: UIAlertAction = UIAlertAction(title: Constant.buttonTitles.help, style: .default) { action -> Void in
+            let storyboard = UIStoryboard(name: "GetawayAlertsIphone", bundle: nil)
+            let helpNavigation = storyboard.instantiateViewController(withIdentifier: "AboutHelpNav") as! UINavigationController
+            let alertVC = helpNavigation.viewControllers.first as! AlertHelpViewController
+            alertVC.ishelpView = true
+            
+            self.present(helpNavigation, animated: true, completion: nil)
+            
         }
         actionSheetController.addAction(helpAction)
         

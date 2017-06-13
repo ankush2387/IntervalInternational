@@ -268,6 +268,8 @@
 		DC7EF5141D709F8800E9E360 /* ResortInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7EF5031D709F8800E9E360 /* ResortInfoTableViewCell.swift */; };
 		DC7EF5151D709F8800E9E360 /* SignInPreLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7EF5041D709F8800E9E360 /* SignInPreLoginViewController.swift */; };
 		DC96F3B81D7F41E500C08F1E /* TouchID.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC96F3B71D7F41E500C08F1E /* TouchID.swift */; };
+		E932C7601EE07FB70083E871 /* UpComingTripMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932C75F1EE07FB70083E871 /* UpComingTripMapViewController.swift */; };
+		E951BC4D1EE71D800070A04B /* AlertHelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E951BC4C1EE71D800070A04B /* AlertHelpViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -555,6 +557,8 @@
 		DC7EF5041D709F8800E9E360 /* SignInPreLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInPreLoginViewController.swift; sourceTree = "<group>"; };
 		DC96F3B71D7F41E500C08F1E /* TouchID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchID.swift; sourceTree = "<group>"; };
 		E2CBCD7E8490E488AB822061 /* Pods_IntervalApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IntervalApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E932C75F1EE07FB70083E871 /* UpComingTripMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpComingTripMapViewController.swift; sourceTree = "<group>"; };
+		E951BC4C1EE71D800070A04B /* AlertHelpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertHelpViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -660,6 +664,7 @@
 				3A932D591C8868F7004BF665 /* PaymentCell.xib */,
 				3A932D5C1C886918004BF665 /* PolicyCell.swift */,
 				3A932D5D1C886918004BF665 /* PolicyCell.xib */,
+				E932C75F1EE07FB70083E871 /* UpComingTripMapViewController.swift */,
 			);
 			path = UpComingTrips;
 			sourceTree = "<group>";
@@ -1006,6 +1011,7 @@
 				DC27F7BF1DB81B6F00AA374F /* GetawayAlertsIphone.storyboard */,
 				DC27F7C01DB81B6F00AA374F /* GetawayAlertsIPhoneViewController.swift */,
 				DC27F7C11DB81B6F00AA374F /* InfoDetailViewController.swift */,
+				E951BC4C1EE71D800070A04B /* AlertHelpViewController.swift */,
 			);
 			path = GetawayAlerts;
 			sourceTree = "<group>";
@@ -1126,9 +1132,9 @@
 				TargetAttributes = {
 					26D24CA91C4015290008EF39 = {
 						CreatedOnToolsVersion = 7.1.1;
-						DevelopmentTeam = X44NUK9NC8;
+						DevelopmentTeam = 4CR2ZD7GRK;
 						LastSwiftMigration = 0800;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -1236,7 +1242,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		E487CA22C7876FB2B6E5A39D /* [CP] Copy Pods Resources */ = {
@@ -1291,6 +1297,7 @@
 				3AB122C91CD2858400204EB7 /* LoginIPadViewController.swift in Sources */,
 				3A3A01361C99BD0B00B7EC37 /* ClubpointTableViewCell.swift in Sources */,
 				3A2C728B1DDB2D8500BBF40B /* ExchangeOptionsCell.swift in Sources */,
+				E932C7601EE07FB70083E871 /* UpComingTripMapViewController.swift in Sources */,
 				DC27F7CB1DB8278000AA374F /* CustomTableViewCell.swift in Sources */,
 				3AAA5A2F1C720F4500A5EA6D /* CustomHeaderCell.swift in Sources */,
 				3AE0D8681E4B38B500FFF635 /* ResortDestinationCell.swift in Sources */,
@@ -1422,6 +1429,7 @@
 				3A0B25DC1CD241B50080BF3F /* DummyTableViewCell.swift in Sources */,
 				3AC572111E2A2A6500969CF7 /* HeaderCell.swift in Sources */,
 				3AAA5A291C720F4500A5EA6D /* UserContext.swift in Sources */,
+				E951BC4D1EE71D800070A04B /* AlertHelpViewController.swift in Sources */,
 				DC27F7B71DB81B5D00AA374F /* HomeAlertTableViewCell.swift in Sources */,
 				3A3A01431C99BD0B00B7EC37 /* OwnershipFloatTableViewCell.swift in Sources */,
 				DC7BA83E1DB911D600BB0C3B /* MagazinesIPadViewController.swift in Sources */,
@@ -1581,10 +1589,10 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = X44NUK9NC8;
-				ENABLE_BITCODE = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Jhonathan Sanchez (NCQ8EZ997Z)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jhonathan Sanchez (NCQ8EZ997Z)";
+				DEVELOPMENT_TEAM = 4CR2ZD7GRK;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					RealmSwift.framework,
 					"$(PROJECT_DIR)",
@@ -1597,9 +1605,10 @@
 					"$(PROJECT_DIR)/IntervalApp/AdobeMobileLibrary",
 				);
 				MACH_O_TYPE = mh_execute;
-				PRODUCT_BUNDLE_IDENTIFIER = com.intervalinternational.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.intervalintl.Interval;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "743aa0bc-4955-4605-af1e-dff46b57a2a7";
+				PROVISIONING_PROFILE_SPECIFIER = "IntervalApp-DEV";
 				SWIFT_OBJC_BRIDGING_HEADER = "IntervalApp/IntervalApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -1614,10 +1623,10 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = X44NUK9NC8;
-				ENABLE_BITCODE = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Jhonathan Sanchez (NCQ8EZ997Z)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jhonathan Sanchez (NCQ8EZ997Z)";
+				DEVELOPMENT_TEAM = 4CR2ZD7GRK;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					RealmSwift.framework,
 					"$(PROJECT_DIR)",
@@ -1630,9 +1639,10 @@
 					"$(PROJECT_DIR)/IntervalApp/AdobeMobileLibrary",
 				);
 				MACH_O_TYPE = mh_execute;
-				PRODUCT_BUNDLE_IDENTIFIER = com.intervalinternational.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.intervalintl.Interval;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "743aa0bc-4955-4605-af1e-dff46b57a2a7";
+				PROVISIONING_PROFILE_SPECIFIER = "IntervalApp-DEV";
 				SWIFT_OBJC_BRIDGING_HEADER = "IntervalApp/IntervalApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
