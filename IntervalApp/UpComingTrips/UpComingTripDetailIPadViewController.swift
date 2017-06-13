@@ -11,6 +11,7 @@ import IntervalUIKit
 import SDWebImage
 import DarwinSDK
 import MessageUI
+import SVProgressHUD
 
 class UpComingTripDetailIPadViewController: UIViewController {
 
@@ -219,6 +220,27 @@ class UpComingTripDetailIPadViewController: UIViewController {
         
         self.present(mapDetailsNav, animated: true, completion: nil)
     }
+        
+    func didPressWeatherDetailsButton() {
+        guard let resortCode = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.resortCode else { return }
+        SVProgressHUD.show()
+        DirectoryClient.getResortWeather(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode, onSuccess: { (response) in
+            if let weatherResponse = response as? ResortWeather {
+                SVProgressHUD.dismiss()
+                
+                let storyboard = UIStoryboard(name: "MyUpcomingTripIphone", bundle: nil)
+                let mapDetailsNav = storyboard.instantiateViewController(withIdentifier: "weatherNav") as! UINavigationController
+                let weatherVC = mapDetailsNav.viewControllers.first as? WeatherViewController
+                weatherVC?.resortWeather = weatherResponse
+                self.present(mapDetailsNav, animated: true, completion: nil)
+            }
+        }) { (error) in
+            print(error)
+            SVProgressHUD.dismiss()
+            SimpleAlert.alert(self, title: "Error", message: "Something went wrong. Please try again.")
+        }
+
+    }
 }
 
 //***** MARK: Extension classes starts from here *****//
@@ -352,6 +374,8 @@ extension UpComingTripDetailIPadViewController:UITableViewDataSource {
             Helper.addLinearGradientToView(view: cell.resortNameBaseView, colour: UIColor.white, transparntToOpaque: true, vertical: false)
             
             cell.showMapDetailButton.addTarget(self, action: #selector(UpComingTripDetailIPadViewController.didPressMapDetailsButton), for: .touchUpInside)
+            cell.showWeatherDetailButton.addTarget(self, action: #selector(UpComingTripDetailIPadViewController.didPressWeatherDetailsButton), for: .touchUpInside)
+            
             return cell
         }else if((indexPath as NSIndexPath).section == 1) {
             

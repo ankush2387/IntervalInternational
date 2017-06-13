@@ -218,12 +218,20 @@
                                                     </variation>
                                                 </view>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ttr-F0-Xe7">
-                                                    <rect key="frame" x="173" y="196" width="37" height="37"/>
+                                                    <rect key="frame" x="143" y="196" width="37" height="37"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="37" id="bpM-cq-n5p"/>
                                                         <constraint firstAttribute="width" constant="37" id="ga0-uM-PeQ"/>
                                                     </constraints>
                                                     <state key="normal" image="MapIcon"/>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d77-0f-IdH">
+                                                    <rect key="frame" x="98" y="196" width="37" height="37"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="37" id="JeK-6v-l4K"/>
+                                                        <constraint firstAttribute="height" constant="37" id="ydK-7L-slI"/>
+                                                    </constraints>
+                                                    <state key="normal" image="WeatherIcon"/>
                                                 </button>
                                             </subviews>
                                             <constraints>
@@ -231,6 +239,8 @@
                                                 <constraint firstAttribute="bottomMargin" secondItem="bIB-cF-YF6" secondAttribute="bottom" constant="71" id="6qS-yU-vDg"/>
                                                 <constraint firstItem="b95-Yf-IF6" firstAttribute="top" secondItem="wKs-cb-MvB" secondAttribute="top" constant="289" id="99S-OE-Ems"/>
                                                 <constraint firstItem="bIB-cF-YF6" firstAttribute="leading" secondItem="b95-Yf-IF6" secondAttribute="leading" id="Bmh-YR-10a"/>
+                                                <constraint firstItem="Ttr-F0-Xe7" firstAttribute="leading" secondItem="d77-0f-IdH" secondAttribute="trailing" constant="8" id="BqK-Pn-h1x"/>
+                                                <constraint firstItem="d77-0f-IdH" firstAttribute="leading" secondItem="wKs-cb-MvB" secondAttribute="leadingMargin" constant="90" id="FTo-aj-34y"/>
                                                 <constraint firstItem="bIB-cF-YF6" firstAttribute="top" secondItem="wKs-cb-MvB" secondAttribute="top" constant="240" id="LYy-qo-yoZ"/>
                                                 <constraint firstItem="bIB-cF-YF6" firstAttribute="trailing" secondItem="b95-Yf-IF6" secondAttribute="trailing" id="MDa-9O-gbt"/>
                                                 <constraint firstAttribute="trailing" secondItem="Igl-8a-xMo" secondAttribute="trailing" id="Mtd-DR-syE"/>
@@ -238,9 +248,9 @@
                                                 <constraint firstItem="Igl-8a-xMo" firstAttribute="top" secondItem="wKs-cb-MvB" secondAttribute="top" id="Zca-8L-ZL3"/>
                                                 <constraint firstItem="bIB-cF-YF6" firstAttribute="centerX" secondItem="Igl-8a-xMo" secondAttribute="centerX" id="c8H-cc-iDp"/>
                                                 <constraint firstAttribute="bottom" secondItem="Igl-8a-xMo" secondAttribute="bottom" id="dnK-eL-PYE"/>
+                                                <constraint firstItem="bIB-cF-YF6" firstAttribute="top" secondItem="d77-0f-IdH" secondAttribute="bottom" constant="8" id="fT8-zS-RwX"/>
                                                 <constraint firstItem="b95-Yf-IF6" firstAttribute="bottom" secondItem="Igl-8a-xMo" secondAttribute="bottom" id="lSc-5a-QTo"/>
                                                 <constraint firstItem="bIB-cF-YF6" firstAttribute="leading" secondItem="wKs-cb-MvB" secondAttribute="leadingMargin" constant="92" id="qxq-1f-ESo"/>
-                                                <constraint firstItem="Ttr-F0-Xe7" firstAttribute="leading" secondItem="wKs-cb-MvB" secondAttribute="leading" constant="173" id="v5M-iM-zSS"/>
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="subviews">
@@ -249,16 +259,16 @@
                                                     <exclude reference="b95-Yf-IF6"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <exclude reference="10O-wH-8Ca"/>
-                                                    <exclude reference="Mtd-DR-syE"/>
-                                                    <exclude reference="Zca-8L-ZL3"/>
-                                                    <exclude reference="dnK-eL-PYE"/>
                                                     <exclude reference="6qS-yU-vDg"/>
                                                     <exclude reference="Bmh-YR-10a"/>
                                                     <exclude reference="LYy-qo-yoZ"/>
                                                     <exclude reference="MDa-9O-gbt"/>
                                                     <exclude reference="c8H-cc-iDp"/>
                                                     <exclude reference="qxq-1f-ESo"/>
+                                                    <exclude reference="10O-wH-8Ca"/>
+                                                    <exclude reference="Mtd-DR-syE"/>
+                                                    <exclude reference="Zca-8L-ZL3"/>
+                                                    <exclude reference="dnK-eL-PYE"/>
                                                     <exclude reference="99S-OE-Ems"/>
                                                     <exclude reference="lSc-5a-QTo"/>
                                                 </mask>
@@ -270,16 +280,16 @@
                                                     <include reference="b95-Yf-IF6"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <include reference="10O-wH-8Ca"/>
-                                                    <include reference="Mtd-DR-syE"/>
-                                                    <include reference="Zca-8L-ZL3"/>
-                                                    <include reference="dnK-eL-PYE"/>
                                                     <include reference="6qS-yU-vDg"/>
                                                     <include reference="Bmh-YR-10a"/>
                                                     <exclude reference="LYy-qo-yoZ"/>
                                                     <include reference="MDa-9O-gbt"/>
                                                     <include reference="c8H-cc-iDp"/>
                                                     <include reference="qxq-1f-ESo"/>
+                                                    <include reference="10O-wH-8Ca"/>
+                                                    <include reference="Mtd-DR-syE"/>
+                                                    <include reference="Zca-8L-ZL3"/>
+                                                    <include reference="dnK-eL-PYE"/>
                                                     <exclude reference="99S-OE-Ems"/>
                                                     <include reference="lSc-5a-QTo"/>
                                                 </mask>
@@ -294,6 +304,7 @@
                                             <outlet property="resortNameBaseView" destination="b95-Yf-IF6" id="EBN-I1-cFR"/>
                                             <outlet property="resortNameLabel" destination="neP-J2-5Fn" id="boH-yg-ctT"/>
                                             <outlet property="showMapDetailButton" destination="Ttr-F0-Xe7" id="4ZD-wD-DQK"/>
+                                            <outlet property="showWeatherDetailButton" destination="d77-0f-IdH" id="Jns-UD-75k"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="DateCell" rowHeight="100" id="m2J-Qo-EYd" customClass="UpComingTripCell" customModule="IntervalApp" customModuleProvider="target">
@@ -2344,7 +2355,7 @@
                                         <rect key="frame" x="0.0" y="28" width="820" height="1302"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Kot-bb-gB2" id="dNy-W2-g71">
-                                            <rect key="frame" x="0.0" y="0.0" width="820" height="1302"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="820" height="1301.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
@@ -2422,7 +2433,7 @@
                                         <rect key="frame" x="0.0" y="28" width="600" height="100"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YD7-tM-LjB" id="FTy-9V-oDQ">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="100"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="99.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -2430,7 +2441,7 @@
                                         <rect key="frame" x="0.0" y="128" width="600" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zS6-ha-3Bq" id="kYB-p1-DZC">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="60"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="59.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -2481,6 +2492,7 @@
         <image name="DropArrowIcon" width="33" height="33"/>
         <image name="EPlus" width="90" height="50"/>
         <image name="MapIcon" width="33" height="33"/>
+        <image name="WeatherIcon" width="33" height="33"/>
         <image name="sanci_main01_r" width="1200" height="550"/>
     </resources>
     <inferredMetricsTieBreakers>
