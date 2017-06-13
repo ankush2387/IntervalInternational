@@ -196,22 +196,28 @@ class FloatDetailViewController: UIViewController {
         }
         
         
+        
         //Check if float is already saved in database
-        if(Constant.MyClassConstants.floatRemovedArray.count != 0){
+        if(Constant.MyClassConstants.selectedFloatWeek.floatDetails.count > 0){
             
             let storedData = Helper.getLocalStorageWherewanttoTrade()
             
             if(storedData.count > 0) {
                 let realm = try! Realm()
                 try! realm.write {
-                    var floatWeek = OpenWeeks()
+                    let floatWeek = OpenWeeks()
                     var floatWeekIndex = -1
                     
                     for (index,object) in storedData.enumerated(){
                         let openWk1 = object.openWeeks[0].openWeeks[0]
-                        if(openWk1.relinquishmentID == Constant.MyClassConstants.selectedFloatWeek.relinquishmentID && openWk1.isFloatRemoved){
-                            print(index)
-                            floatWeekIndex = index
+                        if(openWk1.relinquishmentID == Constant.MyClassConstants.selectedFloatWeek.relinquishmentID && (openWk1.isFloatRemoved || openWk1.isLockOff)){
+                            if(openWk1.isLockOff){
+                                if(openWk1.floatDetails[0].unitNumber == Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].unitNumber){
+                                    floatWeekIndex = index
+                                }
+                            }else{
+                                floatWeekIndex = index
+                            }
                         }
                     }
     
@@ -230,6 +236,7 @@ class FloatDetailViewController: UIViewController {
                             Constant.MyClassConstants.relinquishmentUnitsArray.removeObject(at: floatWeekIndex)
                         }
                     }*/
+                    if(floatWeekIndex > 0){
                     
                         storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFloatRemoved = false
                         storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFloat = true
@@ -242,6 +249,10 @@ class FloatDetailViewController: UIViewController {
                         if(floatWeek.isLockOff){
                             storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isLockOff = true
                         }
+                        if(!atrributesRowArray.contains(Constant.MyClassConstants.unitNumberAttribute)){
+                            storedData[floatWeekIndex].openWeeks[0].openWeeks[0].floatDetails[0].showUnitNumber = false
+                        }
+                    }
                     //Pop to vacation search screen
                     popToVacationSearch()
 
@@ -313,6 +324,9 @@ class FloatDetailViewController: UIViewController {
         floatDetails.checkInDate = checkInDate
         print(Constant.MyClassConstants.savedClubFloatResort)
         floatDetails.clubResortDetails = Constant.MyClassConstants.savedClubFloatResort
+        if(!atrributesRowArray.contains(Constant.MyClassConstants.unitNumberAttribute)){
+            floatDetails.showUnitNumber = false
+        }
         selectedOpenWeek.floatDetails.append(floatDetails)
         
         let unitDetails = ResortUnitDetails()

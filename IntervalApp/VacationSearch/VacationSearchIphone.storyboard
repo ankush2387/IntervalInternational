@@ -2492,7 +2492,7 @@
                                                     </constraints>
                                                 </view>
                                                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hEp-EN-Tg3">
-                                                    <rect key="frame" x="94" y="50" width="217" height="18"/>
+                                                    <rect key="frame" x="94" y="43" width="217" height="25"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -2509,6 +2509,7 @@
                                                 <constraint firstAttribute="trailingMargin" secondItem="Z1F-XZ-cDU" secondAttribute="trailing" constant="3" id="bNN-aH-elQ"/>
                                                 <constraint firstItem="gme-QA-BdZ" firstAttribute="leading" secondItem="u1f-IC-cAU" secondAttribute="leading" id="dYX-Tm-XGL"/>
                                                 <constraint firstItem="Z1F-XZ-cDU" firstAttribute="leading" secondItem="hEp-EN-Tg3" secondAttribute="trailing" constant="8" id="gB4-NS-yGl"/>
+                                                <constraint firstItem="hEp-EN-Tg3" firstAttribute="top" secondItem="u1f-IC-cAU" secondAttribute="topMargin" constant="35" id="k34-8z-Lqz"/>
                                                 <constraint firstItem="ClN-zZ-VAL" firstAttribute="top" secondItem="0q6-Nd-4a9" secondAttribute="bottom" constant="11" id="mmY-lu-iJk"/>
                                                 <constraint firstItem="0q6-Nd-4a9" firstAttribute="top" secondItem="u1f-IC-cAU" secondAttribute="topMargin" constant="5" id="pRo-9m-pTF"/>
                                                 <constraint firstItem="ClN-zZ-VAL" firstAttribute="top" secondItem="hEp-EN-Tg3" secondAttribute="bottom" constant="11" id="tTo-Pm-yIh"/>
