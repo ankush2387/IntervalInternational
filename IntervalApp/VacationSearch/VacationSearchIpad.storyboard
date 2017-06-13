@@ -96,7 +96,7 @@
         <scene sceneID="AXO-66-1Q5">
             <objects>
                 <navigationController id="YXh-lN-KMw" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="6Ru-xD-idh">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="6Ru-xD-idh">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2311,7 +2311,7 @@
         <scene sceneID="hwE-GA-7Y4">
             <objects>
                 <navigationController id="Kj4-oV-nKd" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="PIk-h1-MHc">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="PIk-h1-MHc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2738,7 +2738,7 @@
         <scene sceneID="DbV-Z9-AeY">
             <objects>
                 <navigationController id="hie-AV-xvD" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="f6g-7W-eAZ">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="f6g-7W-eAZ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -4666,7 +4666,8 @@
                                                                 <rect key="frame" x="0.0" y="0.0" width="800" height="290"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <subviews>
-                                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RK6-Zt-5xh">
+                                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="RK6-Zt-5xh">
+                                                                        <rect key="frame" x="0.0" y="-30" width="800" height="320"/>
                                                                         <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     </imageView>
                                                                 </subviews>
@@ -5596,6 +5597,13 @@
                                                         <constraint firstAttribute="height" constant="1" id="lRX-BK-eIr"/>
                                                     </constraints>
                                                 </view>
+                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="94Q-Mo-BG4">
+                                                    <rect key="frame" x="94" y="53" width="217" height="18"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="bottomMargin" secondItem="Zvy-l7-k3W" secondAttribute="bottom" constant="9" id="5yz-eN-WiQ"/>
@@ -5615,6 +5623,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="addButton" destination="Zvy-l7-k3W" id="OFR-o6-Ted"/>
+                                            <outlet property="bedroomSizeAndKitchenClient" destination="94Q-Mo-BG4" id="biK-lK-wee"/>
                                             <outlet property="resortName" destination="JCB-1a-UAm" id="fqF-yg-vD7"/>
                                             <outlet property="totalWeekLabel" destination="fX0-cE-yQ4" id="fJQ-pQ-uPA"/>
                                         </connections>
@@ -5696,17 +5705,22 @@
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7gg-oX-lmJ">
-                                                    <rect key="frame" x="315" y="39" width="447" height="62"/>
+                                                    <rect key="frame" x="711" y="39" width="51" height="62"/>
                                                     <subviews>
-                                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xci-wv-xtU" customClass="IUIKButton" customModule="IntervalUIKit">
-                                                            <rect key="frame" x="4" y="8" width="45" height="46"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xci-wv-xtU" customClass="IUIKButton" customModule="IntervalUIKit">
+                                                            <rect key="frame" x="8" y="8" width="45" height="46"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
                                                             <state key="normal" image="VS_List-Plus_ORNG"/>
                                                         </button>
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="trailing" secondItem="xci-wv-xtU" secondAttribute="trailing" constant="-2" id="0pK-84-YGE"/>
+                                                        <constraint firstItem="xci-wv-xtU" firstAttribute="leading" secondItem="7gg-oX-lmJ" secondAttribute="leading" constant="8" id="Ykh-FM-Dzi"/>
+                                                        <constraint firstItem="xci-wv-xtU" firstAttribute="top" secondItem="7gg-oX-lmJ" secondAttribute="top" constant="8" id="jKW-Xj-G9d"/>
+                                                        <constraint firstAttribute="bottom" secondItem="xci-wv-xtU" secondAttribute="bottom" constant="8" id="lk8-2M-WWk"/>
+                                                    </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FxM-yk-i6n">
                                                     <rect key="frame" x="16" y="109" width="752" height="1"/>
@@ -5719,7 +5733,7 @@
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="7gg-oX-lmJ" secondAttribute="trailing" constant="6" id="1F4-nP-Mf4"/>
                                                 <constraint firstItem="sxc-dG-YCn" firstAttribute="top" secondItem="sYk-qh-on0" secondAttribute="bottom" id="4nh-yD-YZE"/>
-                                                <constraint firstItem="7gg-oX-lmJ" firstAttribute="leading" secondItem="bzh-1C-2UW" secondAttribute="trailing" constant="3" id="4yV-Fb-LNx"/>
+                                                <constraint firstItem="7gg-oX-lmJ" firstAttribute="leading" secondItem="bzh-1C-2UW" secondAttribute="trailing" constant="399" id="4yV-Fb-LNx"/>
                                                 <constraint firstAttribute="bottom" secondItem="FxM-yk-i6n" secondAttribute="bottom" id="8ZY-rJ-T2L"/>
                                                 <constraint firstItem="sYk-qh-on0" firstAttribute="leading" secondItem="zoI-97-TdN" secondAttribute="leading" constant="16" id="8nL-x9-KgN"/>
                                                 <constraint firstItem="bzh-1C-2UW" firstAttribute="leading" secondItem="sxc-dG-YCn" secondAttribute="trailing" constant="5" id="A0I-oT-gkN"/>
@@ -5731,7 +5745,7 @@
                                                 <constraint firstItem="bzh-1C-2UW" firstAttribute="bottom" secondItem="zoI-97-TdN" secondAttribute="bottomMargin" id="ftB-qW-qmC"/>
                                                 <constraint firstItem="sxc-dG-YCn" firstAttribute="leading" secondItem="zoI-97-TdN" secondAttribute="leading" id="fze-Tk-vQR"/>
                                                 <constraint firstItem="bzh-1C-2UW" firstAttribute="leading" secondItem="zoI-97-TdN" secondAttribute="leading" constant="91" id="oEN-mN-igF"/>
-                                                <constraint firstItem="7gg-oX-lmJ" firstAttribute="leading" secondItem="zoI-97-TdN" secondAttribute="leading" constant="315" id="pTf-cJ-PW8"/>
+                                                <constraint firstItem="7gg-oX-lmJ" firstAttribute="leading" secondItem="zoI-97-TdN" secondAttribute="leading" constant="711" id="pTf-cJ-PW8"/>
                                                 <constraint firstItem="FxM-yk-i6n" firstAttribute="leading" secondItem="sYk-qh-on0" secondAttribute="leading" id="tnA-m0-zkA"/>
                                                 <constraint firstItem="sYk-qh-on0" firstAttribute="top" secondItem="zoI-97-TdN" secondAttribute="top" id="vMt-1h-IGR"/>
                                                 <constraint firstAttribute="trailing" secondItem="sYk-qh-on0" secondAttribute="trailing" id="yu9-0s-LDO"/>
@@ -5740,7 +5754,10 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="addButton" destination="xci-wv-xtU" id="H4M-sw-IUq"/>
+                                            <outlet property="bedroomSizeAndKitchenClient" destination="h43-Gh-e3e" id="Luo-VD-Q6n"/>
                                             <outlet property="resortName" destination="ykN-6n-r03" id="sJk-gH-8JQ"/>
+                                            <outlet property="savedView" destination="sYk-qh-on0" id="SFQ-hN-flr"/>
+                                            <outlet property="totalSleepAndPrivate" destination="nBK-qh-fRV" id="ecT-Kq-G0u"/>
                                             <outlet property="totalWeekLabel" destination="8Hc-pw-oaX" id="wCM-OO-sUK"/>
                                             <outlet property="yearLabel" destination="7pP-cQ-UML" id="bNl-Uw-HuC"/>
                                         </connections>
