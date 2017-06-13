@@ -543,85 +543,29 @@ extension VacationSearchViewController:UITableViewDelegate {
         }else{
             
             let delete = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.delete) { (action,index) -> Void in
-                var isFloat = true
+               // var isFloat = true
                 let storedData = Helper.getLocalStorageWherewanttoTrade()
                 
                 if(storedData.count > 0) {
+                    
+                    
                     let realm = try! Realm()
                     try! realm.write {
-                        var floatWeek:OpenWeeks!
-                         let openWk  = Constant.MyClassConstants.whatToTradeArray[indexPath.row] as! OpenWeeks
                         
-                            print(openWk)
-                            print(Constant.MyClassConstants.whatToTradeArray[indexPath.row])
-    
-                            if(!openWk.isFloatRemoved){
-                             floatWeek = openWk
-                            }else{
-                              isFloat = false
-                            }
-                        
-                        print(floatWeek)
-                        realm.delete(storedData[indexPath.row])
+                
+                        storedData[indexPath.row].openWeeks[0].openWeeks[0].isFloatRemoved = true
+                        storedData[indexPath.row].openWeeks[0].openWeeks[0].isFloat = true
+                        storedData[indexPath.row].openWeeks[0].openWeeks[0].isFromRelinquishment = false
                         
                         if(Constant.MyClassConstants.whatToTradeArray.count > 0){
                             
                             ADBMobile.trackAction(Constant.omnitureEvents.event43, data: nil)
                             Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
                             Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: indexPath.row)
-                            Constant.MyClassConstants.relinquishmentUnitsArray.removeObject(at: indexPath.row)
-                        }
-                        
+                           Constant.MyClassConstants.relinquishmentUnitsArray.removeObject(at: indexPath.row)                        }
                         tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
-                        let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-                        DispatchQueue.main.asyncAfter(deadline: delayTime) {
-                            
-                            tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
-                            
-                            print(floatWeek)
-                            if(!floatWeek.isFloatRemoved && isFloat){
-                                //Realm local storage for selected relinquishment
-                                let storedata = OpenWeeksStorage()
-                                let Membership = UserContext.sharedInstance.selectedMembership
-                                let relinquishmentList = TradeLocalData()
-                                
-                                let selectedOpenWeek = OpenWeeks()
-                                selectedOpenWeek.isFloat = true
-                                selectedOpenWeek.isFloatRemoved = true
-                                selectedOpenWeek.isFromRelinquishment = false
-                                selectedOpenWeek.weekNumber = ""
-                                selectedOpenWeek.relinquishmentID = floatWeek.relinquishmentID
-                                selectedOpenWeek.relinquishmentYear = floatWeek.relinquishmentYear
-                                let resort = ResortList()
-                                resort.resortName = (floatWeek.resort[0].resortName)
-                                
-                                let floatDetails = ResortFloatDetails()
-                                floatDetails.reservationNumber = ""
-                                floatDetails.unitNumber = floatWeek.floatDetails[0].unitNumber
-                                floatDetails.unitSize = floatWeek.floatDetails[0].unitSize
-                                selectedOpenWeek.floatDetails.append(floatDetails)
-                                
-                                let unitDetails = ResortUnitDetails()
-                               // unitDetails.kitchenType = (Helper.getKitchenEnums(kitchenType: (floatWeek.resort[0].units.kitchenType!)))
-                                //unitDetails.unitSize = floatWeek.resort[0].units.unitNumber!
-                                selectedOpenWeek.unitDetails.append(unitDetails)
-                                
-                                selectedOpenWeek.resort.append(resort)
-                                relinquishmentList.openWeeks.append(selectedOpenWeek)
-                                storedata.openWeeks.append(relinquishmentList)
-                                storedata.membeshipNumber = Membership!.memberNumber!
-                                Constant.MyClassConstants.floatRemovedArray.removeAllObjects()
-                                Constant.MyClassConstants.floatRemovedArray.add(floatWeek)
-                                
-                                print(storedata)
-                                print(relinquishmentList)
-                                print(selectedOpenWeek)
-                                let realm = try! Realm()
-                                try! realm.write {
-                                    realm.add(storedata)
-                              }
-                            }
-                        }
+                        
+                        tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
                     }
                 }
             }
