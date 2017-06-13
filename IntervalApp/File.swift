@@ -18,6 +18,7 @@ class RealmLocalStorage:Object {
     var destinations = List<DestinationList>()
     //var openWeeks = List<TradeLocalData>()
     dynamic var membeshipNumber = ""
+    
 }
 
 class OpenWeeksStorage:Object {
@@ -56,6 +57,7 @@ class ResortFloatDetails:Object{
     dynamic var unitSize = ""
     dynamic var checkInDate = ""
     dynamic var clubResortDetails = ""
+    dynamic var showUnitNumber = true
 }
 
 class ResortByMap:Object {
