@@ -16,6 +16,7 @@ target 'IntervalApp' do
     pod 'Brightcove-Player-SDK'
     pod 'Realm' , '~>2.5.0'
     pod 'RealmSwift' , '~>2.5.0'
+    pod "HockeySDK"
 end
 
 post_install do |installer|

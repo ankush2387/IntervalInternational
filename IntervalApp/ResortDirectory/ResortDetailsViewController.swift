@@ -580,12 +580,16 @@ extension ResortDetailsViewController:UITableViewDelegate {
                     self.showSendMailErrorAlert()
                 }
             case 1:
-                let messageVC = MFMessageComposeViewController()
-                messageVC.body = "Enter a message";
-                messageVC.recipients = ["Enter tel-nr"]
-                messageVC.messageComposeDelegate = self;
-                
-                self.present(messageVC, animated: false, completion: nil)
+                let txtComposeViewController = configuredMessageComposeViewController()
+                if MFMessageComposeViewController.canSendText() {
+                    
+                    self.dismiss(animated: true, completion: {
+                        self.present(txtComposeViewController, animated: true, completion: nil)
+                    })
+                } else {
+                    SimpleAlert.alert(self, title: "Could Not Send Text Message" , message: "This device is not able/configured to send Text Messages.")
+                }
+                break
             default:
                 break
             }
@@ -639,6 +643,23 @@ extension ResortDetailsViewController:UITableViewDelegate {
         //mailComposerVC.setMessageBody("Have a look at this resort!", isHTML: false)
         
         return mailComposerVC
+    }
+    
+    func configuredMessageComposeViewController() -> MFMessageComposeViewController {
+        let messageComposerVC = MFMessageComposeViewController()
+        messageComposerVC.messageComposeDelegate = self
+        var message = ""
+        if let name = Constant.MyClassConstants.resortsDescriptionArray.resortName {
+            message.append("Resort Name: \(name)/n")
+        }
+        
+        if let code  = Constant.MyClassConstants.resortsDescriptionArray.resortCode {
+            message.append("Resort Code: \(code)")
+        }
+        
+        messageComposerVC.body = message
+        
+        return messageComposerVC
     }
     
     func showSendMailErrorAlert() {
@@ -1065,6 +1086,6 @@ extension ResortDetailsViewController:MFMailComposeViewControllerDelegate {
 
 extension ResortDetailsViewController:MFMessageComposeViewControllerDelegate{
     func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
-        
+        self.dismiss(animated: true, completion: nil)
     }
 }
