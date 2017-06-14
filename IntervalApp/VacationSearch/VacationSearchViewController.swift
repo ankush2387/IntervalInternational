@@ -754,6 +754,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                             cell.whereTogoTextLabel.text = Constant.MyClassConstants.whereTogoContentArray[(indexPath as NSIndexPath).row] as? String
                         }
                         
+                        cell.bedroomLabel.isHidden = true
                         cell.selectionStyle = UITableViewCellSelectionStyle.none
                         cell.backgroundColor = UIColor.clear
                         return cell
@@ -802,6 +803,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                         if((object as AnyObject) .isKind(of: OpenWeek.self)){
                             let weekNumber = Constant.getWeekNumber(weekType: ((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeek).weekNumber)!)
                             cell.whereTogoTextLabel.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeek).resort!.resortName!), \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeek).relinquishmentYear!) Week \(weekNumber)"
+                            cell.bedroomLabel.isHidden = true
                         }else if((object as AnyObject).isKind(of: OpenWeeks.self)){
                             let weekNumber = Constant.getWeekNumber(weekType: ((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).weekNumber))
                             print((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff)
@@ -837,6 +839,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                             let availablePoints = numberFormatter.string(from: availablePointsNumber)
                             
                             cell.whereTogoTextLabel.text = "Club Interval Gold Points up to \(availablePoints!)"
+                            cell.bedroomLabel.isHidden = true
                         }
                         
                         cell.selectionStyle = UITableViewCellSelectionStyle.none
@@ -1260,28 +1263,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         if (self.SegmentIndex == 1 && (Helper.getAllDestinationFromLocalStorage().count>0 || Helper.getAllResortsFromLocalStorage().count>0)) {
             
             sender.isEnabled = false
-            
-            var fromDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: -(Constant.MyClassConstants.totalWindow/2), to: Constant.MyClassConstants.vacationSearchShowDate, options: [])!
-            
-            var toDate:Date!
-            if (fromDate.isGreaterThanDate(Constant.MyClassConstants.todaysDate)) {
-                
-                toDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: (Constant.MyClassConstants.totalWindow/2), to: Constant.MyClassConstants.vacationSearchShowDate, options: [])!
-            }
-            else {
-                _ = Helper.getDifferenceOfDates()
-                fromDate = Constant.MyClassConstants.todaysDate
-                toDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: (Constant.MyClassConstants.totalWindow) + Helper.getDifferenceOfDates(), to: Constant.MyClassConstants.vacationSearchShowDate as Date, options: [])!
-            }
-            
-            if (toDate.isGreaterThanDate(Constant.MyClassConstants.dateAfterTwoYear!)) {
-                
-                toDate = Constant.MyClassConstants.dateAfterTwoYear
-                fromDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: -(Constant.MyClassConstants.totalWindow) + Helper.getDifferenceOfDatesAhead(), to: Constant.MyClassConstants.vacationSearchShowDate as Date, options: [])!
-            }
-            
-            Constant.MyClassConstants.currentFromDate = fromDate
-            Constant.MyClassConstants.currentToDate = toDate
+            let (toDate,fromDate) = getSearchDates()
             let searchDateRequest = RentalSearchDatesRequest()
             searchDateRequest.checkInToDate = toDate
             searchDateRequest.checkInFromDate = fromDate
@@ -1385,10 +1367,58 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             else {
                 sender.isEnabled = true
             }
-        }else if(self.SegmentIndex == 1){
-            SVProgressHUD.dismiss()
-            Helper.removeServiceCallBackgroundView(view: self.view)
-            SimpleAlert.alert(self, title: Constant.AlertMessages.searchVacationTitle, message: Constant.AlertMessages.searchVacationMessage)
+        }else if(self.SegmentIndex == 2){
+            sender.isEnabled = false
+            let (toDate,fromDate) = getSearchDates()
+            let exchangeSearchDateRequest = ExchangeSearchDatesRequest()
+            exchangeSearchDateRequest.checkInFromDate = fromDate
+            exchangeSearchDateRequest.checkInToDate = toDate
+            exchangeSearchDateRequest.destinations = Helper.getAllDestinationFromLocalStorage()
+            exchangeSearchDateRequest.resorts = Helper.getAllResortsFromLocalStorage()
+            
+            let travelPartyInfo = TravelParty()
+            travelPartyInfo.adults = Int(self.adultCounter)
+            travelPartyInfo.children = Int(self.childCounter)
+            travelPartyInfo.seniors = 1
+            travelPartyInfo.infants = 1
+            
+            exchangeSearchDateRequest.travelParty = travelPartyInfo
+            
+            exchangeSearchDateRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
+            
+            if Reachability.isConnectedToNetwork() == true {
+                ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request: exchangeSearchDateRequest, onSuccess: { (exchangeSearchDates) in
+                    print(exchangeSearchDates)
+                }, onError: { (error) in
+                    SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.noResultError)
+                })
+            }
         }
+    }
+    
+    // Function to get to date and from date for search dates API calling
+    func getSearchDates() -> (Date, Date){
+    
+        var fromDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: -(Constant.MyClassConstants.totalWindow/2), to: Constant.MyClassConstants.vacationSearchShowDate, options: [])!
+        
+        var toDate:Date!
+        if (fromDate.isGreaterThanDate(Constant.MyClassConstants.todaysDate)) {
+            
+            toDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: (Constant.MyClassConstants.totalWindow/2), to: Constant.MyClassConstants.vacationSearchShowDate, options: [])!
+        }
+        else {
+            _ = Helper.getDifferenceOfDates()
+            fromDate = Constant.MyClassConstants.todaysDate
+            toDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: (Constant.MyClassConstants.totalWindow) + Helper.getDifferenceOfDates(), to: Constant.MyClassConstants.vacationSearchShowDate as Date, options: [])!
+        }
+        
+        if (toDate.isGreaterThanDate(Constant.MyClassConstants.dateAfterTwoYear!)) {
+            
+            toDate = Constant.MyClassConstants.dateAfterTwoYear
+            fromDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: -(Constant.MyClassConstants.totalWindow) + Helper.getDifferenceOfDatesAhead(), to: Constant.MyClassConstants.vacationSearchShowDate as Date, options: [])!
+        }
+        Constant.MyClassConstants.currentFromDate = fromDate
+        Constant.MyClassConstants.currentToDate = toDate
+        return(toDate,fromDate)
     }
 }

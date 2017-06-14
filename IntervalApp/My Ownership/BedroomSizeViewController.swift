@@ -74,10 +74,13 @@ class BedroomSizeViewController: UIViewController {
     func changeLabelColor(checkBox:IUIKCheckbox){
         
         let checkedLabel = self.view.viewWithTag(checkBox.tag%10 + 100) as! UILabel
+        let unitLabel = self.view.viewWithTag(checkBox.tag%10 + 10) as! UILabel
         if(checkBox.checked){
-            checkedLabel.textColor = UIColor.orange
+            checkedLabel.textColor = IUIKColorPalette.secondaryB.color
+            unitLabel.textColor = IUIKColorPalette.secondaryB.color
         }else{
             checkedLabel.textColor = UIColor.black
+            unitLabel.textColor = UIColor.black
         }
     }
     
@@ -250,6 +253,7 @@ extension BedroomSizeViewController : UITableViewDataSource{
                 localArrayToHoldSelection.add(cell?.checkBoxButton.tag as Any)
                 doneButton.isEnabled = true
                 cell?.bedroomSizelabel.textColor = IUIKColorPalette.secondaryB.color
+                cell?.unitSizeLabel.textColor = IUIKColorPalette.secondaryB.color
             }
                 cell?.checkBoxButton.checked = true
             }else{
@@ -262,6 +266,7 @@ extension BedroomSizeViewController : UITableViewDataSource{
             }
             cell?.selectionStyle = UITableViewCellSelectionStyle.none
             cell?.bedroomSizelabel.tag = indexPath.row + 100
+            cell?.unitSizeLabel.tag = indexPath.row + 10
             var unitDetails = ""
             if(indexPath.row < Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count - 1 ){
             unitDetails = "\(String(describing: Constant.MyClassConstants.relinquishmentSelectedWeek.unit!.lockOffUnits[indexPath.row].unitNumber!)), \(String(describing: Helper.getKitchenEnums(kitchenType: Constant.MyClassConstants.relinquishmentSelectedWeek.unit!.lockOffUnits[indexPath.row].kitchenType!)))"
@@ -277,12 +282,7 @@ extension BedroomSizeViewController : UITableViewDataSource{
                         cell?.unitSizeLabel.textColor = IUIKColorPalette.secondaryB.color
                         cell?.bedroomSizelabel.textColor = IUIKColorPalette.secondaryB.color
                         cell?.infoSavedLabel.isHidden = false
-                    }/*else{
-                        cell?.infoSavedLabel.isHidden = true
-                        cell?.backgroundCellView.layer.borderColor = UIColor.white.cgColor
-                        cell?.unitSizeLabel.textColor = UIColor.black
-                        cell?.bedroomSizelabel.textColor = UIColor.black
-                    }*/
+                    }
                 }
             return cell!
             
