@@ -181,6 +181,17 @@ class SearchResultViewController: UIViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
+    
+    // function called when search result page map view button pressed
+    @IBAction func mapViewButtonPressed(_ sender: Any) {
+        
+    }
+    
+    //funciton called when search result page sort by name button pressed
+    @IBAction func sortByNameButtonPressed(_ sender: Any) {
+        
+    }
+    
 }
 
 func enableDisablePreviousMoreButton(_ position : NSString) -> Bool{
