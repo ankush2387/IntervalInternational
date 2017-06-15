@@ -552,17 +552,20 @@ extension VacationSearchViewController:UITableViewDelegate {
                     let realm = try! Realm()
                     try! realm.write {
                         
+                        if((Constant.MyClassConstants.whatToTradeArray[indexPath.row] as AnyObject).isKind(of: OpenWeeks.self)){
+                            
                     var floatWeekIndex = -1
                         let dataSelected = Constant.MyClassConstants.whatToTradeArray[indexPath.row] as! OpenWeeks
+                            if(dataSelected.isFloat){
+                                
+                            
                         for (index,object) in storedData.enumerated(){
                             let openWk1 = object.openWeeks[0].openWeeks[0]
                             if(openWk1.relinquishmentID == dataSelected.relinquishmentID){
-                                print(index)
                                 floatWeekIndex = index
                             }
                         }
-                        
-                        
+                            
                         storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFloatRemoved = true
                         storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFloat = true
                         storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFromRelinquishment = false
@@ -574,12 +577,22 @@ extension VacationSearchViewController:UITableViewDelegate {
                             Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: indexPath.row)
                            Constant.MyClassConstants.relinquishmentUnitsArray.removeObject(at: indexPath.row)
                         }
+                            }else{
+                                Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
+                                Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: indexPath.row)
+                                realm.delete(storedData[indexPath.row])
+                            }
+                        }else{
+                            Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
+                            Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: indexPath.row)
+                            realm.delete(storedData[indexPath.row])
+                        }
+                        
                         tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
                         
                         tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
                         Helper.InitializeOpenWeeksFromLocalStorage()
                     }
-                    
                 }
             }
             
@@ -1026,10 +1039,9 @@ extension VacationSearchViewController:UITableViewDataSource {
                     }
                         
                     else {
-                         print(Constant.MyClassConstants.whereTogoContentArray[indexPath.row] as! String)
                         cell.whereTogoTextLabel.text = Constant.MyClassConstants.whereTogoContentArray[(indexPath as NSIndexPath).row] as? String
                     }
-                    
+                    cell.bedroomLabel.isHidden = true
                     cell.selectionStyle = UITableViewCellSelectionStyle.none
                     cell.backgroundColor = UIColor.clear
                     return cell
@@ -1347,8 +1359,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                 SVProgressHUD.dismiss()
                                 Helper.removeServiceCallBackgroundView(view: self.view)
                                 Helper.resortDetailsClicked(toDate: Constant.MyClassConstants.checkInDates[dateToSelect] as NSDate, senderVC: self)
-                            }
-                            else {
+                            }else {
                                 Constant.MyClassConstants.searchResultCollectionViewScrollToIndex = 1
                                 SVProgressHUD.dismiss()
                                 Helper.removeServiceCallBackgroundView(view: self.view)
@@ -1366,9 +1377,12 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             }
             else {
                 sender.isEnabled = true
+                Helper.hideProgressBar(senderView: self)
+                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
             }
         }else if(self.SegmentIndex == 2){
             sender.isEnabled = false
+            Helper.showProgressBar(senderView: self)
             let (toDate,fromDate) = getSearchDates()
             let exchangeSearchDateRequest = ExchangeSearchDatesRequest()
             exchangeSearchDateRequest.checkInFromDate = fromDate
@@ -1379,8 +1393,6 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             let travelPartyInfo = TravelParty()
             travelPartyInfo.adults = Int(self.adultCounter)
             travelPartyInfo.children = Int(self.childCounter)
-            travelPartyInfo.seniors = 1
-            travelPartyInfo.infants = 1
             
             exchangeSearchDateRequest.travelParty = travelPartyInfo
             
@@ -1388,10 +1400,15 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             
             if Reachability.isConnectedToNetwork() == true {
                 ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request: exchangeSearchDateRequest, onSuccess: { (exchangeSearchDates) in
-                    print(exchangeSearchDates)
+                    print(exchangeSearchDates.checkInDates)
+                    Helper.hideProgressBar(senderView: self)
+                    sender.isEnabled = true
                 }, onError: { (error) in
                     SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.noResultError)
                 })
+            }else{
+                Helper.hideProgressBar(senderView: self)
+                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
             }
         }
     }

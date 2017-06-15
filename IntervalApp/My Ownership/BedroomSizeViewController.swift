@@ -102,7 +102,7 @@ class BedroomSizeViewController: UIViewController {
                 self.localArrayToHoldSelection = [0,1,2,3,4]
             }
             else {
-                for index in Constant.MyClassConstants.bedRoomSizeSelectedIndexArray{
+                for index in Constant.MyClassConstants.unitNumberSelectedArray{
                     self.localArrayToHoldSelection.add(index as! Int)
                 }
             }

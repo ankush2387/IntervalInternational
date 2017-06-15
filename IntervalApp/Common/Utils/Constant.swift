@@ -283,6 +283,7 @@ class Constant: NSObject {
         static var collectionViewScrolledIndex:Int = 0
         static var imagesArray:NSMutableArray = []
         static var bedRoomSizeSelectedIndexArray:NSMutableArray = []
+        static var unitNumberSelectedArray:NSMutableArray = []
         static var amenitiesDictionary = NSMutableDictionary()
         static var advisementsDictionary = NSMutableDictionary()
         static var imageSize = "LARGE"
@@ -470,6 +471,9 @@ class Constant: NSObject {
         static var selectedFloatWeek = OpenWeeks()
         static var unitNumberLockOff = ""
         static var saveLockOffDetailsArray = NSMutableArray()
+        
+        //Header for search results
+        static var searchResultHeader = NSLocalizedString("Nearest Check-in Date selected.\nWe found availibility close to your desired date.", comment: "")
     }
     struct CommonStringIdentifiers {
         static var floatWeek = "FLOAT_WEEK"

@@ -22,6 +22,7 @@ class SearchResultViewController: UIViewController {
     //***** variable declaration *****//
     var collectionviewSelectedIndex = Constant.MyClassConstants.searchResultCollectionViewScrollToIndex
     //var checkInDatesArray = Constant.MyClassConstants.checkInDates
+    var isFromExchange = true
     var loadFirst = true
     var enablePreviousMore = true
     var enableNextMore = true
@@ -47,14 +48,33 @@ class SearchResultViewController: UIViewController {
         
         if(Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.getawayAlerts){
             
-            headerVw.frame = CGRect(x:0, y:0, width:300, height:40)
+            //Show header for table if search is from exchange
+            let tableHeader = UIView(frame : CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height:80))
+            if(isFromExchange){
+                tableHeader.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 80)
+                tableHeader.backgroundColor = IUIKColorPalette.primary1.color
+                
+                let headerLabel = UILabel(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 80))
+                headerLabel.numberOfLines = 0
+                headerLabel.textColor = UIColor.white
+                headerLabel.textAlignment = NSTextAlignment.center
+                headerLabel.font = UIFont(name:Constant.fontName.helveticaNeue, size:15)
+                headerLabel.text = Constant.MyClassConstants.searchResultHeader
+                tableHeader.addSubview(headerLabel)
+            }
+            
+            headerVw.frame = CGRect(x:0, y:tableHeader.frame.size.height, width:300, height:tableHeader.frame.size.height + 40)
             headerVw.backgroundColor = UIColor.gray
             
             titleLabel.frame = CGRect(x:10, y:0, width:280, height:40)
             titleLabel.textColor = UIColor.white
             titleLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 14)
+            headerVw.addSubview(tableHeader)
             headerVw.addSubview(titleLabel)
             
+            
+            
+            //Check if resort is in surrounding areas or within destination
             let dateValue = Constant.MyClassConstants.checkInDates[collectionviewSelectedIndex]
             if(Constant.MyClassConstants.surroundingCheckInDates.contains(dateValue)){
                 headerVw.backgroundColor = UIColor(red: 170/255.0, green: 216/255.0, blue: 111/255.0, alpha: 1.0)
@@ -90,7 +110,6 @@ class SearchResultViewController: UIViewController {
         }
         
          self.collectionviewSelectedIndex = Constant.MyClassConstants.searchResultCollectionViewScrollToIndex
-        
     }
     
     override func didReceiveMemoryWarning() {
