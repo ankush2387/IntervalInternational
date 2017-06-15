@@ -767,6 +767,32 @@ public class Helper{
         }
     }
     
+    static func getSearchDates() ->(Date, Date){
+        
+        var fromDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: -(Constant.MyClassConstants.totalWindow/2), to: Constant.MyClassConstants.vacationSearchShowDate, options: [])!
+        
+        var toDate:Date!
+        if (fromDate.isGreaterThanDate(Constant.MyClassConstants.todaysDate)) {
+            
+            toDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: (Constant.MyClassConstants.totalWindow/2), to: Constant.MyClassConstants.vacationSearchShowDate, options: [])!
+        }
+        else {
+            _ = Helper.getDifferenceOfDates()
+            fromDate = Constant.MyClassConstants.todaysDate
+            toDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: (Constant.MyClassConstants.totalWindow) + Helper.getDifferenceOfDates(), to: Constant.MyClassConstants.vacationSearchShowDate as Date, options: [])!
+        }
+        
+        if (toDate.isGreaterThanDate(Constant.MyClassConstants.dateAfterTwoYear!)) {
+            
+            toDate = Constant.MyClassConstants.dateAfterTwoYear
+            fromDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: -(Constant.MyClassConstants.totalWindow) + Helper.getDifferenceOfDatesAhead(), to: Constant.MyClassConstants.vacationSearchShowDate as Date, options: [])!
+        }
+        Constant.MyClassConstants.currentFromDate = fromDate
+        Constant.MyClassConstants.currentToDate = toDate
+        return(toDate,fromDate)
+        
+    }
+    
     //***** common function that returns date difference between todate and fromdate *****//
     static func getDifferenceOfDates() -> Int{
         

@@ -42,6 +42,8 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
     override func viewDidLoad() {
         super.viewDidLoad()
         
+
+        
         NotificationCenter.default.addObserver(self, selector: #selector(refreshTableView), name: NSNotification.Name(rawValue: Constant.notificationNames.refreshTableNotification), object: nil)
         self.getVacationSearchDetails()
     }
@@ -558,26 +560,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
         if (self.segmentIndex == 1 && (Helper.getAllDestinationFromLocalStorage().count>0 || Helper.getAllResortsFromLocalStorage().count>0)) {
             
             sender.isEnabled = false
-            SVProgressHUD.show()
-            
-            var fromDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: -(Constant.MyClassConstants.totalWindow/2), to: Constant.MyClassConstants.vacationSearchShowDate as Date, options: [])!
-            
-            var toDate:Date!
-            if (fromDate.isGreaterThanDate(Constant.MyClassConstants.todaysDate as Date)) {
-                
-                toDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: (Constant.MyClassConstants.totalWindow/2), to: Constant.MyClassConstants.vacationSearchShowDate as Date, options: [])!
-            }
-            else {
-                _ = Helper.getDifferenceOfDates()
-                fromDate = Constant.MyClassConstants.todaysDate as Date
-                toDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: (Constant.MyClassConstants.totalWindow) + Helper.getDifferenceOfDates(), to: Constant.MyClassConstants.vacationSearchShowDate as Date, options: [])!
-            }
-            
-            if (toDate.isGreaterThanDate(Constant.MyClassConstants.dateAfterTwoYear!)) {
-                
-                toDate = Constant.MyClassConstants.dateAfterTwoYear
-                fromDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: -(Constant.MyClassConstants.totalWindow) + Helper.getDifferenceOfDatesAhead(), to: Constant.MyClassConstants.vacationSearchShowDate as Date, options: [])!
-            }
+            let (toDate,fromDate) = Helper.getSearchDates()
             
             Constant.MyClassConstants.currentFromDate = fromDate
             Constant.MyClassConstants.currentToDate = toDate
@@ -653,12 +636,43 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                 
             }
         }
-        else if(self.segmentIndex == 1){
-            SimpleAlert.alert(self, title: Constant.AlertMessages.searchVacationTitle, message: Constant.AlertMessages.searchVacationMessage)
+        else if(self.segmentIndex == 2){
+            
+            sender.isEnabled = false
+            let (toDate,fromDate) = Helper.getSearchDates()
+            let exchangeSearchDateRequest = ExchangeSearchDatesRequest()
+            exchangeSearchDateRequest.checkInFromDate = fromDate
+            exchangeSearchDateRequest.checkInToDate = toDate
+            exchangeSearchDateRequest.destinations = Helper.getAllDestinationFromLocalStorage()
+            exchangeSearchDateRequest.resorts = Helper.getAllResortsFromLocalStorage()
+            
+            let travelPartyInfo = TravelParty()
+            travelPartyInfo.adults = Int(self.adultCounter)
+            travelPartyInfo.children = Int(self.childCounter)
+            travelPartyInfo.seniors = 1
+            travelPartyInfo.infants = 1
+            
+            exchangeSearchDateRequest.travelParty = travelPartyInfo
+            
+            exchangeSearchDateRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
+            
+            if Reachability.isConnectedToNetwork() == true {
+                ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request: exchangeSearchDateRequest, onSuccess: { (exchangeSearchDates) in
+                    print(exchangeSearchDates)
+                   
+                }, onError: { (error) in
+                    SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.noResultError)
+                })
+            }
+            
+            
+          //  SimpleAlert.alert(self, title: Constant.AlertMessages.searchVacationTitle, message: Constant.AlertMessages.searchVacationMessage)
         }
         
     }
+
 }
+
 
 //Extension for collection view.
 extension VacationSearchIPadViewController:UICollectionViewDelegate {

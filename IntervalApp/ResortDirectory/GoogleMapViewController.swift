@@ -1742,8 +1742,8 @@ extension GoogleMapViewController:UITableViewDataSource {
             }else{
             }
             cell.resortName.text = resortDetails.resortName
-            let resortAddress = resortDetails.address!
-            cell.resortCountry.text = resortAddress.cityName //resortAddress.country?.countryName
+            let resortAddress = resortDetails.address
+            cell.resortCountry.text = resortAddress?.cityName //resortAddress.country?.countryName
             cell.resortCode.text = resortDetails.resortCode
             cell.delegate = self
             
