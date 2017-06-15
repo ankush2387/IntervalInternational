@@ -39,6 +39,7 @@ class SearchResultViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        searchResultTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
         Helper.removeServiceCallBackgroundView(view: self.view)
         //***** Register collection cell xib with collection view *****//
         let nib = UINib(nibName: Constant.customCellNibNames.searchResultCollectionCell, bundle: nil)
@@ -63,10 +64,10 @@ class SearchResultViewController: UIViewController {
                 tableHeader.addSubview(headerLabel)
             }
             
-            headerVw.frame = CGRect(x:0, y:tableHeader.frame.size.height, width:300, height:tableHeader.frame.size.height + 40)
-            headerVw.backgroundColor = UIColor.gray
+            headerVw.frame = CGRect(x:0, y:0, width:300, height:tableHeader.frame.size.height + 44)
+            headerVw.backgroundColor = UIColor.white
             
-            titleLabel.frame = CGRect(x:10, y:0, width:280, height:40)
+            titleLabel.frame = CGRect(x:10, y:tableHeader.frame.size.height + 2, width:280, height:40)
             titleLabel.textColor = UIColor.white
             titleLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 14)
             headerVw.addSubview(tableHeader)
@@ -77,10 +78,10 @@ class SearchResultViewController: UIViewController {
             //Check if resort is in surrounding areas or within destination
             let dateValue = Constant.MyClassConstants.checkInDates[collectionviewSelectedIndex]
             if(Constant.MyClassConstants.surroundingCheckInDates.contains(dateValue)){
-                headerVw.backgroundColor = UIColor(red: 170/255.0, green: 216/255.0, blue: 111/255.0, alpha: 1.0)
+                titleLabel.backgroundColor = UIColor(red: 170/255.0, green: 216/255.0, blue: 111/255.0, alpha: 1.0)
                 titleLabel.text = Constant.MyClassConstants.surroundingAreaString
             }else{
-                headerVw.backgroundColor = UIColor(rgb:IUIKColorPalette.primary1.rawValue)
+                titleLabel.backgroundColor = UIColor(rgb:IUIKColorPalette.primary1.rawValue)
                 if(Constant.MyClassConstants.vacationSearchDestinationArray.count > 1){
                     titleLabel.text = "Resorts in \(Constant.MyClassConstants.vacationSearchDestinationArray[0]) and \(Constant.MyClassConstants.vacationSearchDestinationArray.count - 1) more"
                     
@@ -280,12 +281,12 @@ extension SearchResultViewController:UICollectionViewDelegate {
                     dateValue = Constant.MyClassConstants.checkInDates[collectionviewSelectedIndex]
                 }
                 if(Constant.MyClassConstants.surroundingCheckInDates.contains(dateValue) && Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.getawayAlerts){
-                    headerVw.backgroundColor = UIColor(red: 170/255.0, green: 216/255.0, blue: 111/255.0, alpha: 1.0)
+                    titleLabel.backgroundColor = UIColor(red: 170/255.0, green: 216/255.0, blue: 111/255.0, alpha: 1.0)
                     titleLabel.text = Constant.MyClassConstants.surroundingAreaString
                     
                 }else{
                    
-                    headerVw.backgroundColor = UIColor(rgb:IUIKColorPalette.primary1.rawValue)
+                    titleLabel.backgroundColor = UIColor(rgb:IUIKColorPalette.primary1.rawValue)
                     if(Constant.MyClassConstants.vacationSearchDestinationArray.count > 1 && Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.getawayAlerts){
                         titleLabel.text = "Resorts in \(Constant.MyClassConstants.vacationSearchDestinationArray[0]) and \(Constant.MyClassConstants.vacationSearchDestinationArray.count - 1) more"
                     }else{

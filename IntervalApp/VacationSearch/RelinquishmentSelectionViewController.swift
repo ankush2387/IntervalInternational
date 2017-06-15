@@ -766,7 +766,6 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                         cell.dayAndDateLabel.text = ""
                     }
                     cell.totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: openWeek.weekNumber!))"
-                    cell.dayAndDateLabel.text = ""
                     cell.addButton.tag = indexPath.row + 1
                     
                     cell.addButton.addTarget(self, action:  #selector(RelinquishmentSelectionViewController.addAvailablePoinButtonPressed(_:)), for: .touchUpInside)

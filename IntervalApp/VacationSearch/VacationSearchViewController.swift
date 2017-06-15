@@ -1400,9 +1400,21 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             
             if Reachability.isConnectedToNetwork() == true {
                 ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request: exchangeSearchDateRequest, onSuccess: { (exchangeSearchDates) in
-                    print(exchangeSearchDates.checkInDates)
                     Helper.hideProgressBar(senderView: self)
                     sender.isEnabled = true
+                    
+                    let exchangeAvailabilityRequest = ExchangeSearchAvailabilityRequest()
+                    exchangeAvailabilityRequest.checkInDate = exchangeSearchDates.checkInDates[0]
+                    exchangeAvailabilityRequest.resortCodes = exchangeSearchDates.resortCodes
+                    exchangeAvailabilityRequest.travelParty = travelPartyInfo
+                    exchangeAvailabilityRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
+                    
+                    ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: exchangeAvailabilityRequest, onSuccess: { (exchangeAvailability) in
+                        print(exchangeAvailability.resort ?? "")
+                        print(exchangeAvailability.inventory ?? "")
+                    }, onError: { (error) in
+                        SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.noResultError)
+                    })
                 }, onError: { (error) in
                     SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.noResultError)
                 })
