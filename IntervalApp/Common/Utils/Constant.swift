@@ -1177,6 +1177,7 @@ class Constant: NSObject {
         static var detailSegue = "detailSegue"
         static var searchVacation = "searchVacation"
         static var upcomingDetailSegue = "UpComingTripDetailSegue"
+         static var searchResultMapSegue = "searchResultMapSegue"
     }
     
     //***** common  structure to provide all actionSheetAttributedString *****//

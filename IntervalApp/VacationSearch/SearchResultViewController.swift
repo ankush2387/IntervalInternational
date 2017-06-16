@@ -205,6 +205,7 @@ class SearchResultViewController: UIViewController {
     // function called when search result page map view button pressed
     @IBAction func mapViewButtonPressed(_ sender: Any) {
         
+         self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultMapSegue , sender: nil)
     }
     
     //funciton called when search result page sort by name button pressed
