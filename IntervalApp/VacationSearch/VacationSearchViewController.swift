@@ -1380,6 +1380,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 Helper.hideProgressBar(senderView: self)
                 SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
             }
+            Constant.MyClassConstants.isFromExchange = false
         }else if(self.SegmentIndex == 2){
             sender.isEnabled = false
             Helper.showProgressBar(senderView: self)
@@ -1422,6 +1423,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 Helper.hideProgressBar(senderView: self)
                 SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
             }
+             Constant.MyClassConstants.isFromExchange = true
         }
     }
     

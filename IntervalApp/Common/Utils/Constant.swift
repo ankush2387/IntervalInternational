@@ -474,6 +474,7 @@ class Constant: NSObject {
         
         //Header for search results
         static var searchResultHeader = NSLocalizedString("Nearest Check-in Date selected.\nWe found availibility close to your desired date.", comment: "")
+        static var isFromExchange = false
     }
     struct CommonStringIdentifiers {
         static var floatWeek = "FLOAT_WEEK"

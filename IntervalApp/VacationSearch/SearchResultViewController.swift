@@ -22,7 +22,6 @@ class SearchResultViewController: UIViewController {
     //***** variable declaration *****//
     var collectionviewSelectedIndex = Constant.MyClassConstants.searchResultCollectionViewScrollToIndex
     //var checkInDatesArray = Constant.MyClassConstants.checkInDates
-    var isFromExchange = true
     var loadFirst = true
     var enablePreviousMore = true
     var enableNextMore = true
@@ -50,8 +49,8 @@ class SearchResultViewController: UIViewController {
         if(Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.getawayAlerts){
             
             //Show header for table if search is from exchange
-            let tableHeader = UIView(frame : CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height:80))
-            if(isFromExchange){
+            let tableHeader = UIView(frame : CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height:0))
+            if(Constant.MyClassConstants.isFromExchange){
                 tableHeader.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 80)
                 tableHeader.backgroundColor = IUIKColorPalette.primary1.color
                 
@@ -64,10 +63,10 @@ class SearchResultViewController: UIViewController {
                 tableHeader.addSubview(headerLabel)
             }
             
-            headerVw.frame = CGRect(x:0, y:0, width:300, height:tableHeader.frame.size.height + 44)
+            headerVw.frame = CGRect(x:0, y:0, width:UIScreen.main.bounds.width, height:tableHeader.frame.size.height + 44)
             headerVw.backgroundColor = UIColor.white
             
-            titleLabel.frame = CGRect(x:10, y:tableHeader.frame.size.height + 2, width:280, height:40)
+            titleLabel.frame = CGRect(x:0, y:tableHeader.frame.size.height + 2, width:UIScreen.main.bounds.width, height:40)
             titleLabel.textColor = UIColor.white
             titleLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 14)
             headerVw.addSubview(tableHeader)
@@ -77,6 +76,7 @@ class SearchResultViewController: UIViewController {
             
             //Check if resort is in surrounding areas or within destination
             let dateValue = Constant.MyClassConstants.checkInDates[collectionviewSelectedIndex]
+            titleLabel.textAlignment = NSTextAlignment.center
             if(Constant.MyClassConstants.surroundingCheckInDates.contains(dateValue)){
                 titleLabel.backgroundColor = UIColor(red: 170/255.0, green: 216/255.0, blue: 111/255.0, alpha: 1.0)
                 titleLabel.text = Constant.MyClassConstants.surroundingAreaString
@@ -415,7 +415,7 @@ extension SearchResultViewController:UITableViewDelegate {
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if((indexPath as NSIndexPath).row == 0) {
-            
+            Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.vacationSearchFunctionalityCheck
             Helper.addServiceCallBackgroundView(view: self.view)
             SVProgressHUD.show()
             DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: Constant.MyClassConstants.resortsArray[indexPath.section].resortCode!, onSuccess: { (response) in

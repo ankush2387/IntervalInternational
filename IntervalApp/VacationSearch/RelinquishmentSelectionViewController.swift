@@ -852,7 +852,6 @@ extension RelinquishmentSelectionViewController:BedroomSizeViewControllerDelegat
         for unitDetails1 in selectedUnitsArray{
             
             let unitSizeFullDetail1 = Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[(unitDetails1 as! Int - 1000)] as! String
-            
             if(!Constant.MyClassConstants.userSelectedStringArray.contains(unitSizeFullDetail1)){
                 
                 let storedata = OpenWeeksStorage()

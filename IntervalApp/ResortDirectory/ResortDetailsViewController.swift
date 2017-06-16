@@ -282,7 +282,6 @@ class ResortDetailsViewController: UIViewController {
                 self.tableViewResorts.reloadData()
                 
             }
-            
         }
     }
     //***** Function call for Done button *****//
@@ -292,8 +291,11 @@ class ResortDetailsViewController: UIViewController {
             
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
         }else{
-            self.navigationController?.popViewController(animated: true)
-            //self.dismiss(animated: true, completion: nil)
+            if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.vacationSearchFunctionalityCheck){
+                self.dismiss(animated: true, completion: nil)
+            }else{
+                self.navigationController?.popViewController(animated: true)
+            }
         }
     }
     

@@ -247,6 +247,7 @@ extension BedroomSizeViewController : UITableViewDataSource{
             cell?.backgroundCellView.layer.borderColor = UIColor.white.cgColor
             cell?.bedroomSizelabel.text = Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as? String
             cell?.checkBoxButton.tag = indexPath.row + 1000
+            print(Constant.MyClassConstants.userSelectedStringArray)
            if(Constant.MyClassConstants.userSelectedStringArray.contains(Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as! String)){
             if(!localArrayToHoldSelection.contains(cell?.checkBoxButton.tag as Any))
             {
