@@ -294,7 +294,13 @@ class ResortDetailsViewController: UIViewController {
             if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.vacationSearchFunctionalityCheck){
                 self.dismiss(animated: true, completion: nil)
             }else{
-                self.navigationController?.popViewController(animated: true)
+                let transition = CATransition()
+                transition.duration = 0.5
+                transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+                transition.type = kCATransitionReveal
+                transition.subtype = kCATransitionFromBottom
+                navigationController?.view.layer.add(transition, forKey: nil)
+                _ = navigationController?.popViewController(animated: false)
             }
         }
     }

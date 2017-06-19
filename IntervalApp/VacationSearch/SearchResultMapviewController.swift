@@ -161,8 +161,8 @@ class SearchResultMapviewController: UIViewController {
     func handleSwipes(sender:UISwipeGestureRecognizer) {
         
         if (sender.direction == .up) {
-            
-            
+           
+            Helper.getResortWithResortCode(code: Constant.MyClassConstants.resortsArray[self.selectedIndex].resortCode!, viewcontroller: self)
         }
         else {
             self.removeBottomView()
@@ -366,7 +366,7 @@ extension SearchResultMapviewController:UICollectionViewDataSource {
             var url = URL(string: "")
             let imagesArray = resort.images
             for imgStr in imagesArray {
-                if(imgStr.size == Constant.MyClassConstants.imageSize) {
+                if(imgStr.size!.caseInsensitiveCompare(Constant.MyClassConstants.imageSize) == ComparisonResult.orderedSame) {
                     url = URL(string: imgStr.url!)!
                     break
                 }

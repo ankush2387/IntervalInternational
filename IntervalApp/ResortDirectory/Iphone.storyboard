@@ -1480,7 +1480,7 @@ Interval Account</string>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="nRC-as-d50" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Map" id="Xsj-Rz-NIu"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="p9X-Zd-7Lv">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="p9X-Zd-7Lv">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1498,7 +1498,7 @@ Interval Account</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Gpr-6e-otx" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="99W-AA-Yhy">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="99W-AA-Yhy">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1527,7 +1527,7 @@ Interval Account</string>
     <inferredMetricsTieBreakers>
         <segue reference="KTW-Os-bqS"/>
         <segue reference="1yd-In-YGU"/>
-        <segue reference="SsD-cI-IVD"/>
-        <segue reference="LB4-mY-QYy"/>
+        <segue reference="v5y-Uh-olM"/>
+        <segue reference="PVi-Ym-AGy"/>
     </inferredMetricsTieBreakers>
 </document>
