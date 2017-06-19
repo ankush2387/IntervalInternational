@@ -1644,7 +1644,7 @@ extension GoogleMapViewController:UITableViewDataSource {
                 cell.tag = indexPath.section
                 let dicValue = Constant.MyClassConstants.destinations![indexPath.row]
                 cell.resortLocationName.text = dicValue.destinationName
-                guard ((dicValue.address?.territoryCode?.characters.count)! > 0)
+                guard (dicValue.address?.territoryCode != nil)
                     else{
                         return cell
                 }

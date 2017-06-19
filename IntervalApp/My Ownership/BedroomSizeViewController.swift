@@ -248,18 +248,6 @@ extension BedroomSizeViewController : UITableViewDataSource{
             cell?.bedroomSizelabel.text = Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as? String
             cell?.checkBoxButton.tag = indexPath.row + 1000
             print(Constant.MyClassConstants.userSelectedStringArray)
-           if(Constant.MyClassConstants.userSelectedStringArray.contains(Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as! String)){
-            if(!localArrayToHoldSelection.contains(cell?.checkBoxButton.tag as Any))
-            {
-                localArrayToHoldSelection.add(cell?.checkBoxButton.tag as Any)
-                doneButton.isEnabled = true
-                cell?.bedroomSizelabel.textColor = IUIKColorPalette.secondaryB.color
-                cell?.unitSizeLabel.textColor = IUIKColorPalette.secondaryB.color
-            }
-                cell?.checkBoxButton.checked = true
-            }else{
-                cell?.checkBoxButton.checked = false
-            }
             if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController){
                 cell?.checkBoxButton.isHidden = true
             }else{
@@ -275,6 +263,20 @@ extension BedroomSizeViewController : UITableViewDataSource{
                 unitDetails = "\(String(describing: Constant.MyClassConstants.relinquishmentSelectedWeek.unit!.unitNumber!)), \(String(describing: Helper.getKitchenEnums(kitchenType: Constant.MyClassConstants.relinquishmentSelectedWeek.unit!.kitchenType!)))"
             }
             cell?.unitSizeLabel.text = unitDetails
+            let unitNumber = unitDetails.components(separatedBy: ",")
+            if(Constant.MyClassConstants.userSelectedStringArray.contains(Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as! String)){
+                if((unitNumber[0] == Constant.MyClassConstants.unitNumberSelectedArray[indexPath.row] as! String))
+                {
+                    localArrayToHoldSelection.add(cell?.checkBoxButton.tag as Any)
+                    doneButton.isEnabled = true
+                    cell?.bedroomSizelabel.textColor = IUIKColorPalette.secondaryB.color
+                    cell?.unitSizeLabel.textColor = IUIKColorPalette.secondaryB.color
+                    cell?.checkBoxButton.checked = true
+                }
+            }else{
+                cell?.checkBoxButton.checked = false
+            }
+            print(Constant.MyClassConstants.unitNumberSelectedArray)
                 let setUnitSize = cell?.bedroomSizelabel.text?.components(separatedBy: ",")[0]
                 let setUnitNumber = cell?.unitSizeLabel.text?.components(separatedBy: ",")[0]
                 for selectedUnitDetails in Constant.MyClassConstants.saveLockOffDetailsArray{

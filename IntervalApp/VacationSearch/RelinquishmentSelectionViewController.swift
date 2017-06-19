@@ -508,6 +508,7 @@ class RelinquishmentSelectionViewController: UIViewController {
     
     func getUnitSize(_ unitSize:[InventoryUnit]) {
         Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.removeAllObjects()
+        Constant.MyClassConstants.unitNumberSelectedArray.removeAllObjects()
         let unitSizeRelinquishment = unitSize
         var unitString = ""
         var unitNumber = ""
@@ -852,6 +853,7 @@ extension RelinquishmentSelectionViewController:BedroomSizeViewControllerDelegat
         for unitDetails1 in selectedUnitsArray{
             
             let unitSizeFullDetail1 = Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[(unitDetails1 as! Int - 1000)] as! String
+            let unitNumber = Constant.MyClassConstants.unitNumberSelectedArray[(unitDetails1 as! Int - 1000)] as! String
             if(!Constant.MyClassConstants.userSelectedStringArray.contains(unitSizeFullDetail1)){
                 
                 let storedata = OpenWeeksStorage()
@@ -873,7 +875,11 @@ extension RelinquishmentSelectionViewController:BedroomSizeViewControllerDelegat
                 resortUnitDetails.unitSize = unitSizeFullDetail[0]
                 resortUnitDetails.kitchenType = unitSizeFullDetail[1]
                 
+                let floatDetails = ResortFloatDetails()
+                floatDetails.unitNumber = unitNumber
+                
                 selectedOpenWeek.unitDetails.append(resortUnitDetails)
+                selectedOpenWeek.floatDetails.append(floatDetails)
                 selectedOpenWeek.resort.append(resort)
                 
                 relinquishmentList.openWeeks.append(selectedOpenWeek)

@@ -475,6 +475,9 @@ class Constant: NSObject {
         //Header for search results
         static var searchResultHeader = NSLocalizedString("Nearest Check-in Date selected.\nWe found availibility close to your desired date.", comment: "")
         static var isFromExchange = false
+        static var travelPartyInfo = TravelParty()
+        static var inventoryUnitsArray =  [InventoryUnit]()
+        static var promotionsArray = [Promotion]()
     }
     struct CommonStringIdentifiers {
         static var floatWeek = "FLOAT_WEEK"
@@ -1114,6 +1117,7 @@ class Constant: NSObject {
         static var tdiCollectionViewCell = "TdiCollectionViewCell"
         static var unitSizeTdiCollectionViewCell = "UnitSizeTdiCollectionViewCell"
         static var tdiTableViewCell = "TdiTableViewCell"
+        static var exchange = "Exchange"
     }
     
     //***** Common structure for font names and type *****//
