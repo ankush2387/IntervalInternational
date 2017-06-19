@@ -26,7 +26,7 @@ class SearchResultMapviewController: UIViewController {
     var resortCollectionView:UICollectionView!
     var marker:GMSMarker! = nil
     var bounds = GMSCoordinateBounds()
-    var selectedIndex = -1
+    var selectedIndex = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -133,13 +133,15 @@ class SearchResultMapviewController: UIViewController {
             resortView.addGestureRecognizer(topSwipe)
             resortView.addGestureRecognizer(bottomSwipe)
             self.view.addSubview(resortView)
+             let indexPath = IndexPath(row: self.selectedIndex, section: 0)
+            self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.right, animated: true)
         }
     }
     
     // ***** This method executes when we want to hide bottom resort view *****//
     func removeBottomView() {
         
-        self.selectedIndex = -1
+        self.selectedIndex = 0
         for selectedMarker in Constant.MyClassConstants.googleMarkerArray {
             
             selectedMarker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
@@ -299,6 +301,7 @@ extension SearchResultMapviewController:GMSMapViewDelegate {
                         }
                     }
                     self.gmsMapView.selectedMarker = marker
+                    self.selectedIndex = marker.userData as! Int
                     let indexPath = IndexPath(row: marker.userData as! Int, section: 0)
                     if(selectedIndex > marker.userData as! Int) {
                         self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.left, animated: true)
@@ -331,30 +334,12 @@ extension SearchResultMapviewController:UICollectionViewDataSource {
         
         return 1
     }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         return Constant.MyClassConstants.resortsArray.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-      
-//        for marker in Constant.MyClassConstants.googleMarkerArray {
-//            
-//            if(marker.userData as! Int == indexPath.row) {
-//                
-//                marker.icon = UIImage(named:Constant.assetImageNames.pinFocusImage)
-//                marker.isFlat = true
-//                  self.selectedIndex = indexPath.row
-//                self.gmsMapView.selectedMarker = marker
-//            }
-//            else {
-//              
-//                marker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
-//                marker.isFlat = false
-//            }
-//           
-//            
-//        }
         
         let resort = Constant.MyClassConstants.resortsArray[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cell, for: indexPath as IndexPath)
@@ -444,6 +429,29 @@ extension SearchResultMapviewController:UICollectionViewDataSource {
         
         return cell
         
+    }
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        
+        var visible: [AnyObject] = resortCollectionView.indexPathsForVisibleItems as [AnyObject]
+        let indexpath: NSIndexPath = (visible[0] as! NSIndexPath)
+       
+        let index = indexpath.row
+        self.selectedIndex = index
+        for selectedMarker in Constant.MyClassConstants.googleMarkerArray {
+            
+            if(selectedMarker.userData as! Int == index) {
+              
+                selectedMarker.icon = UIImage(named:Constant.assetImageNames.pinFocusImage)
+                selectedMarker.isFlat = true
+                 self.gmsMapView.selectedMarker = selectedMarker
+            }
+            else {
+                
+                selectedMarker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
+                selectedMarker.isFlat = false
+            }
+        }
+       
     }
     
 }
