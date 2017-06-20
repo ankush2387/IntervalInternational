@@ -38,8 +38,8 @@ class SearchResultViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //searchResultTableView.estimatedRowHeight = 200
-        offerString = (Constant.MyClassConstants.promotionsArray[0].offerContentFragment!).html2String
+        searchResultTableView.estimatedRowHeight = 400
+        //offerString = (Constant.MyClassConstants.promotionsArray[0].offerContentFragment!).html2String
         
         searchResultTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
         Helper.removeServiceCallBackgroundView(view: self.view)
@@ -361,7 +361,6 @@ extension SearchResultViewController:UICollectionViewDataSource {
         return 1
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print(Constant.MyClassConstants.checkInDates)
         return Constant.MyClassConstants.checkInDates.count + 2
     }
     
@@ -427,19 +426,19 @@ extension SearchResultViewController:UITableViewDelegate {
     //***** UITableview delegate methods definition here *****//
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if((indexPath as NSIndexPath).row == 0) {
+        /*if((indexPath as NSIndexPath).row == 0) {
             
             return 252
         }
         else {
-            if(indexPath.row % 2 == 0){
+            if(indexPath.row > Constant.MyClassConstants.inventoryUnitsArray.count){
                 return 120
             }else{
                 return 50
             }
-        }
+        }*/
         
-       // return UITableViewAutomaticDimension
+        return UITableViewAutomaticDimension
         
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -649,7 +648,6 @@ extension SearchResultViewController:UITableViewDataSource {
                 
                 cell.totalPrivateLabel.text = String(units[indexPath.row - 1].publicSleepCapacity + units[indexPath.row - 1].privateSleepCapacity) + "Total, " + (String(units[indexPath.row - 1].privateSleepCapacity)) + "Private"
                 
-                
                 let inventoryPrice:[InventoryPrice] = invent.units[indexPath.row - 1].prices
                 cell.getawayPriceLabel.text = String(Int(Float(inventoryPrice[0].price)))
                 cell.exchangeLabel.isHidden = true
@@ -662,8 +660,8 @@ extension SearchResultViewController:UITableViewDataSource {
                 //Check for promotions
                 if(Constant.MyClassConstants.promotionsArray.count != 0 && indexPath.row > Constant.MyClassConstants.inventoryUnitsArray.count){
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.promotionsCell, for: indexPath) as! PromotionsCell
-                    let str = "<html><body><div class=\"style23 promo-tooltip\" id=\"style23\"><a class=\"promo-tooltip-alink\"> <img id=\"icon_image\" src=\"/noImage.png\" border=\"0\"/><div class=\"info_tip\"><div class=\"style23_p1\" id=\"offer_title\"><small>Exchange for 10% off plus 30% off<br />next exchange</small></div></div></a><div class=\"tooltip\"><small><div class=\"style23_p2\" id=\"txn_completed_text\">You received 10% off.  You are now eligible for 30% off your next exchange.</div><div class=\"style23_desc\" id=\"details_text\">Exchange for 10% off plus 30% off next exchange</div></small></div></div></html></body>"//(Constant.MyClassConstants.promotionsArray[0].offerContentFragment)!
-                    cell.promotionWebView.loadHTMLString(str, baseURL: nil)
+                    let str = "<html><body><div class=\"style23 promo-tooltip\" id=\"style23\"><a class=\"promo-tooltip-alink\"> <img src=\"PinActive.png\" border=\"0\"/><div class=\"info_tip\"><div class=\"style23_p1\" id=\"offer_title\"><small>Exchange for 10% off plus 30% off<br />next exchange</small></div></div></a><div class=\"tooltip\"><small><div class=\"style23_p2\" id=\"txn_completed_text\">You received 10% off.  You are now eligible for 30% off your next exchange.</div><div class=\"style23_desc\" id=\"details_text\">Exchange for 10% off plus 30% off next exchange</div></small></div></div></html></body>"//(Constant.MyClassConstants.promotionsArray[0].offerContentFragment)!
+                    cell.promotionWebView.loadHTMLString(str, baseURL: Bundle.main.bundleURL)
                     //cell.promotionTextLabel.text = offerString
                     return cell
                 }else{
@@ -703,7 +701,6 @@ extension SearchResultViewController:UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         //***** Return number of rows in section required in tableview *****//
-        //return 2
         if(Constant.MyClassConstants.isFromExchange){
             self.unitSizeArray = Constant.MyClassConstants.inventoryUnitsArray
             return Constant.MyClassConstants.inventoryUnitsArray.count + Constant.MyClassConstants.promotionsArray.count + 1
