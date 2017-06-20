@@ -422,8 +422,7 @@ public class Helper{
                 Constant.MyClassConstants.resortsArray.removeAll()
                 Constant.MyClassConstants.resortsArray = response.resorts
                 //DarwinSDK.logger.debug(response.resorts[0].promotions)
-                SVProgressHUD.dismiss()
-                removeServiceCallBackgroundView(view: senderVC.view)
+                hideProgressBar(senderView: senderVC)
                 if(senderVC is VacationSearchViewController || senderVC is VacationSearchIPadViewController ) {
                     
                     // omniture tracking with event 33
@@ -462,8 +461,7 @@ public class Helper{
                     }
                     
                     
-                    SVProgressHUD.dismiss()
-                    Helper.removeServiceCallBackgroundView(view: senderVC.view)
+                    hideProgressBar(senderView: senderVC)
                 }
                 
             }, onError: { (error) in

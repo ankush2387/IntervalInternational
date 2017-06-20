@@ -178,7 +178,7 @@ class SearchResultViewController: UIViewController {
         }
         
         Constant.MyClassConstants.resortsArray.removeAll()
-        Helper.addServiceCallBackgroundView(view: self.view)
+        Helper.showProgressBar(senderView: self)
         
         RentalClient.searchResorts(UserContext.sharedInstance.accessToken, request: searchResortRequest, onSuccess: { (response) in
             Constant.MyClassConstants.resortsArray = response.resorts
@@ -187,15 +187,13 @@ class SearchResultViewController: UIViewController {
                 self.headerVw.isHidden = false
             }
             self.searchResultTableView.reloadData()
-            Helper.removeServiceCallBackgroundView(view: self.view)
-            SVProgressHUD.dismiss()
+            Helper.hideProgressBar(senderView: self)
         }, onError: { (error) in
             self.searchResultTableView.reloadData()
-            Helper.removeServiceCallBackgroundView(view: self.view)
             self.alertView = Helper.noResortView(senderView: self.view)
             self.alertView.isHidden = false
             self.headerVw.isHidden = true
-            SVProgressHUD.dismiss()
+            Helper.hideProgressBar(senderView: self)
         })
         
     }
@@ -660,9 +658,9 @@ extension SearchResultViewController:UITableViewDataSource {
                 //Check for promotions
                 if(Constant.MyClassConstants.promotionsArray.count != 0 && indexPath.row > Constant.MyClassConstants.inventoryUnitsArray.count){
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.promotionsCell, for: indexPath) as! PromotionsCell
-                    let str = "<html><body><div class=\"style23 promo-tooltip\" id=\"style23\"><a class=\"promo-tooltip-alink\"> <img src=\"PinActive.png\" border=\"0\"/><div class=\"info_tip\"><div class=\"style23_p1\" id=\"offer_title\"><small>Exchange for 10% off plus 30% off<br />next exchange</small></div></div></a><div class=\"tooltip\"><small><div class=\"style23_p2\" id=\"txn_completed_text\">You received 10% off.  You are now eligible for 30% off your next exchange.</div><div class=\"style23_desc\" id=\"details_text\">Exchange for 10% off plus 30% off next exchange</div></small></div></div></html></body>"//(Constant.MyClassConstants.promotionsArray[0].offerContentFragment)!
-                    cell.promotionWebView.loadHTMLString(str, baseURL: Bundle.main.bundleURL)
-                    //cell.promotionTextLabel.text = offerString
+                    var promotionsString = Constant.MyClassConstants.htmlHeader.appending((Constant.MyClassConstants.promotionsArray[0].offerContentFragment)!)
+                    promotionsString = promotionsString.appending(Constant.MyClassConstants.htmlFooter)
+                    cell.promotionWebView.loadHTMLString(promotionsString, baseURL: Bundle.main.bundleURL)
                     return cell
                 }else{
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.resortBedroomDetails, for: indexPath) as! ResortBedroomDetails

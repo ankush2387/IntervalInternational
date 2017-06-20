@@ -481,6 +481,8 @@ class Constant: NSObject {
         static var travelPartyInfo = TravelParty()
         static var inventoryUnitsArray =  [InventoryUnit]()
         static var promotionsArray = [Promotion]()
+        static var htmlHeader = "<html><body>"
+        static var htmlFooter = "</html></body>"
     }
     struct CommonStringIdentifiers {
         static var floatWeek = "FLOAT_WEEK"
