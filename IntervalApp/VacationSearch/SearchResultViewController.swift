@@ -211,6 +211,7 @@ class SearchResultViewController: UIViewController {
     //funciton called when search result page sort by name button pressed
     @IBAction func sortByNameButtonPressed(_ sender: Any) {
         
+          self.performSegue(withIdentifier: Constant.segueIdentifiers.sortingSegue , sender: nil)
     }
     
 }

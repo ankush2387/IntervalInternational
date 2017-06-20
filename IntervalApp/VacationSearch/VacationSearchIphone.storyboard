@@ -1644,7 +1644,7 @@
                         <segue destination="wRm-6P-Lhz" kind="presentation" identifier="vacationSearchDetailSegue" id="4gU-cx-AAf"/>
                         <segue destination="bmL-3i-9ap" kind="show" identifier="whoWillBeCheckingInSegue" id="EmP-an-7MN"/>
                         <segue destination="Wq3-mX-BzO" kind="show" identifier="searchResultMapSegue" id="vzE-kU-MJR"/>
-                        <segue destination="tUL-09-mc6" kind="show" id="4kH-3V-mVn"/>
+                        <segue destination="tUL-09-mc6" kind="show" identifier="sortingSegue" id="4kH-3V-mVn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="U4c-hu-I43" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -5403,6 +5403,10 @@
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="7NJ-NJ-i5G" id="JUd-em-Bkg"/>
+                                    <outlet property="delegate" destination="7NJ-NJ-i5G" id="9vQ-cx-qTc"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -5414,6 +5418,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="fer-df-DFy"/>
+                    <connections>
+                        <outlet property="sortingTBLview" destination="I4N-5T-1c9" id="8yO-Jd-wk4"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j9p-43-qwv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
