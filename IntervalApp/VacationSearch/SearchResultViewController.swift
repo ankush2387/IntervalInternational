@@ -549,7 +549,6 @@ extension SearchResultViewController:UITableViewDelegate {
             }, onError: {(error) in
                 Helper.removeServiceCallBackgroundView(view: self.view)
                 SVProgressHUD.dismiss()
-                
             })
         }
       }

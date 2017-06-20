@@ -205,8 +205,7 @@ class VacationSearchViewController: UIViewController {
     
     //***** Add location pressed action to show map screen with list of location to select *****//
     func addRelinquishmentSectionButtonPressed(_ sender:IUIKButton) {
-         SVProgressHUD.show()
-         Helper.addServiceCallBackgroundView(view: self.view)
+         Helper.showProgressBar(senderView: self)
          ExchangeClient.getMyUnits(UserContext.sharedInstance.accessToken, onSuccess: { (Relinquishments) in
          
          Constant.MyClassConstants.relinquishmentDeposits = Relinquishments.deposits
@@ -232,11 +231,7 @@ class VacationSearchViewController: UIViewController {
          self.navigationController!.pushViewController(viewController, animated: true)
          
          }, onError: {(error) in
-         
-         print(error.description)
-         SVProgressHUD.dismiss()
-         Helper.removeServiceCallBackgroundView(view: self.view)
-         
+            Helper.hideProgressBar(senderView: self)
          })
         
     }
@@ -1412,9 +1407,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                         
                         sender.isEnabled = true
                         if(Constant.MyClassConstants.checkInDates.count == 0) {
-                            
-                            SVProgressHUD.dismiss()
-                            Helper.removeServiceCallBackgroundView(view: self.view)
+                            Helper.hideProgressBar(senderView: self)
                             SimpleAlert.alert(self, title: Constant.AlertErrorMessages.noResultError, message: Constant.AlertMessages.noResultMessage)
                         }else {
                             
@@ -1445,6 +1438,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                         }
                                         self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
                                     }, onError: { (error) in
+                                        sender.isEnabled = true
                                         Helper.hideProgressBar(senderView: self)
                                         Constant.MyClassConstants.showAlert = true
                                         self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
@@ -1473,6 +1467,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                         Constant.MyClassConstants.promotionsArray = (exchangeAvailability[0].inventory?.buckets[0].promotions)!
                                         self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
                                     }, onError: { (error) in
+                                        sender.isEnabled = true
                                         Constant.MyClassConstants.showAlert = true
                                         self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
                                     })
@@ -1499,6 +1494,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                         
                                         self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
                                     }, onError: { (error) in
+                                        sender.isEnabled = true
                                         Constant.MyClassConstants.showAlert = true
                                         self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
                                     })
@@ -1507,9 +1503,12 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                             }
                         }
                     }, onError: { (error) in
+                    sender.isEnabled = true
+                    Helper.hideProgressBar(senderView: self)
                     SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.noResultError)
                 })
             }else{
+                sender.isEnabled = true
                 Helper.hideProgressBar(senderView: self)
                 SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
             }
