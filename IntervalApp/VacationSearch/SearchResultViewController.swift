@@ -274,7 +274,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
             if(self.collectionviewSelectedIndex != (indexPath as NSIndexPath).row){
                 self.collectionviewSelectedIndex = (indexPath as NSIndexPath).row
                 collectionView.reloadData()
-                Helper.showProgressBar(senderView: self)
+                //Helper.showProgressBar(senderView: self)
                 
                 let dateValue:Date!
                 if(Constant.MyClassConstants.checkInDates.count > 0){
@@ -552,7 +552,7 @@ extension SearchResultViewController:UITableViewDelegate {
             })
         }
       }
-    }
+   }
 }
 
 extension SearchResultViewController:UITableViewDataSource {

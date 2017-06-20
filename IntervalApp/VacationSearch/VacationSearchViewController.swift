@@ -1498,14 +1498,13 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                         Constant.MyClassConstants.showAlert = true
                                         self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
                                     })
-
                                 }
                             }
                         }
                     }, onError: { (error) in
                     sender.isEnabled = true
                     Helper.hideProgressBar(senderView: self)
-                    SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.noResultError)
+                    SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                 })
             }else{
                 sender.isEnabled = true
@@ -1541,4 +1540,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         Constant.MyClassConstants.currentToDate = toDate
         return(toDate,fromDate)
     }
+    
+    //Function for search availability calling
+    
 }
