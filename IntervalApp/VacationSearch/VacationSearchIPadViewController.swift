@@ -558,7 +558,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
         
         
         if (self.segmentIndex == 1 && (Helper.getAllDestinationFromLocalStorage().count>0 || Helper.getAllResortsFromLocalStorage().count>0)) {
-            
+            Constant.MyClassConstants.selectedSegment =  Constant.MyClassConstants.selectedSegmentExchange
             sender.isEnabled = false
             let (toDate,fromDate) = Helper.getSearchDates()
             
@@ -638,6 +638,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
         }
         else if(self.segmentIndex == 2){
             
+            
             sender.isEnabled = false
             let (toDate,fromDate) = Helper.getSearchDates()
             let exchangeSearchDateRequest = ExchangeSearchDatesRequest()
@@ -656,14 +657,26 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
             
             exchangeSearchDateRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
             
+
+            
             if Reachability.isConnectedToNetwork() == true {
                 ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request: exchangeSearchDateRequest, onSuccess: { (exchangeSearchDates) in
-                    print(exchangeSearchDates)
-                   
+                    print(exchangeSearchDates.checkInDates)
+                    Helper.hideProgressBar(senderView: self)
+                    sender.isEnabled = true
+                    var combinedSearchDates = [Date]()
+                    combinedSearchDates = exchangeSearchDates.checkInDates.map { $0 }
+                    Constant.MyClassConstants.checkInDates = combinedSearchDates
+                    self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
                 }, onError: { (error) in
                     SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.noResultError)
                 })
+            }else{
+                Helper.hideProgressBar(senderView: self)
+                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
             }
+   
+  
             
             
           //  SimpleAlert.alert(self, title: Constant.AlertMessages.searchVacationTitle, message: Constant.AlertMessages.searchVacationMessage)

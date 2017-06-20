@@ -18,6 +18,7 @@ class VacationSearchResultIPadController: UIViewController {
     @IBOutlet weak var searchedDateCollectionView: UICollectionView!
     @IBOutlet weak var resortDetailTBLView: UITableView!
     
+    @IBOutlet weak var tabView: UIView!
     //***** Class variables *****//
     var unitSizeArray = [AnyObject]()
     var collectionviewSelectedIndex:Int = 0
@@ -188,6 +189,25 @@ class VacationSearchResultIPadController: UIViewController {
                 SVProgressHUD.dismiss()
         })
     }
+    
+    
+    //Passing information while preparing for segue
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+    }
+    
+    // function called when search result page map view button pressed
+    @IBAction func mapViewButtonPressed(_ sender: Any) {
+        
+        self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultMapSegue , sender: nil)
+    }
+    
+    //funciton called when search result page sort by name button pressed
+    @IBAction func sortByNameButtonPressed(_ sender: Any) {
+        
+    }
+    
 }
 
 //Function to check whether more button should be enabled or disabled.
@@ -380,7 +400,7 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
             //return 410
         }
         else {
-            return 50
+            return 90
         }
         
     }
@@ -546,12 +566,12 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 
             }
             cell.resortNameLabel.text = Constant.MyClassConstants.resortsArray[indexPath.section].resortName
-            let resortAddress = Constant.MyClassConstants.resortsArray[indexPath.section].address!
-            if let city = resortAddress.cityName {
+            let resortAddress = Constant.MyClassConstants.resortsArray[indexPath.section].address
+            if let city = resortAddress?.cityName {
                 
                 cell.resortLocation.text = city
             }
-            if let Country = resortAddress.countryCode {
+            if let Country = resortAddress?.countryCode {
                 cell.resortLocation.text = cell.resortLocation.text?.appending(", \(Country)")
             }
             
@@ -569,7 +589,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             return cell
         }
-        else {
+        else if(Constant.MyClassConstants.selectedSegment == Constant.MyClassConstants.selectedSegmentExchange) {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.getawayCell, for: indexPath) as! GetawayCell
             cell.layer.borderWidth = 0.5
@@ -595,8 +615,12 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             return cell
             
+        }else{
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.getawayCell, for: indexPath) as! GetawayCell
+            return cell
         }
-        
+     
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {

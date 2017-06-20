@@ -309,6 +309,9 @@ class Constant: NSObject {
         static var magazinesFunctionalityCheck = "Magazines"
         static var videosFunctionalityCheck = "Videos"
         static var vacationSearchFunctionalityCheck = "VacationSearch"
+        static var seledtedSegmentGetaway = "Getaway"
+        static var selectedSegmentExchange = "Exchange"
+        static var selectedSegment = ""
         
         static var draw = "Draw"
         static var clear = "Clear"

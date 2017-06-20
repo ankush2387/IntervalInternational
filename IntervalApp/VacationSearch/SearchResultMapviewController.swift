@@ -26,11 +26,13 @@ class SearchResultMapviewController: UIViewController {
     var resortCollectionView:UICollectionView!
     var marker:GMSMarker! = nil
     var bounds = GMSCoordinateBounds()
+    //var selectedIndex = -1
     var selectedIndex = 0
+
+    @IBOutlet weak var dragView: UIView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.title = Constant.ControllerTitles.searchResultViewController
         bottomResortHeight = self.view.frame.height/3 + 50
         let menuButton = UIBarButtonItem(title: Constant.AlertPromtMessages.done, style: .plain, target: self, action: #selector(SearchResultMapviewController.doneButtonPressed(_:)))
@@ -50,6 +52,8 @@ class SearchResultMapviewController: UIViewController {
     
     //***** Creating map with resorts getting from current location when map screen landing first time *****//
     func addMarkersOnMapView() {
+        
+        Constant.MyClassConstants.googleMarkerArray.removeAll()
         
         let camera = GMSCameraPosition.camera(withLatitude: (Constant.MyClassConstants.resortsArray[0].coordinates?.latitude)!,longitude: (Constant.MyClassConstants.resortsArray[0].coordinates?.longitude)!, zoom: 8)
         
@@ -85,12 +89,25 @@ class SearchResultMapviewController: UIViewController {
     //***** Method to create bottom resort view in collection view and pop up with custom animation *****//
     func createBottomResortView(marker :GMSMarker) {
         
+        
         if(resortCollectionView != nil && Constant.MyClassConstants.resortsArray.count > 0){
             resortCollectionView.reloadData()
-            self.resortView.isHidden = false
+           // self.resortView.isHidden = false
             
             UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn ,animations: {
-                self.resortView.frame = CGRect(x: 0, y: self.view.frame.height - (self.bottomResortHeight ), width: self.view.frame.width, height: self.bottomResortHeight)
+                
+                
+                if UIDevice.current.userInterfaceIdiom == .pad {
+                    
+                     self.dragView.isHidden = false
+                    
+                     self.resortView.frame = CGRect(x: 0, y: 44, width: self.view.frame.width/2, height: self.view.frame.height - 44)
+                }
+                else {
+                    
+                    self.resortView.frame = CGRect(x: 0, y: self.view.frame.height - (self.bottomResortHeight ), width: self.view.frame.width, height: self.bottomResortHeight)
+                }
+                
                 
                 self.view.bringSubview(toFront: self.resortView)
             }, completion: { _ in
@@ -99,16 +116,35 @@ class SearchResultMapviewController: UIViewController {
             self.view.bringSubview(toFront: self.resortView)
         }else{
             
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                 self.dragView.isHidden = false
+                self.resortView.frame = CGRect(x: 0, y: 44, width: self.view.frame.width/2, height: self.view.frame.height - 44)
+            }
+             else {
+                
+                resortView.frame = CGRect(x: 0, y: self.view.frame.height , width: self.view.frame.width, height: self.view.frame.height - (self.view.frame.height - self.bottomResortHeight))
+            }
             
-            resortView.frame = CGRect(x: 0, y: self.view.frame.height , width: self.view.frame.width, height: self.view.frame.height - (self.view.frame.height - self.bottomResortHeight))
             
             let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
             layout.minimumInteritemSpacing = 0
             layout.minimumLineSpacing = 0
             layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-            layout.itemSize = CGSize(width:self.resortView.frame.width, height: self.resortView.frame.height)
-            layout.scrollDirection = UICollectionViewScrollDirection.horizontal
-            resortCollectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: self.resortView.bounds.width, height:self.resortView.bounds.height), collectionViewLayout: layout)
+            
+            if UIDevice.current.userInterfaceIdiom == .pad {
+               
+                layout.itemSize = CGSize(width:self.resortView.frame.width, height: self.view.frame.height/3)
+                layout.scrollDirection = UICollectionViewScrollDirection.vertical
+                resortCollectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: self.resortView.bounds.width, height:self.resortView.bounds.height), collectionViewLayout: layout)
+            }
+             else {
+                
+                layout.itemSize = CGSize(width:self.resortView.frame.width, height: self.resortView.frame.height)
+                layout.scrollDirection = UICollectionViewScrollDirection.horizontal
+                resortCollectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: self.resortView.bounds.width, height:self.resortView.bounds.height), collectionViewLayout: layout)
+            }
+            
+           
             
             resortCollectionView.register(CustomCollectionCell.self, forCellWithReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cell)
             resortCollectionView.backgroundColor = UIColor.clear
@@ -120,28 +156,49 @@ class SearchResultMapviewController: UIViewController {
             /*** Subtracting tab bar default height - 49 ****/
             UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn ,animations: {
                 
-                self.resortView.frame = CGRect(x: 0, y: self.view.frame.height - (self.bottomResortHeight), width: self.view.frame.width, height: self.bottomResortHeight)
+                
+                if UIDevice.current.userInterfaceIdiom == .pad {
+                    
+                    self.resortView.frame = CGRect(x: 0, y: 44, width: self.view.frame.width/2, height: self.view.frame.height - 44)
+                }
+                else {
+                    self.resortView.frame = CGRect(x: 0, y: self.view.frame.height - (self.bottomResortHeight), width: self.view.frame.width, height: self.bottomResortHeight)
+                }
+                
                 
             }, completion: { _ in
                 
             })
-            let topSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes(sender:)))
-            let bottomSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes(sender:)))
             
-            topSwipe.direction = .up
-            bottomSwipe.direction = .down
-            resortView.addGestureRecognizer(topSwipe)
-            resortView.addGestureRecognizer(bottomSwipe)
-            self.view.addSubview(resortView)
-             let indexPath = IndexPath(row: self.selectedIndex, section: 0)
-            self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.right, animated: true)
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                
+                 self.view.addSubview(resortView)
+            }
+            else {
+                
+                let topSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes(sender:)))
+                let bottomSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes(sender:)))
+                
+                topSwipe.direction = .up
+                bottomSwipe.direction = .down
+                resortView.addGestureRecognizer(topSwipe)
+                resortView.addGestureRecognizer(bottomSwipe)
+                 self.view.addSubview(resortView)
+                let indexPath = IndexPath(row: self.selectedIndex, section: 0)
+                self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.right, animated: true)
+
+            }
+            
+           
         }
     }
     
     // ***** This method executes when we want to hide bottom resort view *****//
     func removeBottomView() {
         
+        //self.selectedIndex = -1
         self.selectedIndex = 0
+
         for selectedMarker in Constant.MyClassConstants.googleMarkerArray {
             
             selectedMarker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
@@ -151,7 +208,16 @@ class SearchResultMapviewController: UIViewController {
         self.gmsMapView.selectedMarker = nil
         
         UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn ,animations: {
-            self.resortView.frame = CGRect(x: 0, y: self.view.frame.height, width: self.view.frame.width, height: self.bottomResortHeight)
+            
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                
+                self.dragView.isHidden = false
+                self.resortView.frame = CGRect(x: -self.view.frame.width/2, y: 44, width: self.view.frame.width/2, height: self.view.frame.height - 44)
+            }else {
+                
+                self.resortView.frame = CGRect(x: 0, y: self.view.frame.height, width: self.view.frame.width, height: self.bottomResortHeight)
+            }
+            
             
         }, completion: { _ in
             
@@ -163,8 +229,9 @@ class SearchResultMapviewController: UIViewController {
     func handleSwipes(sender:UISwipeGestureRecognizer) {
         
         if (sender.direction == .up) {
-           
-            Helper.getResortWithResortCode(code: Constant.MyClassConstants.resortsArray[self.selectedIndex].resortCode!, viewcontroller: self)
+            
+               Helper.getResortWithResortCode(code: Constant.MyClassConstants.resortsArray[self.selectedIndex].resortCode!, viewcontroller: self)
+ 
         }
         else {
             self.removeBottomView()
@@ -195,6 +262,21 @@ class SearchResultMapviewController: UIViewController {
         
           self.navigationController?.dismiss(animated: true, completion: nil)
     }
+    
+    @IBAction func drarButtonClicked(_ sender: Any) {
+        
+        
+        if(self.dragView.frame.origin.x == 0) {
+            print("showview")
+            self.resortView.frame = CGRect(x: 0, y: 44, width: self.view.frame.width/2, height: self.view.frame.height - 44)
+        }
+        else{
+            print("hideview")
+            self.resortView.frame = CGRect(x: -self.view.frame.width/2, y: 44, width: self.view.frame.width/2, height: self.view.frame.height - 44)
+        }
+    
+    }
+    
 
 }
 
@@ -213,54 +295,6 @@ extension SearchResultMapviewController:GMSMapViewDelegate {
     }
     //***** this method called when map marker selected *****//
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
-        
-        if(UIDevice.current.userInterfaceIdiom == .pad) {
-            
-            if(mapView.selectedMarker == nil) {
-                
-                marker.icon = UIImage(named:Constant.assetImageNames.pinFocusImage)
-                marker.isFlat = true
-                self.gmsMapView.selectedMarker = marker
-                Constant.MyClassConstants.resortsDescriptionArray = Constant.MyClassConstants.resortsArray[marker.userData as! Int]
-                
-                Helper.getResortWithResortCode(code: Constant.MyClassConstants.resortsDescriptionArray.resortCode!,viewcontroller:self)
-                let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes(sender:)))
-                self.handleSwipes(sender: rightSwipe)
-                
-            }else {
-                Constant.MyClassConstants.resortsDescriptionArray = Constant.MyClassConstants.resortsArray[marker.userData as! Int]
-                
-                Helper.getResortWithResortCode(code: Constant.MyClassConstants.resortsDescriptionArray.resortCode!,viewcontroller:self)
-                
-                for selectedMarker in Constant.MyClassConstants.googleMarkerArray {
-                    
-                    if(selectedMarker.userData as! Int == marker.userData as! Int) {
-                        
-                        if( marker.isFlat == true ) {
-                            
-                            marker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
-                            marker.isFlat = false
-                            
-                        }
-                        else {
-                            
-                            marker.icon = UIImage(named:Constant.assetImageNames.pinFocusImage)
-                            self.gmsMapView.selectedMarker = marker
-                            marker.isFlat = true
-                            
-                        }
-                    }
-                    else {
-                        
-                        selectedMarker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
-                        selectedMarker.isFlat = false
-                    }
-                }
-                
-                let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes(sender:)))
-                self.handleSwipes(sender: rightSwipe)
-            }
-        }else{
             
             if(mapView.selectedMarker == nil) {
                 
@@ -302,18 +336,36 @@ extension SearchResultMapviewController:GMSMapViewDelegate {
                     }
                     self.gmsMapView.selectedMarker = marker
                     self.selectedIndex = marker.userData as! Int
+
                     let indexPath = IndexPath(row: marker.userData as! Int, section: 0)
-                    if(selectedIndex > marker.userData as! Int) {
-                        self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.left, animated: true)
+                    
+                    if (UIDevice.current.userInterfaceIdiom == .pad) {
+                        
+                        
+                        if(selectedIndex > marker.userData as! Int) {
+                            self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.bottom, animated: true)
+                        }
+                        else {
+                            self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.top, animated: true)
+                        }
+
+                        
+                    } else {
+                        
+                        if(selectedIndex > marker.userData as! Int) {
+                            self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.left, animated: true)
+                        }
+                        else {
+                            self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.right, animated: true)
+                        }
+
                     }
-                    else {
-                       self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.right, animated: true)
-                    }
+                    
                     
 
                 }
             }
-        }
+        
         return true
     }
     
@@ -334,12 +386,30 @@ extension SearchResultMapviewController:UICollectionViewDataSource {
         
         return 1
     }
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         return Constant.MyClassConstants.resortsArray.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+      
+//        for marker in Constant.MyClassConstants.googleMarkerArray {
+//            
+//            if(marker.userData as! Int == indexPath.row) {
+//                
+//                marker.icon = UIImage(named:Constant.assetImageNames.pinFocusImage)
+//                marker.isFlat = true
+//                  self.selectedIndex = indexPath.row
+//                self.gmsMapView.selectedMarker = marker
+//            }
+//            else {
+//              
+//                marker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
+//                marker.isFlat = false
+//            }
+//           
+//            
+//        }
         
         let resort = Constant.MyClassConstants.resortsArray[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cell, for: indexPath as IndexPath)
@@ -352,6 +422,7 @@ extension SearchResultMapviewController:UICollectionViewDataSource {
             let imagesArray = resort.images
             for imgStr in imagesArray {
                 if(imgStr.size!.caseInsensitiveCompare(Constant.MyClassConstants.imageSize) == ComparisonResult.orderedSame) {
+
                     url = URL(string: imgStr.url!)!
                     break
                 }
@@ -430,20 +501,22 @@ extension SearchResultMapviewController:UICollectionViewDataSource {
         return cell
         
     }
+    
+    
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
         var visible: [AnyObject] = resortCollectionView.indexPathsForVisibleItems as [AnyObject]
         let indexpath: NSIndexPath = (visible[0] as! NSIndexPath)
-       
+        
         let index = indexpath.row
         self.selectedIndex = index
         for selectedMarker in Constant.MyClassConstants.googleMarkerArray {
             
             if(selectedMarker.userData as! Int == index) {
-              
+                
                 selectedMarker.icon = UIImage(named:Constant.assetImageNames.pinFocusImage)
                 selectedMarker.isFlat = true
-                 self.gmsMapView.selectedMarker = selectedMarker
+                self.gmsMapView.selectedMarker = selectedMarker
             }
             else {
                 
@@ -451,9 +524,12 @@ extension SearchResultMapviewController:UICollectionViewDataSource {
                 selectedMarker.isFlat = false
             }
         }
-       
+        
     }
     
+
+
+
 }
 
 
