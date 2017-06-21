@@ -292,8 +292,12 @@ class ResortDetailsViewController: UIViewController {
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
         }else{
             if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.vacationSearchFunctionalityCheck){
+                
                 self.dismiss(animated: true, completion: nil)
+                
+                
             }else{
+                
                 let transition = CATransition()
                 transition.duration = 0.5
                 transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
@@ -796,9 +800,9 @@ extension ResortDetailsViewController:UITableViewDataSource {
                 cell.resortCode.text = Constant.MyClassConstants.resortsDescriptionArray.resortCode
                 let imageStr = Helper.getTierImageName(tier: Constant.MyClassConstants.resortsDescriptionArray.tier!)
                 cell.tierImageView.image = UIImage(named: imageStr)
-                cell.delegate = self
-                
+                cell.fevoriteButton.addTarget(self, action: #selector(favoritesButtonClicked(_:)), for: .touchUpInside)
                 cell.backgroundColor = UIColor.clear
+                
                 return cell
             case 2 :
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.mapTableViewCell, for: indexPath)
@@ -974,7 +978,8 @@ extension ResortDetailsViewController:UITableViewDataSource {
         }
     }
     
-    func favoritesButtonClicked(_ sender:UIButton){
+    func favoritesButtonClicked(_ sender:IUIKButton){
+        
         if(UserContext.sharedInstance.accessToken != nil) {
             
             if (sender.isSelected == false){
@@ -1021,7 +1026,8 @@ extension ResortDetailsViewController:UITableViewDataSource {
         else {
             let storyboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
             let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginController)
-            self.present(viewController, animated: true, completion: nil)        }
+            self.present(viewController, animated: true, completion: nil)
+        }
         
     }
 }
@@ -1054,15 +1060,6 @@ extension ResortDetailsViewController:CLLocationManagerDelegate {
         
     }
     
-}
-
-extension ResortDetailsViewController:ResortDirectoryResortCellDelegate{
-    func favoritesButtonSelectedAtIndex(_ index: Int) {
-        if(Constant.RunningDevice.deviceIdiom == .phone){
-            self.performSegue(withIdentifier: Constant.segueIdentifiers.preLoginSegue, sender: self)
-        }else{
-        }
-    }
 }
 
 extension ResortDetailsViewController:MFMailComposeViewControllerDelegate {

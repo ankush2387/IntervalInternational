@@ -66,23 +66,7 @@ class ResortDirectoryResortCell: UITableViewCell {
         resortAddress.text = resort.address?.cityName
         resortCode.text = resort.resortCode!
     }
-//***** custom cell favorites button action implementation *****//
-    @IBAction func favirotesButtonPressed(_ sender: AnyObject) {
-        
-        if(fevoriteButton.isSelected == false) {
-        
-            if(UserContext.sharedInstance.accessToken == nil ) {
-               self.delegate?.favoritesButtonSelectedAtIndex(sender.tag)
-            }
-            else {
-                
-                fevoriteButton.isSelected = true
-            }
-        }
-        else {
-            fevoriteButton.isSelected = false
-        }
-    }
+
 //***** method called when the added notification reloadFavoritesTab fired from other classes *****//
     func loginNotification() {
         

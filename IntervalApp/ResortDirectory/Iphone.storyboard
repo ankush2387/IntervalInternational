@@ -928,9 +928,6 @@ Interval Account</string>
                                                     </constraints>
                                                     <state key="normal" image="FavoriteIcon-Off"/>
                                                     <state key="selected" image="FavoriteIcon-On"/>
-                                                    <connections>
-                                                        <action selector="favirotesButtonPressed:" destination="19S-Md-nhP" eventType="touchUpInside" id="1Ry-vE-Kmi"/>
-                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
@@ -1526,8 +1523,8 @@ Interval Account</string>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="KTW-Os-bqS"/>
+        <segue reference="VDv-Ib-XnN"/>
         <segue reference="1yd-In-YGU"/>
         <segue reference="v5y-Uh-olM"/>
-        <segue reference="PVi-Ym-AGy"/>
     </inferredMetricsTieBreakers>
 </document>
