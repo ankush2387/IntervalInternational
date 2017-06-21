@@ -241,22 +241,45 @@ class SearchResultMapviewController: UIViewController {
     //***** This method executes when bottom resort view favorite button pressed *****//
     func bottomResortFavoritesButtonPressed(sender:UIButton) {
         
-        SVProgressHUD.show()
-        Helper.addServiceCallBackgroundView(view: self.view)
-        UserClient.addFavoriteResort(UserContext.sharedInstance.accessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
+          if (sender.isSelected == false){
             
-            print(response)
-            Helper.removeServiceCallBackgroundView(view: self.view)
-            SVProgressHUD.dismiss()
-            sender.isSelected = true
-            Constant.MyClassConstants.favoritesResortCodeArray.add(Constant.MyClassConstants.resortsArray[sender.tag].resortCode!)
-            self.resortCollectionView.reloadData()
+            SVProgressHUD.show()
+            Helper.addServiceCallBackgroundView(view: self.view)
+            UserClient.addFavoriteResort(UserContext.sharedInstance.accessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
             
-        }, onError: {(error) in
-            SVProgressHUD.dismiss()
-            Helper.removeServiceCallBackgroundView(view: self.view)
-            print(error)
-        })
+                Helper.removeServiceCallBackgroundView(view: self.view)
+                SVProgressHUD.dismiss()
+                sender.isSelected = true
+                Constant.MyClassConstants.favoritesResortCodeArray.add(Constant.MyClassConstants.resortsArray[sender.tag].resortCode!)
+                self.resortCollectionView.reloadData()
+            
+            }, onError: {(error) in
+                SVProgressHUD.dismiss()
+                Helper.removeServiceCallBackgroundView(view: self.view)
+                print(error)
+            })
+        }
+          else {
+            
+            SVProgressHUD.show()
+            Helper.addServiceCallBackgroundView(view: self.view)
+            UserClient.removeFavoriteResort(UserContext.sharedInstance.accessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
+                
+                sender.isSelected = false
+                Helper.removeServiceCallBackgroundView(view: self.view)
+                SVProgressHUD.dismiss()
+                Constant.MyClassConstants.favoritesResortCodeArray.remove(Constant.MyClassConstants.resortsDescriptionArray.resortCode!)
+                 self.resortCollectionView.reloadData()
+                ADBMobile.trackAction(Constant.omnitureEvents.event51, data: nil)
+            }, onError: {(error) in
+                
+                SVProgressHUD.dismiss()
+                Helper.removeServiceCallBackgroundView(view: self.view)
+                print(error)
+            })
+            
+
+        }
     }
     func doneButtonPressed(_ sender:UIBarButtonItem) {
         

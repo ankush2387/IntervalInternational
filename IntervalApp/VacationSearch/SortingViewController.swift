@@ -7,12 +7,17 @@
 //
 
 import UIKit
+import IntervalUIKit
 
 class SortingViewController: UIViewController {
     
     
     //Outlets
     @IBOutlet weak var sortingTBLview: UITableView!
+    
+    
+    //class variables
+    var selectedIndex = -1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,12 +29,12 @@ class SortingViewController: UIViewController {
         let cancelButton = UIBarButtonItem(title: Constant.buttonTitles.cancel, style: .plain, target: self, action: #selector(cancelButtonPressed(_:)))
 
         cancelButton.tintColor = UIColor.white
-        self.parent!.navigationItem.leftBarButtonItem = cancelButton
+        self.navigationItem.leftBarButtonItem = cancelButton
         
         //***** Creating and adding right bar button for more option button *****//
         let doneButton = UIBarButtonItem(title:Constant.AlertPromtMessages.done, style: .plain, target: self, action: #selector(doneButtonPressed(_:)))
         doneButton.tintColor = UIColor.white
-        self.parent!.navigationItem.rightBarButtonItem = doneButton
+        self.navigationItem.rightBarButtonItem = doneButton
     }
 
     override func didReceiveMemoryWarning() {
@@ -50,6 +55,12 @@ class SortingViewController: UIViewController {
 
 extension SortingViewController:UITableViewDelegate {
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        self.selectedIndex = indexPath.row
+        self.sortingTBLview.reloadData()
+    }
+    
 }
 extension SortingViewController:UITableViewDataSource {
     
@@ -65,6 +76,15 @@ extension SortingViewController:UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.sortingOptionCell, for: indexPath) as! SortingOptionCell
         
+        if(self.selectedIndex == indexPath.row) {
+            
+            cell.sortingOptionLabel.textColor = IUIKColorPalette.secondaryB.color
+        }else {
+            
+            cell.sortingOptionLabel.textColor = UIColor.lightGray
+        }
+        
+        cell.selectionStyle = UITableViewCellSelectionStyle.none
         return cell
 
     }

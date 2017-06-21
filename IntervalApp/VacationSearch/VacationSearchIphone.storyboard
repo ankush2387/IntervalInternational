@@ -264,9 +264,6 @@
                                                     </constraints>
                                                     <state key="normal" image="FavoriteIcon-Off"/>
                                                     <state key="selected" image="FavoriteIcon-On"/>
-                                                    <connections>
-                                                        <action selector="favirotesButtonPressed:" destination="tDF-GY-4A7" eventType="touchUpInside" id="lx5-kP-mQB"/>
-                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
