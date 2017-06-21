@@ -1430,19 +1430,9 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                     exchangeAvailabilityRequest.resortCodes = Constant.MyClassConstants.resortCodesArray
                                     exchangeAvailabilityRequest.travelParty = travelPartyInfo
                                     exchangeAvailabilityRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
-                                    ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: exchangeAvailabilityRequest, onSuccess: { (exchangeAvailability) in
-                                        Helper.hideProgressBar(senderView: self)
-                                        Constant.MyClassConstants.resortsArray.removeAll()
-                                        for exchangeResorts in exchangeAvailability{
-                                            Constant.MyClassConstants.resortsArray.append(exchangeResorts.resort!)
-                                        }
-                                        self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
-                                    }, onError: { (error) in
-                                        sender.isEnabled = true
-                                        Helper.hideProgressBar(senderView: self)
-                                        Constant.MyClassConstants.showAlert = true
-                                        self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
-                                    })
+                                    
+                                    //Check resorts for search availability.
+                                    self.searchAvailability(exchangeAvailabilityRequest: exchangeAvailabilityRequest, sender: sender)
                                     
                                 }
                             }else {
@@ -1457,20 +1447,9 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                     exchangeAvailabilityRequest.resortCodes = exchangeSearchDates.resortCodes
                                     exchangeAvailabilityRequest.travelParty = travelPartyInfo
                                     exchangeAvailabilityRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
-                                    ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: exchangeAvailabilityRequest, onSuccess: { (exchangeAvailability) in
-                                        Helper.hideProgressBar(senderView: self)
-                                        Constant.MyClassConstants.resortsArray.removeAll()
-                                        for exchangeResorts in exchangeAvailability{
-                                            Constant.MyClassConstants.resortsArray.append(exchangeResorts.resort!)
-                                        }
-                                        Constant.MyClassConstants.inventoryUnitsArray = [(exchangeAvailability[0].inventory?.buckets[0].unit)!]
-                                        Constant.MyClassConstants.promotionsArray = (exchangeAvailability[0].inventory?.buckets[0].promotions)!
-                                        self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
-                                    }, onError: { (error) in
-                                        sender.isEnabled = true
-                                        Constant.MyClassConstants.showAlert = true
-                                        self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
-                                    })
+                                    
+                                    //Check resorts for search availability.
+                                    self.searchAvailability(exchangeAvailabilityRequest: exchangeAvailabilityRequest, sender: sender)
                                 }else {
                                     Constant.MyClassConstants.searchResultCollectionViewScrollToIndex = 1
                                     SVProgressHUD.dismiss()
@@ -1483,21 +1462,9 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                     exchangeAvailabilityRequest.resortCodes = Constant.MyClassConstants.resortCodesArray
                                     exchangeAvailabilityRequest.travelParty = travelPartyInfo
                                     exchangeAvailabilityRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
-                                    ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: exchangeAvailabilityRequest, onSuccess: { (exchangeAvailability) in
-                                        Constant.MyClassConstants.showAlert = false
-                                        Constant.MyClassConstants.resortsArray.removeAll()
-                                        for exchangeResorts in exchangeAvailability{
-                                            Constant.MyClassConstants.resortsArray.append(exchangeResorts.resort!)
-                                        }
-                                        Constant.MyClassConstants.inventoryUnitsArray = [(exchangeAvailability[0].inventory?.buckets[0].unit)!]
-                                        Constant.MyClassConstants.promotionsArray = (exchangeAvailability[0].inventory?.buckets[0].promotions)!
-                                        
-                                        self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
-                                    }, onError: { (error) in
-                                        sender.isEnabled = true
-                                        Constant.MyClassConstants.showAlert = true
-                                        self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
-                                    })
+                                    
+                                    //Call for search availability
+                                    self.searchAvailability(exchangeAvailabilityRequest: exchangeAvailabilityRequest, sender: sender)
                                 }
                             }
                         }
@@ -1542,5 +1509,24 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
     }
     
     //Function for search availability calling
+    func searchAvailability(exchangeAvailabilityRequest:ExchangeSearchAvailabilityRequest, sender:IUIKButton){
+        ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: exchangeAvailabilityRequest, onSuccess: { (exchangeAvailability) in
+            Helper.hideProgressBar(senderView: self)
+            Constant.MyClassConstants.showAlert = false
+            Constant.MyClassConstants.resortsArray.removeAll()
+            for exchangeResorts in exchangeAvailability{
+                Constant.MyClassConstants.resortsArray.append(exchangeResorts.resort!)
+                Constant.MyClassConstants.promotionsArray = (exchangeResorts.inventory?.buckets[0].promotions)!
+                Constant.MyClassConstants.inventoryUnitsArray = [(exchangeResorts.inventory?.buckets[0].unit)!]
+            }
+            
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
+        }, onError: { (error) in
+            Helper.hideProgressBar(senderView: self)
+            sender.isEnabled = true
+            Constant.MyClassConstants.showAlert = true
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
+        })
+    }
     
 }
