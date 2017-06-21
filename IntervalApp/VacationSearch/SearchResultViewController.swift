@@ -189,6 +189,7 @@ class SearchResultViewController: UIViewController {
             self.searchResultTableView.reloadData()
             Helper.hideProgressBar(senderView: self)
         }, onError: { (error) in
+            Constant.MyClassConstants.resortsArray.removeAll()
             self.searchResultTableView.reloadData()
             self.alertView = Helper.noResortView(senderView: self.view)
             self.alertView.isHidden = false
@@ -298,6 +299,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
                     }
                 }
                 if(Constant.MyClassConstants.isFromExchange){
+                    Helper.showProgressBar(senderView: self)
                     let exchangeAvailabilityRequest = ExchangeSearchAvailabilityRequest()
                     exchangeAvailabilityRequest.checkInDate = Constant.MyClassConstants.checkInDates[(indexPath as NSIndexPath).item - 1] as Date
                     exchangeAvailabilityRequest.resortCodes = Constant.MyClassConstants.resortCodesArray
@@ -305,14 +307,25 @@ extension SearchResultViewController:UICollectionViewDelegate {
                     exchangeAvailabilityRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
                     ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: exchangeAvailabilityRequest, onSuccess: { (exchangeAvailability) in
                         Helper.hideProgressBar(senderView: self)
+                        if(self.alertView.isHidden == false){
+                            self.alertView.isHidden = true
+                            self.headerVw.isHidden = false
+                        }
                         Constant.MyClassConstants.resortsArray.removeAll()
                         for exchangeResorts in exchangeAvailability{
                             Constant.MyClassConstants.resortsArray.append(exchangeResorts.resort!)
+                            Constant.MyClassConstants.promotionsArray = (exchangeResorts.inventory?.buckets[0].promotions)!
+                            Constant.MyClassConstants.inventoryUnitsArray = [(exchangeResorts.inventory?.buckets[0].unit)!]
                         }
+
                         self.searchResultTableView.reloadData()
                     }, onError: { (error) in
+                        Constant.MyClassConstants.resortsArray.removeAll()
+                        self.searchResultTableView.reloadData()
+                        self.alertView = Helper.noResortView(senderView: self.view)
                         Helper.hideProgressBar(senderView: self)
-                        SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.noResultError)
+                        self.alertView.isHidden = false
+                        self.headerVw.isHidden = true
                     })
                     
                 }else{
@@ -663,10 +676,10 @@ extension SearchResultViewController:UITableViewDataSource {
                     cell.promotionWebView.loadHTMLString(promotionsString, baseURL: Bundle.main.bundleURL)
                     return cell
                 }else{
-                    let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.resortBedroomDetails, for: indexPath) as! ResortBedroomDetails
+                    let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.resortBedroomDetailexchange, for: indexPath) as! ResortBedroomDetails
                     cell.backgroundColor = IUIKColorPalette.contentBackground.color
                     cell.selectionStyle = UITableViewCellSelectionStyle.none
-                    cell.bottomLabel.text = Constant.vacationSearchScreenReusableIdentifiers.exchange
+                    //cell.bottomLabel.text = Constant.vacationSearchScreenReusableIdentifiers.exchange
                     if let roomSize = UnitSize(rawValue: Constant.MyClassConstants.inventoryUnitsArray[0].unitSize!) {
                         
                         cell.numberOfBedroom.text =  Helper.getBrEnums(brType: roomSize.rawValue)
@@ -677,16 +690,9 @@ extension SearchResultViewController:UITableViewDataSource {
                     }
                     
                     cell.totalPrivateLabel.text = String(Constant.MyClassConstants.inventoryUnitsArray[0].publicSleepCapacity + Constant.MyClassConstants.inventoryUnitsArray[0].privateSleepCapacity) + "Total, " + (String(Constant.MyClassConstants.inventoryUnitsArray[0].privateSleepCapacity)) + "Private"
-                    
-                    //cell.getawayPriceLabel.text = String(Int(Float(Constant.MyClassConstants.inventoryUnitsArray[0].prices[0].price)))
-                    cell.exchangeLabel.isHidden = true
-                    cell.sepratorOr.isHidden = true
-                    cell.exchangeButton.isHidden = true
                     return cell
                 }
             }
-            //return cell
-            
         }
     }
     
