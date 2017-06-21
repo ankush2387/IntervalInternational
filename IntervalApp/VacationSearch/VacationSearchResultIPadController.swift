@@ -271,17 +271,64 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
             if(self.collectionviewSelectedIndex != (indexPath as NSIndexPath).row){
                 self.collectionviewSelectedIndex = (indexPath as NSIndexPath).row
                 collectionView.reloadData()
-                SVProgressHUD.show()
-                if(Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.getawayAlerts){
-               
-                if(Constant.MyClassConstants.vacationSearchDestinationArray.count > 1){
-                    titleLabel.text = "Resorts in \(Constant.MyClassConstants.vacationSearchDestinationArray[0]) and \(Constant.MyClassConstants.vacationSearchDestinationArray.count - 1) more"
+                //Helper.showProgressBar(senderView: self)
+                
+                let dateValue:Date!
+                if(Constant.MyClassConstants.checkInDates.count > 0){
+                    dateValue = Constant.MyClassConstants.checkInDates[collectionviewSelectedIndex - 1]
                 }else{
-                    titleLabel.text = "Resorts in \(Constant.MyClassConstants.vacationSearchDestinationArray[0])"
-                 }
+                    dateValue = Constant.MyClassConstants.checkInDates[collectionviewSelectedIndex]
                 }
-                resortDetailsClicked(Constant.MyClassConstants.checkInDates[(indexPath as NSIndexPath).item - 1] as Date)
+                if(Constant.MyClassConstants.surroundingCheckInDates.contains(dateValue) && Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.getawayAlerts){
+                    titleLabel.backgroundColor = UIColor(red: 170/255.0, green: 216/255.0, blue: 111/255.0, alpha: 1.0)
+                    titleLabel.text = Constant.MyClassConstants.surroundingAreaString
+                    
+                }else{
+                    
+                    titleLabel.backgroundColor = UIColor(rgb:IUIKColorPalette.primary1.rawValue)
+                    if(Constant.MyClassConstants.vacationSearchDestinationArray.count > 1 && Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.getawayAlerts){
+                        titleLabel.text = "Resorts in \(Constant.MyClassConstants.vacationSearchDestinationArray[0]) and \(Constant.MyClassConstants.vacationSearchDestinationArray.count - 1) more"
+                    }else{
+                        if(Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.getawayAlerts){
+                            titleLabel.text = "Resorts in \(Constant.MyClassConstants.vacationSearchDestinationArray[0])"
+                        }
+                    }
+                }
+                if(Constant.MyClassConstants.isFromExchange){
+                    Helper.showProgressBar(senderView: self)
+                    let exchangeAvailabilityRequest = ExchangeSearchAvailabilityRequest()
+                    exchangeAvailabilityRequest.checkInDate = Constant.MyClassConstants.checkInDates[(indexPath as NSIndexPath).item - 1] as Date
+                    exchangeAvailabilityRequest.resortCodes = Constant.MyClassConstants.resortCodesArray
+                    exchangeAvailabilityRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
+                    exchangeAvailabilityRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
+                    ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: exchangeAvailabilityRequest, onSuccess: { (exchangeAvailability) in
+                        Helper.hideProgressBar(senderView: self)
+                        if(self.alertView.isHidden == false){
+                            self.alertView.isHidden = true
+                            self.headerVw.isHidden = false
+                        }
+                        Constant.MyClassConstants.resortsArray.removeAll()
+                        for exchangeResorts in exchangeAvailability{
+                            Constant.MyClassConstants.resortsArray.append(exchangeResorts.resort!)
+                            Constant.MyClassConstants.promotionsArray = (exchangeResorts.inventory?.buckets[0].promotions)!
+                            Constant.MyClassConstants.inventoryUnitsArray = [(exchangeResorts.inventory?.buckets[0].unit)!]
+                        }
+                        
+                        self.resortDetailTBLView.reloadData()
+                    }, onError: { (error) in
+                        Constant.MyClassConstants.resortsArray.removeAll()
+                        self.resortDetailTBLView.reloadData()
+                        self.alertView = Helper.noResortView(senderView: self.view)
+                        Helper.hideProgressBar(senderView: self)
+                        self.alertView.isHidden = false
+                        self.headerVw.isHidden = true
+                    })
+                    
+                }else{
+                    resortDetailsClicked(Constant.MyClassConstants.checkInDates[(indexPath as NSIndexPath).item - 1] as Date)
+                }
             }
+            break
         }
     }
     
@@ -632,11 +679,16 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         //***** Return number of rows in section required in tableview *****//
-        var inventoryDict = [Inventory]()
-        inventoryDict = Constant.MyClassConstants.resortsArray[section].inventory
-        let invent = inventoryDict[0]
-        self.unitSizeArray = invent.units
-        return self.unitSizeArray.count + 1
+        if(Constant.MyClassConstants.isFromExchange){
+            self.unitSizeArray = Constant.MyClassConstants.inventoryUnitsArray
+            return Constant.MyClassConstants.inventoryUnitsArray.count + Constant.MyClassConstants.promotionsArray.count + 1
+        }else{
+            var inventoryDict = [Inventory]()
+            inventoryDict = Constant.MyClassConstants.resortsArray[section].inventory
+            let invent = inventoryDict[0]
+            self.unitSizeArray = invent.units
+            return self.unitSizeArray.count + 1
+        }
     }
 }
 
