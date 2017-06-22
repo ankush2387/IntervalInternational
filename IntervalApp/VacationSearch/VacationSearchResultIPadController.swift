@@ -28,6 +28,7 @@ class VacationSearchResultIPadController: UIViewController {
     var alertView = UIView()
     let headerVw = UIView()
     let titleLabel = UILabel()
+    var cellHeight = 50
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -380,7 +381,7 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
             //return 410
         }
         else {
-            return 50
+            return CGFloat(cellHeight)
         }
         
     }
@@ -546,14 +547,20 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 
             }
             cell.resortNameLabel.text = Constant.MyClassConstants.resortsArray[indexPath.section].resortName
-            let resortAddress = Constant.MyClassConstants.resortsArray[indexPath.section].address!
-            if let city = resortAddress.cityName {
-                
-                cell.resortLocation.text = city
+            
+            //TODO: (Jhon) - found nil on address, modified code
+            if let resortAddress = Constant.MyClassConstants.resortsArray[indexPath.section].address {
+                cell.resortLocation.text = resortAddress.cityName
+                cell.resortLocation.text = cell.resortLocation.text?.appending(", \(resortAddress.countryCode)")
             }
-            if let Country = resortAddress.countryCode {
-                cell.resortLocation.text = cell.resortLocation.text?.appending(", \(Country)")
-            }
+//            let resortAddress = Constant.MyClassConstants.resortsArray[indexPath.section].address!
+//            if let city = resortAddress.cityName {
+//                
+//                cell.resortLocation.text = city
+//            }
+//            if let Country = resortAddress.countryCode {
+//                cell.resortLocation.text = cell.resortLocation.text?.appending(", \(Country)")
+//            }
             
             cell.resortCode.text = Constant.MyClassConstants.resortsArray[indexPath.section].resortCode
             let tierImageName = Helper.getTierImageName(tier: Constant.MyClassConstants.resortsArray[indexPath.section].tier!)
@@ -593,6 +600,32 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
             cell.backgroundColor = IUIKColorPalette.contentBackground.color
             
             cell.selectionStyle = UITableViewCellSelectionStyle.none
+
+            let promotions = invent.units[indexPath.row - 1].promotions
+            if promotions.count > 0 {
+                for view in cell.promotionsView.subviews {
+                    view.removeFromSuperview()
+                }
+                
+                cellHeight = 55 + (14*promotions.count)
+                var yPosition: CGFloat = 0
+                for promotion in promotions {
+                    print("Promotions: \(promotions)")
+                    let imgV = UIImageView(frame: CGRect(x:10, y: yPosition, width: 15, height: 15))
+                    imgV.image = UIImage(named: "ExchangeIcon")
+                    let promLabel = UILabel(frame: CGRect(x:30, y: yPosition, width: cell.promotionsView.bounds.width, height: 15))
+                    promLabel.text = promotion.offerName
+                    promLabel.adjustsFontSizeToFitWidth = true
+                    promLabel.minimumScaleFactor = 0.7
+                    promLabel.numberOfLines = 0
+                    promLabel.textColor = UIColor(red: 0, green: 119/255, blue: 190/255, alpha: 1)
+                    promLabel.font = UIFont(name: "Helvetica", size: 18)
+                    cell.promotionsView.addSubview(imgV)
+                    cell.promotionsView.addSubview(promLabel)
+                    yPosition += 15
+                }
+            }
+
             return cell
             
         }

@@ -37,6 +37,10 @@ class CheckOutViewController: UIViewController {
     var isHeightZero = false
     var showLoader = false
     var showInsurance = false
+    var destinationPromotionSelected = false
+    var recapPromotionsArray = [Promotion]()
+    var recapSelectedPromotion: String?
+    var recapFeesTotal: Float?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -237,7 +241,56 @@ class CheckOutViewController: UIViewController {
         self.bookingCostRequiredRows = 1
         checkoutOptionTBLview.reloadData()
         
+        let storyboard = UIStoryboard(name: "VacationSearchIphone", bundle: nil)
+        let promotionsNav = storyboard.instantiateViewController(withIdentifier: "DepositPromotionsNav") as! UINavigationController
+        let promotionsVC = promotionsNav.viewControllers.first as! PromotionsViewController
+        promotionsVC.promotionsArray = Constant.MyClassConstants.recapViewPromotionCodeArray
+        promotionsVC.completionHandler = { selected in
+            SVProgressHUD.show()
+            //Creating Request to recap with Promotion
+            let processResort = RentalProcess()
+            processResort.currentStep = ProcessStep.Recap
+            processResort.processId = Constant.MyClassConstants.processStartResponse.processId
+            
+            let rental = Rental()
+            rental.selectedOfferName = Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName!
+            
+            let fees = RentalFees()
+            fees.rental = rental
+            
+            let processRequest = RentalProcessRecapRecalculateRequest()
+            processRequest.fees = fees
+            
+            RentalProcessClient.addCartPromotion(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: { (response) in
+                print("succes")
+                print(response)
+                
+                if let promotions = response.view?.fees?.rental?.promotions {
+                    self.recapPromotionsArray = promotions
+                }
+                
+                if let selectedPromotion = response.view?.fees?.rental?.selectedOfferName {
+                    self.recapSelectedPromotion = selectedPromotion
+                }
+                
+                if let total = response.view?.fees?.total {
+                    self.recapFeesTotal = total
+                }
+
+                self.destinationPromotionSelected = true
+                self.checkoutOptionTBLview.reloadData()
+                SVProgressHUD.dismiss()
+                
+            }, onError: { (error) in
+                print("Error")
+                print(error)
+                SVProgressHUD.dismiss()
+            })
+        }
+        self.present(promotionsNav, animated: true, completion: nil)
     }
+    
+
     
     //***** Function called when cross button is clicked in email text field. *****//
     func inputClearPressed(_ sender:UIButton) {
@@ -453,8 +506,10 @@ extension CheckOutViewController:UITableViewDataSource {
                 return advisementCount
             }
         }else if(section == 2) {
-            
-            return Constant.MyClassConstants.recapViewPromotionCodeArray.count
+            if Constant.MyClassConstants.recapViewPromotionCodeArray.count > 0 {
+                return 1
+            }
+            return 0
         }else if((section == 5 && (self.isExchangeOptionEnabled || self.isGetawayOptionEnabled) && Constant.MyClassConstants.enableTaxes) || (section == 6 && Constant.MyClassConstants.enableGuestCertificate && self.isTripProtectionEnabled)){
             
             return 2
@@ -524,10 +579,10 @@ extension CheckOutViewController:UITableViewDataSource {
                 }
             }
             else if(section == 2) {
-                
+                return headerView
                 if(Constant.MyClassConstants.vacationSearchSelectedSegmentIndex == 1) {
                     
-                    return nil
+                    return headerView
                 }
                 else {
                     return headerView
@@ -662,20 +717,15 @@ extension CheckOutViewController:UITableViewDataSource {
             
         }else if(indexPath.section == 2) {
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.promotionsCell, for: indexPath) as! PromotionsCell
-            
-            if(self.promotionSelectedIndex == indexPath.row) {
-                
-                cell.promotionSelectionCheckBox.checked = true
-                cell.promotionTextLabel.text = Constant.MyClassConstants.recapViewPromotionCodeArray[self.promotionSelectedIndex]
-            }else {
-                
-                cell.promotionSelectionCheckBox.checked = false
-                cell.promotionTextLabel.text  = Constant.MyClassConstants.recapViewPromotionCodeArray[self.promotionSelectedIndex]
-            }
-            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "CheckoutPromotionCell", for: indexPath) as! CheckoutPromotionCell
+            cell.setupCell(selectedPromotion: destinationPromotionSelected)
             cell.promotionSelectionCheckBox.tag = indexPath.row
-            cell.promotionSelectionCheckBox.addTarget(self, action: #selector(CheckOutViewController.checkBoxCheckedAtIndex(_:)), for: .touchUpInside)
+            if cell.promotionSelectionCheckBox.isHidden {
+                 cell.forwardArrowButton.addTarget(self, action: #selector(CheckOutViewController.checkBoxCheckedAtIndex(_:)), for: .touchUpInside)
+            } else {
+                cell.promotionSelectionCheckBox.addTarget(self, action: #selector(CheckOutViewController.checkBoxCheckedAtIndex(_:)), for: .touchUpInside)
+            }
+           
             cell.selectionStyle = .none
             return cell
         }else if(indexPath.section == 3){
@@ -937,7 +987,21 @@ extension CheckOutViewController:UITableViewDataSource {
                         
                         subviews.isHidden = false
                     }
-                    cell.discountLabel.text = "20% Discount"
+                    cell.discountLabel.text = recapSelectedPromotion
+                    for promotion in recapPromotionsArray {
+                        if promotion.offerName == recapSelectedPromotion {
+                            let priceStr = "\(promotion.amount)"
+                            let priceArray = priceStr.components(separatedBy: ".")
+                            cell.amountLabel.text = "\(Int(promotion.amount))"
+                            if((priceArray.last?.characters.count)! > 1) {
+                                cell.centsLabel.text = "\(priceArray.last!)"
+                            }else{
+                                cell.centsLabel.text = "\(priceArray.last!)0"
+                            }
+
+                        }
+                    }
+                    
                 }else{
                     isHeightZero = false
                     for subviews in cell.subviews {
@@ -952,9 +1016,14 @@ extension CheckOutViewController:UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.totalCostCell, for: indexPath) as! TotalCostCell
                 
                 cell.priceLabel.text = String(Int(Float(Constant.MyClassConstants.rentalFees[0].total)))
+                var priceString = "\(Constant.MyClassConstants.rentalFees[0].total)"
+                var targetString = String(Int(Float(Constant.MyClassConstants.rentalFees[0].total)))
+                if let total = recapFeesTotal {
+                    cell.priceLabel.text = String(Int(Float(total)))
+                    priceString = "\(total)"
+                    targetString = String(Int(Float(total)))
+                }
                 
-                
-                let priceString = "\(Constant.MyClassConstants.rentalFees[0].total)"
                 let priceArray = priceString.components(separatedBy: ".")
                 
                 if((priceArray.last?.characters.count)! > 1) {
@@ -968,7 +1037,6 @@ extension CheckOutViewController:UITableViewDataSource {
                 let width = widthForView(cell.priceLabel.text!, font: font!, height: cell.priceLabel.frame.size.height)
                 cell.priceLabel.frame.size.width = width + 5
                 
-                let targetString = String(Int(Float(Constant.MyClassConstants.rentalFees[0].total)))
                 let range = NSMakeRange(0, targetString.characters.count)
                 
                 cell.priceLabel.attributedText = Helper.attributedString(from: targetString, nonBoldRange: range, font: font!)
@@ -981,6 +1049,10 @@ extension CheckOutViewController:UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.totalCostCell, for: indexPath) as! TotalCostCell
                 
                 cell.priceLabel.text = String(Int(Float(Constant.MyClassConstants.rentalFees[0].total)))
+                if let total = recapFeesTotal {
+                    cell.priceLabel.text = String(Int(Float(total)))
+                    
+                }
                 return cell
             }
         }

@@ -16,4 +16,5 @@ class GetawayCell: UITableViewCell {
     @IBOutlet weak var bedRoomType: UILabel!
     @IBOutlet weak var sleeps: UILabel!
     @IBOutlet weak var kitchenType: UILabel!
+    @IBOutlet weak var promotionsView: UIView!
 }

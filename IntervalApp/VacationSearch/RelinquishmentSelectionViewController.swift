@@ -21,6 +21,7 @@ class RelinquishmentSelectionViewController: UIViewController {
     var openWkToRemoveArray:NSMutableArray!
     var requiredSection = 0
     var masterUnitSize = ""
+    var cellHeight: CGFloat = 80
     
     //Outlets
     @IBOutlet weak var relinquishmentTableview: UITableView!
@@ -521,7 +522,16 @@ extension RelinquishmentSelectionViewController:UITableViewDelegate {
     //***** UITableview delegate methods definition here *****//
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        if((indexPath as NSIndexPath).row == 0) {
+            if ((indexPath as NSIndexPath).section == 0) {
+                return UITableViewAutomaticDimension
+            }
+            return cellHeight
+        }
+        else {
+            return cellHeight
+        }
+
     }
     
     //***** Implementing header and footer cell for all sections  *****//
@@ -678,6 +688,23 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                             }
                             cell.addButton.addTarget(self, action:  #selector(RelinquishmentSelectionViewController.addClubFloatWeek(_:)), for: .touchUpInside)
                             
+                            //display promotion
+                            if relinquishmentOpenWeeksArray.count > 0 {
+                                if let promotion = relinquishmentOpenWeeksArray[indexPath.row].promotion {
+                                    cell.promLabel.text = promotion.offerName
+                                    cellHeight = 90
+                                } else {
+                                    cell.promLabel.isHidden = true
+                                    cell.promImgView.isHidden = true
+                                    cellHeight = 80
+                                }
+
+                            } else {
+                                cell.promLabel.isHidden = true
+                                cell.promImgView.isHidden = true
+                                cellHeight = 80
+                            }
+                            
                             return cell
                             
                         }
@@ -704,6 +731,22 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                                 }
                             }
                             
+                            //display promotion
+                            if relinquishmentOpenWeeksArray.count > 0 {
+                                if let promotion = relinquishmentOpenWeeksArray[indexPath.row].promotion {
+                                    cell.promLabel.text = promotion.offerName
+                                    cellHeight = 90
+                                } else {
+                                    cell.promLabel.isHidden = true
+                                    cell.promImgView.isHidden = true
+                                    cellHeight = 80
+                                }
+                                
+                            } else {
+                                cell.promLabel.isHidden = true
+                                cell.promImgView.isHidden = true
+                                cellHeight = 80
+                            }
                             return cell
                         }
                     }
@@ -724,6 +767,23 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                             cell.bedroomSizeAndKitchenClient.isHidden = true
                         }
                         cell.addButton.addTarget(self, action:  #selector(RelinquishmentSelectionViewController.addClubFloatWeek(_:)), for: .touchUpInside)
+                        
+                        //display promotion
+                        if relinquishmentOpenWeeksArray.count > 0 {
+                            if let promotion = relinquishmentOpenWeeksArray[indexPath.row].promotion {
+                                cell.promLabel.text = promotion.offerName
+                                cellHeight = 90
+                            } else {
+                                cell.promLabel.isHidden = true
+                                cell.promImgView.isHidden = true
+                                cellHeight = 80
+                            }
+                            
+                        } else {
+                            cell.promLabel.isHidden = true
+                            cell.promImgView.isHidden = true
+                            cellHeight = 80
+                        }
                         
                         return cell
                     }
@@ -764,6 +824,23 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                     cell.addButton.tag = indexPath.row + 1
                     
                     cell.addButton.addTarget(self, action:  #selector(RelinquishmentSelectionViewController.addAvailablePoinButtonPressed(_:)), for: .touchUpInside)
+                    
+                    //display promotion
+                    if relinquishmentOpenWeeksArray.count > 0 {
+                        if let promotion = relinquishmentOpenWeeksArray[indexPath.row].promotion {
+                            cell.promLabel.text = promotion.offerName
+                            cellHeight = 90
+                        } else {
+                            cell.promLabel.isHidden = true
+                            cell.promImgView.isHidden = true
+                            cellHeight = 80
+                        }
+                        
+                    } else {
+                        cell.promLabel.isHidden = true
+                        cell.promImgView.isHidden = true
+                        cellHeight = 80
+                    }
                     
                     return cell
 
@@ -819,6 +896,24 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                 
                 intervalWeekCell.selectionStyle = UITableViewCellSelectionStyle.none
                 intervalWeekCell.addButton.addTarget(self, action:  #selector(RelinquishmentSelectionViewController.addIntervalWeekButtonPressed(_:)), for: .touchUpInside)
+                
+                //display promotion
+                if relinquishmentOpenWeeksArray.count > 0 {
+                    if let promotion = relinquishmentOpenWeeksArray[indexPath.row].promotion {
+                        intervalWeekCell.promLabel.text = promotion.offerName
+                        cellHeight = 90
+                    } else {
+                        intervalWeekCell.promLabel.isHidden = true
+                        intervalWeekCell.promImgView.isHidden = true
+                        cellHeight = 80
+                    }
+                } else {
+                    intervalWeekCell.promLabel.isHidden = true
+                    intervalWeekCell.promImgView.isHidden = true
+                    cellHeight = 80
+                }
+
+
                 return intervalWeekCell
             }
           

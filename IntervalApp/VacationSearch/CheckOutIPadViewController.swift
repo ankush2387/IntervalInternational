@@ -29,7 +29,7 @@ class CheckOutIPadViewController: UIViewController {
     //Class variables
     var remainingHoldingTime:Int!
     var requiredSectionIntTBLview = 10
-    var isPromotionsEnabled = false
+    var isPromotionsEnabled = true
     var isTripProtectionEnabled = false
     var isExchangeOptionEnabled = false
     var isGetawayOptionEnabled = true
@@ -46,6 +46,10 @@ class CheckOutIPadViewController: UIViewController {
     var promotionsArray = ["20% OFF","10% OFF","No Thanks"]
     var showLoader = false
     var showInsurance = false
+    var destinationPromotionSelected = false
+    var recapPromotionsArray = [Promotion]()
+    var recapSelectedPromotion: String?
+    var recapFeesTotal: Float?
     
     override func viewWillAppear(_ animated: Bool) {
         NotificationCenter.default.addObserver(self, selector: #selector(changeLabelStatus), name: NSNotification.Name(rawValue: Constant.notificationNames.changeSliderStatus), object: nil)
@@ -363,6 +367,63 @@ class CheckOutIPadViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    func checkBoxCheckedAtIndex(_ sender:IUIKCheckbox) {
+        
+        self.promotionSelectedIndex = sender.tag
+        self.isPromotionsEnabled = true
+        self.bookingCostRequiredRows = 1
+        checkoutTableView.reloadData()
+        
+        let storyboard = UIStoryboard(name: "VacationSearchIphone", bundle: nil)
+        let promotionsNav = storyboard.instantiateViewController(withIdentifier: "DepositPromotionsNav") as! UINavigationController
+        let promotionsVC = promotionsNav.viewControllers.first as! PromotionsViewController
+        promotionsVC.promotionsArray = Constant.MyClassConstants.recapViewPromotionCodeArray
+        promotionsVC.completionHandler = { selected in
+            SVProgressHUD.show()
+            //Creating Request to recap with Promotion
+            let processResort = RentalProcess()
+            processResort.currentStep = ProcessStep.Recap
+            processResort.processId = Constant.MyClassConstants.processStartResponse.processId
+            
+            let rental = Rental()
+            rental.selectedOfferName = Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName!
+            
+            let fees = RentalFees()
+            fees.rental = rental
+            
+            let processRequest = RentalProcessRecapRecalculateRequest()
+            processRequest.fees = fees
+            
+            RentalProcessClient.addCartPromotion(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: { (response) in
+                print("succes")
+                print(response)
+                
+                if let promotions = response.view?.fees?.rental?.promotions {
+                    self.recapPromotionsArray = promotions
+                }
+                
+                if let selectedPromotion = response.view?.fees?.rental?.selectedOfferName {
+                    self.recapSelectedPromotion = selectedPromotion
+                }
+                
+                if let total = response.view?.fees?.total {
+                    self.recapFeesTotal = total
+                }
+                self.destinationPromotionSelected = true
+                self.checkoutTableView.reloadData()
+                self.bookingTableView.reloadData()
+                SVProgressHUD.dismiss()
+            
+            }, onError: { (error) in
+                print("Error")
+                print(error)
+                SVProgressHUD.dismiss()
+            })
+        }
+        self.present(promotionsNav, animated: true, completion: nil)
+    }
+
 }
 
 //Extension class starts from here
@@ -445,6 +506,12 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                 }else{
                     return 1
                 }
+            case 3:
+                if destinationPromotionSelected {
+                    return 1
+                } else {
+                    return 0
+                }
             default:
                 return 1
             }
@@ -465,7 +532,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                     return advisementCount
                 }
             case 2:
-                return 3
+                return 1
             default:
                 return 1
             }
@@ -484,7 +551,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
             if ((indexPath.section == 3 && !self.isPromotionsEnabled) || (indexPath.section == 2 && !self.isTripProtectionEnabled && !Constant.MyClassConstants.enableGuestCertificate) || (indexPath.section == 1 && !self.isExchangeOptionEnabled && !Constant.MyClassConstants.enableTaxes)) {
                 isHeightZero = true
                 return 0
-            }else if(indexPath.section == 3 && self.isPromotionsEnabled){
+            }else if(indexPath.section == 3 && self.isPromotionsEnabled && destinationPromotionSelected){
                 return 60
             }else if(indexPath.section == 3 && !self.isPromotionsEnabled){
                 return 0
@@ -668,7 +735,20 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                         
                         subviews.isHidden = false
                     }
-                    cell.discountLabel.text = ""
+                    cell.discountLabel.text = recapSelectedPromotion
+                    for promotion in recapPromotionsArray {
+                        if promotion.offerName == recapSelectedPromotion {
+                            let priceStr = "\(promotion.amount)"
+                            let priceArray = priceStr.components(separatedBy: ".")
+                            cell.amountLabel.text = "\(Int(promotion.amount))"
+                            if((priceArray.last?.characters.count)! > 1) {
+                                cell.centsLabel.text = "\(priceArray.last!)"
+                            }else{
+                                cell.centsLabel.text = "\(priceArray.last!)0"
+                            }
+                            
+                        }
+                    }
                 }else{
                     isHeightZero = false
                     for subviews in cell.subviews {
@@ -681,19 +761,37 @@ extension CheckOutIPadViewController:UITableViewDataSource {
             case 4:
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.totalCostCell, for: indexPath) as! TotalCostCell
                 cell.priceLabel.text = String(Int(Float(Constant.MyClassConstants.rentalFees[0].total)))
+                var targetString = String(Int(Float(Constant.MyClassConstants.rentalFees[0].total)))
+                var priceString = "\(Constant.MyClassConstants.rentalFees[0].total)"
+                if let total = recapFeesTotal {
+                    cell.priceLabel.text = String(Int(Float(total)))
+                    priceString = "\(total)"
+                    targetString = String(Int(Float(total)))
+                }
                 
+                let priceArray = priceString.components(separatedBy: ".")
+                
+                if((priceArray.last?.characters.count)! > 1) {
+                    cell.fractionalPriceLabel.text = "\(priceArray.last!)"
+                }else{
+                    cell.fractionalPriceLabel.text = "\(priceArray.last!)0"
+                }
+
                 
                 let font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 25.0)
                 
                 let width = widthForView(cell.priceLabel.text!, font: font!, height: cell.priceLabel.frame.size.height)
                 cell.priceLabel.frame.size.width = width + 5
                 
-                let targetString = String(Int(Float(Constant.MyClassConstants.rentalFees[0].total)))
+                
                 let range = NSMakeRange(0, targetString.characters.count)
                 
                 cell.priceLabel.attributedText = Helper.attributedString(from: targetString, nonBoldRange: range, font: font!)
                 cell.periodLabel.frame.origin.x = cell.priceLabel.frame.origin.x + width
                 cell.fractionalPriceLabel.frame.origin.x = cell.periodLabel.frame.origin.x + cell.periodLabel.frame.size.width
+                
+                
+
                 return cell
             case 5:
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.termsConditionsCell, for: indexPath) as! ViewDetailsTBLcell
@@ -752,20 +850,14 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                     
                 
             case 2:
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.promotionsCell, for: indexPath) as! PromotionsCell
-                if(self.promotionSelectedIndex == indexPath.row) {
-                    
-                    cell.promotionSelectionCheckBox.checked = true
-                    cell.promotionTextLabel.text = self.promotionsArray[self.promotionSelectedIndex]
-                }
-                else {
-                    
-                    cell.promotionSelectionCheckBox.checked = false
-                    cell.promotionTextLabel.text = self.promotionsArray[indexPath.row]
-                }
-                
+                let cell = tableView.dequeueReusableCell(withIdentifier: "CheckoutPromotionCell", for: indexPath) as! CheckoutPromotionCell
+                cell.setupCell(selectedPromotion: destinationPromotionSelected)
                 cell.promotionSelectionCheckBox.tag = indexPath.row
-                cell.promotionSelectionCheckBox.addTarget(self, action: #selector(CheckOutViewController.checkBoxCheckedAtIndex(_:)), for: .touchUpInside)
+                if cell.promotionSelectionCheckBox.isHidden {
+                    cell.forwardArrowButton.addTarget(self, action: #selector(CheckOutIPadViewController.checkBoxCheckedAtIndex(_:)), for: .touchUpInside)
+                } else {
+                    cell.promotionSelectionCheckBox.addTarget(self, action: #selector(CheckOutIPadViewController.checkBoxCheckedAtIndex(_:)), for: .touchUpInside)
+                }
                 cell.selectionStyle = .none
                 return cell
                 

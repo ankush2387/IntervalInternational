@@ -253,7 +253,11 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             SVProgressHUD.dismiss()
             Helper.removeServiceCallBackgroundView(view: self.view)
             Constant.MyClassConstants.continueToCheckoutResponse = response
-            Constant.MyClassConstants.recapViewPromotionCodeArray = (response.view?.promoCodes)!
+            
+            if let promotions = response.view?.fees?.rental?.promotions {
+                Constant.MyClassConstants.recapViewPromotionCodeArray = promotions
+            }
+
             Constant.MyClassConstants.allowedCreditCardType = (response.view?.allowedCreditCardTypes)!
             Constant.MyClassConstants.rentalFees = [(response.view?.fees)!]
             Constant.MyClassConstants.memberCreditCardList = (UserContext.sharedInstance.contact?.creditcards)!
