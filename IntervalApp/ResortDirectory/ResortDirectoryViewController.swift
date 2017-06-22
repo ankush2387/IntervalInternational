@@ -11,6 +11,8 @@ import IntervalUIKit
 import DarwinSDK
 import SDWebImage
 import SVProgressHUD
+
+
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     switch (lhs, rhs) {
     case let (l?, r?):
@@ -148,7 +150,6 @@ class ResortDirectoryViewController: UIViewController {
                     //***** This line allows the user to swipe left-to-right to reveal the menu. We might want to comment this out if it becomes confusing. *****//
                     self.view.addGestureRecognizer( rvc.panGestureRecognizer())
                 }
-                
                 
             }
             
@@ -294,6 +295,55 @@ class ResortDirectoryViewController: UIViewController {
             
         }
     }
+    
+    func favoriteButtonClicked(_ sender:UIButton) {
+        
+        if((UserContext.sharedInstance.accessToken) != nil) {
+            
+            if (sender.isSelected == false){
+                
+                SVProgressHUD.show()
+                Helper.addServiceCallBackgroundView(view: self.view)
+                UserClient.addFavoriteResort(UserContext.sharedInstance.accessToken, resortCode: Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!, onSuccess: {(response) in
+                    print(response)
+                    SVProgressHUD.dismiss()
+                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    sender.isSelected = true
+                    Constant.MyClassConstants.favoritesResortCodeArray.add(Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!)
+                    self.resortTableView.reloadData()
+                    
+                }, onError: {(error) in
+                    SVProgressHUD.dismiss()
+                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    print(error)
+                })
+            }
+            else {
+                Helper.addServiceCallBackgroundView(view: self.view)
+                SVProgressHUD.show()
+                UserClient.removeFavoriteResort(UserContext.sharedInstance.accessToken, resortCode: Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!, onSuccess: {(response) in
+                    
+                    print(response)
+                    SVProgressHUD.dismiss()
+                    sender.isSelected = false
+                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    Constant.MyClassConstants.favoritesResortCodeArray.remove(Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!)
+                    self.resortTableView.reloadData()
+                    
+                }, onError: {(error) in
+                    SVProgressHUD.dismiss()
+                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    print(error)
+                })
+                
+            }        }
+        else {
+            
+            Constant.MyClassConstants.btnTag = sender.tag
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.preLoginSegue, sender: nil)
+        }
+    }
+
 }
 
 
@@ -493,7 +543,9 @@ extension ResortDirectoryViewController:UITableViewDataSource {
         }
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         if(tableView.tag == 4){
+            
             if((indexPath as NSIndexPath).row == 0){
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.favoritesCellIdentifier, for: indexPath) as! ResortFavoritesTableViewCell
                 
@@ -522,11 +574,13 @@ extension ResortDirectoryViewController:UITableViewDataSource {
                         }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
                 }
                 return cell
+                
             }else{
+                
                 resort = Constant.MyClassConstants.resortDirectoryResortArray[indexPath.row - 1]
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.resortDirectoryResortCell, for: indexPath) as! ResortFavoritesTableViewCell
                 cell.favoritesCollectionView.reloadData()
-                cell.delegate = self
+                //cell.delegate = self
                 
                 return cell
             }
@@ -545,8 +599,6 @@ extension ResortDirectoryViewController:UITableViewDataSource {
             Helper.addLinearGradientToView(view: cell.resortNameGradientView, colour: UIColor.white, transparntToOpaque: true, vertical: false)
             cell.backgroundColor = IUIKColorPalette.contentBackground.color
             
-            
-            
             let status =  Helper.isResrotFavorite(resortCode: resort.resortCode!)
             if(status) {
                 cell.favoriteButton.isSelected = true
@@ -555,7 +607,7 @@ extension ResortDirectoryViewController:UITableViewDataSource {
                 cell.favoriteButton.isSelected = false
             }
             cell.favoriteButton.tag = (indexPath as NSIndexPath).row
-            let tierImageName = Helper.getTierImageName(tier: resort.tier!)
+            let tierImageName = Helper.getTierImageName(tier: resort.tier!.uppercased())
             cell.tierImageView.image = UIImage(named: tierImageName)
             
             if(resort.images.count > 0){
@@ -569,8 +621,8 @@ extension ResortDirectoryViewController:UITableViewDataSource {
             }
             cell.resortName.textColor = IUIKColorPalette.primary1.color
             cell.resortName.text = resort.resortName
+            cell.favoriteButton.addTarget(self, action: #selector(favoriteButtonClicked(_:)), for: .touchUpInside)
             
-            cell.delegate = self
             //cell.resortCountry.text = resort.address?.cityName!
             cell.resortCode.text = resort.resortCode
             return cell
@@ -620,116 +672,6 @@ extension ResortDirectoryViewController:ResortDirectoryResortCellDelegate {
     }
 }
 
-//***** extension class to define custom cell delegate methods *****//
-extension ResortDirectoryViewController:ResortFavoritesTableViewCellDelegate {
-    func favoritesResortSelectedAtIndex(_ index: Int) {
-        self.performSegue(withIdentifier: Constant.segueIdentifiers.preLoginSegue, sender: self)
-    }
-}
 
-//***** extension class to define custom cell delegate methods *****//
-extension ResortDirectoryViewController:SearchResultContentTableCellDelegate {
-    
-    func favoriteButtonClicked(_ sender:UIButton) {
-        
-        if((UserContext.sharedInstance.accessToken) != nil) {
-            
-            if (sender.isSelected == false){
-                
-               SVProgressHUD.show()
-                Helper.addServiceCallBackgroundView(view: self.view)
-                UserClient.addFavoriteResort(UserContext.sharedInstance.accessToken, resortCode: Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!, onSuccess: {(response) in
-                    print(response)
-                    SVProgressHUD.dismiss()
-                    Helper.removeServiceCallBackgroundView(view: self.view)
-                    sender.isSelected = true
-                    Constant.MyClassConstants.favoritesResortCodeArray.add(Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!)
-                    self.resortTableView.reloadData()
-                    
-                }, onError: {(error) in
-                    SVProgressHUD.dismiss()
-                    Helper.removeServiceCallBackgroundView(view: self.view)
-                    print(error)
-                })
-            }
-            else {
-                Helper.addServiceCallBackgroundView(view: self.view)
-                SVProgressHUD.show()
-                UserClient.removeFavoriteResort(UserContext.sharedInstance.accessToken, resortCode: Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!, onSuccess: {(response) in
-                    
-                    print(response)
-                    SVProgressHUD.dismiss()
-                    sender.isSelected = false
-                    Helper.removeServiceCallBackgroundView(view: self.view)
-                    Constant.MyClassConstants.favoritesResortCodeArray.remove(Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!)
-                    self.resortTableView.reloadData()
-                    
-                }, onError: {(error) in
-                    SVProgressHUD.dismiss()
-                    Helper.removeServiceCallBackgroundView(view: self.view)
-                    print(error)
-                })
-                
-            }        }
-        else {
-            
-            Constant.MyClassConstants.btnTag = sender.tag
-            self.performSegue(withIdentifier: Constant.segueIdentifiers.preLoginSegue, sender: nil)
-        }
-    }
-    func unfavoriteButtonClicked(_ sender:UIButton){
-        
-    }
-    func showResortDetails(_ index:Int){
-        
-        Constant.MyClassConstants.resortsDescriptionArray = Constant.MyClassConstants.resortDirectoryResortArray[index]
-        
-        Constant.MyClassConstants.resortDescriptionString = Constant.MyClassConstants.resortDirectoryResortArray[index].description
-        
-        if(self.containerView != nil) {
-            
-            self.containerView.isHidden = false
-            self.containerView.bringSubview(toFront: self.containerView)
-            let selectedResort = Constant.MyClassConstants.resortDirectoryResortArray[index]
-            Constant.MyClassConstants.isgetResortFromGoogleSearch = false
-            
-            UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseOut ,animations: {
-                
-                (self.view.subviews.last?.frame = CGRect(x: 0, y: 64, width: (self.view.subviews.last?.frame.width)!, height: (self.view.subviews.last?.frame.height)!))!
-                
-                }, completion: { _ in
-                    if(selectedResort.resortCode != nil) {
-                         self.callAPI(selectedResort.resortCode!)
-                    }
-                   
-            })
-            
-        }
-    }
-    func callAPI(_ code:String){
-        SVProgressHUD.show()
-        //Helper.addServiceCallBackgroundView(self.view)
-        DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: code, onSuccess: { (response) in
-            
-            Constant.MyClassConstants.resortsDescriptionArray = response
-            Constant.MyClassConstants.imagesArray.removeAllObjects()
-            let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
-            for imgStr in imagesArray {
-                if(imgStr.size == Constant.MyClassConstants.imageSize) {
-                    
-                    Constant.MyClassConstants.imagesArray.add(imgStr.url!)
-                }
-            }
-            
-            let containerVC = self.childViewControllers[0] as! ResortDetailsViewController
-            containerVC.senderViewController = Constant.MyClassConstants.searchResult
-            containerVC.viewWillAppear(true)
-            SVProgressHUD.dismiss()
-            
-            })
-        { (error) in
-            SVProgressHUD.dismiss()
-        }
-    }
-}
+
 

@@ -31,8 +31,16 @@ class SearchResultMapviewController: UIViewController {
 
     @IBOutlet weak var dragView: UIView!
 
+    @IBOutlet weak var containorView: UIView!
+    @IBOutlet weak var drarButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            self.view.bringSubview(toFront: dragView)
+        }
+        else{
+            
+        }
         self.title = Constant.ControllerTitles.searchResultViewController
         bottomResortHeight = self.view.frame.height/3 + 50
         let menuButton = UIBarButtonItem(title: Constant.AlertPromtMessages.done, style: .plain, target: self, action: #selector(SearchResultMapviewController.doneButtonPressed(_:)))
@@ -45,10 +53,37 @@ class SearchResultMapviewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
+    
+    override func viewWillAppear(_ animated: Bool) {
+      
+        
+        let notificationNames = [Constant.notificationNames.closeButtonClickedNotification, Constant.notificationNames.closeButtonClickedNotification, ]
+        
+            NotificationCenter.default.addObserver(self, selector: #selector(closeDetailView), name: NSNotification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    //***** Method called when done button clicked on details page *****//
+    
+    func closeDetailView(){
+        if(Constant.RunningDevice.deviceIdiom == .pad){
+            UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn ,animations: {
+                self.containorView.frame = CGRect(x: -self.containorView.frame.size.width, y: self.containorView.frame.origin.y, width: self.containorView.frame.size.width, height: self.containorView.frame.size.height)
+                
+            }, completion: { _ in
+                self.containorView.isHidden = true
+                //self.mapView.selectedMarker = nil
+            })
+        }else{
+            //updateMapMarkers()
+        }
+    }
+    
+    
     
     //***** Creating map with resorts getting from current location when map screen landing first time *****//
     func addMarkersOnMapView() {
@@ -100,7 +135,7 @@ class SearchResultMapviewController: UIViewController {
                 if UIDevice.current.userInterfaceIdiom == .pad {
                     
                      self.dragView.isHidden = false
-                    
+                     self.resortView.backgroundColor = UIColor.white
                      self.resortView.frame = CGRect(x: 0, y: 44, width: self.view.frame.width/2, height: self.view.frame.height - 44)
                 }
                 else {
@@ -118,7 +153,7 @@ class SearchResultMapviewController: UIViewController {
             
             if UIDevice.current.userInterfaceIdiom == .pad {
                  self.dragView.isHidden = false
-                self.resortView.frame = CGRect(x: 0, y: 44, width: self.view.frame.width/2, height: self.view.frame.height - 44)
+                 self.resortView.frame = CGRect(x: 0, y: 44, width: self.view.frame.width/2, height: self.view.frame.height - 44)
             }
              else {
                 
@@ -200,7 +235,7 @@ class SearchResultMapviewController: UIViewController {
         self.selectedIndex = 0
 
         for selectedMarker in Constant.MyClassConstants.googleMarkerArray {
-            
+              
             selectedMarker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
             selectedMarker.isFlat = false
             
@@ -241,38 +276,80 @@ class SearchResultMapviewController: UIViewController {
     //***** This method executes when bottom resort view favorite button pressed *****//
     func bottomResortFavoritesButtonPressed(sender:UIButton) {
         
-        SVProgressHUD.show()
-        Helper.addServiceCallBackgroundView(view: self.view)
-        UserClient.addFavoriteResort(UserContext.sharedInstance.accessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
+          if (sender.isSelected == false){
             
-            print(response)
-            Helper.removeServiceCallBackgroundView(view: self.view)
-            SVProgressHUD.dismiss()
-            sender.isSelected = true
-            Constant.MyClassConstants.favoritesResortCodeArray.add(Constant.MyClassConstants.resortsArray[sender.tag].resortCode!)
-            self.resortCollectionView.reloadData()
+            SVProgressHUD.show()
+            Helper.addServiceCallBackgroundView(view: self.view)
+            UserClient.addFavoriteResort(UserContext.sharedInstance.accessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
             
-        }, onError: {(error) in
-            SVProgressHUD.dismiss()
-            Helper.removeServiceCallBackgroundView(view: self.view)
-            print(error)
-        })
+                Helper.removeServiceCallBackgroundView(view: self.view)
+                SVProgressHUD.dismiss()
+                sender.isSelected = true
+                Constant.MyClassConstants.favoritesResortCodeArray.add(Constant.MyClassConstants.resortsArray[sender.tag].resortCode!)
+                self.resortCollectionView.reloadData()
+            
+            }, onError: {(error) in
+                SVProgressHUD.dismiss()
+                Helper.removeServiceCallBackgroundView(view: self.view)
+                print(error)
+            })
+        }
+          else {
+            
+            SVProgressHUD.show()
+            Helper.addServiceCallBackgroundView(view: self.view)
+            UserClient.removeFavoriteResort(UserContext.sharedInstance.accessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
+                
+                sender.isSelected = false
+                Helper.removeServiceCallBackgroundView(view: self.view)
+                SVProgressHUD.dismiss()
+                Constant.MyClassConstants.favoritesResortCodeArray.remove(Constant.MyClassConstants.resortsDescriptionArray.resortCode!)
+                 self.resortCollectionView.reloadData()
+                ADBMobile.trackAction(Constant.omnitureEvents.event51, data: nil)
+            }, onError: {(error) in
+                
+                SVProgressHUD.dismiss()
+                Helper.removeServiceCallBackgroundView(view: self.view)
+                print(error)
+            })
+            
+
+        }
     }
     func doneButtonPressed(_ sender:UIBarButtonItem) {
         
-          self.navigationController?.dismiss(animated: true, completion: nil)
+           self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func drarButtonClicked(_ sender: Any) {
         
         
         if(self.dragView.frame.origin.x == 0) {
-            print("showview")
-            self.resortView.frame = CGRect(x: 0, y: 44, width: self.view.frame.width/2, height: self.view.frame.height - 44)
+
+            UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn ,animations: {
+                
+                self.resortView.frame = CGRect(x: 0, y: 44, width: self.view.frame.width/2, height: self.view.frame.height - 44)
+                self.dragView.frame = CGRect(x: self.resortView.frame.width, y:self.dragView.frame.origin.y, width:self.dragView.frame.size.width, height: self.dragView.frame.size.height)
+            }, completion: { _ in
+                
+                self.drarButton.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
+                self.dragView.frame = CGRect(x: self.resortView.frame.width, y:self.dragView.frame.origin.y, width:self.dragView.frame.size.width, height: self.dragView.frame.size.height)
+            })
+            
         }
         else{
-            print("hideview")
-            self.resortView.frame = CGRect(x: -self.view.frame.width/2, y: 44, width: self.view.frame.width/2, height: self.view.frame.height - 44)
+
+            UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn ,animations: {
+                
+                self.resortView.frame = CGRect(x: -self.view.frame.width/2, y: 44, width: self.view.frame.width/2, height: self.view.frame.height - 44)
+                self.dragView.frame = CGRect(x: 0, y:self.dragView.frame.origin.y, width: self.dragView.frame.size.width, height: self.dragView.frame.size.height)
+                
+            }, completion: { _ in
+                
+                self.drarButton.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi * 2))
+                self.dragView.frame = CGRect(x: 0, y:self.dragView.frame.origin.y, width:self.dragView.frame.size.width, height: self.dragView.frame.size.height)
+            })
+            
         }
     
     }
@@ -375,6 +452,9 @@ extension SearchResultMapviewController:GMSMapViewDelegate {
 
 extension SearchResultMapviewController:UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        self.view.bringSubview(toFront: self.containorView)
+                       Helper.getResortWithResortCode(code: Constant.MyClassConstants.resortsArray[self.selectedIndex].resortCode!, viewcontroller: self)
         
     }
 }
@@ -493,7 +573,7 @@ extension SearchResultMapviewController:UICollectionViewDataSource {
         
         if(resort.tier != nil){
             let tearImageView = UIImageView(frame: CGRect(x: 55, y: 42, width: 16, height: 16))
-            let tierImageName = Helper.getTierImageName(tier: resort.tier!)
+            let tierImageName = Helper.getTierImageName(tier: resort.tier!.uppercased())
             tearImageView.image = UIImage(named: tierImageName)
             resortNameGradientView.addSubview(tearImageView)
         }
@@ -531,5 +611,7 @@ extension SearchResultMapviewController:UICollectionViewDataSource {
 
 
 }
+
+
 
 

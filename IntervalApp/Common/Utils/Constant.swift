@@ -481,6 +481,8 @@ class Constant: NSObject {
         static var travelPartyInfo = TravelParty()
         static var inventoryUnitsArray =  [InventoryUnit]()
         static var promotionsArray = [Promotion]()
+        static var htmlHeader = "<html><body>"
+        static var htmlFooter = "</html></body>"
     }
     struct CommonStringIdentifiers {
         static var floatWeek = "FLOAT_WEEK"
@@ -774,6 +776,7 @@ class Constant: NSObject {
         static var intervalHDiPadControllerTitle =  NSLocalizedString("IntervalHDIpadPlayerViewController", comment: "")
         static var clubpointselection = NSLocalizedString("Club Point Selection", comment: "")
         static var selectedControllerTitle = ""
+        static var sorting = NSLocalizedString("Sorting", comment: "")
     }
     
     //***** Common structure for custom cell identifiers ******//
@@ -1121,6 +1124,17 @@ class Constant: NSObject {
         static var unitSizeTdiCollectionViewCell = "UnitSizeTdiCollectionViewCell"
         static var tdiTableViewCell = "TdiTableViewCell"
         static var exchange = "Exchange"
+        static var sortingOptionCell = "sortingOptionCell"
+    }
+    
+    //***** Common structure for dynamic strings combinining strings *****//
+    
+    struct getDynamicString {
+         static var clubInterValPointsUpTo = NSLocalizedString("Club Interval Gold Points up to", comment: "")
+         static var andString = NSLocalizedString("and", comment: "")
+        static var moreString = NSLocalizedString("more", comment: "")
+        static var fromString = NSLocalizedString("From ", comment:"")
+        static var weekString = NSLocalizedString(" Wk.", comment:"")
     }
     
     //***** Common structure for font names and type *****//
@@ -1184,7 +1198,8 @@ class Constant: NSObject {
         static var detailSegue = "detailSegue"
         static var searchVacation = "searchVacation"
         static var upcomingDetailSegue = "UpComingTripDetailSegue"
-         static var searchResultMapSegue = "searchResultMapSegue"
+        static var searchResultMapSegue = "searchResultMapSegue"
+        static var sortingSegue = "sortingSegue"
     }
     
     //***** common  structure to provide all actionSheetAttributedString *****//

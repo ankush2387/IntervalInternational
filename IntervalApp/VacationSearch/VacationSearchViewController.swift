@@ -205,8 +205,7 @@ class VacationSearchViewController: UIViewController {
     
     //***** Add location pressed action to show map screen with list of location to select *****//
     func addRelinquishmentSectionButtonPressed(_ sender:IUIKButton) {
-         SVProgressHUD.show()
-         Helper.addServiceCallBackgroundView(view: self.view)
+         Helper.showProgressBar(senderView: self)
          ExchangeClient.getMyUnits(UserContext.sharedInstance.accessToken, onSuccess: { (Relinquishments) in
          
          Constant.MyClassConstants.relinquishmentDeposits = Relinquishments.deposits
@@ -232,11 +231,7 @@ class VacationSearchViewController: UIViewController {
          self.navigationController!.pushViewController(viewController, animated: true)
          
          }, onError: {(error) in
-         
-         print(error.description)
-         SVProgressHUD.dismiss()
-         Helper.removeServiceCallBackgroundView(view: self.view)
-         
+            Helper.hideProgressBar(senderView: self)
          })
         
     }
@@ -321,7 +316,7 @@ extension VacationSearchViewController:UICollectionViewDataSource {
             centerView.addSubview(unitLabel)
             
             let priceLabel = UILabel(frame: CGRect(x: 10, y: 30, width: centerView.frame.size.width - 20, height: 20))
-            priceLabel.text = "From " + String(describing: deal.price!.fromPrice) + " Wk."
+            priceLabel.text = "\(Constant.getDynamicString.fromString)" + String(describing: deal.price!.fromPrice) + "\(Constant.getDynamicString.weekString)"
             priceLabel.numberOfLines = 2
             priceLabel.textAlignment = NSTextAlignment.center
             priceLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
@@ -745,7 +740,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                             }
                             var resortNameString = "\(resortNm) (\(resortCode))"
                             if((object as AnyObject).count > 1){
-                                resortNameString = resortNameString + " and \((object as AnyObject).count - 1) more"
+                                resortNameString = resortNameString + " \(Constant.getDynamicString.andString) \((object as AnyObject).count - 1) \(Constant.getDynamicString.moreString)"
                             }
                             cell.whereTogoTextLabel.text = resortNameString
                         }else if (object.isKind(of: List<ResortByMap>.self)){
@@ -756,7 +751,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                             
                             var resortNameString = "\(resort.resortName) (\(resort.resortCode))"
                             if(object.count > 1){
-                                resortNameString = resortNameString + " and \(object.count - 1) more"
+                                resortNameString = resortNameString + " \(Constant.getDynamicString.andString) \(object.count - 1) \(Constant.getDynamicString.moreString)"
                             }
                             
                             cell.whereTogoTextLabel.text = resortNameString
@@ -851,7 +846,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                             
                             let availablePoints = numberFormatter.string(from: availablePointsNumber)
                             
-                            cell.whereTogoTextLabel.text = "Club Interval Gold Points up to \(availablePoints!)"
+                            cell.whereTogoTextLabel.text = "\(Constant.getDynamicString.clubInterValPointsUpTo) \(availablePoints!)"
                             cell.bedroomLabel.isHidden = true
                         }
                         
@@ -1021,7 +1016,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                         }
                         var resortNameString = "\(resortNm) (\(resortCode))"
                         if((object as AnyObject).count > 1){
-                            resortNameString = resortNameString + " and \((object as AnyObject).count - 1) more"
+                            resortNameString = resortNameString + " \(Constant.getDynamicString.andString) \((object as AnyObject).count - 1) \(Constant.getDynamicString.moreString)"
                         }
                         cell.whereTogoTextLabel.text = resortNameString
                     }else if (object.isKind(of: List<ResortByMap>.self)){
@@ -1032,7 +1027,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                         
                         var resortNameString = "\(resort.resortName) (\(resort.resortCode))"
                         if(object.count > 1){
-                            resortNameString = resortNameString + " and \(object.count - 1) more"
+                            resortNameString = resortNameString + " \(Constant.getDynamicString.andString) \(object.count - 1) \(Constant.getDynamicString.moreString)"
                         }
                         
                         cell.whereTogoTextLabel.text = resortNameString
@@ -1284,8 +1279,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             if Reachability.isConnectedToNetwork() == true {
                 
                 ADBMobile.trackAction(Constant.omnitureEvents.event9, data: nil)
-                SVProgressHUD.show()
-                Helper.addServiceCallBackgroundView(view: self.view)
+                Helper.showProgressBar(senderView: self)
                 RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: searchDateRequest, onSuccess:{ (searchDates) in
                     
                     var combinedSearchDates = [Date]()
@@ -1305,8 +1299,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     sender.isEnabled = true
                     if(Constant.MyClassConstants.checkInDates.count == 0) {
                         
-                        SVProgressHUD.dismiss()
-                        Helper.removeServiceCallBackgroundView(view: self.view)
+                        Helper.hideProgressBar(senderView: self)
                         SimpleAlert.alert(self, title: Constant.AlertErrorMessages.noResultError, message: Constant.AlertMessages.noResultMessage)
                     }else {
                         
@@ -1327,8 +1320,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                             }
                             
                             Constant.MyClassConstants.showAlert = true
-                            SVProgressHUD.dismiss()
-                            Helper.removeServiceCallBackgroundView(view: self.view)
+                            Helper.hideProgressBar(senderView: self)
                             
                            
                             // omniture tracking with event 9
@@ -1356,13 +1348,11 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                             if let dateToSelect = Constant.MyClassConstants.checkInDates.index(of: Constant.MyClassConstants.vacationSearchShowDate) {
                                 Constant.MyClassConstants.searchResultCollectionViewScrollToIndex = dateToSelect + 1
                                 Constant.MyClassConstants.showAlert = false
-                                SVProgressHUD.dismiss()
-                                Helper.removeServiceCallBackgroundView(view: self.view)
+                                Helper.hideProgressBar(senderView: self)
                                 Helper.resortDetailsClicked(toDate: Constant.MyClassConstants.checkInDates[dateToSelect] as NSDate, senderVC: self)
                             }else {
                                 Constant.MyClassConstants.searchResultCollectionViewScrollToIndex = 1
-                                SVProgressHUD.dismiss()
-                                Helper.removeServiceCallBackgroundView(view: self.view)
+                                Helper.hideProgressBar(senderView: self)
                                 Helper.resortDetailsClicked(toDate: Constant.MyClassConstants.checkInDates[0] as NSDate, senderVC: self)
                             }
                         }
@@ -1370,8 +1360,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 })
                 { (error) in
                     sender.isEnabled = true
-                    SVProgressHUD.dismiss()
-                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    Helper.hideProgressBar(senderView: self)
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                 }
             }
@@ -1402,22 +1391,6 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             
             if Reachability.isConnectedToNetwork() == true {
                 ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request: exchangeSearchDateRequest, onSuccess: { (exchangeSearchDates) in
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    /////////////////////////////////
-                    
-                    
-                        
                         var combinedSearchDates = [Date]()
                         combinedSearchDates = exchangeSearchDates.checkInDates.map { $0 }
                         combinedSearchDates.append(contentsOf: exchangeSearchDates.surroundingCheckInDates.map { $0 })
@@ -1434,9 +1407,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                         
                         sender.isEnabled = true
                         if(Constant.MyClassConstants.checkInDates.count == 0) {
-                            
-                            SVProgressHUD.dismiss()
-                            Helper.removeServiceCallBackgroundView(view: self.view)
+                            Helper.hideProgressBar(senderView: self)
                             SimpleAlert.alert(self, title: Constant.AlertErrorMessages.noResultError, message: Constant.AlertMessages.noResultMessage)
                         }else {
                             
@@ -1454,54 +1425,21 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                 if let dateToSelect = Constant.MyClassConstants.checkInDates.index(of: Constant.MyClassConstants.vacationSearchShowDate) {
                                     Constant.MyClassConstants.searchResultCollectionViewScrollToIndex = dateToSelect + 1
                                     
-                                    
-                                    
-                                    
                                     let exchangeAvailabilityRequest = ExchangeSearchAvailabilityRequest()
                                     exchangeAvailabilityRequest.checkInDate = Constant.MyClassConstants.checkInDates[dateToSelect]
-                                    exchangeAvailabilityRequest.resortCodes = exchangeSearchDates.resortCodes
+                                    exchangeAvailabilityRequest.resortCodes = Constant.MyClassConstants.resortCodesArray
                                     exchangeAvailabilityRequest.travelParty = travelPartyInfo
                                     exchangeAvailabilityRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
-                                    ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: exchangeAvailabilityRequest, onSuccess: { (exchangeAvailability) in
-                                        Constant.MyClassConstants.resortsArray.removeAll()
-                                        for exchangeResorts in exchangeAvailability{
-                                            Constant.MyClassConstants.resortsArray.append(exchangeResorts.resort!)
-                                        }
-                                        
-                                        let resort = exchangeAvailability
-                                        let unit = exchangeAvailability
-                                        self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
-                                    }, onError: { (error) in
-                                        SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.noResultError)
-                                    })
                                     
-                                    
+                                    //Check resorts for search availability.
+                                    self.searchAvailability(exchangeAvailabilityRequest: exchangeAvailabilityRequest, sender: sender)
                                     
                                 }
-                                
-                                Constant.MyClassConstants.showAlert = true
-                                SVProgressHUD.dismiss()
-                                Helper.removeServiceCallBackgroundView(view: self.view)
-                                //self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
                             }else {
                                 
                                 if let dateToSelect = Constant.MyClassConstants.checkInDates.index(of: Constant.MyClassConstants.vacationSearchShowDate) {
                                     Constant.MyClassConstants.searchResultCollectionViewScrollToIndex = dateToSelect + 1
                                     Constant.MyClassConstants.showAlert = false
-                                    SVProgressHUD.dismiss()
-                                    Helper.removeServiceCallBackgroundView(view: self.view)
-                                    
-                                    
-                                    Helper.hideProgressBar(senderView: self)
                                     sender.isEnabled = true
                                     
                                     let exchangeAvailabilityRequest = ExchangeSearchAvailabilityRequest()
@@ -1509,18 +1447,9 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                     exchangeAvailabilityRequest.resortCodes = exchangeSearchDates.resortCodes
                                     exchangeAvailabilityRequest.travelParty = travelPartyInfo
                                     exchangeAvailabilityRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
-                                    ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: exchangeAvailabilityRequest, onSuccess: { (exchangeAvailability) in
-                                        Constant.MyClassConstants.resortsArray.removeAll()
-                                        for exchangeResorts in exchangeAvailability{
-                                            Constant.MyClassConstants.resortsArray.append(exchangeResorts.resort!)
-                                        }
-                                        Constant.MyClassConstants.inventoryUnitsArray = [(exchangeAvailability[0].inventory?.buckets[0].unit)!]
-                                        Constant.MyClassConstants.promotionsArray = (exchangeAvailability[0].inventory?.buckets[0].promotions)!
-                                        self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
-                                    }, onError: { (error) in
-                                        self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
-                                        SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
-                                    })
+                                    
+                                    //Check resorts for search availability.
+                                    self.searchAvailability(exchangeAvailabilityRequest: exchangeAvailabilityRequest, sender: sender)
                                 }else {
                                     Constant.MyClassConstants.searchResultCollectionViewScrollToIndex = 1
                                     SVProgressHUD.dismiss()
@@ -1530,42 +1459,22 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                     
                                     let exchangeAvailabilityRequest = ExchangeSearchAvailabilityRequest()
                                     exchangeAvailabilityRequest.checkInDate = exchangeSearchDates.checkInDates[0]
-                                    exchangeAvailabilityRequest.resortCodes = exchangeSearchDates.resortCodes
+                                    exchangeAvailabilityRequest.resortCodes = Constant.MyClassConstants.resortCodesArray
                                     exchangeAvailabilityRequest.travelParty = travelPartyInfo
                                     exchangeAvailabilityRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
-                                    ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: exchangeAvailabilityRequest, onSuccess: { (exchangeAvailability) in
-                                        Constant.MyClassConstants.resortsArray.removeAll()
-                                        for exchangeResorts in exchangeAvailability{
-                                            Constant.MyClassConstants.resortsArray.append(exchangeResorts.resort!)
-                                        }
-                                        Constant.MyClassConstants.inventoryUnitsArray = [(exchangeAvailability[0].inventory?.buckets[0].unit)!]
-                                        Constant.MyClassConstants.promotionsArray = (exchangeAvailability[0].inventory?.buckets[0].promotions)!
-                                        
-                                        self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
-                                    }, onError: { (error) in
-                                        SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.noResultError)
-                                    })
-
+                                    
+                                    //Call for search availability
+                                    self.searchAvailability(exchangeAvailabilityRequest: exchangeAvailabilityRequest, sender: sender)
                                 }
                             }
                         }
-                    
-                 ////////////
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-
-                    
                     }, onError: { (error) in
-                    SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.noResultError)
+                    sender.isEnabled = true
+                    Helper.hideProgressBar(senderView: self)
+                    SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                 })
             }else{
+                sender.isEnabled = true
                 Helper.hideProgressBar(senderView: self)
                 SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
             }
@@ -1598,4 +1507,26 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         Constant.MyClassConstants.currentToDate = toDate
         return(toDate,fromDate)
     }
+    
+    //Function for search availability calling
+    func searchAvailability(exchangeAvailabilityRequest:ExchangeSearchAvailabilityRequest, sender:IUIKButton){
+        ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: exchangeAvailabilityRequest, onSuccess: { (exchangeAvailability) in
+            Helper.hideProgressBar(senderView: self)
+            Constant.MyClassConstants.showAlert = false
+            Constant.MyClassConstants.resortsArray.removeAll()
+            for exchangeResorts in exchangeAvailability{
+                Constant.MyClassConstants.resortsArray.append(exchangeResorts.resort!)
+                Constant.MyClassConstants.promotionsArray = (exchangeResorts.inventory?.buckets[0].promotions)!
+                Constant.MyClassConstants.inventoryUnitsArray = [(exchangeResorts.inventory?.buckets[0].unit)!]
+            }
+            
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
+        }, onError: { (error) in
+            Helper.hideProgressBar(senderView: self)
+            sender.isEnabled = true
+            Constant.MyClassConstants.showAlert = true
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
+        })
+    }
+    
 }

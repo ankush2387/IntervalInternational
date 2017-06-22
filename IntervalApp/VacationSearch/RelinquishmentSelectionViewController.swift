@@ -359,7 +359,7 @@ class RelinquishmentSelectionViewController: UIViewController {
             if((relinquishmentOpenWeeksArray[sender.tag - 1].unit?.lockOffUnits.count)! > 0){
                 Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.relinquishmentSelectionViewController
                 masterUnitSize = "\(Helper.getBedroomNumbers(bedroomType: (relinquishmentOpenWeeksArray[sender.tag - 1].unit!.unitSize)!)), \(Helper.getKitchenEnums(kitchenType: (relinquishmentOpenWeeksArray[sender.tag - 1].unit!.kitchenType)!)) Sleeps \(String(describing: relinquishmentOpenWeeksArray[sender.tag - 1].unit!.publicSleepCapacity))"
-                masterUnitNumber = intervalOpenWeeksArray[sender.tag].unit!.unitNumber!
+                masterUnitNumber = relinquishmentOpenWeeksArray[sender.tag - 1].unit!.unitNumber!
                 
                 let results = Constant.MyClassConstants.relinquishmentIdArray.map({ ($0 as AnyObject).contains(relinquishmentOpenWeeksArray[sender.tag - 1].relinquishmentId!)})
                 
@@ -768,7 +768,10 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                     }
                     cell.totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: openWeek.weekNumber!))"
                     cell.addButton.tag = indexPath.row + 1
-                    
+                    if((openWeek.unit?.lockOffUnits.count)! > 0){
+                        cell.bedroomSizeAndKitchenClient.text = Constant.MyClassConstants.lockOffCapable
+                        cell.totalSleepAndPrivate.text = ""
+                    }
                     cell.addButton.addTarget(self, action:  #selector(RelinquishmentSelectionViewController.addAvailablePoinButtonPressed(_:)), for: .touchUpInside)
                     
                     return cell

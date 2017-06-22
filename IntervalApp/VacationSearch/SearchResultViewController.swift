@@ -178,7 +178,7 @@ class SearchResultViewController: UIViewController {
         }
         
         Constant.MyClassConstants.resortsArray.removeAll()
-        Helper.addServiceCallBackgroundView(view: self.view)
+        Helper.showProgressBar(senderView: self)
         
         RentalClient.searchResorts(UserContext.sharedInstance.accessToken, request: searchResortRequest, onSuccess: { (response) in
             Constant.MyClassConstants.resortsArray = response.resorts
@@ -187,15 +187,14 @@ class SearchResultViewController: UIViewController {
                 self.headerVw.isHidden = false
             }
             self.searchResultTableView.reloadData()
-            Helper.removeServiceCallBackgroundView(view: self.view)
-            SVProgressHUD.dismiss()
+            Helper.hideProgressBar(senderView: self)
         }, onError: { (error) in
+            Constant.MyClassConstants.resortsArray.removeAll()
             self.searchResultTableView.reloadData()
-            Helper.removeServiceCallBackgroundView(view: self.view)
             self.alertView = Helper.noResortView(senderView: self.view)
             self.alertView.isHidden = false
             self.headerVw.isHidden = true
-            SVProgressHUD.dismiss()
+            Helper.hideProgressBar(senderView: self)
         })
         
     }
@@ -213,6 +212,7 @@ class SearchResultViewController: UIViewController {
     //funciton called when search result page sort by name button pressed
     @IBAction func sortByNameButtonPressed(_ sender: Any) {
         
+          self.performSegue(withIdentifier: Constant.segueIdentifiers.sortingSegue , sender: nil)
     }
     
 }
@@ -275,8 +275,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
             if(self.collectionviewSelectedIndex != (indexPath as NSIndexPath).row){
                 self.collectionviewSelectedIndex = (indexPath as NSIndexPath).row
                 collectionView.reloadData()
-                Helper.showProgressBar(senderView: self)
-                
+        
                 let dateValue:Date!
                 if(Constant.MyClassConstants.checkInDates.count > 0){
                     dateValue = Constant.MyClassConstants.checkInDates[collectionviewSelectedIndex - 1]
@@ -299,6 +298,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
                     }
                 }
                 if(Constant.MyClassConstants.isFromExchange){
+                    Helper.showProgressBar(senderView: self)
                     let exchangeAvailabilityRequest = ExchangeSearchAvailabilityRequest()
                     exchangeAvailabilityRequest.checkInDate = Constant.MyClassConstants.checkInDates[(indexPath as NSIndexPath).item - 1] as Date
                     exchangeAvailabilityRequest.resortCodes = Constant.MyClassConstants.resortCodesArray
@@ -306,14 +306,25 @@ extension SearchResultViewController:UICollectionViewDelegate {
                     exchangeAvailabilityRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
                     ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: exchangeAvailabilityRequest, onSuccess: { (exchangeAvailability) in
                         Helper.hideProgressBar(senderView: self)
+                        if(self.alertView.isHidden == false){
+                            self.alertView.isHidden = true
+                            self.headerVw.isHidden = false
+                        }
                         Constant.MyClassConstants.resortsArray.removeAll()
                         for exchangeResorts in exchangeAvailability{
                             Constant.MyClassConstants.resortsArray.append(exchangeResorts.resort!)
+                            Constant.MyClassConstants.promotionsArray = (exchangeResorts.inventory?.buckets[0].promotions)!
+                            Constant.MyClassConstants.inventoryUnitsArray = [(exchangeResorts.inventory?.buckets[0].unit)!]
                         }
+
                         self.searchResultTableView.reloadData()
                     }, onError: { (error) in
+                        Constant.MyClassConstants.resortsArray.removeAll()
+                        self.searchResultTableView.reloadData()
+                        self.alertView = Helper.noResortView(senderView: self.view)
                         Helper.hideProgressBar(senderView: self)
-                        SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.noResultError)
+                        self.alertView.isHidden = false
+                        self.headerVw.isHidden = true
                     })
                     
                 }else{
@@ -550,11 +561,10 @@ extension SearchResultViewController:UITableViewDelegate {
             }, onError: {(error) in
                 Helper.removeServiceCallBackgroundView(view: self.view)
                 SVProgressHUD.dismiss()
-                
             })
         }
       }
-    }
+   }
 }
 
 extension SearchResultViewController:UITableViewDataSource {
@@ -610,8 +620,10 @@ extension SearchResultViewController:UITableViewDataSource {
             }
             // resortAddress.country?.countryName
             cell.resortCode.text = Constant.MyClassConstants.resortsArray[indexPath.section].resortCode
-            //let tierImageName = Helper.getTierImageName(tier: Constant.MyClassConstants.resortsArray[indexPath.section].tier!)
-            //cell.tierImageView.image = UIImage(named: tierImageName)
+            if(Constant.MyClassConstants.resortsArray[indexPath.section].tier != nil){
+            let tierImageName = Helper.getTierImageName(tier: Constant.MyClassConstants.resortsArray[indexPath.section].tier!.uppercased())
+            cell.tierImageView.image = UIImage(named: tierImageName)
+            }
             let status = Helper.isResrotFavorite(resortCode: Constant.MyClassConstants.resortsArray[indexPath.section].resortCode!)
             if(status) {
                 cell.favoriteButton.isSelected = true
@@ -660,15 +672,14 @@ extension SearchResultViewController:UITableViewDataSource {
                 //Check for promotions
                 if(Constant.MyClassConstants.promotionsArray.count != 0 && indexPath.row > Constant.MyClassConstants.inventoryUnitsArray.count){
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.promotionsCell, for: indexPath) as! PromotionsCell
-                    let str = "<html><body><div class=\"style23 promo-tooltip\" id=\"style23\"><a class=\"promo-tooltip-alink\"> <img src=\"PinActive.png\" border=\"0\"/><div class=\"info_tip\"><div class=\"style23_p1\" id=\"offer_title\"><small>Exchange for 10% off plus 30% off<br />next exchange</small></div></div></a><div class=\"tooltip\"><small><div class=\"style23_p2\" id=\"txn_completed_text\">You received 10% off.  You are now eligible for 30% off your next exchange.</div><div class=\"style23_desc\" id=\"details_text\">Exchange for 10% off plus 30% off next exchange</div></small></div></div></html></body>"//(Constant.MyClassConstants.promotionsArray[0].offerContentFragment)!
-                    cell.promotionWebView.loadHTMLString(str, baseURL: Bundle.main.bundleURL)
-                    //cell.promotionTextLabel.text = offerString
+                    var promotionsString = Constant.MyClassConstants.htmlHeader.appending((Constant.MyClassConstants.promotionsArray[0].offerContentFragment)!)
+                    promotionsString = promotionsString.appending(Constant.MyClassConstants.htmlFooter)
+                    cell.promotionWebView.loadHTMLString(promotionsString, baseURL: Bundle.main.bundleURL)
                     return cell
                 }else{
-                    let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.resortBedroomDetails, for: indexPath) as! ResortBedroomDetails
+                    let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.resortBedroomDetailexchange, for: indexPath) as! ResortBedroomDetails
                     cell.backgroundColor = IUIKColorPalette.contentBackground.color
                     cell.selectionStyle = UITableViewCellSelectionStyle.none
-                    cell.bottomLabel.text = Constant.vacationSearchScreenReusableIdentifiers.exchange
                     if let roomSize = UnitSize(rawValue: Constant.MyClassConstants.inventoryUnitsArray[0].unitSize!) {
                         
                         cell.numberOfBedroom.text =  Helper.getBrEnums(brType: roomSize.rawValue)
@@ -679,16 +690,9 @@ extension SearchResultViewController:UITableViewDataSource {
                     }
                     
                     cell.totalPrivateLabel.text = String(Constant.MyClassConstants.inventoryUnitsArray[0].publicSleepCapacity + Constant.MyClassConstants.inventoryUnitsArray[0].privateSleepCapacity) + "Total, " + (String(Constant.MyClassConstants.inventoryUnitsArray[0].privateSleepCapacity)) + "Private"
-                    
-                    //cell.getawayPriceLabel.text = String(Int(Float(Constant.MyClassConstants.inventoryUnitsArray[0].prices[0].price)))
-                    cell.exchangeLabel.isHidden = true
-                    cell.sepratorOr.isHidden = true
-                    cell.exchangeButton.isHidden = true
                     return cell
                 }
             }
-            //return cell
-            
         }
     }
     
