@@ -131,7 +131,7 @@ extension ResortFavoritesTableViewCell:UICollectionViewDataSource {
         }
         cell.regionNameLabel.text = resort.resortName
         cell.regionResortCode.text = resort.resortCode
-        let tierImage = Helper.getTierImageName(tier: resort.tier!)
+        let tierImage = Helper.getTierImageName(tier: resort.tier!.uppercased())
         if(resort.tier != nil && cell.tierImageView != nil){
             cell.tierImageView.image = UIImage(named:tierImage)
         }

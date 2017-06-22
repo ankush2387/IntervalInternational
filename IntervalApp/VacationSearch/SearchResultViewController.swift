@@ -275,8 +275,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
             if(self.collectionviewSelectedIndex != (indexPath as NSIndexPath).row){
                 self.collectionviewSelectedIndex = (indexPath as NSIndexPath).row
                 collectionView.reloadData()
-                //Helper.showProgressBar(senderView: self)
-                
+        
                 let dateValue:Date!
                 if(Constant.MyClassConstants.checkInDates.count > 0){
                     dateValue = Constant.MyClassConstants.checkInDates[collectionviewSelectedIndex - 1]
@@ -621,8 +620,10 @@ extension SearchResultViewController:UITableViewDataSource {
             }
             // resortAddress.country?.countryName
             cell.resortCode.text = Constant.MyClassConstants.resortsArray[indexPath.section].resortCode
-            //let tierImageName = Helper.getTierImageName(tier: Constant.MyClassConstants.resortsArray[indexPath.section].tier!)
-            //cell.tierImageView.image = UIImage(named: tierImageName)
+            if(Constant.MyClassConstants.resortsArray[indexPath.section].tier != nil){
+            let tierImageName = Helper.getTierImageName(tier: Constant.MyClassConstants.resortsArray[indexPath.section].tier!.uppercased())
+            cell.tierImageView.image = UIImage(named: tierImageName)
+            }
             let status = Helper.isResrotFavorite(resortCode: Constant.MyClassConstants.resortsArray[indexPath.section].resortCode!)
             if(status) {
                 cell.favoriteButton.isSelected = true
@@ -679,7 +680,6 @@ extension SearchResultViewController:UITableViewDataSource {
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.resortBedroomDetailexchange, for: indexPath) as! ResortBedroomDetails
                     cell.backgroundColor = IUIKColorPalette.contentBackground.color
                     cell.selectionStyle = UITableViewCellSelectionStyle.none
-                    //cell.bottomLabel.text = Constant.vacationSearchScreenReusableIdentifiers.exchange
                     if let roomSize = UnitSize(rawValue: Constant.MyClassConstants.inventoryUnitsArray[0].unitSize!) {
                         
                         cell.numberOfBedroom.text =  Helper.getBrEnums(brType: roomSize.rawValue)

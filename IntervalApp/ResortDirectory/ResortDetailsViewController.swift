@@ -798,7 +798,7 @@ extension ResortDetailsViewController:UITableViewDataSource {
                 cell.resortName.text = Constant.MyClassConstants.resortsDescriptionArray.resortName
                 cell.resortAddress.text = Constant.MyClassConstants.resortsDescriptionArray.address?.cityName
                 cell.resortCode.text = Constant.MyClassConstants.resortsDescriptionArray.resortCode
-                let imageStr = Helper.getTierImageName(tier: Constant.MyClassConstants.resortsDescriptionArray.tier!)
+                let imageStr = Helper.getTierImageName(tier: Constant.MyClassConstants.resortsDescriptionArray.tier!.uppercased())
                 cell.tierImageView.image = UIImage(named: imageStr)
                 cell.fevoriteButton.addTarget(self, action: #selector(favoritesButtonClicked(_:)), for: .touchUpInside)
                 cell.backgroundColor = UIColor.clear

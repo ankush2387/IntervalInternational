@@ -1066,19 +1066,19 @@ public class Helper{
     /***** common function name mapping of tier with swich case *****/
     static func getTierImageName(tier:String) -> String{
         switch tier {
-        case  "select":
+        case  "SELECT":
             return "Resort_Select"
-        case "select_boutique":
+        case "SELECT_BOUTIQUE":
             return "Resort_Select_BTQ"
-        case "premier":
+        case "PREMIER":
             return "Resort_Premier"
-        case "premier_boutique":
+        case "PREMIER_BOUTIQUE":
             return "Resort_Premier_BTQ"
-        case "elite":
+        case "ELITE":
             return "Resort_Elite"
-        case "elite_boutique":
+        case "ELITE_BOUTIQUE":
             return "Resort_Elite_BTQ"
-        case "preferred_residence":
+        case "PREFFERED_RESIDENCE":
             return "Resort_Preferred_Residence"
         default:
             return ""

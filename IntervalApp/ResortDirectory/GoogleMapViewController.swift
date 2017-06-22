@@ -1446,7 +1446,7 @@ extension GoogleMapViewController:UICollectionViewDataSource {
         
         if(resort.tier != nil){
             let tearImageView = UIImageView(frame: CGRect(x: 55, y: 42, width: 16, height: 16))
-            let tierImageName = Helper.getTierImageName(tier: resort.tier!)
+            let tierImageName = Helper.getTierImageName(tier: resort.tier!.uppercased())
             tearImageView.image = UIImage(named: tierImageName)
             resortNameGradientView.addSubview(tearImageView)
         }
@@ -1751,7 +1751,7 @@ extension GoogleMapViewController:UITableViewDataSource {
                 else{
                     return cell
             }
-            let tierImageName = Helper.getTierImageName(tier: resortDetails.tier!)
+            let tierImageName = Helper.getTierImageName(tier: resortDetails.tier!.uppercased())
             cell.tierImageView.image = UIImage(named:tierImageName)
             
             return cell

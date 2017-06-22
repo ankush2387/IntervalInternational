@@ -1127,6 +1127,16 @@ class Constant: NSObject {
         static var sortingOptionCell = "sortingOptionCell"
     }
     
+    //***** Common structure for dynamic strings combinining strings *****//
+    
+    struct getDynamicString {
+         static var clubInterValPointsUpTo = NSLocalizedString("Club Interval Gold Points up to", comment: "")
+         static var andString = NSLocalizedString("and", comment: "")
+        static var moreString = NSLocalizedString("more", comment: "")
+        static var fromString = NSLocalizedString("From ", comment:"")
+        static var weekString = NSLocalizedString(" Wk.", comment:"")
+    }
+    
     //***** Common structure for font names and type *****//
     
     struct fontName {

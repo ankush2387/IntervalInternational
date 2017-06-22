@@ -316,7 +316,7 @@ extension VacationSearchViewController:UICollectionViewDataSource {
             centerView.addSubview(unitLabel)
             
             let priceLabel = UILabel(frame: CGRect(x: 10, y: 30, width: centerView.frame.size.width - 20, height: 20))
-            priceLabel.text = "From " + String(describing: deal.price!.fromPrice) + " Wk."
+            priceLabel.text = "\(Constant.getDynamicString.fromString)" + String(describing: deal.price!.fromPrice) + "\(Constant.getDynamicString.weekString)"
             priceLabel.numberOfLines = 2
             priceLabel.textAlignment = NSTextAlignment.center
             priceLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
@@ -740,7 +740,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                             }
                             var resortNameString = "\(resortNm) (\(resortCode))"
                             if((object as AnyObject).count > 1){
-                                resortNameString = resortNameString + " and \((object as AnyObject).count - 1) more"
+                                resortNameString = resortNameString + " \(Constant.getDynamicString.andString) \((object as AnyObject).count - 1) \(Constant.getDynamicString.moreString)"
                             }
                             cell.whereTogoTextLabel.text = resortNameString
                         }else if (object.isKind(of: List<ResortByMap>.self)){
@@ -751,7 +751,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                             
                             var resortNameString = "\(resort.resortName) (\(resort.resortCode))"
                             if(object.count > 1){
-                                resortNameString = resortNameString + " and \(object.count - 1) more"
+                                resortNameString = resortNameString + " \(Constant.getDynamicString.andString) \(object.count - 1) \(Constant.getDynamicString.moreString)"
                             }
                             
                             cell.whereTogoTextLabel.text = resortNameString
@@ -846,7 +846,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                             
                             let availablePoints = numberFormatter.string(from: availablePointsNumber)
                             
-                            cell.whereTogoTextLabel.text = "Club Interval Gold Points up to \(availablePoints!)"
+                            cell.whereTogoTextLabel.text = "\(Constant.getDynamicString.clubInterValPointsUpTo) \(availablePoints!)"
                             cell.bedroomLabel.isHidden = true
                         }
                         
@@ -1016,7 +1016,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                         }
                         var resortNameString = "\(resortNm) (\(resortCode))"
                         if((object as AnyObject).count > 1){
-                            resortNameString = resortNameString + " and \((object as AnyObject).count - 1) more"
+                            resortNameString = resortNameString + " \(Constant.getDynamicString.andString) \((object as AnyObject).count - 1) \(Constant.getDynamicString.moreString)"
                         }
                         cell.whereTogoTextLabel.text = resortNameString
                     }else if (object.isKind(of: List<ResortByMap>.self)){
@@ -1027,7 +1027,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                         
                         var resortNameString = "\(resort.resortName) (\(resort.resortCode))"
                         if(object.count > 1){
-                            resortNameString = resortNameString + " and \(object.count - 1) more"
+                            resortNameString = resortNameString + " \(Constant.getDynamicString.andString) \(object.count - 1) \(Constant.getDynamicString.moreString)"
                         }
                         
                         cell.whereTogoTextLabel.text = resortNameString

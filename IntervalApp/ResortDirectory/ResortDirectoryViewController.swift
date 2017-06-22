@@ -607,7 +607,7 @@ extension ResortDirectoryViewController:UITableViewDataSource {
                 cell.favoriteButton.isSelected = false
             }
             cell.favoriteButton.tag = (indexPath as NSIndexPath).row
-            let tierImageName = Helper.getTierImageName(tier: resort.tier!)
+            let tierImageName = Helper.getTierImageName(tier: resort.tier!.uppercased())
             cell.tierImageView.image = UIImage(named: tierImageName)
             
             if(resort.images.count > 0){
