@@ -135,7 +135,7 @@ class SearchResultMapviewController: UIViewController {
                 if UIDevice.current.userInterfaceIdiom == .pad {
                     
                      self.dragView.isHidden = false
-                    
+                     self.resortView.backgroundColor = UIColor.white
                      self.resortView.frame = CGRect(x: 0, y: 44, width: self.view.frame.width/2, height: self.view.frame.height - 44)
                 }
                 else {
@@ -153,7 +153,7 @@ class SearchResultMapviewController: UIViewController {
             
             if UIDevice.current.userInterfaceIdiom == .pad {
                  self.dragView.isHidden = false
-                self.resortView.frame = CGRect(x: 0, y: 44, width: self.view.frame.width/2, height: self.view.frame.height - 44)
+                 self.resortView.frame = CGRect(x: 0, y: 44, width: self.view.frame.width/2, height: self.view.frame.height - 44)
             }
              else {
                 
@@ -318,16 +318,14 @@ class SearchResultMapviewController: UIViewController {
     }
     func doneButtonPressed(_ sender:UIBarButtonItem) {
         
-          self.navigationController?.dismiss(animated: true, completion: nil)
+           self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func drarButtonClicked(_ sender: Any) {
         
         
         if(self.dragView.frame.origin.x == 0) {
-            print("showview")
-           // self.resortView.frame = CGRect(x: 0, y: 44, width: self.view.frame.width/2, height: self.view.frame.height - 44)
-            
+
             UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn ,animations: {
                 
                 self.resortView.frame = CGRect(x: 0, y: 44, width: self.view.frame.width/2, height: self.view.frame.height - 44)
@@ -340,8 +338,7 @@ class SearchResultMapviewController: UIViewController {
             
         }
         else{
-            print("hideview")
-           // self.resortView.frame = CGRect(x: -self.view.frame.width/2, y: 44, width: self.view.frame.width/2, height: self.view.frame.height - 44)
+
             UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn ,animations: {
                 
                 self.resortView.frame = CGRect(x: -self.view.frame.width/2, y: 44, width: self.view.frame.width/2, height: self.view.frame.height - 44)
@@ -350,7 +347,7 @@ class SearchResultMapviewController: UIViewController {
             }, completion: { _ in
                 
                 self.drarButton.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi * 2))
-                 self.dragView.frame = CGRect(x: 0, y:self.dragView.frame.origin.y, width:self.dragView.frame.size.width, height: self.dragView.frame.size.height)
+                self.dragView.frame = CGRect(x: 0, y:self.dragView.frame.origin.y, width:self.dragView.frame.size.width, height: self.dragView.frame.size.height)
             })
             
         }

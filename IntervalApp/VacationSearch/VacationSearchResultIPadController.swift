@@ -480,90 +480,98 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
             }
         }else{
             
-            Helper.addServiceCallBackgroundView(view: self.view)
-            SVProgressHUD.show()
-            
-            Constant.MyClassConstants.selectedResort = Constant.MyClassConstants.resortsArray[indexPath.section]
-            
-            var inventoryDict = [Inventory]()
-            inventoryDict = Constant.MyClassConstants.resortsArray[indexPath.section].inventory
-            let invent = inventoryDict[0]
-            let units = invent.units
-            
-            Constant.MyClassConstants.inventoryPrice = invent.units[indexPath.row - 1].prices
-            
-            let processResort = RentalProcess()
-            processResort.holdUnitStartTimeInMillis = Constant.holdingTime
-            
-            let processRequest = RentalProcessStartRequest()
-            processRequest.resort = Constant.MyClassConstants.resortsArray[0]
-            print(Constant.MyClassConstants.resortsArray[0].additionalCharges)
-            if(Constant.MyClassConstants.resortsArray[0].allInclusive){
-                Constant.MyClassConstants.hasAdditionalCharges = true
-            }else{
-                Constant.MyClassConstants.hasAdditionalCharges = false
+            if(Constant.MyClassConstants.isFromExchange){
+                
             }
-            processRequest.unit = units[0]
-            
-            let processRequest1 = RentalProcessStartRequest.init(resortCode: Constant.MyClassConstants.selectedResort.resortCode!, checkInDate: invent.checkInDate!, checkOutDate: invent.checkOutDate, unitSize: UnitSize(rawValue: units[0].unitSize!)!, kitchenType: KitchenType(rawValue: units[0].kitchenType!)!)
-            
-            //API call for start process
-            RentalProcessClient.start(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest1, onSuccess: {(response) in
-            
+            else{
+                
+                Helper.addServiceCallBackgroundView(view: self.view)
+                SVProgressHUD.show()
+                
+                Constant.MyClassConstants.selectedResort = Constant.MyClassConstants.resortsArray[indexPath.section]
+                
+                var inventoryDict = [Inventory]()
+                inventoryDict = Constant.MyClassConstants.resortsArray[indexPath.section].inventory
+                let invent = inventoryDict[0]
+                let units = invent.units
+                
+                Constant.MyClassConstants.inventoryPrice = invent.units[indexPath.row - 1].prices
+                
                 let processResort = RentalProcess()
-                processResort.processId = response.processId
-                print(response.processId)
-                Constant.MyClassConstants.getawayBookingLastStartedProcess = processResort
+                processResort.holdUnitStartTimeInMillis = Constant.holdingTime
                 
-                
-                Constant.MyClassConstants.processStartResponse = response
-                SVProgressHUD.dismiss()
-                Helper.removeServiceCallBackgroundView(view: self.view)
-                Constant.MyClassConstants.viewResponse = response.view!
-                Constant.MyClassConstants.guestCertificate = response.view?.fees?.guestCertificate
-                Constant.MyClassConstants.rentalFees = [(response.view?.fees)!]
-                Constant.MyClassConstants.onsiteArray.removeAllObjects()
-                Constant.MyClassConstants.nearbyArray.removeAllObjects()
-                
-                for amenity in (response.view?.resort?.amenities)!{
-                    if(amenity.nearby == false){
-                        Constant.MyClassConstants.onsiteArray.add(amenity.amenityName!)
-                        Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending(amenity.amenityName!)
-                        Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending("\n")
-                    }else{
-                        Constant.MyClassConstants.nearbyArray.add(amenity.amenityName!)
-                        Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending(amenity.amenityName!)
-                        Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending("\n")
-                    }
+                let processRequest = RentalProcessStartRequest()
+                processRequest.resort = Constant.MyClassConstants.resortsArray[0]
+                print(Constant.MyClassConstants.resortsArray[0].additionalCharges)
+                if(Constant.MyClassConstants.resortsArray[0].allInclusive){
+                    Constant.MyClassConstants.hasAdditionalCharges = true
+                }else{
+                    Constant.MyClassConstants.hasAdditionalCharges = false
                 }
+                processRequest.unit = units[0]
                 
-                //API call for get membership current.
-                UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
+                let processRequest1 = RentalProcessStartRequest.init(resortCode: Constant.MyClassConstants.selectedResort.resortCode!, checkInDate: invent.checkInDate!, checkOutDate: invent.checkOutDate, unitSize: UnitSize(rawValue: units[0].unitSize!)!, kitchenType: KitchenType(rawValue: units[0].kitchenType!)!)
+                
+                //API call for start process
+                RentalProcessClient.start(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest1, onSuccess: {(response) in
                     
-                    // Got an access token!  Save it for later use.
+                    let processResort = RentalProcess()
+                    processResort.processId = response.processId
+                    print(response.processId)
+                    Constant.MyClassConstants.getawayBookingLastStartedProcess = processResort
+                    
+                    
+                    Constant.MyClassConstants.processStartResponse = response
                     SVProgressHUD.dismiss()
                     Helper.removeServiceCallBackgroundView(view: self.view)
-                    Constant.MyClassConstants.membershipContactArray = Membership.contacts!
-                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-                    let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as! WhoWillBeCheckingInIPadViewController
+                    Constant.MyClassConstants.viewResponse = response.view!
+                    Constant.MyClassConstants.guestCertificate = response.view?.fees?.guestCertificate
+                    Constant.MyClassConstants.rentalFees = [(response.view?.fees)!]
+                    Constant.MyClassConstants.onsiteArray.removeAllObjects()
+                    Constant.MyClassConstants.nearbyArray.removeAllObjects()
                     
-                    let transitionManager = TransitionManager()
-                    self.navigationController?.transitioningDelegate = transitionManager
-                    self.navigationController!.pushViewController(viewController, animated: true)
+                    for amenity in (response.view?.resort?.amenities)!{
+                        if(amenity.nearby == false){
+                            Constant.MyClassConstants.onsiteArray.add(amenity.amenityName!)
+                            Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending(amenity.amenityName!)
+                            Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending("\n")
+                        }else{
+                            Constant.MyClassConstants.nearbyArray.add(amenity.amenityName!)
+                            Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending(amenity.amenityName!)
+                            Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending("\n")
+                        }
+                    }
                     
+                    //API call for get membership current.
+                    UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
+                        
+                        // Got an access token!  Save it for later use.
+                        SVProgressHUD.dismiss()
+                        Helper.removeServiceCallBackgroundView(view: self.view)
+                        Constant.MyClassConstants.membershipContactArray = Membership.contacts!
+                        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as! WhoWillBeCheckingInIPadViewController
+                        
+                        let transitionManager = TransitionManager()
+                        self.navigationController?.transitioningDelegate = transitionManager
+                        self.navigationController!.pushViewController(viewController, animated: true)
+                        
                     }, onError: { (error) in
                         
                         SVProgressHUD.dismiss()
                         Helper.removeServiceCallBackgroundView(view: self.view)
                         SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.description)
                         
-                })
-                
+                    })
+                    
                 }, onError: {(error) in
                     Helper.removeServiceCallBackgroundView(view: self.view)
                     SVProgressHUD.dismiss()
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.description)
-            })
+                })
+
+            }
+            
             
         }
     }
@@ -636,36 +644,67 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             return cell
         }
-        else if(Constant.MyClassConstants.selectedSegment == Constant.MyClassConstants.selectedSegmentExchange) {
+        else{
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.getawayCell, for: indexPath) as! GetawayCell
-            cell.layer.borderWidth = 0.5
-            cell.layer.borderColor = UIColor.lightGray.cgColor
-            
-            
-            var inventoryDict = [Inventory]()
-            inventoryDict = Constant.MyClassConstants.resortsArray[indexPath.section].inventory
-            let invent = inventoryDict[0]
-            let units = invent.units
-            if let roomSize = UnitSize(rawValue: units[indexPath.row - 1].unitSize!) {
-                cell.bedRoomType.text = Helper.getBrEnums(brType: roomSize.rawValue)
+            if(!Constant.MyClassConstants.isFromExchange) {
+                
+                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.resortBedroomDetails, for: indexPath) as! ResortBedroomDetails
+                cell.layer.borderWidth = 0.5
+                cell.layer.borderColor = UIColor.lightGray.cgColor
+                
+                
+                var inventoryDict = [Inventory]()
+                inventoryDict = Constant.MyClassConstants.resortsArray[indexPath.section].inventory
+                let invent = inventoryDict[0]
+                let units = invent.units
+                if let roomSize = UnitSize(rawValue: units[indexPath.row - 1].unitSize!) {
+                    cell.numberOfBedroom.text = Helper.getBrEnums(brType: roomSize.rawValue)
+                }
+                if let kitchenSize = KitchenType(rawValue: units[indexPath.row - 1].kitchenType!) {
+                    cell.kitchenLabel.text = Helper.getKitchenEnums(kitchenType: kitchenSize.rawValue)
+                }
+                
+                cell.totalPrivateLabel.text = String(units[indexPath.row - 1].publicSleepCapacity + units[indexPath.row - 1].privateSleepCapacity) + "Total, " + (String(units[indexPath.row - 1].privateSleepCapacity)) + "Private"
+                
+                cell.backgroundColor = IUIKColorPalette.contentBackground.color
+                
+                cell.selectionStyle = UITableViewCellSelectionStyle.none
+                let inventoryPrice:[InventoryPrice] = invent.units[indexPath.row - 1].prices
+                cell.getawayPriceLabel.text = String(Int(Float(inventoryPrice[0].price)))
+                cell.exchangeLabel.isHidden = true
+                cell.sepratorOr.isHidden = true
+                cell.exchangeButton.isHidden = true
+                
+                return cell
+                
+            }else{
+                
+                if(Constant.MyClassConstants.promotionsArray.count != 0 && indexPath.row > Constant.MyClassConstants.inventoryUnitsArray.count){
+                    let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.promotionsCell, for: indexPath) as! PromotionsCell
+                    var promotionsString = Constant.MyClassConstants.htmlHeader.appending((Constant.MyClassConstants.promotionsArray[0].offerContentFragment)!)
+                    promotionsString = promotionsString.appending(Constant.MyClassConstants.htmlFooter)
+                    cell.promotionWebView.loadHTMLString(promotionsString, baseURL: Bundle.main.bundleURL)
+                    return cell
+                }else{
+                    let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.resortBedroomDetailexchange, for: indexPath) as! ResortBedroomDetails
+                    cell.backgroundColor = IUIKColorPalette.contentBackground.color
+                    cell.selectionStyle = UITableViewCellSelectionStyle.none
+                    //cell.bottomLabel.text = Constant.vacationSearchScreenReusableIdentifiers.exchange
+                    if let roomSize = UnitSize(rawValue: Constant.MyClassConstants.inventoryUnitsArray[0].unitSize!) {
+                        
+                        cell.numberOfBedroom.text =  Helper.getBrEnums(brType: roomSize.rawValue)
+                    }
+                    
+                    if let kitchenSize = KitchenType(rawValue: Constant.MyClassConstants.inventoryUnitsArray[0].kitchenType!) {
+                        cell.kitchenLabel.text = Helper.getKitchenEnums(kitchenType: kitchenSize.rawValue)
+                    }
+                    
+                    cell.totalPrivateLabel.text = String(Constant.MyClassConstants.inventoryUnitsArray[0].publicSleepCapacity + Constant.MyClassConstants.inventoryUnitsArray[0].privateSleepCapacity) + "Total, " + (String(Constant.MyClassConstants.inventoryUnitsArray[0].privateSleepCapacity)) + "Private"
+                    return cell
+                }
+
             }
-            if let kitchenSize = KitchenType(rawValue: units[indexPath.row - 1].kitchenType!) {
-                cell.kitchenType.text = Helper.getKitchenEnums(kitchenType: kitchenSize.rawValue)
-            }
             
-            cell.sleeps.text = String(units[indexPath.row - 1].publicSleepCapacity) + "Total, " + (String(units[indexPath.row - 1].privateSleepCapacity)) + "Private"
-           
-            cell.getawayPrice.text = String(Int(Float(invent.units[indexPath.row - 1].prices[0].price)))
-            cell.backgroundColor = IUIKColorPalette.contentBackground.color
-            
-            cell.selectionStyle = UITableViewCellSelectionStyle.none
-            return cell
-            
-        }else{
-            
-            let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.getawayCell, for: indexPath) as! GetawayCell
-            return cell
         }
      
     }
