@@ -202,12 +202,12 @@ class SideMenuiPadTableViewController: UIViewController, UITableViewDataSource {
             
             //***** set label Attribute *****//
             privacyLegalLabel.attributedText = myMutableString
-            cell.addSubview(privacyLegalLabel)
+            //cell.addSubview(privacyLegalLabel)
             let bundleLabel = UILabel()
             bundleLabel.frame = CGRect(x: 15, y: 170, width: self.view.bounds.width - 65, height: 20)
             bundleLabel.text = Helper.getBuildVersion()
             bundleLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 12)
-            cell.addSubview(bundleLabel)
+            //cell.addSubview(bundleLabel)
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             
             return cell

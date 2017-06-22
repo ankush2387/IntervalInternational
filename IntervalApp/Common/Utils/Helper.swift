@@ -76,7 +76,6 @@ public class Helper{
      */
     static func applyCornerRadious(view:UIView,cornerradious:CGFloat = 1){
         view.layer.cornerRadius = cornerradious
-        
     }
     
     //***** Common function to format the date *****//

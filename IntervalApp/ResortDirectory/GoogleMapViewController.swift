@@ -66,13 +66,10 @@ class GoogleMapViewController: UIViewController {
         
         if(Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.resortFunctionalityCheck) {
             
-            
             //***** Creating and adding left  bar button for back button *****//
             let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(GoogleMapViewController.menuBackButtonPressed(_:)))
             menuButton.tintColor = UIColor.white
             self.navigationItem.leftBarButtonItem = menuButton
-            
-            
             
             self.navigationItem.title = Constant.ControllerTitles.vacationSearchDestinationController
             self.bottomViewWithButtons()
