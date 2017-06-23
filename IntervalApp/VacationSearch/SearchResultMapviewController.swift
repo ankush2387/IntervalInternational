@@ -90,7 +90,7 @@ class SearchResultMapviewController: UIViewController {
         
         Constant.MyClassConstants.googleMarkerArray.removeAll()
         
-        let camera = GMSCameraPosition.camera(withLatitude: (Constant.MyClassConstants.resortsArray[0].coordinates?.latitude)!,longitude: (Constant.MyClassConstants.resortsArray[0].coordinates?.longitude)!, zoom: 1)
+        let camera = GMSCameraPosition.camera(withLatitude: (Constant.MyClassConstants.resortsArray[0].coordinates?.latitude)!,longitude: (Constant.MyClassConstants.resortsArray[0].coordinates?.longitude)!, zoom: 8)
         
         self.gmsMapView.camera = camera
         gmsMapView.isMyLocationEnabled = true
@@ -116,7 +116,7 @@ class SearchResultMapviewController: UIViewController {
         gmsMapView.animate(with: GMSCameraUpdate.fit(bounds))
         gmsMapView.delegate = self
         gmsMapView.settings.allowScrollGesturesDuringRotateOrZoom = false
-        gmsMapView.animate(toZoom: 1)
+        gmsMapView.animate(toZoom: 8)
         
     }
 
