@@ -898,7 +898,6 @@ extension VacationSearchIPadViewController:WereWantToGoTableViewCellDelegate {
     }
     
     
-    
     func searchAvailability(exchangeAvailabilityRequest:ExchangeSearchAvailabilityRequest, sender:IUIKButton){
         ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: exchangeAvailabilityRequest, onSuccess: { (exchangeAvailability) in
             Helper.hideProgressBar(senderView: self)
