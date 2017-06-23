@@ -292,8 +292,8 @@ class ResortDetailsViewController: UIViewController {
             
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
         }else{
-            self.navigationController?.popViewController(animated: true)
-            //self.dismiss(animated: true, completion: nil)
+//            self.navigationController?.popViewController(animated: true)
+            self.dismiss(animated: false, completion: nil)
         }
     }
     
@@ -449,6 +449,19 @@ class ResortDetailsViewController: UIViewController {
             Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(searchVacationClicked), userInfo: nil, repeats: false)
         }
     }
+    
+
+    func showLocationButtonPressed() {
+        print("Location Button Pressed")
+        guard let coordinates = Constant.MyClassConstants.resortsDescriptionArray.coordinates else { return }
+        guard let resortName = Constant.MyClassConstants.resortsDescriptionArray.resortName else { return }
+        guard let cityName = Constant.MyClassConstants.resortsDescriptionArray.address?.cityName else { return }
+        SVProgressHUD.show()
+        displayMapView(coordinates: coordinates, resortName: resortName, cityName: cityName) { (response) in
+            SVProgressHUD.dismiss()
+        }
+    }
+
     
     /*
      // MARK: - Navigation
@@ -791,6 +804,8 @@ extension ResortDetailsViewController:UITableViewDataSource {
                 cell.delegate = self
                 
                 cell.backgroundColor = UIColor.clear
+                
+                cell.showResortLocationButton.addTarget(self, action: #selector(self.showLocationButtonPressed), for: .touchUpInside)
                 return cell
             case 2 :
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.mapTableViewCell, for: indexPath)

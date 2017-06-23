@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="x1F-lN-3Vb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="x1F-lN-3Vb">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -310,7 +310,7 @@
                         <outlet property="mapView" destination="va3-wS-akl" id="rAv-yq-ZWl"/>
                         <outlet property="searchDisplayController" destination="3Y8-Kv-DeE" id="DGZ-oQ-aPx"/>
                         <outlet property="searchDisplayTableView" destination="qdr-9g-cte" id="5aR-Ud-Fss"/>
-                        <segue destination="EOV-dU-QDF" kind="show" identifier="detailsSegue" id="LB4-mY-QYy"/>
+                        <segue destination="EOV-dU-QDF" kind="presentation" identifier="detailsSegue" id="LB4-mY-QYy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yrf-BD-XAp" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -721,7 +721,7 @@ Interval Account</string>
                     <connections>
                         <outlet property="resortTableView" destination="zOG-Hk-iJz" id="x9g-3b-ffB"/>
                         <segue destination="tIf-eX-VDF" kind="push" identifier="preLoginSegue" id="SsD-cI-IVD"/>
-                        <segue destination="EOV-dU-QDF" kind="show" identifier="detailsSegue" id="v5y-Uh-olM"/>
+                        <segue destination="EOV-dU-QDF" kind="presentation" identifier="detailsSegue" id="v5y-Uh-olM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G4A-c1-gav" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -797,7 +797,7 @@ Interval Account</string>
                                 </variation>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="VJi-l6-MuQ">
-                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ResortDirectoryResortCell" rowHeight="200" id="19S-Md-nhP" customClass="ResortDirectoryResortCell" customModule="IntervalApp" customModuleProvider="target">
@@ -932,8 +932,27 @@ Interval Account</string>
                                                         <action selector="favirotesButtonPressed:" destination="19S-Md-nhP" eventType="touchUpInside" id="1Ry-vE-Kmi"/>
                                                     </connections>
                                                 </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r7S-E2-C7W">
+                                                    <rect key="frame" x="18" y="90" width="30" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="zlK-CZ-EEH"/>
+                                                        <constraint firstAttribute="width" constant="30" id="zyC-Lf-K5t"/>
+                                                    </constraints>
+                                                    <state key="normal" image="WeatherIcon"/>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dhp-yp-giY">
+                                                    <rect key="frame" x="58" y="90" width="30" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="30" id="7cI-xy-eh3"/>
+                                                        <constraint firstAttribute="height" constant="30" id="i1w-Tr-znk"/>
+                                                    </constraints>
+                                                    <state key="normal" image="MapIcon"/>
+                                                </button>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="r7S-E2-C7W" firstAttribute="leading" secondItem="04C-fq-7PF" secondAttribute="leadingMargin" constant="10" id="2mZ-He-GVQ"/>
+                                                <constraint firstItem="ufu-fx-PLH" firstAttribute="top" secondItem="dhp-yp-giY" secondAttribute="bottom" id="5Ff-BM-fCN"/>
+                                                <constraint firstItem="dhp-yp-giY" firstAttribute="leading" secondItem="r7S-E2-C7W" secondAttribute="trailing" constant="10" id="5gE-O8-7fP"/>
                                                 <constraint firstAttribute="trailing" secondItem="YLM-m0-RHH" secondAttribute="trailing" id="5iW-HU-oAM"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="ufu-fx-PLH" secondAttribute="bottom" constant="-8" id="F6X-iO-3If"/>
                                                 <constraint firstItem="Hrq-bG-Yru" firstAttribute="centerY" secondItem="YLM-m0-RHH" secondAttribute="centerY" constant="40.5" id="IRz-H6-CKv"/>
@@ -947,6 +966,7 @@ Interval Account</string>
                                                 <constraint firstItem="Hze-16-cVi" firstAttribute="top" secondItem="YLM-m0-RHH" secondAttribute="top" id="mUA-cw-1tr"/>
                                                 <constraint firstItem="YLM-m0-RHH" firstAttribute="leading" secondItem="04C-fq-7PF" secondAttribute="leading" id="mjj-ao-JzW"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="Hrq-bG-Yru" secondAttribute="bottom" constant="53" id="qJj-Di-mcV"/>
+                                                <constraint firstItem="ufu-fx-PLH" firstAttribute="top" secondItem="r7S-E2-C7W" secondAttribute="bottom" id="sMK-hM-cqy"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="ufu-fx-PLH" secondAttribute="trailing" constant="-8" id="spa-CP-EF5"/>
                                                 <constraint firstAttribute="bottom" secondItem="YLM-m0-RHH" secondAttribute="bottom" id="wnT-pm-ti9"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="YLM-m0-RHH" secondAttribute="bottom" constant="-8" id="z6U-wX-d3K"/>
@@ -976,6 +996,8 @@ Interval Account</string>
                                             <outlet property="resortCollectionView" destination="YLM-m0-RHH" id="zsq-ci-v2L"/>
                                             <outlet property="resortName" destination="HwS-Hl-Bvh" id="aEq-kz-Vwl"/>
                                             <outlet property="resortNameGradientView" destination="ufu-fx-PLH" id="VQ9-0q-65A"/>
+                                            <outlet property="showResortLocationButton" destination="dhp-yp-giY" id="orQ-xk-X5v"/>
+                                            <outlet property="showResortWeatherbutton" destination="r7S-E2-C7W" id="vz1-L1-Ncc"/>
                                             <outlet property="tierImageView" destination="DPQ-bC-1df" id="F7t-1I-iXS"/>
                                         </connections>
                                     </tableViewCell>
@@ -1517,17 +1539,19 @@ Interval Account</string>
         <image name="FavoriteIcon-Off" width="30" height="30"/>
         <image name="FavoriteIcon-On" width="30" height="30"/>
         <image name="ForwardArrowIcon" width="33" height="33"/>
+        <image name="MapIcon" width="33" height="33"/>
         <image name="MoreNav" width="33" height="33"/>
         <image name="PinFocus" width="33" height="33"/>
         <image name="PinInactive" width="33" height="33"/>
         <image name="PlusIcon" width="33" height="33"/>
         <image name="TouchID-Off" width="36" height="36"/>
+        <image name="WeatherIcon" width="33" height="33"/>
         <image name="close" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="KTW-Os-bqS"/>
         <segue reference="LB4-mY-QYy"/>
-        <segue reference="PVi-Ym-AGy"/>
         <segue reference="1yd-In-YGU"/>
+        <segue reference="SsD-cI-IVD"/>
     </inferredMetricsTieBreakers>
 </document>
