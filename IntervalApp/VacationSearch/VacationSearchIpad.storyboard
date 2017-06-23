@@ -96,7 +96,7 @@
         <scene sceneID="AXO-66-1Q5">
             <objects>
                 <navigationController id="YXh-lN-KMw" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="6Ru-xD-idh">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="6Ru-xD-idh">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2319,7 +2319,7 @@
         <scene sceneID="hwE-GA-7Y4">
             <objects>
                 <navigationController id="Kj4-oV-nKd" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="PIk-h1-MHc">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="PIk-h1-MHc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2746,7 +2746,7 @@
         <scene sceneID="DbV-Z9-AeY">
             <objects>
                 <navigationController id="hie-AV-xvD" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="f6g-7W-eAZ">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="f6g-7W-eAZ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -4840,6 +4840,22 @@
                                                         </mask>
                                                     </variation>
                                                 </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CDt-DB-o9P">
+                                                    <rect key="frame" x="18" y="210" width="30" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="30" id="cxV-s8-HNc"/>
+                                                        <constraint firstAttribute="height" constant="30" id="n0k-eA-Lh2"/>
+                                                    </constraints>
+                                                    <state key="normal" image="WeatherIcon"/>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vYw-js-w03">
+                                                    <rect key="frame" x="58" y="210" width="30" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="6et-0g-OXg"/>
+                                                        <constraint firstAttribute="width" constant="30" id="ip3-nE-CRC"/>
+                                                    </constraints>
+                                                    <state key="normal" image="MapIcon"/>
+                                                </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="i2n-Pv-Abu" firstAttribute="top" secondItem="A3Y-Fk-YNf" secondAttribute="topMargin" constant="-8" id="7Gc-wd-ahA"/>
@@ -4850,9 +4866,11 @@
                                                 </constraint>
                                                 <constraint firstItem="i2n-Pv-Abu" firstAttribute="leading" secondItem="A3Y-Fk-YNf" secondAttribute="leadingMargin" constant="-8" id="Kgf-zG-jKk"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="i2n-Pv-Abu" secondAttribute="bottom" constant="-9" id="KnW-HQ-IHf"/>
+                                                <constraint firstItem="spE-gG-DtE" firstAttribute="top" secondItem="vYw-js-w03" secondAttribute="bottom" constant="-50" id="Sw5-jy-Pu8"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="jLE-hG-Dpm" secondAttribute="trailing" constant="22" id="Txr-9a-mXc">
                                                     <variation key="heightClass=regular-widthClass=regular" constant="14"/>
                                                 </constraint>
+                                                <constraint firstItem="spE-gG-DtE" firstAttribute="top" secondItem="CDt-DB-o9P" secondAttribute="bottom" constant="-50" id="UJO-fw-xex"/>
                                                 <constraint firstItem="jLE-hG-Dpm" firstAttribute="top" secondItem="A3Y-Fk-YNf" secondAttribute="topMargin" constant="19" id="X8f-RO-JPE">
                                                     <variation key="heightClass=regular-widthClass=regular" constant="7"/>
                                                 </constraint>
@@ -4864,6 +4882,8 @@
                                                     <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
                                                 </constraint>
                                                 <constraint firstItem="i2n-Pv-Abu" firstAttribute="trailing" secondItem="rC8-3z-TPM" secondAttribute="trailing" id="ntO-83-8x1"/>
+                                                <constraint firstItem="CDt-DB-o9P" firstAttribute="leading" secondItem="A3Y-Fk-YNf" secondAttribute="leadingMargin" constant="10" id="rbA-TB-zfK"/>
+                                                <constraint firstItem="vYw-js-w03" firstAttribute="leading" secondItem="CDt-DB-o9P" secondAttribute="trailing" constant="10" id="rtp-TU-4tR"/>
                                                 <constraint firstAttribute="trailing" secondItem="rC8-3z-TPM" secondAttribute="trailing" id="sfY-CS-Ye1"/>
                                                 <constraint firstItem="rC8-3z-TPM" firstAttribute="leading" secondItem="A3Y-Fk-YNf" secondAttribute="leading" id="ygt-Zo-aLj"/>
                                             </constraints>
@@ -4923,6 +4943,8 @@
                                             <outlet property="resortCollectionView" destination="i2n-Pv-Abu" id="xkf-1G-eVF"/>
                                             <outlet property="resortName" destination="xAK-uv-7Se" id="Tct-t2-Gnh"/>
                                             <outlet property="resortNameGradientView" destination="rC8-3z-TPM" id="kDj-Ri-f6g"/>
+                                            <outlet property="showResortLocationButton" destination="vYw-js-w03" id="JZg-aa-0UJ"/>
+                                            <outlet property="showResortWeatherbutton" destination="CDt-DB-o9P" id="a7j-pd-2Nk"/>
                                             <outlet property="tierImageView" destination="jaO-6y-sm2" id="znU-3e-V2K"/>
                                         </connections>
                                     </tableViewCell>
@@ -6273,6 +6295,7 @@
         <image name="ForwardArrowIcon" width="33" height="33"/>
         <image name="ForwardArrowNav-Blue" width="33" height="33"/>
         <image name="InfoIcon" width="33" height="33"/>
+        <image name="MapIcon" width="33" height="33"/>
         <image name="PlusIcon" width="33" height="33"/>
         <image name="RST_CO" width="30" height="30"/>
         <image name="Search" width="33" height="33"/>
@@ -6280,6 +6303,7 @@
         <image name="VS_Item-Info" width="20" height="20"/>
         <image name="VS_Item-Remove" width="20" height="20"/>
         <image name="VS_List-Plus_ORNG" width="20" height="20"/>
+        <image name="WeatherIcon" width="33" height="33"/>
         <image name="input_clear" width="15" height="15"/>
     </resources>
     <inferredMetricsTieBreakers>

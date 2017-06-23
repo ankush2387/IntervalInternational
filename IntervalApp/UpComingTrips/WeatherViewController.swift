@@ -14,7 +14,8 @@ class WeatherViewController: UIViewController {
     
     var resortWeather: ResortWeather?
     let selectedButtonTextColor = UIColor.init(colorLiteralRed: 0, green: 122/255, blue: 255/255, alpha: 1.0)
-
+    var resortName: String?
+    var countryCode: String?
 
     @IBOutlet weak var temperaureLowLabel: UILabel!
     @IBOutlet weak var temperatureHighLabel: UILabel!
@@ -40,11 +41,11 @@ class WeatherViewController: UIViewController {
     }
     
     func setup() {
-        if let resortName = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.resortName {
+        if let resortName = self.resortName {
             resortNameLabel.text = "\(resortName)"
         }
         
-        if let countryCode = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address?.countryCode {
+        if let countryCode = self.countryCode {
             resortNameLabel.text?.append(", \(countryCode)")
         }
         
@@ -136,4 +137,32 @@ class WeatherViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+}
+
+
+
+extension UIViewController {
+    func displayWeatherView(resortCode: String, resortName: String, countryCode: String, completionHandler: @escaping (_ response: Bool) -> Void) {
+        
+        DirectoryClient.getResortWeather(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode, onSuccess: { (response) in
+            if let weatherResponse = response as? ResortWeather {
+                let storyboard = UIStoryboard(name: "MyUpcomingTripIphone", bundle: nil)
+                let mapDetailsNav = storyboard.instantiateViewController(withIdentifier: "weatherNav") as! UINavigationController
+                let weatherVC = mapDetailsNav.viewControllers.first as? WeatherViewController
+                weatherVC?.resortWeather = weatherResponse
+                weatherVC?.countryCode = countryCode
+                weatherVC?.resortName = resortName
+                self.present(mapDetailsNav, animated: true, completion: nil)
+                completionHandler(true)
+            }
+            
+            
+        }) { (error) in
+            completionHandler(false)
+            print(error)
+            SimpleAlert.alert(self, title: "Error", message: "Something went wrong. Please try again.")
+            
+        }
+
+    }
 }

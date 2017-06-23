@@ -13,6 +13,9 @@ import DarwinSDK
 class UpComingTripMapViewController: UIViewController, GMSMapViewDelegate {
     
     var mapView = GMSMapView()
+    var coordinates: Coordinates?
+    var resortName: String?
+    var cityName: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,12 +32,13 @@ class UpComingTripMapViewController: UIViewController, GMSMapViewDelegate {
     }
     
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: false, completion: nil)
+        
     }
     
     func setupMap() {
-        guard let latitude = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.coordinates?.latitude else { return }
-        guard let longitude = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.coordinates?.longitude else { return }
+        guard let latitude = coordinates?.latitude else { return }
+        guard let longitude = coordinates?.longitude else { return }
         
         let camera = GMSCameraPosition.camera(withLatitude: latitude, longitude: longitude, zoom: 15)
         let mapframe = CGRect(x: 0, y: 64, width: self.view.frame.width, height: self.view.frame.height - 64)
@@ -47,8 +51,8 @@ class UpComingTripMapViewController: UIViewController, GMSMapViewDelegate {
         let  position = CLLocationCoordinate2DMake(latitude,longitude)
         let marker = GMSMarker()
         marker.position = position
-        marker.title = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.resortName
-        marker.snippet = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.address?.cityName
+        marker.title = resortName
+        marker.snippet = cityName
         marker.isFlat = true
         marker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
         marker.appearAnimation = GMSMarkerAnimation.pop
@@ -60,5 +64,20 @@ class UpComingTripMapViewController: UIViewController, GMSMapViewDelegate {
         self.view.addSubview(mapView)
         
         
+    }
+}
+
+extension UIViewController {
+    func displayMapView(coordinates: Coordinates, resortName: String, cityName: String, completionHandler: @escaping(_ response: Bool) -> Void) {
+                
+        let storyboard = UIStoryboard(name: "MyUpcomingTripIphone", bundle: nil)
+        let mapDetailsNav = storyboard.instantiateViewController(withIdentifier: "mapDetailNav") as! UINavigationController
+        let mapVC = mapDetailsNav.viewControllers.first as! UpComingTripMapViewController
+        mapVC.resortName = resortName
+        mapVC.cityName = cityName
+        mapVC.coordinates = coordinates
+        self.present(mapDetailsNav, animated: true, completion: nil)
+        completionHandler(true)
+
     }
 }
