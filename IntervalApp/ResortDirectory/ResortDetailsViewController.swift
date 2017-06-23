@@ -450,6 +450,15 @@ class ResortDetailsViewController: UIViewController {
         }
     }
     
+    func showWeatherButtonPressed() {
+        guard let resortCode = Constant.MyClassConstants.resortsDescriptionArray.resortCode else { return }
+        guard let resortName = Constant.MyClassConstants.resortsDescriptionArray.resortName else { return }
+        guard let countryCode = Constant.MyClassConstants.resortsDescriptionArray.address?.countryCode else { return }
+        SVProgressHUD.show()
+        displayWeatherView(resortCode: resortCode, resortName: resortName, countryCode: countryCode, completionHandler: { (response) in
+            SVProgressHUD.dismiss()
+        })
+    }
 
     func showLocationButtonPressed() {
         print("Location Button Pressed")
@@ -804,7 +813,7 @@ extension ResortDetailsViewController:UITableViewDataSource {
                 cell.delegate = self
                 
                 cell.backgroundColor = UIColor.clear
-                
+                cell.showResortWeatherbutton.addTarget(self, action: #selector(self.showWeatherButtonPressed), for: .touchUpInside)
                 cell.showResortLocationButton.addTarget(self, action: #selector(self.showLocationButtonPressed), for: .touchUpInside)
                 return cell
             case 2 :
