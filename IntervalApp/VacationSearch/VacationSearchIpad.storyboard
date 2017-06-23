@@ -6470,7 +6470,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BbN-tU-nm7">
-                                <rect key="frame" x="0.0" y="0.0" width="400" height="54"/>
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="54"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EWU-RF-Le5">
                                         <rect key="frame" x="10" y="10" width="90" height="24"/>
@@ -6502,7 +6502,7 @@
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="54" id="2he-bQ-hrE"/>
-                                    <constraint firstAttribute="width" constant="400" id="ag8-nl-Fn7"/>
+                                    <constraint firstAttribute="width" constant="393" id="ag8-nl-Fn7"/>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="8Xn-OT-ihn">
@@ -6667,6 +6667,9 @@
                                                     <rect key="frame" x="320" y="11" width="40" height="40"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <state key="normal" image="DropArrowIcon"/>
+                                                    <connections>
+                                                        <action selector="toggleButtonIsTapped:" destination="c6G-JH-1ZR" eventType="touchUpInside" id="Z0p-KU-bwy"/>
+                                                    </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="United States of America" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VEi-wr-BWA">
                                                     <rect key="frame" x="23" y="22" width="165.5" height="17.5"/>
@@ -6807,7 +6810,7 @@
                             <constraint firstItem="8Xn-OT-ihn" firstAttribute="width" secondItem="EKS-9A-7MW" secondAttribute="width" id="JVd-NS-7cH"/>
                             <constraint firstItem="qxj-YC-ewE" firstAttribute="top" secondItem="8Xn-OT-ihn" secondAttribute="bottom" constant="61" id="NPl-Ym-JPF"/>
                             <constraint firstItem="BbN-tU-nm7" firstAttribute="top" secondItem="33m-Be-eLb" secondAttribute="bottom" id="Rql-TN-cnl"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="BbN-tU-nm7" secondAttribute="trailing" constant="-20" id="Xor-Tl-fO2"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="BbN-tU-nm7" secondAttribute="trailing" constant="-13" id="Xor-Tl-fO2"/>
                             <constraint firstAttribute="trailingMargin" secondItem="8Xn-OT-ihn" secondAttribute="trailing" constant="-20" id="ooi-Vb-tVH"/>
                         </constraints>
                     </view>
