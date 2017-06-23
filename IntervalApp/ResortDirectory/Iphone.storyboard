@@ -876,7 +876,7 @@ Interval Account</string>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Denarau,Fizi Islands" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Yn-Eb-1NU">
-                                                            <rect key="frame" x="20" y="46" width="335" height="18"/>
+                                                            <rect key="frame" x="20" y="42" width="335" height="18"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="18" id="AVn-2T-gbM"/>
                                                             </constraints>
@@ -899,11 +899,11 @@ Interval Account</string>
                                                     </subviews>
                                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
-                                                        <constraint firstItem="oCm-Hm-h6I" firstAttribute="top" secondItem="6Yn-Eb-1NU" secondAttribute="bottom" id="2L8-Xq-NeW"/>
+                                                        <constraint firstItem="oCm-Hm-h6I" firstAttribute="top" secondItem="6Yn-Eb-1NU" secondAttribute="bottom" constant="4" id="2L8-Xq-NeW"/>
                                                         <constraint firstItem="HwS-Hl-Bvh" firstAttribute="centerX" secondItem="ufu-fx-PLH" secondAttribute="centerX" id="7e4-lM-OHp"/>
                                                         <constraint firstItem="HwS-Hl-Bvh" firstAttribute="leading" secondItem="6Yn-Eb-1NU" secondAttribute="leading" id="GPC-O0-t4m"/>
                                                         <constraint firstItem="oCm-Hm-h6I" firstAttribute="leading" secondItem="6Yn-Eb-1NU" secondAttribute="leading" id="Hzg-gR-Jdy"/>
-                                                        <constraint firstItem="6Yn-Eb-1NU" firstAttribute="top" secondItem="HwS-Hl-Bvh" secondAttribute="bottom" constant="-2" id="Jny-eG-jdW"/>
+                                                        <constraint firstItem="6Yn-Eb-1NU" firstAttribute="top" secondItem="HwS-Hl-Bvh" secondAttribute="bottom" constant="-6" id="Jny-eG-jdW"/>
                                                         <constraint firstAttribute="bottom" secondItem="oCm-Hm-h6I" secondAttribute="bottom" id="Ktl-Qx-nlJ"/>
                                                         <constraint firstItem="HwS-Hl-Bvh" firstAttribute="leading" secondItem="ufu-fx-PLH" secondAttribute="leading" constant="20" id="Ohd-Wv-SYu"/>
                                                         <constraint firstAttribute="bottom" secondItem="DPQ-bC-1df" secondAttribute="bottom" constant="1" id="X5P-yH-1wU"/>

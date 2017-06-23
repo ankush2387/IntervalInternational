@@ -35,6 +35,11 @@ class ResortCollectionViewCell: UICollectionViewCell {
         
         //self.pageControl = PageControl(activeImage: UIImage(named: "selected")!, inactiveImage: UIImage(named: "unselected")!)
         pageControl.addConstraint(height)
+        if(Constant.MyClassConstants.imagesArray.count>1){
+           pageControl.isHidden = true
+        }else{
+            pageControl.isHidden = false
+        }
         pageControl.numberOfPages = Constant.MyClassConstants.imagesArray.count
         
     }

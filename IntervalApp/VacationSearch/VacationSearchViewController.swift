@@ -1452,9 +1452,9 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                     self.searchAvailability(exchangeAvailabilityRequest: exchangeAvailabilityRequest, sender: sender)
                                 }else {
                                     Constant.MyClassConstants.searchResultCollectionViewScrollToIndex = 1
-                                    SVProgressHUD.dismiss()
-                                    Helper.removeServiceCallBackgroundView(view: self.view)
-                                    Helper.hideProgressBar(senderView: self)
+                                    //SVProgressHUD.dismiss()
+                                    //Helper.removeServiceCallBackgroundView(view: self.view)
+                                    //Helper.hideProgressBar(senderView: self)
                                     sender.isEnabled = true
                                     
                                     let exchangeAvailabilityRequest = ExchangeSearchAvailabilityRequest()
