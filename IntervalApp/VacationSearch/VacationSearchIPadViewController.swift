@@ -638,8 +638,8 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
         }
         else if(self.segmentIndex == 2){
             
-            
             sender.isEnabled = false
+            Helper.showProgressBar(senderView: self)
             let (toDate,fromDate) = Helper.getSearchDates()
             let exchangeSearchDateRequest = ExchangeSearchDatesRequest()
             exchangeSearchDateRequest.checkInFromDate = fromDate

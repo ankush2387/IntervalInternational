@@ -33,7 +33,7 @@ class VacationSearchResultIPadController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        resortDetailTBLView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
         //Adding back button on menu bar.
         let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(VacationSearchResultIPadController.menuBackButtonPressed(_:)))
         menuButton.tintColor = UIColor.white
