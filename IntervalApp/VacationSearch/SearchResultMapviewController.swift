@@ -137,6 +137,7 @@ class SearchResultMapviewController: UIViewController {
                      self.dragView.isHidden = false
                      self.resortView.backgroundColor = UIColor.white
                      self.resortView.frame = CGRect(x: 0, y: 44, width: self.view.frame.width/2, height: self.view.frame.height - 44)
+                     self.dragView.frame = CGRect(x: self.resortView.frame.width, y:self.dragView.frame.origin.y, width:self.dragView.frame.size.width, height: self.dragView.frame.size.height)
                 }
                 else {
                     
@@ -147,12 +148,15 @@ class SearchResultMapviewController: UIViewController {
                 self.view.bringSubview(toFront: self.resortView)
             }, completion: { _ in
                 
+                self.drarButton.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
+                
             })
             self.view.bringSubview(toFront: self.resortView)
         }else{
             
             if UIDevice.current.userInterfaceIdiom == .pad {
                  self.dragView.isHidden = false
+                 self.resortView.backgroundColor = UIColor.white
                  self.resortView.frame = CGRect(x: 0, y: 44, width: self.view.frame.width/2, height: self.view.frame.height - 44)
             }
              else {
@@ -248,9 +252,11 @@ class SearchResultMapviewController: UIViewController {
                 
                 self.dragView.isHidden = false
                 self.resortView.frame = CGRect(x: -self.view.frame.width/2, y: 44, width: self.view.frame.width/2, height: self.view.frame.height - 44)
+                self.dragView.frame = CGRect(x: 0, y:self.dragView.frame.origin.y, width: self.dragView.frame.size.width, height: self.dragView.frame.size.height)
             }else {
                 
                 self.resortView.frame = CGRect(x: 0, y: self.view.frame.height, width: self.view.frame.width, height: self.bottomResortHeight)
+                self.dragView.frame = CGRect(x: 0, y:self.dragView.frame.origin.y, width: self.dragView.frame.size.width, height: self.dragView.frame.size.height)
             }
             
             
