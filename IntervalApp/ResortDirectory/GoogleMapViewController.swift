@@ -589,7 +589,18 @@ class GoogleMapViewController: UIViewController {
             
             let storyboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
             let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginController)
-            self.present(viewController, animated: true, completion: nil)
+            //self.navigationController?.pushViewController(viewController, animated: true)
+            
+            //***** creating animation transition to show custom transition animation *****//
+            let transition: CATransition = CATransition()
+            let timeFunc : CAMediaTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+            transition.duration = 0.4
+            transition.timingFunction = timeFunc
+            transition.type = kCATransitionPush
+            transition.subtype = kCATransitionFromTop
+            viewController.view.layer.add(transition, forKey: kCATransition)
+            self.navigationController?.pushViewController(viewController, animated: false)
+            UIApplication.shared.keyWindow?.layer.backgroundColor = UIColor.clear.cgColor
         }
         else {
             if(sender.isSelected == true) {

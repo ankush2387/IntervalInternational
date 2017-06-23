@@ -548,6 +548,7 @@ extension ResortDirectoryViewController:UITableViewDataSource {
             
             if((indexPath as NSIndexPath).row == 0){
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.favoritesCellIdentifier, for: indexPath) as! ResortFavoritesTableViewCell
+                cell.delegate = self
                 
                 for layer in cell.backgroundNameView.layer.sublayers!{
                     if(layer.isKind(of: CAGradientLayer.self)) {
@@ -580,7 +581,7 @@ extension ResortDirectoryViewController:UITableViewDataSource {
                 resort = Constant.MyClassConstants.resortDirectoryResortArray[indexPath.row - 1]
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.resortDirectoryResortCell, for: indexPath) as! ResortFavoritesTableViewCell
                 cell.favoritesCollectionView.reloadData()
-                //cell.delegate = self
+                cell.delegate = self
                 
                 return cell
             }
@@ -671,6 +672,46 @@ extension ResortDirectoryViewController:ResortDirectoryResortCellDelegate {
         
     }
 }
+
+//***** Extension to show side view  with container in iPad. *****.//
+extension ResortDirectoryViewController:ResortFavoritesTableViewCellDelegate {
+
+func showResortDetails(_ index:Int){
+    
+    Constant.MyClassConstants.resortsDescriptionArray = Constant.MyClassConstants.resortDirectoryResortArray[index]
+    
+    Constant.MyClassConstants.resortDescriptionString = Constant.MyClassConstants.resortDirectoryResortArray[index].description
+    
+    if(self.containerView != nil) {
+        
+        self.containerView.isHidden = false
+        self.containerView.bringSubview(toFront: self.containerView)
+        let selectedResort = Constant.MyClassConstants.resortDirectoryResortArray[index]
+        Constant.MyClassConstants.isgetResortFromGoogleSearch = false
+        
+        UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseOut ,animations: {
+            
+            (self.view.subviews.last?.frame = CGRect(x: 0, y: 64, width: (self.view.subviews.last?.frame.width)!, height: (self.view.subviews.last?.frame.height)!))!
+            
+        }, completion: { _ in
+            if(selectedResort.resortCode != nil) {
+                //self.callAPI(selectedResort.resortCode!)
+                Helper.getResortWithResortCode(code: selectedResort.resortCode!, viewcontroller: self)
+            }
+            
+        })
+        
+    }
+}
+    func favoritesResortSelectedAtIndex(_ index:Int){
+        let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.resortDirectoryIpad, bundle: nil)
+        let resultController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginViewControlleriPad) as? SignInPreLoginViewController
+        //let navController = UINavigationController(rootViewController: resultController!)
+        self.navigationController?.pushViewController(resultController!, animated: true)
+    }
+}
+
+
 
 
 

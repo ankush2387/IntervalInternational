@@ -1094,3 +1094,10 @@ extension ResortDetailsViewController:MFMessageComposeViewControllerDelegate{
         self.dismiss(animated: true, completion: nil)
     }
 }
+
+//******* For iPad add to favorites functionality ******//
+extension ResortDetailsViewController:ResortDirectoryResortCellDelegate {
+    func favoritesButtonSelectedAtIndex(_ index:Int){
+        
+    }
+}

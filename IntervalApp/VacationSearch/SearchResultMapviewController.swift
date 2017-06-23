@@ -90,7 +90,7 @@ class SearchResultMapviewController: UIViewController {
         
         Constant.MyClassConstants.googleMarkerArray.removeAll()
         
-        let camera = GMSCameraPosition.camera(withLatitude: (Constant.MyClassConstants.resortsArray[0].coordinates?.latitude)!,longitude: (Constant.MyClassConstants.resortsArray[0].coordinates?.longitude)!, zoom: 8)
+        let camera = GMSCameraPosition.camera(withLatitude: (Constant.MyClassConstants.resortsArray[0].coordinates?.latitude)!,longitude: (Constant.MyClassConstants.resortsArray[0].coordinates?.longitude)!, zoom: 1)
         
         self.gmsMapView.camera = camera
         gmsMapView.isMyLocationEnabled = true
@@ -116,7 +116,7 @@ class SearchResultMapviewController: UIViewController {
         gmsMapView.animate(with: GMSCameraUpdate.fit(bounds))
         gmsMapView.delegate = self
         gmsMapView.settings.allowScrollGesturesDuringRotateOrZoom = false
-        gmsMapView.animate(toZoom: 8)
+        gmsMapView.animate(toZoom: 1)
         
     }
 
@@ -453,8 +453,10 @@ extension SearchResultMapviewController:GMSMapViewDelegate {
 extension SearchResultMapviewController:UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
+        if(Constant.RunningDevice.deviceIdiom == .pad){
         self.view.bringSubview(toFront: self.containorView)
                        Helper.getResortWithResortCode(code: Constant.MyClassConstants.resortsArray[self.selectedIndex].resortCode!, viewcontroller: self)
+        }
         
     }
 }
@@ -549,30 +551,31 @@ extension SearchResultMapviewController:UICollectionViewDataSource {
     
         cell.addSubview(resortFavoritesButton)
         
-        let resortNameGradientView = UIView(frame: CGRect(x: 0, y: cell.contentView.frame.height - 63, width: cell.contentView.frame.width, height: 63))
+        let resortNameGradientView = UIView(frame: CGRect(x: 0, y: cell.contentView.frame.height - 73, width: cell.contentView.frame.width, height: 73))
         Helper.addLinearGradientToView(view: resortNameGradientView, colour: UIColor.white, transparntToOpaque: true, vertical: false)
         cell.addSubview(resortNameGradientView)
         
-        let resortNameLabel = UILabel(frame: CGRect(x: 20, y: 0, width: cell.contentView.frame.width - 40, height: 20))
+        let resortNameLabel = UILabel(frame: CGRect(x: 20, y: 0, width: cell.contentView.frame.width - 38, height: 38))
+        resortNameLabel.numberOfLines = 0
         resortNameLabel.text = resort.resortName
         resortNameLabel.textColor = IUIKColorPalette.primary1.color
         resortNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
         resortNameGradientView.addSubview(resortNameLabel)
         
-        let resortCountryLabel = UILabel(frame: CGRect(x: 20, y: 20, width: cell.contentView.frame.width - 20, height: 20))
+        let resortCountryLabel = UILabel(frame: CGRect(x: 20, y: 30, width: cell.contentView.frame.width - 20, height: 20))
         resortCountryLabel.text = resort.address?.cityName
         resortCountryLabel.textColor = UIColor.black
         resortCountryLabel.font = UIFont(name:Constant.fontName.helveticaNeue,size: 14)
         resortNameGradientView.addSubview(resortCountryLabel)
         
-        let resortCodeLabel = UILabel(frame: CGRect(x: 20, y: 40, width: 50, height: 20))
+        let resortCodeLabel = UILabel(frame: CGRect(x: 20, y: 50, width: 50, height: 20))
         resortCodeLabel.text = resort.resortCode
         resortCodeLabel.textColor = UIColor.orange
         resortCodeLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 14)
         resortNameGradientView.addSubview(resortCodeLabel)
         
         if(resort.tier != nil){
-            let tearImageView = UIImageView(frame: CGRect(x: 55, y: 42, width: 16, height: 16))
+            let tearImageView = UIImageView(frame: CGRect(x: 55, y: 52, width: 16, height: 16))
             let tierImageName = Helper.getTierImageName(tier: resort.tier!.uppercased())
             tearImageView.image = UIImage(named: tierImageName)
             resortNameGradientView.addSubview(tearImageView)

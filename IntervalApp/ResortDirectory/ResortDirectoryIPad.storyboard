@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="g4N-VP-z9h">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="g4N-VP-z9h">
     <device id="ipad12_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -103,7 +103,7 @@
                     </tabBar>
                     <connections>
                         <outlet property="delegate" destination="WQz-Ju-WIX" id="jR5-3u-c17"/>
-                        <segue destination="NIS-m0-EaE" kind="presentation" identifier="segueSignInForPreLogin" id="jWh-Yi-Khg"/>
+                        <segue destination="NIS-m0-EaE" kind="show" identifier="segueSignInForPreLogin" id="jWh-Yi-Khg"/>
                         <segue destination="MqJ-3b-541" kind="relationship" relationship="viewControllers" id="0gg-Pg-wmb"/>
                         <segue destination="4EV-Sm-76Z" kind="relationship" relationship="viewControllers" id="h1J-O4-E3a"/>
                         <segue destination="UGW-nC-qAL" kind="relationship" relationship="viewControllers" id="6oG-GO-Rlc"/>
@@ -762,7 +762,7 @@
                         <outlet property="mapTableView" destination="Aux-pa-Eth" id="aaJ-zt-TeP"/>
                         <outlet property="mapView" destination="e9w-2d-GxM" id="LTM-y0-hBs"/>
                         <outlet property="searchDisplayTableView" destination="DGP-W8-Jgj" id="PDr-Gt-LfA"/>
-                        <segue destination="NIS-m0-EaE" kind="presentation" identifier="preLoginSegue" id="HvM-Cf-vhw"/>
+                        <segue destination="NIS-m0-EaE" kind="show" identifier="preLoginSegue" id="HvM-Cf-vhw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="giD-cF-dM3" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1044,7 +1044,7 @@
                         <outlet property="resortTableBaseView" destination="inS-96-iLH" id="I80-Wk-jxg"/>
                         <outlet property="resortTableView" destination="csh-8i-tQT" id="wf8-nv-6lO"/>
                         <outlet property="signInView" destination="wnz-01-5rD" id="Hic-DW-urM"/>
-                        <segue destination="NIS-m0-EaE" kind="presentation" identifier="segueSignInForPreLogin" id="gM3-Tr-hp8"/>
+                        <segue destination="NIS-m0-EaE" kind="show" identifier="segueSignInForPreLogin" id="gM3-Tr-hp8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5fu-ya-IwE" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1528,7 +1528,7 @@
                     <connections>
                         <outlet property="containerView" destination="uvZ-m5-m9d" id="1OZ-Gd-O9J"/>
                         <outlet property="resortTableView" destination="Q7H-Oh-L4F" id="uUy-Iq-Vn5"/>
-                        <segue destination="NIS-m0-EaE" kind="presentation" identifier="preLoginSegue" id="7YR-JZ-0c7"/>
+                        <segue destination="NIS-m0-EaE" kind="show" identifier="preLoginSegue" id="7YR-JZ-0c7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8rB-ZJ-3Jy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1805,7 +1805,7 @@ Interval Account</string>
                         <viewControllerLayoutGuide type="bottom" id="ZJG-Xj-KEC"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Dkw-tK-teI">
-                        <rect key="frame" x="0.0" y="0.0" width="512" height="1251"/>
+                        <rect key="frame" x="0.0" y="0.0" width="512" height="1253"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ihd-aB-vso">
@@ -1834,7 +1834,7 @@ Interval Account</string>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="bCM-D7-5md">
-                                <rect key="frame" x="0.0" y="44" width="512" height="1164"/>
+                                <rect key="frame" x="0.0" y="44" width="512" height="1166"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="443" id="oYN-55-6XI"/>
@@ -2312,8 +2312,8 @@ Interval Account</string>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="7fs-eN-Zxs"/>
-        <segue reference="FJe-xK-8HZ"/>
-        <segue reference="HvM-Cf-vhw"/>
-        <segue reference="urI-DU-i2l"/>
+        <segue reference="gM3-Tr-hp8"/>
+        <segue reference="hcL-G1-Kx1"/>
+        <segue reference="l1G-08-uqt"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -157,7 +157,6 @@ extension ResortFavoritesTableViewCell:ResortDirectoryCollectionViewCellDelegate
             
             if (sender.isSelected == false){
                 
-                print(Constant.MyClassConstants.resortsArray[sender.tag].resortCode!)
                 UserClient.addFavoriteResort(UserContext.sharedInstance.accessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
                     
                     print(response)
@@ -183,4 +182,56 @@ extension ResortFavoritesTableViewCell:ResortDirectoryCollectionViewCellDelegate
     func unfavoriteCollectionButtonClicked(_ sender:UIButton){
         
     }
+    
+    /*func showResortDetails(_ index:Int){
+        
+        Constant.MyClassConstants.resortsDescriptionArray = Constant.MyClassConstants.resortDirectoryResortArray[index]
+        
+        Constant.MyClassConstants.resortDescriptionString = Constant.MyClassConstants.resortDirectoryResortArray[index].description
+        
+        if(self.containerView != nil) {
+            
+            self.containerView.isHidden = false
+            self.containerView.bringSubview(toFront: self.containerView)
+            let selectedResort = Constant.MyClassConstants.resortDirectoryResortArray[index]
+            Constant.MyClassConstants.isgetResortFromGoogleSearch = false
+            
+            UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseOut ,animations: {
+                
+                (self.view.subviews.last?.frame = CGRect(x: 0, y: 64, width: (self.view.subviews.last?.frame.width)!, height: (self.view.subviews.last?.frame.height)!))!
+                
+            }, completion: { _ in
+                if(selectedResort.resortCode != nil) {
+                    self.callAPI(selectedResort.resortCode!)
+                }
+                
+            })
+            
+        }
+    }
+    func callAPI(_ code:String){
+        SVProgressHUD.show()
+        //Helper.addServiceCallBackgroundView(self.view)
+        DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: code, onSuccess: { (response) in
+            
+            Constant.MyClassConstants.resortsDescriptionArray = response
+            Constant.MyClassConstants.imagesArray.removeAllObjects()
+            let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
+            for imgStr in imagesArray {
+                if(imgStr.size == Constant.MyClassConstants.imageSize) {
+                    
+                    Constant.MyClassConstants.imagesArray.add(imgStr.url!)
+                }
+            }
+            
+            let containerVC = self.childViewControllers[0] as! ResortDetailsViewController
+            containerVC.senderViewController = Constant.MyClassConstants.searchResult
+            containerVC.viewWillAppear(true)
+            SVProgressHUD.dismiss()
+            
+        })
+        { (error) in
+            SVProgressHUD.dismiss()
+        }
+    }*/
 }

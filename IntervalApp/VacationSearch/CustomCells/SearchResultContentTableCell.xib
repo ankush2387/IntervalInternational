@@ -53,7 +53,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XGG-s8-LLQ">
-                                <rect key="frame" x="20" y="40" width="355" height="18"/>
+                                <rect key="frame" x="20" y="35" width="355" height="18"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="Fic-Mh-nvW"/>
@@ -89,9 +89,9 @@
                             <constraint firstItem="AMm-VB-06X" firstAttribute="top" secondItem="bd8-V0-I66" secondAttribute="top" id="K3O-IX-bgU"/>
                             <constraint firstItem="XGG-s8-LLQ" firstAttribute="leading" secondItem="bd8-V0-I66" secondAttribute="leading" constant="20" id="YNA-bI-xAW"/>
                             <constraint firstAttribute="bottom" secondItem="AuH-BZ-sbC" secondAttribute="bottom" constant="4" id="Ybw-tt-5Qp"/>
-                            <constraint firstItem="RN3-ta-baG" firstAttribute="top" secondItem="XGG-s8-LLQ" secondAttribute="bottom" id="YlX-0y-9uw"/>
+                            <constraint firstItem="RN3-ta-baG" firstAttribute="top" secondItem="XGG-s8-LLQ" secondAttribute="bottom" constant="5" id="YlX-0y-9uw"/>
                             <constraint firstItem="AMm-VB-06X" firstAttribute="leading" secondItem="bd8-V0-I66" secondAttribute="leading" constant="20" id="c6n-TA-gOS"/>
-                            <constraint firstItem="XGG-s8-LLQ" firstAttribute="top" secondItem="AMm-VB-06X" secondAttribute="bottom" id="dsa-AQ-Ym8"/>
+                            <constraint firstItem="XGG-s8-LLQ" firstAttribute="top" secondItem="AMm-VB-06X" secondAttribute="bottom" constant="-5" id="dsa-AQ-Ym8"/>
                             <constraint firstAttribute="trailing" secondItem="XGG-s8-LLQ" secondAttribute="trailing" id="ppk-b6-SQY"/>
                             <constraint firstAttribute="trailing" secondItem="AMm-VB-06X" secondAttribute="trailing" constant="20" id="wUY-bK-SIu"/>
                             <constraint firstItem="RN3-ta-baG" firstAttribute="leading" secondItem="XGG-s8-LLQ" secondAttribute="leading" id="xBH-LL-IYD"/>
