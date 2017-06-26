@@ -266,8 +266,10 @@
 		DC7EF5151D709F8800E9E360 /* SignInPreLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7EF5041D709F8800E9E360 /* SignInPreLoginViewController.swift */; };
 		DC96F3B81D7F41E500C08F1E /* TouchID.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC96F3B71D7F41E500C08F1E /* TouchID.swift */; };
 		E932C7601EE07FB70083E871 /* UpComingTripMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932C75F1EE07FB70083E871 /* UpComingTripMapViewController.swift */; };
+		E94C7E091EF84DDE003D0EB5 /* PromotionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94C7E081EF84DDE003D0EB5 /* PromotionsViewController.swift */; };
 		E94FB5EA1EF0609C00314C5D /* VerticalProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94FB5E91EF0609C00314C5D /* VerticalProgressView.swift */; };
 		E951BC4D1EE71D800070A04B /* AlertHelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E951BC4C1EE71D800070A04B /* AlertHelpViewController.swift */; };
+		E95A30BB1EF9693700AB64DB /* CheckoutPromotionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95A30BA1EF9693700AB64DB /* CheckoutPromotionCell.swift */; };
 		E961268D1EE9EB2A001BA096 /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E961268C1EE9EB2A001BA096 /* WeatherViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -554,8 +556,10 @@
 		DC96F3B71D7F41E500C08F1E /* TouchID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchID.swift; sourceTree = "<group>"; };
 		E2CBCD7E8490E488AB822061 /* Pods_IntervalApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IntervalApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E932C75F1EE07FB70083E871 /* UpComingTripMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpComingTripMapViewController.swift; sourceTree = "<group>"; };
+		E94C7E081EF84DDE003D0EB5 /* PromotionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromotionsViewController.swift; sourceTree = "<group>"; };
 		E94FB5E91EF0609C00314C5D /* VerticalProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticalProgressView.swift; sourceTree = "<group>"; };
 		E951BC4C1EE71D800070A04B /* AlertHelpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertHelpViewController.swift; sourceTree = "<group>"; };
+		E95A30BA1EF9693700AB64DB /* CheckoutPromotionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckoutPromotionCell.swift; sourceTree = "<group>"; };
 		E961268C1EE9EB2A001BA096 /* WeatherViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -811,6 +815,7 @@
 				3A2089DD1E2544D0001AFFD2 /* RelinquishmentSelectionCIGCell.swift */,
 				3A2089DF1E2544FF001AFFD2 /* RelinquishmentSelectionOpenWeeksCell.swift */,
 				3AE81DBE1E814DF7005C2CEA /* clubPointCell.swift */,
+				E95A30BA1EF9693700AB64DB /* CheckoutPromotionCell.swift */,
 			);
 			path = CustomCells;
 			sourceTree = "<group>";
@@ -948,6 +953,7 @@
 				3AEF71081DDF1B0A00FA076D /* DestinationResortViewController.swift */,
 				3A18D7B91DE05DEC00966472 /* AddDebitOrCreditCardViewController.swift */,
 				3A2089DB1E2525C1001AFFD2 /* RelinquishmentSelectionViewController.swift */,
+				E94C7E081EF84DDE003D0EB5 /* PromotionsViewController.swift */,
 			);
 			path = VacationSearch;
 			sourceTree = "<group>";
@@ -1357,6 +1363,7 @@
 				DC7EF5061D709F8800E9E360 /* CustomTextField.swift in Sources */,
 				3A892F411CD3902F00AE6F45 /* CaledarDateCell.swift in Sources */,
 				DC7EF4D41D709EBF00E9E360 /* CommonMembership.swift in Sources */,
+				E94C7E091EF84DDE003D0EB5 /* PromotionsViewController.swift in Sources */,
 				3A3A013F1C99BD0B00B7EC37 /* OwnershipDetailsTableViewCell.swift in Sources */,
 				3AE81DBF1E814DF7005C2CEA /* clubPointCell.swift in Sources */,
 				3ADA43AA1CA56603003F5373 /* CertificateWhoIsTravelingController.swift in Sources */,
@@ -1406,6 +1413,7 @@
 				DC27F7C91DB81B6F00AA374F /* InfoDetailViewController.swift in Sources */,
 				DC7EF4E21D709F1200E9E360 /* CreateActionSheet.swift in Sources */,
 				DC7EF5151D709F8800E9E360 /* SignInPreLoginViewController.swift in Sources */,
+				E95A30BB1EF9693700AB64DB /* CheckoutPromotionCell.swift in Sources */,
 				3AAA5A2E1C720F4500A5EA6D /* CustomCollectionCell.swift in Sources */,
 				DC7EF4F01D709F2900E9E360 /* FeaturedDestinationsCell.swift in Sources */,
 				3A892F531CD3902F00AE6F45 /* WhoIsTravelingCell.swift in Sources */,

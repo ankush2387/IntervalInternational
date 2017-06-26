@@ -350,7 +350,7 @@ extension VacationSearchViewController:UITableViewDelegate {
             switch((indexPath as NSIndexPath).section) {
             case 0 :
                 if((indexPath as NSIndexPath).row < Constant.MyClassConstants.whereTogoContentArray.count) {
-                    return 70
+                    return UITableViewAutomaticDimension
                 }else {
                     return 60
                 }
@@ -712,7 +712,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                         return cell
                     }else {
                         
-                        let cell: WhereToGoContentCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.whereToGoContentCell, for: indexPath) as! WhereToGoContentCell
+                        let cell: WhereToGoContentCell = tableView.dequeueReusableCell(withIdentifier: "WhereToGoCell", for: indexPath) as! WhereToGoContentCell
                         
                         
                         
@@ -762,7 +762,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                             cell.whereTogoTextLabel.text = Constant.MyClassConstants.whereTogoContentArray[(indexPath as NSIndexPath).row] as? String
                         }
                         
-                        cell.bedroomLabel.isHidden = true
+                        //cell.bedroomLabel.isHidden = true
                         cell.selectionStyle = UITableViewCellSelectionStyle.none
                         cell.backgroundColor = UIColor.clear
                         return cell
@@ -989,7 +989,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                 else {
                     
                     
-                    let cell: WhereToGoContentCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.whereToGoContentCell, for: indexPath) as! WhereToGoContentCell
+                    let cell: WhereToGoContentCell = tableView.dequeueReusableCell(withIdentifier: "WhereToGoCell", for: indexPath) as! WhereToGoContentCell
                     
                     if((indexPath as NSIndexPath).row == destinationOrResort.count - 1 || destinationOrResort.count == 0) {
                         
@@ -1036,7 +1036,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                     else {
                         cell.whereTogoTextLabel.text = Constant.MyClassConstants.whereTogoContentArray[(indexPath as NSIndexPath).row] as? String
                     }
-                    cell.bedroomLabel.isHidden = true
+                    //cell.bedroomLabel.isHidden = true
                     cell.selectionStyle = UITableViewCellSelectionStyle.none
                     cell.backgroundColor = UIColor.clear
                     return cell
@@ -1452,9 +1452,9 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                     self.searchAvailability(exchangeAvailabilityRequest: exchangeAvailabilityRequest, sender: sender)
                                 }else {
                                     Constant.MyClassConstants.searchResultCollectionViewScrollToIndex = 1
-                                    SVProgressHUD.dismiss()
-                                    Helper.removeServiceCallBackgroundView(view: self.view)
-                                    Helper.hideProgressBar(senderView: self)
+                                    //SVProgressHUD.dismiss()
+                                    //Helper.removeServiceCallBackgroundView(view: self.view)
+                                    //Helper.hideProgressBar(senderView: self)
                                     sender.isEnabled = true
                                     
                                     let exchangeAvailabilityRequest = ExchangeSearchAvailabilityRequest()
@@ -1519,7 +1519,9 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 Constant.MyClassConstants.promotionsArray = (exchangeResorts.inventory?.buckets[0].promotions)!
                 Constant.MyClassConstants.inventoryUnitsArray = [(exchangeResorts.inventory?.buckets[0].unit)!]
             }
-            
+            if(Constant.MyClassConstants.resortsArray.count == 0){
+              Constant.MyClassConstants.showAlert = true
+            }
             self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
         }, onError: { (error) in
             Helper.hideProgressBar(senderView: self)

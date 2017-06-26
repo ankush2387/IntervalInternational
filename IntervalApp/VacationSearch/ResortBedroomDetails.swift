@@ -20,6 +20,7 @@ class ResortBedroomDetails: UITableViewCell {
     @IBOutlet weak var totalPrivateLabel: UILabel!
     @IBOutlet weak var lineView: UIView!
     @IBOutlet weak var bottomLabel: UILabel!
+    @IBOutlet weak var promotionsView: UIView!
     
     override func awakeFromNib() {
         super.awakeFromNib()

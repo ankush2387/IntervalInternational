@@ -638,8 +638,8 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
         }
         else if(self.segmentIndex == 2){
             
-            
             sender.isEnabled = false
+            Helper.showProgressBar(senderView: self)
             let (toDate,fromDate) = Helper.getSearchDates()
             let exchangeSearchDateRequest = ExchangeSearchDatesRequest()
             exchangeSearchDateRequest.checkInFromDate = fromDate
@@ -740,6 +740,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                     }
 
                 }, onError: { (error) in
+                    Helper.hideProgressBar(senderView: self)
                     SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.noResultError)
                 })
             }else{
@@ -895,7 +896,6 @@ extension VacationSearchIPadViewController:WereWantToGoTableViewCellDelegate {
         
         self.navigationController!.present(viewController, animated: true, completion: nil)
     }
-    
     
     
     func searchAvailability(exchangeAvailabilityRequest:ExchangeSearchAvailabilityRequest, sender:IUIKButton){

@@ -586,7 +586,18 @@ class GoogleMapViewController: UIViewController {
             
             let storyboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
             let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginController)
-            self.present(viewController, animated: true, completion: nil)
+            //self.navigationController?.pushViewController(viewController, animated: true)
+            
+            //***** creating animation transition to show custom transition animation *****//
+            let transition: CATransition = CATransition()
+            let timeFunc : CAMediaTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+            transition.duration = 0.4
+            transition.timingFunction = timeFunc
+            transition.type = kCATransitionPush
+            transition.subtype = kCATransitionFromTop
+            viewController.view.layer.add(transition, forKey: kCATransition)
+            self.navigationController?.pushViewController(viewController, animated: false)
+            UIApplication.shared.keyWindow?.layer.backgroundColor = UIColor.clear.cgColor
         }
         else {
             if(sender.isSelected == true) {
@@ -1641,11 +1652,13 @@ extension GoogleMapViewController:UITableViewDataSource {
                 cell.tag = indexPath.section
                 let dicValue = Constant.MyClassConstants.destinations![indexPath.row]
                 cell.resortLocationName.text = dicValue.destinationName
-                guard (dicValue.address?.territoryCode != nil)
+                //TODO (jhon) - aplication was crashing when lookin for resort name (Paris, Cancun) 
+                guard let territoryCode = dicValue.address?.territoryCode
+
                     else{
                         return cell
                 }
-                cell.resortCodeLabel.text =  dicValue.address?.territoryCode!
+                cell.resortCodeLabel.text =  territoryCode
                 
                 return cell
                 

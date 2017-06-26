@@ -30,7 +30,7 @@ class SearchResultViewController: UIViewController {
     let headerVw = UIView()
     let titleLabel = UILabel()
     var offerString = String()
-    
+    var cellHeight = 50
     
     override func viewWillAppear(_ animated: Bool) {
         searchResultTableView.reloadData()
@@ -442,6 +442,7 @@ extension SearchResultViewController:UITableViewDelegate {
             return 252
         }
         else {
+<<<<<<< HEAD
             if(indexPath.row > Constant.MyClassConstants.inventoryUnitsArray.count){
                 return 120
             }else{
@@ -450,6 +451,8 @@ extension SearchResultViewController:UITableViewDelegate {
         }*/
         
         return UITableViewAutomaticDimension
+        //return CGFloat(cellHeight)
+        //}
         
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -588,6 +591,7 @@ extension SearchResultViewController:UITableViewDataSource {
             Helper.addLinearGradientToView(view: cell.resortNameGradientView, colour: UIColor.white, transparntToOpaque: true, vertical: false)
             cell.backgroundColor = IUIKColorPalette.contentBackground.color
             
+            
             if(Constant.MyClassConstants.resortsArray.count != 0){
                 if (Constant.MyClassConstants.resortsArray[indexPath.section].images.count>0){
                     var url = URL(string: "")
@@ -665,6 +669,34 @@ extension SearchResultViewController:UITableViewDataSource {
                 cell.exchangeLabel.isHidden = true
                 cell.sepratorOr.isHidden = true
                 cell.exchangeButton.isHidden = true
+                cell.backgroundColor = IUIKColorPalette.contentBackground.color
+                cell.selectionStyle = UITableViewCellSelectionStyle.none
+                
+                //display promotions
+                let promotions = invent.units[indexPath.row - 1].promotions
+                if promotions.count > 0 {
+                    for view in cell.promotionsView.subviews {
+                        view.removeFromSuperview()
+                    }
+                    
+                    cellHeight = 55 + (14*promotions.count)
+                    var yPosition: CGFloat = 0
+                    for promotion in promotions {
+                        print("Promotions: \(promotions)")
+                        let imgV = UIImageView(frame: CGRect(x:10, y: yPosition, width: 15, height: 15))
+                        imgV.image = UIImage(named: "ExchangeIcon")
+                        let promLabel = UILabel(frame: CGRect(x:30, y: yPosition, width: cell.promotionsView.bounds.width, height: 15))
+                        promLabel.text = promotion.offerName
+                        promLabel.adjustsFontSizeToFitWidth = true
+                        promLabel.minimumScaleFactor = 0.7
+                        promLabel.numberOfLines = 0
+                        promLabel.textColor = UIColor(red: 0, green: 119/255, blue: 190/255, alpha: 1)
+                        promLabel.font = UIFont(name: "Helvetica", size: 18)
+                        cell.promotionsView.addSubview(imgV)
+                        cell.promotionsView.addSubview(promLabel)
+                        yPosition += 15
+                    }
+                }
                 return cell
                 
             }else{

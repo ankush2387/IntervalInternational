@@ -393,6 +393,11 @@ class WhoWillBeCheckingInViewController: UIViewController {
             SVProgressHUD.dismiss()
             Helper.removeServiceCallBackgroundView(view: self.view)
             Constant.MyClassConstants.continueToCheckoutResponse = response
+            
+            if let promotions = response.view?.fees?.rental?.promotions {
+                Constant.MyClassConstants.recapViewPromotionCodeArray = promotions
+            }
+            
             DarwinSDK.logger.debug("Promo codes are : \(String(describing: response.view?.promoCodes))")
             DarwinSDK.logger.debug("Response is : \(String(describing: response.view?.fees)) , -------->\(response)")
             Constant.MyClassConstants.allowedCreditCardType = (response.view?.allowedCreditCardTypes)!

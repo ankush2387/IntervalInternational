@@ -137,6 +137,7 @@ class SearchResultMapviewController: UIViewController {
                      self.dragView.isHidden = false
                      self.resortView.backgroundColor = UIColor.white
                      self.resortView.frame = CGRect(x: 0, y: 44, width: self.view.frame.width/2, height: self.view.frame.height - 44)
+                     self.dragView.frame = CGRect(x: self.resortView.frame.width, y:self.dragView.frame.origin.y, width:self.dragView.frame.size.width, height: self.dragView.frame.size.height)
                 }
                 else {
                     
@@ -147,12 +148,15 @@ class SearchResultMapviewController: UIViewController {
                 self.view.bringSubview(toFront: self.resortView)
             }, completion: { _ in
                 
+                self.drarButton.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
+                
             })
             self.view.bringSubview(toFront: self.resortView)
         }else{
             
             if UIDevice.current.userInterfaceIdiom == .pad {
                  self.dragView.isHidden = false
+                 self.resortView.backgroundColor = UIColor.white
                  self.resortView.frame = CGRect(x: 0, y: 44, width: self.view.frame.width/2, height: self.view.frame.height - 44)
             }
              else {
@@ -248,9 +252,11 @@ class SearchResultMapviewController: UIViewController {
                 
                 self.dragView.isHidden = false
                 self.resortView.frame = CGRect(x: -self.view.frame.width/2, y: 44, width: self.view.frame.width/2, height: self.view.frame.height - 44)
+                self.dragView.frame = CGRect(x: 0, y:self.dragView.frame.origin.y, width: self.dragView.frame.size.width, height: self.dragView.frame.size.height)
             }else {
                 
                 self.resortView.frame = CGRect(x: 0, y: self.view.frame.height, width: self.view.frame.width, height: self.bottomResortHeight)
+                self.dragView.frame = CGRect(x: 0, y:self.dragView.frame.origin.y, width: self.dragView.frame.size.width, height: self.dragView.frame.size.height)
             }
             
             
@@ -453,8 +459,10 @@ extension SearchResultMapviewController:GMSMapViewDelegate {
 extension SearchResultMapviewController:UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
+        if(Constant.RunningDevice.deviceIdiom == .pad){
         self.view.bringSubview(toFront: self.containorView)
                        Helper.getResortWithResortCode(code: Constant.MyClassConstants.resortsArray[self.selectedIndex].resortCode!, viewcontroller: self)
+        }
         
     }
 }
@@ -549,30 +557,31 @@ extension SearchResultMapviewController:UICollectionViewDataSource {
     
         cell.addSubview(resortFavoritesButton)
         
-        let resortNameGradientView = UIView(frame: CGRect(x: 0, y: cell.contentView.frame.height - 63, width: cell.contentView.frame.width, height: 63))
+        let resortNameGradientView = UIView(frame: CGRect(x: 0, y: cell.contentView.frame.height - 73, width: cell.contentView.frame.width, height: 73))
         Helper.addLinearGradientToView(view: resortNameGradientView, colour: UIColor.white, transparntToOpaque: true, vertical: false)
         cell.addSubview(resortNameGradientView)
         
-        let resortNameLabel = UILabel(frame: CGRect(x: 20, y: 0, width: cell.contentView.frame.width - 40, height: 20))
+        let resortNameLabel = UILabel(frame: CGRect(x: 20, y: 0, width: cell.contentView.frame.width - 38, height: 38))
+        resortNameLabel.numberOfLines = 0
         resortNameLabel.text = resort.resortName
         resortNameLabel.textColor = IUIKColorPalette.primary1.color
         resortNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
         resortNameGradientView.addSubview(resortNameLabel)
         
-        let resortCountryLabel = UILabel(frame: CGRect(x: 20, y: 20, width: cell.contentView.frame.width - 20, height: 20))
+        let resortCountryLabel = UILabel(frame: CGRect(x: 20, y: 30, width: cell.contentView.frame.width - 20, height: 20))
         resortCountryLabel.text = resort.address?.cityName
         resortCountryLabel.textColor = UIColor.black
         resortCountryLabel.font = UIFont(name:Constant.fontName.helveticaNeue,size: 14)
         resortNameGradientView.addSubview(resortCountryLabel)
         
-        let resortCodeLabel = UILabel(frame: CGRect(x: 20, y: 40, width: 50, height: 20))
+        let resortCodeLabel = UILabel(frame: CGRect(x: 20, y: 50, width: 50, height: 20))
         resortCodeLabel.text = resort.resortCode
         resortCodeLabel.textColor = UIColor.orange
         resortCodeLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 14)
         resortNameGradientView.addSubview(resortCodeLabel)
         
         if(resort.tier != nil){
-            let tearImageView = UIImageView(frame: CGRect(x: 55, y: 42, width: 16, height: 16))
+            let tearImageView = UIImageView(frame: CGRect(x: 55, y: 52, width: 16, height: 16))
             let tierImageName = Helper.getTierImageName(tier: resort.tier!.uppercased())
             tearImageView.image = UIImage(named: tierImageName)
             resortNameGradientView.addSubview(tearImageView)
