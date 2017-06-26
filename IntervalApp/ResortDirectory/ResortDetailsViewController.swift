@@ -825,8 +825,8 @@ extension ResortDetailsViewController:UITableViewDataSource {
                 cell.tierImageView.image = UIImage(named: imageStr)
                 cell.fevoriteButton.addTarget(self, action: #selector(favoritesButtonClicked(_:)), for: .touchUpInside)
                 cell.backgroundColor = UIColor.clear
-                cell.showResortWeatherbutton.addTarget(self, action: #selector(self.showWeatherButtonPressed), for: .touchUpInside)
-                cell.showResortLocationButton.addTarget(self, action: #selector(self.showLocationButtonPressed), for: .touchUpInside)
+                cell.showResortWeatherbutton?.addTarget(self, action: #selector(self.showWeatherButtonPressed), for: .touchUpInside)
+                cell.showResortLocationButton?.addTarget(self, action: #selector(self.showLocationButtonPressed), for: .touchUpInside)
                 return cell
             case 2 :
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.mapTableViewCell, for: indexPath)
@@ -880,7 +880,6 @@ extension ResortDetailsViewController:UITableViewDataSource {
                         }else if ((indexPath as NSIndexPath).section == 5) {
                             if((indexPath as NSIndexPath).row > 0){
                                 availableCountryCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.ratingCell) as? AvailableDestinationPlaceTableViewCell
-                                
                                 
                             }
                         }else{

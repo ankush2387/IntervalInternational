@@ -29,8 +29,8 @@ class ResortDirectoryResortCell: UITableViewCell {
     @IBOutlet weak var resortCollectionView: UICollectionView!
     @IBOutlet weak var tierImageView: UIImageView!
     @IBOutlet weak var searchVacationButton: IUIKButton?
-    @IBOutlet weak var showResortLocationButton: UIButton!
-    @IBOutlet weak var showResortWeatherbutton: UIButton!
+    @IBOutlet weak var showResortLocationButton: UIButton?
+    @IBOutlet weak var showResortWeatherbutton: UIButton?
     //***** class variables *****//
      var delegate: ResortDirectoryResortCellDelegate?
    

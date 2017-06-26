@@ -29,7 +29,7 @@ class VacationSearchResultIPadController: UIViewController {
     var alertView = UIView()
     let headerVw = UIView()
     let titleLabel = UILabel()
-    var cellHeight = 50
+    var cellHeight = 80
     
     override func viewDidLoad() {
         super.viewDidLoad()
