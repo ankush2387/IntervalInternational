@@ -291,6 +291,7 @@ class ResortDetailsViewController: UIViewController {
             
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
         }else{
+
             if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.vacationSearchFunctionalityCheck){
                 
                 self.dismiss(animated: true, completion: nil)
@@ -461,6 +462,28 @@ class ResortDetailsViewController: UIViewController {
             Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(searchVacationClicked), userInfo: nil, repeats: false)
         }
     }
+    
+    func showWeatherButtonPressed() {
+        guard let resortCode = Constant.MyClassConstants.resortsDescriptionArray.resortCode else { return }
+        guard let resortName = Constant.MyClassConstants.resortsDescriptionArray.resortName else { return }
+        guard let countryCode = Constant.MyClassConstants.resortsDescriptionArray.address?.countryCode else { return }
+        SVProgressHUD.show()
+        displayWeatherView(resortCode: resortCode, resortName: resortName, countryCode: countryCode, completionHandler: { (response) in
+            SVProgressHUD.dismiss()
+        })
+    }
+
+    func showLocationButtonPressed() {
+        print("Location Button Pressed")
+        guard let coordinates = Constant.MyClassConstants.resortsDescriptionArray.coordinates else { return }
+        guard let resortName = Constant.MyClassConstants.resortsDescriptionArray.resortName else { return }
+        guard let cityName = Constant.MyClassConstants.resortsDescriptionArray.address?.cityName else { return }
+        SVProgressHUD.show()
+        displayMapView(coordinates: coordinates, resortName: resortName, cityName: cityName) { (response) in
+            SVProgressHUD.dismiss()
+        }
+    }
+
     
     /*
      // MARK: - Navigation
@@ -802,7 +825,8 @@ extension ResortDetailsViewController:UITableViewDataSource {
                 cell.tierImageView.image = UIImage(named: imageStr)
                 cell.fevoriteButton.addTarget(self, action: #selector(favoritesButtonClicked(_:)), for: .touchUpInside)
                 cell.backgroundColor = UIColor.clear
-                
+                cell.showResortWeatherbutton.addTarget(self, action: #selector(self.showWeatherButtonPressed), for: .touchUpInside)
+                cell.showResortLocationButton.addTarget(self, action: #selector(self.showLocationButtonPressed), for: .touchUpInside)
                 return cell
             case 2 :
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.mapTableViewCell, for: indexPath)

@@ -209,37 +209,25 @@ class UpComingTripDetailIPadViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-  
+    
     func didPressMapDetailsButton() {
-        guard let _ = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.coordinates else {
-            SimpleAlert.alert(self, title: "Error", message: "Could not load map. Please try again.")
-            return
+        guard let coordinates = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.coordinates else { return }
+        guard let resortName = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.resortName else { return }
+        guard let cityName = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address?.cityName else { return }
+        SVProgressHUD.show()
+        displayMapView(coordinates: coordinates, resortName: resortName, cityName: cityName) { (response) in
+            SVProgressHUD.dismiss()
         }
-        
-        let storyboard = UIStoryboard(name: "MyUpcomingTripIphone", bundle: nil)
-        let mapDetailsNav = storyboard.instantiateViewController(withIdentifier: "mapDetailNav") as! UINavigationController
-        
-        self.present(mapDetailsNav, animated: true, completion: nil)
     }
         
     func didPressWeatherDetailsButton() {
         guard let resortCode = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.resortCode else { return }
+        guard let resortName = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.resortName else { return }
+        guard let countryCode = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address?.countryCode else { return }
         SVProgressHUD.show()
-        DirectoryClient.getResortWeather(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode, onSuccess: { (response) in
-            if let weatherResponse = response as? ResortWeather {
-                SVProgressHUD.dismiss()
-                
-                let storyboard = UIStoryboard(name: "MyUpcomingTripIphone", bundle: nil)
-                let mapDetailsNav = storyboard.instantiateViewController(withIdentifier: "weatherNav") as! UINavigationController
-                let weatherVC = mapDetailsNav.viewControllers.first as? WeatherViewController
-                weatherVC?.resortWeather = weatherResponse
-                self.present(mapDetailsNav, animated: true, completion: nil)
-            }
-        }) { (error) in
-            print(error)
+        displayWeatherView(resortCode: resortCode, resortName: resortName, countryCode: countryCode, completionHandler: { (response) in
             SVProgressHUD.dismiss()
-            SimpleAlert.alert(self, title: "Error", message: "Something went wrong. Please try again.")
-        }
+        })
 
     }
 }

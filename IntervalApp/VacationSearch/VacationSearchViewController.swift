@@ -1519,7 +1519,9 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 Constant.MyClassConstants.promotionsArray = (exchangeResorts.inventory?.buckets[0].promotions)!
                 Constant.MyClassConstants.inventoryUnitsArray = [(exchangeResorts.inventory?.buckets[0].unit)!]
             }
-            
+            if(Constant.MyClassConstants.resortsArray.count == 0){
+              Constant.MyClassConstants.showAlert = true
+            }
             self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
         }, onError: { (error) in
             Helper.hideProgressBar(senderView: self)
