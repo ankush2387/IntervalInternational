@@ -283,6 +283,7 @@ class Constant: NSObject {
         static var collectionViewScrolledIndex:Int = 0
         static var imagesArray:NSMutableArray = []
         static var bedRoomSizeSelectedIndexArray:NSMutableArray = []
+        static var unitNumberSelectedArray:NSMutableArray = []
         static var amenitiesDictionary = NSMutableDictionary()
         static var advisementsDictionary = NSMutableDictionary()
         static var imageSize = "LARGE"
@@ -308,6 +309,9 @@ class Constant: NSObject {
         static var magazinesFunctionalityCheck = "Magazines"
         static var videosFunctionalityCheck = "Videos"
         static var vacationSearchFunctionalityCheck = "VacationSearch"
+        static var seledtedSegmentGetaway = "Getaway"
+        static var selectedSegmentExchange = "Exchange"
+        static var selectedSegment = ""
         
         static var draw = "Draw"
         static var clear = "Clear"
@@ -470,6 +474,17 @@ class Constant: NSObject {
         static var selectedFloatWeek = OpenWeeks()
         static var unitNumberLockOff = ""
         static var saveLockOffDetailsArray = NSMutableArray()
+        
+        //Header for search results
+        static var searchResultHeader = NSLocalizedString("Nearest Check-in Date selected.\nWe found availibility close to your desired date.", comment: "")
+        static var isFromExchange = false
+        static var travelPartyInfo = TravelParty()
+        static var bucketsArray = [ExchangeBucket]()
+        static var exchangeInventory = [ExchageInventory]()
+        static var inventoryUnitsArray =  [InventoryUnit]()
+        static var promotionsArray = [Promotion]()
+        static var htmlHeader = "<html><body>"
+        static var htmlFooter = "</html></body>"
     }
     struct CommonStringIdentifiers {
         static var floatWeek = "FLOAT_WEEK"
@@ -763,6 +778,7 @@ class Constant: NSObject {
         static var intervalHDiPadControllerTitle =  NSLocalizedString("IntervalHDIpadPlayerViewController", comment: "")
         static var clubpointselection = NSLocalizedString("Club Point Selection", comment: "")
         static var selectedControllerTitle = ""
+        static var sorting = NSLocalizedString("Sorting", comment: "")
     }
     
     //***** Common structure for custom cell identifiers ******//
@@ -1109,6 +1125,19 @@ class Constant: NSObject {
         static var tdiCollectionViewCell = "TdiCollectionViewCell"
         static var unitSizeTdiCollectionViewCell = "UnitSizeTdiCollectionViewCell"
         static var tdiTableViewCell = "TdiTableViewCell"
+        static var exchange = "Exchange"
+        static var sortingOptionCell = "sortingOptionCell"
+        static var whereToGoCell = "WhereToGoCell"
+    }
+    
+    //***** Common structure for dynamic strings combinining strings *****//
+    
+    struct getDynamicString {
+         static var clubInterValPointsUpTo = NSLocalizedString("Club Interval Gold Points up to", comment: "")
+         static var andString = NSLocalizedString("and", comment: "")
+        static var moreString = NSLocalizedString("more", comment: "")
+        static var fromString = NSLocalizedString("From ", comment:"")
+        static var weekString = NSLocalizedString(" Wk.", comment:"")
     }
     
     //***** Common structure for font names and type *****//
@@ -1172,6 +1201,8 @@ class Constant: NSObject {
         static var detailSegue = "detailSegue"
         static var searchVacation = "searchVacation"
         static var upcomingDetailSegue = "UpComingTripDetailSegue"
+        static var searchResultMapSegue = "searchResultMapSegue"
+        static var sortingSegue = "sortingSegue"
     }
     
     //***** common  structure to provide all actionSheetAttributedString *****//

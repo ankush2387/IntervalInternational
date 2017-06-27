@@ -61,7 +61,7 @@ class ResortDetails: NSObject,UITableViewDataSource,UITableViewDelegate {
         let resortAddress = resortDetails.address!
         cell.resortCountry.text = resortAddress.cityName
         cell.resortCode.text = resortDetails.resortCode
-        let tierImageName = Helper.getTierImageName(tier: resortDetails.tier!)
+        let tierImageName = Helper.getTierImageName(tier: resortDetails.tier!.uppercased())
         cell.tierImageView.image = UIImage(named:tierImageName)
         cell.selectionStyle = UITableViewCellSelectionStyle.none
         cell.delegate = self

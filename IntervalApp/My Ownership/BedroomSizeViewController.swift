@@ -74,10 +74,13 @@ class BedroomSizeViewController: UIViewController {
     func changeLabelColor(checkBox:IUIKCheckbox){
         
         let checkedLabel = self.view.viewWithTag(checkBox.tag%10 + 100) as! UILabel
+        let unitLabel = self.view.viewWithTag(checkBox.tag%10 + 10) as! UILabel
         if(checkBox.checked){
-            checkedLabel.textColor = UIColor.orange
+            checkedLabel.textColor = IUIKColorPalette.secondaryB.color
+            unitLabel.textColor = IUIKColorPalette.secondaryB.color
         }else{
             checkedLabel.textColor = UIColor.black
+            unitLabel.textColor = UIColor.black
         }
     }
     
@@ -99,7 +102,7 @@ class BedroomSizeViewController: UIViewController {
                 self.localArrayToHoldSelection = [0,1,2,3,4]
             }
             else {
-                for index in Constant.MyClassConstants.bedRoomSizeSelectedIndexArray{
+                for index in Constant.MyClassConstants.unitNumberSelectedArray{
                     self.localArrayToHoldSelection.add(index as! Int)
                 }
             }
@@ -244,17 +247,7 @@ extension BedroomSizeViewController : UITableViewDataSource{
             cell?.backgroundCellView.layer.borderColor = UIColor.white.cgColor
             cell?.bedroomSizelabel.text = Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as? String
             cell?.checkBoxButton.tag = indexPath.row + 1000
-           if(Constant.MyClassConstants.userSelectedStringArray.contains(Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as! String)){
-            if(!localArrayToHoldSelection.contains(cell?.checkBoxButton.tag as Any))
-            {
-                localArrayToHoldSelection.add(cell?.checkBoxButton.tag as Any)
-                doneButton.isEnabled = true
-                cell?.bedroomSizelabel.textColor = IUIKColorPalette.secondaryB.color
-            }
-                cell?.checkBoxButton.checked = true
-            }else{
-                cell?.checkBoxButton.checked = false
-            }
+            print(Constant.MyClassConstants.userSelectedStringArray)
             if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController){
                 cell?.checkBoxButton.isHidden = true
             }else{
@@ -262,6 +255,7 @@ extension BedroomSizeViewController : UITableViewDataSource{
             }
             cell?.selectionStyle = UITableViewCellSelectionStyle.none
             cell?.bedroomSizelabel.tag = indexPath.row + 100
+            cell?.unitSizeLabel.tag = indexPath.row + 10
             var unitDetails = ""
             if(indexPath.row < Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count - 1 ){
             unitDetails = "\(String(describing: Constant.MyClassConstants.relinquishmentSelectedWeek.unit!.lockOffUnits[indexPath.row].unitNumber!)), \(String(describing: Helper.getKitchenEnums(kitchenType: Constant.MyClassConstants.relinquishmentSelectedWeek.unit!.lockOffUnits[indexPath.row].kitchenType!)))"
@@ -269,6 +263,20 @@ extension BedroomSizeViewController : UITableViewDataSource{
                 unitDetails = "\(String(describing: Constant.MyClassConstants.relinquishmentSelectedWeek.unit!.unitNumber!)), \(String(describing: Helper.getKitchenEnums(kitchenType: Constant.MyClassConstants.relinquishmentSelectedWeek.unit!.kitchenType!)))"
             }
             cell?.unitSizeLabel.text = unitDetails
+            let unitNumber = unitDetails.components(separatedBy: ",")
+            if(Constant.MyClassConstants.userSelectedStringArray.contains(Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as! String)){
+                if((unitNumber[0] == Constant.MyClassConstants.unitNumberSelectedArray[indexPath.row] as! String))
+                {
+                    localArrayToHoldSelection.add(cell?.checkBoxButton.tag as Any)
+                    doneButton.isEnabled = true
+                    cell?.bedroomSizelabel.textColor = IUIKColorPalette.secondaryB.color
+                    cell?.unitSizeLabel.textColor = IUIKColorPalette.secondaryB.color
+                    cell?.checkBoxButton.checked = true
+                }
+            }else{
+                cell?.checkBoxButton.checked = false
+            }
+            print(Constant.MyClassConstants.unitNumberSelectedArray)
                 let setUnitSize = cell?.bedroomSizelabel.text?.components(separatedBy: ",")[0]
                 let setUnitNumber = cell?.unitSizeLabel.text?.components(separatedBy: ",")[0]
                 for selectedUnitDetails in Constant.MyClassConstants.saveLockOffDetailsArray{
@@ -277,12 +285,7 @@ extension BedroomSizeViewController : UITableViewDataSource{
                         cell?.unitSizeLabel.textColor = IUIKColorPalette.secondaryB.color
                         cell?.bedroomSizelabel.textColor = IUIKColorPalette.secondaryB.color
                         cell?.infoSavedLabel.isHidden = false
-                    }/*else{
-                        cell?.infoSavedLabel.isHidden = true
-                        cell?.backgroundCellView.layer.borderColor = UIColor.white.cgColor
-                        cell?.unitSizeLabel.textColor = UIColor.black
-                        cell?.bedroomSizelabel.textColor = UIColor.black
-                    }*/
+                    }
                 }
             return cell!
             

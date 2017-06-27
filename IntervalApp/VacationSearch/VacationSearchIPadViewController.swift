@@ -42,6 +42,8 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
     override func viewDidLoad() {
         super.viewDidLoad()
         
+
+        
         NotificationCenter.default.addObserver(self, selector: #selector(refreshTableView), name: NSNotification.Name(rawValue: Constant.notificationNames.refreshTableNotification), object: nil)
         self.getVacationSearchDetails()
     }
@@ -556,28 +558,9 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
         
         
         if (self.segmentIndex == 1 && (Helper.getAllDestinationFromLocalStorage().count>0 || Helper.getAllResortsFromLocalStorage().count>0)) {
-            
+            Constant.MyClassConstants.selectedSegment =  Constant.MyClassConstants.selectedSegmentExchange
             sender.isEnabled = false
-            SVProgressHUD.show()
-            
-            var fromDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: -(Constant.MyClassConstants.totalWindow/2), to: Constant.MyClassConstants.vacationSearchShowDate as Date, options: [])!
-            
-            var toDate:Date!
-            if (fromDate.isGreaterThanDate(Constant.MyClassConstants.todaysDate as Date)) {
-                
-                toDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: (Constant.MyClassConstants.totalWindow/2), to: Constant.MyClassConstants.vacationSearchShowDate as Date, options: [])!
-            }
-            else {
-                _ = Helper.getDifferenceOfDates()
-                fromDate = Constant.MyClassConstants.todaysDate as Date
-                toDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: (Constant.MyClassConstants.totalWindow) + Helper.getDifferenceOfDates(), to: Constant.MyClassConstants.vacationSearchShowDate as Date, options: [])!
-            }
-            
-            if (toDate.isGreaterThanDate(Constant.MyClassConstants.dateAfterTwoYear!)) {
-                
-                toDate = Constant.MyClassConstants.dateAfterTwoYear
-                fromDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: -(Constant.MyClassConstants.totalWindow) + Helper.getDifferenceOfDatesAhead(), to: Constant.MyClassConstants.vacationSearchShowDate as Date, options: [])!
-            }
+            let (toDate,fromDate) = Helper.getSearchDates()
             
             Constant.MyClassConstants.currentFromDate = fromDate
             Constant.MyClassConstants.currentToDate = toDate
@@ -653,12 +636,126 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                 
             }
         }
-        else if(self.segmentIndex == 1){
-            SimpleAlert.alert(self, title: Constant.AlertMessages.searchVacationTitle, message: Constant.AlertMessages.searchVacationMessage)
+        else if(self.segmentIndex == 2){
+            
+            sender.isEnabled = false
+            Helper.showProgressBar(senderView: self)
+            let (toDate,fromDate) = Helper.getSearchDates()
+            let exchangeSearchDateRequest = ExchangeSearchDatesRequest()
+            exchangeSearchDateRequest.checkInFromDate = fromDate
+            exchangeSearchDateRequest.checkInToDate = toDate
+            exchangeSearchDateRequest.destinations = Helper.getAllDestinationFromLocalStorage()
+            exchangeSearchDateRequest.resorts = Helper.getAllResortsFromLocalStorage()
+            
+            let travelPartyInfo = TravelParty()
+            travelPartyInfo.adults = Int(self.adultCounter)
+            travelPartyInfo.children = Int(self.childCounter)
+           
+            Constant.MyClassConstants.travelPartyInfo = travelPartyInfo
+            
+            exchangeSearchDateRequest.travelParty = travelPartyInfo
+            
+            exchangeSearchDateRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
+            
+            
+            if Reachability.isConnectedToNetwork() == true {
+                ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request: exchangeSearchDateRequest, onSuccess: { (exchangeSearchDates) in
+                    var combinedSearchDates = [Date]()
+                    combinedSearchDates = exchangeSearchDates.checkInDates.map { $0 }
+                    combinedSearchDates.append(contentsOf: exchangeSearchDates.surroundingCheckInDates.map { $0 })
+                    
+                    var combinedResortCodes = [String]()
+                    combinedResortCodes = exchangeSearchDates.resortCodes.map { $0 } + exchangeSearchDates.surroundingResortCodes.map { $0 }
+                    
+                    Constant.MyClassConstants.combinedCheckInDates = exchangeSearchDates.checkInDates
+                    Constant.MyClassConstants.surroundingCheckInDates = exchangeSearchDates.surroundingCheckInDates.map { $0 }
+                    Constant.MyClassConstants.checkInDates = combinedSearchDates
+                    Constant.MyClassConstants.resortCodesArray = combinedResortCodes
+                    Constant.MyClassConstants.surroundingResortCodesArray = exchangeSearchDates.surroundingResortCodes.map { $0 }
+                    
+                    
+                    sender.isEnabled = true
+                    if(Constant.MyClassConstants.checkInDates.count == 0) {
+                        Helper.hideProgressBar(senderView: self)
+                        SimpleAlert.alert(self, title: Constant.AlertErrorMessages.noResultError, message: Constant.AlertMessages.noResultMessage)
+                    }else {
+                        
+                        let vacationSearchDateString = Helper.convertDateToString(date: Constant.MyClassConstants.vacationSearchShowDate, format: Constant.MyClassConstants.dateFormat)
+                        let datesStringArray = NSMutableArray()
+                        for searchDate in Constant.MyClassConstants.checkInDates{
+                            let searchedDate = Helper.convertDateToString(date: searchDate, format: Constant.MyClassConstants.dateFormat)
+                            datesStringArray.add(searchedDate)
+                        }
+                        if (!datesStringArray.contains(vacationSearchDateString)){
+                            
+                            Constant.MyClassConstants.resortsArray.removeAll()
+                            Constant.MyClassConstants.checkInDates.insert(Constant.MyClassConstants.vacationSearchShowDate, at: 0)
+                            
+                            if let dateToSelect = Constant.MyClassConstants.checkInDates.index(of: Constant.MyClassConstants.vacationSearchShowDate) {
+                                Constant.MyClassConstants.searchResultCollectionViewScrollToIndex = dateToSelect + 1
+                                
+                                let exchangeAvailabilityRequest = ExchangeSearchAvailabilityRequest()
+                                exchangeAvailabilityRequest.checkInDate = Constant.MyClassConstants.checkInDates[dateToSelect]
+                                exchangeAvailabilityRequest.resortCodes = Constant.MyClassConstants.resortCodesArray
+                                exchangeAvailabilityRequest.travelParty = travelPartyInfo
+                                exchangeAvailabilityRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
+                                
+                                //Check resorts for search availability.
+                                self.searchAvailability(exchangeAvailabilityRequest: exchangeAvailabilityRequest, sender: sender)
+                                
+                            }
+                        }else {
+                            
+                            if let dateToSelect = Constant.MyClassConstants.checkInDates.index(of: Constant.MyClassConstants.vacationSearchShowDate) {
+                                Constant.MyClassConstants.searchResultCollectionViewScrollToIndex = dateToSelect + 1
+                                Constant.MyClassConstants.showAlert = false
+                                sender.isEnabled = true
+                                
+                                let exchangeAvailabilityRequest = ExchangeSearchAvailabilityRequest()
+                                exchangeAvailabilityRequest.checkInDate = Constant.MyClassConstants.checkInDates[dateToSelect]
+                                exchangeAvailabilityRequest.resortCodes = exchangeSearchDates.resortCodes
+                                exchangeAvailabilityRequest.travelParty = travelPartyInfo
+                                exchangeAvailabilityRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
+                                
+                                //Check resorts for search availability.
+                                self.searchAvailability(exchangeAvailabilityRequest: exchangeAvailabilityRequest, sender: sender)
+                            }else {
+                                Constant.MyClassConstants.searchResultCollectionViewScrollToIndex = 1
+                                SVProgressHUD.dismiss()
+                                Helper.removeServiceCallBackgroundView(view: self.view)
+                                Helper.hideProgressBar(senderView: self)
+                                sender.isEnabled = true
+                                
+                                let exchangeAvailabilityRequest = ExchangeSearchAvailabilityRequest()
+                                exchangeAvailabilityRequest.checkInDate = exchangeSearchDates.checkInDates[0]
+                                exchangeAvailabilityRequest.resortCodes = Constant.MyClassConstants.resortCodesArray
+                                exchangeAvailabilityRequest.travelParty = travelPartyInfo
+                                exchangeAvailabilityRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
+                                
+                                //Call for search availability
+                                self.searchAvailability(exchangeAvailabilityRequest: exchangeAvailabilityRequest, sender: sender)
+                            }
+                        }
+                    }
+
+                }, onError: { (error) in
+                    Helper.hideProgressBar(senderView: self)
+                    SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.noResultError)
+                })
+            }else{
+                Helper.hideProgressBar(senderView: self)
+                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
+            }
+   
+  
+                Constant.MyClassConstants.isFromExchange = true
+
         }
         
     }
+
 }
+
 
 //Extension for collection view.
 extension VacationSearchIPadViewController:UICollectionViewDelegate {
@@ -687,7 +784,7 @@ extension VacationSearchIPadViewController:UICollectionViewDataSource {
         let resortFlaxImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: 180) )
         resortFlaxImageView.backgroundColor = UIColor.lightGray
         let rentalDeal:RentalDeal = Constant.MyClassConstants.topDeals[indexPath.row]
-        resortFlaxImageView.setImageWith(URL(string: (rentalDeal.image?.url) ?? ""), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
+        resortFlaxImageView.setImageWith(URL(string: (rentalDeal.images[0].url) ?? ""), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
             if (error != nil) {
                 resortFlaxImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
             }
@@ -798,4 +895,28 @@ extension VacationSearchIPadViewController:WereWantToGoTableViewCellDelegate {
         
         self.navigationController!.present(viewController, animated: true, completion: nil)
     }
+    
+    
+    func searchAvailability(exchangeAvailabilityRequest:ExchangeSearchAvailabilityRequest, sender:IUIKButton){
+        ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: exchangeAvailabilityRequest, onSuccess: { (exchangeAvailability) in
+            Helper.hideProgressBar(senderView: self)
+            Constant.MyClassConstants.showAlert = false
+            Constant.MyClassConstants.resortsArray.removeAll()
+            Constant.MyClassConstants.exchangeInventory.removeAll()
+            for exchangeResorts in exchangeAvailability{
+                Constant.MyClassConstants.resortsArray.append(exchangeResorts.resort!)
+                Constant.MyClassConstants.exchangeInventory.append(exchangeResorts.inventory!)
+            }
+            if(Constant.MyClassConstants.resortsArray.count == 0){
+                Constant.MyClassConstants.showAlert = true
+            }
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
+        }, onError: { (error) in
+            Helper.hideProgressBar(senderView: self)
+            sender.isEnabled = true
+            Constant.MyClassConstants.showAlert = true
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
+        })
+    }
+    
 }

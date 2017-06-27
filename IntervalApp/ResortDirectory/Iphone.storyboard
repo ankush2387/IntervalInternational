@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="x1F-lN-3Vb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="x1F-lN-3Vb">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -866,32 +866,32 @@ Interval Account</string>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ufu-fx-PLH">
                                                     <rect key="frame" x="0.0" y="120" width="375" height="80"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hyatt Vacation Resorts Asia Pacific" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HwS-Hl-Bvh">
-                                                            <rect key="frame" x="20" y="10" width="335" height="20"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hyatt Vacation Resorts Asia Pacific" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HwS-Hl-Bvh">
+                                                            <rect key="frame" x="20" y="10" width="335" height="38"/>
                                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="height" constant="20" id="aDn-CD-Hkp"/>
+                                                                <constraint firstAttribute="height" constant="38" id="aDn-CD-Hkp"/>
                                                             </constraints>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="15"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Denarau,Fizi Islands" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Yn-Eb-1NU">
-                                                            <rect key="frame" x="20" y="30" width="335" height="20"/>
+                                                            <rect key="frame" x="20" y="42" width="335" height="18"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="height" constant="20" id="AVn-2T-gbM"/>
+                                                                <constraint firstAttribute="height" constant="18" id="AVn-2T-gbM"/>
                                                             </constraints>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FIJ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oCm-Hm-h6I">
-                                                            <rect key="frame" x="20" y="50" width="20" height="20"/>
+                                                            <rect key="frame" x="20" y="64" width="20" height="16"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <color key="textColor" red="0.94117647059999998" green="0.43529411759999997" blue="0.21176470589999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DPQ-bC-1df">
-                                                            <rect key="frame" x="45" y="50" width="18" height="18"/>
+                                                            <rect key="frame" x="45" y="61" width="18" height="18"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="18" id="KuO-q2-sy9"/>
                                                             </constraints>
@@ -899,19 +899,19 @@ Interval Account</string>
                                                     </subviews>
                                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
-                                                        <constraint firstItem="oCm-Hm-h6I" firstAttribute="top" secondItem="6Yn-Eb-1NU" secondAttribute="bottom" id="2L8-Xq-NeW"/>
+                                                        <constraint firstItem="oCm-Hm-h6I" firstAttribute="top" secondItem="6Yn-Eb-1NU" secondAttribute="bottom" constant="4" id="2L8-Xq-NeW"/>
                                                         <constraint firstItem="HwS-Hl-Bvh" firstAttribute="centerX" secondItem="ufu-fx-PLH" secondAttribute="centerX" id="7e4-lM-OHp"/>
                                                         <constraint firstItem="HwS-Hl-Bvh" firstAttribute="leading" secondItem="6Yn-Eb-1NU" secondAttribute="leading" id="GPC-O0-t4m"/>
                                                         <constraint firstItem="oCm-Hm-h6I" firstAttribute="leading" secondItem="6Yn-Eb-1NU" secondAttribute="leading" id="Hzg-gR-Jdy"/>
-                                                        <constraint firstItem="6Yn-Eb-1NU" firstAttribute="top" secondItem="HwS-Hl-Bvh" secondAttribute="bottom" id="Jny-eG-jdW"/>
-                                                        <constraint firstAttribute="bottom" secondItem="oCm-Hm-h6I" secondAttribute="bottom" constant="10" id="Ktl-Qx-nlJ"/>
+                                                        <constraint firstItem="6Yn-Eb-1NU" firstAttribute="top" secondItem="HwS-Hl-Bvh" secondAttribute="bottom" constant="-6" id="Jny-eG-jdW"/>
+                                                        <constraint firstAttribute="bottom" secondItem="oCm-Hm-h6I" secondAttribute="bottom" id="Ktl-Qx-nlJ"/>
                                                         <constraint firstItem="HwS-Hl-Bvh" firstAttribute="leading" secondItem="ufu-fx-PLH" secondAttribute="leading" constant="20" id="Ohd-Wv-SYu"/>
-                                                        <constraint firstAttribute="bottom" secondItem="DPQ-bC-1df" secondAttribute="bottom" constant="12" id="X5P-yH-1wU"/>
+                                                        <constraint firstAttribute="bottom" secondItem="DPQ-bC-1df" secondAttribute="bottom" constant="1" id="X5P-yH-1wU"/>
                                                         <constraint firstItem="HwS-Hl-Bvh" firstAttribute="top" secondItem="ufu-fx-PLH" secondAttribute="top" constant="10" id="aWN-4J-tHo"/>
                                                         <constraint firstItem="HwS-Hl-Bvh" firstAttribute="trailing" secondItem="6Yn-Eb-1NU" secondAttribute="trailing" id="e5M-eb-X3c"/>
                                                         <constraint firstItem="oCm-Hm-h6I" firstAttribute="trailing" secondItem="6Yn-Eb-1NU" secondAttribute="trailing" id="eJP-fP-AQW"/>
                                                         <constraint firstItem="DPQ-bC-1df" firstAttribute="leading" secondItem="oCm-Hm-h6I" secondAttribute="trailing" constant="5" id="fRK-2I-QVF"/>
-                                                        <constraint firstItem="DPQ-bC-1df" firstAttribute="top" secondItem="oCm-Hm-h6I" secondAttribute="top" id="pRZ-2V-FO9"/>
+                                                        <constraint firstItem="DPQ-bC-1df" firstAttribute="top" secondItem="oCm-Hm-h6I" secondAttribute="top" constant="-3" id="pRZ-2V-FO9"/>
                                                         <constraint firstAttribute="height" constant="80" id="sbP-Lu-MNs"/>
                                                     </constraints>
                                                     <variation key="default">
@@ -928,9 +928,6 @@ Interval Account</string>
                                                     </constraints>
                                                     <state key="normal" image="FavoriteIcon-Off"/>
                                                     <state key="selected" image="FavoriteIcon-On"/>
-                                                    <connections>
-                                                        <action selector="favirotesButtonPressed:" destination="19S-Md-nhP" eventType="touchUpInside" id="1Ry-vE-Kmi"/>
-                                                    </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r7S-E2-C7W">
                                                     <rect key="frame" x="18" y="90" width="30" height="30"/>
@@ -1464,7 +1461,7 @@ Interval Account</string>
                 <navigationController storyboardIdentifier="ListNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="EIu-tg-OFK" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="1" title="List" id="dGZ-Jv-rdU"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="qoS-eY-8yu">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="qoS-eY-8yu">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1483,7 +1480,7 @@ Interval Account</string>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="7en-Uy-gN2" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="2" title="Favorites" id="i2t-5Q-fUh"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="YE2-xg-5Hn">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="YE2-xg-5Hn">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1502,7 +1499,7 @@ Interval Account</string>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="nRC-as-d50" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Map" id="Xsj-Rz-NIu"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="p9X-Zd-7Lv">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="p9X-Zd-7Lv">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1520,7 +1517,7 @@ Interval Account</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Gpr-6e-otx" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="99W-AA-Yhy">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="99W-AA-Yhy">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

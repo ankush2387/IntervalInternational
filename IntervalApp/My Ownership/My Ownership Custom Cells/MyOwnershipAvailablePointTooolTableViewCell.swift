@@ -55,6 +55,8 @@ class MyOwnershipAvailablePointTooolTableViewCell: UITableViewCell {
      */
     fileprivate func updateCellComponentstext(){
         availablePointsToolbutton.setTitle(Constant.ownershipViewController.clubIntervalGoldPointTableViewCell.availablePointsToolbuttonTitle, for: UIControlState())
+        clubIntervalImageView.image = UIImage(named: "")
+        
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {

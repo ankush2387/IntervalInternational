@@ -66,13 +66,10 @@ class GoogleMapViewController: UIViewController {
         
         if(Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.resortFunctionalityCheck) {
             
-            
             //***** Creating and adding left  bar button for back button *****//
             let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(GoogleMapViewController.menuBackButtonPressed(_:)))
             menuButton.tintColor = UIColor.white
             self.navigationItem.leftBarButtonItem = menuButton
-            
-            
             
             self.navigationItem.title = Constant.ControllerTitles.vacationSearchDestinationController
             self.bottomViewWithButtons()
@@ -481,9 +478,8 @@ class GoogleMapViewController: UIViewController {
     func apiCallWithRectangleRequest(request:GeoArea) {
         
         DirectoryClient.getResortsWithinGeoArea(Constant.MyClassConstants.systemAccessToken, geoArea: request, onSuccess: { (response) in
-            
-            Constant.MyClassConstants.resortsArray = response
             if(response.count > 0){
+                Constant.MyClassConstants.resortsArray = response
                 self.updateMapWithMarkers()
             }
             if(Constant.RunningDevice.deviceIdiom == .pad && !self.hideSideView && self.containerView.isHidden == true){
@@ -589,7 +585,18 @@ class GoogleMapViewController: UIViewController {
             
             let storyboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
             let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginController)
-            self.present(viewController, animated: true, completion: nil)
+            //self.navigationController?.pushViewController(viewController, animated: true)
+            
+            //***** creating animation transition to show custom transition animation *****//
+            let transition: CATransition = CATransition()
+            let timeFunc : CAMediaTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+            transition.duration = 0.4
+            transition.timingFunction = timeFunc
+            transition.type = kCATransitionPush
+            transition.subtype = kCATransitionFromTop
+            viewController.view.layer.add(transition, forKey: kCATransition)
+            self.navigationController?.pushViewController(viewController, animated: false)
+            UIApplication.shared.keyWindow?.layer.backgroundColor = UIColor.clear.cgColor
         }
         else {
             if(sender.isSelected == true) {
@@ -1446,7 +1453,7 @@ extension GoogleMapViewController:UICollectionViewDataSource {
         
         if(resort.tier != nil){
             let tearImageView = UIImageView(frame: CGRect(x: 55, y: 42, width: 16, height: 16))
-            let tierImageName = Helper.getTierImageName(tier: resort.tier!)
+            let tierImageName = Helper.getTierImageName(tier: resort.tier!.uppercased())
             tearImageView.image = UIImage(named: tierImageName)
             resortNameGradientView.addSubview(tearImageView)
         }
@@ -1646,6 +1653,7 @@ extension GoogleMapViewController:UITableViewDataSource {
                 cell.resortLocationName.text = dicValue.destinationName
                 //TODO (jhon) - aplication was crashing when lookin for resort name (Paris, Cancun) 
                 guard let territoryCode = dicValue.address?.territoryCode
+
                     else{
                         return cell
                 }
@@ -1743,8 +1751,8 @@ extension GoogleMapViewController:UITableViewDataSource {
             }else{
             }
             cell.resortName.text = resortDetails.resortName
-            let resortAddress = resortDetails.address!
-            cell.resortCountry.text = resortAddress.cityName //resortAddress.country?.countryName
+            let resortAddress = resortDetails.address
+            cell.resortCountry.text = resortAddress?.cityName //resortAddress.country?.countryName
             cell.resortCode.text = resortDetails.resortCode
             cell.delegate = self
             
@@ -1752,7 +1760,7 @@ extension GoogleMapViewController:UITableViewDataSource {
                 else{
                     return cell
             }
-            let tierImageName = Helper.getTierImageName(tier: resortDetails.tier!)
+            let tierImageName = Helper.getTierImageName(tier: resortDetails.tier!.uppercased())
             cell.tierImageView.image = UIImage(named:tierImageName)
             
             return cell
@@ -1806,6 +1814,7 @@ extension GoogleMapViewController:UISearchBarDelegate {
             DirectoryClient.searchDestinations(Constant.MyClassConstants.systemAccessToken, request: SearchDestinationsRequest.init(query: searchBar.text), onSuccess: { (response) in
                 if(response.resorts.count > 0){
                     Constant.MyClassConstants.resorts = response.resorts
+                    Constant.MyClassConstants.resortsArray = response.resorts
                 }
                 
                 

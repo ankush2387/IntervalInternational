@@ -76,7 +76,6 @@ public class Helper{
      */
     static func applyCornerRadious(view:UIView,cornerradious:CGFloat = 1){
         view.layer.cornerRadius = cornerradious
-        
     }
     
     //***** Common function to format the date *****//
@@ -422,8 +421,7 @@ public class Helper{
                 Constant.MyClassConstants.resortsArray.removeAll()
                 Constant.MyClassConstants.resortsArray = response.resorts
                 //DarwinSDK.logger.debug(response.resorts[0].promotions)
-                SVProgressHUD.dismiss()
-                removeServiceCallBackgroundView(view: senderVC.view)
+                hideProgressBar(senderView: senderVC)
                 if(senderVC is VacationSearchViewController || senderVC is VacationSearchIPadViewController ) {
                     
                     // omniture tracking with event 33
@@ -462,8 +460,7 @@ public class Helper{
                     }
                     
                     
-                    SVProgressHUD.dismiss()
-                    Helper.removeServiceCallBackgroundView(view: senderVC.view)
+                    hideProgressBar(senderView: senderVC)
                 }
                 
             }, onError: { (error) in
@@ -767,6 +764,32 @@ public class Helper{
         }
     }
     
+    static func getSearchDates() ->(Date, Date){
+        
+        var fromDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: -(Constant.MyClassConstants.totalWindow/2), to: Constant.MyClassConstants.vacationSearchShowDate, options: [])!
+        
+        var toDate:Date!
+        if (fromDate.isGreaterThanDate(Constant.MyClassConstants.todaysDate)) {
+            
+            toDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: (Constant.MyClassConstants.totalWindow/2), to: Constant.MyClassConstants.vacationSearchShowDate, options: [])!
+        }
+        else {
+            _ = Helper.getDifferenceOfDates()
+            fromDate = Constant.MyClassConstants.todaysDate
+            toDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: (Constant.MyClassConstants.totalWindow) + Helper.getDifferenceOfDates(), to: Constant.MyClassConstants.vacationSearchShowDate as Date, options: [])!
+        }
+        
+        if (toDate.isGreaterThanDate(Constant.MyClassConstants.dateAfterTwoYear!)) {
+            
+            toDate = Constant.MyClassConstants.dateAfterTwoYear
+            fromDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: -(Constant.MyClassConstants.totalWindow) + Helper.getDifferenceOfDatesAhead(), to: Constant.MyClassConstants.vacationSearchShowDate as Date, options: [])!
+        }
+        Constant.MyClassConstants.currentFromDate = fromDate
+        Constant.MyClassConstants.currentToDate = toDate
+        return(toDate,fromDate)
+        
+    }
+    
     //***** common function that returns date difference between todate and fromdate *****//
     static func getDifferenceOfDates() -> Int{
         
@@ -1042,19 +1065,19 @@ public class Helper{
     /***** common function name mapping of tier with swich case *****/
     static func getTierImageName(tier:String) -> String{
         switch tier {
-        case  "select":
+        case  "SELECT":
             return "Resort_Select"
-        case "select_boutique":
+        case "SELECT_BOUTIQUE":
             return "Resort_Select_BTQ"
-        case "premier":
+        case "PREMIER":
             return "Resort_Premier"
-        case "premier_boutique":
+        case "PREMIER_BOUTIQUE":
             return "Resort_Premier_BTQ"
-        case "elite":
+        case "ELITE":
             return "Resort_Elite"
-        case "elite_boutique":
+        case "ELITE_BOUTIQUE":
             return "Resort_Elite_BTQ"
-        case "preferred_residence":
+        case "PREFFERED_RESIDENCE":
             return "Resort_Preferred_Residence"
         default:
             return ""
@@ -1118,7 +1141,17 @@ public class Helper{
                     })
                 }
                 else {
-                    viewcontroller.performSegue(withIdentifier: Constant.segueIdentifiers.resortDetailsSegue, sender: self)
+                    let storyBoard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
+                    let viewController = storyBoard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortVC)
+                    let transition = CATransition()
+                    transition.duration = 0.4
+                    transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+                    transition.type = kCATransitionMoveIn
+                    transition.subtype = kCATransitionFromTop
+                    
+                    viewcontroller.navigationController!.view.layer.add(transition, forKey: kCATransition)
+                    viewcontroller.navigationController?.pushViewController(viewController, animated: false)
+
                 }
             }
             else {
@@ -1486,6 +1519,12 @@ public class Helper{
     static func hideProgressBar(senderView:UIViewController){
         SVProgressHUD.dismiss()
         removeServiceCallBackgroundView(view: senderView.view)
+    }
+    
+    static func currencyCodetoSymbol(code:String)->String{
+        let currencyCode : String? = code
+        let curr = Locale.availableIdentifiers.map{ Locale(identifier: $0)}.filter { return currencyCode == $0.currencyCode }.map { ($0.identifier, $0.currencySymbol) }.flatMap {$0}.first
+        return (curr?.1?.description)!
     }
 
 }

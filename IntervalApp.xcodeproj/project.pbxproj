@@ -92,6 +92,10 @@
 		3A586CC91DDCA28200EF6756 /* PromotionsDiscountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A586CC71DDCA28200EF6756 /* PromotionsDiscountCell.xib */; };
 		3A591E0E1E82AF1C007FB4E8 /* EPlusTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A591E0D1E82AF1C007FB4E8 /* EPlusTableViewCell.swift */; };
 		3A591E101E82B1FA007FB4E8 /* TransactionDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A591E0F1E82B1FA007FB4E8 /* TransactionDetailsTableViewCell.swift */; };
+		3A59DE161F013767005280D3 /* SearchResultMapviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A59DE151F013767005280D3 /* SearchResultMapviewController.swift */; };
+		3A59DE181F015E5F005280D3 /* SortingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A59DE171F015E5F005280D3 /* SortingViewController.swift */; };
+		3A59DE1A1F015FDE005280D3 /* SortingOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A59DE191F015FDE005280D3 /* SortingOptionCell.swift */; };
+		3A59DE1C1F0182D3005280D3 /* OwnershipIpad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A59DE1B1F0182D3005280D3 /* OwnershipIpad.storyboard */; };
 		3A5D1AEC1CE34D2D00F28076 /* VacationSearchResultIPadController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5D1AEB1CE34D2D00F28076 /* VacationSearchResultIPadController.swift */; };
 		3A623C671CF707A400389708 /* SideMenuLogoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A623C661CF707A400389708 /* SideMenuLogoCell.swift */; };
 		3A623C6A1CF728BC00389708 /* UIImageView+UIActivityIndicatorForSDWebImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A623C691CF728BC00389708 /* UIImageView+UIActivityIndicatorForSDWebImage.m */; };
@@ -373,6 +377,10 @@
 		3A586CC71DDCA28200EF6756 /* PromotionsDiscountCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PromotionsDiscountCell.xib; sourceTree = "<group>"; };
 		3A591E0D1E82AF1C007FB4E8 /* EPlusTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EPlusTableViewCell.swift; sourceTree = "<group>"; };
 		3A591E0F1E82B1FA007FB4E8 /* TransactionDetailsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionDetailsTableViewCell.swift; sourceTree = "<group>"; };
+		3A59DE151F013767005280D3 /* SearchResultMapviewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultMapviewController.swift; sourceTree = "<group>"; };
+		3A59DE171F015E5F005280D3 /* SortingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortingViewController.swift; sourceTree = "<group>"; };
+		3A59DE191F015FDE005280D3 /* SortingOptionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortingOptionCell.swift; sourceTree = "<group>"; };
+		3A59DE1B1F0182D3005280D3 /* OwnershipIpad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = OwnershipIpad.storyboard; sourceTree = "<group>"; };
 		3A5D1AEB1CE34D2D00F28076 /* VacationSearchResultIPadController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VacationSearchResultIPadController.swift; sourceTree = "<group>"; };
 		3A623C661CF707A400389708 /* SideMenuLogoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuLogoCell.swift; sourceTree = "<group>"; };
 		3A623C681CF728BC00389708 /* UIImageView+UIActivityIndicatorForSDWebImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+UIActivityIndicatorForSDWebImage.h"; sourceTree = "<group>"; };
@@ -701,6 +709,7 @@
 				3A3A01261C99BD0B00B7EC37 /* OwnershipDetailWithFreeDepositTableViewCell.swift */,
 				3A3A01271C99BD0B00B7EC37 /* OwnershipFloatTableViewCell.swift */,
 				3A3A01281C99BD0B00B7EC37 /* OwnershipIphone.storyboard */,
+				3A59DE1B1F0182D3005280D3 /* OwnershipIpad.storyboard */,
 				3A3A012A1C99BD0B00B7EC37 /* OwnershipViewController.swift */,
 				3A3A012B1C99BD0B00B7EC37 /* VacationDetailTableViewCell.swift */,
 			);
@@ -816,6 +825,7 @@
 				3A2089DF1E2544FF001AFFD2 /* RelinquishmentSelectionOpenWeeksCell.swift */,
 				3AE81DBE1E814DF7005C2CEA /* clubPointCell.swift */,
 				E95A30BA1EF9693700AB64DB /* CheckoutPromotionCell.swift */,
+				3A59DE191F015FDE005280D3 /* SortingOptionCell.swift */,
 			);
 			path = CustomCells;
 			sourceTree = "<group>";
@@ -954,6 +964,8 @@
 				3A18D7B91DE05DEC00966472 /* AddDebitOrCreditCardViewController.swift */,
 				3A2089DB1E2525C1001AFFD2 /* RelinquishmentSelectionViewController.swift */,
 				E94C7E081EF84DDE003D0EB5 /* PromotionsViewController.swift */,
+				3A59DE151F013767005280D3 /* SearchResultMapviewController.swift */,
+				3A59DE171F015E5F005280D3 /* SortingViewController.swift */,
 			);
 			path = VacationSearch;
 			sourceTree = "<group>";
@@ -1177,6 +1189,7 @@
 				3A932D571C8868DC004BF665 /* GuestCertificateCell.xib in Resources */,
 				3A932D5F1C886918004BF665 /* PolicyCell.xib in Resources */,
 				3AAA5A271C720F4500A5EA6D /* Assets.xcassets in Resources */,
+				3A59DE1C1F0182D3005280D3 /* OwnershipIpad.storyboard in Resources */,
 				3A3A014F1C99BED600B7EC37 /* MembershipIphone.storyboard in Resources */,
 				3A2F32401C80740B00FCC111 /* MyUpcomingTripIpad.storyboard in Resources */,
 				3AAA5A311C720F4500A5EA6D /* DashboardIPhone.storyboard in Resources */,
@@ -1364,6 +1377,7 @@
 				3A892F411CD3902F00AE6F45 /* CaledarDateCell.swift in Sources */,
 				DC7EF4D41D709EBF00E9E360 /* CommonMembership.swift in Sources */,
 				E94C7E091EF84DDE003D0EB5 /* PromotionsViewController.swift in Sources */,
+				3A59DE1A1F015FDE005280D3 /* SortingOptionCell.swift in Sources */,
 				3A3A013F1C99BD0B00B7EC37 /* OwnershipDetailsTableViewCell.swift in Sources */,
 				3AE81DBF1E814DF7005C2CEA /* clubPointCell.swift in Sources */,
 				3ADA43AA1CA56603003F5373 /* CertificateWhoIsTravelingController.swift in Sources */,
@@ -1455,6 +1469,7 @@
 				DC7EF5121D709F8800E9E360 /* ResortDirectoryViewController.swift in Sources */,
 				DC7EF5131D709F8800E9E360 /* ResortFavoritesTableViewCell.swift in Sources */,
 				3A2089DC1E2525C1001AFFD2 /* RelinquishmentSelectionViewController.swift in Sources */,
+				3A59DE181F015E5F005280D3 /* SortingViewController.swift in Sources */,
 				3A0B25D81CD241790080BF3F /* PolicyListTBLCell.swift in Sources */,
 				DC7BA8321DB911D600BB0C3B /* MagazineTableViewCell.swift in Sources */,
 				3A1854F21CA065E800D238CA /* ResortBedroomDetails.swift in Sources */,
@@ -1481,6 +1496,7 @@
 				3A892F4A1CD3902F00AE6F45 /* SearchResultCollectionCell.swift in Sources */,
 				3A892F431CD3902F00AE6F45 /* CertificateCell.swift in Sources */,
 				3A892F4F1CD3902F00AE6F45 /* TravelWindowSelectionCell.swift in Sources */,
+				3A59DE161F013767005280D3 /* SearchResultMapviewController.swift in Sources */,
 				3A0326221C8EE684000758E3 /* CalendarViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

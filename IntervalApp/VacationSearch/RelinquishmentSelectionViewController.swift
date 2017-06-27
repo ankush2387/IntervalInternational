@@ -21,6 +21,7 @@ class RelinquishmentSelectionViewController: UIViewController {
     var openWkToRemoveArray:NSMutableArray!
     var requiredSection = 0
     var masterUnitSize = ""
+    var masterUnitNumber = ""
     var cellHeight: CGFloat = 80
     
     //Outlets
@@ -64,7 +65,7 @@ class RelinquishmentSelectionViewController: UIViewController {
                     }
                     
                 }
-                else if(fixed_week_type.pointsProgramCode != "") {
+                else if(fixed_week_type.pointsProgramCode != "" || fixed_week_type.weekNumber == Constant.CommonStringIdentifiers.floatWeek) {
                     
                     if ((fixed_week_type.unit?.lockOffUnits.count)! > 0){
                         let results = Constant.MyClassConstants.relinquishmentIdArray.map({ ($0 as AnyObject).contains(fixed_week_type.relinquishmentId!)})
@@ -212,6 +213,7 @@ class RelinquishmentSelectionViewController: UIViewController {
             Constant.ControllerTitles.bedroomSizeViewController = Constant.MyClassConstants.relinquishmentTitle
             Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.relinquishmentSelectionViewController
             masterUnitSize = "\(Helper.getBedroomNumbers(bedroomType: (intervalOpenWeeksArray[sender.tag].unit!.unitSize)!)), Sleeps \(String(describing: intervalOpenWeeksArray[sender.tag].unit!.publicSleepCapacity))"
+            masterUnitNumber = intervalOpenWeeksArray[sender.tag].unit!.unitNumber!
             
             let results = Constant.MyClassConstants.relinquishmentIdArray.map({ ($0 as AnyObject).contains(intervalOpenWeeksArray[sender.tag].relinquishmentId!)})
             
@@ -358,6 +360,7 @@ class RelinquishmentSelectionViewController: UIViewController {
             if((relinquishmentOpenWeeksArray[sender.tag - 1].unit?.lockOffUnits.count)! > 0){
                 Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.relinquishmentSelectionViewController
                 masterUnitSize = "\(Helper.getBedroomNumbers(bedroomType: (relinquishmentOpenWeeksArray[sender.tag - 1].unit!.unitSize)!)), \(Helper.getKitchenEnums(kitchenType: (relinquishmentOpenWeeksArray[sender.tag - 1].unit!.kitchenType)!)) Sleeps \(String(describing: relinquishmentOpenWeeksArray[sender.tag - 1].unit!.publicSleepCapacity))"
+                masterUnitNumber = relinquishmentOpenWeeksArray[sender.tag - 1].unit!.unitNumber!
                 
                 let results = Constant.MyClassConstants.relinquishmentIdArray.map({ ($0 as AnyObject).contains(relinquishmentOpenWeeksArray[sender.tag - 1].relinquishmentId!)})
                 
@@ -506,14 +509,18 @@ class RelinquishmentSelectionViewController: UIViewController {
     
     func getUnitSize(_ unitSize:[InventoryUnit]) {
         Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.removeAllObjects()
+        Constant.MyClassConstants.unitNumberSelectedArray.removeAllObjects()
         let unitSizeRelinquishment = unitSize
         var unitString = ""
+        var unitNumber = ""
         for unit in unitSizeRelinquishment{
             unitString = "\(Helper.getBedroomNumbers(bedroomType: unit.unitSize!)), Sleeps \(unit.publicSleepCapacity)"
-            
+            unitNumber = unit.unitNumber!
+            Constant.MyClassConstants.unitNumberSelectedArray.add(unitNumber)
             Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.add(unitString)
         }
         Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.add(masterUnitSize)
+        Constant.MyClassConstants.unitNumberSelectedArray.add(masterUnitNumber)
     }
 }
 
@@ -572,7 +579,7 @@ extension RelinquishmentSelectionViewController:UITableViewDelegate {
         
         switch section {
         case 0:
-            if (self.relinquishmentPointsProgramArray[0].availablePoints == nil){
+            if (self.relinquishmentPointsProgramArray.count > 0 && self.relinquishmentPointsProgramArray[0].availablePoints == nil){
                 return 0
             }
             else{
@@ -820,9 +827,11 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                         cell.dayAndDateLabel.text = ""
                     }
                     cell.totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: openWeek.weekNumber!))"
-                    cell.dayAndDateLabel.text = ""
                     cell.addButton.tag = indexPath.row + 1
-                    
+                    if((openWeek.unit?.lockOffUnits.count)! > 0){
+                        cell.bedroomSizeAndKitchenClient.text = Constant.MyClassConstants.lockOffCapable
+                        cell.totalSleepAndPrivate.text = ""
+                    }
                     cell.addButton.addTarget(self, action:  #selector(RelinquishmentSelectionViewController.addAvailablePoinButtonPressed(_:)), for: .touchUpInside)
                     
                     //display promotion
@@ -942,7 +951,7 @@ extension RelinquishmentSelectionViewController:BedroomSizeViewControllerDelegat
         for unitDetails1 in selectedUnitsArray{
             
             let unitSizeFullDetail1 = Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[(unitDetails1 as! Int - 1000)] as! String
-            
+            let unitNumber = Constant.MyClassConstants.unitNumberSelectedArray[(unitDetails1 as! Int - 1000)] as! String
             if(!Constant.MyClassConstants.userSelectedStringArray.contains(unitSizeFullDetail1)){
                 
                 let storedata = OpenWeeksStorage()
@@ -964,7 +973,11 @@ extension RelinquishmentSelectionViewController:BedroomSizeViewControllerDelegat
                 resortUnitDetails.unitSize = unitSizeFullDetail[0]
                 resortUnitDetails.kitchenType = unitSizeFullDetail[1]
                 
+                let floatDetails = ResortFloatDetails()
+                floatDetails.unitNumber = unitNumber
+                
                 selectedOpenWeek.unitDetails.append(resortUnitDetails)
+                selectedOpenWeek.floatDetails.append(floatDetails)
                 selectedOpenWeek.resort.append(resort)
                 
                 relinquishmentList.openWeeks.append(selectedOpenWeek)

@@ -11,7 +11,7 @@ import IntervalUIKit
 
 class PromotionsCell: UITableViewCell {
     
-    
+    @IBOutlet weak var promotionWebView: UIWebView!
     @IBOutlet weak var promotionTextLabel: UILabel!
     @IBOutlet weak var promotionSelectionCheckBox: IUIKCheckbox!
     

@@ -29,8 +29,8 @@ class ResortDirectoryResortCell: UITableViewCell {
     @IBOutlet weak var resortCollectionView: UICollectionView!
     @IBOutlet weak var tierImageView: UIImageView!
     @IBOutlet weak var searchVacationButton: IUIKButton?
-    @IBOutlet weak var showResortLocationButton: UIButton!
-    @IBOutlet weak var showResortWeatherbutton: UIButton!
+    @IBOutlet weak var showResortLocationButton: UIButton?
+    @IBOutlet weak var showResortWeatherbutton: UIButton?
     //***** class variables *****//
      var delegate: ResortDirectoryResortCellDelegate?
    
@@ -67,23 +67,7 @@ class ResortDirectoryResortCell: UITableViewCell {
         resortAddress.text = resort.address?.cityName
         resortCode.text = resort.resortCode!
     }
-//***** custom cell favorites button action implementation *****//
-    @IBAction func favirotesButtonPressed(_ sender: AnyObject) {
-        
-        if(fevoriteButton.isSelected == false) {
-        
-            if(UserContext.sharedInstance.accessToken == nil ) {
-               self.delegate?.favoritesButtonSelectedAtIndex(sender.tag)
-            }
-            else {
-                
-                fevoriteButton.isSelected = true
-            }
-        }
-        else {
-            fevoriteButton.isSelected = false
-        }
-    }
+
 //***** method called when the added notification reloadFavoritesTab fired from other classes *****//
     func loginNotification() {
         
@@ -112,7 +96,6 @@ extension ResortDirectoryResortCell:UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.customCellNibNames.whereToGoTableViewCell, for: indexPath) as! ResortCollectionViewCell
 		
         if((indexPath as NSIndexPath).row % 2 == 0){
-            cell.backgroundColor = UIColor.green
         }
 		if(Constant.MyClassConstants.imagesArray.count > 0){
 			cell.imgView.setImageWith(URL(string: Constant.MyClassConstants.imagesArray[(indexPath as NSIndexPath).row] as! String), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in

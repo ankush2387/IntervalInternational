@@ -119,6 +119,9 @@ class CreateActionSheet: UITableViewController {
         }
           if(Constant.MyClassConstants.signInRequestedController.isKind(of:SignInPreLoginViewController.self)) {
          Constant.MyClassConstants.signInRequestedController.navigationController?.popViewController(animated: true)
+           // Constant.MyClassConstants.signInRequestedController.dismiss(animated: true, completion: {
+            
+           // })
             
          NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
     }
