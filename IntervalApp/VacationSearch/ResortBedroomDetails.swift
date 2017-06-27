@@ -21,6 +21,7 @@ class ResortBedroomDetails: UITableViewCell {
     @IBOutlet weak var lineView: UIView!
     @IBOutlet weak var bottomLabel: UILabel!
     @IBOutlet weak var promotionsView: UIView!
+    @IBOutlet weak var currencySymbol: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

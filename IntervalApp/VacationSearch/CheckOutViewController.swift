@@ -90,11 +90,8 @@ class CheckOutViewController: UIViewController {
             Constant.omnitureEvars.eVar49 : "",
             Constant.omnitureEvars.eVar52 : "\((UserContext.sharedInstance.contact?.creditcards?.count)! > 0 ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no)",
             Constant.omnitureEvars.eVar72 : "\(self.showInsurance ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no)",
-            
             ]
-        
         ADBMobile.trackAction(Constant.omnitureEvents.event37, data: userInfo)
-
         
     }
     
@@ -132,7 +129,19 @@ class CheckOutViewController: UIViewController {
                 continueToPayRequest.confirmationDelivery = confirmationDelivery
                 continueToPayRequest.acceptTermsAndConditions = true
                 continueToPayRequest.acknowledgeAndAgreeResortFees = true
-                continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last!
+                
+                let selectedCreditCard = Creditcard()
+                selectedCreditCard.cardHolderName = Constant.MyClassConstants.selectedCreditCard.last!.cardHolderName!
+                selectedCreditCard.typeCode = Constant.MyClassConstants.selectedCreditCard.last!.typeCode!
+                selectedCreditCard.expirationDate = Constant.MyClassConstants.selectedCreditCard.last!.expirationDate!
+                selectedCreditCard.cardNumber = Constant.MyClassConstants.selectedCreditCard.last!.cardNumber!
+                selectedCreditCard.cvv = Constant.MyClassConstants.selectedCreditCard.last!.cvv!
+                selectedCreditCard.billingAddress = Constant.MyClassConstants.selectedCreditCard.last!.billingAddress!
+                selectedCreditCard.preferredCardIndicator = Constant.MyClassConstants.selectedCreditCard.last!.preferredCardIndicator!
+                selectedCreditCard.saveCardIndicator = Constant.MyClassConstants.selectedCreditCard.last!.saveCardIndicator!
+                selectedCreditCard.autoRenew = Constant.MyClassConstants.selectedCreditCard.last!.autoRenew!
+                
+                continueToPayRequest.creditCard = selectedCreditCard
                 Helper.addServiceCallBackgroundView(view: self.view)
                 SVProgressHUD.show()
                 imageSlider.isHidden = true
@@ -481,6 +490,7 @@ extension CheckOutViewController:UITableViewDataSource {
         return self.requiredSectionIntTBLview
         
     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if(section == 0) {

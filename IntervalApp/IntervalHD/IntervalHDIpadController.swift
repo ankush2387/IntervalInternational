@@ -42,8 +42,7 @@ class IntervalHDIpadController: UIViewController {
                 self.view.addGestureRecognizer( rvc.panGestureRecognizer())
             }
             
-        }
-        else {
+        }else {
             
             let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(self.menuBackButtonPressed(_:)))
             menuButton.tintColor = UIColor.white

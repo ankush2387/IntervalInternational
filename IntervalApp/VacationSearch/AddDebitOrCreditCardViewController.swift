@@ -33,13 +33,57 @@ class AddDebitOrCreditCardViewController: UIViewController {
     var dropDownSelectionRow = -1
     var dropDownSelectionSection = -1
     var saveCardCheckBoxChecked = false
+    var isKeyBoardOpen = false
+    var moved: Bool = false
+    var activeField:UITextField?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        NotificationCenter.default.addObserver(self, selector:#selector(keyboardWasShown), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+        
        ADBMobile.trackAction(Constant.omnitureEvents.event57, data: nil)
        modalTransitionStyle = .flipHorizontal
     }
+    
+    func keyboardWasShown(aNotification: NSNotification) {
+        
+        isKeyBoardOpen = true
+        
+        if(self.moved) {
+            let info = aNotification.userInfo as! [String: AnyObject],
+            kbSize = (info[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue.size,
+            contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: kbSize.height, right: 0)
+            
+            self.cardDetailTBLview.contentInset = contentInsets
+            self.cardDetailTBLview.scrollIndicatorInsets = contentInsets
+            
+            // If active text field is hidden by keyboard, scroll it so it's visible
+            // Your app might not need or want this behavior.
+            var aRect = self.view.frame
+            aRect.size.height -= kbSize.height
+            
+            
+            if !aRect.contains(activeField!.frame.origin) {
+                
+                self.cardDetailTBLview.scrollRectToVisible(activeField!.frame, animated: true)
+                
+            }
+        }
+    }
+    
+    func keyboardWillBeHidden(aNotification: NSNotification) {
+        isKeyBoardOpen = false
+        
+        if(self.moved) {
+            self.moved = false
+            let contentInsets = UIEdgeInsets.zero
+            self.cardDetailTBLview.contentInset = contentInsets
+            self.cardDetailTBLview.scrollIndicatorInsets = contentInsets
+        }
+    }
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -282,6 +326,22 @@ class AddDebitOrCreditCardViewController: UIViewController {
     @IBAction func cancelButtonPressed(_ sender: AnyObject) {
          self.dismiss(animated: true, completion: nil)
     }
+    
+    
+    func addDoneButtonOnNumpad(textField: UITextField) {
+        
+        let keypadToolbar: UIToolbar = UIToolbar()
+        
+        // add a done button to the numberpad
+        keypadToolbar.items=[
+            UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.done, target: textField, action: #selector(UITextField.resignFirstResponder)),
+            UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: self, action: nil)
+        ]
+        keypadToolbar.sizeToFit()
+        // add a toolbar with a done button above the number pad
+        textField.inputAccessoryView = keypadToolbar
+    }
+
   
 }
 
@@ -418,6 +478,7 @@ extension AddDebitOrCreditCardViewController:UITableViewDataSource {
             if(indexPath.row == 0 || indexPath.row == 1 || indexPath.row == 4) {
                 
                   let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.guestTextFieldCell, for: indexPath) as! GuestTextFieldCell
+                cell.nameTF.delegate = self
                 cell.nameTF.text = ""
                 if(indexPath.row == 0) {
                     
@@ -426,7 +487,7 @@ extension AddDebitOrCreditCardViewController:UITableViewDataSource {
                     }
                     else {
                         
-                        cell.nameTF.placeholder = Constant.GetawaySearchResultCardFormDetailData.nameOnCard
+                        cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.nameOnCard
                     }
                 }
                 else if(indexPath.row == 1){
@@ -436,13 +497,10 @@ extension AddDebitOrCreditCardViewController:UITableViewDataSource {
                      }
                      else {
                         
-                        cell.nameTF.placeholder = Constant.GetawaySearchResultCardFormDetailData.cardNumber
+                        cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.cardNumber
                     }
                     
                 }
-                else if(indexPath.row == 3) {
-                    
-                                  }
                 else {
                    
                      if(Constant.GetawaySearchResultCardFormDetailData.cvv == "") {
@@ -450,7 +508,7 @@ extension AddDebitOrCreditCardViewController:UITableViewDataSource {
                     }
                      else {
                         
-                        cell.nameTF.placeholder = Constant.GetawaySearchResultCardFormDetailData.cvv
+                        cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.cvv
                     }
                 }
                 cell.nameTF.tag = indexPath.row
@@ -582,6 +640,7 @@ extension AddDebitOrCreditCardViewController:UITableViewDataSource {
             else {
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.guestTextFieldCell, for: indexPath) as! GuestTextFieldCell
+                cell.nameTF.delegate = self
                 cell.nameTF.text = ""
                 if(indexPath.row == 1) {
                    
@@ -727,5 +786,141 @@ extension AddDebitOrCreditCardViewController:UIPickerViewDataSource {
         }
     }
 }
+
+//***** extension class for uitextfield delegate methods definition *****//
+extension AddDebitOrCreditCardViewController:UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.activeField?.resignFirstResponder()
+        
+        return true
+    }
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        self.activeField?.resignFirstResponder()
+    }
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        print(string)
+        if (range.length == 1 && string.characters.count == 0) {
+            print("backspace tapped")
+        }
+    
+        if(Int(textField.accessibilityValue!) == 0) {
+                
+                if(textField.tag == 0) {
+                    
+                    if (range.length == 1 && string.characters.count == 0) {
+                        Constant.GetawaySearchResultCardFormDetailData.nameOnCard.characters.removeLast()
+                    }
+                    else {
+                        Constant.GetawaySearchResultCardFormDetailData.nameOnCard = "\(textField.text!)\(string)"
+                    }
+
+                }
+                else if(textField.tag == 1) {
+                    
+                    
+                    if (range.length == 1 && string.characters.count == 0) {
+                        Constant.GetawaySearchResultCardFormDetailData.cardNumber.characters.removeLast()
+                    }
+                    else {
+                        Constant.GetawaySearchResultCardFormDetailData.cardNumber = "\(textField.text!)\(string)"
+                    }
+                    
+                }
+                else {
+                    
+                    if (range.length == 1 && string.characters.count == 0) {
+                        Constant.GetawaySearchResultCardFormDetailData.cvv.characters.removeLast()
+                    }
+                    else {
+                        Constant.GetawaySearchResultCardFormDetailData.cvv = "\(textField.text!)\(string)"
+                    }
+
+            }
+        }
+        else {
+                
+                if(textField.tag == 1) {
+                    
+                    if (range.length == 1 && string.characters.count == 0) {
+                        Constant.GetawaySearchResultCardFormDetailData.address1.characters.removeLast()
+                    }
+                    else {
+                        
+                        Constant.GetawaySearchResultCardFormDetailData.address1 = "\(textField.text!)\(string)"
+                    }
+                    
+                }
+                else if(textField.tag == 2) {
+                    
+                    
+                    if (range.length == 1 && string.characters.count == 0) {
+                        Constant.GetawaySearchResultCardFormDetailData.address2.characters.removeLast()
+                    }
+                    else {
+                        Constant.GetawaySearchResultCardFormDetailData.address2 = "\(textField.text!)\(string)"
+
+                    }
+                    
+                }
+                else if(textField.tag == 3) {
+                    
+                    if (range.length == 1 && string.characters.count == 0) {
+                        Constant.GetawaySearchResultCardFormDetailData.city.characters.removeLast()
+                    }
+                    else {
+                        Constant.GetawaySearchResultCardFormDetailData.city = "\(textField.text!)\(string)"
+                    }
+                }
+                else {
+                    
+                    
+                    if (range.length == 1 && string.characters.count == 0) {
+                        Constant.GetawaySearchResultCardFormDetailData.pinCode.characters.removeLast()
+                    }
+                    else {
+                       Constant.GetawaySearchResultCardFormDetailData.pinCode = "\(textField.text!)\(string)"
+                        
+                    }
+                    
+                }
+            }
+        
+            return  true
+        }
+        
+        
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        
+        self.activeField = textField
+        
+        self.moved = true
+        
+        if(Int(textField.accessibilityValue!) == 0) {
+            if(textField.tag == 0){
+               textField.keyboardType = .default
+            }else{
+                textField.keyboardType = .numberPad
+                self.addDoneButtonOnNumpad(textField: textField)
+            }
+            
+        }
+        else  {
+            
+            if(textField.tag == 5) {
+                
+                textField.keyboardType = .numberPad
+                self.addDoneButtonOnNumpad(textField: textField)
+            }else{
+                textField.keyboardType = .default
+            }
+            
+        }
+        
+    }
+    
+}
+
 
 

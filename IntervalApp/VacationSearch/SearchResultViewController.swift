@@ -664,6 +664,10 @@ extension SearchResultViewController:UITableViewDataSource {
                 
                 cell.totalPrivateLabel.text = String(units[indexPath.row - 1].publicSleepCapacity + units[indexPath.row - 1].privateSleepCapacity) + "Total, " + (String(units[indexPath.row - 1].privateSleepCapacity)) + "Private"
                 
+                //Change to currency symbol
+                let currencySymbol : String?
+                currencySymbol = Helper.currencyCodetoSymbol(code: invent.currencyCode!)
+                cell.currencySymbol.text = currencySymbol
                 let inventoryPrice:[InventoryPrice] = invent.units[indexPath.row - 1].prices
                 cell.getawayPriceLabel.text = String(Int(Float(inventoryPrice[0].price)))
                 cell.exchangeLabel.isHidden = true

@@ -435,7 +435,7 @@ extension DashboardTableViewController:UICollectionViewDataSource {
         let rentalDeal:RentalDeal = Constant.MyClassConstants.topDeals[indexPath.row]
         
         
-        resortFlaxImageView.setImageWith(URL(string: (rentalDeal.images?.url) ?? ""), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
+        resortFlaxImageView.setImageWith(URL(string: (rentalDeal.image?.url) ?? ""), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
             if (error != nil) {
                 resortFlaxImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
             }
