@@ -902,10 +902,10 @@ extension VacationSearchIPadViewController:WereWantToGoTableViewCellDelegate {
             Helper.hideProgressBar(senderView: self)
             Constant.MyClassConstants.showAlert = false
             Constant.MyClassConstants.resortsArray.removeAll()
+            Constant.MyClassConstants.exchangeInventory.removeAll()
             for exchangeResorts in exchangeAvailability{
                 Constant.MyClassConstants.resortsArray.append(exchangeResorts.resort!)
-                Constant.MyClassConstants.promotionsArray = (exchangeResorts.inventory?.buckets[0].promotions)!
-                Constant.MyClassConstants.inventoryUnitsArray = [(exchangeResorts.inventory?.buckets[0].unit)!]
+                Constant.MyClassConstants.exchangeInventory.append(exchangeResorts.inventory!)
             }
             if(Constant.MyClassConstants.resortsArray.count == 0){
                 Constant.MyClassConstants.showAlert = true

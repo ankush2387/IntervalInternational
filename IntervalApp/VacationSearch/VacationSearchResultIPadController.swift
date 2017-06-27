@@ -655,7 +655,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
             
             if(!Constant.MyClassConstants.isFromExchange) {
                 
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.resortBedroomDetails, for: indexPath) as! ResortBedroomDetails
+                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.getawayCell, for: indexPath) as! GetawayCell
                 cell.layer.borderWidth = 0.5
                 cell.layer.borderColor = UIColor.lightGray.cgColor
                 
@@ -665,19 +665,19 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 let invent = inventoryDict[0]
                 let units = invent.units
                 if let roomSize = UnitSize(rawValue: units[indexPath.row - 1].unitSize!) {
-                    cell.numberOfBedroom.text = Helper.getBrEnums(brType: roomSize.rawValue)
+                    cell.bedRoomType.text = Helper.getBrEnums(brType: roomSize.rawValue)
                 }
                 if let kitchenSize = KitchenType(rawValue: units[indexPath.row - 1].kitchenType!) {
-                    cell.kitchenLabel.text = Helper.getKitchenEnums(kitchenType: kitchenSize.rawValue)
+                    cell.kitchenType.text = Helper.getKitchenEnums(kitchenType: kitchenSize.rawValue)
                 }
                 
-                cell.totalPrivateLabel.text = String(units[indexPath.row - 1].publicSleepCapacity + units[indexPath.row - 1].privateSleepCapacity) + "Total, " + (String(units[indexPath.row - 1].privateSleepCapacity)) + "Private"
+                cell.sleeps.text = String(units[indexPath.row - 1].publicSleepCapacity + units[indexPath.row - 1].privateSleepCapacity) + "Total, " + (String(units[indexPath.row - 1].privateSleepCapacity)) + "Private"
                 
                 cell.backgroundColor = IUIKColorPalette.contentBackground.color
                 
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 
-                cell.getawayPriceLabel.text = String(Int(Float(invent.units[indexPath.row - 1].prices[0].price)))
+                cell.getawayPrice.text = String(Int(Float(invent.units[indexPath.row - 1].prices[0].price)))
                 cell.backgroundColor = IUIKColorPalette.contentBackground.color
                 
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
@@ -711,7 +711,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 
             }else{
                 
-                if(Constant.MyClassConstants.promotionsArray.count != 0 && indexPath.row > Constant.MyClassConstants.inventoryUnitsArray.count){
+                if(Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].promotions.count != 0 && indexPath.row > Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets.count){
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.promotionsCell, for: indexPath) as! PromotionsCell
                     var promotionsString = Constant.MyClassConstants.htmlHeader.appending((Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].promotions[0].offerContentFragment)!)
                     promotionsString = promotionsString.appending(Constant.MyClassConstants.htmlFooter)
