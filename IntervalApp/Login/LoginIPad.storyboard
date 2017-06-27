@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16D30" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="fou-rd-XBM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="fou-rd-XBM">
     <device id="ipad12_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -739,29 +741,15 @@
                                 </variation>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zbr-G2-8BA">
-                                <rect key="frame" x="300" y="717" width="424" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="Qzs-E6-hGx">
-                                        <variation key="heightClass=regular-widthClass=regular" constant="30"/>
-                                    </constraint>
-                                </constraints>
+                                <rect key="frame" x="487.5" y="717" width="49" height="23.5"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
                                 <nil key="highlightedColor"/>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="Qzs-E6-hGx"/>
-                                    </mask>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=regular">
-                                    <mask key="constraints">
-                                        <include reference="Qzs-E6-hGx"/>
-                                    </mask>
-                                </variation>
                             </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="VJc-pq-Xm5" firstAttribute="centerX" secondItem="Xqg-88-gpn" secondAttribute="centerX" id="6hx-Ny-rWI"/>
+                            <constraint firstItem="Zbr-G2-8BA" firstAttribute="centerX" secondItem="hEp-Gd-gzj" secondAttribute="centerX" id="9mo-rf-gJ7"/>
                             <constraint firstItem="Xqg-88-gpn" firstAttribute="bottom" secondItem="VCW-Rx-zIu" secondAttribute="top" id="EUd-5I-IvP"/>
                             <constraint firstItem="h0b-ep-zOQ" firstAttribute="leading" secondItem="hEp-Gd-gzj" secondAttribute="leadingMargin" constant="10" id="G0M-rx-kew">
                                 <variation key="heightClass=regular-widthClass=regular" constant="184"/>
@@ -774,16 +762,10 @@
                             <constraint firstItem="alG-Kt-d2g" firstAttribute="top" secondItem="VJc-pq-Xm5" secondAttribute="bottom" constant="40" id="Jg9-se-ySa">
                                 <variation key="heightClass=regular-widthClass=regular" constant="66"/>
                             </constraint>
-                            <constraint firstAttribute="trailingMargin" secondItem="Zbr-G2-8BA" secondAttribute="trailing" constant="330" id="KYA-cP-aLx">
-                                <variation key="heightClass=regular-widthClass=regular" constant="280"/>
-                            </constraint>
                             <constraint firstAttribute="trailingMargin" secondItem="h0b-ep-zOQ" secondAttribute="trailing" constant="10" id="RLf-kb-4Ke">
                                 <variation key="heightClass=regular-widthClass=regular" constant="184"/>
                             </constraint>
                             <constraint firstItem="Zbr-G2-8BA" firstAttribute="top" secondItem="h0b-ep-zOQ" secondAttribute="bottom" constant="3" id="TkP-hv-EyD"/>
-                            <constraint firstItem="Zbr-G2-8BA" firstAttribute="leading" secondItem="hEp-Gd-gzj" secondAttribute="leadingMargin" constant="330" id="V3N-SJ-RdN">
-                                <variation key="heightClass=regular-widthClass=regular" constant="280"/>
-                            </constraint>
                             <constraint firstAttribute="trailingMargin" secondItem="alG-Kt-d2g" secondAttribute="trailing" constant="10" id="XNS-E7-jX3">
                                 <variation key="heightClass=regular-widthClass=regular" constant="184"/>
                             </constraint>
@@ -850,9 +832,15 @@
                                 <include reference="Jg9-se-ySa"/>
                                 <include reference="XNS-E7-jX3"/>
                                 <include reference="joq-Z2-eSr"/>
+                                <include reference="6hx-Ny-rWI"/>
+                                <include reference="ydG-dn-GHN"/>
                                 <include reference="G0M-rx-kew"/>
                                 <include reference="H8F-Sx-wXS"/>
                                 <include reference="RLf-kb-4Ke"/>
+                                <include reference="TkP-hv-EyD"/>
+                                <exclude reference="HHL-9d-d2x"/>
+                                <include reference="kfI-0K-Leu"/>
+                                <include reference="pvn-fd-P9k"/>
                             </mask>
                         </variation>
                     </view>

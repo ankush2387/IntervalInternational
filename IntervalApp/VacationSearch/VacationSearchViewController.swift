@@ -380,7 +380,8 @@ extension VacationSearchViewController:UITableViewDelegate {
             switch((indexPath as NSIndexPath).section) {
             case 0 :
                 if((indexPath as NSIndexPath).row < Constant.MyClassConstants.whereTogoContentArray.count) {
-                    return 70
+                    //return 70
+                    return UITableViewAutomaticDimension
                 }
                 else {
                     return 60
@@ -712,7 +713,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                         return cell
                     }else {
                         
-                        let cell: WhereToGoContentCell = tableView.dequeueReusableCell(withIdentifier: "WhereToGoCell", for: indexPath) as! WhereToGoContentCell
+                        let cell: WhereToGoContentCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.whereToGoCell, for: indexPath) as! WhereToGoContentCell
                         
                         
                         
@@ -989,7 +990,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                 else {
                     
                     
-                    let cell: WhereToGoContentCell = tableView.dequeueReusableCell(withIdentifier: "WhereToGoCell", for: indexPath) as! WhereToGoContentCell
+                    let cell: WhereToGoContentCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.whereToGoCell, for: indexPath) as! WhereToGoContentCell
                     
                     if((indexPath as NSIndexPath).row == destinationOrResort.count - 1 || destinationOrResort.count == 0) {
                         
@@ -1514,10 +1515,11 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             Helper.hideProgressBar(senderView: self)
             Constant.MyClassConstants.showAlert = false
             Constant.MyClassConstants.resortsArray.removeAll()
+            Constant.MyClassConstants.exchangeInventory.removeAll()
             for exchangeResorts in exchangeAvailability{
-                Constant.MyClassConstants.resortsArray.append(exchangeResorts.resort!)
-                Constant.MyClassConstants.promotionsArray = (exchangeResorts.inventory?.buckets[0].promotions)!
-                Constant.MyClassConstants.inventoryUnitsArray = [(exchangeResorts.inventory?.buckets[0].unit)!]
+               Constant.MyClassConstants.resortsArray.append(exchangeResorts.resort!)
+                Constant.MyClassConstants.exchangeInventory.append(exchangeResorts.inventory!)
+               
             }
             if(Constant.MyClassConstants.resortsArray.count == 0){
               Constant.MyClassConstants.showAlert = true
