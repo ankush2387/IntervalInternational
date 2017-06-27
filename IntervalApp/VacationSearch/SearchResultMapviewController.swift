@@ -465,6 +465,8 @@ extension SearchResultMapviewController:UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if(Constant.RunningDevice.deviceIdiom == .pad){
+        self.containorView.isHidden = false
+        self.selectedIndex = indexPath.row
         self.view.bringSubview(toFront: self.containorView)
                        Helper.getResortWithResortCode(code: Constant.MyClassConstants.resortsArray[self.selectedIndex].resortCode!, viewcontroller: self)
         }
@@ -543,7 +545,10 @@ extension SearchResultMapviewController:UICollectionViewDataSource {
         
         let resortTierImageView = UIImageView(frame: CGRect(x:cell.contentView.frame.size.width/2 - 25, y: 0, width: 50, height: 30) )
         resortTierImageView.image = UIImage(named:Constant.assetImageNames.upArrowImage)
-        cell.addSubview(resortTierImageView)
+        if(Constant.RunningDevice.deviceIdiom == .phone){
+            cell.addSubview(resortTierImageView)
+        }
+        
         
         let resortFavoritesButton = UIButton(frame: CGRect(x: cell.contentView.frame.width -  60, y: 10, width: 50, height: 50))
         

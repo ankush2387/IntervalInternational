@@ -1054,10 +1054,10 @@ extension ResortDetailsViewController:UITableViewDataSource {
             }else{
                 let storyboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
                 let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginController)
-                self.present(viewController, animated: true, completion: nil)
-                
-            }
+                //self.present(viewController, animated: true, completion: nil)
+                self.navigationController?.pushViewController(viewController, animated:true)
 
+            }
         }
         
     }
