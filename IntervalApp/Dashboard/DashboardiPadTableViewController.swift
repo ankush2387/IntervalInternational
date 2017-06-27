@@ -466,13 +466,15 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
             let resortFlaxImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: 220) )
             resortFlaxImageView.backgroundColor = UIColor.lightGray
             let rentalDeal:RentalDeal = Constant.MyClassConstants.topDeals[indexPath.row]
-            resortFlaxImageView.setImageWith(URL(string: (rentalDeal.image?.url) ?? ""), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
-                if (error != nil) {
-                    resortFlaxImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
-                }
-            }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+            if let imageURL = rentalDeal.images.first?.url {
+                resortFlaxImageView.setImageWith(URL(string: imageURL), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
+                    if (error != nil) {
+                        resortFlaxImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
+                    }
+                }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+            }
+           
             cell.addSubview(resortFlaxImageView)
-            
             
             if(collectionView.tag == 2) {
                 

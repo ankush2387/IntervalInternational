@@ -562,8 +562,8 @@ extension UpComingTripDetailController:UITableViewDataSource {
             }
         }else if(indexPath.section == 4){
             let cell = tableView.dequeueReusableCell(withIdentifier: "PaymentDetailsCell", for: indexPath) as! PaymentCell
-            cell.depositLabel.text = "$\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.payment!.depositAmount!.value)"
-            cell.balanceDueLabel.text = "$\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.payment!.balanceDueAmount!.value)"
+            cell.depositLabel.text = "$\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.payment!.depositAmount!.amount)"
+            cell.balanceDueLabel.text = "$\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.payment!.balanceDueAmount!.amount)"
             cell.balanceDueDateLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.payment!.balanceDueDate!
             return cell
         }else {

@@ -286,14 +286,16 @@ extension VacationSearchViewController:UICollectionViewDataSource {
         
         if(self.SegmentIndex == 0 || self.SegmentIndex == 1) {
             
-            resortFlaxImageView.setImageWith(URL(string: (deal.image?.url) ?? ""), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
-                if (error != nil) {
-                    resortFlaxImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
-                }
-            }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
-            
+            if let imageURL = deal.images.first?.url {
+                resortFlaxImageView.setImageWith(URL(string: imageURL), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
+                    if (error != nil) {
+                        resortFlaxImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
+                    }
+                }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+            }
+           
             cell.addSubview(resortFlaxImageView)
-            
+
             let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: cell.contentView.frame.height - 30, width: cell.contentView.frame.width - 20, height: 20))
             resortImageNameLabel.text = deal.header
             resortImageNameLabel.numberOfLines = 2

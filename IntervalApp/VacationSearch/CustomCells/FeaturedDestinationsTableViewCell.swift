@@ -43,11 +43,14 @@ extension FeaturedDestinationsTableViewCell:UICollectionViewDataSource {
         cell.priceLabelDestination.text = "From " + String(describing: deal.price?.fromPrice) + " Wk."
         cell.unitLabelDestination.text = deal.details
         
-		cell.imageViewDestination.setImageWith(URL(string: (deal.image?.url!)!), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
-			if (error != nil) {
-				cell.imageViewDestination.image = UIImage(named: Constant.MyClassConstants.noImage)
-			}
-		}, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+        if let imageURL = deal.images.first?.url{
+            cell.imageViewDestination.setImageWith(URL(string: imageURL), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
+                if (error != nil) {
+                    cell.imageViewDestination.image = UIImage(named: Constant.MyClassConstants.noImage)
+                }
+            }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+        }
+		
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize {
