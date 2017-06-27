@@ -2244,7 +2244,7 @@ EFJlc2VydmF0aW9uIERldGFpbHM
             <objects>
                 <navigationController storyboardIdentifier="ownershipnavigation" automaticallyAdjustsScrollViewInsets="NO" id="4ES-vh-RAq" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="6Rg-8O-31A">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="6Rg-8O-31A">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

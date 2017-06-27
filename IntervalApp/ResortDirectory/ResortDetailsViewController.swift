@@ -1047,9 +1047,17 @@ extension ResortDetailsViewController:UITableViewDataSource {
           
         }
         else {
-            let storyboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
-            let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginController)
-            self.present(viewController, animated: true, completion: nil)
+            if(Constant.RunningDevice.deviceIdiom == .pad){
+                let storyboard = UIStoryboard(name: Constant.storyboardNames.resortDirectoryIpad, bundle: nil)
+                let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginViewControlleriPad)
+                self.navigationController?.pushViewController(viewController, animated:true)
+            }else{
+                let storyboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
+                let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginController)
+                self.present(viewController, animated: true, completion: nil)
+                
+            }
+
         }
         
     }

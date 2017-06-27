@@ -479,6 +479,8 @@ class Constant: NSObject {
         static var searchResultHeader = NSLocalizedString("Nearest Check-in Date selected.\nWe found availibility close to your desired date.", comment: "")
         static var isFromExchange = false
         static var travelPartyInfo = TravelParty()
+        static var bucketsArray = [ExchangeBucket]()
+        static var exchangeInventory = [ExchageInventory]()
         static var inventoryUnitsArray =  [InventoryUnit]()
         static var promotionsArray = [Promotion]()
         static var htmlHeader = "<html><body>"
@@ -1125,6 +1127,7 @@ class Constant: NSObject {
         static var tdiTableViewCell = "TdiTableViewCell"
         static var exchange = "Exchange"
         static var sortingOptionCell = "sortingOptionCell"
+        static var whereToGoCell = "WhereToGoCell"
     }
     
     //***** Common structure for dynamic strings combinining strings *****//

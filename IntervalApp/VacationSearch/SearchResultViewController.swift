@@ -311,10 +311,10 @@ extension SearchResultViewController:UICollectionViewDelegate {
                             self.headerVw.isHidden = false
                         }
                         Constant.MyClassConstants.resortsArray.removeAll()
+                        Constant.MyClassConstants.exchangeInventory.removeAll()
                         for exchangeResorts in exchangeAvailability{
                             Constant.MyClassConstants.resortsArray.append(exchangeResorts.resort!)
-                            Constant.MyClassConstants.promotionsArray = (exchangeResorts.inventory?.buckets[0].promotions)!
-                            Constant.MyClassConstants.inventoryUnitsArray = [(exchangeResorts.inventory?.buckets[0].unit)!]
+                            Constant.MyClassConstants.exchangeInventory.append(exchangeResorts.inventory!)
                         }
 
                         self.searchResultTableView.reloadData()
@@ -702,9 +702,9 @@ extension SearchResultViewController:UITableViewDataSource {
             }else{
                 
                 //Check for promotions
-                if(Constant.MyClassConstants.promotionsArray.count != 0 && indexPath.row > Constant.MyClassConstants.inventoryUnitsArray.count){
+                if(Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].promotions.count != 0 && indexPath.row > Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets.count){
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.promotionsCell, for: indexPath) as! PromotionsCell
-                    var promotionsString = Constant.MyClassConstants.htmlHeader.appending((Constant.MyClassConstants.promotionsArray[0].offerContentFragment)!)
+                    var promotionsString = Constant.MyClassConstants.htmlHeader.appending((Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].promotions[0].offerContentFragment)!)
                     promotionsString = promotionsString.appending(Constant.MyClassConstants.htmlFooter)
                     cell.promotionWebView.loadHTMLString(promotionsString, baseURL: Bundle.main.bundleURL)
                     return cell
@@ -712,16 +712,16 @@ extension SearchResultViewController:UITableViewDataSource {
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.resortBedroomDetailexchange, for: indexPath) as! ResortBedroomDetails
                     cell.backgroundColor = IUIKColorPalette.contentBackground.color
                     cell.selectionStyle = UITableViewCellSelectionStyle.none
-                    if let roomSize = UnitSize(rawValue: Constant.MyClassConstants.inventoryUnitsArray[0].unitSize!) {
+                    if let roomSize = UnitSize(rawValue: Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitSize!) {
                         
                         cell.numberOfBedroom.text =  Helper.getBrEnums(brType: roomSize.rawValue)
                     }
                     
-                    if let kitchenSize = KitchenType(rawValue: Constant.MyClassConstants.inventoryUnitsArray[0].kitchenType!) {
+                    if let kitchenSize = KitchenType(rawValue: Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.kitchenType!) {
                         cell.kitchenLabel.text = Helper.getKitchenEnums(kitchenType: kitchenSize.rawValue)
                     }
                     
-                    cell.totalPrivateLabel.text = String(Constant.MyClassConstants.inventoryUnitsArray[0].publicSleepCapacity + Constant.MyClassConstants.inventoryUnitsArray[0].privateSleepCapacity) + "Total, " + (String(Constant.MyClassConstants.inventoryUnitsArray[0].privateSleepCapacity)) + "Private"
+                    cell.totalPrivateLabel.text = String(Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.publicSleepCapacity) + "Total, " + (String(Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.privateSleepCapacity)) + "Private"
                     return cell
                 }
             }
@@ -738,8 +738,13 @@ extension SearchResultViewController:UITableViewDataSource {
         
         //***** Return number of rows in section required in tableview *****//
         if(Constant.MyClassConstants.isFromExchange){
-            self.unitSizeArray = Constant.MyClassConstants.inventoryUnitsArray
-            return Constant.MyClassConstants.inventoryUnitsArray.count + Constant.MyClassConstants.promotionsArray.count + 1
+            if(Constant.MyClassConstants.exchangeInventory[section].buckets.count > 0){
+                self.unitSizeArray = [Constant.MyClassConstants.exchangeInventory[section].buckets[0].unit!]
+                return Constant.MyClassConstants.exchangeInventory[section].buckets.count + Constant.MyClassConstants.exchangeInventory[section].buckets[0].promotions.count + 1
+            }else{
+                return 1
+            }
+            
         }else{
             var inventoryDict = [Inventory]()
             inventoryDict = Constant.MyClassConstants.resortsArray[section].inventory

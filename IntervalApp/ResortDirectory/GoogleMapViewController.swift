@@ -481,9 +481,8 @@ class GoogleMapViewController: UIViewController {
     func apiCallWithRectangleRequest(request:GeoArea) {
         
         DirectoryClient.getResortsWithinGeoArea(Constant.MyClassConstants.systemAccessToken, geoArea: request, onSuccess: { (response) in
-            
-            Constant.MyClassConstants.resortsArray = response
             if(response.count > 0){
+                Constant.MyClassConstants.resortsArray = response
                 self.updateMapWithMarkers()
             }
             if(Constant.RunningDevice.deviceIdiom == .pad && !self.hideSideView && self.containerView.isHidden == true){
@@ -1818,6 +1817,7 @@ extension GoogleMapViewController:UISearchBarDelegate {
             DirectoryClient.searchDestinations(Constant.MyClassConstants.systemAccessToken, request: SearchDestinationsRequest.init(query: searchBar.text), onSuccess: { (response) in
                 if(response.resorts.count > 0){
                     Constant.MyClassConstants.resorts = response.resorts
+                    Constant.MyClassConstants.resortsArray = response.resorts
                 }
                 
                 

@@ -33,6 +33,11 @@ class SearchResultMapviewController: UIViewController {
 
     @IBOutlet weak var containorView: UIView!
     @IBOutlet weak var drarButton: UIButton!
+    override func viewDidAppear(_ animated: Bool) {
+        if(resortCollectionView != nil){
+        resortCollectionView.reloadData()
+        } 
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         if UIDevice.current.userInterfaceIdiom == .pad {
