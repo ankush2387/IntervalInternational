@@ -908,7 +908,7 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                 
                 //display promotion
                 if relinquishmentOpenWeeksArray.count > 0 {
-                    if let promotion = relinquishmentOpenWeeksArray[indexPath.row].promotion {
+                    if let promotion = relinquishmentOpenWeeksArray[0].promotion {
                         intervalWeekCell.promLabel.text = promotion.offerName
                         cellHeight = 90
                     } else {
