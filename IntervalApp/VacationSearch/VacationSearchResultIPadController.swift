@@ -479,6 +479,33 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
             
             if(Constant.MyClassConstants.isFromExchange){
                 
+                
+                let exchangeSearchDateRequest = ExchangeFilterRelinquishmentsRequest()
+                exchangeSearchDateRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
+                exchangeSearchDateRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
+                
+               
+                let currentFromDate = Helper.convertDateToString(date: Constant.MyClassConstants.currentFromDate, format: Constant.MyClassConstants.dateFormat)
+                let currentToDate = Helper.convertDateToString(date: Constant.MyClassConstants.currentToDate, format: Constant.MyClassConstants.dateFormat)
+                exchangeSearchDateRequest.destination?.checkOutDate = currentFromDate
+                exchangeSearchDateRequest.destination?.checkOutDate = currentToDate
+                
+                exchangeSearchDateRequest.destination?.resort?.resortName = Constant.MyClassConstants.selectedResort.resortCode!
+                exchangeSearchDateRequest.destination?.resort?.resortCode = Constant.MyClassConstants.selectedResort.resortName!
+               
+               
+             
+                
+                
+                ExchangeClient.filterRelinquishments(UserContext.sharedInstance.accessToken, request: exchangeSearchDateRequest, onSuccess: { (response) in
+                    
+                    print(response)
+                   
+                   
+                }, onError: { (error) in
+                    print(Error.self)
+
+                })
             }
             else{
                 
