@@ -162,11 +162,9 @@ class ResortDirectoryViewController: UIViewController {
         }
         
         if (resortTableView != nil) {
-            
             resortTableView.reloadData()
         }
         else if (resortCollectionView != nil) {
-            
             resortCollectionView.reloadData()
         }
     }
@@ -272,7 +270,7 @@ class ResortDirectoryViewController: UIViewController {
             
             Constant.RunningDevice.deviceOrientation = UIDeviceOrientation.portrait
         }
-        if(resortTableView != nil) {
+        if(resortTableView != nil && self.containerView != nil) {
             
             self.containerView.isHidden = true
             resortTableView.reloadData()

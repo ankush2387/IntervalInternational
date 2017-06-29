@@ -484,51 +484,58 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
             if(Constant.MyClassConstants.isFromExchange){
                 
                 
-//                let exchangeSearchDateRequest = ExchangeFilterRelinquishmentsRequest()
-//                exchangeSearchDateRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
-//                exchangeSearchDateRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
-//                
-//               
-//                
-//                let exchangeDestination = ExchangeDestination()
-//                let currentFromDate = Helper.convertDateToString(date: Constant.MyClassConstants.currentFromDate, format: Constant.MyClassConstants.dateFormat)
-//                
-//                let currentToDate = Helper.convertDateToString(date: Constant.MyClassConstants.currentToDate, format: Constant.MyClassConstants.dateFormat)
-//                
-//                let resort = Resort()
-//                resort.resortName = Constant.MyClassConstants.resortsArray[selectedIndex].resortName
-//                resort.resortCode = Constant.MyClassConstants.resortsArray[selectedIndex].resortCode
-//                
-//                exchangeDestination.resort = resort
-//                
-//                let unit = InventoryUnit()
-//                unit.kitchenType = Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.kitchenType!
-//                unit.unitSize = Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitSize!
-//                unit.checkInDate = currentFromDate
-//                unit.checkOutDate = currentToDate
-//                unit.unitNumber = Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitNumber!
-//                
-//                exchangeDestination.unit = unit
-//                
-//                exchangeSearchDateRequest.destination = exchangeDestination
-//                
-//                ExchangeClient.filterRelinquishments(UserContext.sharedInstance.accessToken, request: exchangeSearchDateRequest, onSuccess: { (response) in
-//                    
-//                    print(response)
-//                   
-//                   
-//                }, onError: { (error) in
-//                    print(Error.self)
-//
-//                })
+                let exchangeSearchDateRequest = ExchangeFilterRelinquishmentsRequest()
+                exchangeSearchDateRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
                 
-                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                let relinquishmentIDArray = ["Ek83chJmdS6ESNRpVfhH8QaTBeXh5rpNm_2AJLhV_4jRTiVySvOk2NKFm4iHOtEK",
+                                             "Ek83chJmdS6ESNRpVfhH8RFxFgvpS1HHCzYyrvzw42rRTiVySvOk2NKFm4iHOtEK",
+                                             "Ek83chJmdS6ESNRpVfhH8SOcpMOEqw1KO8bsQKhjLZnRTiVySvOk2NKFm4iHOtEK",
+                                             "Ek83chJmdS6ESNRpVfhH8YMAv0D39MaVmh75YJgm_IDRTiVySvOk2NKFm4iHOtEK"]
+                exchangeSearchDateRequest.relinquishmentsIds = relinquishmentIDArray//Constant.MyClassConstants.relinquishmentIdArray as! [String]
+                
+               
+                
+                let exchangeDestination = ExchangeDestination()
+                let currentFromDate = Helper.convertDateToString(date: Constant.MyClassConstants.currentFromDate, format: Constant.MyClassConstants.dateFormat)
+                
+                let currentToDate = Helper.convertDateToString(date: Constant.MyClassConstants.currentToDate, format: Constant.MyClassConstants.dateFormat)
+                
+                let resort = Resort()
+                resort.resortName = Constant.MyClassConstants.resortsArray[selectedIndex].resortName
+                resort.resortCode = "CZP"//Constant.MyClassConstants.resortsArray[selectedIndex].resortCode
+                
+                exchangeDestination.resort = resort
+                
+                let unit = InventoryUnit()
+                unit.kitchenType = Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.kitchenType!
+                unit.unitSize = Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitSize!
+                exchangeDestination.checkInDate = "2017-07-17"//currentFromDate
+                exchangeDestination.checkOutDate = "2017-07-24"//currentToDate
+                unit.unitNumber = Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitNumber!
+                unit.publicSleepCapacity = 4
+                unit.privateSleepCapacity = 2
+                
+                exchangeDestination.unit = unit
+                
+                exchangeSearchDateRequest.destination = exchangeDestination
+                
+                ExchangeClient.filterRelinquishments(UserContext.sharedInstance.accessToken, request: exchangeSearchDateRequest, onSuccess: { (response) in
+                    
+                    print(response)
+                   
+                   
+                }, onError: { (error) in
+                    print(Error.self)
+
+                })
+                
+               /* let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
                 let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whatToUseViewController) as! RelinquishmentWhatToUseViewController
                 
                 
                 let transitionManager = TransitionManager()
                 self.navigationController?.transitioningDelegate = transitionManager
-                self.navigationController!.pushViewController(viewController, animated: true)
+                self.navigationController!.pushViewController(viewController, animated: true)*/
 
                 
             }
@@ -655,7 +662,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 
                 let imagesArray = Constant.MyClassConstants.resortsArray[indexPath.section].images
                 for imgStr in imagesArray {
-                    if(imgStr.size == Constant.MyClassConstants.imageSize) {
+                    if(imgStr.size!.caseInsensitiveCompare(Constant.MyClassConstants.imageSize) == ComparisonResult.orderedSame) {
                         
                         url = URL(string: imgStr.url!)!
                         break

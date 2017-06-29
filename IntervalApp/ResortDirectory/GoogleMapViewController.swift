@@ -239,7 +239,7 @@ class GoogleMapViewController: UIViewController {
             self.navigationItem.rightBarButtonItem = applyButton
         }
         
-        if(mapSideView != nil){
+        if(mapSideView != nil && self.containerView != nil){
             self.containerView.tag = 100
             containerView.isHidden = true
             self.view.bringSubview(toFront: mapSideView)
@@ -482,7 +482,7 @@ class GoogleMapViewController: UIViewController {
                 Constant.MyClassConstants.resortsArray = response
                 self.updateMapWithMarkers()
             }
-            if(Constant.RunningDevice.deviceIdiom == .pad && !self.hideSideView && self.containerView.isHidden == true){
+            if(Constant.RunningDevice.deviceIdiom == .pad && !self.hideSideView && self.containerView != nil && self.containerView.isHidden == true){
                 
                 Constant.MyClassConstants.addResortSelectedIndex.removeAllObjects()
                 self.mapTableView.reloadData()
@@ -850,7 +850,9 @@ class GoogleMapViewController: UIViewController {
             
             self.mapSideView.frame = CGRect(x: -self.mapSideView.frame.size.width, y: self.mapSideView.frame.origin.y, width: self.mapSideView.frame.size.width, height: self.mapSideView.frame.size.height)
             self.draggingView.frame = CGRect(x: 0, y:self.draggingView.frame.origin.y, width:self.draggingView.frame.size.width, height: self.draggingView.frame.size.height)
+            if(self.containerView != nil){
             self.containerView.frame = CGRect(x: -self.containerView.frame.size.width, y: self.containerView.frame.origin.y, width: self.containerView.frame.size.width, height: self.containerView.frame.size.height)
+            }
             self.dragButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI))
         })
         
@@ -960,12 +962,14 @@ class GoogleMapViewController: UIViewController {
         }else if (sender.direction == .right){
             self.mapSideView.isHidden = false
             self.draggingView.isHidden = false
+            if(self.containerView != nil){
             self.containerView.isHidden = false
             self.view.bringSubview(toFront: self.containerView)
             UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn ,animations: {
                 self.containerView.frame = CGRect(x: 0, y: self.containerView.frame.origin.y, width: self.containerView.frame.size.width, height: self.self.containerView.frame.size.height)
             }, completion: { _ in
             })
+        }
         }
         
     }
@@ -1006,7 +1010,9 @@ class GoogleMapViewController: UIViewController {
                     self.mapTableView.isHidden = false
                     self.mapSideView.isHidden = false
                     self.draggingView.isHidden = false
+                    if(self.containerView != nil){
                     self.containerView.isHidden = true
+                    }
                     self.alertView.isHidden = true
                 })
             }
@@ -1023,7 +1029,9 @@ class GoogleMapViewController: UIViewController {
                 }
                 self.mapSideView.isHidden = false
                 self.draggingView.isHidden = false
-                self.containerView.isHidden = true
+                if(self.containerView != nil){
+                    self.containerView.isHidden = true
+                }
                 UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn ,animations: {
                     
                     if(self.mapView.camera.zoom >= 10){
@@ -1120,7 +1128,7 @@ class GoogleMapViewController: UIViewController {
         UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn ,animations: {
             self.searchDisplayTableView.frame = CGRect(x: 0, y: 108, width: self.view.frame.width,  height: UIScreen.main.bounds.height - 152)
             
-            if(Constant.RunningDevice.deviceIdiom == .pad){
+            if(Constant.RunningDevice.deviceIdiom == .pad && self.containerView != nil){
                 if(self.containerView.frame.origin.x == 0){
                     self.containerView.frame = CGRect(x: -self.containerView.frame.size.width, y: self.containerView.frame.origin.y, width: self.containerView.frame.size.width, height: self.containerView.frame.size.height)
                 }

@@ -58,7 +58,7 @@ class FevoritesResortController: UIViewController {
             if(self.containerView != nil){
                 self.containerView.isHidden = true
                 if(self.emptyFavoritesMessageView != nil){
-                    self.emptyFavoritesMessageView.isHidden = true
+                    self.emptyFavoritesMessageView.isHidden = false
                     self.backgroundView.isHidden = true
                     
                     var count = 0
@@ -71,7 +71,6 @@ class FevoritesResortController: UIViewController {
                         createMapWithMarkers()
                     }
                 }
-                
                 resortTableView.reloadData()
             }
             
@@ -370,8 +369,10 @@ extension FevoritesResortController:GMSMapViewDelegate {
             if (Constant.MyClassConstants.googleMarkerArray.count == 0){
                 
             }else{
+                if(self.containerView != nil){
                 self.containerView.isHidden = false
                 self.view.bringSubview(toFront: self.containerView)
+                }
                 Constant.MyClassConstants.resortsDescriptionArray = Constant.MyClassConstants.favoritesResortArray[marker.userData as! Int]
                 
                 Helper.getResortWithResortCode(code: Constant.MyClassConstants.resortsDescriptionArray.resortCode!,viewcontroller:self)
@@ -380,6 +381,7 @@ extension FevoritesResortController:GMSMapViewDelegate {
                 containerVC.senderViewController = Constant.MyClassConstants.searchResult
                 containerVC.viewWillAppear(true)
                 
+                if(self.containerView != nil){
                 UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn ,animations: {
                     
                     self.containerView.frame = CGRect(x: 0, y: 64, width: self.containerView.frame.size.width, height: self.containerView.frame.size.height)
@@ -387,6 +389,7 @@ extension FevoritesResortController:GMSMapViewDelegate {
                 }, completion: { _ in
                     
                 })
+                }
                 
             }
         }
