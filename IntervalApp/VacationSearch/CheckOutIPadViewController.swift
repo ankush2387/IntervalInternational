@@ -37,7 +37,7 @@ class CheckOutIPadViewController: UIViewController {
     var promotionSelectedIndex = 0
     var isAgreed:Bool = false
     var isAgreedToFees:Bool = false
-    let cellWebView = UIWebView()
+    var cellWebView = UIWebView()
     var showUpdateEmail = false
     var updateEmailSwitchStauts = "off"
     var emailTextToEnter = ""
@@ -873,7 +873,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                     subviews.removeFromSuperview()
                 }
                 
-                let cellWebView = UIWebView(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: 400))
+                cellWebView = UIWebView(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: 400))
                 cellWebView.scrollView.isScrollEnabled = false
                 let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
                 tapRecognizer.numberOfTapsRequired = 1

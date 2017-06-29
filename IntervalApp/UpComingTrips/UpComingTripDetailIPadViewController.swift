@@ -14,7 +14,7 @@ import MessageUI
 import SVProgressHUD
 
 class UpComingTripDetailIPadViewController: UIViewController {
-
+    
     var isOpen:Bool = false
     var detailsView:UIView?
     var unitDetialsCellHeight = 20
@@ -22,10 +22,10 @@ class UpComingTripDetailIPadViewController: UIViewController {
     var requiredRowsArrayRelinquishment = NSMutableArray()
     //***** Outlets *****//
     @IBOutlet weak var upcomingTripDetailTbleview: UITableView!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         //***** register GuestCertificateCell xib  with table *****//
         let cellNib1 = UINib(nibName:Constant.customCellNibNames.guestCertificateCell, bundle: nil)
         self.upcomingTripDetailTbleview!.register(cellNib1, forCellReuseIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.guestCertificateCell)
@@ -55,12 +55,12 @@ class UpComingTripDetailIPadViewController: UIViewController {
         let userInfo: [String: String] = [
             Constant.omnitureEvars.eVar18 : "",
             //TODO (Jhon): error found in iPad with user bwilling
-//            Constant.omnitureEvars.eVar18 : Constant.MyClassConstants.upcomingOriginationPoint,
+            //            Constant.omnitureEvars.eVar18 : Constant.MyClassConstants.upcomingOriginationPoint,
             Constant.omnitureEvars.eVar55 : ""
-
+            
         ]
         ADBMobile.trackAction(Constant.omnitureEvents.event74, data: userInfo)
-
+        
         
     }
     
@@ -219,7 +219,7 @@ class UpComingTripDetailIPadViewController: UIViewController {
             SVProgressHUD.dismiss()
         }
     }
-        
+    
     func didPressWeatherDetailsButton() {
         guard let resortCode = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.resortCode else { return }
         guard let resortName = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.resortName else { return }
@@ -228,7 +228,7 @@ class UpComingTripDetailIPadViewController: UIViewController {
         displayWeatherView(resortCode: resortCode, resortName: resortName, countryCode: countryCode, completionHandler: { (response) in
             SVProgressHUD.dismiss()
         })
-
+        
     }
 }
 
@@ -318,29 +318,29 @@ extension UpComingTripDetailIPadViewController:UITableViewDataSource {
                     //cell.sleepsTotalOrPrivate.text = "Sleeps \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.publicSleepCapacity) total, \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.privateSleepCapacity) Private"
                     
                     /*let checkInDate = Helper.convertStringToDate(dateString:Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.checkInDate!, format: Constant.MyClassConstants.dateFormat)
-                    
-                    let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                    let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkInDate)
-                    
-                    
-                    let formatedCheckInDate = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday!)) \(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)). \(myComponents.year!)"
-                    
-                    cell.checkInDateLabel.text = "\(myComponents.day!)"
-                    if(cell.checkInDateLabel.text?.characters.count == 1){
-                        cell.checkInDateLabel.text = "0\(myComponents.day!)"
-                    }
-                    cell.checkInMonthYearLabel.text = formatedCheckInDate
-                    
-                    let checkOutDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.checkOutDate!, format: Constant.MyClassConstants.dateFormat1)
-                    
-                    let myComponents1 = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkOutDate)
-                    
-                    let formatedCheckOutDate = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents1.weekday!)) \(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!)). \(myComponents1.year!)"
-                    cell.checkOutDateLabel.text = "\(myComponents1.day!)"
-                    if(cell.checkOutDateLabel.text?.characters.count == 1){
-                        cell.checkOutDateLabel.text = "0\(myComponents1.day!)"
-                    }
-                    cell.checkOutMonthYearLabel.text = formatedCheckOutDate*/
+                     
+                     let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
+                     let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkInDate)
+                     
+                     
+                     let formatedCheckInDate = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday!)) \(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)). \(myComponents.year!)"
+                     
+                     cell.checkInDateLabel.text = "\(myComponents.day!)"
+                     if(cell.checkInDateLabel.text?.characters.count == 1){
+                     cell.checkInDateLabel.text = "0\(myComponents.day!)"
+                     }
+                     cell.checkInMonthYearLabel.text = formatedCheckInDate
+                     
+                     let checkOutDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.checkOutDate!, format: Constant.MyClassConstants.dateFormat1)
+                     
+                     let myComponents1 = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkOutDate)
+                     
+                     let formatedCheckOutDate = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents1.weekday!)) \(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!)). \(myComponents1.year!)"
+                     cell.checkOutDateLabel.text = "\(myComponents1.day!)"
+                     if(cell.checkOutDateLabel.text?.characters.count == 1){
+                     cell.checkOutDateLabel.text = "0\(myComponents1.day!)"
+                     }
+                     cell.checkOutMonthYearLabel.text = formatedCheckOutDate*/
                 }
                 cell.resortImageView.setImageWith(URL(string: resortImage.url!), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
                     if (error != nil) {
@@ -372,38 +372,38 @@ extension UpComingTripDetailIPadViewController:UITableViewDataSource {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.dateCell, for: indexPath) as! UpComingTripCell
             
-             let checkInDate = Helper.convertStringToDate(dateString:Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.checkInDate!, format: Constant.MyClassConstants.dateFormat)
-             
-             let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-             let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkInDate)
-             
-             
-             let formatedCheckInDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)). \(myComponents.year!)"
-             
-             cell.checkInDateLabel.text = "\(myComponents.day!)"
-             if(cell.checkInDateLabel.text?.characters.count == 1){
-             cell.checkInDateLabel.text = "0\(myComponents.day!)"
-             }
-             cell.inDateHeading.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday!))"
-             cell.checkInMonthYearLabel.text = formatedCheckInDate
-             
-             let checkOutDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.checkOutDate!, format: Constant.MyClassConstants.dateFormat1)
-             
-             let myComponents1 = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkOutDate)
-             
-             let formatedCheckOutDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!)). \(myComponents1.year!)"
-             cell.checkOutDateLabel.text = "\(myComponents1.day!)"
-             if(cell.checkOutDateLabel.text?.characters.count == 1){
-             cell.checkOutDateLabel.text = "0\(myComponents1.day!)"
-             }
-             cell.outDateHeading.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents1.weekday!))"
-             cell.checkOutMonthYearLabel.text = formatedCheckOutDate
+            let checkInDate = Helper.convertStringToDate(dateString:Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.checkInDate!, format: Constant.MyClassConstants.dateFormat)
+            
+            let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
+            let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkInDate)
             
             
-             return cell
+            let formatedCheckInDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)). \(myComponents.year!)"
+            
+            cell.checkInDateLabel.text = "\(myComponents.day!)"
+            if(cell.checkInDateLabel.text?.characters.count == 1){
+                cell.checkInDateLabel.text = "0\(myComponents.day!)"
+            }
+            cell.inDateHeading.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday!))"
+            cell.checkInMonthYearLabel.text = formatedCheckInDate
+            
+            let checkOutDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.checkOutDate!, format: Constant.MyClassConstants.dateFormat1)
+            
+            let myComponents1 = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkOutDate)
+            
+            let formatedCheckOutDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!)). \(myComponents1.year!)"
+            cell.checkOutDateLabel.text = "\(myComponents1.day!)"
+            if(cell.checkOutDateLabel.text?.characters.count == 1){
+                cell.checkOutDateLabel.text = "0\(myComponents1.day!)"
+            }
+            cell.outDateHeading.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents1.weekday!))"
+            cell.checkOutMonthYearLabel.text = formatedCheckOutDate
+            
+            
+            return cell
             
         }else if((indexPath as NSIndexPath).section == 2) {
-
+            
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.unitCell, for: indexPath) as! UpComingTripCell
             
             cell.backgroundColor = IUIKColorPalette.contentBackground.color
@@ -411,31 +411,31 @@ extension UpComingTripDetailIPadViewController:UITableViewDataSource {
             
             if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise != nil){
             }else{
-            let unitsize = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.unitSize!
-            print(unitsize)
-            cell.bedRoomKitechenType.text =  "\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.unitSize!) \(Helper.getKitchenEnums(kitchenType: (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit?.kitchenType)!))"
-            
-            cell.sleepsTotalOrPrivate.text = "Sleeps \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.publicSleepCapacity) total, \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.privateSleepCapacity) Private"
+                let unitsize = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.unitSize!
+                print(unitsize)
+                cell.bedRoomKitechenType.text =  "\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.unitSize!) \(Helper.getKitchenEnums(kitchenType: (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit?.kitchenType)!))"
+                
+                cell.sleepsTotalOrPrivate.text = "Sleeps \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.publicSleepCapacity) total, \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.privateSleepCapacity) Private"
             }
             return cell
         }else if((indexPath as NSIndexPath).section == 3) {
             if(indexPath.row == 0){
-            let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.unitDetailCell, for: indexPath) as! UnitDetailCell
-            
-            cell.backgroundColor = IUIKColorPalette.contentBackground.color
-            cell.toggleButton.addTarget(self, action: #selector(UpComingTripDetailIPadViewController.toggleButtonPressed(_:)), for: .touchUpInside)
-            return cell
+                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.unitDetailCell, for: indexPath) as! UnitDetailCell
+                
+                cell.backgroundColor = IUIKColorPalette.contentBackground.color
+                cell.toggleButton.addTarget(self, action: #selector(UpComingTripDetailIPadViewController.toggleButtonPressed(_:)), for: .touchUpInside)
+                return cell
             }else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.amenitiesCell, for: indexPath)
                 
-    
-                    if(self.detailsView == nil) {
-                        cell.addSubview(self.getDetails())
-                    }
+                
+                if(self.detailsView == nil) {
+                    cell.addSubview(self.getDetails())
+                }
                 return cell
             }
-           
-    
+            
+            
         }else if ((indexPath as NSIndexPath).section == 4){
             
             if(self.requiredRowsArrayRelinquishment[indexPath.row] as! String == Constant.upComingTripDetailControllerReusableIdentifiers.resortCell)
@@ -507,7 +507,7 @@ extension UpComingTripDetailIPadViewController:UITableViewDataSource {
                 if((Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.cruise!.cabin!.travelParty!.children) > 0){
                     cell.travellingWithLabel.text = "\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.cruise!.cabin!.travelParty!.adults) Adults, \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.cruise!.cabin!.travelParty!.children) Children "
                 }
-                cell.cabinNumber.text = "\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.cruise!.cabin!.number)!"
+                cell.cabinNumber.text = "\(String(describing: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.cruise!.cabin!.number))!"
                 cell.cabinDetails.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.cruise!.cabin!.details!
                 cell.transactionDate.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.transactionDate!
                 
@@ -658,14 +658,14 @@ extension UpComingTripDetailIPadViewController:UITableViewDataSource {
         
         //***** Return number of rows in section required in tableview *****//
         switch section {
-        
+            
         case 0:
             if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.confirmationNumber != nil) {
                 return 1
             }else{
                 return 0
             }
-        
+            
         case 1:
             if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.confirmationNumber != nil) {
                 return 1
@@ -680,36 +680,35 @@ extension UpComingTripDetailIPadViewController:UITableViewDataSource {
             }
         case 3:
             /*let cruiseInfo: String? = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise?.shipName
-            guard let cruiseDetail = cruiseInfo, !cruiseDetail.isEmpty else {
-                return 0
-            }*/
-                
-                if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise != nil){
-                    let cruiseInfo: String? = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise?.shipName
-                    guard let cruiseDetail = cruiseInfo, !cruiseDetail.isEmpty else {
-                        return 0
-                    }
-                    
-                    
-                    let unitDetils = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit?.amenities
-                    if((unitDetils?.count)! > 0){
-                        return 1
-                    }else{
-                        return 0
-                    }
-                    
-                }else{
-                    let unitDetils = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.amenities
-                    if((unitDetils?.count)! > 0){
-                        if(isOpen){
-                           return 2
-                        }else{
-                            return 1
-                        }
-                    }else{
-                        return 0
-                    }
+             guard let cruiseDetail = cruiseInfo, !cruiseDetail.isEmpty else {
+             return 0
+             }*/
+            
+            if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise != nil){
+                let cruiseInfo: String? = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise?.shipName
+                guard let cruiseDetail = cruiseInfo, !cruiseDetail.isEmpty else {
+                    return 0
                 }
+                
+                
+                let unitDetils = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit?.amenities
+                if((unitDetils?.count)! > 0){
+                    return 1
+                }else{
+                    return 0
+                }
+                
+            }else{
+                if let unitDetils = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.amenities{
+                    if(isOpen){
+                        return 2
+                    }else{
+                        return 1
+                    }
+                }else{
+                    return 0
+                }
+            }
         case 4:
             return self.requiredRowsArrayRelinquishment.count
         case 5:
@@ -721,12 +720,12 @@ extension UpComingTripDetailIPadViewController:UITableViewDataSource {
                 return 0
             }
         case 7:
-             return 1
+            return 1
         case 8:
             return 1
         default:
             return 0
-     }
+        }
         
         //return 1
     }
@@ -789,7 +788,7 @@ extension UpComingTripDetailIPadViewController: MFMessageComposeViewControllerDe
         
         //dissmis Text Composer
         self.dismiss(animated: true, completion: nil)
-
+        
     }
 }
 

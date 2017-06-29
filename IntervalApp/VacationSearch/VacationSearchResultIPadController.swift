@@ -30,6 +30,8 @@ class VacationSearchResultIPadController: UIViewController {
     let headerVw = UIView()
     let titleLabel = UILabel()
     var cellHeight = 80
+    var selectedIndex = 0
+    var selectedUnitIndex = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -449,6 +451,8 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
         
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedIndex = indexPath.section
+        selectedUnitIndex = indexPath.row
         if((indexPath as NSIndexPath).row == 0) {
             
             Helper.addServiceCallBackgroundView(view: self.view)
@@ -485,17 +489,28 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
                 exchangeSearchDateRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
                 
                
+                
+                let exchangeDestination = ExchangeDestination()
                 let currentFromDate = Helper.convertDateToString(date: Constant.MyClassConstants.currentFromDate, format: Constant.MyClassConstants.dateFormat)
+                
                 let currentToDate = Helper.convertDateToString(date: Constant.MyClassConstants.currentToDate, format: Constant.MyClassConstants.dateFormat)
-                exchangeSearchDateRequest.destination?.checkOutDate = currentFromDate
-                exchangeSearchDateRequest.destination?.checkOutDate = currentToDate
                 
-                exchangeSearchDateRequest.destination?.resort?.resortName = Constant.MyClassConstants.selectedResort.resortCode!
-                exchangeSearchDateRequest.destination?.resort?.resortCode = Constant.MyClassConstants.selectedResort.resortName!
-               
-               
-             
+                let resort = Resort()
+                resort.resortName = Constant.MyClassConstants.resortsArray[selectedIndex].resortName
+                resort.resortCode = Constant.MyClassConstants.resortsArray[selectedIndex].resortCode
                 
+                exchangeDestination.resort = resort
+                
+                let unit = InventoryUnit()
+                unit.kitchenType = Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.kitchenType!
+                unit.unitSize = Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitSize!
+                unit.checkInDate = currentFromDate
+                unit.checkOutDate = currentToDate
+                unit.unitNumber = Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitNumber!
+                
+                exchangeDestination.unit = unit
+                
+                exchangeSearchDateRequest.destination = exchangeDestination
                 
                 ExchangeClient.filterRelinquishments(UserContext.sharedInstance.accessToken, request: exchangeSearchDateRequest, onSuccess: { (response) in
                     

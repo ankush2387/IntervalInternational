@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -619,21 +619,21 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d3o-qC-2lv">
                                                     <rect key="frame" x="8" y="163" width="584" height="92"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="WestWood at Split Rock" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GM0-mN-7FY">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WestWood at Split Rock" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GM0-mN-7FY">
                                                             <rect key="frame" x="6" y="8" width="570" height="23"/>
                                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Lake Harmony" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qab-JW-VRc">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lake Harmony" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qab-JW-VRc">
                                                             <rect key="frame" x="6" y="39" width="560" height="22"/>
                                                             <color key="backgroundColor" red="0.97953344669999998" green="0.97829060219999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <fontDescription key="fontDescription" type="system" weight="light" pointSize="18"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="WSP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OIK-TM-1kt">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WSP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OIK-TM-1kt">
                                                             <rect key="frame" x="6" y="61" width="560" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -644,7 +644,10 @@
                                                     <constraints>
                                                         <constraint firstItem="OIK-TM-1kt" firstAttribute="trailing" secondItem="Qab-JW-VRc" secondAttribute="trailing" id="9PD-pP-6g7"/>
                                                         <constraint firstItem="GM0-mN-7FY" firstAttribute="trailing" secondItem="Qab-JW-VRc" secondAttribute="trailing" constant="10" id="GWK-SL-3nK"/>
+                                                        <constraint firstItem="GM0-mN-7FY" firstAttribute="trailing" secondItem="d3o-qC-2lv" secondAttribute="trailingMargin" id="Hmf-qL-XyR"/>
+                                                        <constraint firstItem="GM0-mN-7FY" firstAttribute="top" secondItem="d3o-qC-2lv" secondAttribute="topMargin" id="LtX-5U-ngX"/>
                                                         <constraint firstItem="Qab-JW-VRc" firstAttribute="top" secondItem="GM0-mN-7FY" secondAttribute="bottom" constant="8" id="V2I-dU-Mgh"/>
+                                                        <constraint firstItem="GM0-mN-7FY" firstAttribute="leading" secondItem="d3o-qC-2lv" secondAttribute="leading" constant="6" id="VIk-VD-agV"/>
                                                         <constraint firstItem="Qab-JW-VRc" firstAttribute="leading" secondItem="GM0-mN-7FY" secondAttribute="leading" id="YXr-wb-ewh"/>
                                                         <constraint firstItem="OIK-TM-1kt" firstAttribute="top" secondItem="Qab-JW-VRc" secondAttribute="bottom" id="bFH-Ww-c2y"/>
                                                         <constraint firstItem="OIK-TM-1kt" firstAttribute="leading" secondItem="Qab-JW-VRc" secondAttribute="leading" id="xGz-VF-vae"/>
@@ -1420,7 +1423,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="89.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LogoMenu" translatesAutoresizingMaskIntoConstraints="NO" id="mSw-A0-zhI">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mSw-A0-zhI">
                                                     <rect key="frame" x="16" y="0.0" width="295" height="88"/>
                                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </imageView>
@@ -1925,12 +1928,11 @@ EFJlc2VydmF0aW9uIERldGFpbHM
     <resources>
         <image name="DropArrowIcon" width="33" height="33"/>
         <image name="ForwardArrowIcon" width="33" height="33"/>
-        <image name="LogoMenu" width="250" height="87"/>
         <image name="OfferIcon" width="33" height="33"/>
         <image name="close" width="32" height="32"/>
         <image name="sanci_main01_r" width="1200" height="550"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="uZC-bT-nk3"/>
+        <segue reference="feW-SK-q5h"/>
     </inferredMetricsTieBreakers>
 </document>

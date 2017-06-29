@@ -211,7 +211,7 @@ class GoogleMapViewController: UIViewController {
         // condition check to send resort directory
         if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.resortFunctionalityCheck) {
             
-             // omniture tracking with event 40
+            // omniture tracking with event 40
             Helper.trackOmnitureCallForPageView(name: Constant.omnitureCommonString.resortDirectoryHome)
             
         }
@@ -278,7 +278,7 @@ class GoogleMapViewController: UIViewController {
     
     func resortShowMapPressedAtIndex(sender:UIButton) {
         
-           Constant.MyClassConstants.destinationOrResortSelectedBy = Constant.omnitureCommonString.mapSelection
+        Constant.MyClassConstants.destinationOrResortSelectedBy = Constant.omnitureCommonString.mapSelection
         self.hidePopUpView()
         
         let senderButton = sender
@@ -314,13 +314,13 @@ class GoogleMapViewController: UIViewController {
                 self.navigationItem.rightBarButtonItem!.isEnabled = true
                 Constant.MyClassConstants.googleMarkerArray.removeAll()
                 if(Constant.MyClassConstants.resortsArray.count > 0){
-                let resort = Constant.MyClassConstants.resortsArray[0]
-                let location = CLLocation.init(latitude: (resort.coordinates?.latitude)!, longitude: (resort.coordinates?.longitude)!)
-                
-                self.displaySearchedResort(location: location)
-                if(self.mapTableView != nil){
-                    self.mapTableView.reloadData()
-                }
+                    let resort = Constant.MyClassConstants.resortsArray[0]
+                    let location = CLLocation.init(latitude: (resort.coordinates?.latitude)!, longitude: (resort.coordinates?.longitude)!)
+                    
+                    self.displaySearchedResort(location: location)
+                    if(self.mapTableView != nil){
+                        self.mapTableView.reloadData()
+                    }
                 }
                 
                 SVProgressHUD.dismiss()
@@ -336,7 +336,7 @@ class GoogleMapViewController: UIViewController {
     func destinationSelectedAtIndex(sender:UIButton) {
         
         
-         Constant.MyClassConstants.destinationOrResortSelectedBy = Constant.omnitureCommonString.typedSelection
+        Constant.MyClassConstants.destinationOrResortSelectedBy = Constant.omnitureCommonString.typedSelection
         if(self.sourceController != "" && self.sourceController == Constant.MyClassConstants.createAlert || self.sourceController == Constant.MyClassConstants.editAlert) {
             let senderButton = sender
             
@@ -684,13 +684,13 @@ class GoogleMapViewController: UIViewController {
         if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.resortDirectoryTitle){
             self.navigationController?.dismiss(animated: true, completion: nil)
         }else{
-             Constant.MyClassConstants.selectionType = -1
+            Constant.MyClassConstants.selectionType = -1
             if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.resortFunctionalityCheck){
                 self.dismiss(animated: true, completion: nil)
             }else{
-                 _ = self.navigationController?.popViewController(animated: true)
+                _ = self.navigationController?.popViewController(animated: true)
             }
-           
+            
             
         }
         
@@ -713,7 +713,7 @@ class GoogleMapViewController: UIViewController {
                 resortbyMap.resortCode = object.resortCode!
                 resortbyMap.resortName = object.resortName!
                 if let territoryCode = object.address?.territoryCode{
-                  resortbyMap.territorrycode = territoryCode
+                    resortbyMap.territorrycode = territoryCode
                 }
                 resortList.resortArray.append(resortbyMap)
             }
@@ -1159,17 +1159,18 @@ class GoogleMapViewController: UIViewController {
     //***** Show screen in landscape/potrait mode. *****//
     func getScreenFrameForOrientation(){
         if(Constant.RunningDevice.deviceIdiom == .pad){
-            if(self.containerView.isHidden == false){
-                self.containerView.isHidden = true
-            }else{
-                self.mapSideView.isHidden = true
+            if(self.containerView != nil){
+                if(self.containerView.isHidden == false){
+                    self.containerView.isHidden = true
+                }else{
+                    self.mapSideView.isHidden = true
+                }
+                
+                let containerVC = self.childViewControllers[0] as! ResortDetailsViewController
+                containerVC.senderViewController = Constant.MyClassConstants.searchResult
+                containerVC.viewWillAppear(true)
             }
-            
-            let containerVC = self.childViewControllers[0] as! ResortDetailsViewController
-            containerVC.senderViewController = Constant.MyClassConstants.searchResult
-            containerVC.viewWillAppear(true)
         }
-        
     }
     
     
@@ -1375,15 +1376,15 @@ extension GoogleMapViewController:UICollectionViewDataSource {
                 }
             }
             
-        resortImageView.setImageWith(url , completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
-            if (error != nil) {
-                resortImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
-            }
-        }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+            resortImageView.setImageWith(url , completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
+                if (error != nil) {
+                    resortImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
+                }
+            }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
         }else{
             var imageURL = ""
             if(resort.images.count > 0){
-             imageURL = resort.images[resort.images.count].url!
+                imageURL = resort.images[resort.images.count].url!
             }
             
             resortImageView.setImageWith(URL(string: imageURL), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
@@ -1651,9 +1652,9 @@ extension GoogleMapViewController:UITableViewDataSource {
                 cell.tag = indexPath.section
                 let dicValue = Constant.MyClassConstants.destinations![indexPath.row]
                 cell.resortLocationName.text = dicValue.destinationName
-                //TODO (jhon) - aplication was crashing when lookin for resort name (Paris, Cancun) 
+                //TODO (jhon) - aplication was crashing when lookin for resort name (Paris, Cancun)
                 guard let territoryCode = dicValue.address?.territoryCode
-
+                    
                     else{
                         return cell
                 }

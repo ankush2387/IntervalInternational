@@ -78,7 +78,7 @@ class ResortDirectoryViewController: UIViewController {
                     if (error != nil) {
                         self.backgroundImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                     }
-                    }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+                }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
             }else{
                 
             }
@@ -91,7 +91,7 @@ class ResortDirectoryViewController: UIViewController {
                 
                 self.containerView.frame = CGRect(x: -self.containerView.frame.size.width, y: 64, width: self.containerView.frame.size.width, height: self.containerView.frame.size.height)
                 
-                }, completion: { _ in
+            }, completion: { _ in
             })
             self.view.bringSubview(toFront: self.containerView)
         }
@@ -111,7 +111,7 @@ class ResortDirectoryViewController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         
-         self.tabBarController?.tabBar.isHidden = false
+        self.tabBarController?.tabBar.isHidden = false
         
         //***** adding notifications so that it invock the specific method when the notification is fired *****//
         NotificationCenter.default.addObserver(self, selector: #selector(helpClicked), name: NSNotification.Name(rawValue: Constant.notificationNames.showHelp), object: nil)
@@ -128,7 +128,7 @@ class ResortDirectoryViewController: UIViewController {
     
     func setNavigationBar(){
         //***** handle hamberger menu button for prelogin and post login case *****//
-      
+        
         print("------> self.navigationController?.viewControllers.count", self.navigationController?.viewControllers.count as Any)
         if((UserContext.sharedInstance.accessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
             if(self.navigationController?.viewControllers.count > 1) {
@@ -174,10 +174,10 @@ class ResortDirectoryViewController: UIViewController {
     //**** Remove added observers ****//
     override func viewDidDisappear(_ animated: Bool) {
         /*NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.showHelp), object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadTableNotification), object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadRegionNotification), object: nil)*/
+         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
+         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadTableNotification), object: nil)
+         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
+         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadRegionNotification), object: nil)*/
     }
     
     //*****Function for back button press.*****//
@@ -237,8 +237,8 @@ class ResortDirectoryViewController: UIViewController {
             
             (self.view.subviews.last?.frame = CGRect(x: -(self.view.subviews.last?.frame.width)!, y: 64, width: (self.view.subviews.last?.frame.width)!, height: (self.view.subviews.last?.frame.height)!))!
             
-            }, completion: { _ in
-                self.view.subviews.last?.isHidden = true
+        }, completion: { _ in
+            self.view.subviews.last?.isHidden = true
         })
     }
     
@@ -258,7 +258,7 @@ class ResortDirectoryViewController: UIViewController {
     //***** Notification to show region details. *****//
     func showAreaDetails(){
         
-            self.performSegue(withIdentifier: Constant.segueIdentifiers.areaSegue, sender: nil)
+        self.performSegue(withIdentifier: Constant.segueIdentifiers.areaSegue, sender: nil)
         
     }
     
@@ -277,10 +277,11 @@ class ResortDirectoryViewController: UIViewController {
             self.containerView.isHidden = true
             resortTableView.reloadData()
         }
-        
-        let containerVC = self.childViewControllers[0] as! ResortDetailsViewController
-        containerVC.senderViewController = Constant.MyClassConstants.searchResult
-        containerVC.viewWillAppear(true)
+        if(self.childViewControllers.count > 0){
+            let containerVC = self.childViewControllers[0] as! ResortDetailsViewController
+            containerVC.senderViewController = Constant.MyClassConstants.searchResult
+            containerVC.viewWillAppear(true)
+        }
     }
     
     //***** overriding storyboard segue methods *****//
@@ -343,7 +344,7 @@ class ResortDirectoryViewController: UIViewController {
             self.performSegue(withIdentifier: Constant.segueIdentifiers.preLoginSegue, sender: nil)
         }
     }
-
+    
 }
 
 
@@ -351,7 +352,7 @@ class ResortDirectoryViewController: UIViewController {
 extension ResortDirectoryViewController:UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-       
+        
         if(tableView.tag == 0){
             let region = Constant.MyClassConstants.resortDirectoryRegionArray[indexPath.row]
             Constant.MyClassConstants.resortDirectoryCommonHearderText = region.regionName!
@@ -369,11 +370,11 @@ extension ResortDirectoryViewController:UITableViewDelegate {
                     Helper.removeServiceCallBackgroundView(view: self.view)
                     Constant.MyClassConstants.resortDirectoryAreaListArray = response
                     self.showAreaDetails()
-                     Helper.trackOmnitureCallForPageView(name: "\(Constant.MyClassConstants.resortDirectoryTitle) \(region.regionName!)")
+                    Helper.trackOmnitureCallForPageView(name: "\(Constant.MyClassConstants.resortDirectoryTitle) \(region.regionName!)")
                     
-                    }, onError: {(error) in
-                        SVProgressHUD.dismiss()
-                        Helper.removeServiceCallBackgroundView(view: self.view)
+                }, onError: {(error) in
+                    SVProgressHUD.dismiss()
+                    Helper.removeServiceCallBackgroundView(view: self.view)
                 })
             }
         }
@@ -390,11 +391,11 @@ extension ResortDirectoryViewController:UITableViewDelegate {
                 Helper.removeServiceCallBackgroundView(view: self.view)
                 Constant.MyClassConstants.resortDirectoryAreaListArray = response
                 self.showAreaDetails()
-                  Helper.trackOmnitureCallForPageView(name: "\(Constant.MyClassConstants.resortDirectoryTitle) \(subregion.regionName!)")
+                Helper.trackOmnitureCallForPageView(name: "\(Constant.MyClassConstants.resortDirectoryTitle) \(subregion.regionName!)")
                 
-                }, onError: {(error) in
-                    SVProgressHUD.dismiss()
-                    Helper.removeServiceCallBackgroundView(view: self.view)
+            }, onError: {(error) in
+                SVProgressHUD.dismiss()
+                Helper.removeServiceCallBackgroundView(view: self.view)
             })
             
         }
@@ -413,7 +414,7 @@ extension ResortDirectoryViewController:UITableViewDelegate {
                         self.backgroundImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                     }
                     
-                    }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+                }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
             }
             else {
                 
@@ -425,8 +426,8 @@ extension ResortDirectoryViewController:UITableViewDelegate {
                 
                 SVProgressHUD.dismiss()
                 Helper.removeServiceCallBackgroundView(view: self.view)
-                 Helper.trackOmnitureCallForPageView(name: "\(Constant.MyClassConstants.resortDirectoryTitle) \(area.areaName!)")
-                 self.performSegue(withIdentifier: Constant.segueIdentifiers.resortByAreaSegue, sender: nil)
+                Helper.trackOmnitureCallForPageView(name: "\(Constant.MyClassConstants.resortDirectoryTitle) \(area.areaName!)")
+                self.performSegue(withIdentifier: Constant.segueIdentifiers.resortByAreaSegue, sender: nil)
                 
             }, onError: {(error) in
                 SVProgressHUD.dismiss()
@@ -444,7 +445,7 @@ extension ResortDirectoryViewController:UITableViewDelegate {
                 Helper.getUserFavorites()
                 if(selectedResort.resortCode != nil) {
                     
-                   Helper.getResortWithResortCode(code: selectedResort.resortCode!,viewcontroller:self)
+                    Helper.getResortWithResortCode(code: selectedResort.resortCode!,viewcontroller:self)
                 }
             }
         }
@@ -572,7 +573,7 @@ extension ResortDirectoryViewController:UITableViewDataSource {
                         if (error != nil) {
                             cell.imageViewTop.image = UIImage(named: Constant.MyClassConstants.noImage)
                         }
-                        }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+                    }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
                 }
                 return cell
                 
@@ -615,7 +616,7 @@ extension ResortDirectoryViewController:UITableViewDataSource {
                 
                 if let stirngUrl = resort.images[2].url {
                     let url = URL(string: stirngUrl)
-                        cell.resortImageView.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+                    cell.resortImageView.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
                 }else{
                     
                 }
@@ -664,7 +665,7 @@ extension ResortDirectoryViewController:UITableViewDataSource {
 extension ResortDirectoryViewController:ResortDirectoryResortCellDelegate {
     
     func favoritesButtonSelectedAtIndex(_ index: Int) {
-
+        
         let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.iphone, bundle: nil)
         let resultController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginController) as? SignInPreLoginViewController
         let navController = UINavigationController(rootViewController: resultController!)
@@ -675,34 +676,34 @@ extension ResortDirectoryViewController:ResortDirectoryResortCellDelegate {
 
 //***** Extension to show side view  with container in iPad. *****.//
 extension ResortDirectoryViewController:ResortFavoritesTableViewCellDelegate {
-
-func showResortDetails(_ index:Int){
     
-    Constant.MyClassConstants.resortsDescriptionArray = Constant.MyClassConstants.resortDirectoryResortArray[index]
-    
-    Constant.MyClassConstants.resortDescriptionString = Constant.MyClassConstants.resortDirectoryResortArray[index].description
-    
-    if(self.containerView != nil) {
+    func showResortDetails(_ index:Int){
         
-        self.containerView.isHidden = false
-        self.containerView.bringSubview(toFront: self.containerView)
-        let selectedResort = Constant.MyClassConstants.resortDirectoryResortArray[index]
-        Constant.MyClassConstants.isgetResortFromGoogleSearch = false
+        Constant.MyClassConstants.resortsDescriptionArray = Constant.MyClassConstants.resortDirectoryResortArray[index]
         
-        UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseOut ,animations: {
-            
-            (self.view.subviews.last?.frame = CGRect(x: 0, y: 64, width: (self.view.subviews.last?.frame.width)!, height: (self.view.subviews.last?.frame.height)!))!
-            
-        }, completion: { _ in
-            if(selectedResort.resortCode != nil) {
-                //self.callAPI(selectedResort.resortCode!)
-                Helper.getResortWithResortCode(code: selectedResort.resortCode!, viewcontroller: self)
-            }
-            
-        })
+        Constant.MyClassConstants.resortDescriptionString = Constant.MyClassConstants.resortDirectoryResortArray[index].description
         
+        if(self.containerView != nil) {
+            
+            self.containerView.isHidden = false
+            self.containerView.bringSubview(toFront: self.containerView)
+            let selectedResort = Constant.MyClassConstants.resortDirectoryResortArray[index]
+            Constant.MyClassConstants.isgetResortFromGoogleSearch = false
+            
+            UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseOut ,animations: {
+                
+                (self.view.subviews.last?.frame = CGRect(x: 0, y: 64, width: (self.view.subviews.last?.frame.width)!, height: (self.view.subviews.last?.frame.height)!))!
+                
+            }, completion: { _ in
+                if(selectedResort.resortCode != nil) {
+                    //self.callAPI(selectedResort.resortCode!)
+                    Helper.getResortWithResortCode(code: selectedResort.resortCode!, viewcontroller: self)
+                }
+                
+            })
+            
+        }
     }
-}
     func favoritesResortSelectedAtIndex(_ index:Int){
         let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.resortDirectoryIpad, bundle: nil)
         let resultController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginViewControlleriPad) as? SignInPreLoginViewController

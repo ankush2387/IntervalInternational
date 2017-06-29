@@ -67,10 +67,10 @@ class UpComingTripDetailController: UIViewController {
             
             Constant.omnitureEvars.eVar55 : "\(getdatediffrence())",
             Constant.omnitureEvars.eVar56 : ""
-
+            
         ]
         ADBMobile.trackAction(Constant.omnitureEvents.event74, data: userInfo)
-
+        
         
     }
     
@@ -695,19 +695,19 @@ extension UpComingTripDetailController:UITableViewDataSource {
         if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.confirmationNumber != nil) {
             
             if let sailingDate = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise?.cabin?.sailingDate {
-            // TODO(Jhon): Error, found nil
+                // TODO(Jhon): Error, found nil
                 checkDate  = Helper.getUpcommingcheckinDatesDiffrence(date: Helper.convertStringToDate(dateString:sailingDate, format: Constant.MyClassConstants.dateFormat))
             }
-        
+            
         }
-        
+            
         else{
             
             checkDate = Helper.getUpcommingcheckinDatesDiffrence(date: Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment!.accommodationCertificate!.travelWindow!.fromDate!, format: Constant.MyClassConstants.dateFormat1))
         }
         
         
-     return checkDate
+        return checkDate
     }
 }
 

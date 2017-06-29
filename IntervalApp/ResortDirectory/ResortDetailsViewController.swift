@@ -48,8 +48,8 @@ class ResortDetailsViewController: UIViewController {
         super.viewWillAppear(true)
         
         if(Constant.RunningDevice.deviceIdiom == .phone){
-        self.navigationController?.isNavigationBarHidden = true
-        self.tabBarController?.tabBar.isHidden = true
+            self.navigationController?.isNavigationBarHidden = true
+            self.tabBarController?.tabBar.isHidden = true
         }
         // Notification to perform vacation search after user pre-login
         NotificationCenter.default.addObserver(self, selector: #selector(showVacationSearch), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
@@ -91,7 +91,7 @@ class ResortDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-       
+        
         // omniture tracking with event 35
         if(Constant.MyClassConstants.resortsDescriptionArray.resortCode != nil){
             let userInfo: [String: String] = [
@@ -121,8 +121,8 @@ class ResortDetailsViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         if(Constant.RunningDevice.deviceIdiom == .phone){
-        self.navigationController?.isNavigationBarHidden = false
-        self.tabBarController?.tabBar.isHidden = false
+            self.navigationController?.isNavigationBarHidden = false
+            self.tabBarController?.tabBar.isHidden = false
         }
     }
     
@@ -195,7 +195,7 @@ class ResortDetailsViewController: UIViewController {
                     SVProgressHUD.dismiss()
                     Helper.removeServiceCallBackgroundView(view: self.view)
                     self.tableViewResorts.reloadData()
-                    })
+                })
                 { (error) in
                     SVProgressHUD.dismiss()
                     Helper.removeServiceCallBackgroundView(view: self.view)
@@ -251,7 +251,7 @@ class ResortDetailsViewController: UIViewController {
                     ]
                     
                     ADBMobile.trackAction(Constant.omnitureEvents.event35, data: userInfo)
-                    })
+                })
                 { (error) in
                     SVProgressHUD.dismiss()
                     Helper.removeServiceCallBackgroundView(view: self.view)
@@ -291,7 +291,7 @@ class ResortDetailsViewController: UIViewController {
             
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
         }else{
-
+            
             if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.vacationSearchFunctionalityCheck){
                 
                 self.dismiss(animated: true, completion: nil)
@@ -334,11 +334,19 @@ class ResortDetailsViewController: UIViewController {
             let storedata = RealmLocalStorage()
             let Membership = UserContext.sharedInstance.selectedMembership
             let resortList = ResortList()
-            resortList.resortCityName = (address?.cityName)!
-            resortList.resortCode = dict.resortCode!
+            if let cityName = (address?.cityName){
+                resortList.resortCityName = cityName
+            }
+            if let resortCode = dict.resortCode{
+                resortList.resortCode = resortCode
+                resortList.resortName = "\(dict.resortName!) - \(dict.resortCode!)"
+            }
             resortList.thumbnailurl = dict.images[0].url!
-            resortList.resortName = "\(dict.resortName!) - \(dict.resortCode!)"
-            resortList.territorrycode = (address?.territoryCode)!
+            
+            if let territoryCode = (address?.territoryCode){
+                resortList.territorrycode = territoryCode
+            }
+            
             storedata.resorts.append(resortList)
             storedata.membeshipNumber = Membership!.memberNumber!
             try! realm.write {
@@ -472,7 +480,7 @@ class ResortDetailsViewController: UIViewController {
             SVProgressHUD.dismiss()
         })
     }
-
+    
     func showLocationButtonPressed() {
         print("Location Button Pressed")
         guard let coordinates = Constant.MyClassConstants.resortsDescriptionArray.coordinates else { return }
@@ -483,7 +491,7 @@ class ResortDetailsViewController: UIViewController {
             SVProgressHUD.dismiss()
         }
     }
-
+    
     
     /*
      // MARK: - Navigation
@@ -515,10 +523,10 @@ extension ResortDetailsViewController:UITableViewDelegate {
             case 0:
                 return tableView.frame.size.width/2 + 100
             case 1:
-               
+                
                 if(Constant.MyClassConstants.resortsDescriptionArray.description != nil){
                     if((Constant.MyClassConstants.resortsDescriptionArray.description?.characters.count)! > 0){
-
+                        
                         var height:CGFloat
                         if(Constant.RunningDevice.deviceIdiom == .pad){
                             let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0)
@@ -747,7 +755,7 @@ extension ResortDetailsViewController:UITableViewDataSource {
                                 }
                             }else if(section == 6){
                                 if Constant.MyClassConstants.resortsDescriptionArray.tdiUrl != nil{
-                                     return 2
+                                    return 2
                                 }else{
                                     return 1
                                 }
@@ -895,7 +903,7 @@ extension ResortDetailsViewController:UITableViewDataSource {
                         
                         if((indexPath as NSIndexPath).section == 3){
                             availableCountryCell?.infoLabel.isHidden = false
-                           
+                            
                             if(Constant.MyClassConstants.resortsDescriptionArray.nearestAiport?.name != nil){
                                 var airportAdress = "Nearest Airport" + "\n" + (Constant.MyClassConstants.resortsDescriptionArray.nearestAiport?.name)! + "/"
                                 airportAdress = airportAdress + (Constant.MyClassConstants.resortsDescriptionArray.nearestAiport?.code)! + " /\(Constant.MyClassConstants.resortsDescriptionArray.nearestAiport!.distanceInMiles) Miles /\(Constant.MyClassConstants.resortsDescriptionArray.nearestAiport!.distanceInKilometers) KM"
@@ -920,7 +928,7 @@ extension ResortDetailsViewController:UITableViewDataSource {
                                 let url = URL(string:  Constant.MyClassConstants.resortsDescriptionArray.tdiUrl!)
                                 availableCountryCell?.tdiImageView.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
                             }else{
-                              availableCountryCell?.tdiImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
+                                availableCountryCell?.tdiImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                             }
                         }else if((indexPath as NSIndexPath).section == 5){
                             var resortCategory:[ResortRatingCategory]
@@ -1016,7 +1024,7 @@ extension ResortDetailsViewController:UITableViewDataSource {
                     sender.isSelected = true
                     Constant.MyClassConstants.favoritesResortCodeArray.add(Constant.MyClassConstants.resortsDescriptionArray.resortCode!)
                     self.tableViewResorts.reloadData()
-                     ADBMobile.trackAction(Constant.omnitureEvents.event48, data: nil)
+                    ADBMobile.trackAction(Constant.omnitureEvents.event48, data: nil)
                 }, onError: {(error) in
                     SVProgressHUD.dismiss()
                     Helper.removeServiceCallBackgroundView(view: self.view)
@@ -1028,7 +1036,7 @@ extension ResortDetailsViewController:UITableViewDataSource {
                 Helper.addServiceCallBackgroundView(view: self.view)
                 UserClient.removeFavoriteResort(UserContext.sharedInstance.accessToken, resortCode: Constant.MyClassConstants.resortsDescriptionArray.resortCode!, onSuccess: {(response) in
                     
-                  
+                    
                     sender.isSelected = false
                     Helper.removeServiceCallBackgroundView(view: self.view)
                     SVProgressHUD.dismiss()
@@ -1044,7 +1052,7 @@ extension ResortDetailsViewController:UITableViewDataSource {
                 
             }
             
-          
+            
         }
         else {
             if(Constant.RunningDevice.deviceIdiom == .pad){
@@ -1056,7 +1064,7 @@ extension ResortDetailsViewController:UITableViewDataSource {
                 let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginController)
                 //self.present(viewController, animated: true, completion: nil)
                 self.navigationController?.pushViewController(viewController, animated:true)
-
+                
             }
         }
         
