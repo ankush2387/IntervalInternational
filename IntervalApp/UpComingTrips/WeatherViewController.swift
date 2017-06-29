@@ -13,7 +13,7 @@ class WeatherViewController: UIViewController {
     
     
     var resortWeather: ResortWeather?
-    let selectedButtonTextColor = UIColor.init(colorLiteralRed: 0, green: 122/255, blue: 255/255, alpha: 1.0)
+    let selectedButtonTextColor = UIColor.black
     var resortName: String?
     var countryCode: String?
 
@@ -116,14 +116,14 @@ class WeatherViewController: UIViewController {
     }
     
     @IBAction func didPressCelsiusButton(_ sender: Any) {
-        self.fahrenheitButton.setTitleColor(UIColor.black, for: .normal)
+        self.fahrenheitButton.setTitleColor(UIColor.init(colorLiteralRed: 0, green: 122/255, blue: 255/255, alpha: 1.0), for: .normal)
         self.celsiusButton.setTitleColor(selectedButtonTextColor, for: .normal)
         
         displayCelsius()
     }
     @IBAction func didPressFahrenheitButton(_ sender: Any) {
         self.fahrenheitButton.setTitleColor(selectedButtonTextColor, for: .normal)
-        self.celsiusButton.setTitleColor(UIColor.black, for: .normal)
+        self.celsiusButton.setTitleColor(UIColor.init(colorLiteralRed: 0, green: 122/255, blue: 255/255, alpha: 1.0), for: .normal)
         
         displayFarenheit()
     }

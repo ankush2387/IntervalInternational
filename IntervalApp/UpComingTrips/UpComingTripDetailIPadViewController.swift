@@ -141,41 +141,40 @@ class UpComingTripDetailIPadViewController: UIViewController {
             //Just dismiss the action sheet
         }
         actionSheetController.addAction(viewMyRecentSearchAction)
-        //***** Create and add the Reset my search *****//
-        let resetMySearchAction: UIAlertAction = UIAlertAction(title: Constant.buttonTitles.emailTripTitle, style: .default) { action -> Void in
+         //***** Present ActivityViewController for share options *****//
+        let shareAction: UIAlertAction = UIAlertAction(title: "Share", style: .default) { action -> Void in
             Constant.MyClassConstants.checkInClosestContentArray.removeAllObjects()
             Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
             Constant.MyClassConstants.realmStoredDestIdOrCodeArray.removeAllObjects()
-            //check if device can send email messages
-            if MFMailComposeViewController.canSendMail() {
-                let mailComposerVC = MFMailComposeViewController()
-                mailComposerVC.mailComposeDelegate = self
-                mailComposerVC.navigationBar.tintColor = UIColor.white
-                mailComposerVC.setSubject("Upcoming Trip Details")
-                let message = self.formatMessageforComposer()
-                mailComposerVC.setMessageBody(message, isHTML: false)
-                self.present(mailComposerVC, animated: true, completion: nil)
-            } else{
-                SimpleAlert.alert(self, title: "Error", message: "This device is not able/configured to send Email Messages")
-            }
-        }
-        actionSheetController.addAction(resetMySearchAction)
-        //***** Create and add help *****//
-        let helpAction: UIAlertAction = UIAlertAction(title: Constant.buttonTitles.textTripTitle, style: .default) { action -> Void in
-            //check if device can send text messages
-            if MFMessageComposeViewController.canSendText() {
-                let messageComposerVC = MFMessageComposeViewController()
-                messageComposerVC.messageComposeDelegate = self
+            
+            let message = ShareActivityMessage()
+            message.upcomingTripDetailsMessage()
+            
+            let shareActivityViewController = UIActivityViewController(activityItems: [message], applicationActivities: nil)
+            shareActivityViewController.completionWithItemsHandler = {(activityType, completed, returnItems, error) in
+                if completed {
+                    if activityType == UIActivityType.mail || activityType == UIActivityType.message {
+                        //Display message to confirm Message and Mail have been sent
+                        SimpleAlert.alert(self, title: "Success", message: "Your Confirmation has been sent!")
+                    }
+                }
                 
-                messageComposerVC.navigationBar.titleTextAttributes = ["NSForegroundColorAttributeName" : UIColor.black]
-                let message = self.formatMessageforComposer()
-                messageComposerVC.body = message
-                self.present(messageComposerVC, animated: true, completion: nil)
-            } else {
-                SimpleAlert.alert(self, title: "Error", message: "This device is not able/configured to send Text Messages")
+                if error != nil {
+                    if activityType == UIActivityType.mail || activityType == UIActivityType.message {
+                        //Display message to let user know there was error
+                        SimpleAlert.alert(self, title: "Error", message: "The Confirmation could not be sent. Please try again.")
+                    }
+                }
             }
+            
+            shareActivityViewController.popoverPresentationController?.sourceView = self.view
+            shareActivityViewController.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.size.width,y: 0, width: 100, height: 60)
+            shareActivityViewController.popoverPresentationController!.permittedArrowDirections = .up;
+
+            self.present(shareActivityViewController, animated: false, completion: nil)
+            
         }
-        actionSheetController.addAction(helpAction)
+        actionSheetController.addAction(shareAction)
         
         //***** Purchase trip insurance *****//
         let insuranceAction: UIAlertAction = UIAlertAction(title: Constant.buttonTitles.purchaseInsuranceTitle, style: .default) { action -> Void in
@@ -729,83 +728,5 @@ extension UpComingTripDetailIPadViewController:UITableViewDataSource {
      }
         
         //return 1
-    }
-}
-
-extension UpComingTripDetailIPadViewController: MFMessageComposeViewControllerDelegate {
-    
-    func formatMessageforComposer() -> String {
-        //format message to be sent for text and Email
-        var message = ""
-        var location = ""
-        //confirmation Number
-        if let confirmationNum = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.confirmationNumber {
-            message.append("Confirmation #: \(confirmationNum)\n")
-        }
-        //transaction Type
-        let transactionType = ExchangeTransactionType.fromName(name: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.exchangeTransactionType!).friendlyNameForUpcomingTrip()
-        message.append("TransactionType: \(transactionType)\n")
-        //Resort Name
-        if let name = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.resortName {
-            message.append("Resort: \(name)\n")
-        }
-        //city Name
-        if let cityName = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address!.cityName {
-            location = "\(cityName), "
-        }
-        //Country Code
-        if let countryCode = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address!.countryCode {
-            location.append("\(countryCode)")
-        }
-        message.append("Location: \(location)\n")
-        
-        //format checkIn Date
-        let checkInDate = Helper.convertStringToDate(dateString:Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.checkInDate!, format: Constant.MyClassConstants.dateFormat)
-        let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-        let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkInDate)
-        let formatedCheckInDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!))/\(myComponents.day!)/\(myComponents.year!)"
-        
-        message.append("CheckIn: \(formatedCheckInDate)\n")
-        
-        //format CheckOut Date
-        let checkOutDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.checkOutDate!, format: Constant.MyClassConstants.dateFormat1)
-        let myComponents1 = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkOutDate)
-        let formatedCheckOutDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!))/\(myComponents1.day!)/\(myComponents1.year!)"
-        message.append("CheckOut: \(formatedCheckOutDate)\n")
-        
-        return message
-    }
-    
-    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
-        //display alert message if message fails to be sent.
-        switch result.rawValue {
-        case MessageComposeResult.failed.rawValue:
-            SimpleAlert.alert(self, title: "Error", message: "The text message could not be sent. Please try again.")
-            break
-        default:
-            print("Text Result: \(result.rawValue)")
-            break
-        }
-        
-        //dissmis Text Composer
-        self.dismiss(animated: true, completion: nil)
-
-    }
-}
-
-extension UpComingTripDetailIPadViewController: MFMailComposeViewControllerDelegate{
-    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-        //display alert message if message fails to be sent.
-        switch result.rawValue {
-        case MFMailComposeResult.failed.rawValue:
-            SimpleAlert.alert(self, title: "Error", message: "The Email could not be sent. Please try again.")
-            break
-        default:
-            print("Email Result: \(result.rawValue)")
-            break
-        }
-        
-        //dissmis MailComposer
-        self.dismiss(animated: true, completion: nil)
     }
 }
