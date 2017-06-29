@@ -9,6 +9,9 @@
 import UIKit
 
 class RelinquishmentWhatToUseViewController: UIViewController {
+    
+    
+    @IBOutlet weak var whatToUsetableview: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,14 +27,37 @@ class RelinquishmentWhatToUseViewController: UIViewController {
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+ 
+  
 
 }
+
+extension RelinquishmentWhatToUseViewController: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return 5
+        
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+          let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.resortBedroomDetailexchange, for: indexPath) as UITableViewCell
+        
+        return cell
+    }
+    
+}
+
+
+
+extension RelinquishmentWhatToUseViewController: UITableViewDelegate{
+    
+    
+    
+ 
+}
+
+
+
+
