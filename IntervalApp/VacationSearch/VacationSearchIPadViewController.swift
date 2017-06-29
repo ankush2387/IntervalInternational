@@ -696,7 +696,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                             
                             if let dateToSelect = Constant.MyClassConstants.checkInDates.index(of: Constant.MyClassConstants.vacationSearchShowDate) {
                                 Constant.MyClassConstants.searchResultCollectionViewScrollToIndex = dateToSelect + 1
-                                
+                                //Helper.showProgressBar(senderView: self)
                                 let exchangeAvailabilityRequest = ExchangeSearchAvailabilityRequest()
                                 exchangeAvailabilityRequest.checkInDate = Constant.MyClassConstants.checkInDates[dateToSelect]
                                 exchangeAvailabilityRequest.resortCodes = Constant.MyClassConstants.resortCodesArray
@@ -713,6 +713,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                                 Constant.MyClassConstants.searchResultCollectionViewScrollToIndex = dateToSelect + 1
                                 Constant.MyClassConstants.showAlert = false
                                 sender.isEnabled = true
+                                //Helper.showProgressBar(senderView: self)
                                 
                                 let exchangeAvailabilityRequest = ExchangeSearchAvailabilityRequest()
                                 exchangeAvailabilityRequest.checkInDate = Constant.MyClassConstants.checkInDates[dateToSelect]
@@ -724,9 +725,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                                 self.searchAvailability(exchangeAvailabilityRequest: exchangeAvailabilityRequest, sender: sender)
                             }else {
                                 Constant.MyClassConstants.searchResultCollectionViewScrollToIndex = 1
-                                SVProgressHUD.dismiss()
-                                Helper.removeServiceCallBackgroundView(view: self.view)
-                                Helper.hideProgressBar(senderView: self)
+                                //Helper.showProgressBar(senderView: self)
                                 sender.isEnabled = true
                                 
                                 let exchangeAvailabilityRequest = ExchangeSearchAvailabilityRequest()

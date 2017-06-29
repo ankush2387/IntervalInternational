@@ -49,10 +49,10 @@ class VacationSearchResultIPadController: UIViewController {
         
         if(Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.getawayAlerts){
             
-            headerVw.frame = CGRect(x:0, y:0, width:300, height:40)
+            headerVw.frame = CGRect(x:0, y:0, width:UIScreen.main.bounds.width, height:40)
             headerVw.backgroundColor = UIColor.gray
             
-            titleLabel.frame = CGRect(x:10, y:0, width:280, height:40)
+            titleLabel.frame = CGRect(x:10, y:0, width:UIScreen.main.bounds.width, height:40)
             titleLabel.textColor = UIColor.white
             titleLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 14)
             headerVw.addSubview(titleLabel)

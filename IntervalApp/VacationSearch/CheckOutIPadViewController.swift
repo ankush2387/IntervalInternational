@@ -253,7 +253,8 @@ class CheckOutIPadViewController: UIViewController {
                 self.isTripProtectionEnabled = false
                 self.addTripProtection(shouldAddTripProtection: false)
             }
-            self.bookingTableView.reloadSections(IndexSet(integer: 4), with:.automatic)
+            self.bookingTableView.reloadData()
+            //self.bookingTableView.reloadSections(IndexSet(integer: 4), with:.automatic)
         }
         
     }
@@ -356,7 +357,6 @@ class CheckOutIPadViewController: UIViewController {
     
     //***** Function to check if the email entered by user is an valid email address. *****//
     func isValidEmail(testStr:String) -> Bool {
-        
         let emailRegEx = Constant.MyClassConstants.emailRegex
         
         let emailTest = NSPredicate(format:Constant.MyClassConstants.selfMatches, emailRegEx)
