@@ -484,43 +484,53 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
             if(Constant.MyClassConstants.isFromExchange){
                 
                 
-                let exchangeSearchDateRequest = ExchangeFilterRelinquishmentsRequest()
-                exchangeSearchDateRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
-                exchangeSearchDateRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
+//                let exchangeSearchDateRequest = ExchangeFilterRelinquishmentsRequest()
+//                exchangeSearchDateRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
+//                exchangeSearchDateRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
+//                
+//               
+//                
+//                let exchangeDestination = ExchangeDestination()
+//                let currentFromDate = Helper.convertDateToString(date: Constant.MyClassConstants.currentFromDate, format: Constant.MyClassConstants.dateFormat)
+//                
+//                let currentToDate = Helper.convertDateToString(date: Constant.MyClassConstants.currentToDate, format: Constant.MyClassConstants.dateFormat)
+//                
+//                let resort = Resort()
+//                resort.resortName = Constant.MyClassConstants.resortsArray[selectedIndex].resortName
+//                resort.resortCode = Constant.MyClassConstants.resortsArray[selectedIndex].resortCode
+//                
+//                exchangeDestination.resort = resort
+//                
+//                let unit = InventoryUnit()
+//                unit.kitchenType = Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.kitchenType!
+//                unit.unitSize = Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitSize!
+//                unit.checkInDate = currentFromDate
+//                unit.checkOutDate = currentToDate
+//                unit.unitNumber = Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitNumber!
+//                
+//                exchangeDestination.unit = unit
+//                
+//                exchangeSearchDateRequest.destination = exchangeDestination
+//                
+//                ExchangeClient.filterRelinquishments(UserContext.sharedInstance.accessToken, request: exchangeSearchDateRequest, onSuccess: { (response) in
+//                    
+//                    print(response)
+//                   
+//                   
+//                }, onError: { (error) in
+//                    print(Error.self)
+//
+//                })
                 
-               
+                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whatToUseViewController) as! RelinquishmentWhatToUseViewController
                 
-                let exchangeDestination = ExchangeDestination()
-                let currentFromDate = Helper.convertDateToString(date: Constant.MyClassConstants.currentFromDate, format: Constant.MyClassConstants.dateFormat)
                 
-                let currentToDate = Helper.convertDateToString(date: Constant.MyClassConstants.currentToDate, format: Constant.MyClassConstants.dateFormat)
-                
-                let resort = Resort()
-                resort.resortName = Constant.MyClassConstants.resortsArray[selectedIndex].resortName
-                resort.resortCode = Constant.MyClassConstants.resortsArray[selectedIndex].resortCode
-                
-                exchangeDestination.resort = resort
-                
-                let unit = InventoryUnit()
-                unit.kitchenType = Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.kitchenType!
-                unit.unitSize = Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitSize!
-                unit.checkInDate = currentFromDate
-                unit.checkOutDate = currentToDate
-                unit.unitNumber = Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitNumber!
-                
-                exchangeDestination.unit = unit
-                
-                exchangeSearchDateRequest.destination = exchangeDestination
-                
-                ExchangeClient.filterRelinquishments(UserContext.sharedInstance.accessToken, request: exchangeSearchDateRequest, onSuccess: { (response) in
-                    
-                    print(response)
-                   
-                   
-                }, onError: { (error) in
-                    print(Error.self)
+                let transitionManager = TransitionManager()
+                self.navigationController?.transitioningDelegate = transitionManager
+                self.navigationController!.pushViewController(viewController, animated: true)
 
-                })
+                
             }
             else{
                 
