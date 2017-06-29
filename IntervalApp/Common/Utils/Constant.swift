@@ -779,6 +779,7 @@ class Constant: NSObject {
         static var clubpointselection = NSLocalizedString("Club Point Selection", comment: "")
         static var selectedControllerTitle = ""
         static var sorting = NSLocalizedString("Sorting", comment: "")
+        static var choosewhattouse = NSLocalizedString("Choose what to use", comment: "")
     }
     
     //***** Common structure for custom cell identifiers ******//
@@ -862,6 +863,7 @@ class Constant: NSObject {
         static var tripDetailsViewController = "TripDetailsNavigationController"
         static var createAlertViewController = "CreateAlertViewController"
         static var signInPreLoginViewController = "SignInPreLoginViewController"
+        static var whatToUseViewController = "WhatToUseViewController"
         
     }
     
