@@ -177,11 +177,11 @@ extension BookYourSelectionViewController:UITableViewDataSource {
                     cell.totalWeekLabel.text = "\(String(describing: (exchange.openWeek?.relinquishmentYear!)!))"
                     cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType:(exchange.openWeek?.unit!.unitSize!)!))), \(Helper.getKitchenEnums(kitchenType:(exchange.openWeek?.unit!.kitchenType!)!))"
                     cell.totalSleepAndPrivate.text = "Sleeps \(String(describing: exchange.openWeek!.unit!.publicSleepCapacity)), \(String(describing: exchange.openWeek!.unit!.privateSleepCapacity)) Private"
-                    let date = exchange.openWeek!.unit?.checkInDate
-                    if(date.count > 0) {
+                    //let date = exchange.openWeek!.unit?.checkInDate
+                    //if(date.count > 0) {
                         
-                        let dateString = date[0]
-                        let date =  Helper.convertStringToDate(dateString: dateString, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
+                        let dateString = exchange.openWeek!.unit?.checkInDate
+                        let date =  Helper.convertStringToDate(dateString: dateString!, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
                         let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
                         let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: date)
                         let day = myComponents.day!
@@ -195,11 +195,11 @@ extension BookYourSelectionViewController:UITableViewDataSource {
                         
                         cell.dayAndDateLabel.text = month.uppercased()
                         
-                    }
+                    /*}
                     else {
                         
                         cell.dayAndDateLabel.text = ""
-                    }
+                    }*/
                     cell.selectionStyle = UITableViewCellSelectionStyle.none
                     return cell
                 }else{
