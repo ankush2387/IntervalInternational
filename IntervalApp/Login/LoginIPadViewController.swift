@@ -118,6 +118,11 @@ class LoginIPadViewController: UIViewController
         intervalHD.setTitle(Constant.buttonTitles.intervalHDTitle, for: UIControlState())
         magazines.setTitle(Constant.buttonTitles.magazineTitle, for: UIControlState())
         
+        //set UserName if previously saved
+        if let userName = UserDefaults.standard.string(forKey: Constant.MyClassConstants.userName) {
+            self.userNameTextField.text = userName
+        }
+        
         //***** Setting font size according to the running device width *****//
 		
 		enableTouchIdTextLabel.textColor = IUIKColorPalette.primary1.color
@@ -157,6 +162,13 @@ class LoginIPadViewController: UIViewController
         {
             getScreenInPotrait()
         }
+    }
+    
+    func saveUsername(user: String) {
+        //save username to UserDefaults
+        let uName = user
+        UserDefaults.standard.set(uName, forKey: Constant.MyClassConstants.userName)
+        UserDefaults.standard.synchronize()
     }
     
     func getScreenInLandscape(){
@@ -213,6 +225,7 @@ class LoginIPadViewController: UIViewController
 		}
 		// touch disabled, perform standard login
 		else {
+            saveUsername(user: trimmedUsername!)
 			performStandardLogin(trimmedUsername!, password:trimmedPassword!)
 		}
     }
