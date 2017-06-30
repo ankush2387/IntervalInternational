@@ -507,11 +507,11 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
                 exchangeDestination.resort = resort
                 
                 let unit = InventoryUnit()
-                unit.kitchenType = Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.kitchenType!
-                unit.unitSize = Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitSize!
+                unit.kitchenType = "NO_KITCHEN"//Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.kitchenType!
+                unit.unitSize = "STUDIO"//Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitSize!
                 exchangeDestination.checkInDate = "2017-07-17"//currentFromDate
                 exchangeDestination.checkOutDate = "2017-07-24"//currentToDate
-                unit.unitNumber = Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitNumber!
+                //unit.unitNumber = Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitNumber!
                 unit.publicSleepCapacity = 4
                 unit.privateSleepCapacity = 2
                 
@@ -521,7 +521,7 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
                 
                 ExchangeClient.filterRelinquishments(UserContext.sharedInstance.accessToken, request: exchangeSearchDateRequest, onSuccess: { (response) in
                     
-                    print(response)
+                    print(response[0].openWeek?.relinquishmentId! ?? "")
                    
                    
                 }, onError: { (error) in

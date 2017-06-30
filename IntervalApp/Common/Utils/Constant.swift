@@ -485,6 +485,9 @@ class Constant: NSObject {
         static var promotionsArray = [Promotion]()
         static var htmlHeader = "<html><body>"
         static var htmlFooter = "</html></body>"
+        
+        // Choose relinquishments
+        static var filterRelinquishments = [ExchangeRelinquishment]()
     }
     struct CommonStringIdentifiers {
         static var floatWeek = "FLOAT_WEEK"
@@ -1205,6 +1208,8 @@ class Constant: NSObject {
         static var upcomingDetailSegue = "UpComingTripDetailSegue"
         static var searchResultMapSegue = "searchResultMapSegue"
         static var sortingSegue = "sortingSegue"
+        static var whatToUseSegue = "whatToUse"
+        static var bookingSelectionSegue = "BookYourSelectionSegue"
     }
     
     //***** common  structure to provide all actionSheetAttributedString *****//

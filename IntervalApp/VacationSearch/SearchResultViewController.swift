@@ -198,6 +198,54 @@ class SearchResultViewController: UIViewController {
         })
         
     }
+    //Calling API for filterRelinquishments
+    
+    func getFilterRelinquishments(){
+        Helper.showProgressBar(senderView: self)
+        let exchangeSearchDateRequest = ExchangeFilterRelinquishmentsRequest()
+        exchangeSearchDateRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
+        
+        let relinquishmentIDArray = ["Ek83chJmdS6ESNRpVfhH8QaTBeXh5rpNm_2AJLhV_4jRTiVySvOk2NKFm4iHOtEK",
+                                     "Ek83chJmdS6ESNRpVfhH8RFxFgvpS1HHCzYyrvzw42rRTiVySvOk2NKFm4iHOtEK",
+                                     "Ek83chJmdS6ESNRpVfhH8SOcpMOEqw1KO8bsQKhjLZnRTiVySvOk2NKFm4iHOtEK",
+                                     "Ek83chJmdS6ESNRpVfhH8YMAv0D39MaVmh75YJgm_IDRTiVySvOk2NKFm4iHOtEK"]
+        exchangeSearchDateRequest.relinquishmentsIds = relinquishmentIDArray//Constant.MyClassConstants.relinquishmentIdArray as! [String]
+        
+        
+        
+        let exchangeDestination = ExchangeDestination()
+        let currentFromDate = Helper.convertDateToString(date: Constant.MyClassConstants.currentFromDate, format: Constant.MyClassConstants.dateFormat)
+        
+        let currentToDate = Helper.convertDateToString(date: Constant.MyClassConstants.currentToDate, format: Constant.MyClassConstants.dateFormat)
+        
+        let resort = Resort()
+        //resort.resortName = Constant.MyClassConstants.resortsArray[selectedIndex].resortName
+        resort.resortCode = "CZP"//Constant.MyClassConstants.resortsArray[selectedIndex].resortCode
+        
+        exchangeDestination.resort = resort
+        
+        let unit = InventoryUnit()
+        unit.kitchenType = "NO_KITCHEN"//Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.kitchenType!
+        unit.unitSize = "STUDIO"//Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitSize!
+        exchangeDestination.checkInDate = "2017-07-17"//currentFromDate
+        exchangeDestination.checkOutDate = "2017-07-24"//currentToDate
+        //unit.unitNumber = Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitNumber!
+        unit.publicSleepCapacity = 4
+        unit.privateSleepCapacity = 2
+        
+        exchangeDestination.unit = unit
+        
+        exchangeSearchDateRequest.destination = exchangeDestination
+        
+        ExchangeClient.filterRelinquishments(UserContext.sharedInstance.accessToken, request: exchangeSearchDateRequest, onSuccess: { (response) in
+            Helper.hideProgressBar(senderView: self)
+            Constant.MyClassConstants.filterRelinquishments = response
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+        }, onError: { (error) in
+            print(Error.self)
+            Helper.hideProgressBar(senderView: self)
+        })
+    }
     //Passing information while preparing for segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
@@ -485,7 +533,7 @@ extension SearchResultViewController:UITableViewDelegate {
         }else{
             
             if(Constant.MyClassConstants.isFromExchange){
-                
+                self.getFilterRelinquishments()
             }else{
             Helper.addServiceCallBackgroundView(view: self.view)
             SVProgressHUD.show()
