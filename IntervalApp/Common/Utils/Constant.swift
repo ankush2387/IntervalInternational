@@ -1087,6 +1087,7 @@ class Constant: NSObject {
         static var resortBedroomDetails = "ResortBedroomDetails"
         static var resortBedroomDetailwithInfo = "ResortBedroomDetailWithInfoCell"
         static var resortBedroomDetailexchange = "ResortBedroomDetailExchangeCell"
+        static var relinquishmentForExchange = "RelinquishmentForExchange"
         static var travelWindowSelectionCell = "TravelWindowSelectionCell"
         static var eligibleDestinationCell = "EligibleDestinationCell"
         static var destinationResortDetailCell = "DestinationResortDetailCell"

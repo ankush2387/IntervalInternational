@@ -483,7 +483,7 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
             
             if(Constant.MyClassConstants.isFromExchange){
                 
-                
+                Helper.showProgressBar(senderView: self)
                 let exchangeSearchDateRequest = ExchangeFilterRelinquishmentsRequest()
                 exchangeSearchDateRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
                 
@@ -521,7 +521,9 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
                 
                 ExchangeClient.filterRelinquishments(UserContext.sharedInstance.accessToken, request: exchangeSearchDateRequest, onSuccess: { (response) in
                     
-                    print(response[0].relinquishment?.openWeek?.relinquishmentId! ?? "")
+                    Helper.hideProgressBar(senderView: self)
+                    Constant.MyClassConstants.filterRelinquishments = response
+                    self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
                    
                    
                 }, onError: { (error) in
