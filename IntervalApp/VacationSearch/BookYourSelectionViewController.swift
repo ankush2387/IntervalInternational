@@ -37,6 +37,11 @@ class BookYourSelectionViewController: UIViewController {
        self.dismiss(animated: true, completion: nil)
     }
     
+    
+    @IBAction func onClickDetailsButton(_ sender: Any) {
+        self.performSegue(withIdentifier: Constant.segueIdentifiers.showDestinationResortsSegue, sender: nil)
+    }
+    
     // Function to get dynamic number of rows according to API response
     
     func getNumberOfRows(){
