@@ -928,7 +928,7 @@ class Constant: NSObject {
         static var inHeadingString = "Sailing Date:"
         static var bottomCell = "BottomCell"
         
-        static var exchangeDetails = ExchangeTripDetails()
+        static var exchangeDetails = ExchangeDetails()
     }
     
     //***** Common  structure to provide all destination Resort ViewController CellIdentifiers And HardCoded Strings *****//

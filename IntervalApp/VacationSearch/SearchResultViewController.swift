@@ -239,7 +239,9 @@ class SearchResultViewController: UIViewController {
         
         ExchangeClient.filterRelinquishments(UserContext.sharedInstance.accessToken, request: exchangeSearchDateRequest, onSuccess: { (response) in
             Helper.hideProgressBar(senderView: self)
-            Constant.MyClassConstants.filterRelinquishments = response
+            for exchageDetail in response{
+                Constant.MyClassConstants.filterRelinquishments.append(exchageDetail.relinquishment!)
+            }
             self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
         }, onError: { (error) in
             print(Error.self)

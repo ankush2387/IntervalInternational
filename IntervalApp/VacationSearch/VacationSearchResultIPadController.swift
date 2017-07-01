@@ -521,7 +521,7 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
                 
                 ExchangeClient.filterRelinquishments(UserContext.sharedInstance.accessToken, request: exchangeSearchDateRequest, onSuccess: { (response) in
                     
-                    print(response[0].openWeek?.relinquishmentId! ?? "")
+                    print(response[0].relinquishment?.openWeek?.relinquishmentId! ?? "")
                    
                    
                 }, onError: { (error) in
