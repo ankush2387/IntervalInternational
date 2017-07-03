@@ -126,22 +126,11 @@ class CheckOutViewController: UIViewController {
             if((isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && (strAccept == "true" || strReject == "true") && Constant.MyClassConstants.selectedCreditCard.count > 0){
                 
                 let continueToPayRequest = RentalProcessRecapContinueToPayRequest.init()
+                continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last!
                 continueToPayRequest.confirmationDelivery = confirmationDelivery
                 continueToPayRequest.acceptTermsAndConditions = true
                 continueToPayRequest.acknowledgeAndAgreeResortFees = true
                 
-                let selectedCreditCard = Creditcard()
-                selectedCreditCard.cardHolderName = Constant.MyClassConstants.selectedCreditCard.last!.cardHolderName!
-                selectedCreditCard.typeCode = Constant.MyClassConstants.selectedCreditCard.last!.typeCode!
-                selectedCreditCard.expirationDate = Constant.MyClassConstants.selectedCreditCard.last!.expirationDate!
-                selectedCreditCard.cardNumber = Constant.MyClassConstants.selectedCreditCard.last!.cardNumber!
-                selectedCreditCard.cvv = Constant.MyClassConstants.selectedCreditCard.last!.cvv!
-                selectedCreditCard.billingAddress = Constant.MyClassConstants.selectedCreditCard.last!.billingAddress!
-                selectedCreditCard.preferredCardIndicator = Constant.MyClassConstants.selectedCreditCard.last!.preferredCardIndicator!
-                selectedCreditCard.saveCardIndicator = Constant.MyClassConstants.selectedCreditCard.last!.saveCardIndicator!
-                selectedCreditCard.autoRenew = Constant.MyClassConstants.selectedCreditCard.last!.autoRenew!
-                
-                continueToPayRequest.creditCard = selectedCreditCard
                 Helper.addServiceCallBackgroundView(view: self.view)
                 SVProgressHUD.show()
                 imageSlider.isHidden = true
@@ -157,7 +146,7 @@ class CheckOutViewController: UIViewController {
                         UserContext.sharedInstance.contact?.creditcards?.append(selectedCard[0])
                     }
                     Constant.MyClassConstants.selectedCreditCard.removeAll()
-                     Helper.removeStoredGuestFormDetials()
+                    Helper.removeStoredGuestFormDetials()
                     self.isAgreed = true
                     SVProgressHUD.dismiss()
                     Helper.removeServiceCallBackgroundView(view: self.view)
