@@ -169,7 +169,7 @@ extension BookYourSelectionViewController:UITableViewDataSource {
                     
                 }else if((exchange.clubPoints) != nil){
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell0, for: indexPath) as! ExchangeCell0
-                    cell.contentBackgroundView.layer.cornerRadius = 7
+                    cell.layer.cornerRadius = 7
                     Helper.applyShadowOnUIView(view: cell.contentBackgroundView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
                     cell.selectionStyle = UITableViewCellSelectionStyle.none
                     return cell

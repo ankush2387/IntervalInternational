@@ -173,7 +173,7 @@ extension DestinationResortViewController:UITableViewDataSource {
             
             let imagesArray = Constant.MyClassConstants.viewResponse.resort?.images
             for imgStr in imagesArray! {
-                if(imgStr.size == Constant.MyClassConstants.imageSize) {
+                if(imgStr.size!.caseInsensitiveCompare(Constant.MyClassConstants.imageSize) == ComparisonResult.orderedSame) {
                     url = URL(string: imgStr.url!)!
                     break
                 }

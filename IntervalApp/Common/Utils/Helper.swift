@@ -301,6 +301,11 @@ public class Helper{
                                             logger.warning(error.description)
                                             SimpleAlert.alert(sender, title:Constant.AlertErrorMessages.loginFailed, message: error.localizedDescription)
             }
+                
+                
+                
+            
+                
             )
         }else{
             SimpleAlert.alert(sender, title:Constant.AlertErrorMessages.networkError, message: Constant.AlertMessages.networkErrorMessage)
@@ -384,6 +389,7 @@ public class Helper{
     //**** Common function to get upcoming trips. ****//
    static func getUpcomingTripsForUser(){
         UserClient.getUpcomingTrips(UserContext.sharedInstance.accessToken, onSuccess: {(upComingTrips) in
+            print("Call 4",upComingTrips)
             Constant.MyClassConstants.upcomingTripsArray = upComingTrips
             
             for trip in upComingTrips { if((trip.type) != nil) {
@@ -824,12 +830,14 @@ public class Helper{
     static func getTopDeals(senderVC : UIViewController){
         showProgressBar(senderView: senderVC)
         RentalClient.getTop10Deals(UserContext.sharedInstance.accessToken,onSuccess: {(response) in
+            print("Call 5",response)
             Constant.MyClassConstants.topDeals = response
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.refreshTableNotification), object: nil)
             Helper.removeServiceCallBackgroundView(view: senderVC.view)
             SVProgressHUD.dismiss()
         },
                                    onError: {(error) in
+                                    print("Call 5",error.localizedDescription)
                                     Helper.removeServiceCallBackgroundView(view: senderVC.view)
                                     SVProgressHUD.dismiss()
                                     SimpleAlert.alert(senderVC, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)

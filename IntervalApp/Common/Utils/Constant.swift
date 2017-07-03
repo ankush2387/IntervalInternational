@@ -130,6 +130,10 @@ class Constant: NSObject {
         
         static var getawayBookingLastStartedProcess:RentalProcess!
         
+        //global variable to hold last exchange getaway booking process
+        
+        static var exchangeBookingLastStartedProcess:ExchangeProcess!
+        
         //***** global variable that hold system access token *****//
         static var systemAccessToken:DarwinAccessToken?
         
@@ -349,9 +353,11 @@ class Constant: NSObject {
         
         static var surroundingAreaString = "Resorts in surrounding areas."
         static var viewResponse = PrepareView()
+        static var exchangeViewResponse = ExchangeProcessPrepareView()
         static var generalAdvisementsArray = [Advisement]()
         static var additionalAdvisementsArray = [Advisement]()
         static var processStartResponse = RentalProcessPrepareResponse()
+        static var exchangeProcessStartResponse = ExchangeProcessPrepareResponse()
         static var continueToCheckoutResponse = RentalProcessRecapResponse()
         static var continueToPayResponse = RentalProcessEndResponse()
         static var recapViewPromotionCodeArray = [Promotion]()

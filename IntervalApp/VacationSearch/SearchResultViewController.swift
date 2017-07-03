@@ -31,6 +31,8 @@ class SearchResultViewController: UIViewController {
     let titleLabel = UILabel()
     var offerString = String()
     var cellHeight = 50
+    var selectedSection = 0
+    var selectedRow = 0
     
     override func viewWillAppear(_ animated: Bool) {
         searchResultTableView.reloadData()
@@ -242,7 +244,112 @@ class SearchResultViewController: UIViewController {
             for exchageDetail in response{
                 Constant.MyClassConstants.filterRelinquishments.append(exchageDetail.relinquishment!)
             }
-            self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+            
+            Helper.addServiceCallBackgroundView(view: self.view)
+            SVProgressHUD.show()
+            
+            Constant.MyClassConstants.selectedResort = Constant.MyClassConstants.resortsArray[self.selectedSection]
+            
+            Constant.MyClassConstants.inventoryPrice = (Constant.MyClassConstants.exchangeInventory[self.selectedSection].buckets[0].unit?.prices)!
+            
+            let processResort = ExchangeProcess()
+            processResort.holdUnitStartTimeInMillis = Constant.holdingTime
+            
+            let processRequest = ExchangeProcessStartRequest()
+            
+            let resort = Resort()
+            resort.resortCode = "CZP"
+            processRequest.resort = resort//Constant.MyClassConstants.resortsArray[0]
+            
+            let relinquishment = OpenWeek()
+            relinquishment.relinquishmentId = "Ek83chJmdS6ESNRpVfhH8YMAv0D39MaVmh75YJgm_IDRTiVySvOk2NKFm4iHOtEK"
+            
+            let unit = InventoryUnit()
+            unit.kitchenType = "NO_KITCHEN"
+            unit.unitSize = "STUDIO"
+            unit.publicSleepCapacity = 4
+            unit.privateSleepCapacity = 2
+
+            
+            let exchangeDestination = ExchangeDestination()
+            exchangeDestination.checkInDate = "2017-07-17"
+            exchangeDestination.checkOutDate = "2017-07-24"
+            exchangeDestination.resort = resort
+            exchangeDestination.unit = unit
+            if(Constant.MyClassConstants.resortsArray[0].allInclusive){
+                Constant.MyClassConstants.hasAdditionalCharges = true
+            }else{
+                Constant.MyClassConstants.hasAdditionalCharges = false
+            }
+            processRequest.unit = Constant.MyClassConstants.exchangeInventory[self.selectedSection].buckets[0].unit
+            
+            let processRequest1 = ExchangeProcessStartRequest.init(resortCode: "CZP", checkInDate: "2017-07-17", checkOutDate: "2017-07-24", unitSize: UnitSize(rawValue: "STUDIO")!, kitchenType: KitchenType(rawValue: "NO_KITCHEN")!)
+            
+            ExchangeProcessClient.start(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest1, onSuccess: {(response) in
+                
+                let processResort = ExchangeProcess()
+                processResort.processId = response.processId
+                Constant.MyClassConstants.exchangeBookingLastStartedProcess = processResort
+                Constant.MyClassConstants.exchangeProcessStartResponse = response
+                SVProgressHUD.dismiss()
+                Helper.removeServiceCallBackgroundView(view: self.view)
+                Constant.MyClassConstants.exchangeViewResponse = response.view!
+                Constant.MyClassConstants.rentalFees = [(response.view?.fees)!]
+                Constant.MyClassConstants.guestCertificate = response.view?.fees?.guestCertificate
+                Constant.MyClassConstants.onsiteArray.removeAllObjects()
+                Constant.MyClassConstants.nearbyArray.removeAllObjects()
+                
+                for amenity in (response.view?.resort?.amenities)!{
+                    if(amenity.nearby == false){
+                        Constant.MyClassConstants.onsiteArray.add(amenity.amenityName!)
+                        Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending(amenity.amenityName!)
+                        Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending("\n")
+                    }else{
+                        Constant.MyClassConstants.nearbyArray.add(amenity.amenityName!)
+                        Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending(amenity.amenityName!)
+                        Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending("\n")
+                    }
+                }
+                
+                
+                UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
+                    
+                    // Got an access token!  Save it for later use.
+                    SVProgressHUD.dismiss()
+                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    Constant.MyClassConstants.membershipContactArray = Membership.contacts!
+                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                    let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+                    
+                    let transitionManager = TransitionManager()
+                    self.navigationController?.transitioningDelegate = transitionManager
+                    self.navigationController!.pushViewController(viewController, animated: true)
+                    
+                }, onError: { (error) in
+                    
+                    SVProgressHUD.dismiss()
+                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.description)
+                    
+                })
+                
+            }, onError: {(error) in
+                Helper.removeServiceCallBackgroundView(view: self.view)
+                SVProgressHUD.dismiss()
+            })
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
         }, onError: { (error) in
             print(Error.self)
             Helper.hideProgressBar(senderView: self)
@@ -535,6 +642,8 @@ extension SearchResultViewController:UITableViewDelegate {
         }else{
             
             if(Constant.MyClassConstants.isFromExchange){
+                selectedSection = indexPath.section
+                selectedRow = indexPath.row
                 self.getFilterRelinquishments()
             }else{
             Helper.addServiceCallBackgroundView(view: self.view)
@@ -756,26 +865,46 @@ extension SearchResultViewController:UITableViewDataSource {
             }else{
                 
                 //Check for promotions
-                if(Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].promotions.count != 0 && indexPath.row > Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets.count){
+                
+                var promotions = 0
+                for bucket in Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets{
+                    //for (index,promotion) in bucket.promotions.enumerated(){
+                    promotions = bucket.promotions.count
+                    //}
+                }
+                if(promotions != 0 && indexPath.row > Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets.count){
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.promotionsCell, for: indexPath) as! PromotionsCell
-                    var promotionsString = Constant.MyClassConstants.htmlHeader.appending((Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].promotions[0].offerContentFragment)!)
-                    promotionsString = promotionsString.appending(Constant.MyClassConstants.htmlFooter)
-                    cell.promotionWebView.loadHTMLString(promotionsString, baseURL: Bundle.main.bundleURL)
-                    return cell
+                    
+                    var promotions = 0
+                    for bucket in Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets{
+                        for (index,promotion) in bucket.promotions.enumerated(){
+                            if (index == indexPath.row - Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets.count){
+                                var promotionsString = Constant.MyClassConstants.htmlHeader.appending((Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[indexPath.row - 1].promotions[0].offerContentFragment)!)
+                                for promotion in Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[indexPath.row - 1].promotions{
+                                    promotionsString = promotion.offerContentFragment!
+                                    promotionsString = promotionsString.appending(Constant.MyClassConstants.htmlFooter)
+                                    cell.promotionWebView.loadHTMLString(promotionsString, baseURL: Bundle.main.bundleURL)
+                                }
+
+                            }
+                        }
+                    }
+                    
+                 return cell
                 }else{
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.resortBedroomDetailexchange, for: indexPath) as! ResortBedroomDetails
                     cell.backgroundColor = IUIKColorPalette.contentBackground.color
                     cell.selectionStyle = UITableViewCellSelectionStyle.none
-                    if let roomSize = UnitSize(rawValue: Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitSize!) {
+                    if let roomSize = UnitSize(rawValue: Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[indexPath.row - 1].unit!.unitSize!) {
                         
                         cell.numberOfBedroom.text =  Helper.getBrEnums(brType: roomSize.rawValue)
                     }
                     
-                    if let kitchenSize = KitchenType(rawValue: Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.kitchenType!) {
+                    if let kitchenSize = KitchenType(rawValue: Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[indexPath.row - 1].unit!.kitchenType!) {
                         cell.kitchenLabel.text = Helper.getKitchenEnums(kitchenType: kitchenSize.rawValue)
                     }
                     
-                    cell.totalPrivateLabel.text = String(Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.publicSleepCapacity) + "Total, " + (String(Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.privateSleepCapacity)) + "Private"
+                    cell.totalPrivateLabel.text = String(Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[indexPath.row - 1].unit!.publicSleepCapacity) + "Total, " + (String(Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[indexPath.row - 1].unit!.privateSleepCapacity)) + "Private"
                     return cell
                 }
             }
@@ -794,7 +923,13 @@ extension SearchResultViewController:UITableViewDataSource {
         if(Constant.MyClassConstants.isFromExchange){
             if(Constant.MyClassConstants.exchangeInventory[section].buckets.count > 0){
                 self.unitSizeArray = [Constant.MyClassConstants.exchangeInventory[section].buckets[0].unit!]
-                return Constant.MyClassConstants.exchangeInventory[section].buckets.count + Constant.MyClassConstants.exchangeInventory[section].buckets[0].promotions.count + 1
+                var promotions = 0
+                for bucket in Constant.MyClassConstants.exchangeInventory[section].buckets{
+                    //for (index,promotion) in bucket.promotions.enumerated(){
+                        promotions = bucket.promotions.count
+                    //}
+                }
+                return Constant.MyClassConstants.exchangeInventory[section].buckets.count + promotions + 1
             }else{
                 return 1
             }
