@@ -14,6 +14,7 @@ class AvailablePointCell: UITableViewCell {
     
     @IBOutlet weak var availablePointValueLabel: UILabel!
 
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

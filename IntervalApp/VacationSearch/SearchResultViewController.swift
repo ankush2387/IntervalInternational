@@ -245,111 +245,11 @@ class SearchResultViewController: UIViewController {
                 Constant.MyClassConstants.filterRelinquishments.append(exchageDetail.relinquishment!)
             }
             
-            Helper.addServiceCallBackgroundView(view: self.view)
-            SVProgressHUD.show()
-            
             Constant.MyClassConstants.selectedResort = Constant.MyClassConstants.resortsArray[self.selectedSection]
             
             Constant.MyClassConstants.inventoryPrice = (Constant.MyClassConstants.exchangeInventory[self.selectedSection].buckets[0].unit?.prices)!
             
-            let processResort = ExchangeProcess()
-            processResort.holdUnitStartTimeInMillis = Constant.holdingTime
-            
-            let processRequest = ExchangeProcessStartRequest()
-            
-            let resort = Resort()
-            resort.resortCode = "CZP"
-            processRequest.resort = resort//Constant.MyClassConstants.resortsArray[0]
-            
-            let relinquishment = OpenWeek()
-            relinquishment.relinquishmentId = "Ek83chJmdS6ESNRpVfhH8YMAv0D39MaVmh75YJgm_IDRTiVySvOk2NKFm4iHOtEK"
-            
-            let unit = InventoryUnit()
-            unit.kitchenType = "NO_KITCHEN"
-            unit.unitSize = "STUDIO"
-            unit.publicSleepCapacity = 4
-            unit.privateSleepCapacity = 2
-
-            
-            let exchangeDestination = ExchangeDestination()
-            exchangeDestination.checkInDate = "2017-07-17"
-            exchangeDestination.checkOutDate = "2017-07-24"
-            exchangeDestination.resort = resort
-            exchangeDestination.unit = unit
-            if(Constant.MyClassConstants.resortsArray[0].allInclusive){
-                Constant.MyClassConstants.hasAdditionalCharges = true
-            }else{
-                Constant.MyClassConstants.hasAdditionalCharges = false
-            }
-            processRequest.unit = Constant.MyClassConstants.exchangeInventory[self.selectedSection].buckets[0].unit
-            
-            let processRequest1 = ExchangeProcessStartRequest.init(resortCode: "CZP", checkInDate: "2017-07-17", checkOutDate: "2017-07-24", unitSize: UnitSize(rawValue: "STUDIO")!, kitchenType: KitchenType(rawValue: "NO_KITCHEN")!)
-            
-            ExchangeProcessClient.start(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest1, onSuccess: {(response) in
-                
-                let processResort = ExchangeProcess()
-                processResort.processId = response.processId
-                Constant.MyClassConstants.exchangeBookingLastStartedProcess = processResort
-                Constant.MyClassConstants.exchangeProcessStartResponse = response
-                SVProgressHUD.dismiss()
-                Helper.removeServiceCallBackgroundView(view: self.view)
-                Constant.MyClassConstants.exchangeViewResponse = response.view!
-                Constant.MyClassConstants.rentalFees = [(response.view?.fees)!]
-                Constant.MyClassConstants.guestCertificate = response.view?.fees?.guestCertificate
-                Constant.MyClassConstants.onsiteArray.removeAllObjects()
-                Constant.MyClassConstants.nearbyArray.removeAllObjects()
-                
-                for amenity in (response.view?.resort?.amenities)!{
-                    if(amenity.nearby == false){
-                        Constant.MyClassConstants.onsiteArray.add(amenity.amenityName!)
-                        Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending(amenity.amenityName!)
-                        Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending("\n")
-                    }else{
-                        Constant.MyClassConstants.nearbyArray.add(amenity.amenityName!)
-                        Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending(amenity.amenityName!)
-                        Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending("\n")
-                    }
-                }
-                
-                
-                UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
-                    
-                    // Got an access token!  Save it for later use.
-                    SVProgressHUD.dismiss()
-                    Helper.removeServiceCallBackgroundView(view: self.view)
-                    Constant.MyClassConstants.membershipContactArray = Membership.contacts!
-                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-                    let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
-                    
-                    let transitionManager = TransitionManager()
-                    self.navigationController?.transitioningDelegate = transitionManager
-                    self.navigationController!.pushViewController(viewController, animated: true)
-                    
-                }, onError: { (error) in
-                    
-                    SVProgressHUD.dismiss()
-                    Helper.removeServiceCallBackgroundView(view: self.view)
-                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.description)
-                    
-                })
-                
-            }, onError: {(error) in
-                Helper.removeServiceCallBackgroundView(view: self.view)
-                SVProgressHUD.dismiss()
-            })
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
         }, onError: { (error) in
             print(Error.self)
             Helper.hideProgressBar(senderView: self)

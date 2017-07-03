@@ -98,6 +98,11 @@ extension BookYourSelectionViewController:UITableViewDelegate {
                 headerTextLabel.text = Constant.HeaderViewConstantStrings.exchange
                 headerTextLabel.textColor = UIColor.black
                 headerView.addSubview(headerTextLabel)
+
+            
+                let bottomLabel = UILabel(frame: CGRect(x: 15, y: 30, width: self.view.bounds.width - 30, height: 30))
+                bottomLabel.textColor = UIColor.gray
+                bottomLabel.text = "4 of the 6 relquishments are avialable for exchange"
                 return headerView
             }
         else {
@@ -176,18 +181,21 @@ extension BookYourSelectionViewController:UITableViewDataSource {
                     
                 }else if((exchange.openWeek) != nil){
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell1, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
-                    cell.contentView.layer.cornerRadius = 7
-                    Helper.applyShadowOnUIView(view: cell.contentView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
+                    cell.layer.cornerRadius = 7
+                    cell.layer.borderWidth = 2
+                    cell.layer.borderColor = UIColor.orange.cgColor
+                    cell.clipsToBounds = true
+                    //Helper.applyShadowOnUIView(view: cell.contentView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
                     cell.resortName.text = exchange.openWeek?.resort?.resortName!
                     cell.yearLabel.text = "\(String(describing: (exchange.openWeek?.relinquishmentYear!)!))"
                     cell.totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: (exchange.openWeek?.weekNumber!)!))"
                     cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType:(exchange.openWeek?.unit!.unitSize!)!))), \(Helper.getKitchenEnums(kitchenType:(exchange.openWeek?.unit!.kitchenType!)!))"
                     cell.totalSleepAndPrivate.text = "Sleeps \(String(describing: exchange.openWeek!.unit!.publicSleepCapacity)), \(String(describing: exchange.openWeek!.unit!.privateSleepCapacity)) Private"
-                    let date = exchange.openWeek!.checkInDates
-                    if(date.count > 0) {
+                    //let date = exchange.openWeek!.checkInDate
+                    //if(date.count > 0) {
                         
-                        let dateString = date[0]
-                        let date =  Helper.convertStringToDate(dateString: dateString, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
+                        let dateString = exchange.openWeek!.checkInDate
+                        let date =  Helper.convertStringToDate(dateString: dateString!, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
                         let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
                         let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: date)
                         let day = myComponents.day!
@@ -201,11 +209,11 @@ extension BookYourSelectionViewController:UITableViewDataSource {
                         
                         cell.dayAndDateLabel.text = month.uppercased()
                         
-                   }
-                    else {
+                   //}
+                    /*else {
                         
                         cell.dayAndDateLabel.text = ""
-                    }
+                    }*/
                     cell.selectionStyle = UITableViewCellSelectionStyle.none
                     return cell
                 }else{
@@ -237,9 +245,9 @@ extension BookYourSelectionViewController:UITableViewDataSource {
             else {
                 
                 //***** Configure and return search vacation cell *****//
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.getawaysCell, for: indexPath) as! GetawaysCell
-                cell.contentBackgroundView.layer.cornerRadius = 7
-                Helper.applyShadowOnUIView(view: cell.contentBackgroundView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ExchangeCell0"/*Constant.vacationSearchScreenReusableIdentifiers.getawaysCell*/, for: indexPath) as! AvailablePointCell/*GetawaysCell*/
+                //cell.contentBackgroundView.layer.cornerRadius = 7
+                Helper.applyShadowOnUIView(view: cell, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 return cell
                 
