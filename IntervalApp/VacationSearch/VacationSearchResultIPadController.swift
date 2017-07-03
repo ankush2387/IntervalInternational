@@ -482,16 +482,23 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
         }else{
             
             if(Constant.MyClassConstants.isFromExchange){
-                
+                Constant.MyClassConstants.filterRelinquishments.removeAll()
                 Helper.showProgressBar(senderView: self)
                 let exchangeSearchDateRequest = ExchangeFilterRelinquishmentsRequest()
                 exchangeSearchDateRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
                 
                 let relinquishmentIDArray = ["Ek83chJmdS6ESNRpVfhH8QaTBeXh5rpNm_2AJLhV_4jRTiVySvOk2NKFm4iHOtEK",
-                                             "Ek83chJmdS6ESNRpVfhH8RFxFgvpS1HHCzYyrvzw42rRTiVySvOk2NKFm4iHOtEK",
-                                             "Ek83chJmdS6ESNRpVfhH8SOcpMOEqw1KO8bsQKhjLZnRTiVySvOk2NKFm4iHOtEK",
-                                             "Ek83chJmdS6ESNRpVfhH8YMAv0D39MaVmh75YJgm_IDRTiVySvOk2NKFm4iHOtEK"]
-                exchangeSearchDateRequest.relinquishmentsIds = relinquishmentIDArray//Constant.MyClassConstants.relinquishmentIdArray as! [String]
+                                     "Ek83chJmdS6ESNRpVfhH8RFxFgvpS1HHCzYyrvzw42rRTiVySvOk2NKFm4iHOtEK",
+                                     "Ek83chJmdS6ESNRpVfhH8SOcpMOEqw1KO8bsQKhjLZnRTiVySvOk2NKFm4iHOtEK",
+                                     "Ek83chJmdS6ESNRpVfhH8YMAv0D39MaVmh75YJgm_IDRTiVySvOk2NKFm4iHOtEK"]
+                
+                    // Constant.MyClassConstants.relinquishmentIdArray as! [String]
+                
+//                ["Ek83chJmdS6ESNRpVfhH8QaTBeXh5rpNm_2AJLhV_4jRTiVySvOk2NKFm4iHOtEK",
+//                 "Ek83chJmdS6ESNRpVfhH8RFxFgvpS1HHCzYyrvzw42rRTiVySvOk2NKFm4iHOtEK",
+//                 "Ek83chJmdS6ESNRpVfhH8SOcpMOEqw1KO8bsQKhjLZnRTiVySvOk2NKFm4iHOtEK",
+//                 "Ek83chJmdS6ESNRpVfhH8YMAv0D39MaVmh75YJgm_IDRTiVySvOk2NKFm4iHOtEK"]
+                exchangeSearchDateRequest.relinquishmentsIds = relinquishmentIDArray
                 
                
                 
@@ -507,10 +514,14 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
                 exchangeDestination.resort = resort
                 
                 let unit = InventoryUnit()
-                unit.kitchenType = "NO_KITCHEN"//Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.kitchenType!
-                unit.unitSize = "STUDIO"//Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitSize!
-                exchangeDestination.checkInDate = "2017-07-17"//currentFromDate
-                exchangeDestination.checkOutDate = "2017-07-24"//currentToDate
+                unit.kitchenType = "NO_KITCHEN"
+                    //Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.kitchenType!
+                unit.unitSize = "STUDIO"
+                    //Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitSize!
+                exchangeDestination.checkInDate = "2017-07-17" //currentFromDate
+                exchangeDestination.checkOutDate = "2017-07-24" //currentToDate
+                //"2017-07-17"
+               // "2017-07-24"
                 //unit.unitNumber = Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitNumber!
                 unit.publicSleepCapacity = 4
                 unit.privateSleepCapacity = 2
@@ -522,24 +533,18 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
                 ExchangeClient.filterRelinquishments(UserContext.sharedInstance.accessToken, request: exchangeSearchDateRequest, onSuccess: { (response) in
                     
                     Helper.hideProgressBar(senderView: self)
-                    Constant.MyClassConstants.filterRelinquishments = response
-                    self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                    for exchageDetail in response{
+                        Constant.MyClassConstants.filterRelinquishments.append(exchageDetail.relinquishment!)
+                    }
+                    self.performSegue(withIdentifier: Constant.segueIdentifiers.chooseWhatToUse, sender: self)
                    
                    
                 }, onError: { (error) in
                     print(Error.self)
 
                 })
-                
-               /* let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whatToUseViewController) as! RelinquishmentWhatToUseViewController
-                
-                
-                let transitionManager = TransitionManager()
-                self.navigationController?.transitioningDelegate = transitionManager
-                self.navigationController!.pushViewController(viewController, animated: true)*/
-
-                
+           
+               
             }
             else{
                 
@@ -764,27 +769,45 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 
             }else{
                 
-                if(Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].promotions.count != 0 && indexPath.row > Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets.count){
+                var promotions = 0
+                for bucket in Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets{
+                    //for (index,promotion) in bucket.promotions.enumerated(){
+                    promotions = bucket.promotions.count
+                    //}
+                }
+                if(promotions != 0 && indexPath.row > Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets.count){
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.promotionsCell, for: indexPath) as! PromotionsCell
-                    var promotionsString = Constant.MyClassConstants.htmlHeader.appending((Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].promotions[0].offerContentFragment)!)
-                    promotionsString = promotionsString.appending(Constant.MyClassConstants.htmlFooter)
-                    cell.promotionWebView.loadHTMLString(promotionsString, baseURL: Bundle.main.bundleURL)
+                    
+                    var promotions = 0
+                    for bucket in Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets{
+                        for (index,promotion) in bucket.promotions.enumerated(){
+                            if (index == indexPath.row - Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets.count){
+                                var promotionsString = Constant.MyClassConstants.htmlHeader.appending((Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[indexPath.row - 1].promotions[0].offerContentFragment)!)
+                                for promotion in Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[indexPath.row - 1].promotions{
+                                    promotionsString = promotion.offerContentFragment!
+                                    promotionsString = promotionsString.appending(Constant.MyClassConstants.htmlFooter)
+                                    cell.promotionWebView.loadHTMLString(promotionsString, baseURL: Bundle.main.bundleURL)
+                                }
+                                
+                            }
+                        }
+                    }
+                    
                     return cell
                 }else{
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.resortBedroomDetailexchange, for: indexPath) as! ResortBedroomDetails
                     cell.backgroundColor = IUIKColorPalette.contentBackground.color
                     cell.selectionStyle = UITableViewCellSelectionStyle.none
-                    //cell.bottomLabel.text = Constant.vacationSearchScreenReusableIdentifiers.exchange
-                    if let roomSize = UnitSize(rawValue: Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitSize!) {
+                    if let roomSize = UnitSize(rawValue: Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[indexPath.row - 1].unit!.unitSize!) {
                         
                         cell.numberOfBedroom.text =  Helper.getBrEnums(brType: roomSize.rawValue)
                     }
                     
-                    if let kitchenSize = KitchenType(rawValue: Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.kitchenType!) {
+                    if let kitchenSize = KitchenType(rawValue: Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[indexPath.row - 1].unit!.kitchenType!) {
                         cell.kitchenLabel.text = Helper.getKitchenEnums(kitchenType: kitchenSize.rawValue)
                     }
                     
-                    cell.totalPrivateLabel.text = String(Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.publicSleepCapacity) + "Total, " + (String(Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.privateSleepCapacity)) + "Private"
+                    cell.totalPrivateLabel.text = String(Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[indexPath.row - 1].unit!.publicSleepCapacity) + "Total, " + (String(Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[indexPath.row - 1].unit!.privateSleepCapacity)) + "Private"
                     return cell
                 }
                 

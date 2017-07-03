@@ -1140,6 +1140,7 @@ class Constant: NSObject {
         static var exchange = "Exchange"
         static var sortingOptionCell = "sortingOptionCell"
         static var whereToGoCell = "WhereToGoCell"
+        static var availablePoints = "AvailablePoints"
     }
     
     //***** Common structure for dynamic strings combinining strings *****//
@@ -1220,6 +1221,7 @@ class Constant: NSObject {
         static var sortingSegue = "sortingSegue"
         static var whatToUseSegue = "whatToUse"
         static var bookingSelectionSegue = "BookYourSelectionSegue"
+        static var chooseWhatToUse = "ChooseWhatToUse"
     }
     
     //***** common  structure to provide all actionSheetAttributedString *****//
