@@ -294,12 +294,12 @@ extension VacationSearchViewController:UICollectionViewDataSource {
             
             cell.addSubview(resortFlaxImageView)
             
-            let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: cell.contentView.frame.height - 30, width: cell.contentView.frame.width - 20, height: 20))
+            let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: cell.contentView.frame.height - 50, width: cell.contentView.frame.width - 20, height: 60))
             resortImageNameLabel.text = deal.header
             resortImageNameLabel.numberOfLines = 2
             resortImageNameLabel.textAlignment = NSTextAlignment.center
             resortImageNameLabel.textColor = UIColor.black
-            resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueBold,size: 20)
+            resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueBold,size: 16)
             cell.addSubview(resortImageNameLabel)
             
             let centerView = UIView(frame: CGRect(x: 0, y: 0, width: 150, height: 75))
@@ -368,7 +368,7 @@ extension VacationSearchViewController:UITableViewDelegate {
             case 4:
                 return 70
             case 5:
-                return 280
+                return 290
                 
             default :
                 return 70
