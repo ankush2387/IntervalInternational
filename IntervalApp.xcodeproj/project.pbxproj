@@ -269,6 +269,9 @@
 		DC7EF5141D709F8800E9E360 /* ResortInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7EF5031D709F8800E9E360 /* ResortInfoTableViewCell.swift */; };
 		DC7EF5151D709F8800E9E360 /* SignInPreLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7EF5041D709F8800E9E360 /* SignInPreLoginViewController.swift */; };
 		DC96F3B81D7F41E500C08F1E /* TouchID.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC96F3B71D7F41E500C08F1E /* TouchID.swift */; };
+		E9057F911F02DDA000E20047 /* ShareActivityImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9057F901F02DDA000E20047 /* ShareActivityImage.swift */; };
+		E9057F931F02DDBA00E20047 /* ShareActivityMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9057F921F02DDBA00E20047 /* ShareActivityMessage.swift */; };
+		E9057F951F02DDCB00E20047 /* ShareActivityURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9057F941F02DDCB00E20047 /* ShareActivityURL.swift */; };
 		E932C7601EE07FB70083E871 /* UpComingTripMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932C75F1EE07FB70083E871 /* UpComingTripMapViewController.swift */; };
 		E94C7E091EF84DDE003D0EB5 /* PromotionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94C7E081EF84DDE003D0EB5 /* PromotionsViewController.swift */; };
 		E94FB5EA1EF0609C00314C5D /* VerticalProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94FB5E91EF0609C00314C5D /* VerticalProgressView.swift */; };
@@ -563,6 +566,9 @@
 		DC7EF5041D709F8800E9E360 /* SignInPreLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInPreLoginViewController.swift; sourceTree = "<group>"; };
 		DC96F3B71D7F41E500C08F1E /* TouchID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchID.swift; sourceTree = "<group>"; };
 		E2CBCD7E8490E488AB822061 /* Pods_IntervalApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IntervalApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9057F901F02DDA000E20047 /* ShareActivityImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareActivityImage.swift; sourceTree = "<group>"; };
+		E9057F921F02DDBA00E20047 /* ShareActivityMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareActivityMessage.swift; sourceTree = "<group>"; };
+		E9057F941F02DDCB00E20047 /* ShareActivityURL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareActivityURL.swift; sourceTree = "<group>"; };
 		E932C75F1EE07FB70083E871 /* UpComingTripMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpComingTripMapViewController.swift; sourceTree = "<group>"; };
 		E94C7E081EF84DDE003D0EB5 /* PromotionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromotionsViewController.swift; sourceTree = "<group>"; };
 		E94FB5E91EF0609C00314C5D /* VerticalProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticalProgressView.swift; sourceTree = "<group>"; };
@@ -1107,6 +1113,9 @@
 				DC7EF5021D709F8800E9E360 /* ResortFavoritesTableViewCell.swift */,
 				DC7EF5031D709F8800E9E360 /* ResortInfoTableViewCell.swift */,
 				DC7EF5041D709F8800E9E360 /* SignInPreLoginViewController.swift */,
+				E9057F901F02DDA000E20047 /* ShareActivityImage.swift */,
+				E9057F921F02DDBA00E20047 /* ShareActivityMessage.swift */,
+				E9057F941F02DDCB00E20047 /* ShareActivityURL.swift */,
 			);
 			path = ResortDirectory;
 			sourceTree = "<group>";
@@ -1291,6 +1300,7 @@
 				DC7EF5091D709F8800E9E360 /* GoogleMapViewController.swift in Sources */,
 				3A3A013D1C99BD0B00B7EC37 /* FloatdetaildoneButtonTableViewCell.swift in Sources */,
 				3AAA5A331C720F4500A5EA6D /* MemberCell.swift in Sources */,
+				E9057F931F02DDBA00E20047 /* ShareActivityMessage.swift in Sources */,
 				3AAA5A371C720F4500A5EA6D /* SideMenuTableViewController.swift in Sources */,
 				3A623C6A1CF728BC00389708 /* UIImageView+UIActivityIndicatorForSDWebImage.m in Sources */,
 				3AC5720F1E2A2A5000969CF7 /* AvailablePointCell.swift in Sources */,
@@ -1406,6 +1416,7 @@
 				3A892F421CD3902F00AE6F45 /* CellHeaderTableViewCell.swift in Sources */,
 				3AF7CC131C848C5900FB9AC6 /* AccomodationCertsDetailController.swift in Sources */,
 				3A3A01391C99BD0B00B7EC37 /* AvailablePointsAsOfTableViewCell.swift in Sources */,
+				E9057F951F02DDCB00E20047 /* ShareActivityURL.swift in Sources */,
 				3A39965C1E5B028600527A99 /* UpcomingTripsCollectionViewCell.swift in Sources */,
 				DC04BB3F1DB829F100227FF5 /* IntervalHDIpadController.swift in Sources */,
 				DC96F3B81D7F41E500C08F1E /* TouchID.swift in Sources */,
@@ -1449,6 +1460,7 @@
 				3A29B4901EF034E4008995A5 /* ReservationTableViewCell.swift in Sources */,
 				087A875A1E951A2D009B1387 /* UnitSizeTdiCollectionViewCell.swift in Sources */,
 				3A0B25DC1CD241B50080BF3F /* DummyTableViewCell.swift in Sources */,
+				E9057F911F02DDA000E20047 /* ShareActivityImage.swift in Sources */,
 				3AC572111E2A2A6500969CF7 /* HeaderCell.swift in Sources */,
 				3AAA5A291C720F4500A5EA6D /* UserContext.swift in Sources */,
 				E951BC4D1EE71D800070A04B /* AlertHelpViewController.swift in Sources */,

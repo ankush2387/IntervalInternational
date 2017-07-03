@@ -119,6 +119,14 @@ class LoginViewController: UIViewController
         
     }
     
+    func saveUsername(user: String) {
+        //save username to UserDefaults
+        let uName = user
+        UserDefaults.standard.set(uName, forKey: Constant.MyClassConstants.userName)
+        UserDefaults.standard.synchronize()
+    }
+    
+    
     //***** MARK: - Busisness Actions *****//
     //***** function to call serviece on login button pressed *****//
     func loginButtonPressed(_ sender:AnyObject)
@@ -149,7 +157,7 @@ class LoginViewController: UIViewController
             
             let trimmedUsername = self.userName.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             let trimmedPassword = self.password.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-            
+            saveUsername(user: trimmedUsername)
             performStandardLogin(trimmedUsername, password:trimmedPassword)
         }
     }
@@ -349,7 +357,10 @@ extension LoginViewController:UITableViewDataSource {
             }
             else
             {
-                cell.userNameTextField.text = self.userName
+                //set username saved on UserDefaults
+                if let savedUserName = UserDefaults.standard.string(forKey: Constant.MyClassConstants.userName) {
+                    cell.userNameTextField.text = savedUserName
+                }
             }
             
             //***** Setup the password *****//

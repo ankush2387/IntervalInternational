@@ -491,9 +491,12 @@ class Constant: NSObject {
         static var promotionsArray = [Promotion]()
         static var htmlHeader = "<html><body>"
         static var htmlFooter = "</html></body>"
-        
+    
         // Choose relinquishments
         static var filterRelinquishments = [ExchangeRelinquishment]()
+
+        //UserDefaults
+        static var userName = "userName"
     }
     struct CommonStringIdentifiers {
         static var floatWeek = "FLOAT_WEEK"

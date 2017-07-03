@@ -141,41 +141,40 @@ class UpComingTripDetailIPadViewController: UIViewController {
             //Just dismiss the action sheet
         }
         actionSheetController.addAction(viewMyRecentSearchAction)
-        //***** Create and add the Reset my search *****//
-        let resetMySearchAction: UIAlertAction = UIAlertAction(title: Constant.buttonTitles.emailTripTitle, style: .default) { action -> Void in
+         //***** Present ActivityViewController for share options *****//
+        let shareAction: UIAlertAction = UIAlertAction(title: "Share", style: .default) { action -> Void in
             Constant.MyClassConstants.checkInClosestContentArray.removeAllObjects()
             Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
             Constant.MyClassConstants.realmStoredDestIdOrCodeArray.removeAllObjects()
-            //check if device can send email messages
-            if MFMailComposeViewController.canSendMail() {
-                let mailComposerVC = MFMailComposeViewController()
-                mailComposerVC.mailComposeDelegate = self
-                mailComposerVC.navigationBar.tintColor = UIColor.white
-                mailComposerVC.setSubject("Upcoming Trip Details")
-                let message = self.formatMessageforComposer()
-                mailComposerVC.setMessageBody(message, isHTML: false)
-                self.present(mailComposerVC, animated: true, completion: nil)
-            } else{
-                SimpleAlert.alert(self, title: "Error", message: "This device is not able/configured to send Email Messages")
-            }
-        }
-        actionSheetController.addAction(resetMySearchAction)
-        //***** Create and add help *****//
-        let helpAction: UIAlertAction = UIAlertAction(title: Constant.buttonTitles.textTripTitle, style: .default) { action -> Void in
-            //check if device can send text messages
-            if MFMessageComposeViewController.canSendText() {
-                let messageComposerVC = MFMessageComposeViewController()
-                messageComposerVC.messageComposeDelegate = self
+            
+            let message = ShareActivityMessage()
+            message.upcomingTripDetailsMessage()
+            
+            let shareActivityViewController = UIActivityViewController(activityItems: [message], applicationActivities: nil)
+            shareActivityViewController.completionWithItemsHandler = {(activityType, completed, returnItems, error) in
+                if completed {
+                    if activityType == UIActivityType.mail || activityType == UIActivityType.message {
+                        //Display message to confirm Message and Mail have been sent
+                        SimpleAlert.alert(self, title: "Success", message: "Your Confirmation has been sent!")
+                    }
+                }
                 
-                messageComposerVC.navigationBar.titleTextAttributes = ["NSForegroundColorAttributeName" : UIColor.black]
-                let message = self.formatMessageforComposer()
-                messageComposerVC.body = message
-                self.present(messageComposerVC, animated: true, completion: nil)
-            } else {
-                SimpleAlert.alert(self, title: "Error", message: "This device is not able/configured to send Text Messages")
+                if error != nil {
+                    if activityType == UIActivityType.mail || activityType == UIActivityType.message {
+                        //Display message to let user know there was error
+                        SimpleAlert.alert(self, title: "Error", message: "The Confirmation could not be sent. Please try again.")
+                    }
+                }
             }
+            
+            shareActivityViewController.popoverPresentationController?.sourceView = self.view
+            shareActivityViewController.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.size.width,y: 0, width: 100, height: 60)
+            shareActivityViewController.popoverPresentationController!.permittedArrowDirections = .up;
+
+            self.present(shareActivityViewController, animated: false, completion: nil)
+            
         }
-        actionSheetController.addAction(helpAction)
+        actionSheetController.addAction(shareAction)
         
         //***** Purchase trip insurance *****//
         let insuranceAction: UIAlertAction = UIAlertAction(title: Constant.buttonTitles.purchaseInsuranceTitle, style: .default) { action -> Void in

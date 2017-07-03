@@ -375,10 +375,30 @@ class ResortDetailsViewController: UIViewController {
     //***** Function call for More button *****//
     
     @IBAction func moreButtonClicked(_ sender: AnyObject){
+        guard let name = Constant.MyClassConstants.resortsDescriptionArray.resortName else { return }
+        guard let address = Constant.MyClassConstants.resortsDescriptionArray.address?.addrLine1 else { return }
+        guard let description = Constant.MyClassConstants.resortsDescriptionArray.description else { return }
+        guard let resortCode = Constant.MyClassConstants.resortsDescriptionArray.resortCode else { return }
+        
+        let message = ShareActivityMessage()
+        message.resortInformationMessage(resortName: name, address: address, description: description, resortCode: resortCode)
+        let resortImage = ShareActivityImage()
+        let resortURL = ShareActivityURL(activityURL: resortCode)
+        resortImage.getResrtImage(strURL: Constant.MyClassConstants.imagesArray[0] as! String)
+        
+        let shareActivityViewController = UIActivityViewController(activityItems: [message, resortImage, resortURL], applicationActivities: nil)
+        
         if(UIDevice().userInterfaceIdiom == .pad){
-        }else{
-            createActionSheetForSharing(self)
+            //ipad has to present as Popover
+            shareActivityViewController.modalPresentationStyle = .popover
+            if let presenter = shareActivityViewController.popoverPresentationController {
+                let pView = sender as! UIView
+                presenter.sourceView = pView
+                presenter.sourceRect = pView.bounds
+            }
         }
+        
+        self.present(shareActivityViewController, animated: false, completion: nil)
     }
     
     
