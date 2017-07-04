@@ -462,7 +462,7 @@ class RelinquishmentSelectionViewController: UIViewController {
             getUnitSize((Constant.MyClassConstants.relinquishmentSelectedWeek.unit?.lockOffUnits)!)
             
             Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.floatViewController
-            Constant.MyClassConstants.relinquishmentIdArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!)
+            //Constant.MyClassConstants.relinquishmentIdArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!)
             
             var mainStoryboard = UIStoryboard()
             if(Constant.RunningDevice.deviceIdiom == .pad) {

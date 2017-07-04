@@ -116,7 +116,7 @@ class LoginViewController: UIViewController
         Constant.MyClassConstants.webviewTtile = Constant.ControllerTitles.JoinTodayViewController
         Constant.MyClassConstants.requestedWebviewURL = Constant.WebUrls.joinTodayURL
         self.performSegue(withIdentifier: Constant.segueIdentifiers.webViewSegue, sender: nil)
-        
+    
     }
     
     func saveUsername(user: String) {
@@ -360,6 +360,7 @@ extension LoginViewController:UITableViewDataSource {
                 //set username saved on UserDefaults
                 if let savedUserName = UserDefaults.standard.string(forKey: Constant.MyClassConstants.userName) {
                     cell.userNameTextField.text = savedUserName
+                    self.userName = cell.userNameTextField.text!
                 }
             }
             

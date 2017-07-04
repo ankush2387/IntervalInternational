@@ -280,7 +280,7 @@ extension BedroomSizeViewController : UITableViewDataSource{
                 let setUnitSize = cell?.bedroomSizelabel.text?.components(separatedBy: ",")[0]
                 let setUnitNumber = cell?.unitSizeLabel.text?.components(separatedBy: ",")[0]
                 for selectedUnitDetails in Constant.MyClassConstants.saveLockOffDetailsArray{
-                    if((selectedUnitDetails as! String).components(separatedBy: ",")[0] == setUnitNumber && (selectedUnitDetails as! String).components(separatedBy: ",")[1] == setUnitSize){
+                    if((selectedUnitDetails as! String).components(separatedBy: ",")[0] == setUnitNumber && (selectedUnitDetails as! String).components(separatedBy: ",")[1] == setUnitSize && Constant.MyClassConstants.realmOpenWeeksID.contains(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!)){
                         cell?.backgroundCellView.layer.borderColor = UIColor.orange.cgColor
                         cell?.unitSizeLabel.textColor = IUIKColorPalette.secondaryB.color
                         cell?.bedroomSizelabel.textColor = IUIKColorPalette.secondaryB.color

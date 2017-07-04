@@ -195,6 +195,39 @@ class FloatDetailViewController: UIViewController {
             checkInDate = getTableViewCellSubviews(tableViewCell:tableViewCell)
         }
         
+        //API call for update fix week reservation
+       let fixedWeekReservation = FixWeekReservation()
+        
+        let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
+        let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate)
+        let year = String(describing: myComponents.year!)
+        var month = String(describing: myComponents.month!)
+        if(month.characters.count == 1){
+            month = month.appending("0")
+        }
+        let day   = myComponents.day!
+        
+        
+        
+        fixedWeekReservation.checkInDate = "\(year)-\(month)-\(day)"//checkInDate
+        fixedWeekReservation.reservationNumber = Constant.FloatDetails.reservationNumber
+        fixedWeekReservation.relinquishmentId = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!
+        fixedWeekReservation.weekNumber = Constant.MyClassConstants.relinquishmentSelectedWeek.weekNumber!
+        
+        let resort = Resort()
+        resort.resortCode = Constant.MyClassConstants.relinquishmentSelectedWeek.resort!.resortCode!
+        
+        
+        let unit = InventoryUnit()
+        unit.unitNumber = Constant.MyClassConstants.relinquishmentSelectedWeek.unit!.unitNumber!
+        unit.unitSize = Constant.MyClassConstants.relinquishmentSelectedWeek.unit!.unitSize
+        
+        fixedWeekReservation.resort = resort
+        fixedWeekReservation.unit = unit
+        
+        Helper.updateFixWeekReservation(relinqishmentID: Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!, fixedWeekReservation: fixedWeekReservation)
+        
+        
         
         
         //Check if float is already saved in database
@@ -341,6 +374,7 @@ class FloatDetailViewController: UIViewController {
         let realm = try! Realm()
         try! realm.write {
             realm.add(storedata)
+            Constant.MyClassConstants.relinquishmentIdArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!)
             //Pop to vacation search screen
             popToVacationSearch()
         }
