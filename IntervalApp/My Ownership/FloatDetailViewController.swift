@@ -211,7 +211,6 @@ class FloatDetailViewController: UIViewController {
         
         fixedWeekReservation.checkInDate = "\(year)-\(month)-\(day)"//checkInDate
         fixedWeekReservation.reservationNumber = Constant.FloatDetails.reservationNumber
-        fixedWeekReservation.relinquishmentId = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!
         fixedWeekReservation.weekNumber = Constant.MyClassConstants.relinquishmentSelectedWeek.weekNumber!
         
         let resort = Resort()
