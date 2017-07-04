@@ -167,8 +167,9 @@ class CheckOutIPadViewController: UIViewController {
             if((isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && (strAccept == Constant.MyClassConstants.status || strReject == Constant.MyClassConstants.status) && Constant.MyClassConstants.selectedCreditCard.count > 0){
                 
                 let continueToPayRequest = RentalProcessRecapContinueToPayRequest.init()
-                continueToPayRequest.confirmationDelivery = confirmationDelivery
                 continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last!
+                continueToPayRequest.confirmationDelivery = confirmationDelivery
+                
                 Helper.addServiceCallBackgroundView(view: self.view)
                 SVProgressHUD.show()
                 imageSlider.isHidden = true
