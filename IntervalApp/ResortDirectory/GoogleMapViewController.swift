@@ -118,7 +118,12 @@ class GoogleMapViewController: UIViewController {
     }
     
     override func viewDidLayoutSubviews() {
-        self.searchDisplayTableView.frame = CGRect(x: 0, y: UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 152)
+        if self.searchDisplayTableView.frame.origin.y == UIScreen.main.bounds.height{
+            self.searchDisplayTableView.frame = CGRect(x: 0, y: UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 152)
+        }else{
+            self.searchDisplayTableView.frame = CGRect(x: 0, y: 108, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 152)
+        }
+        
         
         if(Constant.MyClassConstants.addResortSelectedIndex.count == 0 && self.navigationItem.rightBarButtonItem != nil) {
             self.navigationItem.rightBarButtonItem!.isEnabled = false
@@ -127,6 +132,7 @@ class GoogleMapViewController: UIViewController {
                 self.navigationItem.rightBarButtonItem!.isEnabled = true
             }
         }
+
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -1171,7 +1177,17 @@ class GoogleMapViewController: UIViewController {
                 if(self.containerView.isHidden == false){
                     self.containerView.isHidden = true
                 }else{
-                    self.mapSideView.isHidden = true
+                    if self.mapSideView.frame.origin.x != 0{
+                        self.mapSideView.isHidden = true
+                        //TODO
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.0) {
+                            self.draggingView.frame = CGRect(x: 0, y: self.draggingView.frame.origin.y, width: self.draggingView.frame.size.width, height: self.draggingView.frame.size.height)
+                            self.mapSideView.frame = CGRect(x: -self.mapSideView.frame.size.width, y: self.mapSideView.frame.origin.y, width: self.mapSideView.frame.size.width, height: self.mapSideView.frame.size.height)
+                        }
+                        
+                    }else{
+                        self.mapSideView.isHidden = false
+                    }
                 }
                 
                 let containerVC = self.childViewControllers[0] as! ResortDetailsViewController

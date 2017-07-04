@@ -143,7 +143,7 @@ extension MagazinesViewController:UITableViewDataSource {
         cell.magazineImageView.setImageWith(NSURL(string: magazine.images[0].url!) as URL!, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
         var magazineTitle = magazine.label
         magazineTitle = magazineTitle?.appending(" ")
-        magazineTitle = "\(magazineTitle) \(magazine.year!)"
+        magazineTitle = "\(magazineTitle!) \(magazine.year!)"
         cell.magazineTitle.text = magazineTitle
         return cell
         
