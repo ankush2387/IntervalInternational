@@ -11,6 +11,10 @@ import IntervalUIKit
 
 class BookYourSelectionViewController: UIViewController {
     
+    var isCheckedBox = false
+    
+    @IBOutlet weak var tableView: UITableView!
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         // Get dynamic rows
@@ -37,6 +41,28 @@ class BookYourSelectionViewController: UIViewController {
        self.dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func checkBoxPressed(_ sender: Any) {
+        
+        let cell = (sender as AnyObject).superview??.superview?.superview as? RelinquishmentSelectionOpenWeeksCell
+        
+         let cell1 = (sender as AnyObject).superview??.superview?.superview as?  GetawayCell
+        
+    
+        if self.isCheckedBox == false {
+            cell?.mainView.layer.cornerRadius = 7
+            cell?.mainView.layer.borderWidth = 2
+            cell?.mainView.layer.borderColor = UIColor.orange.cgColor
+            cell?.mainView.clipsToBounds = true
+            //cell?.checkBox.checked = false
+            self.isCheckedBox = true
+        } else {
+            cell?.mainView.layer.borderWidth = 0
+            self.isCheckedBox = false
+            //cell?.checkBox.checked = true
+            
+        }
+        
+    }
     
     @IBAction func onClickDetailsButton(_ sender: Any) {
         self.performSegue(withIdentifier: Constant.segueIdentifiers.showDestinationResortsSegue, sender: nil)
@@ -120,6 +146,22 @@ extension BookYourSelectionViewController:UITableViewDelegate {
         
         return 30
     }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let shadowView = UIView()
+        
+        shadowView.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
+        shadowView.layer.shadowOffset = CGSize(width: -1, height: 1)
+        shadowView.layer.shadowOpacity = 1.0
+        shadowView.layer.shadowRadius = 0.0
+        shadowView.layer.masksToBounds = false
+        
+        return shadowView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 2
+    }
 
 }
 
@@ -181,10 +223,11 @@ extension BookYourSelectionViewController:UITableViewDataSource {
                     
                 }else if((exchange.openWeek) != nil){
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell1, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
-                    cell.layer.cornerRadius = 7
+                   /* cell.layer.cornerRadius = 7
                     cell.layer.borderWidth = 2
                     cell.layer.borderColor = UIColor.orange.cgColor
-                    cell.clipsToBounds = true
+                    cell.clipsToBounds = true*/
+                    
                     //Helper.applyShadowOnUIView(view: cell.contentView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
                     cell.resortName.text = exchange.openWeek?.resort?.resortName!
                     cell.yearLabel.text = "\(String(describing: (exchange.openWeek?.relinquishmentYear!)!))"

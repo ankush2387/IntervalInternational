@@ -3297,10 +3297,10 @@
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BQm-Z3-R3y">
-                                                            <rect key="frame" x="80" y="0.0" width="238" height="60"/>
+                                                            <rect key="frame" x="80" y="0.0" width="235" height="60"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Westwood at Split Rock" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LFV-5h-tuB">
-                                                                    <rect key="frame" x="4" y="0.0" width="234" height="21"/>
+                                                                    <rect key="frame" x="4" y="0.0" width="231" height="21"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="21" id="byr-Db-TFI"/>
                                                                     </constraints>
@@ -3309,7 +3309,7 @@
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sleeps 6 total, 4 Private" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GjR-Nr-Xy8">
-                                                                    <rect key="frame" x="4" y="35" width="234" height="21"/>
+                                                                    <rect key="frame" x="4" y="35" width="231" height="21"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="21" id="Qfs-Xl-avz"/>
                                                                     </constraints>
@@ -3318,7 +3318,7 @@
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2 Bedroom, Full Kitchen" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9SB-YE-Ejr">
-                                                                    <rect key="frame" x="4" y="18" width="226" height="22"/>
+                                                                    <rect key="frame" x="4" y="18" width="223" height="22"/>
                                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <nil key="highlightedColor"/>
@@ -3340,7 +3340,7 @@
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5J4-54-kml" customClass="IUIKCheckbox" customModule="IntervalUIKit">
-                                                            <rect key="frame" x="319" y="17" width="40" height="26"/>
+                                                            <rect key="frame" x="316" y="17" width="40" height="26"/>
                                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="40" id="ydX-CE-uYx"/>
@@ -3357,6 +3357,9 @@
                                                                     <color key="value" red="0.96078431369999995" green="0.49803921569999998" blue="0.14117647059999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
+                                                            <connections>
+                                                                <action selector="checkBoxPressed:" destination="X80-Wg-GJ4" eventType="valueChanged" id="cEz-2H-kCy"/>
+                                                            </connections>
                                                         </view>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -3364,7 +3367,7 @@
                                                         <constraint firstItem="5J4-54-kml" firstAttribute="top" secondItem="Y39-oo-O1h" secondAttribute="top" constant="17" id="1Ra-gy-F4l"/>
                                                         <constraint firstItem="Sjl-t5-WFu" firstAttribute="centerY" secondItem="Y39-oo-O1h" secondAttribute="centerY" id="H3Z-IK-lXp"/>
                                                         <constraint firstItem="BQm-Z3-R3y" firstAttribute="leading" secondItem="Sjl-t5-WFu" secondAttribute="trailing" id="H9q-QU-LeQ"/>
-                                                        <constraint firstAttribute="trailing" secondItem="5J4-54-kml" secondAttribute="trailing" id="WqM-Qz-02Z"/>
+                                                        <constraint firstAttribute="trailing" secondItem="5J4-54-kml" secondAttribute="trailing" constant="3" id="WqM-Qz-02Z"/>
                                                         <constraint firstItem="5J4-54-kml" firstAttribute="leading" secondItem="BQm-Z3-R3y" secondAttribute="trailing" constant="1" id="gjH-Lu-08S"/>
                                                         <constraint firstItem="Sjl-t5-WFu" firstAttribute="leading" secondItem="Y39-oo-O1h" secondAttribute="leading" id="j2E-zq-Wo5"/>
                                                         <constraint firstItem="BQm-Z3-R3y" firstAttribute="centerY" secondItem="Y39-oo-O1h" secondAttribute="centerY" id="t7T-xm-kC9"/>
@@ -3381,7 +3384,9 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="bedroomSizeAndKitchenClient" destination="9SB-YE-Ejr" id="12h-cA-aYF"/>
+                                            <outlet property="checkBox" destination="5J4-54-kml" id="Vx6-ER-QFU"/>
                                             <outlet property="dayAndDateLabel" destination="Vtl-gi-9sc" id="A9q-W5-U4S"/>
+                                            <outlet property="mainView" destination="Y39-oo-O1h" id="Yb5-o4-7oV"/>
                                             <outlet property="resortName" destination="LFV-5h-tuB" id="Hgz-Km-w5c"/>
                                             <outlet property="totalSleepAndPrivate" destination="GjR-Nr-Xy8" id="YRW-5o-n4C"/>
                                             <outlet property="totalWeekLabel" destination="3nd-Ka-44I" id="lUc-c0-vPa"/>
@@ -3509,6 +3514,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="hB4-2S-n1z"/>
                     <connections>
+                        <outlet property="tableView" destination="qah-VK-Vhe" id="UYR-4Y-PY8"/>
                         <segue destination="uNV-hq-jgj" kind="showDetail" identifier="showDestinationResorts" id="aZT-a1-O4J"/>
                     </connections>
                 </viewController>

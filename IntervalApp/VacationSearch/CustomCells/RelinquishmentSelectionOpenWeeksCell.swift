@@ -28,6 +28,9 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
     @IBOutlet weak var promLabel: UILabel!
     @IBOutlet weak var promImgView: UIImageView!
     
+    @IBOutlet weak var mainView: UIView!
+    @IBOutlet weak var checkBox: IUIKCheckbox!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
