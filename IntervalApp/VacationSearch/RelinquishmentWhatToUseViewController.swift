@@ -38,6 +38,11 @@ class RelinquishmentWhatToUseViewController: UIViewController {
     }
  
   
+    @IBAction func onDetailButtonClick(_ sender: Any) {
+        
+        self.performSegue(withIdentifier: Constant.segueIdentifiers.showDestinationResortsSegue, sender: nil)
+    }
+ 
 
 }
 
@@ -65,17 +70,18 @@ extension RelinquishmentWhatToUseViewController: UITableViewDataSource {
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.availablePoints, for: indexPath) as! AvailablePointCell
                 
+                
                 return cell
             }
             else{
                 let exchange = Constant.MyClassConstants.filterRelinquishments[indexPath.row-1]
                 
-
                 
                 if((exchange.openWeek) != nil){
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell1, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
                     cell.contentView.layer.cornerRadius = 7
-                    cell.resortDetailsView.layer.borderColor = UIColor.white.cgColor
+                    cell.resortDetailsView.layer.borderColor = UIColor.clear.cgColor
+                    cell.dayandDateLabel.layer.borderColor = UIColor.clear.cgColor
                     Helper.applyShadowOnUIView(view: cell.contentView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
                     cell.resortName.text = exchange.openWeek?.resort?.resortName!
                     cell.yearLabel.text = "\(String(describing: (exchange.openWeek?.relinquishmentYear!)!))"

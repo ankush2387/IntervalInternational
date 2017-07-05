@@ -96,7 +96,7 @@
         <scene sceneID="AXO-66-1Q5">
             <objects>
                 <navigationController id="YXh-lN-KMw" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="6Ru-xD-idh">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="6Ru-xD-idh">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2590,7 +2590,7 @@
         <scene sceneID="hwE-GA-7Y4">
             <objects>
                 <navigationController id="Kj4-oV-nKd" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="PIk-h1-MHc">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="PIk-h1-MHc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -3017,7 +3017,7 @@
         <scene sceneID="DbV-Z9-AeY">
             <objects>
                 <navigationController id="hie-AV-xvD" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="f6g-7W-eAZ">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="f6g-7W-eAZ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -5617,6 +5617,9 @@
                                         <state key="normal" title="Details">
                                             <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="onDetailButtonClick:" destination="v1i-It-4l8" eventType="touchUpInside" id="Meo-y5-9Qu"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Destination Resort" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZbK-p5-kiQ">
                                         <rect key="frame" x="47" y="19" width="213" height="31"/>
@@ -5751,13 +5754,6 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3E8-Sg-AsT">
                                                     <rect key="frame" x="15" y="8" width="98" height="99"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="April 09" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2VA-tm-egY">
-                                                            <rect key="frame" x="8" y="8" width="70" height="21"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="2018" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xc4-Cv-2Id">
                                                             <rect key="frame" x="8" y="37" width="70" height="21"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -5766,14 +5762,24 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Week 16" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Urm-8w-ate">
-                                                            <rect key="frame" x="8" y="70" width="70" height="21"/>
+                                                            <rect key="frame" x="8" y="60" width="70" height="21"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="April 09" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2VA-tm-egY">
+                                                            <rect key="frame" x="8" y="14" width="70" height="21"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="98" id="PfN-sv-vG5"/>
+                                                    </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dyG-Bh-T5N" customClass="IUIKCheckbox" customModule="IntervalUIKit">
                                                     <rect key="frame" x="671" y="25" width="73" height="65"/>
@@ -5809,47 +5815,51 @@
                                                     <rect key="frame" x="121" y="8" width="528" height="99"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Westwood at Split Rock" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1pP-1Q-ywt">
-                                                            <rect key="frame" x="14" y="14" width="212.5" height="24"/>
+                                                            <rect key="frame" x="8" y="8" width="212.5" height="24"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Bedroom Details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J3i-x9-2nE">
-                                                            <rect key="frame" x="18" y="39" width="126.5" height="21"/>
+                                                            <rect key="frame" x="8" y="39" width="239" height="21"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sleep Capacity" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bLN-ie-g3g">
-                                                            <rect key="frame" x="23" y="58" width="115" height="21"/>
+                                                            <rect key="frame" x="8" y="61" width="239" height="21"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="528" id="Eam-p4-6Mx"/>
+                                                    </constraints>
                                                 </view>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="3E8-Sg-AsT" firstAttribute="leading" secondItem="l1c-bf-mr3" secondAttribute="leadingMargin" constant="7" id="2bf-ay-zIB"/>
                                                 <constraint firstAttribute="topMargin" secondItem="BEu-0X-bJH" secondAttribute="top" id="4m2-qz-2i0"/>
                                                 <constraint firstItem="dyG-Bh-T5N" firstAttribute="leading" secondItem="BEu-0X-bJH" secondAttribute="trailing" constant="22" id="4vm-Sq-Z2J"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="3E8-Sg-AsT" secondAttribute="trailing" constant="647" id="7zF-rc-ajW"/>
+                                                <constraint firstItem="3E8-Sg-AsT" firstAttribute="leading" secondItem="l1c-bf-mr3" secondAttribute="leadingMargin" constant="7" id="D1O-JN-Dwg"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="BEu-0X-bJH" secondAttribute="bottom" constant="-0.5" id="KdF-VZ-dlH"/>
+                                                <constraint firstItem="BEu-0X-bJH" firstAttribute="leading" secondItem="3E8-Sg-AsT" secondAttribute="trailing" constant="8" id="Sni-Ua-ryo"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="dyG-Bh-T5N" secondAttribute="trailing" constant="16" id="VVN-Gy-fgS"/>
-                                                <constraint firstAttribute="topMargin" secondItem="3E8-Sg-AsT" secondAttribute="top" id="h13-46-Pbl"/>
-                                                <constraint firstItem="BEu-0X-bJH" firstAttribute="leading" secondItem="3E8-Sg-AsT" secondAttribute="trailing" constant="8" id="h56-GV-QeE"/>
+                                                <constraint firstItem="BEu-0X-bJH" firstAttribute="leading" secondItem="3E8-Sg-AsT" secondAttribute="trailing" constant="8" id="XIw-oK-aYE"/>
+                                                <constraint firstAttribute="topMargin" secondItem="3E8-Sg-AsT" secondAttribute="top" id="fRO-u4-8j2"/>
                                                 <constraint firstItem="dyG-Bh-T5N" firstAttribute="top" secondItem="l1c-bf-mr3" secondAttribute="topMargin" constant="17" id="iLa-FT-c53"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="3E8-Sg-AsT" secondAttribute="bottom" constant="-0.5" id="sNs-2M-UwE"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="3E8-Sg-AsT" secondAttribute="bottom" constant="-0.5" id="qkh-jO-Wgd"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="dyG-Bh-T5N" secondAttribute="bottom" constant="16.5" id="zcL-ME-fYK"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="bedroomSizeAndKitchenClient" destination="J3i-x9-2nE" id="GTX-7m-B7E"/>
                                             <outlet property="dayAndDateLabel" destination="2VA-tm-egY" id="T0G-m1-utr"/>
+                                            <outlet property="dayandDateLabel" destination="3E8-Sg-AsT" id="48T-qf-CDj"/>
                                             <outlet property="resortDetailsView" destination="BEu-0X-bJH" id="ymj-hg-fSI"/>
                                             <outlet property="resortName" destination="1pP-1Q-ywt" id="FIT-Er-U0o"/>
                                             <outlet property="totalSleepAndPrivate" destination="bLN-ie-g3g" id="TLT-VB-Zk2"/>
@@ -6924,7 +6934,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Wc0-eI-yK9" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="98v-Sn-Axw">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="98v-Sn-Axw">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -7305,7 +7315,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="lDo-kQ-A9s" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="h8X-dQ-5XW"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="lNH-0Y-9a5">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="lNH-0Y-9a5">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

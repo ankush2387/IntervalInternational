@@ -67,35 +67,46 @@ class ShareActivityMessage: NSObject, UIActivityItemSource {
             message.append("Confirmation #: \(confirmationNum)\n")
         }
         //transaction Type
-        let transactionType = ExchangeTransactionType.fromName(name: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.exchangeTransactionType!).friendlyNameForUpcomingTrip()
-        message.append("TransactionType: \(transactionType)\n")
+    
+        if var transactionType =  Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.exchangeTransactionType{
+            transactionType = ExchangeTransactionType.fromName(name: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.exchangeTransactionType!).friendlyNameForUpcomingTrip()
+            message.append("TransactionType: \(transactionType)\n")
+        }
+        //transactionType = ExchangeTransactionType.fromName(name: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.exchangeTransactionType!).friendlyNameForUpcomingTrip
+        
         //Resort Name
-        if let name = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.resortName {
+        if let name = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.resortName {
             message.append("Resort: \(name)\n")
         }
         //city Name
-        if let cityName = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address!.cityName {
+        if let cityName = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.address?.cityName {
             location = "\(cityName), "
         }
         //Country Code
-        if let countryCode = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address!.countryCode {
+        if let countryCode = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.address?.countryCode {
             location.append("\(countryCode)")
         }
         message.append("Location: \(location)\n")
         
         //format checkIn Date
-        let checkInDate = Helper.convertStringToDate(dateString:Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.checkInDate!, format: Constant.MyClassConstants.dateFormat)
         let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-        let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkInDate)
-        let formatedCheckInDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!))/\(myComponents.day!)/\(myComponents.year!)"
+        if (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkInDate) != nil{
+            let checkInDate = Helper.convertStringToDate(dateString:(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkInDate)!, format: Constant.MyClassConstants.dateFormat)
+            let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkInDate)
+            let formatedCheckInDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month ?? 0))/\(myComponents.day ?? 0)/\(myComponents.year ?? 0)"
+            message.append("CheckIn: \(formatedCheckInDate)\n")
+        }
+       
         
-        message.append("CheckIn: \(formatedCheckInDate)\n")
+        
         
         //format CheckOut Date
-        let checkOutDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.checkOutDate!, format: Constant.MyClassConstants.dateFormat1)
+        if (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkOutDate) != nil{
+        let checkOutDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkOutDate ?? "", format: Constant.MyClassConstants.dateFormat1)
         let myComponents1 = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkOutDate)
-        let formatedCheckOutDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!))/\(myComponents1.day!)/\(myComponents1.year!)"
+        let formatedCheckOutDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents1.month ?? 0))/\(myComponents1.day ?? 0)/\(myComponents1.year ?? 0)"
         message.append("CheckOut: \(formatedCheckOutDate)\n")
+        }
 
         self.messageStr = message
         let attributedMessage = NSMutableAttributedString(string: message)

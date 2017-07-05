@@ -21,6 +21,7 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
     @IBOutlet weak var totalSleepAndPrivate: UILabel!
     @IBOutlet weak var bedroomSizeAndKitchenClient: UILabel!
     @IBOutlet weak var resortName: UILabel!
+    @IBOutlet weak var dayandDateLabel: UIView!
     
     @IBOutlet weak var addButton: IUIKButton!
     @IBOutlet weak var savedView: UILabel!
