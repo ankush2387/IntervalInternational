@@ -9,7 +9,7 @@
 import UIKit
 import IntervalUIKit
 
-class RelinquishmentSelectionOpenWeeksCell1: UITableViewCell {
+class RelinquishmentSelectionOpenWeeksCellWithUpgrade: UITableViewCell {
     
     //IBOutlets
     @IBOutlet weak var dayAndDateLabel: UILabel!

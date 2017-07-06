@@ -47,9 +47,7 @@ class BookYourSelectionViewController: UIViewController {
         
         let cell = (sender as AnyObject).superview??.superview?.superview as? RelinquishmentSelectionOpenWeeksCell
         
-         let cell1 = (sender as AnyObject).superview??.superview?.superview as?  GetawayCell
         
-    
         if self.isCheckedBox == false {
             cell?.mainView.layer.cornerRadius = 7
             cell?.mainView.layer.borderWidth = 2
@@ -92,7 +90,7 @@ extension BookYourSelectionViewController:UITableViewDelegate {
                 return 70
             case 1:
                     if((indexPath as NSIndexPath).row == 0) {
-                        if showUpgrade == false {
+                        if showUpgrade == true {
                             return 150
                         } else {
                             return 100
@@ -100,7 +98,7 @@ extension BookYourSelectionViewController:UITableViewDelegate {
                         }
                     }
                     else {
-                        if showUpgrade == false {
+                        if showUpgrade == true {
                             return 150
                         } else {
                             return 100
@@ -256,8 +254,8 @@ extension BookYourSelectionViewController:UITableViewDataSource {
                     
                 }else if((exchange.openWeek) != nil){
                     
-                    if showUpgrade == false {
-                        let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell2, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell1
+                    if showUpgrade == true {
+                        let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell2, for: indexPath) as! RelinquishmentSelectionOpenWeeksCellWithUpgrade
                         /* cell.layer.cornerRadius = 7
                          cell.layer.borderWidth = 2
                          cell.layer.borderColor = UIColor.orange.cgColor

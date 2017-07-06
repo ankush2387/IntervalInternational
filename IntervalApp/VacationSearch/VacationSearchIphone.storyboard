@@ -3392,7 +3392,7 @@
                                             <outlet property="yearLabel" destination="uPM-XS-vql" id="ENN-IK-fwH"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ExchangeCell2" rowHeight="150" id="jHh-Bx-j5m" userLabel="ExchangeCell2" customClass="RelinquishmentSelectionOpenWeeksCell1" customModule="IntervalApp" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ExchangeCell2" rowHeight="150" id="jHh-Bx-j5m" userLabel="ExchangeCell2" customClass="RelinquishmentSelectionOpenWeeksCellWithUpgrade" customModule="IntervalApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="298" width="375" height="150"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jHh-Bx-j5m" id="s0t-R7-au2">
