@@ -15,6 +15,7 @@ import SVProgressHUD
 class BookYourSelectionViewController: UIViewController {
     
     var isCheckedBox = false
+     var showUpgrade = false
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -155,10 +156,21 @@ extension BookYourSelectionViewController:UITableViewDelegate {
                 return 70
             case 1:
                     if((indexPath as NSIndexPath).row == 0) {
-                        return 100
+                        if showUpgrade == false {
+                            return 150
+                        } else {
+                            return 100
+    
+                        }
                     }
                     else {
-                        return 100
+                        if showUpgrade == false {
+                            return 150
+                        } else {
+                            return 100
+                            
+                        }
+
                     }
                 
             case 2:
@@ -316,14 +328,21 @@ extension BookYourSelectionViewController:UITableViewDataSource {
                     cell.layer.borderColor = UIColor.orange.cgColor
                     cell.clipsToBounds = true*/
                     
-                    //Helper.applyShadowOnUIView(view: cell.contentView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
-                    cell.resortName.text = exchange.openWeek?.resort?.resortName!
-                    cell.yearLabel.text = "\(String(describing: (exchange.openWeek?.relinquishmentYear!)!))"
-                    cell.totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: (exchange.openWeek?.weekNumber!)!))"
-                    cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType:(exchange.openWeek?.unit!.unitSize!)!))), \(Helper.getKitchenEnums(kitchenType:(exchange.openWeek?.unit!.kitchenType!)!))"
-                    cell.totalSleepAndPrivate.text = "Sleeps \(String(describing: exchange.openWeek!.unit!.publicSleepCapacity)), \(String(describing: exchange.openWeek!.unit!.privateSleepCapacity)) Private"
-                    //let date = exchange.openWeek!.checkInDate
-                    //if(date.count > 0) {
+                    if showUpgrade == false {
+                        let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell2, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell1
+                        /* cell.layer.cornerRadius = 7
+                         cell.layer.borderWidth = 2
+                         cell.layer.borderColor = UIColor.orange.cgColor
+                         cell.clipsToBounds = true*/
+                        
+                        //Helper.applyShadowOnUIView(view: cell.contentView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
+                        cell.resortName.text = exchange.openWeek?.resort?.resortName!
+                        cell.yearLabel.text = "\(String(describing: (exchange.openWeek?.relinquishmentYear!)!))"
+                        cell.totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: (exchange.openWeek?.weekNumber!)!))"
+                        cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType:(exchange.openWeek?.unit!.unitSize!)!))), \(Helper.getKitchenEnums(kitchenType:(exchange.openWeek?.unit!.kitchenType!)!))"
+                        cell.totalSleepAndPrivate.text = "Sleeps \(String(describing: exchange.openWeek!.unit!.publicSleepCapacity)), \(String(describing: exchange.openWeek!.unit!.privateSleepCapacity)) Private"
+                        //let date = exchange.openWeek!.checkInDate
+                        //if(date.count > 0) {
                         
                         let dateString = exchange.openWeek!.checkInDate
                         let date =  Helper.convertStringToDate(dateString: dateString!, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
@@ -340,13 +359,55 @@ extension BookYourSelectionViewController:UITableViewDataSource {
                         
                         cell.dayAndDateLabel.text = month.uppercased()
                         
-                   //}
-                    /*else {
+                        //}
+                        /*else {
+                         
+                         cell.dayAndDateLabel.text = ""
+                         }*/
+                        cell.selectionStyle = UITableViewCellSelectionStyle.none
+                        return cell
+
+                    } else {
+                        let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell1, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
+                        /* cell.layer.cornerRadius = 7
+                         cell.layer.borderWidth = 2
+                         cell.layer.borderColor = UIColor.orange.cgColor
+                         cell.clipsToBounds = true*/
                         
-                        cell.dayAndDateLabel.text = ""
-                    }*/
-                    cell.selectionStyle = UITableViewCellSelectionStyle.none
-                    return cell
+                        //Helper.applyShadowOnUIView(view: cell.contentView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
+                        cell.resortName.text = exchange.openWeek?.resort?.resortName!
+                        cell.yearLabel.text = "\(String(describing: (exchange.openWeek?.relinquishmentYear!)!))"
+                        cell.totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: (exchange.openWeek?.weekNumber!)!))"
+                        cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType:(exchange.openWeek?.unit!.unitSize!)!))), \(Helper.getKitchenEnums(kitchenType:(exchange.openWeek?.unit!.kitchenType!)!))"
+                        cell.totalSleepAndPrivate.text = "Sleeps \(String(describing: exchange.openWeek!.unit!.publicSleepCapacity)), \(String(describing: exchange.openWeek!.unit!.privateSleepCapacity)) Private"
+                        //let date = exchange.openWeek!.checkInDate
+                        //if(date.count > 0) {
+                        
+                        let dateString = exchange.openWeek!.checkInDate
+                        let date =  Helper.convertStringToDate(dateString: dateString!, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
+                        let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
+                        let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: date)
+                        let day = myComponents.day!
+                        var month = ""
+                        if(day < 10) {
+                            month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) 0\(day)"
+                        }
+                        else {
+                            month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \(day)"
+                        }
+                        
+                        cell.dayAndDateLabel.text = month.uppercased()
+                        
+                        //}
+                        /*else {
+                         
+                         cell.dayAndDateLabel.text = ""
+                         }*/
+                        cell.selectionStyle = UITableViewCellSelectionStyle.none
+                        return cell
+
+                        
+                    }
                 }else{
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell0, for: indexPath) as! ExchangeCell0
                     cell.tag = indexPath.row
