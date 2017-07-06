@@ -1102,6 +1102,7 @@ class Constant: NSObject {
         static var destinationResortDetailCell = "DestinationResortDetailCell"
         static var exchangeCell0 = "ExchangeCell0"
         static var exchangeCell1 = "ExchangeCell1"
+        static var exchangeCell2 = "ExchangeCell2"
         static var getawaysCell  = "GetawaysCell"
         static var moreCell = "MoreCell"
         static var searchResultDateCell = "SearchResultDateCell"
