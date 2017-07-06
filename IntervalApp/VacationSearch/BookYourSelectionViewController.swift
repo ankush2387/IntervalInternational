@@ -9,6 +9,8 @@
 import UIKit
 import IntervalUIKit
 import SDWebImage
+import DarwinSDK
+import SVProgressHUD
 
 class BookYourSelectionViewController: UIViewController {
     
@@ -46,21 +48,90 @@ class BookYourSelectionViewController: UIViewController {
     @IBAction func checkBoxPressed(_ sender: Any) {
         
         let cell = (sender as AnyObject).superview??.superview?.superview as? RelinquishmentSelectionOpenWeeksCell
+<<<<<<< HEAD
         
         
+=======
+    
+>>>>>>> 8ef7d18485555240b418dbadefd2709cbe8d4a90
         if self.isCheckedBox == false {
-            cell?.mainView.layer.cornerRadius = 7
-            cell?.mainView.layer.borderWidth = 2
             cell?.mainView.layer.borderColor = UIColor.orange.cgColor
-            cell?.mainView.clipsToBounds = true
-            //cell?.checkBox.checked = false
             self.isCheckedBox = true
         } else {
-            cell?.mainView.layer.borderWidth = 0
+            cell?.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
             self.isCheckedBox = false
-            //cell?.checkBox.checked = true
             
         }
+        
+        
+        
+        //Start process request
+        
+        //Exchange process request parameters
+        Helper.showProgressBar(senderView: self)
+        let processResort = ExchangeProcess()
+        processResort.holdUnitStartTimeInMillis = Constant.holdingTime
+        
+        
+        let processRequest = ExchangeProcessStartRequest()
+        
+        processRequest.destination = Constant.MyClassConstants.exchangeDestination
+        processRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
+        
+        if(Constant.MyClassConstants.filterRelinquishments[(cell?.tag)!].openWeek != nil){
+            processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[(cell?.tag)!].openWeek?.relinquishmentId
+        }
+        
+        ExchangeProcessClient.start(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: {(response) in
+            Helper.hideProgressBar(senderView: self)
+            let processResort = ExchangeProcess()
+            processResort.processId = response.processId
+            Constant.MyClassConstants.exchangeBookingLastStartedProcess = processResort
+            Constant.MyClassConstants.exchangeProcessStartResponse = response
+            Constant.MyClassConstants.exchangeViewResponse = response.view!
+            //Constant.MyClassConstants.rentalFees = [(response.view?.fees)!]
+            Constant.MyClassConstants.guestCertificate = response.view?.fees?.guestCertificate
+            Constant.MyClassConstants.onsiteArray.removeAllObjects()
+            Constant.MyClassConstants.nearbyArray.removeAllObjects()
+            
+            /*for amenity in (response.view?.resort?.amenities)!{
+                if(amenity.nearby == false){
+                    Constant.MyClassConstants.onsiteArray.add(amenity.amenityName!)
+                    Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending(amenity.amenityName!)
+                    Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending("\n")
+                }else{
+                    Constant.MyClassConstants.nearbyArray.add(amenity.amenityName!)
+                    Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending(amenity.amenityName!)
+                    Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending("\n")
+                }
+            }*/
+            
+            
+            UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
+                
+                // Got an access token!  Save it for later use.
+                SVProgressHUD.dismiss()
+                Helper.removeServiceCallBackgroundView(view: self.view)
+                Constant.MyClassConstants.membershipContactArray = Membership.contacts!
+                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+                
+                let transitionManager = TransitionManager()
+                self.navigationController?.transitioningDelegate = transitionManager
+                self.navigationController!.pushViewController(viewController, animated: true)
+                
+            }, onError: { (error) in
+                
+                Helper.hideProgressBar(senderView: self)
+                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                
+            })
+            
+        }, onError: {(error) in
+            Helper.hideProgressBar(senderView: self)
+            SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+        })
+        
         
     }
     
@@ -226,20 +297,18 @@ extension BookYourSelectionViewController:UITableViewDataSource {
                 if let resortName = Constant.MyClassConstants.selectedResort.resortName{
                     cell.resortName.text = resortName
                 }
-
-                
-                
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                     
                     return cell
             }
         
             else if((indexPath as NSIndexPath).section == 1) {
-                
+            
                let exchange = Constant.MyClassConstants.filterRelinquishments[indexPath.row]
                 
                 if((exchange.pointsProgram) != nil){
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell0, for: indexPath) as! ExchangeCell0
+                    cell.tag = indexPath.row
                     cell.contentBackgroundView.layer.cornerRadius = 7
                     Helper.applyShadowOnUIView(view: cell.contentBackgroundView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
                     cell.selectionStyle = UITableViewCellSelectionStyle.none
@@ -247,12 +316,22 @@ extension BookYourSelectionViewController:UITableViewDataSource {
                     
                 }else if((exchange.clubPoints) != nil){
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell0, for: indexPath) as! ExchangeCell0
+                    cell.tag = indexPath.row
                     cell.layer.cornerRadius = 7
                     Helper.applyShadowOnUIView(view: cell.contentBackgroundView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
                     cell.selectionStyle = UITableViewCellSelectionStyle.none
                     return cell
                     
                 }else if((exchange.openWeek) != nil){
+                    let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell1, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
+                    cell.tag = indexPath.row
+                    cell.mainView.layer.cornerRadius = 7
+                    cell.mainView.layer.borderWidth = 2
+                    cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
+                   /* cell.layer.cornerRadius = 7
+                    cell.layer.borderWidth = 2
+                    cell.layer.borderColor = UIColor.orange.cgColor
+                    cell.clipsToBounds = true*/
                     
                     if showUpgrade == true {
                         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell2, for: indexPath) as! RelinquishmentSelectionOpenWeeksCellWithUpgrade
@@ -336,6 +415,7 @@ extension BookYourSelectionViewController:UITableViewDataSource {
                     }
                 }else{
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell0, for: indexPath) as! ExchangeCell0
+                    cell.tag = indexPath.row
                     cell.contentBackgroundView.layer.cornerRadius = 7
                     Helper.applyShadowOnUIView(view: cell.contentBackgroundView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
                     cell.selectionStyle = UITableViewCellSelectionStyle.none
@@ -365,6 +445,7 @@ extension BookYourSelectionViewController:UITableViewDataSource {
                 //***** Configure and return search vacation cell *****//
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ExchangeCell0"/*Constant.vacationSearchScreenReusableIdentifiers.getawaysCell*/, for: indexPath) as! AvailablePointCell/*GetawaysCell*/
                 //cell.contentBackgroundView.layer.cornerRadius = 7
+                cell.tag = indexPath.row
                 Helper.applyShadowOnUIView(view: cell, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 return cell

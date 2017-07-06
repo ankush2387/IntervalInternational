@@ -1282,7 +1282,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 ADBMobile.trackAction(Constant.omnitureEvents.event9, data: nil)
                 Helper.showProgressBar(senderView: self)
                 RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: searchDateRequest, onSuccess:{ (searchDates) in
-                    
+                                        
                     var combinedSearchDates = [Date]()
                     combinedSearchDates = searchDates.checkInDates.map { $0 }
                     combinedSearchDates.append(contentsOf: searchDates.surroundingCheckInDates.map { $0 })
