@@ -544,6 +544,7 @@ extension SearchResultViewController:UITableViewDelegate {
             if(Constant.MyClassConstants.isFromExchange){
                 selectedSection = indexPath.section
                 selectedRow = indexPath.row
+                Constant.MyClassConstants.selectedResort = Constant.MyClassConstants.resortsArray[indexPath.section]
                 self.getFilterRelinquishments()
             }else{
             Helper.addServiceCallBackgroundView(view: self.view)

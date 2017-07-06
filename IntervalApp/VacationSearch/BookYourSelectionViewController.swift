@@ -8,6 +8,7 @@
 
 import UIKit
 import IntervalUIKit
+import SDWebImage
 
 class BookYourSelectionViewController: UIViewController {
     
@@ -144,7 +145,12 @@ extension BookYourSelectionViewController:UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         
-        return 30
+        if(section != 0){
+            return 30
+        }else{
+            return 0
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -171,7 +177,7 @@ extension BookYourSelectionViewController:UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
-        return 3
+        return 2
         
     }
     
@@ -197,7 +203,22 @@ extension BookYourSelectionViewController:UITableViewDataSource {
                 
                 //***** Configure and return cell according to sections in tableview *****//
                     
-                    let cell: DestinationResortDetailCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.destinationResortDetailCell, for: indexPath) as! DestinationResortDetailCell
+                let cell: DestinationResortDetailCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.destinationResortDetailCell, for: indexPath) as! DestinationResortDetailCell
+               
+                if let image = Constant.MyClassConstants.selectedResort.images.first?.url{
+                    cell.destinationImageView.setImageWith(URL(string: image) , completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
+                        if (error != nil) {
+                            cell.destinationImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
+                        }
+                    }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+                }
+                
+                if let resortName = Constant.MyClassConstants.selectedResort.resortName{
+                    cell.resortName.text = resortName
+                }
+
+                
+                
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                     
                     return cell
