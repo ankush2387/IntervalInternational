@@ -21,7 +21,7 @@ let logger = XCGLogger.default
 let userDefaults = UserDefaults.standard
 
 
-@UIApplicationMain
+//@UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
@@ -68,7 +68,63 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         BITHockeyManager.shared().configure(withIdentifier: "bde61378ac204256b1e52748bd34f688")
         BITHockeyManager.shared().start()
         BITHockeyManager.shared().authenticator.authenticateInstallation()
+        
+        
+         NotificationCenter.default.addObserver(self, selector: #selector(AppDelegate.applicationDidTimout), name: NSNotification.Name(rawValue: TimerUIApplication.ApplicationDidTimoutNotification), object: nil)
         return true
+    }
+    
+    // The callback for when the timeout was fired.
+    func applicationDidTimout(notification: NSNotification) {
+        UserContext.sharedInstance.signOut()
+        //Remove all favorites for a user.
+        Constant.MyClassConstants.favoritesResortArray.removeAll()
+        Constant.MyClassConstants.favoritesResortCodeArray.removeAllObjects()
+        
+        //Remove available points for relinquishment program
+        Constant.MyClassConstants.relinquishmentProgram = PointsProgram()
+        
+        //Remove all saved alerts for a user.
+        Constant.MyClassConstants.getawayAlertsArray.removeAll()
+        Constant.MyClassConstants.isLoginSuccessfull = false
+        Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
+        TouchID().deactivateTouchID()
+        
+
+        let transition = CATransition()
+        transition.duration = 0.4
+        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        transition.type = kCATransitionPush
+        transition.subtype = kCATransitionFromBottom
+        
+        // Alert to the user
+        let alertMessage = UIAlertController(title: "", message: "You have been automatically logged out due to inactivity.", preferredStyle: .alert)
+        let alertAction = UIAlertAction(title: "OK", style: .default) { (response) in
+            //callback
+            
+        }
+        alertMessage.addAction(alertAction)
+
+        //Present LoginViewController
+        if UIDevice.current.userInterfaceIdiom == .pad{
+            let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.loginIPad, bundle: nil)
+            let NavController = UINavigationController()
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.loginViewControllerIPad) as! LoginIPadViewController
+            NavController.viewControllers = [viewController]
+            viewController.view.layer.add(transition, forKey: Constant.MyClassConstants.switchToView)
+            UIApplication.shared.keyWindow?.rootViewController = NavController
+            
+            //present Alert
+            viewController.present(alertMessage, animated: true, completion: nil)
+        } else {
+            let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.loginIPhone, bundle: nil)
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.loginViewController) as! LoginViewController
+            viewController.view.layer.add(transition, forKey:Constant.MyClassConstants.switchToView)
+            UIApplication.shared.keyWindow?.rootViewController = viewController
+            
+            //present Alert
+            viewController.present(alertMessage, animated: true, completion: nil)
+        }
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
