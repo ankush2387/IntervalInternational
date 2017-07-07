@@ -48,7 +48,6 @@ class BookYourSelectionViewController: UIViewController {
     @IBAction func checkBoxPressed(_ sender: Any) {
         
         let cell = (sender as AnyObject).superview??.superview?.superview as? RelinquishmentSelectionOpenWeeksCell
-    
         if self.isCheckedBox == false {
             cell?.mainView.layer.borderColor = UIColor.orange.cgColor
             self.isCheckedBox = true
@@ -155,20 +154,16 @@ extension BookYourSelectionViewController:UITableViewDelegate {
             case 0 :
                 return 70
             case 1:
-                    if((indexPath as NSIndexPath).row == 0) {
-                        if showUpgrade == false {
-                            return 100
-                        } else {
+                if((indexPath as NSIndexPath).row == 0) {
+                        if showUpgrade == true {
                             return 150
-                        }
-                    }
-                    else {
-                        if showUpgrade == false {
-                            return 100
                         } else {
-                            return 150
+                            return 100
                         }
-                    }
+                }else{
+                    return 70
+                }
+    
             case 2:
                 return 70
             default :
@@ -320,8 +315,10 @@ extension BookYourSelectionViewController:UITableViewDataSource {
                     cell.mainView.layer.borderWidth = 2
                     cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
                     
-                    if showUpgrade == false {
-                        let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell2, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell1
+
+                    if showUpgrade == true {
+                        let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell2, for: indexPath) as! RelinquishmentSelectionOpenWeeksCellWithUpgrade
+                    
                         //Helper.applyShadowOnUIView(view: cell.contentView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
                         cell.resortName.text = exchange.openWeek?.resort?.resortName!
                         cell.yearLabel.text = "\(String(describing: (exchange.openWeek?.relinquishmentYear!)!))"
