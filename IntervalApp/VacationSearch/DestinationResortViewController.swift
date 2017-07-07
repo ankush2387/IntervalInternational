@@ -140,7 +140,7 @@ extension DestinationResortViewController:UITableViewDataSource {
                 
               return CGFloat (count * 20)
                 
-            }else if(indexPath.row == 1 && indexPath.section == 5){
+            }else if(indexPath.row == 1 && indexPath.section == 5 && (Constant.MyClassConstants.viewResponse.resort?.advisements.count)! > 1){
                 
                 let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0)
                 var height:CGFloat
@@ -256,11 +256,15 @@ extension DestinationResortViewController:UITableViewDataSource {
                    
                     cell.infoLabel.text = Constant.MyClassConstants.nearbyString.appending("\n\n").appending(Constant.MyClassConstants.onsiteString)
                 }else{
+                    if (Constant.MyClassConstants.viewResponse.resort?.advisements.count)! > 1 {
+                        
+                        cell.infoLabel.text = Constant.MyClassConstants.viewResponse.resort?.advisements[1].description
+                    }
                     
-                    cell.infoLabel.text = Constant.MyClassConstants.viewResponse.resort?.advisements[1].description
                 }
                 cell.infoLabel.sizeToFit()
                 return cell
+                
             }
         }else {
             
