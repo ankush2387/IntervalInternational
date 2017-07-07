@@ -169,7 +169,6 @@ class WhoWillBeCheckingInViewController: UIViewController {
     
     func guestFormCheckForDetails() ->Bool {
         
-        
         if(Constant.GetawaySearchResultGuestFormDetailData.firstName != "" && Constant.GetawaySearchResultGuestFormDetailData.lastName != "" && Constant.GetawaySearchResultGuestFormDetailData.country != "" && Constant.GetawaySearchResultGuestFormDetailData.address1 != "" && Constant.GetawaySearchResultGuestFormDetailData.address2 != "" && Constant.GetawaySearchResultGuestFormDetailData.city != "" && Constant.GetawaySearchResultGuestFormDetailData.state != "" && Constant.GetawaySearchResultGuestFormDetailData.pinCode != "" && Constant.GetawaySearchResultGuestFormDetailData.email != "" && Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber != "" && Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber != "") {
             
             if(proceedStatus) {
@@ -345,7 +344,82 @@ class WhoWillBeCheckingInViewController: UIViewController {
     //***** Function to perform checkout *****//
     @IBAction func proceedToCheckoutPressed(_ sender: AnyObject) {
         
-        
+        if(Constant.MyClassConstants.isFromExchange){
+            let exchangeProcessRequest = ExchangeProcessContinueToCheckoutRequest()
+            
+            if(self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count) {
+                
+                if(self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count) {
+                    
+                    let guest = Guest()
+                    
+                    guest.firstName = Constant.GetawaySearchResultGuestFormDetailData.firstName
+                    guest.lastName = Constant.GetawaySearchResultGuestFormDetailData.lastName
+                    guest.primaryTraveler = true
+                    
+                    
+                    let guestAddress = Address()
+                    
+                    guestAddress.addrLine1 = Constant.GetawaySearchResultGuestFormDetailData.address1
+                    guestAddress.addrLine2 = Constant.GetawaySearchResultGuestFormDetailData.address2
+                    guestAddress.cityName = Constant.GetawaySearchResultGuestFormDetailData.city
+                    guestAddress.zipCode = Constant.GetawaySearchResultGuestFormDetailData.pinCode
+                    guestAddress.addressType = "Home"
+                    guestAddress.territoryCode = "FL"
+                    guestAddress.countryCode = "USA"
+                    
+                    var phoneNumbers = [Phone]()
+                    let homePhoneNo = Phone()
+                    homePhoneNo.phoneNumber = Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber
+                    homePhoneNo.countryPhoneCode = "1"
+                    homePhoneNo.phoneType = "HOME_PRIMARY"
+                    homePhoneNo.areaCode = "305"
+                    homePhoneNo.countryCode = "FL"
+                    phoneNumbers.append(homePhoneNo)
+                    
+                    guest.phones = phoneNumbers
+                    guest.address = guestAddress
+                    exchangeProcessRequest.guest = guest
+                    
+                    Constant.MyClassConstants.enableGuestCertificate = true
+                }
+                let processResort = ExchangeProcess()
+                processResort.holdUnitStartTimeInMillis = Constant.holdingTime
+                processResort.processId = Constant.MyClassConstants.exchangeProcessStartResponse.processId
+                
+                ExchangeProcessClient.continueToCheckout(UserContext.sharedInstance.accessToken, process: processResort, request: exchangeProcessRequest, onSuccess: {(response) in
+                    DarwinSDK.logger.debug(response)
+                    SVProgressHUD.dismiss()
+                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    Constant.MyClassConstants.exchangeContinueToCheckoutResponse = response
+                    
+                    if let promotions = response.view?.fees?.shopExchange?.promotions {
+                        Constant.MyClassConstants.recapViewPromotionCodeArray = promotions
+                    }
+                    
+                    DarwinSDK.logger.debug("Promo codes are : \(String(describing: response.view?.promoCodes))")
+                    DarwinSDK.logger.debug("Response is : \(String(describing: response.view?.fees)) , -------->\(response)")
+                    Constant.MyClassConstants.allowedCreditCardType = (response.view?.allowedCreditCardTypes)!
+                    Constant.MyClassConstants.exchangeFees = [(response.view?.fees)!]
+                    if(Int((response.view?.fees?.shopExchange?.rentalPrice?.tax)!) != 0){
+                        Constant.MyClassConstants.enableTaxes = true
+                    }else{
+                        Constant.MyClassConstants.enableTaxes = false
+                    }
+                    Constant.MyClassConstants.memberCreditCardList = (UserContext.sharedInstance.contact?.creditcards)!
+                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                    let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.checkOutViewController) as! CheckOutViewController
+                    
+                    let transitionManager = TransitionManager()
+                    self.navigationController?.transitioningDelegate = transitionManager
+                    self.navigationController!.pushViewController(viewController, animated: true)
+                }, onError: {(error) in
+                    SVProgressHUD.dismiss()
+                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    
+                })
+        }
+        }else{
         let processRequest1 = RentalProcessPrepareContinueToCheckoutRequest()
         
         if(self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count) {
@@ -382,8 +456,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
             
             Constant.MyClassConstants.enableGuestCertificate = true
         }
-        Helper.addServiceCallBackgroundView(view: self.view)
-        SVProgressHUD.show()
+        Helper.showProgressBar(senderView: self)
         let processResort = RentalProcess()
         processResort.holdUnitStartTimeInMillis = Constant.holdingTime
         processResort.processId = Constant.MyClassConstants.processStartResponse.processId
@@ -420,6 +493,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 
         })
     }
+}
 }
 
 //Extension class starts from here

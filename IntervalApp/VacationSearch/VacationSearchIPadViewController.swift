@@ -765,12 +765,7 @@ extension VacationSearchIPadViewController:UICollectionViewDataSource {
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        if(Constant.MyClassConstants.topDeals != nil){
-            return Constant.MyClassConstants.topDeals.count
-        }else{
-            return 0
-        }
+        return Constant.MyClassConstants.topDeals.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cell, for: indexPath)

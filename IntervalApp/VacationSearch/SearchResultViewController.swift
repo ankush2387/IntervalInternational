@@ -265,8 +265,6 @@ class SearchResultViewController: UIViewController {
         
         exchangeSearchDateRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
         
-        
-        
         let exchangeDestination = ExchangeDestination()
         let currentFromDate = Helper.convertDateToString(date: Constant.MyClassConstants.currentFromDate, format: Constant.MyClassConstants.dateFormat)
         
@@ -299,8 +297,12 @@ class SearchResultViewController: UIViewController {
             Constant.MyClassConstants.selectedResort = Constant.MyClassConstants.resortsArray[self.selectedSection]
             
             Constant.MyClassConstants.inventoryPrice = (Constant.MyClassConstants.exchangeInventory[self.selectedSection].buckets[self.selectedRow - 1].unit?.prices)!
+            if(Constant.MyClassConstants.whatToTradeArray.count > 1 || String(describing: response[0].destination?.upgradeCost?.amount) != "0"){
+                self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+            }else {
+                self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+            }
             
-            self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
         }, onError: { (error) in
             print(Error.self)
             Helper.hideProgressBar(senderView: self)
@@ -415,10 +417,10 @@ extension SearchResultViewController:UICollectionViewDelegate {
                     exchangeAvailabilityRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
                     ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: exchangeAvailabilityRequest, onSuccess: { (exchangeAvailability) in
                         Helper.hideProgressBar(senderView: self)
-                        if(self.alertView.isHidden == false){
+                        //if(self.alertView.isHidden == false){
                             self.alertView.isHidden = true
                             self.headerVw.isHidden = false
-                        }
+                        //}
                         Constant.MyClassConstants.resortsArray.removeAll()
                         Constant.MyClassConstants.exchangeInventory.removeAll()
                         for exchangeResorts in exchangeAvailability{
