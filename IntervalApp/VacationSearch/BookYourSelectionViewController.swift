@@ -154,15 +154,15 @@ extension BookYourSelectionViewController:UITableViewDelegate {
             case 0 :
                 return 70
             case 1:
-                if((indexPath as NSIndexPath).row == 0) {
+                //if((indexPath as NSIndexPath).row == 0) {
                         if showUpgrade == true {
                             return 150
                         } else {
                             return 100
                         }
-                }else{
-                    return 70
-                }
+                //}else{
+                //    return 70
+                //}
     
             case 2:
                 return 70

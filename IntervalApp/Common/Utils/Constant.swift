@@ -359,10 +359,12 @@ class Constant: NSObject {
         static var processStartResponse = RentalProcessPrepareResponse()
         static var exchangeProcessStartResponse = ExchangeProcessPrepareResponse()
         static var continueToCheckoutResponse = RentalProcessRecapResponse()
+        static var exchangeContinueToCheckoutResponse = ExchangeProcessRecapResponse()
         static var continueToPayResponse = RentalProcessEndResponse()
         static var recapViewPromotionCodeArray = [Promotion]()
         static var allowedCreditCardType = [AllowedCreditCardType]()
         static var rentalFees = [RentalFees]()
+        static var exchangeFees = [ExchangeFees]()
         static var memberCreditCardList = [Creditcard]()
         static var selectedCreditCard = [Creditcard]()
         static var guestCertificate:GuestCertificate!
