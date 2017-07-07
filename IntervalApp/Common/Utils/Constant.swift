@@ -497,6 +497,7 @@ class Constant: NSObject {
 
         //UserDefaults
         static var userName = "userName"
+        static var exchangeDestination = ExchangeDestination()
     }
     struct CommonStringIdentifiers {
         static var floatWeek = "FLOAT_WEEK"

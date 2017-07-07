@@ -157,22 +157,18 @@ extension BookYourSelectionViewController:UITableViewDelegate {
             case 1:
                     if((indexPath as NSIndexPath).row == 0) {
                         if showUpgrade == false {
-                            return 150
-                        } else {
                             return 100
-    
+                        } else {
+                            return 150
                         }
                     }
                     else {
                         if showUpgrade == false {
-                            return 150
-                        } else {
                             return 100
-                            
+                        } else {
+                            return 150
                         }
-
                     }
-                
             case 2:
                 return 70
             default :
@@ -323,27 +319,15 @@ extension BookYourSelectionViewController:UITableViewDataSource {
                     cell.mainView.layer.cornerRadius = 7
                     cell.mainView.layer.borderWidth = 2
                     cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
-                   /* cell.layer.cornerRadius = 7
-                    cell.layer.borderWidth = 2
-                    cell.layer.borderColor = UIColor.orange.cgColor
-                    cell.clipsToBounds = true*/
                     
                     if showUpgrade == false {
                         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell2, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell1
-                        /* cell.layer.cornerRadius = 7
-                         cell.layer.borderWidth = 2
-                         cell.layer.borderColor = UIColor.orange.cgColor
-                         cell.clipsToBounds = true*/
-                        
                         //Helper.applyShadowOnUIView(view: cell.contentView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
                         cell.resortName.text = exchange.openWeek?.resort?.resortName!
                         cell.yearLabel.text = "\(String(describing: (exchange.openWeek?.relinquishmentYear!)!))"
                         cell.totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: (exchange.openWeek?.weekNumber!)!))"
                         cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType:(exchange.openWeek?.unit!.unitSize!)!))), \(Helper.getKitchenEnums(kitchenType:(exchange.openWeek?.unit!.kitchenType!)!))"
                         cell.totalSleepAndPrivate.text = "Sleeps \(String(describing: exchange.openWeek!.unit!.publicSleepCapacity)), \(String(describing: exchange.openWeek!.unit!.privateSleepCapacity)) Private"
-                        //let date = exchange.openWeek!.checkInDate
-                        //if(date.count > 0) {
-                        
                         let dateString = exchange.openWeek!.checkInDate
                         let date =  Helper.convertStringToDate(dateString: dateString!, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
                         let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
@@ -358,31 +342,17 @@ extension BookYourSelectionViewController:UITableViewDataSource {
                         }
                         
                         cell.dayAndDateLabel.text = month.uppercased()
-                        
-                        //}
-                        /*else {
-                         
-                         cell.dayAndDateLabel.text = ""
-                         }*/
                         cell.selectionStyle = UITableViewCellSelectionStyle.none
                         return cell
 
                     } else {
                         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell1, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
-                        /* cell.layer.cornerRadius = 7
-                         cell.layer.borderWidth = 2
-                         cell.layer.borderColor = UIColor.orange.cgColor
-                         cell.clipsToBounds = true*/
-                        
                         //Helper.applyShadowOnUIView(view: cell.contentView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
                         cell.resortName.text = exchange.openWeek?.resort?.resortName!
                         cell.yearLabel.text = "\(String(describing: (exchange.openWeek?.relinquishmentYear!)!))"
                         cell.totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: (exchange.openWeek?.weekNumber!)!))"
                         cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType:(exchange.openWeek?.unit!.unitSize!)!))), \(Helper.getKitchenEnums(kitchenType:(exchange.openWeek?.unit!.kitchenType!)!))"
                         cell.totalSleepAndPrivate.text = "Sleeps \(String(describing: exchange.openWeek!.unit!.publicSleepCapacity)), \(String(describing: exchange.openWeek!.unit!.privateSleepCapacity)) Private"
-                        //let date = exchange.openWeek!.checkInDate
-                        //if(date.count > 0) {
-                        
                         let dateString = exchange.openWeek!.checkInDate
                         let date =  Helper.convertStringToDate(dateString: dateString!, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
                         let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
@@ -397,16 +367,8 @@ extension BookYourSelectionViewController:UITableViewDataSource {
                         }
                         
                         cell.dayAndDateLabel.text = month.uppercased()
-                        
-                        //}
-                        /*else {
-                         
-                         cell.dayAndDateLabel.text = ""
-                         }*/
                         cell.selectionStyle = UITableViewCellSelectionStyle.none
                         return cell
-
-                        
                     }
                 }else{
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell0, for: indexPath) as! ExchangeCell0
@@ -416,30 +378,11 @@ extension BookYourSelectionViewController:UITableViewDataSource {
                     cell.selectionStyle = UITableViewCellSelectionStyle.none
                     return cell
                 }
-                
-                //***** Configure and return calendar cell  *****//
-               /* if((indexPath as NSIndexPath).row == 0) {
-                    
-                    let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell0, for: indexPath) as! ExchangeCell0
-                    cell.contentBackgroundView.layer.cornerRadius = 7
-                    Helper.applyShadowOnUIView(view: cell.contentBackgroundView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
-                    cell.selectionStyle = UITableViewCellSelectionStyle.none
-                    return cell
-                }
-                else {
-                    
-                }
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell1, for: indexPath) as! ExchangeCell1
-                cell.contentBackgroundView.layer.cornerRadius = 7
-                Helper.applyShadowOnUIView(view: cell.contentBackgroundView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
-                cell.selectionStyle = UITableViewCellSelectionStyle.none
-                return cell*/
             }
             else {
                 
                 //***** Configure and return search vacation cell *****//
-                let cell = tableView.dequeueReusableCell(withIdentifier: "ExchangeCell0"/*Constant.vacationSearchScreenReusableIdentifiers.getawaysCell*/, for: indexPath) as! AvailablePointCell/*GetawaysCell*/
-                //cell.contentBackgroundView.layer.cornerRadius = 7
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ExchangeCell0", for: indexPath) as! AvailablePointCell
                 cell.tag = indexPath.row
                 Helper.applyShadowOnUIView(view: cell, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
