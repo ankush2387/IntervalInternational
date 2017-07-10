@@ -12,6 +12,7 @@ import DarwinSDK
 class MembershipIPadViewController: UIViewController {
     /** Outlets */
     @IBOutlet weak var tableView: UITableView!
+    var previousSelectedMembershipCellIndex: IndexPath?
     /**
      Show action sheet.
      - parameter sender: sender UIbutton reference.
@@ -69,6 +70,10 @@ class MembershipIPadViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.displayMenuButton()
+        
+        //Update Membership Dictionary
+        let membership = UserContext.sharedInstance.selectedMembership
+         memberDetailDictionary.updateValue((membership?.memberNumber)!, forKey: "membernumber")
     }
     
     //MARK:Display menu button
@@ -225,6 +230,13 @@ extension MembershipIPadViewController:UITableViewDataSource{
             let productcode = Product?.productCode
             cell.membershipName.text = Product?.productName
             cell.memberImageView.image = UIImage(named: productcode!)
+            if memberDetailDictionary["membernumber"] == cell.membershipNumber.text {
+                cell.selectedImageView.image = UIImage(named: "Select-On")
+                previousSelectedMembershipCellIndex = indexPath
+            } else {
+                cell.selectedImageView.image = UIImage(named: "Select-Off")
+            }
+
 
             cell.delegate = self
             return cell
@@ -297,10 +309,42 @@ extension MembershipIPadViewController:UITableViewDelegate
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		
 		if tableView.tag == 3 {
+            guard let cell = tableView.cellForRow(at: indexPath) as? ActionSheetTblCell else { return }
+            cell.selectedImageView.image = UIImage(named: "Select-On")
+            
+            //change previously selected image
+            if let previousIndex = previousSelectedMembershipCellIndex {
+                if previousIndex != indexPath{
+                    let previousCell = tableView.cellForRow(at: previousIndex) as? ActionSheetTblCell
+                    previousCell?.selectedImageView.image = UIImage(named: "Select-Off")
+                }
+            }
+
 			let contact = UserContext.sharedInstance.contact
 			let membership = contact?.memberships![indexPath.row]
-			UserContext.sharedInstance.selectedMembership = membership
-			self.membershipWasSelected()
+            if memberDetailDictionary["membernumber"] != membership?.memberNumber{
+                self.dismiss(animated: true, completion: nil)
+                print("Same Membership")
+                let alert = UIAlertController(title: Constant.memberShipViewController.switchMembershipAlertTitle, message: Constant.memberShipViewController.switchMembershipAlertMessage, preferredStyle: .actionSheet)
+                let actionYes = UIAlertAction(title: "Yes", style: .destructive, handler: { (response) in
+                    print("Continue")
+                    self.memberDetailDictionary.updateValue((membership?.memberNumber)!, forKey:"membernumber" )
+                    UserContext.sharedInstance.selectedMembership = membership
+                    self.membershipWasSelected()
+                })
+                
+                let actionCancel = UIAlertAction(title: "No", style: .default, handler: { (response) in
+                    print("Cancel")
+                })
+                
+                alert.addAction(actionYes)
+                alert.addAction(actionCancel)
+                alert.modalPresentationStyle = .popover
+                alert.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue: 0)
+                alert.popoverPresentationController?.sourceView = self.view
+                alert.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+                self.present(alert, animated: true, completion: nil)
+            }
 		}
 	}
 }
