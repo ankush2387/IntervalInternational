@@ -36,6 +36,8 @@ class WhoWillBeCheckingInViewController: UIViewController {
     var holdingTimer:Timer!
     var holdingTime = 2
     var decreaseValue = 1
+    var selectedCountryIndex: Int?
+
     
     override func viewWillAppear(_ animated: Bool) {
         NotificationCenter.default.addObserver(self, selector: #selector(updateResortHoldingTime), name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
@@ -251,6 +253,14 @@ class WhoWillBeCheckingInViewController: UIViewController {
             checkingInUserTBLview.scrollToRow(at: indexPath as IndexPath, at: .top, animated: true)
             self.proceedToCheckoutButton.isEnabled = false
             self.proceedToCheckoutButton.alpha = 0.5
+            
+            LookupClient.getCountries(Constant.MyClassConstants.systemAccessToken!, onSuccess: { (response) in
+                Constant.GetawaySearchResultGuestFormDetailData.countryListArray = response
+
+            }, onError: { (error) in
+                print(error)
+            })
+
         }
         else {
             
@@ -258,6 +268,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
             checkingInUserTBLview.reloadData()
             self.proceedToCheckoutButton.isEnabled = true
             self.proceedToCheckoutButton.alpha = 1.0
+            
         }
         
         
@@ -327,7 +338,17 @@ class WhoWillBeCheckingInViewController: UIViewController {
     
     //***** Function to select value from picker. *****//
     func pickerDoneButtonPressed(_ sender:UIButton) {
-        
+        if dropDownSelectionRow == 0 {
+            if let countryIndex = selectedCountryIndex {
+                if let countryCode = Constant.GetawaySearchResultGuestFormDetailData.countryListArray[countryIndex].countryCode {
+                    LookupClient.getStates(Constant.MyClassConstants.systemAccessToken!, countryCode: countryCode, onSuccess: { (response) in
+                        Constant.GetawaySearchResultGuestFormDetailData.stateListArray = response
+                    }, onError: { (error) in
+                        print(error)
+                    })
+                }
+            }
+        }
         self.hideStatus = false
         self.pickerBaseView.isHidden = true
         let indexPath = NSIndexPath(row: self.dropDownSelectionRow, section: self.dropDownSelectionSection)
@@ -780,22 +801,28 @@ extension WhoWillBeCheckingInViewController:UIPickerViewDelegate {
         
         if(self.dropDownSelectionRow == 0) {
             
-            return Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row]
+            return Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row].countryName
+
         }
         else {
             
-            return Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row]
+            return Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name
+
         }
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if(self.dropDownSelectionRow == 0) {
             
-            Constant.GetawaySearchResultGuestFormDetailData.country = Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row]
+            guard let countryName = Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row].countryName else { return }
+            
+            Constant.GetawaySearchResultGuestFormDetailData.country = countryName
+            selectedCountryIndex = row
         }
         else {
-            
-            Constant.GetawaySearchResultGuestFormDetailData.state = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row]
+            guard let stateName = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name else { return }
+
+            Constant.GetawaySearchResultGuestFormDetailData.state = stateName
         }
     }
 }

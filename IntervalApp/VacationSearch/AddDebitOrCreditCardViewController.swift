@@ -36,6 +36,7 @@ class AddDebitOrCreditCardViewController: UIViewController {
     var isKeyBoardOpen = false
     var moved: Bool = false
     var activeField:UITextField?
+    var countryIndex: Int = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -716,12 +717,12 @@ extension AddDebitOrCreditCardViewController:UIPickerViewDelegate {
         else {
             
             if(self.dropDownSelectionRow == 0) {
-                
-                return Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row]
+    
+                return Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row].countryName
             }
             else {
                 
-                return Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row]
+                return Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name
             }
 
         }
@@ -747,12 +748,13 @@ extension AddDebitOrCreditCardViewController:UIPickerViewDelegate {
         else {
             
              if(self.dropDownSelectionRow == 0) {
-                
-                 Constant.GetawaySearchResultCardFormDetailData.country = Constant.GetawaySearchResultCardFormDetailData.countryListArray[row]
+                guard let countryName = Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row].countryName else { return }
+                countryIndex = row
+                 Constant.GetawaySearchResultCardFormDetailData.country = countryName
              }
              else {
-                
-                Constant.GetawaySearchResultCardFormDetailData.state = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row]
+                guard let stateName = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name else { return }
+                Constant.GetawaySearchResultCardFormDetailData.state = stateName
             }
             
         }
