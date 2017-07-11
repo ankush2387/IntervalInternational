@@ -248,6 +248,7 @@ class SearchResultViewController: UIViewController {
             Constant.MyClassConstants.selectedResort = Constant.MyClassConstants.resortsArray[self.selectedSection]
             
             Constant.MyClassConstants.inventoryPrice = (Constant.MyClassConstants.exchangeInventory[self.selectedSection].buckets[0].unit?.prices)!
+            Constant.MyClassConstants.exchangeDestination = exchangeDestination
             
             self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
         }, onError: { (error) in
@@ -297,11 +298,11 @@ class SearchResultViewController: UIViewController {
             Constant.MyClassConstants.selectedResort = Constant.MyClassConstants.resortsArray[self.selectedSection]
             
             Constant.MyClassConstants.inventoryPrice = (Constant.MyClassConstants.exchangeInventory[self.selectedSection].buckets[self.selectedRow - 1].unit?.prices)!
-            if(Constant.MyClassConstants.whatToTradeArray.count > 1 || String(describing: response[0].destination?.upgradeCost?.amount) != "0"){
+            //if(Constant.MyClassConstants.whatToTradeArray.count > 1 || String(describing: response[0].destination?.upgradeCost?.amount) != "0"){
                 self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
-            }else {
-                self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
-            }
+           // }else {
+               // self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+            //}
             
         }, onError: { (error) in
             print(Error.self)
@@ -599,7 +600,8 @@ extension SearchResultViewController:UITableViewDelegate {
                 selectedSection = indexPath.section
                 selectedRow = indexPath.row
                 Constant.MyClassConstants.selectedResort = Constant.MyClassConstants.resortsArray[indexPath.section]
-                self.getFilterRelinquishments()
+                //self.getFilterRelinquishments()
+                self.getStaticFilterRelinquishments()
             }else{
             Helper.addServiceCallBackgroundView(view: self.view)
             SVProgressHUD.show()
