@@ -394,6 +394,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
                 }else{
                     dateValue = Constant.MyClassConstants.checkInDates[collectionviewSelectedIndex]
                 }
+                Constant.MyClassConstants.currentFromDate = dateValue
                 if(Constant.MyClassConstants.surroundingCheckInDates.contains(dateValue) && Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.getawayAlerts){
                     titleLabel.backgroundColor = UIColor(red: 170/255.0, green: 216/255.0, blue: 111/255.0, alpha: 1.0)
                     titleLabel.text = Constant.MyClassConstants.surroundingAreaString
@@ -418,10 +419,8 @@ extension SearchResultViewController:UICollectionViewDelegate {
                     exchangeAvailabilityRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
                     ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: exchangeAvailabilityRequest, onSuccess: { (exchangeAvailability) in
                         Helper.hideProgressBar(senderView: self)
-                        //if(self.alertView.isHidden == false){
                             self.alertView.isHidden = true
                             self.headerVw.isHidden = false
-                        //}
                         Constant.MyClassConstants.resortsArray.removeAll()
                         Constant.MyClassConstants.exchangeInventory.removeAll()
                         for exchangeResorts in exchangeAvailability{
@@ -600,8 +599,8 @@ extension SearchResultViewController:UITableViewDelegate {
                 selectedSection = indexPath.section
                 selectedRow = indexPath.row
                 Constant.MyClassConstants.selectedResort = Constant.MyClassConstants.resortsArray[indexPath.section]
-                //self.getFilterRelinquishments()
-                self.getStaticFilterRelinquishments()
+                self.getFilterRelinquishments()
+                //self.getStaticFilterRelinquishments()
             }else{
             Helper.addServiceCallBackgroundView(view: self.view)
             SVProgressHUD.show()

@@ -346,8 +346,6 @@ class WhoWillBeCheckingInViewController: UIViewController {
         
         if(Constant.MyClassConstants.isFromExchange){
             let exchangeProcessRequest = ExchangeProcessContinueToCheckoutRequest()
-            
-            if(self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count) {
                 
                 if(self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count) {
                     
@@ -418,7 +416,6 @@ class WhoWillBeCheckingInViewController: UIViewController {
                     Helper.removeServiceCallBackgroundView(view: self.view)
                     
                 })
-        }
         }else{
         let processRequest1 = RentalProcessPrepareContinueToCheckoutRequest()
         
