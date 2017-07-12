@@ -461,6 +461,24 @@ public class Helper{
                     
                     
                     hideProgressBar(senderView: senderVC)
+                } else {
+                    if(Constant.RunningDevice.deviceIdiom == .pad){
+                        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! VacationSearchResultIPadController
+                        
+                        let transitionManager = TransitionManager()
+                        senderVC.navigationController?.transitioningDelegate = transitionManager
+                        senderVC.navigationController!.pushViewController(viewController, animated: true)
+                    }else{
+                        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
+                        
+                        let transitionManager = TransitionManager()
+                        senderVC.navigationController?.transitioningDelegate = transitionManager
+                        
+                        senderVC.navigationController!.pushViewController(viewController, animated: true)
+                    }
+                     hideProgressBar(senderView: senderVC)
                 }
                 
             }, onError: { (error) in
