@@ -1216,9 +1216,8 @@ class Constant: NSObject {
         static var confirmationScreenSegue = "confirmationSegue"
         static var selectPaymentMethodSegue = "selectPaymentSegue"
         static var showResortDetailsSegue = "showResortDetails"
-        
-        static var showDestinationResortsSegue = "showDestinationResorts"
-        
+        static var showRelinguishmentsDetailsSegue = "showRelinguishmentsDetails"
+
         static var confirmationUpcomingTripSegue = "confirmationUpcomingTripSegue"
         static var newCreditCardSegue = "newCreditCardSegue"
         static var PolicyWebviewSegue = "privacyPolicyWebviewSegue"

@@ -337,7 +337,13 @@ class WhoWillBeCheckingInViewController: UIViewController {
     
     func resortDetailsClicked(_ sender:IUIKCheckbox){
         
-        self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
+        if sender.tag == 0 {
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
+
+        } else {
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: nil)
+
+        }
         
     }
     
@@ -620,10 +626,12 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.viewDetailsTBLcell, for: indexPath) as! ViewDetailsTBLcell
             if(indexPath.row == 0){
                 cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
+                cell.resortDetailsButton.tag = indexPath.row
                 cell.resortName?.text = Constant.MyClassConstants.selectedResort.resortName
                 cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.resortImage)
             }else{
                 cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
+                cell.resortDetailsButton.tag = indexPath.row
                 cell.resortName?.text = Constant.MyClassConstants.selectedResort.resortName
                 cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.relinquishmentImage)
                 cell.resortName?.text = ""//Constant.MyClassConstants.exchan
