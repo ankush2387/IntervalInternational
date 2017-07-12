@@ -406,6 +406,7 @@ class Constant: NSObject {
         
         static var inventoryPrice = [InventoryPrice]()
         static var selectedResort = Resort()
+        static var selectedExchange = ""
         
         static var paymentMethodTitle = "Payment Method"
         static var webViewGetElementById = "document.getElementById('WASCInsuranceOfferOption0').checked == true;"
@@ -1278,11 +1279,12 @@ class Constant: NSObject {
         static var visaCardImage = "Visa_CO"
         static var swipeArrowOrgImage = "SwipeArrow_ORG"
         static var swipeArrowGryImage = "SwipeArrow_GRY"
-        static var relinquishmentImage = "RST_CO"
+        static var resortImage = "RST_CO"
         static var exchangeImage = "EPlus"
         static var checkMarkOn = "Checkmark-On"
         static var plusIcon = "PlusIcon"
         static var infoImage = "InfoIcon"
+        static var relinquishmentImage = "ExchangeIcon"
     }
     
     //***** Bedroom ViewController *****//
