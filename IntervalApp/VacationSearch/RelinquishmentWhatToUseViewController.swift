@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import IntervalUIKit
 
 class RelinquishmentWhatToUseViewController: UIViewController {
     
@@ -70,6 +71,9 @@ extension RelinquishmentWhatToUseViewController: UITableViewDataSource {
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.availablePoints, for: indexPath) as! AvailablePointCell
                 
+                    cell.borderView.layer.cornerRadius = 7
+                    cell.borderView.layer.borderWidth = 2
+                    cell.borderView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
                 
                 return cell
             }
@@ -79,10 +83,10 @@ extension RelinquishmentWhatToUseViewController: UITableViewDataSource {
                 
                 if((exchange.openWeek) != nil){
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell1, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
-                    cell.contentView.layer.cornerRadius = 7
-                    cell.resortDetailsView.layer.borderColor = UIColor.clear.cgColor
-                    cell.dayandDateLabel.layer.borderColor = UIColor.clear.cgColor
-                    Helper.applyShadowOnUIView(view: cell.contentView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
+//                    cell.contentView.layer.cornerRadius = 7
+//                    cell.resortDetailsView.layer.borderColor = UIColor.clear.cgColor
+//                    cell.dayandDateLabel.layer.borderColor = UIColor.clear.cgColor
+//                    Helper.applyShadowOnUIView(view: cell.contentView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
                     cell.resortName.text = exchange.openWeek?.resort?.resortName!
                     cell.yearLabel.text = "\(String(describing: (exchange.openWeek?.relinquishmentYear!)!))"
                     cell.totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: (exchange.openWeek?.weekNumber!)!))"
@@ -112,6 +116,9 @@ extension RelinquishmentWhatToUseViewController: UITableViewDataSource {
                         cell.dayAndDateLabel.text = ""
                     }
                     cell.selectionStyle = UITableViewCellSelectionStyle.none
+                    cell.mainView.layer.cornerRadius = 7
+                    cell.mainView.layer.borderWidth = 2
+                    cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
                     return cell
                 }else{
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell0, for: indexPath) as! ExchangeCell0
@@ -151,18 +158,18 @@ extension RelinquishmentWhatToUseViewController: UITableViewDelegate{
         
         //***** configure header cell for each section to show header labels *****//
        
-        let  headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 20))
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 20))
         let headerLabel = UILabel(frame: CGRect(x: 30, y: 0, width: tableView.bounds.width - 60, height: 30))
         
         if(section == 0){
-            headerView.backgroundColor =  UIColor.lightGray
+            headerView.backgroundColor =  IUIKColorPalette.titleBackdrop.color
             headerLabel.text = "Exchange"// Header Name
             headerLabel.textColor = UIColor.darkGray
             headerView.addSubview(headerLabel)
             return headerView
         }
         else{
-            headerView.backgroundColor =  UIColor.lightGray
+            headerView.backgroundColor =  IUIKColorPalette.titleBackdrop.color
             headerLabel.text = "Getaway"// Header Name
             headerLabel.textColor = UIColor.darkGray
             headerView.addSubview(headerLabel)
@@ -184,12 +191,12 @@ extension RelinquishmentWhatToUseViewController: UITableViewDelegate{
                 return 100
             }
             else{
-                return 110
+                return 120
             }
             
         case 1:
             
-                return 110
+                return 100
             
         default :
                 return 70
