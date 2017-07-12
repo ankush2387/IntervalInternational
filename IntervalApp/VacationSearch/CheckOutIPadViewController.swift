@@ -811,7 +811,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                 case 0:
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.CheckOutIPadViewControllerCellIdentifiersAndHardCodedStrings.headerCell, for: indexPath) as! ViewDetailsTBLcell
                     cell.resortDetailsButton.addTarget(self, action: #selector(self.resortDetailsClicked(_:)), for: .touchUpInside)
-                    cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.relinquishmentImage)
+                    cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.resortImage)
                     cell.resortName?.text = Constant.MyClassConstants.viewResponse.resort?.resortName
                     return cell
                 default:

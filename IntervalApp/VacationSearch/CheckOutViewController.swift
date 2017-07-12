@@ -678,7 +678,7 @@ extension CheckOutViewController:UITableViewDataSource {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.viewDetailsTBLcell, for: indexPath) as! ViewDetailsTBLcell
             cell.resortDetailsButton.addTarget(self, action: #selector(self.resortDetailsClicked(_:)), for: .touchUpInside)
-            cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.relinquishmentImage)
+            cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.resortImage)
             cell.resortName?.text = Constant.MyClassConstants.viewResponse.resort?.resortName
             cell.resortAddress?.text = Constant.MyClassConstants.viewResponse.resort?.address?.cityName?.appending(", ").appending((Constant.MyClassConstants.viewResponse.resort?.address?.territoryCode!)!)
             cell.resortCode?.text = Constant.MyClassConstants.viewResponse.resort?.resortCode

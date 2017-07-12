@@ -509,17 +509,19 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
                 
                 let resort = Resort()
                 resort.resortName = Constant.MyClassConstants.resortsArray[selectedIndex].resortName
-                resort.resortCode = "CZP"//Constant.MyClassConstants.resortsArray[selectedIndex].resortCode
+                resort.resortCode = "CZP" //Constant.MyClassConstants.resortsArray[selectedIndex].resortCode
                 
                 exchangeDestination.resort = resort
                 
                 let unit = InventoryUnit()
-                unit.kitchenType = "NO_KITCHEN"
-                    //Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.kitchenType!
-                unit.unitSize = "STUDIO"
-                    //Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitSize!
-                exchangeDestination.checkInDate = "2017-07-17" //currentFromDate
-                exchangeDestination.checkOutDate = "2017-07-24" //currentToDate
+                unit.kitchenType = "NO_KITCHEN" // Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.kitchenType!
+                
+               // "NO_KITCHEN"
+                unit.unitSize = "STUDIO" //Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitSize!
+                   
+                  //  "STUDIO"
+                exchangeDestination.checkInDate = "2017-07-17" // currentFromDate
+                exchangeDestination.checkOutDate = "2017-07-24" // currentToDate
                 //"2017-07-17"
                // "2017-07-24"
                 //unit.unitNumber = Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitNumber!

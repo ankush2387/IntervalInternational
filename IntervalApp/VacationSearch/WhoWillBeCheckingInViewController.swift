@@ -380,6 +380,15 @@ class WhoWillBeCheckingInViewController: UIViewController {
                     exchangeProcessRequest.guest = guest
                     
                     Constant.MyClassConstants.enableGuestCertificate = true
+                }else{
+                    /*let guest = Guest()
+                    guest.firstName = ""
+                    guest.lastName = ""
+                    var phoneNumbers = [Phone]()
+                    guest.phones = phoneNumbers
+                    let guestAddress = Address()
+                    guest.address = guestAddress
+                    exchangeProcessRequest.guest = guest*/
                 }
                 let processResort = ExchangeProcess()
                 processResort.holdUnitStartTimeInMillis = Constant.holdingTime
@@ -609,9 +618,17 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
         if(indexPath.section == 0) {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.viewDetailsTBLcell, for: indexPath) as! ViewDetailsTBLcell
-            cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
-            cell.resortName?.text = Constant.MyClassConstants.selectedResort.resortName
-            cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.relinquishmentImage)
+            if(indexPath.row == 0){
+                cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
+                cell.resortName?.text = Constant.MyClassConstants.selectedResort.resortName
+                cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.resortImage)
+            }else{
+                cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
+                cell.resortName?.text = Constant.MyClassConstants.selectedResort.resortName
+                cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.relinquishmentImage)
+                cell.resortName?.text = ""//Constant.MyClassConstants.exchan
+            }
+            
             cell.selectionStyle = .none
             
             return cell
