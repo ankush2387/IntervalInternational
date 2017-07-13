@@ -26,8 +26,8 @@ class Constant: NSObject {
     //Getaways SearchResult CardFormDetail Data
     struct GetawaySearchResultGuestFormDetailData {
         
-        static var countryListArray = ["Canada","USA","India","Austrelia","South Africa"]
-        static var stateListArray = ["Alaska","Arizona","Hawaii","Florida","Bostom"]
+        static var countryListArray = [Country]()
+        static var stateListArray = [State]()
         static var textFieldChangedInSection = -1
         static var firstName = ""
         static var lastName = ""

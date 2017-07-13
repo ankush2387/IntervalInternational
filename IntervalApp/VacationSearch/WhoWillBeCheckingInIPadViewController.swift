@@ -29,6 +29,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     var holdingTimer:Timer!
     var holdingTime = 17
     var decreaseValue = 1
+    var selectedCountryIndex: Int?
     
     override func viewWillAppear(_ animated: Bool) {
         NotificationCenter.default.addObserver(self, selector: #selector(showAlertForTimer), name: NSNotification.Name(rawValue: "showAlert"), object: nil)
@@ -135,6 +136,14 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             checkingInUserIPadTableView.scrollToRow(at: indexPath as IndexPath, at: .top, animated: true)
             self.proceedToCheckoutButton.isEnabled = false
             self.proceedToCheckoutButton.alpha = 0.5
+            
+            LookupClient.getCountries(Constant.MyClassConstants.systemAccessToken!, onSuccess: { (response) in
+                Constant.GetawaySearchResultGuestFormDetailData.countryListArray = response
+                
+            }, onError: { (error) in
+                print(error)
+            })
+
         }
         else {
             self.requiredSectionIntTBLview = 2
@@ -201,7 +210,18 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     
     // Function to remove picker view on done button pressed.
     func pickerDoneButtonPressed(_ sender:UIButton) {
-        
+        if dropDownSelectionRow == 0 {
+            if let countryIndex = selectedCountryIndex {
+                if let countryCode = Constant.GetawaySearchResultGuestFormDetailData.countryListArray[countryIndex].countryCode {
+                    LookupClient.getStates(Constant.MyClassConstants.systemAccessToken!, countryCode: countryCode, onSuccess: { (response) in
+                        Constant.GetawaySearchResultGuestFormDetailData.stateListArray = response
+                    }, onError: { (error) in
+                        print(error)
+                    })
+                }
+            }
+        }
+
         self.hideStatus = false
         self.pickerBaseView.isHidden = true
         let indexPath = NSIndexPath(row: self.dropDownSelectionRow, section: self.dropDownSelectionSection)
@@ -552,22 +572,23 @@ extension WhoWillBeCheckingInIPadViewController:UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if(self.dropDownSelectionRow == 0) {
             
-            return Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row]
+            return Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row].countryName
         }
         else {
             
-            return Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row]
+            return Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name
         }
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if(self.dropDownSelectionRow == 0) {
-            
-            Constant.GetawaySearchResultGuestFormDetailData.country = Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row]
+            guard let countryName = Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row].countryName else { return }
+            Constant.GetawaySearchResultGuestFormDetailData.country = countryName
+            selectedCountryIndex = row
         }
         else {
-            
-            Constant.GetawaySearchResultGuestFormDetailData.state = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row]
+            guard let stateName = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name else { return }
+            Constant.GetawaySearchResultGuestFormDetailData.state = stateName
         }
     }
 }
