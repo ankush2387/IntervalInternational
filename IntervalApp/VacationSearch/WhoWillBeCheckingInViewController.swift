@@ -737,6 +737,7 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
                     
                     if(Constant.GetawaySearchResultGuestFormDetailData.firstName == "") {
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormFnamePlaceholder
+                        cell.nameTF.text = "Alex"
                     }
                     else {
                         cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.firstName
@@ -747,6 +748,7 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
                     
                     if(Constant.GetawaySearchResultGuestFormDetailData.lastName == "") {
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormLnamePlaceholder
+                        cell.nameTF.text = "Wayn"
                     }
                     else {
                         cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.lastName
@@ -761,6 +763,7 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
                     
                     if(Constant.GetawaySearchResultGuestFormDetailData.email == "") {
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormEmail
+                        cell.nameTF.text = "xyz@gmail.com"
                     }
                     else {
                         cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.email
@@ -770,6 +773,7 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
                     
                     if(Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber == "") {
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormHomePhoneNumber
+                        cell.nameTF.text = "456123789"
                     }
                     else {
                         cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber
@@ -779,6 +783,7 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
                     
                     if(Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber == "") {
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormBusinessPhoneNumber
+                        cell.nameTF.text = "963582147"
                     }
                     else {
                         cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber
@@ -846,6 +851,7 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
                 if(indexPath.row == 1) {
                     if(Constant.GetawaySearchResultGuestFormDetailData.address1 == "") {
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormAddress1
+                        cell.nameTF.text = "B 302"
                     }
                     else {
                         cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.address1
@@ -854,6 +860,7 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
                 else if(indexPath.row == 2) {
                     if(Constant.GetawaySearchResultGuestFormDetailData.address2 == "") {
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormAddress2
+                        cell.nameTF.text = "H 506"
                     }
                     else {
                         cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.address2
@@ -864,6 +871,7 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
                     
                     if(Constant.GetawaySearchResultGuestFormDetailData.city == "") {
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormCity
+                        cell.nameTF.text = "Miami"
                     }
                     else {
                         cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.city
@@ -873,6 +881,7 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
                     
                     if(Constant.GetawaySearchResultGuestFormDetailData.pinCode == "") {
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormPostalCode
+                        cell.nameTF.text = "nameTF"
                     }
                     else {
                         cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.pinCode
