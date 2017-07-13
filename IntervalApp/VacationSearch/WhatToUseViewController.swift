@@ -271,13 +271,7 @@ extension WhatToUseViewController:UITableViewDataSource {
             
             let cell: DestinationResortDetailCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.destinationResortDetailCell, for: indexPath) as! DestinationResortDetailCell
             
-            if let image = Constant.MyClassConstants.selectedResort.images.first?.url{
-                cell.destinationImageView.setImageWith(URL(string: image) , completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
-                    if (error != nil) {
-                        cell.destinationImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
-                    }
-                }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
-            }
+            cell.destinationImageView.image = UIImage(named: Constant.assetImageNames.resortImage)
             
             if let resortName = Constant.MyClassConstants.selectedResort.resortName{
                 cell.resortName.text = resortName

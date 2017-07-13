@@ -413,6 +413,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 let processResort = ExchangeProcess()
                 processResort.holdUnitStartTimeInMillis = Constant.holdingTime
                 processResort.processId = Constant.MyClassConstants.exchangeProcessStartResponse.processId
+                Helper.showProgressBar(senderView: self)
                 
                 ExchangeProcessClient.continueToCheckout(UserContext.sharedInstance.accessToken, process: processResort, request: exchangeProcessRequest, onSuccess: {(response) in
                     DarwinSDK.logger.debug(response)
@@ -692,7 +693,17 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
        
             
             let guestPrices = Constant.MyClassConstants.guestCertificate.prices
-            let memberTier = Constant.MyClassConstants.rentalFees[0].memberTier
+            var memberTier = ""
+            if(Constant.MyClassConstants.isFromExchange){
+                if(Constant.MyClassConstants.exchangeFees.count > 0){
+                memberTier = Constant.MyClassConstants.exchangeFees[0].memberTier!
+                }else{
+                  memberTier = ""
+                }
+                
+            }else{
+                memberTier = Constant.MyClassConstants.rentalFees[0].memberTier!
+            }
             
             for price in guestPrices {
                 
