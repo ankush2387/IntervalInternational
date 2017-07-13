@@ -5405,7 +5405,7 @@ Units Upgrade with this selection.</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="3ud-eb-cFe">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SearchResultContentTableCell" rowHeight="278" id="YUH-P1-7Hm" customClass="SearchResultContentTableCell" customModule="IntervalApp" customModuleProvider="target">
@@ -5455,13 +5455,8 @@ Units Upgrade with this selection.</string>
                                                             <color key="textColor" red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XeH-dv-3Dh">
-                                                            <rect key="frame" x="60" y="53" width="18" height="18"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                        </imageView>
                                                     </subviews>
-                                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <color key="backgroundColor" red="0.50588235290000005" green="0.71764705880000002" blue="0.22352941179999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="trailing" secondItem="jmX-AS-ooy" secondAttribute="trailing" constant="20" id="2qQ-UM-bE1"/>
                                                         <constraint firstAttribute="bottom" secondItem="gbc-Ys-b6r" secondAttribute="bottom" constant="5" id="4yt-C3-L9A"/>
@@ -5483,6 +5478,7 @@ Units Upgrade with this selection.</string>
                                                     </constraints>
                                                 </view>
                                             </subviews>
+                                            <color key="backgroundColor" red="0.96078431369999995" green="0.38823529410000002" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="qIf-ff-Qur" secondAttribute="trailing" id="A0l-DA-X2d"/>
                                                 <constraint firstAttribute="bottom" secondItem="EmQ-Cj-50q" secondAttribute="bottom" id="Aww-Jg-Bdx"/>
@@ -5503,7 +5499,6 @@ Units Upgrade with this selection.</string>
                                             <outlet property="resortImageView" destination="3KY-Uh-jUv" id="UnZ-xS-cvJ"/>
                                             <outlet property="resortName" destination="jmX-AS-ooy" id="5zW-Pn-Q1O"/>
                                             <outlet property="resortNameGradientView" destination="qIf-ff-Qur" id="g38-6f-MDu"/>
-                                            <outlet property="tierImageView" destination="XeH-dv-3Dh" id="XuK-hU-TNo"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ExchangeCell1" rowHeight="89" id="XbP-Go-j8O" customClass="RelinquishmentSelectionOpenWeeksCell" customModule="IntervalApp" customModuleProvider="target">
@@ -5642,7 +5637,7 @@ Units Upgrade with this selection.</string>
                             <constraint firstItem="3ud-eb-cFe" firstAttribute="leading" secondItem="mcV-eu-CGq" secondAttribute="leading" id="zqF-kt-ipu"/>
                         </constraints>
                     </view>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <nil key="simulatedTopBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ktf-zW-mHD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
