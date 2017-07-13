@@ -361,6 +361,7 @@ class Constant: NSObject {
         static var continueToCheckoutResponse = RentalProcessRecapResponse()
         static var exchangeContinueToCheckoutResponse = ExchangeProcessRecapResponse()
         static var continueToPayResponse = RentalProcessEndResponse()
+        static var exchangeContinueToPayResponse = ExchangeProcessEndResponse()
         static var recapViewPromotionCodeArray = [Promotion]()
         static var allowedCreditCardType = [AllowedCreditCardType]()
         static var rentalFees = [RentalFees]()
@@ -1283,7 +1284,7 @@ class Constant: NSObject {
         static var checkMarkOn = "Checkmark-On"
         static var plusIcon = "PlusIcon"
         static var infoImage = "InfoIcon"
-        static var relinquishmentImage = "ExchangeIcon"
+        static var relinquishmentImage = "EXG_CO"
     }
     
     //***** Bedroom ViewController *****//

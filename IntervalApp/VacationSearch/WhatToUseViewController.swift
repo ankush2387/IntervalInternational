@@ -308,15 +308,16 @@ extension WhatToUseViewController:UITableViewDataSource {
                 return cell
                 
             }else if((exchange.openWeek) != nil){
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell1, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
-                cell.tag = indexPath.row
-                cell.mainView.layer.cornerRadius = 7
-                cell.mainView.layer.borderWidth = 2
-                cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
+                //let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell1, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
+                
                 
                 
                 if showUpgrade == true {
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell2, for: indexPath) as! RelinquishmentSelectionOpenWeeksCellWithUpgrade
+                    cell.tag = indexPath.row
+                    cell.mainView.layer.cornerRadius = 7
+                    cell.mainView.layer.borderWidth = 2
+                    cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
                     
                     //Helper.applyShadowOnUIView(view: cell.contentView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
                     cell.resortName.text = exchange.openWeek?.resort?.resortName!
@@ -343,6 +344,10 @@ extension WhatToUseViewController:UITableViewDataSource {
                     
                 } else {
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell1, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
+                    cell.tag = indexPath.row
+                    cell.mainView.layer.cornerRadius = 7
+                    cell.mainView.layer.borderWidth = 2
+                    cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
                     //Helper.applyShadowOnUIView(view: cell.contentView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
                     cell.resortName.text = exchange.openWeek?.resort?.resortName!
                     cell.yearLabel.text = "\(String(describing: (exchange.openWeek?.relinquishmentYear!)!))"

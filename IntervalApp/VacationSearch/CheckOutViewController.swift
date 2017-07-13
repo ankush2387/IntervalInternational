@@ -24,7 +24,7 @@ class CheckOutViewController: UIViewController {
     var isPromotionsEnabled = false
     var isTripProtectionEnabled = false
     var isExchangeOptionEnabled = false
-    var isGetawayOptionEnabled = true
+    var isGetawayOptionEnabled = false
     var bookingCostRequiredRows = 1
     var promotionSelectedIndex = 0
     var isAgreed:Bool = false
@@ -56,6 +56,17 @@ class CheckOutViewController: UIViewController {
         }
         Constant.MyClassConstants.additionalAdvisementsArray.removeAll()
         Constant.MyClassConstants.generalAdvisementsArray.removeAll()
+        
+        if(Constant.MyClassConstants.isFromExchange){
+            for advisement in (Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements)!{
+                
+                if(advisement.title == Constant.MyClassConstants.additionalAdv){
+                    Constant.MyClassConstants.additionalAdvisementsArray.append(advisement)
+                }else{
+                    Constant.MyClassConstants.generalAdvisementsArray.append(advisement)
+                }
+            }
+        }else{
         for advisement in (Constant.MyClassConstants.viewResponse.resort?.advisements)!{
             
             if(advisement.title == Constant.MyClassConstants.additionalAdv){
@@ -64,7 +75,8 @@ class CheckOutViewController: UIViewController {
                 Constant.MyClassConstants.generalAdvisementsArray.append(advisement)
             }
         }
-        
+    }
+    
         //Register custom cell xib with tableview
         
         checkoutOptionTBLview.register(UINib(nibName: Constant.customCellNibNames.totalCostCell, bundle: nil), forCellReuseIdentifier: Constant.customCellNibNames.totalCostCell)
@@ -125,18 +137,48 @@ class CheckOutViewController: UIViewController {
             
             if((isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && (strAccept == "true" || strReject == "true") && Constant.MyClassConstants.selectedCreditCard.count > 0){
                 
-                let continueToPayRequest = RentalProcessRecapContinueToPayRequest.init()
-                continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last!
-                continueToPayRequest.confirmationDelivery = confirmationDelivery
-                continueToPayRequest.acceptTermsAndConditions = true
-                continueToPayRequest.acknowledgeAndAgreeResortFees = true
-                
-                Helper.addServiceCallBackgroundView(view: self.view)
-                SVProgressHUD.show()
+                Helper.showProgressBar(senderView: self)
                 imageSlider.isHidden = true
                 showLoader = true
                 self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
-                
+                if(Constant.MyClassConstants.isFromExchange){
+                    
+                    let continueToPayRequest = ExchangeProcessContinueToPayRequest.init()
+                    continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last!
+                    continueToPayRequest.confirmationDelivery = confirmationDelivery
+                    continueToPayRequest.acceptTermsAndConditions = true
+                    continueToPayRequest.acknowledgeAndAgreeResortFees = true
+                    
+                    ExchangeProcessClient.continueToPay(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { (response) in
+                        
+                        Constant.MyClassConstants.exchangeBookingLastStartedProcess = nil
+                        Constant.MyClassConstants.exchangeContinueToPayResponse = response
+                        let selectedCard = Constant.MyClassConstants.selectedCreditCard
+                        if(selectedCard[0].saveCardIndicator == true){
+                            UserContext.sharedInstance.contact?.creditcards?.append(selectedCard[0])
+                        }
+                        Constant.MyClassConstants.selectedCreditCard.removeAll()
+                        Helper.removeStoredGuestFormDetials()
+                        self.isAgreed = true
+                        Helper.hideProgressBar(senderView: self)
+                        self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
+                        self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
+                        
+                    }, onError: { (error) in
+                        Helper.hideProgressBar(senderView: self)
+                        imageSlider.isHidden = false
+                        self.isAgreed = false
+                        self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
+                        SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: error.description)
+                    })
+                }else{
+                    
+                    let continueToPayRequest = RentalProcessRecapContinueToPayRequest.init()
+                    continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last!
+                    continueToPayRequest.confirmationDelivery = confirmationDelivery
+                    continueToPayRequest.acceptTermsAndConditions = true
+                    continueToPayRequest.acknowledgeAndAgreeResortFees = true
+                    
                 RentalProcessClient.continueToPay(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { (response) in
                     
                     Constant.MyClassConstants.getawayBookingLastStartedProcess = nil
@@ -154,14 +196,14 @@ class CheckOutViewController: UIViewController {
                     self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
                 }, onError: { (error) in
                     
-                    SVProgressHUD.dismiss()
-                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    Helper.hideProgressBar(senderView: self)
                     imageSlider.isHidden = false
                     self.isAgreed = false
                     self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                     SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: error.description)
                 })
-                
+            }
+            
             }else if(!isAgreedToFees && Constant.MyClassConstants.hasAdditionalCharges){
                 let indexPath = NSIndexPath(row: 0, section: 8)
                 checkoutOptionTBLview.scrollToRow(at: indexPath as IndexPath, at: .top, animated: true)
@@ -345,20 +387,27 @@ class CheckOutViewController: UIViewController {
     }
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
         
-        SVProgressHUD.show()
-        Helper.addServiceCallBackgroundView(view: self.view)
-        RentalProcessClient.backToWhoIsChecking(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, onSuccess: {(response) in
+        Helper.showProgressBar(senderView: self)
+        if(Constant.MyClassConstants.isFromExchange){
+            ExchangeProcessClient.backToChooseExchange(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess: {(response) in
+                Helper.hideProgressBar(senderView: self)
+            }, onError: {(error) in
+                Helper.hideProgressBar(senderView: self)
+                SimpleAlert.alert(self, title: "Checkout", message: error.localizedDescription)
+            })
+
+        }else{
+            RentalProcessClient.backToWhoIsChecking(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, onSuccess: {(response) in
             
-            SVProgressHUD.dismiss()
-            Helper.removeServiceCallBackgroundView(view: self.view)
+            Helper.hideProgressBar(senderView: self)
             _ = self.navigationController?.popViewController(animated: true)
             
         }, onError: {(error) in
             
-            SVProgressHUD.dismiss()
-            Helper.removeServiceCallBackgroundView(view: self.view)
+            Helper.hideProgressBar(senderView: self)
             SimpleAlert.alert(self, title: "Checkout", message: "Unable to perform back button operatin due to server error, Try again!")
         })
+        }
     }
     
     //***** Function called when radio button is selected in Add Trip Protection. *****//
@@ -603,7 +652,6 @@ extension CheckOutViewController:UITableViewDataSource {
         isHeightZero = false
         showInsurance = false
         if(indexPath.section == 0) {
-            
             return 50
         }
         else if(indexPath.section == 1) {
@@ -630,13 +678,29 @@ extension CheckOutViewController:UITableViewDataSource {
         }else if(indexPath.section == 2 || indexPath.section == 9) {
             return 60
         }else if(indexPath.section == 4) {
-            let insuranceString: String? = Constant.MyClassConstants.rentalFees[0].insurance?.insuranceOfferHTML!
-            guard let myString = insuranceString, !myString.isEmpty else {
-                showInsurance = false
-                return 0
+            if(Constant.MyClassConstants.isFromExchange){
+                if(Constant.MyClassConstants.exchangeFees.count > 0){
+                    let insuranceString: String? = Constant.MyClassConstants.exchangeFees[0].insurance?.insuranceOfferHTML!
+                    guard let myString = insuranceString, !myString.isEmpty else {
+                        showInsurance = false
+                        return 0
+                    }
+                    showInsurance = true
+                    return 420
+                }else{
+                    return 0
+                }
+                
+            }else{
+                let insuranceString: String? = Constant.MyClassConstants.rentalFees[0].insurance?.insuranceOfferHTML!
+                guard let myString = insuranceString, !myString.isEmpty else {
+                    showInsurance = false
+                    return 0
+                }
+                showInsurance = true
+                return 420
             }
-            showInsurance = true
-            return 420
+            
         }else if ((indexPath.section == 7 && !self.isPromotionsEnabled) || (indexPath.section == 6 && !self.isTripProtectionEnabled && !Constant.MyClassConstants.enableGuestCertificate) || (indexPath.section == 5 && !self.isExchangeOptionEnabled && !self.isGetawayOptionEnabled && !Constant.MyClassConstants.enableTaxes)) {
             isHeightZero = true
             return 0
@@ -652,8 +716,10 @@ extension CheckOutViewController:UITableViewDataSource {
             if(Constant.MyClassConstants.vacationSearchSelectedSegmentIndex == 1) {
                 return 0
             }else {
-                return 130
+                return 0//return 130
             }
+        }else if(indexPath.section == 4 && Constant.MyClassConstants.isFromExchange){
+            return 0
         }else if(indexPath.section == 10){
             if(self.showUpdateEmail){
                 return 130
@@ -677,11 +743,32 @@ extension CheckOutViewController:UITableViewDataSource {
         if(indexPath.section == 0) {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.viewDetailsTBLcell, for: indexPath) as! ViewDetailsTBLcell
+            
+            
+            if(indexPath.row == 0){
+                cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
+                cell.resortName?.text = Constant.MyClassConstants.selectedResort.resortName
+                cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.resortImage)
+            }else{
+                cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
+                cell.resortName?.text = Constant.MyClassConstants.selectedResort.resortName
+                cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.relinquishmentImage)
+                cell.resortName?.text = ""//Constant.MyClassConstants.exchan
+            }
+            
+            
             cell.resortDetailsButton.addTarget(self, action: #selector(self.resortDetailsClicked(_:)), for: .touchUpInside)
-            cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.resortImage)
-            cell.resortName?.text = Constant.MyClassConstants.viewResponse.resort?.resortName
-            cell.resortAddress?.text = Constant.MyClassConstants.viewResponse.resort?.address?.cityName?.appending(", ").appending((Constant.MyClassConstants.viewResponse.resort?.address?.territoryCode!)!)
-            cell.resortCode?.text = Constant.MyClassConstants.viewResponse.resort?.resortCode
+            /*cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.resortImage)
+            if(Constant.MyClassConstants.isFromExchange){
+                cell.resortName?.text = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.resortName
+                cell.resortAddress?.text = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.address?.cityName?.appending(", ").appending((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.address?.territoryCode!)!)
+                cell.resortCode?.text = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.resortCode
+
+            }else{
+                cell.resortName?.text = Constant.MyClassConstants.viewResponse.resort?.resortName
+                cell.resortAddress?.text = Constant.MyClassConstants.viewResponse.resort?.address?.cityName?.appending(", ").appending((Constant.MyClassConstants.viewResponse.resort?.address?.territoryCode!)!)
+                cell.resortCode?.text = Constant.MyClassConstants.viewResponse.resort?.resortCode
+            }*/
             cell.selectionStyle = .none
             
             return cell
@@ -862,9 +949,12 @@ extension CheckOutViewController:UITableViewDataSource {
                     
                     cellWebView.addGestureRecognizer(tapRecognizer)
                     
-                    if(showInsurance){
+                    if(showInsurance && !Constant.MyClassConstants.isFromExchange){
                         let str = (Constant.MyClassConstants.rentalFees[indexPath.row].insurance?.insuranceOfferHTML!)!
                         cellWebView.loadHTMLString(str, baseURL: nil)
+                    }else{
+                        //let str = (Constant.MyClassConstants.exchangeFees[indexPath.row].insurance?.insuranceOfferHTML!)!
+                        //cellWebView.loadHTMLString(str, baseURL: nil)
                     }
                     cellWebView.backgroundColor = UIColor.gray
                     cell.addSubview(cellWebView)
@@ -897,7 +987,13 @@ extension CheckOutViewController:UITableViewDataSource {
                         
                     }else{
                         cell.priceLabel.text = "Taxes"
-                        let rentalTax = Int((Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.rental?.rentalPrice?.tax)!)
+                        var rentalTax = 0.0
+                        if(Constant.MyClassConstants.isFromExchange){
+                            rentalTax = Double(Int((Constant.MyClassConstants.exchangeContinueToCheckoutResponse.view?.fees?.total)!))
+                        }else{
+                            rentalTax = Double(Int((Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.rental?.rentalPrice?.tax)!))
+                        }
+                        
                         cell.primaryPriceLabel.text = "\(rentalTax)"
                         let priceString = "\(Constant.MyClassConstants.continueToCheckoutResponse.view!.fees!.rental!.rentalPrice!.tax)"
                         let priceArray = priceString.components(separatedBy: ".")
@@ -997,14 +1093,11 @@ extension CheckOutViewController:UITableViewDataSource {
                             }else{
                                 cell.centsLabel.text = "\(priceArray.last!)0"
                             }
-
                         }
                     }
-                    
                 }else{
                     isHeightZero = false
                     for subviews in cell.subviews {
-                        
                         subviews.isHidden = true
                     }
                 }
@@ -1013,41 +1106,47 @@ extension CheckOutViewController:UITableViewDataSource {
             }else if(indexPath.section == 8){
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.totalCostCell, for: indexPath) as! TotalCostCell
-                
-                cell.priceLabel.text = String(Int(Float(Constant.MyClassConstants.rentalFees[0].total)))
-                var priceString = "\(Constant.MyClassConstants.rentalFees[0].total)"
-                var targetString = String(Int(Float(Constant.MyClassConstants.rentalFees[0].total)))
-                if let total = recapFeesTotal {
-                    cell.priceLabel.text = String(Int(Float(total)))
-                    priceString = "\(total)"
-                    targetString = String(Int(Float(total)))
-                }
-                
-                let priceArray = priceString.components(separatedBy: ".")
-                
-                if((priceArray.last?.characters.count)! > 1) {
-                    cell.fractionalPriceLabel.text = "\(priceArray.last!)"
+                if(Constant.MyClassConstants.isFromExchange){
+                    cell.priceLabel.text = String(Int(Float(Constant.MyClassConstants.exchangeFees[0].total)))
                 }else{
-                    cell.fractionalPriceLabel.text = "\(priceArray.last!)0"
+                    cell.priceLabel.text = String(Int(Float(Constant.MyClassConstants.rentalFees[0].total)))
+                    var priceString = "\(Constant.MyClassConstants.rentalFees[0].total)"
+                    var targetString = String(Int(Float(Constant.MyClassConstants.rentalFees[0].total)))
+                    if let total = recapFeesTotal {
+                        cell.priceLabel.text = String(Int(Float(total)))
+                        priceString = "\(total)"
+                        targetString = String(Int(Float(total)))
+                    }
+                    
+                    let priceArray = priceString.components(separatedBy: ".")
+                    
+                    if((priceArray.last?.characters.count)! > 1) {
+                        cell.fractionalPriceLabel.text = "\(priceArray.last!)"
+                    }else{
+                        cell.fractionalPriceLabel.text = "\(priceArray.last!)0"
+                    }
+                    
+                    let font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 25.0)
+                    
+                    let width = widthForView(cell.priceLabel.text!, font: font!, height: cell.priceLabel.frame.size.height)
+                    cell.priceLabel.frame.size.width = width + 5
+                    
+                    let range = NSMakeRange(0, targetString.characters.count)
+                    
+                    cell.priceLabel.attributedText = Helper.attributedString(from: targetString, nonBoldRange: range, font: font!)
+                    cell.periodLabel.frame.origin.x = cell.priceLabel.frame.origin.x + width
+                    cell.fractionalPriceLabel.frame.origin.x = cell.periodLabel.frame.origin.x + cell.periodLabel.frame.size.width + 5
                 }
-                
-                let font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 25.0)
-                
-                let width = widthForView(cell.priceLabel.text!, font: font!, height: cell.priceLabel.frame.size.height)
-                cell.priceLabel.frame.size.width = width + 5
-                
-                let range = NSMakeRange(0, targetString.characters.count)
-                
-                cell.priceLabel.attributedText = Helper.attributedString(from: targetString, nonBoldRange: range, font: font!)
-                cell.periodLabel.frame.origin.x = cell.priceLabel.frame.origin.x + width
-                cell.fractionalPriceLabel.frame.origin.x = cell.periodLabel.frame.origin.x + cell.periodLabel.frame.size.width + 5
-                
                 return cell
                 
             }else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.totalCostCell, for: indexPath) as! TotalCostCell
+                if(Constant.MyClassConstants.isFromExchange){
+                    cell.priceLabel.text = String(Int(Float(Constant.MyClassConstants.exchangeFees[0].total)))
+                }else{
+                    cell.priceLabel.text = String(Int(Float(Constant.MyClassConstants.rentalFees[0].total)))
+                }
                 
-                cell.priceLabel.text = String(Int(Float(Constant.MyClassConstants.rentalFees[0].total)))
                 if let total = recapFeesTotal {
                     cell.priceLabel.text = String(Int(Float(total)))
                     

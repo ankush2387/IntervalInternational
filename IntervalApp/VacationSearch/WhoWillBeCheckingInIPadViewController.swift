@@ -80,10 +80,22 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     
     // Function to dismis current controller on back button pressed.
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
-        
-        SVProgressHUD.show()
-        Helper.addServiceCallBackgroundView(view: self.view)
-        
+        Helper.showProgressBar(senderView: self)
+        if(Constant.MyClassConstants.isFromExchange){
+            Constant.holdingTimer.invalidate()
+            
+            ExchangeProcessClient.backToChooseExchange(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess:{(response) in
+                
+                Constant.MyClassConstants.selectedCreditCard.removeAll()
+                Helper.hideProgressBar(senderView: self)
+                _ = self.navigationController?.popViewController(animated: true)
+                
+            }, onError: {(error) in
+                
+                Helper.hideProgressBar(senderView: self)
+                SimpleAlert.alert(self, title: "Who will be checking in", message: Constant.AlertMessages.operationFailedMessage)
+            })
+        }else{
         Constant.holdingTimer.invalidate()
         
         RentalProcessClient.backToChooseRental(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, onSuccess:{(response) in
@@ -99,6 +111,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             Helper.removeServiceCallBackgroundView(view: self.view)
             SimpleAlert.alert(self, title: "Who will be checking in", message: Constant.AlertMessages.operationFailedMessage)
         })
+    }
 
     }
     
