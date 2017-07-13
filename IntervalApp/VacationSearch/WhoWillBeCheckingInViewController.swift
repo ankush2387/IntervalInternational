@@ -217,7 +217,21 @@ class WhoWillBeCheckingInViewController: UIViewController {
         
         SVProgressHUD.show()
         Helper.addServiceCallBackgroundView(view: self.view)
-        
+        if(Constant.MyClassConstants.isFromExchange){
+            Constant.holdingTimer.invalidate()
+            
+            ExchangeProcessClient.backToChooseExchange(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess:{(response) in
+                
+                Constant.MyClassConstants.selectedCreditCard.removeAll()
+                Helper.hideProgressBar(senderView: self)
+                _ = self.navigationController?.popViewController(animated: true)
+                
+            }, onError: {(error) in
+                
+                Helper.hideProgressBar(senderView: self)
+                SimpleAlert.alert(self, title: "Who will be checking in", message: error.localizedDescription)
+            })
+        }else{
         Constant.holdingTimer.invalidate()
         
         RentalProcessClient.backToChooseRental(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, onSuccess:{(response) in
@@ -235,7 +249,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 SimpleAlert.alert(self, title: Constant.ControllerTitles.whoWillBeCheckingInControllerTitle, message: Constant.AlertMessages.operationFailedMessage)
         })
         
-       
+        }
     }
     
     //***** Select member who will be checking in? *****//

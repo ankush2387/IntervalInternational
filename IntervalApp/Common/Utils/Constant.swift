@@ -772,7 +772,7 @@ class Constant: NSObject {
         static var JoinTodayViewController = NSLocalizedString("Join_Today", comment: "")
         static var calendarViewController = NSLocalizedString("Pick_Date", comment: "")
         static var accomodationCertsDetailController = NSLocalizedString("Accomodation_Certificates", comment: "")
-        static var bookYourSelectionController = NSLocalizedString("Book Your Selection", comment: "")
+        static var bookYourSelectionController = NSLocalizedString("Choose What To Use", comment: "")
         static var vacationSearchTabBarController = NSLocalizedString("Vacation_Search", comment: "")
         static var dashboardTableViewController = NSLocalizedString("Home", comment: "")
         static var upComingTripDetailController = NSLocalizedString("Trip_Details", comment: "")
