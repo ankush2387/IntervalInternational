@@ -129,7 +129,8 @@ class WhatToUseViewController: UIViewController {
     }
     
     @IBAction func onClickDetailsButton(_ sender: Any) {
-        self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
+        Helper.getResortWithResortCode(code:Constant.MyClassConstants.selectedResort.resortCode! , viewcontroller:self)
+        //self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
     }
     
     // Function to get dynamic number of rows according to API response
