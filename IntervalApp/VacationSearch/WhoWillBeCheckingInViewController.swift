@@ -440,7 +440,7 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
         
         if(section == 0) {
             
-            if(Constant.MyClassConstants.vacationSearchSelectedSegmentIndex == 1) {
+            if(Constant.MyClassConstants.vacationSearchSelectedSegmentIndex == 1) || Constant.MyClassConstants.vacationSearchSelectedSegmentIndex == 0 {
                 
                 return 1
             }
