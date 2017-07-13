@@ -1369,6 +1369,8 @@ class Constant: NSObject {
         static let ownershipDetailCellIdentifier = "ownershipDetailCell"
         static let membershipDetailCellIdentifier = "membershipDetailCell"
         static let ownershipHeaderTitletext = "Ownership"
+        static let switchMembershipAlertMessage = "You have chosen to use a different membership account. Please note, benefit and exchange access may change. Would you like to continue?"
+        static let switchMembershipAlertTitle = "You are Switchinig Memberships"
         //membershipDetailTableViewCell
         struct membershipDetailTableViewCell{
             static let contactnameInfoLabelText = "Contact Name"

@@ -29,6 +29,7 @@ class ActionSheetTblCell: UITableViewCell {
     @IBOutlet weak var memberImageView: UIImageView!
     @IBOutlet weak var membershipNumber: UILabel!
     @IBOutlet weak var lineView: UIView!
+    @IBOutlet weak var selectedImageView: UIImageView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
