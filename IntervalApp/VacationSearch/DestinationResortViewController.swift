@@ -107,7 +107,7 @@ extension DestinationResortViewController:UITableViewDataSource {
             }
         } else if(section == 3 && Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements.count == 0)  {
             return 0
-        }else{
+        } else{
             return 1
         }
     }
@@ -161,10 +161,11 @@ extension DestinationResortViewController:UITableViewDataSource {
             
             if(indexPath.row == 1 && indexPath.section == 4){
                 
-              let count = Constant.MyClassConstants.onsiteArray.count + Constant.MyClassConstants.nearbyArray.count
-                  //count = count + 2
+              var count = Constant.MyClassConstants.onsiteArray.count + Constant.MyClassConstants.nearbyArray.count
+              count = count + 2
                 
-              return CGFloat (count * 20)
+             // return CGFloat (count * 20 + 20)
+                return 500
                 
             }else if(indexPath.row == 1 && indexPath.section == 5){
                 
@@ -359,13 +360,21 @@ extension DestinationResortViewController:UITableViewDataSource {
             }else{
                 let cell = tableView.dequeueReusableCell(withIdentifier:Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.amenitiesCell, for: indexPath) as! AvailableDestinationPlaceTableViewCell
                 if(indexPath.section == 4){
-                   
                     cell.infoLabel.text = Constant.MyClassConstants.nearbyString.appending("\n\n").appending(Constant.MyClassConstants.onsiteString)
                 }else{
-                    if (Constant.MyClassConstants.viewResponse.resort?.advisements.count)! > 1 {
-                        
-                        cell.infoLabel.text = Constant.MyClassConstants.viewResponse.resort?.advisements[1].description
+                    
+                    if(Constant.MyClassConstants.isFromExchange){
+                        if (Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements.count)! > 1 {
+                            
+                            cell.infoLabel.text = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[1].description
+                        }
+                    }else{
+                        if (Constant.MyClassConstants.viewResponse.resort?.advisements.count)! > 1 {
+                            
+                            cell.infoLabel.text = Constant.MyClassConstants.viewResponse.resort?.advisements[1].description
+                        }
                     }
+                    
                     
                 }
                 cell.infoLabel.sizeToFit()
