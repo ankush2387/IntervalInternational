@@ -22,7 +22,9 @@ class ResortDetailsViewController: UIViewController {
     @IBOutlet weak var imageIndexLabel:UILabel!
     @IBOutlet weak var headerTextForShowingResortCounter: UILabel!
     
+    @IBOutlet weak var previousButton: UIButton!
     
+    @IBOutlet weak var forwordButton: UIButton!
     //***** Class Variables *****//
     var bounds = GMSCoordinateBounds()
     var actionSheetTable:UITableView!
@@ -46,6 +48,12 @@ class ResortDetailsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        
+        if Constant.MyClassConstants.isFromExchange {
+            self.previousButton.isHidden = true
+            self.forwordButton.isHidden = true
+            self.headerTextForShowingResortCounter.isHidden = true
+        }
         
         if(Constant.RunningDevice.deviceIdiom == .phone){
             self.navigationController?.isNavigationBarHidden = true

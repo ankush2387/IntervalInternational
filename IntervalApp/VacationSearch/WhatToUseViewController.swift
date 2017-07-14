@@ -113,6 +113,29 @@ class WhatToUseViewController: UIViewController {
                 self.navigationController?.transitioningDelegate = transitionManager
                 self.navigationController!.pushViewController(viewController, animated: true)
                 
+                if self.showUpgrade == true {
+                    if let cell = (sender as AnyObject).superview??.superview?.superview as? RelinquishmentSelectionOpenWeeksCellWithUpgrade {
+                        let indexPath = self.tableView.indexPath(for: cell)
+                        let objFilterRelinquishment = Constant.MyClassConstants.filterRelinquishments[(indexPath?.row)!]
+                        
+                        viewController.filterRelinquishments = objFilterRelinquishment
+                    
+                }
+             
+                } else {
+                    if let cell = (sender as AnyObject).superview??.superview?.superview as? RelinquishmentSelectionOpenWeeksCell {
+                        let indexPath = self.tableView.indexPath(for: cell)
+                        let objFilterRelinquishment = Constant.MyClassConstants.filterRelinquishments[(indexPath?.row)!]
+                        
+                        viewController.filterRelinquishments = objFilterRelinquishment
+                        
+                    }
+                    
+                }
+
+                
+             
+                
             }, onError: { (error) in
                 
                 Helper.hideProgressBar(senderView: self)

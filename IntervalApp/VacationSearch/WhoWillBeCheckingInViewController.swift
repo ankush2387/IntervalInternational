@@ -10,6 +10,8 @@ import UIKit
 import IntervalUIKit
 import DarwinSDK
 import SVProgressHUD
+import SDWebImage
+import RealmSwift
 
 class WhoWillBeCheckingInViewController: UIViewController {
     
@@ -18,7 +20,10 @@ class WhoWillBeCheckingInViewController: UIViewController {
     @IBOutlet weak var resortHoldingTimeLabel: UILabel!
     @IBOutlet weak var checkingInUserTBLview: UITableView!
     @IBOutlet weak var proceedToCheckoutButton: IUIKButton!
+    
     @IBOutlet var keyboardHeightLayoutConstraint: NSLayoutConstraint?
+    
+    var filterRelinquishments = ExchangeRelinquishment()
     
     //Class variables
     var isKeyBoardOpen = false
@@ -355,7 +360,8 @@ class WhoWillBeCheckingInViewController: UIViewController {
             self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
 
         } else {
-            self.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: nil)
+            Helper.getRelinquishmentDetails(resortCode: ((filterRelinquishments.openWeek?.resort?.resortCode)!!), viewController: self)
+            /*self.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: nil)*/
 
         }
         

@@ -414,6 +414,35 @@ public class Helper{
         })
     }
 
+    //Relinquishment details
+    static func getRelinquishmentDetails(resortCode:String?, viewController:UIViewController) {
+        showProgressBar(senderView: viewController)
+        
+        DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode!, onSuccess: { (response) in
+            
+            Constant.MyClassConstants.resortsDescriptionArray = response
+            Constant.MyClassConstants.imagesArray.removeAllObjects()
+            let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
+            for imgStr in imagesArray {
+                print(imgStr.url!)
+                if(imgStr.size == Constant.MyClassConstants.imageSize) {
+                    
+                    Constant.MyClassConstants.imagesArray.add(imgStr.url!)
+                }
+            }
+            
+            SVProgressHUD.dismiss()
+            removeServiceCallBackgroundView(view: viewController.view)
+            viewController.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: self)
+        })
+        { (error) in
+            SVProgressHUD.dismiss()
+            removeServiceCallBackgroundView(view: viewController.view)
+            SimpleAlert.alert(viewController, title:Constant.AlertErrorMessages.errorString, message: error.description)
+        }
+        
+    }
+
 
     //***** common function that contains API call for  searchResorts with todate and resort code *****//
     static func resortDetailsClicked(toDate: NSDate, senderVC : UIViewController) {
