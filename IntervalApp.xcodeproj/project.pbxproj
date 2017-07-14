@@ -280,6 +280,7 @@
 		E951BC4D1EE71D800070A04B /* AlertHelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E951BC4C1EE71D800070A04B /* AlertHelpViewController.swift */; };
 		E95A30BB1EF9693700AB64DB /* CheckoutPromotionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95A30BA1EF9693700AB64DB /* CheckoutPromotionCell.swift */; };
 		E961268D1EE9EB2A001BA096 /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E961268C1EE9EB2A001BA096 /* WeatherViewController.swift */; };
+		E9C5EF381F19555B00E658DA /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C5EF371F19555B00E658DA /* UIViewControllerExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -579,6 +580,7 @@
 		E951BC4C1EE71D800070A04B /* AlertHelpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertHelpViewController.swift; sourceTree = "<group>"; };
 		E95A30BA1EF9693700AB64DB /* CheckoutPromotionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckoutPromotionCell.swift; sourceTree = "<group>"; };
 		E961268C1EE9EB2A001BA096 /* WeatherViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherViewController.swift; sourceTree = "<group>"; };
+		E9C5EF371F19555B00E658DA /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -870,6 +872,7 @@
 		3AAA59F91C720F4500A5EA6D /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				E9C5EF361F19553100E658DA /* Extensions */,
 				E90C365F1F06A8F900CCBE92 /* Inactivity Timer */,
 				E94FB5E91EF0609C00314C5D /* VerticalProgressView.swift */,
 				DC27F7CA1DB8278000AA374F /* CustomTableViewCell.swift */,
@@ -1132,6 +1135,14 @@
 				E90C365D1F058EBE00CCBE92 /* TimerUIApplication.swift */,
 			);
 			name = "Inactivity Timer";
+			sourceTree = "<group>";
+		};
+		E9C5EF361F19553100E658DA /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				E9C5EF371F19555B00E658DA /* UIViewControllerExtension.swift */,
+			);
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1497,6 +1508,7 @@
 				DC7EF5121D709F8800E9E360 /* ResortDirectoryViewController.swift in Sources */,
 				DC7EF5131D709F8800E9E360 /* ResortFavoritesTableViewCell.swift in Sources */,
 				3A2089DC1E2525C1001AFFD2 /* RelinquishmentSelectionViewController.swift in Sources */,
+				E9C5EF381F19555B00E658DA /* UIViewControllerExtension.swift in Sources */,
 				3A59DE181F015E5F005280D3 /* SortingViewController.swift in Sources */,
 				3A0B25D81CD241790080BF3F /* PolicyListTBLCell.swift in Sources */,
 				DC7BA8321DB911D600BB0C3B /* MagazineTableViewCell.swift in Sources */,

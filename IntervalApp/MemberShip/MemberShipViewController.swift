@@ -80,6 +80,8 @@ class MemberShipViewController: UIViewController {
     */
     fileprivate func displayMenuButton(){
         if let rvc = self.revealViewController() {
+            //set SWRevealViewController's Delegate
+            rvc.delegate = self
             
             //***** Add the hamburger menu *****//
             let menuButton = UIBarButtonItem(image: UIImage(named:"ic_menu"), style: .plain, target: rvc, action:#selector(rvc.revealToggle(_:)))
