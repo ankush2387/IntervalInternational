@@ -305,7 +305,7 @@ extension DestinationResortViewController:UITableViewDataSource {
                     }
                 }
                 
-                let totalSleepCapacity:String = String((Constant.MyClassConstants.exchangeViewResponse.destination?.unit?.publicSleepCapacity)! + (Constant.MyClassConstants.viewResponse.unit?.privateSleepCapacity)!)
+                let totalSleepCapacity:String = String((Constant.MyClassConstants.exchangeViewResponse.destination?.unit?.publicSleepCapacity)! + (Constant.MyClassConstants.exchangeViewResponse.destination?.unit?.privateSleepCapacity)!)
                 let privateSleepCapacity:String = String(describing: (Constant.MyClassConstants.exchangeViewResponse.destination?.unit?.privateSleepCapacity)!)
                 cell.sleepLabel.text = "Sleeps " + totalSleepCapacity + " Total, " + privateSleepCapacity + " Private"
                 

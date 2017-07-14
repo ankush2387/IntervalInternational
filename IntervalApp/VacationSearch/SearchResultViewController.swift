@@ -597,12 +597,18 @@ extension SearchResultViewController:UITableViewDelegate {
         }else{
             
             if(Constant.MyClassConstants.isFromExchange){
+                if(indexPath.row > Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets.count + 1)
+                {
+                    
+                }else{
                 selectedSection = indexPath.section
                 selectedRow = indexPath.row
                 Constant.MyClassConstants.selectedResort = Constant.MyClassConstants.resortsArray[indexPath.section]
                 self.getFilterRelinquishments()
                 //self.getStaticFilterRelinquishments()
-            }else{
+
+                }
+                            }else{
             Helper.addServiceCallBackgroundView(view: self.view)
             SVProgressHUD.show()
             
@@ -720,7 +726,7 @@ extension SearchResultViewController:UITableViewDataSource {
                             break
                         }
                     }
-                    
+                    cell.resortImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                     cell.resortImageView.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
                 }
                 else {
