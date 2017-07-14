@@ -897,6 +897,7 @@ class Constant: NSObject {
         static var whoIsTravelingCell = "WhoIsTravelingCell"
         static var searchResultCollectionCell = "SearchResultCollectionCell"
         static var searchResultContentTableCell = "SearchResultContentTableCell"
+        static var relinquishmentDetailsCell = "RelinquishmentDetailsCell"
         static var moreSearchResult = "MoreCollectionCell"
         static var whereToGoTableViewCell = "WereToGo"
         static var wereToGoTableViewCell = "wereToGo"
