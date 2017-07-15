@@ -41,6 +41,7 @@ class CheckOutViewController: UIViewController {
     var recapPromotionsArray = [Promotion]()
     var recapSelectedPromotion: String?
     var recapFeesTotal: Float?
+    var filterRelinquishments = ExchangeRelinquishment()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -753,7 +754,8 @@ extension CheckOutViewController:UITableViewDataSource {
                 cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
                 cell.resortName?.text = Constant.MyClassConstants.selectedResort.resortName
                 cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.relinquishmentImage)
-                cell.resortName?.text = ""//Constant.MyClassConstants.exchan
+                cell.lblHeading.text = "Relinquishment"
+                cell.resortName?.text = filterRelinquishments.openWeek?.resort?.resortName
             }
             
             
