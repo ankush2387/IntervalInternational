@@ -51,7 +51,8 @@ extension RelinquishmentDetailsViewController:UITableViewDataSource, UITableView
                 if (Constant.MyClassConstants.resortsArray[indexPath.section].images.count>0){
                     var url = URL(string: "")
                     
-                    let imagesArray = Constant.MyClassConstants.resortsArray[indexPath.section].images
+                    let imagesArray = Constant.MyClassConstants.resortsArray[0].images
+                    
                     for imgStr in imagesArray {
                         if(imgStr.size!.caseInsensitiveCompare(Constant.MyClassConstants.imageSize) == ComparisonResult.orderedSame) {
                             
@@ -59,8 +60,8 @@ extension RelinquishmentDetailsViewController:UITableViewDataSource, UITableView
                             break
                         }
                     }
-                    cell.resortImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
-                    cell.resortImageView.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+                    cell.resortImage.image = UIImage(named: Constant.MyClassConstants.noImage)
+                    cell.resortImage.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
                 }
                 else {
                     
@@ -69,7 +70,16 @@ extension RelinquishmentDetailsViewController:UITableViewDataSource, UITableView
             
             
             cell.resortName.text = objRelinquishment.openWeek?.resort?.resortName!
-            cell.resortCountry.text = objRelinquishment.openWeek?.resort?.address?.cityName
+            
+            if let city = objRelinquishment.openWeek?.resort!.address?.cityName {
+                
+                cell.resortCountry.text = city
+            }
+            if let Country = objRelinquishment.openWeek?.resort!.address?.countryCode! {
+                
+                cell.resortCountry.text = cell.resortCountry.text?.appending(", \(Country)")
+            }
+
             cell.resortCode.text = objRelinquishment.openWeek?.resort?.resortCode
             
             cell.gradientView.frame = CGRect(x: cell.gradientView.frame.origin.x, y: cell.gradientView.frame.origin.y, width: cell.contentView.frame.width, height: cell.gradientView.frame.height)
@@ -117,7 +127,7 @@ extension RelinquishmentDetailsViewController:UITableViewDataSource, UITableView
         if indexPath.section == 0 {
             return 280
         } else {
-            return 70
+            return 80
 
         }
     }

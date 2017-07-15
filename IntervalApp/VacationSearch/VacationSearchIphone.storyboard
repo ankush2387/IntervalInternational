@@ -5167,6 +5167,7 @@ Units Upgrade with this selection.</string>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="lblHeading" destination="pU0-Yl-qcn" id="Pg4-ti-FeZ"/>
                                             <outlet property="resortDetailsButton" destination="2ha-nH-NCP" id="PnB-yG-TuV"/>
                                             <outlet property="resortImageView" destination="Jan-oH-MSi" id="0gp-9a-7Zv"/>
                                             <outlet property="resortName" destination="pMW-8y-sLt" id="NcL-kr-RjL"/>
@@ -5457,30 +5458,24 @@ Units Upgrade with this selection.</string>
                                                     </constraints>
                                                 </imageView>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qIf-ff-Qur">
-                                                    <rect key="frame" x="0.0" y="203" width="375" height="75"/>
+                                                    <rect key="frame" x="0.0" y="188" width="375" height="90"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jmX-AS-ooy">
-                                                            <rect key="frame" x="20" y="0.0" width="335" height="20"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Westwood at Split Rock" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jmX-AS-ooy">
+                                                            <rect key="frame" x="20" y="0.0" width="335" height="18"/>
                                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="20" id="TzN-pT-t7G"/>
-                                                            </constraints>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="15"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9fo-bW-f6a">
-                                                            <rect key="frame" x="20" y="25" width="335" height="20"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Miami, USA" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9fo-bW-f6a">
+                                                            <rect key="frame" x="20" y="20" width="335" height="17.5"/>
                                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="20" id="LxT-RM-Gfl"/>
-                                                            </constraints>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MGV" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gbc-Ys-b6r">
-                                                            <rect key="frame" x="20" y="50" width="335" height="17.5"/>
+                                                            <rect key="frame" x="20" y="39.5" width="335" height="17.5"/>
                                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                             <color key="textColor" red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -5491,13 +5486,13 @@ Units Upgrade with this selection.</string>
                                                     <constraints>
                                                         <constraint firstItem="jmX-AS-ooy" firstAttribute="top" secondItem="qIf-ff-Qur" secondAttribute="top" id="6Jp-BB-Lzy"/>
                                                         <constraint firstAttribute="trailing" secondItem="jmX-AS-ooy" secondAttribute="trailing" constant="20" id="81h-Ly-9ZO"/>
-                                                        <constraint firstAttribute="height" constant="75" id="IqQ-d8-sen"/>
+                                                        <constraint firstAttribute="height" constant="90" id="IqQ-d8-sen"/>
                                                         <constraint firstAttribute="trailing" secondItem="9fo-bW-f6a" secondAttribute="trailing" constant="20" id="LLR-77-0cc"/>
                                                         <constraint firstAttribute="trailing" secondItem="gbc-Ys-b6r" secondAttribute="trailing" constant="20" id="RMK-Y3-orB"/>
                                                         <constraint firstItem="jmX-AS-ooy" firstAttribute="leading" secondItem="qIf-ff-Qur" secondAttribute="leading" constant="20" id="gzQ-Zt-ONb"/>
                                                         <constraint firstItem="gbc-Ys-b6r" firstAttribute="leading" secondItem="qIf-ff-Qur" secondAttribute="leading" constant="20" id="jbe-dc-10y"/>
-                                                        <constraint firstItem="gbc-Ys-b6r" firstAttribute="top" secondItem="9fo-bW-f6a" secondAttribute="bottom" constant="5" id="mVa-yh-HYx"/>
-                                                        <constraint firstItem="9fo-bW-f6a" firstAttribute="top" secondItem="jmX-AS-ooy" secondAttribute="bottom" constant="5" id="rBY-mN-cKy"/>
+                                                        <constraint firstItem="gbc-Ys-b6r" firstAttribute="top" secondItem="9fo-bW-f6a" secondAttribute="bottom" constant="2" id="mVa-yh-HYx"/>
+                                                        <constraint firstItem="9fo-bW-f6a" firstAttribute="top" secondItem="jmX-AS-ooy" secondAttribute="bottom" constant="2" id="rBY-mN-cKy"/>
                                                         <constraint firstItem="9fo-bW-f6a" firstAttribute="leading" secondItem="qIf-ff-Qur" secondAttribute="leading" constant="20" id="vE3-ze-SOx"/>
                                                     </constraints>
                                                 </view>
@@ -5574,28 +5569,22 @@ Units Upgrade with this selection.</string>
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EGU-MP-S1T">
-                                                            <rect key="frame" x="80" y="4.5" width="174.5" height="60"/>
+                                                            <rect key="frame" x="80" y="-0.5" width="279" height="70"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Westwood at Split Rock" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sjX-es-nXC">
-                                                                    <rect key="frame" x="4" y="0.0" width="170.5" height="21"/>
-                                                                    <constraints>
-                                                                        <constraint firstAttribute="height" constant="21" id="7pt-5Z-53A"/>
-                                                                    </constraints>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Westwood at Split Rock" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sjX-es-nXC">
+                                                                    <rect key="frame" x="4" y="0.0" width="265" height="18"/>
                                                                     <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2 Bedroom, Full Kitchen" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5li-Vf-j4T">
-                                                                    <rect key="frame" x="4" y="18" width="162.5" height="22"/>
+                                                                    <rect key="frame" x="4" y="19" width="265" height="17.5"/>
                                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sleeps 6 total, 4 Private" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M7g-DI-7K0">
-                                                                    <rect key="frame" x="4" y="34.5" width="170.5" height="21"/>
-                                                                    <constraints>
-                                                                        <constraint firstAttribute="height" constant="21" id="6vt-eE-cyC"/>
-                                                                    </constraints>
+                                                                    <rect key="frame" x="4" y="38" width="265" height="17.5"/>
                                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                                     <color key="textColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <nil key="highlightedColor"/>
@@ -5605,21 +5594,21 @@ Units Upgrade with this selection.</string>
                                                             <constraints>
                                                                 <constraint firstItem="sjX-es-nXC" firstAttribute="top" secondItem="EGU-MP-S1T" secondAttribute="top" id="365-FC-IDA"/>
                                                                 <constraint firstItem="5li-Vf-j4T" firstAttribute="leading" secondItem="EGU-MP-S1T" secondAttribute="leading" constant="4" id="60X-UI-cXH"/>
-                                                                <constraint firstAttribute="height" constant="60" id="94b-vZ-sHd"/>
-                                                                <constraint firstAttribute="bottom" secondItem="M7g-DI-7K0" secondAttribute="bottom" constant="4" id="Mwu-o3-KWn"/>
-                                                                <constraint firstAttribute="trailing" secondItem="sjX-es-nXC" secondAttribute="trailing" id="TlB-DO-vwj"/>
-                                                                <constraint firstAttribute="trailing" secondItem="M7g-DI-7K0" secondAttribute="trailing" id="aQC-Zp-eOn"/>
+                                                                <constraint firstAttribute="height" constant="70" id="94b-vZ-sHd"/>
+                                                                <constraint firstAttribute="trailing" secondItem="sjX-es-nXC" secondAttribute="trailing" constant="10" id="TlB-DO-vwj"/>
+                                                                <constraint firstAttribute="trailing" secondItem="M7g-DI-7K0" secondAttribute="trailing" constant="10" id="aQC-Zp-eOn"/>
                                                                 <constraint firstItem="sjX-es-nXC" firstAttribute="leading" secondItem="EGU-MP-S1T" secondAttribute="leading" constant="4" id="cK7-kM-jfx"/>
-                                                                <constraint firstItem="5li-Vf-j4T" firstAttribute="top" secondItem="sjX-es-nXC" secondAttribute="bottom" constant="-3" id="nO8-4R-0zU"/>
+                                                                <constraint firstItem="5li-Vf-j4T" firstAttribute="top" secondItem="sjX-es-nXC" secondAttribute="bottom" constant="1" id="doR-3L-UMG"/>
                                                                 <constraint firstItem="M7g-DI-7K0" firstAttribute="leading" secondItem="EGU-MP-S1T" secondAttribute="leading" constant="4" id="qle-Iq-giy"/>
-                                                                <constraint firstItem="M7g-DI-7K0" firstAttribute="top" secondItem="5li-Vf-j4T" secondAttribute="bottom" constant="-5" id="t07-OV-HA8"/>
-                                                                <constraint firstAttribute="trailing" secondItem="5li-Vf-j4T" secondAttribute="trailing" constant="8" id="vkD-hw-HKz"/>
+                                                                <constraint firstItem="M7g-DI-7K0" firstAttribute="top" secondItem="5li-Vf-j4T" secondAttribute="bottom" constant="1" id="ubA-bG-8HX"/>
+                                                                <constraint firstAttribute="trailing" secondItem="5li-Vf-j4T" secondAttribute="trailing" constant="10" id="vkD-hw-HKz"/>
                                                             </constraints>
                                                         </view>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstItem="EGU-MP-S1T" firstAttribute="centerY" secondItem="8or-JA-AwY" secondAttribute="centerY" id="SoB-eU-NpU"/>
+                                                        <constraint firstAttribute="trailing" secondItem="EGU-MP-S1T" secondAttribute="trailing" id="bmD-5W-v8K"/>
                                                         <constraint firstItem="EGU-MP-S1T" firstAttribute="leading" secondItem="vG8-5e-ahG" secondAttribute="trailing" id="qGt-GS-tVs"/>
                                                         <constraint firstItem="vG8-5e-ahG" firstAttribute="centerY" secondItem="8or-JA-AwY" secondAttribute="centerY" id="tzf-ED-2z5"/>
                                                         <constraint firstItem="vG8-5e-ahG" firstAttribute="leading" secondItem="8or-JA-AwY" secondAttribute="leading" id="u3q-6U-eF2"/>
