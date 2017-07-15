@@ -621,6 +621,12 @@ extension CheckOutViewController:UITableViewDataSource {
                 return 1
             }
             return 0
+        }else if(section == 3){
+            if(Constant.MyClassConstants.isFromExchange){
+                return 1
+            }else{
+                return 0
+            }
         }else if((section == 5 && (self.isExchangeOptionEnabled || self.isGetawayOptionEnabled) && Constant.MyClassConstants.enableTaxes) || (section == 6 && Constant.MyClassConstants.enableGuestCertificate && self.isTripProtectionEnabled)){
             
             return 2
@@ -780,7 +786,7 @@ extension CheckOutViewController:UITableViewDataSource {
         }else if(indexPath.section == 5 || indexPath.section == 6){
             return 30
         }else if(indexPath.section == 3) {
-            if(Constant.MyClassConstants.vacationSearchSelectedSegmentIndex == 1) {
+            if(!Constant.MyClassConstants.isFromExchange) {
                 return 0
             }else {
                 if(Constant.MyClassConstants.exchangeFees[0].eplus == nil){
