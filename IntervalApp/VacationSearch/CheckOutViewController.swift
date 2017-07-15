@@ -713,10 +713,10 @@ extension CheckOutViewController:UITableViewDataSource {
         }else if(indexPath.section == 5 || indexPath.section == 6){
             return 30
         }else if(indexPath.section == 3) {
-            if(Constant.MyClassConstants.vacationSearchSelectedSegmentIndex == 1) {
+            if(Constant.MyClassConstants.vacationSearchSelectedSegmentIndex == 1 && !(Constant.MyClassConstants.exchangeFees[0].eplus?.selected)!) {
                 return 0
             }else {
-                return 0//return 130
+                return 130
             }
         }else if(indexPath.section == 4 && Constant.MyClassConstants.isFromExchange){
             return 0
@@ -817,7 +817,7 @@ extension CheckOutViewController:UITableViewDataSource {
         }else if(indexPath.section == 3){
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeOptionsCell, for: indexPath) as! ExchangeOptionsCell
-            
+            cell.setupCell(selectedEplus:true)
             cell.selectionStyle = .none
             return cell
             
@@ -954,7 +954,9 @@ extension CheckOutViewController:UITableViewDataSource {
                         cellWebView.loadHTMLString(str, baseURL: nil)
                     }else{
                         //let str = (Constant.MyClassConstants.exchangeFees[indexPath.row].insurance?.insuranceOfferHTML!)!
-                        //cellWebView.loadHTMLString(str, baseURL: nil)
+                        
+                        let str = "<html><div class=\"box_rnd_3_top trip-protection-header\">\n    <h2 style=\"display:inline-block;\">\n        <strong>Add Trip Protection</strong> <br />(Highly Recommended) \n    </h2>\n    <img src=\"https://gateway.americas.allianz-assistance.com/images/aga-usa-100x33px.png\" height=\"33\" width=\"100\" alt=\"Allianz Logo\" style=\"float:right;margin-top:10px;\"/>\n</div>\n<div class=\"box_rnd_2_mid\">\n    <div class=\"agaBlueBox\">\n        <p><strong>Peace of mind is only a tap away.</strong><br /><span style=\"font-size:.845em;\">Benefits include trip cancellation and interruption reimbursement, emergency medical and dental, travel delay protection and 24/7 emergency assistance.</span></p>\n    </div>\n    <div style=\"display: block; margin: 10px 0;\">\n        <div class=\"ui-radio\">\n            <input id='WASCInsuranceOfferOption0' type='radio' name='WASCInsuranceOfferOption' value=\"YES\" style=\"display: inline-block;\" /> \n            <label for=\"WASCInsuranceOfferOption0\" style=\"width: 90%;\" data-corners=\"true\" data-shadow=\"false\" data-iconshadow=\"true\" data-wrapperels=\"span\" data-icon=\"radio-off\" data-theme=\"a\" class=\"ui-btn ui-btn-up-a ui-btn-corner-all ui-btn-icon-left ui-radio-off\">\n                <span style=\"color:#3d89b4;\"><strong>Yes,</strong></span> add protection for $55.00. \n            </label>\n        </div> \n    </div>\n    <div>\n        \n        \n    </div>\n    <div style=\"display: block; margin: 10px 0;\">\n        <div class=\"ui-radio\">                        \n\n            <input id='WASCInsuranceOfferOption1' type='radio' name='WASCInsuranceOfferOption' value=\"NO\" style=\"display: inline-block;\" /> \n            <label for=\"WASCInsuranceOfferOption1\" style=\"width: 90%;\" data-corners=\"true\" data-shadow=\"false\" data-iconshadow=\"true\" data-wrapperels=\"span\" data-icon=\"radio-off\" data-theme=\"a\" class=\"ui-btn ui-btn-corner-all ui-btn-icon-left ui-radio-off ui-btn-up-a\">\n                <strong>No,</strong> I decline coverage. \n            </label>\n        </div> \n\n    </div> \n    \n    <p style=\"font-size:.8em;\">Terms, conditions, and exclusions <a href=\"https://gateway.americas.allianz-assistance.com/TC/ITV/OTA_IntlHotel_r.html\" rel=\"popup large\" target=\"_blank\" style=\"display: inline;\">apply</a>.<br /><span class=\"agaShowDisclaimer\">Insurance benefits are underwritten by<span id=\"agaDislaimer\"><a href=\"#agaDislaimer\" class=\"agaDislaimerShow\">... +</a> <span> BCS Insurance Company or Jefferson Insurance Company, depending on insured's state of residence.<a href=\"#\" class=\"agaDislaimerHide\"> -</a></span></span></span></p>\n</div>\n<style>\n.trip-protection {\n\tfont-size: 14px;\n\tcolor: #999;\n}\n.box_rnd_3_top.trip-protection {\n\tborder-bottom: 0px;\n}\n.trip-protection {\n\tpadding: 0px 15px;\n}\n.trip-protection-header h2 {\n\tfont-size: 1.1em;\n\tpadding: 5px 15px;\n\tcolor: #666;\n\tfont-weight: normal;\n}\n.agaBlueBox{\n    background: #3d89b4;\n    color: white !important;\n    margin:0;\n    padding:10px !important;\n    font-size: .917em;\n}\n.agaCheckIcon{\n    background: url('http://gateway.americas.allianz-assistance.com/images/icon-insurance.png') no-repeat;\n    width: 21px;\n    height: 23px;\n    float:left;\n    margin-right:5%;\n}\n.agaShowDisclaimer{\n    color:#aaa !important;\n    font-size: .8em;\n}\n.ui-radio{\n    background:white;\n    border:1px solid #aaa;\n    padding:10px;\n    height:40px;\n}\ninput[type=radio]{\n    display:none !important;\n}\nlabel:before{\n    content:\"\";\n    display:inline;\n    width:25px;\n    height:25px;\n    margin-right: 10px;\n    position: absolute;\n    left:5px;\n    top:-6px;\n    background-color: white;\n    border:1px solid #bbb;\n}\n.ui-radio label:before{\n    border-radius: 15px;\n}\nlabel{\n    display: inline-block;\n    cursor: pointer;\n    position: relative;\n    padding-left: 40px;\n    margin-right: 15px;\n    top:8px;\n    font-size: 13px;\n}\ninput[type=radio]:checked ~ label:before {\n    content: \"\\2022\";\n    color: #3d89b4;\n    font-size: 70px;\n    text-align: center;\n    line-height: 24px;\n}\n#agaDislaimer span,\n#agaDislaimer .agaDislaimerHide,\n#agaDislaimer:target .agaDislaimerShow {\n    display:none;\n    text-decoration: none;\n}\n#agaDislaimer .agaDislaimerShow,\n#agaDislaimer:target span,\n#agaDislaimer:target .agaDislaimerHide{\n    display:inline;\n    text-decoration: none;\n}  \n.agaDislaimerHide, .agaDislaimerShow{\n    color:#3d89b4;\n    font-weight: bold;\n}\n</style></html>"
+                        cellWebView.loadHTMLString(str, baseURL: nil)
                     }
                     cellWebView.backgroundColor = UIColor.gray
                     cell.addSubview(cellWebView)
