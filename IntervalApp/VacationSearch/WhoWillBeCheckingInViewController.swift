@@ -655,7 +655,8 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
                 cell.resortDetailsButton.tag = indexPath.row
                 cell.resortName?.text = Constant.MyClassConstants.selectedResort.resortName
                 cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.relinquishmentImage)
-                cell.resortName?.text = ""//Constant.MyClassConstants.exchan
+                cell.lblHeading.text = "Relinquishment"
+                cell.resortName?.text = filterRelinquishments.openWeek?.resort?.resortName
             }
             
             cell.selectionStyle = .none
