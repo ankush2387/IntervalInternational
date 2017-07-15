@@ -76,7 +76,6 @@ class WhatToUseViewController: UIViewController {
         }
         
         ExchangeProcessClient.start(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: {(response) in
-            Helper.hideProgressBar(senderView: self)
             let processResort = ExchangeProcess()
             processResort.processId = response.processId
             Constant.MyClassConstants.exchangeBookingLastStartedProcess = processResort
@@ -87,7 +86,7 @@ class WhatToUseViewController: UIViewController {
             Constant.MyClassConstants.onsiteArray.removeAllObjects()
             Constant.MyClassConstants.nearbyArray.removeAllObjects()
             
-            /*for amenity in (response.view?.resort?.amenities)!{
+            for amenity in (response.view?.destination?.resort?.amenities)!{
              if(amenity.nearby == false){
              Constant.MyClassConstants.onsiteArray.add(amenity.amenityName!)
              Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending(amenity.amenityName!)
@@ -97,14 +96,11 @@ class WhatToUseViewController: UIViewController {
              Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending(amenity.amenityName!)
              Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending("\n")
              }
-             }*/
-            
-            
+             }
             UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
                 
                 // Got an access token!  Save it for later use.
-                SVProgressHUD.dismiss()
-                Helper.removeServiceCallBackgroundView(view: self.view)
+                Helper.hideProgressBar(senderView: self)
                 Constant.MyClassConstants.membershipContactArray = Membership.contacts!
                 let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
                 let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
@@ -132,10 +128,6 @@ class WhatToUseViewController: UIViewController {
                     }
                     
                 }
-
-                
-             
-                
             }, onError: { (error) in
                 
                 Helper.hideProgressBar(senderView: self)
@@ -147,8 +139,6 @@ class WhatToUseViewController: UIViewController {
             Helper.hideProgressBar(senderView: self)
             SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
         })
-        
-        
     }
     
     @IBAction func onClickDetailsButton(_ sender: Any) {

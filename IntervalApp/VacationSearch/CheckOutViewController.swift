@@ -287,8 +287,48 @@ class CheckOutViewController: UIViewController {
         let promotionsVC = promotionsNav.viewControllers.first as! PromotionsViewController
         promotionsVC.promotionsArray = Constant.MyClassConstants.recapViewPromotionCodeArray
         promotionsVC.completionHandler = { selected in
-            SVProgressHUD.show()
+            Helper.showProgressBar(senderView: self)
             //Creating Request to recap with Promotion
+            
+            
+            if(Constant.MyClassConstants.isFromExchange){
+                let processResort = ExchangeProcess()
+                processResort.currentStep = ProcessStep.Recap
+                processResort.processId = Constant.MyClassConstants.exchangeProcessStartResponse.processId
+                
+                let shopExchange = ShopExchange()
+                shopExchange.selectedOfferName = Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName!
+                
+                let fees = ExchangeFees()
+                fees.shopExchange = shopExchange
+                
+                let processRequest = ExchangeProcessRecalculateRequest()
+                processRequest.fees = fees
+                
+                ExchangeProcessClient.addCartPromotion(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: { (response) in
+                    
+                    if let promotions = response.view?.fees?.shopExchange?.promotions {
+                        self.recapPromotionsArray = promotions
+                    }
+                    
+                    if let selectedPromotion = response.view?.fees?.shopExchange?.selectedOfferName {
+                        self.recapSelectedPromotion = selectedPromotion
+                    }
+                    
+                    if let total = response.view?.fees?.total {
+                        self.recapFeesTotal = total
+                    }
+                    
+                    self.destinationPromotionSelected = true
+                    self.checkoutOptionTBLview.reloadData()
+                    SVProgressHUD.dismiss()
+                    
+                }, onError: { (error) in
+                    print("Error")
+                    print(error)
+                    SVProgressHUD.dismiss()
+                })
+            }else{
             let processResort = RentalProcess()
             processResort.currentStep = ProcessStep.Recap
             processResort.processId = Constant.MyClassConstants.processStartResponse.processId
@@ -327,6 +367,7 @@ class CheckOutViewController: UIViewController {
                 print(error)
                 SVProgressHUD.dismiss()
             })
+            }
         }
         self.present(promotionsNav, animated: true, completion: nil)
     }
@@ -441,27 +482,48 @@ class CheckOutViewController: UIViewController {
     
     func addTripProtection(shouldAddTripProtection:Bool){
         
-        Constant.MyClassConstants.rentalFees.last!.insurance?.selected = shouldAddTripProtection
-        let rentalRecalculateRequest = RentalProcessRecapRecalculateRequest.init()
-        rentalRecalculateRequest.fees = Constant.MyClassConstants.rentalFees.last!
-        Helper.addServiceCallBackgroundView(view: self.view)
-        SVProgressHUD.show()
-        RentalProcessClient.addTripProtection(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, request: rentalRecalculateRequest, onSuccess: { (response) in
-            self.tripRequestInProcess = false
-            Constant.MyClassConstants.continueToCheckoutResponse = response
-            DarwinSDK.logger.debug(Constant.MyClassConstants.continueToCheckoutResponse.view?.promoCodes)
-            DarwinSDK.logger.debug(Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.insurance?.price)
-            Constant.MyClassConstants.rentalFees[0].total = (response.view?.fees?.total)!
-            self.checkoutOptionTBLview.reloadSections(IndexSet(integer: 8), with:.automatic)
-            Helper.removeServiceCallBackgroundView(view: self.view)
-            SVProgressHUD.dismiss()
-        }, onError: { (error) in
-            self.tripRequestInProcess = false
-            DarwinSDK.logger.debug(error.description)
-            Helper.removeServiceCallBackgroundView(view: self.view)
-            SVProgressHUD.dismiss()
-        })
-        
+        if(Constant.MyClassConstants.isFromExchange){
+            Constant.MyClassConstants.exchangeFees.last!.insurance?.selected = shouldAddTripProtection
+            let exchangeRecalculateRequest = ExchangeProcessRecalculateRequest.init()
+            exchangeRecalculateRequest.fees = Constant.MyClassConstants.exchangeFees.last!
+            Helper.showProgressBar(senderView: self)
+            ExchangeProcessClient.updateTripProtection(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: exchangeRecalculateRequest, onSuccess: {
+                (response) in
+                
+                self.tripRequestInProcess = false
+                Constant.MyClassConstants.exchangeContinueToCheckoutResponse = response
+                DarwinSDK.logger.debug(Constant.MyClassConstants.continueToCheckoutResponse.view?.promoCodes)
+                DarwinSDK.logger.debug(Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.insurance?.price)
+                Constant.MyClassConstants.exchangeFees[0].total = (response.view?.fees?.total)!
+                self.checkoutOptionTBLview.reloadSections(IndexSet(integer: 8), with:.automatic)
+                Helper.hideProgressBar(senderView: self)
+                
+            }, onError: { (error) in
+                self.tripRequestInProcess = false
+                DarwinSDK.logger.debug(error.description)
+                Helper.hideProgressBar(senderView: self)
+            })
+        }else{
+            
+            Constant.MyClassConstants.rentalFees.last!.insurance?.selected = shouldAddTripProtection
+            let rentalRecalculateRequest = RentalProcessRecapRecalculateRequest.init()
+            rentalRecalculateRequest.fees = Constant.MyClassConstants.rentalFees.last!
+            Helper.showProgressBar(senderView: self)
+            RentalProcessClient.addTripProtection(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, request: rentalRecalculateRequest, onSuccess: { (response) in
+                self.tripRequestInProcess = false
+                Constant.MyClassConstants.continueToCheckoutResponse = response
+                DarwinSDK.logger.debug(Constant.MyClassConstants.continueToCheckoutResponse.view?.promoCodes)
+                DarwinSDK.logger.debug(Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.insurance?.price)
+                Constant.MyClassConstants.rentalFees[0].total = (response.view?.fees?.total)!
+                self.checkoutOptionTBLview.reloadSections(IndexSet(integer: 8), with:.automatic)
+                Helper.hideProgressBar(senderView: self)
+            }, onError: { (error) in
+                self.tripRequestInProcess = false
+                DarwinSDK.logger.debug(error.description)
+                Helper.hideProgressBar(senderView: self)
+            })
+            
+        }
     }
     
     //***** Function called when detail button is pressed. ******//
@@ -588,7 +650,11 @@ extension CheckOutViewController:UITableViewDataSource {
                     return 0
                 }
                 else {
-                    return 50
+                    if(Constant.MyClassConstants.exchangeFees[0].eplus == nil){
+                        return 0
+                    }else{
+                        return 50
+                    }
                 }
                 
             }else if(section == 3 && !showInsurance){
@@ -714,10 +780,14 @@ extension CheckOutViewController:UITableViewDataSource {
         }else if(indexPath.section == 5 || indexPath.section == 6){
             return 30
         }else if(indexPath.section == 3) {
-            if(Constant.MyClassConstants.vacationSearchSelectedSegmentIndex == 1 && !(Constant.MyClassConstants.exchangeFees[0].eplus?.selected)!) {
+            if(Constant.MyClassConstants.vacationSearchSelectedSegmentIndex == 1) {
                 return 0
             }else {
-                return 130
+                if(Constant.MyClassConstants.exchangeFees[0].eplus == nil){
+                    return 0
+                }else{
+                    return 130
+                }
             }
         }else if(indexPath.section == 4 && Constant.MyClassConstants.isFromExchange){
             return 0
