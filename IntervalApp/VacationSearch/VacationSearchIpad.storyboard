@@ -3007,7 +3007,7 @@
                         <outlet property="resortHoldingTimeLabel" destination="a4S-0u-g72" id="oZN-6F-XfF"/>
                         <segue destination="5vQ-ut-G3U" kind="presentation" identifier="showResortDetails" id="sel-eD-RNr"/>
                         <segue destination="hie-AV-xvD" kind="show" identifier="checkoutScreenSegue" id="xIh-8p-z08"/>
-                        <segue destination="5BT-QX-6Zq" kind="showDetail" id="AZs-HP-gzH"/>
+                        <segue destination="5BT-QX-6Zq" kind="showDetail" identifier="showRelinguishmentsDetails" id="AZs-HP-gzH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W0A-1T-ut6" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4444,7 +4444,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Check - Out Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cvm-gr-g2Z">
-                                                    <rect key="frame" x="406" y="3" width="134" height="21"/>
+                                                    <rect key="frame" x="405.5" y="3" width="134" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="ecg-Ct-fob"/>
                                                     </constraints>
@@ -4482,7 +4482,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Saturday" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vrz-QG-cIH">
-                                                    <rect key="frame" x="466" y="43" width="69" height="20"/>
+                                                    <rect key="frame" x="465.5" y="43" width="69" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="ibf-9n-cci"/>
                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="zcx-ve-CkY"/>
@@ -4492,14 +4492,14 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZRt-h6-wUI">
-                                                    <rect key="frame" x="354" y="0.0" width="1" height="130"/>
+                                                    <rect key="frame" x="353.5" y="0.0" width="1" height="130"/>
                                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="1" id="XTc-hz-ZiI"/>
                                                     </constraints>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="22" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4xZ-dK-iXH">
-                                                    <rect key="frame" x="412" y="36" width="48" height="51"/>
+                                                    <rect key="frame" x="411.5" y="36" width="48" height="51"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="43"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -4512,7 +4512,7 @@
                                                     </constraints>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Oct. 2016" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eak-oK-rmn">
-                                                    <rect key="frame" x="466" y="63" width="76" height="21"/>
+                                                    <rect key="frame" x="465.5" y="63" width="76" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="HYI-b6-839"/>
                                                     </constraints>
@@ -7810,29 +7810,28 @@ Units Upgrade with this selection.</string>
                                 <rect key="frame" x="0.0" y="84" width="768" height="940"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="RelinquishmentDetailsCell" rowHeight="278" id="Pe7-XQ-NG7" customClass="RelinquishmentDetailsCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="768" height="278"/>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="RelinquishmentDetailsCell" rowHeight="450" id="Pe7-XQ-NG7" customClass="RelinquishmentDetailsCell" customModule="IntervalApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="768" height="450"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Pe7-XQ-NG7" id="ouN-Wu-RjW">
-                                            <rect key="frame" x="0.0" y="0.0" width="768" height="277.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="768" height="449.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dFP-XY-AN7" userLabel="View Gradient">
-                                                    <rect key="frame" x="0.0" y="0.0" width="768" height="280"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="768" height="450"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="280" id="CS1-dE-XIZ"/>
+                                                        <constraint firstAttribute="height" constant="450" id="CS1-dE-XIZ"/>
                                                     </constraints>
                                                 </view>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NoImageIcon" translatesAutoresizingMaskIntoConstraints="NO" id="n2s-vB-sbn">
-                                                    <rect key="frame" x="0.0" y="0.0" width="768" height="230"/>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <rect key="frame" x="30" y="0.0" width="708" height="400"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="230" id="ioy-f2-RX1"/>
+                                                        <constraint firstAttribute="height" constant="400" id="ioy-f2-RX1"/>
                                                     </constraints>
                                                 </imageView>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1RT-He-h46">
-                                                    <rect key="frame" x="0.0" y="188" width="768" height="90"/>
+                                                    <rect key="frame" x="0.0" y="359.5" width="768" height="90"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Westwood at Split Rock" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4qa-Mt-hD1">
                                                             <rect key="frame" x="20" y="0.0" width="728" height="18"/>
@@ -7875,12 +7874,12 @@ Units Upgrade with this selection.</string>
                                                 <constraint firstAttribute="trailing" secondItem="dFP-XY-AN7" secondAttribute="trailing" id="44I-SB-hGF"/>
                                                 <constraint firstItem="dFP-XY-AN7" firstAttribute="top" secondItem="ouN-Wu-RjW" secondAttribute="top" id="CT2-9N-hs6"/>
                                                 <constraint firstItem="1RT-He-h46" firstAttribute="leading" secondItem="ouN-Wu-RjW" secondAttribute="leading" id="LNT-xm-f7s"/>
-                                                <constraint firstAttribute="trailing" secondItem="n2s-vB-sbn" secondAttribute="trailing" id="OmU-pn-MZH"/>
-                                                <constraint firstAttribute="bottom" secondItem="1RT-He-h46" secondAttribute="bottom" id="aAd-kL-87c"/>
+                                                <constraint firstAttribute="trailing" secondItem="n2s-vB-sbn" secondAttribute="trailing" constant="30" id="OmU-pn-MZH"/>
                                                 <constraint firstItem="n2s-vB-sbn" firstAttribute="top" secondItem="ouN-Wu-RjW" secondAttribute="top" id="cuU-oh-HTT"/>
                                                 <constraint firstItem="dFP-XY-AN7" firstAttribute="leading" secondItem="ouN-Wu-RjW" secondAttribute="leading" id="e5q-90-u9n"/>
-                                                <constraint firstItem="n2s-vB-sbn" firstAttribute="leading" secondItem="ouN-Wu-RjW" secondAttribute="leading" id="jpy-7Z-CZ6"/>
+                                                <constraint firstItem="n2s-vB-sbn" firstAttribute="leading" secondItem="ouN-Wu-RjW" secondAttribute="leading" constant="30" id="jpy-7Z-CZ6"/>
                                                 <constraint firstAttribute="trailing" secondItem="1RT-He-h46" secondAttribute="trailing" id="phk-mz-Fao"/>
+                                                <constraint firstAttribute="bottom" secondItem="1RT-He-h46" secondAttribute="bottom" id="vGN-jS-QWT"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -7892,7 +7891,7 @@ Units Upgrade with this selection.</string>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ExchangeCell1" rowHeight="89" id="ewW-AS-YGy" customClass="RelinquishmentSelectionOpenWeeksCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="306" width="768" height="89"/>
+                                        <rect key="frame" x="0.0" y="478" width="768" height="89"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ewW-AS-YGy" id="PmZ-Ew-DMf">
                                             <rect key="frame" x="0.0" y="0.0" width="768" height="88.5"/>
@@ -8029,7 +8028,7 @@ Units Upgrade with this selection.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Udq-L7-j8z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5220" y="572"/>
+            <point key="canvasLocation" x="5219.53125" y="571.875"/>
         </scene>
     </scenes>
     <resources>
