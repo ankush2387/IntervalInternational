@@ -20,11 +20,11 @@ class ResortDetailsViewController: UIViewController {
     //***** Outlets *****//
     @IBOutlet weak var tableViewResorts:UITableView!
     @IBOutlet weak var imageIndexLabel:UILabel!
-    @IBOutlet weak var headerTextForShowingResortCounter: UILabel!
+    @IBOutlet weak var headerTextForShowingResortCounter: UILabel?
     
-    @IBOutlet weak var previousButton: UIButton!
+    @IBOutlet weak var previousButton: UIButton?
     
-    @IBOutlet weak var forwordButton: UIButton!
+    @IBOutlet weak var forwordButton: UIButton?
     //***** Class Variables *****//
     var bounds = GMSCoordinateBounds()
     var actionSheetTable:UITableView!
@@ -50,9 +50,9 @@ class ResortDetailsViewController: UIViewController {
         super.viewWillAppear(true)
         
         if (Constant.MyClassConstants.isFromExchange && Constant.RunningDevice.deviceIdiom == .phone) {
-            self.previousButton.isHidden = true
-            self.forwordButton.isHidden = true
-            self.headerTextForShowingResortCounter.isHidden = true
+            self.previousButton?.isHidden = true
+            self.forwordButton?.isHidden = true
+            self.headerTextForShowingResortCounter?.isHidden = true
         }
         
         if(Constant.RunningDevice.deviceIdiom == .phone){
@@ -65,7 +65,7 @@ class ResortDetailsViewController: UIViewController {
         
         if(self.headerTextForShowingResortCounter != nil) {
             
-            self.headerTextForShowingResortCounter.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
+            self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
         }
         if(Constant.MyClassConstants.resortsDescriptionArray.amenities.count>0) {
             
@@ -158,7 +158,7 @@ class ResortDetailsViewController: UIViewController {
                     Constant.MyClassConstants.imagesArray.add(imgStr.url!)
                 }
             }
-            self.headerTextForShowingResortCounter.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
+            self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
             
             self.tableViewResorts.reloadData()
             // omniture tracking with event 35
@@ -199,7 +199,7 @@ class ResortDetailsViewController: UIViewController {
                             Constant.MyClassConstants.imagesArray.add(imgStr.url!)
                         }
                     }
-                    self.headerTextForShowingResortCounter.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
+                    self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
                     SVProgressHUD.dismiss()
                     Helper.removeServiceCallBackgroundView(view: self.view)
                     self.tableViewResorts.reloadData()
@@ -248,7 +248,7 @@ class ResortDetailsViewController: UIViewController {
                     }else{
                         //sender.isEnabled = true
                     }
-                    self.headerTextForShowingResortCounter.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
+                    self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
                     SVProgressHUD.dismiss()
                     Helper.removeServiceCallBackgroundView(view: self.view)
                     self.tableViewResorts.reloadData()
@@ -285,7 +285,7 @@ class ResortDetailsViewController: UIViewController {
                         Constant.MyClassConstants.imagesArray.add(imgStr.url!)
                     }
                 }
-                self.headerTextForShowingResortCounter.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
+                self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
                 
                 self.tableViewResorts.reloadData()
                 
