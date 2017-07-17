@@ -2579,7 +2579,7 @@
                         <segue destination="mzd-45-82N" kind="presentation" identifier="vacationSearchDetailSegue" id="ifu-09-nVJ"/>
                         <segue destination="Kj4-oV-nKd" kind="show" identifier="whoWillBeCheckingInSegue" id="KuY-oq-4Cx"/>
                         <segue destination="Wc0-eI-yK9" kind="show" identifier="searchResultMapSegue" id="94V-Me-jUi"/>
-                        <segue destination="lDo-kQ-A9s" kind="show" identifier="BookYourSelectionSegue" customClass="BookYourSelectionSegue" id="6NX-Mm-t1s"/>
+                        <segue destination="lDo-kQ-A9s" kind="show" identifier="BookYourSelectionSegue" id="6NX-Mm-t1s"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Eh-rQ-aSd" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -5661,6 +5661,9 @@
                                                                     <color key="value" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
+                                                            <connections>
+                                                                <action selector="onClickDetailsButton:" destination="v1i-It-4l8" eventType="touchUpInside" id="aG7-Tq-tce"/>
+                                                            </connections>
                                                         </button>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Destination Resort" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pWQ-3L-8PS">
                                                             <rect key="frame" x="62" y="11" width="164" height="21"/>
@@ -5970,6 +5973,9 @@
                                                                     <color key="value" red="0.96078431369999995" green="0.49803921569999998" blue="0.14117647059999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
+                                                            <connections>
+                                                                <action selector="checkBoxPressed:" destination="v1i-It-4l8" eventType="valueChanged" id="4Nx-ng-ftv"/>
+                                                            </connections>
                                                         </view>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5y0-pY-maM">
                                                             <rect key="frame" x="7" y="85" width="231.5" height="40"/>
@@ -6170,6 +6176,9 @@ Units Upgrade with this selection.</string>
                                                                     <color key="value" red="0.96078431369999995" green="0.49803921569999998" blue="0.14117647059999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
+                                                            <connections>
+                                                                <action selector="checkBoxPressed:" destination="v1i-It-4l8" eventType="valueChanged" id="jcW-t3-bfg"/>
+                                                            </connections>
                                                         </view>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
