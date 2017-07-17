@@ -8,8 +8,15 @@
 
 import Foundation
 
+//extension to Handle Tap and swipe Actions to dismiss Nav Menu
 extension UIViewController: SWRevealViewControllerDelegate {
-    //extension to Handle Tap Action to dismiss Nav Menu
+    
+    public func revealControllerPanGestureShouldBegin(_ revealController: SWRevealViewController!) -> Bool {
+        revealController.quickFlickVelocity = 5000 //default value 250, changed to make swipe less sensitive
+        return true
+    }
+    
+    
     public func revealController(_ revealController: SWRevealViewController!, didMoveTo position: FrontViewPosition) {
         if position == FrontViewPosition.left {
             //hidden
@@ -20,6 +27,7 @@ extension UIViewController: SWRevealViewControllerDelegate {
             //visible, cancel userInteranction in ViewController's view and add tapGestureRecognizer on reveal controller frontViewController to handle Tap
             self.view.isUserInteractionEnabled = false
             revealController.frontViewController.view.addGestureRecognizer(revealController.tapGestureRecognizer())
+            revealController.frontViewController.view.addGestureRecognizer(revealController.panGestureRecognizer())
         }
     }
 }
