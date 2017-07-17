@@ -49,7 +49,7 @@ class ResortDetailsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        if Constant.MyClassConstants.isFromExchange {
+        if (Constant.MyClassConstants.isFromExchange && Constant.RunningDevice.deviceIdiom == .phone) {
             self.previousButton.isHidden = true
             self.forwordButton.isHidden = true
             self.headerTextForShowingResortCounter.isHidden = true

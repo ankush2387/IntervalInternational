@@ -538,7 +538,9 @@
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="forwordButton" destination="XG7-Tt-kdN" id="z57-8i-h3C"/>
                         <outlet property="headerTextForShowingResortCounter" destination="IdW-Ty-pEh" id="Xei-2S-MKr"/>
+                        <outlet property="previousButton" destination="bGV-Y2-Tes" id="yDr-FQ-py7"/>
                         <outlet property="tableViewResorts" destination="Z7H-la-zBu" id="UIf-9h-uUf"/>
                         <segue destination="QCd-cg-p7T" kind="showDetail" identifier="detailMapSegue" id="WN7-bT-JOB"/>
                     </connections>
