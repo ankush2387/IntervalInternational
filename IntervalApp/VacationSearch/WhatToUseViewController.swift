@@ -102,8 +102,20 @@ class WhatToUseViewController: UIViewController {
                 // Got an access token!  Save it for later use.
                 Helper.hideProgressBar(senderView: self)
                 Constant.MyClassConstants.membershipContactArray = Membership.contacts!
-                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+                var viewController = UIViewController()
+                if Constant.RunningDevice.deviceIdiom == .phone {
+                    viewController = WhoWillBeCheckingInViewController()
+                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                     viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+
+                    
+                } else {
+                    viewController = WhoWillBeCheckingInIPadViewController()
+
+                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                     viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as! WhoWillBeCheckingInIPadViewController
+                }
+                
                 
                 let transitionManager = TransitionManager()
                 self.navigationController?.transitioningDelegate = transitionManager
@@ -113,17 +125,30 @@ class WhatToUseViewController: UIViewController {
                     if let cell = (sender as AnyObject).superview??.superview?.superview as? RelinquishmentSelectionOpenWeeksCellWithUpgrade {
                         let indexPath = self.tableView.indexPath(for: cell)
                         let objFilterRelinquishment = Constant.MyClassConstants.filterRelinquishments[(indexPath?.row)!]
+                        if Constant.RunningDevice.deviceIdiom == .phone {
+                            (viewController as! WhoWillBeCheckingInViewController).filterRelinquishments = objFilterRelinquishment
+                            
+                            
+                        } else {
+                            (viewController as! WhoWillBeCheckingInIPadViewController).filterRelinquishments = objFilterRelinquishment
+                            
+                        }
                         
-                        viewController.filterRelinquishments = objFilterRelinquishment
+                    }
                     
-                }
-             
                 } else {
                     if let cell = (sender as AnyObject).superview??.superview?.superview as? RelinquishmentSelectionOpenWeeksCell {
                         let indexPath = self.tableView.indexPath(for: cell)
                         let objFilterRelinquishment = Constant.MyClassConstants.filterRelinquishments[(indexPath?.row)!]
-                        
-                        viewController.filterRelinquishments = objFilterRelinquishment
+                        if Constant.RunningDevice.deviceIdiom == .phone {
+                            (viewController as! WhoWillBeCheckingInViewController).filterRelinquishments = objFilterRelinquishment
+                            
+                            
+                        } else {
+                            (viewController as! WhoWillBeCheckingInIPadViewController).filterRelinquishments = objFilterRelinquishment
+                            
+                        }
+
                         
                     }
                     

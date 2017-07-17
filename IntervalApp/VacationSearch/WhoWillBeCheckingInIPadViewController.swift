@@ -224,7 +224,14 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     
     //***** Function called when detail button is pressed. ******//
     func resortDetailsClicked(_ sender:IUIKButton){
-        self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
+        if sender.tag == 0 {
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
+        } else {
+            Helper.getRelinquishmentDetails(resortCode: ((filterRelinquishments.openWeek?.resort?.resortCode)!!), viewController: self)
+
+            /*self.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: nil)*/
+        }
+        
     }
     
     //***** Function called when drop down is pressed. *****//
