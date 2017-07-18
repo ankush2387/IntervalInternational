@@ -42,7 +42,7 @@ extension PromotionsViewController: UITableViewDelegate {
         selectedPromotionIndex = indexPath
         promotionsTableView.reloadData()
         if indexPath.section == 0 {
-            
+            Constant.MyClassConstants.isPromotionsEnabled = true
             if(Constant.MyClassConstants.isFromExchange){
                 Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName = promotionsArray[indexPath.row].offerName
             }else{
@@ -50,7 +50,12 @@ extension PromotionsViewController: UITableViewDelegate {
             }
 
         } else {
-            Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName = "No Thanks"
+            Constant.MyClassConstants.isPromotionsEnabled = false
+            if(Constant.MyClassConstants.isFromExchange){
+               Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName = "No Thanks"
+            }else{
+                Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName = "No Thanks"
+            }
         }
         self.dismiss(animated: true, completion: nil)
         completionHandler(true)

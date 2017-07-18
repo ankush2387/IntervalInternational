@@ -502,6 +502,9 @@ class Constant: NSObject {
         //UserDefaults
         static var userName = "userName"
         static var exchangeDestination = ExchangeDestination()
+        
+        //Changed promotions to global
+        static var isPromotionsEnabled = false
     }
     struct CommonStringIdentifiers {
         static var floatWeek = "FLOAT_WEEK"
