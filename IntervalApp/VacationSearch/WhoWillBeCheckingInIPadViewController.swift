@@ -21,6 +21,10 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     //Class variables
     var requiredSectionIntTBLview = 2
     var whoWillBeCheckingInSelectedIndex = -1
+    var activeField:UITextField?
+    var moved: Bool = false
+    var cellUsedFor = ""
+    var proceedStatus = false
     var pickerBaseView:UIView!
     var pickerView:UIPickerView!
     var hideStatus = false
@@ -29,6 +33,8 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     var holdingTimer:Timer!
     var holdingTime = 17
     var decreaseValue = 1
+    
+    var filterRelinquishments = ExchangeRelinquishment()
     
     override func viewWillAppear(_ animated: Bool) {
         NotificationCenter.default.addObserver(self, selector: #selector(showAlertForTimer), name: NSNotification.Name(rawValue: "showAlert"), object: nil)
@@ -75,6 +81,64 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     
     func showAlertForTimer(){
         SimpleAlert.alertTodismissController(self, title: "Holding time lost", message: "Oops You have lost your holding time for this resort!. Please try again")
+    }
+    
+    
+    func validateUsername(str: String) -> Bool
+    {
+        do
+        {
+            let regex = try NSRegularExpression(pattern: "^[a-zA-Z\\_]{1,18}$", options: .caseInsensitive)
+            if regex.matches(in: str, options: [], range: NSMakeRange(0, str.characters.count)).count > 0 {return true}
+        }
+        catch {}
+        return false
+    }
+    
+    func isValidEmail(testStr:String) -> Bool {
+        
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailTest.evaluate(with: testStr)
+    }
+
+    
+    func guestFormCheckForDetails() ->Bool {
+        
+        if(Constant.GetawaySearchResultGuestFormDetailData.firstName != "" && Constant.GetawaySearchResultGuestFormDetailData.lastName != "" && Constant.GetawaySearchResultGuestFormDetailData.country != "" && Constant.GetawaySearchResultGuestFormDetailData.address1 != "" && Constant.GetawaySearchResultGuestFormDetailData.address2 != "" && Constant.GetawaySearchResultGuestFormDetailData.city != "" && Constant.GetawaySearchResultGuestFormDetailData.state != "" && Constant.GetawaySearchResultGuestFormDetailData.pinCode != "" && Constant.GetawaySearchResultGuestFormDetailData.email != "" && Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber != "" && Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber != "") {
+            
+            if(proceedStatus) {
+                
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.enableGuestFormCheckout), object: nil)
+                proceedStatus = true
+            }
+            else {
+                
+                
+            }
+            
+            
+        }
+        else {
+            proceedStatus = false
+        }
+        
+        return proceedStatus
+    }
+    
+    func addDoneButtonOnNumpad(textField: UITextField) {
+        
+        let keypadToolbar: UIToolbar = UIToolbar()
+        
+        // add a done button to the numberpad
+        keypadToolbar.items=[
+            UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.done, target: textField, action: #selector(UITextField.resignFirstResponder)),
+            UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: self, action: nil)
+        ]
+        keypadToolbar.sizeToFit()
+        // add a toolbar with a done button above the number pad
+        textField.inputAccessoryView = keypadToolbar
     }
     
     
@@ -160,7 +224,14 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     
     //***** Function called when detail button is pressed. ******//
     func resortDetailsClicked(_ sender:IUIKButton){
-        self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
+        if sender.tag == 0 {
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
+        } else {
+            Helper.getRelinquishmentDetails(resortCode: ((filterRelinquishments.openWeek?.resort?.resortCode)!!), viewController: self)
+
+            /*self.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: nil)*/
+        }
+        
     }
     
     //***** Function called when drop down is pressed. *****//
@@ -223,7 +294,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     
     //***** Function for proceed to checkout button click. *****//
     @IBAction func proceedToCheckoutPressed(_ sender: AnyObject) {
-        let processRequest1 = RentalProcessPrepareContinueToCheckoutRequest()
+        let exchangeProcessRequest = ExchangeProcessContinueToCheckoutRequest()
         
         if(self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count) {
             
@@ -236,9 +307,10 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             
             let guestAddress = Address()
             
-            guestAddress.addrLine1 = "11023 SW 40 ST"
-            guestAddress.cityName = "MIAMI"
-            guestAddress.zipCode = "33176"
+            guestAddress.addrLine1 = Constant.GetawaySearchResultGuestFormDetailData.address1
+            guestAddress.addrLine2 = Constant.GetawaySearchResultGuestFormDetailData.address2
+            guestAddress.cityName = Constant.GetawaySearchResultGuestFormDetailData.city
+            guestAddress.zipCode = Constant.GetawaySearchResultGuestFormDetailData.pinCode
             guestAddress.addressType = "Home"
             guestAddress.territoryCode = "FL"
             guestAddress.countryCode = "USA"
@@ -246,6 +318,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             var phoneNumbers = [Phone]()
             let homePhoneNo = Phone()
             homePhoneNo.phoneNumber = Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber
+            homePhoneNo.countryPhoneCode = "1"
             homePhoneNo.phoneType = "HOME_PRIMARY"
             homePhoneNo.areaCode = "305"
             homePhoneNo.countryCode = "FL"
@@ -253,37 +326,59 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             
             guest.phones = phoneNumbers
             guest.address = guestAddress
-            processRequest1.guest = guest
+            exchangeProcessRequest.guest = guest
+            
+            Constant.MyClassConstants.enableGuestCertificate = true
+        }
+        else{
+            
+            /*let guest = Guest()
+             guest.firstName = ""
+             guest.lastName = ""
+             var phoneNumbers = [Phone]()
+             guest.phones = phoneNumbers
+             let guestAddress = Address()
+             guest.address = guestAddress
+             exchangeProcessRequest.guest = guest*/
         }
        
-        Helper.addServiceCallBackgroundView(view: self.view)
-        SVProgressHUD.show()
-        let processResort = RentalProcess()
+        let processResort = ExchangeProcess()
         processResort.holdUnitStartTimeInMillis = Constant.holdingTime
-        processResort.processId = Constant.MyClassConstants.processStartResponse.processId
+        processResort.processId = Constant.MyClassConstants.exchangeProcessStartResponse.processId
+        Helper.showProgressBar(senderView: self)
         
-        RentalProcessClient.continueToCheckout(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest1, onSuccess: {(response) in
+        ExchangeProcessClient.continueToCheckout(UserContext.sharedInstance.accessToken, process: processResort, request: exchangeProcessRequest, onSuccess: {(response) in
+            DarwinSDK.logger.debug(response)
             SVProgressHUD.dismiss()
             Helper.removeServiceCallBackgroundView(view: self.view)
-            Constant.MyClassConstants.continueToCheckoutResponse = response
+            Constant.MyClassConstants.exchangeContinueToCheckoutResponse = response
             
-            if let promotions = response.view?.fees?.rental?.promotions {
+            if let promotions = response.view?.fees?.shopExchange?.promotions {
                 Constant.MyClassConstants.recapViewPromotionCodeArray = promotions
             }
-
-            Constant.MyClassConstants.allowedCreditCardType = (response.view?.allowedCreditCardTypes)!
-            Constant.MyClassConstants.rentalFees = [(response.view?.fees)!]
-            Constant.MyClassConstants.memberCreditCardList = (UserContext.sharedInstance.contact?.creditcards)!
             
+            DarwinSDK.logger.debug("Promo codes are : \(String(describing: response.view?.promoCodes))")
+            DarwinSDK.logger.debug("Response is : \(String(describing: response.view?.fees)) , -------->\(response)")
+            Constant.MyClassConstants.allowedCreditCardType = (response.view?.allowedCreditCardTypes)!
+            Constant.MyClassConstants.exchangeFees = [(response.view?.fees)!]
+            if(Int((response.view?.fees?.shopExchange?.rentalPrice?.tax)!) != 0){
+                Constant.MyClassConstants.enableTaxes = true
+            }else{
+                Constant.MyClassConstants.enableTaxes = false
+            }
+            Constant.MyClassConstants.memberCreditCardList = (UserContext.sharedInstance.contact?.creditcards)!
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.checkOutViewController) as! CheckOutIPadViewController
+            viewController.filterRelinquishments = self.filterRelinquishments
             
             let transitionManager = TransitionManager()
             self.navigationController?.transitioningDelegate = transitionManager
             self.navigationController!.pushViewController(viewController, animated: true)
-            }, onError: {(error) in
-                SVProgressHUD.dismiss()
-                Helper.removeServiceCallBackgroundView(view: self.view)
+        }, onError: {(error) in
+            print(error.localizedDescription)
+            SVProgressHUD.dismiss()
+            Helper.removeServiceCallBackgroundView(view: self.view)
+            
         })
      }
 
@@ -424,7 +519,17 @@ extension WhoWillBeCheckingInIPadViewController:UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.guestCertificatePriceCell, for: indexPath) as! GuestCertificatePriceCell
             
             let guestPrices = Constant.MyClassConstants.guestCertificate.prices
-            let memberTier = Constant.MyClassConstants.rentalFees[0].memberTier
+            var memberTier = ""
+            if(Constant.MyClassConstants.isFromExchange){
+                if(Constant.MyClassConstants.exchangeFees.count > 0){
+                    memberTier = Constant.MyClassConstants.exchangeFees[0].memberTier!
+                }else{
+                    memberTier = ""
+                }
+                
+            }else{
+                memberTier = Constant.MyClassConstants.rentalFees[0].memberTier!
+            }
             
             for price in guestPrices {
                 
@@ -451,13 +556,26 @@ extension WhoWillBeCheckingInIPadViewController:UITableViewDataSource {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.guestTextFieldCell, for: indexPath) as! GuestTextFieldCell
             cell.nameTF.text = ""
+            cell.nameTF.delegate = self
             if(indexPath.section == 3) {
                 
                 if(indexPath.row == 0) {
-                    cell.nameTF.placeholder = Constant.textFieldTitles.guestFormFnamePlaceholder
+                    if(Constant.GetawaySearchResultGuestFormDetailData.firstName == "") {
+                        cell.nameTF.placeholder = Constant.textFieldTitles.guestFormFnamePlaceholder
+                        
+                    }
+                    else {
+                        cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.firstName
+                    }
                 }
                 else {
-                    cell.nameTF.placeholder = Constant.textFieldTitles.guestFormLnamePlaceholder
+                    if(Constant.GetawaySearchResultGuestFormDetailData.lastName == "") {
+                        cell.nameTF.placeholder = Constant.textFieldTitles.guestFormLnamePlaceholder
+                        
+                    }
+                    else {
+                        cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.lastName
+                    }
                 }
                 
             }
@@ -465,15 +583,33 @@ extension WhoWillBeCheckingInIPadViewController:UITableViewDataSource {
                 
                 if(indexPath.row == 0) {
                     
-                    cell.nameTF.placeholder = Constant.textFieldTitles.guestFormEmail
+                    if(Constant.GetawaySearchResultGuestFormDetailData.email == "") {
+                        cell.nameTF.placeholder = Constant.textFieldTitles.guestFormEmail
+                        
+                    }
+                    else {
+                        cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.email
+                    }
                 }
                 else if(indexPath.row == 1){
                     
-                    cell.nameTF.placeholder = Constant.textFieldTitles.guestFormHomePhoneNumber
+                    if(Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber == "") {
+                        cell.nameTF.placeholder = Constant.textFieldTitles.guestFormHomePhoneNumber
+                        
+                    }
+                    else {
+                        cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber
+                    }
                 }
                 else {
-                    cell.nameTF.placeholder = Constant.textFieldTitles.guestFormBusinessPhoneNumber
                     
+                    if(Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber == "") {
+                        cell.nameTF.placeholder = Constant.textFieldTitles.guestFormBusinessPhoneNumber
+                        
+                    }
+                    else {
+                        cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber
+                    }
                 }
                 
             }
@@ -531,7 +667,8 @@ extension WhoWillBeCheckingInIPadViewController:UITableViewDataSource {
             else {
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.guestTextFieldCell, for: indexPath) as! GuestTextFieldCell
-                
+                cell.nameTF.text = ""
+                cell.nameTF.delegate = self
                 if(indexPath.row == 1) {
                     cell.nameTF.placeholder = Constant.textFieldTitles.guestFormAddress1
                 }
@@ -601,5 +738,294 @@ extension WhoWillBeCheckingInIPadViewController:UIPickerViewDataSource {
             return Constant.GetawaySearchResultGuestFormDetailData.stateListArray.count
         }
     }
+}
+
+
+extension WhoWillBeCheckingInIPadViewController:UITextFieldDelegate{
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.activeField?.resignFirstResponder()
+        
+        return true
+    }
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        self.activeField?.resignFirstResponder()
+    }
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        print(string)
+        if (range.length == 1 && string.characters.count == 0) {
+            print("backspace tapped")
+        }
+        
+        if(self.cellUsedFor == Constant.MyClassConstants.guestString) {
+            
+            if(Int(textField.accessibilityValue!) == 3) {
+                
+                if(textField.tag == 0) {
+                    
+                    if (range.length == 1 && string.characters.count == 0) {
+                        Constant.GetawaySearchResultGuestFormDetailData.firstName.characters.removeLast()
+                    }
+                    else {
+                        Constant.GetawaySearchResultGuestFormDetailData.firstName = "\(textField.text!)\(string)"
+                    }
+                    
+                    let vfnm =  self.validateUsername(str: Constant.GetawaySearchResultGuestFormDetailData.firstName)
+                    if(vfnm || Constant.GetawaySearchResultGuestFormDetailData.firstName.characters.count == 0) {
+                        
+                        proceedStatus = true
+                        textField.superview?.layer.borderColor = UIColor(red: 233.0/255.0, green: 233.0/255.0, blue: 235.0/255.0, alpha: 1.0).cgColor
+                    }
+                    else {
+                        
+                        textField.superview?.layer.borderColor = UIColor.red.cgColor
+                        proceedStatus = false
+                    }
+                }
+                else {
+                    
+                    
+                    if (range.length == 1 && string.characters.count == 0) {
+                        Constant.GetawaySearchResultGuestFormDetailData.lastName.characters.removeLast()
+                    }
+                    else {
+                        Constant.GetawaySearchResultGuestFormDetailData.lastName = "\(textField.text!)\(string)"
+                    }
+                    
+                    let vfnm =  self.validateUsername(str: Constant.GetawaySearchResultGuestFormDetailData.lastName)
+                    if(vfnm || Constant.GetawaySearchResultGuestFormDetailData.lastName.characters.count == 0) {
+                        proceedStatus = true
+                        textField.superview?.layer.borderColor = UIColor(red: 233.0/255.0, green: 233.0/255.0, blue: 235.0/255.0, alpha: 1.0).cgColor
+                    }
+                    else {
+                        
+                        textField.superview?.layer.borderColor = UIColor.red.cgColor
+                        proceedStatus = false
+                    }
+                    
+                }
+            }
+            else if(Int(textField.accessibilityValue!) == 4) {
+                
+                if(textField.tag == 0) {
+                    
+                    
+                }
+                else if(textField.tag == 1) {
+                    
+                    if (range.length == 1 && string.characters.count == 0) {
+                        Constant.GetawaySearchResultGuestFormDetailData.address1.characters.removeLast()
+                    }
+                    else {
+                        Constant.GetawaySearchResultGuestFormDetailData.address1 = "\(textField.text!)\(string)"
+                    }
+                }
+                else if(textField.tag == 2) {
+                    
+                    if (range.length == 1 && string.characters.count == 0) {
+                        Constant.GetawaySearchResultGuestFormDetailData.address2.characters.removeLast()
+                    }
+                    else {
+                        
+                        Constant.GetawaySearchResultGuestFormDetailData.address2 = "\(textField.text!)\(string)"
+                    }
+                    
+                }
+                else if(textField.tag == 3) {
+                    
+                    if (range.length == 1 && string.characters.count == 0) {
+                        Constant.GetawaySearchResultGuestFormDetailData.city.characters.removeLast()
+                    }
+                    else {
+                        Constant.GetawaySearchResultGuestFormDetailData.city = "\(textField.text!)\(string)"
+                    }
+                }
+                else if(textField.tag == 4) {
+                    
+                }
+                else {
+                    
+                    
+                    if (range.length == 1 && string.characters.count == 0) {
+                        Constant.GetawaySearchResultGuestFormDetailData.pinCode.characters.removeLast()
+                    }
+                    else {
+                        
+                        Constant.GetawaySearchResultGuestFormDetailData.pinCode = "\(textField.text!)\(string)"
+                    }
+                    
+                    if(Constant.GetawaySearchResultGuestFormDetailData.pinCode.characters.count > 6) {
+                        textField.superview?.layer.borderColor = UIColor.red.cgColor
+                        proceedStatus = false
+                    }
+                    else {
+                        
+                        textField.superview?.layer.borderColor = UIColor(red: 233.0/255.0, green: 233.0/255.0, blue: 235.0/255.0, alpha: 1.0).cgColor
+                        proceedStatus = true
+                        
+                    }
+                    
+                }
+            }
+            else {
+                
+                if(textField.tag == 0) {
+                    
+                    if (range.length == 1 && string.characters.count == 0) {
+                        Constant.GetawaySearchResultGuestFormDetailData.email.characters.removeLast()
+                    }
+                    else {
+                        
+                        Constant.GetawaySearchResultGuestFormDetailData.email = "\(textField.text!)\(string)"
+                    }
+                    
+                    let eml = self.isValidEmail(testStr: Constant.GetawaySearchResultGuestFormDetailData.email)
+                    
+                    if(eml || Constant.GetawaySearchResultGuestFormDetailData.email.characters.count == 0) {
+                        
+                        textField.superview?.layer.borderColor = UIColor(red: 233.0/255.0, green: 233.0/255.0, blue: 235.0/255.0, alpha: 1.0).cgColor
+                        proceedStatus = true
+                    }
+                    else {
+                        
+                        textField.superview?.layer.borderColor = UIColor.red.cgColor
+                        proceedStatus = false
+                    }
+                    
+                }
+                else if(textField.tag == 1) {
+                    
+                    
+                    if (range.length == 1 && string.characters.count == 0) {
+                        Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber.characters.removeLast()
+                    }
+                    else {
+                        Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber = "\(textField.text!)\(string)"
+                        
+                        if(Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber.characters.count > 9) {
+                            
+                            textField.superview?.layer.borderColor = UIColor(red: 233.0/255.0, green: 233.0/255.0, blue: 235.0/255.0, alpha: 1.0).cgColor
+                            proceedStatus = true
+                            
+                        }
+                        else {
+                            
+                            textField.superview?.layer.borderColor = UIColor.red.cgColor
+                            proceedStatus = false
+                            
+                        }
+                    }
+                    
+                }
+                else {
+                    
+                    
+                    if (range.length == 1 && string.characters.count == 0) {
+                        Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber.characters.removeLast()
+                    }
+                    else {
+                        Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber = "\(textField.text!)\(string)"
+                        
+                        if(Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber.characters.count > 9) {
+                            
+                            textField.superview?.layer.borderColor = UIColor(red: 233.0/255.0, green: 233.0/255.0, blue: 235.0/255.0, alpha: 1.0).cgColor
+                            proceedStatus = true
+                            
+                        }
+                        else {
+                            
+                            textField.superview?.layer.borderColor = UIColor.red.cgColor
+                            proceedStatus = false
+                            
+                        }
+                        
+                    }
+                    
+                }
+            }
+            let detailStatus = guestFormCheckForDetails()
+            if(detailStatus) {
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.enableGuestFormCheckout), object: nil)
+            }
+            return  true
+        }
+        else {
+            if(Int(textField.accessibilityValue!) == 0) {
+                
+                if(textField.tag == 0) {
+                    
+                    Constant.GetawaySearchResultCardFormDetailData.nameOnCard = "\(textField.text!)\(string)"
+                }
+                else if(textField.tag == 1) {
+                    
+                    Constant.GetawaySearchResultCardFormDetailData.cardNumber = "\(textField.text!)\(string)"
+                }
+                else {
+                    
+                    Constant.GetawaySearchResultCardFormDetailData.cvv = "\(textField.text!)\(string)"
+                }
+            }
+            else {
+                
+                if(textField.tag == 1) {
+                    
+                    Constant.GetawaySearchResultCardFormDetailData.address1 = "\(textField.text!)\(string)"
+                }
+                else if(textField.tag == 2) {
+                    
+                    Constant.GetawaySearchResultCardFormDetailData.address2 = "\(textField.text!)\(string)"
+                }
+                else if(textField.tag == 3) {
+                    Constant.GetawaySearchResultCardFormDetailData.city = "\(textField.text!)\(string)"
+                }
+                else {
+                    
+                    Constant.GetawaySearchResultCardFormDetailData.pinCode = "\(textField.text!)\(string)"
+                }
+            }
+            return  true
+        }
+        
+        
+    }
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        
+        self.activeField = textField
+        
+        
+        if(Int(textField.accessibilityValue!) == 3) {
+            
+            textField.keyboardType = .default
+        }
+        else if(Int(textField.accessibilityValue!) == 4) {
+            
+            if(textField.tag != 0 && textField.tag != 1 && textField.tag != 2 && textField.tag != 3 && textField.tag != 4) {
+                
+                textField.keyboardType = .numberPad
+                self.addDoneButtonOnNumpad(textField: textField)
+            }
+            
+        }
+        else {
+            
+            if(textField.tag == 0 ) {
+                
+                self.moved = true
+                textField.keyboardType = .default
+            }
+            else if(textField.tag == 1) {
+                self.moved = true
+                textField.keyboardType = .numberPad
+                self.addDoneButtonOnNumpad(textField: textField)
+            }
+            else {
+                self.moved = true
+                textField.keyboardType = .numberPad
+                self.addDoneButtonOnNumpad(textField: textField)
+            }
+        }
+    }
+    
 }
 

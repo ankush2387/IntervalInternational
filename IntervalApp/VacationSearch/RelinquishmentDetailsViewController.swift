@@ -125,7 +125,11 @@ extension RelinquishmentDetailsViewController:UITableViewDataSource, UITableView
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
-            return 280
+            if Constant.RunningDevice.deviceIdiom == .phone {
+                return 280
+            } else {
+                return 450
+            }
         } else {
             return 80
 
