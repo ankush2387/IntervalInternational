@@ -200,9 +200,9 @@ class SearchResultViewController: UIViewController {
         })
         
     }
-    //Calling API for filterRelinquishments
+    //Static Calling API for filterRelinquishments
     
-    func getFilterRelinquishments(){
+    func getStaticFilterRelinquishments(){
         Helper.showProgressBar(senderView: self)
         let exchangeSearchDateRequest = ExchangeFilterRelinquishmentsRequest()
         exchangeSearchDateRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
@@ -248,6 +248,7 @@ class SearchResultViewController: UIViewController {
             Constant.MyClassConstants.selectedResort = Constant.MyClassConstants.resortsArray[self.selectedSection]
             
             Constant.MyClassConstants.inventoryPrice = (Constant.MyClassConstants.exchangeInventory[self.selectedSection].buckets[0].unit?.prices)!
+            Constant.MyClassConstants.exchangeDestination = exchangeDestination
             
             self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
         }, onError: { (error) in
@@ -255,6 +256,61 @@ class SearchResultViewController: UIViewController {
             Helper.hideProgressBar(senderView: self)
         })
     }
+    
+    //Dynamic API hit
+    
+    func getFilterRelinquishments(){
+        Helper.showProgressBar(senderView: self)
+        let exchangeSearchDateRequest = ExchangeFilterRelinquishmentsRequest()
+        exchangeSearchDateRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
+        
+        exchangeSearchDateRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
+        
+        let exchangeDestination = ExchangeDestination()
+        let currentFromDate = Helper.convertDateToString(date: Constant.MyClassConstants.currentFromDate, format: Constant.MyClassConstants.dateFormat)
+        
+        let currentToDate = Helper.convertDateToString(date: Constant.MyClassConstants.currentToDate, format: Constant.MyClassConstants.dateFormat)
+        
+        let resort = Resort()
+        resort.resortCode = Constant.MyClassConstants.resortsArray[selectedSection].resortCode
+        
+        exchangeDestination.resort = resort
+        
+        let unit = InventoryUnit()
+        unit.kitchenType = Constant.MyClassConstants.exchangeInventory[selectedSection].buckets[selectedRow - 1].unit!.kitchenType!
+        unit.unitSize = Constant.MyClassConstants.exchangeInventory[selectedSection].buckets[selectedRow - 1].unit!.unitSize!
+        exchangeDestination.checkInDate = currentFromDate
+        exchangeDestination.checkOutDate = currentToDate
+        unit.publicSleepCapacity = Constant.MyClassConstants.exchangeInventory[selectedSection].buckets[selectedRow - 1].unit!.publicSleepCapacity
+        unit.privateSleepCapacity = Constant.MyClassConstants.exchangeInventory[selectedSection].buckets[selectedRow - 1].unit!.privateSleepCapacity
+        
+        exchangeDestination.unit = unit
+        
+        exchangeSearchDateRequest.destination = exchangeDestination
+        Constant.MyClassConstants.exchangeDestination = exchangeDestination
+        
+        ExchangeClient.filterRelinquishments(UserContext.sharedInstance.accessToken, request: exchangeSearchDateRequest, onSuccess: { (response) in
+            Helper.hideProgressBar(senderView: self)
+            Constant.MyClassConstants.filterRelinquishments.removeAll()
+            for exchageDetail in response{
+                Constant.MyClassConstants.filterRelinquishments.append(exchageDetail.relinquishment!)
+            }
+            
+            Constant.MyClassConstants.selectedResort = Constant.MyClassConstants.resortsArray[self.selectedSection]
+            
+            Constant.MyClassConstants.inventoryPrice = (Constant.MyClassConstants.exchangeInventory[self.selectedSection].buckets[self.selectedRow - 1].unit?.prices)!
+            //if(Constant.MyClassConstants.whatToTradeArray.count > 1 || String(describing: response[0].destination?.upgradeCost?.amount) != "0"){
+                self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+           // }else {
+               // self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+            //}
+            
+        }, onError: { (error) in
+            print(Error.self)
+            Helper.hideProgressBar(senderView: self)
+        })
+    }
+    
     //Passing information while preparing for segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
@@ -339,6 +395,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
                 }else{
                     dateValue = Constant.MyClassConstants.checkInDates[collectionviewSelectedIndex]
                 }
+                Constant.MyClassConstants.currentFromDate = dateValue
                 if(Constant.MyClassConstants.surroundingCheckInDates.contains(dateValue) && Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.getawayAlerts){
                     titleLabel.backgroundColor = UIColor(red: 170/255.0, green: 216/255.0, blue: 111/255.0, alpha: 1.0)
                     titleLabel.text = Constant.MyClassConstants.surroundingAreaString
@@ -363,10 +420,8 @@ extension SearchResultViewController:UICollectionViewDelegate {
                     exchangeAvailabilityRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
                     ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: exchangeAvailabilityRequest, onSuccess: { (exchangeAvailability) in
                         Helper.hideProgressBar(senderView: self)
-                        if(self.alertView.isHidden == false){
                             self.alertView.isHidden = true
                             self.headerVw.isHidden = false
-                        }
                         Constant.MyClassConstants.resortsArray.removeAll()
                         Constant.MyClassConstants.exchangeInventory.removeAll()
                         for exchangeResorts in exchangeAvailability{
@@ -542,10 +597,18 @@ extension SearchResultViewController:UITableViewDelegate {
         }else{
             
             if(Constant.MyClassConstants.isFromExchange){
+                if(indexPath.row > Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets.count + 1)
+                {
+                    
+                }else{
                 selectedSection = indexPath.section
                 selectedRow = indexPath.row
+                Constant.MyClassConstants.selectedResort = Constant.MyClassConstants.resortsArray[indexPath.section]
                 self.getFilterRelinquishments()
-            }else{
+                //self.getStaticFilterRelinquishments()
+
+                }
+                            }else{
             Helper.addServiceCallBackgroundView(view: self.view)
             SVProgressHUD.show()
             
@@ -663,7 +726,7 @@ extension SearchResultViewController:UITableViewDataSource {
                             break
                         }
                     }
-                    
+                    cell.resortImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                     cell.resortImageView.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
                 }
                 else {

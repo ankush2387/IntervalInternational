@@ -558,6 +558,8 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
         
         
         if (self.segmentIndex == 1 && (Helper.getAllDestinationFromLocalStorage().count>0 || Helper.getAllResortsFromLocalStorage().count>0)) {
+            Helper.showProgressBar(senderView: self)
+            SVProgressHUD.show()
             Constant.MyClassConstants.selectedSegment =  Constant.MyClassConstants.selectedSegmentExchange
             sender.isEnabled = false
             let (toDate,fromDate) = Helper.getSearchDates()
@@ -586,7 +588,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                     Constant.MyClassConstants.surroundingResortCodesArray = searchDates.surroundingResortCodes.map { $0 }
                     sender.isEnabled = true
                     if(searchDates.checkInDates.count == 0) {
-                        
+                        Helper.hideProgressBar(senderView: self)
                         SVProgressHUD.dismiss()
                         SimpleAlert.alert(self, title: Constant.AlertErrorMessages.noResultError, message: Constant.AlertMessages.noResultMessage)
                     }
@@ -607,6 +609,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                             }
                             
                             Constant.MyClassConstants.showAlert = true
+                            Helper.hideProgressBar(senderView: self)
                             SVProgressHUD.dismiss()
                             Helper.removeServiceCallBackgroundView(view: self.view)
                             self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
@@ -762,12 +765,7 @@ extension VacationSearchIPadViewController:UICollectionViewDataSource {
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        if(Constant.MyClassConstants.topDeals != nil){
-            return Constant.MyClassConstants.topDeals.count
-        }else{
-            return 0
-        }
+        return Constant.MyClassConstants.topDeals.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cell, for: indexPath)

@@ -13,6 +13,7 @@ class ViewDetailsTBLcell: UITableViewCell {
 
     @IBOutlet weak var resortDetailsButton: IUIKButton!
     
+    @IBOutlet weak var lblHeading: UILabel!
     @IBOutlet weak var resortImageView: UIImageView?
     @IBOutlet weak var resortName: UILabel?
     @IBOutlet weak var resortAddress:UILabel?

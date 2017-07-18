@@ -359,10 +359,13 @@ class Constant: NSObject {
         static var processStartResponse = RentalProcessPrepareResponse()
         static var exchangeProcessStartResponse = ExchangeProcessPrepareResponse()
         static var continueToCheckoutResponse = RentalProcessRecapResponse()
+        static var exchangeContinueToCheckoutResponse = ExchangeProcessRecapResponse()
         static var continueToPayResponse = RentalProcessEndResponse()
+        static var exchangeContinueToPayResponse = ExchangeProcessEndResponse()
         static var recapViewPromotionCodeArray = [Promotion]()
         static var allowedCreditCardType = [AllowedCreditCardType]()
         static var rentalFees = [RentalFees]()
+        static var exchangeFees = [ExchangeFees]()
         static var memberCreditCardList = [Creditcard]()
         static var selectedCreditCard = [Creditcard]()
         static var guestCertificate:GuestCertificate!
@@ -404,6 +407,7 @@ class Constant: NSObject {
         
         static var inventoryPrice = [InventoryPrice]()
         static var selectedResort = Resort()
+        static var selectedExchange = ""
         
         static var paymentMethodTitle = "Payment Method"
         static var webViewGetElementById = "document.getElementById('WASCInsuranceOfferOption0').checked == true;"
@@ -497,6 +501,10 @@ class Constant: NSObject {
 
         //UserDefaults
         static var userName = "userName"
+        static var exchangeDestination = ExchangeDestination()
+        
+        //Changed promotions to global
+        static var isPromotionsEnabled = false
     }
     struct CommonStringIdentifiers {
         static var floatWeek = "FLOAT_WEEK"
@@ -768,7 +776,7 @@ class Constant: NSObject {
         static var JoinTodayViewController = NSLocalizedString("Join_Today", comment: "")
         static var calendarViewController = NSLocalizedString("Pick_Date", comment: "")
         static var accomodationCertsDetailController = NSLocalizedString("Accomodation_Certificates", comment: "")
-        static var bookYourSelectionController = NSLocalizedString("Book Your Selection", comment: "")
+        static var bookYourSelectionController = NSLocalizedString("Choose What To Use", comment: "")
         static var vacationSearchTabBarController = NSLocalizedString("Vacation_Search", comment: "")
         static var dashboardTableViewController = NSLocalizedString("Home", comment: "")
         static var upComingTripDetailController = NSLocalizedString("Trip_Details", comment: "")
@@ -893,6 +901,7 @@ class Constant: NSObject {
         static var whoIsTravelingCell = "WhoIsTravelingCell"
         static var searchResultCollectionCell = "SearchResultCollectionCell"
         static var searchResultContentTableCell = "SearchResultContentTableCell"
+        static var relinquishmentDetailsCell = "RelinquishmentDetailsCell"
         static var moreSearchResult = "MoreCollectionCell"
         static var whereToGoTableViewCell = "WereToGo"
         static var wereToGoTableViewCell = "wereToGo"
@@ -1104,6 +1113,7 @@ class Constant: NSObject {
         static var destinationResortDetailCell = "DestinationResortDetailCell"
         static var exchangeCell0 = "ExchangeCell0"
         static var exchangeCell1 = "ExchangeCell1"
+        static var exchangeCell2 = "ExchangeCell2"
         static var getawaysCell  = "GetawaysCell"
         static var moreCell = "MoreCell"
         static var searchResultDateCell = "SearchResultDateCell"
@@ -1213,9 +1223,8 @@ class Constant: NSObject {
         static var confirmationScreenSegue = "confirmationSegue"
         static var selectPaymentMethodSegue = "selectPaymentSegue"
         static var showResortDetailsSegue = "showResortDetails"
-        
-        static var showDestinationResortsSegue = "showDestinationResorts"
-        
+        static var showRelinguishmentsDetailsSegue = "showRelinguishmentsDetails"
+
         static var confirmationUpcomingTripSegue = "confirmationUpcomingTripSegue"
         static var newCreditCardSegue = "newCreditCardSegue"
         static var PolicyWebviewSegue = "privacyPolicyWebviewSegue"
@@ -1276,11 +1285,12 @@ class Constant: NSObject {
         static var visaCardImage = "Visa_CO"
         static var swipeArrowOrgImage = "SwipeArrow_ORG"
         static var swipeArrowGryImage = "SwipeArrow_GRY"
-        static var relinquishmentImage = "RST_CO"
+        static var resortImage = "RST_CO"
         static var exchangeImage = "EPlus"
         static var checkMarkOn = "Checkmark-On"
         static var plusIcon = "PlusIcon"
         static var infoImage = "InfoIcon"
+        static var relinquishmentImage = "EXG_CO"
     }
     
     //***** Bedroom ViewController *****//

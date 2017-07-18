@@ -2474,7 +2474,7 @@
             <objects>
                 <navigationController storyboardIdentifier="TripDetailsNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="ppQ-Fo-c32" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="b5I-Md-GXc">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="b5I-Md-GXc">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

@@ -723,8 +723,12 @@ class GoogleMapViewController: UIViewController {
                 }
                 resortList.resortArray.append(resortbyMap)
             }
-            Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(Constant.MyClassConstants.resortsArray[0].resortCode!)
-            storedata.membeshipNumber = Membership!.memberNumber!
+            if(Constant.MyClassConstants.resortsArray.count > 0){
+                 Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(Constant.MyClassConstants.resortsArray[0].resortCode as Any)
+                storedata.membeshipNumber = Membership!.memberNumber!
+            }
+            
+            
             
             storedata.resorts.append(resortList)
             let realm = try! Realm()

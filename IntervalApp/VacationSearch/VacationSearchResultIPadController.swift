@@ -32,6 +32,9 @@ class VacationSearchResultIPadController: UIViewController {
     var cellHeight = 80
     var selectedIndex = 0
     var selectedUnitIndex = 0
+    var selectedSection = 0
+    var selectedRow = 0
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -278,6 +281,7 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
                 }else{
                     dateValue = Constant.MyClassConstants.checkInDates[collectionviewSelectedIndex]
                 }
+                Constant.MyClassConstants.currentFromDate = dateValue
                 if(Constant.MyClassConstants.surroundingCheckInDates.contains(dateValue) && Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.getawayAlerts){
                     titleLabel.backgroundColor = UIColor(red: 170/255.0, green: 216/255.0, blue: 111/255.0, alpha: 1.0)
                     titleLabel.text = Constant.MyClassConstants.surroundingAreaString
@@ -451,8 +455,11 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
         
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedIndex = indexPath.section
-        selectedUnitIndex = indexPath.row
+        //selectedIndex = indexPath.section
+        //selectedUnitIndex = indexPath.row
+        selectedSection = indexPath.section
+        selectedRow = indexPath.row
+        Constant.MyClassConstants.selectedResort = Constant.MyClassConstants.resortsArray[indexPath.section]
         if((indexPath as NSIndexPath).row == 0) {
             
             Helper.addServiceCallBackgroundView(view: self.view)
@@ -482,25 +489,11 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
         }else{
             
             if(Constant.MyClassConstants.isFromExchange){
-                Constant.MyClassConstants.filterRelinquishments.removeAll()
                 Helper.showProgressBar(senderView: self)
                 let exchangeSearchDateRequest = ExchangeFilterRelinquishmentsRequest()
                 exchangeSearchDateRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
                 
-                let relinquishmentIDArray = ["Ek83chJmdS6ESNRpVfhH8QaTBeXh5rpNm_2AJLhV_4jRTiVySvOk2NKFm4iHOtEK",
-                                     "Ek83chJmdS6ESNRpVfhH8RFxFgvpS1HHCzYyrvzw42rRTiVySvOk2NKFm4iHOtEK",
-                                     "Ek83chJmdS6ESNRpVfhH8SOcpMOEqw1KO8bsQKhjLZnRTiVySvOk2NKFm4iHOtEK",
-                                     "Ek83chJmdS6ESNRpVfhH8YMAv0D39MaVmh75YJgm_IDRTiVySvOk2NKFm4iHOtEK"]
-                
-                    // Constant.MyClassConstants.relinquishmentIdArray as! [String]
-                
-//                ["Ek83chJmdS6ESNRpVfhH8QaTBeXh5rpNm_2AJLhV_4jRTiVySvOk2NKFm4iHOtEK",
-//                 "Ek83chJmdS6ESNRpVfhH8RFxFgvpS1HHCzYyrvzw42rRTiVySvOk2NKFm4iHOtEK",
-//                 "Ek83chJmdS6ESNRpVfhH8SOcpMOEqw1KO8bsQKhjLZnRTiVySvOk2NKFm4iHOtEK",
-//                 "Ek83chJmdS6ESNRpVfhH8YMAv0D39MaVmh75YJgm_IDRTiVySvOk2NKFm4iHOtEK"]
-                exchangeSearchDateRequest.relinquishmentsIds = relinquishmentIDArray
-                
-               
+                exchangeSearchDateRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
                 
                 let exchangeDestination = ExchangeDestination()
                 let currentFromDate = Helper.convertDateToString(date: Constant.MyClassConstants.currentFromDate, format: Constant.MyClassConstants.dateFormat)
@@ -508,42 +501,43 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
                 let currentToDate = Helper.convertDateToString(date: Constant.MyClassConstants.currentToDate, format: Constant.MyClassConstants.dateFormat)
                 
                 let resort = Resort()
-                resort.resortName = Constant.MyClassConstants.resortsArray[selectedIndex].resortName
-                resort.resortCode = "CZP"//Constant.MyClassConstants.resortsArray[selectedIndex].resortCode
+                resort.resortCode = Constant.MyClassConstants.resortsArray[selectedSection].resortCode
                 
                 exchangeDestination.resort = resort
                 
                 let unit = InventoryUnit()
-                unit.kitchenType = "NO_KITCHEN"
-                    //Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.kitchenType!
-                unit.unitSize = "STUDIO"
-                    //Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitSize!
-                exchangeDestination.checkInDate = "2017-07-17" //currentFromDate
-                exchangeDestination.checkOutDate = "2017-07-24" //currentToDate
-                //"2017-07-17"
-               // "2017-07-24"
-                //unit.unitNumber = Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitNumber!
-                unit.publicSleepCapacity = 4
-                unit.privateSleepCapacity = 2
+                unit.kitchenType = Constant.MyClassConstants.exchangeInventory[selectedSection].buckets[selectedRow-1].unit!.kitchenType!
+                unit.unitSize = Constant.MyClassConstants.exchangeInventory[selectedSection].buckets[selectedRow-1].unit!.unitSize!
+                exchangeDestination.checkInDate = currentFromDate
+                exchangeDestination.checkOutDate = currentToDate
+                unit.publicSleepCapacity = Constant.MyClassConstants.exchangeInventory[selectedSection].buckets[selectedRow-1].unit!.publicSleepCapacity
+                unit.privateSleepCapacity = Constant.MyClassConstants.exchangeInventory[selectedSection].buckets[selectedRow-1].unit!.privateSleepCapacity
                 
                 exchangeDestination.unit = unit
                 
                 exchangeSearchDateRequest.destination = exchangeDestination
+                Constant.MyClassConstants.exchangeDestination = exchangeDestination
                 
                 ExchangeClient.filterRelinquishments(UserContext.sharedInstance.accessToken, request: exchangeSearchDateRequest, onSuccess: { (response) in
-                    
                     Helper.hideProgressBar(senderView: self)
+                    Constant.MyClassConstants.filterRelinquishments.removeAll()
                     for exchageDetail in response{
                         Constant.MyClassConstants.filterRelinquishments.append(exchageDetail.relinquishment!)
                     }
-                    self.performSegue(withIdentifier: Constant.segueIdentifiers.chooseWhatToUse, sender: self)
-                   
-                   
+                    
+                    Constant.MyClassConstants.selectedResort = Constant.MyClassConstants.resortsArray[self.selectedSection]
+                    
+                    Constant.MyClassConstants.inventoryPrice = (Constant.MyClassConstants.exchangeInventory[self.selectedSection].buckets[self.selectedRow - 1].unit?.prices)!
+                   // if(Constant.MyClassConstants.whatToTradeArray.count > 1 || String(describing: response[0].destination?.upgradeCost?.amount) != "0"){
+                    self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                    // }else {
+                    // self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                    //}
+                    
                 }, onError: { (error) in
                     print(Error.self)
-
+                    Helper.hideProgressBar(senderView: self)
                 })
-           
                
             }
             else{
@@ -828,7 +822,13 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
         if(Constant.MyClassConstants.isFromExchange){
             if(Constant.MyClassConstants.exchangeInventory[section].buckets.count > 0){
                 self.unitSizeArray = [Constant.MyClassConstants.exchangeInventory[section].buckets[0].unit!]
-                return Constant.MyClassConstants.exchangeInventory[section].buckets.count + Constant.MyClassConstants.exchangeInventory[section].buckets[0].promotions.count + 1
+                var promotions = 0
+                for bucket in Constant.MyClassConstants.exchangeInventory[section].buckets{
+                    //for (index,promotion) in bucket.promotions.enumerated(){
+                    promotions = bucket.promotions.count
+                    //}
+                }
+                return Constant.MyClassConstants.exchangeInventory[section].buckets.count + promotions + 1
             }else{
                 return 1
             }

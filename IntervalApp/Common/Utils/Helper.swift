@@ -414,6 +414,35 @@ public class Helper{
         })
     }
 
+    //Relinquishment details
+    static func getRelinquishmentDetails(resortCode:String?, viewController:UIViewController) {
+        showProgressBar(senderView: viewController)
+        
+        DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode!, onSuccess: { (response) in
+            
+            Constant.MyClassConstants.resortsDescriptionArray = response
+            Constant.MyClassConstants.imagesArray.removeAllObjects()
+            let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
+            for imgStr in imagesArray {
+                print(imgStr.url!)
+                if(imgStr.size == Constant.MyClassConstants.imageSize) {
+                    
+                    Constant.MyClassConstants.imagesArray.add(imgStr.url!)
+                }
+            }
+            
+            SVProgressHUD.dismiss()
+            removeServiceCallBackgroundView(view: viewController.view)
+            viewController.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: self)
+        })
+        { (error) in
+            SVProgressHUD.dismiss()
+            removeServiceCallBackgroundView(view: viewController.view)
+            SimpleAlert.alert(viewController, title:Constant.AlertErrorMessages.errorString, message: error.description)
+        }
+        
+    }
+
 
     //***** common function that contains API call for  searchResorts with todate and resort code *****//
     static func resortDetailsClicked(toDate: NSDate, senderVC : UIViewController) {
@@ -1136,17 +1165,40 @@ public class Helper{
                 
                 if(Constant.RunningDevice.deviceIdiom == .pad) {
                     
-                    let containerVC = viewcontroller.childViewControllers[0] as! ResortDetailsViewController
-                    containerVC.senderViewController = Constant.MyClassConstants.searchResult
-                    containerVC.viewWillAppear(true)
                     
-                    UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn ,animations: {
+                    if(Constant.MyClassConstants.isFromExchange){
                         
-                        viewcontroller.view.subviews.last?.frame = CGRect(x: 0, y: (viewcontroller.view.subviews.last?.frame.origin.y)!, width: (viewcontroller.view.subviews.last?.frame.size.width)!, height: (viewcontroller.view.subviews.last?.frame.size.height)!)
                         
-                    }, completion: { _ in
+                        let storyBoard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
+                        let viewController = storyBoard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortVC)
+                        let transition = CATransition()
+                        transition.duration = 0.4
+                        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+                        transition.type = kCATransitionMoveIn
+                        transition.subtype = kCATransitionFromTop
                         
-                    })
+                        viewcontroller.navigationController!.view.layer.add(transition, forKey: kCATransition)
+                        viewcontroller.navigationController?.pushViewController(viewController, animated: false)
+
+                        
+                    }
+                    else{
+                        
+                        let containerVC = viewcontroller.childViewControllers[0] as! ResortDetailsViewController
+                        containerVC.senderViewController = Constant.MyClassConstants.searchResult
+                        containerVC.viewWillAppear(true)
+                        
+                        UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn ,animations: {
+                            
+                            viewcontroller.view.subviews.last?.frame = CGRect(x: 0, y: (viewcontroller.view.subviews.last?.frame.origin.y)!, width: (viewcontroller.view.subviews.last?.frame.size.width)!, height: (viewcontroller.view.subviews.last?.frame.size.height)!)
+                            
+                        }, completion: { _ in
+                            
+                        })
+
+                        
+                    }
+                    
                 }
                 else {
                     let storyBoard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)

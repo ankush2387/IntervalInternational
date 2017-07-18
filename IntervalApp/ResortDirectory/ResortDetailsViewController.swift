@@ -20,9 +20,11 @@ class ResortDetailsViewController: UIViewController {
     //***** Outlets *****//
     @IBOutlet weak var tableViewResorts:UITableView!
     @IBOutlet weak var imageIndexLabel:UILabel!
-    @IBOutlet weak var headerTextForShowingResortCounter: UILabel!
+    @IBOutlet weak var headerTextForShowingResortCounter: UILabel?
     
+    @IBOutlet weak var previousButton: UIButton?
     
+    @IBOutlet weak var forwordButton: UIButton?
     //***** Class Variables *****//
     var bounds = GMSCoordinateBounds()
     var actionSheetTable:UITableView!
@@ -47,17 +49,28 @@ class ResortDetailsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        if(Constant.RunningDevice.deviceIdiom == .phone){
-            self.navigationController?.isNavigationBarHidden = true
-            self.tabBarController?.tabBar.isHidden = true
-        }
+//        if (Constant.MyClassConstants.isFromExchange && Constant.RunningDevice.deviceIdiom == .phone) {
+//            self.previousButton?.isHidden = true
+//            self.forwordButton?.isHidden = true
+//            self.headerTextForShowingResortCounter?.isHidden = true
+//        }
+        self.previousButton?.isHidden = true
+        self.forwordButton?.isHidden = true
+        self.headerTextForShowingResortCounter?.isHidden = true
+        self.navigationController?.isNavigationBarHidden = true
+        self.tabBarController?.tabBar.isHidden = true
+        
+//        if(Constant.RunningDevice.deviceIdiom == .phone){
+//            self.navigationController?.isNavigationBarHidden = true
+//            self.tabBarController?.tabBar.isHidden = true
+//        }
         // Notification to perform vacation search after user pre-login
         NotificationCenter.default.addObserver(self, selector: #selector(showVacationSearch), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
         
         
         if(self.headerTextForShowingResortCounter != nil) {
             
-            self.headerTextForShowingResortCounter.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
+            self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
         }
         if(Constant.MyClassConstants.resortsDescriptionArray.amenities.count>0) {
             
@@ -150,7 +163,7 @@ class ResortDetailsViewController: UIViewController {
                     Constant.MyClassConstants.imagesArray.add(imgStr.url!)
                 }
             }
-            self.headerTextForShowingResortCounter.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
+            self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
             
             self.tableViewResorts.reloadData()
             // omniture tracking with event 35
@@ -191,7 +204,7 @@ class ResortDetailsViewController: UIViewController {
                             Constant.MyClassConstants.imagesArray.add(imgStr.url!)
                         }
                     }
-                    self.headerTextForShowingResortCounter.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
+                    self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
                     SVProgressHUD.dismiss()
                     Helper.removeServiceCallBackgroundView(view: self.view)
                     self.tableViewResorts.reloadData()
@@ -240,7 +253,7 @@ class ResortDetailsViewController: UIViewController {
                     }else{
                         //sender.isEnabled = true
                     }
-                    self.headerTextForShowingResortCounter.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
+                    self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
                     SVProgressHUD.dismiss()
                     Helper.removeServiceCallBackgroundView(view: self.view)
                     self.tableViewResorts.reloadData()
@@ -277,7 +290,7 @@ class ResortDetailsViewController: UIViewController {
                         Constant.MyClassConstants.imagesArray.add(imgStr.url!)
                     }
                 }
-                self.headerTextForShowingResortCounter.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
+                self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
                 
                 self.tableViewResorts.reloadData()
                 
@@ -289,7 +302,28 @@ class ResortDetailsViewController: UIViewController {
     @IBAction func doneButtonClicked(_ sender: AnyObject){
         if(UIDevice().userInterfaceIdiom == .pad){
             
+            if(Constant.MyClassConstants.isFromExchange){
+                
+                if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.vacationSearchFunctionalityCheck){
+                    
+                    self.dismiss(animated: true, completion: nil)
+                    
+                    
+                }else{
+                    
+                    let transition = CATransition()
+                    transition.duration = 0.5
+                    transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+                    transition.type = kCATransitionReveal
+                    transition.subtype = kCATransitionFromBottom
+                    navigationController?.view.layer.add(transition, forKey: nil)
+                    _ = navigationController?.popViewController(animated: false)
+                }
+                
+            }
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
+            
+            
         }else{
             
             if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.vacationSearchFunctionalityCheck){

@@ -33,7 +33,11 @@ class CheckoutPromotionCell: UITableViewCell {
             promotionSelectionCheckBox.checked = true
             promotionSelectionCheckBox.isHidden = false
             promotionStatusLabel.isHidden = false
-            promotionNameLabel.text = Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName
+            if(Constant.MyClassConstants.isFromExchange){
+                promotionNameLabel.text = Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName
+            }else{
+                promotionNameLabel.text = Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName
+            }
         } else {
             promotionSelectionCheckBox.checked = false
             promotionSelectionCheckBox.isHidden = true

@@ -1,37 +1,30 @@
 //
-//  RelinquishmentSelectionOpenWeeksCell.swift
+//  RelinquishmentSelectionOpenWeeksCell1.swift
 //  IntervalApp
 //
-//  Created by Chetu on 10/01/17.
+//  Created by Chetu on 06/07/17.
 //  Copyright © 2017 Interval International. All rights reserved.
 //
 
 import UIKit
 import IntervalUIKit
 
-class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
-    
+class RelinquishmentSelectionOpenWeeksCellWithUpgrade: UITableViewCell {
     
     //IBOutlets
     @IBOutlet weak var dayAndDateLabel: UILabel!
     @IBOutlet weak var yearLabel: UILabel!
     @IBOutlet weak var totalWeekLabel: UILabel!
-    
-    @IBOutlet weak var resortDetailsView: UIView!
     @IBOutlet weak var totalSleepAndPrivate: UILabel!
     @IBOutlet weak var bedroomSizeAndKitchenClient: UILabel!
     @IBOutlet weak var resortName: UILabel!
-    @IBOutlet weak var dayandDateLabel: UIView!
-    
-    @IBOutlet weak var addButton: IUIKButton!
-    @IBOutlet weak var savedView: UILabel!
- 
-    @IBOutlet weak var promLabel: UILabel!
-    @IBOutlet weak var promImgView: UIImageView!
-    
     @IBOutlet weak var mainView: UIView!
+
+    @IBOutlet weak var lblFees: UILabel!
     @IBOutlet weak var checkBox: IUIKCheckbox!
-    
+
+    @IBOutlet weak var lblUpgrade: UILabel!
+    @IBOutlet weak var lblDescription: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
