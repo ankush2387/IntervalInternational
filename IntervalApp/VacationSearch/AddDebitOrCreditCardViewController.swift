@@ -181,9 +181,7 @@ class AddDebitOrCreditCardViewController: UIViewController {
                 
                 SimpleAlert.alert(self, title:Constant.MyClassConstants.newCardalertTitle, message: Constant.MyClassConstants.newCardalertMess)
             }
-           
-                                                   
-                                                    
+            
         }
         else {
             SimpleAlert.alert(self, title: Constant.MyClassConstants.newCardalertTitle, message: Constant.MyClassConstants.alertReqFieldMsg)
@@ -240,9 +238,6 @@ class AddDebitOrCreditCardViewController: UIViewController {
                 hidePickerView()
             }
         }
-        
-        
-        
     }
     
     // function to create date picker view when drop down button pressed.
@@ -368,8 +363,7 @@ extension AddDebitOrCreditCardViewController:UITableViewDataSource {
         if(section == 0) {
             
             return 6
-        }
-        else {
+        }else {
             return 7
         }
     }
@@ -471,6 +465,8 @@ extension AddDebitOrCreditCardViewController:UITableViewDataSource {
             }
         }
     }
+    
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if(indexPath.section == 0) {
@@ -582,8 +578,6 @@ extension AddDebitOrCreditCardViewController:UITableViewDataSource {
                 cell.borderView.layer.cornerRadius = 5
                 cell.selectionStyle = .none
 
-
-                
                 return cell
             }
           

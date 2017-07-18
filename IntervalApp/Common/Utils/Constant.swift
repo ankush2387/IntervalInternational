@@ -720,6 +720,7 @@ class Constant: NSObject {
         static var type = NSLocalizedString("Type", comment: "")
         static var expirationDate = NSLocalizedString("Select Expiration Date", comment: "")
         static var cvv = NSLocalizedString("CVV", comment: "")
+        static var expirationDatePlaceHolder = NSLocalizedString("MM/YY", comment: "")
         static var country = NSLocalizedString("Country", comment: "")
         //Ownership text field placeholder
         static var reservationNumber = NSLocalizedString("Reservation Number", comment: "")
@@ -960,6 +961,7 @@ class Constant: NSObject {
     struct PaymentSelectionViewControllerCellIdentifiersAndHardCodedStrings {
         
         static var cvvAlertTitle = NSLocalizedString("Please enter the credit card CVV code", comment: "")
+        static var cvvandExpiryDateAlertTitle = NSLocalizedString("Your card is expired. Please enter your credit card CVV code and the new expiration date.", comment: "")
     }
     
     //***** common  structure to provide all CheckOut IPad View Controller CellIdentifiers And HardCoded Strings *****//

@@ -17,6 +17,7 @@ class SelectPaymentMethodCell: UITableViewCell {
     @IBOutlet weak var expireDate: UILabel!
     @IBOutlet weak var cardHolderName: UILabel!
     
+    @IBOutlet weak var expireDateLabel: UILabel!
     @IBOutlet weak var cardType: UILabel!
     @IBOutlet weak var cardSelectionCheckBox: IUIKCheckbox!
 
