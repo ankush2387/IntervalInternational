@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Zmr-d0-xh5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Zmr-d0-xh5">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
@@ -47,7 +47,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dPC-06-hhy">
-                                <rect key="frame" x="-4" y="17" width="383" height="49"/>
+                                <rect key="frame" x="-4" y="61" width="383" height="49"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Resort 1 of 7" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IdW-Ty-pEh">
                                         <rect key="frame" x="87" y="5" width="233" height="42"/>
@@ -110,7 +110,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Z7H-la-zBu">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="108" width="375" height="510"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="536" id="xAh-Ay-Djq"/>
@@ -735,7 +735,7 @@
                                         <rect key="frame" x="0.0" y="28" width="383" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="exy-kN-uRJ" id="HZD-c2-Kxy">
-                                            <rect key="frame" x="0.0" y="0.0" width="383" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="383" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Arizona, Lake Havasu" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YYE-QS-Kqe">
@@ -2091,7 +2091,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="hBB-OJ-Y0k" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="w8Z-0z-EGh">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="w8Z-0z-EGh">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2124,7 +2124,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oSN-ih-PeL" id="zZb-fK-UIm">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="89.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -2132,7 +2132,7 @@
                                         <rect key="frame" x="0.0" y="118" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qNT-SI-vkM" id="r3x-cO-4hS">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -2200,7 +2200,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="77"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Zvv-BQ-JV5" id="gMM-qr-jvh">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="77"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="76.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Qdq-ev-xcy">
@@ -2733,7 +2733,7 @@
                                                     <color key="textColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ExchangeIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Ony-eE-wMw">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PromoImage" translatesAutoresizingMaskIntoConstraints="NO" id="Ony-eE-wMw">
                                                     <rect key="frame" x="18" y="68" width="17" height="17"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="17" id="O2e-aY-ZhW"/>
@@ -2898,7 +2898,7 @@
                                                     <color key="textColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ExchangeIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Ot7-C4-fbt">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PromoImage" translatesAutoresizingMaskIntoConstraints="NO" id="Ot7-C4-fbt">
                                                     <rect key="frame" x="26" y="95" width="17" height="17"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="17" id="7Vb-Hr-Did"/>
@@ -2973,7 +2973,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="eMV-Px-Ad8" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Zma-bI-0pT">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Zma-bI-0pT">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -3254,7 +3254,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y39-oo-O1h">
-                                                    <rect key="frame" x="8" y="10" width="359" height="60"/>
+                                                    <rect key="frame" x="8" y="5" width="359" height="70"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sjl-t5-WFu">
                                                             <rect key="frame" x="0.0" y="0.0" width="80" height="60"/>
@@ -3368,20 +3368,20 @@
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstItem="5J4-54-kml" firstAttribute="top" secondItem="Y39-oo-O1h" secondAttribute="top" constant="17" id="1Ra-gy-F4l"/>
-                                                        <constraint firstItem="Sjl-t5-WFu" firstAttribute="centerY" secondItem="Y39-oo-O1h" secondAttribute="centerY" id="H3Z-IK-lXp"/>
+                                                        <constraint firstItem="Sjl-t5-WFu" firstAttribute="centerY" secondItem="Y39-oo-O1h" secondAttribute="centerY" constant="-5" id="H3Z-IK-lXp"/>
                                                         <constraint firstItem="BQm-Z3-R3y" firstAttribute="leading" secondItem="Sjl-t5-WFu" secondAttribute="trailing" id="H9q-QU-LeQ"/>
                                                         <constraint firstAttribute="trailing" secondItem="5J4-54-kml" secondAttribute="trailing" constant="3" id="WqM-Qz-02Z"/>
                                                         <constraint firstItem="5J4-54-kml" firstAttribute="leading" secondItem="BQm-Z3-R3y" secondAttribute="trailing" constant="1" id="gjH-Lu-08S"/>
                                                         <constraint firstItem="Sjl-t5-WFu" firstAttribute="leading" secondItem="Y39-oo-O1h" secondAttribute="leading" id="j2E-zq-Wo5"/>
-                                                        <constraint firstItem="BQm-Z3-R3y" firstAttribute="centerY" secondItem="Y39-oo-O1h" secondAttribute="centerY" id="t7T-xm-kC9"/>
-                                                        <constraint firstItem="5J4-54-kml" firstAttribute="centerY" secondItem="Y39-oo-O1h" secondAttribute="centerY" id="y6q-td-IJ0"/>
+                                                        <constraint firstItem="BQm-Z3-R3y" firstAttribute="centerY" secondItem="Y39-oo-O1h" secondAttribute="centerY" constant="-5" id="t7T-xm-kC9"/>
+                                                        <constraint firstItem="5J4-54-kml" firstAttribute="centerY" secondItem="Y39-oo-O1h" secondAttribute="centerY" constant="-5" id="y6q-td-IJ0"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottomMargin" secondItem="Y39-oo-O1h" secondAttribute="bottom" constant="2" id="Mn9-rn-7VJ"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="Y39-oo-O1h" secondAttribute="bottom" constant="-3" id="Mn9-rn-7VJ"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="Y39-oo-O1h" secondAttribute="trailing" id="oZL-Tl-Uvd"/>
-                                                <constraint firstItem="Y39-oo-O1h" firstAttribute="top" secondItem="UBF-I3-nY0" secondAttribute="topMargin" constant="2" id="uhE-df-qZ4"/>
+                                                <constraint firstItem="Y39-oo-O1h" firstAttribute="top" secondItem="UBF-I3-nY0" secondAttribute="topMargin" constant="-3" id="uhE-df-qZ4"/>
                                                 <constraint firstItem="Y39-oo-O1h" firstAttribute="leading" secondItem="UBF-I3-nY0" secondAttribute="leadingMargin" id="wR7-uo-jB8"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -3404,7 +3404,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XdR-Th-0lR">
-                                                    <rect key="frame" x="8" y="10" width="359" height="130"/>
+                                                    <rect key="frame" x="8" y="5" width="359" height="140"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b2K-fh-mzh">
                                                             <rect key="frame" x="0.0" y="20" width="80" height="60"/>
@@ -3565,13 +3565,13 @@ Units Upgrade with this selection.</string>
                                                     <constraints>
                                                         <constraint firstItem="tMK-OB-d1c" firstAttribute="top" secondItem="iPA-Hd-jAQ" secondAttribute="bottom" constant="5" id="3WN-8m-RW9"/>
                                                         <constraint firstItem="b2K-fh-mzh" firstAttribute="top" secondItem="XdR-Th-0lR" secondAttribute="top" constant="20" id="9gb-qA-KWb"/>
-                                                        <constraint firstAttribute="bottom" secondItem="tMK-OB-d1c" secondAttribute="bottom" constant="5" id="Ldo-Sd-Aeh"/>
+                                                        <constraint firstAttribute="bottom" secondItem="tMK-OB-d1c" secondAttribute="bottom" constant="15" id="Ldo-Sd-Aeh"/>
                                                         <constraint firstAttribute="trailing" secondItem="LgW-bV-buN" secondAttribute="trailing" constant="3" id="NKI-Jl-s1o"/>
                                                         <constraint firstItem="LgW-bV-buN" firstAttribute="centerY" secondItem="IMK-Y4-xhM" secondAttribute="centerY" id="UU1-QT-grq"/>
                                                         <constraint firstItem="b2K-fh-mzh" firstAttribute="leading" secondItem="XdR-Th-0lR" secondAttribute="leading" id="aUB-l4-owO"/>
                                                         <constraint firstItem="Qly-GI-vcY" firstAttribute="top" secondItem="iPA-Hd-jAQ" secondAttribute="bottom" constant="5" id="cor-vN-Ebw"/>
                                                         <constraint firstItem="tMK-OB-d1c" firstAttribute="leading" secondItem="XdR-Th-0lR" secondAttribute="leading" constant="7" id="dXQ-X5-Fks"/>
-                                                        <constraint firstAttribute="bottom" secondItem="Qly-GI-vcY" secondAttribute="bottom" constant="5" id="fZK-gM-89x"/>
+                                                        <constraint firstAttribute="bottom" secondItem="Qly-GI-vcY" secondAttribute="bottom" constant="15" id="fZK-gM-89x"/>
                                                         <constraint firstItem="iPA-Hd-jAQ" firstAttribute="top" secondItem="XdR-Th-0lR" secondAttribute="top" constant="20" id="mfA-ZD-f1z"/>
                                                         <constraint firstItem="iPA-Hd-jAQ" firstAttribute="leading" secondItem="b2K-fh-mzh" secondAttribute="trailing" id="qWN-Wy-jXT"/>
                                                         <constraint firstAttribute="trailing" secondItem="Qly-GI-vcY" secondAttribute="trailing" constant="2" id="vcc-tS-F9P"/>
@@ -3580,10 +3580,10 @@ Units Upgrade with this selection.</string>
                                                 </view>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="XdR-Th-0lR" firstAttribute="top" secondItem="s0t-R7-au2" secondAttribute="topMargin" constant="2" id="9en-Fi-Mqw"/>
+                                                <constraint firstItem="XdR-Th-0lR" firstAttribute="top" secondItem="s0t-R7-au2" secondAttribute="topMargin" constant="-3" id="9en-Fi-Mqw"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="XdR-Th-0lR" secondAttribute="trailing" id="UuJ-Nr-EKr"/>
                                                 <constraint firstItem="XdR-Th-0lR" firstAttribute="leading" secondItem="s0t-R7-au2" secondAttribute="leadingMargin" id="X4n-dh-aby"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="XdR-Th-0lR" secondAttribute="bottom" constant="2" id="rpX-fe-rhA"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="XdR-Th-0lR" secondAttribute="bottom" constant="-3" id="rpX-fe-rhA"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -3923,13 +3923,13 @@ Units Upgrade with this selection.</string>
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select a Promotion" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Xgb-LD-ISr">
-                                                    <rect key="frame" x="20" y="22" width="297" height="16.5"/>
+                                                    <rect key="frame" x="20" y="22" width="297" height="17"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Applied" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2a1-y6-iaO">
-                                                    <rect key="frame" x="20" y="38.5" width="297" height="14"/>
+                                                    <rect key="frame" x="20" y="39" width="297" height="14"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                                     <color key="textColor" red="0.25098040700000002" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -4868,7 +4868,7 @@ Units Upgrade with this selection.</string>
                                         <rect key="frame" x="0.0" y="28" width="345" height="63"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6sC-ch-ZrS" id="NpD-Jw-A7q">
-                                            <rect key="frame" x="0.0" y="0.0" width="345" height="63"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="345" height="62.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$10.00 Off" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="V7p-gc-VAj">
@@ -4958,7 +4958,7 @@ Units Upgrade with this selection.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0yH-QX-dYW" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="HRh-g1-Okf">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="HRh-g1-Okf">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -4976,7 +4976,7 @@ Units Upgrade with this selection.</string>
             <objects>
                 <navigationController storyboardIdentifier="AccomodationCertsDetailController" automaticallyAdjustsScrollViewInsets="NO" id="6AW-3c-VGG" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="r65-jV-lcs">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="r65-jV-lcs">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -4994,7 +4994,7 @@ Units Upgrade with this selection.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Wnj-OU-Bqx" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="lsp-Nf-AIz">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="lsp-Nf-AIz">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -5448,7 +5448,7 @@ Units Upgrade with this selection.</string>
                                         <rect key="frame" x="0.0" y="28" width="375" height="278"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YUH-P1-7Hm" id="EpQ-hL-E8x">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="278"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="277.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9ha-mg-rWb" userLabel="View Gradient">
@@ -5528,7 +5528,7 @@ Units Upgrade with this selection.</string>
                                         <rect key="frame" x="0.0" y="306" width="375" height="89"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XbP-Go-j8O" id="GOP-TW-hhE">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="89"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="88.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8or-JA-AwY">
@@ -6115,7 +6115,7 @@ Units Upgrade with this selection.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CNS-r3-5Pe">
-                                                    <rect key="frame" x="10" y="0.0" width="355" height="88"/>
+                                                    <rect key="frame" x="20" y="0.0" width="335" height="88"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -6123,9 +6123,9 @@ Units Upgrade with this selection.</string>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="CNS-r3-5Pe" firstAttribute="top" secondItem="GcU-e2-6zp" secondAttribute="topMargin" constant="-8" id="FmH-DW-61O"/>
-                                                <constraint firstItem="CNS-r3-5Pe" firstAttribute="leading" secondItem="GcU-e2-6zp" secondAttribute="leadingMargin" constant="2" id="J83-LP-u21"/>
+                                                <constraint firstItem="CNS-r3-5Pe" firstAttribute="leading" secondItem="GcU-e2-6zp" secondAttribute="leadingMargin" constant="12" id="J83-LP-u21"/>
                                                 <constraint firstAttribute="bottom" secondItem="CNS-r3-5Pe" secondAttribute="bottom" constant="8" id="W9p-32-ol4"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="CNS-r3-5Pe" secondAttribute="trailing" constant="2" id="yM7-oH-jvC"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="CNS-r3-5Pe" secondAttribute="trailing" constant="12" id="yM7-oH-jvC"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -6201,7 +6201,7 @@ Units Upgrade with this selection.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="QCd-cg-p7T" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="FDW-qy-gN2">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="FDW-qy-gN2">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -6218,7 +6218,7 @@ Units Upgrade with this selection.</string>
         <scene sceneID="woz-M3-99b">
             <objects>
                 <navigationController id="ngh-TZ-XZu" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="s8P-VH-HG7">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="s8P-VH-HG7">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -6268,7 +6268,7 @@ Units Upgrade with this selection.</string>
         <scene sceneID="iMz-Os-rBf">
             <objects>
                 <navigationController id="7wx-gU-8rb" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Vfi-ic-Xub">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Vfi-ic-Xub">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -6300,7 +6300,7 @@ Units Upgrade with this selection.</string>
                                         <rect key="frame" x="0.0" y="28" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Eed-Yk-H6H" id="BFp-hE-tPg">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sorting Options" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bh3-cn-ky7">
@@ -6350,7 +6350,7 @@ Units Upgrade with this selection.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="bmL-3i-9ap" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="biQ-JT-fNk">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="biQ-JT-fNk">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -6368,7 +6368,7 @@ Units Upgrade with this selection.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="UeM-gf-1oQ" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="vSk-wg-ocj">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="vSk-wg-ocj">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -6386,7 +6386,7 @@ Units Upgrade with this selection.</string>
             <objects>
                 <navigationController storyboardIdentifier="DepositPromotionsNav" automaticallyAdjustsScrollViewInsets="NO" id="1g4-hf-v3R" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="A6D-xj-RBR">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="A6D-xj-RBR">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -6415,6 +6415,7 @@ Units Upgrade with this selection.</string>
         <image name="InfoIcon" width="33" height="33"/>
         <image name="MapIcon" width="33" height="33"/>
         <image name="NoImageIcon" width="64" height="64"/>
+        <image name="PromoImage" width="20" height="20"/>
         <image name="SearchTab-Off" width="33" height="33"/>
         <image name="VS_List-Plus_ORNG" width="20" height="20"/>
         <image name="WeatherIcon" width="33" height="33"/>
@@ -6423,7 +6424,7 @@ Units Upgrade with this selection.</string>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="0uV-Eo-2bn"/>
-        <segue reference="4gU-cx-AAf"/>
+        <segue reference="sGp-zH-9TZ"/>
         <segue reference="4Eo-F1-CbC"/>
     </inferredMetricsTieBreakers>
 </document>

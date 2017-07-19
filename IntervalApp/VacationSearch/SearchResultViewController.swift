@@ -723,6 +723,7 @@ extension SearchResultViewController:UITableViewDataSource {
                         if(imgStr.size!.caseInsensitiveCompare(Constant.MyClassConstants.imageSize) == ComparisonResult.orderedSame) {
                             
                             url = URL(string: imgStr.url!)!
+                            cell.resortImageView.contentMode = .scaleToFill
                             break
                         }
                     }
@@ -810,7 +811,7 @@ extension SearchResultViewController:UITableViewDataSource {
                     for promotion in promotions {
                         print("Promotions: \(promotions)")
                         let imgV = UIImageView(frame: CGRect(x:10, y: yPosition, width: 15, height: 15))
-                        imgV.image = UIImage(named: "ExchangeIcon")
+                        imgV.image = UIImage(named: Constant.assetImageNames.promoImage)
                         let promLabel = UILabel(frame: CGRect(x:30, y: yPosition, width: cell.promotionsView.bounds.width, height: 15))
                         promLabel.text = promotion.offerName
                         promLabel.adjustsFontSizeToFitWidth = true

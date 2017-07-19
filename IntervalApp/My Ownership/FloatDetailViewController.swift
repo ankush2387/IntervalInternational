@@ -224,7 +224,7 @@ class FloatDetailViewController: UIViewController {
         fixedWeekReservation.resort = resort
         fixedWeekReservation.unit = unit
         
-        Helper.updateFixWeekReservation(relinqishmentID: Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!, fixedWeekReservation: fixedWeekReservation)
+        Helper.updateFixWeekReservation(relinqishmentID: Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!, fixedWeekReservation: fixedWeekReservation, viewController:self)
         
         
         

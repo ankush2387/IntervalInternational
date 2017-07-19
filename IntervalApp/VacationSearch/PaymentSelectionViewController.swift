@@ -24,7 +24,6 @@ class PaymentSelectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        debugPrint(Constant.MyClassConstants.memberCreditCardList[0].expirationDate)
     }
 
     // function to dismis current controller on cancel button button pressed
