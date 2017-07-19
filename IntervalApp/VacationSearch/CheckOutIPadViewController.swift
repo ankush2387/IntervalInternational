@@ -36,6 +36,7 @@ class CheckOutIPadViewController: UIViewController {
     var bookingCostRequiredRows = 1
     var promotionSelectedIndex = 0
     var isAgreed:Bool = false
+    var eplusAdded = false
     var isAgreedToFees:Bool = false
     var cellWebView = UIWebView()
     var showUpdateEmail = false
@@ -95,6 +96,21 @@ class CheckOutIPadViewController: UIViewController {
                     Constant.MyClassConstants.additionalAdvisementsArray.append(advisement)
                 }else{
                     Constant.MyClassConstants.generalAdvisementsArray.append(advisement)
+                }
+            }
+            
+            
+            if(Constant.MyClassConstants.exchangeFees.count > 0){
+                if let _: String? = Constant.MyClassConstants.exchangeFees[0].insurance?.insuranceOfferHTML!{
+                    showInsurance = true
+                }else{
+                    showInsurance = false
+                }
+                
+                if(Constant.MyClassConstants.exchangeFees[0].eplus != nil && (Constant.MyClassConstants.exchangeFees[0].eplus?.selected)!){
+                    eplusAdded = true
+                }else{
+                    eplusAdded = false
                 }
             }
         }
@@ -283,24 +299,50 @@ class CheckOutIPadViewController: UIViewController {
     //***** Function for adding and removing trip protection *****//
     func addTripProtection(shouldAddTripProtection:Bool){
         
-        Constant.MyClassConstants.rentalFees.last!.insurance?.selected = shouldAddTripProtection
-        let rentalRecalculateRequest = RentalProcessRecapRecalculateRequest.init()
-        rentalRecalculateRequest.fees = Constant.MyClassConstants.rentalFees.last!
-        Helper.addServiceCallBackgroundView(view: self.view)
-        SVProgressHUD.show()
-        RentalProcessClient.addTripProtection(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, request: rentalRecalculateRequest, onSuccess: { (response) in
-            self.tripRequestInProcess = false
-            Constant.MyClassConstants.continueToCheckoutResponse = response
-            Constant.MyClassConstants.rentalFees[0].total = (response.view?.fees?.total)!
-            self.bookingTableView.reloadSections(IndexSet(integer: 0), with:.automatic)
-            Helper.removeServiceCallBackgroundView(view: self.view)
-            SVProgressHUD.dismiss()
+        if(Constant.MyClassConstants.isFromExchange){
+            Constant.MyClassConstants.exchangeFees.last!.insurance?.selected = shouldAddTripProtection
+            let exchangeRecalculateRequest = ExchangeProcessRecalculateRequest.init()
+            exchangeRecalculateRequest.fees = Constant.MyClassConstants.exchangeFees.last!
+            Helper.showProgressBar(senderView: self)
+            ExchangeProcessClient.updateTripProtection(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: exchangeRecalculateRequest, onSuccess: {
+                (response) in
+                
+                self.tripRequestInProcess = false
+                Constant.MyClassConstants.exchangeContinueToCheckoutResponse = response
+                DarwinSDK.logger.debug(Constant.MyClassConstants.continueToCheckoutResponse.view?.promoCodes)
+                DarwinSDK.logger.debug(Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.insurance?.price)
+                Constant.MyClassConstants.exchangeFees[0].total = (response.view?.fees?.total)!
+                self.checkoutTableView.reloadSections(IndexSet(integer: 8), with:.automatic)
+                Helper.hideProgressBar(senderView: self)
+                
+            }, onError: { (error) in
+                self.tripRequestInProcess = false
+                DarwinSDK.logger.debug(error.description)
+                Helper.hideProgressBar(senderView: self)
+            })
+        }
+        else{
+            Constant.MyClassConstants.rentalFees.last!.insurance?.selected = shouldAddTripProtection
+            let rentalRecalculateRequest = RentalProcessRecapRecalculateRequest.init()
+            rentalRecalculateRequest.fees = Constant.MyClassConstants.rentalFees.last!
+            Helper.addServiceCallBackgroundView(view: self.view)
+            SVProgressHUD.show()
+            RentalProcessClient.addTripProtection(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, request: rentalRecalculateRequest, onSuccess: { (response) in
+                self.tripRequestInProcess = false
+                Constant.MyClassConstants.continueToCheckoutResponse = response
+                Constant.MyClassConstants.rentalFees[0].total = (response.view?.fees?.total)!
+                self.bookingTableView.reloadSections(IndexSet(integer: 0), with:.automatic)
+                Helper.removeServiceCallBackgroundView(view: self.view)
+                SVProgressHUD.dismiss()
             }, onError: { (error) in
                 self.tripRequestInProcess = false
                 DarwinSDK.logger.debug(error.description)
                 Helper.removeServiceCallBackgroundView(view: self.view)
                 SVProgressHUD.dismiss()
-        })
+            })
+        }
+        
+
         
     }
     
@@ -308,6 +350,27 @@ class CheckOutIPadViewController: UIViewController {
     func resortDetailsClicked(_ sender:IUIKButton){
         self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
     }
+    
+    //Function to add remove eplus
+    @IBAction func checkBoxClicked(_ sender: IUIKCheckbox) {
+        
+        let exchangeRecalculateRequest = ExchangeProcessRecalculateRequest.init()
+        exchangeRecalculateRequest.fees = Constant.MyClassConstants.exchangeFees.last!
+        exchangeRecalculateRequest.fees?.eplus?.selected = sender.checked
+        Helper.showProgressBar(senderView: self)
+        ExchangeProcessClient.updateEplus(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: exchangeRecalculateRequest, onSuccess: { (recapResponse) in
+            Constant.MyClassConstants.exchangeFees = [(recapResponse.view?.fees)!]
+            Helper.hideProgressBar(senderView: self)
+        }, onError: { (error) in
+            Helper.hideProgressBar(senderView: self)
+        })
+        /*}else{
+         
+         }*/
+
+    }
+    
+    
     
     //***** Function to calculate dynamic height. ******//
     func heightForView(_ text:String, font:UIFont, width:CGFloat) -> CGFloat{
@@ -407,40 +470,82 @@ class CheckOutIPadViewController: UIViewController {
             processResort.currentStep = ProcessStep.Recap
             processResort.processId = Constant.MyClassConstants.processStartResponse.processId
             
-            let rental = Rental()
-            rental.selectedOfferName = Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName!
             
-            let fees = RentalFees()
-            fees.rental = rental
-            
-            let processRequest = RentalProcessRecapRecalculateRequest()
-            processRequest.fees = fees
-            
-            RentalProcessClient.addCartPromotion(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: { (response) in
-                print("succes")
-                print(response)
+            if(Constant.MyClassConstants.isFromExchange){
+                let processResort = ExchangeProcess()
+                processResort.currentStep = ProcessStep.Recap
+                processResort.processId = Constant.MyClassConstants.exchangeProcessStartResponse.processId
                 
-                if let promotions = response.view?.fees?.rental?.promotions {
-                    self.recapPromotionsArray = promotions
-                }
+                let shopExchange = ShopExchange()
+                shopExchange.selectedOfferName = Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName!
                 
-                if let selectedPromotion = response.view?.fees?.rental?.selectedOfferName {
-                    self.recapSelectedPromotion = selectedPromotion
-                }
+                let fees = ExchangeFees()
+                fees.shopExchange = shopExchange
                 
-                if let total = response.view?.fees?.total {
-                    self.recapFeesTotal = total
-                }
-                self.destinationPromotionSelected = true
-                self.checkoutTableView.reloadData()
-                self.bookingTableView.reloadData()
-                SVProgressHUD.dismiss()
-            
-            }, onError: { (error) in
-                print("Error")
-                print(error)
-                SVProgressHUD.dismiss()
-            })
+                let processRequest = ExchangeProcessRecalculateRequest()
+                processRequest.fees = fees
+                
+                ExchangeProcessClient.addCartPromotion(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: { (response) in
+                    
+                    if let promotions = response.view?.fees?.shopExchange?.promotions {
+                        self.recapPromotionsArray = promotions
+                    }
+                    
+                    if let selectedPromotion = response.view?.fees?.shopExchange?.selectedOfferName {
+                        self.recapSelectedPromotion = selectedPromotion
+                    }
+                    
+                    if let total = response.view?.fees?.total {
+                        Constant.MyClassConstants.exchangeFees[0].total = total
+                        self.recapFeesTotal = total
+                    }
+                    
+                    self.destinationPromotionSelected = true
+                    self.bookingTableView.reloadData()
+                    Helper.hideProgressBar(senderView: self)
+                    
+                }, onError: { (error) in
+                    Helper.hideProgressBar(senderView: self)
+                })
+            }
+            else{
+                
+                let rental = Rental()
+                rental.selectedOfferName = Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName!
+                
+                let fees = RentalFees()
+                fees.rental = rental
+                
+                let processRequest = RentalProcessRecapRecalculateRequest()
+                processRequest.fees = fees
+                
+                RentalProcessClient.addCartPromotion(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: { (response) in
+                    print("succes")
+                    print(response)
+                    
+                    if let promotions = response.view?.fees?.rental?.promotions {
+                        self.recapPromotionsArray = promotions
+                    }
+                    
+                    if let selectedPromotion = response.view?.fees?.rental?.selectedOfferName {
+                        self.recapSelectedPromotion = selectedPromotion
+                    }
+                    
+                    if let total = response.view?.fees?.total {
+                        self.recapFeesTotal = total
+                    }
+                    self.destinationPromotionSelected = true
+                    self.checkoutTableView.reloadData()
+                    self.bookingTableView.reloadData()
+                    SVProgressHUD.dismiss()
+                    
+                }, onError: { (error) in
+                    print("Error")
+                    print(error)
+                    SVProgressHUD.dismiss()
+                })
+            }
+
         }
         self.present(promotionsNav, animated: true, completion: nil)
     }
@@ -515,13 +620,19 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                 if((self.isExchangeOptionEnabled || self.isGetawayOptionEnabled) && Constant.MyClassConstants.enableTaxes){
                     return 2
                 }else if(!self.isTripProtectionEnabled && !Constant.MyClassConstants.enableTaxes){
-                    return 0
+                    if(eplusAdded){
+                        return 3
+                    }
+                    else{
+                        return 2
+                    }
                 }else{
                     return 1
                 }
             case 2:
                 if(self.isTripProtectionEnabled && Constant.MyClassConstants.enableGuestCertificate){
-                    return 2
+                        return 2
+                    
                 }else if(!self.isTripProtectionEnabled && !Constant.MyClassConstants.enableGuestCertificate){
                     return 0
                 }else{
@@ -614,10 +725,14 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                     return 0
                 }
             case 3:
-                if(self.isExchangeOptionEnabled){
-                    return 200
-                }else{
+                if(!Constant.MyClassConstants.isFromExchange) {
                     return 0
+                }else {
+                    if(Constant.MyClassConstants.exchangeFees[0].eplus == nil){
+                        return 0
+                    }else{
+                        return 130
+                    }
                 }
             case 4:
                 if(Constant.MyClassConstants.isFromExchange){
@@ -730,16 +845,33 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                         subviews.isHidden = false
                     }
                     if(indexPath.row == 0 && self.isTripProtectionEnabled){
-                        cell.priceLabel.text = Constant.MyClassConstants.insurance
-                        let priceString = "\(Constant.MyClassConstants.rentalFees[indexPath.row].insurance!.price)"
-                        let priceArray = priceString.components(separatedBy: ".")
                         
-                        cell.primaryPriceLabel.text = priceArray.first!
-                        if((priceArray.last?.characters.count)! > 1) {
-                            cell.fractionalPriceLabel.text = "\(priceArray.last!)"
-                        }else{
-                            cell.fractionalPriceLabel.text = "\(priceArray.last!)0"
+                        if(Constant.MyClassConstants.isFromExchange){
+                            
+                            cell.priceLabel.text = Constant.MyClassConstants.insurance
+                            let priceString = "\(Constant.MyClassConstants.exchangeFees[indexPath.row].insurance!.price)"
+                            let priceArray = priceString.components(separatedBy: ".")
+                            cell.primaryPriceLabel.text = priceArray.first!
+                            if((priceArray.last?.characters.count)! > 1) {
+                                cell.fractionalPriceLabel.text = "\(priceArray.last!)"
+                            }else{
+                                cell.fractionalPriceLabel.text = "\(priceArray.last!)0"
+                            }
+                            
                         }
+                        else{
+                            cell.priceLabel.text = Constant.MyClassConstants.insurance
+                            let priceString = "\(Constant.MyClassConstants.rentalFees[indexPath.row].insurance!.price)"
+                            let priceArray = priceString.components(separatedBy: ".")
+                            
+                            cell.primaryPriceLabel.text = priceArray.first!
+                            if((priceArray.last?.characters.count)! > 1) {
+                                cell.fractionalPriceLabel.text = "\(priceArray.last!)"
+                            }else{
+                                cell.fractionalPriceLabel.text = "\(priceArray.last!)0"
+                            }
+                        }
+
                     }else{
                         cell.priceLabel.text = Constant.MyClassConstants.guestCertificateTitle
                         let guestPrice = Int(Constant.MyClassConstants.guestCertificatePrice)
@@ -910,30 +1042,41 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                 
             case 3:
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeOptionsCell, for: indexPath) as! ExchangeOptionsCell
-                
+                cell.setupCell(selectedEplus:true)
                 cell.selectionStyle = .none
                 return cell
                 
             case 4:
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.tripProtectionCell, for: indexPath)
+                var containsWebView = false
                 for subviews in cell.subviews {
-                    subviews.removeFromSuperview()
+                    if(subviews.isKind(of: UIWebView.self)){
+                        containsWebView = true
+                    }
+                    
                 }
-                
-                cellWebView = UIWebView(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: 400))
-                cellWebView.scrollView.isScrollEnabled = false
-                let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
-                tapRecognizer.numberOfTapsRequired = 1
-                tapRecognizer.delegate = self
-                cellWebView.addGestureRecognizer(tapRecognizer)
-                if(showInsurance && !Constant.MyClassConstants.isFromExchange){
-                    let str = (Constant.MyClassConstants.rentalFees[indexPath.row].insurance?.insuranceOfferHTML!)!
-                    cellWebView.loadHTMLString(str, baseURL: nil)
+                if(!containsWebView){
+                    cellWebView = UIWebView(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: 400))
+                    cellWebView.scrollView.isScrollEnabled = false
+                    let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
+                    tapRecognizer.numberOfTapsRequired = 1
+                    tapRecognizer.delegate = self
+                    cellWebView.addGestureRecognizer(tapRecognizer)
+                    if(showInsurance && !Constant.MyClassConstants.isFromExchange){
+                        let str = (Constant.MyClassConstants.rentalFees[indexPath.row].insurance?.insuranceOfferHTML!)!
+                        cellWebView.loadHTMLString(str, baseURL: nil)
+                    }
+                    else{
+                        let str = (Constant.MyClassConstants.exchangeFees[indexPath.row].insurance?.insuranceOfferHTML!)!
+                        cellWebView.loadHTMLString(str, baseURL: nil)
+
+                    }
+                    cellWebView.delegate = self
+                    cellWebView.backgroundColor = UIColor.gray
+                    cell.addSubview(cellWebView)
+                    
+                    
                 }
-                cellWebView.delegate = self
-                cellWebView.backgroundColor = UIColor.gray
-                cell.addSubview(cellWebView)
-                
                 return cell
                 
             case 5:

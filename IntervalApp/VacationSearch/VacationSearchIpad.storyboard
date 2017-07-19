@@ -2481,10 +2481,10 @@
                                     <outlet property="delegate" destination="xJQ-QW-rEx" id="VPZ-Ci-B37"/>
                                 </connections>
                             </tableView>
-                            <view alpha="0.84999999999999998" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AiR-Ex-UZ5">
+                            <view alpha="0.84999999999999998" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AiR-Ex-UZ5">
                                 <rect key="frame" x="-4" y="549" width="383" height="70"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FnJ-TE-sbX">
+                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FnJ-TE-sbX">
                                         <rect key="frame" x="173.5" y="0.0" width="3" height="70"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -2492,16 +2492,16 @@
                                             <constraint firstAttribute="height" constant="70" id="rLr-s2-GaA"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4GQ-uE-0Uu">
-                                        <rect key="frame" x="216.5" y="8" width="117.5" height="52"/>
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4GQ-uE-0Uu">
+                                        <rect key="frame" x="216.5" y="8" width="117.5" height="48"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                         <state key="normal" title="Sort By: Resort Name"/>
                                         <connections>
                                             <action selector="sortByNameButtonPressed:" destination="xJQ-QW-rEx" eventType="touchUpInside" id="kq2-Cb-upi"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ANQ-TV-zpg">
-                                        <rect key="frame" x="10" y="10" width="142.5" height="52"/>
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ANQ-TV-zpg">
+                                        <rect key="frame" x="10" y="10" width="142.5" height="48"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                         <state key="normal" title="Map View"/>
                                         <connections>
@@ -3289,7 +3289,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="511" height="162"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vOR-yk-fuA">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="EPlus" translatesAutoresizingMaskIntoConstraints="NO" id="vOR-yk-fuA">
                                                     <rect key="frame" x="24" y="16" width="100" height="50"/>
                                                     <color key="backgroundColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
@@ -3297,7 +3297,7 @@
                                                         <constraint firstAttribute="height" constant="50" id="kig-fU-dsj"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JeC-cy-lGa">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Change your destination, resort, unit size, or travel dates up to three times for one low fee." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JeC-cy-lGa">
                                                     <rect key="frame" x="201" y="16" width="279" height="65"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="65" id="3yX-xC-3d0"/>
@@ -3308,7 +3308,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lj9-fQ-9kk" customClass="IUIKCheckbox" customModule="IntervalUIKit">
-                                                    <rect key="frame" x="388" y="98" width="101" height="64"/>
+                                                    <rect key="frame" x="388" y="96" width="101" height="64"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="101" id="dsz-78-fbA"/>
@@ -3323,40 +3323,78 @@
                                                         <userDefinedRuntimeAttribute type="color" keyPath="checkmarkColor">
                                                             <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="filled" value="YES"/>
                                                         <userDefinedRuntimeAttribute type="color" keyPath="checkedFillColor">
-                                                            <color key="value" red="1" green="0.45882352939999999" blue="0.2274509804" alpha="1" colorSpace="calibratedRGB"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
                                                             <color key="value" red="1" green="0.45882352939999999" blue="0.2274509804" alpha="1" colorSpace="calibratedRGB"/>
                                                         </userDefinedRuntimeAttribute>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
                                                             <real key="value" value="3"/>
                                                         </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="uncheckedFillColor">
+                                                            <color key="value" red="0.78823529410000004" green="0.78823529410000004" blue="0.80784313730000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="checkBoxClicked:" destination="EFM-3a-jZR" eventType="valueChanged" id="use-Lc-oIo"/>
+                                                    </connections>
                                                 </view>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$ 59. 00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7pe-2e-PgJ">
-                                                    <rect key="frame" x="252" y="110" width="128" height="41"/>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rLN-EM-189">
+                                                    <rect key="frame" x="276" y="101" width="72" height="32"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="$" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gLi-JC-8d1">
+                                                            <rect key="frame" x="4" y="0.0" width="15" height="21"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                                            <color key="textColor" red="0.96862745100000003" green="0.41176470590000003" blue="0.19215686269999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mdl-kJ-vcI">
+                                                            <rect key="frame" x="14" y="1" width="38" height="27"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="30"/>
+                                                            <color key="textColor" red="0.96862745100000003" green="0.41176470590000003" blue="0.19215686269999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sL2-sG-B74">
+                                                            <rect key="frame" x="55" y="1" width="22" height="20"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                                            <color key="textColor" red="0.96862745100000003" green="0.41176470590000003" blue="0.19215686269999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FJP-pJ-rva">
+                                                            <rect key="frame" x="50" y="5" width="6" height="27"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
+                                                            <color key="textColor" red="0.96862745100000003" green="0.41176470590000003" blue="0.19215686269999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="128" id="2S6-83-Nwf"/>
-                                                        <constraint firstAttribute="height" constant="41" id="Il2-VR-pCy"/>
+                                                        <constraint firstAttribute="height" constant="32" id="YPA-TE-vlV"/>
+                                                        <constraint firstAttribute="width" constant="72" id="cB8-9I-DKj"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="25"/>
-                                                    <color key="textColor" red="1" green="0.45882352939999999" blue="0.2274509804" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                </view>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="lj9-fQ-9kk" firstAttribute="leading" secondItem="7pe-2e-PgJ" secondAttribute="trailing" constant="8" id="2hI-On-Ef5"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="7pe-2e-PgJ" secondAttribute="bottom" constant="3" id="KXN-Fz-1Gd"/>
-                                                <constraint firstAttribute="bottom" secondItem="lj9-fQ-9kk" secondAttribute="bottom" id="bJa-xL-VuK"/>
+                                                <constraint firstItem="lj9-fQ-9kk" firstAttribute="leading" secondItem="rLN-EM-189" secondAttribute="trailing" constant="40" id="Gds-PU-gcR"/>
+                                                <constraint firstAttribute="bottom" secondItem="lj9-fQ-9kk" secondAttribute="bottom" constant="2" id="bJa-xL-VuK"/>
                                                 <constraint firstItem="vOR-yk-fuA" firstAttribute="leading" secondItem="Bzj-HE-M4U" secondAttribute="leadingMargin" constant="16" id="brD-xM-80P"/>
                                                 <constraint firstItem="vOR-yk-fuA" firstAttribute="top" secondItem="Bzj-HE-M4U" secondAttribute="topMargin" constant="8" id="h8t-Ce-HR6"/>
                                                 <constraint firstItem="JeC-cy-lGa" firstAttribute="top" secondItem="Bzj-HE-M4U" secondAttribute="topMargin" constant="8" id="hBU-dH-RhM"/>
                                                 <constraint firstAttribute="trailing" secondItem="lj9-fQ-9kk" secondAttribute="trailing" constant="22" id="iOF-w6-fca"/>
+                                                <constraint firstItem="rLN-EM-189" firstAttribute="top" secondItem="JeC-cy-lGa" secondAttribute="bottom" constant="20" id="mSd-Nu-a6o"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="JeC-cy-lGa" secondAttribute="trailing" constant="23" id="q2L-RK-s0q"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="currencyLabel" destination="gLi-JC-8d1" id="Usa-by-sRL"/>
+                                            <outlet property="fractionalPriceLabel" destination="sL2-sG-B74" id="joQ-Rx-aUE"/>
+                                            <outlet property="periodLabel" destination="FJP-pJ-rva" id="fFy-yA-Uvh"/>
+                                            <outlet property="priceCheckBox" destination="lj9-fQ-9kk" id="c4O-f7-prT"/>
+                                            <outlet property="priceView" destination="rLN-EM-189" id="M1m-sp-2SO"/>
+                                            <outlet property="primaryPriceLabel" destination="Mdl-kJ-vcI" id="NQ3-SJ-lwf"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="TripProtectionCell" rowHeight="20" id="VOz-D0-3MC">
                                         <rect key="frame" x="0.0" y="699" width="511" height="20"/>
@@ -3999,7 +4037,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YYU-n7-Ox1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4129" y="3871"/>
+            <point key="canvasLocation" x="4394" y="3884"/>
         </scene>
         <!--Add Debit Or Credit Card View Controller-->
         <scene sceneID="16m-J4-vw7">
@@ -5544,10 +5582,10 @@
                                     <constraint firstItem="GAm-DW-4Da" firstAttribute="top" secondItem="MEz-MS-DqD" secondAttribute="top" id="fgo-mC-igf"/>
                                 </constraints>
                             </view>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Erq-Cc-xDk">
+                            <view hidden="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Erq-Cc-xDk">
                                 <rect key="frame" x="380" y="457" width="33" height="33"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4oc-RZ-roG">
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4oc-RZ-roG">
                                         <rect key="frame" x="0.0" y="7" width="33" height="33"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <state key="normal" image="ForwardArrowNav-Blue"/>
@@ -8037,6 +8075,7 @@ Units Upgrade with this selection.</string>
         <image name="CalendarIcon" width="33" height="33"/>
         <image name="CertificatesTab-Off" width="33" height="33"/>
         <image name="DropArrowIcon" width="33" height="33"/>
+        <image name="EPlus" width="90" height="50"/>
         <image name="ExchangeIcon" width="33" height="33"/>
         <image name="FavoriteIcon-Off" width="30" height="30"/>
         <image name="FavoriteIcon-On" width="30" height="30"/>
