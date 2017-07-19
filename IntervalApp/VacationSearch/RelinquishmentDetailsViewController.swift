@@ -84,10 +84,6 @@ extension RelinquishmentDetailsViewController:UITableViewDataSource, UITableView
             
             cell.gradientView.frame = CGRect(x: cell.gradientView.frame.origin.x, y: cell.gradientView.frame.origin.y, width: cell.contentView.frame.width, height: cell.gradientView.frame.height)
             Helper.addLinearGradientToView(view: cell.gradientView, colour: UIColor.white, transparntToOpaque: true, vertical: true)
-            cell.layer.borderColor = UIColor.lightGray.cgColor
-            cell.layer.borderWidth = 1.0
-            cell.layer.cornerRadius = 7
-            cell.layer.masksToBounds = true
             return cell
             
         } else {

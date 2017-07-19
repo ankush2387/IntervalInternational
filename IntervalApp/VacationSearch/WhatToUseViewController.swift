@@ -56,114 +56,118 @@ class WhatToUseViewController: UIViewController {
             cell?.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
             self.isCheckedBox = false
             
-        }
-        
-        //Start process request
-        
-        //Exchange process request parameters
-        Helper.showProgressBar(senderView: self)
-        let processResort = ExchangeProcess()
-        processResort.holdUnitStartTimeInMillis = Constant.holdingTime
-        
-        
-        let processRequest = ExchangeProcessStartRequest()
-        
-        processRequest.destination = Constant.MyClassConstants.exchangeDestination
-        processRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
-        
-        if(Constant.MyClassConstants.filterRelinquishments[(cell?.tag)!].openWeek != nil){
-            processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[(cell?.tag)!].openWeek?.relinquishmentId
-        }
-        
-        ExchangeProcessClient.start(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: {(response) in
+            //Start process request
+            
+            //Exchange process request parameters
+            Helper.showProgressBar(senderView: self)
             let processResort = ExchangeProcess()
-            processResort.processId = response.processId
-            Constant.MyClassConstants.exchangeBookingLastStartedProcess = processResort
-            Constant.MyClassConstants.exchangeProcessStartResponse = response
-            Constant.MyClassConstants.exchangeViewResponse = response.view!
-            //Constant.MyClassConstants.rentalFees = [(response.view?.fees)!]
-            Constant.MyClassConstants.guestCertificate = response.view?.fees?.guestCertificate
-            Constant.MyClassConstants.onsiteArray.removeAllObjects()
-            Constant.MyClassConstants.nearbyArray.removeAllObjects()
+            processResort.holdUnitStartTimeInMillis = Constant.holdingTime
             
-            for amenity in (response.view?.destination?.resort?.amenities)!{
-             if(amenity.nearby == false){
-             Constant.MyClassConstants.onsiteArray.add(amenity.amenityName!)
-             Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending(amenity.amenityName!)
-             Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending("\n")
-             }else{
-             Constant.MyClassConstants.nearbyArray.add(amenity.amenityName!)
-             Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending(amenity.amenityName!)
-             Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending("\n")
-             }
-             }
-            UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
+            
+            let processRequest = ExchangeProcessStartRequest()
+            
+            processRequest.destination = Constant.MyClassConstants.exchangeDestination
+            processRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
+            
+            if(Constant.MyClassConstants.filterRelinquishments[(cell?.tag)!].openWeek != nil){
+                processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[(cell?.tag)!].openWeek?.relinquishmentId
+            }
+            
+            ExchangeProcessClient.start(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: {(response) in
+                let processResort = ExchangeProcess()
+                processResort.processId = response.processId
+                Constant.MyClassConstants.exchangeBookingLastStartedProcess = processResort
+                Constant.MyClassConstants.exchangeProcessStartResponse = response
+                Constant.MyClassConstants.exchangeViewResponse = response.view!
+                //Constant.MyClassConstants.rentalFees = [(response.view?.fees)!]
+                Constant.MyClassConstants.guestCertificate = response.view?.fees?.guestCertificate
+                Constant.MyClassConstants.onsiteArray.removeAllObjects()
+                Constant.MyClassConstants.nearbyArray.removeAllObjects()
+                cell?.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
+
                 
-                // Got an access token!  Save it for later use.
-                Helper.hideProgressBar(senderView: self)
-                Constant.MyClassConstants.membershipContactArray = Membership.contacts!
-                var viewController = UIViewController()
-                if Constant.RunningDevice.deviceIdiom == .phone {
-                    viewController = WhoWillBeCheckingInViewController()
-                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-                     viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
-
-                    
-                } else {
-                    viewController = WhoWillBeCheckingInIPadViewController()
-
-                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-                     viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as! WhoWillBeCheckingInIPadViewController
+                for amenity in (response.view?.destination?.resort?.amenities)!{
+                    if(amenity.nearby == false){
+                        Constant.MyClassConstants.onsiteArray.add(amenity.amenityName!)
+                        Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending(amenity.amenityName!)
+                        Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending("\n")
+                    }else{
+                        Constant.MyClassConstants.nearbyArray.add(amenity.amenityName!)
+                        Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending(amenity.amenityName!)
+                        Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending("\n")
+                    }
                 }
-                
-                
-                let transitionManager = TransitionManager()
-                self.navigationController?.transitioningDelegate = transitionManager
-                self.navigationController!.pushViewController(viewController, animated: true)
-                
-                if self.showUpgrade == true {
-                    if let cell = (sender as AnyObject).superview??.superview?.superview as? RelinquishmentSelectionOpenWeeksCellWithUpgrade {
-                        let indexPath = self.tableView.indexPath(for: cell)
-                        let objFilterRelinquishment = Constant.MyClassConstants.filterRelinquishments[(indexPath?.row)!]
-                        if Constant.RunningDevice.deviceIdiom == .phone {
-                            (viewController as! WhoWillBeCheckingInViewController).filterRelinquishments = objFilterRelinquishment
+                UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
+                    
+                    // Got an access token!  Save it for later use.
+                    Helper.hideProgressBar(senderView: self)
+                    Constant.MyClassConstants.membershipContactArray = Membership.contacts!
+                    var viewController = UIViewController()
+                    if Constant.RunningDevice.deviceIdiom == .phone {
+                        viewController = WhoWillBeCheckingInViewController()
+                        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                        viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+                        
+                        
+                    } else {
+                        viewController = WhoWillBeCheckingInIPadViewController()
+                        
+                        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                        viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as! WhoWillBeCheckingInIPadViewController
+                    }
+                    
+                    
+                    let transitionManager = TransitionManager()
+                    self.navigationController?.transitioningDelegate = transitionManager
+                    self.navigationController!.pushViewController(viewController, animated: true)
+                    
+                    if self.showUpgrade == true {
+                        if let cell = (sender as AnyObject).superview??.superview?.superview as? RelinquishmentSelectionOpenWeeksCellWithUpgrade {
+                            let indexPath = self.tableView.indexPath(for: cell)
+                            let objFilterRelinquishment = Constant.MyClassConstants.filterRelinquishments[(indexPath?.row)!]
+                            if Constant.RunningDevice.deviceIdiom == .phone {
+                                (viewController as! WhoWillBeCheckingInViewController).filterRelinquishments = objFilterRelinquishment
+                                
+                                
+                            } else {
+                                (viewController as! WhoWillBeCheckingInIPadViewController).filterRelinquishments = objFilterRelinquishment
+                                
+                            }
                             
+                        }
+                        
+                    } else {
+                        if let cell = (sender as AnyObject).superview??.superview?.superview as? RelinquishmentSelectionOpenWeeksCell {
+                            let indexPath = self.tableView.indexPath(for: cell)
+                            let objFilterRelinquishment = Constant.MyClassConstants.filterRelinquishments[(indexPath?.row)!]
+                            if Constant.RunningDevice.deviceIdiom == .phone {
+                                (viewController as! WhoWillBeCheckingInViewController).filterRelinquishments = objFilterRelinquishment
+                                
+                                
+                            } else {
+                                (viewController as! WhoWillBeCheckingInIPadViewController).filterRelinquishments = objFilterRelinquishment
+                                
+                            }
                             
-                        } else {
-                            (viewController as! WhoWillBeCheckingInIPadViewController).filterRelinquishments = objFilterRelinquishment
                             
                         }
                         
                     }
+                }, onError: { (error) in
                     
-                } else {
-                    if let cell = (sender as AnyObject).superview??.superview?.superview as? RelinquishmentSelectionOpenWeeksCell {
-                        let indexPath = self.tableView.indexPath(for: cell)
-                        let objFilterRelinquishment = Constant.MyClassConstants.filterRelinquishments[(indexPath?.row)!]
-                        if Constant.RunningDevice.deviceIdiom == .phone {
-                            (viewController as! WhoWillBeCheckingInViewController).filterRelinquishments = objFilterRelinquishment
-                            
-                            
-                        } else {
-                            (viewController as! WhoWillBeCheckingInIPadViewController).filterRelinquishments = objFilterRelinquishment
-                            
-                        }
-
-                        
-                    }
+                    Helper.hideProgressBar(senderView: self)
+                    cell?.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
+                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                     
-                }
-            }, onError: { (error) in
+                })
                 
+            }, onError: {(error) in
                 Helper.hideProgressBar(senderView: self)
+                cell?.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
                 SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
-                
             })
-            
-        }, onError: {(error) in
-            Helper.hideProgressBar(senderView: self)
-            SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
-        })
+        }
+        
     }
     
     @IBAction func onClickDetailsButton(_ sender: Any) {

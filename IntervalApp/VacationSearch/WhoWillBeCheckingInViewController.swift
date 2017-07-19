@@ -50,12 +50,13 @@ class WhoWillBeCheckingInViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector:#selector(keyboardWasShown), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
         
-       
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // call country api
+        Helper.getCountry(viewController: self)
         
         // omniture tracking with event 40
         let pageView: [String: String] = [
@@ -63,7 +64,6 @@ class WhoWillBeCheckingInViewController: UIViewController {
             ]
         ADBMobile.trackAction(Constant.omnitureEvents.event40, data: pageView)
 
-        
         
         // omniture tracking with event 37
         let userInfo: [String: String] = [
@@ -75,7 +75,6 @@ class WhoWillBeCheckingInViewController: UIViewController {
         
         ADBMobile.trackAction(Constant.omnitureEvents.event37, data: userInfo)
 
-        
         
         self.proceedToCheckoutButton.isEnabled = false
         self.proceedToCheckoutButton.alpha = 0.5

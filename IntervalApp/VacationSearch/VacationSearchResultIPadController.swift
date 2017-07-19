@@ -293,7 +293,9 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
                         titleLabel.text = "Resorts in \(Constant.MyClassConstants.vacationSearchDestinationArray[0]) and \(Constant.MyClassConstants.vacationSearchDestinationArray.count - 1) more"
                     }else{
                         if(Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.getawayAlerts){
-                            titleLabel.text = "Resorts in \(Constant.MyClassConstants.vacationSearchDestinationArray[0])"
+                            if Constant.MyClassConstants.vacationSearchDestinationArray.count > 0 {
+                                titleLabel.text = "Resorts in \(Constant.MyClassConstants.vacationSearchDestinationArray[0])"
+                            }
                         }
                     }
                 }

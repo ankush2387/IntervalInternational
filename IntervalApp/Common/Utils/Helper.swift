@@ -413,7 +413,44 @@ public class Helper{
 
         })
     }
+    
+    // get Countries
+    static func getCountry(viewController:UIViewController) {
+        
+        
+        showProgressBar(senderView: viewController)
+        
+       /* DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode!, onSuccess: { (response) in*/
+        
+        LookupClient.getCountries(Constant.MyClassConstants.systemAccessToken!, onSuccess: { (response) in
+            Constant.GetawaySearchResultGuestFormDetailData.countryListArray = (response as! NSMutableArray) as! [String]
 
+            SVProgressHUD.dismiss()
+            removeServiceCallBackgroundView(view: viewController.view)
+
+        }) { (error) in
+            SVProgressHUD.dismiss()
+            removeServiceCallBackgroundView(view: viewController.view)
+            SimpleAlert.alert(viewController, title:Constant.AlertErrorMessages.errorString, message: error.description)
+        }
+        
+    }
+    
+    static func getStates(country:String, viewController:UIViewController) {
+        showProgressBar(senderView: viewController)
+        LookupClient.getStates(Constant.MyClassConstants.systemAccessToken!, countryCode: "", onSuccess: { (response) in
+            SVProgressHUD.dismiss()
+            Constant.GetawaySearchResultGuestFormDetailData.stateListArray = (response as NSArray) as! [String]
+            removeServiceCallBackgroundView(view: viewController.view)
+        }, onError: { (error) in
+            SVProgressHUD.dismiss()
+            removeServiceCallBackgroundView(view: viewController.view)
+            SimpleAlert.alert(viewController, title:Constant.AlertErrorMessages.errorString, message: error.description)
+        })
+        
+    }
+    
+    
     //Relinquishment details
     static func getRelinquishmentDetails(resortCode:String?, viewController:UIViewController) {
         showProgressBar(senderView: viewController)
@@ -440,7 +477,7 @@ public class Helper{
             removeServiceCallBackgroundView(view: viewController.view)
             SimpleAlert.alert(viewController, title:Constant.AlertErrorMessages.errorString, message: error.description)
         }
-        
+    
     }
 
 

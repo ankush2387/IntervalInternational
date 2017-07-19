@@ -367,8 +367,8 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                 Constant.MyClassConstants.enableTaxes = false
             }
             Constant.MyClassConstants.memberCreditCardList = (UserContext.sharedInstance.contact?.creditcards)!
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.checkOutViewController) as! CheckOutViewController
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.checkOutViewController) as! CheckOutIPadViewController
             viewController.filterRelinquishments = self.filterRelinquishments
             
             let transitionManager = TransitionManager()
@@ -483,7 +483,12 @@ extension WhoWillBeCheckingInIPadViewController:UITableViewDataSource {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.viewDetailsTBLcell, for: indexPath) as! ViewDetailsTBLcell
             cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInIPadViewController.resortDetailsClicked(_:)), for: .touchUpInside)
-            
+            if (indexPath.row == 0) {
+                cell.resortDetailsButton.tag = indexPath.row
+            } else {
+                cell.resortDetailsButton.tag = indexPath.row
+            }
+
             cell.resortName?.text = Constant.MyClassConstants.selectedResort.resortName
             cell.selectionStyle = .none
             
