@@ -434,7 +434,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
                     DarwinSDK.logger.debug("Response is : \(String(describing: response.view?.fees)) , -------->\(response)")
                     Constant.MyClassConstants.allowedCreditCardType = (response.view?.allowedCreditCardTypes)!
                     Constant.MyClassConstants.exchangeFees = [(response.view?.fees)!]
-                    if(Int((response.view?.fees?.shopExchange?.rentalPrice?.tax)!) != 0){
+                    if(Int((Constant.MyClassConstants.exchangeFees[0].shopExchange?.rentalPrice?.tax)!) != 0){
                         Constant.MyClassConstants.enableTaxes = true
                     }else{
                         Constant.MyClassConstants.enableTaxes = false

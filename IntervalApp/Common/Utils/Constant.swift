@@ -502,6 +502,9 @@ class Constant: NSObject {
         //UserDefaults
         static var userName = "userName"
         static var exchangeDestination = ExchangeDestination()
+        
+        //Changed promotions to global
+        static var isPromotionsEnabled = false
     }
     struct CommonStringIdentifiers {
         static var floatWeek = "FLOAT_WEEK"
@@ -593,6 +596,7 @@ class Constant: NSObject {
         static var feesAlertMessage = NSLocalizedString("Slide to agree to fees. ", comment:"")
         static var insuranceSelectionMessage = NSLocalizedString("Select trip protection or choose \("\"No I decline coverage.\"")", comment: "")
         static var paymentSelectionMessage = NSLocalizedString("Please select any payment method. ", comment:"")
+        static var promotionsMessage = NSLocalizedString("Please select any promotions. ", comment:"")
         static var feesPaymentMessage = NSLocalizedString("I acknowledge and agree that the mandatory resort fees will be payable to the resort. Fees are per person and per day", comment: "")
         static var agreeToFeesMessage = NSLocalizedString("Agreed to Fees", comment: "")
         static var termsConditionMessage = NSLocalizedString("I have read and accepted the Terms and Conditions and Privacy Policy", comment: "")
@@ -725,6 +729,7 @@ class Constant: NSObject {
         static var type = NSLocalizedString("Type", comment: "")
         static var expirationDate = NSLocalizedString("Select Expiration Date", comment: "")
         static var cvv = NSLocalizedString("CVV", comment: "")
+        static var expirationDatePlaceHolder = NSLocalizedString("MM/YY", comment: "")
         static var country = NSLocalizedString("Country", comment: "")
         //Ownership text field placeholder
         static var reservationNumber = NSLocalizedString("Reservation Number", comment: "")
@@ -966,6 +971,7 @@ class Constant: NSObject {
     struct PaymentSelectionViewControllerCellIdentifiersAndHardCodedStrings {
         
         static var cvvAlertTitle = NSLocalizedString("Please enter the credit card CVV code", comment: "")
+        static var cvvandExpiryDateAlertTitle = NSLocalizedString("Your card is expired. Please enter your credit card CVV code and the new expiration date.", comment: "")
     }
     
     //***** common  structure to provide all CheckOut IPad View Controller CellIdentifiers And HardCoded Strings *****//
@@ -1245,7 +1251,6 @@ class Constant: NSObject {
     
     //***** common  structure to provide all assetImageNames *****//
     struct assetImageNames {
-        
         static var TouchIdOn = "TouchID-On"
         static var TouchIdOff = "TouchID-Off"
         static var backArrowNav = "BackArrowNav"
@@ -1286,6 +1291,7 @@ class Constant: NSObject {
         static var plusIcon = "PlusIcon"
         static var infoImage = "InfoIcon"
         static var relinquishmentImage = "EXG_CO"
+        static var promoImage = "PromoImage"
     }
     
     //***** Bedroom ViewController *****//

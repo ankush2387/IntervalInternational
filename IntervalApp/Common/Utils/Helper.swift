@@ -1625,11 +1625,10 @@ public class Helper{
     }
     
     //Function to update fix week reservation
-    static func updateFixWeekReservation(relinqishmentID:String, fixedWeekReservation:FixWeekReservation){
+    static func updateFixWeekReservation(relinqishmentID:String, fixedWeekReservation:FixWeekReservation, viewController:UIViewController){
         ExchangeClient.updateFixWeekReservation(UserContext.sharedInstance.accessToken, relinquishmentId: relinqishmentID, reservation: fixedWeekReservation, onSuccess: {
-            print("success")
         }) { (error) in
-            
+            SimpleAlert.alert(viewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
         }
     }
 

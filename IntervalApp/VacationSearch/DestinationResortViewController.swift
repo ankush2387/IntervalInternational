@@ -146,12 +146,12 @@ extension DestinationResortViewController:UITableViewDataSource {
                 }
                
             }else{
-                let font = UIFont(name: Constant.fontName.helveticaNeue, size: 14.0)
+                let font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0)
                 if Constant.MyClassConstants.isFromExchange {
-                    height = heightForView((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[0].description)!, font: font!, width: Constant.MyClassConstants.runningDeviceWidth!)
+                    height = heightForView((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[0].description)!, font: font!, width: Constant.MyClassConstants.runningDeviceWidth! - 40)
                     return height + 60
                 } else {
-                    height = heightForView((Constant.MyClassConstants.viewResponse.resort?.advisements[0].description)!, font: font!, width: Constant.MyClassConstants.runningDeviceWidth!)
+                    height = heightForView((Constant.MyClassConstants.viewResponse.resort?.advisements[0].description)!, font: font!, width: Constant.MyClassConstants.runningDeviceWidth! - 40)
                     return height + 60
                     
                 }
@@ -161,15 +161,18 @@ extension DestinationResortViewController:UITableViewDataSource {
             
             if(indexPath.row == 1 && indexPath.section == 4){
                 
-              var count = Constant.MyClassConstants.onsiteArray.count + Constant.MyClassConstants.nearbyArray.count
-              count = count + 2
-                
-             // return CGFloat (count * 20 + 20)
-                return 500
+              var count = 0
+                if(Constant.MyClassConstants.onsiteArray.count > 0){
+                   count = count + Constant.MyClassConstants.onsiteArray.count * 20 + 40
+                }
+                if(Constant.MyClassConstants.nearbyArray.count > 0){
+                    count = count + Constant.MyClassConstants.nearbyArray.count + 40
+                }
+              return CGFloat (count)
                 
             }else if(indexPath.row == 1 && indexPath.section == 5){
                 
-                if ((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements.count)! > 1 && Constant.MyClassConstants.isFromExchange) {
+                if (Constant.MyClassConstants.isFromExchange && (Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements.count)! > 1) {
                     
                     let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0)
                     var height:CGFloat
