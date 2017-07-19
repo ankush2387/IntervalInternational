@@ -20,7 +20,7 @@ class InfoDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let object = Constant.MyClassConstants.selectedGetawayAlertDestinationArray[selectedIndex] as! NSArray
+        /*let object = Constant.MyClassConstants.selectedGetawayAlertDestinationArray[selectedIndex] as! NSArray
         
         var y = 60
         
@@ -49,7 +49,7 @@ class InfoDetailViewController: UIViewController {
             self.resortDetailView.addSubview(bullet)
             self.resortDetailView.addSubview(nameLabel)
             y = y + Int(nameLabel.frame.height)
-        }
+        }*/
         
     }
     
@@ -64,4 +64,34 @@ class InfoDetailViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
+}
+
+//***** extensiion class to define tableview datasource methods *****//
+extension InfoDetailViewController:UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
+}
+
+extension InfoDetailViewController:UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return Constant.MyClassConstants.selectedGetawayAlertDestinationArray.count
+    }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cellIdentifier, for: indexPath as IndexPath) as! ResortInfoTableViewCell
+        cell.selectionStyle = UITableViewCellSelectionStyle.none
+        let object = Constant.MyClassConstants.selectedGetawayAlertDestinationArray[indexPath.row] as! NSArray
+        let resort = object[indexPath.row] as! Resort
+        cell.resortInfoLabel.text =
+            resort.resortName
+        return cell
+        
+    }
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
 }

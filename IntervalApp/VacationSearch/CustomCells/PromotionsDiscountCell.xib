@@ -20,13 +20,13 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="20% Discount" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="4P5-Bc-g7B">
-                        <rect key="frame" x="15" y="19" width="89" height="21"/>
+                        <rect key="frame" x="20" y="19" width="89" height="21"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                         <color key="textColor" red="0.50588235290000005" green="0.71764705880000002" blue="0.22352941179999999" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rk6-4J-dsv">
-                        <rect key="frame" x="257" y="20" width="63" height="20"/>
+                        <rect key="frame" x="217" y="20" width="58" height="20"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Td-FJ-ujV">
                                 <rect key="frame" x="-4" y="-1" width="13" height="21"/>
@@ -47,13 +47,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="VaN-GJ-ePY">
-                                <rect key="frame" x="10" y="0.0" width="40" height="20"/>
+                                <rect key="frame" x="10" y="0.0" width="35" height="20"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                 <color key="textColor" red="0.50588235290000005" green="0.71764705880000002" blue="0.22352941179999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ely-FB-MpL">
-                                <rect key="frame" x="31" y="1" width="10" height="21"/>
+                                <rect key="frame" x="31" y="1" width="5" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.50588235290000005" green="0.71764705880000002" blue="0.22352941179999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -88,10 +88,9 @@
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="Rk6-4J-dsv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="257" id="8oW-Ft-Bf3"/>
                     <constraint firstItem="4P5-Bc-g7B" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="11" id="9l3-rD-Yw8"/>
-                    <constraint firstItem="4P5-Bc-g7B" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="7" id="DoP-YL-XWi"/>
-                    <constraint firstAttribute="trailing" secondItem="Rk6-4J-dsv" secondAttribute="trailing" id="Hi2-hq-i77"/>
+                    <constraint firstItem="4P5-Bc-g7B" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="12" id="DoP-YL-XWi"/>
+                    <constraint firstAttribute="trailing" secondItem="Rk6-4J-dsv" secondAttribute="trailing" constant="45" id="Hi2-hq-i77"/>
                     <constraint firstItem="Rk6-4J-dsv" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="20" id="KJr-PR-QAo"/>
                     <constraint firstAttribute="bottomMargin" secondItem="4P5-Bc-g7B" secondAttribute="bottom" constant="11.5" id="fqN-Ri-O09"/>
                     <constraint firstAttribute="bottom" secondItem="Rk6-4J-dsv" secondAttribute="bottom" constant="19.5" id="ghd-DE-aQY"/>

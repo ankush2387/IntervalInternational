@@ -76,7 +76,10 @@ class CheckOutViewController: UIViewController {
                     }
                 
                     if(Constant.MyClassConstants.exchangeFees[0].eplus != nil && (Constant.MyClassConstants.exchangeFees[0].eplus?.selected)!){
-                        eplusAdded = true
+                        let chckBoxButton = IUIKCheckbox()
+                        chckBoxButton.checked = true
+                        self.checkBoxClicked(sender: chckBoxButton)
+
                     }else{
                         eplusAdded = false
                     }
@@ -505,7 +508,7 @@ class CheckOutViewController: UIViewController {
         
         if(Constant.MyClassConstants.isFromExchange){
             Constant.MyClassConstants.exchangeFees.last!.insurance?.selected = shouldAddTripProtection
-            let exchangeRecalculateRequest = ExchangeProcessRecalculateRequest.init()
+            let exchangeRecalculateRequest = ExchangeProcessRecalculateRequest()
             exchangeRecalculateRequest.fees = Constant.MyClassConstants.exchangeFees.last!
             Helper.showProgressBar(senderView: self)
             ExchangeProcessClient.updateTripProtection(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: exchangeRecalculateRequest, onSuccess: {
@@ -520,7 +523,11 @@ class CheckOutViewController: UIViewController {
                 Helper.hideProgressBar(senderView: self)
                 
             }, onError: { (error) in
+                "document.getElementById('WASCInsuranceOfferOption0').checked = false;"
+                "document.getElementById('WASCInsuranceOfferOption1').checked = false;"
                 self.tripRequestInProcess = false
+                self.isTripProtectionEnabled = false
+                self.checkoutOptionTBLview.reloadData()
                 DarwinSDK.logger.debug(error.description)
                 Helper.hideProgressBar(senderView: self)
             })
@@ -539,7 +546,11 @@ class CheckOutViewController: UIViewController {
                 self.checkoutOptionTBLview.reloadSections(IndexSet(integer: 8), with:.automatic)
                 Helper.hideProgressBar(senderView: self)
             }, onError: { (error) in
+                "document.getElementById('WASCInsuranceOfferOption0').checked = false;"
+                "document.getElementById('WASCInsuranceOfferOption1').checked = false;"
                 self.tripRequestInProcess = false
+                self.isTripProtectionEnabled = false
+                self.checkoutOptionTBLview.reloadData()
                 DarwinSDK.logger.debug(error.description)
                 Helper.hideProgressBar(senderView: self)
             })
@@ -554,20 +565,20 @@ class CheckOutViewController: UIViewController {
     
     //Function to add remove eplus
     @IBAction func checkBoxClicked(sender: IUIKCheckbox){
-        //if(sender.checked){
-            let exchangeRecalculateRequest = ExchangeProcessRecalculateRequest.init()
+            let exchangeRecalculateRequest = ExchangeProcessRecalculateRequest()
             exchangeRecalculateRequest.fees = Constant.MyClassConstants.exchangeFees.last!
             exchangeRecalculateRequest.fees?.eplus?.selected = sender.checked
             Helper.showProgressBar(senderView: self)
             ExchangeProcessClient.updateEplus(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: exchangeRecalculateRequest, onSuccess: { (recapResponse) in
+                self.eplusAdded = true
+                self.checkoutOptionTBLview.reloadData()
                 Constant.MyClassConstants.exchangeFees = [(recapResponse.view?.fees)!]
                 Helper.hideProgressBar(senderView: self)
             }, onError: { (error) in
+                self.eplusAdded = false
+                self.checkoutOptionTBLview.reloadData()
                 Helper.hideProgressBar(senderView: self)
             })
-        /*}else{
-            
-        }*/
     }
     
 
