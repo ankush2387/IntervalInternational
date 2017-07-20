@@ -27,6 +27,7 @@ class Constant: NSObject {
     struct GetawaySearchResultGuestFormDetailData {
         
         static var countryListArray = [String]()
+        static var countryCodeArray = [String]()
         static var stateListArray = [String]()
         static var textFieldChangedInSection = -1
         static var firstName = ""
@@ -61,6 +62,7 @@ class Constant: NSObject {
     struct GetawaySearchResultCardFormDetailData {
         
         static var countryListArray = ["Canada","USA","India","Austrelia","South Africa"]
+        static var countryCodeArray: [String] = []
         static var cardTypeArray = ["Visa","Master","Coral"]
         static var textFieldChangedInSection = -1
         static var nameOnCard = ""

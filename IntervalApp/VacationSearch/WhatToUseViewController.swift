@@ -49,12 +49,12 @@ class WhatToUseViewController: UIViewController {
     @IBAction func checkBoxPressed(_ sender: Any) {
         
         let cell = (sender as AnyObject).superview??.superview?.superview as? RelinquishmentSelectionOpenWeeksCell
-        if self.isCheckedBox == false {
+        if self.isCheckedBox == true {
             cell?.mainView.layer.borderColor = UIColor.orange.cgColor
-            self.isCheckedBox = true
+            self.isCheckedBox = false
         } else {
             cell?.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
-            self.isCheckedBox = false
+            self.isCheckedBox = true
             
             //Start process request
             

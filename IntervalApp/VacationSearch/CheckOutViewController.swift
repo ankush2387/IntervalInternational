@@ -531,6 +531,7 @@ class CheckOutViewController: UIViewController {
                 self.checkoutOptionTBLview.reloadData()
                 DarwinSDK.logger.debug(error.description)
                 Helper.hideProgressBar(senderView: self)
+                SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: error.description)
             })
         }else{
             
@@ -580,6 +581,7 @@ class CheckOutViewController: UIViewController {
                Constant.MyClassConstants.exchangeFees[0].eplus?.selected = sender.checked
                 self.checkoutOptionTBLview.reloadData()
                 Helper.hideProgressBar(senderView: self)
+                SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: error.description)
             })
     }
     

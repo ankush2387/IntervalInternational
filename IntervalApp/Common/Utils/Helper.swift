@@ -421,6 +421,7 @@ public class Helper{
             
             for country in (response ){
                 Constant.GetawaySearchResultGuestFormDetailData.countryListArray.append(country.countryName!)
+                Constant.GetawaySearchResultGuestFormDetailData.countryCodeArray.append(country.countryCode!)
             }
             SVProgressHUD.dismiss()
             removeServiceCallBackgroundView(view: viewController.view)

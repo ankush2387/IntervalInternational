@@ -433,7 +433,6 @@ extension SearchResultViewController:UICollectionViewDelegate {
                     }, onError: { (error) in
                         Constant.MyClassConstants.resortsArray.removeAll()
                         self.searchResultTableView.reloadData()
-                        self.alertView = Helper.noResortView(senderView: self.view)
                         Helper.hideProgressBar(senderView: self)
                         self.alertView.isHidden = false
                         self.headerVw.isHidden = true
