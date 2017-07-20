@@ -416,15 +416,12 @@ public class Helper{
     
     // get Countries
     static func getCountry(viewController:UIViewController) {
-        
-        
         showProgressBar(senderView: viewController)
-        
-       /* DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode!, onSuccess: { (response) in*/
-        
         LookupClient.getCountries(Constant.MyClassConstants.systemAccessToken!, onSuccess: { (response) in
-            Constant.GetawaySearchResultGuestFormDetailData.countryListArray = (response as! NSMutableArray) as! [String]
-
+            
+            for country in (response ){
+                Constant.GetawaySearchResultGuestFormDetailData.countryListArray.append(country.countryName!)
+            }
             SVProgressHUD.dismiss()
             removeServiceCallBackgroundView(view: viewController.view)
 

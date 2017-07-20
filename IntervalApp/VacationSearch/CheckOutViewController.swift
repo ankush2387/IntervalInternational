@@ -76,9 +76,10 @@ class CheckOutViewController: UIViewController {
                     }
                 
                     if(Constant.MyClassConstants.exchangeFees[0].eplus != nil && (Constant.MyClassConstants.exchangeFees[0].eplus?.selected)!){
-                        let chckBoxButton = IUIKCheckbox()
-                        chckBoxButton.checked = true
-                        self.checkBoxClicked(sender: chckBoxButton)
+                        //let chckBoxButton = IUIKCheckbox()
+                       // chckBoxButton.checked = true
+                        eplusAdded = true
+                        //self.checkBoxClicked(sender: chckBoxButton)
 
                     }else{
                         eplusAdded = false
@@ -576,6 +577,7 @@ class CheckOutViewController: UIViewController {
                 Helper.hideProgressBar(senderView: self)
             }, onError: { (error) in
                 self.eplusAdded = false
+               Constant.MyClassConstants.exchangeFees[0].eplus?.selected = sender.checked
                 self.checkoutOptionTBLview.reloadData()
                 Helper.hideProgressBar(senderView: self)
             })

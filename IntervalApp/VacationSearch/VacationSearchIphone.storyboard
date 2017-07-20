@@ -3969,12 +3969,12 @@ Units Upgrade with this selection.</string>
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="130"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6p9-ZB-FG7">
-                                                    <rect key="frame" x="20" y="8" width="97" height="73"/>
-                                                    <color key="backgroundColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="EPlus" translatesAutoresizingMaskIntoConstraints="NO" id="6p9-ZB-FG7">
+                                                    <rect key="frame" x="20" y="20" width="97" height="57"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="97" id="1bQ-pv-f7f"/>
-                                                        <constraint firstAttribute="height" constant="73" id="H2v-W6-sYT"/>
+                                                        <constraint firstAttribute="height" constant="57" id="H2v-W6-sYT"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Change your destination, resort, unit size, or travel dates up to three times for one low fee." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2V9-JA-PS2">
@@ -4046,7 +4046,7 @@ Units Upgrade with this selection.</string>
                                                 <constraint firstItem="Ks0-JR-YM1" firstAttribute="leading" secondItem="W7Q-QH-rQ9" secondAttribute="trailing" constant="17" id="4N4-tV-IfJ"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="Ks0-JR-YM1" secondAttribute="bottom" constant="-2" id="7l1-1t-bWh"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="W7Q-QH-rQ9" secondAttribute="bottom" id="AEt-Ps-cP1"/>
-                                                <constraint firstAttribute="topMargin" secondItem="6p9-ZB-FG7" secondAttribute="top" id="B7I-OR-nV6"/>
+                                                <constraint firstAttribute="topMargin" secondItem="6p9-ZB-FG7" secondAttribute="top" constant="-12" id="B7I-OR-nV6"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="2V9-JA-PS2" secondAttribute="trailing" constant="7" id="DCD-9f-dcy"/>
                                                 <constraint firstItem="6p9-ZB-FG7" firstAttribute="leading" secondItem="wfu-JT-1fO" secondAttribute="leadingMargin" constant="12" id="Lde-fY-a5d"/>
                                                 <constraint firstAttribute="topMargin" secondItem="2V9-JA-PS2" secondAttribute="top" id="fIO-14-khz"/>
@@ -4058,6 +4058,7 @@ Units Upgrade with this selection.</string>
                                             <outlet property="currencyLabel" destination="xBm-4L-JBN" id="oXP-Eg-w1H"/>
                                             <outlet property="fractionalPriceLabel" destination="yy9-dr-4xD" id="VR7-Ke-MS3"/>
                                             <outlet property="periodLabel" destination="79L-ao-wES" id="YsI-aA-4u6"/>
+                                            <outlet property="priceCheckBox" destination="Ks0-JR-YM1" id="cIH-w4-7Uq"/>
                                             <outlet property="priceView" destination="W7Q-QH-rQ9" id="fPe-pz-Hj6"/>
                                             <outlet property="primaryPriceLabel" destination="Y0s-Tx-Jch" id="tKg-QO-LTR"/>
                                         </connections>
@@ -4304,7 +4305,7 @@ Units Upgrade with this selection.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4U8-Y9-NTh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5858" y="1189"/>
+            <point key="canvasLocation" x="5857.2463768115949" y="1188.5869565217392"/>
         </scene>
         <!--Confirmation-->
         <scene sceneID="eRM-Oz-aVQ">
@@ -6402,6 +6403,7 @@ Units Upgrade with this selection.</string>
         <image name="CalendarIcon" width="33" height="33"/>
         <image name="CertificatesTab-Off" width="33" height="33"/>
         <image name="DropArrowIcon" width="33" height="33"/>
+        <image name="EPlus" width="90" height="50"/>
         <image name="ExchangeIcon" width="33" height="33"/>
         <image name="FavoriteIcon-Off" width="30" height="30"/>
         <image name="FavoriteIcon-On" width="30" height="30"/>
@@ -6418,7 +6420,7 @@ Units Upgrade with this selection.</string>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="0uV-Eo-2bn"/>
-        <segue reference="4gU-cx-AAf"/>
-        <segue reference="xan-e8-tse"/>
+        <segue reference="sGp-zH-9TZ"/>
+        <segue reference="4Eo-F1-CbC"/>
     </inferredMetricsTieBreakers>
 </document>
