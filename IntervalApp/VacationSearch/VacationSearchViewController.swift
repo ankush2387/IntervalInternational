@@ -474,6 +474,7 @@ extension VacationSearchViewController:UITableViewDelegate {
                     let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
                     DispatchQueue.main.asyncAfter(deadline: delayTime) {
                         tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
+                        Helper.InitializeArrayFromLocalStorage()
                     }
                     
                 }

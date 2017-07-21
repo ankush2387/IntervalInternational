@@ -494,6 +494,7 @@ public class Helper{
             searchResortRequest.resortCodes = Constant.MyClassConstants.resortCodesArray
             showProgressBar(senderView:senderVC)
             RentalClient.searchResorts(UserContext.sharedInstance.accessToken, request: searchResortRequest, onSuccess: { (response) in
+                Constant.MyClassConstants.showAlert = false
                 Constant.MyClassConstants.resortsArray.removeAll()
                 Constant.MyClassConstants.resortsArray = response.resorts
                 //DarwinSDK.logger.debug(response.resorts[0].promotions)

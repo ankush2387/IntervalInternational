@@ -1546,9 +1546,9 @@ Interval Account</string>
         <image name="close" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="PVi-Ym-AGy"/>
-        <segue reference="v5y-Uh-olM"/>
-        <segue reference="1yd-In-YGU"/>
         <segue reference="KTW-Os-bqS"/>
+        <segue reference="LB4-mY-QYy"/>
+        <segue reference="PVi-Ym-AGy"/>
+        <segue reference="1yd-In-YGU"/>
     </inferredMetricsTieBreakers>
 </document>

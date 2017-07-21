@@ -172,8 +172,9 @@ extension DestinationResortViewController:UITableViewDataSource {
                 
             }else if(indexPath.row == 1 && indexPath.section == 5){
                 
-                if (Constant.MyClassConstants.isFromExchange && (Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements.count)! > 1) {
+                if (Constant.MyClassConstants.isFromExchange) {
                     
+                    if((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements.count)! > 1){
                     let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0)
                     var height:CGFloat
                     if(Constant.RunningDevice.deviceIdiom == .pad){
@@ -183,9 +184,13 @@ extension DestinationResortViewController:UITableViewDataSource {
                         height = heightForView((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[1].description)!, font: font!, width: Constant.MyClassConstants.runningDeviceWidth!)
                         return height + 20
                     }
+                    }else{
+                        return 0
+                    }
                 }else {
                     let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0)
                     var height:CGFloat
+                    if((Constant.MyClassConstants.viewResponse.resort?.advisements.count)! > 0){
                     if(Constant.RunningDevice.deviceIdiom == .pad){
                         height = heightForView((Constant.MyClassConstants.viewResponse.resort?.advisements[1].description)!, font: font!, width: (Constant.MyClassConstants.runningDeviceWidth!/2) - 100)
                         return height
@@ -193,6 +198,10 @@ extension DestinationResortViewController:UITableViewDataSource {
                         height = heightForView((Constant.MyClassConstants.viewResponse.resort?.advisements[1].description)!, font: font!, width: Constant.MyClassConstants.runningDeviceWidth!)
                         return height + 20
                     }
+                    }else{
+                        return 0
+                    }
+                    
                 }
        
             }else{
