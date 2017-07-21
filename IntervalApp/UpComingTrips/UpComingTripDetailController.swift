@@ -63,13 +63,13 @@ class UpComingTripDetailController: UIViewController {
         
         // Omniture tracking with event 74
         
-        let userInfo: [String: String] = [
+       /*  let userInfo: [String: String] = [
             
             Constant.omnitureEvars.eVar55 : "\(getdatediffrence())",
             Constant.omnitureEvars.eVar56 : ""
             
         ]
-        ADBMobile.trackAction(Constant.omnitureEvents.event74, data: userInfo)
+        ADBMobile.trackAction(Constant.omnitureEvents.event74, data: userInfo) */
         
         
     }

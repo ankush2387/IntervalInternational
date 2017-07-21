@@ -29,6 +29,7 @@ class Constant: NSObject {
         static var countryListArray = [String]()
         static var countryCodeArray = [String]()
         static var stateListArray = [String]()
+        static var stateCodeArray = [String]()
         static var textFieldChangedInSection = -1
         static var firstName = ""
         static var lastName = ""
@@ -77,6 +78,7 @@ class Constant: NSObject {
         static var expDate:Date? = nil
         static var cvv = ""
         static var countryCode = ""
+        static var stateCode = ""
     }
     
     struct MyClassConstants{
@@ -615,6 +617,7 @@ class Constant: NSObject {
         static var userInterestMessage = NSLocalizedString("How's about you go favorite some resorts and when you come back they will be here all warm and toasty waiting for you!", comment: "")
         static var goGetMessage = NSLocalizedString("Go on Get! ", comment: "")
         static var noDatesMessage = NSLocalizedString("No Dates availabel", comment: "")
+        static var tradeItemMessage = NSLocalizedString("Add items to \("What do you want to trade?") section", comment: "")
     }
     
     //***** common  structure to provide alert promt button titles *****//

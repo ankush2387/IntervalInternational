@@ -1373,6 +1373,9 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             }
             Constant.MyClassConstants.isFromExchange = false
         }else if(self.SegmentIndex == 2){
+            if(Constant.MyClassConstants.relinquishmentIdArray.count == 0){
+              SimpleAlert.alert(self, title: Constant.AlertErrorMessages.noResultError, message: Constant.AlertMessages.tradeItemMessage)
+            }else{
             sender.isEnabled = false
             Helper.showProgressBar(senderView: self)
             let (toDate,fromDate) = getSearchDates()
@@ -1481,6 +1484,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
             }
             Constant.MyClassConstants.isFromExchange = true
+        }
         }
     }
     

@@ -140,6 +140,7 @@ extension ClubresortsViewController:UITableViewDataSource{
                 }
             }
             else{
+                print(clubresortArrayOfDictionary)
                 cell?.getCell(clubresortArrayOfDictionary[(indexPath as NSIndexPath).row],index: (indexPath as NSIndexPath).row)
             }
             

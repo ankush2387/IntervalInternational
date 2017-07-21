@@ -443,6 +443,7 @@ public class Helper{
             SVProgressHUD.dismiss()
             for state in response{
                 Constant.GetawaySearchResultGuestFormDetailData.stateListArray.append(state.name!)
+                Constant.GetawaySearchResultGuestFormDetailData.stateCodeArray.append(state.code!)
             }
             removeServiceCallBackgroundView(view: viewController.view)
         }, onError: { (error) in

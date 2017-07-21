@@ -140,9 +140,9 @@ class AddDebitOrCreditCardViewController: UIViewController {
                 billingAdrs.addrLine2 = Constant.GetawaySearchResultCardFormDetailData.address2
                 billingAdrs.cityName = Constant.GetawaySearchResultCardFormDetailData.city
                 
-                billingAdrs.countryCode = "USA"
+                billingAdrs.countryCode = Constant.GetawaySearchResultCardFormDetailData.countryCode
                 billingAdrs.zipCode = Constant.GetawaySearchResultCardFormDetailData.pinCode
-                billingAdrs.territoryCode = "FL"
+                billingAdrs.territoryCode = Constant.GetawaySearchResultCardFormDetailData.stateCode
                 
                 newCreditCard.billingAddress = billingAdrs
                 newCreditCard.typeCode = Helper.cardNameMapping(cardName: Constant.GetawaySearchResultCardFormDetailData.cardType)
@@ -171,7 +171,7 @@ class AddDebitOrCreditCardViewController: UIViewController {
                     self.delegate?.newCreditCardAdded()
                     
                     }, onError: {(error) in
-                        
+                        SimpleAlert.alert(self, title:Constant.MyClassConstants.newCardalertTitle, message: error.description)
                         Helper.removeServiceCallBackgroundView(view: self.view)
                         SVProgressHUD.dismiss()
                        
@@ -750,6 +750,7 @@ extension AddDebitOrCreditCardViewController:UIPickerViewDelegate {
              else {
                 
                 Constant.GetawaySearchResultCardFormDetailData.state = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row]
+                Constant.GetawaySearchResultCardFormDetailData.stateCode = Constant.GetawaySearchResultGuestFormDetailData.stateCodeArray[row]
             }
             
         }
