@@ -485,11 +485,15 @@ extension WhoWillBeCheckingInIPadViewController:UITableViewDataSource {
             cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInIPadViewController.resortDetailsClicked(_:)), for: .touchUpInside)
             if (indexPath.row == 0) {
                 cell.resortDetailsButton.tag = indexPath.row
+                cell.lblHeading.text = "Resort Detail"
+                cell.resortName?.text = Constant.MyClassConstants.selectedResort.resortName
             } else {
                 cell.resortDetailsButton.tag = indexPath.row
+                cell.lblHeading.text = "Relinquishment"
+                 cell.resortName?.text = filterRelinquishments.openWeek?.resort?.resortName
             }
 
-            cell.resortName?.text = Constant.MyClassConstants.selectedResort.resortName
+            
             cell.selectionStyle = .none
             
             return cell

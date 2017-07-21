@@ -77,14 +77,16 @@ extension InfoDetailViewController:UITableViewDelegate {
 
 extension InfoDetailViewController:UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        return Constant.MyClassConstants.selectedGetawayAlertDestinationArray.count
+        let object = Constant.MyClassConstants.selectedGetawayAlertDestinationArray[0] as! NSArray
+       // let count  = object as! Int
+        //let resort = object[0] as! NSArray
+        return object.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cellIdentifier, for: indexPath as IndexPath) as! ResortInfoTableViewCell
         cell.selectionStyle = UITableViewCellSelectionStyle.none
-        let object = Constant.MyClassConstants.selectedGetawayAlertDestinationArray[indexPath.row] as! NSArray
+        let object = Constant.MyClassConstants.selectedGetawayAlertDestinationArray[0] as! NSArray
         let resort = object[indexPath.row] as! Resort
         cell.resortInfoLabel.text =
             resort.resortName
