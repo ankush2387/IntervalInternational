@@ -76,7 +76,7 @@ class Constant: NSObject {
         static var cardType = ""
         static var expDate:Date? = nil
         static var cvv = ""
-        
+        static var countryCode = ""
     }
     
     struct MyClassConstants{

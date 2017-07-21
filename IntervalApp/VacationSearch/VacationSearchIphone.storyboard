@@ -4485,6 +4485,7 @@ Units Upgrade with this selection.</string>
                                             <outlet property="cardSelectionCheckBox" destination="5Vc-pz-Cn5" id="vnU-jN-TLn"/>
                                             <outlet property="cardType" destination="WbU-2v-QhV" id="R4o-xV-lt8"/>
                                             <outlet property="expireDate" destination="kvu-M0-g8b" id="r1I-UO-EMQ"/>
+                                            <outlet property="expireDateLabel" destination="2qm-7k-w07" id="tuW-V7-c6v"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="AddNewCreditCardCell" rowHeight="50" id="AZn-vs-82g" customClass="AddNewCreditCardCell" customModule="IntervalApp" customModuleProvider="target">

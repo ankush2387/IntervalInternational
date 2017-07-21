@@ -417,6 +417,8 @@ public class Helper{
     // get Countries
     static func getCountry(viewController:UIViewController) {
         showProgressBar(senderView: viewController)
+        Constant.GetawaySearchResultGuestFormDetailData.countryListArray.removeAll()
+        Constant.GetawaySearchResultGuestFormDetailData.countryCodeArray.removeAll()
         LookupClient.getCountries(Constant.MyClassConstants.systemAccessToken!, onSuccess: { (response) in
             
             for country in (response ){
@@ -436,13 +438,17 @@ public class Helper{
     
     static func getStates(country:String, viewController:UIViewController) {
         showProgressBar(senderView: viewController)
-        LookupClient.getStates(Constant.MyClassConstants.systemAccessToken!, countryCode: "", onSuccess: { (response) in
+        Constant.GetawaySearchResultGuestFormDetailData.stateListArray.removeAll()
+        LookupClient.getStates(Constant.MyClassConstants.systemAccessToken!, countryCode: country, onSuccess: { (response) in
             SVProgressHUD.dismiss()
-            Constant.GetawaySearchResultGuestFormDetailData.stateListArray = (response as NSArray) as! [String]
+            for state in response{
+                Constant.GetawaySearchResultGuestFormDetailData.stateListArray.append(state.name!)
+            }
             removeServiceCallBackgroundView(view: viewController.view)
         }, onError: { (error) in
             SVProgressHUD.dismiss()
             removeServiceCallBackgroundView(view: viewController.view)
+            Constant.GetawaySearchResultGuestFormDetailData.stateListArray = ["California","Pennyslvenia"]
             SimpleAlert.alert(viewController, title:Constant.AlertErrorMessages.errorString, message: error.description)
         })
         

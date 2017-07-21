@@ -742,7 +742,10 @@ extension AddDebitOrCreditCardViewController:UIPickerViewDelegate {
             
              if(self.dropDownSelectionRow == 0) {
                 
-                 Constant.GetawaySearchResultCardFormDetailData.country = Constant.GetawaySearchResultCardFormDetailData.countryListArray[row]
+                 Constant.GetawaySearchResultCardFormDetailData.country = Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row]
+                Constant.GetawaySearchResultCardFormDetailData.countryCode = Constant.GetawaySearchResultGuestFormDetailData.countryCodeArray[row]
+                
+                Helper.getStates(country: Constant.GetawaySearchResultCardFormDetailData.countryCode, viewController: self)
              }
              else {
                 
