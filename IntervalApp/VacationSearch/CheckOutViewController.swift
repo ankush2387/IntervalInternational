@@ -519,12 +519,11 @@ class CheckOutViewController: UIViewController {
                 DarwinSDK.logger.debug(Constant.MyClassConstants.continueToCheckoutResponse.view?.promoCodes)
                 DarwinSDK.logger.debug(Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.insurance?.price)
                 Constant.MyClassConstants.exchangeFees[0].total = (response.view?.fees?.total)!
-                self.checkoutOptionTBLview.reloadSections(IndexSet(integer: 8), with:.automatic)
+                self.checkoutOptionTBLview.reloadData()
                 Helper.hideProgressBar(senderView: self)
-                
+    
             }, onError: { (error) in
-                "document.getElementById('WASCInsuranceOfferOption0').checked = false;"
-                "document.getElementById('WASCInsuranceOfferOption1').checked = false;"
+                Constant.MyClassConstants.exchangeFees.last!.insurance?.selected = !shouldAddTripProtection
                 self.tripRequestInProcess = false
                 self.isTripProtectionEnabled = false
                 self.checkoutOptionTBLview.reloadData()
@@ -571,12 +570,12 @@ class CheckOutViewController: UIViewController {
             exchangeRecalculateRequest.fees?.eplus?.selected = sender.checked
             Helper.showProgressBar(senderView: self)
             ExchangeProcessClient.recalculateFees(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: exchangeRecalculateRequest, onSuccess: { (recapResponse) in
-                self.eplusAdded = true
+                self.eplusAdded = sender.checked
                 self.checkoutOptionTBLview.reloadData()
                 Constant.MyClassConstants.exchangeFees = [(recapResponse.view?.fees)!]
                 Helper.hideProgressBar(senderView: self)
             }, onError: { (error) in
-                self.eplusAdded = false
+               self.eplusAdded = !sender.checked
                Constant.MyClassConstants.exchangeFees[0].eplus?.selected = sender.checked
                 self.checkoutOptionTBLview.reloadData()
                 Helper.hideProgressBar(senderView: self)
