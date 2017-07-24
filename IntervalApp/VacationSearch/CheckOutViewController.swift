@@ -336,8 +336,7 @@ class CheckOutViewController: UIViewController {
                 
                 let processRequest = ExchangeProcessRecalculateRequest()
                 processRequest.fees = fees
-                
-                ExchangeProcessClient.addCartPromotion(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: { (response) in
+                ExchangeProcessClient.recalculateFees(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: { (response) in
                     
                     if let promotions = response.view?.fees?.shopExchange?.promotions {
                         self.recapPromotionsArray = promotions
@@ -512,7 +511,7 @@ class CheckOutViewController: UIViewController {
             let exchangeRecalculateRequest = ExchangeProcessRecalculateRequest()
             exchangeRecalculateRequest.fees = Constant.MyClassConstants.exchangeFees.last!
             Helper.showProgressBar(senderView: self)
-            ExchangeProcessClient.updateTripProtection(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: exchangeRecalculateRequest, onSuccess: {
+            ExchangeProcessClient.recalculateFees(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: exchangeRecalculateRequest, onSuccess: {
                 (response) in
                 
                 self.tripRequestInProcess = false
@@ -571,7 +570,7 @@ class CheckOutViewController: UIViewController {
             exchangeRecalculateRequest.fees = Constant.MyClassConstants.exchangeFees.last!
             exchangeRecalculateRequest.fees?.eplus?.selected = sender.checked
             Helper.showProgressBar(senderView: self)
-            ExchangeProcessClient.updateEplus(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: exchangeRecalculateRequest, onSuccess: { (recapResponse) in
+            ExchangeProcessClient.recalculateFees(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: exchangeRecalculateRequest, onSuccess: { (recapResponse) in
                 self.eplusAdded = true
                 self.checkoutOptionTBLview.reloadData()
                 Constant.MyClassConstants.exchangeFees = [(recapResponse.view?.fees)!]
