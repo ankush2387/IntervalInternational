@@ -306,8 +306,8 @@ class SearchResultViewController: UIViewController {
             //}
             
         }, onError: { (error) in
-            print(Error.self)
             Helper.hideProgressBar(senderView: self)
+            SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.description)
         })
     }
     

@@ -50,10 +50,10 @@ class WhatToUseViewController: UIViewController {
         
         let cell = (sender as AnyObject).superview??.superview?.superview as? RelinquishmentSelectionOpenWeeksCell
         if self.isCheckedBox == true {
-            cell?.mainView.layer.borderColor = UIColor.orange.cgColor
+            cell?.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
             self.isCheckedBox = false
         } else {
-            cell?.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
+            cell?.mainView.layer.borderColor = UIColor.orange.cgColor
             self.isCheckedBox = true
             
             //Start process request
@@ -127,13 +127,9 @@ class WhatToUseViewController: UIViewController {
                             let objFilterRelinquishment = Constant.MyClassConstants.filterRelinquishments[(indexPath?.row)!]
                             if Constant.RunningDevice.deviceIdiom == .phone {
                                 (viewController as! WhoWillBeCheckingInViewController).filterRelinquishments = objFilterRelinquishment
-                                
-                                
                             } else {
                                 (viewController as! WhoWillBeCheckingInIPadViewController).filterRelinquishments = objFilterRelinquishment
-                                
                             }
-                            
                         }
                         
                     } else {
@@ -142,16 +138,10 @@ class WhatToUseViewController: UIViewController {
                             let objFilterRelinquishment = Constant.MyClassConstants.filterRelinquishments[(indexPath?.row)!]
                             if Constant.RunningDevice.deviceIdiom == .phone {
                                 (viewController as! WhoWillBeCheckingInViewController).filterRelinquishments = objFilterRelinquishment
-                                
-                                
                             } else {
                                 (viewController as! WhoWillBeCheckingInIPadViewController).filterRelinquishments = objFilterRelinquishment
-                                
                             }
-                            
-                            
                         }
-                        
                     }
                 }, onError: { (error) in
                     
