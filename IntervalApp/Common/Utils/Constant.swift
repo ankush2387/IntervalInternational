@@ -385,6 +385,7 @@ class Constant: NSObject {
         static var  relinquishmentOpenWeeks = [OpenWeek]()
         static var  relinquishmentProgram = PointsProgram()
         static var  relinquishmentSelectedWeek = OpenWeek()
+        static var relinquismentSelectedDeposit = Deposit()
         static var  clubPointResortsArray = [Resort]()
         static var  userSelectedStringArray = [String]()
         

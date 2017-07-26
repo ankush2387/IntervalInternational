@@ -79,6 +79,7 @@ class TradeLocalData:Object {
     
     var openWeeks = List<OpenWeeks>()
     var pProgram = List<rlmPointsProgram>()
+    var deposits = List<Deposits>()
 }
 
 class rlmPointsProgram:Object {
@@ -104,6 +105,21 @@ class OpenWeeks:Object {
     var unitDetails = List<ResortUnitDetails>()
     var floatDetails = List<ResortFloatDetails>()
     //dynamic var units = [InventoryUnit]()
+}
+
+class Deposits: Object {
+    dynamic var relinquishmentID = ""
+    dynamic var pointsProgramCode = ""
+    dynamic var exchangeStatus = ""
+    dynamic var weekNumber = ""
+    dynamic var relinquishmentYear = 0
+    dynamic var isLockOff = false
+    dynamic var isFloat = false
+    dynamic var isFloatRemoved = false
+    dynamic var isFromRelinquishment = false
+    var resort = List<ResortList>()
+    var unitDetails = List<ResortUnitDetails>()
+    var floatDetails = List<ResortFloatDetails>()
 }
 
 
