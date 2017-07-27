@@ -161,19 +161,31 @@ class CheckOutIPadViewController: UIViewController {
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
         
         SVProgressHUD.show()
-        Helper.addServiceCallBackgroundView(view: self.view)
-        RentalProcessClient.backToWhoIsChecking(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, onSuccess: {(response) in
+       
+        if(Constant.MyClassConstants.isFromExchange){
+            ExchangeProcessClient.backToChooseExchange(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess: {(response) in
+                Helper.hideProgressBar(senderView: self)
+            }, onError: {(error) in
+                Helper.hideProgressBar(senderView: self)
+                SimpleAlert.alert(self, title: "Checkout", message: error.localizedDescription)
+            })
             
-            SVProgressHUD.dismiss()
-            Helper.removeServiceCallBackgroundView(view: self.view)
-            _ = self.navigationController?.popViewController(animated: true)
+        }else{
             
-        }, onError: {(error) in
-            
-            SVProgressHUD.dismiss()
-            Helper.removeServiceCallBackgroundView(view: self.view)
-            SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.operationFailedMessage)
-        })
+            RentalProcessClient.backToWhoIsChecking(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, onSuccess: {(response) in
+                
+                SVProgressHUD.dismiss()
+                Helper.removeServiceCallBackgroundView(view: self.view)
+                _ = self.navigationController?.popViewController(animated: true)
+                
+            }, onError: {(error) in
+                
+                SVProgressHUD.dismiss()
+                Helper.removeServiceCallBackgroundView(view: self.view)
+                SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.operationFailedMessage)
+            })
+        }
+        
     }
     override func viewDidLayoutSubviews() {
         
@@ -304,7 +316,7 @@ class CheckOutIPadViewController: UIViewController {
             let exchangeRecalculateRequest = ExchangeProcessRecalculateRequest.init()
             exchangeRecalculateRequest.fees = Constant.MyClassConstants.exchangeFees.last!
             Helper.showProgressBar(senderView: self)
-            ExchangeProcessClient.updateTripProtection(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: exchangeRecalculateRequest, onSuccess: {
+            ExchangeProcessClient.recalculateFees(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: exchangeRecalculateRequest, onSuccess: {
                 (response) in
                 
                 self.tripRequestInProcess = false
@@ -312,7 +324,7 @@ class CheckOutIPadViewController: UIViewController {
                 DarwinSDK.logger.debug(Constant.MyClassConstants.continueToCheckoutResponse.view?.promoCodes)
                 DarwinSDK.logger.debug(Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.insurance?.price)
                 Constant.MyClassConstants.exchangeFees[0].total = (response.view?.fees?.total)!
-                self.checkoutTableView.reloadSections(IndexSet(integer: 8), with:.automatic)
+                self.bookingTableView.reloadSections(IndexSet(integer: 8), with:.automatic)
                 Helper.hideProgressBar(senderView: self)
                 
             }, onError: { (error) in
@@ -358,7 +370,10 @@ class CheckOutIPadViewController: UIViewController {
         exchangeRecalculateRequest.fees = Constant.MyClassConstants.exchangeFees.last!
         exchangeRecalculateRequest.fees?.eplus?.selected = sender.checked
         Helper.showProgressBar(senderView: self)
-        ExchangeProcessClient.updateEplus(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: exchangeRecalculateRequest, onSuccess: { (recapResponse) in
+        ExchangeProcessClient.recalculateFees(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: exchangeRecalculateRequest, onSuccess: { (recapResponse) in
+            
+            self.eplusAdded = true
+            self.bookingTableView.reloadData()
             Constant.MyClassConstants.exchangeFees = [(recapResponse.view?.fees)!]
             Helper.hideProgressBar(senderView: self)
         }, onError: { (error) in
@@ -485,7 +500,7 @@ class CheckOutIPadViewController: UIViewController {
                 let processRequest = ExchangeProcessRecalculateRequest()
                 processRequest.fees = fees
                 
-                ExchangeProcessClient.addCartPromotion(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: { (response) in
+                ExchangeProcessClient.recalculateFees(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: { (response) in
                     
                     if let promotions = response.view?.fees?.shopExchange?.promotions {
                         self.recapPromotionsArray = promotions
@@ -501,8 +516,10 @@ class CheckOutIPadViewController: UIViewController {
                     }
                     
                     self.destinationPromotionSelected = true
+                    self.checkoutTableView.reloadData()
                     self.bookingTableView.reloadData()
                     Helper.hideProgressBar(senderView: self)
+                    
                     
                 }, onError: { (error) in
                     Helper.hideProgressBar(senderView: self)
@@ -574,7 +591,7 @@ extension CheckOutIPadViewController:UITableViewDelegate {
                 }
                 else {
                     
-                    let selectedCard = Constant.MyClassConstants.selectedCreditCard[0]
+                     let selectedCard = Constant.MyClassConstants.selectedCreditCard[0]
                     if(selectedCard.creditcardId == 0) {
                         Constant.MyClassConstants.memberCreditCardList.append(selectedCard)
                         SVProgressHUD.dismiss()
@@ -617,17 +634,11 @@ extension CheckOutIPadViewController:UITableViewDataSource {
         case 2:
             switch section{
             case 1:
-                if((self.isExchangeOptionEnabled || self.isGetawayOptionEnabled) && Constant.MyClassConstants.enableTaxes){
-                    return 2
-                }else if(!self.isTripProtectionEnabled && !Constant.MyClassConstants.enableTaxes){
-                    if(eplusAdded){
-                        return 3
-                    }
-                    else{
-                        return 2
-                    }
+                if(!showInsurance){
+                    return 0
+                   
                 }else{
-                    return 1
+                   return 1
                 }
             case 2:
                 if(self.isTripProtectionEnabled && Constant.MyClassConstants.enableGuestCertificate){
@@ -644,6 +655,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                 } else {
                     return 0
                 }
+
             default:
                 return 1
             }
@@ -664,7 +676,26 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                     return advisementCount
                 }
             case 2:
-                return 1
+                if Constant.MyClassConstants.recapViewPromotionCodeArray.count > 0 {
+                    return 1
+                }
+                return 0
+            case 4 :
+              if((Constant.MyClassConstants.isFromExchange || !Constant.MyClassConstants.isFromExchange) && Constant.MyClassConstants.enableTaxes) || ( Constant.MyClassConstants.enableGuestCertificate && self.isTripProtectionEnabled){
+                    if(eplusAdded){
+                        return 3
+                    }else{
+                        return 2
+                    }
+                }else{
+                    if(eplusAdded){
+                        return 2
+                    }else{
+                        return 1
+                    }
+                    
+                }
+                
             default:
                 return 1
             }
