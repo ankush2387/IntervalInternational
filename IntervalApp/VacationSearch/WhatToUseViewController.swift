@@ -24,6 +24,8 @@ class WhatToUseViewController: UIViewController {
         super.viewWillAppear(true)
         // Get dynamic rows
         self.getNumberOfRows()
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+
     }
     
     override func viewDidLoad() {
