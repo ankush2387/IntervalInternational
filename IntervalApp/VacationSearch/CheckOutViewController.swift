@@ -71,8 +71,10 @@ class CheckOutViewController: UIViewController {
                 if(Constant.MyClassConstants.exchangeFees.count > 0){
                     if let _: String? = Constant.MyClassConstants.exchangeFees[0].insurance?.insuranceOfferHTML!{
                         showInsurance = true
+                        self.isTripProtectionEnabled = true
                     }else{
                         showInsurance = false
+                        self.isTripProtectionEnabled = false
                     }
                 
                     if(Constant.MyClassConstants.exchangeFees[0].eplus != nil && (Constant.MyClassConstants.exchangeFees[0].eplus?.selected)!){
@@ -188,6 +190,7 @@ class CheckOutViewController: UIViewController {
                         self.isAgreed = true
                         Helper.hideProgressBar(senderView: self)
                         self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
+                        Constant.MyClassConstants.transactionNumber = (response.view?.fees?.shopExchange?.confirmationNumber)!
                         self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
                         
                     }, onError: { (error) in
@@ -218,6 +221,7 @@ class CheckOutViewController: UIViewController {
                     self.isAgreed = true
                     SVProgressHUD.dismiss()
                     Helper.removeServiceCallBackgroundView(view: self.view)
+                    Constant.MyClassConstants.transactionNumber = (response.view?.fees?.rental?.confirmationNumber)!
                     self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                     self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
                 }, onError: { (error) in
@@ -240,8 +244,8 @@ class CheckOutViewController: UIViewController {
                 checkoutOptionTBLview.scrollToRow(at: indexPath as IndexPath, at: .top, animated: true)
                 imageSlider.isHidden = false
                 SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.insuranceSelectionMessage)
-            }else if(Constant.MyClassConstants.isFromExchange && (Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName == nil || Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName == "")){
-                imageSlider.isHidden = true
+            }else if((Constant.MyClassConstants.isFromExchange && Constant.MyClassConstants.recapPromotionsArray.count > 0 && Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName == "")){
+                imageSlider.isHidden = false
                 SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.promotionsMessage)
             }else if(!Constant.MyClassConstants.isFromExchange && (Constant.MyClassConstants.rentalFees[0].rental!.selectedOfferName == nil || Constant.MyClassConstants.rentalFees[0].rental!.selectedOfferName == "")){
                 imageSlider.isHidden = true
@@ -259,6 +263,12 @@ class CheckOutViewController: UIViewController {
             self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
         }
     }
+    
+     //***** Function called when notification top show trip details is fired. *****//
+    func showTripDetails(notification:NSNotification){
+        self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
+    }
+    
     
     override func viewWillAppear(_ animated: Bool) {
 
@@ -291,6 +301,7 @@ class CheckOutViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(updateResortHoldingTime), name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(changeLabelStatus), name: NSNotification.Name(rawValue: Constant.notificationNames.changeSliderStatus), object: nil)
+        
     }
     
     //***** Function called switch state is 'On' so as to update user's email. *****//
@@ -336,8 +347,6 @@ class CheckOutViewController: UIViewController {
         self.promotionSelectedIndex = sender.tag
         Constant.MyClassConstants.isPromotionsEnabled = true
         self.bookingCostRequiredRows = 1
-        
-        //checkoutOptionTBLview.reloadData()
         
         let storyboard = UIStoryboard(name: "VacationSearchIphone", bundle: nil)
         let promotionsNav = storyboard.instantiateViewController(withIdentifier: "DepositPromotionsNav") as! UINavigationController
@@ -532,9 +541,8 @@ class CheckOutViewController: UIViewController {
     //***** Function for adding and removing trip protection *****//
     
     func addTripProtection(shouldAddTripProtection:Bool){
-        
         if(Constant.MyClassConstants.isFromExchange){
-            Constant.MyClassConstants.exchangeFees.last!.insurance?.selected = shouldAddTripProtection
+          Constant.MyClassConstants.exchangeFees.last!.insurance?.selected = shouldAddTripProtection
             let exchangeRecalculateRequest = ExchangeProcessRecalculateRequest()
             exchangeRecalculateRequest.fees = Constant.MyClassConstants.exchangeFees.last!
             Helper.showProgressBar(senderView: self)
@@ -913,7 +921,7 @@ extension CheckOutViewController:UITableViewDataSource {
                 cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
                 cell.resortName?.text = Constant.MyClassConstants.selectedResort.resortName
                 cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.relinquishmentImage)
-                cell.lblHeading.text = "Relinquishment"
+                cell.lblHeading.text = Constant.MyClassConstants.relinquishment
                 cell.resortName?.text = filterRelinquishments.openWeek?.resort?.resortName
             }
             cell.resortDetailsButton.addTarget(self, action: #selector(self.resortDetailsClicked(_:)), for: .touchUpInside)
@@ -1040,6 +1048,7 @@ extension CheckOutViewController:UITableViewDataSource {
                 cell.agreeLabel.layer.borderColor = UIColor(colorLiteralRed: 248/255, green: 107/255, blue: 63/255, alpha: 1.0).cgColor
                 cell.agreeLabel.text = Constant.AlertMessages.feesAlertMessage
             }
+            cell.selectionStyle = .none
             return cell
             
         }
@@ -1072,6 +1081,7 @@ extension CheckOutViewController:UITableViewDataSource {
                 cell.agreeLabel.layer.borderColor = UIColor.lightGray.cgColor
                 cell.agreeLabel.textColor = UIColor.lightGray
             }
+            cell.selectionStyle = .none
             return cell
         }else {
             
@@ -1108,6 +1118,7 @@ extension CheckOutViewController:UITableViewDataSource {
                     cellWebView.backgroundColor = UIColor.gray
                     cell.addSubview(cellWebView)
                 }
+                cell.selectionStyle = .none
                 
                 return cell
             }else if(indexPath.section == 5){
@@ -1194,6 +1205,7 @@ extension CheckOutViewController:UITableViewDataSource {
                         subviews.isHidden = true
                     }
                 }
+                cell.selectionStyle = .none
                 return cell
                 
             }else if(indexPath.section == 6){
@@ -1246,6 +1258,7 @@ extension CheckOutViewController:UITableViewDataSource {
                         subviews.isHidden = true
                     }
                 }
+                cell.selectionStyle = .none
                 return cell
                 
             }else if(indexPath.section == 7){
@@ -1276,11 +1289,13 @@ extension CheckOutViewController:UITableViewDataSource {
                         subviews.isHidden = true
                     }
                 }
+                cell.selectionStyle = .none
                 return cell
                 
             }else if(indexPath.section == 8){
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.totalCostCell, for: indexPath) as! TotalCostCell
+                cell.selectionStyle = .none
                 if(Constant.MyClassConstants.isFromExchange){
                     cell.priceLabel.text = String(Int(Float(Constant.MyClassConstants.exchangeFees[0].total)))
                 }else{

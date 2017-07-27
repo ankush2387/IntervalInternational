@@ -13,7 +13,7 @@ class ConfirmationViewController: UIViewController {
     
     //Outlets
     @IBOutlet var confirmationNumber:UILabel!
-    @IBOutlet var memberName:UILabel!
+    //@IBOutlet var memberName:UILabel!
     @IBOutlet var memberNumber:UILabel!
     @IBOutlet var transactionDate:UILabel!
     
@@ -22,6 +22,10 @@ class ConfirmationViewController: UIViewController {
     
     //Class variables
     var moreButton:UIBarButtonItem?
+    
+    override func viewWillAppear(_ animated: Bool) {
+        NotificationCenter.default.addObserver(self, selector: #selector(showTripDetails), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadTripDetailsNotification), object: nil)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,8 +55,8 @@ class ConfirmationViewController: UIViewController {
         }
         confirmationNumber.text = Constant.MyClassConstants.continueToPayResponse.view?.fees?.rental?.confirmationNumber
         
-        let name = UserContext.sharedInstance.contact?.firstName?.capitalized
-        memberName.text = "Booking Complete \n Congratulations \(name!)!"
+        //let name = UserContext.sharedInstance.contact?.firstName?.capitalized
+        //memberName.text = "Booking Complete \n Congratulations \(name!)!"
         memberNumber.text = UserContext.sharedInstance.selectedMembership?.memberNumber
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .long
@@ -82,9 +86,8 @@ class ConfirmationViewController: UIViewController {
         
     }
     
-    //***** Function called when view trip details button is pressed. ******//
-    @IBAction func viewTripDetailsPressed(_ sender:IUIKButton) {
-        
+    //***** Method called when notification for trip details is fired. ****//
+    func showTripDetails(){
         if(Constant.RunningDevice.deviceIdiom == .phone){
             
             let storyBoard = UIStoryboard(name: Constant.storyboardNames.myUpcomingTripIphone, bundle: nil)
@@ -104,7 +107,11 @@ class ConfirmationViewController: UIViewController {
             self.navigationController?.present(navController, animated: true, completion: nil)
             
         }
-        
+    }
+    
+    //***** Function called when view trip details button is pressed. ******//
+    @IBAction func viewTripDetailsPressed(_ sender:IUIKButton) {
+       Helper.getTripDetails(senderViewController: self)
     }
     
     //***** Function called when upcoming trip details button is pressed. *****//
@@ -128,7 +135,7 @@ class ConfirmationViewController: UIViewController {
         }
         actionSheetController.addAction(shareViaEmailAction)
         //***** Create and add the Reset my search *****//
-        let shareViaText: UIAlertAction = UIAlertAction(title: Constant.buttonTitles.shareViaEmail, style: .default) { action -> Void in
+        let shareViaText: UIAlertAction = UIAlertAction(title: Constant.buttonTitles.shareViaText, style: .default) { action -> Void in
         }
         actionSheetController.addAction(shareViaText)
         //***** Create and add help *****//

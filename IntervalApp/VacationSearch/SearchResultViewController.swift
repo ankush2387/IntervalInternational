@@ -299,11 +299,12 @@ class SearchResultViewController: UIViewController {
             Constant.MyClassConstants.selectedResort = Constant.MyClassConstants.resortsArray[self.selectedSection]
             
             Constant.MyClassConstants.inventoryPrice = (Constant.MyClassConstants.exchangeInventory[self.selectedSection].buckets[self.selectedRow - 1].unit?.prices)!
-            //if(Constant.MyClassConstants.whatToTradeArray.count > 1 || String(describing: response[0].destination?.upgradeCost?.amount) != "0"){
+            if(Constant.MyClassConstants.filterRelinquishments.count > 1 || String(describing: response[0].destination?.upgradeCost?.amount) != "0"){
                 self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
-           // }else {
-               // self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
-            //}
+            }else {
+                self.startProcess()
+                //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+            }
             
         }, onError: { (error) in
             Helper.hideProgressBar(senderView: self)
@@ -311,12 +312,92 @@ class SearchResultViewController: UIViewController {
         })
     }
     
+    //Start process function call
+    
+    func startProcess(){
+        
+        
+        //Start process request
+        
+        //Exchange process request parameters
+        Helper.showProgressBar(senderView: self)
+        let processResort = ExchangeProcess()
+        processResort.holdUnitStartTimeInMillis = Constant.holdingTime
+        
+        
+        let processRequest = ExchangeProcessStartRequest()
+        
+        processRequest.destination = Constant.MyClassConstants.exchangeDestination
+        processRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
+        processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[0].openWeek?.relinquishmentId
+        
+        ExchangeProcessClient.start(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: {(response) in
+            let processResort = ExchangeProcess()
+            processResort.processId = response.processId
+            Constant.MyClassConstants.exchangeBookingLastStartedProcess = processResort
+            Constant.MyClassConstants.exchangeProcessStartResponse = response
+            Constant.MyClassConstants.exchangeViewResponse = response.view!
+            //Constant.MyClassConstants.rentalFees = [(response.view?.fees)!]
+            Constant.MyClassConstants.guestCertificate = response.view?.fees?.guestCertificate
+            Constant.MyClassConstants.onsiteArray.removeAllObjects()
+            Constant.MyClassConstants.nearbyArray.removeAllObjects()
+            //cell?.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
+            
+            
+            for amenity in (response.view?.destination?.resort?.amenities)!{
+                if(amenity.nearby == false){
+                    Constant.MyClassConstants.onsiteArray.add(amenity.amenityName!)
+                    Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending(amenity.amenityName!)
+                    Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending("\n")
+                }else{
+                    Constant.MyClassConstants.nearbyArray.add(amenity.amenityName!)
+                    Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending(amenity.amenityName!)
+                    Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending("\n")
+                }
+            }
+            UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
+                
+                // Got an access token!  Save it for later use.
+                Helper.hideProgressBar(senderView: self)
+                Constant.MyClassConstants.membershipContactArray = Membership.contacts!
+                var viewController = UIViewController()
+                if Constant.RunningDevice.deviceIdiom == .phone {
+                    viewController = WhoWillBeCheckingInViewController()
+                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                    viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+                    
+                    
+                } else {
+                    viewController = WhoWillBeCheckingInIPadViewController()
+                    
+                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                    viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as! WhoWillBeCheckingInIPadViewController
+                }
+                
+                
+                let transitionManager = TransitionManager()
+                self.navigationController?.transitioningDelegate = transitionManager
+                self.navigationController!.pushViewController(viewController, animated: true)
+            }, onError: { (error) in
+                
+                Helper.hideProgressBar(senderView: self)
+                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                
+            })
+            
+        }, onError: {(error) in
+            Helper.hideProgressBar(senderView: self)
+            SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+        })
+    }
+  
+
     //Passing information while preparing for segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-    
+
     // function called when search result page map view button pressed
     @IBAction func mapViewButtonPressed(_ sender: Any) {
         self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultMapSegue , sender: nil)

@@ -523,6 +523,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
             }, onError: {(error) in
                 SVProgressHUD.dismiss()
                 Helper.removeServiceCallBackgroundView(view: self.view)
+                SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                 
         })
     }
@@ -929,10 +930,13 @@ extension WhoWillBeCheckingInViewController:UIPickerViewDelegate {
         if(self.dropDownSelectionRow == 0) {
             
             Constant.GetawaySearchResultGuestFormDetailData.country = Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row]
+            Constant.GetawaySearchResultCardFormDetailData.countryCode = Constant.GetawaySearchResultGuestFormDetailData.countryCodeArray[row]
+            Helper.getStates(country: Constant.GetawaySearchResultCardFormDetailData.countryCode, viewController: self)
         }
         else {
             
             Constant.GetawaySearchResultGuestFormDetailData.state = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row]
+            Constant.GetawaySearchResultCardFormDetailData.stateCode = Constant.GetawaySearchResultGuestFormDetailData.stateCodeArray[row]
         }
     }
 }

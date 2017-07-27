@@ -1477,7 +1477,7 @@ public class Helper{
     static func getTripDetails(senderViewController: UIViewController){
         showProgressBar(senderView:senderViewController)
         ExchangeClient.getExchangeTripDetails(UserContext.sharedInstance.accessToken, confirmationNumber: Constant.MyClassConstants.transactionNumber, onSuccess: { (exchangeResponse) in
-            
+            Helper.hideProgressBar(senderView: senderViewController)
             Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails = exchangeResponse
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadTripDetailsNotification), object: nil)
             
