@@ -68,6 +68,8 @@ class VacationSearchViewController: UIViewController {
         self.getVacationSearchDetails()
         
         if let rvc = self.revealViewController() {
+            //set SWRevealViewController's Delegate
+            rvc.delegate = self
             
             //***** Add the hamburger menu *****//
             let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action:#selector(SWRevealViewController.revealToggle(_:)))
@@ -248,6 +250,9 @@ class VacationSearchViewController: UIViewController {
 extension VacationSearchViewController:UICollectionViewDelegate {
     
     //***** UICollectonview delegate methods definition here *****//
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.topTenGetawaySelected(selectedIndexPath: indexPath)
+    }
     
     
 }
@@ -306,7 +311,7 @@ extension VacationSearchViewController:UICollectionViewDataSource {
             centerView.center = resortFlaxImageView.center
             centerView.backgroundColor = UIColor(red: 176.0/255.0, green: 215.0/255.0, blue: 115.0/255.0, alpha: 1.0)
             
-            let unitLabel = UILabel(frame: CGRect(x: 10, y: 10, width: centerView.frame.size.width - 20, height: 25))
+            let unitLabel = UILabel(frame: CGRect(x: 10, y: 15, width: centerView.frame.size.width - 20, height: 25))
             unitLabel.text = deal.details
             unitLabel.numberOfLines = 2
             unitLabel.textAlignment = NSTextAlignment.center
@@ -315,8 +320,8 @@ extension VacationSearchViewController:UICollectionViewDataSource {
             unitLabel.backgroundColor = UIColor.clear
             centerView.addSubview(unitLabel)
             
-            let priceLabel = UILabel(frame: CGRect(x: 10, y: 30, width: centerView.frame.size.width - 20, height: 20))
-            priceLabel.text = "\(Constant.getDynamicString.fromString)" + String(describing: deal.price!.fromPrice) + "\(Constant.getDynamicString.weekString)"
+            let priceLabel = UILabel(frame: CGRect(x: 10, y: 35, width: centerView.frame.size.width - 20, height: 20))
+            priceLabel.text = "\(Constant.getDynamicString.fromString) $" + String(describing: deal.price!.fromPrice) + "\(Constant.getDynamicString.weekString)"
             priceLabel.numberOfLines = 2
             priceLabel.textAlignment = NSTextAlignment.center
             priceLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
@@ -839,7 +844,31 @@ extension VacationSearchViewController:UITableViewDataSource {
                             }else{
                                 cell.whereTogoTextLabel.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).resort[0].resortName)/ \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).relinquishmentYear)"
                             }
-                        }else{
+                        } else if((object as AnyObject) .isKind(of: Deposits.self)){
+                            //Deposits
+                            let weekNumber = Constant.getWeekNumber(weekType: ((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).weekNumber))
+
+                            if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isLockOff || (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isFloat){
+                                cell.bedroomLabel.isHidden = false
+                                
+                                let resortList = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).unitDetails
+                                print((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).resort[0].resortName, resortList.count)
+                                if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isFloat){
+                                    let floatDetails = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).floatDetails
+                                    cell.bedroomLabel.text = "\(resortList[0].unitSize), \(floatDetails[0].unitNumber), \(resortList[0].kitchenType)"
+                                }else{
+                                    cell.bedroomLabel.text = "\(resortList[0].unitSize), \(resortList[0].kitchenType)"
+                                }
+                            }else{
+                                cell.bedroomLabel.isHidden = true
+                            }
+                            if(weekNumber != ""){
+                                cell.whereTogoTextLabel.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).resort[0].resortName)/ \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).relinquishmentYear), Wk\(weekNumber)"
+                            }else{
+                                cell.whereTogoTextLabel.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).resort[0].resortName)/ \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).relinquishmentYear)"
+                            }
+                        
+                        } else{
                             
                             let availablePointsNumber = Constant.MyClassConstants.relinquishmentAvailablePointsProgram as NSNumber
                             

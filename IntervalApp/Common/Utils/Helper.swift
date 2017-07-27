@@ -422,7 +422,7 @@ public class Helper{
         LookupClient.getCountries(Constant.MyClassConstants.systemAccessToken!, onSuccess: { (response) in
             
             for country in (response ){
-                Constant.GetawaySearchResultGuestFormDetailData.countryListArray.append(country.countryName!)
+                Constant.GetawaySearchResultGuestFormDetailData.countryListArray.append(country)
                 Constant.GetawaySearchResultGuestFormDetailData.countryCodeArray.append(country.countryCode!)
             }
             SVProgressHUD.dismiss()
@@ -442,14 +442,13 @@ public class Helper{
         LookupClient.getStates(Constant.MyClassConstants.systemAccessToken!, countryCode: country, onSuccess: { (response) in
             SVProgressHUD.dismiss()
             for state in response{
-                Constant.GetawaySearchResultGuestFormDetailData.stateListArray.append(state.name!)
+                Constant.GetawaySearchResultGuestFormDetailData.stateListArray.append(state)
                 Constant.GetawaySearchResultGuestFormDetailData.stateCodeArray.append(state.code!)
             }
             removeServiceCallBackgroundView(view: viewController.view)
         }, onError: { (error) in
             SVProgressHUD.dismiss()
             removeServiceCallBackgroundView(view: viewController.view)
-            Constant.GetawaySearchResultGuestFormDetailData.stateListArray = ["California","Pennyslvenia"]
             SimpleAlert.alert(viewController, title:Constant.AlertErrorMessages.errorString, message: error.description)
         })
         
@@ -539,6 +538,24 @@ public class Helper{
                     
                     
                     hideProgressBar(senderView: senderVC)
+                } else {
+                    if(Constant.RunningDevice.deviceIdiom == .pad){
+                        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! VacationSearchResultIPadController
+                        
+                        let transitionManager = TransitionManager()
+                        senderVC.navigationController?.transitioningDelegate = transitionManager
+                        senderVC.navigationController!.pushViewController(viewController, animated: true)
+                    }else{
+                        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
+                        
+                        let transitionManager = TransitionManager()
+                        senderVC.navigationController?.transitioningDelegate = transitionManager
+                        
+                        senderVC.navigationController!.pushViewController(viewController, animated: true)
+                    }
+                     hideProgressBar(senderView: senderVC)
                 }
                 
             }, onError: { (error) in
@@ -710,7 +727,30 @@ public class Helper{
                             }
                         }
                         
-                    }else{
+                    } else if openWk.deposits.count > 0 {
+                        for object in openWk.deposits {
+                            
+                            Constant.MyClassConstants.realmOpenWeeksID.add(object.relinquishmentID)
+                            let tempDict = NSMutableDictionary()
+                            if(object.isFloat){
+                                if(object.isFloatRemoved){
+                                    Constant.MyClassConstants.floatRemovedArray.add(object)
+                                }else if(object.floatDetails.count > 0 && !object.isFloatRemoved && object.isFromRelinquishment){
+                                    Constant.MyClassConstants.whatToTradeArray.add(object)
+                                    Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
+                                }
+                            }else{
+                                Constant.MyClassConstants.whatToTradeArray.add(object)
+                                Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
+                            }
+                            Constant.MyClassConstants.idUnitsRelinquishmentDictionary.setValue(object.unitDetails, forKey: object.relinquishmentID)
+                            tempDict.setValue(object.unitDetails, forKey: object.relinquishmentID)
+                            if(!object.isFloatRemoved){
+                                Constant.MyClassConstants.relinquishmentUnitsArray.add(tempDict)
+                            }
+                        }
+
+                    } else{
                         
                         Constant.MyClassConstants.whatToTradeArray.add(openWk.pProgram)
                         Constant.MyClassConstants.relinquishmentIdArray.add(openWk.pProgram[0].relinquishmentId)

@@ -109,6 +109,8 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
         Constant.MyClassConstants.topDeals = []
         
         if let rvc = self.revealViewController() {
+            //set SWRevealViewController's Delegate
+            rvc.delegate = self
             
             //***** Add the hamburger menu *****//
             let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action:#selector(SWRevealViewController.revealToggle(_:)))
@@ -760,6 +762,10 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
 
 //Extension for collection view.
 extension VacationSearchIPadViewController:UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.topTenGetawaySelected(selectedIndexPath: indexPath)
+    }
 }
 
 extension VacationSearchIPadViewController:UICollectionViewDataSource {
@@ -823,7 +829,7 @@ extension VacationSearchIPadViewController:UICollectionViewDataSource {
             centerView.center = resortFlaxImageView.center
             centerView.backgroundColor = Constant.RGBColorCode.centerViewRgb
             
-            let unitLabel = UILabel(frame: CGRect(x: 10, y: 10, width: centerView.frame.size.width - 20, height: 25))
+            let unitLabel = UILabel(frame: CGRect(x: 10, y: 15, width: centerView.frame.size.width - 20, height: 25))
             unitLabel.text = topTenDeals.details
             unitLabel.numberOfLines = 2
             unitLabel.textAlignment = NSTextAlignment.center
@@ -832,8 +838,8 @@ extension VacationSearchIPadViewController:UICollectionViewDataSource {
             unitLabel.backgroundColor = UIColor.clear
             centerView.addSubview(unitLabel)
             
-            let priceLabel = UILabel(frame: CGRect(x: 10, y: 30, width: centerView.frame.size.width - 20, height: 20))
-            priceLabel.text = "From " + String(describing: topTenDeals.price!.fromPrice) + " Wk."
+            let priceLabel = UILabel(frame: CGRect(x: 10, y: 35, width: centerView.frame.size.width - 20, height: 20))
+            priceLabel.text = "From $" + String(describing: topTenDeals.price!.fromPrice) + " Wk."
             priceLabel.numberOfLines = 2
             priceLabel.textAlignment = NSTextAlignment.center
             priceLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)

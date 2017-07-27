@@ -23,6 +23,8 @@ class MagazinesIPadViewController: UIViewController {
         if((UserContext.sharedInstance.accessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
             
             if let rvc = self.revealViewController() {
+                //set SWRevealViewController's Delegate
+                rvc.delegate = self
                 
                 //***** Add the hamburger menu *****//
                 let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action:#selector(SWRevealViewController.revealToggle(_:)))

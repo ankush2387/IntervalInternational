@@ -15,7 +15,8 @@ class GetawayAlertsIpadViewController: UIViewController {
         
         self.title = Constant.ControllerTitles.getawayAlertsViewController
         if let rvc = self.revealViewController() {
-            
+            //set SWRevealViewController's Delegate
+            rvc.delegate = self
             //***** Add the hamburger menu *****//
             let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action:#selector(rvc.revealToggle(_:)))
             menuButton.tintColor = UIColor.white

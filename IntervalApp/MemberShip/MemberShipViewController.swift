@@ -29,6 +29,7 @@ class MemberShipViewController: UIViewController {
     //private let ownershipDetailCellIdentifier = "ownershipDetailCell"
     fileprivate let numberOfRowInSection = 1
     var memberDetailDictionary = [String:String]()
+    var previousSelectedMembershipCellIndex: IndexPath?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,6 +80,8 @@ class MemberShipViewController: UIViewController {
     */
     fileprivate func displayMenuButton(){
         if let rvc = self.revealViewController() {
+            //set SWRevealViewController's Delegate
+            rvc.delegate = self
             
             //***** Add the hamburger menu *****//
             let menuButton = UIBarButtonItem(image: UIImage(named:"ic_menu"), style: .plain, target: rvc, action:#selector(rvc.revealToggle(_:)))
@@ -214,6 +217,12 @@ extension MemberShipViewController:UITableViewDataSource{
             let productcode = Product?.productCode
             cell.membershipName.text = Product?.productName
             cell.memberImageView.image = UIImage(named: productcode!)
+            if memberDetailDictionary["membernumber"] == cell.membershipNumber.text {
+                cell.selectedImageView.image = UIImage(named: "Select-On")
+                previousSelectedMembershipCellIndex = indexPath
+            } else {
+                cell.selectedImageView.image = UIImage(named: "Select-Off")
+            }
             
             
             cell.delegate = self
@@ -283,16 +292,48 @@ extension MemberShipViewController:UITableViewDelegate{
 	}
 	
 	//***** Custom cell delegate methods *****//
-	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		
-		if tableView.tag == 3 {
-			let contact = UserContext.sharedInstance.contact
-			let membership = contact?.memberships![indexPath.row]
-			memberDetailDictionary.updateValue((membership?.memberNumber)!, forKey:"membernumber" )
-			UserContext.sharedInstance.selectedMembership = membership
-			self.membershipWasSelected()
-		}
-	}
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if tableView.tag == 3 {
+            guard let cell = tableView.cellForRow(at: indexPath) as? ActionSheetTblCell else { return }
+            cell.selectedImageView.image = UIImage(named: "Select-On")
+            
+            //change previously selected image
+            if let previousIndex = previousSelectedMembershipCellIndex {
+                if previousIndex != indexPath{
+                    let previousCell = tableView.cellForRow(at: previousIndex) as? ActionSheetTblCell
+                    previousCell?.selectedImageView.image = UIImage(named: "Select-Off")
+                }
+            }
+
+            let contact = UserContext.sharedInstance.contact
+            let membership = contact?.memberships![indexPath.row]
+            
+            if memberDetailDictionary["membernumber"] != membership?.memberNumber{
+                self.dismiss(animated: true, completion: nil)
+                print("Same Membership")
+                let alert = UIAlertController(title: Constant.memberShipViewController.switchMembershipAlertTitle, message: Constant.memberShipViewController.switchMembershipAlertMessage, preferredStyle: .actionSheet)
+                let actionYes = UIAlertAction(title: "Yes", style: .destructive, handler: { (response) in
+                    print("Continue")
+                    self.memberDetailDictionary.updateValue((membership?.memberNumber)!, forKey:"membernumber" )
+                    UserContext.sharedInstance.selectedMembership = membership
+                    self.membershipWasSelected()
+                })
+                
+                let actionCancel = UIAlertAction(title: "No", style: .cancel, handler: { (response) in
+                    print("Cancel")
+                })
+                
+                alert.addAction(actionYes)
+                alert.addAction(actionCancel)
+                
+                self.present(alert, animated: true, completion: nil)
+                
+            }
+            
+        }
+    }
+    
 }
 /*
 extension for actionsheet table delegate

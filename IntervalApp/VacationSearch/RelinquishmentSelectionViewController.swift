@@ -23,6 +23,7 @@ class RelinquishmentSelectionViewController: UIViewController {
     var masterUnitSize = ""
     var masterUnitNumber = ""
     var cellHeight: CGFloat = 80
+    var relinquishmentDeposit = [Deposit]()
     
     //Outlets
     @IBOutlet weak var relinquishmentTableview: UITableView!
@@ -50,6 +51,9 @@ class RelinquishmentSelectionViewController: UIViewController {
         self.relinquishmentPointsProgramArray.append(Constant.MyClassConstants.relinquishmentProgram)
         
         relinquishmentOpenWeeksArray.removeAll()
+        
+        //Get Deposits to display
+        verifyDepositsToDisplay()
         
         //Array to get details of unit details saved by user for lock-off capable.
         Constant.MyClassConstants.saveLockOffDetailsArray.removeAllObjects()
@@ -168,6 +172,17 @@ class RelinquishmentSelectionViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    func verifyDepositsToDisplay(){
+        for fixed_week_type in Constant.MyClassConstants.relinquishmentDeposits{
+            guard let relinquinshmentID = fixed_week_type.relinquishmentId else { return }
+            
+            if(!(Constant.MyClassConstants.relinquishmentIdArray.contains(relinquinshmentID))) {
+                self.relinquishmentDeposit.append(fixed_week_type)
+            }
+        }
+    }
+    
     func requiredNumberOfSection() -> Int{
         
         if(self.relinquishmentPointsProgramArray.count > 0) {
@@ -187,6 +202,10 @@ class RelinquishmentSelectionViewController: UIViewController {
         }
         if(intervalOpenWeeksArray.count > 0) {
             self.requiredSection = self.requiredSection + 1
+        }
+        
+        if relinquishmentDeposit.count > 0 {
+            self.requiredSection += 1
         }
         
         return self.requiredSection
@@ -507,6 +526,39 @@ class RelinquishmentSelectionViewController: UIViewController {
         }
     }
     
+    func addDeposits(_ sender:IUIKButton) {
+        Constant.MyClassConstants.relinquismentSelectedDeposit = relinquishmentDeposit[sender.tag]
+        Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.relinquishmentSelectionViewController
+        Constant.MyClassConstants.whatToTradeArray.add(Constant.MyClassConstants.relinquismentSelectedDeposit)
+        Constant.MyClassConstants.relinquishmentIdArray.add(Constant.MyClassConstants.relinquismentSelectedDeposit.relinquishmentId!)
+        
+        //Realm local storage for selected relinquishment
+        let storedata = OpenWeeksStorage()
+        let Membership = UserContext.sharedInstance.selectedMembership
+        let relinquishmentList = TradeLocalData()
+        
+        let selectedOpenWeek = Deposits()
+        selectedOpenWeek.weekNumber = Constant.MyClassConstants.relinquismentSelectedDeposit.weekNumber!
+        selectedOpenWeek.relinquishmentID = Constant.MyClassConstants.relinquismentSelectedDeposit.relinquishmentId!
+        selectedOpenWeek.relinquishmentYear = Constant.MyClassConstants.relinquismentSelectedDeposit.relinquishmentYear!
+        let resort = ResortList()
+        if let name = Constant.MyClassConstants.relinquismentSelectedDeposit.resort?.resortName {
+            resort.resortName = name
+        }
+        
+        selectedOpenWeek.resort.append(resort)
+        relinquishmentList.deposits.append(selectedOpenWeek)
+        storedata.openWeeks.append(relinquishmentList)
+        storedata.membeshipNumber = Membership!.memberNumber!
+        let realm = try! Realm()
+        try! realm.write {
+            realm.add(storedata)
+        }
+        
+        _ = self.navigationController?.popViewController(animated: true)
+
+    }
+    
     func getUnitSize(_ unitSize:[InventoryUnit]) {
         Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.removeAllObjects()
         Constant.MyClassConstants.unitNumberSelectedArray.removeAllObjects()
@@ -529,6 +581,18 @@ extension RelinquishmentSelectionViewController:UITableViewDelegate {
     //***** UITableview delegate methods definition here *****//
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        //Height for deposit cells
+        if indexPath.section == 4 {
+            let windowHeight = self.view.window?.bounds.height
+            if Float(windowHeight!) <= 568.0 {
+                //height for devices with smaller screen (iPhone 5s and beyond)
+                return 135
+            } else{
+                //height for devices with bigger screens (iPhone 6 and beyond)
+                return 110
+            }
+        }
+        
         if((indexPath as NSIndexPath).row == 0) {
             if ((indexPath as NSIndexPath).section == 0) {
                 return UITableViewAutomaticDimension
@@ -614,7 +678,7 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
-        return 4
+        return 5
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -637,6 +701,8 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
             
         case 3:
             return intervalOpenWeeksArray.count
+        case 4:
+            return relinquishmentDeposit.count
         default:
             return 0
         }
@@ -927,7 +993,19 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
             }
           
         }
-        else {
+        else if indexPath.section == 4 {
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "DepositedCell", for: indexPath) as? RelinquishmentSelectionOpenWeeksCell {
+                let deposit = relinquishmentDeposit[indexPath.row] as Deposit
+                cell.setupDepositedCell(deposit: deposit)
+                cell.addButton.tag = indexPath.row
+                cell.addButton.addTarget(self, action: #selector(self.addDeposits(_:)), for: .touchUpInside)
+                
+//                cell.addButton.addTarget(self, action:  #selector(RelinquishmentSelectionViewController.addIntervalWeekButtonPressed(_:)), for: .touchUpInside)
+                return cell
+            }
+            
+            return UITableViewCell()
+        } else {
             
             let openWeek = pointOpenWeeksArray[indexPath.row]
             

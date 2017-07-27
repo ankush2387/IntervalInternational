@@ -165,7 +165,18 @@ class CheckOutViewController: UIViewController {
             
             if((isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && (strAccept == "true" || strReject == "true") && Constant.MyClassConstants.selectedCreditCard.count > 0){
                 
+
                 Helper.showProgressBar(senderView: self)
+
+                let continueToPayRequest = RentalProcessRecapContinueToPayRequest.init()
+                continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last!
+                continueToPayRequest.confirmationDelivery = confirmationDelivery
+                continueToPayRequest.acceptTermsAndConditions = true
+                continueToPayRequest.acknowledgeAndAgreeResortFees = true
+                
+                Helper.addServiceCallBackgroundView(view: self.view)
+                SVProgressHUD.show()
+
                 imageSlider.isHidden = true
                 showLoader = true
                 self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
@@ -684,8 +695,15 @@ extension CheckOutViewController:UITableViewDataSource {
         
         if(section == 0) {
             
+
             if(Constant.MyClassConstants.isFromExchange) {
+
+            if(Constant.MyClassConstants.vacationSearchSelectedSegmentIndex == 1) || Constant.MyClassConstants.vacationSearchSelectedSegmentIndex == 0{
+                return 1
+            }else{
+
                 return 2
+                }
             }else{
                 return 1
             }
@@ -818,7 +836,7 @@ extension CheckOutViewController:UITableViewDataSource {
         
     }
     
-    @objc(tableView:heightForRowAtIndexPath:) func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         isHeightZero = false
         //showInsurance = false
         if(indexPath.section == 0) {
@@ -1345,7 +1363,8 @@ extension CheckOutViewController:UITableViewDataSource {
             }
         }
     }
-}
+  }
+
 
 extension CheckOutViewController:UIGestureRecognizerDelegate{
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool{

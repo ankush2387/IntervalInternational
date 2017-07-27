@@ -149,6 +149,8 @@ class ResortDirectoryViewController: UIViewController {
                     
                     //***** This line allows the user to swipe left-to-right to reveal the menu. We might want to comment this out if it becomes confusing. *****//
                     self.view.addGestureRecognizer( rvc.panGestureRecognizer())
+                    //Allow user to tap anywhere to dismiss reveal menu
+                    self.view.addGestureRecognizer(rvc.tapGestureRecognizer())
                 }
                 
             }

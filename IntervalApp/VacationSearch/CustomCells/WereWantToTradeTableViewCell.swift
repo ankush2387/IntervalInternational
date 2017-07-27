@@ -128,6 +128,24 @@ extension WereWantToTradeTableViewCell:UICollectionViewDataSource {
                     cell.lblTitle.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).resort[0].resortName), \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).relinquishmentYear)"
                     
                     
+                } else if ((object as AnyObject).isKind(of: Deposits.self)) {
+                    _ = Constant.getWeekNumber(weekType: ((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).weekNumber))
+                    print((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isLockOff)
+                    if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isLockOff || (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isFloat){
+                        cell.bedroomNumber.isHidden = false
+                        
+                        let resortList = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).unitDetails
+                        print((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).resort[0].resortName, resortList.count)
+                        if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isFloat){
+                            let floatDetails = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).floatDetails
+                            cell.bedroomNumber.text = "\(resortList[0].unitSize), \(floatDetails[0].unitNumber), \(resortList[0].kitchenType)"
+                        }else{
+                            cell.bedroomNumber.text = "\(resortList[0].unitSize), \(resortList[0].kitchenType)"
+                        }
+                    }else{
+                        cell.bedroomNumber.isHidden = true
+                    }
+                    cell.lblTitle.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).resort[0].resortName), \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).relinquishmentYear)"
                 }
                 else {
                     
@@ -175,12 +193,13 @@ extension WereWantToTradeTableViewCell:WhereToGoCollectionViewCellDelegate {
     func deleteButtonClickedAtIndex(_ Index: Int) {
 
         let storedData = Helper.getLocalStorageWherewanttoTrade()
-
+        
         if(storedData.count > 0) {
             
             
             let realm = try! Realm()
             try! realm.write {
+
                 
                 if((Constant.MyClassConstants.whatToTradeArray[Index] as AnyObject).isKind(of: OpenWeeks.self)){
                     
@@ -195,27 +214,141 @@ extension WereWantToTradeTableViewCell:WhereToGoCollectionViewCellDelegate {
                                 floatWeekIndex = index
                             }
                         }
+                    
+                
+                //TODO - Jhon : once code is updated, review is this variables are neeeded, if not delete.
+                var isFloatRemoved: Bool?
+                var isFloat: Bool?
+                var relinquishmentId: String?
+                var relinquismentYear: Int?
+                var resortName: String?
+                var unitNumber: String?
+                var unitSize: String?
+                
+                for openWk in Constant.MyClassConstants.whatToTradeArray{
+                    if ((openWk as AnyObject).isKind(of: OpenWeeks.self)){
+                        var floatWeek = OpenWeeks()
+                        let openWk1 = openWk as! OpenWeeks
+                        if(!openWk1.isFloatRemoved){
+                            floatWeek = openWk1
+                            isFloatRemoved = floatWeek.isFloatRemoved
+                            relinquishmentId = floatWeek.relinquishmentID
+                            relinquismentYear = floatWeek.relinquishmentYear
+                            resortName = floatWeek.resort[0].resortName
+                            if floatWeek.floatDetails.count > 0 {
+                                unitNumber = floatWeek.floatDetails[0].unitNumber
+                                unitSize = floatWeek.floatDetails[0].unitSize
+                            }
+                            Constant.MyClassConstants.floatRemovedArray.removeAllObjects()
+                            Constant.MyClassConstants.floatRemovedArray.add(floatWeek)
+                        }else{
+                            isFloat = false
+                        }
+                        
+                        
+                    } else if ((openWk as AnyObject).isKind(of: Deposits.self)) {
+                        var floatWeek = Deposits()
+                        let deposit = openWk as! Deposits
+                        if(!deposit.isFloatRemoved){
+                            floatWeek = deposit
+                            isFloatRemoved = floatWeek.isFloatRemoved
+                            relinquishmentId = floatWeek.relinquishmentID
+                            relinquismentYear = floatWeek.relinquishmentYear
+                            resortName = floatWeek.resort[0].resortName
+                            if floatWeek.floatDetails.count > 0 {
+                                unitNumber = floatWeek.floatDetails[0].unitNumber
+                                unitSize = floatWeek.floatDetails[0].unitSize
+                            }
+                            Constant.MyClassConstants.floatRemovedArray.removeAllObjects()
+                            Constant.MyClassConstants.floatRemovedArray.add(floatWeek)
+                        
+                        }else{
+                            isFloat = false
+                        }
+                        
+                    }
+                    
+                    
+                }
+                //delete from local Storage
+                realm.delete(storedData[Index])
+                    
+                    
+                
+                if(Constant.MyClassConstants.whatToTradeArray.count > 0){
+                    
+                    ADBMobile.trackAction(Constant.omnitureEvents.event43, data: nil)
+                    Constant.MyClassConstants.whatToTradeArray.removeObject(at: Index)
+                    Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: Index)
+                    Constant.MyClassConstants.relinquishmentUnitsArray.removeObject(at: Index)
+                }
+                
+                
+                let deletionIndexPath = IndexPath(item: Index, section: 0)
+                self.collectionView.deleteItems(at: [deletionIndexPath])
+                let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+                DispatchQueue.main.asyncAfter(deadline: delayTime) {
+                    
+                   
+                    
+                    if(!isFloatRemoved! && isFloat!){
+                        //Realm local storage for selected relinquishment
+                        let storedata = OpenWeeksStorage()
+                        let Membership = UserContext.sharedInstance.selectedMembership
+                        let relinquishmentList = TradeLocalData()
+                        
+                        let selectedOpenWeek = OpenWeeks()
+                        selectedOpenWeek.isFloat = true
+                        selectedOpenWeek.isFloatRemoved = true
+                        selectedOpenWeek.isFromRelinquishment = false
+                        selectedOpenWeek.weekNumber = ""
+                        selectedOpenWeek.relinquishmentID = relinquishmentId!
+                        selectedOpenWeek.relinquishmentYear = relinquismentYear!
+                        let resort = ResortList()
+                        resort.resortName = (resortName!)
+                        
+                        let floatDetails = ResortFloatDetails()
+                        floatDetails.reservationNumber = ""
+                        floatDetails.unitNumber = unitNumber!
+                        floatDetails.unitSize = unitSize!
+                        selectedOpenWeek.floatDetails.append(floatDetails)
+
                         
                         storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFloatRemoved = true
                         storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFloat = true
                         storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFromRelinquishment = false
-                        
+
                         if(Constant.MyClassConstants.whatToTradeArray.count > 0){
                             
                             ADBMobile.trackAction(Constant.omnitureEvents.event43, data: nil)
                             Constant.MyClassConstants.whatToTradeArray.removeObject(at: Index)
                             Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: Index)
                             Constant.MyClassConstants.relinquishmentUnitsArray.removeObject(at: Index)
+
+                        selectedOpenWeek.resort.append(resort)
+                        relinquishmentList.openWeeks.append(selectedOpenWeek)
+                        storedata.openWeeks.append(relinquishmentList)
+                        storedata.membeshipNumber = Membership!.memberNumber!
+//                        Constant.MyClassConstants.floatRemovedArray.removeAllObjects()
+//                        Constant.MyClassConstants.floatRemovedArray.add(floatWeek)
+                        let realm = try! Realm()
+                        try! realm.write {
+                            realm.add(storedata)
+
                         }
                     }else{
                         Constant.MyClassConstants.whatToTradeArray.removeObject(at: Index)
                         Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: Index)
                         realm.delete(storedData[Index])
                     }
+
                 }else{
                     Constant.MyClassConstants.whatToTradeArray.removeObject(at: Index)
                     Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: Index)
                     realm.delete(storedData[Index])
+
+                
+
                 }
                 
                 let deletionIndexPath = IndexPath(item: Index, section: 0)
@@ -224,11 +357,15 @@ extension WereWantToTradeTableViewCell:WhereToGoCollectionViewCellDelegate {
             }
         }
     }
+  }
+}
+    }
     
     func infoButtonClickedAtIndex(_ Index: Int) {
         
         self.delegate?.multipleResortInfoButtonPressedAtIndex(Index)
     }
+    
 }
 
 

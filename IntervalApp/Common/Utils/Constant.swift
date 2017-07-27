@@ -26,10 +26,15 @@ class Constant: NSObject {
     //Getaways SearchResult CardFormDetail Data
     struct GetawaySearchResultGuestFormDetailData {
         
-        static var countryListArray = [String]()
+
+        //static var countryListArray = [String]()
         static var countryCodeArray = [String]()
-        static var stateListArray = [String]()
+        //static var stateListArray = [String]()
         static var stateCodeArray = [String]()
+
+        static var countryListArray = [Country]()
+        static var stateListArray = [State]()
+
         static var textFieldChangedInSection = -1
         static var firstName = ""
         static var lastName = ""
@@ -399,6 +404,7 @@ class Constant: NSObject {
         static var  relinquishmentOpenWeeks = [OpenWeek]()
         static var  relinquishmentProgram = PointsProgram()
         static var  relinquishmentSelectedWeek = OpenWeek()
+        static var relinquismentSelectedDeposit = Deposit()
         static var  clubPointResortsArray = [Resort]()
         static var  userSelectedStringArray = [String]()
         
@@ -1409,6 +1415,8 @@ class Constant: NSObject {
         static let ownershipDetailCellIdentifier = "ownershipDetailCell"
         static let membershipDetailCellIdentifier = "membershipDetailCell"
         static let ownershipHeaderTitletext = "Ownership"
+        static let switchMembershipAlertMessage = "You have chosen to use a different membership account. Please note, benefit and exchange access may change. Would you like to continue?"
+        static let switchMembershipAlertTitle = "You are Switchinig Memberships"
         //membershipDetailTableViewCell
         struct membershipDetailTableViewCell{
             static let contactnameInfoLabelText = "Contact Name"
