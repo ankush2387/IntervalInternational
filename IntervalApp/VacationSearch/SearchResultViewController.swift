@@ -299,8 +299,10 @@ class SearchResultViewController: UIViewController {
             Constant.MyClassConstants.selectedResort = Constant.MyClassConstants.resortsArray[self.selectedSection]
             
             Constant.MyClassConstants.inventoryPrice = (Constant.MyClassConstants.exchangeInventory[self.selectedSection].buckets[self.selectedRow - 1].unit?.prices)!
-            if(Constant.MyClassConstants.filterRelinquishments.count > 1 || String(describing: response[0].destination?.upgradeCost?.amount) != "0"){
+            if(Constant.MyClassConstants.filterRelinquishments.count > 1){
                 self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+            }else if(String(describing: response[0].destination?.upgradeCost) != nil && String(describing: response[0].destination?.upgradeCost?.amount) != "0"){
+                self.startProcess()
             }else {
                 self.startProcess()
                 //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
