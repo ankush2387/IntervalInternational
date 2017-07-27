@@ -54,7 +54,12 @@ class ConfirmationViewController: UIViewController {
             self.view.addGestureRecognizer( rvc.panGestureRecognizer() )
             
         }
-        confirmationNumber.text = Constant.MyClassConstants.continueToPayResponse.view?.fees?.rental?.confirmationNumber
+        if(Constant.MyClassConstants.isFromExchange){
+            confirmationNumber.text = Constant.MyClassConstants.exchangeContinueToPayResponse.view?.fees?.shopExchange?.confirmationNumber
+        }else{
+          confirmationNumber.text = Constant.MyClassConstants.continueToPayResponse.view?.fees?.rental?.confirmationNumber
+        }
+        
         
         //let name = UserContext.sharedInstance.contact?.firstName?.capitalized
         //memberName.text = "Booking Complete \n Congratulations \(name!)!"

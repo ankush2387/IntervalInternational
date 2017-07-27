@@ -1138,8 +1138,8 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                     }
                     else{
                         
-                        let str = (Constant.MyClassConstants.exchangeFees[indexPath.row].insurance?.insuranceOfferHTML!)!
-                        cellWebView.loadHTMLString(str, baseURL: nil)
+                        //let str = (Constant.MyClassConstants.exchangeFees[indexPath.row].insurance?.insuranceOfferHTML!)!
+                       // cellWebView.loadHTMLString(str, baseURL: nil)
 
                     }
                     cellWebView.delegate = self
