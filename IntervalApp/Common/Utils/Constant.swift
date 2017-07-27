@@ -348,6 +348,7 @@ class Constant: NSObject {
         static var adultCounter = 2
         
         static var resortVC = "ResortDetailsViewController"
+        static var destinationResortDetail = "DestinationResortViewController"
         static var resortsString = "Resort"
         static var tutorialsString = "Tutorial"
         static var areaString = "Area"
@@ -492,6 +493,7 @@ class Constant: NSObject {
         //Header for search results
         static var searchResultHeader = NSLocalizedString("Nearest Check-in Date selected.\nWe found availibility close to your desired date.", comment: "")
         static var isFromExchange = false
+        static var isFromWhatToUse = false
         static var travelPartyInfo = TravelParty()
         static var bucketsArray = [ExchangeBucket]()
         static var exchangeInventory = [ExchageInventory]()
@@ -509,6 +511,7 @@ class Constant: NSObject {
         
         //Changed promotions to global
         static var isPromotionsEnabled = false
+        static var recapPromotionsArray = [Promotion]()
     }
     struct CommonStringIdentifiers {
         static var floatWeek = "FLOAT_WEEK"

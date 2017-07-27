@@ -450,7 +450,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 }, onError: {(error) in
                     SVProgressHUD.dismiss()
                     Helper.removeServiceCallBackgroundView(view: self.view)
-                    
+                    SimpleAlert.alert(self, title: Constant.AlertErrorMessages.noResultError, message: error.localizedDescription)
                 })
         }else{
         let processRequest1 = RentalProcessPrepareContinueToCheckoutRequest()

@@ -47,7 +47,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dPC-06-hhy">
-                                <rect key="frame" x="0.0" y="61" width="414" height="49"/>
+                                <rect key="frame" x="0.0" y="17" width="414" height="49"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Resort 1 of 7" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IdW-Ty-pEh">
                                         <rect key="frame" x="87" y="5" width="264" height="42"/>
@@ -110,7 +110,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Z7H-la-zBu">
-                                <rect key="frame" x="0.0" y="108" width="414" height="579"/>
+                                <rect key="frame" x="0.0" y="64" width="414" height="672"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="536" id="xAh-Ay-Djq"/>
@@ -2091,7 +2091,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="hBB-OJ-Y0k" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="w8Z-0z-EGh">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="w8Z-0z-EGh">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2973,7 +2973,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="eMV-Px-Ad8" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Zma-bI-0pT">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Zma-bI-0pT">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -3724,7 +3724,7 @@ Units Upgrade with this selection.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cDk-vF-urN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4126.086956521739" y="1332.8804347826087"/>
+            <point key="canvasLocation" x="4120" y="1127"/>
         </scene>
         <!--Check Out View Controller-->
         <scene sceneID="fEv-OX-dZh">
@@ -4955,7 +4955,7 @@ Units Upgrade with this selection.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0yH-QX-dYW" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="HRh-g1-Okf">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="HRh-g1-Okf">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -4973,7 +4973,7 @@ Units Upgrade with this selection.</string>
             <objects>
                 <navigationController storyboardIdentifier="AccomodationCertsDetailController" automaticallyAdjustsScrollViewInsets="NO" id="6AW-3c-VGG" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="r65-jV-lcs">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="r65-jV-lcs">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -4991,7 +4991,7 @@ Units Upgrade with this selection.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Wnj-OU-Bqx" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="lsp-Nf-AIz">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="lsp-Nf-AIz">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -5665,7 +5665,7 @@ Units Upgrade with this selection.</string>
         <!--Destination Resort View Controller-->
         <scene sceneID="SfE-tu-FSX">
             <objects>
-                <viewController id="uNV-hq-jgj" customClass="DestinationResortViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DestinationResortViewController" id="uNV-hq-jgj" customClass="DestinationResortViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="bnm-bg-qd3"/>
                         <viewControllerLayoutGuide type="bottom" id="he7-e4-NqS"/>
@@ -6199,7 +6199,7 @@ Units Upgrade with this selection.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="QCd-cg-p7T" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="FDW-qy-gN2">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="FDW-qy-gN2">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -6216,7 +6216,7 @@ Units Upgrade with this selection.</string>
         <scene sceneID="woz-M3-99b">
             <objects>
                 <navigationController id="ngh-TZ-XZu" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="s8P-VH-HG7">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="s8P-VH-HG7">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -6266,7 +6266,7 @@ Units Upgrade with this selection.</string>
         <scene sceneID="iMz-Os-rBf">
             <objects>
                 <navigationController id="7wx-gU-8rb" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Vfi-ic-Xub">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Vfi-ic-Xub">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -6348,7 +6348,7 @@ Units Upgrade with this selection.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="bmL-3i-9ap" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="biQ-JT-fNk">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="biQ-JT-fNk">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -6366,7 +6366,7 @@ Units Upgrade with this selection.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="UeM-gf-1oQ" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="vSk-wg-ocj">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="vSk-wg-ocj">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -6384,7 +6384,7 @@ Units Upgrade with this selection.</string>
             <objects>
                 <navigationController storyboardIdentifier="DepositPromotionsNav" automaticallyAdjustsScrollViewInsets="NO" id="1g4-hf-v3R" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="A6D-xj-RBR">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="A6D-xj-RBR">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -6422,7 +6422,7 @@ Units Upgrade with this selection.</string>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Lp2-ch-oU8"/>
-        <segue reference="sGp-zH-9TZ"/>
+        <segue reference="4gU-cx-AAf"/>
         <segue reference="4Eo-F1-CbC"/>
     </inferredMetricsTieBreakers>
 </document>

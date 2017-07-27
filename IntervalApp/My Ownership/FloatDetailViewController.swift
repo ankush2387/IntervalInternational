@@ -28,6 +28,7 @@ class FloatDetailViewController: UIViewController {
     var selectedTextField = false
     var floatAttributesArray = NSMutableArray()
     var atrributesRowArray = NSMutableArray()
+    var checkInDate = ""
     
     /**
      PopcurrentViewcontroller from NavigationController
@@ -185,7 +186,6 @@ class FloatDetailViewController: UIViewController {
     //Save Float Details
     @IBAction func saveFloatDetails(){
         
-        var checkInDate = ""
         var tableViewCell = UITableViewCell()
         if(isFromLockOff){
             Constant.FloatDetails.unitNumber = Constant.MyClassConstants.unitNumberLockOff
@@ -224,79 +224,75 @@ class FloatDetailViewController: UIViewController {
         fixedWeekReservation.resort = resort
         fixedWeekReservation.unit = unit
         
-        Helper.updateFixWeekReservation(relinqishmentID: Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!, fixedWeekReservation: fixedWeekReservation, viewController:self)
-        
-        
-        
-        
-        //Check if float is already saved in database
-        if(Constant.MyClassConstants.selectedFloatWeek.floatDetails.count > 0){
+        updateFixWeekReservation(relinqishmentID: Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!, fixedWeekReservation: fixedWeekReservation, viewController:self)
+    }
+    
+    //Function to update fix week reservation
+     func updateFixWeekReservation(relinqishmentID:String, fixedWeekReservation:FixWeekReservation, viewController:UIViewController){
+        ExchangeClient.updateFixWeekReservation(UserContext.sharedInstance.accessToken, relinquishmentId: relinqishmentID, reservation: fixedWeekReservation, onSuccess: {
             
-            let storedData = Helper.getLocalStorageWherewanttoTrade()
             
-            if(storedData.count > 0) {
-                let realm = try! Realm()
-                try! realm.write {
-                    let floatWeek = OpenWeeks()
-                    var floatWeekIndex = -1
-                    
-                    for (index,object) in storedData.enumerated(){
-                        let openWk1 = object.openWeeks[0].openWeeks[0]
-                        if(openWk1.relinquishmentID == Constant.MyClassConstants.selectedFloatWeek.relinquishmentID && (openWk1.isFloatRemoved || openWk1.isLockOff)){
-                            if(openWk1.isLockOff){
-                                if(openWk1.floatDetails[0].unitNumber == Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].unitNumber){
+            
+            
+            //Check if float is already saved in database
+            if(Constant.MyClassConstants.selectedFloatWeek.floatDetails.count > 0){
+                
+                let storedData = Helper.getLocalStorageWherewanttoTrade()
+                
+                if(storedData.count > 0) {
+                    let realm = try! Realm()
+                    try! realm.write {
+                        let floatWeek = OpenWeeks()
+                        var floatWeekIndex = -1
+                        
+                        for (index,object) in storedData.enumerated(){
+                            let openWk1 = object.openWeeks[0].openWeeks[0]
+                            if(openWk1.relinquishmentID == Constant.MyClassConstants.selectedFloatWeek.relinquishmentID && (openWk1.isFloatRemoved || openWk1.isLockOff)){
+                                if(openWk1.isLockOff){
+                                    if(openWk1.floatDetails[0].unitNumber == Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].unitNumber){
+                                        floatWeekIndex = index
+                                    }
+                                }else{
                                     floatWeekIndex = index
                                 }
-                            }else{
-                                floatWeekIndex = index
                             }
                         }
-                    }
-    
-                        /*for openWk in Constant.MyClassConstants.floatRemovedArray{
-                            let openWk1 = openWk as! OpenWeeks
-                            if(openWk1.relinquishmentID == Constant.MyClassConstants.selectedFloatWeek.relinquishmentID && openWk1.floatDetails[0].unitNumber == Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].unitNumber){
-                                floatWeek = openWk1
-                                floatWeekIndex = Constant.MyClassConstants.floatRemovedArray.index(of: Constant.MyClassConstants.selectedFloatWeek)
-                            }
-                        }
-                    
-                    if(floatWeekIndex >= 0){
-                    if(Constant.MyClassConstants.whatToTradeArray.count > 0){
+                        
+                        if(floatWeekIndex > 0){
                             
-                            Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: floatWeekIndex)
-                            Constant.MyClassConstants.relinquishmentUnitsArray.removeObject(at: floatWeekIndex)
+                            storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFloatRemoved = false
+                            storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFloat = true
+                            storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFromRelinquishment = true
+                            storedData[floatWeekIndex].openWeeks[0].openWeeks[0].floatDetails[0].reservationNumber = Constant.FloatDetails.reservationNumber
+                            storedData[floatWeekIndex].openWeeks[0].openWeeks[0].floatDetails[0].unitNumber = Constant.FloatDetails.unitNumber
+                            storedData[floatWeekIndex].openWeeks[0].openWeeks[0].floatDetails[0].unitSize = Constant.MyClassConstants.savedBedroom
+                            storedData[floatWeekIndex].openWeeks[0].openWeeks[0].floatDetails[0].checkInDate = self.checkInDate
+                            storedData[floatWeekIndex].openWeeks[0].openWeeks[0].floatDetails[0].clubResortDetails = Constant.MyClassConstants.savedClubFloatResort
+                            if(floatWeek.isLockOff){
+                                storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isLockOff = true
+                            }
+                            if(!self.atrributesRowArray.contains(Constant.MyClassConstants.unitNumberAttribute)){
+                                storedData[floatWeekIndex].openWeeks[0].openWeeks[0].floatDetails[0].showUnitNumber = false
+                            }
                         }
-                    }*/
-                    if(floatWeekIndex > 0){
-                    
-                        storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFloatRemoved = false
-                        storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFloat = true
-                        storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFromRelinquishment = true
-                        storedData[floatWeekIndex].openWeeks[0].openWeeks[0].floatDetails[0].reservationNumber = Constant.FloatDetails.reservationNumber
-                        storedData[floatWeekIndex].openWeeks[0].openWeeks[0].floatDetails[0].unitNumber = Constant.FloatDetails.unitNumber
-                        storedData[floatWeekIndex].openWeeks[0].openWeeks[0].floatDetails[0].unitSize = Constant.MyClassConstants.savedBedroom
-                        storedData[floatWeekIndex].openWeeks[0].openWeeks[0].floatDetails[0].checkInDate = checkInDate
-                        storedData[floatWeekIndex].openWeeks[0].openWeeks[0].floatDetails[0].clubResortDetails = Constant.MyClassConstants.savedClubFloatResort
-                        if(floatWeek.isLockOff){
-                            storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isLockOff = true
-                        }
-                        if(!atrributesRowArray.contains(Constant.MyClassConstants.unitNumberAttribute)){
-                            storedData[floatWeekIndex].openWeeks[0].openWeeks[0].floatDetails[0].showUnitNumber = false
-                        }
+                        //Pop to vacation search screen
+                        self.popToVacationSearch()
+                        
                     }
-                    //Pop to vacation search screen
-                    popToVacationSearch()
-
                 }
+            }else{
+                
+                self.addFloatToDatabase(reservationNumber:Constant.FloatDetails.reservationNumber, unitNumber:Constant.FloatDetails.unitNumber, unitSize:Constant.MyClassConstants.savedBedroom, checkInDate:self.checkInDate)
             }
-        }else{
             
-            addFloatToDatabase(reservationNumber:Constant.FloatDetails.reservationNumber, unitNumber:Constant.FloatDetails.unitNumber, unitSize:Constant.MyClassConstants.savedBedroom, checkInDate:checkInDate)
+        }) { (error) in
+            //Pop to vacation search screen
+            self.popToVacationSearch()
+            SimpleAlert.alert(viewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
         }
-        
-        
     }
+
+    
     
     func resetFloatGlobalVariables() {
         

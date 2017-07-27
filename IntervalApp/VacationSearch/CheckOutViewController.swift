@@ -38,7 +38,7 @@ class CheckOutViewController: UIViewController {
     var showInsurance = false
     var eplusAdded = false
     var destinationPromotionSelected = false
-    var recapPromotionsArray = [Promotion]()
+    //var recapPromotionsArray = [Promotion]()
     var recapSelectedPromotion: String?
     var recapFeesTotal: Float?
     var filterRelinquishments = ExchangeRelinquishment()
@@ -264,6 +264,30 @@ class CheckOutViewController: UIViewController {
 
         self.emailTextToEnter = (UserContext.sharedInstance.contact?.emailAddress)!
         self.checkoutOptionTBLview.reloadData()
+        if(Constant.MyClassConstants.isFromExchange){
+            if let selectedPromotion = Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName {
+                self.recapSelectedPromotion = selectedPromotion
+                if(selectedPromotion == ""){
+                    Constant.MyClassConstants.isPromotionsEnabled = false
+                    destinationPromotionSelected = false
+                }else{
+                    Constant.MyClassConstants.isPromotionsEnabled = true
+                    destinationPromotionSelected = true
+                }
+            }
+        }else{
+            if let selectedPromotion = Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName {
+                self.recapSelectedPromotion = selectedPromotion
+                if(selectedPromotion == ""){
+                    Constant.MyClassConstants.isPromotionsEnabled = false
+                    destinationPromotionSelected = false
+                }else{
+                    Constant.MyClassConstants.isPromotionsEnabled = true
+                    destinationPromotionSelected = true
+                }
+            }
+        }
+        
         NotificationCenter.default.addObserver(self, selector: #selector(updateResortHoldingTime), name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(changeLabelStatus), name: NSNotification.Name(rawValue: Constant.notificationNames.changeSliderStatus), object: nil)
@@ -312,7 +336,8 @@ class CheckOutViewController: UIViewController {
         self.promotionSelectedIndex = sender.tag
         Constant.MyClassConstants.isPromotionsEnabled = true
         self.bookingCostRequiredRows = 1
-        checkoutOptionTBLview.reloadData()
+        
+        //checkoutOptionTBLview.reloadData()
         
         let storyboard = UIStoryboard(name: "VacationSearchIphone", bundle: nil)
         let promotionsNav = storyboard.instantiateViewController(withIdentifier: "DepositPromotionsNav") as! UINavigationController
@@ -337,9 +362,10 @@ class CheckOutViewController: UIViewController {
                 let processRequest = ExchangeProcessRecalculateRequest()
                 processRequest.fees = fees
                 ExchangeProcessClient.recalculateFees(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: { (response) in
+                    Constant.MyClassConstants.recapPromotionsArray.removeAll()
                     
                     if let promotions = response.view?.fees?.shopExchange?.promotions {
-                        self.recapPromotionsArray = promotions
+                        Constant.MyClassConstants.recapPromotionsArray = promotions
                     }
                     
                     if let selectedPromotion = response.view?.fees?.shopExchange?.selectedOfferName {
@@ -373,8 +399,9 @@ class CheckOutViewController: UIViewController {
             processRequest.fees = fees
             
             RentalProcessClient.addCartPromotion(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: { (response) in
+                Constant.MyClassConstants.recapPromotionsArray.removeAll()
                 if let promotions = response.view?.fees?.rental?.promotions {
-                    self.recapPromotionsArray = promotions
+                    Constant.MyClassConstants.recapPromotionsArray = promotions
                 }
                 
                 if let selectedPromotion = response.view?.fees?.rental?.selectedOfferName {
@@ -554,7 +581,6 @@ class CheckOutViewController: UIViewController {
                 DarwinSDK.logger.debug(error.description)
                 Helper.hideProgressBar(senderView: self)
             })
-            
         }
     }
     
@@ -571,15 +597,15 @@ class CheckOutViewController: UIViewController {
             Helper.showProgressBar(senderView: self)
             ExchangeProcessClient.recalculateFees(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: exchangeRecalculateRequest, onSuccess: { (recapResponse) in
                 self.eplusAdded = sender.checked
-                self.checkoutOptionTBLview.reloadData()
                 Constant.MyClassConstants.exchangeFees = [(recapResponse.view?.fees)!]
                 Helper.hideProgressBar(senderView: self)
+                self.checkoutOptionTBLview.reloadData()
             }, onError: { (error) in
                self.eplusAdded = !sender.checked
                Constant.MyClassConstants.exchangeFees[0].eplus?.selected = sender.checked
-                self.checkoutOptionTBLview.reloadData()
                 Helper.hideProgressBar(senderView: self)
                 SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: error.description)
+                self.checkoutOptionTBLview.reloadData()
             })
     }
     
@@ -1232,7 +1258,7 @@ extension CheckOutViewController:UITableViewDataSource {
                         subviews.isHidden = false
                     }
                     cell.discountLabel.text = recapSelectedPromotion
-                    for promotion in recapPromotionsArray {
+                    for promotion in Constant.MyClassConstants.recapPromotionsArray {
                         if promotion.offerName == recapSelectedPromotion {
                             let priceStr = "\(promotion.amount)"
                             let priceArray = priceStr.components(separatedBy: ".")
