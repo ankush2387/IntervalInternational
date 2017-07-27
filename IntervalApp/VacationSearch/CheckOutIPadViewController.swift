@@ -70,19 +70,15 @@ class CheckOutIPadViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        Helper.getCountry(viewController: self)
         // omniture tracking with event 40
         let pageView: [String: String] = [
         Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.vacationSearchPaymentInformation
         ]
         ADBMobile.trackAction(Constant.omnitureEvents.event40, data: pageView)
         
-        //Register custom cell xib with tableview
-        self.remainingResortHoldingTimeLabel.text = Constant.holdingResortForRemainingMinutes
         
-        self.bookingTableView.register(UINib(nibName: Constant.customCellNibNames.totalCostCell, bundle: nil), forCellReuseIdentifier: Constant.customCellNibNames.totalCostCell)
-        self.bookingTableView.register(UINib(nibName: Constant.customCellNibNames.promotionsDiscountCell, bundle: nil), forCellReuseIdentifier: Constant.customCellNibNames.promotionsDiscountCell)
-        
-        self.bookingTableView.register(UINib(nibName: Constant.customCellNibNames.exchangeOrProtectionCell, bundle: nil), forCellReuseIdentifier: Constant.customCellNibNames.exchangeOrProtectionCell)
+       
         
         if(!Constant.MyClassConstants.hasAdditionalCharges){
             isAgreedToFees = true
@@ -123,24 +119,25 @@ class CheckOutIPadViewController: UIViewController {
                     Constant.MyClassConstants.generalAdvisementsArray.append(advisement)
                 }
             }
+            if let _: String? = Constant.MyClassConstants.rentalFees[0].insurance?.insuranceOfferHTML!{
+                showInsurance = true
+            }else{
+                showInsurance = false
+            }
+            
         }
         
-
-    
+        //Register custom cell xib with tableview
+        self.remainingResortHoldingTimeLabel.text = Constant.holdingResortForRemainingMinutes
+        
+        self.bookingTableView.register(UINib(nibName: Constant.customCellNibNames.totalCostCell, bundle: nil), forCellReuseIdentifier: Constant.customCellNibNames.totalCostCell)
+        self.bookingTableView.register(UINib(nibName: Constant.customCellNibNames.promotionsDiscountCell, bundle: nil), forCellReuseIdentifier: Constant.customCellNibNames.promotionsDiscountCell)
+        
+        self.bookingTableView.register(UINib(nibName: Constant.customCellNibNames.exchangeOrProtectionCell, bundle: nil), forCellReuseIdentifier: Constant.customCellNibNames.exchangeOrProtectionCell)
         self.title = Constant.ControllerTitles.checkOutControllerTitle
         let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(CheckOutIPadViewController.menuBackButtonPressed(_:)))
         menuButton.tintColor = UIColor.white
         self.navigationItem.leftBarButtonItem = menuButton
-//        if(Constant.MyClassConstants.isFromExchange){
-//            
-//            let insuranceString: String? = Constant.MyClassConstants.rentalFees[0].insurance?.insuranceOfferHTML
-//            guard let myString = insuranceString, !myString.isEmpty else {
-//                showInsurance = false
-//                return
-//            }
-//        }
-   
-        showInsurance = true
         
         
         // omniture tracking with event 38
@@ -223,30 +220,72 @@ class CheckOutIPadViewController: UIViewController {
                 imageSlider.isHidden = true
                 showLoader = true
                 self.checkoutTableView.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
-                
-                
-                RentalProcessClient.continueToPay(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { (response) in
-                    Constant.MyClassConstants.getawayBookingLastStartedProcess = nil
-                    Constant.MyClassConstants.continueToPayResponse = response
-                    let selectedCard = Constant.MyClassConstants.selectedCreditCard
-                    if(selectedCard[0].saveCardIndicator == true){
-                        UserContext.sharedInstance.contact?.creditcards?.append(selectedCard[0])
-                    }
-                    Constant.MyClassConstants.selectedCreditCard.removeAll()
-                    self.isAgreed = true
-                    SVProgressHUD.dismiss()
-                    Helper.removeServiceCallBackgroundView(view: self.view)
-                    self.checkoutTableView.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
-                    self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
+                if(Constant.MyClassConstants.isFromExchange){
                     
+                    let continueToPayRequest = ExchangeProcessContinueToPayRequest.init()
+                    continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last!
+                    continueToPayRequest.confirmationDelivery = confirmationDelivery
+                    continueToPayRequest.acceptTermsAndConditions = true
+                    continueToPayRequest.acknowledgeAndAgreeResortFees = true
+                    
+                    ExchangeProcessClient.continueToPay(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { (response) in
+                        
+                        Constant.MyClassConstants.exchangeBookingLastStartedProcess = nil
+                        Constant.MyClassConstants.exchangeContinueToPayResponse = response
+                        let selectedCard = Constant.MyClassConstants.selectedCreditCard
+                        if(selectedCard[0].saveCardIndicator == true){
+                            UserContext.sharedInstance.contact?.creditcards?.append(selectedCard[0])
+                        }
+                        Constant.MyClassConstants.selectedCreditCard.removeAll()
+                        Helper.removeStoredGuestFormDetials()
+                        self.isAgreed = true
+                        Helper.hideProgressBar(senderView: self)
+                        self.checkoutTableView.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
+                        self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
+                        
+                    }, onError: { (error) in
+                        Helper.hideProgressBar(senderView: self)
+                        imageSlider.isHidden = false
+                        self.isAgreed = false
+                        self.checkoutTableView.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
+                        SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: error.description)
+                    })
+
+                    
+                    
+                }else{
+                    
+                    let continueToPayRequest = RentalProcessRecapContinueToPayRequest.init()
+                    continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last!
+                    continueToPayRequest.confirmationDelivery = confirmationDelivery
+                    continueToPayRequest.acceptTermsAndConditions = true
+                    continueToPayRequest.acknowledgeAndAgreeResortFees = true
+                    
+                    RentalProcessClient.continueToPay(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { (response) in
+                        Constant.MyClassConstants.getawayBookingLastStartedProcess = nil
+                        Constant.MyClassConstants.continueToPayResponse = response
+                        let selectedCard = Constant.MyClassConstants.selectedCreditCard
+                        if(selectedCard[0].saveCardIndicator == true){
+                            UserContext.sharedInstance.contact?.creditcards?.append(selectedCard[0])
+                        }
+                        Constant.MyClassConstants.selectedCreditCard.removeAll()
+                        self.isAgreed = true
+                        SVProgressHUD.dismiss()
+                        Helper.removeServiceCallBackgroundView(view: self.view)
+                        self.checkoutTableView.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
+                        self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
+                        
                     }, onError: { (error) in
                         SVProgressHUD.dismiss()
                         Helper.removeServiceCallBackgroundView(view: self.view)
                         imageSlider.isHidden = false
                         self.isAgreed = false
-                    self.checkoutTableView.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
+                        self.checkoutTableView.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                         SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: error.description)
-                })
+                    })
+                }
+                
+
             }else if(!isAgreedToFees && Constant.MyClassConstants.hasAdditionalCharges){
                 let indexPath = NSIndexPath(row: 0, section: 7)
                 checkoutTableView.scrollToRow(at: indexPath as IndexPath, at: .top, animated: true)
@@ -470,7 +509,7 @@ class CheckOutIPadViewController: UIViewController {
     func checkBoxCheckedAtIndex(_ sender:IUIKCheckbox) {
         
         self.promotionSelectedIndex = sender.tag
-        self.isPromotionsEnabled = true
+        Constant.MyClassConstants.isPromotionsEnabled = true
         self.bookingCostRequiredRows = 1
         checkoutTableView.reloadData()
         
@@ -1098,6 +1137,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                         cellWebView.loadHTMLString(str, baseURL: nil)
                     }
                     else{
+                        
                         let str = (Constant.MyClassConstants.exchangeFees[indexPath.row].insurance?.insuranceOfferHTML!)!
                         cellWebView.loadHTMLString(str, baseURL: nil)
 
