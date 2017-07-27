@@ -607,7 +607,7 @@ extension SearchResultViewController:UITableViewDelegate {
                 //self.getStaticFilterRelinquishments()
 
                 }
-                            }else{
+              }else{
             Helper.addServiceCallBackgroundView(view: self.view)
             SVProgressHUD.show()
             

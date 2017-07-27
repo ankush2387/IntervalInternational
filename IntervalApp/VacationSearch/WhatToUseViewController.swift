@@ -23,6 +23,7 @@ class WhatToUseViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         // Get dynamic rows
+        tableView.reloadData()
         self.getNumberOfRows()
         self.navigationController?.setNavigationBarHidden(false, animated: true)
 
@@ -85,7 +86,7 @@ class WhatToUseViewController: UIViewController {
                 Constant.MyClassConstants.guestCertificate = response.view?.fees?.guestCertificate
                 Constant.MyClassConstants.onsiteArray.removeAllObjects()
                 Constant.MyClassConstants.nearbyArray.removeAllObjects()
-                cell?.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
+                //cell?.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
 
                 
                 for amenity in (response.view?.destination?.resort?.amenities)!{

@@ -1629,15 +1629,6 @@ public class Helper{
         let curr = Locale.availableIdentifiers.map{ Locale(identifier: $0)}.filter { return currencyCode == $0.currencyCode }.map { ($0.identifier, $0.currencySymbol) }.flatMap {$0}.first
         return (curr?.1?.description)!
     }
-    
-    //Function to update fix week reservation
-    static func updateFixWeekReservation(relinqishmentID:String, fixedWeekReservation:FixWeekReservation, viewController:UIViewController){
-        ExchangeClient.updateFixWeekReservation(UserContext.sharedInstance.accessToken, relinquishmentId: relinqishmentID, reservation: fixedWeekReservation, onSuccess: {
-        }) { (error) in
-            SimpleAlert.alert(viewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
-        }
-    }
-
 }
 
 
