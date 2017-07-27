@@ -744,6 +744,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                     }
                     
                 }, onError: { (error) in
+                    sender.isEnabled = true
                     Helper.hideProgressBar(senderView: self)
                     SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.noResultError)
                 })
