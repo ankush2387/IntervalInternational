@@ -116,7 +116,7 @@ class LoginViewController: UIViewController
         Constant.MyClassConstants.webviewTtile = Constant.ControllerTitles.JoinTodayViewController
         Constant.MyClassConstants.requestedWebviewURL = Constant.WebUrls.joinTodayURL
         self.performSegue(withIdentifier: Constant.segueIdentifiers.webViewSegue, sender: nil)
-        
+    
     }
     
     func saveUsername(user: String) {
@@ -217,6 +217,7 @@ extension LoginViewController {
                ADBMobile.trackAction(Constant.omnitureEvents.event70, data: nil)
                 // let the login process continue
                 Helper.accessTokenDidChange(sender: self)
+                
             }
             else {
                 

@@ -10,6 +10,8 @@ import UIKit
 import IntervalUIKit
 import DarwinSDK
 import SVProgressHUD
+import SDWebImage
+import RealmSwift
 
 class WhoWillBeCheckingInViewController: UIViewController {
     
@@ -18,7 +20,10 @@ class WhoWillBeCheckingInViewController: UIViewController {
     @IBOutlet weak var resortHoldingTimeLabel: UILabel!
     @IBOutlet weak var checkingInUserTBLview: UITableView!
     @IBOutlet weak var proceedToCheckoutButton: IUIKButton!
+    
     @IBOutlet var keyboardHeightLayoutConstraint: NSLayoutConstraint?
+    
+    var filterRelinquishments = ExchangeRelinquishment()
     
     //Class variables
     var isKeyBoardOpen = false
@@ -47,12 +52,13 @@ class WhoWillBeCheckingInViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector:#selector(keyboardWasShown), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
         
-       
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // call country api
+        Helper.getCountry(viewController: self)
         
         // omniture tracking with event 40
         let pageView: [String: String] = [
@@ -60,7 +66,6 @@ class WhoWillBeCheckingInViewController: UIViewController {
             ]
         ADBMobile.trackAction(Constant.omnitureEvents.event40, data: pageView)
 
-        
         
         // omniture tracking with event 37
         let userInfo: [String: String] = [
@@ -72,7 +77,6 @@ class WhoWillBeCheckingInViewController: UIViewController {
         
         ADBMobile.trackAction(Constant.omnitureEvents.event37, data: userInfo)
 
-        
         
         self.proceedToCheckoutButton.isEnabled = false
         self.proceedToCheckoutButton.alpha = 0.5
@@ -171,7 +175,6 @@ class WhoWillBeCheckingInViewController: UIViewController {
     
     func guestFormCheckForDetails() ->Bool {
         
-        
         if(Constant.GetawaySearchResultGuestFormDetailData.firstName != "" && Constant.GetawaySearchResultGuestFormDetailData.lastName != "" && Constant.GetawaySearchResultGuestFormDetailData.country != "" && Constant.GetawaySearchResultGuestFormDetailData.address1 != "" && Constant.GetawaySearchResultGuestFormDetailData.address2 != "" && Constant.GetawaySearchResultGuestFormDetailData.city != "" && Constant.GetawaySearchResultGuestFormDetailData.state != "" && Constant.GetawaySearchResultGuestFormDetailData.pinCode != "" && Constant.GetawaySearchResultGuestFormDetailData.email != "" && Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber != "" && Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber != "") {
             
             if(proceedStatus) {
@@ -220,7 +223,21 @@ class WhoWillBeCheckingInViewController: UIViewController {
         
         SVProgressHUD.show()
         Helper.addServiceCallBackgroundView(view: self.view)
-        
+        if(Constant.MyClassConstants.isFromExchange){
+            Constant.holdingTimer.invalidate()
+            
+            ExchangeProcessClient.backToChooseExchange(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess:{(response) in
+                
+                Constant.MyClassConstants.selectedCreditCard.removeAll()
+                Helper.hideProgressBar(senderView: self)
+                _ = self.navigationController?.popViewController(animated: true)
+                
+            }, onError: {(error) in
+                
+                Helper.hideProgressBar(senderView: self)
+                SimpleAlert.alert(self, title: "Who will be checking in", message: error.localizedDescription)
+            })
+        }else{
         Constant.holdingTimer.invalidate()
         
         RentalProcessClient.backToChooseRental(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, onSuccess:{(response) in
@@ -238,7 +255,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 SimpleAlert.alert(self, title: Constant.ControllerTitles.whoWillBeCheckingInControllerTitle, message: Constant.AlertMessages.operationFailedMessage)
         })
         
-       
+        }
     }
     
     //***** Select member who will be checking in? *****//
@@ -294,20 +311,19 @@ class WhoWillBeCheckingInViewController: UIViewController {
             self.hideStatus = false
             hidePickerView()
         }
-        
-        
     }
     
     //***** Picker View for credit card type, country and city selection. *****//
     func createPickerView() {
         
         pickerBaseView = UIView(frame: CGRect(x: 0, y: self.view.frame.size.height - 200, width: self.view.frame.size.width, height: 200))
-        self.pickerBaseView.backgroundColor = UIColor.darkGray
+        self.pickerBaseView.backgroundColor = IUIKColorPalette.primary1.color
         let doneButton = UIButton(frame: CGRect(x: pickerBaseView.frame.size.width - 60, y: 5, width: 50, height: 50))
         doneButton.setTitle(Constant.AlertPromtMessages.done, for: .normal)
         doneButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.pickerDoneButtonPressed(_:)), for: .touchUpInside)
         
         pickerView = UIPickerView(frame: CGRect(x: 0, y: 50, width: pickerBaseView.frame.size.width, height: pickerBaseView.frame.size.height - 60))
+        pickerView.setValue(UIColor.white, forKeyPath: Constant.MyClassConstants.keyTextColor)
         self.pickerBaseView.addSubview(doneButton)
         self.pickerBaseView.addSubview(pickerView)
         pickerView.delegate = self
@@ -359,14 +375,104 @@ class WhoWillBeCheckingInViewController: UIViewController {
     
     func resortDetailsClicked(_ sender:IUIKCheckbox){
         
-        self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
+        if sender.tag == 0 {
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
+
+        } else {
+            Helper.getRelinquishmentDetails(resortCode: ((filterRelinquishments.openWeek?.resort?.resortCode)!!), viewController: self)
+            /*self.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: nil)*/
+
+        }
         
     }
     
     //***** Function to perform checkout *****//
     @IBAction func proceedToCheckoutPressed(_ sender: AnyObject) {
         
-        
+        if(Constant.MyClassConstants.isFromExchange){
+            let exchangeProcessRequest = ExchangeProcessContinueToCheckoutRequest()
+                
+                if(self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count) {
+                    
+                    let guest = Guest()
+                    
+                    guest.firstName = Constant.GetawaySearchResultGuestFormDetailData.firstName
+                    guest.lastName = Constant.GetawaySearchResultGuestFormDetailData.lastName
+                    guest.primaryTraveler = true
+                    
+                    
+                    let guestAddress = Address()
+                    
+                    guestAddress.addrLine1 = Constant.GetawaySearchResultGuestFormDetailData.address1
+                    guestAddress.addrLine2 = Constant.GetawaySearchResultGuestFormDetailData.address2
+                    guestAddress.cityName = Constant.GetawaySearchResultGuestFormDetailData.city
+                    guestAddress.zipCode = Constant.GetawaySearchResultGuestFormDetailData.pinCode
+                    guestAddress.addressType = "Home"
+                    guestAddress.territoryCode = "FL"
+                    guestAddress.countryCode = "USA"
+                    
+                    var phoneNumbers = [Phone]()
+                    let homePhoneNo = Phone()
+                    homePhoneNo.phoneNumber = Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber
+                    homePhoneNo.countryPhoneCode = "1"
+                    homePhoneNo.phoneType = "HOME_PRIMARY"
+                    homePhoneNo.areaCode = "305"
+                    homePhoneNo.countryCode = "FL"
+                    phoneNumbers.append(homePhoneNo)
+                    
+                    guest.phones = phoneNumbers
+                    guest.address = guestAddress
+                    exchangeProcessRequest.guest = guest
+                    
+                    Constant.MyClassConstants.enableGuestCertificate = true
+                }else{
+                    /*let guest = Guest()
+                    guest.firstName = ""
+                    guest.lastName = ""
+                    var phoneNumbers = [Phone]()
+                    guest.phones = phoneNumbers
+                    let guestAddress = Address()
+                    guest.address = guestAddress
+                    exchangeProcessRequest.guest = guest*/
+                }
+                let processResort = ExchangeProcess()
+                processResort.holdUnitStartTimeInMillis = Constant.holdingTime
+                processResort.processId = Constant.MyClassConstants.exchangeProcessStartResponse.processId
+                Helper.showProgressBar(senderView: self)
+                
+                ExchangeProcessClient.continueToCheckout(UserContext.sharedInstance.accessToken, process: processResort, request: exchangeProcessRequest, onSuccess: {(response) in
+                    DarwinSDK.logger.debug(response)
+                    SVProgressHUD.dismiss()
+                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    Constant.MyClassConstants.exchangeContinueToCheckoutResponse = response
+                    
+                    if let promotions = response.view?.fees?.shopExchange?.promotions {
+                        Constant.MyClassConstants.recapViewPromotionCodeArray = promotions
+                    }
+                    
+                    DarwinSDK.logger.debug("Promo codes are : \(String(describing: response.view?.promoCodes))")
+                    DarwinSDK.logger.debug("Response is : \(String(describing: response.view?.fees)) , -------->\(response)")
+                    Constant.MyClassConstants.allowedCreditCardType = (response.view?.allowedCreditCardTypes)!
+                    Constant.MyClassConstants.exchangeFees = [(response.view?.fees)!]
+                    if(Int((Constant.MyClassConstants.exchangeFees[0].shopExchange?.rentalPrice?.tax)!) != 0){
+                        Constant.MyClassConstants.enableTaxes = true
+                    }else{
+                        Constant.MyClassConstants.enableTaxes = false
+                    }
+                    Constant.MyClassConstants.memberCreditCardList = (UserContext.sharedInstance.contact?.creditcards)!
+                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                    let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.checkOutViewController) as! CheckOutViewController
+                    viewController.filterRelinquishments = self.filterRelinquishments
+                    
+                    let transitionManager = TransitionManager()
+                    self.navigationController?.transitioningDelegate = transitionManager
+                    self.navigationController!.pushViewController(viewController, animated: true)
+                }, onError: {(error) in
+                    SVProgressHUD.dismiss()
+                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    SimpleAlert.alert(self, title: Constant.AlertErrorMessages.noResultError, message: error.localizedDescription)
+                })
+        }else{
         let processRequest1 = RentalProcessPrepareContinueToCheckoutRequest()
         
         if(self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count) {
@@ -403,8 +509,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
             
             Constant.MyClassConstants.enableGuestCertificate = true
         }
-        Helper.addServiceCallBackgroundView(view: self.view)
-        SVProgressHUD.show()
+        Helper.showProgressBar(senderView: self)
         let processResort = RentalProcess()
         processResort.holdUnitStartTimeInMillis = Constant.holdingTime
         processResort.processId = Constant.MyClassConstants.processStartResponse.processId
@@ -438,9 +543,11 @@ class WhoWillBeCheckingInViewController: UIViewController {
             }, onError: {(error) in
                 SVProgressHUD.dismiss()
                 Helper.removeServiceCallBackgroundView(view: self.view)
+                SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                 
         })
     }
+}
 }
 
 //Extension class starts from here
@@ -559,9 +666,20 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
         if(indexPath.section == 0) {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.viewDetailsTBLcell, for: indexPath) as! ViewDetailsTBLcell
-            cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
-            cell.resortName?.text = Constant.MyClassConstants.selectedResort.resortName
-            cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.relinquishmentImage)
+            if(indexPath.row == 0){
+                cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
+                cell.resortDetailsButton.tag = indexPath.row
+                cell.resortName?.text = Constant.MyClassConstants.selectedResort.resortName
+                cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.resortImage)
+            }else{
+                cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
+                cell.resortDetailsButton.tag = indexPath.row
+                cell.resortName?.text = Constant.MyClassConstants.selectedResort.resortName
+                cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.relinquishmentImage)
+                cell.lblHeading.text = "Relinquishment"
+                cell.resortName?.text = filterRelinquishments.openWeek?.resort?.resortName
+            }
+            
             cell.selectionStyle = .none
             
             return cell
@@ -603,7 +721,17 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
        
             
             let guestPrices = Constant.MyClassConstants.guestCertificate.prices
-            let memberTier = Constant.MyClassConstants.rentalFees[0].memberTier
+            var memberTier = ""
+            if(Constant.MyClassConstants.isFromExchange){
+                if(Constant.MyClassConstants.exchangeFees.count > 0){
+                memberTier = Constant.MyClassConstants.exchangeFees[0].memberTier!
+                }else{
+                  memberTier = ""
+                }
+                
+            }else{
+                memberTier = Constant.MyClassConstants.rentalFees[0].memberTier!
+            }
             
             for price in guestPrices {
                 
@@ -637,6 +765,7 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
                     
                     if(Constant.GetawaySearchResultGuestFormDetailData.firstName == "") {
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormFnamePlaceholder
+                       
                     }
                     else {
                         cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.firstName
@@ -647,6 +776,7 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
                     
                     if(Constant.GetawaySearchResultGuestFormDetailData.lastName == "") {
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormLnamePlaceholder
+                        
                     }
                     else {
                         cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.lastName
@@ -661,6 +791,7 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
                     
                     if(Constant.GetawaySearchResultGuestFormDetailData.email == "") {
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormEmail
+                        
                     }
                     else {
                         cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.email
@@ -670,6 +801,7 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
                     
                     if(Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber == "") {
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormHomePhoneNumber
+                        
                     }
                     else {
                         cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber
@@ -679,6 +811,7 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
                     
                     if(Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber == "") {
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormBusinessPhoneNumber
+                        
                     }
                     else {
                         cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber
@@ -746,6 +879,7 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
                 if(indexPath.row == 1) {
                     if(Constant.GetawaySearchResultGuestFormDetailData.address1 == "") {
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormAddress1
+                        
                     }
                     else {
                         cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.address1
@@ -754,6 +888,7 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
                 else if(indexPath.row == 2) {
                     if(Constant.GetawaySearchResultGuestFormDetailData.address2 == "") {
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormAddress2
+                        
                     }
                     else {
                         cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.address2
@@ -764,6 +899,7 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
                     
                     if(Constant.GetawaySearchResultGuestFormDetailData.city == "") {
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormCity
+                        
                     }
                     else {
                         cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.city
@@ -773,6 +909,7 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
                     
                     if(Constant.GetawaySearchResultGuestFormDetailData.pinCode == "") {
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormPostalCode
+                        
                     }
                     else {
                         cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.pinCode
@@ -813,13 +950,10 @@ extension WhoWillBeCheckingInViewController:UIPickerViewDelegate {
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if(self.dropDownSelectionRow == 0) {
-            
-            guard let countryName = Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row].countryName else { return }
-            
-            Constant.GetawaySearchResultGuestFormDetailData.country = countryName
-            selectedCountryIndex = row
-        }
-        else {
+            Constant.GetawaySearchResultGuestFormDetailData.country = Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row].countryName!
+            Constant.GetawaySearchResultCardFormDetailData.countryCode = Constant.GetawaySearchResultGuestFormDetailData.countryCodeArray[row]
+            Helper.getStates(country: Constant.GetawaySearchResultCardFormDetailData.countryCode, viewController: self)
+        }else {
             guard let stateName = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name else { return }
 
             Constant.GetawaySearchResultGuestFormDetailData.state = stateName

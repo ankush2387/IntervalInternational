@@ -11,6 +11,9 @@ import UIKit
 class DestinationResortDetailCell: UITableViewCell {
 
     @IBOutlet weak var contentBackgroundView: UIView!
+    @IBOutlet weak var destinationImageView: UIImageView!
+    @IBOutlet weak var resortName: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

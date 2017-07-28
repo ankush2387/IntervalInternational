@@ -11,6 +11,8 @@
 		087A87581E951A17009B1387 /* TdiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087A87571E951A17009B1387 /* TdiCollectionViewCell.swift */; };
 		087A875A1E951A2D009B1387 /* UnitSizeTdiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087A87591E951A2D009B1387 /* UnitSizeTdiCollectionViewCell.swift */; };
 		0895D7141E966F0D004EAA91 /* ContainerContentTBLviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0895D7131E966F0D004EAA91 /* ContainerContentTBLviewController.swift */; };
+		08E3BCF61F2A30F80021F2BC /* RelinquishmentDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E3BCF51F2A30F80021F2BC /* RelinquishmentDetailsViewController.swift */; };
+		08E3BCF81F2A31330021F2BC /* RelinquishmentDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E3BCF71F2A31330021F2BC /* RelinquishmentDetailsCell.swift */; };
 		3A0326221C8EE684000758E3 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0326211C8EE684000758E3 /* CalendarViewController.swift */; };
 		3A05D4501C7B7CF400258C72 /* CertificateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A05D44F1C7B7CF400258C72 /* CertificateViewController.swift */; };
 		3A06C0A51CA9385A009A9574 /* AvailableDestinationCountryOrContinentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A06C0A11CA9385A009A9574 /* AvailableDestinationCountryOrContinentsTableViewCell.swift */; };
@@ -39,6 +41,7 @@
 		3A2F32421C80742300FCC111 /* UpComingTripCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2F32411C80742300FCC111 /* UpComingTripCell.swift */; };
 		3A31F26B1CA1547A0028C68F /* VacationOrResortTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A31F26A1CA1547A0028C68F /* VacationOrResortTableViewCell.swift */; };
 		3A341E901C9C2F2D007AC67D /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A341E8F1C9C2F2C007AC67D /* Helper.swift */; };
+		3A3663741F0F926F00951A88 /* RelinquishmentSelectionOpenWeeksCellWithUpgrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3663731F0F926F00951A88 /* RelinquishmentSelectionOpenWeeksCellWithUpgrade.swift */; };
 		3A39965B1E5B028600527A99 /* UpcomingTrip.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A3996591E5B028600527A99 /* UpcomingTrip.xib */; };
 		3A39965C1E5B028600527A99 /* UpcomingTripsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A39965A1E5B028600527A99 /* UpcomingTripsCollectionViewCell.swift */; };
 		3A3A012D1C99BD0B00B7EC37 /* AvailablePointToolViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3A010F1C99BD0B00B7EC37 /* AvailablePointToolViewController.swift */; };
@@ -102,6 +105,7 @@
 		3A645C0E1CF853180033EEB7 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A645C0D1CF853180033EEB7 /* Reachability.swift */; };
 		3A733AC61CEF2A2E0068CF15 /* ImageWithNameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A733AC51CEF2A2E0068CF15 /* ImageWithNameCell.swift */; };
 		3A795A8D1CF5D22E0098C26D /* HeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A795A8C1CF5D22E0098C26D /* HeaderTableViewCell.swift */; };
+		3A7F44A71F17768800F4DD18 /* WhatToUseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7F44A61F17768800F4DD18 /* WhatToUseViewController.swift */; };
 		3A8618C81EA679660092A804 /* ClubPoints.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A8618C71EA679660092A804 /* ClubPoints.xib */; };
 		3A892F411CD3902F00AE6F45 /* CaledarDateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A892F2D1CD3902F00AE6F45 /* CaledarDateCell.swift */; };
 		3A892F421CD3902F00AE6F45 /* CellHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A892F2E1CD3902F00AE6F45 /* CellHeaderTableViewCell.swift */; };
@@ -246,7 +250,6 @@
 		DC7EF4E01D709F1200E9E360 /* ActionSheetMemberShipCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7EF4DD1D709F1200E9E360 /* ActionSheetMemberShipCell.swift */; };
 		DC7EF4E11D709F1200E9E360 /* ActionSheetMemberShipCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC7EF4DE1D709F1200E9E360 /* ActionSheetMemberShipCell.xib */; };
 		DC7EF4E21D709F1200E9E360 /* CreateActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7EF4DF1D709F1200E9E360 /* CreateActionSheet.swift */; };
-		DC7EF4E81D709F2000E9E360 /* BookYourSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7EF4E31D709F2000E9E360 /* BookYourSelectionViewController.swift */; };
 		DC7EF4EA1D709F2000E9E360 /* RelinquishmentSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7EF4E51D709F2000E9E360 /* RelinquishmentSearchViewController.swift */; };
 		DC7EF4F01D709F2900E9E360 /* FeaturedDestinationsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7EF4ED1D709F2900E9E360 /* FeaturedDestinationsCell.swift */; };
 		DC7EF4F11D709F2900E9E360 /* FeaturedDestinationsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7EF4EE1D709F2900E9E360 /* FeaturedDestinationsTableViewCell.swift */; };
@@ -301,6 +304,8 @@
 		087A87571E951A17009B1387 /* TdiCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TdiCollectionViewCell.swift; sourceTree = "<group>"; };
 		087A87591E951A2D009B1387 /* UnitSizeTdiCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitSizeTdiCollectionViewCell.swift; sourceTree = "<group>"; };
 		0895D7131E966F0D004EAA91 /* ContainerContentTBLviewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerContentTBLviewController.swift; sourceTree = "<group>"; };
+		08E3BCF51F2A30F80021F2BC /* RelinquishmentDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentDetailsViewController.swift; sourceTree = "<group>"; };
+		08E3BCF71F2A31330021F2BC /* RelinquishmentDetailsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentDetailsCell.swift; sourceTree = "<group>"; };
 		26D24CAA1C4015290008EF39 /* IntervalApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IntervalApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A0326211C8EE684000758E3 /* CalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		3A05D44F1C7B7CF400258C72 /* CertificateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CertificateViewController.swift; sourceTree = "<group>"; };
@@ -330,6 +335,7 @@
 		3A2F32411C80742300FCC111 /* UpComingTripCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpComingTripCell.swift; sourceTree = "<group>"; };
 		3A31F26A1CA1547A0028C68F /* VacationOrResortTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VacationOrResortTableViewCell.swift; sourceTree = "<group>"; };
 		3A341E8F1C9C2F2C007AC67D /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
+		3A3663731F0F926F00951A88 /* RelinquishmentSelectionOpenWeeksCellWithUpgrade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentSelectionOpenWeeksCellWithUpgrade.swift; sourceTree = "<group>"; };
 		3A3996591E5B028600527A99 /* UpcomingTrip.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UpcomingTrip.xib; sourceTree = "<group>"; };
 		3A39965A1E5B028600527A99 /* UpcomingTripsCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpcomingTripsCollectionViewCell.swift; sourceTree = "<group>"; };
 		3A3A010F1C99BD0B00B7EC37 /* AvailablePointToolViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvailablePointToolViewController.swift; sourceTree = "<group>"; };
@@ -394,6 +400,7 @@
 		3A645C0D1CF853180033EEB7 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		3A733AC51CEF2A2E0068CF15 /* ImageWithNameCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageWithNameCell.swift; sourceTree = "<group>"; };
 		3A795A8C1CF5D22E0098C26D /* HeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderTableViewCell.swift; sourceTree = "<group>"; };
+		3A7F44A61F17768800F4DD18 /* WhatToUseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhatToUseViewController.swift; sourceTree = "<group>"; };
 		3A8618C71EA679660092A804 /* ClubPoints.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClubPoints.xib; sourceTree = "<group>"; };
 		3A892F2D1CD3902F00AE6F45 /* CaledarDateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaledarDateCell.swift; sourceTree = "<group>"; };
 		3A892F2E1CD3902F00AE6F45 /* CellHeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellHeaderTableViewCell.swift; sourceTree = "<group>"; };
@@ -545,7 +552,6 @@
 		DC7EF4DD1D709F1200E9E360 /* ActionSheetMemberShipCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionSheetMemberShipCell.swift; sourceTree = "<group>"; };
 		DC7EF4DE1D709F1200E9E360 /* ActionSheetMemberShipCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActionSheetMemberShipCell.xib; sourceTree = "<group>"; };
 		DC7EF4DF1D709F1200E9E360 /* CreateActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateActionSheet.swift; sourceTree = "<group>"; };
-		DC7EF4E31D709F2000E9E360 /* BookYourSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookYourSelectionViewController.swift; sourceTree = "<group>"; };
 		DC7EF4E51D709F2000E9E360 /* RelinquishmentSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentSearchViewController.swift; sourceTree = "<group>"; };
 		DC7EF4ED1D709F2900E9E360 /* FeaturedDestinationsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeaturedDestinationsCell.swift; sourceTree = "<group>"; };
 		DC7EF4EE1D709F2900E9E360 /* FeaturedDestinationsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeaturedDestinationsTableViewCell.swift; sourceTree = "<group>"; };
@@ -779,6 +785,7 @@
 			isa = PBXGroup;
 			children = (
 				3A892F361CD3902F00AE6F45 /* SearchResultCollectionCell.swift */,
+				08E3BCF71F2A31330021F2BC /* RelinquishmentDetailsCell.swift */,
 				3A1854F11CA065E800D238CA /* ResortBedroomDetails.swift */,
 				3ABC81A11DF971FD003CE64A /* EmailTableViewCell.swift */,
 				3A9983D81DE723E800CE44A5 /* SlideTableViewCell.swift */,
@@ -835,6 +842,7 @@
 				3A4006A11CA1618A0014DBF3 /* ResortBedroomDetailExchangeCell.swift */,
 				3A2089DD1E2544D0001AFFD2 /* RelinquishmentSelectionCIGCell.swift */,
 				3A2089DF1E2544FF001AFFD2 /* RelinquishmentSelectionOpenWeeksCell.swift */,
+				3A3663731F0F926F00951A88 /* RelinquishmentSelectionOpenWeeksCellWithUpgrade.swift */,
 				3AE81DBE1E814DF7005C2CEA /* clubPointCell.swift */,
 				E95A30BA1EF9693700AB64DB /* CheckoutPromotionCell.swift */,
 				3A59DE191F015FDE005280D3 /* SortingOptionCell.swift */,
@@ -954,7 +962,6 @@
 		3AAA5A1A1C720F4500A5EA6D /* VacationSearch */ = {
 			isa = PBXGroup;
 			children = (
-				DC7EF4E31D709F2000E9E360 /* BookYourSelectionViewController.swift */,
 				DC7EF4E51D709F2000E9E360 /* RelinquishmentSearchViewController.swift */,
 				3AAA5A121C720F4500A5EA6D /* Login */,
 				3A892F2C1CD3902F00AE6F45 /* CustomCells */,
@@ -962,6 +969,7 @@
 				3AAA5A1F1C720F4500A5EA6D /* VacationSearchIphone.storyboard */,
 				3AB122B01CD283AF00204EB7 /* VacationSearchIPadViewController.swift */,
 				3AAA5A201C720F4500A5EA6D /* VacationSearchTabBarController.swift */,
+				08E3BCF51F2A30F80021F2BC /* RelinquishmentDetailsViewController.swift */,
 				3AAA5A211C720F4500A5EA6D /* VacationSearchViewController.swift */,
 				3A05D44F1C7B7CF400258C72 /* CertificateViewController.swift */,
 				3AF7CC121C848C5900FB9AC6 /* AccomodationCertsDetailController.swift */,
@@ -980,6 +988,7 @@
 				E94C7E081EF84DDE003D0EB5 /* PromotionsViewController.swift */,
 				3A59DE151F013767005280D3 /* SearchResultMapviewController.swift */,
 				3A59DE171F015E5F005280D3 /* SortingViewController.swift */,
+				3A7F44A61F17768800F4DD18 /* WhatToUseViewController.swift */,
 			);
 			path = VacationSearch;
 			sourceTree = "<group>";
@@ -1181,9 +1190,9 @@
 				TargetAttributes = {
 					26D24CA91C4015290008EF39 = {
 						CreatedOnToolsVersion = 7.1.1;
-						DevelopmentTeam = 4CR2ZD7GRK;
+						DevelopmentTeam = FX5T74KH69;
 						LastSwiftMigration = 0800;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -1349,6 +1358,7 @@
 				3AB122C91CD2858400204EB7 /* LoginIPadViewController.swift in Sources */,
 				3A3A01361C99BD0B00B7EC37 /* ClubpointTableViewCell.swift in Sources */,
 				3A2C728B1DDB2D8500BBF40B /* ExchangeOptionsCell.swift in Sources */,
+				3A7F44A71F17768800F4DD18 /* WhatToUseViewController.swift in Sources */,
 				E932C7601EE07FB70083E871 /* UpComingTripMapViewController.swift in Sources */,
 				DC27F7CB1DB8278000AA374F /* CustomTableViewCell.swift in Sources */,
 				3AAA5A2F1C720F4500A5EA6D /* CustomHeaderCell.swift in Sources */,
@@ -1360,7 +1370,6 @@
 				087A87581E951A17009B1387 /* TdiCollectionViewCell.swift in Sources */,
 				3AF7CC081C8450FF00FB9AC6 /* TransitionManager.swift in Sources */,
 				3A45F5C21CA051FE0045B2EF /* MyownershipClubIntervalGoldPointsTableViewCell.swift in Sources */,
-				DC7EF4E81D709F2000E9E360 /* BookYourSelectionViewController.swift in Sources */,
 				3AAA5A431C720F4500A5EA6D /* LoginLowerButtonCell.swift in Sources */,
 				3A8C7EB91C85A7DB000A4E46 /* PrivacyLegalViewController.swift in Sources */,
 				3A932D5A1C8868F7004BF665 /* PaymentCell.swift in Sources */,
@@ -1379,6 +1388,7 @@
 				3A31F26B1CA1547A0028C68F /* VacationOrResortTableViewCell.swift in Sources */,
 				DC7EF4DA1D709F0400E9E360 /* UpComingTripsTableViewCell.swift in Sources */,
 				DC7BA8331DB911D600BB0C3B /* DetailedIssueViewController.swift in Sources */,
+				08E3BCF61F2A30F80021F2BC /* RelinquishmentDetailsViewController.swift in Sources */,
 				3A3D56851DD33A7400922FA9 /* ViewDetailsTBLcell.swift in Sources */,
 				3A18D7BE1DE0967C00966472 /* SaveCardOptionCell.swift in Sources */,
 				3A894C1F1C9081FF00CF2D54 /* SearchResultViewController.swift in Sources */,
@@ -1449,6 +1459,7 @@
 				3A586CC41DDCA24F00EF6756 /* TotalCostCell.swift in Sources */,
 				DC27F7C81DB81B6F00AA374F /* GetawayAlertsIPhoneViewController.swift in Sources */,
 				3A8C7EB71C85A632000A4E46 /* JoinTodayViewController.swift in Sources */,
+				3A3663741F0F926F00951A88 /* RelinquishmentSelectionOpenWeeksCellWithUpgrade.swift in Sources */,
 				DC7EF5071D709F8800E9E360 /* DetailMapViewController.swift in Sources */,
 				DC7EF5141D709F8800E9E360 /* ResortInfoTableViewCell.swift in Sources */,
 				3AAA5A3D1C720F4500A5EA6D /* PostLaunchViewController.swift in Sources */,
@@ -1538,6 +1549,7 @@
 				3A892F4F1CD3902F00AE6F45 /* TravelWindowSelectionCell.swift in Sources */,
 				3A59DE161F013767005280D3 /* SearchResultMapviewController.swift in Sources */,
 				3A0326221C8EE684000758E3 /* CalendarViewController.swift in Sources */,
+				08E3BCF81F2A31330021F2BC /* RelinquishmentDetailsCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1654,8 +1666,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Jhonathan Sanchez (NCQ8EZ997Z)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jhonathan Sanchez (NCQ8EZ997Z)";
-				DEVELOPMENT_TEAM = 4CR2ZD7GRK;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = FX5T74KH69;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					RealmSwift.framework,
@@ -1669,10 +1681,10 @@
 					"$(PROJECT_DIR)/IntervalApp/AdobeMobileLibrary",
 				);
 				MACH_O_TYPE = mh_execute;
-				PRODUCT_BUNDLE_IDENTIFIER = com.intervalintl.Interval;
+				PRODUCT_BUNDLE_IDENTIFIER = com.intervalintl.Interval1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "743aa0bc-4955-4605-af1e-dff46b57a2a7";
-				PROVISIONING_PROFILE_SPECIFIER = "IntervalApp-DEV";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "IntervalApp/IntervalApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -1688,8 +1700,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Jhonathan Sanchez (NCQ8EZ997Z)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jhonathan Sanchez (NCQ8EZ997Z)";
-				DEVELOPMENT_TEAM = 4CR2ZD7GRK;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = FX5T74KH69;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					RealmSwift.framework,
@@ -1703,10 +1715,10 @@
 					"$(PROJECT_DIR)/IntervalApp/AdobeMobileLibrary",
 				);
 				MACH_O_TYPE = mh_execute;
-				PRODUCT_BUNDLE_IDENTIFIER = com.intervalintl.Interval;
+				PRODUCT_BUNDLE_IDENTIFIER = com.intervalintl.Interval1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "743aa0bc-4955-4605-af1e-dff46b57a2a7";
-				PROVISIONING_PROFILE_SPECIFIER = "IntervalApp-DEV";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "IntervalApp/IntervalApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;

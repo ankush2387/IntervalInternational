@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -1577,12 +1577,51 @@
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="DyR-og-le6">
+                                        <rect key="frame" x="0.0" y="50" width="394" height="536"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <prototypes>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CellIdentifier" rowHeight="40" id="JQ6-fw-J80" customClass="ResortInfoTableViewCell" customModule="IntervalApp" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="28" width="394" height="40"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JQ6-fw-J80" id="Apt-8e-XyS">
+                                                    <rect key="frame" x="0.0" y="0.0" width="394" height="40"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="40" translatesAutoresizingMaskIntoConstraints="NO" id="izb-YS-SoI">
+                                                            <rect key="frame" x="0.0" y="0.0" width="394" height="40"/>
+                                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="izb-YS-SoI" firstAttribute="top" secondItem="Apt-8e-XyS" secondAttribute="top" id="Eg5-l1-lRT"/>
+                                                        <constraint firstItem="izb-YS-SoI" firstAttribute="leading" secondItem="Apt-8e-XyS" secondAttribute="leading" id="ee2-Q2-gva"/>
+                                                        <constraint firstAttribute="trailing" secondItem="izb-YS-SoI" secondAttribute="trailing" id="fpU-yt-h1x"/>
+                                                        <constraint firstAttribute="bottom" secondItem="izb-YS-SoI" secondAttribute="bottom" id="vNa-0R-aES"/>
+                                                    </constraints>
+                                                </tableViewCellContentView>
+                                                <connections>
+                                                    <outlet property="resortInfoLabel" destination="izb-YS-SoI" id="2Dq-Mf-Ofx"/>
+                                                </connections>
+                                            </tableViewCell>
+                                        </prototypes>
+                                        <connections>
+                                            <outlet property="dataSource" destination="P1X-Js-6tf" id="c2j-eB-YkF"/>
+                                            <outlet property="delegate" destination="P1X-Js-6tf" id="fe9-gP-p10"/>
+                                        </connections>
+                                    </tableView>
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="DyR-og-le6" secondAttribute="trailing" id="4wo-cu-01o"/>
                                     <constraint firstAttribute="trailing" secondItem="8fc-dC-gIe" secondAttribute="trailing" id="DZv-fD-ZHs"/>
                                     <constraint firstItem="8fc-dC-gIe" firstAttribute="top" secondItem="Vni-pM-YmN" secondAttribute="top" constant="20" id="E7E-yU-4pl"/>
+                                    <constraint firstAttribute="bottom" secondItem="DyR-og-le6" secondAttribute="bottom" id="FFm-aP-V2N"/>
+                                    <constraint firstItem="DyR-og-le6" firstAttribute="top" secondItem="8fc-dC-gIe" secondAttribute="bottom" constant="10" id="Fcy-t4-MMc"/>
                                     <constraint firstItem="8fc-dC-gIe" firstAttribute="leading" secondItem="Vni-pM-YmN" secondAttribute="leading" id="Tub-W6-bws"/>
+                                    <constraint firstItem="DyR-og-le6" firstAttribute="leading" secondItem="Vni-pM-YmN" secondAttribute="leading" id="a8v-Ks-lVG"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -1603,7 +1642,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PF1-CQ-OGC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2041" y="580"/>
+            <point key="canvasLocation" x="2040.5797101449277" y="579.61956521739137"/>
         </scene>
         <!--Side Menu Table View Controller-->
         <scene sceneID="wL4-V1-OMw">
@@ -1666,7 +1705,7 @@
             <objects>
                 <navigationController storyboardIdentifier="AboutHelpNav" automaticallyAdjustsScrollViewInsets="NO" id="5pZ-7o-otW" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="1vD-f1-oL0">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="1vD-f1-oL0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

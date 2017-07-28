@@ -18,9 +18,11 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
     @IBOutlet weak var yearLabel: UILabel!
     @IBOutlet weak var totalWeekLabel: UILabel!
     
+    @IBOutlet weak var resortDetailsView: UIView!
     @IBOutlet weak var totalSleepAndPrivate: UILabel!
     @IBOutlet weak var bedroomSizeAndKitchenClient: UILabel!
     @IBOutlet weak var resortName: UILabel!
+    @IBOutlet weak var dayandDateLabel: UIView!
     
     @IBOutlet weak var addButton: IUIKButton!
     @IBOutlet weak var savedView: UILabel!
@@ -28,6 +30,9 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
     @IBOutlet weak var promLabel: UILabel!
     @IBOutlet weak var promImgView: UIImageView!
     @IBOutlet weak var expirationMessageLabel: UILabel!
+    
+    @IBOutlet weak var mainView: UIView!
+    @IBOutlet weak var checkBox: IUIKCheckbox!
     
     override func awakeFromNib() {
         super.awakeFromNib()

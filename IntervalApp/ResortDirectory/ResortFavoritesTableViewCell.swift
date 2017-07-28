@@ -114,7 +114,7 @@ extension ResortFavoritesTableViewCell:UICollectionViewDataSource {
         let frame = CGRect(x: 0, y: (collectionView.frame.size.width-10)/2-80, width: (collectionView.frame.size.width-10)/2, height: 80)
         cell.resortNameGradientView.frame = frame
         
-        cell.resortImageView.frame = cell.frame
+        //cell.resortImageView.frame = cell.frame
         
         Helper.addLinearGradientToView(view: cell.resortNameGradientView, colour: UIColor.white, transparntToOpaque: true, vertical: false)
         cell.backgroundColor = IUIKColorPalette.contentBackground.color

@@ -26,8 +26,15 @@ class Constant: NSObject {
     //Getaways SearchResult CardFormDetail Data
     struct GetawaySearchResultGuestFormDetailData {
         
+
+        //static var countryListArray = [String]()
+        static var countryCodeArray = [String]()
+        //static var stateListArray = [String]()
+        static var stateCodeArray = [String]()
+
         static var countryListArray = [Country]()
         static var stateListArray = [State]()
+
         static var textFieldChangedInSection = -1
         static var firstName = ""
         static var lastName = ""
@@ -61,6 +68,7 @@ class Constant: NSObject {
     struct GetawaySearchResultCardFormDetailData {
         
         static var countryListArray = ["Canada","USA","India","Austrelia","South Africa"]
+        static var countryCodeArray: [String] = []
         static var cardTypeArray = ["Visa","Master","Coral"]
         static var textFieldChangedInSection = -1
         static var nameOnCard = ""
@@ -74,7 +82,8 @@ class Constant: NSObject {
         static var cardType = ""
         static var expDate:Date? = nil
         static var cvv = ""
-        
+        static var countryCode = ""
+        static var stateCode = ""
     }
     
     struct MyClassConstants{
@@ -129,6 +138,10 @@ class Constant: NSObject {
         //global variable to hold last Getaway Booking Process
         
         static var getawayBookingLastStartedProcess:RentalProcess!
+        
+        //global variable to hold last exchange getaway booking process
+        
+        static var exchangeBookingLastStartedProcess:ExchangeProcess!
         
         //***** global variable that hold system access token *****//
         static var systemAccessToken:DarwinAccessToken?
@@ -340,6 +353,7 @@ class Constant: NSObject {
         static var adultCounter = 2
         
         static var resortVC = "ResortDetailsViewController"
+        static var destinationResortDetail = "DestinationResortViewController"
         static var resortsString = "Resort"
         static var tutorialsString = "Tutorial"
         static var areaString = "Area"
@@ -349,14 +363,19 @@ class Constant: NSObject {
         
         static var surroundingAreaString = "Resorts in surrounding areas."
         static var viewResponse = PrepareView()
+        static var exchangeViewResponse = ExchangeProcessPrepareView()
         static var generalAdvisementsArray = [Advisement]()
         static var additionalAdvisementsArray = [Advisement]()
         static var processStartResponse = RentalProcessPrepareResponse()
+        static var exchangeProcessStartResponse = ExchangeProcessPrepareResponse()
         static var continueToCheckoutResponse = RentalProcessRecapResponse()
+        static var exchangeContinueToCheckoutResponse = ExchangeProcessRecapResponse()
         static var continueToPayResponse = RentalProcessEndResponse()
+        static var exchangeContinueToPayResponse = ExchangeProcessEndResponse()
         static var recapViewPromotionCodeArray = [Promotion]()
         static var allowedCreditCardType = [AllowedCreditCardType]()
         static var rentalFees = [RentalFees]()
+        static var exchangeFees = [ExchangeFees]()
         static var memberCreditCardList = [Creditcard]()
         static var selectedCreditCard = [Creditcard]()
         static var guestCertificate:GuestCertificate!
@@ -399,6 +418,7 @@ class Constant: NSObject {
         
         static var inventoryPrice = [InventoryPrice]()
         static var selectedResort = Resort()
+        static var selectedExchange = ""
         
         static var paymentMethodTitle = "Payment Method"
         static var webViewGetElementById = "document.getElementById('WASCInsuranceOfferOption0').checked == true;"
@@ -479,6 +499,7 @@ class Constant: NSObject {
         //Header for search results
         static var searchResultHeader = NSLocalizedString("Nearest Check-in Date selected.\nWe found availibility close to your desired date.", comment: "")
         static var isFromExchange = false
+        static var isFromWhatToUse = false
         static var travelPartyInfo = TravelParty()
         static var bucketsArray = [ExchangeBucket]()
         static var exchangeInventory = [ExchageInventory]()
@@ -486,9 +507,20 @@ class Constant: NSObject {
         static var promotionsArray = [Promotion]()
         static var htmlHeader = "<html><body>"
         static var htmlFooter = "</html></body>"
-        
+    
+        // Choose relinquishments
+        static var filterRelinquishments = [ExchangeRelinquishment]()
+
         //UserDefaults
         static var userName = "userName"
+        static var exchangeDestination = ExchangeDestination()
+        
+        //Changed promotions to global
+        static var isPromotionsEnabled = false
+        static var recapPromotionsArray = [Promotion]()
+        
+        //Keypath for picker
+        static var keyTextColor = "textColor"
     }
     struct CommonStringIdentifiers {
         static var floatWeek = "FLOAT_WEEK"
@@ -580,6 +612,7 @@ class Constant: NSObject {
         static var feesAlertMessage = NSLocalizedString("Slide to agree to fees. ", comment:"")
         static var insuranceSelectionMessage = NSLocalizedString("Select trip protection or choose \("\"No I decline coverage.\"")", comment: "")
         static var paymentSelectionMessage = NSLocalizedString("Please select any payment method. ", comment:"")
+        static var promotionsMessage = NSLocalizedString("Please select any promotions. ", comment:"")
         static var feesPaymentMessage = NSLocalizedString("I acknowledge and agree that the mandatory resort fees will be payable to the resort. Fees are per person and per day", comment: "")
         static var agreeToFeesMessage = NSLocalizedString("Agreed to Fees", comment: "")
         static var termsConditionMessage = NSLocalizedString("I have read and accepted the Terms and Conditions and Privacy Policy", comment: "")
@@ -596,6 +629,7 @@ class Constant: NSObject {
         static var userInterestMessage = NSLocalizedString("How's about you go favorite some resorts and when you come back they will be here all warm and toasty waiting for you!", comment: "")
         static var goGetMessage = NSLocalizedString("Go on Get! ", comment: "")
         static var noDatesMessage = NSLocalizedString("No Dates availabel", comment: "")
+        static var tradeItemMessage = NSLocalizedString("Add items to \("What do you want to trade?") section", comment: "")
     }
     
     //***** common  structure to provide alert promt button titles *****//
@@ -712,6 +746,7 @@ class Constant: NSObject {
         static var type = NSLocalizedString("Type", comment: "")
         static var expirationDate = NSLocalizedString("Select Expiration Date", comment: "")
         static var cvv = NSLocalizedString("CVV", comment: "")
+        static var expirationDatePlaceHolder = NSLocalizedString("MM/YY", comment: "")
         static var country = NSLocalizedString("Country", comment: "")
         //Ownership text field placeholder
         static var reservationNumber = NSLocalizedString("Reservation Number", comment: "")
@@ -759,7 +794,7 @@ class Constant: NSObject {
         static var JoinTodayViewController = NSLocalizedString("Join_Today", comment: "")
         static var calendarViewController = NSLocalizedString("Pick_Date", comment: "")
         static var accomodationCertsDetailController = NSLocalizedString("Accomodation_Certificates", comment: "")
-        static var bookYourSelectionController = NSLocalizedString("Book Your Selection", comment: "")
+        static var bookYourSelectionController = NSLocalizedString("Choose What To Use", comment: "")
         static var vacationSearchTabBarController = NSLocalizedString("Vacation_Search", comment: "")
         static var dashboardTableViewController = NSLocalizedString("Home", comment: "")
         static var upComingTripDetailController = NSLocalizedString("Trip_Details", comment: "")
@@ -783,6 +818,7 @@ class Constant: NSObject {
         static var clubpointselection = NSLocalizedString("Club Point Selection", comment: "")
         static var selectedControllerTitle = ""
         static var sorting = NSLocalizedString("Sorting", comment: "")
+        static var choosewhattouse = NSLocalizedString("Choose what to use", comment: "")
     }
     
     //***** Common structure for custom cell identifiers ******//
@@ -866,6 +902,7 @@ class Constant: NSObject {
         static var tripDetailsViewController = "TripDetailsNavigationController"
         static var createAlertViewController = "CreateAlertViewController"
         static var signInPreLoginViewController = "SignInPreLoginViewController"
+        static var whatToUseViewController = "WhatToUseViewController"
         
     }
     
@@ -882,6 +919,7 @@ class Constant: NSObject {
         static var whoIsTravelingCell = "WhoIsTravelingCell"
         static var searchResultCollectionCell = "SearchResultCollectionCell"
         static var searchResultContentTableCell = "SearchResultContentTableCell"
+        static var relinquishmentDetailsCell = "RelinquishmentDetailsCell"
         static var moreSearchResult = "MoreCollectionCell"
         static var whereToGoTableViewCell = "WereToGo"
         static var wereToGoTableViewCell = "wereToGo"
@@ -950,6 +988,7 @@ class Constant: NSObject {
     struct PaymentSelectionViewControllerCellIdentifiersAndHardCodedStrings {
         
         static var cvvAlertTitle = NSLocalizedString("Please enter the credit card CVV code", comment: "")
+        static var cvvandExpiryDateAlertTitle = NSLocalizedString("Your card is expired. Please enter your credit card CVV code and the new expiration date.", comment: "")
     }
     
     //***** common  structure to provide all CheckOut IPad View Controller CellIdentifiers And HardCoded Strings *****//
@@ -1086,11 +1125,13 @@ class Constant: NSObject {
         static var resortBedroomDetails = "ResortBedroomDetails"
         static var resortBedroomDetailwithInfo = "ResortBedroomDetailWithInfoCell"
         static var resortBedroomDetailexchange = "ResortBedroomDetailExchangeCell"
+        static var relinquishmentForExchange = "RelinquishmentForExchange"
         static var travelWindowSelectionCell = "TravelWindowSelectionCell"
         static var eligibleDestinationCell = "EligibleDestinationCell"
         static var destinationResortDetailCell = "DestinationResortDetailCell"
         static var exchangeCell0 = "ExchangeCell0"
         static var exchangeCell1 = "ExchangeCell1"
+        static var exchangeCell2 = "ExchangeCell2"
         static var getawaysCell  = "GetawaysCell"
         static var moreCell = "MoreCell"
         static var searchResultDateCell = "SearchResultDateCell"
@@ -1132,6 +1173,7 @@ class Constant: NSObject {
         static var exchange = "Exchange"
         static var sortingOptionCell = "sortingOptionCell"
         static var whereToGoCell = "WhereToGoCell"
+        static var availablePoints = "AvailablePoints"
     }
     
     //***** Common structure for dynamic strings combinining strings *****//
@@ -1199,6 +1241,8 @@ class Constant: NSObject {
         static var confirmationScreenSegue = "confirmationSegue"
         static var selectPaymentMethodSegue = "selectPaymentSegue"
         static var showResortDetailsSegue = "showResortDetails"
+        static var showRelinguishmentsDetailsSegue = "showRelinguishmentsDetails"
+
         static var confirmationUpcomingTripSegue = "confirmationUpcomingTripSegue"
         static var newCreditCardSegue = "newCreditCardSegue"
         static var PolicyWebviewSegue = "privacyPolicyWebviewSegue"
@@ -1207,6 +1251,9 @@ class Constant: NSObject {
         static var upcomingDetailSegue = "UpComingTripDetailSegue"
         static var searchResultMapSegue = "searchResultMapSegue"
         static var sortingSegue = "sortingSegue"
+        static var whatToUseSegue = "whatToUse"
+        static var bookingSelectionSegue = "BookYourSelectionSegue"
+        static var chooseWhatToUse = "ChooseWhatToUse"
     }
     
     //***** common  structure to provide all actionSheetAttributedString *****//
@@ -1221,7 +1268,6 @@ class Constant: NSObject {
     
     //***** common  structure to provide all assetImageNames *****//
     struct assetImageNames {
-        
         static var TouchIdOn = "TouchID-On"
         static var TouchIdOff = "TouchID-Off"
         static var backArrowNav = "BackArrowNav"
@@ -1256,11 +1302,13 @@ class Constant: NSObject {
         static var visaCardImage = "Visa_CO"
         static var swipeArrowOrgImage = "SwipeArrow_ORG"
         static var swipeArrowGryImage = "SwipeArrow_GRY"
-        static var relinquishmentImage = "RST_CO"
+        static var resortImage = "RST_CO"
         static var exchangeImage = "EPlus"
         static var checkMarkOn = "Checkmark-On"
         static var plusIcon = "PlusIcon"
         static var infoImage = "InfoIcon"
+        static var relinquishmentImage = "EXG_CO"
+        static var promoImage = "PromoImage"
     }
     
     //***** Bedroom ViewController *****//

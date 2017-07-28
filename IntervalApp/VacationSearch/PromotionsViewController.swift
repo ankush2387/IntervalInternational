@@ -42,9 +42,20 @@ extension PromotionsViewController: UITableViewDelegate {
         selectedPromotionIndex = indexPath
         promotionsTableView.reloadData()
         if indexPath.section == 0 {
-            Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName = promotionsArray[indexPath.row].offerName
+            Constant.MyClassConstants.isPromotionsEnabled = true
+            if(Constant.MyClassConstants.isFromExchange){
+                Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName = promotionsArray[indexPath.row].offerName
+            }else{
+               Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName = promotionsArray[indexPath.row].offerName
+            }
+
         } else {
-            Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName = "No Thanks"
+            Constant.MyClassConstants.isPromotionsEnabled = false
+            if(Constant.MyClassConstants.isFromExchange){
+               Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName = "No Thanks"
+            }else{
+                Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName = "No Thanks"
+            }
         }
         self.dismiss(animated: true, completion: nil)
         completionHandler(true)
@@ -73,11 +84,20 @@ extension PromotionsViewController: UITableViewDataSource {
             cell.selectionStyle = .none
             
             cell.promotionTextLabel.text = promotion.offerName
-            if (cell.promotionTextLabel.text == Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName) {
-                cell.promotionSelectionCheckBox.checked = true
-            } else {
-                cell.promotionSelectionCheckBox.checked = false
+            if(Constant.MyClassConstants.isFromExchange){
+                if (cell.promotionTextLabel.text == Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName) {
+                    cell.promotionSelectionCheckBox.checked = true
+                } else {
+                    cell.promotionSelectionCheckBox.checked = false
+                }
+            }else{
+                if (cell.promotionTextLabel.text == Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName) {
+                    cell.promotionSelectionCheckBox.checked = true
+                } else {
+                    cell.promotionSelectionCheckBox.checked = false
+                }
             }
+            
             cell.promotionSelectionCheckBox.isUserInteractionEnabled = false
             cell.promotionSelectionCheckBox.addTarget(self, action: #selector(PromotionsViewController.promotionCellSelected), for: .touchUpInside)
             return cell
@@ -85,10 +105,22 @@ extension PromotionsViewController: UITableViewDataSource {
             let cell = promotionsTableView.dequeueReusableCell(withIdentifier: "PromotionCell", for: indexPath) as! PromotionsCell
             cell.promotionTextLabel.text = "No Thanks"
             cell.selectionStyle = .none
-            if (cell.promotionTextLabel.text == Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName) {
-                cell.promotionSelectionCheckBox.checked = true
-            } else {    
-                cell.promotionSelectionCheckBox.checked = false
+            if(Constant.MyClassConstants.isFromExchange){
+                
+                if (cell.promotionTextLabel.text == Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName) {
+                    cell.promotionSelectionCheckBox.checked = true
+                } else {
+                    cell.promotionSelectionCheckBox.checked = false
+                }
+                
+            }else{
+                
+                if (cell.promotionTextLabel.text == Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName) {
+                    cell.promotionSelectionCheckBox.checked = true
+                } else {
+                    cell.promotionSelectionCheckBox.checked = false
+                }
+                
             }
             cell.promotionSelectionCheckBox.isUserInteractionEnabled = false
             return cell

@@ -1,20 +1,22 @@
 //
-//  AvailablePointCell.swift
+//  RelinquishmentDetailsCell.swift
 //  IntervalApp
 //
-//  Created by Chetu on 14/01/17.
+//  Created by Chetu on 14/07/17.
 //  Copyright © 2017 Interval International. All rights reserved.
 //
 
 import UIKit
 
-class AvailablePointCell: UITableViewCell {
-    
-    //Outlets
-    
-    @IBOutlet weak var availablePointValueLabel: UILabel!
+class RelinquishmentDetailsCell: UITableViewCell {
 
-    @IBOutlet weak var borderView: UIView!
+    @IBOutlet weak var resortImage: UIImageView!
+    
+    @IBOutlet weak var resortName: UILabel!
+    
+    @IBOutlet weak var gradientView: UIView!
+    @IBOutlet weak var resortCode: UILabel!
+    @IBOutlet weak var resortCountry: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()

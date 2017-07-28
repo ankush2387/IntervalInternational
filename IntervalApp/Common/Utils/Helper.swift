@@ -301,6 +301,11 @@ public class Helper{
                                             logger.warning(error.description)
                                             SimpleAlert.alert(sender, title:Constant.AlertErrorMessages.loginFailed, message: error.localizedDescription)
             }
+                
+                
+                
+            
+                
             )
         }else{
             SimpleAlert.alert(sender, title:Constant.AlertErrorMessages.networkError, message: Constant.AlertMessages.networkErrorMessage)
@@ -384,6 +389,7 @@ public class Helper{
     //**** Common function to get upcoming trips. ****//
    static func getUpcomingTripsForUser(){
         UserClient.getUpcomingTrips(UserContext.sharedInstance.accessToken, onSuccess: {(upComingTrips) in
+            print("Call 4",upComingTrips)
             Constant.MyClassConstants.upcomingTripsArray = upComingTrips
             
             for trip in upComingTrips { if((trip.type) != nil) {
@@ -407,6 +413,76 @@ public class Helper{
 
         })
     }
+    
+    // get Countries
+    static func getCountry(viewController:UIViewController) {
+        showProgressBar(senderView: viewController)
+        Constant.GetawaySearchResultGuestFormDetailData.countryListArray.removeAll()
+        Constant.GetawaySearchResultGuestFormDetailData.countryCodeArray.removeAll()
+        LookupClient.getCountries(Constant.MyClassConstants.systemAccessToken!, onSuccess: { (response) in
+            
+            for country in (response ){
+                Constant.GetawaySearchResultGuestFormDetailData.countryListArray.append(country)
+                Constant.GetawaySearchResultGuestFormDetailData.countryCodeArray.append(country.countryCode!)
+            }
+            SVProgressHUD.dismiss()
+            removeServiceCallBackgroundView(view: viewController.view)
+
+        }) { (error) in
+            SVProgressHUD.dismiss()
+            removeServiceCallBackgroundView(view: viewController.view)
+            SimpleAlert.alert(viewController, title:Constant.AlertErrorMessages.errorString, message: error.description)
+        }
+        
+    }
+    
+    static func getStates(country:String, viewController:UIViewController) {
+        showProgressBar(senderView: viewController)
+        Constant.GetawaySearchResultGuestFormDetailData.stateListArray.removeAll()
+        LookupClient.getStates(Constant.MyClassConstants.systemAccessToken!, countryCode: country, onSuccess: { (response) in
+            SVProgressHUD.dismiss()
+            for state in response{
+                Constant.GetawaySearchResultGuestFormDetailData.stateListArray.append(state)
+                Constant.GetawaySearchResultGuestFormDetailData.stateCodeArray.append(state.code!)
+            }
+            removeServiceCallBackgroundView(view: viewController.view)
+        }, onError: { (error) in
+            SVProgressHUD.dismiss()
+            removeServiceCallBackgroundView(view: viewController.view)
+            SimpleAlert.alert(viewController, title:Constant.AlertErrorMessages.errorString, message: error.description)
+        })
+        
+    }
+    
+    
+    //Relinquishment details
+    static func getRelinquishmentDetails(resortCode:String?, viewController:UIViewController) {
+        showProgressBar(senderView: viewController)
+        
+        DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode!, onSuccess: { (response) in
+            
+            Constant.MyClassConstants.resortsDescriptionArray = response
+            Constant.MyClassConstants.imagesArray.removeAllObjects()
+            let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
+            for imgStr in imagesArray {
+                print(imgStr.url!)
+                if(imgStr.size == Constant.MyClassConstants.imageSize) {
+                    
+                    Constant.MyClassConstants.imagesArray.add(imgStr.url!)
+                }
+            }
+            
+            SVProgressHUD.dismiss()
+            removeServiceCallBackgroundView(view: viewController.view)
+            viewController.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: self)
+        })
+        { (error) in
+            SVProgressHUD.dismiss()
+            removeServiceCallBackgroundView(view: viewController.view)
+            SimpleAlert.alert(viewController, title:Constant.AlertErrorMessages.errorString, message: error.description)
+        }
+    
+    }
 
 
     //***** common function that contains API call for  searchResorts with todate and resort code *****//
@@ -418,6 +494,7 @@ public class Helper{
             searchResortRequest.resortCodes = Constant.MyClassConstants.resortCodesArray
             showProgressBar(senderView:senderVC)
             RentalClient.searchResorts(UserContext.sharedInstance.accessToken, request: searchResortRequest, onSuccess: { (response) in
+                Constant.MyClassConstants.showAlert = false
                 Constant.MyClassConstants.resortsArray.removeAll()
                 Constant.MyClassConstants.resortsArray = response.resorts
                 //DarwinSDK.logger.debug(response.resorts[0].promotions)
@@ -865,12 +942,14 @@ public class Helper{
     static func getTopDeals(senderVC : UIViewController){
         showProgressBar(senderView: senderVC)
         RentalClient.getTop10Deals(UserContext.sharedInstance.accessToken,onSuccess: {(response) in
+            print("Call 5",response)
             Constant.MyClassConstants.topDeals = response
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.refreshTableNotification), object: nil)
             Helper.removeServiceCallBackgroundView(view: senderVC.view)
             SVProgressHUD.dismiss()
         },
                                    onError: {(error) in
+                                    print("Call 5",error.localizedDescription)
                                     Helper.removeServiceCallBackgroundView(view: senderVC.view)
                                     SVProgressHUD.dismiss()
                                     SimpleAlert.alert(senderVC, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
@@ -1169,17 +1248,40 @@ public class Helper{
                 
                 if(Constant.RunningDevice.deviceIdiom == .pad) {
                     
-                    let containerVC = viewcontroller.childViewControllers[0] as! ResortDetailsViewController
-                    containerVC.senderViewController = Constant.MyClassConstants.searchResult
-                    containerVC.viewWillAppear(true)
                     
-                    UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn ,animations: {
+                    if(Constant.MyClassConstants.isFromExchange){
                         
-                        viewcontroller.view.subviews.last?.frame = CGRect(x: 0, y: (viewcontroller.view.subviews.last?.frame.origin.y)!, width: (viewcontroller.view.subviews.last?.frame.size.width)!, height: (viewcontroller.view.subviews.last?.frame.size.height)!)
                         
-                    }, completion: { _ in
+                        let storyBoard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
+                        let viewController = storyBoard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortVC)
+                        let transition = CATransition()
+                        transition.duration = 0.4
+                        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+                        transition.type = kCATransitionMoveIn
+                        transition.subtype = kCATransitionFromTop
                         
-                    })
+                        viewcontroller.navigationController!.view.layer.add(transition, forKey: kCATransition)
+                        viewcontroller.navigationController?.pushViewController(viewController, animated: false)
+
+                        
+                    }
+                    else{
+                        
+                        let containerVC = viewcontroller.childViewControllers[0] as! ResortDetailsViewController
+                        containerVC.senderViewController = Constant.MyClassConstants.searchResult
+                        containerVC.viewWillAppear(true)
+                        
+                        UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn ,animations: {
+                            
+                            viewcontroller.view.subviews.last?.frame = CGRect(x: 0, y: (viewcontroller.view.subviews.last?.frame.origin.y)!, width: (viewcontroller.view.subviews.last?.frame.size.width)!, height: (viewcontroller.view.subviews.last?.frame.size.height)!)
+                            
+                        }, completion: { _ in
+                            
+                        })
+
+                        
+                    }
+                    
                 }
                 else {
                     let storyBoard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
@@ -1415,7 +1517,7 @@ public class Helper{
     static func getTripDetails(senderViewController: UIViewController){
         showProgressBar(senderView:senderViewController)
         ExchangeClient.getExchangeTripDetails(UserContext.sharedInstance.accessToken, confirmationNumber: Constant.MyClassConstants.transactionNumber, onSuccess: { (exchangeResponse) in
-            
+            Helper.hideProgressBar(senderView: senderViewController)
             Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails = exchangeResponse
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadTripDetailsNotification), object: nil)
             
@@ -1567,7 +1669,6 @@ public class Helper{
         let curr = Locale.availableIdentifiers.map{ Locale(identifier: $0)}.filter { return currencyCode == $0.currencyCode }.map { ($0.identifier, $0.currencySymbol) }.flatMap {$0}.first
         return (curr?.1?.description)!
     }
-
 }
 
 

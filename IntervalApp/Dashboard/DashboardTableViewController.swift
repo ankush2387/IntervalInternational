@@ -142,7 +142,7 @@ class DashboardTableViewController: UITableViewController {
         if(dashboardArray[indexPath.section] as! String == Constant.dashboardTableScreenReusableIdentifiers.upcoming || dashboardArray[indexPath.section] as! String == Constant.dashboardTableScreenReusableIdentifiers.alert || dashboardArray[indexPath.section] as! String == Constant.dashboardTableScreenReusableIdentifiers.search){
             return 70
         }else{
-            return 280
+            return 290
         }
     }
     
@@ -448,13 +448,13 @@ extension DashboardTableViewController:UICollectionViewDataSource {
         
         if(collectionView.tag == 1) {
             
-            let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: cell.contentView.frame.height - 50, width: cell.contentView.frame.width - 20, height: 50))
+            let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: cell.contentView.frame.height - 50, width: cell.contentView.frame.width - 20, height: 60))
             
             resortImageNameLabel.text = topTenDeals.header!
             resortImageNameLabel.numberOfLines = 2
             resortImageNameLabel.textAlignment = NSTextAlignment.center
             resortImageNameLabel.textColor = UIColor.black
-            resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 20)
+            resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 16)
             resortImageNameLabel.backgroundColor = UIColor.clear
             cell.addSubview(resortImageNameLabel)
             cell.layer.borderColor = UIColor.lightGray.cgColor
@@ -466,13 +466,14 @@ extension DashboardTableViewController:UICollectionViewDataSource {
             
             
             
-            let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: cell.contentView.frame.height - 50, width: cell.contentView.frame.width - 20, height: 50))
+            let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: cell.contentView.frame.height - 50, width: cell.contentView.frame.width - 20, height: 60))
             
             resortImageNameLabel.text = topTenDeals.header!
             resortImageNameLabel.numberOfLines = 2
+            resortImageNameLabel.backgroundColor = UIColor.orange
             resortImageNameLabel.textAlignment = NSTextAlignment.center
             resortImageNameLabel.textColor = UIColor.black
-            resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 20)
+            resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 16)
             resortImageNameLabel.backgroundColor = UIColor.clear
             cell.addSubview(resortImageNameLabel)
             

@@ -55,23 +55,24 @@ class FevoritesResortController: UIViewController {
     }
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         if(Constant.RunningDevice.deviceIdiom == .pad && resortTableView != nil){
-            self.containerView.isHidden = true
-            if(self.emptyFavoritesMessageView != nil){
-                self.emptyFavoritesMessageView.isHidden = true
-                self.backgroundView.isHidden = true
-                
-                var count = 0
-                for subView in self.view.subviews{
-                    if (subView .isKind(of: GMSMapView.self)){
-                        count = count + 1
+            if(self.containerView != nil){
+                self.containerView.isHidden = true
+                if(self.emptyFavoritesMessageView != nil){
+                    self.emptyFavoritesMessageView.isHidden = false
+                    self.backgroundView.isHidden = true
+                    
+                    var count = 0
+                    for subView in self.view.subviews{
+                        if (subView .isKind(of: GMSMapView.self)){
+                            count = count + 1
+                        }
+                    }
+                    if(count == 0){
+                        createMapWithMarkers()
                     }
                 }
-                if(count == 0){
-                    createMapWithMarkers()
-                }
+                resortTableView.reloadData()
             }
-            
-            resortTableView.reloadData()
             
         }
     }
@@ -166,9 +167,9 @@ class FevoritesResortController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         /*NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.showHelp), object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.showUnfavorite), object: nil)*/
+         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
+         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.showHelp), object: nil)
+         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.showUnfavorite), object: nil)*/
     }
     //****** Function to create map for iPad with markers *****//
     
@@ -348,13 +349,13 @@ class FevoritesResortController: UIViewController {
                 
                 self.containerView.frame = CGRect(x: -(self.containerView.frame.size.width), y: 64, width: self.containerView.frame.size.width, height: self.containerView.frame.size.height)
                 
-                }, completion: { _ in
-                    
-            })
-            
             }, completion: { _ in
                 
-                
+            })
+            
+        }, completion: { _ in
+            
+            
         })
     }
 }
@@ -370,8 +371,10 @@ extension FevoritesResortController:GMSMapViewDelegate {
             if (Constant.MyClassConstants.googleMarkerArray.count == 0){
                 
             }else{
+                if(self.containerView != nil){
                 self.containerView.isHidden = false
                 self.view.bringSubview(toFront: self.containerView)
+                }
                 Constant.MyClassConstants.resortsDescriptionArray = Constant.MyClassConstants.favoritesResortArray[marker.userData as! Int]
                 
                 Helper.getResortWithResortCode(code: Constant.MyClassConstants.resortsDescriptionArray.resortCode!,viewcontroller:self)
@@ -380,13 +383,15 @@ extension FevoritesResortController:GMSMapViewDelegate {
                 containerVC.senderViewController = Constant.MyClassConstants.searchResult
                 containerVC.viewWillAppear(true)
                 
+                if(self.containerView != nil){
                 UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn ,animations: {
                     
                     self.containerView.frame = CGRect(x: 0, y: 64, width: self.containerView.frame.size.width, height: self.containerView.frame.size.height)
                     
-                    }, completion: { _ in
-                        
+                }, completion: { _ in
+                    
                 })
+                }
                 
             }
         }
@@ -410,8 +415,8 @@ extension FevoritesResortController : ResortDetailsDelegate{
                 
                 self.containerView.frame = CGRect(x: 0, y: 64, width: self.containerView.frame.size.width, height: self.containerView.frame.size.height)
                 
-                }, completion: { _ in
-                    
+            }, completion: { _ in
+                
             })
         }else{
             let selectedResort = Constant.MyClassConstants.favoritesResortArray[index]

@@ -191,16 +191,34 @@ extension WereWantToTradeTableViewCell:UICollectionViewDataSource {
 extension WereWantToTradeTableViewCell:WhereToGoCollectionViewCellDelegate {
     
     func deleteButtonClickedAtIndex(_ Index: Int) {
-        print(Index)
-        var isFloat = true
+
         let storedData = Helper.getLocalStorageWherewanttoTrade()
         
         if(storedData.count > 0) {
+            
+            
             let realm = try! Realm()
             try! realm.write {
+
+                
+                if((Constant.MyClassConstants.whatToTradeArray[Index] as AnyObject).isKind(of: OpenWeeks.self)){
+                    
+                    var floatWeekIndex = -1
+                    let dataSelected = Constant.MyClassConstants.whatToTradeArray[Index] as! OpenWeeks
+                    if(dataSelected.isFloat){
+                        
+                        
+                        for (index,object) in storedData.enumerated(){
+                            let openWk1 = object.openWeeks[0].openWeeks[0]
+                            if(openWk1.relinquishmentID == dataSelected.relinquishmentID){
+                                floatWeekIndex = index
+                            }
+                        }
+                    
                 
                 //TODO - Jhon : once code is updated, review is this variables are neeeded, if not delete.
                 var isFloatRemoved: Bool?
+                var isFloat: Bool?
                 var relinquishmentId: String?
                 var relinquismentYear: Int?
                 var resortName: String?
@@ -254,6 +272,8 @@ extension WereWantToTradeTableViewCell:WhereToGoCollectionViewCellDelegate {
                 }
                 //delete from local Storage
                 realm.delete(storedData[Index])
+                    
+                    
                 
                 if(Constant.MyClassConstants.whatToTradeArray.count > 0){
                     
@@ -271,7 +291,7 @@ extension WereWantToTradeTableViewCell:WhereToGoCollectionViewCellDelegate {
                     
                    
                     
-                    if(!isFloatRemoved! && isFloat){
+                    if(!isFloatRemoved! && isFloat!){
                         //Realm local storage for selected relinquishment
                         let storedata = OpenWeeksStorage()
                         let Membership = UserContext.sharedInstance.selectedMembership
@@ -292,12 +312,19 @@ extension WereWantToTradeTableViewCell:WhereToGoCollectionViewCellDelegate {
                         floatDetails.unitNumber = unitNumber!
                         floatDetails.unitSize = unitSize!
                         selectedOpenWeek.floatDetails.append(floatDetails)
+
                         
-                        let unitDetails = ResortUnitDetails()
-                        // unitDetails.kitchenType = (Helper.getKitchenEnums(kitchenType: (floatWeek.resort[0].units.kitchenType!)))
-                        //unitDetails.unitSize = floatWeek.resort[0].units.unitNumber!
-                        selectedOpenWeek.unitDetails.append(unitDetails)
-                        
+                        storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFloatRemoved = true
+                        storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFloat = true
+                        storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFromRelinquishment = false
+
+                        if(Constant.MyClassConstants.whatToTradeArray.count > 0){
+                            
+                            ADBMobile.trackAction(Constant.omnitureEvents.event43, data: nil)
+                            Constant.MyClassConstants.whatToTradeArray.removeObject(at: Index)
+                            Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: Index)
+                            Constant.MyClassConstants.relinquishmentUnitsArray.removeObject(at: Index)
+
                         selectedOpenWeek.resort.append(resort)
                         relinquishmentList.openWeeks.append(selectedOpenWeek)
                         storedata.openWeeks.append(relinquishmentList)
@@ -307,21 +334,38 @@ extension WereWantToTradeTableViewCell:WhereToGoCollectionViewCellDelegate {
                         let realm = try! Realm()
                         try! realm.write {
                             realm.add(storedata)
-                        }
-                    }
-                
-                }
-            }
-            
-        }
 
-        
+                        }
+                    }else{
+                        Constant.MyClassConstants.whatToTradeArray.removeObject(at: Index)
+                        Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: Index)
+                        realm.delete(storedData[Index])
+                    }
+
+                }else{
+                    Constant.MyClassConstants.whatToTradeArray.removeObject(at: Index)
+                    Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: Index)
+                    realm.delete(storedData[Index])
+
+                
+
+                }
+                
+                let deletionIndexPath = IndexPath(item: Index, section: 0)
+                self.collectionView.deleteItems(at: [deletionIndexPath])
+                Helper.InitializeOpenWeeksFromLocalStorage()
+            }
+        }
+    }
+  }
+}
     }
     
     func infoButtonClickedAtIndex(_ Index: Int) {
         
         self.delegate?.multipleResortInfoButtonPressedAtIndex(Index)
     }
+    
 }
 
 

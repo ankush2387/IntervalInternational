@@ -124,8 +124,11 @@ extension ClubresortsViewController:UITableViewDataSource{
         if (Constant.MyClassConstants.buttontitle == Constant.buttonId.bedroomselection) {
            
             cell?.clubresortNameLabel.text = "\(UnitSize.forDisplay[indexPath.row].friendlyName()) "
+            if currentCheckedIndex != nil{
+                cell?.getBedroomCell(index: currentCheckedIndex!, isChecked:isbedroomSizeCheckboxchecked)
+            }
            
-                   }
+        }
         else if( Constant.MyClassConstants.buttontitle == Constant.buttonId.resortSelection){
             
             let resort = Constant.MyClassConstants.clubFloatResorts[indexPath.row]
@@ -133,14 +136,14 @@ extension ClubresortsViewController:UITableViewDataSource{
             if currentCheckedIndex != nil{
                 if (indexPath as NSIndexPath).row == currentCheckedIndex!{
                     
-                    cell?.getCell(clubresortArrayOfDictionary[(indexPath as NSIndexPath).row], index: currentCheckedIndex!, isChecked:isbedroomSizeCheckboxchecked)
+                    cell?.getCell(index: currentCheckedIndex!, isChecked:isbedroomSizeCheckboxchecked)
                 }
                 else{
-                    cell?.getCell(clubresortArrayOfDictionary[(indexPath as NSIndexPath).row],index: (indexPath as NSIndexPath).row)
+                    cell?.getCell(index: (indexPath as NSIndexPath).row)
                 }
             }
             else{
-                cell?.getCell(clubresortArrayOfDictionary[(indexPath as NSIndexPath).row],index: (indexPath as NSIndexPath).row)
+                cell?.getCell(index: (indexPath as NSIndexPath).row)
             }
             
             cell?.clubresortNameLabel.text = "\(resort.resortName!) . \(resort.resortCode!)"

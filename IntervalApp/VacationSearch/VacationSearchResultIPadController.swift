@@ -30,11 +30,16 @@ class VacationSearchResultIPadController: UIViewController {
     let headerVw = UIView()
     let titleLabel = UILabel()
     var cellHeight = 80
+    var selectedIndex = 0
+    var selectedUnitIndex = 0
+    var selectedSection = 0
+    var selectedRow = 0
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        resortDetailTBLView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
+        resortDetailTBLView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 100, right: 0)
         //Adding back button on menu bar.
         let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(VacationSearchResultIPadController.menuBackButtonPressed(_:)))
         menuButton.tintColor = UIColor.white
@@ -47,10 +52,10 @@ class VacationSearchResultIPadController: UIViewController {
         
         if(Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.getawayAlerts){
             
-            headerVw.frame = CGRect(x:0, y:0, width:300, height:40)
+            headerVw.frame = CGRect(x:0, y:0, width:UIScreen.main.bounds.width, height:40)
             headerVw.backgroundColor = UIColor.gray
             
-            titleLabel.frame = CGRect(x:10, y:0, width:280, height:40)
+            titleLabel.frame = CGRect(x:10, y:0, width:UIScreen.main.bounds.width, height:40)
             titleLabel.textColor = UIColor.white
             titleLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 14)
             headerVw.addSubview(titleLabel)
@@ -70,7 +75,7 @@ class VacationSearchResultIPadController: UIViewController {
             }
             
             resortDetailTBLView.tableHeaderView = headerVw
-    
+            
         }
         
         self.enablePreviousMore = enableDisablePreviousMoreButtoniPad(Constant.MyClassConstants.left)
@@ -93,7 +98,7 @@ class VacationSearchResultIPadController: UIViewController {
     
     // Function called to dismiss current controller when back button pressed.
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
-         _ = self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     //**** Function for orientation change for iPad ****//
@@ -157,8 +162,8 @@ class VacationSearchResultIPadController: UIViewController {
         RentalClient.searchResorts(UserContext.sharedInstance.accessToken, request: searchResortRequest, onSuccess: { (response) in
             Constant.MyClassConstants.resortsArray = response.resorts
             self.resortDetailTBLView.reloadData()
-            }, onError: { (error) in
-                
+        }, onError: { (error) in
+            
         })
         
     }
@@ -168,26 +173,22 @@ class VacationSearchResultIPadController: UIViewController {
         let searchResortRequest = RentalSearchResortsRequest()
         searchResortRequest.checkInDate = toDate
         searchResortRequest.resortCodes = Constant.MyClassConstants.resortCodesArray
-        
-        Helper.addServiceCallBackgroundView(view: self.view)
+        Helper.showProgressBar(senderView: self)
         Constant.MyClassConstants.resortsArray.removeAll()
         RentalClient.searchResorts(UserContext.sharedInstance.accessToken, request: searchResortRequest, onSuccess: { (response) in
-            Helper.removeServiceCallBackgroundView(view: self.view)
+            Helper.hideProgressBar(senderView: self)
             Constant.MyClassConstants.resortsArray = response.resorts
             if(self.alertView.isHidden == false){
                 self.alertView.isHidden = true
                 self.headerVw.isHidden = false
             }
             self.resortDetailTBLView.reloadData()
-            Helper.removeServiceCallBackgroundView(view: self.view)
-            SVProgressHUD.dismiss()
-            }, onError: { (error) in
-                self.resortDetailTBLView.reloadData()
-                self.alertView = Helper.noResortView(senderView: self.view)
-                self.alertView.isHidden = false
-                self.headerVw.isHidden = true
-                Helper.removeServiceCallBackgroundView(view: self.view)
-                SVProgressHUD.dismiss()
+        }, onError: { (error) in
+            self.resortDetailTBLView.reloadData()
+            self.alertView = Helper.noResortView(senderView: self.view)
+            self.alertView.isHidden = false
+            self.headerVw.isHidden = true
+            Helper.hideProgressBar(senderView: self)
         })
     }
     
@@ -249,9 +250,9 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
         case 0:
             if(Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.getawayAlerts){
                 
-            let toDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: -1, to: Constant.MyClassConstants.currentFromDate as Date, options: [])!
-            let fromDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: -(Constant.MyClassConstants.totalWindow), to: toDate, options: [])!
-            moreButtonClicked(toDate, fromDate: fromDate, index: "First")
+                let toDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: -1, to: Constant.MyClassConstants.currentFromDate as Date, options: [])!
+                let fromDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: -(Constant.MyClassConstants.totalWindow), to: toDate, options: [])!
+                moreButtonClicked(toDate, fromDate: fromDate, index: "First")
                 
             }
             
@@ -261,9 +262,9 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
             
             if(Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.getawayAlerts){
                 
-            let fromDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: 1, to: Constant.MyClassConstants.currentToDate as Date, options: [])!
-            let toDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: Constant.MyClassConstants.totalWindow, to: fromDate, options: [])!
-            moreButtonClicked(toDate, fromDate: fromDate, index: "Last")
+                let fromDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: 1, to: Constant.MyClassConstants.currentToDate as Date, options: [])!
+                let toDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: Constant.MyClassConstants.totalWindow, to: fromDate, options: [])!
+                moreButtonClicked(toDate, fromDate: fromDate, index: "Last")
                 
             }
             break
@@ -280,6 +281,7 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
                 }else{
                     dateValue = Constant.MyClassConstants.checkInDates[collectionviewSelectedIndex]
                 }
+                Constant.MyClassConstants.currentFromDate = dateValue
                 if(Constant.MyClassConstants.surroundingCheckInDates.contains(dateValue) && Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.getawayAlerts){
                     titleLabel.backgroundColor = UIColor(red: 170/255.0, green: 216/255.0, blue: 111/255.0, alpha: 1.0)
                     titleLabel.text = Constant.MyClassConstants.surroundingAreaString
@@ -295,6 +297,7 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
                                 titleLabel.text = "Resorts in \(Constant.MyClassConstants.vacationSearchDestinationArray[0])"
                             } else {
                                 titleLabel.text = "Resorts in \(Constant.MyClassConstants.whereTogoContentArray[0])"
+
                             }
                         }
                     }
@@ -457,6 +460,11 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
         
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //selectedIndex = indexPath.section
+        //selectedUnitIndex = indexPath.row
+        selectedSection = indexPath.section
+        selectedRow = indexPath.row
+        Constant.MyClassConstants.selectedResort = Constant.MyClassConstants.resortsArray[indexPath.section]
         if((indexPath as NSIndexPath).row == 0) {
             
             Helper.addServiceCallBackgroundView(view: self.view)
@@ -476,7 +484,7 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
                 SVProgressHUD.dismiss()
                 Helper.removeServiceCallBackgroundView(view: self.view)
                 self.performSegue(withIdentifier: Constant.segueIdentifiers.vacationSearchDetailSegue, sender: nil)
-                })
+            })
             { (error) in
                 
                 SVProgressHUD.dismiss()
@@ -486,7 +494,56 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
         }else{
             
             if(Constant.MyClassConstants.isFromExchange){
+                Helper.showProgressBar(senderView: self)
+                let exchangeSearchDateRequest = ExchangeFilterRelinquishmentsRequest()
+                exchangeSearchDateRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
                 
+                exchangeSearchDateRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
+                
+                let exchangeDestination = ExchangeDestination()
+                let currentFromDate = Helper.convertDateToString(date: Constant.MyClassConstants.currentFromDate, format: Constant.MyClassConstants.dateFormat)
+                
+                let currentToDate = Helper.convertDateToString(date: Constant.MyClassConstants.currentToDate, format: Constant.MyClassConstants.dateFormat)
+                
+                let resort = Resort()
+                resort.resortCode = Constant.MyClassConstants.resortsArray[selectedSection].resortCode
+                
+                exchangeDestination.resort = resort
+                
+                let unit = InventoryUnit()
+                unit.kitchenType = Constant.MyClassConstants.exchangeInventory[selectedSection].buckets[selectedRow-1].unit!.kitchenType!
+                unit.unitSize = Constant.MyClassConstants.exchangeInventory[selectedSection].buckets[selectedRow-1].unit!.unitSize!
+                exchangeDestination.checkInDate = currentFromDate
+                exchangeDestination.checkOutDate = currentToDate
+                unit.publicSleepCapacity = Constant.MyClassConstants.exchangeInventory[selectedSection].buckets[selectedRow-1].unit!.publicSleepCapacity
+                unit.privateSleepCapacity = Constant.MyClassConstants.exchangeInventory[selectedSection].buckets[selectedRow-1].unit!.privateSleepCapacity
+                
+                exchangeDestination.unit = unit
+                
+                exchangeSearchDateRequest.destination = exchangeDestination
+                Constant.MyClassConstants.exchangeDestination = exchangeDestination
+                
+                ExchangeClient.filterRelinquishments(UserContext.sharedInstance.accessToken, request: exchangeSearchDateRequest, onSuccess: { (response) in
+                    Helper.hideProgressBar(senderView: self)
+                    Constant.MyClassConstants.filterRelinquishments.removeAll()
+                    for exchageDetail in response{
+                        Constant.MyClassConstants.filterRelinquishments.append(exchageDetail.relinquishment!)
+                    }
+                    
+                    Constant.MyClassConstants.selectedResort = Constant.MyClassConstants.resortsArray[self.selectedSection]
+                    
+                    Constant.MyClassConstants.inventoryPrice = (Constant.MyClassConstants.exchangeInventory[self.selectedSection].buckets[self.selectedRow - 1].unit?.prices)!
+                   // if(Constant.MyClassConstants.whatToTradeArray.count > 1 || String(describing: response[0].destination?.upgradeCost?.amount) != "0"){
+                    self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                    // }else {
+                    // self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                    //}
+                    
+                }, onError: { (error) in
+                    print(Error.self)
+                    Helper.hideProgressBar(senderView: self)
+                })
+               
             }
             else{
                 
@@ -574,10 +631,8 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
                     SVProgressHUD.dismiss()
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.description)
                 })
-
+                
             }
-            
-            
         }
     }
 }
@@ -594,7 +649,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.imageWithNameCell, for: indexPath) as! ImageWithNameCell
             cell.layer.borderWidth = 0.5
             cell.layer.borderColor = UIColor.lightGray.cgColor
-
+            
             
             for layer in cell.bottomViewForResortName.layer.sublayers!{
                 if(layer.isKind(of: CAGradientLayer.self)) {
@@ -613,7 +668,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 
                 let imagesArray = Constant.MyClassConstants.resortsArray[indexPath.section].images
                 for imgStr in imagesArray {
-                    if(imgStr.size == Constant.MyClassConstants.imageSize) {
+                    if(imgStr.size!.caseInsensitiveCompare(Constant.MyClassConstants.imageSize) == ComparisonResult.orderedSame) {
                         
                         url = URL(string: imgStr.url!)!
                         break
@@ -630,20 +685,18 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
             //TODO: (Jhon) - found nil on address, modified code
             if let resortAddress = Constant.MyClassConstants.resortsArray[indexPath.section].address {
                 cell.resortLocation.text = resortAddress.cityName
-                cell.resortLocation.text = cell.resortLocation.text?.appending(", \(String(describing: resortAddress.countryCode))")
+                if let resortCountryCode = resortAddress.countryCode{
+                    cell.resortLocation.text = cell.resortLocation.text?.appending(", \(String(describing: resortCountryCode))")
+                }
+            }else{
+                cell.resortLocation.text = ""
             }
-//            let resortAddress = Constant.MyClassConstants.resortsArray[indexPath.section].address!
-//            if let city = resortAddress.cityName {
-//                
-//                cell.resortLocation.text = city
-//            }
-//            if let Country = resortAddress.countryCode {
-//                cell.resortLocation.text = cell.resortLocation.text?.appending(", \(Country)")
-//            }
             
             cell.resortCode.text = Constant.MyClassConstants.resortsArray[indexPath.section].resortCode
-            let tierImageName = Helper.getTierImageName(tier: Constant.MyClassConstants.resortsArray[indexPath.section].tier!.uppercased())
-            cell.tierImageView.image = UIImage(named: tierImageName)
+            if let tierImageName = Constant.MyClassConstants.resortsArray[indexPath.section].tier{
+                cell.tierImageView.image = UIImage(named: Helper.getTierImageName(tier: tierImageName.uppercased()))
+            }
+            
             let status = Helper.isResrotFavorite(resortCode: Constant.MyClassConstants.resortsArray[indexPath.section].resortCode!)
             if(status) {
                 cell.fevrateButton.isSelected = true
@@ -715,33 +768,51 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 
             }else{
                 
-                if(Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].promotions.count != 0 && indexPath.row > Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets.count){
+                var promotions = 0
+                for bucket in Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets{
+                    //for (index,promotion) in bucket.promotions.enumerated(){
+                    promotions = bucket.promotions.count
+                    //}
+                }
+                if(promotions != 0 && indexPath.row > Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets.count){
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.promotionsCell, for: indexPath) as! PromotionsCell
-                    var promotionsString = Constant.MyClassConstants.htmlHeader.appending((Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].promotions[0].offerContentFragment)!)
-                    promotionsString = promotionsString.appending(Constant.MyClassConstants.htmlFooter)
-                    cell.promotionWebView.loadHTMLString(promotionsString, baseURL: Bundle.main.bundleURL)
+                    
+                    var promotions = 0
+                    for bucket in Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets{
+                        for (index,promotion) in bucket.promotions.enumerated(){
+                            if (index == indexPath.row - Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets.count){
+                                var promotionsString = Constant.MyClassConstants.htmlHeader.appending((Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[indexPath.row - 1].promotions[0].offerContentFragment)!)
+                                for promotion in Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[indexPath.row - 1].promotions{
+                                    promotionsString = promotion.offerContentFragment!
+                                    promotionsString = promotionsString.appending(Constant.MyClassConstants.htmlFooter)
+                                    cell.promotionWebView.loadHTMLString(promotionsString, baseURL: Bundle.main.bundleURL)
+                                }
+                                
+                            }
+                        }
+                    }
+                    
                     return cell
                 }else{
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.resortBedroomDetailexchange, for: indexPath) as! ResortBedroomDetails
                     cell.backgroundColor = IUIKColorPalette.contentBackground.color
                     cell.selectionStyle = UITableViewCellSelectionStyle.none
-                    //cell.bottomLabel.text = Constant.vacationSearchScreenReusableIdentifiers.exchange
-                    if let roomSize = UnitSize(rawValue: Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitSize!) {
+                    if let roomSize = UnitSize(rawValue: Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[indexPath.row - 1].unit!.unitSize!) {
                         
                         cell.numberOfBedroom.text =  Helper.getBrEnums(brType: roomSize.rawValue)
                     }
                     
-                    if let kitchenSize = KitchenType(rawValue: Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.kitchenType!) {
+                    if let kitchenSize = KitchenType(rawValue: Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[indexPath.row - 1].unit!.kitchenType!) {
                         cell.kitchenLabel.text = Helper.getKitchenEnums(kitchenType: kitchenSize.rawValue)
                     }
                     
-                    cell.totalPrivateLabel.text = String(Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.publicSleepCapacity) + "Total, " + (String(Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.privateSleepCapacity)) + "Private"
+                    cell.totalPrivateLabel.text = String(Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[indexPath.row - 1].unit!.publicSleepCapacity) + "Total, " + (String(Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[indexPath.row - 1].unit!.privateSleepCapacity)) + "Private"
                     return cell
                 }
-
+                
             }
         }
-     
+        
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -756,7 +827,13 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
         if(Constant.MyClassConstants.isFromExchange){
             if(Constant.MyClassConstants.exchangeInventory[section].buckets.count > 0){
                 self.unitSizeArray = [Constant.MyClassConstants.exchangeInventory[section].buckets[0].unit!]
-                return Constant.MyClassConstants.exchangeInventory[section].buckets.count + Constant.MyClassConstants.exchangeInventory[section].buckets[0].promotions.count + 1
+                var promotions = 0
+                for bucket in Constant.MyClassConstants.exchangeInventory[section].buckets{
+                    //for (index,promotion) in bucket.promotions.enumerated(){
+                    promotions = bucket.promotions.count
+                    //}
+                }
+                return Constant.MyClassConstants.exchangeInventory[section].buckets.count + promotions + 1
             }else{
                 return 1
             }
