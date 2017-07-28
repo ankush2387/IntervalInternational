@@ -55,6 +55,7 @@ class CheckOutIPadViewController: UIViewController {
     var filterRelinquishments = ExchangeRelinquishment()
     
     override func viewWillAppear(_ animated: Bool) {
+        Helper.removeServiceCallBackgroundView(view: self.view)
         NotificationCenter.default.addObserver(self, selector: #selector(changeLabelStatus), name: NSNotification.Name(rawValue: Constant.notificationNames.changeSliderStatus), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateResortHoldingTime), name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
         self.emailTextToEnter = (UserContext.sharedInstance.contact?.emailAddress)!
@@ -333,12 +334,14 @@ class CheckOutIPadViewController: UIViewController {
                 
                 self.tripRequestInProcess = true
                 self.isTripProtectionEnabled = true
+                Constant.MyClassConstants.checkoutInsurencePurchased = Constant.AlertPromtMessages.yes
                 self.addTripProtection(shouldAddTripProtection: true)
                 
             }else if(str == Constant.MyClassConstants.isFalse && !self.tripRequestInProcess){
                 
                 self.tripRequestInProcess = true
                 self.isTripProtectionEnabled = false
+                Constant.MyClassConstants.checkoutInsurencePurchased = Constant.AlertPromtMessages.no
                 self.addTripProtection(shouldAddTripProtection: false)
             }
             self.bookingTableView.reloadData()
@@ -363,13 +366,18 @@ class CheckOutIPadViewController: UIViewController {
                 DarwinSDK.logger.debug(Constant.MyClassConstants.continueToCheckoutResponse.view?.promoCodes)
                 DarwinSDK.logger.debug(Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.insurance?.price)
                 Constant.MyClassConstants.exchangeFees[0].total = (response.view?.fees?.total)!
-                self.bookingTableView.reloadSections(IndexSet(integer: 8), with:.automatic)
+                //self.bookingTableView.reloadSections(IndexSet(integer: 0), with:.automatic)
+                self.bookingTableView.reloadData()
                 Helper.hideProgressBar(senderView: self)
                 
             }, onError: { (error) in
+                Constant.MyClassConstants.exchangeFees.last!.insurance?.selected = !shouldAddTripProtection
                 self.tripRequestInProcess = false
+                self.isTripProtectionEnabled = false
+                self.bookingTableView.reloadData()
                 DarwinSDK.logger.debug(error.description)
                 Helper.hideProgressBar(senderView: self)
+                SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: error.description)
             })
         }
         else{
@@ -511,7 +519,7 @@ class CheckOutIPadViewController: UIViewController {
         self.promotionSelectedIndex = sender.tag
         Constant.MyClassConstants.isPromotionsEnabled = true
         self.bookingCostRequiredRows = 1
-        checkoutTableView.reloadData()
+        bookingTableView.reloadData()
         
         let storyboard = UIStoryboard(name: "VacationSearchIphone", bundle: nil)
         let promotionsNav = storyboard.instantiateViewController(withIdentifier: "DepositPromotionsNav") as! UINavigationController
@@ -673,12 +681,22 @@ extension CheckOutIPadViewController:UITableViewDataSource {
         case 2:
             switch section{
             case 1:
-                if(!showInsurance){
-                    return 0
-                   
+                
+                if((Constant.MyClassConstants.isFromExchange || !Constant.MyClassConstants.isFromExchange) && Constant.MyClassConstants.enableTaxes) || ( Constant.MyClassConstants.enableGuestCertificate && self.isTripProtectionEnabled){
+                    if(eplusAdded){
+                        return 3
+                    }else{
+                        return 2
+                    }
                 }else{
-                   return 1
+                    if(eplusAdded){
+                        return 2
+                    }else{
+                        return 1
+                    }
+                    
                 }
+                
             case 2:
                 if(self.isTripProtectionEnabled && Constant.MyClassConstants.enableGuestCertificate){
                         return 2
@@ -720,20 +738,14 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                 }
                 return 0
             case 4 :
-              if((Constant.MyClassConstants.isFromExchange || !Constant.MyClassConstants.isFromExchange) && Constant.MyClassConstants.enableTaxes) || ( Constant.MyClassConstants.enableGuestCertificate && self.isTripProtectionEnabled){
-                    if(eplusAdded){
-                        return 3
-                    }else{
-                        return 2
-                    }
-                }else{
-                    if(eplusAdded){
-                        return 2
-                    }else{
-                        return 1
-                    }
+                
+                if(!showInsurance){
+                    return 0
                     
+                }else{
+                    return 1
                 }
+
                 
             default:
                 return 1
@@ -1126,7 +1138,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                     
                 }
                 if(!containsWebView){
-                    cellWebView = UIWebView(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: 400))
+                    cellWebView = UIWebView(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: 420))
                     cellWebView.scrollView.isScrollEnabled = false
                     let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
                     tapRecognizer.numberOfTapsRequired = 1
@@ -1138,8 +1150,8 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                     }
                     else{
                         
-                        //let str = (Constant.MyClassConstants.exchangeFees[indexPath.row].insurance?.insuranceOfferHTML!)!
-                       // cellWebView.loadHTMLString(str, baseURL: nil)
+                        let str = (Constant.MyClassConstants.exchangeFees[0].insurance?.insuranceOfferHTML!)!
+                        cellWebView.loadHTMLString(str, baseURL: nil)
 
                     }
                     cellWebView.delegate = self
