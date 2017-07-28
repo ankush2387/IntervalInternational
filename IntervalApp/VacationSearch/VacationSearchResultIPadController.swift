@@ -552,9 +552,9 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
                 
                 Constant.MyClassConstants.selectedResort = Constant.MyClassConstants.resortsArray[indexPath.section]
                 
-                var inventoryDict = [Inventory]()
-                inventoryDict = Constant.MyClassConstants.resortsArray[indexPath.section].inventory
-                let invent = inventoryDict[0]
+                var inventoryDict = Inventory()
+                inventoryDict = Constant.MyClassConstants.resortsArray[indexPath.section].inventory!
+                let invent = inventoryDict
                 let units = invent.units
                 
                 Constant.MyClassConstants.inventoryPrice = invent.units[indexPath.row - 1].prices
@@ -717,9 +717,9 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 cell.layer.borderColor = UIColor.lightGray.cgColor
                 
                 
-                var inventoryDict = [Inventory]()
-                inventoryDict = Constant.MyClassConstants.resortsArray[indexPath.section].inventory
-                let invent = inventoryDict[0]
+                var inventoryDict = Inventory()
+                inventoryDict = Constant.MyClassConstants.resortsArray[indexPath.section].inventory!
+                let invent = inventoryDict
                 let units = invent.units
                 if let roomSize = UnitSize(rawValue: units[indexPath.row - 1].unitSize!) {
                     cell.bedRoomType.text = Helper.getBrEnums(brType: roomSize.rawValue)
@@ -838,9 +838,9 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 return 1
             }
         }else{
-            var inventoryDict = [Inventory]()
-            inventoryDict = Constant.MyClassConstants.resortsArray[section].inventory
-            let invent = inventoryDict[0]
+            var inventoryDict = Inventory()
+            inventoryDict = Constant.MyClassConstants.resortsArray[section].inventory!
+            let invent = inventoryDict
             self.unitSizeArray = invent.units
             return self.unitSizeArray.count + 1
         }

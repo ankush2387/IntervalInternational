@@ -410,7 +410,7 @@ class ResortDetailsViewController: UIViewController {
     
     @IBAction func moreButtonClicked(_ sender: AnyObject){
         guard let name = Constant.MyClassConstants.resortsDescriptionArray.resortName else { return }
-        guard let address = Constant.MyClassConstants.resortsDescriptionArray.address?.addrLine1 else { return }
+        guard let address = Constant.MyClassConstants.resortsDescriptionArray.address?.addressLines[0] else { return }
         guard let description = Constant.MyClassConstants.resortsDescriptionArray.description else { return }
         guard let resortCode = Constant.MyClassConstants.resortsDescriptionArray.resortCode else { return }
         

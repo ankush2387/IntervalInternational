@@ -502,7 +502,7 @@ class Constant: NSObject {
         static var isFromWhatToUse = false
         static var travelPartyInfo = TravelParty()
         static var bucketsArray = [ExchangeBucket]()
-        static var exchangeInventory = [ExchageInventory]()
+        static var exchangeInventory = [ExchangeInventory]()
         static var inventoryUnitsArray =  [InventoryUnit]()
         static var promotionsArray = [Promotion]()
         static var htmlHeader = "<html><body>"
