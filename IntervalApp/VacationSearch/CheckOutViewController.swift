@@ -173,10 +173,6 @@ class CheckOutViewController: UIViewController {
                 continueToPayRequest.confirmationDelivery = confirmationDelivery
                 continueToPayRequest.acceptTermsAndConditions = true
                 continueToPayRequest.acknowledgeAndAgreeResortFees = true
-                
-                Helper.addServiceCallBackgroundView(view: self.view)
-                SVProgressHUD.show()
-
                 imageSlider.isHidden = true
                 showLoader = true
                 self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
@@ -605,7 +601,15 @@ class CheckOutViewController: UIViewController {
     
     //***** Function called when detail button is pressed. ******//
     func resortDetailsClicked(_ sender:IUIKButton){
-        self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
+        //self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
+        if sender.tag == 0 {
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
+            
+        } else {
+            Helper.getRelinquishmentDetails(resortCode: ((filterRelinquishments.openWeek?.resort?.resortCode)!!), viewController: self)
+            /*self.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: nil)*/
+            
+        }
     }
     
     //Function to add remove eplus
@@ -929,7 +933,7 @@ extension CheckOutViewController:UITableViewDataSource {
         if(indexPath.section == 0) {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.viewDetailsTBLcell, for: indexPath) as! ViewDetailsTBLcell
-            
+            cell.resortDetailsButton.tag = indexPath.row
             
             if(indexPath.row == 0){
                 cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
@@ -942,7 +946,7 @@ extension CheckOutViewController:UITableViewDataSource {
                 cell.lblHeading.text = Constant.MyClassConstants.relinquishment
                 cell.resortName?.text = filterRelinquishments.openWeek?.resort?.resortName
             }
-            cell.resortDetailsButton.addTarget(self, action: #selector(self.resortDetailsClicked(_:)), for: .touchUpInside)
+            //cell.resortDetailsButton.addTarget(self, action: #selector(self.resortDetailsClicked(_:)), for: .touchUpInside)
             cell.selectionStyle = .none
             return cell
         }else if(indexPath.section == 1) {

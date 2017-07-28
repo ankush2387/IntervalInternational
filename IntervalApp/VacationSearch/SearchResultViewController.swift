@@ -301,11 +301,10 @@ class SearchResultViewController: UIViewController {
             Constant.MyClassConstants.inventoryPrice = (Constant.MyClassConstants.exchangeInventory[self.selectedSection].buckets[self.selectedRow - 1].unit?.prices)!
             if(Constant.MyClassConstants.filterRelinquishments.count > 1){
                 self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
-            }else if(String(describing: response[0].destination?.upgradeCost) != nil && String(describing: response[0].destination?.upgradeCost?.amount) != "0"){
-                self.startProcess()
+            }else if(response[0].destination?.upgradeCost != nil){
+                self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
             }else {
                 self.startProcess()
-                //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
             }
             
         }, onError: { (error) in
@@ -363,19 +362,12 @@ class SearchResultViewController: UIViewController {
                 Helper.hideProgressBar(senderView: self)
                 Constant.MyClassConstants.membershipContactArray = Membership.contacts!
                 var viewController = UIViewController()
-                if Constant.RunningDevice.deviceIdiom == .phone {
                     viewController = WhoWillBeCheckingInViewController()
                     let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
                     viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+                    (viewController as! WhoWillBeCheckingInViewController).filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[0]
                     
                     
-                } else {
-                    viewController = WhoWillBeCheckingInIPadViewController()
-                    
-                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-                    viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as! WhoWillBeCheckingInIPadViewController
-                }
-                
                 
                 let transitionManager = TransitionManager()
                 self.navigationController?.transitioningDelegate = transitionManager

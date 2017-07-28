@@ -311,20 +311,19 @@ class WhoWillBeCheckingInViewController: UIViewController {
             self.hideStatus = false
             hidePickerView()
         }
-        
-        
     }
     
     //***** Picker View for credit card type, country and city selection. *****//
     func createPickerView() {
         
         pickerBaseView = UIView(frame: CGRect(x: 0, y: self.view.frame.size.height - 200, width: self.view.frame.size.width, height: 200))
-        self.pickerBaseView.backgroundColor = UIColor.darkGray
+        self.pickerBaseView.backgroundColor = IUIKColorPalette.primary1.color
         let doneButton = UIButton(frame: CGRect(x: pickerBaseView.frame.size.width - 60, y: 5, width: 50, height: 50))
         doneButton.setTitle(Constant.AlertPromtMessages.done, for: .normal)
         doneButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.pickerDoneButtonPressed(_:)), for: .touchUpInside)
         
         pickerView = UIPickerView(frame: CGRect(x: 0, y: 50, width: pickerBaseView.frame.size.width, height: pickerBaseView.frame.size.height - 60))
+        pickerView.setValue(UIColor.white, forKeyPath: Constant.MyClassConstants.keyTextColor)
         self.pickerBaseView.addSubview(doneButton)
         self.pickerBaseView.addSubview(pickerView)
         pickerView.delegate = self

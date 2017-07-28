@@ -245,13 +245,15 @@ class AddDebitOrCreditCardViewController: UIViewController {
     func createDatePicker() {
         
         pickerBaseView = UIView(frame: CGRect(x: 0, y: self.view.frame.size.height - 200, width: self.view.frame.size.width, height: 200))
-        self.pickerBaseView.backgroundColor = UIColor.darkGray
-        let doneButton = UIButton(frame: CGRect(x: pickerBaseView.frame.size.width - 60, y: 5, width: 50, height: 50))
+        pickerBaseView.backgroundColor = IUIKColorPalette.primary1.color
+        let doneButton = UIButton(frame: CGRect(x: 0, y: 5, width: pickerBaseView.frame.size.width - 20, height: 50))
         doneButton.setTitle(Constant.AlertPromtMessages.done, for: .normal)
+        doneButton.contentHorizontalAlignment = .right
         doneButton.addTarget(self, action: #selector(AddDebitOrCreditCardViewController.pickerDoneButtonPressed(_:)), for: .touchUpInside)
         
         self.datePickerView = UIDatePicker(frame: CGRect(x: 0, y: 50, width: pickerBaseView.frame.size.width, height: pickerBaseView.frame.size.height - 60))
         self.datePickerView.datePickerMode = .date
+        self.datePickerView.setValue(UIColor.white, forKeyPath: Constant.MyClassConstants.keyTextColor)
         self.datePickerView.addTarget(self, action: #selector(AddDebitOrCreditCardViewController.dateSelectedFromDatePicker(_:)), for: UIControlEvents.valueChanged)
         self.pickerBaseView.addSubview(doneButton)
         self.pickerBaseView.addSubview(datePickerView)
@@ -263,12 +265,13 @@ class AddDebitOrCreditCardViewController: UIViewController {
     func createPickerView() {
         
         pickerBaseView = UIView(frame: CGRect(x: 0, y: self.view.frame.size.height - 200, width: self.view.frame.size.width, height: 200))
-        self.pickerBaseView.backgroundColor = UIColor.darkGray
+        self.pickerBaseView.backgroundColor = IUIKColorPalette.primary1.color
         let doneButton = UIButton(frame: CGRect(x: pickerBaseView.frame.size.width - 60, y: 5, width: 50, height: 50))
         doneButton.setTitle(Constant.AlertPromtMessages.done, for: .normal)
         doneButton.addTarget(self, action: #selector(AddDebitOrCreditCardViewController.pickerDoneButtonPressed(_:)), for: .touchUpInside)
         
         pickerView = UIPickerView(frame: CGRect(x: 0, y: 50, width: pickerBaseView.frame.size.width, height: pickerBaseView.frame.size.height - 60))
+        pickerView.setValue(UIColor.white, forKeyPath: Constant.MyClassConstants.keyTextColor)
         self.pickerBaseView.addSubview(doneButton)
         self.pickerBaseView.addSubview(pickerView)
         pickerView.delegate = self
@@ -374,7 +377,7 @@ extension AddDebitOrCreditCardViewController:UITableViewDataSource {
         
         if(section == 0) {
             
-            return 60
+            return 40
         }
         else {
             
@@ -386,12 +389,13 @@ extension AddDebitOrCreditCardViewController:UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         
         if(section == 0) {
-            let headerView = UIView(frame: CGRect(x: 0, y: 0, width: cardDetailTBLview.frame.size.width, height: 60))
+            let headerView = UIView(frame: CGRect(x: 0, y: 0, width: cardDetailTBLview.frame.size.width, height: 40))
             
-            headerView.backgroundColor = UIColor(red: 170.0/255.0, green: 206.0/255.0, blue: 230.0/255.0, alpha: 1.0)
+            headerView.backgroundColor = IUIKColorPalette.primary1.color
             let headerLabel = UILabel()
-            headerLabel.frame = CGRect(x: 20, y: 5, width: cardDetailTBLview.frame.size.width - 40, height: 50)
+            headerLabel.frame = CGRect(x: 20, y: 5, width: cardDetailTBLview.frame.size.width - 40, height: 30)
             headerLabel.text = Constant.MyClassConstants.addressStringForCardDetailSection
+            headerLabel.textColor = UIColor.white
             headerLabel.numberOfLines = 2
             
             headerView.addSubview(headerLabel)

@@ -518,6 +518,9 @@ class Constant: NSObject {
         //Changed promotions to global
         static var isPromotionsEnabled = false
         static var recapPromotionsArray = [Promotion]()
+        
+        //Keypath for picker
+        static var keyTextColor = "textColor"
     }
     struct CommonStringIdentifiers {
         static var floatWeek = "FLOAT_WEEK"
