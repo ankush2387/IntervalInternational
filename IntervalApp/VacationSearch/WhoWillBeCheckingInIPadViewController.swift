@@ -327,11 +327,14 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             
             
             let guestAddress = Address()
+            var address = [String]()
+            address.append(Constant.GetawaySearchResultCardFormDetailData.address1)
+            address.append(Constant.GetawaySearchResultCardFormDetailData.address2)
+            guestAddress.addressLines = address
             
-            guestAddress.addrLine1 = Constant.GetawaySearchResultGuestFormDetailData.address1
-            guestAddress.addrLine2 = Constant.GetawaySearchResultGuestFormDetailData.address2
+            
             guestAddress.cityName = Constant.GetawaySearchResultGuestFormDetailData.city
-            guestAddress.zipCode = Constant.GetawaySearchResultGuestFormDetailData.pinCode
+            guestAddress.postalCode = Constant.GetawaySearchResultGuestFormDetailData.pinCode
             guestAddress.addressType = "Home"
             guestAddress.territoryCode = "FL"
             guestAddress.countryCode = "USA"
