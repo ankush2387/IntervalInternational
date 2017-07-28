@@ -18,6 +18,7 @@ class ViewDetailsTBLcell: UITableViewCell {
     @IBOutlet weak var resortName: UILabel?
     @IBOutlet weak var resortAddress:UILabel?
     @IBOutlet weak var resortCode:UILabel?
+    @IBOutlet weak var labelFirstHeading:UILabel?
     
     
     

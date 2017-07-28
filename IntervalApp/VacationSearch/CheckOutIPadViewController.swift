@@ -1115,6 +1115,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                         cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.resortImage)
                         cell.resortName?.text = Constant.MyClassConstants.selectedResort.resortName
                     }else{
+                        cell.labelFirstHeading?.text = "Relinquishment"
                         cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.relinquishmentImage)
                         cell.resortName?.text = filterRelinquishments.openWeek?.resort?.resortName
                     }
