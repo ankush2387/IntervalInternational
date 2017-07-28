@@ -10,10 +10,15 @@ import UIKit
 
 class RelinquishmentDetailsViewController: UIViewController {
 
+    @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        self.tableView.layer.cornerRadius = 5
+        self.tableView.layer.borderWidth = 2.0
+        //self.tableView.layer.masksToBounds = true
+        self.tableView.layer.borderColor = UIColor.lightGray.cgColor
     }
 
     override func didReceiveMemoryWarning() {
@@ -42,10 +47,13 @@ extension RelinquishmentDetailsViewController:UITableViewDataSource, UITableView
         let objRelinquishment = Constant.MyClassConstants.filterRelinquishments[0]
 
         
+        
         if (indexPath.section == 0) {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.relinquishmentDetailsCell, for: indexPath) as! RelinquishmentDetailsCell
-            
+            /*cell.layer.cornerRadius=10 //set corner radius here
+            cell.layer.borderColor = UIColor.lightGray.cgColor  // set cell border color here
+            cell.layer.borderWidth = 2*/
             
             if(Constant.MyClassConstants.resortsArray.count != 0){
                 if (Constant.MyClassConstants.resortsArray[indexPath.section].images.count>0){
@@ -68,7 +76,6 @@ extension RelinquishmentDetailsViewController:UITableViewDataSource, UITableView
                 }
             }
             
-            
             cell.resortName.text = objRelinquishment.openWeek?.resort?.resortName!
             
             if let city = objRelinquishment.openWeek?.resort!.address?.cityName {
@@ -89,6 +96,10 @@ extension RelinquishmentDetailsViewController:UITableViewDataSource, UITableView
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell1, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
 
+            /*cell.layer.cornerRadius=10 //set corner radius here
+            cell.layer.borderColor = UIColor.lightGray.cgColor  // set cell border color here
+            cell.layer.borderWidth = 2*/
+            
             let dateString = objRelinquishment.openWeek!.checkInDate
             let date =  Helper.convertStringToDate(dateString: dateString!, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
             let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
