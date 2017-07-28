@@ -119,7 +119,7 @@ class WhatToUseViewController: UIViewController {
                         viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as! WhoWillBeCheckingInIPadViewController
                     }
                     
-                    
+                    self.isCheckedBox = false
                     let transitionManager = TransitionManager()
                     self.navigationController?.transitioningDelegate = transitionManager
                     self.navigationController!.pushViewController(viewController, animated: true)
@@ -150,6 +150,7 @@ class WhatToUseViewController: UIViewController {
                     
                     Helper.hideProgressBar(senderView: self)
                     cell?.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
+                    self.isCheckedBox = false
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                     
                 })
@@ -157,6 +158,7 @@ class WhatToUseViewController: UIViewController {
             }, onError: {(error) in
                 Helper.hideProgressBar(senderView: self)
                 cell?.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
+                self.isCheckedBox = false
                 SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
             })
         }
