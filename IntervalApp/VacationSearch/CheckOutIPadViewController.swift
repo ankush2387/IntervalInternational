@@ -29,10 +29,8 @@ class CheckOutIPadViewController: UIViewController {
     //Class variables
     var remainingHoldingTime:Int!
     var requiredSectionIntTBLview = 10
-    var isPromotionsEnabled = true
+    var isPromotionsEnabled = false
     var isTripProtectionEnabled = false
-    var isExchangeOptionEnabled = false
-    var isGetawayOptionEnabled = true
     var bookingCostRequiredRows = 1
     var promotionSelectedIndex = 0
     var isAgreed:Bool = false
@@ -55,6 +53,7 @@ class CheckOutIPadViewController: UIViewController {
     var filterRelinquishments = ExchangeRelinquishment()
     
     override func viewWillAppear(_ animated: Bool) {
+        Helper.removeServiceCallBackgroundView(view: self.view)
         NotificationCenter.default.addObserver(self, selector: #selector(changeLabelStatus), name: NSNotification.Name(rawValue: Constant.notificationNames.changeSliderStatus), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateResortHoldingTime), name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
         self.emailTextToEnter = (UserContext.sharedInstance.contact?.emailAddress)!
@@ -333,12 +332,14 @@ class CheckOutIPadViewController: UIViewController {
                 
                 self.tripRequestInProcess = true
                 self.isTripProtectionEnabled = true
+                Constant.MyClassConstants.checkoutInsurencePurchased = Constant.AlertPromtMessages.yes
                 self.addTripProtection(shouldAddTripProtection: true)
                 
             }else if(str == Constant.MyClassConstants.isFalse && !self.tripRequestInProcess){
                 
                 self.tripRequestInProcess = true
                 self.isTripProtectionEnabled = false
+                Constant.MyClassConstants.checkoutInsurencePurchased = Constant.AlertPromtMessages.no
                 self.addTripProtection(shouldAddTripProtection: false)
             }
             self.bookingTableView.reloadData()
@@ -363,13 +364,18 @@ class CheckOutIPadViewController: UIViewController {
                 DarwinSDK.logger.debug(Constant.MyClassConstants.continueToCheckoutResponse.view?.promoCodes)
                 DarwinSDK.logger.debug(Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.insurance?.price)
                 Constant.MyClassConstants.exchangeFees[0].total = (response.view?.fees?.total)!
-                self.bookingTableView.reloadSections(IndexSet(integer: 8), with:.automatic)
+                //self.bookingTableView.reloadSections(IndexSet(integer: 0), with:.automatic)
+                self.bookingTableView.reloadData()
                 Helper.hideProgressBar(senderView: self)
                 
             }, onError: { (error) in
+                Constant.MyClassConstants.exchangeFees.last!.insurance?.selected = !shouldAddTripProtection
                 self.tripRequestInProcess = false
+                self.isTripProtectionEnabled = false
+                self.bookingTableView.reloadData()
                 DarwinSDK.logger.debug(error.description)
                 Helper.hideProgressBar(senderView: self)
+                SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: error.description)
             })
         }
         else{
@@ -399,7 +405,12 @@ class CheckOutIPadViewController: UIViewController {
     
     //***** Function called when detail button is pressed. ******//
     func resortDetailsClicked(_ sender:IUIKButton){
-        self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
+        if(sender.tag == 0){
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
+        }else{
+            //Helper.sho
+        }
+        
     }
     
     //Function to add remove eplus
@@ -411,11 +422,17 @@ class CheckOutIPadViewController: UIViewController {
         Helper.showProgressBar(senderView: self)
         ExchangeProcessClient.recalculateFees(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: exchangeRecalculateRequest, onSuccess: { (recapResponse) in
             
-            self.eplusAdded = true
+            self.eplusAdded = sender.checked
             self.bookingTableView.reloadData()
             Constant.MyClassConstants.exchangeFees = [(recapResponse.view?.fees)!]
             Helper.hideProgressBar(senderView: self)
         }, onError: { (error) in
+            self.eplusAdded = !sender.checked
+            Constant.MyClassConstants.exchangeFees[0].eplus?.selected = sender.checked
+            Helper.hideProgressBar(senderView: self)
+            SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: error.description)
+            self.bookingTableView.reloadData()
+            self.checkoutTableView.reloadData()
             Helper.hideProgressBar(senderView: self)
         })
         /*}else{
@@ -511,7 +528,7 @@ class CheckOutIPadViewController: UIViewController {
         self.promotionSelectedIndex = sender.tag
         Constant.MyClassConstants.isPromotionsEnabled = true
         self.bookingCostRequiredRows = 1
-        checkoutTableView.reloadData()
+        bookingTableView.reloadData()
         
         let storyboard = UIStoryboard(name: "VacationSearchIphone", bundle: nil)
         let promotionsNav = storyboard.instantiateViewController(withIdentifier: "DepositPromotionsNav") as! UINavigationController
@@ -673,12 +690,22 @@ extension CheckOutIPadViewController:UITableViewDataSource {
         case 2:
             switch section{
             case 1:
-                if(!showInsurance){
-                    return 0
-                   
+                
+                if((Constant.MyClassConstants.isFromExchange || !Constant.MyClassConstants.isFromExchange) && Constant.MyClassConstants.enableTaxes) || ( Constant.MyClassConstants.enableGuestCertificate && self.isTripProtectionEnabled){
+                    if(eplusAdded){
+                        return 3
+                    }else{
+                        return 2
+                    }
                 }else{
-                   return 1
+                    if(eplusAdded){
+                        return 2
+                    }else{
+                        return 1
+                    }
+                    
                 }
+                
             case 2:
                 if(self.isTripProtectionEnabled && Constant.MyClassConstants.enableGuestCertificate){
                         return 2
@@ -700,6 +727,12 @@ extension CheckOutIPadViewController:UITableViewDataSource {
             }
         case 3:
             switch section {
+            case 0:
+                if(Constant.MyClassConstants.isFromExchange){
+                    return 2
+                }else{
+                    return 1
+                }
             case 1:
                 var advisementCount:Int = 0
                 if let isOpen = tappedButtonDictionary[section]{
@@ -720,20 +753,14 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                 }
                 return 0
             case 4 :
-              if((Constant.MyClassConstants.isFromExchange || !Constant.MyClassConstants.isFromExchange) && Constant.MyClassConstants.enableTaxes) || ( Constant.MyClassConstants.enableGuestCertificate && self.isTripProtectionEnabled){
-                    if(eplusAdded){
-                        return 3
-                    }else{
-                        return 2
-                    }
-                }else{
-                    if(eplusAdded){
-                        return 2
-                    }else{
-                        return 1
-                    }
+                
+                if(!showInsurance){
+                    return 0
                     
+                }else{
+                    return 1
                 }
+
                 
             default:
                 return 1
@@ -750,7 +777,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
         //showInsurance = false
         switch tableView.tag {
         case 2:
-            if ((indexPath.section == 3 && !self.isPromotionsEnabled) || (indexPath.section == 2 && !self.isTripProtectionEnabled && !Constant.MyClassConstants.enableGuestCertificate) || (indexPath.section == 1 && !self.isExchangeOptionEnabled && !Constant.MyClassConstants.enableTaxes)) {
+            if ((indexPath.section == 3 && !self.isPromotionsEnabled) || (indexPath.section == 2 && !self.isTripProtectionEnabled && !Constant.MyClassConstants.enableGuestCertificate) || (indexPath.section == 1 && !Constant.MyClassConstants.isFromExchange && !Constant.MyClassConstants.enableTaxes)) {
                 isHeightZero = true
                 return 0
             }else if(indexPath.section == 3 && self.isPromotionsEnabled && destinationPromotionSelected){
@@ -873,15 +900,42 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                         
                         subviews.isHidden = false
                     }
-                    if(indexPath.row == 0 && self.isExchangeOptionEnabled){
+                    if(indexPath.row == 0 && Constant.MyClassConstants.isFromExchange){
                         cell.priceLabel.text = Constant.MyClassConstants.exchangeFeeTitle
-                        cell.primaryPriceLabel.text = ""
-                    }else if(indexPath.row == 0 && self.isGetawayOptionEnabled){
+                        cell.priceLabel.numberOfLines = 0
+                        cell.primaryPriceLabel.text = String(Int(Float((Constant.MyClassConstants.exchangeFees[0].shopExchange?.rentalPrice?.price)!)))
+                        let priceString = "\(Constant.MyClassConstants.exchangeFees[0].shopExchange!.rentalPrice!.price)"
+                        let priceArray = priceString.components(separatedBy: ".")
+                        print(priceArray.last!)
+                        if((priceArray.last!.characters.count) > 1) {
+                            cell.fractionalPriceLabel.text = "\(priceArray.last!)"
+                        }else{
+                            cell.fractionalPriceLabel.text = "00"
+                        }
+                    }else if(Constant.MyClassConstants.isFromExchange && eplusAdded){
+                        cell.priceLabel.text = "EPlus"
+                        
+                        let priceString = "\(Constant.MyClassConstants.exchangeFees[0].eplus!.price)"
+                        let priceArray = priceString.components(separatedBy: ".")
+                        cell.primaryPriceLabel.text = priceArray.first
+                        if((priceArray.last?.characters.count)! > 1) {
+                            cell.fractionalPriceLabel.text = "\(String(describing: priceArray.last!))"
+                        }else{
+                            cell.fractionalPriceLabel.text = "00"
+                        }
+                        
+                        
+                    }else if(indexPath.row == 0 && !Constant.MyClassConstants.isFromExchange){
                         cell.priceLabel.text = Constant.MyClassConstants.getawayFee
                         cell.primaryPriceLabel.text = String(Int(Float(Constant.MyClassConstants.inventoryPrice[0].price)))
                     }else{
                         cell.priceLabel.text = Constant.MyClassConstants.taxesTitle
-                        let rentalTax = Int((Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.rental?.rentalPrice?.tax)!)
+                        var rentalTax = 0
+                        if(Constant.MyClassConstants.isFromExchange){
+                            rentalTax = Int((Constant.MyClassConstants.exchangeContinueToCheckoutResponse.view?.fees?.shopExchange?.rentalPrice?.tax)!)
+                        }else{
+                            rentalTax = Int((Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.rental?.rentalPrice?.tax)!)
+                        }
                         cell.primaryPriceLabel.text = "\(rentalTax)"
                     }
                     
@@ -1055,18 +1109,17 @@ extension CheckOutIPadViewController:UITableViewDataSource {
             switch indexPath.section {
                 
             case 0:
-                switch indexPath.row{
-                case 0:
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.CheckOutIPadViewControllerCellIdentifiersAndHardCodedStrings.headerCell, for: indexPath) as! ViewDetailsTBLcell
                     cell.resortDetailsButton.addTarget(self, action: #selector(self.resortDetailsClicked(_:)), for: .touchUpInside)
-                    cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.resortImage)
-                    cell.resortName?.text = Constant.MyClassConstants.viewResponse.resort?.resortName
+                    if(indexPath.row == 0){
+                        cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.resortImage)
+                        cell.resortName?.text = Constant.MyClassConstants.selectedResort.resortName
+                    }else{
+                        cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.relinquishmentImage)
+                        cell.resortName?.text = filterRelinquishments.openWeek?.resort?.resortName
+                    }
+                    
                     return cell
-                default:
-                    let cell = tableView.dequeueReusableCell(withIdentifier: Constant.CheckOutIPadViewControllerCellIdentifiersAndHardCodedStrings.headerCell, for: indexPath) as! ViewDetailsTBLcell
-                    return cell
-                }
-                
             case 1:
                 
                     if(indexPath.row == (Constant.MyClassConstants.generalAdvisementsArray.count)) {
@@ -1126,7 +1179,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                     
                 }
                 if(!containsWebView){
-                    cellWebView = UIWebView(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: 400))
+                    cellWebView = UIWebView(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: 420))
                     cellWebView.scrollView.isScrollEnabled = false
                     let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
                     tapRecognizer.numberOfTapsRequired = 1
@@ -1138,8 +1191,8 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                     }
                     else{
                         
-                        //let str = (Constant.MyClassConstants.exchangeFees[indexPath.row].insurance?.insuranceOfferHTML!)!
-                       // cellWebView.loadHTMLString(str, baseURL: nil)
+                        let str = (Constant.MyClassConstants.exchangeFees[0].insurance?.insuranceOfferHTML!)!
+                        cellWebView.loadHTMLString(str, baseURL: nil)
 
                     }
                     cellWebView.delegate = self
@@ -1262,8 +1315,17 @@ extension CheckOutIPadViewController:UITableViewDataSource {
             
             if(section == 1 && !self.isPromotionsEnabled){
                 return 0
-            }else if(section == 2 && !self.isExchangeOptionEnabled){
-                return 0
+            }else if(section == 2){
+                if(!Constant.MyClassConstants.isFromExchange){
+                    return 0
+                }else{
+                    if(Constant.MyClassConstants.exchangeFees[0].eplus == nil){
+                        return 0
+                    }else{
+                        return 50
+                    }
+                }
+                
             }else if(section == 3 && !showInsurance){
                 return 0
             }else if(section == 6 || section == 7){
