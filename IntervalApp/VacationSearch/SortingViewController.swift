@@ -9,12 +9,18 @@
 import UIKit
 import IntervalUIKit
 
+protocol sortingOptionDelegate {
+    func selectedOptionis(filteredValueIs:String)
+}
+
 class SortingViewController: UIViewController {
+  
+    var delegate:sortingOptionDelegate?
     
+    var isFilterClicked = false
     
     //Outlets
     @IBOutlet weak var sortingTBLview: UITableView!
-    
     
     //class variables
     var selectedIndex = -1
@@ -35,48 +41,50 @@ class SortingViewController: UIViewController {
         
         self.navigationController?.navigationBar.barTintColor = UIColor.white
         
-        //self.navigationItem.leftBarButtonItem = cancelButton
-        
-        //***** Creating and adding right bar button for more option button *****//
-        /*let doneButton = UIBarButtonItem(title:Constant.AlertPromtMessages.done, style: .plain, target: self, action: #selector(doneButtonPressed(_:)))
-        
-        doneButton.tintColor = UIColor.white*/
-        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         
     }
+    
     /*func doneButtonPressed(_ sender:UIBarButtonItem) {
         
         self.navigationController?.dismiss(animated: true, completion: nil)
     }*/
     
     @IBAction func checkBoxClicked(_ sender: IUIKCheckbox) {
-        let cell = sender.superview?.superview?.superview as? SortingOptionCell
         
-        let indexPath = self.sortingTBLview.indexPath(for: cell!)
-        
-        self.selectedIndex = (indexPath?.row)!
-        
-        /*if cell?.checkBox.isSelected == true {
-            cell?.checkBox.checked = false
-            cell?.sortingOptionLabel.textColor = UIColor.lightGray
+        if self.isFilterClicked {
+            let cell = sender.superview?.superview?.superview as? FilterCell
+            let indexPath = self.sortingTBLview.indexPath(for: cell!)
+            
+            self.selectedIndex = (indexPath?.row)!
+            
+            self.delegate?.selectedOptionis(filteredValueIs: "filtered vale")
             
         } else {
-            cell?.sortingOptionLabel.textColor = IUIKColorPalette.secondaryB.color
-            cell?.checkBox.checked = true
+            let cell = sender.superview?.superview?.superview as? SortingOptionCell
+            let indexPath = self.sortingTBLview.indexPath(for: cell!)
             
-        }*/
+            self.selectedIndex = (indexPath?.row)!
+            
+            self.delegate?.selectedOptionis(filteredValueIs: "sorting vale")
+        }
         
-        self.sortingTBLview.reloadData()
+        self.navigationController?.popViewController(animated: true)
+        
+        
+       // self.sortingTBLview.reloadData()
         
     }
     
+    
+    
     func cancelButtonPressed(_ sender:UIBarButtonItem) {
         
-         self.navigationController?.dismiss(animated: true, completion: nil)
+         //self.navigationController?.dismiss(animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: true)
     }
 
 }
@@ -87,7 +95,15 @@ extension SortingViewController:UITableViewDelegate {
         
         self.selectedIndex = indexPath.row
         self.sortingTBLview.reloadData()
-        //self.navigationController?.dismiss(animated: true, completion: nil)
+        
+        // set selected value here from array.
+        if self.isFilterClicked {
+            self.delegate?.selectedOptionis(filteredValueIs: "filtered vale")
+        } else {
+            self.delegate?.selectedOptionis(filteredValueIs: "sorting value")
+        }
+        
+        self.navigationController?.popViewController(animated: true)
     }
     
 }
@@ -103,21 +119,36 @@ extension SortingViewController:UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.sortingOptionCell, for: indexPath) as! SortingOptionCell
         
-        if(self.selectedIndex == indexPath.row) {
+        if self.isFilterClicked  {
+             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.filterOptionCell, for: indexPath) as! FilterCell
+            if(self.selectedIndex == indexPath.row) {
+                
+                cell.lblFilterOption.textColor = IUIKColorPalette.secondaryB.color
+                cell.checkBox.checked = true
+            }else {
+                
+                cell.lblFilterOption.textColor = UIColor.lightGray
+                cell.checkBox.checked = false
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyle.none
+            return cell
+        } else {
+             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.sortingOptionCell, for: indexPath) as! SortingOptionCell
+            if(self.selectedIndex == indexPath.row) {
+                
+                cell.lblSortingOption.textColor = IUIKColorPalette.secondaryB.color
+                cell.checkBox.checked = true
+            }else {
+                
+                cell.lblSortingOption.textColor = UIColor.lightGray
+                cell.checkBox.checked = false
+            }
             
-            cell.sortingOptionLabel.textColor = IUIKColorPalette.secondaryB.color
-            cell.checkBox.checked = true
-        }else {
-            
-            cell.sortingOptionLabel.textColor = UIColor.lightGray
-            cell.checkBox.checked = false
+            cell.selectionStyle = UITableViewCellSelectionStyle.none
+            return cell
         }
         
-        cell.selectionStyle = UITableViewCellSelectionStyle.none
-        return cell
-
     }
     
     
