@@ -355,7 +355,7 @@ class CheckOutViewController: UIViewController {
         Constant.MyClassConstants.isPromotionsEnabled = true
         self.bookingCostRequiredRows = 1
         
-        let storyboard = UIStoryboard(name: "VacationSearchIphone", bundle: nil)
+        let storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         let promotionsNav = storyboard.instantiateViewController(withIdentifier: "DepositPromotionsNav") as! UINavigationController
         let promotionsVC = promotionsNav.viewControllers.first as! PromotionsViewController
         promotionsVC.promotionsArray = Constant.MyClassConstants.recapViewPromotionCodeArray
@@ -502,7 +502,7 @@ class CheckOutViewController: UIViewController {
                 Helper.hideProgressBar(senderView: self)
             }, onError: {(error) in
                 Helper.hideProgressBar(senderView: self)
-                SimpleAlert.alert(self, title: "Checkout", message: error.localizedDescription)
+                SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
             })
 
         }else{
@@ -514,7 +514,7 @@ class CheckOutViewController: UIViewController {
         }, onError: {(error) in
             
             Helper.hideProgressBar(senderView: self)
-            SimpleAlert.alert(self, title: "Checkout", message: "Unable to perform back button operatin due to server error, Try again!")
+            SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.operationFailedMessage)
         })
         }
     }
@@ -739,12 +739,15 @@ extension CheckOutViewController:UITableViewDataSource {
             }
         }else if(section == 4 && !showInsurance){
             return 0
-        }else if((section == 5 && (Constant.MyClassConstants.isFromExchange || !Constant.MyClassConstants.isFromExchange) && Constant.MyClassConstants.enableTaxes) || (section == 6 && Constant.MyClassConstants.enableGuestCertificate && self.isTripProtectionEnabled)){
-            if(eplusAdded){
-                return 3
-            }else{
+        }else if((section == 5 && (Constant.MyClassConstants.isFromExchange || !Constant.MyClassConstants.isFromExchange) && Constant.MyClassConstants.enableTaxes)){
+            return 2
+        }else if (section == 6){
+            if(Constant.MyClassConstants.enableGuestCertificate && self.isTripProtectionEnabled){
                 return 2
+            }else if(Constant.MyClassConstants.enableGuestCertificate || self.isTripProtectionEnabled){
+                return 1
             }
+            return 0
         }else{
             if(section == 5 && eplusAdded){
                 return 2
@@ -1153,7 +1156,7 @@ extension CheckOutViewController:UITableViewDataSource {
                         subviews.isHidden = false
                     }
                     if(indexPath.row == 0 && Constant.MyClassConstants.isFromExchange){
-                        cell.priceLabel.text = "Exchange Fee"
+                        cell.priceLabel.text = Constant.MyClassConstants.exchangeFeeTitle
                         cell.primaryPriceLabel.text = String(Int(Float((Constant.MyClassConstants.exchangeFees[0].shopExchange?.rentalPrice?.price)!)))
                         let priceString = "\(Constant.MyClassConstants.exchangeFees[0].shopExchange!.rentalPrice!.price)"
                         let priceArray = priceString.components(separatedBy: ".")
@@ -1164,7 +1167,7 @@ extension CheckOutViewController:UITableViewDataSource {
                             cell.fractionalPriceLabel.text = "00"
                         }
                     }else if(indexPath.row == 0 && !Constant.MyClassConstants.isFromExchange){
-                        cell.priceLabel.text = "Getaway Fee"
+                        cell.priceLabel.text = Constant.MyClassConstants.getawayFee
                         cell.primaryPriceLabel.text = String(Int(Float((Constant.MyClassConstants.rentalFees[0].rental?.rentalPrice?.price)!)))
                         let priceString = "\(Constant.MyClassConstants.rentalFees[0].rental!.rentalPrice!.price)"
                         let priceArray = priceString.components(separatedBy: ".")
@@ -1176,7 +1179,7 @@ extension CheckOutViewController:UITableViewDataSource {
                         }
                         
                     }else if(Constant.MyClassConstants.isFromExchange && eplusAdded){
-                        cell.priceLabel.text = "EPlus"
+                        cell.priceLabel.text = Constant.MyClassConstants.eplus
                         
                         let priceString = "\(Constant.MyClassConstants.exchangeFees[0].eplus!.price)"
                         let priceArray = priceString.components(separatedBy: ".")
@@ -1189,7 +1192,7 @@ extension CheckOutViewController:UITableViewDataSource {
 
                         
                     }else{
-                        cell.priceLabel.text = "Taxes"
+                        cell.priceLabel.text = Constant.MyClassConstants.taxesTitle
                         var rentalTax = 0.0
                         if(Constant.MyClassConstants.isFromExchange){
                             rentalTax = Double(Int((Constant.MyClassConstants.exchangeContinueToCheckoutResponse.view?.fees?.total)!))
@@ -1240,7 +1243,7 @@ extension CheckOutViewController:UITableViewDataSource {
                         subviews.isHidden = false
                     }
                     if(indexPath.row == 0 && self.isTripProtectionEnabled){
-                        cell.priceLabel.text = "Insurance"
+                        cell.priceLabel.text = Constant.MyClassConstants.insurance
                         var priceString = ""
                         if(Constant.MyClassConstants.isFromExchange){
                             priceString = "\(Constant.MyClassConstants.exchangeFees[indexPath.row].insurance!.price)"
@@ -1256,7 +1259,7 @@ extension CheckOutViewController:UITableViewDataSource {
                             cell.fractionalPriceLabel.text = "00"
                         }
                     }else{
-                        cell.priceLabel.text = "Guest Certificate"
+                        cell.priceLabel.text = Constant.MyClassConstants.guestCertificateTitle
                         let guestPrice = Int(Constant.MyClassConstants.guestCertificatePrice)
                         cell.primaryPriceLabel.text = "\(guestPrice)"
                     }

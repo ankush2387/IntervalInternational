@@ -335,7 +335,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             
             guestAddress.cityName = Constant.GetawaySearchResultGuestFormDetailData.city
             guestAddress.postalCode = Constant.GetawaySearchResultGuestFormDetailData.pinCode
-            guestAddress.addressType = "Home"
+            guestAddress.addressType = "HADDR"
             guestAddress.territoryCode = "FL"
             guestAddress.countryCode = "USA"
             
