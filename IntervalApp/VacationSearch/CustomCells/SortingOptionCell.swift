@@ -7,12 +7,16 @@
 //
 
 import UIKit
+import IntervalUIKit
+
 
 class SortingOptionCell: UITableViewCell {
 
     
     //Outlets
     @IBOutlet weak var sortingOptionLabel: UILabel!
+    
+    @IBOutlet weak var checkBox: IUIKCheckbox!
     
     override func awakeFromNib() {
         super.awakeFromNib()

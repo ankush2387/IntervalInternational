@@ -402,14 +402,16 @@ class WhoWillBeCheckingInViewController: UIViewController {
                     
                     
                     let guestAddress = Address()
+                    var address = [String]()
+                    address.append(Constant.GetawaySearchResultCardFormDetailData.address1)
+                    address.append(Constant.GetawaySearchResultCardFormDetailData.address2)
+                    guestAddress.addressLines = address
                     
-                    guestAddress.addrLine1 = Constant.GetawaySearchResultGuestFormDetailData.address1
-                    guestAddress.addrLine2 = Constant.GetawaySearchResultGuestFormDetailData.address2
                     guestAddress.cityName = Constant.GetawaySearchResultGuestFormDetailData.city
-                    guestAddress.zipCode = Constant.GetawaySearchResultGuestFormDetailData.pinCode
-                    guestAddress.addressType = "Home"
-                    guestAddress.territoryCode = "FL"
-                    guestAddress.countryCode = "USA"
+                    guestAddress.postalCode = Constant.GetawaySearchResultGuestFormDetailData.pinCode
+                    guestAddress.addressType = "HADDR"
+                    guestAddress.territoryCode = Constant.GetawaySearchResultCardFormDetailData.stateCode
+                    guestAddress.countryCode = Constant.GetawaySearchResultCardFormDetailData.countryCode
                     
                     var phoneNumbers = [Phone]()
                     let homePhoneNo = Phone()
@@ -417,7 +419,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
                     homePhoneNo.countryPhoneCode = "1"
                     homePhoneNo.phoneType = "HOME_PRIMARY"
                     homePhoneNo.areaCode = "305"
-                    homePhoneNo.countryCode = "FL"
+                    homePhoneNo.countryCode = Constant.GetawaySearchResultCardFormDetailData.countryCode
                     phoneNumbers.append(homePhoneNo)
                     
                     guest.phones = phoneNumbers
@@ -485,14 +487,17 @@ class WhoWillBeCheckingInViewController: UIViewController {
             
             
             let guestAddress = Address()
+            var address = [String]()
+            address.append(Constant.GetawaySearchResultCardFormDetailData.address1)
+            address.append(Constant.GetawaySearchResultCardFormDetailData.address2)
+            guestAddress.addressLines = address
             
-            guestAddress.addrLine1 = Constant.GetawaySearchResultGuestFormDetailData.address1
-            guestAddress.addrLine2 = Constant.GetawaySearchResultGuestFormDetailData.address2
+            
             guestAddress.cityName = Constant.GetawaySearchResultGuestFormDetailData.city
-            guestAddress.zipCode = Constant.GetawaySearchResultGuestFormDetailData.pinCode
-            guestAddress.addressType = "Home"
-            guestAddress.territoryCode = "FL"
-            guestAddress.countryCode = "USA"
+            guestAddress.postalCode = Constant.GetawaySearchResultGuestFormDetailData.pinCode
+            guestAddress.addressType = "HADDR"
+            guestAddress.territoryCode = Constant.GetawaySearchResultCardFormDetailData.stateCode
+            guestAddress.countryCode = Constant.GetawaySearchResultCardFormDetailData.countryCode
             
             var phoneNumbers = [Phone]()
             let homePhoneNo = Phone()
@@ -500,7 +505,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
             homePhoneNo.countryPhoneCode = "1"
             homePhoneNo.phoneType = "HOME_PRIMARY"
             homePhoneNo.areaCode = "305"
-            homePhoneNo.countryCode = "FL"
+            homePhoneNo.countryCode = Constant.GetawaySearchResultCardFormDetailData.countryCode
             phoneNumbers.append(homePhoneNo)
             
             guest.phones = phoneNumbers
@@ -955,8 +960,9 @@ extension WhoWillBeCheckingInViewController:UIPickerViewDelegate {
             Helper.getStates(country: Constant.GetawaySearchResultCardFormDetailData.countryCode, viewController: self)
         }else {
             guard let stateName = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name else { return }
-
+            
             Constant.GetawaySearchResultGuestFormDetailData.state = stateName
+            Constant.GetawaySearchResultCardFormDetailData.stateCode = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].code!
         }
     }
 }

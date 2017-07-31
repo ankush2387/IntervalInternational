@@ -429,8 +429,7 @@ public class Helper{
             removeServiceCallBackgroundView(view: viewController.view)
 
         }) { (error) in
-            SVProgressHUD.dismiss()
-            removeServiceCallBackgroundView(view: viewController.view)
+            hideProgressBar(senderView: viewController)
             SimpleAlert.alert(viewController, title:Constant.AlertErrorMessages.errorString, message: error.description)
         }
         
@@ -447,8 +446,7 @@ public class Helper{
             }
             removeServiceCallBackgroundView(view: viewController.view)
         }, onError: { (error) in
-            SVProgressHUD.dismiss()
-            removeServiceCallBackgroundView(view: viewController.view)
+            hideProgressBar(senderView: viewController)
             SimpleAlert.alert(viewController, title:Constant.AlertErrorMessages.errorString, message: error.description)
         })
         
@@ -1665,9 +1663,14 @@ public class Helper{
     }
     
     static func currencyCodetoSymbol(code:String)->String{
+        
         let currencyCode : String? = code
         let curr = Locale.availableIdentifiers.map{ Locale(identifier: $0)}.filter { return currencyCode == $0.currencyCode }.map { ($0.identifier, $0.currencySymbol) }.flatMap {$0}.first
         return (curr?.1?.description)!
+    }
+    
+    static func hardProcessingWithString(input: String, completion: (_ result: String) -> String) {
+           _ = completion(input)
     }
 }
 

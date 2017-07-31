@@ -787,7 +787,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
             }else if(indexPath.section == 4){
                 return 60
             }else if(indexPath.section == 1 || indexPath.section == 2){
-                return 30
+                return 50 
             }else{
                 return 80
             }

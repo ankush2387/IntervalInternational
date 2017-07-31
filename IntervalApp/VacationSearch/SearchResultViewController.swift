@@ -693,9 +693,9 @@ extension SearchResultViewController:UITableViewDelegate {
             
             Constant.MyClassConstants.selectedResort = Constant.MyClassConstants.resortsArray[indexPath.section]
             
-            var inventoryDict = [Inventory]()
-            inventoryDict = Constant.MyClassConstants.resortsArray[indexPath.section].inventory
-            let invent = inventoryDict[0]
+            var inventoryDict = Inventory()
+            inventoryDict = Constant.MyClassConstants.resortsArray[indexPath.section].inventory!
+            let invent = inventoryDict
             let units = invent.units
             
             Constant.MyClassConstants.inventoryPrice = invent.units[indexPath.row - 1].prices
@@ -765,6 +765,7 @@ extension SearchResultViewController:UITableViewDelegate {
             }, onError: {(error) in
                 Helper.removeServiceCallBackgroundView(view: self.view)
                 SVProgressHUD.dismiss()
+                SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.description)
             })
         }
       }
@@ -848,11 +849,11 @@ extension SearchResultViewController:UITableViewDataSource {
                 cell.backgroundColor = IUIKColorPalette.contentBackground.color
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 
-                var inventoryDict = [Inventory]()
+                var inventoryDict = Inventory()
                 
-                inventoryDict = Constant.MyClassConstants.resortsArray[indexPath.section].inventory
+                inventoryDict = Constant.MyClassConstants.resortsArray[indexPath.section].inventory!
                 
-                let invent = inventoryDict[0]
+                let invent = inventoryDict
                 let units = invent.units
                 
                 if let roomSize = UnitSize(rawValue: units[indexPath.row - 1].unitSize!) {
@@ -978,9 +979,9 @@ extension SearchResultViewController:UITableViewDataSource {
             }
             
         }else{
-            var inventoryDict = [Inventory]()
-            inventoryDict = Constant.MyClassConstants.resortsArray[section].inventory
-            let invent = inventoryDict[0]
+            var inventoryDict = Inventory()
+            inventoryDict = Constant.MyClassConstants.resortsArray[section].inventory!
+            let invent = inventoryDict
             self.unitSizeArray = invent.units
             return self.unitSizeArray.count + 1
         }
