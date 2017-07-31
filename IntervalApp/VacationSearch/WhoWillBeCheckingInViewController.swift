@@ -409,7 +409,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
                     
                     guestAddress.cityName = Constant.GetawaySearchResultGuestFormDetailData.city
                     guestAddress.postalCode = Constant.GetawaySearchResultGuestFormDetailData.pinCode
-                    guestAddress.addressType = "RES_ADDR"
+                    guestAddress.addressType = "HADDR"
                     guestAddress.territoryCode = Constant.GetawaySearchResultCardFormDetailData.stateCode
                     guestAddress.countryCode = Constant.GetawaySearchResultCardFormDetailData.countryCode
                     
@@ -495,7 +495,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
             
             guestAddress.cityName = Constant.GetawaySearchResultGuestFormDetailData.city
             guestAddress.postalCode = Constant.GetawaySearchResultGuestFormDetailData.pinCode
-            guestAddress.addressType = "RES_ADDR"
+            guestAddress.addressType = "HADDR"
             guestAddress.territoryCode = Constant.GetawaySearchResultCardFormDetailData.stateCode
             guestAddress.countryCode = Constant.GetawaySearchResultCardFormDetailData.countryCode
             
