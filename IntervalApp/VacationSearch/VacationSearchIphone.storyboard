@@ -47,7 +47,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dPC-06-hhy">
-                                <rect key="frame" x="-4" y="61" width="383" height="49"/>
+                                <rect key="frame" x="-4" y="17" width="383" height="49"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Resort 1 of 7" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IdW-Ty-pEh">
                                         <rect key="frame" x="87" y="5" width="233" height="42"/>
@@ -110,7 +110,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Z7H-la-zBu">
-                                <rect key="frame" x="0.0" y="108" width="375" height="510"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="536" id="xAh-Ay-Djq"/>
@@ -6495,7 +6495,7 @@ Units Upgrade with this selection.</string>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pBm-VX-AMc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3198" y="-117"/>
+            <point key="canvasLocation" x="3047" y="-90"/>
         </scene>
         <!--Sorting View Controller-->
         <scene sceneID="PN2-Yq-ZXa">
@@ -6509,32 +6509,95 @@ Units Upgrade with this selection.</string>
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="I4N-5T-1c9">
-                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6XO-y2-z6d">
+                                <rect key="frame" x="0.0" y="64" width="375" height="64"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Filter Search Results" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QvF-Ph-AN3">
+                                        <rect key="frame" x="97" y="20.5" width="182.5" height="24"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="QvF-Ph-AN3" firstAttribute="centerX" secondItem="6XO-y2-z6d" secondAttribute="centerX" id="LGF-03-lC9"/>
+                                    <constraint firstAttribute="height" constant="64" id="Yyj-cH-39h"/>
+                                    <constraint firstItem="QvF-Ph-AN3" firstAttribute="centerY" secondItem="6XO-y2-z6d" secondAttribute="centerY" id="z2k-Yn-2Ds"/>
+                                </constraints>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="I4N-5T-1c9">
+                                <rect key="frame" x="0.0" y="128" width="375" height="490"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="sortingOptionCell" rowHeight="50" id="Eed-Yk-H6H" customClass="SortingOptionCell" customModule="IntervalApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Eed-Yk-H6H" id="BFp-hE-tPg">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sorting Options" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bh3-cn-ky7">
-                                                    <rect key="frame" x="20" y="10" width="339" height="30"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2md-Fl-Vtn">
+                                                    <rect key="frame" x="10" y="0.0" width="355" height="49.5"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sorting Options" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bh3-cn-ky7">
+                                                            <rect key="frame" x="26" y="9" width="261" height="30"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="30" id="l5S-Fk-jRJ"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B7h-jW-mEZ" customClass="IUIKCheckbox" customModule="IntervalUIKit">
+                                                            <rect key="frame" x="307" y="4" width="40" height="41"/>
+                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="40" id="a2k-eG-7o6"/>
+                                                            </constraints>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="boolean" keyPath="round" value="YES"/>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="checkmarkSize">
+                                                                    <real key="value" value="3"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                                <userDefinedRuntimeAttribute type="color" keyPath="checkedFillColor">
+                                                                    <color key="value" red="0.96078431369999995" green="0.38823529410000002" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                                <userDefinedRuntimeAttribute type="color" keyPath="uncheckedFillColor">
+                                                                    <color key="value" red="0.78823529410000004" green="0.78823529410000004" blue="0.80784313730000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                                <userDefinedRuntimeAttribute type="color" keyPath="checkmarkColor">
+                                                                    <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                            <connections>
+                                                                <action selector="checkBoxClicked:" destination="7NJ-NJ-i5G" eventType="valueChanged" id="AoN-lw-0fT"/>
+                                                            </connections>
+                                                        </view>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="bottom" secondItem="B7h-jW-mEZ" secondAttribute="bottom" constant="4.5" id="4ON-ZG-7r1"/>
+                                                        <constraint firstItem="B7h-jW-mEZ" firstAttribute="centerY" secondItem="2md-Fl-Vtn" secondAttribute="centerY" id="av7-X8-31U"/>
+                                                        <constraint firstItem="bh3-cn-ky7" firstAttribute="leading" secondItem="2md-Fl-Vtn" secondAttribute="leading" constant="26" id="fDa-VJ-Tab"/>
+                                                        <constraint firstItem="B7h-jW-mEZ" firstAttribute="leading" secondItem="bh3-cn-ky7" secondAttribute="trailing" constant="20" id="i9l-CN-Xs9"/>
+                                                        <constraint firstItem="B7h-jW-mEZ" firstAttribute="top" secondItem="2md-Fl-Vtn" secondAttribute="top" constant="4" id="igi-ud-6xg"/>
+                                                        <constraint firstItem="bh3-cn-ky7" firstAttribute="centerY" secondItem="2md-Fl-Vtn" secondAttribute="centerY" id="jbu-LR-6Bg"/>
+                                                        <constraint firstAttribute="trailing" secondItem="B7h-jW-mEZ" secondAttribute="trailing" constant="8" id="vLW-QQ-qV7"/>
+                                                    </constraints>
+                                                </view>
                                             </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstAttribute="bottomMargin" secondItem="bh3-cn-ky7" secondAttribute="bottom" constant="1.5" id="83j-KN-3Tc"/>
-                                                <constraint firstItem="bh3-cn-ky7" firstAttribute="top" secondItem="BFp-hE-tPg" secondAttribute="topMargin" constant="2" id="CS4-cJ-tdm"/>
-                                                <constraint firstItem="bh3-cn-ky7" firstAttribute="leading" secondItem="BFp-hE-tPg" secondAttribute="leadingMargin" constant="12" id="Ejr-kb-hhI"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="bh3-cn-ky7" secondAttribute="trailing" constant="8" id="mze-89-Cfb"/>
+                                                <constraint firstItem="2md-Fl-Vtn" firstAttribute="top" secondItem="BFp-hE-tPg" secondAttribute="top" id="d2H-rG-F8Z"/>
+                                                <constraint firstAttribute="trailing" secondItem="2md-Fl-Vtn" secondAttribute="trailing" constant="10" id="q42-8t-ka7"/>
+                                                <constraint firstItem="2md-Fl-Vtn" firstAttribute="leading" secondItem="BFp-hE-tPg" secondAttribute="leading" constant="10" id="uG1-Ac-F9i"/>
+                                                <constraint firstAttribute="bottom" secondItem="2md-Fl-Vtn" secondAttribute="bottom" id="z9r-5p-uni"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
+                                            <outlet property="checkBox" destination="B7h-jW-mEZ" id="4KH-hJ-C60"/>
                                             <outlet property="sortingOptionLabel" destination="bh3-cn-ky7" id="sfH-jN-5ia"/>
                                         </connections>
                                     </tableViewCell>
@@ -6548,8 +6611,11 @@ Units Upgrade with this selection.</string>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="I4N-5T-1c9" firstAttribute="leading" secondItem="vm1-nw-Vfv" secondAttribute="leadingMargin" constant="-16" id="U3f-XS-AuY"/>
+                            <constraint firstItem="6XO-y2-z6d" firstAttribute="top" secondItem="F82-zd-4OZ" secondAttribute="bottom" id="Zlk-gA-box"/>
+                            <constraint firstAttribute="trailing" secondItem="6XO-y2-z6d" secondAttribute="trailing" id="eM7-ek-65N"/>
                             <constraint firstItem="Khy-Rl-B5E" firstAttribute="top" secondItem="I4N-5T-1c9" secondAttribute="bottom" id="kcc-Ir-Rv2"/>
-                            <constraint firstItem="I4N-5T-1c9" firstAttribute="top" secondItem="F82-zd-4OZ" secondAttribute="bottom" id="y8I-Wa-mOb"/>
+                            <constraint firstItem="6XO-y2-z6d" firstAttribute="leading" secondItem="vm1-nw-Vfv" secondAttribute="leading" id="tY1-Gr-l37"/>
+                            <constraint firstItem="I4N-5T-1c9" firstAttribute="top" secondItem="F82-zd-4OZ" secondAttribute="bottom" constant="64" id="y8I-Wa-mOb"/>
                             <constraint firstAttribute="trailingMargin" secondItem="I4N-5T-1c9" secondAttribute="trailing" constant="-16" id="zfi-LZ-qEU"/>
                         </constraints>
                     </view>
@@ -6560,7 +6626,7 @@ Units Upgrade with this selection.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j9p-43-qwv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5284" y="-361"/>
+            <point key="canvasLocation" x="5284" y="-361.16941529235385"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Htc-yi-6nR">
@@ -6578,7 +6644,7 @@ Units Upgrade with this selection.</string>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XX5-mb-nxu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3233" y="376"/>
+            <point key="canvasLocation" x="3246" y="573"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="gPE-d8-uaQ">
@@ -6641,8 +6707,9 @@ Units Upgrade with this selection.</string>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Lp2-ch-oU8"/>
-        <segue reference="sGp-zH-9TZ"/>
-        <segue reference="kmp-5Q-mdc"/>
-        <segue reference="4Eo-F1-CbC"/>
+        <segue reference="4gU-cx-AAf"/>
+        <segue reference="Gma-QI-cCT"/>
+        <segue reference="xan-e8-tse"/>
     </inferredMetricsTieBreakers>
+    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
 </document>

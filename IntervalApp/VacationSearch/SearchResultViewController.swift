@@ -765,6 +765,7 @@ extension SearchResultViewController:UITableViewDelegate {
             }, onError: {(error) in
                 Helper.removeServiceCallBackgroundView(view: self.view)
                 SVProgressHUD.dismiss()
+                SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.description)
             })
         }
       }
