@@ -1662,50 +1662,59 @@
                                 <rect key="frame" x="0.0" y="569" width="376" height="49"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3vH-OR-RMt" customClass="IUIKButton" customModule="IntervalUIKit">
-                                        <rect key="frame" x="10" y="5" width="171.5" height="40"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <rect key="frame" x="0.0" y="5" width="124" height="40"/>
+                                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="Bnx-7C-0e4"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
-                                        <state key="normal" title="Map View">
+                                        <state key="normal" title="Map">
                                             <color key="titleColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
                                             <action selector="mapViewButtonPressed:" destination="mFZ-eI-9Oz" eventType="touchUpInside" id="dob-K6-R5M"/>
                                         </connections>
                                     </button>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xmc-il-qwz">
-                                        <rect key="frame" x="186.5" y="0.0" width="2" height="50"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="akI-fS-XvQ"/>
-                                            <constraint firstAttribute="width" constant="2" id="sJY-VB-ybv"/>
-                                        </constraints>
-                                    </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Vz-2i-41i" customClass="IUIKButton" customModule="IntervalUIKit">
-                                        <rect key="frame" x="193.5" y="5" width="171.5" height="40"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <rect key="frame" x="126" y="4" width="124" height="40"/>
+                                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
-                                        <state key="normal" title="Sort By : Resort Name">
+                                        <state key="normal" title="Filter">
                                             <color key="titleColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
-                                            <action selector="sortByNameButtonPressed:" destination="mFZ-eI-9Oz" eventType="touchUpInside" id="qVk-hr-HBQ"/>
+                                            <action selector="filterByNameButtonPressed:" destination="mFZ-eI-9Oz" eventType="touchUpInside" id="cNc-8R-ycW"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EkZ-f2-ZRl">
+                                        <rect key="frame" x="252" y="5" width="124" height="40"/>
+                                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
+                                        <state key="normal" title="Sort">
+                                            <color key="titleColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="sortByNameButtonPressed:" destination="mFZ-eI-9Oz" eventType="touchUpInside" id="2M3-6v-pvV"/>
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" red="0.20784313725490194" green="0.21176470588235294" blue="0.21176470588235294" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="0Vz-2i-41i" firstAttribute="leading" secondItem="3vH-OR-RMt" secondAttribute="trailing" constant="12" id="287-LT-iPJ"/>
-                                    <constraint firstAttribute="bottom" secondItem="3vH-OR-RMt" secondAttribute="bottom" constant="4" id="7YH-7d-5bc"/>
-                                    <constraint firstItem="Xmc-il-qwz" firstAttribute="centerX" secondItem="08j-o8-ksJ" secondAttribute="centerX" constant="-1" id="Cdj-45-h4a"/>
-                                    <constraint firstAttribute="trailing" secondItem="0Vz-2i-41i" secondAttribute="trailing" constant="11" id="Dk0-dn-36T"/>
+                                    <constraint firstItem="0Vz-2i-41i" firstAttribute="width" secondItem="3vH-OR-RMt" secondAttribute="width" id="2wf-Aj-PFw"/>
+                                    <constraint firstItem="3vH-OR-RMt" firstAttribute="top" secondItem="08j-o8-ksJ" secondAttribute="top" constant="5" id="63A-Ug-AuY"/>
                                     <constraint firstAttribute="height" constant="49" id="J8c-fz-25o"/>
-                                    <constraint firstItem="Xmc-il-qwz" firstAttribute="centerY" secondItem="08j-o8-ksJ" secondAttribute="centerY" id="PkQ-ya-XWV"/>
-                                    <constraint firstItem="0Vz-2i-41i" firstAttribute="top" secondItem="08j-o8-ksJ" secondAttribute="top" constant="5" id="Q9W-bN-fwf"/>
-                                    <constraint firstItem="3vH-OR-RMt" firstAttribute="leading" secondItem="08j-o8-ksJ" secondAttribute="leading" constant="10" id="XWk-2j-IiK"/>
-                                    <constraint firstAttribute="bottom" secondItem="0Vz-2i-41i" secondAttribute="bottom" constant="4" id="abx-Ud-735"/>
-                                    <constraint firstItem="3vH-OR-RMt" firstAttribute="top" secondItem="08j-o8-ksJ" secondAttribute="top" constant="5" id="dCy-wH-7UW"/>
-                                    <constraint firstItem="0Vz-2i-41i" firstAttribute="width" secondItem="3vH-OR-RMt" secondAttribute="width" id="ifg-at-fQY"/>
-                                    <constraint firstItem="0Vz-2i-41i" firstAttribute="height" secondItem="3vH-OR-RMt" secondAttribute="height" id="j2q-dZ-dfQ"/>
+                                    <constraint firstItem="3vH-OR-RMt" firstAttribute="width" secondItem="08j-o8-ksJ" secondAttribute="width" multiplier="0.33" id="Nhe-ni-sEx"/>
+                                    <constraint firstItem="0Vz-2i-41i" firstAttribute="top" secondItem="08j-o8-ksJ" secondAttribute="top" constant="4" id="Qsr-SN-0Wf"/>
+                                    <constraint firstItem="0Vz-2i-41i" firstAttribute="height" secondItem="3vH-OR-RMt" secondAttribute="height" id="Rid-GW-YR3"/>
+                                    <constraint firstAttribute="bottom" secondItem="EkZ-f2-ZRl" secondAttribute="bottom" constant="4" id="TUF-cA-Q0M"/>
+                                    <constraint firstItem="0Vz-2i-41i" firstAttribute="leading" secondItem="3vH-OR-RMt" secondAttribute="trailing" constant="2" id="ef2-Ny-Dk1"/>
+                                    <constraint firstItem="EkZ-f2-ZRl" firstAttribute="width" secondItem="3vH-OR-RMt" secondAttribute="width" id="h4v-Wu-3B1"/>
+                                    <constraint firstItem="EkZ-f2-ZRl" firstAttribute="height" secondItem="3vH-OR-RMt" secondAttribute="height" id="i92-Fl-m2l"/>
+                                    <constraint firstAttribute="bottom" secondItem="0Vz-2i-41i" secondAttribute="bottom" constant="5" id="qQs-h1-EQA"/>
+                                    <constraint firstAttribute="bottom" secondItem="3vH-OR-RMt" secondAttribute="bottom" constant="4" id="tKC-zC-9U5"/>
+                                    <constraint firstItem="EkZ-f2-ZRl" firstAttribute="top" secondItem="08j-o8-ksJ" secondAttribute="top" constant="5" id="uwm-Ev-FPZ"/>
+                                    <constraint firstItem="EkZ-f2-ZRl" firstAttribute="leading" secondItem="0Vz-2i-41i" secondAttribute="trailing" constant="2" id="wmw-nR-kpn"/>
+                                    <constraint firstItem="3vH-OR-RMt" firstAttribute="leading" secondItem="08j-o8-ksJ" secondAttribute="leading" id="xaC-2S-NBo"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -1747,7 +1756,7 @@
                     <inset key="sectionInset" minX="5" minY="5" maxX="0.0" maxY="0.0"/>
                 </collectionViewFlowLayout>
             </objects>
-            <point key="canvasLocation" x="2286" y="376"/>
+            <point key="canvasLocation" x="2285.5999999999999" y="375.56221889055473"/>
         </scene>
         <!--Accomodation Certs-->
         <scene sceneID="7vx-yQ-O6U">
@@ -5205,7 +5214,7 @@ Units Upgrade with this selection.</string>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4lQ-mg-5yA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3246" y="1128"/>
+            <point key="canvasLocation" x="3231" y="1333"/>
         </scene>
         <!--Who Will Be Checking In View Controller-->
         <scene sceneID="kYX-ah-ros">
@@ -5628,7 +5637,9 @@ Units Upgrade with this selection.</string>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="k5R-QZ-Msh"/>
                                         </constraints>
-                                        <state key="normal" title="Done"/>
+                                        <state key="normal" title="Done">
+                                            <color key="titleColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
                                         <connections>
                                             <action selector="onClickDone:" destination="Vv5-WS-R5T" eventType="touchUpInside" id="oI3-w3-sCE"/>
                                         </connections>
@@ -5902,7 +5913,9 @@ Units Upgrade with this selection.</string>
                                             <constraint firstAttribute="width" constant="60" id="8aW-48-Hre"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
-                                        <state key="normal" title="Done"/>
+                                        <state key="normal" title="Done">
+                                            <color key="titleColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
                                         <connections>
                                             <action selector="doneButtonClicked:" destination="uNV-hq-jgj" eventType="touchUpInside" id="a3J-CX-hR4"/>
                                         </connections>
@@ -6500,7 +6513,7 @@ Units Upgrade with this selection.</string>
         <!--Sorting View Controller-->
         <scene sceneID="PN2-Yq-ZXa">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="7NJ-NJ-i5G" customClass="SortingViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SortingViewController" automaticallyAdjustsScrollViewInsets="NO" id="7NJ-NJ-i5G" customClass="SortingViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="F82-zd-4OZ"/>
                         <viewControllerLayoutGuide type="bottom" id="Khy-Rl-B5E"/>
@@ -6530,7 +6543,7 @@ Units Upgrade with this selection.</string>
                                 <rect key="frame" x="0.0" y="128" width="375" height="490"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="sortingOptionCell" rowHeight="50" id="Eed-Yk-H6H" customClass="SortingOptionCell" customModule="IntervalApp" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="filterOptionCell" rowHeight="50" id="Eed-Yk-H6H" customClass="FilterCell" customModule="IntervalApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Eed-Yk-H6H" id="BFp-hE-tPg">
@@ -6540,7 +6553,7 @@ Units Upgrade with this selection.</string>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2md-Fl-Vtn">
                                                     <rect key="frame" x="10" y="0.0" width="355" height="49.5"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sorting Options" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bh3-cn-ky7">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hyatt Beach Resort" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bh3-cn-ky7">
                                                             <rect key="frame" x="26" y="9" width="261" height="30"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="30" id="l5S-Fk-jRJ"/>
@@ -6597,8 +6610,89 @@ Units Upgrade with this selection.</string>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
-                                            <outlet property="checkBox" destination="B7h-jW-mEZ" id="4KH-hJ-C60"/>
-                                            <outlet property="sortingOptionLabel" destination="bh3-cn-ky7" id="sfH-jN-5ia"/>
+                                            <outlet property="checkBox" destination="B7h-jW-mEZ" id="E3p-gk-s6G"/>
+                                            <outlet property="lblFilterOption" destination="bh3-cn-ky7" id="69L-MX-R0p"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="sortingOptionCell" rowHeight="50" id="QtS-am-83Y" userLabel="SortingOptionCell" customClass="SortingOptionCell" customModule="IntervalApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="78" width="375" height="50"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QtS-am-83Y" id="bAy-tY-bam">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qAr-ZX-Hd8">
+                                                    <rect key="frame" x="10" y="0.0" width="355" height="49.5"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Resort name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nRI-53-l4k">
+                                                            <rect key="frame" x="5" y="14" width="130" height="20.5"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ugl-iF-1NX" customClass="IUIKCheckbox" customModule="IntervalUIKit">
+                                                            <rect key="frame" x="307" y="4" width="40" height="41"/>
+                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="40" id="0pD-GK-hYv"/>
+                                                            </constraints>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="boolean" keyPath="round" value="YES"/>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="checkmarkSize">
+                                                                    <real key="value" value="3"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                                <userDefinedRuntimeAttribute type="color" keyPath="checkedFillColor">
+                                                                    <color key="value" red="0.96078431369999995" green="0.38823529410000002" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                                <userDefinedRuntimeAttribute type="color" keyPath="uncheckedFillColor">
+                                                                    <color key="value" red="0.78823529410000004" green="0.78823529410000004" blue="0.80784313730000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                                <userDefinedRuntimeAttribute type="color" keyPath="checkmarkColor">
+                                                                    <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                            <connections>
+                                                                <action selector="checkBoxClicked:" destination="7NJ-NJ-i5G" eventType="valueChanged" id="gxJ-IB-tYG"/>
+                                                            </connections>
+                                                        </view>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Low - High" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RBV-vX-VBQ">
+                                                            <rect key="frame" x="142.5" y="12" width="80" height="25"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="25" id="8eb-FX-xdQ"/>
+                                                                <constraint firstAttribute="width" constant="80" id="BK0-0U-zzN"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstItem="RBV-vX-VBQ" firstAttribute="centerX" secondItem="qAr-ZX-Hd8" secondAttribute="centerX" constant="5" id="9XD-HS-vEP"/>
+                                                        <constraint firstItem="nRI-53-l4k" firstAttribute="leading" secondItem="qAr-ZX-Hd8" secondAttribute="leading" constant="5" id="FBT-hh-Lxb"/>
+                                                        <constraint firstItem="RBV-vX-VBQ" firstAttribute="centerY" secondItem="qAr-ZX-Hd8" secondAttribute="centerY" id="KsC-Mv-ShK"/>
+                                                        <constraint firstItem="Ugl-iF-1NX" firstAttribute="centerY" secondItem="qAr-ZX-Hd8" secondAttribute="centerY" id="STH-65-VVP"/>
+                                                        <constraint firstAttribute="bottom" secondItem="Ugl-iF-1NX" secondAttribute="bottom" constant="4.5" id="Tp3-2Z-Uxj"/>
+                                                        <constraint firstItem="RBV-vX-VBQ" firstAttribute="leading" secondItem="nRI-53-l4k" secondAttribute="trailing" constant="7.5" id="WIl-il-8DZ"/>
+                                                        <constraint firstAttribute="trailing" secondItem="Ugl-iF-1NX" secondAttribute="trailing" constant="8" id="Wqe-CJ-tt4"/>
+                                                        <constraint firstItem="Ugl-iF-1NX" firstAttribute="top" secondItem="qAr-ZX-Hd8" secondAttribute="top" constant="4" id="iFw-vJ-Xa4"/>
+                                                        <constraint firstItem="nRI-53-l4k" firstAttribute="centerY" secondItem="qAr-ZX-Hd8" secondAttribute="centerY" id="qEr-QN-GsG"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstItem="qAr-ZX-Hd8" firstAttribute="top" secondItem="bAy-tY-bam" secondAttribute="top" id="H2y-1o-F5w"/>
+                                                <constraint firstItem="qAr-ZX-Hd8" firstAttribute="leading" secondItem="bAy-tY-bam" secondAttribute="leading" constant="10" id="XfD-J1-PAL"/>
+                                                <constraint firstAttribute="trailing" secondItem="qAr-ZX-Hd8" secondAttribute="trailing" constant="10" id="euF-c0-iCX"/>
+                                                <constraint firstAttribute="bottom" secondItem="qAr-ZX-Hd8" secondAttribute="bottom" id="fVb-zL-w1c"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="checkBox" destination="Ugl-iF-1NX" id="xPt-Hh-VrW"/>
+                                            <outlet property="lblSortingOption" destination="nRI-53-l4k" id="Dd9-Yi-nDD"/>
+                                            <outlet property="lblSortingRange" destination="RBV-vX-VBQ" id="NEM-61-c9x"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -6626,7 +6720,7 @@ Units Upgrade with this selection.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j9p-43-qwv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5284" y="-361.16941529235385"/>
+            <point key="canvasLocation" x="5234" y="-346"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Htc-yi-6nR">
