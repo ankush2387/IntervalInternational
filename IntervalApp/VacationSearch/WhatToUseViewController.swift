@@ -150,6 +150,7 @@ class WhatToUseViewController: UIViewController {
                     
                     Helper.hideProgressBar(senderView: self)
                     cell?.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
+                    cell?.checkBox.checked = false
                     self.isCheckedBox = false
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                     
@@ -158,6 +159,7 @@ class WhatToUseViewController: UIViewController {
             }, onError: {(error) in
                 Helper.hideProgressBar(senderView: self)
                 cell?.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
+                cell?.checkBox.checked = false
                 self.isCheckedBox = false
                 SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
             })
@@ -182,6 +184,12 @@ class WhatToUseViewController: UIViewController {
 extension WhatToUseViewController:UITableViewDelegate {
     
     //***** UITableview delegate methods definition here *****//
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let indexPath = tableView.indexPathForSelectedRow
+        let currentCell = tableView.cellForRow(at: indexPath!) as! RelinquishmentSelectionOpenWeeksCell
+        self.checkBoxPressed(currentCell.checkBox)
+    }
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

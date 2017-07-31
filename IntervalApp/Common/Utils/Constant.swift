@@ -429,6 +429,7 @@ class Constant: NSObject {
         static var guestCertificateTitle = "Guest Certificate"
         static var exchangeFeeTitle = "Exchange Fee"
         static var getawayFee = "Getaway Fee"
+        static var eplus = "EPlus"
         static var taxesTitle = "Taxes"
         static var emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
         static var selfMatches = "SELF MATCHES %@"

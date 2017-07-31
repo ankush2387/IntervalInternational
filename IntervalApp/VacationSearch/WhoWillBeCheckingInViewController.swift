@@ -409,9 +409,9 @@ class WhoWillBeCheckingInViewController: UIViewController {
                     
                     guestAddress.cityName = Constant.GetawaySearchResultGuestFormDetailData.city
                     guestAddress.postalCode = Constant.GetawaySearchResultGuestFormDetailData.pinCode
-                    guestAddress.addressType = "Home"
-                    guestAddress.territoryCode = "FL"
-                    guestAddress.countryCode = "USA"
+                    guestAddress.addressType = "RES_ADDR"
+                    guestAddress.territoryCode = Constant.GetawaySearchResultCardFormDetailData.stateCode
+                    guestAddress.countryCode = Constant.GetawaySearchResultCardFormDetailData.countryCode
                     
                     var phoneNumbers = [Phone]()
                     let homePhoneNo = Phone()
@@ -419,7 +419,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
                     homePhoneNo.countryPhoneCode = "1"
                     homePhoneNo.phoneType = "HOME_PRIMARY"
                     homePhoneNo.areaCode = "305"
-                    homePhoneNo.countryCode = "FL"
+                    homePhoneNo.countryCode = Constant.GetawaySearchResultCardFormDetailData.countryCode
                     phoneNumbers.append(homePhoneNo)
                     
                     guest.phones = phoneNumbers
@@ -495,9 +495,9 @@ class WhoWillBeCheckingInViewController: UIViewController {
             
             guestAddress.cityName = Constant.GetawaySearchResultGuestFormDetailData.city
             guestAddress.postalCode = Constant.GetawaySearchResultGuestFormDetailData.pinCode
-            guestAddress.addressType = "Home"
-            guestAddress.territoryCode = "FL"
-            guestAddress.countryCode = "USA"
+            guestAddress.addressType = "RES_ADDR"
+            guestAddress.territoryCode = Constant.GetawaySearchResultCardFormDetailData.stateCode
+            guestAddress.countryCode = Constant.GetawaySearchResultCardFormDetailData.countryCode
             
             var phoneNumbers = [Phone]()
             let homePhoneNo = Phone()
@@ -505,7 +505,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
             homePhoneNo.countryPhoneCode = "1"
             homePhoneNo.phoneType = "HOME_PRIMARY"
             homePhoneNo.areaCode = "305"
-            homePhoneNo.countryCode = "FL"
+            homePhoneNo.countryCode = Constant.GetawaySearchResultCardFormDetailData.countryCode
             phoneNumbers.append(homePhoneNo)
             
             guest.phones = phoneNumbers
@@ -960,8 +960,9 @@ extension WhoWillBeCheckingInViewController:UIPickerViewDelegate {
             Helper.getStates(country: Constant.GetawaySearchResultCardFormDetailData.countryCode, viewController: self)
         }else {
             guard let stateName = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name else { return }
-
+            
             Constant.GetawaySearchResultGuestFormDetailData.state = stateName
+            Constant.GetawaySearchResultCardFormDetailData.stateCode = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].code!
         }
     }
 }
