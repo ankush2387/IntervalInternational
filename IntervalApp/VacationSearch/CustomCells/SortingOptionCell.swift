@@ -14,10 +14,11 @@ class SortingOptionCell: UITableViewCell {
 
     
     //Outlets
-    @IBOutlet weak var sortingOptionLabel: UILabel!
     
+    @IBOutlet weak var lblSortingRange: UILabel!
     @IBOutlet weak var checkBox: IUIKCheckbox!
     
+    @IBOutlet weak var lblSortingOption: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
