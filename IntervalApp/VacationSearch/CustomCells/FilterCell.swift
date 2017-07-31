@@ -7,9 +7,16 @@
 //
 
 import UIKit
+import IntervalUIKit
+
 
 class FilterCell: UITableViewCell {
+    
+    //Outlets
+    
+    @IBOutlet weak var checkBox: IUIKCheckbox!
 
+    @IBOutlet weak var lblFilterOption: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
