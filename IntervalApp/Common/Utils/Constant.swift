@@ -522,6 +522,9 @@ class Constant: NSObject {
         
         //Keypath for picker
         static var keyTextColor = "textColor"
+        
+        //used to not remove observers on ipad googleMapViewController when going to map or weather view
+        static var goingToMapOrWeatherView = false
     }
     struct CommonStringIdentifiers {
         static var floatWeek = "FLOAT_WEEK"

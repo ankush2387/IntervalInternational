@@ -16,24 +16,34 @@ class UpComingTripMapViewController: UIViewController, GMSMapViewDelegate {
     var coordinates: Coordinates?
     var resortName: String?
     var cityName: String?
+    var presentedModally = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        if presentedModally {
+            setupNavigationForModalPresentation()
+        }
+        self.setupMap()
+    }
+    
+    func setupNavigationForModalPresentation() {
         // change Nav-bar tint color.
         self.navigationController?.navigationBar.barTintColor = UIColor(red: 229.0/255.0, green: 231.0/255.0, blue: 228.0/255.0, alpha: 1.0)
-
+        
         //Nav-bar button
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(DetailMapViewController.menuBackButtonPressed(_:)))
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(UpComingTripMapViewController.menuBackButtonPressed(_:)))
         doneButton.tintColor = UIColor(red: 0/255.0, green: 128.0/255.0, blue: 255.0/255.0, alpha: 1.0)
         self.navigationItem.rightBarButtonItem = doneButton
-        
-        self.setupMap()
+
     }
     
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
         self.dismiss(animated: false, completion: nil)
         
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.tabBarController?.tabBar.isHidden = true
     }
     
     func setupMap() {
@@ -45,7 +55,7 @@ class UpComingTripMapViewController: UIViewController, GMSMapViewDelegate {
         
         mapView = GMSMapView.map(withFrame: mapframe, camera: camera)
         mapView.isUserInteractionEnabled = true
-        mapView.isMyLocationEnabled = true
+//        mapView.isMyLocationEnabled = true
 
         //create Marker
         let  position = CLLocationCoordinate2DMake(latitude,longitude)
@@ -68,7 +78,7 @@ class UpComingTripMapViewController: UIViewController, GMSMapViewDelegate {
 }
 
 extension UIViewController {
-    func displayMapView(coordinates: Coordinates, resortName: String, cityName: String, completionHandler: @escaping(_ response: Bool) -> Void) {
+    func displayMapView(coordinates: Coordinates, resortName: String, cityName: String, presentModal: Bool, completionHandler: @escaping(_ response: Bool) -> Void) {
                 
         let storyboard = UIStoryboard(name: "MyUpcomingTripIphone", bundle: nil)
         let mapDetailsNav = storyboard.instantiateViewController(withIdentifier: "mapDetailNav") as! UINavigationController
@@ -76,7 +86,14 @@ extension UIViewController {
         mapVC.resortName = resortName
         mapVC.cityName = cityName
         mapVC.coordinates = coordinates
-        self.present(mapDetailsNav, animated: true, completion: nil)
+        
+        if presentModal {
+            self.present(mapDetailsNav, animated: true, completion: nil)
+        } else {
+            self.navigationController?.pushViewController(mapVC, animated: false)
+            mapVC.presentedModally = false
+        }
+        
         completionHandler(true)
 
     }

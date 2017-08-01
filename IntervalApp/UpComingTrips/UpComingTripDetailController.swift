@@ -229,7 +229,7 @@ class UpComingTripDetailController: UIViewController {
         guard let resortName = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.resortName else { return }
         guard let cityName = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address?.cityName else { return }
         SVProgressHUD.show()
-        displayMapView(coordinates: coordinates, resortName: resortName, cityName: cityName) { (response) in
+        displayMapView(coordinates: coordinates, resortName: resortName, cityName: cityName, presentModal: true) { (response) in
             SVProgressHUD.dismiss()
         }
         
@@ -240,7 +240,7 @@ class UpComingTripDetailController: UIViewController {
         guard let resortName = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.resortName else { return }
         guard let countryCode = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address?.countryCode else { return }
         SVProgressHUD.show()
-        displayWeatherView(resortCode: resortCode, resortName: resortName, countryCode: countryCode, completionHandler: { (response) in
+        displayWeatherView(resortCode: resortCode, resortName: resortName, countryCode: countryCode, presentModal: true, completionHandler: { (response) in
             SVProgressHUD.dismiss()
         })
     }
