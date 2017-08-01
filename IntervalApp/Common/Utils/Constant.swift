@@ -904,6 +904,7 @@ class Constant: NSObject {
         static var createAlertViewController = "CreateAlertViewController"
         static var signInPreLoginViewController = "SignInPreLoginViewController"
         static var whatToUseViewController = "WhatToUseViewController"
+        static var sortingViewController = "SortingViewController"
         
     }
     
@@ -1173,6 +1174,7 @@ class Constant: NSObject {
         static var tdiTableViewCell = "TdiTableViewCell"
         static var exchange = "Exchange"
         static var sortingOptionCell = "sortingOptionCell"
+        static var filterOptionCell = "filterOptionCell"
         static var whereToGoCell = "WhereToGoCell"
         static var availablePoints = "AvailablePoints"
     }
