@@ -52,6 +52,8 @@ class GoogleMapViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        //used to not remove observers if going to map or weather view
+        Constant.MyClassConstants.goingToMapOrWeatherView = false
         
         //***** Adding notifications so that it invoke the specific method when the notification is fired *****//
         let notificationNames = [Constant.notificationNames.closeButtonClickedNotification, Constant.notificationNames.closeButtonClickedNotification, ]
@@ -101,19 +103,22 @@ class GoogleMapViewController: UIViewController {
         }
     }
     override func viewDidDisappear(_ animated: Bool) {
-        Constant.MyClassConstants.btnTag = -1
-        Constant.MyClassConstants.isgetResortFromGoogleSearch = false
+        if Constant.MyClassConstants.goingToMapOrWeatherView == false {
+            Constant.MyClassConstants.btnTag = -1
+            Constant.MyClassConstants.isgetResortFromGoogleSearch = false
+            
+            //**** Remove added observers ****//
+            NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
+            
+            NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
+            
+            NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadMapNotification), object: nil)
+            
+            NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.addMarkerWithRactangleRequestNotification), object: nil)
+            
+            NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadMapForApply), object: nil)
+        }
         
-        //**** Remove added observers ****//
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
-        
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
-        
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadMapNotification), object: nil)
-        
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.addMarkerWithRactangleRequestNotification), object: nil)
-        
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadMapForApply), object: nil)
         
     }
     

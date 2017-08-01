@@ -2189,9 +2189,7 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" id="zrp-3g-jgJ">
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="Hmn-ZK-M5t"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="zrp-3g-jgJ"/>
                     <connections>
                         <outlet property="celsiusButton" destination="cdg-qX-MYz" id="Qx0-hP-tOw"/>
                         <outlet property="fahrenheitButton" destination="Z5h-he-FzS" id="7OW-Lf-ImV"/>

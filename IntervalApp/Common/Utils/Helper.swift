@@ -1283,13 +1283,13 @@ public class Helper{
                 }
                 else {
                     let storyBoard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
-                    let viewController = storyBoard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortVC)
+                    let viewController = storyBoard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortVC) as! ResortDetailsViewController
+                    viewController.presentViewModally = false
                     let transition = CATransition()
                     transition.duration = 0.4
                     transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
                     transition.type = kCATransitionMoveIn
                     transition.subtype = kCATransitionFromTop
-                    
                     viewcontroller.navigationController!.view.layer.add(transition, forKey: kCATransition)
                     viewcontroller.navigationController?.pushViewController(viewController, animated: false)
 

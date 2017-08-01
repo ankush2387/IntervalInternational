@@ -128,7 +128,7 @@ class ResortDirectoryViewController: UIViewController {
     
     func setNavigationBar(){
         //***** handle hamberger menu button for prelogin and post login case *****//
-        
+        self.navigationController?.navigationBar.barTintColor = UIColor(red: 0/255, green: 119.0/255, blue: 190.0/255, alpha: 1.0)
         print("------> self.navigationController?.viewControllers.count", self.navigationController?.viewControllers.count as Any)
         if((UserContext.sharedInstance.accessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
             if(self.navigationController?.viewControllers.count > 1) {
