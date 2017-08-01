@@ -13,7 +13,7 @@ import SDWebImage
 import SVProgressHUD
 import RealmSwift
 
-class SearchResultViewController: UIViewController {
+class SearchResultViewController: UIViewController, sortingOptionDelegate {
     
     //***** Outlets ****//
     @IBOutlet weak var searchResultColelctionView: UICollectionView!
@@ -34,7 +34,14 @@ class SearchResultViewController: UIViewController {
     var selectedSection = 0
     var selectedRow = 0
     
+    // sorting optionDelegate call
+    
+    func selectedOptionis(filteredValueIs: String) {
+        print(filteredValueIs)
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.navigationBar.barTintColor = UIColor.init(colorLiteralRed: 70.0/255.0, green: 136.0/255.0, blue: 193.0/255.0, alpha: 1.0)
         searchResultTableView.reloadData()
     }
     
@@ -397,10 +404,24 @@ class SearchResultViewController: UIViewController {
         self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultMapSegue , sender: nil)
     }
     
-    //funciton called when search result page sort by name button pressed
-    @IBAction func sortByNameButtonPressed(_ sender: Any) {
+    @IBAction func sortByNameButtonPressed(_ sender: UIButton) {
         
-          self.performSegue(withIdentifier: Constant.segueIdentifiers.sortingSegue , sender: nil)
+        let viewController = self.storyboard?.instantiateViewController(withIdentifier: Constant.storyboardControllerID.sortingViewController) as! SortingViewController
+        viewController.delegate = self
+        self.navigationController?.pushViewController(viewController, animated: true)
+        
+        //self.performSegue(withIdentifier: Constant.segueIdentifiers.sortingSegue , sender: nil)
+    }
+    
+    //funciton called when search result page sort by name button pressed
+    @IBAction func filterByNameButtonPressed(_ sender: Any) {
+        
+        let viewController = self.storyboard?.instantiateViewController(withIdentifier: Constant.storyboardControllerID.sortingViewController) as! SortingViewController
+        viewController.delegate = self
+        viewController.isFilterClicked = true
+        self.navigationController?.pushViewController(viewController, animated: true)
+        
+        // self.performSegue(withIdentifier: Constant.segueIdentifiers.sortingSegue , sender: nil)
     }
     
 }
