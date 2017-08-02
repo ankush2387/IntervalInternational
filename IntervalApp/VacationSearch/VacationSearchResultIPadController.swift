@@ -12,7 +12,7 @@ import DarwinSDK
 import SDWebImage
 import SVProgressHUD
 
-class VacationSearchResultIPadController: UIViewController {
+class VacationSearchResultIPadController: UIViewController, sortingOptionDelegate {
     
     //***** Outlets *****//
     @IBOutlet weak var searchedDateCollectionView: UICollectionView!
@@ -35,6 +35,19 @@ class VacationSearchResultIPadController: UIViewController {
     var selectedSection = 0
     var selectedRow = 0
     
+    
+    // sorting optionDelegate call
+    
+    func selectedOptionis(filteredValueIs:String, indexPath:NSIndexPath, isFromFiltered:Bool) {
+        
+        if isFromFiltered {
+            Constant.MyClassConstants.filteredIndex = indexPath.row
+        } else {
+            Constant.MyClassConstants.sortingIndex = indexPath.row
+        }
+        
+        print(filteredValueIs)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -207,8 +220,27 @@ class VacationSearchResultIPadController: UIViewController {
     
     //funciton called when search result page sort by name button pressed
     @IBAction func sortByNameButtonPressed(_ sender: Any) {
+        let storyBoard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        
+        let viewController = storyBoard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.sortingViewController) as! SortingViewController
+        
+        viewController.delegate = self
+        viewController.selectedSortingIndex = Constant.MyClassConstants.sortingIndex
+        self.navigationController?.pushViewController(viewController, animated: true)
         
     }
+    
+    @IBAction func filterByNameButtonPressed(_ sender: UIButton) {
+        let storyBoard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        
+        let viewController = storyBoard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.sortingViewController) as! SortingViewController
+        viewController.delegate = self
+        viewController.isFilterClicked = true
+        viewController.resortNameArray = Constant.MyClassConstants.resortsArray
+        viewController.selectedIndex = Constant.MyClassConstants.filteredIndex
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
     
 }
 
