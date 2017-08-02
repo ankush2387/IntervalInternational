@@ -8,9 +8,10 @@
 
 import UIKit
 import IntervalUIKit
+import DarwinSDK
 
 protocol sortingOptionDelegate {
-    func selectedOptionis(filteredValueIs:String)
+    func selectedOptionis(filteredValueIs:String, indexPath:NSIndexPath, isFromFiltered:Bool)
 }
 
 class SortingViewController: UIViewController {
@@ -18,12 +19,15 @@ class SortingViewController: UIViewController {
     var delegate:sortingOptionDelegate?
     
     var isFilterClicked = false
+     @IBOutlet weak var lblHeading: UILabel!
+    var resortNameArray = [Resort]()
     
     //Outlets
     @IBOutlet weak var sortingTBLview: UITableView!
     
     //class variables
     var selectedIndex = -1
+    var selectedSortingIndex = -1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +53,6 @@ class SortingViewController: UIViewController {
     }
     
     /*func doneButtonPressed(_ sender:UIBarButtonItem) {
-        
         self.navigationController?.dismiss(animated: true, completion: nil)
     }*/
     
@@ -61,15 +64,17 @@ class SortingViewController: UIViewController {
             
             self.selectedIndex = (indexPath?.row)!
             
-            self.delegate?.selectedOptionis(filteredValueIs: "filtered vale")
+            let resortName = resortNameArray[(indexPath?.row)!].resortName
             
-        } else {
+            self.delegate?.selectedOptionis(filteredValueIs: resortName!, indexPath: indexPath! as NSIndexPath, isFromFiltered: true)
+            
+        } else { // sorting option clicked
             let cell = sender.superview?.superview?.superview as? SortingOptionCell
             let indexPath = self.sortingTBLview.indexPath(for: cell!)
             
-            self.selectedIndex = (indexPath?.row)!
+            self.selectedSortingIndex = (indexPath?.row)!
             
-            self.delegate?.selectedOptionis(filteredValueIs: "sorting vale")
+            self.delegate?.selectedOptionis(filteredValueIs: Constant.MyClassConstants.sortingOptionArray[(indexPath?.row)!], indexPath: indexPath! as NSIndexPath, isFromFiltered: false)
         }
         
         self.navigationController?.popViewController(animated: true)
@@ -94,19 +99,20 @@ extension SortingViewController:UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         self.selectedIndex = indexPath.row
+        self.selectedSortingIndex = indexPath.row
         self.sortingTBLview.reloadData()
         
         // set selected value here from array.
         if self.isFilterClicked {
-            self.delegate?.selectedOptionis(filteredValueIs: "filtered vale")
+            self.delegate?.selectedOptionis(filteredValueIs: resortNameArray[indexPath.row].resortName!, indexPath: indexPath as NSIndexPath, isFromFiltered: true)
         } else {
-            self.delegate?.selectedOptionis(filteredValueIs: "sorting value")
+            self.delegate?.selectedOptionis(filteredValueIs: Constant.MyClassConstants.sortingOptionArray[(indexPath.row)], indexPath: indexPath as NSIndexPath, isFromFiltered: false)
         }
         
         self.navigationController?.popViewController(animated: true)
     }
-    
 }
+
 extension SortingViewController:UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -114,14 +120,25 @@ extension SortingViewController:UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        if self.isFilterClicked {
+            if resortNameArray.count > 0 {
+                return resortNameArray.count
+            } else {
+                return 0
+            }
+        } else {
+            return Constant.MyClassConstants.sortingOptionArray.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         
         if self.isFilterClicked  {
+            self.lblHeading.text = "Filter Search Result"
              let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.filterOptionCell, for: indexPath) as! FilterCell
+            cell.lblFilterOption.text = resortNameArray[indexPath.row].resortName
+            
             if(self.selectedIndex == indexPath.row) {
                 
                 cell.lblFilterOption.textColor = IUIKColorPalette.secondaryB.color
@@ -133,15 +150,19 @@ extension SortingViewController:UITableViewDataSource {
             }
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             return cell
-        } else {
+            
+        } else { // sorting options
+            self.lblHeading.text = "Sorting"
              let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.sortingOptionCell, for: indexPath) as! SortingOptionCell
-            if(self.selectedIndex == indexPath.row) {
+            cell.lblSortingOption.text = Constant.MyClassConstants.sortingOptionArray[indexPath.row]
+            cell.lblSortingRange.text = Constant.MyClassConstants.sortingRangeArray[indexPath.row]
+            if(self.selectedSortingIndex == indexPath.row) {
                 
                 cell.lblSortingOption.textColor = IUIKColorPalette.secondaryB.color
                 cell.checkBox.checked = true
             }else {
                 
-                cell.lblSortingOption.textColor = UIColor.lightGray
+                cell.lblSortingOption.textColor = UIColor.black
                 cell.checkBox.checked = false
             }
             
