@@ -87,20 +87,20 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
             
             
             //Check if resort is in surrounding areas or within destination
-            let dateValue = Constant.MyClassConstants.checkInDates[collectionviewSelectedIndex]
-            titleLabel.textAlignment = NSTextAlignment.center
-            if(Constant.MyClassConstants.surroundingCheckInDates.contains(dateValue)){
-                titleLabel.backgroundColor = UIColor(red: 170/255.0, green: 216/255.0, blue: 111/255.0, alpha: 1.0)
-                titleLabel.text = Constant.MyClassConstants.surroundingAreaString
-            }else{
-                titleLabel.backgroundColor = UIColor(rgb:IUIKColorPalette.primary1.rawValue)
-                if(Constant.MyClassConstants.vacationSearchDestinationArray.count > 1){
-                    titleLabel.text = "Resorts in \(Constant.MyClassConstants.vacationSearchDestinationArray[0]) and \(Constant.MyClassConstants.vacationSearchDestinationArray.count - 1) more"
-                    
-                }else{
-                    titleLabel.text = "Resorts in \(Constant.MyClassConstants.whereTogoContentArray[0])"
-                }
-            }
+//            let dateValue = Constant.MyClassConstants.checkInDates[collectionviewSelectedIndex]
+//            titleLabel.textAlignment = NSTextAlignment.center
+//            if(Constant.MyClassConstants.surroundingCheckInDates.contains(dateValue)){
+//                titleLabel.backgroundColor = UIColor(red: 170/255.0, green: 216/255.0, blue: 111/255.0, alpha: 1.0)
+//                titleLabel.text = Constant.MyClassConstants.surroundingAreaString
+//            }else{
+//                titleLabel.backgroundColor = UIColor(rgb:IUIKColorPalette.primary1.rawValue)
+//                if(Constant.MyClassConstants.vacationSearchDestinationArray.count > 1){
+//                    titleLabel.text = "Resorts in \(Constant.MyClassConstants.vacationSearchDestinationArray[0]) and \(Constant.MyClassConstants.vacationSearchDestinationArray.count - 1) more"
+//                    
+//                }else{
+//                    titleLabel.text = "Resorts in \(Constant.MyClassConstants.whereTogoContentArray[0])"
+//                }
+//            }
             
             searchResultTableView.tableHeaderView = headerVw
         }
@@ -584,7 +584,8 @@ extension SearchResultViewController:UICollectionViewDataSource {
         return 1
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return Constant.MyClassConstants.checkInDates.count + 2
+        //return Constant.MyClassConstants.checkInDates.count + 2
+        return Constant.MyClassConstants.calendarCount
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
