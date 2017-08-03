@@ -1050,7 +1050,8 @@ extension VacationSearchIPadViewController:WereWantToGoTableViewCellDelegate {
                                     self.showAvailabilityResults()
                                     
                                     //expectation.fulfill()
-                                    //self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
+                                    Helper.hideProgressBar(senderView: self)
+                                    self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
         },
                                    onError:{ (error) in
                                     DarwinSDK.logger.error("Error Code: \(error.code)")
