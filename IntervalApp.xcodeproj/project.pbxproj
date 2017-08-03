@@ -11,6 +11,7 @@
 		087A87581E951A17009B1387 /* TdiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087A87571E951A17009B1387 /* TdiCollectionViewCell.swift */; };
 		087A875A1E951A2D009B1387 /* UnitSizeTdiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087A87591E951A2D009B1387 /* UnitSizeTdiCollectionViewCell.swift */; };
 		0895D7141E966F0D004EAA91 /* ContainerContentTBLviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0895D7131E966F0D004EAA91 /* ContainerContentTBLviewController.swift */; };
+		08B43F1C1F31FE3B00C4069E /* FilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B43F1B1F31FE3B00C4069E /* FilterCell.swift */; };
 		08E3BCF61F2A30F80021F2BC /* RelinquishmentDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E3BCF51F2A30F80021F2BC /* RelinquishmentDetailsViewController.swift */; };
 		08E3BCF81F2A31330021F2BC /* RelinquishmentDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E3BCF71F2A31330021F2BC /* RelinquishmentDetailsCell.swift */; };
 		3A0326221C8EE684000758E3 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0326211C8EE684000758E3 /* CalendarViewController.swift */; };
@@ -304,6 +305,7 @@
 		087A87571E951A17009B1387 /* TdiCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TdiCollectionViewCell.swift; sourceTree = "<group>"; };
 		087A87591E951A2D009B1387 /* UnitSizeTdiCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitSizeTdiCollectionViewCell.swift; sourceTree = "<group>"; };
 		0895D7131E966F0D004EAA91 /* ContainerContentTBLviewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerContentTBLviewController.swift; sourceTree = "<group>"; };
+		08B43F1B1F31FE3B00C4069E /* FilterCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterCell.swift; sourceTree = "<group>"; };
 		08E3BCF51F2A30F80021F2BC /* RelinquishmentDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentDetailsViewController.swift; sourceTree = "<group>"; };
 		08E3BCF71F2A31330021F2BC /* RelinquishmentDetailsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentDetailsCell.swift; sourceTree = "<group>"; };
 		26D24CAA1C4015290008EF39 /* IntervalApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IntervalApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -784,6 +786,7 @@
 		3A892F2C1CD3902F00AE6F45 /* CustomCells */ = {
 			isa = PBXGroup;
 			children = (
+				08B43F1B1F31FE3B00C4069E /* FilterCell.swift */,
 				3A892F361CD3902F00AE6F45 /* SearchResultCollectionCell.swift */,
 				08E3BCF71F2A31330021F2BC /* RelinquishmentDetailsCell.swift */,
 				3A1854F11CA065E800D238CA /* ResortBedroomDetails.swift */,
@@ -1405,6 +1408,7 @@
 				DC27F7C41DB81B6F00AA374F /* EditMyAlertIpadViewController.swift in Sources */,
 				3A892F441CD3902F00AE6F45 /* DateAndPassengerSelectionTableViewCell.swift in Sources */,
 				DC7EF50F1D709F8800E9E360 /* ResortDirectoryResortCell.swift in Sources */,
+				08B43F1C1F31FE3B00C4069E /* FilterCell.swift in Sources */,
 				3A3A01461C99BD0B00B7EC37 /* OwnershipViewController.swift in Sources */,
 				3A968E0E1DD62ECD0004E0EB /* CheckOutViewController.swift in Sources */,
 				3ACC27931DDDBDA40057B809 /* PaymentSelectionViewController.swift in Sources */,
