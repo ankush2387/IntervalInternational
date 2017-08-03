@@ -609,15 +609,12 @@ extension SearchResultViewController:UICollectionViewDataSource {
             if (!self.enablePreviousMore && (indexPath as NSIndexPath).item == 0) {
                 cell.isUserInteractionEnabled = false
                 cell.layer.borderColor = UIColor.lightGray.cgColor
-                cell.moreLabel.textColor = UIColor.lightGray
             }else if(!self.enableNextMore && (indexPath as NSIndexPath).item == Constant.MyClassConstants.checkInDates.count+1){
                 cell.isUserInteractionEnabled = false
                 cell.layer.borderColor = UIColor.lightGray.cgColor
-                cell.moreLabel.textColor = UIColor.lightGray
             }else{
                 cell.isUserInteractionEnabled = true
                 cell.layer.borderColor = IUIKColorPalette.primaryB.color.cgColor
-                cell.moreLabel.textColor = IUIKColorPalette.primaryB.color
             }
             return cell
         }
