@@ -39,6 +39,8 @@ class VacationSearchViewController: UIViewController {
     var showExchange = false
     var showGetaways = true
     var vacationSearch = VacationSearch()
+    var searchDateRequest = RentalSearchDatesRequest()
+    
     
     override func viewWillAppear(_ animated: Bool) {
         
@@ -147,18 +149,18 @@ class VacationSearchViewController: UIViewController {
         let cancunMEXDestination = AreaOfInfluenceDestination()
         cancunMEXDestination.destinationId = "7EEF0188E4DC4B45B4A757E3DF950E1F"
         cancunMEXDestination.aoiId = "2F8C1FBA1ADA41C49E3CFE0619795FD4"
-        cancunMEXDestination.destinationName = "Cancun"
+        cancunMEXDestination.destinationName = Constant.MyClassConstants.selectedDestinationNames
         cancunMEXDestination.address = Address()
         cancunMEXDestination.address?.countryCode = "MEX"
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         
-        let checkInDate = "2017-09-23"
+        
         
         let searchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
         searchCriteria.destination = cancunMEXDestination
-        searchCriteria.checkInDate = dateFormatter.date(from: checkInDate)
+        searchCriteria.checkInDate = searchDateRequest.checkInToDate
         
         return searchCriteria
     }
@@ -1334,13 +1336,12 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         ADBMobile.trackAction(Constant.omnitureEvents.event1, data: nil)
         if (self.SegmentIndex == 1 && (Helper.getAllDestinationFromLocalStorage().count>0 || Helper.getAllResortsFromLocalStorage().count>0)) {
             
-//            sender.isEnabled = false
-//            let (toDate,fromDate) = getSearchDates()
-//            let searchDateRequest = RentalSearchDatesRequest()
-//            searchDateRequest.checkInToDate = toDate
-//            searchDateRequest.checkInFromDate = fromDate
-//            searchDateRequest.destinations = Helper.getAllDestinationFromLocalStorage()
-//            searchDateRequest.resorts = Helper.getAllResortsFromLocalStorage()
+            sender.isEnabled = false
+            let (toDate,fromDate) = getSearchDates()
+            searchDateRequest.checkInToDate = toDate
+            searchDateRequest.checkInFromDate = fromDate
+            searchDateRequest.destinations = Helper.getAllDestinationFromLocalStorage()
+            searchDateRequest.resorts = Helper.getAllResortsFromLocalStorage()
 //            if Reachability.isConnectedToNetwork() == true {
 //                
 //                ADBMobile.trackAction(Constant.omnitureEvents.event9, data: nil)
@@ -1445,8 +1446,6 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 
                 print(response)
                 
-                
-                
                 self.vacationSearch.rentalSearch?.searchContext.response = response
                 
                 // Update active interval
@@ -1493,6 +1492,13 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             if(Constant.MyClassConstants.relinquishmentIdArray.count == 0){
               SimpleAlert.alert(self, title: Constant.AlertErrorMessages.noResultError, message: Constant.AlertMessages.tradeItemMessage)
             }else{
+                
+            let appSettings = AppSettings()
+            appSettings.searchByBothEnable = false
+            appSettings.collapseBookingIntervalEnable = true
+            appSettings.checkInSelectorStrategy = CheckInSelectorStrategy.First.rawValue
+    
+                
             sender.isEnabled = false
             Helper.showProgressBar(senderView: self)
             let (toDate,fromDate) = getSearchDates()
@@ -1510,6 +1516,9 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             exchangeSearchDateRequest.travelParty = travelPartyInfo
             
             exchangeSearchDateRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
+                
+                
+           
             
             if Reachability.isConnectedToNetwork() == true {
                 ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request: exchangeSearchDateRequest, onSuccess: { (exchangeSearchDates) in
@@ -1668,7 +1677,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 if (calendarItem.isIntervalAvailable)! {
                     // Available for selection or click by the Member
                     DarwinSDK.logger.info("\(String(describing: calendarItem.intervalStartDate!)) - \(String(describing: calendarItem.intervalEndDate!)) [Available]")
-                    
+                   // Constant.MyClassConstants.bucketDateArray.add(<#T##anObject: Any##Any#>)
                     
                 } else {
                     // No available for selection or click by the Member
