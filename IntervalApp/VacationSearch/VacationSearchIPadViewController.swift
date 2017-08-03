@@ -543,13 +543,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                 appSettings.checkInSelectorStrategy = CheckInSelectorStrategy.First.rawValue
                 appSettings.collapseBookingIntervalEnable = true
                 
-                let destination = AreaOfInfluenceDestination()
-                destination.destinationId = ""
-                destination.aoiId = ""
-                destination.destinationName = ""
-                destination.address = Address()
-                destination.address?.countryCode = ""
-                
+            
                 
                 let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
                 rentalSearchCriteria.destination = searchDateRequest.destinations[0]
@@ -572,12 +566,12 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                     
                     // Get activeInterval (or initial search interval)
                     let activeInterval = BookingWindowInterval(interval: self.vacationSearch.bookingWindow.getActiveInterval())
-                    
+                    print(activeInterval.hasCheckInDates(), activeInterval.fetchedBefore)
                     // Check not available checkIn dates for the active interval
                     if (activeInterval.fetchedBefore && !activeInterval.hasCheckInDates()) {
                         self.showScrollingCalendar()
                         
-                        //self.showNotAvailabilityResults()
+                        self.showNotAvailabilityResults()
                     }
                     
                     DarwinSDK.logger.info("Auto call to Search Availability")
@@ -590,7 +584,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                     DarwinSDK.logger.info("Initial Rental Search using request payload:")
                     DarwinSDK.logger.info(" CheckInDate = \(initialSearchCheckInDate)")
                     DarwinSDK.logger.info(" ResortCodes = \(String(describing: activeInterval.resortCodes))")
-                    
+                    Constant.MyClassConstants.checkInDates = response.checkInDates
                     self.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: dateFormatter.date(from: initialSearchCheckInDate))
                     
                     
@@ -612,12 +606,9 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
             
             sender.isEnabled = false
             Helper.showProgressBar(senderView: self)
-            let (toDate,fromDate) = Helper.getSearchDates()
-            let exchangeSearchDateRequest = ExchangeSearchDatesRequest()
-            exchangeSearchDateRequest.checkInFromDate = fromDate
-            exchangeSearchDateRequest.checkInToDate = toDate
-            exchangeSearchDateRequest.destinations = Helper.getAllDestinationFromLocalStorage()
-            exchangeSearchDateRequest.resorts = Helper.getAllResortsFromLocalStorage()
+            
+            let destinations = Helper.getAllDestinationFromLocalStorage()
+            let resorts = Helper.getAllResortsFromLocalStorage()
             
             let travelPartyInfo = TravelParty()
             travelPartyInfo.adults = Int(self.adultCounter)
@@ -625,23 +616,18 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
             
             Constant.MyClassConstants.travelPartyInfo = travelPartyInfo
             
-            exchangeSearchDateRequest.travelParty = travelPartyInfo
-            
-            exchangeSearchDateRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
-            
-            
             if Reachability.isConnectedToNetwork() == true {
                 
                 let appSettings = AppSettings()
                 appSettings.searchByBothEnable = false
                 appSettings.checkInSelectorStrategy = CheckInSelectorStrategy.First.rawValue
                 appSettings.collapseBookingIntervalEnable = true
-                
-                
+    
+        
                 let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
-                exchangeSearchCriteria.destination = exchangeSearchDateRequest.destinations[0]
+                exchangeSearchCriteria.destination = destinations[0]
                 exchangeSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
-                exchangeSearchCriteria.checkInDate = fromDate
+                exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                 exchangeSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
                 exchangeSearchCriteria.searchType = VacationSearchType.Exchange
                 
@@ -649,7 +635,6 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                 
                 ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request:vacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
                     sender.isEnabled = true
-                    
                     self.vacationSearch.exchangeSearch?.searchContext.response = response
                     
                     // Update active interval
@@ -661,8 +646,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                     // Check not available checkIn dates for the active interval
                     if (activeInterval.fetchedBefore && !activeInterval.hasCheckInDates()) {
                         self.showScrollingCalendar()
-                        
-                        //self.showNotAvailabilityResults()
+                        self.showNotAvailabilityResults()
                     }
                     
                     DarwinSDK.logger.info("Auto call to Search Availability")
@@ -670,14 +654,20 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                     let dateFormatter = DateFormatter()
                     dateFormatter.dateFormat = "yyyy-MM-dd"
                     
-                    let initialSearchCheckInDate = self.vacationSearch.getCheckInDateForInitialSearch()
-                    
-                    DarwinSDK.logger.info("Initial Rental Search using request payload:")
-                    DarwinSDK.logger.info(" CheckInDate = \(initialSearchCheckInDate)")
-                    DarwinSDK.logger.info(" ResortCodes = \(String(describing: activeInterval.resortCodes))")
-                    
-                    self.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: dateFormatter.date(from: initialSearchCheckInDate))
-                    
+                    if (activeInterval.hasCheckInDates()){
+                        let initialSearchCheckInDate = self.vacationSearch.getCheckInDateForInitialSearch()
+                        
+                        DarwinSDK.logger.info("Initial Rental Search using request payload:")
+                        DarwinSDK.logger.info(" CheckInDate = \(initialSearchCheckInDate)")
+                        DarwinSDK.logger.info(" ResortCodes = \(String(describing: activeInterval.resortCodes))")
+                        
+                        self.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: dateFormatter.date(from: initialSearchCheckInDate))
+                    }else{
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "yyyy-MM-dd"
+                        Helper.hideProgressBar(senderView: self)
+                        self.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate:exchangeSearchCriteria.checkInDate)
+                    }
                     
                   }, onError: { (error) in
                     sender.isEnabled = true
@@ -879,6 +869,162 @@ extension VacationSearchIPadViewController:WereWantToGoTableViewCellDelegate {
         
     }
     
+    func showNotAvailabilityResults() {
+        DarwinSDK.logger.info("Show the Not Availability Screen.")
+    }
+    
+    func showAvailabilityResults() {
+        DarwinSDK.logger.info("-- Create Sections --")
+        
+        let sections = self.vacationSearch.createSections()
+        
+        // Show up the Availability Sections in UI
+        DarwinSDK.logger.info("Sorting criteria is: \(String(describing: self.vacationSearch.sortType))")
+        for section in sections {
+            if (self.vacationSearch.sortType.isDefault()) {
+                self.showAvailabilitySectionWithDefault(section: section)
+            } else {
+                self.showAvailabilitySection(section: section);
+            }
+        }
+    }
+    
+    func showAvailabilitySectionWithDefault(section:AvailabilitySection!) {
+        if (section.hasDestination()) {
+            if (section.exactMatch)! {
+                // Show up Destination exact match as header
+                DarwinSDK.logger.info("Header[D] - \(String(describing: self.resolveDestinationInfo(destination: section.destination!)))")
+            } else {
+                // Show up Destination surrounding match as header
+                DarwinSDK.logger.info("Header[D] - Surrounding to \(String(describing: self.resolveDestinationInfo(destination: section.destination!)))")
+            }
+            
+            for inventoryItem in (section.item?.rentalInventory)! {
+                self.showAvailabilityBucket(inventoryItem: inventoryItem)
+            }
+            
+            DarwinSDK.logger.info("===============================================================")
+        } else {
+            for inventoryItem in (section.item?.rentalInventory)! {
+                // Show up only Resorts as header
+                DarwinSDK.logger.info("Header[R] - \(String(describing: inventoryItem.resortName))")
+                
+                self.showAvailabilityBucket(inventoryItem: inventoryItem)
+            }
+            
+            DarwinSDK.logger.info("===============================================================")
+        }
+    }
+    
+    func showAvailabilitySection(section:AvailabilitySection!) {
+        if (section.exactMatch)! {
+            // Show up exact match as header
+            DarwinSDK.logger.info("Header - Exact Match")
+        } else {
+            // Show up surrounding match as header
+            DarwinSDK.logger.info("Header - Surrounding Match")
+        }
+        
+        for inventoryItem in (section.item?.rentalInventory)! {
+            self.showAvailabilityBucket(inventoryItem: inventoryItem)
+        }
+        
+        DarwinSDK.logger.info("===============================================================")
+    }
+    
+    func showAvailabilityBucket(inventoryItem:Resort!) {
+        DarwinSDK.logger.info("\(String(describing: self.resolveResortInfo(resort: inventoryItem)))")
+        
+        for unit in (inventoryItem.inventory?.units)! {
+            DarwinSDK.logger.info("\(String(describing: self.resolveUnitInfo(unit: unit)))")
+        }
+    }
+    private func resolveDestinationInfo(destination:AreaOfInfluenceDestination) -> String {
+        var info = String()
+        info.append(destination.destinationName)
+        
+        if (destination.address?.cityName != nil) {
+            info.append(" ")
+            info.append((destination.address?.cityName)!)
+        }
+        
+        if (destination.address?.territoryCode != nil) {
+            info.append(" ")
+            info.append((destination.address?.territoryCode)!)
+        }
+        
+        if (destination.address?.countryCode != nil) {
+            info.append(" ")
+            info.append((destination.address?.countryCode)!)
+        }
+        
+        return info
+    }
+    
+    private func resolveResortInfo(resort:Resort!) -> String {
+        var info = String()
+        info.append(resort.resortCode!)
+        info.append(" ")
+        info.append(resort.resortName!)
+        info.append(" ")
+        
+        if (resort.address?.cityName != nil) {
+            info.append(" ")
+            info.append((resort.address?.cityName)!)
+        }
+        
+        if (resort.address?.territoryCode != nil) {
+            info.append(" ")
+            info.append((resort.address?.territoryCode)!)
+        }
+        
+        if (resort.address?.countryCode != nil) {
+            info.append(" ")
+            info.append((resort.address?.countryCode)!)
+        }
+        
+        return info
+    }
+    
+    private func resolveUnitInfo(unit:InventoryUnit) -> String {
+        var info = String()
+        info.append("    ")
+        info.append(unit.unitSize!)
+        info.append(" ")
+        info.append(unit.kitchenType!)
+        info.append(" ")
+        info.append("\(String(describing: unit.publicSleepCapacity))")
+        info.append(" total ")
+        info.append("\(String(describing: unit.privateSleepCapacity))")
+        info.append(" private")
+        return info
+    }
+    
+    func showNearestCheckInDateSelectedMessage() {
+        DarwinSDK.logger.info("NEAREST CHECK-IN DATE SELECTED - We found availability close to your desired Check-in Date")
+    }
+    
+    /*
+    * Execute Exchange Search Availability
+    */
+    
+    func executeExchangeSearchAvailability(activeInterval: BookingWindowInterval!, checkInDate:Date!) {
+        
+        let request = ExchangeSearchAvailabilityRequest()
+        request.checkInDate = checkInDate
+        request.resortCodes = activeInterval.resortCodes!
+        request.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
+        request.travelParty = Constant.MyClassConstants.travelPartyInfo
+        
+       
+        ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: request, onSuccess: { (searchAvailabilityResponse) in
+            
+            print(searchAvailabilityResponse)
+        }) { (error) in
+            
+        }
+    }
+    
     /*
      * Execute Rental Search Availability
      */
@@ -896,15 +1042,15 @@ extension VacationSearchIPadViewController:WereWantToGoTableViewCellDelegate {
                                     
                                     // Check if not has availability in the desired check-In date.
                                     if (self.vacationSearch.searchCriteria.checkInDate != checkInDate) {
-                                        //self.showNearestCheckInDateSelectedMessage()
+                                        self.showNearestCheckInDateSelectedMessage()
                                     }
                                     
                                     self.showScrollingCalendar()
                                     
-                                  //  self.showAvailabilityResults()
+                                    self.showAvailabilityResults()
                                     
                                     //expectation.fulfill()
-                                    self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
+                                    //self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
         },
                                    onError:{ (error) in
                                     DarwinSDK.logger.error("Error Code: \(error.code)")
