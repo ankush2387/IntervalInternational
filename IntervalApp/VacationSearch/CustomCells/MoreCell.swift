@@ -17,9 +17,9 @@ class MoreCell: UICollectionViewCell {
     @IBOutlet weak var lblEndYear: UILabel!
     
     
-    func setDateForBucket(){
-        let startDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.availableBucketArray[0].intervalStartDate!, format: Constant.MyClassConstants.dateFormat)
-        let endDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.availableBucketArray[0].intervalEndDate!, format: Constant.MyClassConstants.dateFormat)
+    func setDateForBucket(index: Int){
+        let startDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.totalBucketArray[index].intervalStartDate!, format: Constant.MyClassConstants.dateFormat)
+        let endDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.totalBucketArray[index].intervalEndDate!, format: Constant.MyClassConstants.dateFormat)
         
         let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
         let startComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: startDate)
