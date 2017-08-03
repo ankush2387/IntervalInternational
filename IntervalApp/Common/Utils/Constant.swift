@@ -228,8 +228,9 @@ class Constant: NSObject {
         
         static var membershipContactArray = [Contact]()
         static var vacationSearchDestinationArray:NSMutableArray = []
-        static var singleDateArray:NSMutableArray = []
-        static var bucketDateArray:NSMutableArray = []
+        static var singleDateArray = [CalendarItem]()
+        static var availableBucketArray = [CalendarItem]()
+        static var noAvailableBucketArray = [CalendarItem]()
         static var calendarCount:Int!
         static var realmStoredDestIdOrCodeArray:NSMutableArray = []
         static var resortCodesArray : [String] = []

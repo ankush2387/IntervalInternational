@@ -18,30 +18,27 @@
                 <rect key="frame" x="0.0" y="0.0" width="100" height="69.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="bottom" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Friday" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mjw-AG-Cd0">
-                        <rect key="frame" x="0.0" y="0.0" width="100" height="20"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="20" id="yuS-W1-xgi"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="bottom" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SUN" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mjw-AG-Cd0">
+                        <rect key="frame" x="0.0" y="8" width="100" height="14"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                         <color key="textColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="15" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0jy-bO-9Wx">
-                        <rect key="frame" x="30.5" y="17.5" width="39" height="35"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="35" id="u4O-EC-Oly"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="35"/>
-                        <color key="textColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jan. 2016" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pev-59-tki">
-                        <rect key="frame" x="0.0" y="55" width="100" height="15"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="JUL 2016" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pev-59-tki">
+                        <rect key="frame" x="0.0" y="47" width="100" height="15"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="15" id="fPi-wq-gOc"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
+                        <color key="textColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="15" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0jy-bO-9Wx">
+                        <rect key="frame" x="34" y="22" width="33.5" height="25"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="25" id="u4O-EC-Oly"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="30"/>
                         <color key="textColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -52,9 +49,9 @@
                     <constraint firstItem="mjw-AG-Cd0" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="Vt3-BF-0BA"/>
                     <constraint firstItem="0jy-bO-9Wx" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="WeO-zS-e7f"/>
                     <constraint firstItem="0jy-bO-9Wx" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="ZmV-iY-QhQ"/>
-                    <constraint firstAttribute="bottom" secondItem="Pev-59-tki" secondAttribute="bottom" constant="-0.5" id="bzE-BL-E9k"/>
+                    <constraint firstItem="Pev-59-tki" firstAttribute="top" secondItem="0jy-bO-9Wx" secondAttribute="bottom" id="bHj-PU-Bty"/>
+                    <constraint firstItem="0jy-bO-9Wx" firstAttribute="top" secondItem="mjw-AG-Cd0" secondAttribute="bottom" id="cQC-Tk-U0S"/>
                     <constraint firstItem="Pev-59-tki" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="qfQ-0N-Q2Z"/>
-                    <constraint firstItem="mjw-AG-Cd0" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="x7i-RC-hGY"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

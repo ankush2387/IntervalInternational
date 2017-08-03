@@ -1678,7 +1678,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 // Is a Single Date
                 DarwinSDK.logger.info("\(String(describing: calendarItem.checkInDate!))")
 
-                Constant.MyClassConstants.singleDateArray.add(calendarItem.checkInDate as Any)
+                Constant.MyClassConstants.singleDateArray.append(calendarItem)
                 
             }
 

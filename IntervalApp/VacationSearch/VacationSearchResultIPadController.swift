@@ -240,8 +240,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
         viewController.selectedIndex = Constant.MyClassConstants.filteredIndex
         self.navigationController?.pushViewController(viewController, animated: true)
     }
-    
-    
+
 }
 
 //Function to check whether more button should be enabled or disabled.
@@ -378,7 +377,7 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
             let indexPath = IndexPath(row: Constant.MyClassConstants.searchResultCollectionViewScrollToIndex , section: 0)
             
             self.searchedDateCollectionView.scrollToItem(at: indexPath,at: .centeredHorizontally,animated: true)
-            self.searchedDateCollectionView.contentOffset = CGPoint(x: 100, y: 0.0)
+            //self.searchedDateCollectionView.contentOffset = CGPoint(x: 100, y: 0.0)
             loadFirst = false
         }
     }
@@ -393,9 +392,9 @@ extension VacationSearchResultIPadController:UICollectionViewDelegateFlowLayout 
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if ((indexPath as NSIndexPath).row == 0 || (indexPath as NSIndexPath).row == Constant.MyClassConstants.checkInDates.count+1){
-            return CGSize(width: 160.0, height: 60.0)
+            return CGSize(width: 160.0, height: 80.0)
         }else{
-            return CGSize(width: 150.0, height: 60.0)
+            return CGSize(width: 80.0, height: 80.0)
         }
     }
 }
@@ -409,7 +408,7 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return Constant.MyClassConstants.checkInDates.count + 2
+        return Constant.MyClassConstants.singleDateArray.count + 1
     }
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         
@@ -424,8 +423,11 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         if ((indexPath as NSIndexPath).item == 0 || (indexPath as NSIndexPath).item == Constant.MyClassConstants.checkInDates.count+1) {
+            print(Constant.MyClassConstants.availableBucketArray[0].intervalEndDate ?? "", Constant.MyClassConstants.availableBucketArray[0].intervalStartDate!)
+            print(Helper.convertStringToDate(dateString: Constant.MyClassConstants.availableBucketArray[0].intervalStartDate!, format: Constant.MyClassConstants.dateFormat))
             
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.vacationSearchScreenReusableIdentifiers.moreCell, for: indexPath) as! MoreCell
+            cell.setDateForBucket()
             cell.layer.cornerRadius = 7
             cell.layer.borderWidth = 2
             cell.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
@@ -466,10 +468,16 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
             
             
             let dateValue = Constant.MyClassConstants.checkInDates[(indexPath as NSIndexPath).row - 1]
-            cell.dateLabel.text = Helper.getWeekDay(dateString: dateValue as Date as Date as NSDate, getValue: Constant.MyClassConstants.date)
-            cell.daynameWithyearLabel.text = Helper.getWeekDay(dateString: dateValue as Date as Date as NSDate, getValue: Constant.MyClassConstants.weekDay)
-            cell.monthYearLabel.text = ((Helper.getWeekDay(dateString: dateValue as NSDate, getValue: Constant.MyClassConstants.month)) + " " + Helper.getWeekDay(dateString: dateValue as NSDate, getValue: Constant.MyClassConstants.year))
+            cell.dateLabel.text = Helper.getWeekDay(dateString: dateValue as NSDate, getValue: Constant.MyClassConstants.date)
+            cell.daynameWithyearLabel.text = Helper.getWeekDay(dateString: dateValue as NSDate, getValue: Constant.MyClassConstants.weekDay).capitalized
+            let str:String = cell.daynameWithyearLabel.text!
+            let index1 = str.index(str.endIndex, offsetBy: -(str.characters.count-3))
+            let substring1 = str.substring(to: index1)
+            cell.daynameWithyearLabel.text = substring1
             
+            cell.monthYearLabel.text = ((Helper.getWeekDay(dateString: dateValue as NSDate, getValue: Constant.MyClassConstants.month)) + " " + Helper.getWeekDay(dateString: dateValue as NSDate, getValue: Constant.MyClassConstants.year)).capitalized
+            print(indexPath.item)
+            cell.setSingleDateItems(index: indexPath.item)
             return cell
         }
     }
@@ -856,7 +864,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         //***** Return number of rows in section required in tableview *****//
-        if(Constant.MyClassConstants.isFromExchange){
+        /*if(Constant.MyClassConstants.isFromExchange){
             if(Constant.MyClassConstants.exchangeInventory[section].buckets.count > 0){
                 self.unitSizeArray = [Constant.MyClassConstants.exchangeInventory[section].buckets[0].unit!]
                 var promotions = 0
@@ -875,8 +883,10 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
             let invent = inventoryDict
             self.unitSizeArray = invent.units
             return self.unitSizeArray.count + 1
-        }
+        }*/
+        return 0
     }
+    
 }
 
 // Implementing custom delegate method definition
