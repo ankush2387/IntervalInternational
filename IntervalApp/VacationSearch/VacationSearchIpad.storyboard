@@ -1679,7 +1679,7 @@
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="LUK-83-Qso">
                                 <rect key="frame" x="0.0" y="65" width="768" height="100"/>
-                                <color key="backgroundColor" red="0.4823529412" green="0.70980392160000005" blue="0.22352941179999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="Z7O-LD-t64"/>
                                 </constraints>
@@ -1701,7 +1701,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="129" height="74"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GhU-f6-SZx">
-                                                            <rect key="frame" x="40" y="2" width="49" height="17"/>
+                                                            <rect key="frame" x="40" y="4" width="49" height="17"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="17" id="x90-El-IC6"/>
                                                             </constraints>
@@ -1739,7 +1739,6 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
-                                                    <color key="backgroundColor" red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstItem="p79-B3-umk" firstAttribute="top" secondItem="IIq-vO-eVQ" secondAttribute="bottom" constant="2" id="4w3-Wh-rc4"/>
                                                         <constraint firstAttribute="trailing" secondItem="7j1-vG-gzp" secondAttribute="trailing" constant="32" id="JSz-C6-BCr"/>
@@ -1750,7 +1749,7 @@
                                                         <constraint firstAttribute="trailing" secondItem="GhU-f6-SZx" secondAttribute="trailing" constant="40" id="hIf-4K-HcY"/>
                                                         <constraint firstItem="IIq-vO-eVQ" firstAttribute="leading" secondItem="Ut1-ud-nhS" secondAttribute="leading" id="sH4-ow-jaa"/>
                                                         <constraint firstAttribute="trailing" secondItem="IIq-vO-eVQ" secondAttribute="trailing" id="w5H-Rd-aqr"/>
-                                                        <constraint firstItem="GhU-f6-SZx" firstAttribute="top" secondItem="Ut1-ud-nhS" secondAttribute="top" constant="2" id="wso-bm-faF"/>
+                                                        <constraint firstItem="GhU-f6-SZx" firstAttribute="top" secondItem="Ut1-ud-nhS" secondAttribute="top" constant="4" id="wso-bm-faF"/>
                                                     </constraints>
                                                     <variation key="default">
                                                         <mask key="subviews">
@@ -1794,6 +1793,11 @@
                                                 <include reference="qKX-LS-zX2"/>
                                             </mask>
                                         </variation>
+                                        <connections>
+                                            <outlet property="lblEndYear" destination="7j1-vG-gzp" id="3vv-8G-kEr"/>
+                                            <outlet property="lblMonth" destination="IIq-vO-eVQ" id="2Me-Zy-rHd"/>
+                                            <outlet property="lblStartYear" destination="p79-B3-umk" id="THZ-GZ-AkT"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                                 <variation key="default">

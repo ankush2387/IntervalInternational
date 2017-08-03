@@ -9,5 +9,11 @@
 import UIKit
 
 class MoreCell: UICollectionViewCell {
-     @IBOutlet weak var moreLabel: UILabel!
+    
+    @IBOutlet weak var lblMonth: UILabel!
+    
+    @IBOutlet weak var lblStartYear: UILabel!
+    
+     @IBOutlet weak var lblEndYear: UILabel!
+    
 }
