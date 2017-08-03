@@ -88,8 +88,10 @@ class Constant: NSObject {
     
     struct MyClassConstants{
         
-        
         static var alertOriginationPoint:String!
+        static var depositPromotionNav = "DepositPromotionsNav"
+        static var sorting = "Sorting"
+        static var filterSearchResult = "Filter Search Result"
         static var loginOriginationPoint:String!
         static var upcomingOriginationPoint : String!
         static var loginType:String!
@@ -113,6 +115,17 @@ class Constant: NSObject {
         
         //global variable to hold advisement type text
         static var advisementTypeStringaArray = ["Important Advisements","General Advisements","Additional Advisements"]
+        
+        // Sorting or filter options array
+        static var filteredOptiondArray = ["Crecent resort on...+3 more", "Hyatt Beach Resort House", "Key West, Florida", "Las Vegas, Nevada"]
+        
+        static var sortingOptionArray = ["Resort Name:", "Resort Name:", "City:", "City:", "Price:", "Price:", "Resort Tier:", "Resort Tier:"]
+        
+        static var sortingRangeArray = ["A - Z", "Z - A", "Low - High", "High - Low", "A - Z", "Z - A", "Low - High", "High - Low"]
+        
+        static var filteredIndex = -1
+        static var sortingIndex = -1
+
         
         //Relinquishment available points program
         static var relinquishmentAvailablePointsProgram = 0
@@ -220,6 +233,7 @@ class Constant: NSObject {
         static var calendarCount:Int!
         static var realmStoredDestIdOrCodeArray:NSMutableArray = []
         static var resortCodesArray : [String] = []
+        
         static var surroundingResortCodesArray : [String] = []
         static var resortsArray = [Resort]()
         static var favoritesResortArray = [Resort]()
@@ -833,6 +847,7 @@ class Constant: NSObject {
         static var featuredCell = "FeaturedCell"
         static var checkCell = "CheckCell"
         static var headerCell = "HeaderCell"
+        static var checkoutPromotionCell = "CheckoutPromotionCell"
     }
     
     //***** common  structure to provide all storyboard names *****//

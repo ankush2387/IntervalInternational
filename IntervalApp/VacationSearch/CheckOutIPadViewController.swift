@@ -530,8 +530,8 @@ class CheckOutIPadViewController: UIViewController {
         self.bookingCostRequiredRows = 1
         bookingTableView.reloadData()
         
-        let storyboard = UIStoryboard(name: "VacationSearchIphone", bundle: nil)
-        let promotionsNav = storyboard.instantiateViewController(withIdentifier: "DepositPromotionsNav") as! UINavigationController
+        let storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        let promotionsNav = storyboard.instantiateViewController(withIdentifier: Constant.MyClassConstants.depositPromotionNav) as! UINavigationController
         let promotionsVC = promotionsNav.viewControllers.first as! PromotionsViewController
         promotionsVC.promotionsArray = Constant.MyClassConstants.recapViewPromotionCodeArray
         promotionsVC.completionHandler = { selected in
@@ -540,7 +540,6 @@ class CheckOutIPadViewController: UIViewController {
             let processResort = RentalProcess()
             processResort.currentStep = ProcessStep.Recap
             processResort.processId = Constant.MyClassConstants.processStartResponse.processId
-            
             
             if(Constant.MyClassConstants.isFromExchange){
                 let processResort = ExchangeProcess()
@@ -1153,7 +1152,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                     
                 
             case 2:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "CheckoutPromotionCell", for: indexPath) as! CheckoutPromotionCell
+                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.cellIdentifiers.checkoutPromotionCell, for: indexPath) as! CheckoutPromotionCell
                 cell.setupCell(selectedPromotion: destinationPromotionSelected)
                 cell.promotionSelectionCheckBox.tag = indexPath.row
                 if cell.promotionSelectionCheckBox.isHidden {

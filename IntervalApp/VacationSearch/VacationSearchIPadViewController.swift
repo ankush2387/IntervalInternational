@@ -1050,6 +1050,7 @@ extension VacationSearchIPadViewController:WereWantToGoTableViewCellDelegate {
                                     self.showAvailabilityResults()
                                     
                                     //expectation.fulfill()
+                                    Helper.hideProgressBar(senderView: self)
                                     self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
         },
                                    onError:{ (error) in

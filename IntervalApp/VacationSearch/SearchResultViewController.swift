@@ -15,6 +15,8 @@ import RealmSwift
 
 class SearchResultViewController: UIViewController, sortingOptionDelegate {
     
+     var selectedIndex = -1
+    
     //***** Outlets ****//
     @IBOutlet weak var searchResultColelctionView: UICollectionView!
     @IBOutlet weak var searchResultTableView: UITableView!
@@ -36,7 +38,14 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
     
     // sorting optionDelegate call
     
-    func selectedOptionis(filteredValueIs: String) {
+    func selectedOptionis(filteredValueIs:String, indexPath:NSIndexPath, isFromFiltered:Bool) {
+        
+        if isFromFiltered {
+            Constant.MyClassConstants.filteredIndex = indexPath.row
+        } else {
+            Constant.MyClassConstants.sortingIndex = indexPath.row
+        }
+        
         print(filteredValueIs)
     }
     
@@ -408,6 +417,7 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
         
         let viewController = self.storyboard?.instantiateViewController(withIdentifier: Constant.storyboardControllerID.sortingViewController) as! SortingViewController
         viewController.delegate = self
+        viewController.selectedSortingIndex = Constant.MyClassConstants.sortingIndex
         self.navigationController?.pushViewController(viewController, animated: true)
         
         //self.performSegue(withIdentifier: Constant.segueIdentifiers.sortingSegue , sender: nil)
@@ -419,6 +429,8 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
         let viewController = self.storyboard?.instantiateViewController(withIdentifier: Constant.storyboardControllerID.sortingViewController) as! SortingViewController
         viewController.delegate = self
         viewController.isFilterClicked = true
+        viewController.resortNameArray = Constant.MyClassConstants.resortsArray
+        viewController.selectedIndex = Constant.MyClassConstants.filteredIndex
         self.navigationController?.pushViewController(viewController, animated: true)
         
         // self.performSegue(withIdentifier: Constant.segueIdentifiers.sortingSegue , sender: nil)
