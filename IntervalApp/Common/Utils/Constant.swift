@@ -88,8 +88,10 @@ class Constant: NSObject {
     
     struct MyClassConstants{
         
-        
         static var alertOriginationPoint:String!
+        static var depositPromotionNav = "DepositPromotionsNav"
+        static var sorting = "Sorting"
+        static var filterSearchResult = "Filter Search Result"
         static var loginOriginationPoint:String!
         static var upcomingOriginationPoint : String!
         static var loginType:String!
@@ -226,6 +228,9 @@ class Constant: NSObject {
         
         static var membershipContactArray = [Contact]()
         static var vacationSearchDestinationArray:NSMutableArray = []
+        static var singleDateArray:NSMutableArray = []
+        static var bucketDateArray:NSMutableArray = []
+        static var calendarCount:Int!
         static var realmStoredDestIdOrCodeArray:NSMutableArray = []
         static var resortCodesArray : [String] = []
         
@@ -842,6 +847,7 @@ class Constant: NSObject {
         static var featuredCell = "FeaturedCell"
         static var checkCell = "CheckCell"
         static var headerCell = "HeaderCell"
+        static var checkoutPromotionCell = "CheckoutPromotionCell"
     }
     
     //***** common  structure to provide all storyboard names *****//

@@ -135,7 +135,7 @@ extension SortingViewController:UITableViewDataSource {
         
         
         if self.isFilterClicked  {
-            self.lblHeading.text = "Filter Search Result"
+            self.lblHeading.text = Constant.MyClassConstants.filterSearchResult
              let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.filterOptionCell, for: indexPath) as! FilterCell
             cell.lblFilterOption.text = resortNameArray[indexPath.row].resortName
             
@@ -152,7 +152,7 @@ extension SortingViewController:UITableViewDataSource {
             return cell
             
         } else { // sorting options
-            self.lblHeading.text = "Sorting"
+            self.lblHeading.text = Constant.MyClassConstants.sorting
              let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.sortingOptionCell, for: indexPath) as! SortingOptionCell
             cell.lblSortingOption.text = Constant.MyClassConstants.sortingOptionArray[indexPath.row]
             cell.lblSortingRange.text = Constant.MyClassConstants.sortingRangeArray[indexPath.row]

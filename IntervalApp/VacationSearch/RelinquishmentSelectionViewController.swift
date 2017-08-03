@@ -211,8 +211,12 @@ class RelinquishmentSelectionViewController: UIViewController {
         return self.requiredSection
     }
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
+        if(Constant.RunningDevice.deviceIdiom == .pad){
+            self.dismiss(animated: true, completion: nil)
+        }else{
+            _ = self.navigationController?.popViewController(animated: true)
+        }
         
-        _ = self.navigationController?.popViewController(animated: true)
     }
     
     func availablePointToolButtonPressed(_ sender:IUIKButton) {

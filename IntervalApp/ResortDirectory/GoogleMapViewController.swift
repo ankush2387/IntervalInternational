@@ -54,6 +54,7 @@ class GoogleMapViewController: UIViewController {
         super.viewWillAppear(true)
         
         //***** Adding notifications so that it invoke the specific method when the notification is fired *****//
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
         let notificationNames = [Constant.notificationNames.closeButtonClickedNotification, Constant.notificationNames.closeButtonClickedNotification, ]
         //Helper.addNotifications(notificationNames: notificationNames, senderVC: self)
         NotificationCenter.default.addObserver(self, selector: #selector(closeButtonClicked), name: NSNotification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
@@ -442,7 +443,12 @@ class GoogleMapViewController: UIViewController {
                 }
             }
             sender.isSelected = true
-            _ = self.navigationController?.popViewController(animated: true)
+            if(Constant.RunningDevice.deviceIdiom == .pad){
+                self.navigationController?.dismiss(animated: true, completion: nil)
+            }else{
+                _ = self.navigationController?.popViewController(animated: true)
+            }
+            
         }
         
     }
@@ -694,7 +700,11 @@ class GoogleMapViewController: UIViewController {
             if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.resortFunctionalityCheck){
                 self.dismiss(animated: true, completion: nil)
             }else{
-                _ = self.navigationController?.popViewController(animated: true)
+                if(Constant.RunningDevice.deviceIdiom == .pad){
+                    self.dismiss(animated: true, completion: nil)
+                }else{
+                    _ = self.navigationController?.popViewController(animated: true)
+                }
             }
             
             
