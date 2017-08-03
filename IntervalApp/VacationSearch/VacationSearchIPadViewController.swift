@@ -856,14 +856,17 @@ extension VacationSearchIPadViewController:WereWantToGoTableViewCellDelegate {
                 // Is a Interval of Dates
                 if (calendarItem.isIntervalAvailable)! {
                     // Available for selection or click by the Member
+                    Constant.MyClassConstants.availableBucketArray.append(calendarItem)
                     DarwinSDK.logger.info("\(String(describing: calendarItem.intervalStartDate!)) - \(String(describing: calendarItem.intervalEndDate!)) [Available]")
                 } else {
                     // No available for selection or click by the Member
+                    Constant.MyClassConstants.noAvailableBucketArray.append(calendarItem)
                     DarwinSDK.logger.info("\(String(describing: calendarItem.intervalStartDate!)) - \(String(describing: calendarItem.intervalEndDate!)) [No Available]")
                 }
             } else {
                 // Is a Single Date
                 DarwinSDK.logger.info("\(String(describing: calendarItem.checkInDate!))")
+                Constant.MyClassConstants.singleDateArray.append(calendarItem)
             }
         }
         

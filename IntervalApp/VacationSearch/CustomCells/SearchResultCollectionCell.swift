@@ -20,5 +20,25 @@ class SearchResultCollectionCell: UICollectionViewCell {
         super.awakeFromNib()
         // Initialization code
     }
+    
+    func setSingleDateItems(index: Int){
+        
+        let calendarDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.singleDateArray[index - 1].checkInDate!, format: Constant.MyClassConstants.dateFormat)
+        
+        let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
+        let startComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: calendarDate)
+        let year = String(describing: startComponents.year!)
+        let monthName = "\(Helper.getMonthnameFromInt(monthNumber: startComponents.month!))"
+        dateLabel.text = "\(startComponents.day!)".uppercased()
+        if(dateLabel.text?.characters.count == 1){
+            dateLabel.text = "0\(startComponents.day!)".uppercased()
+        }
+        daynameWithyearLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber:startComponents.weekday!))"
+        let str:String = daynameWithyearLabel.text!
+        let index1 = str.index(str.endIndex, offsetBy: -(str.characters.count-3))
+        let substring1 = str.substring(to: index1)
+        daynameWithyearLabel.text = substring1.uppercased()
+        monthYearLabel.text = "\(monthName) \(year)".uppercased()
+    }
 
 }
