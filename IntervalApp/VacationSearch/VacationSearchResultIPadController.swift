@@ -63,7 +63,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
         searchedDateCollectionView?.register(nib, forCellWithReuseIdentifier: Constant.customCellNibNames.searchResultCollectionCell)
         
         self.title = Constant.ControllerTitles.searchResultViewController
-    
+        
         self.searchedDateCollectionView.reloadData()
         
         if (Constant.MyClassConstants.showAlert == true) {
@@ -101,7 +101,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     }
     
     //*****Function for more button press *****//
-    func moreButtonClicked(_ toDate: Date, fromDate: Date, index: String){
+    func intervalBucketClicked(_ toDate: Date, fromDate: Date, index: String){
         let searchDateRequest = RentalSearchDatesRequest()
         searchDateRequest.checkInToDate = toDate
         searchDateRequest.checkInFromDate = fromDate
@@ -254,7 +254,7 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
                 
                 let toDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: -1, to: Constant.MyClassConstants.currentFromDate as Date, options: [])!
                 let fromDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: -(Constant.MyClassConstants.totalWindow), to: toDate, options: [])!
-                moreButtonClicked(toDate, fromDate: fromDate, index: "First")
+                intervalBucketClicked(toDate, fromDate: fromDate, index: "First")
                 
             }
             
@@ -266,7 +266,7 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
                 
                 let fromDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: 1, to: Constant.MyClassConstants.currentToDate as Date, options: [])!
                 let toDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: Constant.MyClassConstants.totalWindow, to: fromDate, options: [])!
-                moreButtonClicked(toDate, fromDate: fromDate, index: "Last")
+                intervalBucketClicked(toDate, fromDate: fromDate, index: "Last")
                 
             }
             break
@@ -379,17 +379,24 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return Constant.MyClassConstants.singleDateArray.count + Constant.MyClassConstants.availableBucketArray.count + Constant.MyClassConstants.noAvailableBucketArray.count
+        print(Constant.MyClassConstants.singleDateArray.count)
+        print(Constant.MyClassConstants.availableBucketArray.count)
+        print(Constant.MyClassConstants.noAvailableBucketArray.count)
+        return Constant.MyClassConstants.singleDateArray.count + Constant.MyClassConstants.availableBucketArray.count + Constant.MyClassConstants.noAvailableBucketArray.count - 2
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        if ((indexPath as NSIndexPath).item == 0 || (indexPath as NSIndexPath).item > Constant.MyClassConstants.singleDateArray.count + 1) {
+        if ((indexPath as NSIndexPath).item == 0 || (indexPath as NSIndexPath).item > Constant.MyClassConstants.singleDateArray.count) {
             
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.vacationSearchScreenReusableIdentifiers.moreCell, for: indexPath) as! MoreCell
             Constant.MyClassConstants.totalBucketArray = Constant.MyClassConstants.availableBucketArray + Constant.MyClassConstants.noAvailableBucketArray
             cell.setDateForBucket(index: bucketIndex)
-            bucketIndex = bucketIndex + 1
+            if(indexPath.item == 0){
+                bucketIndex = bucketIndex + 1
+            }else{
+                bucketIndex = (indexPath.item + 1) - Constant.MyClassConstants.singleDateArray.count
+            }
             cell.layer.cornerRadius = 7
             cell.layer.borderWidth = 2
             cell.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
@@ -434,7 +441,12 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
+        if(section == 0){
+            return 40
+        }else{
+            return 0
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -459,9 +471,14 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
         
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: self.resortDetailTBLView.frame.width, height: 20))
         footerView.backgroundColor = UIColor(red: 239.0/255.0, green: 239.0/255.0, blue: 246.0/255.0, alpha: 1)
+        footerView.backgroundColor = UIColor.clear
         return footerView
     }
+    
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if(section == Constant.MyClassConstants.resortsArray.count){
+            return 0
+        }
         return 20
     }
 }

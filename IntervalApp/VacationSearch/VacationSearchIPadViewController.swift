@@ -576,7 +576,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                     DarwinSDK.logger.info(" ResortCodes = \(String(describing: activeInterval.resortCodes))")
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     sender.isEnabled = true
-                    self.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat))
+                    Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: self.vacationSearch)
                     
                     
                 })
