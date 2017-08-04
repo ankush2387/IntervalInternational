@@ -84,34 +84,6 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
                 tableHeader.addSubview(headerLabel)
             }
             
-            headerVw.frame = CGRect(x:0, y:0, width:UIScreen.main.bounds.width, height:tableHeader.frame.size.height + 44)
-            headerVw.backgroundColor = UIColor.white
-            
-            titleLabel.frame = CGRect(x:0, y:tableHeader.frame.size.height + 2, width:UIScreen.main.bounds.width, height:40)
-            titleLabel.textColor = UIColor.white
-            titleLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 14)
-            headerVw.addSubview(tableHeader)
-            headerVw.addSubview(titleLabel)
-            
-            
-            
-            //Check if resort is in surrounding areas or within destination
-//            let dateValue = Constant.MyClassConstants.checkInDates[collectionviewSelectedIndex]
-//            titleLabel.textAlignment = NSTextAlignment.center
-//            if(Constant.MyClassConstants.surroundingCheckInDates.contains(dateValue)){
-//                titleLabel.backgroundColor = UIColor(red: 170/255.0, green: 216/255.0, blue: 111/255.0, alpha: 1.0)
-//                titleLabel.text = Constant.MyClassConstants.surroundingAreaString
-//            }else{
-//                titleLabel.backgroundColor = UIColor(rgb:IUIKColorPalette.primary1.rawValue)
-//                if(Constant.MyClassConstants.vacationSearchDestinationArray.count > 1){
-//                    titleLabel.text = "Resorts in \(Constant.MyClassConstants.vacationSearchDestinationArray[0]) and \(Constant.MyClassConstants.vacationSearchDestinationArray.count - 1) more"
-//                    
-//                }else{
-//                    titleLabel.text = "Resorts in \(Constant.MyClassConstants.whereTogoContentArray[0])"
-//                }
-//            }
-            
-            searchResultTableView.tableHeaderView = headerVw
         }
         
         self.title = Constant.ControllerTitles.searchResultViewController
@@ -571,22 +543,22 @@ extension SearchResultViewController:UICollectionViewDelegate {
         }
     }
 }
-extension SearchResultViewController:UICollectionViewDelegateFlowLayout {
-    
-    //***** Collection delegate methods definition here *****//
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 2.0, left: 6.0, bottom: 0.0, right: 6.0)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if ((indexPath as NSIndexPath).item == 0 || (indexPath as NSIndexPath).item == Constant.MyClassConstants.checkInDates.count+1){
-            return CGSize(width: 120.0, height: 50.0)
-        }else{
-            return CGSize(width: 150.0, height: 50.0)
-        }
-    }
-}
+//extension SearchResultViewController:UICollectionViewDelegateFlowLayout {
+//    
+//    //***** Collection delegate methods definition here *****//
+//    
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+//        return UIEdgeInsets(top: 2.0, left: 6.0, bottom: 0.0, right: 6.0)
+//    }
+//    
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        if ((indexPath as NSIndexPath).item == 0 || (indexPath as NSIndexPath).item == Constant.MyClassConstants.checkInDates.count+1){
+//            return CGSize(width: 120.0, height: 50.0)
+//        }else{
+//            return CGSize(width: 150.0, height: 50.0)
+//        }
+//    }
+//}
 
 extension SearchResultViewController:UICollectionViewDataSource {
     
@@ -596,25 +568,31 @@ extension SearchResultViewController:UICollectionViewDataSource {
         return 1
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        //return Constant.MyClassConstants.checkInDates.count + 2
-        return Constant.MyClassConstants.calendarCount
+        
+             return Constant.MyClassConstants.singleDateArray.count + 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if ((indexPath as NSIndexPath).item == 0 || (indexPath as NSIndexPath).item == Constant.MyClassConstants.checkInDates.count+1) {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.customCellNibNames.moreSearchResult, for: indexPath) as! MoreCell
+            print(Constant.MyClassConstants.availableBucketArray[0].intervalEndDate ?? "", Constant.MyClassConstants.availableBucketArray[0].intervalStartDate!)
+            print(Helper.convertStringToDate(dateString: Constant.MyClassConstants.availableBucketArray[0].intervalStartDate!, format: Constant.MyClassConstants.dateFormat))
+            
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.vacationSearchScreenReusableIdentifiers.moreCell, for: indexPath) as! MoreCell
+            cell.setDateForBucket()
             cell.layer.cornerRadius = 7
             cell.layer.borderWidth = 2
+            cell.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
             cell.layer.masksToBounds = true
             if (!self.enablePreviousMore && (indexPath as NSIndexPath).item == 0) {
                 cell.isUserInteractionEnabled = false
-                cell.layer.borderColor = UIColor.lightGray.cgColor
-            }else if(!self.enableNextMore && (indexPath as NSIndexPath).item == Constant.MyClassConstants.checkInDates.count+1){
+            }
+            else if(!self.enableNextMore && (indexPath as NSIndexPath).item == 1) {
+                
                 cell.isUserInteractionEnabled = false
-                cell.layer.borderColor = UIColor.lightGray.cgColor
-            }else{
+            }
+            else {
+                
                 cell.isUserInteractionEnabled = true
-                cell.layer.borderColor = IUIKColorPalette.primaryB.color.cgColor
             }
             return cell
         }
@@ -641,13 +619,17 @@ extension SearchResultViewController:UICollectionViewDataSource {
             
             //Check
             
-            var dateValue = Date()
-            if(Constant.MyClassConstants.checkInDates.count > 0){
-                dateValue = Constant.MyClassConstants.checkInDates[indexPath.row - 1]
-            }
-            cell.dateLabel.text = Helper.getWeekDay(dateString: dateValue as Date as Date as NSDate, getValue: Constant.MyClassConstants.date)
-            cell.daynameWithyearLabel.text = Helper.getWeekDay(dateString: dateValue as Date as Date as NSDate, getValue: Constant.MyClassConstants.weekDay)
-            cell.monthYearLabel.text = ((Helper.getWeekDay(dateString: dateValue as NSDate, getValue: Constant.MyClassConstants.month)) + " " + Helper.getWeekDay(dateString: dateValue as NSDate, getValue: Constant.MyClassConstants.year))
+            let dateValue = Constant.MyClassConstants.checkInDates[(indexPath as NSIndexPath).row - 1]
+            cell.dateLabel.text = Helper.getWeekDay(dateString: dateValue as NSDate, getValue: Constant.MyClassConstants.date)
+            cell.daynameWithyearLabel.text = Helper.getWeekDay(dateString: dateValue as NSDate, getValue: Constant.MyClassConstants.weekDay).capitalized
+            let str:String = cell.daynameWithyearLabel.text!
+            let index1 = str.index(str.endIndex, offsetBy: -(str.characters.count-3))
+            let substring1 = str.substring(to: index1)
+            cell.daynameWithyearLabel.text = substring1
+            
+            cell.monthYearLabel.text = ((Helper.getWeekDay(dateString: dateValue as NSDate, getValue: Constant.MyClassConstants.month)) + " " + Helper.getWeekDay(dateString: dateValue as NSDate, getValue: Constant.MyClassConstants.year)).capitalized
+            print(indexPath.item)
+            cell.setSingleDateItems(index: indexPath.item)
             
             return cell
         }

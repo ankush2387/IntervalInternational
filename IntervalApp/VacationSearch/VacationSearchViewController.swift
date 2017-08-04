@@ -1335,9 +1335,12 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         
         ADBMobile.trackAction(Constant.omnitureEvents.event1, data: nil)
         if (self.SegmentIndex == 1 && (Helper.getAllDestinationFromLocalStorage().count>0 || Helper.getAllResortsFromLocalStorage().count>0)) {
-            
+            Helper.showProgressBar(senderView: self)
+            SVProgressHUD.show()
             sender.isEnabled = false
             let (toDate,fromDate) = getSearchDates()
+            
+            
             searchDateRequest.checkInToDate = toDate
             searchDateRequest.checkInFromDate = fromDate
             searchDateRequest.destinations = Helper.getAllDestinationFromLocalStorage()
@@ -1435,54 +1438,67 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
 //                Helper.hideProgressBar(senderView: self)
 //                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
 //            }
-            Constant.MyClassConstants.isFromExchange = false
-            
-            let searchCriteria = createSearchCriteriaForCancunMex()
-            let appSettings = createAppSetting()
-            
-            self.vacationSearch = VacationSearch(appSettings, searchCriteria)
-            
-            RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: self.vacationSearch.rentalSearch?.searchContext.request, onSuccess: { (response) in
+            if Reachability.isConnectedToNetwork() == true{
                 
-                print(response)
+                let appSettings = createAppSetting()
                 
-                self.vacationSearch.rentalSearch?.searchContext.response = response
+                let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
+                rentalSearchCriteria.destination = searchDateRequest.destinations[0]
                 
-                // Update active interval
-                self.vacationSearch.updateActiveInterval()
+                rentalSearchCriteria.checkInDate = searchDateRequest.checkInToDate
                 
-                // Get activeInterval (or initial search interval)
-                let activeInterval = BookingWindowInterval(interval: self.vacationSearch.bookingWindow.getActiveInterval())
                 
-                // Check not available checkIn dates for the active interval
-                if (activeInterval.fetchedBefore && !activeInterval.hasCheckInDates()) {
-                    self.showScrollingCalendar()
+                self.vacationSearch = VacationSearch(appSettings, rentalSearchCriteria)
+                
+                RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: self.vacationSearch.rentalSearch?.searchContext.request, onSuccess: { (response) in
                     
-                    self.showNotAvailabilityResults()
-                }
-                
-                DarwinSDK.logger.info("Auto call to Search Availability")
-                
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-dd"
-                
-                let initialSearchCheckInDate = self.vacationSearch.getCheckInDateForInitialSearch()
-                
-                DarwinSDK.logger.info("Initial Rental Search using request payload:")
-                DarwinSDK.logger.info(" CheckInDate = \(initialSearchCheckInDate)")
-                DarwinSDK.logger.info(" ResortCodes = \(String(describing: activeInterval.resortCodes))")
-                
-                self.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: dateFormatter.date(from: initialSearchCheckInDate))
-                
-                //expectation.fulfill()
-                
-                
-                
-                
-            },
-            onError:{ (error) in
-                                        
-            })
+                    print(response)
+                    
+                    self.vacationSearch.rentalSearch?.searchContext.response = response
+                    
+                    // Update active interval
+                    self.vacationSearch.updateActiveInterval()
+                    
+                    // Get activeInterval (or initial search interval)
+                    let activeInterval = BookingWindowInterval(interval: self.vacationSearch.bookingWindow.getActiveInterval())
+                    
+                    // Check not available checkIn dates for the active interval
+                    if (activeInterval.fetchedBefore && !activeInterval.hasCheckInDates()) {
+                        self.showScrollingCalendar()
+                        
+                        self.showNotAvailabilityResults()
+                    }
+                    
+                    DarwinSDK.logger.info("Auto call to Search Availability")
+                    
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd"
+                    
+                    let initialSearchCheckInDate = self.vacationSearch.getCheckInDateForInitialSearch()
+                    
+                    DarwinSDK.logger.info("Initial Rental Search using request payload:")
+                    DarwinSDK.logger.info(" CheckInDate = \(initialSearchCheckInDate)")
+                    DarwinSDK.logger.info(" ResortCodes = \(String(describing: activeInterval.resortCodes))")
+                    Constant.MyClassConstants.checkInDates = response.checkInDates
+                    self.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: dateFormatter.date(from: initialSearchCheckInDate))
+                    
+                    //expectation.fulfill()
+                    
+                    
+                },
+                    onError:{ (error) in
+                    SVProgressHUD.dismiss()
+                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                })
+            }
+            else{
+                sender.isEnabled = true
+                Helper.hideProgressBar(senderView: self)
+                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
+            }
+             Constant.MyClassConstants.isFromExchange = false
+            
+
             
             
         }else if(self.SegmentIndex == 2){
@@ -1676,27 +1692,24 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 // Is a Interval of Dates
                 if (calendarItem.isIntervalAvailable)! {
                     // Available for selection or click by the Member
+                    Constant.MyClassConstants.availableBucketArray.append(calendarItem)
                     DarwinSDK.logger.info("\(String(describing: calendarItem.intervalStartDate!)) - \(String(describing: calendarItem.intervalEndDate!)) [Available]")
                    // Constant.MyClassConstants.bucketDateArray.add(<#T##anObject: Any##Any#>)
                     
                 } else {
                     // No available for selection or click by the Member
+                    Constant.MyClassConstants.noAvailableBucketArray.append(calendarItem)
                     DarwinSDK.logger.info("\(String(describing: calendarItem.intervalStartDate!)) - \(String(describing: calendarItem.intervalEndDate!)) [No Available]")
                 }
             } else {
                 // Is a Single Date
                 DarwinSDK.logger.info("\(String(describing: calendarItem.checkInDate!))")
-
                 Constant.MyClassConstants.singleDateArray.append(calendarItem)
                 
             }
 
         }
-        print(calendar.count)
-        Constant.MyClassConstants.calendarCount = calendar.count
-        print(Constant.MyClassConstants.calendarCount)
-       
-        self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
+        
     }
     
     func showNotAvailabilityResults() {
@@ -1726,7 +1739,8 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                     self.showScrollingCalendar()
                                     
                                     self.showAvailabilityResults()
-                                    
+                                    Helper.hideProgressBar(senderView: self)
+                                    self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
                                     //expectation.fulfill()
         },
                                    onError:{ (error) in
