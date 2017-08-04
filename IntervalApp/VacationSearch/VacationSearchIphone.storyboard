@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Zmr-d0-xh5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Zmr-d0-xh5">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -1772,7 +1772,7 @@
                         <segue destination="wRm-6P-Lhz" kind="presentation" identifier="vacationSearchDetailSegue" id="4gU-cx-AAf"/>
                         <segue destination="bmL-3i-9ap" kind="show" identifier="whoWillBeCheckingInSegue" id="EmP-an-7MN"/>
                         <segue destination="ngh-TZ-XZu" kind="show" identifier="searchResultMapSegue" id="0zV-03-nGi"/>
-                        <segue destination="7wx-gU-8rb" kind="show" identifier="sortingSegue" id="CF2-li-kLd"/>
+                        <segue destination="7wx-gU-8rb" kind="presentation" identifier="sortingSegue" id="CF2-li-kLd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="U4c-hu-I43" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -6555,6 +6555,30 @@ Units Upgrade with this selection.</string>
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d8B-T5-YHa" userLabel="View Top">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="64"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GkO-0K-SaH">
+                                        <rect key="frame" x="334" y="12" width="60" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="60" id="23T-dw-isw"/>
+                                            <constraint firstAttribute="height" constant="40" id="LZO-wC-XIf"/>
+                                        </constraints>
+                                        <state key="normal" title="Cancel">
+                                            <color key="titleColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="cancelButtonPressed:" destination="7NJ-NJ-i5G" eventType="touchUpInside" id="Tqb-r1-CsJ"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="SE3-CE-H3Q"/>
+                                    <constraint firstItem="GkO-0K-SaH" firstAttribute="centerY" secondItem="d8B-T5-YHa" secondAttribute="centerY" id="knM-UA-50a"/>
+                                    <constraint firstAttribute="trailing" secondItem="GkO-0K-SaH" secondAttribute="trailing" constant="20" id="lAB-Wl-2bS"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6XO-y2-z6d">
                                 <rect key="frame" x="0.0" y="64" width="414" height="64"/>
                                 <subviews>
@@ -6573,7 +6597,7 @@ Units Upgrade with this selection.</string>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="I4N-5T-1c9">
-                                <rect key="frame" x="4" y="128" width="406" height="559"/>
+                                <rect key="frame" x="4" y="128" width="406" height="608"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="filterOptionCell" rowHeight="50" id="Eed-Yk-H6H" customClass="FilterCell" customModule="IntervalApp" customModuleProvider="target">
@@ -6736,16 +6760,21 @@ Units Upgrade with this selection.</string>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="d8B-T5-YHa" secondAttribute="trailing" id="8q2-of-NKQ"/>
+                            <constraint firstItem="I4N-5T-1c9" firstAttribute="top" secondItem="6XO-y2-z6d" secondAttribute="bottom" id="EP3-2b-mxg"/>
                             <constraint firstItem="I4N-5T-1c9" firstAttribute="leading" secondItem="vm1-nw-Vfv" secondAttribute="leadingMargin" constant="-16" id="U3f-XS-AuY"/>
-                            <constraint firstItem="6XO-y2-z6d" firstAttribute="top" secondItem="F82-zd-4OZ" secondAttribute="bottom" id="Zlk-gA-box"/>
+                            <constraint firstItem="6XO-y2-z6d" firstAttribute="top" secondItem="d8B-T5-YHa" secondAttribute="bottom" id="WO5-za-zub"/>
+                            <constraint firstItem="I4N-5T-1c9" firstAttribute="top" secondItem="6XO-y2-z6d" secondAttribute="bottom" id="cQR-Rl-dyu"/>
+                            <constraint firstItem="d8B-T5-YHa" firstAttribute="top" secondItem="vm1-nw-Vfv" secondAttribute="top" id="e9r-3U-nJk"/>
                             <constraint firstAttribute="trailing" secondItem="6XO-y2-z6d" secondAttribute="trailing" id="eM7-ek-65N"/>
                             <constraint firstItem="Khy-Rl-B5E" firstAttribute="top" secondItem="I4N-5T-1c9" secondAttribute="bottom" id="kcc-Ir-Rv2"/>
+                            <constraint firstItem="d8B-T5-YHa" firstAttribute="leading" secondItem="vm1-nw-Vfv" secondAttribute="leading" id="lF9-UX-nGD"/>
                             <constraint firstItem="6XO-y2-z6d" firstAttribute="leading" secondItem="vm1-nw-Vfv" secondAttribute="leading" id="tY1-Gr-l37"/>
-                            <constraint firstItem="I4N-5T-1c9" firstAttribute="top" secondItem="F82-zd-4OZ" secondAttribute="bottom" constant="64" id="y8I-Wa-mOb"/>
                             <constraint firstAttribute="trailingMargin" secondItem="I4N-5T-1c9" secondAttribute="trailing" constant="-16" id="zfi-LZ-qEU"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="fer-df-DFy"/>
+                    <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="lblHeading" destination="QvF-Ph-AN3" id="Fv2-O2-LnJ"/>
                         <outlet property="sortingTBLview" destination="I4N-5T-1c9" id="8yO-Jd-wk4"/>
@@ -6753,7 +6782,7 @@ Units Upgrade with this selection.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j9p-43-qwv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5234" y="-346"/>
+            <point key="canvasLocation" x="5233.3333333333339" y="-346.46739130434787"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Htc-yi-6nR">

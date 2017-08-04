@@ -542,6 +542,8 @@ class Constant: NSObject {
         
         //Keypath for picker
         static var keyTextColor = "textColor"
+        
+        static var initialVacationSearch = VacationSearch()
     }
     struct CommonStringIdentifiers {
         static var floatWeek = "FLOAT_WEEK"

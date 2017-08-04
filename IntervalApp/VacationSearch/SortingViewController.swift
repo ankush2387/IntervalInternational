@@ -38,12 +38,12 @@ class SortingViewController: UIViewController {
         self.title = Constant.ControllerTitles.sorting
         //***** Add the cancel button  as left bar button item *****//
         
-        let cancelButton = UIBarButtonItem(title: Constant.buttonTitles.cancel, style: .plain, target: self, action: #selector(cancelButtonPressed(_:)))
+        /*let cancelButton = UIBarButtonItem(title: Constant.buttonTitles.cancel, style: .plain, target: self, action: #selector(cancelButtonPressed(_:)))
 
         cancelButton.tintColor = UIColor.init(colorLiteralRed: 52.0/255.0, green: 152.0/255.0, blue: 200.0/255.0, alpha: 1.0)
         self.navigationItem.rightBarButtonItem = cancelButton
         
-        self.navigationController?.navigationBar.barTintColor = UIColor.white
+        self.navigationController?.navigationBar.barTintColor = UIColor.white*/
         
     }
 
@@ -52,9 +52,6 @@ class SortingViewController: UIViewController {
         
     }
     
-    /*func doneButtonPressed(_ sender:UIBarButtonItem) {
-        self.navigationController?.dismiss(animated: true, completion: nil)
-    }*/
     
     @IBAction func checkBoxClicked(_ sender: IUIKCheckbox) {
         
@@ -85,12 +82,15 @@ class SortingViewController: UIViewController {
     }
     
     
+    @IBAction func cancelButtonPressed(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
+    }
     
-    func cancelButtonPressed(_ sender:UIBarButtonItem) {
+   /* func cancelButtonPressed(_ sender:UIBarButtonItem) {
         
          //self.navigationController?.dismiss(animated: true, completion: nil)
         self.navigationController?.popViewController(animated: true)
-    }
+    }*/
 
 }
 
@@ -132,7 +132,6 @@ extension SortingViewController:UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         
         if self.isFilterClicked  {
             self.lblHeading.text = Constant.MyClassConstants.filterSearchResult
