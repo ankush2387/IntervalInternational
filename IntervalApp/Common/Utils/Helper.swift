@@ -14,11 +14,18 @@ import SVProgressHUD
 import DarwinSDK
 import RealmSwift
 
+//***** Custom delegate method declaration *****//
+protocol HelperDelegate {
+    // Call for SearchResult
+    func resortSearchComplete()
+}
 
 public class Helper{
     
     static var progressBarBackgroundView:UIView!
     static var window: UIWindow?
+    
+    static var helperDelegate: HelperDelegate?
     //***** common function to get system access token *****//
     
     static func getSystemAccessToken(){
@@ -1703,7 +1710,8 @@ public class Helper{
                                     
                                     //expectation.fulfill()
                                     hideProgressBar(senderView: senderViewController)
-                                    senderViewController.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
+                                    helperDelegate?.resortSearchComplete()
+                                    //senderViewController.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
         },
                                    onError:{ (error) in
                                     DarwinSDK.logger.error("Error Code: \(error.code)")

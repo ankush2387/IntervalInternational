@@ -545,6 +545,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                 rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                 
                 self.vacationSearch = VacationSearch.init(appSettings, rentalSearchCriteria)
+                Constant.MyClassConstants.initialVacationSearch = self.vacationSearch
                 
                 
                 ADBMobile.trackAction(Constant.omnitureEvents.event9, data: nil)
@@ -576,6 +577,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                     DarwinSDK.logger.info(" ResortCodes = \(String(describing: activeInterval.resortCodes))")
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     sender.isEnabled = true
+                    Helper.helperDelegate = self
                     Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: self.vacationSearch)
                     
                     
@@ -1071,4 +1073,11 @@ extension VacationSearchIPadViewController:WereWantToGoTableViewCellDelegate {
         )
     }
     
+}
+
+//Mark: Extension for Helper
+extension VacationSearchIPadViewController:HelperDelegate {
+    func resortSearchComplete(){
+        self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
+    }
 }
