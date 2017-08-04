@@ -106,7 +106,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     }
     
     //*****Function for more button press *****//
-    func intervalBucketClicked(_ toDate: Date){
+    func intervalDateItemClicked(_ toDate: Date){
         let activeInterval = BookingWindowInterval(interval: Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval())
         Helper.helperDelegate = self
         Helper.showProgressBar(senderView: self)
@@ -228,7 +228,7 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
         case 0:
             if(Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.getawayAlerts){
                 Helper.showProgressBar(senderView: self)
-                intervalBucketClicked(Helper.convertStringToDate(dateString: Constant.MyClassConstants.singleDateArray[0].checkInDate!, format: Constant.MyClassConstants.dateFormat))
+                intervalDateItemClicked(Helper.convertStringToDate(dateString: Constant.MyClassConstants.singleDateArray[0].checkInDate!, format: Constant.MyClassConstants.dateFormat))
             }
             
             break
@@ -245,7 +245,7 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
             break
             
         default:
-            intervalBucketClicked(Helper.convertStringToDate(dateString: Constant.MyClassConstants.singleDateArray[indexPath.item - 1].checkInDate!, format: Constant.MyClassConstants.dateFormat))
+            intervalDateItemClicked(Helper.convertStringToDate(dateString: Constant.MyClassConstants.singleDateArray[indexPath.item - 1].checkInDate!, format: Constant.MyClassConstants.dateFormat))
             break
         }
     }
