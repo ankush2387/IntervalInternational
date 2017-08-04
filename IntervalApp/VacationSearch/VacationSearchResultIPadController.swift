@@ -34,6 +34,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     var selectedUnitIndex = 0
     var selectedSection = 0
     var selectedRow = 0
+    var bucketIndex = 0
     
     
     // sorting optionDelegate call
@@ -391,7 +392,7 @@ extension VacationSearchResultIPadController:UICollectionViewDelegateFlowLayout 
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if ((indexPath as NSIndexPath).row == 0 || (indexPath as NSIndexPath).row == Constant.MyClassConstants.checkInDates.count+1){
+        if ((indexPath as NSIndexPath).row == 0 || (indexPath as NSIndexPath).item >= Constant.MyClassConstants.singleDateArray.count + 1){
             return CGSize(width: 160.0, height: 80.0)
         }else{
             return CGSize(width: 80.0, height: 80.0)
@@ -408,26 +409,17 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return Constant.MyClassConstants.singleDateArray.count + 1
-    }
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        
-        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: self.resortDetailTBLView.frame.width, height: 20))
-        footerView.backgroundColor = UIColor(red: 239.0/255.0, green: 239.0/255.0, blue: 246.0/255.0, alpha: 1)
-        return footerView
-    }
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 20
+        return Constant.MyClassConstants.singleDateArray.count + Constant.MyClassConstants.availableBucketArray.count + Constant.MyClassConstants.noAvailableBucketArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        if ((indexPath as NSIndexPath).item == 0 || (indexPath as NSIndexPath).item == Constant.MyClassConstants.checkInDates.count+1) {
-            print(Constant.MyClassConstants.availableBucketArray[0].intervalEndDate ?? "", Constant.MyClassConstants.availableBucketArray[0].intervalStartDate!)
-            print(Helper.convertStringToDate(dateString: Constant.MyClassConstants.availableBucketArray[0].intervalStartDate!, format: Constant.MyClassConstants.dateFormat))
+        if ((indexPath as NSIndexPath).item == 0 || (indexPath as NSIndexPath).item >= Constant.MyClassConstants.singleDateArray.count + 1) {
             
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.vacationSearchScreenReusableIdentifiers.moreCell, for: indexPath) as! MoreCell
-            cell.setDateForBucket()
+            Constant.MyClassConstants.totalBucketArray = Constant.MyClassConstants.availableBucketArray + Constant.MyClassConstants.noAvailableBucketArray
+            cell.setDateForBucket(index: bucketIndex)
+            bucketIndex = bucketIndex + 1
             cell.layer.cornerRadius = 7
             cell.layer.borderWidth = 2
             cell.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
@@ -476,10 +468,19 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
             cell.daynameWithyearLabel.text = substring1
             
             cell.monthYearLabel.text = ((Helper.getWeekDay(dateString: dateValue as NSDate, getValue: Constant.MyClassConstants.month)) + " " + Helper.getWeekDay(dateString: dateValue as NSDate, getValue: Constant.MyClassConstants.year)).capitalized
-            print(indexPath.item)
             cell.setSingleDateItems(index: indexPath.item)
             return cell
         }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: self.resortDetailTBLView.frame.width, height: 20))
+        footerView.backgroundColor = UIColor(red: 239.0/255.0, green: 239.0/255.0, blue: 246.0/255.0, alpha: 1)
+        return footerView
+    }
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 20
     }
 }
 
