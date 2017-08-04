@@ -63,37 +63,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
         searchedDateCollectionView?.register(nib, forCellWithReuseIdentifier: Constant.customCellNibNames.searchResultCollectionCell)
         
         self.title = Constant.ControllerTitles.searchResultViewController
-        
-        if(Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.getawayAlerts){
-            
-            headerVw.frame = CGRect(x:0, y:0, width:UIScreen.main.bounds.width, height:40)
-            headerVw.backgroundColor = UIColor.gray
-            
-            titleLabel.frame = CGRect(x:10, y:0, width:UIScreen.main.bounds.width, height:40)
-            titleLabel.textColor = UIColor.white
-            titleLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 14)
-            headerVw.addSubview(titleLabel)
-            
-            let dateValue = Constant.MyClassConstants.checkInDates[collectionviewSelectedIndex]
-            if(Constant.MyClassConstants.surroundingCheckInDates.contains(dateValue)){
-                headerVw.backgroundColor = UIColor(red: 170/255.0, green: 216/255.0, blue: 111/255.0, alpha: 1.0)
-                titleLabel.text = Constant.MyClassConstants.surroundingAreaString
-            }else{
-                headerVw.backgroundColor = UIColor(rgb:IUIKColorPalette.primary1.rawValue)
-                if(Constant.MyClassConstants.vacationSearchDestinationArray.count > 1){
-                    titleLabel.text = "Resorts in \(Constant.MyClassConstants.vacationSearchDestinationArray[0]) and \(Constant.MyClassConstants.vacationSearchDestinationArray.count - 1) more"
-                    
-                }else{
-                    titleLabel.text = "Resorts in \(Constant.MyClassConstants.whereTogoContentArray[0])"
-                }
-            }
-            
-            resortDetailTBLView.tableHeaderView = headerVw
-            
-        }
-        
-        self.enablePreviousMore = enableDisablePreviousMoreButtoniPad(Constant.MyClassConstants.left)
-        self.enableNextMore = enableDisablePreviousMoreButtoniPad(Constant.MyClassConstants.right)
+    
         self.searchedDateCollectionView.reloadData()
         
         if (Constant.MyClassConstants.showAlert == true) {
@@ -414,7 +384,7 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        if ((indexPath as NSIndexPath).item == 0 || (indexPath as NSIndexPath).item >= Constant.MyClassConstants.singleDateArray.count + 1) {
+        if ((indexPath as NSIndexPath).item == 0 || (indexPath as NSIndexPath).item > Constant.MyClassConstants.singleDateArray.count + 1) {
             
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.vacationSearchScreenReusableIdentifiers.moreCell, for: indexPath) as! MoreCell
             Constant.MyClassConstants.totalBucketArray = Constant.MyClassConstants.availableBucketArray + Constant.MyClassConstants.noAvailableBucketArray
@@ -458,19 +428,31 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
             cell.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
             cell.layer.masksToBounds = true
             
-            
-            let dateValue = Constant.MyClassConstants.checkInDates[(indexPath as NSIndexPath).row - 1]
-            cell.dateLabel.text = Helper.getWeekDay(dateString: dateValue as NSDate, getValue: Constant.MyClassConstants.date)
-            cell.daynameWithyearLabel.text = Helper.getWeekDay(dateString: dateValue as NSDate, getValue: Constant.MyClassConstants.weekDay).capitalized
-            let str:String = cell.daynameWithyearLabel.text!
-            let index1 = str.index(str.endIndex, offsetBy: -(str.characters.count-3))
-            let substring1 = str.substring(to: index1)
-            cell.daynameWithyearLabel.text = substring1
-            
-            cell.monthYearLabel.text = ((Helper.getWeekDay(dateString: dateValue as NSDate, getValue: Constant.MyClassConstants.month)) + " " + Helper.getWeekDay(dateString: dateValue as NSDate, getValue: Constant.MyClassConstants.year)).capitalized
             cell.setSingleDateItems(index: indexPath.item)
             return cell
         }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.resortDetailTBLView.frame.width, height: 40))
+        headerView.backgroundColor = UIColor(red: 112.0/255.0, green: 185.0/255.0, blue: 9.0/255.0, alpha: 1)
+        
+        let headerLabel = UILabel(frame: CGRect(x: 20, y: 0, width: self.resortDetailTBLView.frame.width - 40, height: 40))
+        headerLabel.text = Constant.MyClassConstants.searchAvailabilityHeader
+        headerLabel.textColor = UIColor.white
+        headerView.addSubview(headerLabel)
+        
+        let dropDownImgVw = UIImageView(frame: CGRect(x: self.resortDetailTBLView.frame.width - 40, y: 5, width: 30, height: 30))
+        dropDownImgVw.image = UIImage(named: Constant.assetImageNames.dropArrow)
+        headerView.addSubview(dropDownImgVw)
+        
+        return headerView
+
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -691,7 +673,6 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
             cell.layer.borderWidth = 0.5
             cell.layer.borderColor = UIColor.lightGray.cgColor
             
-            
             for layer in cell.bottomViewForResortName.layer.sublayers!{
                 if(layer.isKind(of: CAGradientLayer.self)) {
                     layer.removeFromSuperlayer()
@@ -769,7 +750,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                     cell.kitchenType.text = Helper.getKitchenEnums(kitchenType: kitchenSize.rawValue)
                 }
                 
-                cell.sleeps.text = String(units[indexPath.row - 1].publicSleepCapacity + units[indexPath.row - 1].privateSleepCapacity) + "Total, " + (String(units[indexPath.row - 1].privateSleepCapacity)) + "Private"
+                cell.sleeps.text = String(units[indexPath.row - 1].publicSleepCapacity) + "Total, " + (String(units[indexPath.row - 1].privateSleepCapacity)) + "Private"
                 
                 cell.backgroundColor = IUIKColorPalette.contentBackground.color
                 
@@ -865,7 +846,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         //***** Return number of rows in section required in tableview *****//
-        /*if(Constant.MyClassConstants.isFromExchange){
+        if(Constant.MyClassConstants.isFromExchange){
             if(Constant.MyClassConstants.exchangeInventory[section].buckets.count > 0){
                 self.unitSizeArray = [Constant.MyClassConstants.exchangeInventory[section].buckets[0].unit!]
                 var promotions = 0
@@ -884,8 +865,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
             let invent = inventoryDict
             self.unitSizeArray = invent.units
             return self.unitSizeArray.count + 1
-        }*/
-        return 0
+        }
     }
     
 }

@@ -235,6 +235,7 @@ class Constant: NSObject {
         static var calendarCount:Int!
         static var realmStoredDestIdOrCodeArray:NSMutableArray = []
         static var resortCodesArray : [String] = []
+        static var searchAvailabilityHeader = ""
         
         static var surroundingResortCodesArray : [String] = []
         static var resortsArray = [Resort]()

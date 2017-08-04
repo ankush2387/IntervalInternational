@@ -525,15 +525,9 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
             SVProgressHUD.show()
             Constant.MyClassConstants.selectedSegment =  Constant.MyClassConstants.selectedSegmentExchange
             sender.isEnabled = false
-            let (toDate,fromDate) = Helper.getSearchDates()
-            
-            Constant.MyClassConstants.currentFromDate = fromDate
-            Constant.MyClassConstants.currentToDate = toDate
-            let searchDateRequest = RentalSearchDatesRequest()
-            searchDateRequest.checkInToDate = toDate
-            searchDateRequest.checkInFromDate = fromDate
-            searchDateRequest.destinations = Helper.getAllDestinationFromLocalStorage()
-            searchDateRequest.resorts = Helper.getAllResortsFromLocalStorage()
+    
+            let destinations = Helper.getAllDestinationFromLocalStorage()
+            let resorts = Helper.getAllResortsFromLocalStorage()
             if Reachability.isConnectedToNetwork() == true {
                 
                 
@@ -546,15 +540,14 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
             
                 
                 let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
-                rentalSearchCriteria.destination = searchDateRequest.destinations[0]
+                rentalSearchCriteria.destination = destinations[0]
                 
-                rentalSearchCriteria.checkInDate = searchDateRequest.checkInToDate
+                rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                 
                 self.vacationSearch = VacationSearch.init(appSettings, rentalSearchCriteria)
                 
                 
                 ADBMobile.trackAction(Constant.omnitureEvents.event9, data: nil)
-                //Helper.showProgressBar(senderView: self)
                 
                 
                 RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: vacationSearch.rentalSearch?.searchContext.request, onSuccess:{ (response) in
@@ -576,16 +569,14 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                     
                     DarwinSDK.logger.info("Auto call to Search Availability")
                     
-                    let dateFormatter = DateFormatter()
-                    dateFormatter.dateFormat = "yyyy-MM-dd"
-                    
                     let initialSearchCheckInDate = self.vacationSearch.getCheckInDateForInitialSearch()
                     
                     DarwinSDK.logger.info("Initial Rental Search using request payload:")
                     DarwinSDK.logger.info(" CheckInDate = \(initialSearchCheckInDate)")
                     DarwinSDK.logger.info(" ResortCodes = \(String(describing: activeInterval.resortCodes))")
                     Constant.MyClassConstants.checkInDates = response.checkInDates
-                    self.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: dateFormatter.date(from: initialSearchCheckInDate))
+                    sender.isEnabled = true
+                    self.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat))
                     
                     
                 })
@@ -897,9 +888,11 @@ extension VacationSearchIPadViewController:WereWantToGoTableViewCellDelegate {
             if (section.exactMatch)! {
                 // Show up Destination exact match as header
                 DarwinSDK.logger.info("Header[D] - \(String(describing: self.resolveDestinationInfo(destination: section.destination!)))")
+                Constant.MyClassConstants.searchAvailabilityHeader = "Resorts in \(String(describing: self.resolveDestinationInfo(destination: section.destination!)))"
             } else {
                 // Show up Destination surrounding match as header
                 DarwinSDK.logger.info("Header[D] - Surrounding to \(String(describing: self.resolveDestinationInfo(destination: section.destination!)))")
+                Constant.MyClassConstants.searchAvailabilityHeader = "Resorts near \(String(describing: self.resolveDestinationInfo(destination: section.destination!)))"
             }
             
             for inventoryItem in (section.item?.rentalInventory)! {
@@ -911,7 +904,7 @@ extension VacationSearchIPadViewController:WereWantToGoTableViewCellDelegate {
             for inventoryItem in (section.item?.rentalInventory)! {
                 // Show up only Resorts as header
                 DarwinSDK.logger.info("Header[R] - \(String(describing: inventoryItem.resortName))")
-                
+                Constant.MyClassConstants.searchAvailabilityHeader = "\(String(describing: inventoryItem.resortName))"
                 self.showAvailabilityBucket(inventoryItem: inventoryItem)
             }
             
@@ -923,6 +916,7 @@ extension VacationSearchIPadViewController:WereWantToGoTableViewCellDelegate {
         if (section.exactMatch)! {
             // Show up exact match as header
             DarwinSDK.logger.info("Header - Exact Match")
+            
         } else {
             // Show up surrounding match as header
             DarwinSDK.logger.info("Header - Surrounding Match")
@@ -1041,6 +1035,9 @@ extension VacationSearchIPadViewController:WereWantToGoTableViewCellDelegate {
         RentalClient.searchResorts(UserContext.sharedInstance.accessToken, request: request,
                                    onSuccess: { (response) in
                                     // Update Rental inventory
+                                    
+                                    Constant.MyClassConstants.resortsArray = response.resorts
+                                    
                                     self.vacationSearch.rentalSearch?.inventory = response.resorts
                                     
                                     // Check if not has availability in the desired check-In date.
@@ -1070,11 +1067,7 @@ extension VacationSearchIPadViewController:WereWantToGoTableViewCellDelegate {
                                         // TODO: Handle SDK/API errors
                                         DarwinSDK.logger.error("Handle SDK/API errors.")
                                     }
-                                    
-                                    //expectation.fulfill()
-                                    //XCTAssert(false, "Not Pass")
-                                    //XCTFail()
-        }
+            }
         )
     }
     
