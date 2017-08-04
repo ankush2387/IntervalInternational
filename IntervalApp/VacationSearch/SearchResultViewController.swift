@@ -35,7 +35,7 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
     var cellHeight = 50
     var selectedSection = 0
     var selectedRow = 0
-    
+    var bucketIndex = 0
     // sorting optionDelegate call
     
     func selectedOptionis(filteredValueIs:String, indexPath:NSIndexPath, isFromFiltered:Bool) {
@@ -90,8 +90,8 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
         let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(SearchResultViewController.menuBackButtonPressed(_:)))
         menuButton.tintColor = UIColor.white
         self.navigationItem.leftBarButtonItem = menuButton
-        self.enablePreviousMore = enableDisablePreviousMoreButton(Constant.MyClassConstants.left as NSString)
-        self.enableNextMore = enableDisablePreviousMoreButton(Constant.MyClassConstants.right as NSString)
+       // self.enablePreviousMore = enableDisablePreviousMoreButton(Constant.MyClassConstants.left as NSString)
+       // self.enableNextMore = enableDisablePreviousMoreButton(Constant.MyClassConstants.right as NSString)
         
         if (Constant.MyClassConstants.showAlert == true) {
             self.alertView = Helper.noResortView(senderView: self.view)
@@ -188,63 +188,7 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
         })
         
     }
-    //Static Calling API for filterRelinquishments
-    
-    func getStaticFilterRelinquishments(){
-        Helper.showProgressBar(senderView: self)
-        let exchangeSearchDateRequest = ExchangeFilterRelinquishmentsRequest()
-        exchangeSearchDateRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
-        
-        let relinquishmentIDArray = ["Ek83chJmdS6ESNRpVfhH8QaTBeXh5rpNm_2AJLhV_4jRTiVySvOk2NKFm4iHOtEK",
-                                     "Ek83chJmdS6ESNRpVfhH8RFxFgvpS1HHCzYyrvzw42rRTiVySvOk2NKFm4iHOtEK",
-                                     "Ek83chJmdS6ESNRpVfhH8SOcpMOEqw1KO8bsQKhjLZnRTiVySvOk2NKFm4iHOtEK",
-                                     "Ek83chJmdS6ESNRpVfhH8YMAv0D39MaVmh75YJgm_IDRTiVySvOk2NKFm4iHOtEK"]
-        exchangeSearchDateRequest.relinquishmentsIds = relinquishmentIDArray//Constant.MyClassConstants.relinquishmentIdArray as! [String]
-        
-        
-        
-        let exchangeDestination = ExchangeDestination()
-        let currentFromDate = Helper.convertDateToString(date: Constant.MyClassConstants.currentFromDate, format: Constant.MyClassConstants.dateFormat)
-        
-        let currentToDate = Helper.convertDateToString(date: Constant.MyClassConstants.currentToDate, format: Constant.MyClassConstants.dateFormat)
-        
-        let resort = Resort()
-        //resort.resortName = Constant.MyClassConstants.resortsArray[selectedIndex].resortName
-        resort.resortCode = "CZP"//Constant.MyClassConstants.resortsArray[selectedIndex].resortCode
-        
-        exchangeDestination.resort = resort
-        
-        let unit = InventoryUnit()
-        unit.kitchenType = "NO_KITCHEN"//Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.kitchenType!
-        unit.unitSize = "STUDIO"//Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitSize!
-        exchangeDestination.checkInDate = "2017-07-17"//currentFromDate
-        exchangeDestination.checkOutDate = "2017-07-24"//currentToDate
-        //unit.unitNumber = Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitNumber!
-        unit.publicSleepCapacity = 4
-        unit.privateSleepCapacity = 2
-        
-        exchangeDestination.unit = unit
-        
-        exchangeSearchDateRequest.destination = exchangeDestination
-        
-        ExchangeClient.filterRelinquishments(UserContext.sharedInstance.accessToken, request: exchangeSearchDateRequest, onSuccess: { (response) in
-            Helper.hideProgressBar(senderView: self)
-            for exchageDetail in response{
-                Constant.MyClassConstants.filterRelinquishments.append(exchageDetail.relinquishment!)
-            }
-            
-            Constant.MyClassConstants.selectedResort = Constant.MyClassConstants.resortsArray[self.selectedSection]
-            
-            Constant.MyClassConstants.inventoryPrice = (Constant.MyClassConstants.exchangeInventory[self.selectedSection].buckets[0].unit?.prices)!
-            Constant.MyClassConstants.exchangeDestination = exchangeDestination
-            
-            self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
-        }, onError: { (error) in
-            print(Error.self)
-            Helper.hideProgressBar(senderView: self)
-        })
-    }
-    
+
     //Dynamic API hit
     
     func getFilterRelinquishments(){
@@ -574,11 +518,12 @@ extension SearchResultViewController:UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if ((indexPath as NSIndexPath).item == 0 || (indexPath as NSIndexPath).item == Constant.MyClassConstants.checkInDates.count+1) {
-            print(Constant.MyClassConstants.availableBucketArray[0].intervalEndDate ?? "", Constant.MyClassConstants.availableBucketArray[0].intervalStartDate!)
-            print(Helper.convertStringToDate(dateString: Constant.MyClassConstants.availableBucketArray[0].intervalStartDate!, format: Constant.MyClassConstants.dateFormat))
             
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.vacationSearchScreenReusableIdentifiers.moreCell, for: indexPath) as! MoreCell
-            cell.setDateForBucket(index: 0)
+            Constant.MyClassConstants.totalBucketArray = Constant.MyClassConstants.availableBucketArray + Constant.MyClassConstants.noAvailableBucketArray
+
+            
+            cell.setDateForBucket(index:bucketIndex)
             cell.layer.cornerRadius = 7
             cell.layer.borderWidth = 2
             cell.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
@@ -633,6 +578,40 @@ extension SearchResultViewController:UICollectionViewDataSource {
             
             return cell
         }
+    }
+    
+    
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.searchResultTableView.frame.width, height: 40))
+        headerView.backgroundColor = UIColor(red: 112.0/255.0, green: 185.0/255.0, blue: 9.0/255.0, alpha: 1)
+        
+        let headerLabel = UILabel(frame: CGRect(x: 20, y: 0, width: self.searchResultTableView.frame.width - 40, height: 40))
+        headerLabel.text = Constant.MyClassConstants.searchAvailabilityHeader
+        headerLabel.textColor = UIColor.white
+        headerView.addSubview(headerLabel)
+        
+        let dropDownImgVw = UIImageView(frame: CGRect(x: self.searchResultTableView.frame.width - 40, y: 5, width: 30, height: 30))
+        dropDownImgVw.image = UIImage(named: Constant.assetImageNames.dropArrow)
+        headerView.addSubview(dropDownImgVw)
+        
+        return headerView
+        
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: self.searchResultTableView.frame.width, height: 20))
+        footerView.backgroundColor = UIColor(red: 239.0/255.0, green: 239.0/255.0, blue: 246.0/255.0, alpha: 1)
+        return footerView
+    }
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 20
     }
 }
 
