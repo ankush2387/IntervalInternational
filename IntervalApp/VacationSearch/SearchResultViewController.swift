@@ -46,7 +46,6 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
             Constant.MyClassConstants.sortingIndex = indexPath.row
         }
         
-        print(filteredValueIs)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -390,7 +389,8 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
         let viewController = self.storyboard?.instantiateViewController(withIdentifier: Constant.storyboardControllerID.sortingViewController) as! SortingViewController
         viewController.delegate = self
         viewController.selectedSortingIndex = Constant.MyClassConstants.sortingIndex
-        self.navigationController?.pushViewController(viewController, animated: true)
+        self.present(viewController, animated: true, completion: nil)
+        //self.navigationController?.pushViewController(viewController, animated: true)
         
         //self.performSegue(withIdentifier: Constant.segueIdentifiers.sortingSegue , sender: nil)
     }
@@ -403,7 +403,8 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
         viewController.isFilterClicked = true
         viewController.resortNameArray = Constant.MyClassConstants.resortsArray
         viewController.selectedIndex = Constant.MyClassConstants.filteredIndex
-        self.navigationController?.pushViewController(viewController, animated: true)
+        self.present(viewController, animated: true, completion: nil)
+       // self.navigationController?.pushViewController(viewController, animated: true)
         
         // self.performSegue(withIdentifier: Constant.segueIdentifiers.sortingSegue , sender: nil)
     }

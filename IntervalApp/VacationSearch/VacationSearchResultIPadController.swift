@@ -50,6 +50,11 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
         print(filteredValueIs)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        
+        self.navigationController?.navigationBar.barTintColor = UIColor.init(colorLiteralRed: 70.0/255.0, green: 136.0/255.0, blue: 193.0/255.0, alpha: 1.0)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -167,7 +172,8 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
         
         viewController.delegate = self
         viewController.selectedSortingIndex = Constant.MyClassConstants.sortingIndex
-        self.navigationController?.pushViewController(viewController, animated: true)
+        
+        self.present(viewController, animated: true, completion: nil)
         
     }
     
@@ -179,7 +185,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
         viewController.isFilterClicked = true
         viewController.resortNameArray = Constant.MyClassConstants.resortsArray
         viewController.selectedIndex = Constant.MyClassConstants.filteredIndex
-        self.navigationController?.pushViewController(viewController, animated: true)
+        self.present(viewController, animated: true, completion: nil)
     }
 
 }
@@ -293,6 +299,7 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
             
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.vacationSearchScreenReusableIdentifiers.moreCell, for: indexPath) as! MoreCell
             Constant.MyClassConstants.totalBucketArray = Constant.MyClassConstants.availableBucketArray + Constant.MyClassConstants.noAvailableBucketArray
+            print(bucketIndex)
             cell.setDateForBucket(index: bucketIndex)
             if(indexPath.item == 0){
                 bucketIndex = bucketIndex + 1

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Zmr-d0-xh5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Zmr-d0-xh5">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -613,7 +613,7 @@
                                         </collectionViewFlowLayout>
                                         <cells>
                                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="TravelWindowSelectionCell" id="jVy-4r-Frl" customClass="TravelWindowSelectionCell" customModule="IntervalApp" customModuleProvider="target">
-                                                <rect key="frame" x="5" y="13.666666666666666" width="150" height="56"/>
+                                                <rect key="frame" x="5" y="14" width="150" height="56"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                                     <rect key="frame" x="0.0" y="0.0" width="150" height="56"/>
@@ -735,7 +735,7 @@
                                         <rect key="frame" x="0.0" y="28" width="414" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="exy-kN-uRJ" id="HZD-c2-Kxy">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="49.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Arizona, Lake Havasu" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YYE-QS-Kqe">
@@ -1226,7 +1226,7 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MoreCell" id="HeT-Ba-0Un" customClass="MoreCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="1.6666666666666667" width="157" height="56"/>
+                                        <rect key="frame" x="0.0" y="2" width="157" height="56"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="157" height="56"/>
@@ -1695,7 +1695,7 @@
                                 <rect key="frame" x="4" y="638" width="407" height="49"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3vH-OR-RMt" customClass="IUIKButton" customModule="IntervalUIKit">
-                                        <rect key="frame" x="0.0" y="5" width="134.33333333333334" height="40"/>
+                                        <rect key="frame" x="0.0" y="5" width="134" height="40"/>
                                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="Bnx-7C-0e4"/>
@@ -1709,7 +1709,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Vz-2i-41i" customClass="IUIKButton" customModule="IntervalUIKit">
-                                        <rect key="frame" x="136.33333333333331" y="4" width="133.99999999999994" height="40"/>
+                                        <rect key="frame" x="136" y="4" width="134" height="40"/>
                                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
                                         <state key="normal" title="Filter">
@@ -1720,7 +1720,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EkZ-f2-ZRl">
-                                        <rect key="frame" x="272.33333333333331" y="5" width="134.33333333333337" height="40"/>
+                                        <rect key="frame" x="272" y="5" width="134" height="40"/>
                                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
                                         <state key="normal" title="Sort">
@@ -1772,7 +1772,7 @@
                         <segue destination="wRm-6P-Lhz" kind="presentation" identifier="vacationSearchDetailSegue" id="4gU-cx-AAf"/>
                         <segue destination="bmL-3i-9ap" kind="show" identifier="whoWillBeCheckingInSegue" id="EmP-an-7MN"/>
                         <segue destination="ngh-TZ-XZu" kind="show" identifier="searchResultMapSegue" id="0zV-03-nGi"/>
-                        <segue destination="7wx-gU-8rb" kind="show" identifier="sortingSegue" id="CF2-li-kLd"/>
+                        <segue destination="7wx-gU-8rb" kind="presentation" identifier="sortingSegue" id="CF2-li-kLd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="U4c-hu-I43" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2166,7 +2166,7 @@
                                         <rect key="frame" x="0.0" y="28" width="414" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oSN-ih-PeL" id="zZb-fK-UIm">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="89.666666666666671"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="89"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -2174,7 +2174,7 @@
                                         <rect key="frame" x="0.0" y="118" width="414" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qNT-SI-vkM" id="r3x-cO-4hS">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="59.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="59"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -2242,11 +2242,11 @@
                                         <rect key="frame" x="0.0" y="28" width="414" height="77"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Zvv-BQ-JV5" id="gMM-qr-jvh">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="76.666666666666671"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="76"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Qdq-ev-xcy">
-                                                    <rect key="frame" x="15" y="0.0" width="384" height="76.666666666666671"/>
+                                                    <rect key="frame" x="15" y="0.0" width="384" height="76"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -3016,7 +3016,7 @@
                                                     <rect key="frame" x="0.0" y="30" width="86" height="65"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2018" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iTT-Me-ECA">
-                                                            <rect key="frame" x="8" y="18" width="70" height="23.666666666666671"/>
+                                                            <rect key="frame" x="8" y="18" width="70" height="24"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="23.5" id="rIG-f2-zgk"/>
                                                             </constraints>
@@ -3067,19 +3067,19 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2 Bedroom, Full Kitchen" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="OLx-8p-sYw">
-                                                            <rect key="frame" x="8" y="20" width="205" height="16.666666666666671"/>
+                                                            <rect key="frame" x="8" y="20" width="205" height="17"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Sleeps 6 total, 4 private" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hBP-Kg-tBM">
-                                                            <rect key="frame" x="8" y="38.666666666666671" width="205" height="15.333333333333329"/>
+                                                            <rect key="frame" x="8" y="39" width="205" height="16"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
                                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Expires in 26 days." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hle-Xw-Mi9">
-                                                            <rect key="frame" x="8" y="55" width="178.66666666666669" height="14"/>
+                                                            <rect key="frame" x="8" y="56" width="179" height="14"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="14" id="6TH-LV-adQ"/>
                                                             </constraints>
@@ -3108,7 +3108,7 @@
                                                     <rect key="frame" x="312" y="39" width="57" height="37"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oBF-fC-5yf" customClass="IUIKButton" customModule="IntervalUIKit">
-                                                            <rect key="frame" x="6.6666666666666856" y="8" width="45" height="21"/>
+                                                            <rect key="frame" x="7" y="8" width="45" height="21"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
                                                             <state key="normal" image="VS_List-Plus_ORNG"/>
@@ -5110,7 +5110,7 @@ Units Upgrade with this selection.</string>
                                         <rect key="frame" x="0.0" y="28" width="384" height="63"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6sC-ch-ZrS" id="NpD-Jw-A7q">
-                                            <rect key="frame" x="0.0" y="0.0" width="384" height="62.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="384" height="62"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$10.00 Off" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="V7p-gc-VAj">
@@ -5678,7 +5678,7 @@ Units Upgrade with this selection.</string>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Relinquishment" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UwE-wb-G5P">
-                                        <rect key="frame" x="107" y="20.666666666666668" width="200" height="24.000000000000004"/>
+                                        <rect key="frame" x="107" y="20" width="200" height="24"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="200" id="bnk-7B-pKY"/>
                                         </constraints>
@@ -5706,7 +5706,7 @@ Units Upgrade with this selection.</string>
                                         <rect key="frame" x="0.0" y="28" width="394" height="278"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YUH-P1-7Hm" id="EpQ-hL-E8x">
-                                            <rect key="frame" x="0.0" y="0.0" width="394" height="277.66666666666669"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="394" height="277"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9ha-mg-rWb">
@@ -5723,7 +5723,7 @@ Units Upgrade with this selection.</string>
                                                     </constraints>
                                                 </imageView>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qIf-ff-Qur" userLabel="View Gradient">
-                                                    <rect key="frame" x="0.0" y="198" width="394" height="80"/>
+                                                    <rect key="frame" x="0.0" y="197" width="394" height="80"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Westwood at Split Rock" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jmX-AS-ooy">
                                                             <rect key="frame" x="20" y="5" width="354" height="18"/>
@@ -5787,14 +5787,14 @@ Units Upgrade with this selection.</string>
                                         <rect key="frame" x="0.0" y="306" width="394" height="89"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XbP-Go-j8O" id="GOP-TW-hhE">
-                                            <rect key="frame" x="0.0" y="0.0" width="394" height="88.666666666666671"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="394" height="88"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8or-JA-AwY">
-                                                    <rect key="frame" x="8" y="10" width="378" height="69"/>
+                                                    <rect key="frame" x="8" y="10" width="378" height="68"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vG8-5e-ahG">
-                                                            <rect key="frame" x="0.0" y="4.6666666666666679" width="80" height="60"/>
+                                                            <rect key="frame" x="0.0" y="4" width="80" height="60"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="APR 07" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2oA-L7-ZJn">
                                                                     <rect key="frame" x="5" y="0.0" width="70" height="21"/>
@@ -5803,7 +5803,7 @@ Units Upgrade with this selection.</string>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Week 16" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WMJ-Ht-Zzz">
-                                                                    <rect key="frame" x="7" y="39" width="67" height="21.000000000000007"/>
+                                                                    <rect key="frame" x="7" y="39" width="67" height="21"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="21" id="nXD-mq-bk5"/>
                                                                     </constraints>
@@ -5835,7 +5835,7 @@ Units Upgrade with this selection.</string>
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EGU-MP-S1T">
-                                                            <rect key="frame" x="80" y="-0.3333333333333357" width="298" height="70"/>
+                                                            <rect key="frame" x="80" y="-1" width="298" height="70"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Westwood at Split Rock" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sjX-es-nXC">
                                                                     <rect key="frame" x="4" y="0.0" width="284" height="18"/>
@@ -5850,7 +5850,7 @@ Units Upgrade with this selection.</string>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sleeps 6 total, 4 Private" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M7g-DI-7K0">
-                                                                    <rect key="frame" x="4" y="38" width="284" height="18.000000000000007"/>
+                                                                    <rect key="frame" x="4" y="38" width="284" height="18"/>
                                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                                     <color key="textColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <nil key="highlightedColor"/>
@@ -5987,26 +5987,26 @@ Units Upgrade with this selection.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sanci_main01_r" translatesAutoresizingMaskIntoConstraints="NO" id="SuX-8v-BkR">
-                                                    <rect key="frame" x="0.0" y="0.0" width="165.66666666666666" height="79"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="166" height="79"/>
                                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="79" id="igm-Gs-cWX"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hayyat Vacation Resorts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dql-e5-tfs">
-                                                    <rect key="frame" x="174.66666666666663" y="10" width="221.33333333333337" height="18"/>
+                                                    <rect key="frame" x="175" y="10" width="221" height="18"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jupiter, FL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aTB-mi-HON">
-                                                    <rect key="frame" x="174.66666666666666" y="28" width="71" height="18"/>
+                                                    <rect key="frame" x="175" y="28" width="71" height="18"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="JBS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UJp-nA-nnO">
-                                                    <rect key="frame" x="174.66666666666666" y="46" width="28" height="18"/>
+                                                    <rect key="frame" x="175" y="46" width="28" height="18"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                     <color key="textColor" red="0.95686274510000002" green="0.49803921569999998" blue="0.1529411765" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -6052,7 +6052,7 @@ Units Upgrade with this selection.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g1h-RS-czt">
-                                                    <rect key="frame" x="206.66666666666666" y="0.0" width="1" height="80"/>
+                                                    <rect key="frame" x="207" y="0.0" width="1" height="80"/>
                                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="1" id="Wle-zX-Hh6"/>
@@ -6076,7 +6076,7 @@ Units Upgrade with this selection.</string>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Check - Out Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="paJ-VP-B6N">
-                                                    <rect key="frame" x="216.66666666666669" y="10" width="118.00000000000006" height="20"/>
+                                                    <rect key="frame" x="217" y="10" width="118" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="hvQ-B4-Ho1"/>
                                                     </constraints>
@@ -6112,7 +6112,7 @@ Units Upgrade with this selection.</string>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="22" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KjQ-A6-jzc">
-                                                    <rect key="frame" x="216.66666666666669" y="30" width="45.000000000000057" height="40"/>
+                                                    <rect key="frame" x="217" y="30" width="45" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="40" id="Hsv-be-lFJ"/>
                                                     </constraints>
@@ -6121,7 +6121,7 @@ Units Upgrade with this selection.</string>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Oct. 2016" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ed-BV-AZ1">
-                                                    <rect key="frame" x="265.66666666666669" y="48" width="66" height="20"/>
+                                                    <rect key="frame" x="266" y="48" width="66" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="2r4-Rq-bgH"/>
                                                     </constraints>
@@ -6130,7 +6130,7 @@ Units Upgrade with this selection.</string>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Saturday" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qxn-3i-3vu">
-                                                    <rect key="frame" x="265.66666666666669" y="33" width="61" height="20"/>
+                                                    <rect key="frame" x="266" y="33" width="61" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="JXD-JN-Dgg"/>
                                                     </constraints>
@@ -6555,11 +6555,35 @@ Units Upgrade with this selection.</string>
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d8B-T5-YHa" userLabel="View Top">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="64"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GkO-0K-SaH">
+                                        <rect key="frame" x="334" y="12" width="60" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="60" id="23T-dw-isw"/>
+                                            <constraint firstAttribute="height" constant="40" id="LZO-wC-XIf"/>
+                                        </constraints>
+                                        <state key="normal" title="Cancel">
+                                            <color key="titleColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="cancelButtonPressed:" destination="7NJ-NJ-i5G" eventType="touchUpInside" id="Tqb-r1-CsJ"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="SE3-CE-H3Q"/>
+                                    <constraint firstItem="GkO-0K-SaH" firstAttribute="centerY" secondItem="d8B-T5-YHa" secondAttribute="centerY" id="knM-UA-50a"/>
+                                    <constraint firstAttribute="trailing" secondItem="GkO-0K-SaH" secondAttribute="trailing" constant="20" id="lAB-Wl-2bS"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6XO-y2-z6d">
                                 <rect key="frame" x="0.0" y="64" width="414" height="64"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Filter Search Results" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QvF-Ph-AN3">
-                                        <rect key="frame" x="116.66666666666666" y="20.666666666666671" width="182.33333333333334" height="24"/>
+                                        <rect key="frame" x="116" y="20" width="183" height="24"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -6573,7 +6597,7 @@ Units Upgrade with this selection.</string>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="I4N-5T-1c9">
-                                <rect key="frame" x="4" y="128" width="406" height="559"/>
+                                <rect key="frame" x="4" y="128" width="406" height="608"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="filterOptionCell" rowHeight="50" id="Eed-Yk-H6H" customClass="FilterCell" customModule="IntervalApp" customModuleProvider="target">
@@ -6584,10 +6608,10 @@ Units Upgrade with this selection.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2md-Fl-Vtn">
-                                                    <rect key="frame" x="10" y="0.0" width="386" height="49.666666666666664"/>
+                                                    <rect key="frame" x="10" y="0.0" width="386" height="50"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hyatt Beach Resort" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bh3-cn-ky7">
-                                                            <rect key="frame" x="26" y="9" width="292" height="30"/>
+                                                            <rect key="frame" x="26" y="10" width="292" height="30"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="30" id="l5S-Fk-jRJ"/>
                                                             </constraints>
@@ -6655,10 +6679,10 @@ Units Upgrade with this selection.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qAr-ZX-Hd8">
-                                                    <rect key="frame" x="10" y="0.0" width="386" height="49.666666666666664"/>
+                                                    <rect key="frame" x="10" y="0.0" width="386" height="50"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Resort name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nRI-53-l4k">
-                                                            <rect key="frame" x="5" y="14" width="145.66666666666666" height="20.666666666666664"/>
+                                                            <rect key="frame" x="5" y="14" width="146" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
@@ -6736,16 +6760,21 @@ Units Upgrade with this selection.</string>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="d8B-T5-YHa" secondAttribute="trailing" id="8q2-of-NKQ"/>
+                            <constraint firstItem="I4N-5T-1c9" firstAttribute="top" secondItem="6XO-y2-z6d" secondAttribute="bottom" id="EP3-2b-mxg"/>
                             <constraint firstItem="I4N-5T-1c9" firstAttribute="leading" secondItem="vm1-nw-Vfv" secondAttribute="leadingMargin" constant="-16" id="U3f-XS-AuY"/>
-                            <constraint firstItem="6XO-y2-z6d" firstAttribute="top" secondItem="F82-zd-4OZ" secondAttribute="bottom" id="Zlk-gA-box"/>
+                            <constraint firstItem="6XO-y2-z6d" firstAttribute="top" secondItem="d8B-T5-YHa" secondAttribute="bottom" id="WO5-za-zub"/>
+                            <constraint firstItem="I4N-5T-1c9" firstAttribute="top" secondItem="6XO-y2-z6d" secondAttribute="bottom" id="cQR-Rl-dyu"/>
+                            <constraint firstItem="d8B-T5-YHa" firstAttribute="top" secondItem="vm1-nw-Vfv" secondAttribute="top" id="e9r-3U-nJk"/>
                             <constraint firstAttribute="trailing" secondItem="6XO-y2-z6d" secondAttribute="trailing" id="eM7-ek-65N"/>
                             <constraint firstItem="Khy-Rl-B5E" firstAttribute="top" secondItem="I4N-5T-1c9" secondAttribute="bottom" id="kcc-Ir-Rv2"/>
+                            <constraint firstItem="d8B-T5-YHa" firstAttribute="leading" secondItem="vm1-nw-Vfv" secondAttribute="leading" id="lF9-UX-nGD"/>
                             <constraint firstItem="6XO-y2-z6d" firstAttribute="leading" secondItem="vm1-nw-Vfv" secondAttribute="leading" id="tY1-Gr-l37"/>
-                            <constraint firstItem="I4N-5T-1c9" firstAttribute="top" secondItem="F82-zd-4OZ" secondAttribute="bottom" constant="64" id="y8I-Wa-mOb"/>
                             <constraint firstAttribute="trailingMargin" secondItem="I4N-5T-1c9" secondAttribute="trailing" constant="-16" id="zfi-LZ-qEU"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="fer-df-DFy"/>
+                    <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="lblHeading" destination="QvF-Ph-AN3" id="Fv2-O2-LnJ"/>
                         <outlet property="sortingTBLview" destination="I4N-5T-1c9" id="8yO-Jd-wk4"/>
@@ -6753,7 +6782,7 @@ Units Upgrade with this selection.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j9p-43-qwv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5234" y="-346"/>
+            <point key="canvasLocation" x="5233.3333333333339" y="-346.46739130434787"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Htc-yi-6nR">
