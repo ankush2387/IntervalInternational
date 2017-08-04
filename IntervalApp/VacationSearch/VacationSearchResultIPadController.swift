@@ -105,7 +105,12 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
         // Dispose of any resources that can be recreated.
     }
     
-    //*****Function for more button press *****//
+    //Mark: Function for bucket click
+    func intervalBucketClicked(_ toDate: Date){
+        
+    }
+    
+    //*****Function for single date item press *****//
     func intervalDateItemClicked(_ toDate: Date){
         let activeInterval = BookingWindowInterval(interval: Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval())
         Helper.helperDelegate = self
@@ -228,24 +233,24 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
         case 0:
             if(Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.getawayAlerts){
                 Helper.showProgressBar(senderView: self)
-                intervalDateItemClicked(Helper.convertStringToDate(dateString: Constant.MyClassConstants.singleDateArray[0].checkInDate!, format: Constant.MyClassConstants.dateFormat))
+                intervalBucketClicked(Helper.convertStringToDate(dateString: Constant.MyClassConstants.singleDateArray[0].checkInDate!, format: Constant.MyClassConstants.dateFormat))
             }
             
             break
             
-        case Constant.MyClassConstants.checkInDates.count+1:
+        case Constant.MyClassConstants.singleDateArray.count+1:
             
             if(Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.getawayAlerts){
                 
-                let fromDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: 1, to: Constant.MyClassConstants.currentToDate as Date, options: [])!
-                let toDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: Constant.MyClassConstants.totalWindow, to: fromDate, options: [])!
-                //intervalBucketClicked(toDate, fromDate: fromDate, index: "Last")
+                intervalDateItemClicked(Helper.convertStringToDate(dateString: Constant.MyClassConstants.singleDateArray[indexPath.item - 1].checkInDate!, format: Constant.MyClassConstants.dateFormat))
                 
             }
             break
             
         default:
-            intervalDateItemClicked(Helper.convertStringToDate(dateString: Constant.MyClassConstants.singleDateArray[indexPath.item - 1].checkInDate!, format: Constant.MyClassConstants.dateFormat))
+            
+            let bucketIndex = (indexPath.item + 1) - Constant.MyClassConstants.singleDateArray.count
+            intervalBucketClicked(Helper.convertStringToDate(dateString:Constant.MyClassConstants.availableBucketArray[bucketIndex].intervalStartDate!,format: Constant.MyClassConstants.dateFormat))
             break
         }
     }
@@ -287,9 +292,6 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print(Constant.MyClassConstants.singleDateArray.count)
-        print(Constant.MyClassConstants.availableBucketArray.count)
-        print(Constant.MyClassConstants.noAvailableBucketArray.count)
         return Constant.MyClassConstants.singleDateArray.count + Constant.MyClassConstants.availableBucketArray.count + Constant.MyClassConstants.noAvailableBucketArray.count - 2
     }
     
