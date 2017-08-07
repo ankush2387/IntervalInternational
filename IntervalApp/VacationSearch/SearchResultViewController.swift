@@ -35,15 +35,51 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
     var cellHeight = 50
     var selectedSection = 0
     var selectedRow = 0
-    
+    var vacationSearch = VacationSearch()
     // sorting optionDelegate call
     
     func selectedOptionis(filteredValueIs:String, indexPath:NSIndexPath, isFromFiltered:Bool) {
+        
+        var selectedvalue = filteredValueIs 
         
         if isFromFiltered {
             Constant.MyClassConstants.filteredIndex = indexPath.row
         } else {
             Constant.MyClassConstants.sortingIndex = indexPath.row
+            
+            if selectedvalue.capitalized == "DEFAULT" {
+                selectedvalue = "DEFAULT"
+            } else if (selectedvalue.capitalized == "RESORT_NAME") {
+                selectedvalue = "RESORT_NAME"
+                
+            } else if (selectedvalue.capitalized == "CITY_NAME") {
+                selectedvalue = "CITY_NAME"
+                
+            } else if (selectedvalue.capitalized == "RESORT_TIER") {
+                selectedvalue = "RESORT_TIER"
+                
+            } else if (filteredValueIs.capitalized == "PRICE") {
+                 selectedvalue = "PRICE"
+                
+            } else {
+                selectedvalue = "UNKNOWN"
+            }
+           
+            
+            let activeInterval = BookingWindowInterval(interval: self.vacationSearch.bookingWindow.getActiveInterval())
+            
+            
+            let initialSearchCheckInDate = self.vacationSearch.getCheckInDateForInitialSearch()
+            
+            let vacationSearchForSorting = Constant.MyClassConstants.initialVacationSearch
+            
+            vacationSearchForSorting.sortType = AvailabilitySortType(rawValue: selectedvalue)!
+            
+            // sorting apin integration
+            
+             Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: vacationSearchForSorting)
+            
+            searchResultTableView.reloadData()
         }
         
     }
@@ -200,8 +236,7 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
                                      "Ek83chJmdS6ESNRpVfhH8YMAv0D39MaVmh75YJgm_IDRTiVySvOk2NKFm4iHOtEK"]
         exchangeSearchDateRequest.relinquishmentsIds = relinquishmentIDArray//Constant.MyClassConstants.relinquishmentIdArray as! [String]
         
-        
-        
+    
         let exchangeDestination = ExchangeDestination()
         let currentFromDate = Helper.convertDateToString(date: Constant.MyClassConstants.currentFromDate, format: Constant.MyClassConstants.dateFormat)
         
