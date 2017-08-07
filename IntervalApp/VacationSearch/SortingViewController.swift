@@ -74,7 +74,7 @@ class SortingViewController: UIViewController {
             self.delegate?.selectedOptionis(filteredValueIs: Constant.MyClassConstants.sortingOptionArray[(indexPath?.row)!], indexPath: indexPath! as NSIndexPath, isFromFiltered: false)
         }
         
-        self.navigationController?.popViewController(animated: true)
+        //self.navigationController?.popViewController(animated: true)
         
         
        // self.sortingTBLview.reloadData()
@@ -109,7 +109,7 @@ extension SortingViewController:UITableViewDelegate {
             self.delegate?.selectedOptionis(filteredValueIs: Constant.MyClassConstants.sortingOptionArray[(indexPath.row)], indexPath: indexPath as NSIndexPath, isFromFiltered: false)
         }
         
-        self.navigationController?.popViewController(animated: true)
+        //self.navigationController?.popViewController(animated: true)
     }
 }
 
