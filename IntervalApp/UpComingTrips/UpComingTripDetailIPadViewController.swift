@@ -137,10 +137,10 @@ class UpComingTripDetailIPadViewController: UIViewController {
         let actionSheetController: UIAlertController = UIAlertController(title:Constant.buttonTitles.optionTitle, message: "", preferredStyle: .actionSheet)
         
         //***** Create and add the View my recent search *****//
-        let viewMyRecentSearchAction: UIAlertAction = UIAlertAction(title:Constant.buttonTitles.resendTitle, style: .default) { action -> Void in
-            //Just dismiss the action sheet
+        let resendConfirmationAction: UIAlertAction = UIAlertAction(title:Constant.buttonTitles.resendTitle, style: .default) { action -> Void in
+            Helper.resendConfirmationInfoForUpcomingTrip(viewcontroller: self)
         }
-        actionSheetController.addAction(viewMyRecentSearchAction)
+        actionSheetController.addAction(resendConfirmationAction)
          //***** Present ActivityViewController for share options *****//
         let shareAction: UIAlertAction = UIAlertAction(title: "Share", style: .default) { action -> Void in
             Constant.MyClassConstants.checkInClosestContentArray.removeAllObjects()
