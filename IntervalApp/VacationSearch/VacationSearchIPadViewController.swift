@@ -535,7 +535,6 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                 appSettings.checkInSelectorStrategy = CheckInSelectorStrategy.First.rawValue
                 appSettings.collapseBookingIntervalEnable = true
                 
-            
                 
                 let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
                 rentalSearchCriteria.destination = destinations[0]
@@ -577,7 +576,6 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                     sender.isEnabled = true
                     Helper.helperDelegate = self
                     Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: self.vacationSearch)
-                    
                     
                 })
                 { (error) in
