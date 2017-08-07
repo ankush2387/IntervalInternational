@@ -1739,6 +1739,7 @@ public class Helper{
         Constant.MyClassConstants.singleDateArray.removeAll()
         Constant.MyClassConstants.availableBucketArray.removeAll()
         Constant.MyClassConstants.noAvailableBucketArray.removeAll()
+        Constant.MyClassConstants.calendarDatesArray.removeAll()
         
         let calendar = vacationSearch.createCalendar()
         
@@ -1748,23 +1749,20 @@ public class Helper{
                 // Is a Interval of Dates
                 if (calendarItem.isIntervalAvailable)! {
                     // Available for selection or click by the Member
-                    Constant.MyClassConstants.availableBucketArray.append(calendarItem)
+                    Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
                     DarwinSDK.logger.info("\(String(describing: calendarItem.intervalStartDate!)) - \(String(describing: calendarItem.intervalEndDate!)) [Available]")
                     
                 } else {
                     // No available for selection or click by the Member
-                    Constant.MyClassConstants.noAvailableBucketArray.append(calendarItem)
+                    Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
                     DarwinSDK.logger.info("\(String(describing: calendarItem.intervalStartDate!)) - \(String(describing: calendarItem.intervalEndDate!)) [No Available]")
                 }
             } else {
                 // Is a Single Date
                 DarwinSDK.logger.info("\(String(describing: calendarItem.checkInDate!))")
-                Constant.MyClassConstants.singleDateArray.append(calendarItem)
-                
+                Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
             }
-            
         }
-        
     }
     
     static func showNearestCheckInDateSelectedMessage() {

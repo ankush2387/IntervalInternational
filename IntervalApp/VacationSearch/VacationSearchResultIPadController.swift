@@ -257,7 +257,6 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if (loadFirst){
-            
             let indexPath = IndexPath(row: Constant.MyClassConstants.searchResultCollectionViewScrollToIndex , section: 0)
             
             self.searchedDateCollectionView.scrollToItem(at: indexPath,at: .centeredHorizontally,animated: true)
@@ -275,7 +274,7 @@ extension VacationSearchResultIPadController:UICollectionViewDelegateFlowLayout 
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if ((indexPath as NSIndexPath).row == 0 || (indexPath as NSIndexPath).item >= Constant.MyClassConstants.singleDateArray.count + 1){
+        if (Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)!{
             return CGSize(width: 160.0, height: 80.0)
         }else{
             return CGSize(width: 80.0, height: 80.0)
@@ -292,12 +291,12 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return Constant.MyClassConstants.singleDateArray.count + Constant.MyClassConstants.availableBucketArray.count + Constant.MyClassConstants.noAvailableBucketArray.count - 2
+        return Constant.MyClassConstants.calendarDatesArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        if ((indexPath as NSIndexPath).item == 0 || (indexPath as NSIndexPath).item > Constant.MyClassConstants.singleDateArray.count) {
+        print("\(indexPath.item) --------> \(Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)")
+        if (Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)! {
             
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.vacationSearchScreenReusableIdentifiers.moreCell, for: indexPath) as! MoreCell
             Constant.MyClassConstants.totalBucketArray = Constant.MyClassConstants.availableBucketArray + Constant.MyClassConstants.noAvailableBucketArray
@@ -324,8 +323,7 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
                 cell.isUserInteractionEnabled = true
             }
             return cell
-        }
-        else {
+        }else {
             
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.customCellNibNames.searchResultCollectionCell, for: indexPath) as! SearchResultCollectionCell
             if((indexPath as NSIndexPath).row == collectionviewSelectedIndex) {
