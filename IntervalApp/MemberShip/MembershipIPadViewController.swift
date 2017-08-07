@@ -8,18 +8,27 @@
 
 import UIKit
 import DarwinSDK
+import SVProgressHUD
 
 class MembershipIPadViewController: UIViewController {
     /** Outlets */
     @IBOutlet weak var tableView: UITableView!
-    var previousSelectedMembershipCellIndex: IndexPath?
+    /** Class variables */
+    fileprivate let numberOfSection = 2
+    //private let membershipDetailCellIdentifier = "membershipDetailCell"
+    //private let ownershipDetailCellIdentifier = "ownershipDetailCell"
+    fileprivate let numberOfRowInSection = 1
+    fileprivate var previousSelectedMembershipCellIndex: IndexPath?
+    fileprivate var ownershipArray = [Ownership]()
+    fileprivate var membershipProductsArray = [Product]()
+    fileprivate var contactInfo = Contact()
+
     /**
      Show action sheet.
      - parameter sender: sender UIbutton reference.
      - returns : No return value.
      */
     @IBAction func switchMemberShipButtonIsTapped(_ sender: UIButton) {
-       // CreateActionSheet()
         let actionSheet:UIAlertController = UIAlertController(title: "", message: "", preferredStyle: UIAlertControllerStyle.actionSheet)
         
         let actionsheetViewController = UIViewController()
@@ -58,22 +67,40 @@ class MembershipIPadViewController: UIViewController {
         self.present(actionSheet, animated: true, completion: nil)
     }
     
-    
-    
-    /** Class variables */
-    fileprivate let numberOfSection = 2
-    //private let membershipDetailCellIdentifier = "membershipDetailCell"
-    //private let ownershipDetailCellIdentifier = "ownershipDetailCell"
-    fileprivate let numberOfRowInSection = 1
-    var memberDetailDictionary = [String:String]()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.displayMenuButton()
+        getContactMembershipInfo()
+    }
+    
+    fileprivate func getContactMembershipInfo() {
+        SVProgressHUD.show()
+        if let contact = UserContext.sharedInstance.contact {
+            self.contactInfo = contact
+        }
         
-        //Update Membership Dictionary
-        let membership = UserContext.sharedInstance.selectedMembership
-         memberDetailDictionary.updateValue((membership?.memberNumber)!, forKey: "membernumber")
+        if let memberships = contactInfo.memberships {
+             Constant.MyClassConstants.membershipdetails = memberships
+        }
+       
+        Constant.MyClassConstants.memberNumber = UserContext.sharedInstance.selectedMembership?.memberNumber
+        
+        UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: { (membership) in
+            if let ownerships = membership.ownerships {
+                self.ownershipArray = ownerships
+            }
+            
+            if let products = membership.products {
+                self.membershipProductsArray = products
+            }
+            
+            self.membershipProductsArray.sort{$0.highestTier && !$1.highestTier}
+            self.tableView.reloadData()
+            SVProgressHUD.dismiss()
+        }) { (error) in
+            SVProgressHUD.dismiss()
+            print(error)
+        }
     }
     
     //MARK:Display menu button
@@ -99,64 +126,6 @@ class MembershipIPadViewController: UIViewController {
         
         
     }
-    
-    //MARK:create list of membership using action sheet
-    
-    /**
-     Create membership list using action sheet
-     - parameter No parameter :
-     - returns : No return value
-     */
-    fileprivate func CreateActionSheet(){
-        
-        
-        let actionSheet:UIAlertController = UIAlertController(title: "", message: "", preferredStyle: UIAlertControllerStyle.actionSheet)
-        
-        
-        
-        let actionsheetViewController = UIViewController()
-        //let rect = CGRectMake(0, 0, self.view.bounds.width - 20, CGFloat((UserContext.sharedInstance.contact?.memberships?.count)! * 70))
-        let rect = CGRect(x: 0, y: 0, width: self.view.bounds.width - 20, height: CGFloat(self.view.bounds.height))
-        
-        
-        
-        actionsheetViewController.preferredContentSize = rect.size
-        
-        
-        let actionSheetTable = UITableView(frame: rect)
-        
-        actionSheetTable.register(UINib(nibName: Constant.customCellNibNames.actionSheetTblCell, bundle: nil), forCellReuseIdentifier: Constant.loginScreenReusableIdentifiers.CustomCell)
-        actionSheetTable.delegate = self
-        actionSheetTable.dataSource = self
-        actionSheetTable.tag = 3
-        actionSheetTable.separatorStyle = UITableViewCellSeparatorStyle.none
-        actionSheetTable.isUserInteractionEnabled = true
-        actionSheetTable.allowsSelection = true
-        
-        actionsheetViewController.view.addSubview(actionSheetTable)
-        actionsheetViewController.view.bringSubview(toFront: actionSheetTable)
-        actionsheetViewController.view.isUserInteractionEnabled = true
-        
-        
-        
-        let attributedString = NSAttributedString(string: "Select Membership", attributes: [
-            NSFontAttributeName : UIFont.systemFont(ofSize: 20),
-            NSForegroundColorAttributeName : UIColor.black
-            ])
-        
-        let action:UIAlertAction = UIAlertAction(title: Constant.AlertPromtMessages.cancel, style: UIAlertActionStyle.cancel, handler: nil)
-        
-        actionSheet.setValue(attributedString, forKey: "attributedTitle")
-        actionSheet.setValue(actionsheetViewController, forKey: "contentViewController")
-        actionSheet.addAction(action)
-        
-        actionSheet.popoverPresentationController?.sourceView = self.tableView
-        actionSheet.popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height)
-        // this is the center of the screen currently but it can be any point in the view
-
-        self.present(actionSheet, animated: true, completion: nil)
-    }
-
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -174,7 +143,7 @@ class MembershipIPadViewController: UIViewController {
                                         //***** Done!  Segue to the Home page *****//
                                         
                                         self.dismiss(animated: true, completion: nil)
-                                        self.tableView.reloadData()
+                                        self.getContactMembershipInfo()
                                         
                                         //***** Getaway Alerts API call after successfull login *****//
                                         RentalClient.getAlerts(UserContext.sharedInstance.accessToken, onSuccess: { (response) in
@@ -198,29 +167,35 @@ extension MembershipIPadViewController:UITableViewDataSource{
     
     //MARK:Number of section in Table View
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        if tableView.tag == 3 {
+            return 1
+        }
+        
+        if membershipProductsArray.count > 0 {
+            return 3
+        }
+        return numberOfSection
     }
     //MARK:Number of Row in a section
     /** This function is used to return number of row in a section */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-         if(tableView.tag == 3) {
-            
+        if(tableView.tag == 3) {
             let contact = UserContext.sharedInstance.contact
             return (contact?.memberships?.count)!
-        }
-         else {
-            
-            return 1
+        } else if section == 1 {
+            return membershipProductsArray.count
+        } else if section == 2 {
+            return ownershipArray.count
+        } else {
+            return numberOfRowInSection
         }
     }
     //MARK:Cell for a row
     /** This function is used to return cell for a row */
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var membershipCell:DummyTableViewCell?
-        var ownershipCell:OwnerShipDetailTableViewCell?
         if(tableView.tag == 3) {
-            
+
             let contact = UserContext.sharedInstance.contact
             let membership = contact?.memberships![indexPath.row]
             
@@ -232,7 +207,7 @@ extension MembershipIPadViewController:UITableViewDataSource{
             let productcode = Product?.productCode
             cell.membershipName.text = Product?.productName
             cell.memberImageView.image = UIImage(named: productcode!)
-            if memberDetailDictionary["membernumber"] == cell.membershipNumber.text {
+            if Constant.MyClassConstants.memberNumber == cell.membershipNumber.text {
                 cell.selectedImageView.image = UIImage(named: "Select-On")
                 previousSelectedMembershipCellIndex = indexPath
             } else {
@@ -243,22 +218,45 @@ extension MembershipIPadViewController:UITableViewDataSource{
             cell.delegate = self
             return cell
             
-        }
-        else if (indexPath as NSIndexPath).section == 1{
-            ownershipCell = tableView.dequeueReusableCell(withIdentifier: Constant.memberShipViewController.ownershipDetailCellIdentifier) as? OwnerShipDetailTableViewCell
-            ownershipCell?.getCell(self.memberDetailDictionary)
-            return ownershipCell!
-        }
-        else{
-            membershipCell = tableView.dequeueReusableCell(withIdentifier: Constant.memberShipViewController.membershipDetailCellIdentifier) as? DummyTableViewCell
-            let membership = UserContext.sharedInstance.selectedMembership
-            membershipCell?.memberNumberLabel.text = membership?.memberNumber
+        } else if indexPath.section == 1 {
+            let product = membershipProductsArray[indexPath.row]
+            if product.highestTier {
+                let prodCell = tableView.dequeueReusableCell(withIdentifier: "selectedMembershipProductCell") as! MembershipProductCell
+                prodCell.externalContainerView.roundCorners(corners: [.topLeft, .topRight], radius: 4)
+                prodCell.containerView.layer.cornerRadius = 4
+                prodCell.setupCell(product: product)
+                
+                
+                return prodCell
+            } else {
+                let prodCell = tableView.dequeueReusableCell(withIdentifier: "membershipProductCell") as! MembershipProductCell
+                
+                if indexPath.row == membershipProductsArray.count - 1 {
+                    prodCell.externalContainerView.roundCorners(corners: [.bottomRight, .bottomLeft], radius: 4)
+                }
+                
+                prodCell.setupCell(product: product)
+                
+                if indexPath.row > 1 {
+                    prodCell.triangleView.isHidden = true
+                }
+                
+                return prodCell
+            }
+            
+        } else if (indexPath as NSIndexPath).section == 2 {
+            guard let ownershipCell = tableView.dequeueReusableCell(withIdentifier: Constant.memberShipViewController.ownershipDetailCellIdentifier) as? OwnerShipDetailTableViewCell else { return UITableViewCell() }
+            let ownership = ownershipArray[indexPath.row]
+            ownershipCell.getCell(ownership: ownership)
+            return ownershipCell
+        } else {
+            guard let membershipCell = tableView.dequeueReusableCell(withIdentifier: Constant.memberShipViewController.membershipDetailCellIdentifier) as? MemberShipDetailTableViewCell else { return UITableViewCell() }
             let contact = UserContext.sharedInstance.contact
             if contact!.memberships!.count == 1 {
-                membershipCell?.switchMembershipButton.isHidden = true
+                membershipCell.switchMembershipButton.isHidden = true
             }
-
-            return membershipCell!
+            membershipCell.getCell(contactInfo: self.contactInfo)
+            return membershipCell
         }
         
     }
@@ -266,10 +264,23 @@ extension MembershipIPadViewController:UITableViewDataSource{
     /** This function is used to return title for header In section */
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         var title = ""
-        if section == 1 && tableView.tag != 3{
+        if section == 2 && tableView.tag != 3{
             title = Constant.memberShipViewController.ownershipHeaderTitletext
+            return title
         }
-        return title
+        
+        return nil
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: 20))
+        
+        if (section == 1) {
+            headerView.backgroundColor = UIColor.white
+            return headerView
+        }
+        
+        return nil
     }
 }
 /*
@@ -280,31 +291,36 @@ extension MembershipIPadViewController:UITableViewDelegate
 {
 	/** This function is used to return Height for footer In section */
 	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-		return 1
-	}
+        if section == 1 {
+            return 20
+        }
+        return 0.0001
+    }
 	
  	/** This function is used to return Height for a row at particular index In section */
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 		if(tableView.tag == 3) {
-			
 			return 70
 		}
 		else if (indexPath as NSIndexPath).section == 0{
-			return 125
-		}
-		else{
-			return 125
-		}
+			return 334
+        } else if indexPath.section == 1 {
+            return 99
+        } else{
+            return 427
+        }
 	}
 	
 	/** This function is used to return Height for header In section */
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		if section == 0{
-			return 0
-		}
-		else{
-			return 30
-		}
+        if section == 0 {
+            return 0
+        } else if section == 2 {
+            return 30
+        }
+        else {
+            return 0.0001
+        }
 	}
 	
 	//***** Custom cell delegate methods *****//
@@ -324,19 +340,17 @@ extension MembershipIPadViewController:UITableViewDelegate
 
 			let contact = UserContext.sharedInstance.contact
 			let membership = contact?.memberships![indexPath.row]
-            if memberDetailDictionary["membernumber"] != membership?.memberNumber{
+            if Constant.MyClassConstants.memberNumber != membership?.memberNumber{
                 self.dismiss(animated: true, completion: nil)
-                print("Same Membership")
                 let alert = UIAlertController(title: Constant.memberShipViewController.switchMembershipAlertTitle, message: Constant.memberShipViewController.switchMembershipAlertMessage, preferredStyle: .actionSheet)
                 let actionYes = UIAlertAction(title: "Yes", style: .destructive, handler: { (response) in
-                    print("Continue")
-                    self.memberDetailDictionary.updateValue((membership?.memberNumber)!, forKey:"membernumber" )
+                    SVProgressHUD.show()
                     UserContext.sharedInstance.selectedMembership = membership
                     self.membershipWasSelected()
                 })
                 
                 let actionCancel = UIAlertAction(title: "No", style: .default, handler: { (response) in
-                    print("Cancel")
+                    //cancel
                 })
                 
                 alert.addAction(actionYes)

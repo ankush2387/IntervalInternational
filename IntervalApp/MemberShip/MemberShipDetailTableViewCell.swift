@@ -8,6 +8,7 @@
 
 import UIKit
 import IntervalUIKit
+import DarwinSDK
 class MemberShipDetailTableViewCell: UITableViewCell {
     //Outlets
     @IBOutlet weak var contactnameInfoLabel: UILabel!
@@ -21,17 +22,9 @@ class MemberShipDetailTableViewCell: UITableViewCell {
     @IBOutlet weak var memberNumberLabel: UILabel!
     @IBOutlet weak var memberSinceInfoLabel: UILabel!
     @IBOutlet weak var memberSinceDateLabel: UILabel!
-    @IBOutlet weak var membershipInfoLabel: UILabel!
-    @IBOutlet weak var memberShipExpirationdateLabel: UILabel!
-    @IBOutlet weak var memberCardImageView: UIImageView!
-    @IBOutlet weak var memberCardInfoLabel: UILabel!
-    @IBOutlet weak var memberCardExpirationDateLabel: UILabel!
     @IBOutlet weak var contactInfoMainView: UIView!
     @IBOutlet weak var memberInfoMainView: UIView!
-    @IBOutlet weak var membershipInfoMainView: UIView!
-    @IBOutlet weak var cardInfoMainView: UIView!
     @IBOutlet weak var switchMembershipButton: IUIKButton!
-    
     @IBOutlet weak var activememberOutOfTotalMemberLabel: UILabel!
     
     
@@ -46,9 +39,49 @@ class MemberShipDetailTableViewCell: UITableViewCell {
         - parameter membershipDetailDictionary : Dictionary with String key and String Value.
         - returns : No value is return
     */
-    func getCell(_ membershipDetailDictionary:[String:String]){
+    func getCell(contactInfo: Contact){
         self.setPropertiesTocellElements()
-        self.updateCell(membershipDetailDictionary)
+        
+        var firstName = ""
+        var lastName = ""
+        var loginID = ""
+        var emailAddress = ""
+        var status = ""
+        var dateString = ""
+        var membershipsAmount = 0
+        
+        if let name = contactInfo.firstName {
+            firstName = name
+        }
+        
+        if let lastname = contactInfo.lastName {
+            lastName = lastname
+        }
+        
+        if let login = contactInfo.userName {
+            loginID = login
+        }
+        
+        if let email = contactInfo.emailAddress {
+            emailAddress = email
+        }
+        
+        if let memberStatus = contactInfo.status {
+            status = memberStatus
+        }
+        
+        if let memberSinceDate = contactInfo.lastVerifiedDate {
+            dateString = Helper.convertDateToString(date: memberSinceDate, format: "dd/MM/YYYY")
+        }
+        
+        if let count = contactInfo.memberships?.count {
+            membershipsAmount = count
+        }
+        
+        
+        self.updateCell(contactName: "\(firstName) \(lastName)", loginID: loginID, email: emailAddress, status: status, date: dateString, memberships: membershipsAmount)
+        
+        
     }
     //MARK:Update value according to server response
     /**
@@ -57,29 +90,24 @@ class MemberShipDetailTableViewCell: UITableViewCell {
         - parameter membershipDetailDictionary: Dictionary with String Key and String Value.
         - returns: No return value.
     */
-    fileprivate func updateCell(_ membershipDetailDictionary:[String:String]){
+    fileprivate func updateCell(contactName: String, loginID: String, email: String, status: String, date: String, memberships: Int){
         
         // Update label text
         contactnameInfoLabel.text = Constant.memberShipViewController.membershipDetailTableViewCell.contactnameInfoLabelText
-        activeLabel.text = Constant.memberShipViewController.membershipDetailTableViewCell.activeLabelText
+//        activeLabel.text = Constant.memberShipViewController.membershipDetailTableViewCell.activeLabelText
         loginInfoLabel.text = Constant.memberShipViewController.membershipDetailTableViewCell.loginInfoLabelText
          emailInfoLabel.text = Constant.memberShipViewController.membershipDetailTableViewCell.emailInfoLabelText
         memberNumberInfoLabel.text = Constant.memberShipViewController.membershipDetailTableViewCell.memberNumberInfoLabelText
-        memberSinceInfoLabel.text = Constant.memberShipViewController.membershipDetailTableViewCell.memberSinceInfoLabelText
-        membershipInfoLabel.text = Constant.memberShipViewController.membershipDetailTableViewCell.membershipInfoLabelText
-        memberCardInfoLabel.text = Constant.memberShipViewController.membershipDetailTableViewCell.memberCardInfoLabelText
         switchMembershipButton.setTitle(Constant.memberShipViewController.membershipDetailTableViewCell.switchMembershipButtonTitle, for: .normal)
+        activememberOutOfTotalMemberLabel.text = "1 of \(memberships)"
         
+        contactNameLabel.text = contactName
+         loginIdLabel.text = loginID
+         emailLabel.text = email
+         memberNumberLabel.text = Constant.MyClassConstants.memberNumber
+         memberSinceDateLabel.text = date
+        activeLabel.text = status
         
-        contactNameLabel.text = membershipDetailDictionary[Constant.CommonLocalisedString.contactName] ?? ""
-         memberCardInfoLabel.text = membershipDetailDictionary[Constant.CommonLocalisedString.cardName] ?? ""
-         loginIdLabel.text = membershipDetailDictionary[Constant.CommonLocalisedString.loginID] ?? ""
-         emailLabel.text = membershipDetailDictionary[Constant.CommonLocalisedString.email] ?? ""
-         memberNumberLabel.text = membershipDetailDictionary[Constant.CommonLocalisedString.memberNum] ?? ""
-         memberSinceDateLabel.text = membershipDetailDictionary[Constant.CommonLocalisedString.memberDate] ?? ""
-         memberShipExpirationdateLabel.text = membershipDetailDictionary[Constant.CommonLocalisedString.membershipExpirationDate] ?? ""
-         memberCardExpirationDateLabel.text = membershipDetailDictionary[Constant.CommonLocalisedString.cardExpirationDate] ?? ""
-         
     }
     //MARK:set commonPrperties to cell
     /**
@@ -89,6 +117,8 @@ class MemberShipDetailTableViewCell: UITableViewCell {
     */
     fileprivate func setPropertiesTocellElements(){
         
+        self.switchMembershipButton.layer.cornerRadius = 4
+        
         //ContactInfo Main View Properties
         
         Helper.applyShadowOnUIView(view: contactInfoMainView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 1)
@@ -96,9 +126,8 @@ class MemberShipDetailTableViewCell: UITableViewCell {
         // memberInfoMainView Properties
         
         memberInfoMainView.layer.cornerRadius = 4
+        contactInfoMainView.layer.cornerRadius = 4
         //cardInfoMainView Properties
-        cardInfoMainView.layer.cornerRadius = 4
-        
         contactnameInfoLabel.textColor = UIColor(rgb:IUIKColorPalette.secondaryText.rawValue)
         contactNameLabel.textColor = UIColor(rgb:IUIKColorPalette.primaryText.rawValue)
         activeLabel.textColor = UIColor(rgb:IUIKColorPalette.active.rawValue)
@@ -110,12 +139,7 @@ class MemberShipDetailTableViewCell: UITableViewCell {
         memberNumberLabel.textColor = UIColor(rgb:IUIKColorPalette.primaryText.rawValue)
         memberSinceInfoLabel.textColor = UIColor(rgb:IUIKColorPalette.secondaryText.rawValue)
         memberSinceDateLabel.textColor = UIColor(rgb:IUIKColorPalette.secondaryText.rawValue)
-        
-        membershipInfoLabel.textColor = UIColor(rgb:IUIKColorPalette.primaryText.rawValue)
-        memberShipExpirationdateLabel.textColor = UIColor(rgb:IUIKColorPalette.secondaryText.rawValue)
-        
-        memberCardInfoLabel.textColor = UIColor(rgb:IUIKColorPalette.primaryText.rawValue)
-        memberCardExpirationDateLabel.textColor = UIColor(rgb:IUIKColorPalette.secondaryText.rawValue)
+
         switchMembershipButton.backgroundColor = UIColor(rgb: IUIKColorPalette.primary1.rawValue)
     }
     
