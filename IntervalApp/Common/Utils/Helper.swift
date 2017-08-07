@@ -1749,12 +1749,13 @@ public class Helper{
                 // Is a Interval of Dates
                 if (calendarItem.isIntervalAvailable)! {
                     // Available for selection or click by the Member
+
                     Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
                     DarwinSDK.logger.info("\(String(describing: calendarItem.intervalStartDate!)) - \(String(describing: calendarItem.intervalEndDate!)) [Available]")
                     
                 } else {
                     // No available for selection or click by the Member
-                    Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
+Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
                     DarwinSDK.logger.info("\(String(describing: calendarItem.intervalStartDate!)) - \(String(describing: calendarItem.intervalEndDate!)) [No Available]")
                 }
             } else {
