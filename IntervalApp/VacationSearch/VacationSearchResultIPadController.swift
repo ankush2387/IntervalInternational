@@ -34,7 +34,6 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     var selectedUnitIndex = 0
     var selectedSection = 0
     var selectedRow = 0
-    var bucketIndex = 0
     
     
     // sorting optionDelegate call
@@ -249,8 +248,7 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
             
         default:
             
-            let bucketIndex = (indexPath.item + 1) - Constant.MyClassConstants.singleDateArray.count
-            intervalBucketClicked(Helper.convertStringToDate(dateString:Constant.MyClassConstants.availableBucketArray[bucketIndex].intervalStartDate!,format: Constant.MyClassConstants.dateFormat))
+            intervalBucketClicked(Helper.convertStringToDate(dateString:Constant.MyClassConstants.availableBucketArray[indexPath.item].intervalStartDate!,format: Constant.MyClassConstants.dateFormat))
             break
         }
     }
@@ -295,18 +293,11 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        print("\(indexPath.item) --------> \(Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)")
         if (Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)! {
             
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.vacationSearchScreenReusableIdentifiers.moreCell, for: indexPath) as! MoreCell
             Constant.MyClassConstants.totalBucketArray = Constant.MyClassConstants.availableBucketArray + Constant.MyClassConstants.noAvailableBucketArray
-            print(bucketIndex)
-            cell.setDateForBucket(index: bucketIndex)
-            if(indexPath.item == 0){
-                bucketIndex = bucketIndex + 1
-            }else{
-                bucketIndex = (indexPath.item + 1) - Constant.MyClassConstants.singleDateArray.count
-            }
+            cell.setDateForBucket(index: indexPath.item)
             cell.layer.cornerRadius = 7
             cell.layer.borderWidth = 2
             cell.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
