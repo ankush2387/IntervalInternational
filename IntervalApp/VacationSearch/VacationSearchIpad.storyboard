@@ -2532,14 +2532,14 @@
                                                             <color key="backgroundColor" red="0.43921568630000002" green="0.72549019609999998" blue="0.035294117649999998" alpha="1" colorSpace="calibratedRGB"/>
                                                         </collectionViewCell>
                                                         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="RentalInventory" id="fWG-8Y-aAj" customClass="AvailabilityCollectionViewCell" customModule="IntervalApp" customModuleProvider="target">
-                                                            <rect key="frame" x="2" y="292" width="699" height="101"/>
+                                                            <rect key="frame" x="2" y="292" width="699" height="121"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                                                <rect key="frame" x="0.0" y="0.0" width="699" height="101"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="699" height="121"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                             </view>
                                                             <color key="backgroundColor" red="0.0" green="0.5568627451" blue="0.76078431369999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <size key="customSize" width="699" height="101"/>
+                                                            <size key="customSize" width="699" height="121"/>
                                                         </collectionViewCell>
                                                     </cells>
                                                     <connections>
