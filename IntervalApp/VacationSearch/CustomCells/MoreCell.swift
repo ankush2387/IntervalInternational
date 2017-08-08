@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import IntervalUIKit
 
 class MoreCell: UICollectionViewCell {
     
@@ -17,7 +18,10 @@ class MoreCell: UICollectionViewCell {
     @IBOutlet weak var lblEndYear: UILabel!
     
     
-    func setDateForBucket(index: Int){
+    func setDateForBucket(index: Int, selectedIndex: Int){
+        
+        setUpCell(index: index, collectionViewSelectedIndex: selectedIndex)
+
         
         let startDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.calendarDatesArray[index].intervalStartDate!, format: Constant.MyClassConstants.dateFormat)
         let endDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.calendarDatesArray[index].intervalEndDate!, format: Constant.MyClassConstants.dateFormat)
@@ -34,6 +38,33 @@ class MoreCell: UICollectionViewCell {
         lblStartYear.text = "\(startYear)"
         lblEndYear.text = "\(endYear)"
         
+    }
+    
+    func setUpCell(index:Int, collectionViewSelectedIndex: Int){
+        self.layer.cornerRadius = 7
+        self.layer.borderWidth = 2
+        self.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
+        self.layer.masksToBounds = true
+        
+        if (Constant.MyClassConstants.calendarDatesArray[index].isIntervalAvailable)! {
+            self.isUserInteractionEnabled = true
+        }else {
+            self.isUserInteractionEnabled = false
+        }
+        
+        if(index == collectionViewSelectedIndex) {
+            
+            self.backgroundColor = IUIKColorPalette.primary1.color
+            self.lblMonth.textColor = UIColor.white
+            self.lblStartYear.textColor = UIColor.white
+            self.lblEndYear.textColor = UIColor.white
+        }
+        else {
+            self.backgroundColor = UIColor.white
+            self.lblMonth.textColor = IUIKColorPalette.primary1.color
+            self.lblStartYear.textColor = IUIKColorPalette.primary1.color
+            self.lblEndYear.textColor = IUIKColorPalette.primary1.color
+        }
     }
     
 }
