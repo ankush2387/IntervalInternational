@@ -20,6 +20,7 @@ class SearchTableViewCell: UITableViewCell {
     
     
     @IBOutlet weak var searchVacation: IUIKButton!
+    @IBOutlet weak var resortInfoCollectionView: UICollectionView!
     var delegate:SearchTableViewCellDelegate?
 
     override func awakeFromNib() {

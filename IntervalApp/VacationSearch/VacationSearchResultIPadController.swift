@@ -34,7 +34,13 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     var selectedUnitIndex = 0
     var selectedSection = 0
     var selectedRow = 0
+
     var vacationSearch = VacationSearch()
+
+    var exactMatchResortsArray = [Resort]()
+    var surroundingMatchResortsArray = [Resort]()
+    
+
     // sorting optionDelegate call
     
     func selectedOptionis(filteredValueIs:String, indexPath:NSIndexPath, isFromFiltered:Bool) {
@@ -84,6 +90,16 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     override func viewWillAppear(_ animated: Bool) {
         
         self.navigationController?.navigationBar.barTintColor = UIColor.init(colorLiteralRed: 70.0/255.0, green: 136.0/255.0, blue: 193.0/255.0, alpha: 1.0)
+        let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
+        print(sections.count)
+        if(sections.count > 0){
+            let resortsExact = sections[0].item?.rentalInventory
+            exactMatchResortsArray = resortsExact!
+            if(sections.count > 1){
+            let resortsSurrounding = sections[1].item?.rentalInventory
+            surroundingMatchResortsArray = resortsSurrounding!
+            }
+        }
     }
     
     override func viewDidLoad() {
@@ -324,10 +340,12 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
             if(section == 0){
                 return 1
             }else{
-                let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
-                let inventoryCount = sectionsInSearchResult[section].item?.rentalInventory[collectionView.tag].inventory?.units.count
-                return inventoryCount!
-
+                
+                if(collectionView.superview?.superview?.tag == 0){
+                    return (exactMatchResortsArray[collectionView.tag].inventory?.units.count)!
+                }else{
+                    return (surroundingMatchResortsArray[collectionView.tag].inventory?.units.count)!
+                }
             }
         }
     }
@@ -388,10 +406,12 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
         
         let headerLabel = UILabel(frame: CGRect(x: 20, y: 0, width: self.resortDetailTBLView.frame.width - 40, height: 40))
         let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
-        if(sectionsInSearchResult[section].exactMatch)!{
-            headerLabel.text = "Resorts in \(String(describing: Helper.resolveDestinationInfo(destination: sectionsInSearchResult[section].destination!)))"
-        }else{
-            headerLabel.text = "Resorts near \(String(describing: Helper.resolveDestinationInfo(destination: sectionsInSearchResult[section].destination!)))"
+        for section in sectionsInSearchResult{
+            if(section.exactMatch)!{
+                headerLabel.text = "Resorts in \(String(describing: Helper.resolveDestinationInfo(destination: section.destination!)))"
+            }else{
+                headerLabel.text = "Resorts near \(String(describing: Helper.resolveDestinationInfo(destination: section.destination!)))"
+            }
         }
         
         headerLabel.textColor = UIColor.white
@@ -436,9 +456,8 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
             return CGFloat(cellHeight)
         }*/
         
-        let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
-        let inventoryCount = sectionsInSearchResult[indexPath.section].item?.rentalInventory[indexPath.row].inventory?.units.count
-        return CGFloat(CGFloat(inventoryCount!*100) + 280)
+        
+        return 400
         
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -522,7 +541,8 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
                     //}
                     
                 }, onError: { (error) in
-                    print(Error.self)
+                    
+                    
                     Helper.hideProgressBar(senderView: self)
                 })
                 
@@ -628,7 +648,10 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
         //***** configuring prototype cell for UpComingtrip resort details *****//
         if(!Constant.MyClassConstants.isFromExchange) {
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: "AvailbilityCell", for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "AvailbilityCell", for: indexPath) as! SearchTableViewCell
+            cell.tag = indexPath.section
+            cell.resortInfoCollectionView.tag = indexPath.row
+            cell.resortInfoCollectionView.isScrollEnabled = false
             cell.layer.borderWidth = 0.5
             cell.layer.borderColor = UIColor.lightGray.cgColor
             
@@ -798,9 +821,9 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
         
         //***** Return number of sections required in tableview *****//
         //return Constant.MyClassConstants.resortsArray.count
-        let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
-        print(sections.count)
-        return sections.count
+        //return 2
+        let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
+        return sectionsInSearchResult.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -820,9 +843,11 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 return 1
             }
         }else{
-            let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
-            print(sectionsInSearchResult[section].item?.rentalInventory.count)
-            return (sectionsInSearchResult[section].item?.rentalInventory.count)!
+            if(section == 0){
+                return exactMatchResortsArray.count
+            }else{
+                return surroundingMatchResortsArray.count
+            }
         }
     }
     

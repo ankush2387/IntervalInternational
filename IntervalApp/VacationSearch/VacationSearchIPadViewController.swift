@@ -538,7 +538,6 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                 
                 let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
                 rentalSearchCriteria.destination = destinations[0]
-                rentalSearchCriteria.resorts = resorts
                 
                 rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                 
@@ -552,15 +551,16 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                 RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: vacationSearch.rentalSearch?.searchContext.request, onSuccess:{ (response) in
                     
                     self.vacationSearch.rentalSearch?.searchContext.response = response
-                    
+                    let activeInterval = self.vacationSearch.bookingWindow.getActiveInterval()
                     // Update active interval
-                    //self.vacationSearch.updateActiveInterval()
-                    
-                    // Get activeInterval (or initial search interval)
-                    let activeInterval = BookingWindowInterval(interval: self.vacationSearch.bookingWindow.getActiveInterval())
-                    print(activeInterval.hasCheckInDates(), activeInterval.fetchedBefore)
+                    self.vacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                    self.showScrollingCalendar()
+                   
+                    print(activeInterval?.hasCheckInDates(), activeInterval?.fetchedBefore)
                     // Check not available checkIn dates for the active interval
-                    if (activeInterval.fetchedBefore && !activeInterval.hasCheckInDates()) {
+                    if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                        // Update active interval
+                        self.vacationSearch.updateActiveInterval(activeInterval: activeInterval)
                         self.showScrollingCalendar()
                         
                         self.showNotAvailabilityResults()
@@ -572,7 +572,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                     
                     DarwinSDK.logger.info("Initial Rental Search using request payload:")
                     DarwinSDK.logger.info(" CheckInDate = \(initialSearchCheckInDate)")
-                    DarwinSDK.logger.info(" ResortCodes = \(String(describing: activeInterval.resortCodes))")
+                    DarwinSDK.logger.info(" ResortCodes = \(String(describing: activeInterval?.resortCodes))")
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     sender.isEnabled = true
                     Helper.helperDelegate = self
@@ -627,11 +627,12 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                     sender.isEnabled = true
                     self.vacationSearch.exchangeSearch?.searchContext.response = response
                     
-                    // Update active interval
-                    //self.vacationSearch.updateActiveInterval()
-                    
+
                     // Get activeInterval (or initial search interval)
                     let activeInterval = BookingWindowInterval(interval: self.vacationSearch.bookingWindow.getActiveInterval())
+                    
+                    // Update active interval
+                    self.vacationSearch.updateActiveInterval(activeInterval: activeInterval)
                     
                     // Check not available checkIn dates for the active interval
                     if (activeInterval.fetchedBefore && !activeInterval.hasCheckInDates()) {
@@ -1019,55 +1020,6 @@ extension VacationSearchIPadViewController:WereWantToGoTableViewCellDelegate {
         }) { (error) in
             
         }
-    }
-    
-    /*
-     * Execute Rental Search Availability
-     */
-    func executeRentalSearchAvailability(activeInterval:BookingWindowInterval!, checkInDate:Date!) {
-        DarwinSDK.logger.error("----- Waiting for search availability ... -----")
-        
-        let request = RentalSearchResortsRequest()
-        request.checkInDate = checkInDate
-        request.resortCodes = activeInterval.resortCodes
-        
-        RentalClient.searchResorts(UserContext.sharedInstance.accessToken, request: request,
-                                   onSuccess: { (response) in
-                                    // Update Rental inventory
-                                    
-                                    Constant.MyClassConstants.resortsArray = response.resorts
-                                    
-                                    self.vacationSearch.rentalSearch?.inventory = response.resorts
-                                    
-                                    // Check if not has availability in the desired check-In date.
-                                    if (self.vacationSearch.searchCriteria.checkInDate != checkInDate) {
-                                        self.showNearestCheckInDateSelectedMessage()
-                                    }
-                                    
-                                    self.showScrollingCalendar()
-                                    
-                                    self.showAvailabilityResults()
-                                    
-                                    //expectation.fulfill()
-                                    Helper.hideProgressBar(senderView: self)
-                                    self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
-        },
-                                   onError:{ (error) in
-                                    DarwinSDK.logger.error("Error Code: \(error.code)")
-                                    DarwinSDK.logger.error("Error Description: \(error.description)")
-                                    
-                                    let INVENTORY_NOT_AVAILABLE_CODE = "d67dc7030d7462db65465023262e704f"
-                                    let sdkErrorCode = String(describing: error.userInfo["errorCode"])
-                                    
-                                    if (INVENTORY_NOT_AVAILABLE_CODE == sdkErrorCode) {
-                                        // TODO: Define behavior for not available inventory
-                                        DarwinSDK.logger.error("Define behavior for not available inventory.")
-                                    } else {
-                                        // TODO: Handle SDK/API errors
-                                        DarwinSDK.logger.error("Handle SDK/API errors.")
-                                    }
-            }
-        )
     }
     
 }

@@ -1732,25 +1732,33 @@ public class Helper{
     
     static func showScrollingCalendar(vacationSearch:VacationSearch) {
         DarwinSDK.logger.info("-- Create Calendar based on Booking Window Intervals --")
+        
+        Constant.MyClassConstants.singleDateArray.removeAll()
+        Constant.MyClassConstants.availableBucketArray.removeAll()
+        Constant.MyClassConstants.noAvailableBucketArray.removeAll()
         Constant.MyClassConstants.calendarDatesArray.removeAll()
         
         let calendar = vacationSearch.createCalendar()
         
         // Show up the Scrolling Calendar in UI
         for calendarItem in calendar {
-            Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
             if (calendarItem.isInterval)! {
                 // Is a Interval of Dates
                 if (calendarItem.isIntervalAvailable)! {
                     // Available for selection or click by the Member
+
+                    Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
                     DarwinSDK.logger.info("\(String(describing: calendarItem.intervalStartDate!)) - \(String(describing: calendarItem.intervalEndDate!)) [Available]")
+                    
                 } else {
                     // No available for selection or click by the Member
+Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
                     DarwinSDK.logger.info("\(String(describing: calendarItem.intervalStartDate!)) - \(String(describing: calendarItem.intervalEndDate!)) [No Available]")
                 }
             } else {
                 // Is a Single Date
                 DarwinSDK.logger.info("\(String(describing: calendarItem.checkInDate!))")
+                Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
             }
         }
     }

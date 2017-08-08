@@ -597,22 +597,23 @@ extension SearchResultViewController:UICollectionViewDelegate {
         }
     }
 }
-//extension SearchResultViewController:UICollectionViewDelegateFlowLayout {
-//    
-//    //***** Collection delegate methods definition here *****//
-//    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-//        return UIEdgeInsets(top: 2.0, left: 6.0, bottom: 0.0, right: 6.0)
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        if ((indexPath as NSIndexPath).item == 0 || (indexPath as NSIndexPath).item == Constant.MyClassConstants.singleDateArray.count+1){
-//            return CGSize(width: 120.0, height: 50.0)
-//        }else{
-//            return CGSize(width: 150.0, height: 50.0)
-//        }
-//    }
-//}
+extension SearchResultViewController:UICollectionViewDelegateFlowLayout {
+    
+    //***** Collection delegate methods definition here *****//
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 2.0, left: 6.0, bottom: 0.0, right: 6.0)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        if (Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)!{
+            return CGSize(width: 160.0, height: 80.0)
+        }else{
+            return CGSize(width: 80.0, height: 60.0)
+        }
+    }
+}
 
 extension SearchResultViewController:UICollectionViewDataSource {
     
@@ -623,69 +624,57 @@ extension SearchResultViewController:UICollectionViewDataSource {
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-             return Constant.MyClassConstants.singleDateArray.count + Constant.MyClassConstants.availableBucketArray.count + Constant.MyClassConstants.noAvailableBucketArray.count - 2
+             return Constant.MyClassConstants.calendarDatesArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if ((indexPath as NSIndexPath).item == 0 || (indexPath as NSIndexPath).item > Constant.MyClassConstants.singleDateArray.count) {
+        
+        if(collectionView.tag == -1){
             
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.vacationSearchScreenReusableIdentifiers.moreCell, for: indexPath) as! MoreCell
-  
-            Constant.MyClassConstants.totalBucketArray = Constant.MyClassConstants.availableBucketArray + Constant.MyClassConstants.noAvailableBucketArray
-
+            if (Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)! {
+                
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.vacationSearchScreenReusableIdentifiers.moreCell, for: indexPath) as! MoreCell
+                cell.setDateForBucket(index: indexPath.item, selectedIndex: collectionviewSelectedIndex)
+                return cell
+            }else {
+                
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.customCellNibNames.searchResultCollectionCell, for: indexPath) as! SearchResultCollectionCell
+                if((indexPath as NSIndexPath).row == collectionviewSelectedIndex) {
+                    
+                    cell.backgroundColor = IUIKColorPalette.primary1.color
+                    cell.dateLabel.textColor = UIColor.white
+                    cell.daynameWithyearLabel.textColor = UIColor.white
+                    cell.monthYearLabel.textColor = UIColor.white
+                }
+                else {
+                    cell.backgroundColor = UIColor.white
+                    cell.dateLabel.textColor = IUIKColorPalette.primary1.color
+                    cell.daynameWithyearLabel.textColor = IUIKColorPalette.primary1.color
+                    cell.monthYearLabel.textColor = IUIKColorPalette.primary1.color
+                }
+                cell.layer.cornerRadius = 7
+                cell.layer.borderWidth = 2
+                cell.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
+                cell.layer.masksToBounds = true
+                
+                cell.setSingleDateItems(index: indexPath.item)
+                return cell
+            }
             
-            cell.setDateForBucket(index:bucketIndex, selectedIndex: 0)
-            if(indexPath.item == 0 ){
-                bucketIndex = bucketIndex + 1
-            }
-            else{
-                bucketIndex = (indexPath.item + 1) - Constant.MyClassConstants.singleDateArray.count
-            }
-            cell.layer.cornerRadius = 7
-            cell.layer.borderWidth = 2
-            cell.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
-            cell.layer.masksToBounds = true
-            if (!self.enablePreviousMore && (indexPath as NSIndexPath).item == 0) {
-                cell.isUserInteractionEnabled = false
-            }
-            else if(!self.enableNextMore && (indexPath as NSIndexPath).item == 1) {
-                
-                cell.isUserInteractionEnabled = false
-            }
-            else {
-                
-                cell.isUserInteractionEnabled = true
-            }
-            return cell
         }
-        else {
+        else{
             
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.customCellNibNames.searchResultCollectionCell, for: indexPath) as! SearchResultCollectionCell
-            if((indexPath as NSIndexPath).row == collectionviewSelectedIndex) {
-                
-                cell.backgroundColor = IUIKColorPalette.primary1.color
-                cell.dateLabel.textColor = UIColor.white
-                cell.daynameWithyearLabel.textColor = UIColor.white
-                cell.monthYearLabel.textColor = UIColor.white
-            }
-            else {
-                cell.backgroundColor = UIColor.white
-                cell.dateLabel.textColor = IUIKColorPalette.primary1.color
-                cell.daynameWithyearLabel.textColor = IUIKColorPalette.primary1.color
-                cell.monthYearLabel.textColor = IUIKColorPalette.primary1.color
-            }
-            cell.layer.cornerRadius = 7
-            cell.layer.borderWidth = 2
-            cell.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
-            cell.layer.masksToBounds = true
-            
-            cell.setSingleDateItems(index: indexPath.item)
+            if(indexPath.section == 0){
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! AvailabilityCollectionViewCell
+                return cell
+            }else{
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RentalInventory", for: indexPath) as! AvailabilityCollectionViewCell
+                return cell
 
-            
-            return cell
         }
+
     }
-    
+    }
     
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
