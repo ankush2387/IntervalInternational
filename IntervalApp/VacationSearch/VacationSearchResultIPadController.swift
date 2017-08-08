@@ -34,6 +34,8 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     var selectedUnitIndex = 0
     var selectedSection = 0
     var selectedRow = 0
+    var exactMatchResortsArray = [Resort]()
+    var surroundingMatchResortsArray = [Resort]()
     
     
     // sorting optionDelegate call
@@ -52,6 +54,16 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     override func viewWillAppear(_ animated: Bool) {
         
         self.navigationController?.navigationBar.barTintColor = UIColor.init(colorLiteralRed: 70.0/255.0, green: 136.0/255.0, blue: 193.0/255.0, alpha: 1.0)
+        let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
+        print(sections.count)
+        if(sections.count > 0){
+            let resortsExact = sections[0].item?.rentalInventory
+            exactMatchResortsArray = resortsExact!
+            if(sections.count > 1){
+            let resortsSurrounding = sections[1].item?.rentalInventory
+            surroundingMatchResortsArray = resortsSurrounding!
+            }
+        }
     }
     
     override func viewDidLoad() {
@@ -289,7 +301,24 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+
         return Constant.MyClassConstants.calendarDatesArray.count
+
+        if(collectionView.tag == -1){
+            return Constant.MyClassConstants.calendarDatesArray.count
+        }else{
+            if(section == 0){
+                return 1
+            }else{
+                
+                if(collectionView.superview?.superview?.tag == 0){
+                    return (exactMatchResortsArray[collectionView.tag].inventory?.units.count)!
+                }else{
+                    return (surroundingMatchResortsArray[collectionView.tag].inventory?.units.count)!
+                }
+            }
+        }
+>>>>>>> 43dded974a66af7914056206b8a125c1116166b3
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -586,7 +615,14 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
         //***** configuring prototype cell for UpComingtrip resort details *****//
         if((indexPath as NSIndexPath).row == 0) {
             
+
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.imageWithNameCell, for: indexPath) as! ImageWithNameCell
+
+            let cell = tableView.dequeueReusableCell(withIdentifier: "AvailbilityCell", for: indexPath) as! SearchTableViewCell
+            cell.tag = indexPath.section
+            cell.resortInfoCollectionView.tag = indexPath.row
+            cell.resortInfoCollectionView.isScrollEnabled = false
+>>>>>>> 43dded974a66af7914056206b8a125c1116166b3
             cell.layer.borderWidth = 0.5
             cell.layer.borderColor = UIColor.lightGray.cgColor
             
@@ -757,7 +793,12 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         
         //***** Return number of sections required in tableview *****//
+<<<<<<< HEAD
         return Constant.MyClassConstants.resortsArray.count
+=======
+        //return Constant.MyClassConstants.resortsArray.count
+        return 2
+>>>>>>> 43dded974a66af7914056206b8a125c1116166b3
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -777,11 +818,19 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 return 1
             }
         }else{
+<<<<<<< HEAD
             var inventoryDict = Inventory()
             inventoryDict = Constant.MyClassConstants.resortsArray[section].inventory!
             let invent = inventoryDict
             self.unitSizeArray = invent.units
             return self.unitSizeArray.count + 1
+=======
+            if(section == 0){
+                return exactMatchResortsArray.count
+            }else{
+                return surroundingMatchResortsArray.count
+            }
+>>>>>>> 43dded974a66af7914056206b8a125c1116166b3
         }
     }
     
