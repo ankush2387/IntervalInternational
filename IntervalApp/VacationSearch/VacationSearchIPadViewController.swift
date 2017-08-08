@@ -627,6 +627,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                     sender.isEnabled = true
                     self.vacationSearch.exchangeSearch?.searchContext.response = response
                     
+
                     // Get activeInterval (or initial search interval)
                     let activeInterval = BookingWindowInterval(interval: self.vacationSearch.bookingWindow.getActiveInterval())
                     

@@ -44,36 +44,34 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
     
     func selectedOptionis(filteredValueIs:String, indexPath:NSIndexPath, isFromFiltered:Bool) {
         
-        var selectedvalue = filteredValueIs 
+        var selectedvalue = filteredValueIs.uppercased()
         
         if isFromFiltered {
             Constant.MyClassConstants.filteredIndex = indexPath.row
         } else {
             Constant.MyClassConstants.sortingIndex = indexPath.row
             
-            if selectedvalue.capitalized == "DEFAULT" {
+            if selectedvalue == "DEFAULT" {
                 selectedvalue = "DEFAULT"
-            } else if (selectedvalue.capitalized == "RESORT_NAME") {
+            } else if (selectedvalue == "RESORT NAME:") {
                 selectedvalue = "RESORT_NAME"
                 
-            } else if (selectedvalue.capitalized == "CITY_NAME") {
+            } else if (selectedvalue == "CITY:") {
                 selectedvalue = "CITY_NAME"
                 
-            } else if (selectedvalue.capitalized == "RESORT_TIER") {
+            } else if (selectedvalue == "RESORT TIER:") {
                 selectedvalue = "RESORT_TIER"
                 
-            } else if (filteredValueIs.capitalized == "PRICE") {
-                 selectedvalue = "PRICE"
+            } else if (selectedvalue == "PRICE:") {
+                selectedvalue = "PRICE"
                 
             } else {
                 selectedvalue = "UNKNOWN"
             }
-           
             
-            let activeInterval = BookingWindowInterval(interval: self.vacationSearch.bookingWindow.getActiveInterval())
+            let activeInterval = BookingWindowInterval(interval: Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval())
             
-            
-            let initialSearchCheckInDate = self.vacationSearch.getCheckInDateForInitialSearch()
+            let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.getCheckInDateForInitialSearch()
             
             let vacationSearchForSorting = Constant.MyClassConstants.initialVacationSearch
             
@@ -83,6 +81,7 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
             
              Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: vacationSearchForSorting)
             
+            self.dismiss(animated: true, completion: nil)
             searchResultTableView.reloadData()
         }
         

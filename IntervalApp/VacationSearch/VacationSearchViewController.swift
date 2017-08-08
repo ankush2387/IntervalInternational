@@ -1456,7 +1456,9 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     
 
                     // Update active interval
+
                     self.vacationSearch.updateActiveInterval(activeInterval: self.vacationSearch.bookingWindow.currentInterval)
+
 
 
                     

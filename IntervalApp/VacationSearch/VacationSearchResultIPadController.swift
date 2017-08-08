@@ -34,21 +34,57 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     var selectedUnitIndex = 0
     var selectedSection = 0
     var selectedRow = 0
+
+    var vacationSearch = VacationSearch()
+
     var exactMatchResortsArray = [Resort]()
     var surroundingMatchResortsArray = [Resort]()
     
-    
-    
+
     // sorting optionDelegate call
     
     func selectedOptionis(filteredValueIs:String, indexPath:NSIndexPath, isFromFiltered:Bool) {
+         var selectedvalue = filteredValueIs.uppercased()
         
         if isFromFiltered {
             Constant.MyClassConstants.filteredIndex = indexPath.row
         } else {
             Constant.MyClassConstants.sortingIndex = indexPath.row
+            
+            if selectedvalue == "DEFAULT" {
+                selectedvalue = "DEFAULT"
+            } else if (selectedvalue == "RESORT NAME:") {
+                selectedvalue = "RESORT_NAME"
+                
+            } else if (selectedvalue == "CITY:") {
+                selectedvalue = "CITY_NAME"
+                
+            } else if (selectedvalue == "RESORT TIER:") {
+                selectedvalue = "RESORT_TIER"
+                
+            } else if (selectedvalue == "PRICE:") {
+                selectedvalue = "PRICE"
+                
+            } else {
+                selectedvalue = "UNKNOWN"
+            }
+            
+            
+            let activeInterval = BookingWindowInterval(interval: Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval())
+            
+            let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.getCheckInDateForInitialSearch()
+            
+            let vacationSearchForSorting = Constant.MyClassConstants.initialVacationSearch
+            
+            vacationSearchForSorting.sortType = AvailabilitySortType(rawValue: selectedvalue)!
+            
+            // sorting apin integration
+            
+            Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: vacationSearchForSorting)
+            
+            self.dismiss(animated: true, completion: nil)
+            resortDetailTBLView.reloadData()
         }
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -360,6 +396,7 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40
+
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
