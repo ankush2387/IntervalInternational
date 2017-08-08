@@ -554,7 +554,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                     self.vacationSearch.rentalSearch?.searchContext.response = response
                     
                     // Update active interval
-                    self.vacationSearch.updateActiveInterval()
+                    //self.vacationSearch.updateActiveInterval()
                     
                     // Get activeInterval (or initial search interval)
                     let activeInterval = BookingWindowInterval(interval: self.vacationSearch.bookingWindow.getActiveInterval())
@@ -628,7 +628,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                     self.vacationSearch.exchangeSearch?.searchContext.response = response
                     
                     // Update active interval
-                    self.vacationSearch.updateActiveInterval()
+                    //self.vacationSearch.updateActiveInterval()
                     
                     // Get activeInterval (or initial search interval)
                     let activeInterval = BookingWindowInterval(interval: self.vacationSearch.bookingWindow.getActiveInterval())
