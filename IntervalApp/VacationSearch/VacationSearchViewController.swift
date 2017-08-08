@@ -1455,7 +1455,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     self.vacationSearch.rentalSearch?.searchContext.response = response
                     
                     // Update active interval
-                    self.vacationSearch.updateActiveInterval(activeInterval: BookingWindowInterval?)
+                    self.vacationSearch.updateActiveInterval(activeInterval: self.vacationSearch.bookingWindow.currentInterval)
                     
                     // Get activeInterval (or initial search interval)
                     let activeInterval = BookingWindowInterval(interval: self.vacationSearch.bookingWindow.getActiveInterval())
@@ -1503,129 +1503,84 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         }else if(self.SegmentIndex == 2){
             
             
-            
-            if(Constant.MyClassConstants.relinquishmentIdArray.count == 0){
-              SimpleAlert.alert(self, title: Constant.AlertErrorMessages.noResultError, message: Constant.AlertMessages.tradeItemMessage)
-            }else{
-                
-            let appSettings = AppSettings()
-            appSettings.searchByBothEnable = false
-            appSettings.collapseBookingIntervalEnable = true
-            appSettings.checkInSelectorStrategy = CheckInSelectorStrategy.First.rawValue
-    
-                
             sender.isEnabled = false
             Helper.showProgressBar(senderView: self)
-            let (toDate,fromDate) = getSearchDates()
-            let exchangeSearchDateRequest = ExchangeSearchDatesRequest()
-            exchangeSearchDateRequest.checkInFromDate = fromDate
-            exchangeSearchDateRequest.checkInToDate = toDate
-            exchangeSearchDateRequest.destinations = Helper.getAllDestinationFromLocalStorage()
-            exchangeSearchDateRequest.resorts = Helper.getAllResortsFromLocalStorage()
+            
+            let destinations = Helper.getAllDestinationFromLocalStorage()
+            let resorts = Helper.getAllResortsFromLocalStorage()
             
             let travelPartyInfo = TravelParty()
             travelPartyInfo.adults = Int(self.adultCounter)
             travelPartyInfo.children = Int(self.childCounter)
+            
             Constant.MyClassConstants.travelPartyInfo = travelPartyInfo
             
-            exchangeSearchDateRequest.travelParty = travelPartyInfo
-            
-            exchangeSearchDateRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
-                
-                
-           
-            
             if Reachability.isConnectedToNetwork() == true {
-                ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request: exchangeSearchDateRequest, onSuccess: { (exchangeSearchDates) in
-                    var combinedSearchDates = [Date]()
-                    combinedSearchDates = exchangeSearchDates.checkInDates.map { $0 }
-                    combinedSearchDates.append(contentsOf: exchangeSearchDates.surroundingCheckInDates.map { $0 })
-                    
-                    var combinedResortCodes = [String]()
-                    combinedResortCodes = exchangeSearchDates.resortCodes.map { $0 } + exchangeSearchDates.surroundingResortCodes.map { $0 }
-                    
-                    Constant.MyClassConstants.combinedCheckInDates = exchangeSearchDates.checkInDates
-                    Constant.MyClassConstants.surroundingCheckInDates = exchangeSearchDates.surroundingCheckInDates.map { $0 }
-                    Constant.MyClassConstants.checkInDates = combinedSearchDates
-                    Constant.MyClassConstants.resortCodesArray = combinedResortCodes
-                    Constant.MyClassConstants.surroundingResortCodesArray = exchangeSearchDates.surroundingResortCodes.map { $0 }
-                    
-                    
+                
+                let appSettings = AppSettings()
+                appSettings.searchByBothEnable = false
+                appSettings.checkInSelectorStrategy = CheckInSelectorStrategy.First.rawValue
+                appSettings.collapseBookingIntervalEnable = true
+                
+                
+                let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
+                exchangeSearchCriteria.destination = destinations[0]
+                exchangeSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
+                exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
+                exchangeSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
+                exchangeSearchCriteria.searchType = VacationSearchType.Exchange
+                
+                self.vacationSearch = VacationSearch.init(appSettings, exchangeSearchCriteria)
+                
+                ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request:vacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
                     sender.isEnabled = true
-                    if(Constant.MyClassConstants.checkInDates.count == 0) {
-                        Helper.hideProgressBar(senderView: self)
-                        SimpleAlert.alert(self, title: Constant.AlertErrorMessages.noResultError, message: Constant.AlertMessages.noResultMessage)
-                    }else {
-                        
-                        let vacationSearchDateString = Helper.convertDateToString(date: Constant.MyClassConstants.vacationSearchShowDate, format: Constant.MyClassConstants.dateFormat)
-                        let datesStringArray = NSMutableArray()
-                        for searchDate in Constant.MyClassConstants.checkInDates{
-                            let searchedDate = Helper.convertDateToString(date: searchDate, format: Constant.MyClassConstants.dateFormat)
-                            datesStringArray.add(searchedDate)
-                        }
-                        if (!datesStringArray.contains(vacationSearchDateString)){
-                            
-                            Constant.MyClassConstants.resortsArray.removeAll()
-                            Constant.MyClassConstants.checkInDates.insert(Constant.MyClassConstants.vacationSearchShowDate, at: 0)
-                            
-                            if let dateToSelect = Constant.MyClassConstants.checkInDates.index(of: Constant.MyClassConstants.vacationSearchShowDate) {
-                                Constant.MyClassConstants.searchResultCollectionViewScrollToIndex = dateToSelect + 1
-                                
-                                let exchangeAvailabilityRequest = ExchangeSearchAvailabilityRequest()
-                                exchangeAvailabilityRequest.checkInDate = Constant.MyClassConstants.checkInDates[dateToSelect]
-                                exchangeAvailabilityRequest.resortCodes = Constant.MyClassConstants.resortCodesArray
-                                exchangeAvailabilityRequest.travelParty = travelPartyInfo
-                                exchangeAvailabilityRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
-                                
-                                //Check resorts for search availability.
-                                self.searchAvailability(exchangeAvailabilityRequest: exchangeAvailabilityRequest, sender: sender)
-                                
-                            }
-                        }else {
-                            
-                            if let dateToSelect = Constant.MyClassConstants.checkInDates.index(of: Constant.MyClassConstants.vacationSearchShowDate) {
-                                Constant.MyClassConstants.searchResultCollectionViewScrollToIndex = dateToSelect + 1
-                                Constant.MyClassConstants.showAlert = false
-                                sender.isEnabled = true
-                                
-                                let exchangeAvailabilityRequest = ExchangeSearchAvailabilityRequest()
-                                exchangeAvailabilityRequest.checkInDate = Constant.MyClassConstants.checkInDates[dateToSelect]
-                                exchangeAvailabilityRequest.resortCodes = exchangeSearchDates.resortCodes
-                                exchangeAvailabilityRequest.travelParty = travelPartyInfo
-                                exchangeAvailabilityRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
-                                
-                                //Check resorts for search availability.
-                                self.searchAvailability(exchangeAvailabilityRequest: exchangeAvailabilityRequest, sender: sender)
-                            }else {
-                                Constant.MyClassConstants.searchResultCollectionViewScrollToIndex = 1
-                                //SVProgressHUD.dismiss()
-                                //Helper.removeServiceCallBackgroundView(view: self.view)
-                                //Helper.hideProgressBar(senderView: self)
-                                sender.isEnabled = true
-                                
-                                let exchangeAvailabilityRequest = ExchangeSearchAvailabilityRequest()
-                                exchangeAvailabilityRequest.checkInDate = exchangeSearchDates.checkInDates[0]
-                                exchangeAvailabilityRequest.resortCodes = Constant.MyClassConstants.resortCodesArray
-                                exchangeAvailabilityRequest.travelParty = travelPartyInfo
-                                exchangeAvailabilityRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
-                                
-                                //Call for search availability
-                                self.searchAvailability(exchangeAvailabilityRequest: exchangeAvailabilityRequest, sender: sender)
-                            }
-                        }
+                    self.vacationSearch.exchangeSearch?.searchContext.response = response
+                    
+                    // Update active interval
+                    //self.vacationSearch.updateActiveInterval(activeInterval: BookingWindowInterval?)
+                    
+                    // Get activeInterval (or initial search interval)
+                    let activeInterval = BookingWindowInterval(interval: self.vacationSearch.bookingWindow.getActiveInterval())
+                    
+                    // Check not available checkIn dates for the active interval
+                    if (activeInterval.fetchedBefore && !activeInterval.hasCheckInDates()) {
+                        self.showScrollingCalendar()
+                        self.showNotAvailabilityResults()
                     }
+                    
+                    DarwinSDK.logger.info("Auto call to Search Availability")
+                    
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd"
+                    
+                    if (activeInterval.hasCheckInDates()){
+                        let initialSearchCheckInDate = self.vacationSearch.getCheckInDateForInitialSearch()
+                        
+                        DarwinSDK.logger.info("Initial Rental Search using request payload:")
+                        DarwinSDK.logger.info(" CheckInDate = \(initialSearchCheckInDate)")
+                        DarwinSDK.logger.info(" ResortCodes = \(String(describing: activeInterval.resortCodes))")
+                        
+                        self.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: dateFormatter.date(from: initialSearchCheckInDate))
+                    }else{
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "yyyy-MM-dd"
+                        Helper.hideProgressBar(senderView: self)
+                        self.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate:exchangeSearchCriteria.checkInDate)
+                    }
+                    
                 }, onError: { (error) in
                     sender.isEnabled = true
                     Helper.hideProgressBar(senderView: self)
-                    SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                    SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.noResultError)
                 })
             }else{
-                sender.isEnabled = true
                 Helper.hideProgressBar(senderView: self)
                 SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
             }
             Constant.MyClassConstants.isFromExchange = true
-        }
+
+            
+           
         }
     }
     
@@ -1714,6 +1669,29 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
     func showNotAvailabilityResults() {
         DarwinSDK.logger.info("Show the Not Availability Screen.")
     }
+    
+    /*
+     * Execute Exchange Search Availability
+     */
+    
+    func executeExchangeSearchAvailability(activeInterval: BookingWindowInterval!, checkInDate:Date!) {
+        
+        let request = ExchangeSearchAvailabilityRequest()
+        request.checkInDate = checkInDate
+        request.resortCodes = activeInterval.resortCodes!
+        request.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
+        request.travelParty = Constant.MyClassConstants.travelPartyInfo
+        
+        
+        ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: request, onSuccess: { (searchAvailabilityResponse) in
+            
+            print(searchAvailabilityResponse)
+        }) { (error) in
+            
+        }
+    }
+    
+    
     
     /*
      * Execute Rental Search Availability
