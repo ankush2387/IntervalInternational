@@ -35,15 +35,55 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
     var cellHeight = 50
     var selectedSection = 0
     var selectedRow = 0
+
     var bucketIndex = 0
+
+    var vacationSearch = VacationSearch()
+
     // sorting optionDelegate call
     
     func selectedOptionis(filteredValueIs:String, indexPath:NSIndexPath, isFromFiltered:Bool) {
+        
+        var selectedvalue = filteredValueIs 
         
         if isFromFiltered {
             Constant.MyClassConstants.filteredIndex = indexPath.row
         } else {
             Constant.MyClassConstants.sortingIndex = indexPath.row
+            
+            if selectedvalue.capitalized == "DEFAULT" {
+                selectedvalue = "DEFAULT"
+            } else if (selectedvalue.capitalized == "RESORT_NAME") {
+                selectedvalue = "RESORT_NAME"
+                
+            } else if (selectedvalue.capitalized == "CITY_NAME") {
+                selectedvalue = "CITY_NAME"
+                
+            } else if (selectedvalue.capitalized == "RESORT_TIER") {
+                selectedvalue = "RESORT_TIER"
+                
+            } else if (filteredValueIs.capitalized == "PRICE") {
+                 selectedvalue = "PRICE"
+                
+            } else {
+                selectedvalue = "UNKNOWN"
+            }
+           
+            
+            let activeInterval = BookingWindowInterval(interval: self.vacationSearch.bookingWindow.getActiveInterval())
+            
+            
+            let initialSearchCheckInDate = self.vacationSearch.getCheckInDateForInitialSearch()
+            
+            let vacationSearchForSorting = Constant.MyClassConstants.initialVacationSearch
+            
+            vacationSearchForSorting.sortType = AvailabilitySortType(rawValue: selectedvalue)!
+            
+            // sorting apin integration
+            
+             Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: vacationSearchForSorting)
+            
+            searchResultTableView.reloadData()
         }
         
     }
@@ -196,6 +236,65 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
         })
         
     }
+
+
+
+    //Static Calling API for filterRelinquishments
+    
+    func getStaticFilterRelinquishments(){
+        Helper.showProgressBar(senderView: self)
+        let exchangeSearchDateRequest = ExchangeFilterRelinquishmentsRequest()
+        exchangeSearchDateRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
+        
+        let relinquishmentIDArray = ["Ek83chJmdS6ESNRpVfhH8QaTBeXh5rpNm_2AJLhV_4jRTiVySvOk2NKFm4iHOtEK",
+                                     "Ek83chJmdS6ESNRpVfhH8RFxFgvpS1HHCzYyrvzw42rRTiVySvOk2NKFm4iHOtEK",
+                                     "Ek83chJmdS6ESNRpVfhH8SOcpMOEqw1KO8bsQKhjLZnRTiVySvOk2NKFm4iHOtEK",
+                                     "Ek83chJmdS6ESNRpVfhH8YMAv0D39MaVmh75YJgm_IDRTiVySvOk2NKFm4iHOtEK"]
+        exchangeSearchDateRequest.relinquishmentsIds = relinquishmentIDArray//Constant.MyClassConstants.relinquishmentIdArray as! [String]
+        
+    
+        let exchangeDestination = ExchangeDestination()
+        let currentFromDate = Helper.convertDateToString(date: Constant.MyClassConstants.currentFromDate, format: Constant.MyClassConstants.dateFormat)
+        
+        let currentToDate = Helper.convertDateToString(date: Constant.MyClassConstants.currentToDate, format: Constant.MyClassConstants.dateFormat)
+        
+        let resort = Resort()
+        //resort.resortName = Constant.MyClassConstants.resortsArray[selectedIndex].resortName
+        resort.resortCode = "CZP"//Constant.MyClassConstants.resortsArray[selectedIndex].resortCode
+        
+        exchangeDestination.resort = resort
+        
+        let unit = InventoryUnit()
+        unit.kitchenType = "NO_KITCHEN"//Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.kitchenType!
+        unit.unitSize = "STUDIO"//Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitSize!
+        exchangeDestination.checkInDate = "2017-07-17"//currentFromDate
+        exchangeDestination.checkOutDate = "2017-07-24"//currentToDate
+        //unit.unitNumber = Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitNumber!
+        unit.publicSleepCapacity = 4
+        unit.privateSleepCapacity = 2
+        
+        exchangeDestination.unit = unit
+        
+        exchangeSearchDateRequest.destination = exchangeDestination
+        
+        ExchangeClient.filterRelinquishments(UserContext.sharedInstance.accessToken, request: exchangeSearchDateRequest, onSuccess: { (response) in
+            Helper.hideProgressBar(senderView: self)
+            for exchageDetail in response{
+                Constant.MyClassConstants.filterRelinquishments.append(exchageDetail.relinquishment!)
+            }
+            
+            Constant.MyClassConstants.selectedResort = Constant.MyClassConstants.resortsArray[self.selectedSection]
+            
+            Constant.MyClassConstants.inventoryPrice = (Constant.MyClassConstants.exchangeInventory[self.selectedSection].buckets[0].unit?.prices)!
+            Constant.MyClassConstants.exchangeDestination = exchangeDestination
+            
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+        }, onError: { (error) in
+            print(Error.self)
+            Helper.hideProgressBar(senderView: self)
+        })
+    }
+    
 
     //Dynamic API hit
     

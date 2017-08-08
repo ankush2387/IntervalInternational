@@ -19,8 +19,8 @@ class MoreCell: UICollectionViewCell {
     
     func setDateForBucket(index: Int){
         
-        let startDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.totalBucketArray[index].intervalStartDate!, format: Constant.MyClassConstants.dateFormat)
-        let endDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.totalBucketArray[index].intervalEndDate!, format: Constant.MyClassConstants.dateFormat)
+        let startDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.calendarDatesArray[index].intervalStartDate!, format: Constant.MyClassConstants.dateFormat)
+        let endDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.calendarDatesArray[index].intervalEndDate!, format: Constant.MyClassConstants.dateFormat)
         
         let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
         let startComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: startDate)

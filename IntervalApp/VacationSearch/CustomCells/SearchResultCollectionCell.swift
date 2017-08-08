@@ -23,7 +23,7 @@ class SearchResultCollectionCell: UICollectionViewCell {
     
     func setSingleDateItems(index: Int){
         
-        let calendarDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.singleDateArray[index - 1].checkInDate!, format: Constant.MyClassConstants.dateFormat)
+        let calendarDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.calendarDatesArray[index].checkInDate!, format: Constant.MyClassConstants.dateFormat)
         
         let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
         let startComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: calendarDate)

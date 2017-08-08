@@ -231,6 +231,7 @@ class Constant: NSObject {
         static var singleDateArray = [CalendarItem]()
         static var availableBucketArray = [CalendarItem]()
         static var noAvailableBucketArray = [CalendarItem]()
+        static var calendarDatesArray = [CalendarItem]()
         static var totalBucketArray = [CalendarItem]()
         static var calendarCount:Int!
         static var realmStoredDestIdOrCodeArray:NSMutableArray = []
