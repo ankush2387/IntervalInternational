@@ -16,6 +16,7 @@ class DetailedIssueViewController: UIViewController {
     internal var magazinTitile:String?
     @IBOutlet weak var webView:UIWebView?
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
