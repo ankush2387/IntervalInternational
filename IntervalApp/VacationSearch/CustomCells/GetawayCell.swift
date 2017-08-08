@@ -10,7 +10,6 @@ import UIKit
 
 class GetawayCell: UITableViewCell {
     
-    
     @IBOutlet weak var getawayNameLabel: UILabel!
     @IBOutlet weak var getawayPrice: UILabel!
     @IBOutlet weak var bedRoomType: UILabel!
