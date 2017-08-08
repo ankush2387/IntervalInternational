@@ -595,7 +595,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
         //***** configuring prototype cell for UpComingtrip resort details *****//
         if(!Constant.MyClassConstants.isFromExchange) {
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: "AvailbilityCell", for: indexPath) as!
+            let cell = tableView.dequeueReusableCell(withIdentifier: "AvailbilityCell", for: indexPath)
             cell.layer.borderWidth = 0.5
             cell.layer.borderColor = UIColor.lightGray.cgColor
             

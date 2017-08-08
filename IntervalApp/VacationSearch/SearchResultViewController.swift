@@ -635,7 +635,7 @@ extension SearchResultViewController:UICollectionViewDataSource {
             Constant.MyClassConstants.totalBucketArray = Constant.MyClassConstants.availableBucketArray + Constant.MyClassConstants.noAvailableBucketArray
 
             
-            cell.setDateForBucket(index:bucketIndex)
+            cell.setDateForBucket(index:bucketIndex, selectedIndex: 0)
             if(indexPath.item == 0 ){
                 bucketIndex = bucketIndex + 1
             }
