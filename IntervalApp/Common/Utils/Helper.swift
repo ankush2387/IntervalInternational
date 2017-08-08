@@ -1680,7 +1680,6 @@ public class Helper{
            _ = completion(input)
     }
     
-    
     /*
      * Execute Rental Search Availability
      */
