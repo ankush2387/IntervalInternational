@@ -1338,13 +1338,11 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             Helper.showProgressBar(senderView: self)
             SVProgressHUD.show()
             sender.isEnabled = false
-            let (toDate,fromDate) = getSearchDates()
             
+            let destinations = Helper.getAllDestinationFromLocalStorage()
+            let resorts = Helper.getAllResortsFromLocalStorage()
             
-            searchDateRequest.checkInToDate = toDate
-            searchDateRequest.checkInFromDate = fromDate
-            searchDateRequest.destinations = Helper.getAllDestinationFromLocalStorage()
-            searchDateRequest.resorts = Helper.getAllResortsFromLocalStorage()
+
 //            if Reachability.isConnectedToNetwork() == true {
 //                
 //                ADBMobile.trackAction(Constant.omnitureEvents.event9, data: nil)
@@ -1443,9 +1441,9 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 let appSettings = createAppSetting()
                 
                 let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
-                rentalSearchCriteria.destination = searchDateRequest.destinations[0]
+                rentalSearchCriteria.destination = destinations[0]
                 
-                rentalSearchCriteria.checkInDate = searchDateRequest.checkInToDate
+                rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                 
                 
                 self.vacationSearch = VacationSearch(appSettings, rentalSearchCriteria)
@@ -1480,6 +1478,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     DarwinSDK.logger.info(" CheckInDate = \(initialSearchCheckInDate)")
                     DarwinSDK.logger.info(" ResortCodes = \(String(describing: activeInterval.resortCodes))")
                     Constant.MyClassConstants.checkInDates = response.checkInDates
+                    sender.isEnabled = true
                     self.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: dateFormatter.date(from: initialSearchCheckInDate))
                     
                     //expectation.fulfill()
@@ -1729,6 +1728,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         RentalClient.searchResorts(UserContext.sharedInstance.accessToken, request: request,
                                    onSuccess: { (response) in
                                     // Update Rental inventory
+                                    Constant.MyClassConstants.resortsArray = response.resorts
                                     self.vacationSearch.rentalSearch?.inventory = response.resorts
                                     
                                     // Check if not has availability in the desired check-In date.
@@ -1744,6 +1744,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                     //expectation.fulfill()
         },
                                    onError:{ (error) in
+                                     Helper.hideProgressBar(senderView: self)
                                     DarwinSDK.logger.error("Error Code: \(error.code)")
                                     DarwinSDK.logger.error("Error Description: \(error.description)")
                                     
