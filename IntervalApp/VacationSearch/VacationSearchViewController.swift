@@ -1455,7 +1455,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     self.vacationSearch.rentalSearch?.searchContext.response = response
                     
                     // Update active interval
-                    self.vacationSearch.updateActiveInterval()
+                    self.vacationSearch.updateActiveInterval(activeInterval: BookingWindowInterval?)
                     
                     // Get activeInterval (or initial search interval)
                     let activeInterval = BookingWindowInterval(interval: self.vacationSearch.bookingWindow.getActiveInterval())
@@ -1691,19 +1691,19 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 // Is a Interval of Dates
                 if (calendarItem.isIntervalAvailable)! {
                     // Available for selection or click by the Member
-                    Constant.MyClassConstants.availableBucketArray.append(calendarItem)
+                    Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
                     DarwinSDK.logger.info("\(String(describing: calendarItem.intervalStartDate!)) - \(String(describing: calendarItem.intervalEndDate!)) [Available]")
                    // Constant.MyClassConstants.bucketDateArray.add(<#T##anObject: Any##Any#>)
                     
                 } else {
                     // No available for selection or click by the Member
-                    Constant.MyClassConstants.noAvailableBucketArray.append(calendarItem)
+                    Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
                     DarwinSDK.logger.info("\(String(describing: calendarItem.intervalStartDate!)) - \(String(describing: calendarItem.intervalEndDate!)) [No Available]")
                 }
             } else {
                 // Is a Single Date
                 DarwinSDK.logger.info("\(String(describing: calendarItem.checkInDate!))")
-                Constant.MyClassConstants.singleDateArray.append(calendarItem)
+                Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
                 
             }
 

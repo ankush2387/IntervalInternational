@@ -598,22 +598,29 @@ extension SearchResultViewController:UICollectionViewDelegate {
         }
     }
 }
-//extension SearchResultViewController:UICollectionViewDelegateFlowLayout {
-//    
-//    //***** Collection delegate methods definition here *****//
-//    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-//        return UIEdgeInsets(top: 2.0, left: 6.0, bottom: 0.0, right: 6.0)
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+extension SearchResultViewController:UICollectionViewDelegateFlowLayout {
+    
+    //***** Collection delegate methods definition here *****//
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 2.0, left: 6.0, bottom: 0.0, right: 6.0)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 //        if ((indexPath as NSIndexPath).item == 0 || (indexPath as NSIndexPath).item == Constant.MyClassConstants.singleDateArray.count+1){
 //            return CGSize(width: 120.0, height: 50.0)
 //        }else{
 //            return CGSize(width: 150.0, height: 50.0)
 //        }
-//    }
-//}
+        
+        
+        if (Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)!{
+            return CGSize(width: 160.0, height: 80.0)
+        }else{
+            return CGSize(width: 80.0, height: 80.0)
+        }
+    }
+}
 
 extension SearchResultViewController:UICollectionViewDataSource {
     
@@ -624,24 +631,18 @@ extension SearchResultViewController:UICollectionViewDataSource {
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-             return Constant.MyClassConstants.singleDateArray.count + Constant.MyClassConstants.availableBucketArray.count + Constant.MyClassConstants.noAvailableBucketArray.count - 2
+             return Constant.MyClassConstants.calendarDatesArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if ((indexPath as NSIndexPath).item == 0 || (indexPath as NSIndexPath).item > Constant.MyClassConstants.singleDateArray.count) {
+        if (Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)! {
             
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.vacationSearchScreenReusableIdentifiers.moreCell, for: indexPath) as! MoreCell
   
             Constant.MyClassConstants.totalBucketArray = Constant.MyClassConstants.availableBucketArray + Constant.MyClassConstants.noAvailableBucketArray
 
             
-            cell.setDateForBucket(index:bucketIndex)
-            if(indexPath.item == 0 ){
-                bucketIndex = bucketIndex + 1
-            }
-            else{
-                bucketIndex = (indexPath.item + 1) - Constant.MyClassConstants.singleDateArray.count
-            }
+            cell.setDateForBucket(index: indexPath.item)
             cell.layer.cornerRadius = 7
             cell.layer.borderWidth = 2
             cell.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
