@@ -96,7 +96,7 @@
         <scene sceneID="AXO-66-1Q5">
             <objects>
                 <navigationController id="YXh-lN-KMw" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="6Ru-xD-idh">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="6Ru-xD-idh">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2502,7 +2502,7 @@
                                             <outlet property="promotionWebView" destination="Nvu-4a-Quu" id="BUh-In-pnz"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AvailbilityCell" rowHeight="400" id="hTJ-2g-4PE">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AvailbilityCell" rowHeight="400" id="hTJ-2g-4PE" customClass="SearchTableViewCell" customModule="IntervalApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="288" width="708" height="400"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hTJ-2g-4PE" id="JXa-tf-WYD">
@@ -2667,7 +2667,7 @@
         <scene sceneID="hwE-GA-7Y4">
             <objects>
                 <navigationController id="Kj4-oV-nKd" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="PIk-h1-MHc">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="PIk-h1-MHc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -3096,7 +3096,7 @@
         <scene sceneID="DbV-Z9-AeY">
             <objects>
                 <navigationController id="hie-AV-xvD" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="f6g-7W-eAZ">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="f6g-7W-eAZ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -4402,7 +4402,7 @@
                         <viewControllerLayoutGuide type="bottom" id="eSZ-FK-Dat"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="q0Z-GI-P7H">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1500"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RU4-ms-tnh">
@@ -4457,7 +4457,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="170" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="UQr-UE-QNt">
-                                <rect key="frame" x="30" y="60" width="708" height="1391"/>
+                                <rect key="frame" x="30" y="60" width="708" height="964"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ViewDetailsTBLcell" rowHeight="130" id="nh8-hF-3hI" customClass="ViewDetailsTBLcell" customModule="IntervalApp" customModuleProvider="target">
@@ -7673,7 +7673,7 @@ Units Upgrade with this selection.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Wc0-eI-yK9" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="98v-Sn-Axw">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="98v-Sn-Axw">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -8054,7 +8054,7 @@ Units Upgrade with this selection.</string>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="lDo-kQ-A9s" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="h8X-dQ-5XW"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="lNH-0Y-9a5">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="lNH-0Y-9a5">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -8369,6 +8369,6 @@ Units Upgrade with this selection.</string>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="hgo-Jq-z8A"/>
-        <segue reference="5di-wX-yoy"/>
+        <segue reference="sel-eD-RNr"/>
     </inferredMetricsTieBreakers>
 </document>
