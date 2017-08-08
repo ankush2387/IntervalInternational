@@ -1454,11 +1454,12 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     
                     self.vacationSearch.rentalSearch?.searchContext.response = response
                     
-                    // Update active interval
-                    self.vacationSearch.updateActiveInterval()
                     
                     // Get activeInterval (or initial search interval)
                     let activeInterval = BookingWindowInterval(interval: self.vacationSearch.bookingWindow.getActiveInterval())
+                    
+                    // Update active interval
+                    self.vacationSearch.updateActiveInterval(activeInterval: activeInterval)
                     
                     // Check not available checkIn dates for the active interval
                     if (activeInterval.fetchedBefore && !activeInterval.hasCheckInDates()) {
