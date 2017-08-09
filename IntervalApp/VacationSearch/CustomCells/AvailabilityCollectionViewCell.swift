@@ -11,15 +11,17 @@ import IntervalUIKit
 
 class AvailabilityCollectionViewCell: UICollectionViewCell {
     //***** Outlets *****//
-    @IBOutlet weak var regionNameLabel: UILabel!
-    @IBOutlet weak var regionAreaLabel: UILabel!
-    @IBOutlet weak var regionResortCode: UILabel!
+
     @IBOutlet weak var resortImageView:UIImageView!
-    @IBOutlet weak var favoriteButton:IUIKButton!
-    @IBOutlet weak var resortNameGradientView:UIView!
-    @IBOutlet weak var tierImageView:UIImageView!
+   
+    @IBOutlet weak var resortName: UILabel!
+ 
+    @IBOutlet weak var resortCode: UILabel!
+    @IBOutlet weak var resortAddress: UILabel!
+ 
+    @IBOutlet weak var viewGradient: UIView!
     
     //***** class variables *****//
     //var delegate:ResortDirectoryCollectionViewCellDelegate?
-
+    
 }

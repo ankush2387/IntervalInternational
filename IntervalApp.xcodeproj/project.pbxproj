@@ -190,6 +190,7 @@
 		3ACC27931DDDBDA40057B809 /* PaymentSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACC27921DDDBDA40057B809 /* PaymentSelectionViewController.swift */; };
 		3ACC27951DDDC2BA0057B809 /* SelectPaymentMethodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACC27941DDDC2BA0057B809 /* SelectPaymentMethodCell.swift */; };
 		3ACC27971DDDCB270057B809 /* AddNewCreditCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACC27961DDDCB270057B809 /* AddNewCreditCardCell.swift */; };
+		3AD822CA1F3A046A00CD68C6 /* AvailabilityCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD822C91F3A046A00CD68C6 /* AvailabilityCollectionViewCell.swift */; };
 		3ADA43AA1CA56603003F5373 /* CertificateWhoIsTravelingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADA43A91CA56603003F5373 /* CertificateWhoIsTravelingController.swift */; };
 		3AE0D8681E4B38B500FFF635 /* ResortDestinationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE0D8671E4B38B500FFF635 /* ResortDestinationCell.swift */; };
 		3AE0D86A1E4B396400FFF635 /* ResortsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE0D8691E4B396400FFF635 /* ResortsTableViewCell.swift */; };
@@ -489,6 +490,7 @@
 		3ACC27921DDDBDA40057B809 /* PaymentSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentSelectionViewController.swift; sourceTree = "<group>"; };
 		3ACC27941DDDC2BA0057B809 /* SelectPaymentMethodCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectPaymentMethodCell.swift; sourceTree = "<group>"; };
 		3ACC27961DDDCB270057B809 /* AddNewCreditCardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddNewCreditCardCell.swift; sourceTree = "<group>"; };
+		3AD822C91F3A046A00CD68C6 /* AvailabilityCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvailabilityCollectionViewCell.swift; sourceTree = "<group>"; };
 		3ADA43A91CA56603003F5373 /* CertificateWhoIsTravelingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CertificateWhoIsTravelingController.swift; sourceTree = "<group>"; };
 		3AE0D8671E4B38B500FFF635 /* ResortDestinationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResortDestinationCell.swift; sourceTree = "<group>"; };
 		3AE0D8691E4B396400FFF635 /* ResortsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResortsTableViewCell.swift; sourceTree = "<group>"; };
@@ -786,6 +788,7 @@
 		3A892F2C1CD3902F00AE6F45 /* CustomCells */ = {
 			isa = PBXGroup;
 			children = (
+				3AD822C91F3A046A00CD68C6 /* AvailabilityCollectionViewCell.swift */,
 				3A5BDCB21F34DD1800FDA672 /* FilterCell.swift */,
 				3A892F361CD3902F00AE6F45 /* SearchResultCollectionCell.swift */,
 				08E3BCF71F2A31330021F2BC /* RelinquishmentDetailsCell.swift */,
@@ -1430,6 +1433,7 @@
 				3A59DE1A1F015FDE005280D3 /* SortingOptionCell.swift in Sources */,
 				3A3A013F1C99BD0B00B7EC37 /* OwnershipDetailsTableViewCell.swift in Sources */,
 				3AE81DBF1E814DF7005C2CEA /* clubPointCell.swift in Sources */,
+				3AD822CA1F3A046A00CD68C6 /* AvailabilityCollectionViewCell.swift in Sources */,
 				3ADA43AA1CA56603003F5373 /* CertificateWhoIsTravelingController.swift in Sources */,
 				3AC5720D1E2A278E00969CF7 /* NotesCell.swift in Sources */,
 				3AAA5A3E1C720F4500A5EA6D /* ActionSheetTblCell.swift in Sources */,
