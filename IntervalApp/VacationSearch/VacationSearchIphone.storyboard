@@ -1212,24 +1212,24 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="1aP-fE-BC0">
-                                <rect key="frame" x="-4" y="64" width="383" height="59"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" tag="-1" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="1aP-fE-BC0">
+                                <rect key="frame" x="0.0" y="64" width="383" height="85"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="59" id="eeH-Ul-kFp"/>
+                                    <constraint firstAttribute="height" constant="85" id="eeH-Ul-kFp"/>
                                 </constraints>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="qIY-Ad-GoQ">
-                                    <size key="itemSize" width="157" height="56"/>
+                                    <size key="itemSize" width="157" height="62"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MoreCell" id="HeT-Ba-0Un" customClass="MoreCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="1.5" width="157" height="56"/>
+                                        <rect key="frame" x="0.0" y="11.5" width="157" height="62"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="157" height="56"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="157" height="62"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F3N-l3-zU0">
@@ -1243,24 +1243,24 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="July - Sep" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b10-6d-HIU">
-                                                    <rect key="frame" x="13" y="17" width="133" height="26"/>
+                                                    <rect key="frame" x="13" y="17" width="135" height="26"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="26" id="mLQ-Gi-QqE"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                                     <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="2017" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R6r-SE-ypC">
-                                                    <rect key="frame" x="99" y="44" width="32" height="9"/>
+                                                    <rect key="frame" x="95" y="43" width="26" height="9"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                     <color key="textColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="2017" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qw7-R0-Rfm">
-                                                    <rect key="frame" x="32" y="44" width="32" height="9"/>
+                                                    <rect key="frame" x="38" y="42" width="28" height="9"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                     <color key="textColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -1272,11 +1272,12 @@
                                         <constraints>
                                             <constraint firstItem="F3N-l3-zU0" firstAttribute="top" secondItem="HeT-Ba-0Un" secondAttribute="topMargin" constant="-3" id="ESS-32-jb3"/>
                                             <constraint firstItem="F3N-l3-zU0" firstAttribute="leading" secondItem="HeT-Ba-0Un" secondAttribute="leadingMargin" constant="31" id="PGW-rR-DR8"/>
-                                            <constraint firstAttribute="trailingMargin" secondItem="b10-6d-HIU" secondAttribute="trailing" constant="3" id="ZdV-UH-54w"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="b10-6d-HIU" secondAttribute="trailing" constant="1" id="ZdV-UH-54w"/>
                                             <constraint firstItem="b10-6d-HIU" firstAttribute="top" secondItem="F3N-l3-zU0" secondAttribute="bottom" constant="4" id="iIq-Qz-H1Z"/>
                                             <constraint firstItem="b10-6d-HIU" firstAttribute="leading" secondItem="HeT-Ba-0Un" secondAttribute="leadingMargin" constant="5" id="jug-SG-raO"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="F3N-l3-zU0" secondAttribute="trailing" constant="35" id="mfi-dz-asH"/>
                                         </constraints>
+                                        <size key="customSize" width="157" height="62"/>
                                         <connections>
                                             <outlet property="lblEndYear" destination="R6r-SE-ypC" id="8kb-KN-kEM"/>
                                             <outlet property="lblMonth" destination="b10-6d-HIU" id="ora-2r-GMQ"/>
@@ -1290,7 +1291,7 @@
                                 </connections>
                             </collectionView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="50" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="l8b-fw-PuL">
-                                <rect key="frame" x="0.0" y="126" width="375" height="492"/>
+                                <rect key="frame" x="0.0" y="150" width="375" height="492"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ResortBedroomDetails" rowHeight="80" id="qnN-k4-wbG" customClass="ResortBedroomDetails" customModule="IntervalApp" customModuleProvider="target">
@@ -1804,13 +1805,13 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="08j-o8-ksJ" firstAttribute="leading" secondItem="ByV-ji-NXW" secondAttribute="leadingMargin" constant="-16" id="5rW-6i-7Uz"/>
-                            <constraint firstItem="1aP-fE-BC0" firstAttribute="leading" secondItem="ByV-ji-NXW" secondAttribute="leadingMargin" constant="-20" id="9M2-ga-IpM"/>
+                            <constraint firstItem="1aP-fE-BC0" firstAttribute="leading" secondItem="ByV-ji-NXW" secondAttribute="leadingMargin" constant="-16" id="9M2-ga-IpM"/>
                             <constraint firstItem="1aP-fE-BC0" firstAttribute="top" secondItem="t2M-98-VTi" secondAttribute="bottom" id="Ab4-Fj-IbX"/>
-                            <constraint firstItem="l8b-fw-PuL" firstAttribute="top" secondItem="1aP-fE-BC0" secondAttribute="bottom" constant="3" id="LDK-MV-V3E"/>
-                            <constraint firstItem="aqg-gh-21n" firstAttribute="top" secondItem="l8b-fw-PuL" secondAttribute="bottom" id="TVK-Zj-rOl"/>
+                            <constraint firstItem="l8b-fw-PuL" firstAttribute="top" secondItem="1aP-fE-BC0" secondAttribute="bottom" constant="1" id="LDK-MV-V3E"/>
+                            <constraint firstItem="aqg-gh-21n" firstAttribute="top" secondItem="l8b-fw-PuL" secondAttribute="bottom" constant="-24" id="TVK-Zj-rOl"/>
                             <constraint firstItem="aqg-gh-21n" firstAttribute="top" secondItem="08j-o8-ksJ" secondAttribute="bottom" id="UXc-MV-Sss"/>
                             <constraint firstAttribute="trailingMargin" secondItem="08j-o8-ksJ" secondAttribute="trailing" constant="-17" id="Wb0-bs-Ffk"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="1aP-fE-BC0" secondAttribute="trailing" constant="-20" id="fYu-0f-dT8"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="1aP-fE-BC0" secondAttribute="trailing" constant="-24" id="fYu-0f-dT8"/>
                             <constraint firstAttribute="trailing" secondItem="l8b-fw-PuL" secondAttribute="trailing" id="nNT-L2-JVY"/>
                             <constraint firstItem="l8b-fw-PuL" firstAttribute="leading" secondItem="ByV-ji-NXW" secondAttribute="leading" id="wT5-Y5-YQh"/>
                         </constraints>
