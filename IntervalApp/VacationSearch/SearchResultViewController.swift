@@ -41,7 +41,7 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
     var vacationSearch = VacationSearch()
     var exactMatchResortsArray = [Resort]()
     var surroundingMatchResortsArray = [Resort]()
-    var dateCellSelectionColor = "Blue"
+    var dateCellSelectionColor = Constant.CommonColor.blueColor
     
 
     // sorting optionDelegate call
@@ -162,6 +162,92 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    
+    func intervalBucketClicked(calendarItem:CalendarItem!){
+        Helper.hideProgressBar(senderView: self)
+        
+        if (calendarItem.isInterval)! {
+            
+            // Resolve the next active interval based on the Calendar interval selected
+            let activeInterval = Constant.MyClassConstants.initialVacationSearch.resolveNextActiveIntervalFor(intervalStartDate: calendarItem.intervalStartDate, intervalEndDate: calendarItem.intervalEndDate)
+            
+            // Fetch CheckIn dates only in the active interval doesn't have CheckIn dates
+            if (!(activeInterval?.hasCheckInDates())!) {
+                
+                // Execute Search Dates
+                if (Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()) {
+                    // Update CheckInFrom and CheckInTo dates
+                    Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.checkInFromDate = Helper.convertStringToDate(dateString:calendarItem.intervalStartDate!,format:Constant.MyClassConstants.dateFormat)
+                    Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.checkInToDate = Helper.convertStringToDate(dateString:calendarItem.intervalEndDate!,format:Constant.MyClassConstants.dateFormat)
+                    
+                    RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
+                                             onSuccess: { (response) in
+                                                Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
+                                                
+                                                // Update active interval
+                                                Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                                                
+                                                Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                                
+                                                //expectation.fulfill()
+                                                self.searchResultColelctionView.reloadData()
+                    },
+                                             onError:{ (error) in
+                                                DarwinSDK.logger.error("Error Code: \(error.code)")
+                                                DarwinSDK.logger.error("Error Description: \(error.description)")
+                                                
+                                                // TODO: Handle SDK/API errors
+                                                DarwinSDK.logger.error("Handle SDK/API errors.")
+                                                
+                                                //expectation.fulfill()
+                    }
+                    )
+                }
+            }
+            
+        } else {
+            
+            // Get activeInterval
+            let activeInterval = BookingWindowInterval(interval: self.vacationSearch.bookingWindow.getActiveInterval())
+            
+            // Execute Search Availability
+            if (self.vacationSearch.searchCriteria.searchType.isRental()) {
+                
+                let request = RentalSearchResortsRequest()
+                request.checkInDate = Helper.convertStringToDate(dateString: calendarItem.checkInDate!, format: Constant.MyClassConstants.dateFormat)
+                request.resortCodes = activeInterval.resortCodes
+                
+                RentalClient.searchResorts(UserContext.sharedInstance.accessToken, request: request,
+                                           onSuccess: { (response) in
+                                            // Update Rental inventory
+                                            Constant.MyClassConstants.initialVacationSearch.rentalSearch?.inventory = response.resorts
+                                            
+                                            Helper.showScrollingCalendar(vacationSearch: self.vacationSearch)
+                                            Helper.showAvailabilityResults(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                            
+                                            //expectation.fulfill()
+                },
+                                           onError:{ (error) in
+                                            DarwinSDK.logger.error("Error Code: \(error.code)")
+                                            DarwinSDK.logger.error("Error Description: \(error.description)")
+                                            
+                                            let INVENTORY_NOT_AVAILABLE_CODE = "d67dc7030d7462db65465023262e704f"
+                                            let sdkErrorCode = String(describing: error.userInfo["errorCode"])
+                                            
+                                            if (INVENTORY_NOT_AVAILABLE_CODE == sdkErrorCode) {
+                                                // TODO: Define behavior for not available inventory
+                                                DarwinSDK.logger.error("Define behavior for not available inventory.")
+                                            } else {
+                                                // TODO: Handle SDK/API errors
+                                                DarwinSDK.logger.error("Handle SDK/API errors.")
+                                            }
+                                            
+                                            //expectation.fulfill()
+                }
+                )
+            }
+        }
+    }
     
     
     //*****Function for more button press *****//
@@ -510,95 +596,22 @@ extension SearchResultViewController:UICollectionViewDelegate {
     
     //***** Collection delegate methods definition here *****//
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        switch (indexPath as NSIndexPath).row {
-        case 0:
-            
-            if(Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.getawayAlerts){
-                let toDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: -1, to: Constant.MyClassConstants.currentFromDate as Date, options: [])!//Constant.MyClassConstants.currentFromDate
-                let fromDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: -90, to: toDate, options: [])!
-                moreButtonClicked(toDate, fromDate: fromDate, index: Constant.MyClassConstants.first)
+        
+        if(collectionView.tag == -1){
+            let lastSelectedIndex = collectionviewSelectedIndex
+            collectionviewSelectedIndex = indexPath.item
+            dateCellSelectionColor = Constant.CommonColor.blueColor
+            let lastIndexPath = IndexPath(item: lastSelectedIndex, section: 0)
+            let currentIndexPath = IndexPath(item: collectionviewSelectedIndex, section: 0)
+            searchResultColelctionView.reloadItems(at: [lastIndexPath, currentIndexPath])
+            if(Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)!{
+                Helper.showProgressBar(senderView: self)
+                intervalBucketClicked(calendarItem:Constant.MyClassConstants.calendarDatesArray[indexPath.item])
+            }else{
+                intervalDateItemClicked(Helper.convertStringToDate(dateString: Constant.MyClassConstants.calendarDatesArray[indexPath.item].checkInDate!, format: Constant.MyClassConstants.dateFormat))
             }
-            
-            break
-            
-        case Constant.MyClassConstants.checkInDates.count+1:
-            
-            if(Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.getawayAlerts){
-                let fromDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: 1, to: Constant.MyClassConstants.currentToDate as Date, options: [])!//Constant.MyClassConstants.currentToDate
-                let toDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: Constant.MyClassConstants.totalWindow, to: fromDate, options: [])!
-                moreButtonClicked(toDate, fromDate: fromDate, index: Constant.MyClassConstants.last)
-            }
-            break
-            
-        default:
-            
-                intervalDateItemClicked(Helper.convertStringToDate(dateString: Constant.MyClassConstants.singleDateArray[indexPath.item - 1].checkInDate!, format: Constant.MyClassConstants.dateFormat))
-            
-//            if(self.collectionviewSelectedIndex != (indexPath as NSIndexPath).row){
-//                self.collectionviewSelectedIndex = (indexPath as NSIndexPath).row
-//                collectionView.reloadData()
-//        
-//                let dateValue:Date!
-//                if(Constant.MyClassConstants.checkInDates.count > 0){
-//                    dateValue = Constant.MyClassConstants.checkInDates[collectionviewSelectedIndex - 1]
-//                }else{
-//                    dateValue = Constant.MyClassConstants.checkInDates[collectionviewSelectedIndex]
-//                }
-//                Constant.MyClassConstants.currentFromDate = dateValue
-//                if(Constant.MyClassConstants.surroundingCheckInDates.contains(dateValue) && Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.getawayAlerts){
-//                    titleLabel.backgroundColor = UIColor(red: 170/255.0, green: 216/255.0, blue: 111/255.0, alpha: 1.0)
-//                    titleLabel.text = Constant.MyClassConstants.surroundingAreaString
-//                    
-//                }else{
-//                    
-//                    titleLabel.backgroundColor = UIColor(rgb:IUIKColorPalette.primary1.rawValue)
-//                    if(Constant.MyClassConstants.vacationSearchDestinationArray.count > 1 && Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.getawayAlerts){
-//                        titleLabel.text = "Resorts in \(Constant.MyClassConstants.vacationSearchDestinationArray[0]) and \(Constant.MyClassConstants.vacationSearchDestinationArray.count - 1) more"
-//                    }else{
-//                        if(Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.getawayAlerts){
-//                            if Constant.MyClassConstants.vacationSearchDestinationArray.count > 0 {
-//                                titleLabel.text = "Resorts in \(Constant.MyClassConstants.vacationSearchDestinationArray[0])"
-//                            } else {
-//                                titleLabel.text = "Resorts in \(Constant.MyClassConstants.whereTogoContentArray[0])"
-//                            }
-//
-//                        }
-//                    }
-//                }
-//                if(Constant.MyClassConstants.isFromExchange){
-//                    Helper.showProgressBar(senderView: self)
-//                    let exchangeAvailabilityRequest = ExchangeSearchAvailabilityRequest()
-//                    exchangeAvailabilityRequest.checkInDate = Constant.MyClassConstants.checkInDates[(indexPath as NSIndexPath).item - 1] as Date
-//                    exchangeAvailabilityRequest.resortCodes = Constant.MyClassConstants.resortCodesArray
-//                    exchangeAvailabilityRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
-//                    exchangeAvailabilityRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
-//                    ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: exchangeAvailabilityRequest, onSuccess: { (exchangeAvailability) in
-//                        Helper.hideProgressBar(senderView: self)
-//                            self.alertView.isHidden = true
-//                            self.headerVw.isHidden = false
-//                        Constant.MyClassConstants.resortsArray.removeAll()
-//                        Constant.MyClassConstants.exchangeInventory.removeAll()
-//                        for exchangeResorts in exchangeAvailability{
-//                            Constant.MyClassConstants.resortsArray.append(exchangeResorts.resort!)
-//                            Constant.MyClassConstants.exchangeInventory.append(exchangeResorts.inventory!)
-//                        }
-//
-//                        self.searchResultTableView.reloadData()
-//                    }, onError: { (error) in
-//                        Constant.MyClassConstants.resortsArray.removeAll()
-//                        self.searchResultTableView.reloadData()
-//                        Helper.hideProgressBar(senderView: self)
-//                        self.alertView.isHidden = false
-//                        self.headerVw.isHidden = true
-//                    })
-//                    
-//                }else{
-//                    resortDetailsClicked(Constant.MyClassConstants.checkInDates[(indexPath as NSIndexPath).item - 1] as Date)
-//                }
-//            }
-            
-            break
         }
+
     }
     
     func collectionView(_ collectionView: UICollectionView,
@@ -700,7 +713,7 @@ extension SearchResultViewController:UICollectionViewDataSource {
             
             
             if(indexPath.section == 0){
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ResortDetailCell", for: indexPath) as! AvailabilityCollectionViewCell
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.resortDetailCell, for: indexPath) as! AvailabilityCollectionViewCell
 //                for layer in cell.viewGradient.layer.sublayers!{
 //                    if(layer.isKind(of: CAGradientLayer.self)) {
 //                        layer.removeFromSuperlayer()
@@ -729,7 +742,7 @@ extension SearchResultViewController:UICollectionViewDataSource {
                 
                 return cell
             }else{
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RentalInventory", for: indexPath) as! AvailabilityCollectionViewCell
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.resortInventoryCell, for: indexPath) as! RentalInventoryCVCell
                 return cell
 
         }
@@ -943,7 +956,7 @@ extension SearchResultViewController:UITableViewDataSource {
         
         if(!Constant.MyClassConstants.isFromExchange) {
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: "AvailbilityCell", for: indexPath) as! SearchTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.availabilityCell, for: indexPath) as! SearchTableViewCell
             cell.tag = indexPath.section
             
             cell.resortInfoCollectionView.tag = indexPath.row

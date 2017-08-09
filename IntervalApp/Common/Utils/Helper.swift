@@ -1737,10 +1737,11 @@ public class Helper{
                                     //expectation.fulfill()
                                     hideProgressBar(senderView: senderViewController)
                                     helperDelegate?.resortSearchComplete()
-                                    //senderViewController.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
         },
                                    onError:{ (error) in
+                                    
                                     hideProgressBar(senderView: senderViewController)
+                                    helperDelegate?.resortSearchComplete()
                                     SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                                     DarwinSDK.logger.error("Error Code: \(error.code)")
                                     DarwinSDK.logger.error("Error Description: \(error.description)")
