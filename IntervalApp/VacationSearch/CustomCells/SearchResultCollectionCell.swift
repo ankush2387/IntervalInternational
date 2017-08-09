@@ -33,12 +33,15 @@ class SearchResultCollectionCell: UICollectionViewCell {
         if(dateLabel.text?.characters.count == 1){
             dateLabel.text = "0\(startComponents.day!)".uppercased()
         }
+        dateLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 25)
         daynameWithyearLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber:startComponents.weekday!))"
         let str:String = daynameWithyearLabel.text!
         let index1 = str.index(str.endIndex, offsetBy: -(str.characters.count-3))
         let substring1 = str.substring(to: index1)
         daynameWithyearLabel.text = substring1.uppercased()
+        
         monthYearLabel.text = "\(monthName) \(year)".uppercased()
+        monthYearLabel.font = UIFont(name:  Constant.fontName.helveticaNeue, size: 7)
     }
 
 }

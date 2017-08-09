@@ -623,9 +623,9 @@ extension SearchResultViewController:UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         if (Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)!{
-            return CGSize(width: 140.0, height: 70.0)
+            return CGSize(width: 110.0, height: 60.0)
         }else{
-            return CGSize(width: 70.0, height: 70.0)
+            return CGSize(width: 60.0, height: 60.0)
         }
     }
 }
@@ -701,6 +701,32 @@ extension SearchResultViewController:UICollectionViewDataSource {
             
             if(indexPath.section == 0){
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ResortDetailCell", for: indexPath) as! AvailabilityCollectionViewCell
+//                for layer in cell.viewGradient.layer.sublayers!{
+//                    if(layer.isKind(of: CAGradientLayer.self)) {
+//                        layer.removeFromSuperlayer()
+//                    }
+//                }
+//                var inventoryItem = Resort()
+//                if(collectionView.superview?.superview?.tag == 0){
+//                    inventoryItem = exactMatchResortsArray[collectionView.tag]
+//                }else{
+//                    inventoryItem = surroundingMatchResortsArray[collectionView.tag]
+//                }
+//                var url = URL(string: "")
+//                for imgStr in inventoryItem.images {
+//                    if(imgStr.size!.caseInsensitiveCompare(Constant.MyClassConstants.imageSize) == ComparisonResult.orderedSame) {
+//                        url = URL(string: imgStr.url!)!
+//                        break
+//                    }
+//                }
+//                Helper.addLinearGradientToView(view: cell.viewGradient, colour: UIColor.white, transparntToOpaque: true, vertical: false)
+//                cell.resortImageView?.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+//                cell.resortName.text = inventoryItem.resortName
+//                cell.resortAddress.text = inventoryItem.address?.cityName
+//                cell.resortCode.text = inventoryItem.resortCode
+//                DarwinSDK.logger.info("\(String(describing: Helper.resolveResortInfo(resort: inventoryItem)))")
+                
+                
                 return cell
             }else{
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RentalInventory", for: indexPath) as! AvailabilityCollectionViewCell
@@ -769,22 +795,15 @@ extension SearchResultViewController:UITableViewDelegate {
     //***** UITableview delegate methods definition here *****//
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        /*if((indexPath as NSIndexPath).row == 0) {
-            
-            return 252
+      
+        if(indexPath.section == 0){
+            let totalUnits = self.exactMatchResortsArray[indexPath.row].inventory?.units.count
+            return CGFloat(totalUnits!*80 + 320)
+        }else{
+            let totalUnits = self.surroundingMatchResortsArray[indexPath.row].inventory?.units.count
+            return CGFloat(totalUnits!*80 + 320)
         }
-        else {
-<<<<<<< HEAD
-            if(indexPath.row > Constant.MyClassConstants.inventoryUnitsArray.count){
-                return 120
-            }else{
-                return 50
-            }
-        }*/
-        
-        return UITableViewAutomaticDimension
-        //return CGFloat(cellHeight)
-        //}
+      
         
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
