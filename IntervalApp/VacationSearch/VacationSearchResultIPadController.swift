@@ -437,14 +437,55 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
             }else{
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RentalInventory", for: indexPath) as! RentalInventoryCVCell
                 var invetoryItem = Resort()
+                print(invetoryItem)
                 if(collectionView.superview?.superview?.tag == 0){
                     invetoryItem = exactMatchResortsArray[collectionView.tag]
                 }else{
                     invetoryItem = surroundingMatchResortsArray[collectionView.tag]
                 }
-                for unit in (invetoryItem.inventory?.units)! {
+               // for unit in (invetoryItem.inventory?.units)! {
+                let unit = (invetoryItem.inventory?.units[indexPath.item])!
                     DarwinSDK.logger.info("\(String(describing: Helper.resolveUnitInfo(unit: unit)))")
-                }
+                    
+                    // price
+                    let price = Int(unit.prices[0].price)
+                    cell.getawayPrice.text = String(price)
+                    
+                    // bedroom details
+                    
+                    var bedRoomDetails = ""
+                    if let bedType = unit.unitSize {
+                        bedRoomDetails.append(" \(String(describing: Helper.getBrEnums(brType: bedType)))")
+                    }
+                    
+                    cell.bedRoomType.text = bedRoomDetails
+                    
+                    var kitchenDetails = ""
+                    if let kitchenType = unit.kitchenType {
+                        kitchenDetails.append(" \(String(describing: Helper.getKitchenEnums(kitchenType: kitchenType)))")
+                    }
+                    
+                    cell.kitchenType.text = kitchenDetails
+                                        
+                    var totalSleepCapacity = String()
+                    
+                    if unit.publicSleepCapacity > 0 {
+                        
+                        totalSleepCapacity =  String(unit.publicSleepCapacity) + "Total"
+                        
+                    }
+                    
+                    if unit.privateSleepCapacity > 0 {
+                        
+                        cell.sleeps.text =  totalSleepCapacity + ", " + String(unit.privateSleepCapacity) + "Private"
+                        
+                    }
+                    
+                    
+                //}
+                
+                //show data here
+               
                 return cell
             }
             
