@@ -17,6 +17,8 @@ class MoreCell: UICollectionViewCell {
     
     @IBOutlet weak var lblEndYear: UILabel!
     
+    @IBOutlet weak var lblHeader: UILabel!
+    
     
     func setDateForBucket(index: Int, selectedIndex: Int, color: String){
         
@@ -61,12 +63,14 @@ class MoreCell: UICollectionViewCell {
             self.lblMonth.textColor = UIColor.white
             self.lblStartYear.textColor = UIColor.white
             self.lblEndYear.textColor = UIColor.white
+            self.lblHeader.textColor = UIColor.white
         }
         else {
             self.backgroundColor = UIColor.white
             self.lblMonth.textColor = IUIKColorPalette.primary1.color
             self.lblStartYear.textColor = IUIKColorPalette.primary1.color
             self.lblEndYear.textColor = IUIKColorPalette.primary1.color
+            self.lblHeader.textColor = IUIKColorPalette.primary1.color
         }
     }
     
