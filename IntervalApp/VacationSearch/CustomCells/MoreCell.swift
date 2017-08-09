@@ -53,7 +53,7 @@ class MoreCell: UICollectionViewCell {
         }
         
         if(index == collectionViewSelectedIndex) {
-            if(dateSelectionColor == "Green"){
+            if(dateSelectionColor == Constant.CommonColor.greenColor){
                 self.backgroundColor = IUIKColorPalette.secondary1.color
             }else{
                 self.backgroundColor = IUIKColorPalette.primary1.color

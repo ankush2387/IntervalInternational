@@ -546,6 +546,12 @@ class Constant: NSObject {
         
         static var initialVacationSearch = VacationSearch()
     }
+    
+    struct CommonColor {
+        static var greenColor = "Green"
+        static var blueColor = "Blue"
+    }
+    
     struct CommonStringIdentifiers {
         static var floatWeek = "FLOAT_WEEK"
         static var pointWeek = "POINTS_WEEK"
@@ -559,6 +565,10 @@ class Constant: NSObject {
         static var user_id = NSLocalizedString("User ID", comment: "")
         static var user_password = NSLocalizedString("Password", comment: "")
         static var sign_in = NSLocalizedString("Sign_In", comment: "")
+        static var totalString = NSLocalizedString("Total, ", comment: "")
+        static var privateString = NSLocalizedString("Private", comment: "")
+        static var exactString = NSLocalizedString("Resorts in ", comment: "")
+        static var surroundingString = NSLocalizedString("Resorts near ", comment: "")
         static var contactName = "contactname"
         static var cardName = "cardname"
         static var loginID = "loginid"
@@ -608,6 +618,7 @@ class Constant: NSObject {
         static var loginFailedError = NSLocalizedString("Login Failed", comment: "")
         static var getawayAlertMessage = NSLocalizedString("Check back with us in a bit or we will keep searching and contact you when we have a match!\n\n You can also start your own search", comment: "")
         static var emailAlertMessage = NSLocalizedString("Please enter valid email", comment: "")
+        static var noDestinationRelinquishmentError = NSLocalizedString("Add \("Destinations") and \("Items to trade")", comment: "")
         
     }
     
@@ -1076,6 +1087,9 @@ class Constant: NSObject {
         static var checkBoxCell = "CheckCell"
         static var attributesCell = "attributesTableCell"
         static var buttonCell = "ButtonTableCell"
+        static var resortDetailCell = "ImageCell"
+        static var resortInventoryCell = "RentalInventory"
+        static var availabilityCell = "AvailbilityCell"
     }
     
     //***** common  structure to provide all dashboardTableViewControllerHeaderText *****//

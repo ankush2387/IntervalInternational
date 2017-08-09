@@ -594,15 +594,17 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                 SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
             }
             Constant.MyClassConstants.isFromExchange = false
-        }
-        else if(self.segmentIndex == 2){
+        }else if(self.segmentIndex == 2){
             
             sender.isEnabled = false
             Helper.showProgressBar(senderView: self)
             
+           
+            
             let destinations = Helper.getAllDestinationFromLocalStorage()
             let resorts = Helper.getAllResortsFromLocalStorage()
             
+            if(Constant.MyClassConstants.relinquishmentIdArray.count > 0 && (destinations.count > 0 || resorts.count > 0)){
             let travelPartyInfo = TravelParty()
             travelPartyInfo.adults = Int(self.adultCounter)
             travelPartyInfo.children = Int(self.childCounter)
@@ -672,6 +674,11 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                 Helper.hideProgressBar(senderView: self)
                 SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
             }
+        }else{
+            SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message:Constant.AlertErrorMessages.noDestinationRelinquishmentError)
+            sender.isEnabled = true
+            Helper.hideProgressBar(senderView: self)
+        }
             Constant.MyClassConstants.isFromExchange = true
         }
     }
