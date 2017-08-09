@@ -2529,6 +2529,7 @@
                                                                 <subviews>
                                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rFA-A6-XVz">
                                                                         <rect key="frame" x="0.0" y="0.0" width="699" height="242"/>
+                                                                        <color key="backgroundColor" red="0.65490196079999996" green="0.65490196079999996" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     </imageView>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f60-79-76t">
                                                                         <rect key="frame" x="0.0" y="202" width="699" height="80"/>
@@ -2568,7 +2569,7 @@
                                                                     </view>
                                                                 </subviews>
                                                             </view>
-                                                            <color key="backgroundColor" red="0.43921568630000002" green="0.72549019609999998" blue="0.035294117649999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="bottom" secondItem="rFA-A6-XVz" secondAttribute="bottom" constant="40" id="6Is-so-DRn"/>
                                                                 <constraint firstAttribute="bottom" secondItem="f60-79-76t" secondAttribute="bottom" id="W6c-pr-TRn"/>
@@ -2693,7 +2694,7 @@
                                                                     </imageView>
                                                                 </subviews>
                                                             </view>
-                                                            <color key="backgroundColor" red="0.0" green="0.5568627451" blue="0.76078431369999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <constraints>
                                                                 <constraint firstItem="SR5-ta-mXH" firstAttribute="centerY" secondItem="fWG-8Y-aAj" secondAttribute="centerY" id="W8z-WR-PE3"/>
                                                                 <constraint firstItem="J5x-iU-wdm" firstAttribute="leading" secondItem="fWG-8Y-aAj" secondAttribute="leading" constant="20" id="Wqd-Hg-UcJ"/>
