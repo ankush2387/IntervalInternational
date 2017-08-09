@@ -18,9 +18,9 @@ class MoreCell: UICollectionViewCell {
     @IBOutlet weak var lblEndYear: UILabel!
     
     
-    func setDateForBucket(index: Int, selectedIndex: Int){
+    func setDateForBucket(index: Int, selectedIndex: Int, color: String){
         
-        setUpCell(index: index, collectionViewSelectedIndex: selectedIndex)
+        setUpCell(index: index, collectionViewSelectedIndex: selectedIndex, dateSelectionColor: color)
 
         
         let startDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.calendarDatesArray[index].intervalStartDate!, format: Constant.MyClassConstants.dateFormat)
@@ -40,7 +40,7 @@ class MoreCell: UICollectionViewCell {
         
     }
     
-    func setUpCell(index:Int, collectionViewSelectedIndex: Int){
+    func setUpCell(index:Int, collectionViewSelectedIndex: Int, dateSelectionColor:String){
         self.layer.cornerRadius = 7
         self.layer.borderWidth = 2
         self.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
@@ -53,8 +53,11 @@ class MoreCell: UICollectionViewCell {
         }
         
         if(index == collectionViewSelectedIndex) {
-            
-            self.backgroundColor = IUIKColorPalette.primary1.color
+            if(dateSelectionColor == "Green"){
+                self.backgroundColor = IUIKColorPalette.secondary1.color
+            }else{
+                self.backgroundColor = IUIKColorPalette.primary1.color
+            }
             self.lblMonth.textColor = UIColor.white
             self.lblStartYear.textColor = UIColor.white
             self.lblEndYear.textColor = UIColor.white

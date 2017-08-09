@@ -39,6 +39,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
 
     var exactMatchResortsArray = [Resort]()
     var surroundingMatchResortsArray = [Resort]()
+    var dateCellSelectionColor = "Blue"
     
 
     // sorting optionDelegate call
@@ -244,6 +245,17 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
         self.present(viewController, animated: true, completion: nil)
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let firstVisibleIndexPath = resortDetailTBLView.indexPathsForVisibleRows?.first
+        let indexPath = IndexPath(item: collectionviewSelectedIndex, section: 0)
+        if(firstVisibleIndexPath?.section == 1){
+            dateCellSelectionColor = "Green"
+        }else{
+            dateCellSelectionColor = "Blue"
+        }
+        searchedDateCollectionView.reloadItems(at: [indexPath])
+    }
+    
 }
 
 //Function to check whether more button should be enabled or disabled.
@@ -280,13 +292,19 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
     
     //***** Collection delegate methods definition here *****//
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if(collectionView.tag == -1){
+        let lastSelectedIndex = collectionviewSelectedIndex
         collectionviewSelectedIndex = indexPath.item
-        collectionView.reloadData()
+        dateCellSelectionColor = "Blue"
+        let lastIndexPath = IndexPath(item: lastSelectedIndex, section: 0)
+        let currentIndexPath = IndexPath(item: collectionviewSelectedIndex, section: 0)
+        searchedDateCollectionView.reloadItems(at: [lastIndexPath, currentIndexPath])
         if(Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)!{
             Helper.showProgressBar(senderView: self)
             intervalBucketClicked(Helper.convertStringToDate(dateString: Constant.MyClassConstants.calendarDatesArray[indexPath.item].checkInDate!, format: Constant.MyClassConstants.dateFormat))
         }else{
             intervalDateItemClicked(Helper.convertStringToDate(dateString: Constant.MyClassConstants.calendarDatesArray[indexPath.item].checkInDate!, format: Constant.MyClassConstants.dateFormat))
+         }
         }
     }
     
@@ -317,7 +335,7 @@ extension VacationSearchResultIPadController:UICollectionViewDelegateFlowLayout 
             }
         }else{
             if(indexPath.section == 0){
-                return CGSize(width: UIScreen.main.bounds.width - 40, height: 280.0)
+                return CGSize(width: UIScreen.main.bounds.width - 40, height: 320.0)
             }else{
                 return CGSize(width: UIScreen.main.bounds.width - 40, height: 60.0)
             }
@@ -344,7 +362,6 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
             if(section == 0){
                 return 1
             }else{
-                print("------------> Inside collection",collectionView.superview?.superview?.tag, collectionView.superview?.superview?.superview?.tag)
                 if(collectionView.superview?.superview?.tag == 0){
                     return (exactMatchResortsArray[collectionView.tag].inventory?.units.count)!
                 }else{
@@ -360,14 +377,17 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
             if (Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)! {
                 
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.vacationSearchScreenReusableIdentifiers.moreCell, for: indexPath) as! MoreCell
-                cell.setDateForBucket(index: indexPath.item, selectedIndex: collectionviewSelectedIndex)
+                cell.setDateForBucket(index: indexPath.item, selectedIndex: collectionviewSelectedIndex, color: dateCellSelectionColor)
                 return cell
             }else {
                 
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.customCellNibNames.searchResultCollectionCell, for: indexPath) as! SearchResultCollectionCell
-                if((indexPath as NSIndexPath).row == collectionviewSelectedIndex) {
-                    
-                    cell.backgroundColor = IUIKColorPalette.primary1.color
+                if(indexPath.item == collectionviewSelectedIndex) {
+                    if(dateCellSelectionColor == "Green"){
+                        cell.backgroundColor = IUIKColorPalette.secondary1.color
+                    }else{
+                        cell.backgroundColor = IUIKColorPalette.primary1.color
+                    }
                     cell.dateLabel.textColor = UIColor.white
                     cell.daynameWithyearLabel.textColor = UIColor.white
                     cell.monthYearLabel.textColor = UIColor.white
@@ -395,6 +415,14 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
                 }else{
                     inventoryItem = surroundingMatchResortsArray[collectionView.tag]
                 }
+                var url = URL(string: "")
+                for imgStr in inventoryItem.images {
+                    if(imgStr.size!.caseInsensitiveCompare(Constant.MyClassConstants.imageSize) == ComparisonResult.orderedSame) {
+                        url = URL(string: imgStr.url!)!
+                        break
+                    }
+                }
+                cell.resortImageView?.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
                 DarwinSDK.logger.info("\(String(describing: Helper.resolveResortInfo(resort: inventoryItem)))")
                 return cell
             }else{
@@ -423,10 +451,10 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if(indexPath.section == 0){
             let totalUnits = self.exactMatchResortsArray[indexPath.row].inventory?.units.count
-            return CGFloat(totalUnits!*80 + 280)
+            return CGFloat(totalUnits!*80 + 320)
         }else{
             let totalUnits = self.surroundingMatchResortsArray[indexPath.row].inventory?.units.count
-            return CGFloat(totalUnits!*80 + 280)
+            return CGFloat(totalUnits!*80 + 320)
         }
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -864,7 +892,6 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
         }
         return 20
     }
-    
 }
 
 // Implementing custom delegate method definition
