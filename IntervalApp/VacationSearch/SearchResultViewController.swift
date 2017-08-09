@@ -1069,10 +1069,10 @@ extension SearchResultViewController:UITableViewDataSource {
                 return 1
             }
         }else{
-            if(section == 0){
-                return exactMatchResortsArray.count
-            }else{
+            if(section == 0 && surroundingMatchResortsArray.count == 0 || section == 1){
                 return surroundingMatchResortsArray.count
+            }else{
+                return exactMatchResortsArray.count
             }
         }
     }
