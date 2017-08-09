@@ -409,6 +409,11 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
         }else{
             if(indexPath.section == 0){
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! AvailabilityCollectionViewCell
+                for layer in cell.viewGradient.layer.sublayers!{
+                    if(layer.isKind(of: CAGradientLayer.self)) {
+                        layer.removeFromSuperlayer()
+                    }
+                }
                 var inventoryItem = Resort()
                 if(collectionView.superview?.superview?.tag == 0){
                     inventoryItem = exactMatchResortsArray[collectionView.tag]
@@ -422,11 +427,15 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
                         break
                     }
                 }
+                Helper.addLinearGradientToView(view: cell.viewGradient, colour: UIColor.white, transparntToOpaque: true, vertical: false)
                 cell.resortImageView?.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+                cell.resortName.text = inventoryItem.resortName
+                cell.resortAddress.text = inventoryItem.address?.cityName
+                cell.resortCode.text = inventoryItem.resortCode
                 DarwinSDK.logger.info("\(String(describing: Helper.resolveResortInfo(resort: inventoryItem)))")
                 return cell
             }else{
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RentalInventory", for: indexPath) as! AvailabilityCollectionViewCell
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RentalInventory", for: indexPath) as! RentalInventoryCVCell
                 var invetoryItem = Resort()
                 if(collectionView.superview?.superview?.tag == 0){
                     invetoryItem = exactMatchResortsArray[collectionView.tag]
