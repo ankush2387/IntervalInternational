@@ -90,14 +90,18 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     override func viewWillAppear(_ animated: Bool) {
         
         self.navigationController?.navigationBar.barTintColor = UIColor.init(colorLiteralRed: 70.0/255.0, green: 136.0/255.0, blue: 193.0/255.0, alpha: 1.0)
+        self.createSections()
+        
+    }
+    
+    func createSections(){
         let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
-        print(sections.count)
         if(sections.count > 0){
             let resortsExact = sections[0].item?.rentalInventory
             exactMatchResortsArray = resortsExact!
             if(sections.count > 1){
-            let resortsSurrounding = sections[1].item?.rentalInventory
-            surroundingMatchResortsArray = resortsSurrounding!
+                let resortsSurrounding = sections[1].item?.rentalInventory
+                surroundingMatchResortsArray = resortsSurrounding!
             }
         }
     }
@@ -788,8 +792,6 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         
         //***** Return number of sections required in tableview *****//
-        //return Constant.MyClassConstants.resortsArray.count
-        //return 2
         let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
         return sectionsInSearchResult.count
     }
@@ -811,10 +813,10 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 return 1
             }
         }else{
-            if(section == 0){
-                return exactMatchResortsArray.count
-            }else{
+            if(section == 0 && surroundingMatchResortsArray.count == 0 || section == 1){
                 return surroundingMatchResortsArray.count
+            }else{
+                return exactMatchResortsArray.count
             }
         }
     }
@@ -878,6 +880,7 @@ extension VacationSearchIPadViewController:ImageWithNameCellDelegate {
 extension VacationSearchResultIPadController:HelperDelegate {
     func resortSearchComplete(){
         Helper.hideProgressBar(senderView: self)
+        self.createSections()
         self.resortDetailTBLView.reloadData()
     }
 }
