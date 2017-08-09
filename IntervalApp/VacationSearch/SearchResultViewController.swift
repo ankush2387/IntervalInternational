@@ -617,15 +617,15 @@ extension SearchResultViewController:UICollectionViewDelegateFlowLayout {
     //***** Collection delegate methods definition here *****//
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 2.0, left: 6.0, bottom: 0.0, right: 6.0)
+        return UIEdgeInsets(top: 5.0, left: 6.0, bottom: 5.0, right: 6.0)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         if (Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)!{
-            return CGSize(width: 160.0, height: 80.0)
+            return CGSize(width: 140.0, height: 70.0)
         }else{
-            return CGSize(width: 80.0, height: 60.0)
+            return CGSize(width: 70.0, height: 70.0)
         }
     }
 }
