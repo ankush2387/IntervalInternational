@@ -1631,6 +1631,33 @@ public class Helper{
         
         
     }
+    
+    static func returnFilteredValue(filteredValue:String) -> String {
+        
+        var selectedvalue = filteredValue.uppercased()
+        
+        if selectedvalue == "DEFAULT" {
+            selectedvalue = "DEFAULT"
+        } else if (selectedvalue == "RESORT NAME:") {
+            selectedvalue = "RESORT_NAME"
+            
+        } else if (selectedvalue == "CITY:") {
+            selectedvalue = "CITY_NAME"
+            
+        } else if (selectedvalue == "RESORT TIER:") {
+            selectedvalue = "RESORT_TIER"
+            
+        } else if (selectedvalue == "PRICE:") {
+            selectedvalue = "PRICE"
+            
+        } else {
+            selectedvalue = "UNKNOWN"
+        }
+        
+        return selectedvalue
+        
+    }
+    
     static func trackOmnitureCallForPageView(name:String) {
         
         // omniture tracking with event 40

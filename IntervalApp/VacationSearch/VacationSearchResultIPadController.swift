@@ -45,31 +45,14 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     // sorting optionDelegate call
     
     func selectedOptionis(filteredValueIs:String, indexPath:NSIndexPath, isFromFiltered:Bool) {
-         var selectedvalue = filteredValueIs.uppercased()
+        // let selectedvalue = filteredValueIs.uppercased()
+        
+       let selectedvalue = Helper.returnFilteredValue(filteredValue: filteredValueIs)
         
         if isFromFiltered {
             Constant.MyClassConstants.filteredIndex = indexPath.row
         } else {
             Constant.MyClassConstants.sortingIndex = indexPath.row
-            
-            if selectedvalue == "DEFAULT" {
-                selectedvalue = "DEFAULT"
-            } else if (selectedvalue == "RESORT NAME:") {
-                selectedvalue = "RESORT_NAME"
-                
-            } else if (selectedvalue == "CITY:") {
-                selectedvalue = "CITY_NAME"
-                
-            } else if (selectedvalue == "RESORT TIER:") {
-                selectedvalue = "RESORT_TIER"
-                
-            } else if (selectedvalue == "PRICE:") {
-                selectedvalue = "PRICE"
-                
-            } else {
-                selectedvalue = "UNKNOWN"
-            }
-            
             
             let activeInterval = BookingWindowInterval(interval: Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval())
             
