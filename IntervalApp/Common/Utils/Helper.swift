@@ -1836,7 +1836,7 @@ Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
             DarwinSDK.logger.info("\(String(describing: self.resolveUnitInfo(unit: unit)))")
         }
     }
-    func resolveResortInfo(resort:Resort!) -> String {
+    static func resolveResortInfo(resort:Resort!) -> String {
         var info = String()
         info.append(resort.resortCode!)
         info.append(" ")

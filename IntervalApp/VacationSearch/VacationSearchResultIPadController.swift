@@ -340,7 +340,7 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
             if(section == 0){
                 return 1
             }else{
-                
+                print("------------> Inside collection",collectionView.superview?.superview?.tag, collectionView.superview?.superview?.superview?.tag)
                 if(collectionView.superview?.superview?.tag == 0){
                     return (exactMatchResortsArray[collectionView.tag].inventory?.units.count)!
                 }else{
@@ -385,59 +385,29 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
         }else{
             if(indexPath.section == 0){
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! AvailabilityCollectionViewCell
+                var inventoryItem = Resort()
+                if(collectionView.superview?.superview?.tag == 0){
+                    inventoryItem = exactMatchResortsArray[collectionView.tag]
+                }else{
+                    inventoryItem = surroundingMatchResortsArray[collectionView.tag]
+                }
+                DarwinSDK.logger.info("\(String(describing: Helper.resolveResortInfo(resort: inventoryItem)))")
                 return cell
             }else{
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RentalInventory", for: indexPath) as! AvailabilityCollectionViewCell
+                var invetoryItem = Resort()
+                if(collectionView.superview?.superview?.tag == 0){
+                    invetoryItem = exactMatchResortsArray[collectionView.tag]
+                }else{
+                    invetoryItem = surroundingMatchResortsArray[collectionView.tag]
+                }
+                for unit in (invetoryItem.inventory?.units)! {
+                    DarwinSDK.logger.info("\(String(describing: Helper.resolveUnitInfo(unit: unit)))")
+                }
                 return cell
             }
             
         }
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
-
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.resortDetailTBLView.frame.width, height: 40))
-        headerView.backgroundColor = UIColor(red: 112.0/255.0, green: 185.0/255.0, blue: 9.0/255.0, alpha: 1)
-        
-        let headerLabel = UILabel(frame: CGRect(x: 20, y: 0, width: self.resortDetailTBLView.frame.width - 40, height: 40))
-        let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
-        for section in sectionsInSearchResult{
-            if(section.exactMatch)!{
-                headerLabel.text = "Resorts in \(String(describing: Helper.resolveDestinationInfo(destination: section.destination!)))"
-            }else{
-                headerLabel.text = "Resorts near \(String(describing: Helper.resolveDestinationInfo(destination: section.destination!)))"
-            }
-        }
-        
-        headerLabel.textColor = UIColor.white
-        headerView.addSubview(headerLabel)
-        
-        let dropDownImgVw = UIImageView(frame: CGRect(x: self.resortDetailTBLView.frame.width - 40, y: 5, width: 30, height: 30))
-        dropDownImgVw.image = UIImage(named: Constant.assetImageNames.dropArrow)
-        headerView.addSubview(dropDownImgVw)
-        
-        return headerView
-        
-    }
-    
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        
-        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: self.resortDetailTBLView.frame.width, height: 20))
-        footerView.backgroundColor = UIColor(red: 239.0/255.0, green: 239.0/255.0, blue: 246.0/255.0, alpha: 1)
-        footerView.backgroundColor = UIColor.clear
-        return footerView
-    }
-    
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if(section == Constant.MyClassConstants.resortsArray.count){
-            return 0
-        }
-        return 20
     }
 }
 
@@ -447,18 +417,13 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
     //***** UITableview delegate methods definition here *****//
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-       /* if((indexPath as NSIndexPath).row == 0) {
-            
-            return (UIScreen.main.bounds.width - 40)/2 + 100
-            //return 410
+        if(indexPath.section == 0){
+            let totalUnits = self.exactMatchResortsArray[indexPath.row].inventory?.units.count
+            return CGFloat(totalUnits!*80 + 280)
+        }else{
+            let totalUnits = self.surroundingMatchResortsArray[indexPath.row].inventory?.units.count
+            return CGFloat(totalUnits!*80 + 280)
         }
-        else {
-            return CGFloat(cellHeight)
-        }*/
-        
-        
-        return 400
-        
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //selectedIndex = indexPath.section
@@ -650,6 +615,9 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "AvailbilityCell", for: indexPath) as! SearchTableViewCell
             cell.tag = indexPath.section
+            
+            print("------------> Inside table",cell.tag, indexPath.section)
+            cell.resortInfoCollectionView.reloadData()
             cell.resortInfoCollectionView.tag = indexPath.row
             cell.resortInfoCollectionView.isScrollEnabled = false
             cell.layer.borderWidth = 0.5
@@ -849,6 +817,50 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 return surroundingMatchResortsArray.count
             }
         }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40
+        
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.resortDetailTBLView.frame.width, height: 40))
+        let headerLabel = UILabel(frame: CGRect(x: 20, y: 0, width: self.resortDetailTBLView.frame.width - 40, height: 40))
+        let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
+        if(sectionsInSearchResult[section].exactMatch)!{
+            headerLabel.text = "Resorts in \(String(describing: Helper.resolveDestinationInfo(destination: sectionsInSearchResult[section].destination!)))"
+            headerView.backgroundColor = IUIKColorPalette.primary1.color
+        }else{
+            headerLabel.text = "Resorts near \(String(describing: Helper.resolveDestinationInfo(destination: sectionsInSearchResult[section].destination!)))"
+            headerView.backgroundColor = UIColor(red: 112.0/255.0, green: 185.0/255.0, blue: 9.0/255.0, alpha: 1)
+        }
+        
+        headerLabel.textColor = UIColor.white
+        headerView.addSubview(headerLabel)
+        
+        let dropDownImgVw = UIImageView(frame: CGRect(x: self.resortDetailTBLView.frame.width - 40, y: 5, width: 30, height: 30))
+        dropDownImgVw.image = UIImage(named: Constant.assetImageNames.dropArrow)
+        headerView.addSubview(dropDownImgVw)
+        
+        return headerView
+        
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: self.resortDetailTBLView.frame.width, height: 20))
+        footerView.backgroundColor = UIColor(red: 239.0/255.0, green: 239.0/255.0, blue: 246.0/255.0, alpha: 1)
+        footerView.backgroundColor = UIColor.clear
+        return footerView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if(section == Constant.MyClassConstants.resortsArray.count){
+            return 0
+        }
+        return 20
     }
     
 }
