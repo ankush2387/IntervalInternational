@@ -39,6 +39,10 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
     var bucketIndex = 0
 
     var vacationSearch = VacationSearch()
+    var exactMatchResortsArray = [Resort]()
+    var surroundingMatchResortsArray = [Resort]()
+    var dateCellSelectionColor = "Blue"
+    
 
     // sorting optionDelegate call
     
@@ -89,7 +93,16 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.barTintColor = UIColor.init(colorLiteralRed: 70.0/255.0, green: 136.0/255.0, blue: 193.0/255.0, alpha: 1.0)
-        searchResultTableView.reloadData()
+        let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
+        print(sections.count)
+        if(sections.count > 0){
+            let resortsExact = sections[0].item?.rentalInventory
+            exactMatchResortsArray = resortsExact!
+            if(sections.count > 1){
+                let resortsSurrounding = sections[1].item?.rentalInventory
+                surroundingMatchResortsArray = resortsSurrounding!
+            }
+        }
     }
     
     override func viewDidLoad() {
@@ -148,6 +161,8 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
     
     //*****Function for more button press *****//
     func intervalDateItemClicked(_ toDate: Date){
@@ -620,11 +635,29 @@ extension SearchResultViewController:UICollectionViewDataSource {
     //***** Collection dataSource methods definition here *****//
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        if(collectionView.tag == -1){
+            return 1
+        }else{
+            return 2
+        }
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-             return Constant.MyClassConstants.calendarDatesArray.count
+        if(collectionView.tag == -1){
+            return Constant.MyClassConstants.calendarDatesArray.count
+        }else{
+            if(section == 0){
+                return 1
+            }else{
+                
+                if(collectionView.superview?.superview?.tag == 0){
+                    return (exactMatchResortsArray[collectionView.tag].inventory?.units.count)!
+                }else{
+                    return (surroundingMatchResortsArray[collectionView.tag].inventory?.units.count)!
+                }
+              
+            }
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -634,7 +667,8 @@ extension SearchResultViewController:UICollectionViewDataSource {
             if (Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)! {
                 
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.vacationSearchScreenReusableIdentifiers.moreCell, for: indexPath) as! MoreCell
-                cell.setDateForBucket(index: indexPath.item, selectedIndex: collectionviewSelectedIndex)
+                cell.setDateForBucket(index: indexPath.item, selectedIndex: collectionviewSelectedIndex, color: dateCellSelectionColor)
+
                 return cell
             }else {
                 
@@ -664,8 +698,9 @@ extension SearchResultViewController:UICollectionViewDataSource {
         }
         else{
             
+            
             if(indexPath.section == 0){
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! AvailabilityCollectionViewCell
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ResortDetailCell", for: indexPath) as! AvailabilityCollectionViewCell
                 return cell
             }else{
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RentalInventory", for: indexPath) as! AvailabilityCollectionViewCell
@@ -701,9 +736,28 @@ extension SearchResultViewController:UICollectionViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         
-        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: self.searchResultTableView.frame.width, height: 20))
-        footerView.backgroundColor = UIColor(red: 239.0/255.0, green: 239.0/255.0, blue: 246.0/255.0, alpha: 1)
-        return footerView
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.searchResultTableView.frame.width, height: 40))
+        headerView.backgroundColor = UIColor(red: 112.0/255.0, green: 185.0/255.0, blue: 9.0/255.0, alpha: 1)
+        
+        let headerLabel = UILabel(frame: CGRect(x: 20, y: 0, width: self.searchResultTableView.frame.width - 40, height: 40))
+        let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
+        for section in sectionsInSearchResult{
+            if(section.exactMatch)!{
+                headerLabel.text = "Resorts in \(String(describing: Helper.resolveDestinationInfo(destination: section.destination!)))"
+            }else{
+                headerLabel.text = "Resorts near \(String(describing: Helper.resolveDestinationInfo(destination: section.destination!)))"
+            }
+        }
+        
+        headerLabel.textColor = UIColor.white
+        headerView.addSubview(headerLabel)
+        
+        let dropDownImgVw = UIImageView(frame: CGRect(x: self.searchResultTableView.frame.width - 40, y: 5, width: 30, height: 30))
+        dropDownImgVw.image = UIImage(named: Constant.assetImageNames.dropArrow)
+        headerView.addSubview(dropDownImgVw)
+        
+        return headerView
+
     }
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 20
@@ -867,118 +921,64 @@ extension SearchResultViewController:UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         //***** configuring prototype cell for UpComingtrip resort details *****//
-        if((indexPath as NSIndexPath).row == 0) {
+        
+        if(!Constant.MyClassConstants.isFromExchange) {
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.searchResultContentTableCell, for: indexPath) as! SearchResultContentTableCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "AvailbilityCell", for: indexPath) as! SearchTableViewCell
+            cell.tag = indexPath.section
             
-            for layer in cell.resortNameGradientView.layer.sublayers!{
-                if(layer.isKind(of: CAGradientLayer.self)) {
-                    layer.removeFromSuperlayer()
-                }
-            }
-            
-            Helper.addLinearGradientToView(view: cell.resortNameGradientView, colour: UIColor.white, transparntToOpaque: true, vertical: false)
-            cell.backgroundColor = IUIKColorPalette.contentBackground.color
-            
-            
-            if(Constant.MyClassConstants.resortsArray.count != 0){
-                if (Constant.MyClassConstants.resortsArray[indexPath.section].images.count>0){
-                    var url = URL(string: "")
-                    
-                    let imagesArray = Constant.MyClassConstants.resortsArray[indexPath.section].images
-                    for imgStr in imagesArray {
-                        if(imgStr.size!.caseInsensitiveCompare(Constant.MyClassConstants.imageSize) == ComparisonResult.orderedSame) {
-                            
-                            url = URL(string: imgStr.url!)!
-                            cell.resortImageView.contentMode = .scaleToFill
-                            break
-                        }
-                    }
-                    cell.resortImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
-                    cell.resortImageView.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
-                }
-                else {
-                    
-                }
-            }
-            cell.resortName.text = Constant.MyClassConstants.resortsArray[indexPath.section].resortName
-            cell.delegate = self
-            let resortAddress = Constant.MyClassConstants.resortsArray[indexPath.section].address
-            if let city = resortAddress?.cityName! {
-                
-                cell.resortCountry.text = city
-            }
-            if let Country = resortAddress?.countryCode! {
-                
-                cell.resortCountry.text = cell.resortCountry.text?.appending(", \(Country)")
-            }
-            // resortAddress.country?.countryName
-            cell.resortCode.text = Constant.MyClassConstants.resortsArray[indexPath.section].resortCode
-            if(Constant.MyClassConstants.resortsArray[indexPath.section].tier != nil){
-            let tierImageName = Helper.getTierImageName(tier: Constant.MyClassConstants.resortsArray[indexPath.section].tier!.uppercased())
-            cell.tierImageView.image = UIImage(named: tierImageName)
-            }
-            let status = Helper.isResrotFavorite(resortCode: Constant.MyClassConstants.resortsArray[indexPath.section].resortCode!)
-            if(status) {
-                cell.favoriteButton.isSelected = true
-            }
-            else {
-                cell.favoriteButton.isSelected = false
-            }
-            cell.favoriteButton.tag = indexPath.section
-            cell.selectionStyle = UITableViewCellSelectionStyle.none
+            cell.resortInfoCollectionView.tag = indexPath.row
+            cell.resortInfoCollectionView.reloadData()
+            cell.resortInfoCollectionView.isScrollEnabled = false
+            cell.layer.borderWidth = 0.5
+            cell.layer.borderColor = UIColor.lightGray.cgColor
             return cell
+ 
+            
         }
-        else {
+        else{
             if(!Constant.MyClassConstants.isFromExchange){
                 
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.resortBedroomDetails, for: indexPath) as! ResortBedroomDetails
-                cell.backgroundColor = IUIKColorPalette.contentBackground.color
-                cell.selectionStyle = UITableViewCellSelectionStyle.none
+                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.getawayCell, for: indexPath) as! GetawayCell
+                cell.layer.borderWidth = 0.5
+                cell.layer.borderColor = UIColor.lightGray.cgColor
+                
                 
                 var inventoryDict = Inventory()
-                
-                inventoryDict = Constant.MyClassConstants.resortsArray[indexPath.section].inventory!
-                
-                let invent = inventoryDict
-                let units = invent.units
-                
-                if let roomSize = UnitSize(rawValue: units[indexPath.row - 1].unitSize!) {
-                    
-                    cell.numberOfBedroom.text =  Helper.getBrEnums(brType: roomSize.rawValue)
+                //inventoryDict = Constant.MyClassConstants.resortsArray[indexPath.section].inventory!
+                //let invent = inventoryDict
+                let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
+                let inventoryItem = sectionsInSearchResult[indexPath.section].item?.rentalInventory
+                let units = inventoryItem?[0].inventory?.units
+                if let roomSize = UnitSize(rawValue: (units?[0].unitSize!)!) {
+                    cell.bedRoomType.text = Helper.getBrEnums(brType: roomSize.rawValue)
+                }
+                if let kitchenSize = KitchenType(rawValue: (units?[0].kitchenType!)!) {
+                    cell.kitchenType.text = Helper.getKitchenEnums(kitchenType: kitchenSize.rawValue)
                 }
                 
-                if let kitchenSize = KitchenType(rawValue: units[indexPath.row - 1].kitchenType!) {
-                    cell.kitchenLabel.text = Helper.getKitchenEnums(kitchenType: kitchenSize.rawValue)
-                }
+                cell.sleeps.text = String(describing: units?[0].publicSleepCapacity) + "Total, " + (String(describing: units?[0].privateSleepCapacity)) + "Private"
                 
-                cell.totalPrivateLabel.text = String(units[indexPath.row - 1].publicSleepCapacity + units[indexPath.row - 1].privateSleepCapacity) + "Total, " + (String(units[indexPath.row - 1].privateSleepCapacity)) + "Private"
-                
-                //Change to currency symbol
-                let currencySymbol : String?
-                currencySymbol = Helper.currencyCodetoSymbol(code: invent.currencyCode!)
-                cell.currencySymbol.text = currencySymbol
-                let inventoryPrice:[InventoryPrice] = invent.units[indexPath.row - 1].prices
-                cell.getawayPriceLabel.text = String(Int(Float(inventoryPrice[0].price)))
-                cell.exchangeLabel.isHidden = true
-                cell.sepratorOr.isHidden = true
-                cell.exchangeButton.isHidden = true
                 cell.backgroundColor = IUIKColorPalette.contentBackground.color
+                
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 
-                //display promotions
-                let promotions = invent.units[indexPath.row - 1].promotions
-                if promotions.count > 0 {
+                cell.getawayPrice.text = String(Int(Float((units?[0].prices[0].price)!)))
+                cell.backgroundColor = IUIKColorPalette.contentBackground.color
+                
+                cell.selectionStyle = UITableViewCellSelectionStyle.none
+                
+                let promotions = units?[0].promotions
+                if (promotions?.count)! > 0 {
                     for view in cell.promotionsView.subviews {
                         view.removeFromSuperview()
                     }
                     
-                    cellHeight = 55 + (14*promotions.count)
+                    cellHeight = 55 + (14*(promotions?.count)!)
                     var yPosition: CGFloat = 0
-                    for promotion in promotions {
-                        print("Promotions: \(promotions)")
+                    for promotion in promotions! {
                         let imgV = UIImageView(frame: CGRect(x:10, y: yPosition, width: 15, height: 15))
-                        imgV.image = UIImage(named: Constant.assetImageNames.promoImage)
+                        imgV.image = UIImage(named: "ExchangeIcon")
                         let promLabel = UILabel(frame: CGRect(x:30, y: yPosition, width: cell.promotionsView.bounds.width, height: 15))
                         promLabel.text = promotion.offerName
                         promLabel.adjustsFontSizeToFitWidth = true
@@ -991,6 +991,7 @@ extension SearchResultViewController:UITableViewDataSource {
                         yPosition += 15
                     }
                 }
+                
                 return cell
                 
             }else{
@@ -1016,12 +1017,12 @@ extension SearchResultViewController:UITableViewDataSource {
                                     promotionsString = promotionsString.appending(Constant.MyClassConstants.htmlFooter)
                                     cell.promotionWebView.loadHTMLString(promotionsString, baseURL: Bundle.main.bundleURL)
                                 }
-
+                                
                             }
                         }
                     }
                     
-                 return cell
+                    return cell
                 }else{
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.resortBedroomDetailexchange, for: indexPath) as! ResortBedroomDetails
                     cell.backgroundColor = IUIKColorPalette.contentBackground.color
@@ -1040,12 +1041,15 @@ extension SearchResultViewController:UITableViewDataSource {
                 }
             }
         }
+        
+        
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
         //***** Return number of sections required in tableview *****//
-        return Constant.MyClassConstants.resortsArray.count
+        let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
+        return sectionsInSearchResult.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -1057,22 +1061,20 @@ extension SearchResultViewController:UITableViewDataSource {
                 var promotions = 0
                 for bucket in Constant.MyClassConstants.exchangeInventory[section].buckets{
                     //for (index,promotion) in bucket.promotions.enumerated(){
-                        promotions = bucket.promotions.count
+                    promotions = bucket.promotions.count
                     //}
                 }
                 return Constant.MyClassConstants.exchangeInventory[section].buckets.count + promotions + 1
             }else{
                 return 1
             }
-            
         }else{
-            var inventoryDict = Inventory()
-            inventoryDict = Constant.MyClassConstants.resortsArray[section].inventory!
-            let invent = inventoryDict
-            self.unitSizeArray = invent.units
-            return self.unitSizeArray.count + 1
+            if(section == 0){
+                return exactMatchResortsArray.count
+            }else{
+                return surroundingMatchResortsArray.count
+            }
         }
-        
     }
 }
 

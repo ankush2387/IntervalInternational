@@ -1447,6 +1447,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 
                 
                 self.vacationSearch = VacationSearch(appSettings, rentalSearchCriteria)
+                Constant.MyClassConstants.initialVacationSearch = self.vacationSearch
                 
                 RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: self.vacationSearch.rentalSearch?.searchContext.request, onSuccess: { (response) in
                     
@@ -1777,9 +1778,11 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             if (section.exactMatch)! {
                 // Show up Destination exact match as header
                 DarwinSDK.logger.info("Header[D] - \(String(describing: self.resolveDestinationInfo(destination: section.destination!)))")
+                Constant.MyClassConstants.searchAvailabilityHeader = "Resorts in \(String(describing: self.resolveDestinationInfo(destination: section.destination!)))"
             } else {
                 // Show up Destination surrounding match as header
                 DarwinSDK.logger.info("Header[D] - Surrounding to \(String(describing: self.resolveDestinationInfo(destination: section.destination!)))")
+                Constant.MyClassConstants.searchAvailabilityHeader = "Resorts near \(String(describing: self.resolveDestinationInfo(destination: section.destination!)))"
             }
             
             for inventoryItem in (section.item?.rentalInventory)! {
@@ -1791,7 +1794,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             for inventoryItem in (section.item?.rentalInventory)! {
                 // Show up only Resorts as header
                 DarwinSDK.logger.info("Header[R] - \(String(describing: inventoryItem.resortName))")
-                
+                Constant.MyClassConstants.searchAvailabilityHeader = "\(String(describing: inventoryItem.resortName))"
                 self.showAvailabilityBucket(inventoryItem: inventoryItem)
             }
             
