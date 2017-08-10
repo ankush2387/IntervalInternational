@@ -86,9 +86,16 @@ class SortingViewController: UIViewController {
             
             self.selectedIndex = (indexPath?.row)!
             
-            let resortName = resortNameArray[(indexPath?.row)!].resortName
+            switch Constant.MyClassConstants.filterOptionsArray[(indexPath?.row)!] {
+            case .Destination(let val):
+                self.delegate?.selectedOptionis(filteredValueIs: val.destinationName, indexPath: indexPath! as NSIndexPath, isFromFiltered: true)
+            case .Resort(let val):
+                 self.delegate?.selectedOptionis(filteredValueIs: val.resortName, indexPath: indexPath! as NSIndexPath, isFromFiltered: true)
+            }
             
-            self.delegate?.selectedOptionis(filteredValueIs: resortName!, indexPath: indexPath! as NSIndexPath, isFromFiltered: true)
+            //let resortName = resortNameArray[(indexPath?.row)!].resortName
+            
+            //self.delegate?.selectedOptionis(filteredValueIs: resortName!, indexPath: indexPath! as NSIndexPath, isFromFiltered: true)
             
         } else { // sorting option clicked
             let cell = sender.superview?.superview?.superview as? SortingOptionCell
