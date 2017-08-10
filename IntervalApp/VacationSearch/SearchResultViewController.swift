@@ -1263,4 +1263,8 @@ extension SearchResultViewController:HelperDelegate {
         Helper.hideProgressBar(senderView: self)
         self.searchResultTableView.reloadData()
     }
+    
+    func resetCalendar(){
+        
+    }
 }

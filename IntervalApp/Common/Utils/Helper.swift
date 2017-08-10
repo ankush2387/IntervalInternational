@@ -15,9 +15,10 @@ import DarwinSDK
 import RealmSwift
 
 //***** Custom delegate method declaration *****//
-protocol HelperDelegate {
+@objc protocol HelperDelegate {
     // Call for SearchResult
     func resortSearchComplete()
+    func resetCalendar()
 }
 
 public class Helper{
@@ -1631,6 +1632,33 @@ public class Helper{
         
         
     }
+    
+    static func returnFilteredValue(filteredValue:String) -> String {
+        
+        var selectedvalue = filteredValue.uppercased()
+        
+        if selectedvalue == "DEFAULT" {
+            selectedvalue = "DEFAULT"
+        } else if (selectedvalue == "RESORT NAME:") {
+            selectedvalue = "RESORT_NAME"
+            
+        } else if (selectedvalue == "CITY:") {
+            selectedvalue = "CITY_NAME"
+            
+        } else if (selectedvalue == "RESORT TIER:") {
+            selectedvalue = "RESORT_TIER"
+            
+        } else if (selectedvalue == "PRICE:") {
+            selectedvalue = "PRICE"
+            
+        } else {
+            selectedvalue = "UNKNOWN"
+        }
+        
+        return selectedvalue
+        
+    }
+    
     static func trackOmnitureCallForPageView(name:String) {
         
         // omniture tracking with event 40
@@ -1735,35 +1763,30 @@ public class Helper{
     
     static func showScrollingCalendar(vacationSearch:VacationSearch) {
         DarwinSDK.logger.info("-- Create Calendar based on Booking Window Intervals --")
-        
-        Constant.MyClassConstants.singleDateArray.removeAll()
-        Constant.MyClassConstants.availableBucketArray.removeAll()
-        Constant.MyClassConstants.noAvailableBucketArray.removeAll()
         Constant.MyClassConstants.calendarDatesArray.removeAll()
         
         let calendar = vacationSearch.createCalendar()
         
         // Show up the Scrolling Calendar in UI
         for calendarItem in calendar {
+            Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
             if (calendarItem.isInterval)! {
                 // Is a Interval of Dates
                 if (calendarItem.isIntervalAvailable)! {
                     // Available for selection or click by the Member
-
-                    Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
                     DarwinSDK.logger.info("\(String(describing: calendarItem.intervalStartDate!)) - \(String(describing: calendarItem.intervalEndDate!)) [Available]")
                     
                 } else {
                     // No available for selection or click by the Member
-Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
                     DarwinSDK.logger.info("\(String(describing: calendarItem.intervalStartDate!)) - \(String(describing: calendarItem.intervalEndDate!)) [No Available]")
                 }
             } else {
                 // Is a Single Date
                 DarwinSDK.logger.info("\(String(describing: calendarItem.checkInDate!))")
-                Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
             }
         }
+        
+        helperDelegate?.resetCalendar()
     }
     
     static func showNearestCheckInDateSelectedMessage() {

@@ -874,4 +874,7 @@ extension VacationSearchIPadViewController:HelperDelegate {
     func resortSearchComplete(){
         self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
     }
+    func resetCalendar(){
+        
+    }
 }
