@@ -37,6 +37,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     var exactMatchResortsArray = [Resort]()
     var surroundingMatchResortsArray = [Resort]()
     var dateCellSelectionColor = Constant.CommonColor.blueColor
+    var myActivityIndicator = UIActivityIndicatorView()
     
 
     // sorting optionDelegate call
@@ -222,6 +223,10 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                     
                     RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
                                              onSuccess: { (response) in
+                                                
+                                                // hide indicator here
+                                                //self.myActivityIndicator.stopAnimating()
+                                                
                                                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
                                                 let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.currentInterval
                                                 // Update active interval
@@ -423,6 +428,32 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
     //***** Collection delegate methods definition here *****//
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if(collectionView.tag == -1){
+            
+            let cell = collectionView.cellForItem(at: indexPath)
+            
+            if(cell?.isKind(of:MoreCell.self))!{
+                let viewForActivity = UIView()
+                viewForActivity.frame = CGRect(x:0, y:0, width:(cell?.bounds.width)!, height:(cell?.bounds.height)!)
+                
+                myActivityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+                
+                // Position Activity Indicator in the center of the main view
+                myActivityIndicator.center = (cell?.contentView.center)!
+                
+                // If needed, you can prevent Acivity Indicator from hiding when stopAnimating() is called
+                myActivityIndicator.hidesWhenStopped = false
+                
+                // Start Activity Indicator
+                myActivityIndicator.startAnimating()
+                
+                myActivityIndicator.hidesWhenStopped = true
+                // Call stopAnimating() when need to stop activity indicator
+                //myActivityIndicator.stopAnimating()
+                viewForActivity.backgroundColor = UIColor.green
+                viewForActivity.addSubview(myActivityIndicator)
+                cell?.contentView.addSubview(viewForActivity)
+            }
+            
         let lastSelectedIndex = collectionviewSelectedIndex
         collectionviewSelectedIndex = indexPath.item
         dateCellSelectionColor = Constant.CommonColor.blueColor
@@ -664,6 +695,7 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
             return CGFloat(totalUnits!*80 + 320)
         }
     }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //selectedIndex = indexPath.section
         //selectedUnitIndex = indexPath.row
