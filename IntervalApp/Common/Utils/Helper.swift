@@ -18,7 +18,7 @@ import RealmSwift
 @objc protocol HelperDelegate {
     // Call for SearchResult
     func resortSearchComplete()
-    @objc optional func resetCalendar()
+    func resetCalendar()
 }
 
 public class Helper{
@@ -1786,7 +1786,7 @@ public class Helper{
             }
         }
         
-        helperDelegate?.resetCalendar!()
+        helperDelegate?.resetCalendar()
     }
     
     static func showNearestCheckInDateSelectedMessage() {
