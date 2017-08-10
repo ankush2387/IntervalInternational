@@ -632,9 +632,9 @@ extension SearchResultViewController:UICollectionViewDelegateFlowLayout {
             }
         }else{
             if(indexPath.section == 0){
-                return CGSize(width: UIScreen.main.bounds.width - 40, height: 250.0)
+                return CGSize(width: UIScreen.main.bounds.width - 40, height: 230.0)
             }else{
-                return CGSize(width: UIScreen.main.bounds.width - 40, height: 30.0)
+                return CGSize(width: UIScreen.main.bounds.width - 40, height: 60.0)
             }
         }
         
@@ -786,7 +786,7 @@ extension SearchResultViewController:UICollectionViewDataSource {
                     cell.sleeps.text =  totalSleepCapacity + String(unit.privateSleepCapacity) + Constant.CommonLocalisedString.privateString
                     
                 }
-                
+               
                 return cell
 
         }
@@ -872,10 +872,10 @@ extension SearchResultViewController:UITableViewDelegate {
       
         if(indexPath.section == 0){
             let totalUnits = self.exactMatchResortsArray[indexPath.row].inventory?.units.count
-            return CGFloat(totalUnits!*80 + 320)
+            return CGFloat(totalUnits!*60 + 260)
         }else{
             let totalUnits = self.surroundingMatchResortsArray[indexPath.row].inventory?.units.count
-            return CGFloat(totalUnits!*80 + 320)
+            return CGFloat(totalUnits!*60 + 250)
         }
       
         
