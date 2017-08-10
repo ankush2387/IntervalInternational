@@ -42,7 +42,6 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     // sorting optionDelegate call
     
     func selectedOptionis(filteredValueIs:String, indexPath:NSIndexPath, isFromFiltered:Bool) {
-        // let selectedvalue = filteredValueIs.uppercased()
         
        let selectedvalue = Helper.returnFilteredValue(filteredValue: filteredValueIs)
         
@@ -128,10 +127,11 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
             
             vacationSearchForSorting.sortType = AvailabilitySortType(rawValue: selectedvalue)!
             
-            // sorting apin integration
+            // sorting api integration
             
             Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: vacationSearchForSorting)
             
+            Constant.MyClassConstants.isFromSorting = true
             self.dismiss(animated: true, completion: nil)
             resortDetailTBLView.reloadData()
         }
@@ -378,7 +378,8 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
         let viewController = storyBoard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.sortingViewController) as! SortingViewController
         viewController.delegate = self
         viewController.isFilterClicked = true
-        viewController.resortNameArray = Constant.MyClassConstants.resortsArray
+        
+        //viewController.resortNameArray = Constant.MyClassConstants.resortsArray
         viewController.selectedIndex = Constant.MyClassConstants.filteredIndex
         self.present(viewController, animated: true, completion: nil)
     }
@@ -1011,11 +1012,21 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
         let headerLabel = UILabel(frame: CGRect(x: 20, y: 0, width: self.resortDetailTBLView.frame.width - 40, height: 40))
         let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
         if(sectionsInSearchResult[section].exactMatch)!{
-            headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing: Helper.resolveDestinationInfo(destination: sectionsInSearchResult[section].destination!)))"
+            
+            if sectionsInSearchResult[section].destination != nil {
+                
+                headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing: Helper.resolveDestinationInfo(destination: sectionsInSearchResult[section].destination!)))"
+                
+            }
             headerView.backgroundColor = IUIKColorPalette.primary1.color
+            
         }else{
-            headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing: Helper.resolveDestinationInfo(destination: sectionsInSearchResult[section].destination!)))"
-            headerView.backgroundColor = UIColor(red: 112.0/255.0, green: 185.0/255.0, blue: 9.0/255.0, alpha: 1)
+            
+            if sectionsInSearchResult[section].destination != nil {
+                headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing: Helper.resolveDestinationInfo(destination: sectionsInSearchResult[section].destination!)))"
+                headerView.backgroundColor = UIColor(red: 112.0/255.0, green: 185.0/255.0, blue: 9.0/255.0, alpha: 1)
+                
+            }
         }
         
         headerLabel.textColor = UIColor.white

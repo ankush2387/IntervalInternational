@@ -48,31 +48,13 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
     
     func selectedOptionis(filteredValueIs:String, indexPath:NSIndexPath, isFromFiltered:Bool) {
         
-        var selectedvalue = filteredValueIs.uppercased()
+        let selectedvalue = Helper.returnFilteredValue(filteredValue: filteredValueIs)
         
         if isFromFiltered {
             Constant.MyClassConstants.filteredIndex = indexPath.row
         } else {
             Constant.MyClassConstants.sortingIndex = indexPath.row
-            
-            if selectedvalue == "DEFAULT" {
-                selectedvalue = "DEFAULT"
-            } else if (selectedvalue == "RESORT NAME:") {
-                selectedvalue = "RESORT_NAME"
-                
-            } else if (selectedvalue == "CITY:") {
-                selectedvalue = "CITY_NAME"
-                
-            } else if (selectedvalue == "RESORT TIER:") {
-                selectedvalue = "RESORT_TIER"
-                
-            } else if (selectedvalue == "PRICE:") {
-                selectedvalue = "PRICE"
-                
-            } else {
-                selectedvalue = "UNKNOWN"
-            }
-            
+ 
             let activeInterval = BookingWindowInterval(interval: Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval())
             
             let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.getCheckInDateForInitialSearch()
@@ -635,11 +617,27 @@ extension SearchResultViewController:UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        if (Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)!{
-            return CGSize(width: 110.0, height: 60.0)
+//        if (Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)!{
+//            return CGSize(width: 110.0, height: 60.0)
+//        }else{
+//            return CGSize(width: 60.0, height: 60.0)
+//        }
+        
+        
+        if(collectionView.tag == -1){
+            if (Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)!{
+                return CGSize(width: 110.0, height: 60.0)
+            }else{
+                return CGSize(width: 60.0, height: 60.0)
+            }
         }else{
-            return CGSize(width: 60.0, height: 60.0)
+            if(indexPath.section == 0){
+                return CGSize(width: UIScreen.main.bounds.width - 40, height: 250.0)
+            }else{
+                return CGSize(width: UIScreen.main.bounds.width - 40, height: 30.0)
+            }
         }
+        
     }
 }
 
@@ -714,35 +712,81 @@ extension SearchResultViewController:UICollectionViewDataSource {
             
             if(indexPath.section == 0){
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.resortDetailCell, for: indexPath) as! AvailabilityCollectionViewCell
-//                for layer in cell.viewGradient.layer.sublayers!{
-//                    if(layer.isKind(of: CAGradientLayer.self)) {
-//                        layer.removeFromSuperlayer()
-//                    }
-//                }
-//                var inventoryItem = Resort()
-//                if(collectionView.superview?.superview?.tag == 0){
-//                    inventoryItem = exactMatchResortsArray[collectionView.tag]
-//                }else{
-//                    inventoryItem = surroundingMatchResortsArray[collectionView.tag]
-//                }
-//                var url = URL(string: "")
-//                for imgStr in inventoryItem.images {
-//                    if(imgStr.size!.caseInsensitiveCompare(Constant.MyClassConstants.imageSize) == ComparisonResult.orderedSame) {
-//                        url = URL(string: imgStr.url!)!
-//                        break
-//                    }
-//                }
-//                Helper.addLinearGradientToView(view: cell.viewGradient, colour: UIColor.white, transparntToOpaque: true, vertical: false)
-//                cell.resortImageView?.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
-//                cell.resortName.text = inventoryItem.resortName
-//                cell.resortAddress.text = inventoryItem.address?.cityName
-//                cell.resortCode.text = inventoryItem.resortCode
-//                DarwinSDK.logger.info("\(String(describing: Helper.resolveResortInfo(resort: inventoryItem)))")
+                for layer in cell.viewGradient.layer.sublayers!{
+                    if(layer.isKind(of: CAGradientLayer.self)) {
+                        layer.removeFromSuperlayer()
+                    }
+                }
+                var inventoryItem = Resort()
+                if(collectionView.superview?.superview?.tag == 0){
+                    inventoryItem = exactMatchResortsArray[collectionView.tag]
+                }else{
+                    inventoryItem = surroundingMatchResortsArray[collectionView.tag]
+                }
+                var url = URL(string: "")
+                for imgStr in inventoryItem.images {
+                    if(imgStr.size!.caseInsensitiveCompare(Constant.MyClassConstants.imageSize) == ComparisonResult.orderedSame) {
+                        url = URL(string: imgStr.url!)!
+                        break
+                    }
+                }
+                Helper.addLinearGradientToView(view: cell.viewGradient, colour: UIColor.white, transparntToOpaque: true, vertical: false)
+                cell.resortImageView?.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+                cell.resortName.text = inventoryItem.resortName
+                cell.resortAddress.text = inventoryItem.address?.cityName
+                cell.resortCode.text = inventoryItem.resortCode
+                DarwinSDK.logger.info("\(String(describing: Helper.resolveResortInfo(resort: inventoryItem)))")
                 
                 
                 return cell
             }else{
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.resortInventoryCell, for: indexPath) as! RentalInventoryCVCell
+                
+                var invetoryItem = Resort()
+                print(invetoryItem)
+                if(collectionView.superview?.superview?.tag == 0){
+                    invetoryItem = exactMatchResortsArray[collectionView.tag]
+                }else{
+                    invetoryItem = surroundingMatchResortsArray[collectionView.tag]
+                }
+                // for unit in (invetoryItem.inventory?.units)! {
+                let unit = (invetoryItem.inventory?.units[indexPath.item])!
+                DarwinSDK.logger.info("\(String(describing: Helper.resolveUnitInfo(unit: unit)))")
+                
+                // price
+                let price = Int(unit.prices[0].price)
+                cell.getawayPrice.text = String(price)
+                
+                // bedroom details
+                
+                var bedRoomDetails = ""
+                if let bedType = unit.unitSize {
+                    bedRoomDetails.append(" \(String(describing: Helper.getBrEnums(brType: bedType)))")
+                }
+                
+                cell.bedRoomType.text = bedRoomDetails
+                
+                var kitchenDetails = ""
+                if let kitchenType = unit.kitchenType {
+                    kitchenDetails.append(" \(String(describing: Helper.getKitchenEnums(kitchenType: kitchenType)))")
+                }
+                
+                cell.kitchenType.text = kitchenDetails
+                
+                var totalSleepCapacity = String()
+                
+                if unit.publicSleepCapacity > 0 {
+                    
+                    totalSleepCapacity =  String(unit.publicSleepCapacity) + Constant.CommonLocalisedString.totalString
+                    
+                }
+                
+                if unit.privateSleepCapacity > 0 {
+                    
+                    cell.sleeps.text =  totalSleepCapacity + String(unit.privateSleepCapacity) + Constant.CommonLocalisedString.privateString
+                    
+                }
+                
                 return cell
 
         }
@@ -758,10 +802,16 @@ extension SearchResultViewController:UICollectionViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.searchResultTableView.frame.width, height: 40))
-        headerView.backgroundColor = UIColor(red: 112.0/255.0, green: 185.0/255.0, blue: 9.0/255.0, alpha: 1)
-        
         let headerLabel = UILabel(frame: CGRect(x: 20, y: 0, width: self.searchResultTableView.frame.width - 40, height: 40))
-        headerLabel.text = Constant.MyClassConstants.searchAvailabilityHeader
+        let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
+        if(sectionsInSearchResult[section].exactMatch)!{
+            headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing: Helper.resolveDestinationInfo(destination: sectionsInSearchResult[section].destination!)))"
+            headerView.backgroundColor = IUIKColorPalette.primary1.color
+        }else{
+            headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing: Helper.resolveDestinationInfo(destination: sectionsInSearchResult[section].destination!)))"
+            headerView.backgroundColor = UIColor(red: 112.0/255.0, green: 185.0/255.0, blue: 9.0/255.0, alpha: 1)
+        }
+        
         headerLabel.textColor = UIColor.white
         headerView.addSubview(headerLabel)
         
@@ -775,32 +825,43 @@ extension SearchResultViewController:UICollectionViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.searchResultTableView.frame.width, height: 40))
-        headerView.backgroundColor = UIColor(red: 112.0/255.0, green: 185.0/255.0, blue: 9.0/255.0, alpha: 1)
+//        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.searchResultTableView.frame.width, height: 40))
+//        headerView.backgroundColor = UIColor(red: 112.0/255.0, green: 185.0/255.0, blue: 9.0/255.0, alpha: 1)
+//        
+//        let headerLabel = UILabel(frame: CGRect(x: 20, y: 0, width: self.searchResultTableView.frame.width - 40, height: 40))
+//        let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
+//        for section in sectionsInSearchResult{
+//            if(section.exactMatch)!{
+//                headerLabel.text = "Resorts in \(String(describing: Helper.resolveDestinationInfo(destination: section.destination!)))"
+//            }else{
+//                headerLabel.text = "Resorts near \(String(describing: Helper.resolveDestinationInfo(destination: section.destination!)))"
+//            }
+//        }
+//        
+//        headerLabel.textColor = UIColor.white
+//        headerView.addSubview(headerLabel)
+//        
+//        let dropDownImgVw = UIImageView(frame: CGRect(x: self.searchResultTableView.frame.width - 40, y: 5, width: 30, height: 30))
+//        dropDownImgVw.image = UIImage(named: Constant.assetImageNames.dropArrow)
+//        headerView.addSubview(dropDownImgVw)
+//        
+//        return headerView
         
-        let headerLabel = UILabel(frame: CGRect(x: 20, y: 0, width: self.searchResultTableView.frame.width - 40, height: 40))
-        let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
-        for section in sectionsInSearchResult{
-            if(section.exactMatch)!{
-                headerLabel.text = "Resorts in \(String(describing: Helper.resolveDestinationInfo(destination: section.destination!)))"
-            }else{
-                headerLabel.text = "Resorts near \(String(describing: Helper.resolveDestinationInfo(destination: section.destination!)))"
-            }
-        }
-        
-        headerLabel.textColor = UIColor.white
-        headerView.addSubview(headerLabel)
-        
-        let dropDownImgVw = UIImageView(frame: CGRect(x: self.searchResultTableView.frame.width - 40, y: 5, width: 30, height: 30))
-        dropDownImgVw.image = UIImage(named: Constant.assetImageNames.dropArrow)
-        headerView.addSubview(dropDownImgVw)
-        
-        return headerView
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: self.searchResultTableView.frame.width, height: 20))
+        footerView.backgroundColor = UIColor(red: 239.0/255.0, green: 239.0/255.0, blue: 246.0/255.0, alpha: 1)
+        footerView.backgroundColor = UIColor.clear
+        return footerView
 
     }
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        
+        
+        if(section == Constant.MyClassConstants.resortsArray.count){
+            return 0
+        }
         return 20
     }
+    
 }
 
 extension SearchResultViewController:UITableViewDelegate {
