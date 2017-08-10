@@ -147,8 +147,11 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
     
     func intervalBucketClicked(calendarItem:CalendarItem!){
         Helper.hideProgressBar(senderView: self)
+        Helper.helperDelegate = self
         
         if (calendarItem.isInterval)! {
+            
+            
             
             // Resolve the next active interval based on the Calendar interval selected
             let activeInterval = Constant.MyClassConstants.initialVacationSearch.resolveNextActiveIntervalFor(intervalStartDate: calendarItem.intervalStartDate, intervalEndDate: calendarItem.intervalEndDate)
@@ -165,16 +168,18 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
                     RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
                                              onSuccess: { (response) in
                                                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
-                                                
+                                                let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
                                                 // Update active interval
                                                 Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                                                 
                                                 Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                                 
                                                 //expectation.fulfill()
-                                                self.searchResultColelctionView.reloadData()
+                                                
                     },
                                              onError:{ (error) in
+                                                
+                                                SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                                                 DarwinSDK.logger.error("Error Code: \(error.code)")
                                                 DarwinSDK.logger.error("Error Description: \(error.description)")
                                                 
@@ -190,10 +195,10 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
         } else {
             
             // Get activeInterval
-            let activeInterval = BookingWindowInterval(interval: self.vacationSearch.bookingWindow.getActiveInterval())
+            let activeInterval = BookingWindowInterval(interval: Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval())
             
             // Execute Search Availability
-            if (self.vacationSearch.searchCriteria.searchType.isRental()) {
+            if (Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()) {
                 
                 let request = RentalSearchResortsRequest()
                 request.checkInDate = Helper.convertStringToDate(dateString: calendarItem.checkInDate!, format: Constant.MyClassConstants.dateFormat)
@@ -204,7 +209,7 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
                                             // Update Rental inventory
                                             Constant.MyClassConstants.initialVacationSearch.rentalSearch?.inventory = response.resorts
                                             
-                                            Helper.showScrollingCalendar(vacationSearch: self.vacationSearch)
+                                            Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                             Helper.showAvailabilityResults(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                             
                                             //expectation.fulfill()
@@ -228,6 +233,8 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
                 }
                 )
             }
+            
+
         }
     }
     
@@ -632,9 +639,9 @@ extension SearchResultViewController:UICollectionViewDelegateFlowLayout {
             }
         }else{
             if(indexPath.section == 0){
-                return CGSize(width: UIScreen.main.bounds.width - 40, height: 230.0)
+                return CGSize(width: UIScreen.main.bounds.width, height: 280.0)
             }else{
-                return CGSize(width: UIScreen.main.bounds.width - 40, height: 60.0)
+                return CGSize(width: UIScreen.main.bounds.width, height: 50.0)
             }
         }
         
@@ -678,6 +685,11 @@ extension SearchResultViewController:UICollectionViewDataSource {
             if (Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)! {
                 
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.vacationSearchScreenReusableIdentifiers.moreCell, for: indexPath) as! MoreCell
+                if(Constant.MyClassConstants.calendarDatesArray[indexPath.item].isIntervalAvailable)!{
+                    cell.backgroundColor = UIColor.white
+                }else{
+                    cell.backgroundColor = UIColor.lightGray
+                }
                 cell.setDateForBucket(index: indexPath.item, selectedIndex: collectionviewSelectedIndex, color: dateCellSelectionColor)
 
                 return cell
@@ -768,7 +780,7 @@ extension SearchResultViewController:UICollectionViewDataSource {
                 
                 var kitchenDetails = ""
                 if let kitchenType = unit.kitchenType {
-                    kitchenDetails.append(" \(String(describing: Helper.getKitchenEnums(kitchenType: kitchenType)))")
+                    kitchenDetails.append("\(String(describing: Helper.getKitchenEnums(kitchenType: kitchenType)))")
                 }
                 
                 cell.kitchenType.text = kitchenDetails
@@ -872,10 +884,10 @@ extension SearchResultViewController:UITableViewDelegate {
       
         if(indexPath.section == 0){
             let totalUnits = self.exactMatchResortsArray[indexPath.row].inventory?.units.count
-            return CGFloat(totalUnits!*60 + 260)
+            return CGFloat(totalUnits!*50 + 300)
         }else{
             let totalUnits = self.surroundingMatchResortsArray[indexPath.row].inventory?.units.count
-            return CGFloat(totalUnits!*60 + 250)
+            return CGFloat(totalUnits!*50 + 300)
         }
       
         
