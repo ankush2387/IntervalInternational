@@ -85,6 +85,7 @@ class SortingViewController: UIViewController {
             let indexPath = self.sortingTBLview.indexPath(for: cell!)
             
             self.selectedIndex = (indexPath?.row)!
+             self.sortingTBLview.reloadData()
             
             switch Constant.MyClassConstants.filterOptionsArray[(indexPath?.row)!] {
             case .Destination(let val):
@@ -136,7 +137,13 @@ extension SortingViewController:UITableViewDelegate {
         
         // set selected value here from array.
         if self.isFilterClicked {
-            self.delegate?.selectedOptionis(filteredValueIs: resortNameArray[indexPath.row].resortName!, indexPath: indexPath as NSIndexPath, isFromFiltered: true)
+            switch Constant.MyClassConstants.filterOptionsArray[indexPath.row] {
+            case .Destination(let val):
+                self.delegate?.selectedOptionis(filteredValueIs: val.destinationName, indexPath: indexPath as NSIndexPath, isFromFiltered: true)
+            case .Resort(let val):
+                self.delegate?.selectedOptionis(filteredValueIs: val.resortName, indexPath: indexPath as NSIndexPath, isFromFiltered: true)
+            }
+            //self.delegate?.selectedOptionis(filteredValueIs: resortNameArray[indexPath.row].resortName!, indexPath: indexPath as NSIndexPath, isFromFiltered: true)
         } else {
             self.delegate?.selectedOptionis(filteredValueIs: Constant.MyClassConstants.sortingOptionArray[(indexPath.row)], indexPath: indexPath as NSIndexPath, isFromFiltered: false)
         }
