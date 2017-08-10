@@ -119,7 +119,7 @@ class Constant: NSObject {
         // Sorting or filter options array
         static var filteredOptiondArray = ["Crecent resort on...+3 more", "Hyatt Beach Resort House", "Key West, Florida", "Las Vegas, Nevada"]
         
-        static var sortingOptionArray = ["Resort Name:", "Resort Name:", "City:", "City:", "Price:", "Price:", "Resort Tier:", "Resort Tier:"]
+        static var sortingOptionArray = ["Resort Name:", "Resort Name:", "Price:", "Price:", "City:", "City:", "Resort Tier:", "Resort Tier:"]
         
         static var sortingRangeArray = ["A - Z", "Z - A", "Low - High", "High - Low", "A - Z", "Z - A", "Low - High", "High - Low"]
         
@@ -173,6 +173,8 @@ class Constant: NSObject {
         
         //***** global variable  that hold  Boolean value successfull login status *****//
         static var isLoginSuccessfull = false
+        
+        static var isFromSorting = false
         
         //***** global variable that contains running device width from appdelegate method *****//
         static var runningDeviceWidth:CGFloat? = UIScreen.main.bounds.width
