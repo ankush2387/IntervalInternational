@@ -540,7 +540,11 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                 
                 
                 let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
-                rentalSearchCriteria.destination = destinations[0]
+                if(destinations.count > 0){
+                   rentalSearchCriteria.destination = destinations[0]
+                }else if(resorts.count > 0){
+                    rentalSearchCriteria.resorts = resorts
+                }
                 
                 rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                 

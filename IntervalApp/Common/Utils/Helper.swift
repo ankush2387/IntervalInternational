@@ -1745,8 +1745,8 @@ public class Helper{
                                     hideProgressBar(senderView: senderViewController)
                                     if Constant.MyClassConstants.isFromSorting == false {
                                         helperDelegate?.resortSearchComplete()
-                                        Constant.MyClassConstants.isFromSorting = false
                                     }
+                                    Constant.MyClassConstants.isFromSorting = false
                                     
         },
                                    onError:{ (error) in

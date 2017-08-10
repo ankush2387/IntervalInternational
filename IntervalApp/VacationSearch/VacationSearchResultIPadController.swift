@@ -65,7 +65,10 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                 rentalSearchCriteria.destination = areaOfInfluenceDestination
                 rentalSearchCriteria.destination = areaOfInfluenceDestination
             case .Resort(let resort):
-                print(resort)
+                let resorts = Resort()
+                resorts.resortName = resort.resortName
+                resorts.resortCode = resort.resortCode
+                rentalSearchCriteria.resorts = [resorts]
             }
             
             
@@ -97,15 +100,10 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                 DarwinSDK.logger.info("Auto call to Search Availability")
                 
                 let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.getCheckInDateForInitialSearch()
-                
-                DarwinSDK.logger.info("Initial Rental Search using request payload:")
-                DarwinSDK.logger.info(" CheckInDate = \(initialSearchCheckInDate)")
-                DarwinSDK.logger.info(" ResortCodes = \(String(describing: activeInterval?.resortCodes))")
                 Constant.MyClassConstants.checkInDates = response.checkInDates
                 Helper.helperDelegate = self
                 Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                 self.dismiss(animated: true, completion: nil)
-                //self.resortDetailTBLView.reloadData()
                 
             })
             { (error) in
@@ -119,18 +117,10 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
         } else {
             Constant.MyClassConstants.sortingIndex = indexPath.row
             
-            let activeInterval = BookingWindowInterval(interval: Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval())
-            
-            let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.getCheckInDateForInitialSearch()
-            
             let vacationSearchForSorting = Constant.MyClassConstants.initialVacationSearch
             
             vacationSearchForSorting.sortType = AvailabilitySortType(rawValue: selectedvalue)!
-            
-            // sorting api integration
-            
-            Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: vacationSearchForSorting)
-            
+            Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: vacationSearchForSorting.bookingWindow.currentInterval)
             Constant.MyClassConstants.isFromSorting = true
             self.dismiss(animated: true, completion: nil)
             resortDetailTBLView.reloadData()
@@ -219,6 +209,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
             
             // Resolve the next active interval based on the Calendar interval selected
             let activeInterval = Constant.MyClassConstants.initialVacationSearch.resolveNextActiveIntervalFor(intervalStartDate: calendarItem.intervalStartDate, intervalEndDate: calendarItem.intervalEndDate)
+            print(activeInterval?.active, activeInterval?.checkInDates)
             
             // Fetch CheckIn dates only in the active interval doesn't have CheckIn dates
             if (!(activeInterval?.hasCheckInDates())!) {
@@ -232,7 +223,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                     RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
                                              onSuccess: { (response) in
                                                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
-                                                let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
+                                                let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.currentInterval
                                                 // Update active interval
                                                 Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                                                 
@@ -995,7 +986,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 return 1
             }
         }else{
-            if(section == 0 && surroundingMatchResortsArray.count == 0 || section == 1){
+            if(section == 0 && exactMatchResortsArray.count == 0 || section == 1){
                 return surroundingMatchResortsArray.count
             }else{
                 return exactMatchResortsArray.count
@@ -1013,21 +1004,26 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.resortDetailTBLView.frame.width, height: 40))
         let headerLabel = UILabel(frame: CGRect(x: 20, y: 0, width: self.resortDetailTBLView.frame.width - 40, height: 40))
         let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
-        if(sectionsInSearchResult[section].exactMatch)!{
-            
-            if sectionsInSearchResult[section].destination != nil {
-                
-                headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing: Helper.resolveDestinationInfo(destination: sectionsInSearchResult[section].destination!)))"
-                
-            }
-            headerView.backgroundColor = IUIKColorPalette.primary1.color
-            
+        if(sectionsInSearchResult[section].hasItem() && sectionsInSearchResult[section].destination == nil){
+                headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing:sectionsInSearchResult[section].item!.rentalInventory[0].resortName!))"
+                headerView.backgroundColor = IUIKColorPalette.primary1.color
         }else{
-            
-            if sectionsInSearchResult[section].destination != nil {
-                headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing: Helper.resolveDestinationInfo(destination: sectionsInSearchResult[section].destination!)))"
-                headerView.backgroundColor = UIColor(red: 112.0/255.0, green: 185.0/255.0, blue: 9.0/255.0, alpha: 1)
+            if(sectionsInSearchResult[section].exactMatch)!{
                 
+                if sectionsInSearchResult[section].destination != nil {
+                    
+                    headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing: Helper.resolveDestinationInfo(destination: sectionsInSearchResult[section].destination!)))"
+                    
+                }
+                headerView.backgroundColor = IUIKColorPalette.primary1.color
+                
+            }else{
+                
+                if sectionsInSearchResult[section].destination != nil {
+                    headerLabel.text = Constant.CommonLocalisedString.surroundingString + "\(String(describing: Helper.resolveDestinationInfo(destination: sectionsInSearchResult[section].destination!)))"
+                    headerView.backgroundColor = UIColor(red: 112.0/255.0, green: 185.0/255.0, blue: 9.0/255.0, alpha: 1)
+                    
+                }
             }
         }
         
@@ -1072,6 +1068,7 @@ extension VacationSearchResultIPadController:HelperDelegate {
     func resortSearchComplete(){
         Helper.hideProgressBar(senderView: self)
         self.createSections()
+        self.searchedDateCollectionView.reloadData()
         self.resortDetailTBLView.reloadData()
     }
     

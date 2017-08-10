@@ -123,7 +123,7 @@ class Constant: NSObject {
         
         static var sortingRangeArray = ["A - Z", "Z - A", "Low - High", "High - Low", "A - Z", "Z - A", "Low - High", "High - Low"]
         
-        static var filteredIndex = -1
+        static var filteredIndex = 0
         static var sortingIndex = -1
 
         
@@ -567,8 +567,8 @@ class Constant: NSObject {
         static var sign_in = NSLocalizedString("Sign_In", comment: "")
         static var totalString = NSLocalizedString("Total, ", comment: "")
         static var privateString = NSLocalizedString("Private", comment: "")
-        static var exactString = NSLocalizedString("Resorts in ", comment: "")
-        static var surroundingString = NSLocalizedString("Resorts near ", comment: "")
+        static var exactString = NSLocalizedString("Results in ", comment: "")
+        static var surroundingString = NSLocalizedString("Results near ", comment: "")
         static var contactName = "contactname"
         static var cardName = "cardname"
         static var loginID = "loginid"
