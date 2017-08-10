@@ -21,6 +21,7 @@ class AvailabilityCollectionViewCell: UICollectionViewCell {
  
     @IBOutlet weak var viewGradient: UIView!
     
+    @IBOutlet weak var tierImage: UIImageView!
     //***** class variables *****//
     //var delegate:ResortDirectoryCollectionViewCellDelegate?
     

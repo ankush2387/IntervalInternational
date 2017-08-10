@@ -576,6 +576,8 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
                 cell.resortName.text = inventoryItem.resortName
                 cell.resortAddress.text = inventoryItem.address?.cityName
                 cell.resortCode.text = inventoryItem.resortCode
+                let tierImageName = Helper.getTierImageName(tier: inventoryItem.tier!.uppercased())
+                cell.tierImage.image = UIImage(named: tierImageName)
                 DarwinSDK.logger.info("\(String(describing: Helper.resolveResortInfo(resort: inventoryItem)))")
                 return cell
             }else{
