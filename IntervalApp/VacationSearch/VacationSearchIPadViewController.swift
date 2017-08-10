@@ -205,8 +205,6 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
                 
             }
             
-            
-            
             let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: (cell?.contentView.frame.width)! - 20, height: 20))
             resortImageNameLabel.text = Constant.segmentControlItems.getawaysLabelText
             
@@ -530,6 +528,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
     
             let destinations = Helper.getAllDestinationFromLocalStorage()
             let resorts = Helper.getAllResortsFromLocalStorage()
+            
             if Reachability.isConnectedToNetwork() == true {
                 
                 

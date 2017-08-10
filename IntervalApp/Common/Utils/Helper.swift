@@ -1713,13 +1713,14 @@ public class Helper{
      */
     static func executeRentalSearchAvailability(activeInterval:BookingWindowInterval!, checkInDate:Date!, senderViewController:UIViewController, vacationSearch:VacationSearch) {
         DarwinSDK.logger.error("----- Waiting for search availability ... -----")
-        
+        SVProgressHUD.show()
         let request = RentalSearchResortsRequest()
         request.checkInDate = checkInDate
         request.resortCodes = activeInterval.resortCodes
         
         RentalClient.searchResorts(UserContext.sharedInstance.accessToken, request: request,
                                    onSuccess: { (response) in
+                                    SVProgressHUD.dismiss()
                                     // Update Rental inventory
                                     
                                     Constant.MyClassConstants.resortsArray = response.resorts
@@ -1737,10 +1738,14 @@ public class Helper{
                                     
                                     //expectation.fulfill()
                                     hideProgressBar(senderView: senderViewController)
-                                    helperDelegate?.resortSearchComplete()
+                                    if Constant.MyClassConstants.isFromSorting == false {
+                                        helperDelegate?.resortSearchComplete()
+                                        Constant.MyClassConstants.isFromSorting = false
+                                    }
+                                    
         },
                                    onError:{ (error) in
-                                    
+                                     Constant.MyClassConstants.isFromSorting = false
                                     hideProgressBar(senderView: senderViewController)
                                     helperDelegate?.resortSearchComplete()
                                     SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
