@@ -1292,6 +1292,7 @@
                                         <size key="customSize" width="157" height="62"/>
                                         <connections>
                                             <outlet property="lblEndYear" destination="R6r-SE-ypC" id="8kb-KN-kEM"/>
+                                            <outlet property="lblHeader" destination="F3N-l3-zU0" id="kbO-Dx-ABJ"/>
                                             <outlet property="lblMonth" destination="b10-6d-HIU" id="ora-2r-GMQ"/>
                                             <outlet property="lblStartYear" destination="Qw7-R0-Rfm" id="IOO-E9-fQv"/>
                                         </connections>
