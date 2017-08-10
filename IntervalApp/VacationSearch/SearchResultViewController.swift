@@ -650,9 +650,9 @@ extension SearchResultViewController:UICollectionViewDelegateFlowLayout {
             }
         }else{
             if(indexPath.section == 0){
-                return CGSize(width: UIScreen.main.bounds.width - 40, height: 320.0)
+                return CGSize(width: UIScreen.main.bounds.width - 40, height: 250.0)
             }else{
-                return CGSize(width: UIScreen.main.bounds.width - 40, height: 60.0)
+                return CGSize(width: UIScreen.main.bounds.width - 40, height: 30.0)
             }
         }
         
