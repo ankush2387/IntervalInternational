@@ -1818,7 +1818,7 @@
                             </collectionView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="349" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="WlK-Oh-1Oi">
                                 <rect key="frame" x="30" y="183" width="708" height="789"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ImageWithNameCell" rowHeight="0.0" id="VSl-wR-obY" customClass="ImageWithNameCell" customModule="IntervalApp" customModuleProvider="target">
@@ -2512,7 +2512,7 @@
                                             <subviews>
                                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="j4M-wW-Iom">
                                                     <rect key="frame" x="0.0" y="0.0" width="708" height="400"/>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mpI-cZ-eX1">
                                                         <size key="itemSize" width="699" height="282"/>
                                                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -2547,20 +2547,31 @@
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SVV" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5WU-vR-ab2">
-                                                                                <rect key="frame" x="20" y="51" width="689" height="18"/>
+                                                                                <rect key="frame" x="20" y="51" width="35" height="18"/>
+                                                                                <constraints>
+                                                                                    <constraint firstAttribute="width" constant="35" id="17E-ON-pzF"/>
+                                                                                </constraints>
                                                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                                 <color key="textColor" red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
+                                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bSs-fe-cZn">
+                                                                                <rect key="frame" x="65" y="47.5" width="25" height="25"/>
+                                                                                <constraints>
+                                                                                    <constraint firstAttribute="height" constant="25" id="8a6-9c-tDQ"/>
+                                                                                    <constraint firstAttribute="width" constant="25" id="vLR-kx-O8h"/>
+                                                                                </constraints>
+                                                                            </imageView>
                                                                         </subviews>
                                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                         <constraints>
                                                                             <constraint firstItem="5WU-vR-ab2" firstAttribute="top" secondItem="xi5-zv-2Xg" secondAttribute="bottom" constant="5" id="06D-5r-kvL"/>
-                                                                            <constraint firstAttribute="trailing" secondItem="5WU-vR-ab2" secondAttribute="trailing" constant="10" id="28e-pi-8m2"/>
                                                                             <constraint firstItem="xi5-zv-2Xg" firstAttribute="leading" secondItem="f60-79-76t" secondAttribute="leading" constant="20" id="95M-Ee-cb9"/>
                                                                             <constraint firstItem="5WU-vR-ab2" firstAttribute="leading" secondItem="f60-79-76t" secondAttribute="leading" constant="20" id="AZY-6C-96h"/>
                                                                             <constraint firstItem="xi5-zv-2Xg" firstAttribute="top" secondItem="QDD-mC-fL8" secondAttribute="bottom" constant="5" id="ChU-Sw-7wC"/>
+                                                                            <constraint firstItem="bSs-fe-cZn" firstAttribute="centerY" secondItem="5WU-vR-ab2" secondAttribute="centerY" id="LtB-hb-bZl"/>
                                                                             <constraint firstItem="QDD-mC-fL8" firstAttribute="leading" secondItem="f60-79-76t" secondAttribute="leading" constant="20" id="Oos-VO-XkK"/>
+                                                                            <constraint firstItem="bSs-fe-cZn" firstAttribute="leading" secondItem="5WU-vR-ab2" secondAttribute="trailing" constant="10" id="aam-nB-c8b"/>
                                                                             <constraint firstAttribute="height" constant="80" id="dpu-NY-o7J"/>
                                                                             <constraint firstItem="QDD-mC-fL8" firstAttribute="top" secondItem="f60-79-76t" secondAttribute="top" id="iaC-Qa-NyT"/>
                                                                             <constraint firstAttribute="trailing" secondItem="QDD-mC-fL8" secondAttribute="trailing" constant="10" id="vRU-b6-W4N"/>
@@ -2584,6 +2595,7 @@
                                                                 <outlet property="resortCode" destination="5WU-vR-ab2" id="y8r-73-CyK"/>
                                                                 <outlet property="resortImageView" destination="rFA-A6-XVz" id="xA5-Dl-CDp"/>
                                                                 <outlet property="resortName" destination="QDD-mC-fL8" id="aic-Ud-BwA"/>
+                                                                <outlet property="tierImage" destination="bSs-fe-cZn" id="sdg-NX-osn"/>
                                                                 <outlet property="viewGradient" destination="f60-79-76t" id="oDN-qJ-G0V"/>
                                                             </connections>
                                                         </collectionViewCell>
@@ -2739,6 +2751,7 @@
                                                 <constraint firstAttribute="bottom" secondItem="j4M-wW-Iom" secondAttribute="bottom" id="wVJ-oH-rdE"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="resortInfoCollectionView" destination="j4M-wW-Iom" id="zJs-v8-P3G"/>
                                         </connections>

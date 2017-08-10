@@ -47,6 +47,75 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
         
         if isFromFiltered {
             Constant.MyClassConstants.filteredIndex = indexPath.row
+            
+            let appSettings = AppSettings()
+            appSettings.searchByBothEnable = false
+            appSettings.checkInSelectorStrategy = CheckInSelectorStrategy.First.rawValue
+            appSettings.collapseBookingIntervalEnable = true
+            
+            
+            let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
+            switch Constant.MyClassConstants.filterOptionsArray[indexPath.row] {
+            case .Destination(let destination):
+                print(destination)
+                let areaOfInfluenceDestination = AreaOfInfluenceDestination()
+                areaOfInfluenceDestination.destinationName = destination.destinationName
+                areaOfInfluenceDestination.destinationId = destination.destinationId
+                areaOfInfluenceDestination.aoiId = destination.aoid
+                rentalSearchCriteria.destination = areaOfInfluenceDestination
+                rentalSearchCriteria.destination = areaOfInfluenceDestination
+            case .Resort(let resort):
+                print(resort)
+            }
+            
+            
+            rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
+            
+            Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(appSettings, rentalSearchCriteria)
+            
+            
+            ADBMobile.trackAction(Constant.omnitureEvents.event9, data: nil)
+            
+            
+            RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess:{ (response) in
+                
+                Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
+                let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
+                // Update active interval
+                Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                
+                // Check not available checkIn dates for the active interval
+                if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                    // Update active interval
+                    Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                    Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                    
+                    //Helper.showNotAvailabilityResults()
+                }
+                
+                DarwinSDK.logger.info("Auto call to Search Availability")
+                
+                let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.getCheckInDateForInitialSearch()
+                
+                DarwinSDK.logger.info("Initial Rental Search using request payload:")
+                DarwinSDK.logger.info(" CheckInDate = \(initialSearchCheckInDate)")
+                DarwinSDK.logger.info(" ResortCodes = \(String(describing: activeInterval?.resortCodes))")
+                Constant.MyClassConstants.checkInDates = response.checkInDates
+                Helper.helperDelegate = self
+                Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                self.dismiss(animated: true, completion: nil)
+                //self.resortDetailTBLView.reloadData()
+                
+            })
+            { (error) in
+                
+                SVProgressHUD.dismiss()
+                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                self.dismiss(animated: true, completion: nil)
+                self.resortDetailTBLView.reloadData()
+            }
+
         } else {
             Constant.MyClassConstants.sortingIndex = indexPath.row
             
@@ -71,6 +140,10 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     override func viewWillAppear(_ animated: Bool) {
         
         self.navigationController?.navigationBar.barTintColor = UIColor.init(colorLiteralRed: 70.0/255.0, green: 136.0/255.0, blue: 193.0/255.0, alpha: 1.0)
+        Constant.MyClassConstants.calendarDatesArray.removeAll()
+        print(Constant.MyClassConstants.calendarDatesArray.count)
+        Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
+        print(Constant.MyClassConstants.calendarDatesArray.count)
         self.createSections()
         
     }
@@ -140,6 +213,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     //Mark: Function for bucket click
     func intervalBucketClicked(calendarItem:CalendarItem!){
         Helper.hideProgressBar(senderView: self)
+        Helper.helperDelegate = self
         
         if (calendarItem.isInterval)! {
             
@@ -168,6 +242,8 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                                                 
                     },
                                              onError:{ (error) in
+                                                
+                                    SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                                                 DarwinSDK.logger.error("Error Code: \(error.code)")
                                                 DarwinSDK.logger.error("Error Description: \(error.description)")
                                                 
@@ -452,7 +528,7 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.customCellNibNames.searchResultCollectionCell, for: indexPath) as! SearchResultCollectionCell
                 if(indexPath.item == collectionviewSelectedIndex) {
                     if(dateCellSelectionColor == Constant.CommonColor.greenColor){
-                        cell.backgroundColor = IUIKColorPalette.secondary1.color
+                        cell.backgroundColor = UIColor(red: 112.0/255.0, green: 185.0/255.0, blue: 9.0/255.0, alpha: 1)//IUIKColorPalette.secondary1.color
                     }else{
                         cell.backgroundColor = IUIKColorPalette.primary1.color
                     }
@@ -500,6 +576,8 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
                 cell.resortName.text = inventoryItem.resortName
                 cell.resortAddress.text = inventoryItem.address?.cityName
                 cell.resortCode.text = inventoryItem.resortCode
+                let tierImageName = Helper.getTierImageName(tier: inventoryItem.tier!.uppercased())
+                cell.tierImage.image = UIImage(named: tierImageName)
                 DarwinSDK.logger.info("\(String(describing: Helper.resolveResortInfo(resort: inventoryItem)))")
                 return cell
             }else{
@@ -548,6 +626,31 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
                         cell.sleeps.text =  totalSleepCapacity + String(unit.privateSleepCapacity) + Constant.CommonLocalisedString.privateString
                         
                     }
+                
+                
+                /*let promotions = invetoryItem.inventory?.units[indexPath.item].promotions
+                if (promotions?.count)! > 0 {
+                    for view in cell.promotionsView.subviews {
+                        view.removeFromSuperview()
+                    }
+                    
+                    cellHeight = 55 + (14*(promotions?.count)!)
+                    var yPosition: CGFloat = 0
+                    for promotion in promotions! {
+                        let imgV = UIImageView(frame: CGRect(x:10, y: yPosition, width: 15, height: 15))
+                        imgV.image = UIImage(named: Constant.assetImageNames.promoImage)
+                        let promLabel = UILabel(frame: CGRect(x:30, y: yPosition, width: cell.promotionsView.bounds.width, height: 15))
+                        promLabel.text = promotion.offerName
+                        promLabel.adjustsFontSizeToFitWidth = true
+                        promLabel.minimumScaleFactor = 0.7
+                        promLabel.numberOfLines = 0
+                        promLabel.textColor = UIColor(red: 0, green: 119/255, blue: 190/255, alpha: 1)
+                        promLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 18)
+                        cell.promotionsView.addSubview(imgV)
+                        cell.promotionsView.addSubview(promLabel)
+                        yPosition += 15
+                    }
+                }*/
                 
                 return cell
             }
@@ -973,6 +1076,11 @@ extension VacationSearchResultIPadController:HelperDelegate {
     }
     
     func resetCalendar(){
+        print(Constant.MyClassConstants.calendarDatesArray.count)
+        Constant.MyClassConstants.calendarDatesArray.removeAll()
+        print(Constant.MyClassConstants.calendarDatesArray.count)
+        Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
+        print(Constant.MyClassConstants.calendarDatesArray.count)
         self.searchedDateCollectionView.reloadData()
     }
 }

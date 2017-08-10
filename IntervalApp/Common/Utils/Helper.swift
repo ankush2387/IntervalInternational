@@ -117,6 +117,11 @@ public class Helper{
         }
     }
     
+    enum ResortDestination{
+        case Resort(ResortList)
+        case Destination(DestinationList)
+    }
+    
     //***** common  function that  takes weekday as int value and return weekday name *****//
     static  func getWeekdayFromInt(weekDayNumber:Int) -> String {
         
@@ -1768,13 +1773,13 @@ public class Helper{
     
     static func showScrollingCalendar(vacationSearch:VacationSearch) {
         DarwinSDK.logger.info("-- Create Calendar based on Booking Window Intervals --")
-        Constant.MyClassConstants.calendarDatesArray.removeAll()
+        Constant.MyClassConstants.totalBucketArray.removeAll()
         
         let calendar = vacationSearch.createCalendar()
         
         // Show up the Scrolling Calendar in UI
         for calendarItem in calendar {
-            Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
+            Constant.MyClassConstants.totalBucketArray.append(calendarItem)
             if (calendarItem.isInterval)! {
                 // Is a Interval of Dates
                 if (calendarItem.isIntervalAvailable)! {

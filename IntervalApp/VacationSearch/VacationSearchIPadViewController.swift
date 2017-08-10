@@ -874,6 +874,7 @@ extension VacationSearchIPadViewController:HelperDelegate {
         self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
     }
     func resetCalendar(){
-        
+        Constant.MyClassConstants.calendarDatesArray.removeAll()
+        Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
     }
 }
