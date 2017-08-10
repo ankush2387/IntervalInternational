@@ -234,6 +234,7 @@ class Constant: NSObject {
         static var realmStoredDestIdOrCodeArray:NSMutableArray = []
         static var resortCodesArray : [String] = []
         static var searchAvailabilityHeader = ""
+        static var filterOptionsArray: [Helper.ResortDestination] = []
         
         static var surroundingResortCodesArray : [String] = []
         static var resortsArray = [Resort]()

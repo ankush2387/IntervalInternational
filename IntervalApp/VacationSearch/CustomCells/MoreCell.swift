@@ -56,7 +56,7 @@ class MoreCell: UICollectionViewCell {
         
         if(index == collectionViewSelectedIndex) {
             if(dateSelectionColor == Constant.CommonColor.greenColor){
-                self.backgroundColor = IUIKColorPalette.secondary1.color
+                self.backgroundColor = UIColor(red: 112.0/255.0, green: 185.0/255.0, blue: 9.0/255.0, alpha: 1)//IUIKColorPalette.secondary1.color
             }else{
                 self.backgroundColor = IUIKColorPalette.primary1.color
             }

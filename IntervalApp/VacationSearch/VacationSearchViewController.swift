@@ -1448,7 +1448,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 
                 self.vacationSearch = VacationSearch(appSettings, rentalSearchCriteria)
                 Constant.MyClassConstants.initialVacationSearch = self.vacationSearch
-                
+            
                 RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: self.vacationSearch.rentalSearch?.searchContext.request, onSuccess: { (response) in
                     
                     print(response)

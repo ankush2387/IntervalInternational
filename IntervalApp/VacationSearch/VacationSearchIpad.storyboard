@@ -1818,7 +1818,7 @@
                             </collectionView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="349" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="WlK-Oh-1Oi">
                                 <rect key="frame" x="30" y="183" width="708" height="789"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ImageWithNameCell" rowHeight="0.0" id="VSl-wR-obY" customClass="ImageWithNameCell" customModule="IntervalApp" customModuleProvider="target">
@@ -2512,7 +2512,7 @@
                                             <subviews>
                                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="j4M-wW-Iom">
                                                     <rect key="frame" x="0.0" y="0.0" width="708" height="400"/>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mpI-cZ-eX1">
                                                         <size key="itemSize" width="699" height="282"/>
                                                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -2739,6 +2739,7 @@
                                                 <constraint firstAttribute="bottom" secondItem="j4M-wW-Iom" secondAttribute="bottom" id="wVJ-oH-rdE"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="resortInfoCollectionView" destination="j4M-wW-Iom" id="zJs-v8-P3G"/>
                                         </connections>
