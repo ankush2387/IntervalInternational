@@ -26,6 +26,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     var loadFirst = true
     var enablePreviousMore = true
     var enableNextMore = true
+    var isShowAvailability = false
     var alertView = UIView()
     let headerVw = UIView()
     let titleLabel = UILabel()
@@ -446,7 +447,6 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
                 // Start Activity Indicator
                 myActivityIndicator.startAnimating()
                 
-                
                 //myActivityIndicator.hidesWhenStopped = true
                 
                 // Call stopAnimating() when need to stop activity indicator
@@ -693,6 +693,9 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if(indexPath.section == 0){
+            if indexPath.row == 0 {
+                return 110
+            }
             let totalUnits = self.exactMatchResortsArray[indexPath.row].inventory?.units.count
             return CGFloat(totalUnits!*80 + 320)
         }else{
@@ -888,6 +891,11 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
         
         //***** configuring prototype cell for UpComingtrip resort details *****//
         if(!Constant.MyClassConstants.isFromExchange) {
+            
+            if indexPath.row == 0 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.novailabilityCell, for: indexPath)
+                return cell
+            }
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.availabilityCell, for: indexPath) as! SearchTableViewCell
             cell.tag = indexPath.section

@@ -1095,6 +1095,7 @@ class Constant: NSObject {
         static var resortDetailCell = "ImageCell"
         static var resortInventoryCell = "RentalInventory"
         static var availabilityCell = "AvailbilityCell"
+        static var novailabilityCell = "noAvailbilityCell"
     }
     
     //***** common  structure to provide all dashboardTableViewControllerHeaderText *****//
