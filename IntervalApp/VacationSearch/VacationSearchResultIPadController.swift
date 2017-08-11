@@ -205,15 +205,13 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     func intervalBucketClicked(calendarItem:CalendarItem!){
         Helper.hideProgressBar(senderView: self)
         Helper.helperDelegate = self
-        
-        if (calendarItem.isInterval)! {
             
             // Resolve the next active interval based on the Calendar interval selected
             let activeInterval = Constant.MyClassConstants.initialVacationSearch.resolveNextActiveIntervalFor(intervalStartDate: calendarItem.intervalStartDate, intervalEndDate: calendarItem.intervalEndDate)
             print(activeInterval?.active, activeInterval?.checkInDates)
             
             // Fetch CheckIn dates only in the active interval doesn't have CheckIn dates
-            if (!(activeInterval?.hasCheckInDates())!) {
+            if (activeInterval != nil && !(activeInterval?.hasCheckInDates())!) {
                 
                 // Execute Search Dates
                 if (Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()) {
@@ -228,7 +226,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                                                 //self.myActivityIndicator.stopAnimating()
                                                 
                                                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
-                                                let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.currentInterval
+                                                let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
                                                 // Update active interval
                                                 Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                                                 
@@ -236,10 +234,31 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                                                 
                                                 //expectation.fulfill()
                                                 
+                                                // Check not available checkIn dates for the active interval
+                                                if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                                                    
+                                                    //self.showNotAvailabilityResults()
+                                                    
+                                                } else {
+                                                    
+                                                    DarwinSDK.logger.info("Auto call to Search Availability")
+                                                    
+                                                    let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.getCheckInDateForInitialSearch()
+                                                    
+                                                    Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self , vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                                }
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
                     },
                                              onError:{ (error) in
                                                 
-                                    SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                                                SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                                                 DarwinSDK.logger.error("Error Code: \(error.code)")
                                                 DarwinSDK.logger.error("Error Description: \(error.description)")
                                                 
@@ -252,48 +271,6 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                 }
             }
             
-        } else {
-            
-            // Get activeInterval
-            let activeInterval = BookingWindowInterval(interval: Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval())
-            
-            // Execute Search Availability
-            if (Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()) {
-                
-                let request = RentalSearchResortsRequest()
-                request.checkInDate = Helper.convertStringToDate(dateString: calendarItem.checkInDate!, format: Constant.MyClassConstants.dateFormat)
-                request.resortCodes = activeInterval.resortCodes
-                
-                RentalClient.searchResorts(UserContext.sharedInstance.accessToken, request: request,
-                                           onSuccess: { (response) in
-                                            // Update Rental inventory
-                                            Constant.MyClassConstants.initialVacationSearch.rentalSearch?.inventory = response.resorts
-                                            
-                                            Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-                                            Helper.showAvailabilityResults(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-                                            
-                                            //expectation.fulfill()
-                },
-                                           onError:{ (error) in
-                                            DarwinSDK.logger.error("Error Code: \(error.code)")
-                                            DarwinSDK.logger.error("Error Description: \(error.description)")
-                                            
-                                            let INVENTORY_NOT_AVAILABLE_CODE = "d67dc7030d7462db65465023262e704f"
-                                            let sdkErrorCode = String(describing: error.userInfo["errorCode"])
-                                            
-                                            if (INVENTORY_NOT_AVAILABLE_CODE == sdkErrorCode) {
-                                                // TODO: Define behavior for not available inventory
-                                                DarwinSDK.logger.error("Define behavior for not available inventory.")
-                                            } else {
-                                                // TODO: Handle SDK/API errors
-                                                DarwinSDK.logger.error("Handle SDK/API errors.")
-                                            }
-                                            
-                                            //expectation.fulfill()
-                }
-                )
-            }
-        }
     }
     
     //*****Function for single date item press *****//
@@ -1042,7 +1019,9 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
         let headerLabel = UILabel(frame: CGRect(x: 20, y: 0, width: self.resortDetailTBLView.frame.width - 40, height: 40))
         let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
         if(sectionsInSearchResult[section].hasItem() && sectionsInSearchResult[section].destination == nil){
+            if(sectionsInSearchResult[section].item!.rentalInventory.count > 0){
                 headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing:sectionsInSearchResult[section].item!.rentalInventory[0].resortName!))"
+            }
                 headerView.backgroundColor = IUIKColorPalette.primary1.color
         }else{
             if(sectionsInSearchResult[section].exactMatch)!{
@@ -1115,6 +1094,6 @@ extension VacationSearchResultIPadController:HelperDelegate {
         print(Constant.MyClassConstants.calendarDatesArray.count)
         Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
         print(Constant.MyClassConstants.calendarDatesArray.count)
-        self.searchedDateCollectionView.reloadData()
+        //self.searchedDateCollectionView.reloadData()
     }
 }

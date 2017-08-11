@@ -117,11 +117,6 @@ public class Helper{
         }
     }
     
-    enum ResortDestination{
-        case Resort(ResortList)
-        case Destination(DestinationList)
-    }
-    
     //***** common  function that  takes weekday as int value and return weekday name *****//
     static  func getWeekdayFromInt(weekDayNumber:Int) -> String {
         
@@ -1796,7 +1791,7 @@ public class Helper{
                 DarwinSDK.logger.info("\(String(describing: calendarItem.checkInDate!))")
             }
         }
-        
+        print(Constant.MyClassConstants.totalBucketArray)
         helperDelegate?.resetCalendar()
     }
     
