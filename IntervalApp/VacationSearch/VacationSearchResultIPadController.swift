@@ -480,7 +480,7 @@ extension VacationSearchResultIPadController:UICollectionViewDelegateFlowLayout 
             if(indexPath.section == 0){
                 return CGSize(width: UIScreen.main.bounds.width - 40, height: 320.0)
             }else{
-                return CGSize(width: UIScreen.main.bounds.width - 40, height: 60.0)
+                return CGSize(width: UIScreen.main.bounds.width - 40, height: 100.0)
             }
         }
     }
@@ -632,7 +632,7 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
                     }
                 
                 
-                /*let promotions = invetoryItem.inventory?.units[indexPath.item].promotions
+                let promotions = invetoryItem.inventory?.units[indexPath.item].promotions
                 if (promotions?.count)! > 0 {
                     for view in cell.promotionsView.subviews {
                         view.removeFromSuperview()
@@ -654,7 +654,7 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
                         cell.promotionsView.addSubview(promLabel)
                         yPosition += 15
                     }
-                }*/
+                }
                 
                 return cell
             }
@@ -674,10 +674,10 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
                 return 110
             }
             let totalUnits = self.exactMatchResortsArray[indexPath.row].inventory?.units.count
-            return CGFloat(totalUnits!*80 + 320)
+            return CGFloat(totalUnits!*110 + 320)
         }else{
             let totalUnits = self.surroundingMatchResortsArray[indexPath.row].inventory?.units.count
-            return CGFloat(totalUnits!*80 + 320)
+            return CGFloat(totalUnits!*110 + 320)
         }
     }
     
