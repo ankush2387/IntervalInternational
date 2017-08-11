@@ -16,6 +16,7 @@ class WeatherViewController: UIViewController {
     let selectedButtonTextColor = UIColor.black
     var resortName: String?
     var countryCode: String?
+    var presentedModally = true
 
     @IBOutlet weak var temperaureLowLabel: UILabel!
     @IBOutlet weak var temperatureHighLabel: UILabel!
@@ -26,17 +27,27 @@ class WeatherViewController: UIViewController {
     @IBOutlet var LowTempeartureBars: [VerticalProgressView]!
     @IBOutlet weak var celsiusButton: UIButton!
     @IBOutlet weak var fahrenheitButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        if presentedModally {
+            setupNavBarForModalPresentation()
+        }
+        setup()
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.tabBarController?.tabBar.isHidden = true
+    }
+    
+    func setupNavBarForModalPresentation() {
         // change Nav-bar tint color.
         self.navigationController?.navigationBar.barTintColor = UIColor(red: 229.0/255.0, green: 231.0/255.0, blue: 228.0/255.0, alpha: 1.0)
         //Nav-bar button
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(WeatherViewController.menuBackButtonPressed(_:)))
         doneButton.tintColor = UIColor(red: 0/255.0, green: 128.0/255.0, blue: 255.0/255.0, alpha: 1.0)
         self.navigationItem.rightBarButtonItem = doneButton
-        
-        setup()
         
     }
     
@@ -142,17 +153,24 @@ class WeatherViewController: UIViewController {
 
 
 extension UIViewController {
-    func displayWeatherView(resortCode: String, resortName: String, countryCode: String, completionHandler: @escaping (_ response: Bool) -> Void) {
+    func displayWeatherView(resortCode: String, resortName: String, countryCode: String, presentModal: Bool, completionHandler: @escaping (_ response: Bool) -> Void) {
         
         DirectoryClient.getResortWeather(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode, onSuccess: { (response) in
             if let weatherResponse = response as? ResortWeather {
                 let storyboard = UIStoryboard(name: "MyUpcomingTripIphone", bundle: nil)
-                let mapDetailsNav = storyboard.instantiateViewController(withIdentifier: "weatherNav") as! UINavigationController
-                let weatherVC = mapDetailsNav.viewControllers.first as? WeatherViewController
-                weatherVC?.resortWeather = weatherResponse
-                weatherVC?.countryCode = countryCode
-                weatherVC?.resortName = resortName
-                self.present(mapDetailsNav, animated: true, completion: nil)
+                let weatherDetailsNav = storyboard.instantiateViewController(withIdentifier: "weatherNav") as! UINavigationController
+                let weatherVC = weatherDetailsNav.viewControllers.first as! WeatherViewController
+                weatherVC.resortWeather = weatherResponse
+                weatherVC.countryCode = countryCode
+                weatherVC.resortName = resortName
+                
+                if presentModal {
+                    self.present(weatherDetailsNav, animated: true, completion: nil)
+                } else {
+                    self.navigationController?.pushViewController(weatherVC, animated: false)
+                    weatherVC.presentedModally = false
+                }
+
                 completionHandler(true)
             }
             

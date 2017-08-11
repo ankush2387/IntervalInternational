@@ -544,7 +544,11 @@ class Constant: NSObject {
         //Keypath for picker
         static var keyTextColor = "textColor"
         
+
         static var initialVacationSearch = VacationSearch()
+
+        //used to not remove observers on ipad googleMapViewController when going to map or weather view
+        static var goingToMapOrWeatherView = false
     }
     
     struct CommonColor {
@@ -1458,7 +1462,7 @@ class Constant: NSObject {
     struct memberShipViewController {
         static let ownershipDetailCellIdentifier = "ownershipDetailCell"
         static let membershipDetailCellIdentifier = "membershipDetailCell"
-        static let ownershipHeaderTitletext = "Ownership"
+        static let ownershipHeaderTitletext = "Ownerships"
         static let switchMembershipAlertMessage = "You have chosen to use a different membership account. Please note, benefit and exchange access may change. Would you like to continue?"
         static let switchMembershipAlertTitle = "You are Switchinig Memberships"
         //membershipDetailTableViewCell

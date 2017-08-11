@@ -8,6 +8,8 @@
 
 import UIKit
 import IntervalUIKit
+import DarwinSDK
+import SDWebImage
 class OwnerShipDetailTableViewCell: UITableViewCell {
 
    //Outlets
@@ -32,9 +34,9 @@ class OwnerShipDetailTableViewCell: UITableViewCell {
         - parameter membershipDetailDictionary :  This dictionary is used to update label text.
         - returns : No value is returned.
     */
-    func getCell(_ membershipDetailDictionary:[String:String]){
+    func getCell(ownership: Ownership){
         self.setPropertiesTocellElements()
-        updateCell(membershipDetailDictionary)
+        updateCell(ownership: ownership)
     }
     //MARK:Update value according to server response
     
@@ -43,20 +45,27 @@ class OwnerShipDetailTableViewCell: UITableViewCell {
         - parameter membershipDetailDictionary : Dictionary with String key and String Value.
         - returns : No value is return.
     */
-    fileprivate func updateCell(_ membershipDetailDictionary:[String:String]){
+    fileprivate func updateCell(ownership: Ownership){
         /// update Label text
-        
-        unitdetailLabel.text = Constant.memberShipViewController.ownerShipDetailTableViewCell.unitdetailLabelText
-        weekDetailLabel.text = Constant.memberShipViewController.ownerShipDetailTableViewCell.weekDetailLabelText
-        
-        placeNameLabel.text = membershipDetailDictionary[Constant.memberShipViewController.membershipDetailTableViewCell.placeName] ?? ""
-        placeAddressLabel.text = membershipDetailDictionary[Constant.memberShipViewController.membershipDetailTableViewCell.placeAddress] ?? ""
-        placeCode.text = membershipDetailDictionary[Constant.memberShipViewController.membershipDetailTableViewCell.placeCode] ?? ""
-        bedroomDetailLabel.text = membershipDetailDictionary[Constant.memberShipViewController.membershipDetailTableViewCell.bedroomDetail] ?? ""
-        weekNumberLabel.text = membershipDetailDictionary[Constant.memberShipViewController.membershipDetailTableViewCell.weekNumber] ?? ""
-        
-        
+        placeNameLabel.text = ownership.resort?.resortName
+        placeAddressLabel.text = ownership.resort?.address?.cityName
+        if let countryCode = ownership.resort?.address?.countryCode {
+            placeAddressLabel.text?.append(", \(countryCode)")
+        }
+        placeCode.text = ownership.resort?.resortCode
+        let bedroomSize = Helper.getBedroomNumbers(bedroomType: (ownership.unit?.unitSize)!)
+        bedroomDetailLabel.text = bedroomSize
+        weekNumberLabel.text = ownership.weekNumber
+        let imageURLStr = ownership.resort?.images[1].url
+        if((ownership.resort?.images.count)! > 0){
+            ownerShipimageView.setImageWith(URL(string: imageURLStr!), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
+                if (error != nil) {
+                    self.ownerShipimageView.image = UIImage(named: Constant.MyClassConstants.noImage)
+                }
+            }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+        }
     }
+    
     //MARK:set commonPrperties to cell
     /** 
     Set  properties to Cell components

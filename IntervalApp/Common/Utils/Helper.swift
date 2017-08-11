@@ -1296,13 +1296,13 @@ public class Helper{
                 }
                 else {
                     let storyBoard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
-                    let viewController = storyBoard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortVC)
+                    let viewController = storyBoard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortVC) as! ResortDetailsViewController
+                    viewController.presentViewModally = false
                     let transition = CATransition()
                     transition.duration = 0.4
                     transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
                     transition.type = kCATransitionMoveIn
                     transition.subtype = kCATransitionFromTop
-                    
                     viewcontroller.navigationController!.view.layer.add(transition, forKey: kCATransition)
                     viewcontroller.navigationController?.pushViewController(viewController, animated: false)
 
@@ -1713,6 +1713,7 @@ public class Helper{
            _ = completion(input)
     }
     
+
     /*
      * Execute Rental Search Availability
      */
@@ -1931,6 +1932,41 @@ public class Helper{
         info.append("\(String(describing: unit.privateSleepCapacity))")
         info.append(" private")
         return info
+    }
+
+    //resend Confirmation Info to email
+    static func resendConfirmationInfoForUpcomingTrip(viewcontroller: UIViewController) {
+        let email = UserContext.sharedInstance.contact?.emailAddress
+        let resendAlert = UIAlertController(title: "Send Confirmation To", message: nil, preferredStyle: .alert)
+        
+        //add Text Field
+        resendAlert.addTextField()
+        //populate text field with user's Email Address
+        resendAlert.textFields?[0].text = email
+        
+        let submitAction = UIAlertAction(title: "Send", style: .default) { [unowned resendAlert] _ in
+            guard let emailAddress = resendAlert.textFields![0].text  else { return }
+            guard let confirmationNumber = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.confirmationNumber else { return }
+            guard let accessToken = UserContext.sharedInstance.accessToken else { return }
+            
+            PaymentClient.resendConfirmation(accessToken, confirmationNumber: confirmationNumber, emailAddress: emailAddress, onSuccess: {
+                print("success")
+                SimpleAlert.alert(viewcontroller, title: "Success", message: "The confirmation email has been sent.")
+            }, onError: { (error) in
+                print(error)
+                SimpleAlert.alert(viewcontroller, title: "Error", message: "The Confirmation could not be sent at the moment.")
+            })
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+            //cancel, dismiss alert
+        }
+        
+        resendAlert.addAction(submitAction)
+        resendAlert.addAction(cancelAction)
+        
+        viewcontroller.present(resendAlert, animated: false, completion: nil)
+
     }
 }
 

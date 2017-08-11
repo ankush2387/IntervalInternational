@@ -280,6 +280,7 @@
 		E9057F951F02DDCB00E20047 /* ShareActivityURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9057F941F02DDCB00E20047 /* ShareActivityURL.swift */; };
 		E90C365A1F058C9800CCBE92 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90C36591F058C9800CCBE92 /* main.swift */; };
 		E90C365E1F058EBE00CCBE92 /* TimerUIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90C365D1F058EBE00CCBE92 /* TimerUIApplication.swift */; };
+		E918EF281F3373AE00C84D51 /* MembershipProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E918EF271F3373AE00C84D51 /* MembershipProductCell.swift */; };
 		E932C7601EE07FB70083E871 /* UpComingTripMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E932C75F1EE07FB70083E871 /* UpComingTripMapViewController.swift */; };
 		E94C7E091EF84DDE003D0EB5 /* PromotionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94C7E081EF84DDE003D0EB5 /* PromotionsViewController.swift */; };
 		E94FB5EA1EF0609C00314C5D /* VerticalProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94FB5E91EF0609C00314C5D /* VerticalProgressView.swift */; };
@@ -586,6 +587,7 @@
 		E9057F941F02DDCB00E20047 /* ShareActivityURL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareActivityURL.swift; sourceTree = "<group>"; };
 		E90C36591F058C9800CCBE92 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = main.swift; path = ../../../main.swift; sourceTree = "<group>"; };
 		E90C365D1F058EBE00CCBE92 /* TimerUIApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimerUIApplication.swift; path = ../../../TimerUIApplication.swift; sourceTree = "<group>"; };
+		E918EF271F3373AE00C84D51 /* MembershipProductCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MembershipProductCell.swift; sourceTree = "<group>"; };
 		E932C75F1EE07FB70083E871 /* UpComingTripMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpComingTripMapViewController.swift; sourceTree = "<group>"; };
 		E94C7E081EF84DDE003D0EB5 /* PromotionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromotionsViewController.swift; sourceTree = "<group>"; };
 		E94FB5E91EF0609C00314C5D /* VerticalProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticalProgressView.swift; sourceTree = "<group>"; };
@@ -773,6 +775,7 @@
 				3A3A014C1C99BED600B7EC37 /* OwnerShipDetailTableViewCell.swift */,
 				3A3A014D1C99BED600B7EC37 /* TriangeView.swift */,
 				3A0B25DB1CD241B50080BF3F /* DummyTableViewCell.swift */,
+				E918EF271F3373AE00C84D51 /* MembershipProductCell.swift */,
 			);
 			path = MemberShip;
 			sourceTree = "<group>";
@@ -1519,6 +1522,7 @@
 				DC7BA83E1DB911D600BB0C3B /* MagazinesIPadViewController.swift in Sources */,
 				3A645C0E1CF853180033EEB7 /* Reachability.swift in Sources */,
 				3A3A01471C99BD0B00B7EC37 /* VacationDetailTableViewCell.swift in Sources */,
+				E918EF281F3373AE00C84D51 /* MembershipProductCell.swift in Sources */,
 				3A892F471CD3902F00AE6F45 /* ExchangeCell0.swift in Sources */,
 				3A18D7BC1DE0949D00966472 /* AddYourCardButtonCell.swift in Sources */,
 				3A892F451CD3902F00AE6F45 /* DateAndPersonPickerTableViewCell.swift in Sources */,

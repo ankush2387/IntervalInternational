@@ -35,6 +35,7 @@ class ResortDetailsViewController: UIViewController {
     var onsiteArray : NSMutableArray = []
     var amenityOnsiteString : String! = "Nearby" + "\n"
     var amenityNearbyString : String!  = "On-Site" + "\n"
+    var presentViewModally = true
     
     //***** Class private Variables *****//
     fileprivate var startIndex = 0
@@ -526,22 +527,23 @@ class ResortDetailsViewController: UIViewController {
     }
     
     func showWeatherButtonPressed() {
+        Constant.MyClassConstants.goingToMapOrWeatherView = true
         guard let resortCode = Constant.MyClassConstants.resortsDescriptionArray.resortCode else { return }
         guard let resortName = Constant.MyClassConstants.resortsDescriptionArray.resortName else { return }
         guard let countryCode = Constant.MyClassConstants.resortsDescriptionArray.address?.countryCode else { return }
         SVProgressHUD.show()
-        displayWeatherView(resortCode: resortCode, resortName: resortName, countryCode: countryCode, completionHandler: { (response) in
+        displayWeatherView(resortCode: resortCode, resortName: resortName, countryCode: countryCode, presentModal: presentViewModally, completionHandler: { (response) in
             SVProgressHUD.dismiss()
         })
     }
     
     func showLocationButtonPressed() {
-        print("Location Button Pressed")
+        Constant.MyClassConstants.goingToMapOrWeatherView = true
         guard let coordinates = Constant.MyClassConstants.resortsDescriptionArray.coordinates else { return }
         guard let resortName = Constant.MyClassConstants.resortsDescriptionArray.resortName else { return }
         guard let cityName = Constant.MyClassConstants.resortsDescriptionArray.address?.cityName else { return }
         SVProgressHUD.show()
-        displayMapView(coordinates: coordinates, resortName: resortName, cityName: cityName) { (response) in
+        displayMapView(coordinates: coordinates, resortName: resortName, cityName: cityName, presentModal: presentViewModally) { (response) in
             SVProgressHUD.dismiss()
         }
     }
