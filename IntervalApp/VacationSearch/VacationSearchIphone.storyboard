@@ -1677,8 +1677,9 @@
                                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="233"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <subviews>
-                                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3j7-jS-zrs">
+                                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NoImageIcon" translatesAutoresizingMaskIntoConstraints="NO" id="3j7-jS-zrs">
                                                                         <rect key="frame" x="0.0" y="0.0" width="375" height="193"/>
+                                                                        <color key="backgroundColor" red="0.65490196079999996" green="0.65490196079999996" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="193" id="d9O-L3-d6o"/>
                                                                         </constraints>
