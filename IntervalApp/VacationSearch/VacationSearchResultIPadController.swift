@@ -26,7 +26,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     var loadFirst = true
     var enablePreviousMore = true
     var enableNextMore = true
-    var isShowAvailability = false
+    var isShowAvailability = true
     var alertView = UIView()
     let headerVw = UIView()
     let titleLabel = UILabel()
@@ -670,11 +670,13 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if(indexPath.section == 0){
-            if indexPath.row == 0 {
+            if indexPath.row == 0 && self.isShowAvailability == true {
                 return 110
+            } else {
+                let totalUnits = self.exactMatchResortsArray[indexPath.row].inventory?.units.count
+                return CGFloat(totalUnits!*80 + 320)
             }
-            let totalUnits = self.exactMatchResortsArray[indexPath.row].inventory?.units.count
-            return CGFloat(totalUnits!*80 + 320)
+            
         }else{
             let totalUnits = self.surroundingMatchResortsArray[indexPath.row].inventory?.units.count
             return CGFloat(totalUnits!*80 + 320)
@@ -869,19 +871,44 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
         //***** configuring prototype cell for UpComingtrip resort details *****//
         if(!Constant.MyClassConstants.isFromExchange) {
             
-            if indexPath.row == 0 {
+            if indexPath.row == 0 && indexPath.section == 0 && self.isShowAvailability == true {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.novailabilityCell, for: indexPath)
+                var deletedRowIndexPath = indexPath
+                deletedRowIndexPath.row = 0
+                deletedRowIndexPath.section = 0
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5.0, execute: {
+                   /* self.isShowAvailability = false
+                    self.resortDetailTBLView.reloadData()*/
+                    
+                    UIView.animate(withDuration: 5, delay: 2, options: UIViewAnimationOptions(rawValue: 0), animations: {
+                        
+                        self.isShowAvailability = false
+                        //cell.contentView.frame.size.height = 50.0
+                        self.resortDetailTBLView.reloadData()
+                    }, completion: nil)
+                })
+            
+               /* UIView.animate(withDuration: 15, delay: 4, options: UIViewAnimationOptions(rawValue: 0), animations: {
+                    
+                    self.resortDetailTBLView.deleteRows(at: [deletedRowIndexPath], with: .automatic)
+                    self.isShowAvailability = false
+                    //cell.contentView.frame.size.height = 50.0
+                    self.resortDetailTBLView.reloadData()
+                }, completion: nil)*/
+                
+                return cell
+            } else {
+                
+                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.availabilityCell, for: indexPath) as! SearchTableViewCell
+                cell.tag = indexPath.section
+                cell.resortInfoCollectionView.reloadData()
+                cell.resortInfoCollectionView.tag = indexPath.row
+                cell.resortInfoCollectionView.isScrollEnabled = false
+                cell.layer.borderWidth = 0.5
+                cell.layer.borderColor = UIColor.lightGray.cgColor
                 return cell
             }
-            
-            let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.availabilityCell, for: indexPath) as! SearchTableViewCell
-            cell.tag = indexPath.section
-            cell.resortInfoCollectionView.reloadData()
-            cell.resortInfoCollectionView.tag = indexPath.row
-            cell.resortInfoCollectionView.isScrollEnabled = false
-            cell.layer.borderWidth = 0.5
-            cell.layer.borderColor = UIColor.lightGray.cgColor
-            return cell
         }else{
             
             if(!Constant.MyClassConstants.isFromExchange) {
@@ -1003,7 +1030,13 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                     promotions = bucket.promotions.count
                     //}
                 }
+                /*if self.isShowAvailability == true {
+                    return Constant.MyClassConstants.exchangeInventory[section].buckets.count + promotions + 2
+                } else {
+                    return Constant.MyClassConstants.exchangeInventory[section].buckets.count + promotions + 1
+                }*/
                 return Constant.MyClassConstants.exchangeInventory[section].buckets.count + promotions + 1
+                
             }else{
                 return 1
             }
