@@ -1733,7 +1733,7 @@ public class Helper{
                                         showNearestCheckInDateSelectedMessage()
                                     }
                                     
-                                    showScrollingCalendar(vacationSearch:vacationSearch)
+                                    //showScrollingCalendar(vacationSearch:vacationSearch)
                                     
                                     showAvailabilityResults(vacationSearch:vacationSearch)
                                     

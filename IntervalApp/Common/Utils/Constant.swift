@@ -560,6 +560,7 @@ class Constant: NSObject {
     struct CommonColor {
         static var greenColor = "Green"
         static var blueColor = "Blue"
+        static var headerGreenColor = UIColor(red: 112.0/255.0, green: 185.0/255.0, blue: 9.0/255.0, alpha: 1)
     }
     
     struct CommonStringIdentifiers {

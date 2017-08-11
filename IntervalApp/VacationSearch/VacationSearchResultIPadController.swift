@@ -166,7 +166,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
         
         self.title = Constant.ControllerTitles.searchResultViewController
         
-        self.searchedDateCollectionView.reloadData()
+        //self.searchedDateCollectionView.reloadData()
         
         if (Constant.MyClassConstants.showAlert == true) {
             self.alertView = Helper.noResortView(senderView: self.view)
@@ -202,14 +202,13 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
         // Dispose of any resources that can be recreated.
     }
     
-    //Mark: Function for bucket click
+    // Mark: Function for bucket click
     func intervalBucketClicked(calendarItem:CalendarItem!){
         Helper.hideProgressBar(senderView: self)
         Helper.helperDelegate = self
             
             // Resolve the next active interval based on the Calendar interval selected
             let activeInterval = Constant.MyClassConstants.initialVacationSearch.resolveNextActiveIntervalFor(intervalStartDate: calendarItem.intervalStartDate, intervalEndDate: calendarItem.intervalEndDate)
-            print(activeInterval?.active, activeInterval?.checkInDates)
             
             // Fetch CheckIn dates only in the active interval doesn't have CheckIn dates
             if (activeInterval != nil && !(activeInterval?.hasCheckInDates())!) {
@@ -237,22 +236,23 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                                                 
                                                 // Check not available checkIn dates for the active interval
                                                 if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                                                    
+                                                    print(Constant.MyClassConstants.calendarDatesArray.count)
+                                                    Constant.MyClassConstants.calendarDatesArray.removeAll()
+                                                    print(Constant.MyClassConstants.calendarDatesArray.count)
+                                                    Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
+                                                    print(Constant.MyClassConstants.calendarDatesArray.count)
+                                                    self.searchedDateCollectionView.reloadData()
                                                     //self.showNotAvailabilityResults()
                                                     
                                                 } else {
                                                     
                                                     DarwinSDK.logger.info("Auto call to Search Availability")
                                                     
-                                                    let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.getCheckInDateForInitialSearch()
+                                                    //let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.getCheckInDateForInitialSearch()
                                                     
-                                                    Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self , vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                                    Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Helper.convertDateToString(date: response.checkInDates.first!, format: Constant.MyClassConstants.dateFormat) , format: Constant.MyClassConstants.dateFormat), senderViewController: self , vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                                 }
-                                                
-                                                
-                                                
-                                                
-                                                
+                                            
                                                 
                                                 
                                                 
@@ -366,7 +366,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
         }else{
             dateCellSelectionColor = Constant.CommonColor.blueColor
         }
-        searchedDateCollectionView.reloadItems(at: [indexPath])
+        //searchedDateCollectionView.reloadItems(at: [indexPath])
     }
     
 }
@@ -441,7 +441,7 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
         dateCellSelectionColor = Constant.CommonColor.blueColor
         let lastIndexPath = IndexPath(item: lastSelectedIndex, section: 0)
         let currentIndexPath = IndexPath(item: collectionviewSelectedIndex, section: 0)
-        searchedDateCollectionView.reloadItems(at: [lastIndexPath, currentIndexPath])
+        //searchedDateCollectionView.reloadItems(at: [lastIndexPath, currentIndexPath])
         if(Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)!{
             Helper.showProgressBar(senderView: self)
             intervalBucketClicked(calendarItem:Constant.MyClassConstants.calendarDatesArray[indexPath.item])
@@ -455,7 +455,7 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
         if (loadFirst){
             let indexPath = IndexPath(row: Constant.MyClassConstants.searchResultCollectionViewScrollToIndex , section: 0)
             
-            self.searchedDateCollectionView.scrollToItem(at: indexPath,at: .centeredHorizontally,animated: true)
+            //self.searchedDateCollectionView.scrollToItem(at: indexPath,at: .centeredHorizontally,animated: true)
             //self.searchedDateCollectionView.contentOffset = CGPoint(x: 100, y: 0.0)
             loadFirst = false
         }
@@ -480,7 +480,7 @@ extension VacationSearchResultIPadController:UICollectionViewDelegateFlowLayout 
             if(indexPath.section == 0){
                 return CGSize(width: UIScreen.main.bounds.width - 40, height: 320.0)
             }else{
-                return CGSize(width: UIScreen.main.bounds.width - 40, height: 60.0)
+                return CGSize(width: UIScreen.main.bounds.width - 40, height: 100.0)
             }
         }
     }
@@ -532,7 +532,7 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.customCellNibNames.searchResultCollectionCell, for: indexPath) as! SearchResultCollectionCell
                 if(indexPath.item == collectionviewSelectedIndex) {
                     if(dateCellSelectionColor == Constant.CommonColor.greenColor){
-                        cell.backgroundColor = UIColor(red: 112.0/255.0, green: 185.0/255.0, blue: 9.0/255.0, alpha: 1)//IUIKColorPalette.secondary1.color
+                        cell.backgroundColor = Constant.CommonColor.headerGreenColor
                     }else{
                         cell.backgroundColor = IUIKColorPalette.primary1.color
                     }
@@ -632,7 +632,7 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
                     }
                 
                 
-                /*let promotions = invetoryItem.inventory?.units[indexPath.item].promotions
+                let promotions = invetoryItem.inventory?.units[indexPath.item].promotions
                 if (promotions?.count)! > 0 {
                     for view in cell.promotionsView.subviews {
                         view.removeFromSuperview()
@@ -654,7 +654,7 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
                         cell.promotionsView.addSubview(promLabel)
                         yPosition += 15
                     }
-                }*/
+                }
                 
                 return cell
             }
@@ -676,10 +676,9 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
                 let totalUnits = self.exactMatchResortsArray[indexPath.row].inventory?.units.count
                 return CGFloat(totalUnits!*80 + 320)
             }
-            
         }else{
             let totalUnits = self.surroundingMatchResortsArray[indexPath.row].inventory?.units.count
-            return CGFloat(totalUnits!*80 + 320)
+            return CGFloat(totalUnits!*110 + 320)
         }
     }
     
@@ -1058,8 +1057,14 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
         
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.resortDetailTBLView.frame.width, height: 40))
         let headerLabel = UILabel(frame: CGRect(x: 20, y: 0, width: self.resortDetailTBLView.frame.width - 40, height: 40))
+        let headerButton = UIButton(frame: CGRect(x: 20, y: 0, width: self.resortDetailTBLView.frame.width - 40, height: 40))
+        headerButton.addTarget(self, action: #selector(VacationSearchResultIPadController.filterByNameButtonPressed(_:)), for: .touchUpInside)
         let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
+        if(Constant.MyClassConstants.isFromSorting){
+            
+        }else{
         if(sectionsInSearchResult[section].hasItem() && sectionsInSearchResult[section].destination == nil){
+           
             if(sectionsInSearchResult[section].item!.rentalInventory.count > 0){
                 headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing:sectionsInSearchResult[section].item!.rentalInventory[0].resortName!))"
             }
@@ -1078,18 +1083,21 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 
                 if sectionsInSearchResult[section].destination != nil {
                     headerLabel.text = Constant.CommonLocalisedString.surroundingString + "\(String(describing: Helper.resolveDestinationInfo(destination: sectionsInSearchResult[section].destination!)))"
-                    headerView.backgroundColor = UIColor(red: 112.0/255.0, green: 185.0/255.0, blue: 9.0/255.0, alpha: 1)
+                    headerView.backgroundColor = Constant.CommonColor.headerGreenColor
                     
                 }
             }
         }
-        
+    }
+    
         headerLabel.textColor = UIColor.white
         headerView.addSubview(headerLabel)
+        
         
         let dropDownImgVw = UIImageView(frame: CGRect(x: self.resortDetailTBLView.frame.width - 40, y: 5, width: 30, height: 30))
         dropDownImgVw.image = UIImage(named: Constant.assetImageNames.dropArrow)
         headerView.addSubview(dropDownImgVw)
+        headerView.addSubview(headerButton)
         
         return headerView
         
@@ -1123,6 +1131,11 @@ extension VacationSearchIPadViewController:ImageWithNameCellDelegate {
 //Mark: Extension for Helper
 extension VacationSearchResultIPadController:HelperDelegate {
     func resortSearchComplete(){
+        print(Constant.MyClassConstants.calendarDatesArray.count)
+        Constant.MyClassConstants.calendarDatesArray.removeAll()
+        print(Constant.MyClassConstants.calendarDatesArray.count)
+        Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
+        print(Constant.MyClassConstants.calendarDatesArray.count)
         Helper.hideProgressBar(senderView: self)
         self.createSections()
         self.searchedDateCollectionView.reloadData()
@@ -1130,11 +1143,5 @@ extension VacationSearchResultIPadController:HelperDelegate {
     }
     
     func resetCalendar(){
-        print(Constant.MyClassConstants.calendarDatesArray.count)
-        Constant.MyClassConstants.calendarDatesArray.removeAll()
-        print(Constant.MyClassConstants.calendarDatesArray.count)
-        Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
-        print(Constant.MyClassConstants.calendarDatesArray.count)
-        //self.searchedDateCollectionView.reloadData()
     }
 }
