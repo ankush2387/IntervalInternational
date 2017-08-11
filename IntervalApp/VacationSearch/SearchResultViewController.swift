@@ -42,6 +42,7 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
     var exactMatchResortsArray = [Resort]()
     var surroundingMatchResortsArray = [Resort]()
     var dateCellSelectionColor = Constant.CommonColor.blueColor
+    var myActivityIndicator = UIActivityIndicatorView()
     
 
     // sorting optionDelegate call
@@ -86,6 +87,19 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
             }
         }
     }
+    
+    func createSections(){
+        let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
+        if(sections.count > 0){
+            let resortsExact = sections[0].item?.rentalInventory
+            exactMatchResortsArray = resortsExact!
+            if(sections.count > 1){
+                let resortsSurrounding = sections[1].item?.rentalInventory
+                surroundingMatchResortsArray = resortsSurrounding!
+            }
+        }
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -550,6 +564,18 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
         // self.performSegue(withIdentifier: Constant.segueIdentifiers.sortingSegue , sender: nil)
     }
     
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let firstVisibleIndexPath = searchResultTableView.indexPathsForVisibleRows?.first
+        let indexPath = IndexPath(item: collectionviewSelectedIndex, section: 0)
+        if(firstVisibleIndexPath?.section == 1){
+            dateCellSelectionColor = Constant.CommonColor.greenColor
+        }else{
+            dateCellSelectionColor = Constant.CommonColor.blueColor
+        }
+        searchResultColelctionView.reloadItems(at: [indexPath])
+    }
+    
 }
 
 func enableDisablePreviousMoreButton(_ position : NSString) -> Bool{
@@ -587,6 +613,32 @@ extension SearchResultViewController:UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if(collectionView.tag == -1){
+            
+            let cell = collectionView.cellForItem(at: indexPath)
+            
+            if(cell?.isKind(of:MoreCell.self))!{
+                let viewForActivity = UIView()
+                viewForActivity.frame = CGRect(x:0, y:0, width:(cell?.bounds.width)!, height:(cell?.bounds.height)!)
+                
+                myActivityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+                
+                // Position Activity Indicator in the center of the main view
+                myActivityIndicator.center = (cell?.contentView.center)!
+                
+                // If needed, you can prevent Acivity Indicator from hiding when stopAnimating() is called
+                myActivityIndicator.hidesWhenStopped = false
+                
+                // Start Activity Indicator
+                myActivityIndicator.startAnimating()
+                
+                myActivityIndicator.hidesWhenStopped = true
+                // Call stopAnimating() when need to stop activity indicator
+                //myActivityIndicator.stopAnimating()
+                viewForActivity.backgroundColor = UIColor.green
+                viewForActivity.addSubview(myActivityIndicator)
+                cell?.contentView.addSubview(viewForActivity)
+            }
+            
             let lastSelectedIndex = collectionviewSelectedIndex
             collectionviewSelectedIndex = indexPath.item
             dateCellSelectionColor = Constant.CommonColor.blueColor
@@ -698,10 +750,15 @@ extension SearchResultViewController:UICollectionViewDataSource {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.customCellNibNames.searchResultCollectionCell, for: indexPath) as! SearchResultCollectionCell
                 if((indexPath as NSIndexPath).row == collectionviewSelectedIndex) {
                     
-                    cell.backgroundColor = IUIKColorPalette.primary1.color
+                    if(dateCellSelectionColor == Constant.CommonColor.greenColor){
+                        cell.backgroundColor = UIColor(red: 112.0/255.0, green: 185.0/255.0, blue: 9.0/255.0, alpha: 1)//IUIKColorPalette.secondary1.color
+                    }else{
+                        cell.backgroundColor = IUIKColorPalette.primary1.color
+                    }
                     cell.dateLabel.textColor = UIColor.white
                     cell.daynameWithyearLabel.textColor = UIColor.white
                     cell.monthYearLabel.textColor = UIColor.white
+
                 }
                 else {
                     cell.backgroundColor = UIColor.white
@@ -816,12 +873,27 @@ extension SearchResultViewController:UICollectionViewDataSource {
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.searchResultTableView.frame.width, height: 40))
         let headerLabel = UILabel(frame: CGRect(x: 20, y: 0, width: self.searchResultTableView.frame.width - 40, height: 40))
         let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
-        if(sectionsInSearchResult[section].exactMatch)!{
-            headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing: Helper.resolveDestinationInfo(destination: sectionsInSearchResult[section].destination!)))"
+        if(sectionsInSearchResult[section].hasItem() && sectionsInSearchResult[section].destination == nil){
+            headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing:sectionsInSearchResult[section].item!.rentalInventory[0].resortName!))"
             headerView.backgroundColor = IUIKColorPalette.primary1.color
         }else{
-            headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing: Helper.resolveDestinationInfo(destination: sectionsInSearchResult[section].destination!)))"
-            headerView.backgroundColor = UIColor(red: 112.0/255.0, green: 185.0/255.0, blue: 9.0/255.0, alpha: 1)
+            if(sectionsInSearchResult[section].exactMatch)!{
+                
+                if sectionsInSearchResult[section].destination != nil {
+                    
+                    headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing: Helper.resolveDestinationInfo(destination: sectionsInSearchResult[section].destination!)))"
+                    
+                }
+                headerView.backgroundColor = IUIKColorPalette.primary1.color
+                
+            }else{
+                
+                if sectionsInSearchResult[section].destination != nil {
+                    headerLabel.text = Constant.CommonLocalisedString.surroundingString + "\(String(describing: Helper.resolveDestinationInfo(destination: sectionsInSearchResult[section].destination!)))"
+                    headerView.backgroundColor = UIColor(red: 112.0/255.0, green: 185.0/255.0, blue: 9.0/255.0, alpha: 1)
+                    
+                }
+            }
         }
         
         headerLabel.textColor = UIColor.white
@@ -1252,13 +1324,23 @@ extension String {
 }
 
 
+
+
 extension SearchResultViewController:HelperDelegate {
     func resortSearchComplete(){
         Helper.hideProgressBar(senderView: self)
+        self.createSections()
+        self.searchResultColelctionView.reloadData()
         self.searchResultTableView.reloadData()
     }
     
     func resetCalendar(){
-        
+        print(Constant.MyClassConstants.calendarDatesArray.count)
+        Constant.MyClassConstants.calendarDatesArray.removeAll()
+        print(Constant.MyClassConstants.calendarDatesArray.count)
+        Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
+        print(Constant.MyClassConstants.calendarDatesArray.count)
+        self.searchResultColelctionView.reloadData()
     }
 }
+
