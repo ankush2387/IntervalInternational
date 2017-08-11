@@ -58,8 +58,8 @@ class ResortDetailsViewController: UIViewController {
         self.previousButton?.isHidden = true
         self.forwordButton?.isHidden = true
         self.headerTextForShowingResortCounter?.isHidden = true
-        self.navigationController?.isNavigationBarHidden = true
-        self.tabBarController?.tabBar.isHidden = true
+        //self.navigationController?.isNavigationBarHidden = true
+        //self.tabBarController?.tabBar.isHidden = true
         
 //        if(Constant.RunningDevice.deviceIdiom == .phone){
 //            self.navigationController?.isNavigationBarHidden = true
@@ -135,8 +135,8 @@ class ResortDetailsViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         if(Constant.RunningDevice.deviceIdiom == .phone){
-            self.navigationController?.isNavigationBarHidden = false
-            self.tabBarController?.tabBar.isHidden = false
+            //self.navigationController?.isNavigationBarHidden = false
+           // self.tabBarController?.tabBar.isHidden = false
         }
     }
     

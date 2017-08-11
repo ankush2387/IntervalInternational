@@ -1,8 +1,8 @@
 //
-//  SortingOptionCell.swift
+//  FilterCell.swift
 //  IntervalApp
 //
-//  Created by Chetu on 20/06/17.
+//  Created by Chetu on 31/07/17.
 //  Copyright © 2017 Interval International. All rights reserved.
 //
 
@@ -10,15 +10,13 @@ import UIKit
 import IntervalUIKit
 
 
-class SortingOptionCell: UITableViewCell {
-
+class FilterCell: UITableViewCell {
     
     //Outlets
     
-    @IBOutlet weak var lblSortingRange: UILabel!
     @IBOutlet weak var checkBox: IUIKCheckbox!
-    
-    @IBOutlet weak var lblSortingOption: UILabel!
+
+    @IBOutlet weak var lblFilterOption: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

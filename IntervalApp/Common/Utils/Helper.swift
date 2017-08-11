@@ -14,11 +14,19 @@ import SVProgressHUD
 import DarwinSDK
 import RealmSwift
 
+//***** Custom delegate method declaration *****//
+@objc protocol HelperDelegate {
+    // Call for SearchResult
+    func resortSearchComplete()
+    func resetCalendar()
+}
 
 public class Helper{
     
     static var progressBarBackgroundView:UIView!
     static var window: UIWindow?
+    
+    static var helperDelegate: HelperDelegate?
     //***** common function to get system access token *****//
     
     static func getSystemAccessToken(){
@@ -1624,6 +1632,33 @@ public class Helper{
         
         
     }
+    
+    static func returnFilteredValue(filteredValue:String) -> String {
+        
+        var selectedvalue = filteredValue.uppercased()
+        
+        if selectedvalue == "DEFAULT" {
+            selectedvalue = "DEFAULT"
+        } else if (selectedvalue == "RESORT NAME:") {
+            selectedvalue = "RESORT_NAME"
+            
+        } else if (selectedvalue == "CITY:") {
+            selectedvalue = "CITY_NAME"
+            
+        } else if (selectedvalue == "RESORT TIER:") {
+            selectedvalue = "RESORT_TIER"
+            
+        } else if (selectedvalue == "PRICE:") {
+            selectedvalue = "PRICE"
+            
+        } else {
+            selectedvalue = "UNKNOWN"
+        }
+        
+        return selectedvalue
+        
+    }
+    
     static func trackOmnitureCallForPageView(name:String) {
         
         // omniture tracking with event 40
@@ -1673,6 +1708,227 @@ public class Helper{
            _ = completion(input)
     }
     
+
+    /*
+     * Execute Rental Search Availability
+     */
+    static func executeRentalSearchAvailability(activeInterval:BookingWindowInterval!, checkInDate:Date!, senderViewController:UIViewController, vacationSearch:VacationSearch) {
+        DarwinSDK.logger.error("----- Waiting for search availability ... -----")
+        SVProgressHUD.show()
+        let request = RentalSearchResortsRequest()
+        request.checkInDate = checkInDate
+        request.resortCodes = activeInterval.resortCodes
+        
+        RentalClient.searchResorts(UserContext.sharedInstance.accessToken, request: request,
+                                   onSuccess: { (response) in
+                                    SVProgressHUD.dismiss()
+                                    // Update Rental inventory
+                                    
+                                    Constant.MyClassConstants.resortsArray = response.resorts
+                                    
+                                    vacationSearch.rentalSearch?.inventory = response.resorts
+                                    
+                                    // Check if not has availability in the desired check-In date.
+                                    if (vacationSearch.searchCriteria.checkInDate != checkInDate) {
+                                        showNearestCheckInDateSelectedMessage()
+                                    }
+                                    
+                                    //showScrollingCalendar(vacationSearch:vacationSearch)
+                                    
+                                    showAvailabilityResults(vacationSearch:vacationSearch)
+                                    
+                                    //expectation.fulfill()
+                                    hideProgressBar(senderView: senderViewController)
+                                    if Constant.MyClassConstants.isFromSorting == false {
+                                        helperDelegate?.resortSearchComplete()
+                                    }
+                                    Constant.MyClassConstants.isFromSorting = false
+                                    
+        },
+                                   onError:{ (error) in
+                                     Constant.MyClassConstants.isFromSorting = false
+                                    hideProgressBar(senderView: senderViewController)
+                                    helperDelegate?.resortSearchComplete()
+                                    SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                                    DarwinSDK.logger.error("Error Code: \(error.code)")
+                                    DarwinSDK.logger.error("Error Description: \(error.description)")
+                                    
+                                    let INVENTORY_NOT_AVAILABLE_CODE = "d67dc7030d7462db65465023262e704f"
+                                    let sdkErrorCode = String(describing: error.userInfo["errorCode"])
+                                    
+                                    if (INVENTORY_NOT_AVAILABLE_CODE == sdkErrorCode) {
+                                        // TODO: Define behavior for not available inventory
+                                        DarwinSDK.logger.error("Define behavior for not available inventory.")
+                                    } else {
+                                        // TODO: Handle SDK/API errors
+                                        DarwinSDK.logger.error("Handle SDK/API errors.")
+                                    }
+        }
+        )
+    }
+    
+    static func showScrollingCalendar(vacationSearch:VacationSearch) {
+        DarwinSDK.logger.info("-- Create Calendar based on Booking Window Intervals --")
+        Constant.MyClassConstants.totalBucketArray.removeAll()
+        
+        let calendar = vacationSearch.createCalendar()
+        
+        // Show up the Scrolling Calendar in UI
+        for calendarItem in calendar {
+            Constant.MyClassConstants.totalBucketArray.append(calendarItem)
+            if (calendarItem.isInterval)! {
+                // Is a Interval of Dates
+                if (calendarItem.isIntervalAvailable)! {
+                    // Available for selection or click by the Member
+                    DarwinSDK.logger.info("\(String(describing: calendarItem.intervalStartDate!)) - \(String(describing: calendarItem.intervalEndDate!)) [Available]")
+                    
+                } else {
+                    // No available for selection or click by the Member
+                    DarwinSDK.logger.info("\(String(describing: calendarItem.intervalStartDate!)) - \(String(describing: calendarItem.intervalEndDate!)) [No Available]")
+                }
+            } else {
+                // Is a Single Date
+                DarwinSDK.logger.info("\(String(describing: calendarItem.checkInDate!))")
+            }
+        }
+        print(Constant.MyClassConstants.totalBucketArray)
+        helperDelegate?.resetCalendar()
+    }
+    
+    static func showNearestCheckInDateSelectedMessage() {
+        DarwinSDK.logger.info("NEAREST CHECK-IN DATE SELECTED - We found availability close to your desired Check-in Date")
+    }
+    
+    static func showAvailabilityResults(vacationSearch:VacationSearch) {
+        DarwinSDK.logger.info("-- Create Sections --")
+        
+        let sections = vacationSearch.createSections()
+        
+        // Show up the Availability Sections in UI
+        DarwinSDK.logger.info("Sorting criteria is: \(String(describing: vacationSearch.sortType))")
+        for section in sections {
+            if (vacationSearch.sortType.isDefault()) {
+                showAvailabilitySectionWithDefault(section: section)
+            } else {
+                showAvailabilitySection(section: section);
+            }
+        }
+    }
+    
+    static func showAvailabilitySectionWithDefault(section:AvailabilitySection!) {
+        if (section.hasDestination()) {
+            if (section.exactMatch)! {
+                // Show up Destination exact match as header
+                DarwinSDK.logger.info("Header[D] - \(String(describing: self.resolveDestinationInfo(destination: section.destination!)))")
+                Constant.MyClassConstants.searchAvailabilityHeader = "Resorts in \(String(describing: self.resolveDestinationInfo(destination: section.destination!)))"
+            } else {
+                // Show up Destination surrounding match as header
+                DarwinSDK.logger.info("Header[D] - Surrounding to \(String(describing: self.resolveDestinationInfo(destination: section.destination!)))")
+                Constant.MyClassConstants.searchAvailabilityHeader = "Resorts near \(String(describing: self.resolveDestinationInfo(destination: section.destination!)))"
+            }
+            
+            for inventoryItem in (section.item?.rentalInventory)! {
+                self.showAvailabilityBucket(inventoryItem: inventoryItem)
+            }
+            
+            DarwinSDK.logger.info("===============================================================")
+        } else {
+            for inventoryItem in (section.item?.rentalInventory)! {
+                // Show up only Resorts as header
+                DarwinSDK.logger.info("Header[R] - \(String(describing: inventoryItem.resortName))")
+                Constant.MyClassConstants.searchAvailabilityHeader = "\(String(describing: inventoryItem.resortName))"
+                self.showAvailabilityBucket(inventoryItem: inventoryItem)
+            }
+            
+            DarwinSDK.logger.info("===============================================================")
+        }
+    }
+
+    
+    static func showAvailabilitySection(section:AvailabilitySection!) {
+        if (section.exactMatch)! {
+            // Show up exact match as header
+            DarwinSDK.logger.info("Header - Exact Match")
+        } else {
+            // Show up surrounding match as header
+            DarwinSDK.logger.info("Header - Surrounding Match")
+        }
+        
+        for inventoryItem in (section.item?.rentalInventory)! {
+            self.showAvailabilityBucket(inventoryItem: inventoryItem)
+        }
+        
+        DarwinSDK.logger.info("===============================================================")
+    }
+    
+    static func showAvailabilityBucket(inventoryItem:Resort!) {
+        //DarwinSDK.logger.info("\(String(describing: resolveResortInfo(inventoryItem)))")
+        
+        for unit in (inventoryItem.inventory?.units)! {
+            DarwinSDK.logger.info("\(String(describing: self.resolveUnitInfo(unit: unit)))")
+        }
+    }
+    static func resolveResortInfo(resort:Resort!) -> String {
+        var info = String()
+        info.append(resort.resortCode!)
+        info.append(" ")
+        info.append(resort.resortName!)
+        info.append(" ")
+        
+        if (resort.address?.cityName != nil) {
+            info.append(" ")
+            info.append((resort.address?.cityName)!)
+        }
+        
+        if (resort.address?.territoryCode != nil) {
+            info.append(" ")
+            info.append((resort.address?.territoryCode)!)
+        }
+        
+        if (resort.address?.countryCode != nil) {
+            info.append(" ")
+            info.append((resort.address?.countryCode)!)
+        }
+        
+        return info
+    }
+    
+    static func resolveDestinationInfo(destination:AreaOfInfluenceDestination) -> String {
+        var info = String()
+        info.append(destination.destinationName)
+        
+        if (destination.address?.cityName != nil) {
+            info.append(" ")
+            info.append((destination.address?.cityName)!)
+        }
+        
+        if (destination.address?.territoryCode != nil) {
+            info.append(" ")
+            info.append((destination.address?.territoryCode)!)
+        }
+        
+        if (destination.address?.countryCode != nil) {
+            info.append(" ")
+            info.append((destination.address?.countryCode)!)
+        }
+        
+        return info
+    }
+    
+    static func resolveUnitInfo(unit:InventoryUnit) -> String {
+        var info = String()
+        info.append("    ")
+        info.append(unit.unitSize!)
+        info.append(" ")
+        info.append(unit.kitchenType!)
+        info.append(" ")
+        info.append("\(String(describing: unit.publicSleepCapacity))")
+        info.append(" total ")
+        info.append("\(String(describing: unit.privateSleepCapacity))")
+        info.append(" private")
+        return info
+    }
+
     //resend Confirmation Info to email
     static func resendConfirmationInfoForUpcomingTrip(viewcontroller: UIViewController) {
         let email = UserContext.sharedInstance.contact?.emailAddress

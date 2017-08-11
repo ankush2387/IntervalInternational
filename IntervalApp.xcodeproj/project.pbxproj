@@ -28,6 +28,7 @@
 		3A18D7BA1DE05DEC00966472 /* AddDebitOrCreditCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A18D7B91DE05DEC00966472 /* AddDebitOrCreditCardViewController.swift */; };
 		3A18D7BC1DE0949D00966472 /* AddYourCardButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A18D7BB1DE0949D00966472 /* AddYourCardButtonCell.swift */; };
 		3A18D7BE1DE0967C00966472 /* SaveCardOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A18D7BD1DE0967C00966472 /* SaveCardOptionCell.swift */; };
+		3A202C731F3B0ABA00678C50 /* RentalInventoryCVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A202C721F3B0ABA00678C50 /* RentalInventoryCVCell.swift */; };
 		3A2089DC1E2525C1001AFFD2 /* RelinquishmentSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2089DB1E2525C1001AFFD2 /* RelinquishmentSelectionViewController.swift */; };
 		3A2089DE1E2544D0001AFFD2 /* RelinquishmentSelectionCIGCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2089DD1E2544D0001AFFD2 /* RelinquishmentSelectionCIGCell.swift */; };
 		3A2089E01E2544FF001AFFD2 /* RelinquishmentSelectionOpenWeeksCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2089DF1E2544FF001AFFD2 /* RelinquishmentSelectionOpenWeeksCell.swift */; };
@@ -99,6 +100,7 @@
 		3A59DE181F015E5F005280D3 /* SortingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A59DE171F015E5F005280D3 /* SortingViewController.swift */; };
 		3A59DE1A1F015FDE005280D3 /* SortingOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A59DE191F015FDE005280D3 /* SortingOptionCell.swift */; };
 		3A59DE1C1F0182D3005280D3 /* OwnershipIpad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A59DE1B1F0182D3005280D3 /* OwnershipIpad.storyboard */; };
+		3A5BDCB31F34DD1800FDA672 /* FilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5BDCB21F34DD1800FDA672 /* FilterCell.swift */; };
 		3A5D1AEC1CE34D2D00F28076 /* VacationSearchResultIPadController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5D1AEB1CE34D2D00F28076 /* VacationSearchResultIPadController.swift */; };
 		3A623C671CF707A400389708 /* SideMenuLogoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A623C661CF707A400389708 /* SideMenuLogoCell.swift */; };
 		3A623C6A1CF728BC00389708 /* UIImageView+UIActivityIndicatorForSDWebImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A623C691CF728BC00389708 /* UIImageView+UIActivityIndicatorForSDWebImage.m */; };
@@ -189,6 +191,7 @@
 		3ACC27931DDDBDA40057B809 /* PaymentSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACC27921DDDBDA40057B809 /* PaymentSelectionViewController.swift */; };
 		3ACC27951DDDC2BA0057B809 /* SelectPaymentMethodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACC27941DDDC2BA0057B809 /* SelectPaymentMethodCell.swift */; };
 		3ACC27971DDDCB270057B809 /* AddNewCreditCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACC27961DDDCB270057B809 /* AddNewCreditCardCell.swift */; };
+		3AD822CA1F3A046A00CD68C6 /* AvailabilityCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD822C91F3A046A00CD68C6 /* AvailabilityCollectionViewCell.swift */; };
 		3ADA43AA1CA56603003F5373 /* CertificateWhoIsTravelingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADA43A91CA56603003F5373 /* CertificateWhoIsTravelingController.swift */; };
 		3AE0D8681E4B38B500FFF635 /* ResortDestinationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE0D8671E4B38B500FFF635 /* ResortDestinationCell.swift */; };
 		3AE0D86A1E4B396400FFF635 /* ResortsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE0D8691E4B396400FFF635 /* ResortsTableViewCell.swift */; };
@@ -323,6 +326,7 @@
 		3A18D7B91DE05DEC00966472 /* AddDebitOrCreditCardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDebitOrCreditCardViewController.swift; sourceTree = "<group>"; };
 		3A18D7BB1DE0949D00966472 /* AddYourCardButtonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddYourCardButtonCell.swift; sourceTree = "<group>"; };
 		3A18D7BD1DE0967C00966472 /* SaveCardOptionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveCardOptionCell.swift; sourceTree = "<group>"; };
+		3A202C721F3B0ABA00678C50 /* RentalInventoryCVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RentalInventoryCVCell.swift; sourceTree = "<group>"; };
 		3A2089DB1E2525C1001AFFD2 /* RelinquishmentSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentSelectionViewController.swift; sourceTree = "<group>"; };
 		3A2089DD1E2544D0001AFFD2 /* RelinquishmentSelectionCIGCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentSelectionCIGCell.swift; sourceTree = "<group>"; };
 		3A2089DF1E2544FF001AFFD2 /* RelinquishmentSelectionOpenWeeksCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentSelectionOpenWeeksCell.swift; sourceTree = "<group>"; };
@@ -394,6 +398,7 @@
 		3A59DE171F015E5F005280D3 /* SortingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortingViewController.swift; sourceTree = "<group>"; };
 		3A59DE191F015FDE005280D3 /* SortingOptionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortingOptionCell.swift; sourceTree = "<group>"; };
 		3A59DE1B1F0182D3005280D3 /* OwnershipIpad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = OwnershipIpad.storyboard; sourceTree = "<group>"; };
+		3A5BDCB21F34DD1800FDA672 /* FilterCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterCell.swift; sourceTree = "<group>"; };
 		3A5D1AEB1CE34D2D00F28076 /* VacationSearchResultIPadController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VacationSearchResultIPadController.swift; sourceTree = "<group>"; };
 		3A623C661CF707A400389708 /* SideMenuLogoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuLogoCell.swift; sourceTree = "<group>"; };
 		3A623C681CF728BC00389708 /* UIImageView+UIActivityIndicatorForSDWebImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+UIActivityIndicatorForSDWebImage.h"; sourceTree = "<group>"; };
@@ -488,6 +493,7 @@
 		3ACC27921DDDBDA40057B809 /* PaymentSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentSelectionViewController.swift; sourceTree = "<group>"; };
 		3ACC27941DDDC2BA0057B809 /* SelectPaymentMethodCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectPaymentMethodCell.swift; sourceTree = "<group>"; };
 		3ACC27961DDDCB270057B809 /* AddNewCreditCardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddNewCreditCardCell.swift; sourceTree = "<group>"; };
+		3AD822C91F3A046A00CD68C6 /* AvailabilityCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvailabilityCollectionViewCell.swift; sourceTree = "<group>"; };
 		3ADA43A91CA56603003F5373 /* CertificateWhoIsTravelingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CertificateWhoIsTravelingController.swift; sourceTree = "<group>"; };
 		3AE0D8671E4B38B500FFF635 /* ResortDestinationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResortDestinationCell.swift; sourceTree = "<group>"; };
 		3AE0D8691E4B396400FFF635 /* ResortsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResortsTableViewCell.swift; sourceTree = "<group>"; };
@@ -787,6 +793,8 @@
 		3A892F2C1CD3902F00AE6F45 /* CustomCells */ = {
 			isa = PBXGroup;
 			children = (
+				3AD822C91F3A046A00CD68C6 /* AvailabilityCollectionViewCell.swift */,
+				3A5BDCB21F34DD1800FDA672 /* FilterCell.swift */,
 				3A892F361CD3902F00AE6F45 /* SearchResultCollectionCell.swift */,
 				08E3BCF71F2A31330021F2BC /* RelinquishmentDetailsCell.swift */,
 				3A1854F11CA065E800D238CA /* ResortBedroomDetails.swift */,
@@ -849,6 +857,7 @@
 				3AE81DBE1E814DF7005C2CEA /* clubPointCell.swift */,
 				E95A30BA1EF9693700AB64DB /* CheckoutPromotionCell.swift */,
 				3A59DE191F015FDE005280D3 /* SortingOptionCell.swift */,
+				3A202C721F3B0ABA00678C50 /* RentalInventoryCVCell.swift */,
 			);
 			path = CustomCells;
 			sourceTree = "<group>";
@@ -1369,6 +1378,7 @@
 				3ABC81A21DF971FD003CE64A /* EmailTableViewCell.swift in Sources */,
 				3AF4AFD71CD35D5600554506 /* SideMenuiPadTableViewController.swift in Sources */,
 				3A2C728D1DDB2D9A00BBF40B /* PromotionsCell.swift in Sources */,
+				3A202C731F3B0ABA00678C50 /* RentalInventoryCVCell.swift in Sources */,
 				3A892F501CD3902F00AE6F45 /* WereWantToTradeTableViewCell.swift in Sources */,
 				087A87581E951A17009B1387 /* TdiCollectionViewCell.swift in Sources */,
 				3AF7CC081C8450FF00FB9AC6 /* TransitionManager.swift in Sources */,
@@ -1408,6 +1418,7 @@
 				DC27F7C41DB81B6F00AA374F /* EditMyAlertIpadViewController.swift in Sources */,
 				3A892F441CD3902F00AE6F45 /* DateAndPassengerSelectionTableViewCell.swift in Sources */,
 				DC7EF50F1D709F8800E9E360 /* ResortDirectoryResortCell.swift in Sources */,
+				3A5BDCB31F34DD1800FDA672 /* FilterCell.swift in Sources */,
 				3A3A01461C99BD0B00B7EC37 /* OwnershipViewController.swift in Sources */,
 				3A968E0E1DD62ECD0004E0EB /* CheckOutViewController.swift in Sources */,
 				3ACC27931DDDBDA40057B809 /* PaymentSelectionViewController.swift in Sources */,
@@ -1429,6 +1440,7 @@
 				3A59DE1A1F015FDE005280D3 /* SortingOptionCell.swift in Sources */,
 				3A3A013F1C99BD0B00B7EC37 /* OwnershipDetailsTableViewCell.swift in Sources */,
 				3AE81DBF1E814DF7005C2CEA /* clubPointCell.swift in Sources */,
+				3AD822CA1F3A046A00CD68C6 /* AvailabilityCollectionViewCell.swift in Sources */,
 				3ADA43AA1CA56603003F5373 /* CertificateWhoIsTravelingController.swift in Sources */,
 				3AC5720D1E2A278E00969CF7 /* NotesCell.swift in Sources */,
 				3AAA5A3E1C720F4500A5EA6D /* ActionSheetTblCell.swift in Sources */,

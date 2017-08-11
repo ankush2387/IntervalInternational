@@ -1,14 +1,14 @@
 //
-//  GetawayCell.swift
+//  RentalInventoryCVCell.swift
 //  IntervalApp
 //
-//  Created by Chetu on 21/05/16.
-//  Copyright © 2016 Interval International. All rights reserved.
+//  Created by Chetu on 09/08/17.
+//  Copyright © 2017 Interval International. All rights reserved.
 //
 
 import UIKit
 
-class GetawayCell: UITableViewCell {
+class RentalInventoryCVCell: UICollectionViewCell {
     
     @IBOutlet weak var getawayNameLabel: UILabel!
     @IBOutlet weak var getawayPrice: UILabel!
@@ -17,4 +17,5 @@ class GetawayCell: UITableViewCell {
     @IBOutlet weak var kitchenType: UILabel!
     @IBOutlet weak var promotionsView: UIView!
     @IBOutlet weak var currencySymbol: UILabel!
+    
 }

@@ -211,8 +211,12 @@ class RelinquishmentSelectionViewController: UIViewController {
         return self.requiredSection
     }
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
+        if(Constant.RunningDevice.deviceIdiom == .pad){
+            self.dismiss(animated: true, completion: nil)
+        }else{
+            _ = self.navigationController?.popViewController(animated: true)
+        }
         
-        _ = self.navigationController?.popViewController(animated: true)
     }
     
     func availablePointToolButtonPressed(_ sender:IUIKButton) {
@@ -299,7 +303,11 @@ class RelinquishmentSelectionViewController: UIViewController {
                 realm.add(storedata)
             }
             
-            _ = self.navigationController?.popViewController(animated: true)
+            if(Constant.RunningDevice.deviceIdiom == .pad){
+                self.dismiss(animated: true, completion: nil)
+            }else{
+                _ = self.navigationController?.popViewController(animated: true)
+            }
         }
     }
     func addClubPointButtonPressed(_ sender:IUIKButton) {
@@ -373,7 +381,11 @@ class RelinquishmentSelectionViewController: UIViewController {
                 realm.add(storedata)
             }
             
-            _ = self.navigationController?.popViewController(animated: true)
+            if(Constant.RunningDevice.deviceIdiom == .pad){
+                self.dismiss(animated: true, completion: nil)
+            }else{
+                _ = self.navigationController?.popViewController(animated: true)
+            }
             
         }else{
             if((relinquishmentOpenWeeksArray[sender.tag - 1].unit?.lockOffUnits.count)! > 0){
@@ -440,7 +452,11 @@ class RelinquishmentSelectionViewController: UIViewController {
                 try! realm.write {
                     realm.add(storedata)
                 }
-                _ = self.navigationController?.popViewController(animated: true)
+                if(Constant.RunningDevice.deviceIdiom == .pad){
+                    self.dismiss(animated: true, completion: nil)
+                }else{
+                    _ = self.navigationController?.popViewController(animated: true)
+                }
             }
         }
     }
@@ -555,7 +571,11 @@ class RelinquishmentSelectionViewController: UIViewController {
             realm.add(storedata)
         }
         
-        _ = self.navigationController?.popViewController(animated: true)
+        if(Constant.RunningDevice.deviceIdiom == .pad){
+            self.dismiss(animated: true, completion: nil)
+        }else{
+            _ = self.navigationController?.popViewController(animated: true)
+        }
 
     }
     

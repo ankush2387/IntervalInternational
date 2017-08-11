@@ -88,8 +88,10 @@ class Constant: NSObject {
     
     struct MyClassConstants{
         
-        
         static var alertOriginationPoint:String!
+        static var depositPromotionNav = "DepositPromotionsNav"
+        static var sorting = "Sorting"
+        static var filterSearchResult = "Filter Search Result"
         static var loginOriginationPoint:String!
         static var upcomingOriginationPoint : String!
         static var loginType:String!
@@ -113,6 +115,17 @@ class Constant: NSObject {
         
         //global variable to hold advisement type text
         static var advisementTypeStringaArray = ["Important Advisements","General Advisements","Additional Advisements"]
+        
+        // Sorting or filter options array
+        static var filteredOptiondArray = ["Crecent resort on...+3 more", "Hyatt Beach Resort House", "Key West, Florida", "Las Vegas, Nevada"]
+        
+        static var sortingOptionArray = ["Resort Name:", "Resort Name:", "Price:", "Price:", "City:", "City:", "Resort Tier:", "Resort Tier:"]
+        
+        static var sortingRangeArray = ["A - Z", "Z - A", "Low - High", "High - Low", "A - Z", "Z - A", "Low - High", "High - Low"]
+        
+        static var filteredIndex = 0
+        static var sortingIndex = -1
+
         
         //Relinquishment available points program
         static var relinquishmentAvailablePointsProgram = 0
@@ -160,6 +173,8 @@ class Constant: NSObject {
         
         //***** global variable  that hold  Boolean value successfull login status *****//
         static var isLoginSuccessfull = false
+        
+        static var isFromSorting = false
         
         //***** global variable that contains running device width from appdelegate method *****//
         static var runningDeviceWidth:CGFloat? = UIScreen.main.bounds.width
@@ -215,8 +230,14 @@ class Constant: NSObject {
         
         static var membershipContactArray = [Contact]()
         static var vacationSearchDestinationArray:NSMutableArray = []
+        static var calendarDatesArray = [CalendarItem]()
+        static var totalBucketArray = [CalendarItem]()
+        static var calendarCount:Int!
         static var realmStoredDestIdOrCodeArray:NSMutableArray = []
         static var resortCodesArray : [String] = []
+        static var searchAvailabilityHeader = ""
+        static var filterOptionsArray: [ResortDestination] = []
+        
         static var surroundingResortCodesArray : [String] = []
         static var resortsArray = [Resort]()
         static var favoritesResortArray = [Resort]()
@@ -523,9 +544,25 @@ class Constant: NSObject {
         //Keypath for picker
         static var keyTextColor = "textColor"
         
+
+        static var initialVacationSearch = VacationSearch()
+
         //used to not remove observers on ipad googleMapViewController when going to map or weather view
         static var goingToMapOrWeatherView = false
     }
+    
+    // Enum to store resorts and destinations
+    enum ResortDestination{
+        case Resort(ResortList)
+        case Destination(DestinationList)
+    }
+    
+    struct CommonColor {
+        static var greenColor = "Green"
+        static var blueColor = "Blue"
+        static var headerGreenColor = UIColor(red: 112.0/255.0, green: 185.0/255.0, blue: 9.0/255.0, alpha: 1)
+    }
+    
     struct CommonStringIdentifiers {
         static var floatWeek = "FLOAT_WEEK"
         static var pointWeek = "POINTS_WEEK"
@@ -539,6 +576,11 @@ class Constant: NSObject {
         static var user_id = NSLocalizedString("User ID", comment: "")
         static var user_password = NSLocalizedString("Password", comment: "")
         static var sign_in = NSLocalizedString("Sign_In", comment: "")
+        static var totalString = NSLocalizedString(" Total, ", comment: "")
+        static var privateString = NSLocalizedString(" Private", comment: "")
+        static var exactString = NSLocalizedString("Resorts in ", comment: "")
+        static var surroundingString = NSLocalizedString("Resorts near ", comment: "")
+
         static var contactName = "contactname"
         static var cardName = "cardname"
         static var loginID = "loginid"
@@ -588,6 +630,7 @@ class Constant: NSObject {
         static var loginFailedError = NSLocalizedString("Login Failed", comment: "")
         static var getawayAlertMessage = NSLocalizedString("Check back with us in a bit or we will keep searching and contact you when we have a match!\n\n You can also start your own search", comment: "")
         static var emailAlertMessage = NSLocalizedString("Please enter valid email", comment: "")
+        static var noDestinationRelinquishmentError = NSLocalizedString("Add \("Destinations") and \("Items to trade")", comment: "")
         
     }
     
@@ -833,6 +876,7 @@ class Constant: NSObject {
         static var featuredCell = "FeaturedCell"
         static var checkCell = "CheckCell"
         static var headerCell = "HeaderCell"
+        static var checkoutPromotionCell = "CheckoutPromotionCell"
     }
     
     //***** common  structure to provide all storyboard names *****//
@@ -907,6 +951,7 @@ class Constant: NSObject {
         static var createAlertViewController = "CreateAlertViewController"
         static var signInPreLoginViewController = "SignInPreLoginViewController"
         static var whatToUseViewController = "WhatToUseViewController"
+        static var sortingViewController = "SortingViewController"
         
     }
     
@@ -1054,6 +1099,10 @@ class Constant: NSObject {
         static var checkBoxCell = "CheckCell"
         static var attributesCell = "attributesTableCell"
         static var buttonCell = "ButtonTableCell"
+        static var resortDetailCell = "ImageCell"
+        static var resortInventoryCell = "RentalInventory"
+        static var availabilityCell = "AvailbilityCell"
+        static var novailabilityCell = "noAvailbilityCell"
     }
     
     //***** common  structure to provide all dashboardTableViewControllerHeaderText *****//
@@ -1176,6 +1225,7 @@ class Constant: NSObject {
         static var tdiTableViewCell = "TdiTableViewCell"
         static var exchange = "Exchange"
         static var sortingOptionCell = "sortingOptionCell"
+        static var filterOptionCell = "filterOptionCell"
         static var whereToGoCell = "WhereToGoCell"
         static var availablePoints = "AvailablePoints"
     }
