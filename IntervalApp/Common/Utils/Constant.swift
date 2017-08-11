@@ -569,10 +569,11 @@ class Constant: NSObject {
         static var user_id = NSLocalizedString("User ID", comment: "")
         static var user_password = NSLocalizedString("Password", comment: "")
         static var sign_in = NSLocalizedString("Sign_In", comment: "")
-        static var totalString = NSLocalizedString("Total, ", comment: "")
-        static var privateString = NSLocalizedString("Private", comment: "")
-        static var exactString = NSLocalizedString("Results in ", comment: "")
-        static var surroundingString = NSLocalizedString("Results near ", comment: "")
+        static var totalString = NSLocalizedString(" Total, ", comment: "")
+        static var privateString = NSLocalizedString(" Private", comment: "")
+        static var exactString = NSLocalizedString("Resorts in ", comment: "")
+        static var surroundingString = NSLocalizedString("Resorts near ", comment: "")
+
         static var contactName = "contactname"
         static var cardName = "cardname"
         static var loginID = "loginid"
