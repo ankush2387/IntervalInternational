@@ -236,7 +236,7 @@ class Constant: NSObject {
         static var realmStoredDestIdOrCodeArray:NSMutableArray = []
         static var resortCodesArray : [String] = []
         static var searchAvailabilityHeader = ""
-        static var filterOptionsArray: [Helper.ResortDestination] = []
+        static var filterOptionsArray: [ResortDestination] = []
         
         static var surroundingResortCodesArray : [String] = []
         static var resortsArray = [Resort]()
@@ -549,6 +549,12 @@ class Constant: NSObject {
 
         //used to not remove observers on ipad googleMapViewController when going to map or weather view
         static var goingToMapOrWeatherView = false
+    }
+    
+    // Enum to store resorts and destinations
+    enum ResortDestination{
+        case Resort(ResortList)
+        case Destination(DestinationList)
     }
     
     struct CommonColor {
