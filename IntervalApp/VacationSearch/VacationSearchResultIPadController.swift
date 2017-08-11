@@ -446,12 +446,17 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
                 // Start Activity Indicator
                 myActivityIndicator.startAnimating()
                 
-                myActivityIndicator.hidesWhenStopped = true
+                
+                //myActivityIndicator.hidesWhenStopped = true
+                
                 // Call stopAnimating() when need to stop activity indicator
                 //myActivityIndicator.stopAnimating()
-                viewForActivity.backgroundColor = UIColor.green
+                
+                cell?.alpha = 0.3
+                
                 viewForActivity.addSubview(myActivityIndicator)
                 cell?.contentView.addSubview(viewForActivity)
+                
             }
             
         let lastSelectedIndex = collectionviewSelectedIndex
