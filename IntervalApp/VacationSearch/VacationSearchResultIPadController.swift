@@ -203,6 +203,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     }
     
     // Mark: Function for bucket click
+
     func intervalBucketClicked(calendarItem:CalendarItem!, cell:UICollectionViewCell){
         Helper.hideProgressBar(senderView: self)
         Helper.helperDelegate = self
@@ -219,7 +220,8 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                     // Update CheckInFrom and CheckInTo dates
                     Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.checkInFromDate = Helper.convertStringToDate(dateString:calendarItem.intervalStartDate!,format:Constant.MyClassConstants.dateFormat)
                     Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.checkInToDate = Helper.convertStringToDate(dateString:calendarItem.intervalEndDate!,format:Constant.MyClassConstants.dateFormat)
-                    
+                    view.removeFromSuperview()
+                    cell.alpha = 1.0
                     RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
                                              onSuccess: { (response) in
                                                 
@@ -238,7 +240,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                                                     Constant.MyClassConstants.calendarDatesArray.removeAll()
                                                     
                                                     Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
-                                                
+
                                                     self.searchedDateCollectionView.reloadData()
                                                     //self.showNotAvailabilityResults()
                                                     
@@ -362,6 +364,8 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+        print(scrollView.superview?.superview)
         let firstVisibleIndexPath = resortDetailTBLView.indexPathsForVisibleRows?.first
         let indexPath = IndexPath(item: collectionviewSelectedIndex, section: 0)
         if(firstVisibleIndexPath?.section == 1){
@@ -411,9 +415,10 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
         if(collectionView.tag == -1){
             
             let cell = collectionView.cellForItem(at: indexPath)
+            let viewForActivity = UIView()
             
             if(cell?.isKind(of:MoreCell.self))!{
-                let viewForActivity = UIView()
+               
                 viewForActivity.frame = CGRect(x:0, y:0, width:(cell?.bounds.width)!, height:(cell?.bounds.height)!)
                 
                 myActivityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
@@ -426,12 +431,7 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
                 
                 // Start Activity Indicator
                 myActivityIndicator.startAnimating()
-                
-                //myActivityIndicator.hidesWhenStopped = true
-                
-                // Call stopAnimating() when need to stop activity indicator
-                //myActivityIndicator.stopAnimating()
-                
+
                 cell?.alpha = 0.3
                 
                 viewForActivity.addSubview(myActivityIndicator)
@@ -448,6 +448,7 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
         if(Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)!{
             Helper.showProgressBar(senderView: self)
             intervalBucketClicked(calendarItem:Constant.MyClassConstants.calendarDatesArray[indexPath.item], cell: cell!)
+
         }else{
             intervalDateItemClicked(Helper.convertStringToDate(dateString: Constant.MyClassConstants.calendarDatesArray[indexPath.item].checkInDate!, format: Constant.MyClassConstants.dateFormat))
          }
