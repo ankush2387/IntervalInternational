@@ -640,11 +640,12 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                 appSettings.searchByBothEnable = false
                 appSettings.checkInSelectorStrategy = CheckInSelectorStrategy.First.rawValue
                 appSettings.collapseBookingIntervalEnable = true
+                //appSettings.VacationSearchCriteria
     
         
                 let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
                 exchangeSearchCriteria.destination = destinations[0]
-                exchangeSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
+                exchangeSearchCriteria.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]//Constant.MyClassConstants.relinquishmentIdArray as? [String]
                 exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                 exchangeSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
                 exchangeSearchCriteria.searchType = VacationSearchType.Exchange

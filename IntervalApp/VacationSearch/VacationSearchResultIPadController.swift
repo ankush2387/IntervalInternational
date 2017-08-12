@@ -220,8 +220,6 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                     // Update CheckInFrom and CheckInTo dates
                     Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.checkInFromDate = Helper.convertStringToDate(dateString:calendarItem.intervalStartDate!,format:Constant.MyClassConstants.dateFormat)
                     Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.checkInToDate = Helper.convertStringToDate(dateString:calendarItem.intervalEndDate!,format:Constant.MyClassConstants.dateFormat)
-                    view.removeFromSuperview()
-                    cell.alpha = 1.0
                     RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
                                              onSuccess: { (response) in
                                                 
@@ -365,7 +363,6 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
-        print(scrollView.superview?.superview)
         let firstVisibleIndexPath = resortDetailTBLView.indexPathsForVisibleRows?.first
         let indexPath = IndexPath(item: collectionviewSelectedIndex, section: 0)
         if(firstVisibleIndexPath?.section == 1){
@@ -373,7 +370,10 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
         }else{
             dateCellSelectionColor = Constant.CommonColor.blueColor
         }
-        //searchedDateCollectionView.reloadItems(at: [indexPath])
+        
+        if(indexPath.row <= Constant.MyClassConstants.calendarDatesArray.count){
+            searchedDateCollectionView.reloadItems(at: [indexPath])
+        }
     }
     
 }
