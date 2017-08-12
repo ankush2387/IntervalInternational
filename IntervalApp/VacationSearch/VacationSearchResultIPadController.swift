@@ -60,6 +60,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
             switch Constant.MyClassConstants.filterOptionsArray[indexPath.row] {
             case .Destination(let destination):
                 print(destination)
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
                 let areaOfInfluenceDestination = AreaOfInfluenceDestination()
                 areaOfInfluenceDestination.destinationName = destination.destinationName
                 areaOfInfluenceDestination.destinationId = destination.destinationId
@@ -68,6 +69,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                 rentalSearchCriteria.destination = areaOfInfluenceDestination
             case .Resort(let resort):
                 let resorts = Resort()
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel = resort.resortName
                 resorts.resortName = resort.resortName
                 resorts.resortCode = resort.resortCode
                 rentalSearchCriteria.resorts = [resorts]
@@ -119,13 +121,14 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
         } else {
             Constant.MyClassConstants.sortingIndex = indexPath.row
             
+            
             let vacationSearchForSorting = Constant.MyClassConstants.initialVacationSearch
             
             vacationSearchForSorting.sortType = AvailabilitySortType(rawValue: selectedvalue)!
             Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: vacationSearchForSorting.bookingWindow.currentInterval)
             Constant.MyClassConstants.isFromSorting = true
             self.dismiss(animated: true, completion: nil)
-            resortDetailTBLView.reloadData()
+            self.resortDetailTBLView.reloadData()
         }
     }
     
@@ -1065,12 +1068,19 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
         headerButton.addTarget(self, action: #selector(VacationSearchResultIPadController.filterByNameButtonPressed(_:)), for: .touchUpInside)
         let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
         if(Constant.MyClassConstants.isFromSorting){
-            
+            if(sectionsInSearchResult[section].exactMatch)!{
+                headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
+                headerView.backgroundColor = IUIKColorPalette.primary1.color
+            }else{
+                headerLabel.text = Constant.CommonLocalisedString.surroundingString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
+                headerView.backgroundColor = Constant.CommonColor.headerGreenColor
+            }
         }else{
         if(sectionsInSearchResult[section].hasItem() && sectionsInSearchResult[section].destination == nil){
            
             if(sectionsInSearchResult[section].item!.rentalInventory.count > 0){
-                headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing:sectionsInSearchResult[section].item!.rentalInventory[0].resortName!))"
+//                headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing:sectionsInSearchResult[section].item!.rentalInventory[0].resortName!))"
+                headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
             }
                 headerView.backgroundColor = IUIKColorPalette.primary1.color
         }else{
@@ -1078,7 +1088,9 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 
                 if sectionsInSearchResult[section].destination != nil {
                     
-                    headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing: Helper.resolveDestinationInfo(destination: sectionsInSearchResult[section].destination!)))"
+                    //headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing: Helper.resolveDestinationInfo(destination: sectionsInSearchResult[section].destination!)))"
+                    
+                    headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
                     
                 }
                 headerView.backgroundColor = IUIKColorPalette.primary1.color

@@ -526,9 +526,6 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
             Constant.MyClassConstants.selectedSegment =  Constant.MyClassConstants.selectedSegmentExchange
             sender.isEnabled = false
     
-            let destinations = Helper.getAllDestinationFromLocalStorage()
-            let resorts = Helper.getAllResortsFromLocalStorage()
-            
             if Reachability.isConnectedToNetwork() == true {
                 
                 
@@ -555,12 +552,15 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                                 destination.destinationId = storedData[0].destinations[0].destinationId
                                 destination.aoiId = storedData[0].destinations[0].aoid
                                 rentalSearchCriteria.destination = destination
+                                print(destination.destinationName)
+                                Constant.MyClassConstants.vacationSearchResultHeaderLabel =  destination.destinationName
                                 
                             }else if((storedData.first?.resorts.count)! > 0){
                                 let resort = Resort()
                                 resort.resortName = storedData[0].resorts[0].resortName
                                 resort.resortCode = storedData[0].resorts[0].resortCode
                                 rentalSearchCriteria.resorts = [resort]
+                                Constant.MyClassConstants.vacationSearchResultHeaderLabel = resort.resortName
                             }
                         
                         
