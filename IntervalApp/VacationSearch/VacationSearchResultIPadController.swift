@@ -203,10 +203,11 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     }
     
     // Mark: Function for bucket click
-    func intervalBucketClicked(calendarItem:CalendarItem!){
+    func intervalBucketClicked(calendarItem:CalendarItem!, cell:UICollectionViewCell){
         Helper.hideProgressBar(senderView: self)
         Helper.helperDelegate = self
-            
+        
+         myActivityIndicator.hidesWhenStopped = true
             // Resolve the next active interval based on the Calendar interval selected
             let activeInterval = Constant.MyClassConstants.initialVacationSearch.resolveNextActiveIntervalFor(intervalStartDate: calendarItem.intervalStartDate, intervalEndDate: calendarItem.intervalEndDate)
             
@@ -222,9 +223,6 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                     RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
                                              onSuccess: { (response) in
                                                 
-                                                // hide indicator here
-                                                //self.myActivityIndicator.stopAnimating()
-                                                
                                                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
                                                 let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
                                                 // Update active interval
@@ -238,9 +236,9 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                                                 if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
                                                     print(Constant.MyClassConstants.calendarDatesArray.count)
                                                     Constant.MyClassConstants.calendarDatesArray.removeAll()
-                                                    print(Constant.MyClassConstants.calendarDatesArray.count)
+                                                    
                                                     Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
-                                                    print(Constant.MyClassConstants.calendarDatesArray.count)
+                                                
                                                     self.searchedDateCollectionView.reloadData()
                                                     //self.showNotAvailabilityResults()
                                                     
@@ -270,7 +268,12 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                     }
                     )
                 }
-            }
+            }else {
+
+                myActivityIndicator.stopAnimating()
+                cell.alpha = 1.0
+            
+        }
             
     }
     
@@ -444,7 +447,7 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
         //searchedDateCollectionView.reloadItems(at: [lastIndexPath, currentIndexPath])
         if(Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)!{
             Helper.showProgressBar(senderView: self)
-            intervalBucketClicked(calendarItem:Constant.MyClassConstants.calendarDatesArray[indexPath.item])
+            intervalBucketClicked(calendarItem:Constant.MyClassConstants.calendarDatesArray[indexPath.item], cell: cell!)
         }else{
             intervalDateItemClicked(Helper.convertStringToDate(dateString: Constant.MyClassConstants.calendarDatesArray[indexPath.item].checkInDate!, format: Constant.MyClassConstants.dateFormat))
          }
