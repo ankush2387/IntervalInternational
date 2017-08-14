@@ -680,8 +680,15 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
             if indexPath.row == 0 && self.isShowAvailability == true {
                 return 110
             } else {
-                let totalUnits = self.exactMatchResortsArray[indexPath.row].inventory?.units.count
-                return CGFloat(totalUnits!*80 + 320)
+                if self.isShowAvailability == true {
+                    let index = indexPath.row - 1
+                    let totalUnits = self.exactMatchResortsArray[index].inventory?.units.count
+                    return CGFloat(totalUnits!*80 + 320 + cellHeight)
+                } else {
+                    let totalUnits = self.exactMatchResortsArray[indexPath.row].inventory?.units.count
+                    return CGFloat(totalUnits!*80 + 320 + cellHeight)
+                    
+                }
             }
         }else{
             let totalUnits = self.surroundingMatchResortsArray[indexPath.row].inventory?.units.count
@@ -909,7 +916,12 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.availabilityCell, for: indexPath) as! SearchTableViewCell
                 cell.tag = indexPath.section
                 cell.resortInfoCollectionView.reloadData()
-                cell.resortInfoCollectionView.tag = indexPath.row
+                
+                if self.isShowAvailability == true {
+                    cell.resortInfoCollectionView.tag = indexPath.row - 1
+                } else {
+                    cell.resortInfoCollectionView.tag = indexPath.row
+                }
                 cell.resortInfoCollectionView.isScrollEnabled = false
                 cell.layer.borderWidth = 0.5
                 cell.layer.borderColor = UIColor.lightGray.cgColor
@@ -1050,7 +1062,13 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
             if(section == 0 && exactMatchResortsArray.count == 0 || section == 1){
                 return surroundingMatchResortsArray.count
             }else{
-                return exactMatchResortsArray.count
+                if self.isShowAvailability == true && section == 0 {
+                    return exactMatchResortsArray.count + 1
+                    
+                } else {
+                    return exactMatchResortsArray.count
+                }
+                
             }
         }
     }
