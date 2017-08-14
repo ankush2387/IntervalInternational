@@ -1334,6 +1334,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
     func searchButtonClicked(_ sender : IUIKButton) {
         
         ADBMobile.trackAction(Constant.omnitureEvents.event1, data: nil)
+        
         if (self.SegmentIndex == 1 && (Helper.getAllDestinationFromLocalStorage().count>0 || Helper.getAllResortsFromLocalStorage().count>0)) {
             Helper.showProgressBar(senderView: self)
             SVProgressHUD.show()
@@ -1347,78 +1348,64 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 
                 let appDelegate = UIApplication.shared.delegate as! AppDelegate
                 Constant.MyClassConstants.appSettings = appDelegate.createAppSetting()
-                
+
                 let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
-                rentalSearchCriteria.destination = destinations[0]
-                
+                if(destinations.count > 0) {
+                    rentalSearchCriteria.destination = destinations[0]
+                } else if (resorts.count > 0) {
+                    rentalSearchCriteria.resorts = resorts
+                }
+
                 rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
-                
                 
                 self.vacationSearch = VacationSearch(Constant.MyClassConstants.appSettings, rentalSearchCriteria)
                 Constant.MyClassConstants.initialVacationSearch = self.vacationSearch
             
-                RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: self.vacationSearch.rentalSearch?.searchContext.request, onSuccess: { (response) in
-                    
-                    print(response)
-                    
-                    self.vacationSearch.rentalSearch?.searchContext.response = response
-                    
+                RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: self.vacationSearch.rentalSearch?.searchContext.request,
+                    onSuccess: { (response) in
+                        self.vacationSearch.rentalSearch?.searchContext.response = response
 
-                    // Update active interval
-
-                    self.vacationSearch.updateActiveInterval(activeInterval: self.vacationSearch.bookingWindow.currentInterval)
-
-
-
+                        // Get activeInterval
+                        let activeInterval = self.vacationSearch.bookingWindow.getActiveInterval()
                     
-                    // Get activeInterval (or initial search interval)
-                    let activeInterval = BookingWindowInterval(interval: self.vacationSearch.bookingWindow.getActiveInterval())
+                        // Update active interval
+                        self.vacationSearch.updateActiveInterval(activeInterval: activeInterval)
                     
-                    // Update active interval
-                    self.vacationSearch.updateActiveInterval(activeInterval: activeInterval)
-                    
-                    // Check not available checkIn dates for the active interval
-                    if (activeInterval.fetchedBefore && !activeInterval.hasCheckInDates()) {
+                        // Always show a fresh copy of the Scrolling Calendar
                         self.showScrollingCalendar()
+                    
+                        // Check not available checkIn dates for the active interval
+                        if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                            self.showNotAvailabilityResults()
+                        } else {
+                            let initialSearchCheckInDate = Helper.convertStringToDate(dateString:self.vacationSearch.getCheckInDateForInitialSearch(),format:Constant.MyClassConstants.dateFormat)
                         
-                        self.showNotAvailabilityResults()
-                    }
-                    
-                    let dateFormatter = DateFormatter()
-                    dateFormatter.dateFormat = "yyyy-MM-dd"
-                    
-                    let initialSearchCheckInDate = self.vacationSearch.getCheckInDateForInitialSearch()
-                    
-                    DarwinSDK.logger.info("Initial Rental Search using request payload:")
-                    DarwinSDK.logger.info(" CheckInDate = \(initialSearchCheckInDate)")
-                    DarwinSDK.logger.info(" ResortCodes = \(String(describing: activeInterval.resortCodes))")
-                    Constant.MyClassConstants.checkInDates = response.checkInDates
-                    sender.isEnabled = true
-                    Helper.helperDelegate = self
-                    self.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: dateFormatter.date(from: initialSearchCheckInDate))
-                    
-                    //expectation.fulfill()
-                    
-                    
-                },
+                            DarwinSDK.logger.info("Initial Rental Search using request payload:")
+                            DarwinSDK.logger.info(" CheckInDate = \(initialSearchCheckInDate)")
+                            DarwinSDK.logger.info(" ResortCodes = \(String(describing: activeInterval?.resortCodes))")
+                        
+                            Constant.MyClassConstants.checkInDates = response.checkInDates
+                            sender.isEnabled = true
+                            Helper.helperDelegate = self
+                        
+                            self.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate)
+                        }
+                    },
                     onError:{ (error) in
-                    SVProgressHUD.dismiss()
-                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
-                })
-            }
-            else{
+                        SVProgressHUD.dismiss()
+                        SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                    }
+                )
+            } else{
                 sender.isEnabled = true
                 Helper.hideProgressBar(senderView: self)
                 SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
             }
-             Constant.MyClassConstants.isFromExchange = false
             
+            Constant.MyClassConstants.isFromExchange = false
+ 
+        } else if(self.SegmentIndex == 2) {
 
-            
-            
-        }else if(self.SegmentIndex == 2){
-            
-            
             sender.isEnabled = false
             Helper.showProgressBar(senderView: self)
             

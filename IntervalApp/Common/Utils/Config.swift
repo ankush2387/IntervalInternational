@@ -74,14 +74,35 @@ class Config
         case "dev2", "development2":
             return Environment.development2
             
+        case "omniture":
+            return Environment.omniture
+            
         case "qa":
             return Environment.qa
+            
+        case "qa2":
+            return Environment.qa2
+            
+        case "staging":
+            return Environment.staging
             
         case "prod", "production":
             return Environment.production
             
+        case "qa_dns":
+            return Environment.qa_dns
+            
+        case "qa2_dns":
+            return Environment.qa2_dns
+            
+        case "staging_dns":
+            return Environment.staging_dns
+            
+        case "prod_dns", "production_dns":
+            return Environment.production_dns
+
         default:
-            return Environment.production
+            return Environment.production_dns
         }
     }
     
