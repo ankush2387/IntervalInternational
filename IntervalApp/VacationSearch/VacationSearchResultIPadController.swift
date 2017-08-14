@@ -78,6 +78,8 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                     Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.resorts.append(resort)
                 }
                 
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel  =  "\(resortList[0].resortName) + \(resortList.count - 1)  + more"
+                
             }
             
             ADBMobile.trackAction(Constant.omnitureEvents.event9, data: nil)
@@ -1090,6 +1092,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 headerView.backgroundColor = Constant.CommonColor.headerGreenColor
             }
         }else{
+            if(sectionsInSearchResult.count > 0){
         if(sectionsInSearchResult[section].hasItem() && sectionsInSearchResult[section].destination == nil){
            
             if(sectionsInSearchResult[section].item!.rentalInventory.count > 0){
@@ -1116,6 +1119,11 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 }
             }
         }
+            }else{
+                headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
+                
+            headerView.backgroundColor = IUIKColorPalette.primary1.color
+            }
     }
     
         headerLabel.textColor = UIColor.white
