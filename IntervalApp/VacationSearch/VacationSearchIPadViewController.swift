@@ -541,6 +541,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
             SVProgressHUD.show()
             Constant.MyClassConstants.selectedSegment =  Constant.MyClassConstants.selectedSegmentExchange
             sender.isEnabled = false
+
             if Reachability.isConnectedToNetwork() == true {
                 let appDelegate = UIApplication.shared.delegate as! AppDelegate
                 Constant.MyClassConstants.appSettings = appDelegate.createAppSetting()
@@ -550,7 +551,6 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                 if(storedData.count > 0) {
                     let realm = try! Realm()
                     try! realm.write {
-                        
                         self.getSavedDestinationsResorts(storedData:storedData, searchCriteria:rentalSearchCriteria)
                         
                         rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate

@@ -55,6 +55,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
             switch Constant.MyClassConstants.filterOptionsArray[indexPath.row] {
             case .Destination(let destination):
                 print(destination)
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
                 let areaOfInfluenceDestination = AreaOfInfluenceDestination()
                 areaOfInfluenceDestination.destinationName = destination.destinationName
                 areaOfInfluenceDestination.destinationId = destination.destinationId
@@ -62,6 +63,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.destinations = [areaOfInfluenceDestination]
             case .Resort(let resort):
                 let resorts = Resort()
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel = resort.resortName
                 resorts.resortName = resort.resortName
                 resorts.resortCode = resort.resortCode
                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.resorts =  [resorts]
@@ -117,13 +119,14 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
         } else {
             Constant.MyClassConstants.sortingIndex = indexPath.row
             
+            
             let vacationSearchForSorting = Constant.MyClassConstants.initialVacationSearch
             
             vacationSearchForSorting.sortType = AvailabilitySortType(rawValue: selectedvalue)!
             Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: vacationSearchForSorting.bookingWindow.currentInterval)
             Constant.MyClassConstants.isFromSorting = true
             self.dismiss(animated: true, completion: nil)
-            resortDetailTBLView.reloadData()
+            self.resortDetailTBLView.reloadData()
         }
     }
     
@@ -699,13 +702,15 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
             if indexPath.row == 0 && self.isShowAvailability == true {
                 return 110
             } else {
-                if(self.exactMatchResortsArray.count > 0){
+                if self.isShowAvailability == true {
+                    let index = indexPath.row - 1
+                    let totalUnits = self.exactMatchResortsArray[index].inventory?.units.count
+                    return CGFloat(totalUnits!*110 + 320 + cellHeight)
+                } else {
                     let totalUnits = self.exactMatchResortsArray[indexPath.row].inventory?.units.count
-                    return CGFloat(totalUnits!*110 + 320)
-                }else{
-                    return 0
+                    return CGFloat(totalUnits!*110 + 320 + cellHeight)
+                    
                 }
-                
             }
         }else{
             let totalUnits = self.surroundingMatchResortsArray[indexPath.row].inventory?.units.count
@@ -933,7 +938,12 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.availabilityCell, for: indexPath) as! SearchTableViewCell
                 cell.tag = indexPath.section
                 cell.resortInfoCollectionView.reloadData()
-                cell.resortInfoCollectionView.tag = indexPath.row
+                
+                if self.isShowAvailability == true {
+                    cell.resortInfoCollectionView.tag = indexPath.row - 1
+                } else {
+                    cell.resortInfoCollectionView.tag = indexPath.row
+                }
                 cell.resortInfoCollectionView.isScrollEnabled = false
                 cell.layer.borderWidth = 0.5
                 cell.layer.borderColor = UIColor.lightGray.cgColor
@@ -1074,7 +1084,13 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
             if(section == 0 && exactMatchResortsArray.count == 0 || section == 1){
                 return surroundingMatchResortsArray.count
             }else{
-                return exactMatchResortsArray.count
+                if self.isShowAvailability == true && section == 0 {
+                    return exactMatchResortsArray.count + 1
+                    
+                } else {
+                    return exactMatchResortsArray.count
+                }
+                
             }
         }
     }
@@ -1092,12 +1108,19 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
         headerButton.addTarget(self, action: #selector(VacationSearchResultIPadController.filterByNameButtonPressed(_:)), for: .touchUpInside)
         let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
         if(Constant.MyClassConstants.isFromSorting){
-            
+            if(sectionsInSearchResult[section].exactMatch)!{
+                headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
+                headerView.backgroundColor = IUIKColorPalette.primary1.color
+            }else{
+                headerLabel.text = Constant.CommonLocalisedString.surroundingString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
+                headerView.backgroundColor = Constant.CommonColor.headerGreenColor
+            }
         }else{
         if(sectionsInSearchResult[section].hasItem() && sectionsInSearchResult[section].destination == nil){
            
             if(sectionsInSearchResult[section].item!.rentalInventory.count > 0){
-                headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing:sectionsInSearchResult[section].item!.rentalInventory[0].resortName!))"
+//                headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing:sectionsInSearchResult[section].item!.rentalInventory[0].resortName!))"
+                headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
             }
                 headerView.backgroundColor = IUIKColorPalette.primary1.color
         }else{
@@ -1105,7 +1128,9 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 
                 if sectionsInSearchResult[section].destination != nil {
                     
-                    headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing: Helper.resolveDestinationInfo(destination: sectionsInSearchResult[section].destination!)))"
+                    //headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing: Helper.resolveDestinationInfo(destination: sectionsInSearchResult[section].destination!)))"
+                    
+                    headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
                     
                 }
                 headerView.backgroundColor = IUIKColorPalette.primary1.color

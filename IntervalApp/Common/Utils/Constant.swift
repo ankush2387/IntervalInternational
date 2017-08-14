@@ -93,6 +93,7 @@ class Constant: NSObject {
         static var sorting = "Sorting"
         static var filterSearchResult = "Filter Search Result"
         static var loginOriginationPoint:String!
+        static var vacationSearchResultHeaderLabel:String!
         static var upcomingOriginationPoint : String!
         static var loginType:String!
         static var selectedDestinationNames:String = ""
@@ -1133,7 +1134,7 @@ class Constant: NSObject {
         static var search = "Search"
         static var exchange = "Exchange"
         static var getaway = "Getaways"
-        
+
     }
     
     //***** common  structure to provide all IntervalHDReusableIdentifiers *****//
