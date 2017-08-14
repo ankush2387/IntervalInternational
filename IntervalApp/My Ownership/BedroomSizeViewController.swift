@@ -24,6 +24,7 @@ class BedroomSizeViewController: UIViewController {
     var selectedUnit = InventoryUnit()
     var selectedRelinquismentId: String?
     var isDeposit = false
+    var isOnwershipSelection = false
     //***** Outlets *****//
     @IBOutlet weak var bedroomSizeTableView: UITableView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -183,7 +184,9 @@ class BedroomSizeViewController: UIViewController {
     @IBAction func doneButtonPressed(_ sender:AnyObject) {
         
         if(localArrayToHoldSelection.count != 0) {
-            
+            if isOnwershipSelection {
+                Helper.deleteObjectsFromLocalStorage()
+            }
             if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController){
                 delegate?.doneButtonClicked(selectedUnitsArray:localArrayToHoldSelection)
             }else{
