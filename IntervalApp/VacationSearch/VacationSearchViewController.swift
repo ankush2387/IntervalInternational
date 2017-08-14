@@ -1343,102 +1343,10 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             let resorts = Helper.getAllResortsFromLocalStorage()
             
 
-//            if Reachability.isConnectedToNetwork() == true {
-//                
-//                ADBMobile.trackAction(Constant.omnitureEvents.event9, data: nil)
-//                Helper.showProgressBar(senderView: self)
-//                RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: searchDateRequest, onSuccess:{ (searchDates) in
-//                                        
-//                    var combinedSearchDates = [Date]()
-//                    combinedSearchDates = searchDates.checkInDates.map { $0 }
-//                    combinedSearchDates.append(contentsOf: searchDates.surroundingCheckInDates.map { $0 })
-//                    
-//                    var combinedResortCodes = [String]()
-//                    combinedResortCodes = searchDates.resortCodes.map { $0 } + searchDates.surroundingResortCodes.map { $0 }
-//                    
-//                    Constant.MyClassConstants.combinedCheckInDates = searchDates.checkInDates
-//                    Constant.MyClassConstants.surroundingCheckInDates = searchDates.surroundingCheckInDates.map { $0 }
-//                    Constant.MyClassConstants.checkInDates = combinedSearchDates
-//                    Constant.MyClassConstants.resortCodesArray = combinedResortCodes
-//                    Constant.MyClassConstants.surroundingResortCodesArray = searchDates.surroundingResortCodes.map { $0 }
-//                    
-//                    
-//                    sender.isEnabled = true
-//                    if(Constant.MyClassConstants.checkInDates.count == 0) {
-//                        
-//                        Helper.hideProgressBar(senderView: self)
-//                        SimpleAlert.alert(self, title: Constant.AlertErrorMessages.noResultError, message: Constant.AlertMessages.noResultMessage)
-//                    }else {
-//                        
-//                        ADBMobile.trackAction(Constant.omnitureEvents.event18, data: nil)
-//                        let vacationSearchDateString = Helper.convertDateToString(date: Constant.MyClassConstants.vacationSearchShowDate, format: Constant.MyClassConstants.dateFormat)
-//                        let datesStringArray = NSMutableArray()
-//                        for searchDate in Constant.MyClassConstants.checkInDates{
-//                            let searchedDate = Helper.convertDateToString(date: searchDate, format: Constant.MyClassConstants.dateFormat)
-//                            datesStringArray.add(searchedDate)
-//                        }
-//                        if (!datesStringArray.contains(vacationSearchDateString)){
-//                            
-//                            Constant.MyClassConstants.resortsArray.removeAll()
-//                            Constant.MyClassConstants.checkInDates.insert(Constant.MyClassConstants.vacationSearchShowDate, at: 0)
-//                            
-//                            if let dateToSelect = Constant.MyClassConstants.checkInDates.index(of: Constant.MyClassConstants.vacationSearchShowDate) {
-//                                Constant.MyClassConstants.searchResultCollectionViewScrollToIndex = dateToSelect + 1
-//                            }
-//                            
-//                            Constant.MyClassConstants.showAlert = true
-//                            Helper.hideProgressBar(senderView: self)
-//                            
-//                            
-//                            // omniture tracking with event 9
-//                            let userInfo: [String: Any] = [
-//                                Constant.omnitureCommonString.listItem: Constant.MyClassConstants.selectedDestinationNames,
-//                                Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch,
-//                                Constant.omnitureEvars.eVar19 : Constant.MyClassConstants.vacationSearchShowDate,
-//                                Constant.omnitureEvars.eVar23 : Constant.omnitureCommonString.primaryAlternateDateAvailable,
-//                                Constant.omnitureEvars.eVar26 : "",
-//                                Constant.omnitureEvars.eVar28: "" ,
-//                                Constant.omnitureEvars.eVar33: "" ,
-//                                Constant.omnitureEvars.eVar34: "\(self.adultCounter):\(self.childCounter)" ,
-//                                Constant.omnitureEvars.eVar36:"\(Helper.omnitureSegmentSearchType(index:  Constant.MyClassConstants.searchForSegmentIndex))-\(Constant.MyClassConstants.resortsArray.count)" ,
-//                                Constant.omnitureEvars.eVar39: "" ,
-//                                Constant.omnitureEvars.eVar45: "\(Constant.MyClassConstants.vacationSearchShowDate)-\(Date())",
-//                                Constant.omnitureEvars.eVar47: "\(Constant.MyClassConstants.checkInDates.count)" ,
-//                                Constant.omnitureEvars.eVar53: "\(Constant.MyClassConstants.resortsArray.count)",
-//                                Constant.omnitureEvars.eVar61:Constant.MyClassConstants.searchOriginationPoint,
-//                                ]
-//                            
-//                            ADBMobile.trackAction(Constant.omnitureEvents.event9, data: userInfo)
-//                            self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
-//                        }else {
-//                            
-//                            if let dateToSelect = Constant.MyClassConstants.checkInDates.index(of: Constant.MyClassConstants.vacationSearchShowDate) {
-//                                Constant.MyClassConstants.searchResultCollectionViewScrollToIndex = dateToSelect + 1
-//                                Constant.MyClassConstants.showAlert = false
-//                                Helper.hideProgressBar(senderView: self)
-//                                Helper.resortDetailsClicked(toDate: Constant.MyClassConstants.checkInDates[dateToSelect] as NSDate, senderVC: self)
-//                            }else {
-//                                Constant.MyClassConstants.searchResultCollectionViewScrollToIndex = 1
-//                                Helper.hideProgressBar(senderView: self)
-//                                Helper.resortDetailsClicked(toDate: Constant.MyClassConstants.checkInDates[0] as NSDate, senderVC: self)
-//                            }
-//                        }
-//                    }
-//                })
-//                { (error) in
-//                    sender.isEnabled = true
-//                    Helper.hideProgressBar(senderView: self)
-//                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
-//                }
-//            }
-//            else {
-//                sender.isEnabled = true
-//                Helper.hideProgressBar(senderView: self)
-//                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
-//            }
             if Reachability.isConnectedToNetwork() == true{
                 
-                let appSettings = createAppSetting()
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                Constant.MyClassConstants.appSettings = appDelegate.createAppSetting()
                 
                 let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
                 rentalSearchCriteria.destination = destinations[0]
@@ -1446,7 +1354,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                 
                 
-                self.vacationSearch = VacationSearch(appSettings, rentalSearchCriteria)
+                self.vacationSearch = VacationSearch(Constant.MyClassConstants.appSettings, rentalSearchCriteria)
                 Constant.MyClassConstants.initialVacationSearch = self.vacationSearch
             
                 RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: self.vacationSearch.rentalSearch?.searchContext.request, onSuccess: { (response) in
@@ -1476,8 +1384,6 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                         self.showNotAvailabilityResults()
                     }
                     
-                    DarwinSDK.logger.info("Auto call to Search Availability")
-                    
                     let dateFormatter = DateFormatter()
                     dateFormatter.dateFormat = "yyyy-MM-dd"
                     
@@ -1488,6 +1394,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     DarwinSDK.logger.info(" ResortCodes = \(String(describing: activeInterval.resortCodes))")
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     sender.isEnabled = true
+                    Helper.helperDelegate = self
                     self.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: dateFormatter.date(from: initialSearchCheckInDate))
                     
                     //expectation.fulfill()
@@ -1651,23 +1558,24 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
 
         // Show up the Scrolling Calendar in UI
         for calendarItem in calendar {
+            Constant.MyClassConstants.totalBucketArray.append(calendarItem)
             if (calendarItem.isInterval)! {
                 // Is a Interval of Dates
                 if (calendarItem.isIntervalAvailable)! {
                     // Available for selection or click by the Member
-                    Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
+                    //Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
                     DarwinSDK.logger.info("\(String(describing: calendarItem.intervalStartDate!)) - \(String(describing: calendarItem.intervalEndDate!)) [Available]")
                    // Constant.MyClassConstants.bucketDateArray.add(<#T##anObject: Any##Any#>)
                     
                 } else {
                     // No available for selection or click by the Member
-                    Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
+                    //Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
                     DarwinSDK.logger.info("\(String(describing: calendarItem.intervalStartDate!)) - \(String(describing: calendarItem.intervalEndDate!)) [No Available]")
                 }
             } else {
                 // Is a Single Date
                 DarwinSDK.logger.info("\(String(describing: calendarItem.checkInDate!))")
-                Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
+                //Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
                 
             }
 
@@ -1885,5 +1793,17 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         info.append("\(String(describing: unit.privateSleepCapacity))")
         info.append(" private")
         return info
+    }
+}
+
+
+extension VacationSearchViewController:HelperDelegate {
+    func resortSearchComplete(){
+        //self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
+
+    }
+    func resetCalendar(){
+        Constant.MyClassConstants.calendarDatesArray.removeAll()
+        Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
     }
 }

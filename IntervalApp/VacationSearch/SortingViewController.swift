@@ -71,7 +71,20 @@ class SortingViewController: UIViewController {
                             )
                        
                     }else if(object.resorts.count > 0){
-                        Constant.MyClassConstants.filterOptionsArray.append(.Resort(object.resorts[0]))
+                        
+                        if(object.resorts[0].resortArray.count > 0){
+                            print(object.resorts[0].resortArray, object.resorts[0])
+                            
+                            var araayOfResorts = List<ResortByMap>()
+                            var reswortByMap = [ResortByMap]()
+                            araayOfResorts = object.resorts[0].resortArray
+                            for resort in araayOfResorts{
+                                reswortByMap.append(resort)
+                            }
+                            Constant.MyClassConstants.filterOptionsArray.append(.ResortList(reswortByMap))
+                        }else{
+                            Constant.MyClassConstants.filterOptionsArray.append(.Resort(object.resorts[0]))
+                        }
                     }
                 }
             }
@@ -92,7 +105,12 @@ class SortingViewController: UIViewController {
                 self.delegate?.selectedOptionis(filteredValueIs: val.destinationName, indexPath: indexPath! as NSIndexPath, isFromFiltered: true)
             case .Resort(let val):
                  self.delegate?.selectedOptionis(filteredValueIs: val.resortName, indexPath: indexPath! as NSIndexPath, isFromFiltered: true)
+            case .ResortList(let val):
+                print(val)
+                self.delegate?.selectedOptionis(filteredValueIs: val[0].resortName, indexPath: indexPath! as NSIndexPath, isFromFiltered: true)
             }
+            
+            
             
             //let resortName = resortNameArray[(indexPath?.row)!].resortName
             
@@ -142,6 +160,8 @@ extension SortingViewController:UITableViewDelegate {
                 self.delegate?.selectedOptionis(filteredValueIs: val.destinationName, indexPath: indexPath as NSIndexPath, isFromFiltered: true)
             case .Resort(let val):
                 self.delegate?.selectedOptionis(filteredValueIs: val.resortName, indexPath: indexPath as NSIndexPath, isFromFiltered: true)
+            case .ResortList(let val):
+                print(val)
             }
             //self.delegate?.selectedOptionis(filteredValueIs: resortNameArray[indexPath.row].resortName!, indexPath: indexPath as NSIndexPath, isFromFiltered: true)
         } else {
@@ -177,8 +197,13 @@ extension SortingViewController:UITableViewDataSource {
             switch Constant.MyClassConstants.filterOptionsArray[indexPath.row] {
             case .Destination(let val):
                 cell.lblFilterOption.text = val.destinationName
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel = val.destinationName
             case .Resort(let val):
                 cell.lblFilterOption.text = val.resortName
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel = val.resortName
+            case .ResortList(let val):
+                cell.lblFilterOption.text = "\(val[0].resortName) + \(val.count - 1)  + more"
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel = cell.lblFilterOption.text!
             }
             //cell.lblFilterOption.text = resortNameArray[indexPath.row].resortName
             

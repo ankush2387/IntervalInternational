@@ -93,6 +93,7 @@ class Constant: NSObject {
         static var sorting = "Sorting"
         static var filterSearchResult = "Filter Search Result"
         static var loginOriginationPoint:String!
+        static var vacationSearchResultHeaderLabel:String = ""
         static var upcomingOriginationPoint : String!
         static var loginType:String!
         static var selectedDestinationNames:String = ""
@@ -549,12 +550,15 @@ class Constant: NSObject {
 
         //used to not remove observers on ipad googleMapViewController when going to map or weather view
         static var goingToMapOrWeatherView = false
+        //Global App Settings
+        static var appSettings = AppSettings()
     }
     
     // Enum to store resorts and destinations
     enum ResortDestination{
         case Resort(ResortList)
         case Destination(DestinationList)
+        case ResortList([ResortByMap])
     }
     
     struct CommonColor {
@@ -1130,7 +1134,7 @@ class Constant: NSObject {
         static var search = "Search"
         static var exchange = "Exchange"
         static var getaway = "Getaways"
-        
+
     }
     
     //***** common  structure to provide all IntervalHDReusableIdentifiers *****//

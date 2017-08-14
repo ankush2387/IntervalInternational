@@ -162,6 +162,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
     }
+    func createAppSetting()-> AppSettings{
+        let appSettings = AppSettings()
+        appSettings.searchByBothEnable = false
+        appSettings.collapseBookingIntervalEnable = true
+        appSettings.checkInSelectorStrategy = CheckInSelectorStrategy.First.rawValue
+        return appSettings
+    }
 
 
 }
