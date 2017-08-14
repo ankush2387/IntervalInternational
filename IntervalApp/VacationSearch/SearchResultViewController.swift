@@ -139,16 +139,13 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.barTintColor = UIColor.init(colorLiteralRed: 70.0/255.0, green: 136.0/255.0, blue: 193.0/255.0, alpha: 1.0)
-        let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
-        print(sections.count)
-        if(sections.count > 0){
-            let resortsExact = sections[0].item?.rentalInventory
-            exactMatchResortsArray = resortsExact!
-            if(sections.count > 1){
-                let resortsSurrounding = sections[1].item?.rentalInventory
-                surroundingMatchResortsArray = resortsSurrounding!
-            }
-        }
+
+        Constant.MyClassConstants.calendarDatesArray.removeAll()
+        print(Constant.MyClassConstants.calendarDatesArray.count)
+        Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
+        print(Constant.MyClassConstants.calendarDatesArray.count)
+        
+        createSections()
     }
     
     func createSections(){
@@ -160,6 +157,7 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
                 let resortsSurrounding = sections[1].item?.rentalInventory
                 surroundingMatchResortsArray = resortsSurrounding!
             }
+            
         }
     }
     
@@ -614,7 +612,10 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
         }else{
             dateCellSelectionColor = Constant.CommonColor.blueColor
         }
-        //searchResultColelctionView.reloadItems(at: [indexPath])
+        
+        if(indexPath.row <= Constant.MyClassConstants.calendarDatesArray.count){
+            searchResultColelctionView.reloadItems(at: [indexPath])
+        }
     }
     
 }
@@ -671,12 +672,8 @@ extension SearchResultViewController:UICollectionViewDelegate {
                 
                 // Start Activity Indicator
                 myActivityIndicator.startAnimating()
-                
-                //myActivityIndicator.hidesWhenStopped = true
-                
-                // Call stopAnimating() when need to stop activity indicator
-                myActivityIndicator.stopAnimating()
 
+                cell?.alpha = 0.3
                 viewForActivity.addSubview(myActivityIndicator)
                 cell?.contentView.addSubview(viewForActivity)
             }
@@ -786,7 +783,7 @@ extension SearchResultViewController:UICollectionViewDataSource {
                 if((indexPath as NSIndexPath).row == collectionviewSelectedIndex) {
                     
                     if(dateCellSelectionColor == Constant.CommonColor.greenColor){
-                        cell.backgroundColor = UIColor(red: 112.0/255.0, green: 185.0/255.0, blue: 9.0/255.0, alpha: 1)//IUIKColorPalette.secondary1.color
+                        cell.backgroundColor = Constant.CommonColor.headerGreenColor//IUIKColorPalette.secondary1.color
                     }else{
                         cell.backgroundColor = IUIKColorPalette.primary1.color
                     }
@@ -836,7 +833,6 @@ extension SearchResultViewController:UICollectionViewDataSource {
                 Helper.addLinearGradientToView(view: cell.viewGradient, colour: UIColor.white, transparntToOpaque: true, vertical: false)
                 cell.resortImageView?.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
                 cell.resortName.text = inventoryItem.resortName
-                //cell.resortName.sizeToFit()
                 cell.resortAddress.text = inventoryItem.address?.cityName
                 cell.resortCode.text = inventoryItem.resortCode
                 DarwinSDK.logger.info("\(String(describing: Helper.resolveResortInfo(resort: inventoryItem)))")
@@ -1313,7 +1309,7 @@ extension SearchResultViewController:UITableViewDataSource {
                 return 1
             }
         }else{
-            if(section == 0 && surroundingMatchResortsArray.count == 0 || section == 1){
+            if(section == 0 && exactMatchResortsArray.count == 0 || section == 1){
                 return surroundingMatchResortsArray.count
             }else{
                 return exactMatchResortsArray.count
@@ -1405,16 +1401,8 @@ extension SearchResultViewController:HelperDelegate {
         self.searchResultColelctionView.reloadData()
         self.searchResultTableView.reloadData()
     }
-    
-    func resetCalendar(){
-//        print(Constant.MyClassConstants.calendarDatesArray.count)
-//        Constant.MyClassConstants.calendarDatesArray.removeAll()
-//        print(Constant.MyClassConstants.calendarDatesArray.count)
-//        Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
-//        print(Constant.MyClassConstants.calendarDatesArray.count)
-        //self.searchResultColelctionView.reloadData()
-        
+        func resetCalendar(){
+        }
 
-    }
 }
 
