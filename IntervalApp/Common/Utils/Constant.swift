@@ -549,12 +549,15 @@ class Constant: NSObject {
 
         //used to not remove observers on ipad googleMapViewController when going to map or weather view
         static var goingToMapOrWeatherView = false
+        //Global App Settings
+        static var appSettings = AppSettings()
     }
     
     // Enum to store resorts and destinations
     enum ResortDestination{
         case Resort(ResortList)
         case Destination(DestinationList)
+        case ResortList([ResortByMap])
     }
     
     struct CommonColor {

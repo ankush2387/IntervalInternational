@@ -47,31 +47,6 @@ class MoreCell: UICollectionViewCell {
         self.layer.borderWidth = 2
         self.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
         self.layer.masksToBounds = true
-        
-        if (Constant.MyClassConstants.calendarDatesArray[index].isIntervalAvailable)! {
-            self.isUserInteractionEnabled = true
-        }else {
-            self.isUserInteractionEnabled = false
-        }
-        
-        if(index == collectionViewSelectedIndex) {
-            if(dateSelectionColor == Constant.CommonColor.greenColor){
-                self.backgroundColor = UIColor(red: 112.0/255.0, green: 185.0/255.0, blue: 9.0/255.0, alpha: 1)//IUIKColorPalette.secondary1.color
-            }else{
-                self.backgroundColor = IUIKColorPalette.primary1.color
-            }
-            self.lblMonth.textColor = UIColor.white
-            self.lblStartYear.textColor = UIColor.white
-            self.lblEndYear.textColor = UIColor.white
-            self.lblHeader.textColor = UIColor.white
-        }
-        else {
-            self.backgroundColor = UIColor.white
-            self.lblMonth.textColor = IUIKColorPalette.primary1.color
-            self.lblStartYear.textColor = IUIKColorPalette.primary1.color
-            self.lblEndYear.textColor = IUIKColorPalette.primary1.color
-            self.lblHeader.textColor = IUIKColorPalette.primary1.color
-        }
     }
     
 }

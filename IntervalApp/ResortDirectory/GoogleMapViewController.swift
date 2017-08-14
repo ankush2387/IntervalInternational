@@ -751,7 +751,11 @@ class GoogleMapViewController: UIViewController {
                 realm.add(storedata)
             }
             
+            if(Constant.RunningDevice.deviceIdiom == .phone){
             _ = self.navigationController?.popViewController(animated: true)
+            }else{
+                self.navigationController?.popViewController(animated: true)
+            }
             
         }
         else {
@@ -761,7 +765,11 @@ class GoogleMapViewController: UIViewController {
                 selectedResortsArray.add(Constant.MyClassConstants.resortsArray[index as! Int])
             }
             Constant.MyClassConstants.selectedGetawayAlertDestinationArray.add(selectedResortsArray)
-            _ = self.navigationController?.popViewController(animated: true)
+            if(Constant.RunningDevice.deviceIdiom == .phone){
+                _ = self.navigationController?.popViewController(animated: true)
+            }else{
+                self.navigationController?.popViewController(animated: true)
+            }
         }
         
     }
