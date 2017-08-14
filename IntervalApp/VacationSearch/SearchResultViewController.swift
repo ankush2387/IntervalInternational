@@ -76,6 +76,9 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
                 resorts.resortName = resort.resortName
                 resorts.resortCode = resort.resortCode
                 rentalSearchCriteria.resorts = [resorts]
+            
+            case .ResortList(let resortsByMap):
+                print(resortsByMap)
             }
             
             

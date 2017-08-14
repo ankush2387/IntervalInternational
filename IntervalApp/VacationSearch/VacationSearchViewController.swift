@@ -1345,7 +1345,8 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
 
             if Reachability.isConnectedToNetwork() == true{
                 
-                let appSettings = createAppSetting()
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                Constant.MyClassConstants.appSettings = appDelegate.createAppSetting()
                 
                 let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
                 rentalSearchCriteria.destination = destinations[0]
@@ -1353,7 +1354,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                 
                 
-                self.vacationSearch = VacationSearch(appSettings, rentalSearchCriteria)
+                self.vacationSearch = VacationSearch(Constant.MyClassConstants.appSettings, rentalSearchCriteria)
                 Constant.MyClassConstants.initialVacationSearch = self.vacationSearch
             
                 RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: self.vacationSearch.rentalSearch?.searchContext.request, onSuccess: { (response) in
@@ -1382,8 +1383,6 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                         
                         self.showNotAvailabilityResults()
                     }
-                    
-                    DarwinSDK.logger.info("Auto call to Search Availability")
                     
                     let dateFormatter = DateFormatter()
                     dateFormatter.dateFormat = "yyyy-MM-dd"

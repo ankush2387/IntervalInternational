@@ -10,6 +10,8 @@ import UIKit
 import IntervalUIKit
 import DarwinSDK
 import SDWebImage
+import Realm
+import RealmSwift
 import SVProgressHUD
 
 class VacationSearchResultIPadController: UIViewController, sortingOptionDelegate {
@@ -50,13 +52,6 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
         if isFromFiltered {
             Constant.MyClassConstants.filteredIndex = indexPath.row
             
-            let appSettings = AppSettings()
-            appSettings.searchByBothEnable = false
-            appSettings.checkInSelectorStrategy = CheckInSelectorStrategy.First.rawValue
-            appSettings.collapseBookingIntervalEnable = true
-            
-            
-            let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
             switch Constant.MyClassConstants.filterOptionsArray[indexPath.row] {
             case .Destination(let destination):
                 print(destination)
@@ -65,21 +60,24 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                 areaOfInfluenceDestination.destinationName = destination.destinationName
                 areaOfInfluenceDestination.destinationId = destination.destinationId
                 areaOfInfluenceDestination.aoiId = destination.aoid
-                rentalSearchCriteria.destination = areaOfInfluenceDestination
-                rentalSearchCriteria.destination = areaOfInfluenceDestination
+                Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.destinations = [areaOfInfluenceDestination]
             case .Resort(let resort):
                 let resorts = Resort()
                 Constant.MyClassConstants.vacationSearchResultHeaderLabel = resort.resortName
                 resorts.resortName = resort.resortName
                 resorts.resortCode = resort.resortCode
-                rentalSearchCriteria.resorts = [resorts]
+                Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.resorts =  [resorts]
+            
+            case .ResortList(let resortList):
+                Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.resorts.removeAll()
+                for resorts in resortList{
+                    let resort = Resort()
+                    resort.resortName = resorts.resortName
+                    resort.resortCode = resorts.resortCode
+                    Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.resorts.append(resort)
+                }
+                
             }
-            
-            
-            rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
-            
-            Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(appSettings, rentalSearchCriteria)
-            
             
             ADBMobile.trackAction(Constant.omnitureEvents.event9, data: nil)
             
@@ -139,7 +137,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
         print(Constant.MyClassConstants.calendarDatesArray.count)
         Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
         print(Constant.MyClassConstants.calendarDatesArray.count)
-        self.createSections()
+        
         
     }
     
@@ -163,6 +161,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
         let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(VacationSearchResultIPadController.menuBackButtonPressed(_:)))
         menuButton.tintColor = UIColor.white
         self.navigationItem.leftBarButtonItem = menuButton
+        self.createSections()
         
         let nib = UINib(nibName: Constant.customCellNibNames.searchResultCollectionCell, bundle: nil)
         searchedDateCollectionView?.register(nib, forCellWithReuseIdentifier: Constant.customCellNibNames.searchResultCollectionCell)
@@ -223,6 +222,31 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                     // Update CheckInFrom and CheckInTo dates
                     Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.checkInFromDate = Helper.convertStringToDate(dateString:calendarItem.intervalStartDate!,format:Constant.MyClassConstants.dateFormat)
                     Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.checkInToDate = Helper.convertStringToDate(dateString:calendarItem.intervalEndDate!,format:Constant.MyClassConstants.dateFormat)
+                    
+                    let storedData = Helper.getLocalStorageWherewanttoGo()
+                    
+                    if(storedData.count > 0) {
+                        let realm = try! Realm()
+                        try! realm.write {
+
+                    
+                    
+                    
+                    if((storedData.first?.destinations.count)! > 0){
+                        let destination = AreaOfInfluenceDestination()
+                        destination.destinationName  = storedData[0].destinations[0].destinationName
+                        destination.destinationId = storedData[0].destinations[0].destinationId
+                        destination.aoiId = storedData[0].destinations[0].aoid
+                        Constant.MyClassConstants.initialVacationSearch.searchCriteria.destination = destination
+                        
+                    }else if((storedData.first?.resorts.count)! > 0){
+                        let resort = Resort()
+                        resort.resortName = storedData[0].resorts[0].resortName
+                        resort.resortCode = storedData[0].resorts[0].resortCode
+                        Constant.MyClassConstants.initialVacationSearch.searchCriteria.resorts = [resort]
+                    }
+                    
+                
                     RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
                                              onSuccess: { (response) in
                                                 
@@ -237,25 +261,20 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                                                 
                                                 // Check not available checkIn dates for the active interval
                                                 if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                                                    print(Constant.MyClassConstants.calendarDatesArray.count)
-                                                    Constant.MyClassConstants.calendarDatesArray.removeAll()
-                                                    
-                                                    Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
-
-                                                    self.searchedDateCollectionView.reloadData()
                                                     //self.showNotAvailabilityResults()
                                                     
                                                 } else {
-                                                    
-                                                    DarwinSDK.logger.info("Auto call to Search Availability")
-                                                    
                                                     //let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.getCheckInDateForInitialSearch()
                                                     
-                                                    Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Helper.convertDateToString(date: response.checkInDates.first!, format: Constant.MyClassConstants.dateFormat) , format: Constant.MyClassConstants.dateFormat), senderViewController: self , vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                                    //Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self , vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                                    
+                                                   //Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate:response.checkInDates[0], senderViewController: self , vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                                 }
-                                            
+                                                Constant.MyClassConstants.calendarDatesArray.removeAll()
                                                 
+                                                Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
                                                 
+                                                self.searchedDateCollectionView.reloadData()
                                                 
                     },
                                              onError:{ (error) in
@@ -270,6 +289,8 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                                                 //expectation.fulfill()
                     }
                     )
+                }
+                    }
                 }
             }else {
 
@@ -441,18 +462,17 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
                 cell?.contentView.addSubview(viewForActivity)
                 
             }
-            
-        let lastSelectedIndex = collectionviewSelectedIndex
-        collectionviewSelectedIndex = indexPath.item
-        dateCellSelectionColor = Constant.CommonColor.blueColor
-        let lastIndexPath = IndexPath(item: lastSelectedIndex, section: 0)
-        let currentIndexPath = IndexPath(item: collectionviewSelectedIndex, section: 0)
-        //searchedDateCollectionView.reloadItems(at: [lastIndexPath, currentIndexPath])
         if(Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)!{
             Helper.showProgressBar(senderView: self)
             intervalBucketClicked(calendarItem:Constant.MyClassConstants.calendarDatesArray[indexPath.item], cell: cell!)
 
         }else{
+            let lastSelectedIndex = collectionviewSelectedIndex
+            collectionviewSelectedIndex = indexPath.item
+            dateCellSelectionColor = Constant.CommonColor.blueColor
+            let lastIndexPath = IndexPath(item: lastSelectedIndex, section: 0)
+            let currentIndexPath = IndexPath(item: collectionviewSelectedIndex, section: 0)
+            searchedDateCollectionView.reloadItems(at: [lastIndexPath, currentIndexPath])
             intervalDateItemClicked(Helper.convertStringToDate(dateString: Constant.MyClassConstants.calendarDatesArray[indexPath.item].checkInDate!, format: Constant.MyClassConstants.dateFormat))
          }
         }
@@ -528,9 +548,11 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
                 
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.vacationSearchScreenReusableIdentifiers.moreCell, for: indexPath) as! MoreCell
                 if(Constant.MyClassConstants.calendarDatesArray[indexPath.item].isIntervalAvailable)!{
+                    cell.isUserInteractionEnabled = true
                     cell.backgroundColor = UIColor.white
                 }else{
-                    cell.backgroundColor = UIColor.lightGray
+                    cell.isUserInteractionEnabled = false
+                    cell.backgroundColor = UIColor(red: 233/255, green: 233/255, blue: 235/255, alpha: 1)
                 }
                 cell.setDateForBucket(index: indexPath.item, selectedIndex: collectionviewSelectedIndex, color: dateCellSelectionColor)
                 return cell
@@ -680,8 +702,15 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
             if indexPath.row == 0 && self.isShowAvailability == true {
                 return 110
             } else {
-                let totalUnits = self.exactMatchResortsArray[indexPath.row].inventory?.units.count
-                return CGFloat(totalUnits!*80 + 320)
+                if self.isShowAvailability == true {
+                    let index = indexPath.row - 1
+                    let totalUnits = self.exactMatchResortsArray[index].inventory?.units.count
+                    return CGFloat(totalUnits!*110 + 320 + cellHeight)
+                } else {
+                    let totalUnits = self.exactMatchResortsArray[indexPath.row].inventory?.units.count
+                    return CGFloat(totalUnits!*110 + 320 + cellHeight)
+                    
+                }
             }
         }else{
             let totalUnits = self.surroundingMatchResortsArray[indexPath.row].inventory?.units.count
@@ -909,7 +938,12 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.availabilityCell, for: indexPath) as! SearchTableViewCell
                 cell.tag = indexPath.section
                 cell.resortInfoCollectionView.reloadData()
-                cell.resortInfoCollectionView.tag = indexPath.row
+                
+                if self.isShowAvailability == true {
+                    cell.resortInfoCollectionView.tag = indexPath.row - 1
+                } else {
+                    cell.resortInfoCollectionView.tag = indexPath.row
+                }
                 cell.resortInfoCollectionView.isScrollEnabled = false
                 cell.layer.borderWidth = 0.5
                 cell.layer.borderColor = UIColor.lightGray.cgColor
@@ -1050,7 +1084,13 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
             if(section == 0 && exactMatchResortsArray.count == 0 || section == 1){
                 return surroundingMatchResortsArray.count
             }else{
-                return exactMatchResortsArray.count
+                if self.isShowAvailability == true && section == 0 {
+                    return exactMatchResortsArray.count + 1
+                    
+                } else {
+                    return exactMatchResortsArray.count
+                }
+                
             }
         }
     }
