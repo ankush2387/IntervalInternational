@@ -285,6 +285,8 @@
 		E94C7E091EF84DDE003D0EB5 /* PromotionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94C7E081EF84DDE003D0EB5 /* PromotionsViewController.swift */; };
 		E94FB5EA1EF0609C00314C5D /* VerticalProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94FB5E91EF0609C00314C5D /* VerticalProgressView.swift */; };
 		E951BC4D1EE71D800070A04B /* AlertHelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E951BC4C1EE71D800070A04B /* AlertHelpViewController.swift */; };
+		E9573D1D1F3CF69F00656C99 /* nonCoreProduct.xib in Resources */ = {isa = PBXBuildFile; fileRef = E9573D1C1F3CF69F00656C99 /* nonCoreProduct.xib */; };
+		E9573D1F1F3CFA3A00656C99 /* nonCoreProductView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9573D1E1F3CFA3A00656C99 /* nonCoreProductView.swift */; };
 		E95A30BB1EF9693700AB64DB /* CheckoutPromotionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95A30BA1EF9693700AB64DB /* CheckoutPromotionCell.swift */; };
 		E961268D1EE9EB2A001BA096 /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E961268C1EE9EB2A001BA096 /* WeatherViewController.swift */; };
 		E9C5EF381F19555B00E658DA /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C5EF371F19555B00E658DA /* UIViewControllerExtension.swift */; };
@@ -592,6 +594,8 @@
 		E94C7E081EF84DDE003D0EB5 /* PromotionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromotionsViewController.swift; sourceTree = "<group>"; };
 		E94FB5E91EF0609C00314C5D /* VerticalProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticalProgressView.swift; sourceTree = "<group>"; };
 		E951BC4C1EE71D800070A04B /* AlertHelpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertHelpViewController.swift; sourceTree = "<group>"; };
+		E9573D1C1F3CF69F00656C99 /* nonCoreProduct.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = nonCoreProduct.xib; sourceTree = "<group>"; };
+		E9573D1E1F3CFA3A00656C99 /* nonCoreProductView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = nonCoreProductView.swift; sourceTree = "<group>"; };
 		E95A30BA1EF9693700AB64DB /* CheckoutPromotionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckoutPromotionCell.swift; sourceTree = "<group>"; };
 		E961268C1EE9EB2A001BA096 /* WeatherViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherViewController.swift; sourceTree = "<group>"; };
 		E9C5EF371F19555B00E658DA /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
@@ -776,6 +780,8 @@
 				3A3A014D1C99BED600B7EC37 /* TriangeView.swift */,
 				3A0B25DB1CD241B50080BF3F /* DummyTableViewCell.swift */,
 				E918EF271F3373AE00C84D51 /* MembershipProductCell.swift */,
+				E9573D1E1F3CFA3A00656C99 /* nonCoreProductView.swift */,
+				E9573D1C1F3CF69F00656C99 /* nonCoreProduct.xib */,
 			);
 			path = MemberShip;
 			sourceTree = "<group>";
@@ -1269,6 +1275,7 @@
 				3AAA5A301C720F4500A5EA6D /* DashboardIPad.storyboard in Resources */,
 				3A932D531C8868C2004BF665 /* UnitDetailCell.xib in Resources */,
 				3AAA5A341C720F4500A5EA6D /* MemberCell.xib in Resources */,
+				E9573D1D1F3CF69F00656C99 /* nonCoreProduct.xib in Resources */,
 				3A06C0A71CA9385A009A9574 /* AvailableDestinationsIphone.storyboard in Resources */,
 				3A0B25DE1CD2432A0080BF3F /* MembershipIPad.storyboard in Resources */,
 				3A892F4B1CD3902F00AE6F45 /* SearchResultCollectionCell.xib in Resources */,
@@ -1345,6 +1352,7 @@
 				3A623C671CF707A400389708 /* SideMenuLogoCell.swift in Sources */,
 				E90C365A1F058C9800CCBE92 /* main.swift in Sources */,
 				DC7EF5091D709F8800E9E360 /* GoogleMapViewController.swift in Sources */,
+				E9573D1F1F3CFA3A00656C99 /* nonCoreProductView.swift in Sources */,
 				3A3A013D1C99BD0B00B7EC37 /* FloatdetaildoneButtonTableViewCell.swift in Sources */,
 				3AAA5A331C720F4500A5EA6D /* MemberCell.swift in Sources */,
 				E9057F931F02DDBA00E20047 /* ShareActivityMessage.swift in Sources */,
