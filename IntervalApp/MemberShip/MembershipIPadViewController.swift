@@ -15,8 +15,6 @@ class MembershipIPadViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     /** Class variables */
     fileprivate let numberOfSection = 2
-    //private let membershipDetailCellIdentifier = "membershipDetailCell"
-    //private let ownershipDetailCellIdentifier = "ownershipDetailCell"
     fileprivate let numberOfRowInSection = 1
     fileprivate var previousSelectedMembershipCellIndex: IndexPath?
     fileprivate var ownershipArray = [Ownership]()
@@ -94,7 +92,7 @@ class MembershipIPadViewController: UIViewController {
                 self.membershipProductsArray = products
             }
             
-            self.membershipProductsArray.sort{$0.highestTier && !$1.highestTier}
+            self.membershipProductsArray.sort{$0.coreProduct && !$1.coreProduct}
             self.tableView.reloadData()
             SVProgressHUD.dismiss()
         }) { (error) in
@@ -171,9 +169,6 @@ extension MembershipIPadViewController:UITableViewDataSource{
             return 1
         }
         
-        if membershipProductsArray.count > 0 {
-            return 3
-        }
         return numberOfSection
     }
     //MARK:Number of Row in a section
@@ -184,8 +179,6 @@ extension MembershipIPadViewController:UITableViewDataSource{
             let contact = UserContext.sharedInstance.contact
             return (contact?.memberships?.count)!
         } else if section == 1 {
-            return membershipProductsArray.count
-        } else if section == 2 {
             return ownershipArray.count
         } else {
             return numberOfRowInSection
@@ -218,33 +211,7 @@ extension MembershipIPadViewController:UITableViewDataSource{
             cell.delegate = self
             return cell
             
-        } else if indexPath.section == 1 {
-            let product = membershipProductsArray[indexPath.row]
-            if product.highestTier {
-                let prodCell = tableView.dequeueReusableCell(withIdentifier: "selectedMembershipProductCell") as! MembershipProductCell
-                prodCell.externalContainerView.roundCorners(corners: [.topLeft, .topRight], radius: 4)
-                prodCell.containerView.layer.cornerRadius = 4
-                prodCell.setupCell(product: product)
-                
-                
-                return prodCell
-            } else {
-                let prodCell = tableView.dequeueReusableCell(withIdentifier: "membershipProductCell") as! MembershipProductCell
-                
-                if indexPath.row == membershipProductsArray.count - 1 {
-                    prodCell.externalContainerView.roundCorners(corners: [.bottomRight, .bottomLeft], radius: 4)
-                }
-                
-                prodCell.setupCell(product: product)
-                
-                if indexPath.row > 1 {
-                    prodCell.triangleView.isHidden = true
-                }
-                
-                return prodCell
-            }
-            
-        } else if (indexPath as NSIndexPath).section == 2 {
+        } else if (indexPath as NSIndexPath).section == 1 {
             guard let ownershipCell = tableView.dequeueReusableCell(withIdentifier: Constant.memberShipViewController.ownershipDetailCellIdentifier) as? OwnerShipDetailTableViewCell else { return UITableViewCell() }
             let ownership = ownershipArray[indexPath.row]
             ownershipCell.getCell(ownership: ownership)
@@ -255,7 +222,7 @@ extension MembershipIPadViewController:UITableViewDataSource{
             if contact!.memberships!.count == 1 {
                 membershipCell.switchMembershipButton.isHidden = true
             }
-            membershipCell.getCell(contactInfo: self.contactInfo)
+            membershipCell.getCell(contactInfo: self.contactInfo, products: membershipProductsArray)
             return membershipCell
         }
         
@@ -264,20 +231,9 @@ extension MembershipIPadViewController:UITableViewDataSource{
     /** This function is used to return title for header In section */
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         var title = ""
-        if section == 2 && tableView.tag != 3{
+        if section == 1 && tableView.tag != 3{
             title = Constant.memberShipViewController.ownershipHeaderTitletext
             return title
-        }
-        
-        return nil
-    }
-    
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: 20))
-        
-        if (section == 1) {
-            headerView.backgroundColor = UIColor.white
-            return headerView
         }
         
         return nil
@@ -291,9 +247,6 @@ extension MembershipIPadViewController:UITableViewDelegate
 {
 	/** This function is used to return Height for footer In section */
 	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if section == 1 {
-            return 20
-        }
         return 0.0001
     }
 	
@@ -303,9 +256,10 @@ extension MembershipIPadViewController:UITableViewDelegate
 			return 70
 		}
 		else if (indexPath as NSIndexPath).section == 0{
-			return 334
-        } else if indexPath.section == 1 {
-            return 99
+            
+            let extraViews = membershipProductsArray.count - 1
+            return CGFloat((80 * extraViews) + 240)
+
         } else{
             return 427
         }
@@ -313,13 +267,10 @@ extension MembershipIPadViewController:UITableViewDelegate
 	
 	/** This function is used to return Height for header In section */
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 0 {
-            return 0
-        } else if section == 2 {
+        if section == 1 {
             return 30
-        }
-        else {
-            return 0.0001
+        } else {
+            return 30
         }
 	}
 	

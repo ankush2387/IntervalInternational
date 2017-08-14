@@ -637,6 +637,20 @@ public class Helper{
         }
         
     }
+    
+    // function that removes all objects stored in OpenWeeksStorage, and clears whatToTradeArray
+    static func deleteObjectsFromLocalStorage() {
+        let realm = try! Realm()
+        let openWeekStorage = realm.objects(OpenWeeksStorage.self)
+        let destinationsStorage = realm.objects(RealmLocalStorage.self)
+        try! realm.write {
+            realm.delete(openWeekStorage)
+            realm.delete(destinationsStorage)
+            Constant.MyClassConstants.whatToTradeArray.removeAllObjects()
+            Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
+        }
+    }
+
     //***** function that get all Realm storage data list for destination list or resort list according to selected membership number and initialize array globaly *****//
     static func InitializeArrayFromLocalStorage () {
         
