@@ -93,7 +93,7 @@ class Constant: NSObject {
         static var sorting = "Sorting"
         static var filterSearchResult = "Filter Search Result"
         static var loginOriginationPoint:String!
-        static var vacationSearchResultHeaderLabel:String!
+        static var vacationSearchResultHeaderLabel:String = ""
         static var upcomingOriginationPoint : String!
         static var loginType:String!
         static var selectedDestinationNames:String = ""

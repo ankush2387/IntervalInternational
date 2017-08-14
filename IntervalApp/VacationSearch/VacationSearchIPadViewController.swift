@@ -501,12 +501,20 @@ extension VacationSearchIPadViewController:DateAndPassengerSelectionTableViewCel
             destination.destinationId = storedData[0].destinations[0].destinationId
             destination.aoiId = storedData[0].destinations[0].aoid
             searchCriteria.destination = destination
+            Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
             
         }else if((storedData.first?.resorts.count)! > 0){
-            let resort = Resort()
-            resort.resortName = storedData[0].resorts[0].resortName
-            resort.resortCode = storedData[0].resorts[0].resortCode
-            searchCriteria.resorts = [resort]
+            
+            if((storedData.first?.resorts[0].resortArray.count)! > 0){
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(String(describing: storedData.first?.resorts[0].resortArray[0].resortName)) + more"
+                
+            }else{
+                let resort = Resort()
+                resort.resortName = storedData[0].resorts[0].resortName
+                resort.resortCode = storedData[0].resorts[0].resortCode
+                searchCriteria.resorts = [resort]
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel = resort.resortName!
+            }
         }
     }
 }

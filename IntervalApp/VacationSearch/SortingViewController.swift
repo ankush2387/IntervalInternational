@@ -197,10 +197,13 @@ extension SortingViewController:UITableViewDataSource {
             switch Constant.MyClassConstants.filterOptionsArray[indexPath.row] {
             case .Destination(let val):
                 cell.lblFilterOption.text = val.destinationName
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel = val.destinationName
             case .Resort(let val):
                 cell.lblFilterOption.text = val.resortName
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel = val.resortName
             case .ResortList(let val):
-                cell.lblFilterOption.text = "\(val[0].resortName) + \(val.count - 1) more"
+                cell.lblFilterOption.text = "\(val[0].resortName) + \(val.count - 1)  + more"
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel = cell.lblFilterOption.text!
             }
             //cell.lblFilterOption.text = resortNameArray[indexPath.row].resortName
             

@@ -54,19 +54,20 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
             
             switch Constant.MyClassConstants.filterOptionsArray[indexPath.row] {
             case .Destination(let destination):
-                print(destination)
-                Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
                 let areaOfInfluenceDestination = AreaOfInfluenceDestination()
                 areaOfInfluenceDestination.destinationName = destination.destinationName
                 areaOfInfluenceDestination.destinationId = destination.destinationId
                 areaOfInfluenceDestination.aoiId = destination.aoid
                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.destinations = [areaOfInfluenceDestination]
+                Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.resorts.removeAll()
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
             case .Resort(let resort):
                 let resorts = Resort()
-                Constant.MyClassConstants.vacationSearchResultHeaderLabel = resort.resortName
                 resorts.resortName = resort.resortName
                 resorts.resortCode = resort.resortCode
                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.resorts =  [resorts]
+                Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.destinations.removeAll()
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel = resort.resortName
             
             case .ResortList(let resortList):
                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.resorts.removeAll()
@@ -86,6 +87,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                 
                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
                 let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
+                
                 // Update active interval
                 Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                 Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
@@ -96,10 +98,8 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                     Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                     Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     
-                    //Helper.showNotAvailabilityResults()
+                //Helper.showNotAvailabilityResults()
                 }
-                
-                DarwinSDK.logger.info("Auto call to Search Availability")
                 
                 let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.getCheckInDateForInitialSearch()
                 Constant.MyClassConstants.checkInDates = response.checkInDates
@@ -210,7 +210,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
         Helper.hideProgressBar(senderView: self)
         Helper.helperDelegate = self
         
-         myActivityIndicator.hidesWhenStopped = true
+            myActivityIndicator.hidesWhenStopped = true
             // Resolve the next active interval based on the Calendar interval selected
             let activeInterval = Constant.MyClassConstants.initialVacationSearch.resolveNextActiveIntervalFor(intervalStartDate: calendarItem.intervalStartDate, intervalEndDate: calendarItem.intervalEndDate)
             
@@ -222,30 +222,6 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                     // Update CheckInFrom and CheckInTo dates
                     Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.checkInFromDate = Helper.convertStringToDate(dateString:calendarItem.intervalStartDate!,format:Constant.MyClassConstants.dateFormat)
                     Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.checkInToDate = Helper.convertStringToDate(dateString:calendarItem.intervalEndDate!,format:Constant.MyClassConstants.dateFormat)
-                    
-                    let storedData = Helper.getLocalStorageWherewanttoGo()
-                    
-                    if(storedData.count > 0) {
-                        let realm = try! Realm()
-                        try! realm.write {
-
-                    
-                    
-                    
-                    if((storedData.first?.destinations.count)! > 0){
-                        let destination = AreaOfInfluenceDestination()
-                        destination.destinationName  = storedData[0].destinations[0].destinationName
-                        destination.destinationId = storedData[0].destinations[0].destinationId
-                        destination.aoiId = storedData[0].destinations[0].aoid
-                        Constant.MyClassConstants.initialVacationSearch.searchCriteria.destination = destination
-                        
-                    }else if((storedData.first?.resorts.count)! > 0){
-                        let resort = Resort()
-                        resort.resortName = storedData[0].resorts[0].resortName
-                        resort.resortCode = storedData[0].resorts[0].resortCode
-                        Constant.MyClassConstants.initialVacationSearch.searchCriteria.resorts = [resort]
-                    }
-                    
                 
                     RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
                                              onSuccess: { (response) in
@@ -289,9 +265,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                                                 //expectation.fulfill()
                     }
                     )
-                }
                     }
-                }
             }else {
 
                 myActivityIndicator.stopAnimating()
@@ -1119,7 +1093,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
         if(sectionsInSearchResult[section].hasItem() && sectionsInSearchResult[section].destination == nil){
            
             if(sectionsInSearchResult[section].item!.rentalInventory.count > 0){
-//                headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing:sectionsInSearchResult[section].item!.rentalInventory[0].resortName!))"
+                headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing:sectionsInSearchResult[section].item!.rentalInventory[0].resortName!))"
                 headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
             }
                 headerView.backgroundColor = IUIKColorPalette.primary1.color
@@ -1128,9 +1102,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 
                 if sectionsInSearchResult[section].destination != nil {
                     
-                    //headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing: Helper.resolveDestinationInfo(destination: sectionsInSearchResult[section].destination!)))"
-                    
-                    headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
+                   headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
                     
                 }
                 headerView.backgroundColor = IUIKColorPalette.primary1.color
