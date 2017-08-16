@@ -381,16 +381,22 @@ public class Helper{
     //***** Common function for user Favorites resort API call after successfull call *****//
     static func getUserFavorites(){
         if(UserContext.sharedInstance.accessToken != nil){
-        UserClient.getFavoriteResorts(UserContext.sharedInstance.accessToken, onSuccess: { (response) in
-            Constant.MyClassConstants.favoritesResortArray.removeAll()
-            for resortcode in [response][0] {
-                Constant.MyClassConstants.favoritesResortCodeArray.add(resortcode)
+            UserClient.getFavoriteResorts(UserContext.sharedInstance.accessToken, onSuccess: { (response) in
+                Constant.MyClassConstants.favoritesResortArray.removeAll()
+                for item in [response][0] {
+                    if let resortFav = item as? ResortFavorite {
+                        if let resort = resortFav.resort{
+                            let code = resort.resortCode
+                            Constant.MyClassConstants.favoritesResortCodeArray.add(code)
+                            Constant.MyClassConstants.favoritesResortArray.append(resort)
+                        }
+                    }
+                    
+                }
+                NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
+            })
+            { (error) in
             }
-            NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
-            
-        })
-        { (error) in
-        }
         }
     }
     
@@ -1189,7 +1195,7 @@ public class Helper{
         
         detailLabel.frame = CGRect(x: 10, y: noResortView.frame.size.height/4, width: noResortView.frame.size.width - 20, height: 3*(noResortView.frame.size.height/4))
         detailLabel.numberOfLines = 0
-        detailLabel.text = "This date does not contain availability for the area you were looking for. Please check other available dates by scrolling above."
+        detailLabel.text = "We were unable to find any availability for the travel dates you requested. Please check other available dates by scrolling above."
         detailLabel.textColor = UIColor.gray
         detailLabel.font = UIFont(name: "Helvetica",size: 12)
         noResortView.addSubview(detailLabel)

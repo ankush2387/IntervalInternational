@@ -45,8 +45,11 @@ class FevoritesResortController: UIViewController {
         //***** Register delegate and data source with tableview *****//
         resortTableView.dataSource = datasource
         resortTableView.delegate = datasource
-        datasource.delegate = self
-        
+        datasource.unfavHandler = {(rowNumber) in
+            print("hello")
+            self.unfavClicked(rowNumber: rowNumber)
+            
+        }
     }
     override func viewWillLayoutSubviews() {
         Constant.MyClassConstants.runningDeviceWidth = 1024
@@ -77,7 +80,32 @@ class FevoritesResortController: UIViewController {
         }
     }
     override func viewWillAppear(_ animated: Bool) {
+        Helper.showProgressBar(senderView: self)
         
+        UserClient.getFavoriteResorts(UserContext.sharedInstance.accessToken, onSuccess: { (response) in
+            Constant.MyClassConstants.favoritesResortArray.removeAll()
+            for item in [response][0] {
+                if let resortFav = item as? ResortFavorite {
+                    if let resort = resortFav.resort{
+                        let code = resort.resortCode
+                        Constant.MyClassConstants.favoritesResortCodeArray.add(code)
+                        Constant.MyClassConstants.favoritesResortArray.append(resort)
+                    }
+                }
+                
+            }
+            self.setupView()
+            Helper.hideProgressBar(senderView: self)
+        })
+        { (error) in
+            self.setupView()
+            Helper.hideProgressBar(senderView: self)
+        }
+        
+        
+    }
+    
+    fileprivate func setupView() {
         if(UserContext.sharedInstance.accessToken == nil) {
             self.signInView.isHidden = false
             self.resortTableBaseView.isHidden = true
@@ -162,7 +190,8 @@ class FevoritesResortController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(helpClicked), name: NSNotification.Name(rawValue: Constant.notificationNames.showHelp), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(unfavClicked), name: NSNotification.Name(rawValue: Constant.notificationNames.showUnfavorite), object: nil)
-        
+
+    
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -285,61 +314,71 @@ class FevoritesResortController: UIViewController {
     }
     
     //***** method called when resort favorites button clicked to make resort unfavorite *****//
-    func unfavClicked(_ notification:Notification) {
+    func unfavClicked(rowNumber: Int) {
         
         var indexPath:IndexPath
-        indexPath = IndexPath(row:(notification.object as! UIButton).tag,section: 0)
+        indexPath = IndexPath(row:rowNumber,section: 0)
         
-        Constant.MyClassConstants.favoritesResortArray .remove(at: (notification.object as! UIButton).tag)
+        //call API
+        let resortCode = Constant.MyClassConstants.favoritesResortArray[indexPath.row].resortCode
+        UserClient.removeFavoriteResort(UserContext.sharedInstance.accessToken, resortCode: resortCode!, onSuccess: {(response) in
+            Constant.MyClassConstants.favoritesResortArray .remove(at: rowNumber)
+            Constant.MyClassConstants.favoritesResortCodeArray.remove(resortCode)
+            self.resortTableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+            ADBMobile.trackAction(Constant.omnitureEvents.event51, data: nil)
+            self.resortTableView.reloadData()
+        }, onError: {(error) in
+            print(error)
+            
+        })
         
         if(Constant.RunningDevice.deviceIdiom == .pad){
-            
             for marker in Constant.MyClassConstants.googleMarkerArray{
                 Constant.MyClassConstants.googleMarkerArray.remove(at: Constant.MyClassConstants.googleMarkerArray.index(of: marker)!)
                 createMapWithMarkers()
             }
         }
+        //TODO - Jhon: review this code.
+//        let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+//        DispatchQueue.main.asyncAfter(deadline: delayTime) {
+//            
+//            if(Constant.MyClassConstants.favoritesResortArray.count>0){
+//                
+//                indexPath = IndexPath(row:(rowNumber) - 1,section: 0)
+//                
+//                self.resortTableView.reloadSections(IndexSet(integer:0), with: .automatic)
+//                
+//            }
+//            else {
+//                
+//                self.emptyFavoritesMessageView = Helper.displayEmptyFavoritesMessage(requestedView: self.view)
+//                self.backgroundView.frame = CGRect(x: 0, y: 0, width: self.resortTableView.frame.size.width-20, height: UIScreen.main.bounds.height)
+//                self.backgroundView.backgroundColor = UIColor.white
+//                self.view.addSubview(self.backgroundView)
+//                if(UIDevice().userInterfaceIdiom == .pad) {
+//                    
+//                    let messageView = UIView()
+//                    
+//                    messageView.frame = CGRect(x: 20, y: 60, width: self.resortTableView.frame.size.width-20, height: 600)
+//                    
+//                    self.emptyFavoritesMessageView = Helper.displayEmptyFavoritesMessage(requestedView: messageView)
+//                    self.backgroundView.addSubview(self.emptyFavoritesMessageView)
+//                    
+//                    if(self.containerView != nil){
+//                        self.containerView.isHidden = true
+//                    }
+//                    
+//                    
+//                }
+//                else {
+//                    
+//                    self.view.superview?.addSubview(self.emptyFavoritesMessageView)
+//                }
+//            }
+//        }
         
-        self.resortTableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
-        
-        let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-        DispatchQueue.main.asyncAfter(deadline: delayTime) {
-            
-            if(Constant.MyClassConstants.favoritesResortArray.count>0){
-                
-                indexPath = IndexPath(row:((notification.object as! UIButton).tag) - 1,section: 0)
-                
-                self.resortTableView.reloadSections(IndexSet(integer:0), with: .automatic)
-                
-            }
-            else {
-                
-                self.emptyFavoritesMessageView = Helper.displayEmptyFavoritesMessage(requestedView: self.view)
-                self.backgroundView.frame = CGRect(x: 0, y: 0, width: self.resortTableView.frame.size.width-20, height: UIScreen.main.bounds.height)
-                self.backgroundView.backgroundColor = UIColor.white
-                self.view.addSubview(self.backgroundView)
-                if(UIDevice().userInterfaceIdiom == .pad) {
-                    
-                    let messageView = UIView()
-                    
-                    messageView.frame = CGRect(x: 20, y: 60, width: self.resortTableView.frame.size.width-20, height: 600)
-                    
-                    self.emptyFavoritesMessageView = Helper.displayEmptyFavoritesMessage(requestedView: messageView)
-                    self.backgroundView.addSubview(self.emptyFavoritesMessageView)
-                    
-                    if(self.containerView != nil){
-                        self.containerView.isHidden = true
-                    }
-                    
-                    
-                }
-                else {
-                    
-                    self.view.superview?.addSubview(self.emptyFavoritesMessageView)
-                }
-            }
-        }
     }
+
     
     //***** Function is called when done button is clicked in details side menu *****/
     func closeButtonClicked(){

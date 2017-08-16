@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="McE-qN-wIp">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F2073" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="McE-qN-wIp">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -103,8 +103,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IaK-58-J25">
                                 <rect key="frame" x="16" y="65" width="343" height="602"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Booking Complete Congratulations Ralph!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bZz-tw-51O">
-                                        <rect key="frame" x="-24" y="0.0" width="415" height="80"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaction Completed" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bZz-tw-51O">
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="80"/>
                                         <color key="backgroundColor" red="0.4823529411764706" green="0.70980392156862748" blue="0.22352941176470587" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="80" id="Zol-p4-V0g"/>
@@ -239,7 +239,6 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="hwi-Qd-pa7" firstAttribute="centerX" secondItem="IaK-58-J25" secondAttribute="centerX" id="D9C-sh-pjd"/>
-                                    <constraint firstItem="bZz-tw-51O" firstAttribute="centerX" secondItem="IaK-58-J25" secondAttribute="centerX" constant="12" id="Ejh-ch-HAE"/>
                                     <constraint firstItem="FdS-lo-5A3" firstAttribute="leading" secondItem="IaK-58-J25" secondAttribute="leading" id="Eqq-VY-Odn"/>
                                     <constraint firstItem="deu-UG-pVN" firstAttribute="top" secondItem="bZz-tw-51O" secondAttribute="bottom" constant="8" id="FNF-bf-pQs"/>
                                     <constraint firstItem="FdS-lo-5A3" firstAttribute="top" secondItem="deu-UG-pVN" secondAttribute="bottom" constant="-3" id="Gy3-Rn-33k"/>
@@ -248,6 +247,8 @@
                                     <constraint firstItem="yD9-ju-BX6" firstAttribute="top" secondItem="hwi-Qd-pa7" secondAttribute="bottom" constant="32" id="Nvx-nd-I59"/>
                                     <constraint firstItem="hwi-Qd-pa7" firstAttribute="top" secondItem="FdS-lo-5A3" secondAttribute="bottom" constant="56" id="Pgd-gL-yMz"/>
                                     <constraint firstAttribute="trailing" secondItem="deu-UG-pVN" secondAttribute="trailing" id="PzT-px-9pY"/>
+                                    <constraint firstAttribute="trailing" secondItem="bZz-tw-51O" secondAttribute="trailing" id="hth-N3-cVA"/>
+                                    <constraint firstItem="bZz-tw-51O" firstAttribute="leading" secondItem="IaK-58-J25" secondAttribute="leading" id="ofp-8v-Ynt"/>
                                     <constraint firstItem="deu-UG-pVN" firstAttribute="leading" secondItem="IaK-58-J25" secondAttribute="leading" id="wYJ-z5-8Rn"/>
                                     <constraint firstItem="bZz-tw-51O" firstAttribute="top" secondItem="IaK-58-J25" secondAttribute="top" id="ymv-ue-gpg"/>
                                 </constraints>
@@ -271,7 +272,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Pf-D4-mB3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="994" y="115"/>
+            <point key="canvasLocation" x="992.79999999999995" y="114.69265367316342"/>
         </scene>
         <!--MyUpcomingTripIpad-->
         <scene sceneID="Jtf-AE-bX6">

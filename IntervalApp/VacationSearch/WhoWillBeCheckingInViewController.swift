@@ -553,6 +553,13 @@ class WhoWillBeCheckingInViewController: UIViewController {
         })
     }
 }
+    
+    func showCertificateInfo() {
+        let storyboard = UIStoryboard(name: "VacationSearchIphone", bundle: nil)
+        let nav = storyboard.instantiateViewController(withIdentifier: "GestCertificateInfo") as! UINavigationController
+        
+        self.present(nav, animated: true, completion: nil)
+    }
 }
 
 //Extension class starts from here
@@ -756,6 +763,8 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
                     }
                 }
             }
+            
+            cell.infoButton.addTarget(self, action: #selector(showCertificateInfo), for: .touchUpInside)
             return cell
         }
         else if(indexPath.section == 3 || indexPath.section == 5) {

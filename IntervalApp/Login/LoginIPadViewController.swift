@@ -204,9 +204,13 @@ class LoginIPadViewController: UIViewController
     {
         self.view.endEditing(true)
         
-		guard (self.userNameTextField.text?.characters.count > 0) && (self.passwordTextField.text?.characters.count > 0) else {
-			SimpleAlert.alert(self, title:Constant.AlertPromtMessages.loginTitle , message: Constant.AlertMessages.loginMessage)
-			
+        guard (self.userNameTextField.text?.characters.count > 0) else {
+            SimpleAlert.alert(self, title:Constant.AlertPromtMessages.loginTitle , message: Constant.AlertMessages.emptyLoginIdMessage)
+            return
+
+        }
+        guard (self.passwordTextField.text?.characters.count > 0) else {
+			SimpleAlert.alert(self, title:Constant.AlertPromtMessages.loginTitle , message: Constant.AlertMessages.emptyPasswordLoginMessage)
 			return
 		}
 		

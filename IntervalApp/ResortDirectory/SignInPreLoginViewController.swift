@@ -188,7 +188,15 @@ class SignInPreLoginViewController: UIViewController {
             })
         }
         else {
-            SimpleAlert.alert(self, title:Constant.AlertPromtMessages.loginTitle , message: Constant.AlertMessages.loginMessage)
+            guard userIdTF.text?.characters.count > 0 else {
+            SimpleAlert.alert(self, title:Constant.AlertPromtMessages.loginTitle , message: Constant.AlertMessages.emptyLoginIdMessage)
+                return
+            }
+            
+            guard passwordTF.text?.characters.count > 0 else {
+                SimpleAlert.alert(self, title:Constant.AlertPromtMessages.loginTitle , message: Constant.AlertMessages.emptyPasswordLoginMessage)
+                return
+            }
         }
         
     }
