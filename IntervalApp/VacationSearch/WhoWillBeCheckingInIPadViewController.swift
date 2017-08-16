@@ -405,6 +405,13 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             
         })
      }
+    
+    func showCertificateInfo() {
+        let storyboard = UIStoryboard(name: "VacationSearchIphone", bundle: nil)
+        let nav = storyboard.instantiateViewController(withIdentifier: "GestCertificateInfo") as! UINavigationController
+        
+        self.present(nav, animated: true, completion: nil)
+    }
 
 }
 
@@ -582,6 +589,8 @@ extension WhoWillBeCheckingInIPadViewController:UITableViewDataSource {
                     }
                 }
             }
+            
+            cell.infoButton.addTarget(self, action: #selector(showCertificateInfo), for: .touchUpInside)
             return cell
 
         }
