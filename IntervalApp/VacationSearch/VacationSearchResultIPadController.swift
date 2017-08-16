@@ -1102,7 +1102,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
             
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { 
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //***** Return number of rows in section required in tableview *****//
         if(Constant.MyClassConstants.isFromExchange){
             if(section == 0 && exchangeExactMatchResortsArray.count == 0 || section == 1){
