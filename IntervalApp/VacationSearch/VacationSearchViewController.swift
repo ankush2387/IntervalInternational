@@ -1369,9 +1369,10 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                         let activeInterval = self.vacationSearch.bookingWindow.getActiveInterval()
                     
                         // Update active interval
-                        self.vacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                        Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                     
                         // Always show a fresh copy of the Scrolling Calendar
+
                         Helper.showScrollingCalendar(vacationSearch: self.vacationSearch)
                     
                         // Check not available checkIn dates for the active interval
@@ -1452,6 +1453,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     // Check not available checkIn dates for the active interval
                     if (activeInterval.fetchedBefore && !activeInterval.hasCheckInDates()) {
                         Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+
                         self.showNotAvailabilityResults()
                     }
                     
@@ -1540,7 +1542,6 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
         })
     }
-
     
     func showNotAvailabilityResults() {
         DarwinSDK.logger.info("Show the Not Availability Screen.")

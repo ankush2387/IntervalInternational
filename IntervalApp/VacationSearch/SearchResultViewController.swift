@@ -247,10 +247,11 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
     }
     
     
-    func intervalBucketClicked(calendarItem:CalendarItem!){
+    func intervalBucketClicked(calendarItem:CalendarItem!, cell:UICollectionViewCell){
         Helper.hideProgressBar(senderView: self)
         Helper.helperDelegate = self
         
+        myActivityIndicator.hidesWhenStopped = true
         // Resolve the next active interval based on the Calendar interval selected
        // let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
 //        rentalSearchCriteria.checkInDate =
@@ -310,10 +311,6 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
                         }
                         )
                     }else{
-                        myActivityIndicator.stopAnimating()
-                        //cell.alpha = 1.0
-                    }
-                }else{
                     
                     
                     // Execute Search Dates
@@ -357,6 +354,7 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
             }
         }
         
+    }
     }
     
     
@@ -754,7 +752,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
             //searchResultColelctionView.reloadItems(at: [lastIndexPath, currentIndexPath])
             if(Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)!{
                 Helper.showProgressBar(senderView: self)
-                intervalBucketClicked(calendarItem:Constant.MyClassConstants.calendarDatesArray[indexPath.item])
+                intervalBucketClicked(calendarItem:Constant.MyClassConstants.calendarDatesArray[indexPath.item], cell: cell!)
             }else{
                 intervalDateItemClicked(Helper.convertStringToDate(dateString: Constant.MyClassConstants.calendarDatesArray[indexPath.item].checkInDate!, format: Constant.MyClassConstants.dateFormat))
             }
