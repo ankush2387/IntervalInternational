@@ -1372,7 +1372,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                         self.vacationSearch.updateActiveInterval(activeInterval: activeInterval)
                     
                         // Always show a fresh copy of the Scrolling Calendar
-                        self.showScrollingCalendar()
+                        Helper.showScrollingCalendar(vacationSearch: self.vacationSearch)
                     
                         // Check not available checkIn dates for the active interval
                         if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
@@ -1388,7 +1388,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                             sender.isEnabled = true
                             Helper.helperDelegate = self
                         
-                            self.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate)
+                            self.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: response.checkInDates[0])
                         }
                     },
                     onError:{ (error) in
@@ -1420,34 +1420,38 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             
             if Reachability.isConnectedToNetwork() == true {
                 
-                let appSettings = AppSettings()
-                appSettings.searchByBothEnable = false
-                appSettings.checkInSelectorStrategy = CheckInSelectorStrategy.First.rawValue
-                appSettings.collapseBookingIntervalEnable = true
-                
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                Constant.MyClassConstants.appSettings = appDelegate.createAppSetting()
                 
                 let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
-                exchangeSearchCriteria.destination = destinations[0]
-                exchangeSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
+                exchangeSearchCriteria.resorts = resorts
+                exchangeSearchCriteria.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]
                 exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                 exchangeSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
                 exchangeSearchCriteria.searchType = VacationSearchType.Exchange
                 
-                self.vacationSearch = VacationSearch.init(appSettings, exchangeSearchCriteria)
+                Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(Constant.MyClassConstants.appSettings, exchangeSearchCriteria)
                 
                 ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request:vacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
                     sender.isEnabled = true
-                    self.vacationSearch.exchangeSearch?.searchContext.response = response
-                    
-                    // Update active interval
-                    //self.vacationSearch.updateActiveInterval(activeInterval: BookingWindowInterval?)
+                    Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
                     
                     // Get activeInterval (or initial search interval)
-                    let activeInterval = BookingWindowInterval(interval: self.vacationSearch.bookingWindow.getActiveInterval())
+                    let activeInterval = BookingWindowInterval(interval: Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval())
+                    
+                    // Update active interval
+                    Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                     
                     // Check not available checkIn dates for the active interval
                     if (activeInterval.fetchedBefore && !activeInterval.hasCheckInDates()) {
-                        self.showScrollingCalendar()
+                        Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                        self.showNotAvailabilityResults()
+                    }
+                    
+                    
+                    // Check not available checkIn dates for the active interval
+                    if (activeInterval.fetchedBefore && !activeInterval.hasCheckInDates()) {
+                        Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                         self.showNotAvailabilityResults()
                     }
                     
@@ -1536,39 +1540,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
         })
     }
-    
-    
-    func showScrollingCalendar() {
-        DarwinSDK.logger.info("-- Create Calendar based on Booking Window Intervals --")
-        
-        let calendar = self.vacationSearch.createCalendar()
 
-        // Show up the Scrolling Calendar in UI
-        for calendarItem in calendar {
-            Constant.MyClassConstants.totalBucketArray.append(calendarItem)
-            if (calendarItem.isInterval)! {
-                // Is a Interval of Dates
-                if (calendarItem.isIntervalAvailable)! {
-                    // Available for selection or click by the Member
-                    //Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
-                    DarwinSDK.logger.info("\(String(describing: calendarItem.intervalStartDate!)) - \(String(describing: calendarItem.intervalEndDate!)) [Available]")
-                   // Constant.MyClassConstants.bucketDateArray.add(<#T##anObject: Any##Any#>)
-                    
-                } else {
-                    // No available for selection or click by the Member
-                    //Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
-                    DarwinSDK.logger.info("\(String(describing: calendarItem.intervalStartDate!)) - \(String(describing: calendarItem.intervalEndDate!)) [No Available]")
-                }
-            } else {
-                // Is a Single Date
-                DarwinSDK.logger.info("\(String(describing: calendarItem.checkInDate!))")
-                //Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
-                
-            }
-
-        }
-        
-    }
     
     func showNotAvailabilityResults() {
         DarwinSDK.logger.info("Show the Not Availability Screen.")
@@ -1582,7 +1554,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         
         let request = ExchangeSearchAvailabilityRequest()
         request.checkInDate = checkInDate
-        request.resortCodes = activeInterval.resortCodes!
+        //request.resortCodes = activeInterval.resortCodes!
         request.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
         request.travelParty = Constant.MyClassConstants.travelPartyInfo
         
@@ -1618,7 +1590,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                         self.showNearestCheckInDateSelectedMessage()
                                     }
                                     
-                                    self.showScrollingCalendar()
+                                    Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                     
                                     self.showAvailabilityResults()
                                     Helper.hideProgressBar(senderView: self)
