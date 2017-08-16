@@ -609,10 +609,12 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
             
             sender.isEnabled = false
             Helper.showProgressBar(senderView: self)
+
             
-            let storedData = Helper.getLocalStorageWherewanttoGo()
+            let destinations = Helper.getAllDestinationFromLocalStorage()
+            let resorts = Helper.getAllResortsFromLocalStorage()
             
-            if(storedData.count > 0) {
+            if(Constant.MyClassConstants.relinquishmentIdArray.count > 0 && (destinations.count > 0 || resorts.count > 0)){
             let travelPartyInfo = TravelParty()
             travelPartyInfo.adults = Int(self.adultCounter)
             travelPartyInfo.children = Int(self.childCounter)
@@ -621,20 +623,27 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
             
             if Reachability.isConnectedToNetwork() == true {
                 
-                let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                Constant.MyClassConstants.appSettings = appDelegate.createAppSetting()
-                
+                let appSettings = AppSettings()
+                appSettings.searchByBothEnable = false
+                appSettings.checkInSelectorStrategy = CheckInSelectorStrategy.First.rawValue
+                appSettings.collapseBookingIntervalEnable = true
+                //appSettings.VacationSearchCriteria
+    
+        
                 let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
-                
-            
+
                 exchangeSearchCriteria.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]//Constant.MyClassConstants.relinquishmentIdArray as? [String]
                 exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                 exchangeSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
                 exchangeSearchCriteria.searchType = VacationSearchType.Exchange
                 
+
                  self.getSavedDestinationsResorts(storedData:storedData, searchCriteria:exchangeSearchCriteria)
                 
                 Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(Constant.MyClassConstants.appSettings, exchangeSearchCriteria)
+
+                Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(appSettings, exchangeSearchCriteria)
+
                 
                
                 
@@ -659,16 +668,17 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                     
                     let dateFormatter = DateFormatter()
                     dateFormatter.dateFormat = "yyyy-MM-dd"
-                    Helper.helperDelegate = self
                     
                     if (activeInterval.hasCheckInDates()){
-                        //let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.getCheckInDateForInitialSearch()
+                        let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.getCheckInDateForInitialSearch()
                         
                         DarwinSDK.logger.info("Initial Rental Search using request payload:")
-                        //DarwinSDK.logger.info(" CheckInDate = \(initialSearchCheckInDate)")
+                        DarwinSDK.logger.info(" CheckInDate = \(initialSearchCheckInDate)")
                         DarwinSDK.logger.info(" ResortCodes = \(String(describing: activeInterval.resortCodes))")
                         
+
                         Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate:Constant.MyClassConstants.vacationSearchShowDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+
                     }else{
                         let dateFormatter = DateFormatter()
                         dateFormatter.dateFormat = "yyyy-MM-dd"
