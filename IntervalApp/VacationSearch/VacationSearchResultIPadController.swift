@@ -889,8 +889,6 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 deletedRowIndexPath.section = 0
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 5.0, execute: {
-                   /* self.isShowAvailability = false
-                    self.resortDetailTBLView.reloadData()*/
                     
                     UIView.animate(withDuration: 5, delay: 2, options: UIViewAnimationOptions(rawValue: 0), animations: {
                         
@@ -899,16 +897,8 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                         self.resortDetailTBLView.reloadData()
                     }, completion: nil)
                 })
-            
-               /* UIView.animate(withDuration: 15, delay: 4, options: UIViewAnimationOptions(rawValue: 0), animations: {
-                    
-                    self.resortDetailTBLView.deleteRows(at: [deletedRowIndexPath], with: .automatic)
-                    self.isShowAvailability = false
-                    //cell.contentView.frame.size.height = 50.0
-                    self.resortDetailTBLView.reloadData()
-                }, completion: nil)*/
-                
                 return cell
+                
             } else {
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.availabilityCell, for: indexPath) as! SearchTableViewCell
@@ -1030,11 +1020,18 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         
         //***** Return number of sections required in tableview *****//
-        let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
-        return sectionsInSearchResult.count
+        if(Constant.MyClassConstants.isFromExchange) {
+            return 1
+            
+        } else {
+            let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
+            return sectionsInSearchResult.count
+            
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 0
         
         //***** Return number of rows in section required in tableview *****//
         if(Constant.MyClassConstants.isFromExchange){
@@ -1046,12 +1043,13 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                     promotions = bucket.promotions.count
                     //}
                 }
-                /*if self.isShowAvailability == true {
+                if self.isShowAvailability == true {
                     return Constant.MyClassConstants.exchangeInventory[section].buckets.count + promotions + 2
                 } else {
                     return Constant.MyClassConstants.exchangeInventory[section].buckets.count + promotions + 1
-                }*/
-                return Constant.MyClassConstants.exchangeInventory[section].buckets.count + promotions + 1
+                }
+                
+                //return Constant.MyClassConstants.exchangeInventory[section].buckets.count + promotions + 1
                 
             }else{
                 return 1

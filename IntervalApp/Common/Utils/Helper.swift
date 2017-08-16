@@ -1781,6 +1781,36 @@ public class Helper{
         )
     }
     
+    
+    
+    
+    /*
+     * Execute Exchange Search Availability
+     */
+    
+ static func executeExchangeSearchAvailability(activeInterval: BookingWindowInterval!, checkInDate:Date!, senderViewController:UIViewController, vacationSearch:VacationSearch) {
+        
+        let request = ExchangeSearchAvailabilityRequest()
+        request.checkInDate = checkInDate
+        request.resortCodes = activeInterval.resortCodes!
+        request.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
+        request.travelParty = Constant.MyClassConstants.travelPartyInfo
+        
+        ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: request, onSuccess: { (searchAvailabilityResponse) in
+            // Update Exchange inventory
+            Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.inventory = searchAvailabilityResponse
+            
+            // Check if not has availability in the desired check-In date.
+            if ( Constant.MyClassConstants.initialVacationSearch.searchCriteria.checkInDate != checkInDate) {
+                self.showNearestCheckInDateSelectedMessage()
+            }
+            
+            print(searchAvailabilityResponse)
+            senderViewController.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)        }) { (error) in
+                
+        }
+    }
+    
     static func showScrollingCalendar(vacationSearch:VacationSearch) {
         DarwinSDK.logger.info("-- Create Calendar based on Booking Window Intervals --")
         Constant.MyClassConstants.totalBucketArray.removeAll()

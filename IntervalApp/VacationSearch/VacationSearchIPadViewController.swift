@@ -626,12 +626,17 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                 
                 let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
                 
+            
                 exchangeSearchCriteria.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]//Constant.MyClassConstants.relinquishmentIdArray as? [String]
                 exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                 exchangeSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
                 exchangeSearchCriteria.searchType = VacationSearchType.Exchange
                 
+                 self.getSavedDestinationsResorts(storedData:storedData, searchCriteria:exchangeSearchCriteria)
+                
                 Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(Constant.MyClassConstants.appSettings, exchangeSearchCriteria)
+                
+               
                 
                 ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
                     sender.isEnabled = true
@@ -663,12 +668,12 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                         //DarwinSDK.logger.info(" CheckInDate = \(initialSearchCheckInDate)")
                         DarwinSDK.logger.info(" ResortCodes = \(String(describing: activeInterval.resortCodes))")
                         
-                        self.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate:Constant.MyClassConstants.vacationSearchShowDate)
+                        Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate:Constant.MyClassConstants.vacationSearchShowDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     }else{
                         let dateFormatter = DateFormatter()
                         dateFormatter.dateFormat = "yyyy-MM-dd"
                         Helper.hideProgressBar(senderView: self)
-                        self.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate:exchangeSearchCriteria.checkInDate)
+                        Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate:exchangeSearchCriteria.checkInDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     }
                     
                   }, onError: { (error) in
@@ -852,25 +857,6 @@ extension VacationSearchIPadViewController:WereWantToGoTableViewCellDelegate {
         })
     }
     
-    /*
-    * Execute Exchange Search Availability
-    */
-    
-    func executeExchangeSearchAvailability(activeInterval: BookingWindowInterval!, checkInDate:Date!) {
-        
-        let request = ExchangeSearchAvailabilityRequest()
-        request.checkInDate = checkInDate
-        request.resortCodes = activeInterval.resortCodes!
-        request.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
-        request.travelParty = Constant.MyClassConstants.travelPartyInfo
-        
-       
-        ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: request, onSuccess: { (searchAvailabilityResponse) in
-            print(searchAvailabilityResponse)
-            self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)        }) { (error) in
-            
-        }
-    }
     
 }
 
