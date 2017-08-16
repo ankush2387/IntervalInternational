@@ -1105,6 +1105,7 @@ class Constant: NSObject {
         static var buttonCell = "ButtonTableCell"
         static var resortDetailCell = "ImageCell"
         static var resortInventoryCell = "RentalInventory"
+        static var exchangeInventoryCell = "ExchangeInventory"
         static var availabilityCell = "AvailbilityCell"
         static var novailabilityCell = "noAvailbilityCell"
     }

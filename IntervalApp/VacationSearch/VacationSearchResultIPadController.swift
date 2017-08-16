@@ -721,8 +721,19 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
                     DarwinSDK.logger.info("\(String(describing: Helper.resolveResortInfo(resort: inventoryItem)))")
                     return cell
                 } else {
-                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.resortDetailCell, for: indexPath) as! AvailabilityCollectionViewCell
+                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.exchangeInventoryCell, for: indexPath) as! RentalInventoryCVCell
+                    var invetoryItem = Resort()
+                    print(invetoryItem)
+                    if(collectionView.superview?.superview?.tag == 0){
+                        invetoryItem = exchangeExactMatchResortsArray.[collectionView.tag].inventory
+                    }else{
+                        invetoryItem = surroundingMatchResortsArray[collectionView.tag]
+                    }
                     
+                    // for unit in (invetoryItem.inventory?.units)! {
+                    let unit = (invetoryItem.inventory?.units[indexPath.item])!
+                    DarwinSDK.logger.info("\(String(describing: Helper.resolveUnitInfo(unit: unit)))")
+
                     return cell
                     
                 }

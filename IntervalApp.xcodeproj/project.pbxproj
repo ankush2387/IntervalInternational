@@ -146,6 +146,7 @@
 		3A9983E11DE7331C00CE44A5 /* Confirmation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A9983E01DE7331C00CE44A5 /* Confirmation.storyboard */; };
 		3AA6BC251EA8BD1A00B5DD7F /* CheckCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AA6BC241EA8BD1A00B5DD7F /* CheckCollectionCell.xib */; };
 		3AA6BC271EA91CDB00B5DD7F /* HeaderCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AA6BC261EA91CDB00B5DD7F /* HeaderCollectionCell.xib */; };
+		3AA88B541F44DAD8001ADC4C /* ExchangeInventoryCVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA88B531F44DAD8001ADC4C /* ExchangeInventoryCVCell.swift */; };
 		3AAA5A261C720F4500A5EA6D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAA59F31C720F4500A5EA6D /* AppDelegate.swift */; };
 		3AAA5A271C720F4500A5EA6D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AAA59F41C720F4500A5EA6D /* Assets.xcassets */; };
 		3AAA5A291C720F4500A5EA6D /* UserContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAA59F81C720F4500A5EA6D /* UserContext.swift */; };
@@ -447,6 +448,7 @@
 		3A9983E01DE7331C00CE44A5 /* Confirmation.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Confirmation.storyboard; sourceTree = "<group>"; };
 		3AA6BC241EA8BD1A00B5DD7F /* CheckCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CheckCollectionCell.xib; sourceTree = "<group>"; };
 		3AA6BC261EA91CDB00B5DD7F /* HeaderCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeaderCollectionCell.xib; sourceTree = "<group>"; };
+		3AA88B531F44DAD8001ADC4C /* ExchangeInventoryCVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExchangeInventoryCVCell.swift; sourceTree = "<group>"; };
 		3AAA59F31C720F4500A5EA6D /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3AAA59F41C720F4500A5EA6D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3AAA59F81C720F4500A5EA6D /* UserContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserContext.swift; sourceTree = "<group>"; };
@@ -800,6 +802,7 @@
 		3A892F2C1CD3902F00AE6F45 /* CustomCells */ = {
 			isa = PBXGroup;
 			children = (
+				3AA88B531F44DAD8001ADC4C /* ExchangeInventoryCVCell.swift */,
 				3AD822C91F3A046A00CD68C6 /* AvailabilityCollectionViewCell.swift */,
 				3A5BDCB21F34DD1800FDA672 /* FilterCell.swift */,
 				3A892F361CD3902F00AE6F45 /* SearchResultCollectionCell.swift */,
@@ -1543,6 +1546,7 @@
 				DC7EF5121D709F8800E9E360 /* ResortDirectoryViewController.swift in Sources */,
 				DC7EF5131D709F8800E9E360 /* ResortFavoritesTableViewCell.swift in Sources */,
 				3A2089DC1E2525C1001AFFD2 /* RelinquishmentSelectionViewController.swift in Sources */,
+				3AA88B541F44DAD8001ADC4C /* ExchangeInventoryCVCell.swift in Sources */,
 				E9C5EF381F19555B00E658DA /* UIViewControllerExtension.swift in Sources */,
 				3A59DE181F015E5F005280D3 /* SortingViewController.swift in Sources */,
 				3A0B25D81CD241790080BF3F /* PolicyListTBLCell.swift in Sources */,
