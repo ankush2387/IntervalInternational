@@ -649,6 +649,8 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                     // Update active interval
                     Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                     
+                    Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                    
                     // Check not available checkIn dates for the active interval
                     if (activeInterval.fetchedBefore && !activeInterval.hasCheckInDates()) {
                         Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
