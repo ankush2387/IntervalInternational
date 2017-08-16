@@ -1369,10 +1369,10 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                         let activeInterval = self.vacationSearch.bookingWindow.getActiveInterval()
                     
                         // Update active interval
-                        self.vacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                        Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                     
                         // Always show a fresh copy of the Scrolling Calendar
-                        self.showScrollingCalendar()
+                        Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     
                         // Check not available checkIn dates for the active interval
                         if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
@@ -1447,7 +1447,8 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     
                     // Check not available checkIn dates for the active interval
                     if (activeInterval.fetchedBefore && !activeInterval.hasCheckInDates()) {
-                        self.showScrollingCalendar()
+                        Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                        
                         self.showNotAvailabilityResults()
                     }
                     
@@ -1538,37 +1539,6 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
     }
     
     
-    func showScrollingCalendar() {
-        DarwinSDK.logger.info("-- Create Calendar based on Booking Window Intervals --")
-        
-        let calendar = self.vacationSearch.createCalendar()
-
-        // Show up the Scrolling Calendar in UI
-        for calendarItem in calendar {
-            Constant.MyClassConstants.totalBucketArray.append(calendarItem)
-            if (calendarItem.isInterval)! {
-                // Is a Interval of Dates
-                if (calendarItem.isIntervalAvailable)! {
-                    // Available for selection or click by the Member
-                    //Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
-                    DarwinSDK.logger.info("\(String(describing: calendarItem.intervalStartDate!)) - \(String(describing: calendarItem.intervalEndDate!)) [Available]")
-                   // Constant.MyClassConstants.bucketDateArray.add(<#T##anObject: Any##Any#>)
-                    
-                } else {
-                    // No available for selection or click by the Member
-                    //Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
-                    DarwinSDK.logger.info("\(String(describing: calendarItem.intervalStartDate!)) - \(String(describing: calendarItem.intervalEndDate!)) [No Available]")
-                }
-            } else {
-                // Is a Single Date
-                DarwinSDK.logger.info("\(String(describing: calendarItem.checkInDate!))")
-                //Constant.MyClassConstants.calendarDatesArray.append(calendarItem)
-                
-            }
-
-        }
-        
-    }
     
     func showNotAvailabilityResults() {
         DarwinSDK.logger.info("Show the Not Availability Screen.")
@@ -1618,7 +1588,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                         self.showNearestCheckInDateSelectedMessage()
                                     }
                                     
-                                    self.showScrollingCalendar()
+                                    //self.showScrollingCalendar()
                                     
                                     self.showAvailabilityResults()
                                     Helper.hideProgressBar(senderView: self)
