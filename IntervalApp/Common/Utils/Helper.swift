@@ -1805,6 +1805,8 @@ public class Helper{
                 self.showNearestCheckInDateSelectedMessage()
             }
             
+            showAvailabilityResults(vacationSearch:vacationSearch)
+            
             print(searchAvailabilityResponse)
             senderViewController.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)        }) { (error) in
                 

@@ -1018,14 +1018,9 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         
         //***** Return number of sections required in tableview *****//
-        if(Constant.MyClassConstants.isFromExchange) {
-            return 1
-            
-        } else {
             let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
             return sectionsInSearchResult.count
             
-        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
