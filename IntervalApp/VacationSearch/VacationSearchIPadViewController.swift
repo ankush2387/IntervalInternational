@@ -658,6 +658,8 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                         self.showNotAvailabilityResults()
                     }
                     
+                    Helper.hideProgressBar(senderView: self)
+                    
                     DarwinSDK.logger.info("Auto call to Search Availability")
                     
                     let dateFormatter = DateFormatter()

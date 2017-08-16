@@ -39,6 +39,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     var selectedRow = 0
     var exactMatchResortsArray = [Resort]()
     var surroundingMatchResortsArray = [Resort]()
+    var exchangeExactMatchResortsArray = [ExchangeAvailability]()
     var dateCellSelectionColor = Constant.CommonColor.blueColor
     var myActivityIndicator = UIActivityIndicatorView()
     
@@ -143,14 +144,26 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     
     func createSections(){
         let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
-        if(sections.count > 0){
-            let resortsExact = sections[0].item?.rentalInventory
-            exactMatchResortsArray = resortsExact!
-            if(sections.count > 1){
-                let resortsSurrounding = sections[1].item?.rentalInventory
-                surroundingMatchResortsArray = resortsSurrounding!
+            if Constant.MyClassConstants.isFromExchange {
+                if(sections.count > 0) {
+                    let resortsExact = sections[0].item?.exchangeInventory
+                    exchangeExactMatchResortsArray = resortsExact!
+                    if(sections.count > 1){
+                        let resortsSurrounding = sections[1].item?.rentalInventory
+                        surroundingMatchResortsArray = resortsSurrounding!
+                    }
+                }
+           
+            } else {
+                let resortsExact = sections[0].item?.rentalInventory
+                exactMatchResortsArray = resortsExact!
+                if(sections.count > 1){
+                    let resortsSurrounding = sections[1].item?.rentalInventory
+                    surroundingMatchResortsArray = resortsSurrounding!
+                }
             }
-        }
+            
+            
     }
     
     override func viewDidLoad() {
@@ -507,7 +520,12 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
                 return 1
             }else{
                 if(collectionView.superview?.superview?.tag == 0){
-                    return (exactMatchResortsArray[collectionView.tag].inventory?.units.count)!
+                    if(Constant.MyClassConstants.isFromExchange){
+                        return (exchangeExactMatchResortsArray[collectionView.tag].inventory?.buckets.count)!
+                    }else{
+                        return (exactMatchResortsArray[collectionView.tag].inventory?.units.count)!
+                    }
+                    
                 }else{
                     return (surroundingMatchResortsArray[collectionView.tag].inventory?.units.count)!
                 }
@@ -558,46 +576,48 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
                 return cell
             }
         }else{
-            if(indexPath.section == 0){
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.resortDetailCell, for: indexPath) as! AvailabilityCollectionViewCell
-                for layer in cell.viewGradient.layer.sublayers!{
-                    if(layer.isKind(of: CAGradientLayer.self)) {
-                        layer.removeFromSuperlayer()
+            
+            if !Constant.MyClassConstants.isFromExchange {
+                if(indexPath.section == 0){
+                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.resortDetailCell, for: indexPath) as! AvailabilityCollectionViewCell
+                    for layer in cell.viewGradient.layer.sublayers!{
+                        if(layer.isKind(of: CAGradientLayer.self)) {
+                            layer.removeFromSuperlayer()
+                        }
                     }
-                }
-                var inventoryItem = Resort()
-                if(collectionView.superview?.superview?.tag == 0){
-                    inventoryItem = exactMatchResortsArray[collectionView.tag]
-                }else{
-                    inventoryItem = surroundingMatchResortsArray[collectionView.tag]
-                }
-                var url = URL(string: "")
-                for imgStr in inventoryItem.images {
-                    if(imgStr.size!.caseInsensitiveCompare(Constant.MyClassConstants.imageSize) == ComparisonResult.orderedSame) {
-                        url = URL(string: imgStr.url!)!
-                        break
+                    var inventoryItem = Resort()
+                    if(collectionView.superview?.superview?.tag == 0){
+                        inventoryItem = exactMatchResortsArray[collectionView.tag]
+                    }else{
+                        inventoryItem = surroundingMatchResortsArray[collectionView.tag]
                     }
-                }
-                Helper.addLinearGradientToView(view: cell.viewGradient, colour: UIColor.white, transparntToOpaque: true, vertical: false)
-                cell.resortImageView?.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
-                cell.resortName.text = inventoryItem.resortName
-                cell.resortAddress.text = inventoryItem.address?.cityName
-                cell.resortCode.text = inventoryItem.resortCode
-                let tierImageName = Helper.getTierImageName(tier: inventoryItem.tier!.uppercased())
-                cell.tierImage.image = UIImage(named: tierImageName)
-                DarwinSDK.logger.info("\(String(describing: Helper.resolveResortInfo(resort: inventoryItem)))")
-                return cell
-            }else{
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.resortInventoryCell, for: indexPath) as! RentalInventoryCVCell
-                var invetoryItem = Resort()
-                print(invetoryItem)
-                if(collectionView.superview?.superview?.tag == 0){
-                    invetoryItem = exactMatchResortsArray[collectionView.tag]
+                    var url = URL(string: "")
+                    for imgStr in inventoryItem.images {
+                        if(imgStr.size!.caseInsensitiveCompare(Constant.MyClassConstants.imageSize) == ComparisonResult.orderedSame) {
+                            url = URL(string: imgStr.url!)!
+                            break
+                        }
+                    }
+                    Helper.addLinearGradientToView(view: cell.viewGradient, colour: UIColor.white, transparntToOpaque: true, vertical: false)
+                    cell.resortImageView?.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+                    cell.resortName.text = inventoryItem.resortName
+                    cell.resortAddress.text = inventoryItem.address?.cityName
+                    cell.resortCode.text = inventoryItem.resortCode
+                    let tierImageName = Helper.getTierImageName(tier: inventoryItem.tier!.uppercased())
+                    cell.tierImage.image = UIImage(named: tierImageName)
+                    DarwinSDK.logger.info("\(String(describing: Helper.resolveResortInfo(resort: inventoryItem)))")
+                    return cell
                 }else{
-                    invetoryItem = surroundingMatchResortsArray[collectionView.tag]
-                }
-               // for unit in (invetoryItem.inventory?.units)! {
-                let unit = (invetoryItem.inventory?.units[indexPath.item])!
+                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.resortInventoryCell, for: indexPath) as! RentalInventoryCVCell
+                    var invetoryItem = Resort()
+                    print(invetoryItem)
+                    if(collectionView.superview?.superview?.tag == 0){
+                        invetoryItem = exactMatchResortsArray[collectionView.tag]
+                    }else{
+                        invetoryItem = surroundingMatchResortsArray[collectionView.tag]
+                    }
+                    // for unit in (invetoryItem.inventory?.units)! {
+                    let unit = (invetoryItem.inventory?.units[indexPath.item])!
                     DarwinSDK.logger.info("\(String(describing: Helper.resolveUnitInfo(unit: unit)))")
                     
                     // price
@@ -619,7 +639,7 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
                     }
                     
                     cell.kitchenType.text = kitchenDetails
-                                        
+                    
                     var totalSleepCapacity = String()
                     
                     if unit.publicSleepCapacity > 0 {
@@ -633,35 +653,72 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
                         cell.sleeps.text =  totalSleepCapacity + String(unit.privateSleepCapacity) + Constant.CommonLocalisedString.privateString
                         
                     }
-                
-                
-                let promotions = invetoryItem.inventory?.units[indexPath.item].promotions
-                if (promotions?.count)! > 0 {
-                    for view in cell.promotionsView.subviews {
-                        view.removeFromSuperview()
+                    
+                    
+                    let promotions = invetoryItem.inventory?.units[indexPath.item].promotions
+                    if (promotions?.count)! > 0 {
+                        for view in cell.promotionsView.subviews {
+                            view.removeFromSuperview()
+                        }
+                        
+                        cellHeight = 55 + (14*(promotions?.count)!)
+                        var yPosition: CGFloat = 0
+                        for promotion in promotions! {
+                            let imgV = UIImageView(frame: CGRect(x:10, y: yPosition, width: 15, height: 15))
+                            imgV.image = UIImage(named: Constant.assetImageNames.promoImage)
+                            let promLabel = UILabel(frame: CGRect(x:30, y: yPosition, width: cell.promotionsView.bounds.width, height: 15))
+                            promLabel.text = promotion.offerName
+                            promLabel.adjustsFontSizeToFitWidth = true
+                            promLabel.minimumScaleFactor = 0.7
+                            promLabel.numberOfLines = 0
+                            promLabel.textColor = UIColor(red: 0, green: 119/255, blue: 190/255, alpha: 1)
+                            promLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 18)
+                            cell.promotionsView.addSubview(imgV)
+                            cell.promotionsView.addSubview(promLabel)
+                            yPosition += 15
+                        }
                     }
                     
-                    cellHeight = 55 + (14*(promotions?.count)!)
-                    var yPosition: CGFloat = 0
-                    for promotion in promotions! {
-                        let imgV = UIImageView(frame: CGRect(x:10, y: yPosition, width: 15, height: 15))
-                        imgV.image = UIImage(named: Constant.assetImageNames.promoImage)
-                        let promLabel = UILabel(frame: CGRect(x:30, y: yPosition, width: cell.promotionsView.bounds.width, height: 15))
-                        promLabel.text = promotion.offerName
-                        promLabel.adjustsFontSizeToFitWidth = true
-                        promLabel.minimumScaleFactor = 0.7
-                        promLabel.numberOfLines = 0
-                        promLabel.textColor = UIColor(red: 0, green: 119/255, blue: 190/255, alpha: 1)
-                        promLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 18)
-                        cell.promotionsView.addSubview(imgV)
-                        cell.promotionsView.addSubview(promLabel)
-                        yPosition += 15
-                    }
+                    return cell
                 }
+            } else {
                 
-                return cell
+                if(indexPath.section == 0){
+                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.resortDetailCell, for: indexPath) as! AvailabilityCollectionViewCell
+                    for layer in cell.viewGradient.layer.sublayers!{
+                        if(layer.isKind(of: CAGradientLayer.self)) {
+                            layer.removeFromSuperlayer()
+                        }
+                    }
+                    var inventoryItem = Resort()
+                    if(collectionView.superview?.superview?.tag == 0){
+                        inventoryItem = exchangeExactMatchResortsArray[collectionView.tag].resort!
+                    }else{
+                        inventoryItem = surroundingMatchResortsArray[collectionView.tag]
+                    }
+                    var url = URL(string: "")
+                    for imgStr in inventoryItem.images {
+                        if(imgStr.size!.caseInsensitiveCompare(Constant.MyClassConstants.imageSize) == ComparisonResult.orderedSame) {
+                            url = URL(string: imgStr.url!)!
+                            break
+                        }
+                    }
+                    Helper.addLinearGradientToView(view: cell.viewGradient, colour: UIColor.white, transparntToOpaque: true, vertical: false)
+                    cell.resortImageView?.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+                    cell.resortName.text = inventoryItem.resortName
+                    cell.resortAddress.text = inventoryItem.address?.cityName
+                    cell.resortCode.text = inventoryItem.resortCode
+                    let tierImageName = Helper.getTierImageName(tier: inventoryItem.tier!.uppercased())
+                    cell.tierImage.image = UIImage(named: tierImageName)
+                    DarwinSDK.logger.info("\(String(describing: Helper.resolveResortInfo(resort: inventoryItem)))")
+                    return cell
+                } else {
+                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.resortDetailCell, for: indexPath) as! AvailabilityCollectionViewCell
+                    
+                    return cell
+                    
+                }
             }
-            
         }
     }
 }
@@ -678,11 +735,25 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
             } else {
                 if self.isShowAvailability == true {
                     let index = indexPath.row - 1
-                    let totalUnits = self.exactMatchResortsArray[index].inventory?.units.count
-                    return CGFloat(totalUnits!*110 + 320 + cellHeight)
+                    if(Constant.MyClassConstants.isFromExchange){
+                        let totalUnits = self.exchangeExactMatchResortsArray[index].inventory?.buckets.count
+                        return CGFloat(totalUnits!*110 + 320 + cellHeight)
+                    }else{
+                        let totalUnits = self.exactMatchResortsArray[index].inventory?.units.count
+                        return CGFloat(totalUnits!*110 + 320 + cellHeight)
+                    }
+                    
                 } else {
-                    let totalUnits = self.exactMatchResortsArray[indexPath.row].inventory?.units.count
-                    return CGFloat(totalUnits!*110 + 320 + cellHeight)
+                    
+                    if(Constant.MyClassConstants.isFromExchange){
+                        let totalUnits = self.exchangeExactMatchResortsArray[indexPath.row].inventory?.buckets.count
+                        return CGFloat(totalUnits!*110 + 320 + cellHeight)
+
+                    }else{
+                        let totalUnits = self.exactMatchResortsArray[indexPath.row].inventory?.units.count
+                        return CGFloat(totalUnits!*110 + 320 + cellHeight)
+
+                    }
                     
                 }
             }
@@ -878,7 +949,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         //***** configuring prototype cell for UpComingtrip resort details *****//
-        if(!Constant.MyClassConstants.isFromExchange) {
+        if(!Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.isFromExchange) {
             
             if indexPath.row == 0 && indexPath.section == 0 && self.isShowAvailability == true {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.novailabilityCell, for: indexPath)
@@ -971,20 +1042,20 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
             }else{
                 
                 var promotions = 0
-                for bucket in Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets{
+                for bucket in (exchangeExactMatchResortsArray[indexPath.section].inventory?.buckets)!{
                     //for (index,promotion) in bucket.promotions.enumerated(){
                     promotions = bucket.promotions.count
                     //}
                 }
-                if(promotions != 0 && indexPath.row > Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets.count){
+                if(promotions != 0 && indexPath.row > (exchangeExactMatchResortsArray[indexPath.section].inventory?.buckets.count)!){
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.promotionsCell, for: indexPath) as! PromotionsCell
                     
                     var promotions = 0
-                    for bucket in Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets{
+                    for bucket in (exchangeExactMatchResortsArray[indexPath.section].inventory?.buckets)!{
                         for (index,promotion) in bucket.promotions.enumerated(){
-                            if (index == indexPath.row - Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets.count){
-                                var promotionsString = Constant.MyClassConstants.htmlHeader.appending((Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[indexPath.row - 1].promotions[0].offerContentFragment)!)
-                                for promotion in Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[indexPath.row - 1].promotions{
+                            if (index == indexPath.row - (exchangeExactMatchResortsArray[indexPath.section].inventory?.buckets.count)!){
+                                var promotionsString = Constant.MyClassConstants.htmlHeader.appending((exchangeExactMatchResortsArray[indexPath.section].inventory?.buckets[indexPath.row - 1].promotions[0].offerContentFragment)!)
+                                for promotion in (exchangeExactMatchResortsArray[indexPath.section].inventory?.buckets[indexPath.row - 1].promotions)!{
                                     promotionsString = promotion.offerContentFragment!
                                     promotionsString = promotionsString.appending(Constant.MyClassConstants.htmlFooter)
                                     cell.promotionWebView.loadHTMLString(promotionsString, baseURL: Bundle.main.bundleURL)
@@ -1024,28 +1095,20 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+       // return 0
         
         //***** Return number of rows in section required in tableview *****//
         if(Constant.MyClassConstants.isFromExchange){
-            if(Constant.MyClassConstants.exchangeInventory[section].buckets.count > 0){
-                self.unitSizeArray = [Constant.MyClassConstants.exchangeInventory[section].buckets[0].unit!]
-                var promotions = 0
-                for bucket in Constant.MyClassConstants.exchangeInventory[section].buckets{
-                    //for (index,promotion) in bucket.promotions.enumerated(){
-                    promotions = bucket.promotions.count
-                    //}
-                }
-                if self.isShowAvailability == true {
-                    return Constant.MyClassConstants.exchangeInventory[section].buckets.count + promotions + 2
-                } else {
-                    return Constant.MyClassConstants.exchangeInventory[section].buckets.count + promotions + 1
-                }
-                
-                //return Constant.MyClassConstants.exchangeInventory[section].buckets.count + promotions + 1
-                
+            if(section == 0 && exchangeExactMatchResortsArray.count == 0 || section == 1){
+                return surroundingMatchResortsArray.count
             }else{
-                return 1
+                if self.isShowAvailability == true && section == 0 {
+                    return exchangeExactMatchResortsArray.count + 1
+                    
+                } else {
+                    return exchangeExactMatchResortsArray.count
+                }
+                
             }
         }else{
             if(section == 0 && exactMatchResortsArray.count == 0 || section == 1){
