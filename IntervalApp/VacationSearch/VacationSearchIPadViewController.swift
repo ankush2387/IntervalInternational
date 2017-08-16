@@ -641,10 +641,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                 
                 ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
                     sender.isEnabled = true
-                    Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
-                    
-                   //Constant.MyClassConstants.initialVacationSearch.bookingWindow.currentInterval?.checkInDates = response.checkInDates.map { $0.string!.dateFromShortFormat() }
-                    
+                    Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response  
 
                     // Get activeInterval (or initial search interval)
                     let activeInterval = BookingWindowInterval(interval: Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval())

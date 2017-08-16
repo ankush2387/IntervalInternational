@@ -77,6 +77,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                     resort.resortCode = resorts.resortCode
                     Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.resorts.append(resort)
                 }
+                 Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(resortList[0].resortName) + \(resortList.count - 1)  + more"
                 
             }
             
@@ -123,9 +124,15 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
             let vacationSearchForSorting = Constant.MyClassConstants.initialVacationSearch
             
             vacationSearchForSorting.sortType = AvailabilitySortType(rawValue: selectedvalue)!
-            Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: vacationSearchForSorting.bookingWindow.currentInterval)
+            let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
+            
+            Helper.showAvailabilityResults(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+            
+            let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
+            Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
             Constant.MyClassConstants.isFromSorting = true
             self.dismiss(animated: true, completion: nil)
+            self.createSections()
             self.resortDetailTBLView.reloadData()
         }
     }
@@ -363,6 +370,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
         
         let firstVisibleIndexPath = resortDetailTBLView.indexPathsForVisibleRows?.first
         let indexPath = IndexPath(item: collectionviewSelectedIndex, section: 0)
+        print("---------->>>>\(collectionviewSelectedIndex)")
         if(firstVisibleIndexPath?.section == 1){
             dateCellSelectionColor = Constant.CommonColor.greenColor
         }else{
@@ -370,7 +378,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
         }
         
         if(indexPath.row <= Constant.MyClassConstants.calendarDatesArray.count){
-            searchedDateCollectionView.reloadItems(at: [indexPath])
+            //searchedDateCollectionView.reloadItems(at: [indexPath])
         }
     }
     
@@ -1024,7 +1032,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        //return 0
         
         //***** Return number of rows in section required in tableview *****//
         if(Constant.MyClassConstants.isFromExchange){
@@ -1074,6 +1082,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
         let headerButton = UIButton(frame: CGRect(x: 20, y: 0, width: self.resortDetailTBLView.frame.width - 40, height: 40))
         headerButton.addTarget(self, action: #selector(VacationSearchResultIPadController.filterByNameButtonPressed(_:)), for: .touchUpInside)
         let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
+        if(sectionsInSearchResult.count > 0){
         if(Constant.MyClassConstants.isFromSorting){
             if(sectionsInSearchResult[section].exactMatch)!{
                 headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
@@ -1084,18 +1093,24 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
             }
         }else{
         if(sectionsInSearchResult[section].hasItem() && sectionsInSearchResult[section].destination == nil){
-           
-            if(sectionsInSearchResult[section].item!.rentalInventory.count > 0){
-                headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing:sectionsInSearchResult[section].item!.rentalInventory[0].resortName!))"
-                headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
-            }
+            if(sectionsInSearchResult[section].exactMatch)!{
+                headerLabel.text  = "\(Constant.CommonLocalisedString.exactString) \( Constant.MyClassConstants.vacationSearchResultHeaderLabel)"
+                
                 headerView.backgroundColor = IUIKColorPalette.primary1.color
+                
+            }else{
+                
+                    headerLabel.text = Constant.CommonLocalisedString.surroundingString + "\( Constant.MyClassConstants.vacationSearchResultHeaderLabel)"
+                    headerView.backgroundColor = Constant.CommonColor.headerGreenColor
+            }
         }else{
             if(sectionsInSearchResult[section].exactMatch)!{
                 
                 if sectionsInSearchResult[section].destination != nil {
                     
-                   headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
+                   //headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing: sectionsInSearchResult[section].destination!.destinationName!))"
+                    print("-------------->>>>>>\(Constant.CommonLocalisedString.exactString) \( Constant.MyClassConstants.vacationSearchResultHeaderLabel)")
+                    headerLabel.text  = "\(Constant.CommonLocalisedString.exactString) \( Constant.MyClassConstants.vacationSearchResultHeaderLabel)"
                     
                 }
                 headerView.backgroundColor = IUIKColorPalette.primary1.color
@@ -1110,6 +1125,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
             }
         }
     }
+        }
     
         headerLabel.textColor = UIColor.white
         headerView.addSubview(headerLabel)
@@ -1136,7 +1152,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
         if(section == Constant.MyClassConstants.resortsArray.count){
             return 0
         }
-        return 20
+        return 0
     }
 }
 
