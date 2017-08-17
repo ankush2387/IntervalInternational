@@ -1115,44 +1115,52 @@ extension SearchResultViewController:UICollectionViewDataSource {
         let headerButton = UIButton(frame: CGRect(x: 20, y: 0, width: self.searchResultTableView.frame.width - 40, height: 40))
         headerButton.addTarget(self, action: #selector(SearchResultViewController.filterByNameButtonPressed(_:)), for: .touchUpInside)
         let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
-        
-        if(Constant.MyClassConstants.isFromSorting){
-            if(sectionsInSearchResult[section].exactMatch)!{
-                headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
-                headerView.backgroundColor = IUIKColorPalette.primary1.color
-            }else{
-                headerLabel.text = Constant.CommonLocalisedString.surroundingString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
-                headerView.backgroundColor = Constant.CommonColor.headerGreenColor
-            }
-        }else{
+        if(sectionsInSearchResult.count > 0){
             
-            if(sectionsInSearchResult[section].hasItem() && sectionsInSearchResult[section].destination == nil){
-                
-                if(sectionsInSearchResult[section].item!.rentalInventory.count > 0){
-                    headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing:sectionsInSearchResult[section].item!.rentalInventory[0].resortName!))"
-                    headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
-                }
-                headerView.backgroundColor = IUIKColorPalette.primary1.color
-            }else{
+            if(Constant.MyClassConstants.isFromSorting){
                 if(sectionsInSearchResult[section].exactMatch)!{
+                    headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
+                    headerView.backgroundColor = IUIKColorPalette.primary1.color
+                }else{
+                    headerLabel.text = Constant.CommonLocalisedString.surroundingString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
+                    headerView.backgroundColor = Constant.CommonColor.headerGreenColor
+                }
+            }else{
+                
+                if(sectionsInSearchResult[section].hasItem() && sectionsInSearchResult[section].destination == nil){
                     
-                    if sectionsInSearchResult[section].destination != nil {
-                        
+                    if(sectionsInSearchResult[section].item!.rentalInventory.count > 0){
+                        headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing:sectionsInSearchResult[section].item!.rentalInventory[0].resortName!))"
                         headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
+                    }else if(sectionsInSearchResult[section].item!.exchangeInventory.count > 0){
                         
+                        headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing:sectionsInSearchResult[section].item!.exchangeInventory[0].resort?.resortName!))"
+                        headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
                     }
                     headerView.backgroundColor = IUIKColorPalette.primary1.color
-                    
                 }else{
-                    
-                    if sectionsInSearchResult[section].destination != nil {
-                        headerLabel.text = Constant.CommonLocalisedString.surroundingString + "\(String(describing: Helper.resolveDestinationInfo(destination: sectionsInSearchResult[section].destination!)))"
-                        headerView.backgroundColor = Constant.CommonColor.headerGreenColor
+                    if(sectionsInSearchResult[section].exactMatch)!{
                         
+                        if sectionsInSearchResult[section].destination != nil {
+                            
+                            print("-------------->>>>>>\(Constant.CommonLocalisedString.exactString) \( Constant.MyClassConstants.vacationSearchResultHeaderLabel)")
+                            headerLabel.text  = "\(Constant.CommonLocalisedString.exactString) \( Constant.MyClassConstants.vacationSearchResultHeaderLabel)"
+                            
+                        }
+                        headerView.backgroundColor = IUIKColorPalette.primary1.color
+                        
+                    }else{
+                        
+                        if sectionsInSearchResult[section].destination != nil {
+                            headerLabel.text = Constant.CommonLocalisedString.surroundingString + "\(String(describing: Helper.resolveDestinationInfo(destination: sectionsInSearchResult[section].destination!)))"
+                            headerView.backgroundColor = Constant.CommonColor.headerGreenColor
+                            
+                        }
                     }
                 }
+                
             }
-            
+
         }
         
         headerLabel.textColor = UIColor.white
