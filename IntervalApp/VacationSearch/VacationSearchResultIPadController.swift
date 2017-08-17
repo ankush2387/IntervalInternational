@@ -28,7 +28,6 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     var loadFirst = true
     var enablePreviousMore = true
     var enableNextMore = true
-    var isShowAvailability = true
     var alertView = UIView()
     let headerVw = UIView()
     let titleLabel = UILabel()
@@ -611,9 +610,9 @@ extension VacationSearchResultIPadController:UICollectionViewDelegateFlowLayout 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if(collectionView.tag == -1){
             if (Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)!{
-                return CGSize(width: 160.0, height: 80.0)
+                return CGSize(width: 160.0, height: 90.0)
             }else{
-                return CGSize(width: 80.0, height: 80.0)
+                return CGSize(width: 80.0, height: 90.0)
             }
         }else{
             if(indexPath.section == 0){
@@ -932,10 +931,10 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if(indexPath.section == 0){
-            if indexPath.row == 0 && self.isShowAvailability == true {
+            if indexPath.row == 0 && Constant.MyClassConstants.isShowAvailability == true {
                 return 110
             } else {
-                if self.isShowAvailability == true {
+                if Constant.MyClassConstants.isShowAvailability == true {
                     let index = indexPath.row - 1
                     if(Constant.MyClassConstants.isFromExchange){
                         let totalUnits = self.exchangeExactMatchResortsArray[index].inventory?.buckets.count
@@ -1153,7 +1152,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
         //***** configuring prototype cell for UpComingtrip resort details *****//
         if(!Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.isFromExchange) {
             
-            if indexPath.row == 0 && indexPath.section == 0 && self.isShowAvailability == true {
+            if indexPath.row == 0 && indexPath.section == 0 && Constant.MyClassConstants.isShowAvailability == true {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.novailabilityCell, for: indexPath)
                 var deletedRowIndexPath = indexPath
                 deletedRowIndexPath.row = 0
@@ -1163,7 +1162,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                     
                     UIView.animate(withDuration: 5, delay: 2, options: UIViewAnimationOptions(rawValue: 0), animations: {
                         
-                        self.isShowAvailability = false
+                        Constant.MyClassConstants.isShowAvailability = false
                         //cell.contentView.frame.size.height = 50.0
                         self.resortDetailTBLView.reloadData()
                     }, completion: nil)
@@ -1175,7 +1174,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.availabilityCell, for: indexPath) as! SearchTableViewCell
                     cell.resortInfoCollectionView.reloadData()
                 
-                if self.isShowAvailability == true {
+                if Constant.MyClassConstants.isShowAvailability == true {
                     cell.resortInfoCollectionView.tag = indexPath.row - 1
                 } else {
                     cell.resortInfoCollectionView.tag = indexPath.row
@@ -1302,7 +1301,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
             if(section == 0 && exchangeExactMatchResortsArray.count == 0 || section == 1){
                 return surroundingMatchResortsArray.count
             }else{
-                if self.isShowAvailability == true && section == 0 {
+                if Constant.MyClassConstants.isShowAvailability == true && section == 0 {
                     return exchangeExactMatchResortsArray.count + 1
                     
                 } else {
@@ -1314,7 +1313,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
             if(section == 0 && exactMatchResortsArray.count == 0 || section == 1){
                 return surroundingMatchResortsArray.count
             }else{
-                if self.isShowAvailability == true && section == 0 {
+                if Constant.MyClassConstants.isShowAvailability == true && section == 0 {
                     return exactMatchResortsArray.count + 1
                     
                 } else {

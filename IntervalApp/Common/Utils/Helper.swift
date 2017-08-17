@@ -1849,6 +1849,7 @@ public class Helper{
     }
     
     static func showNearestCheckInDateSelectedMessage() {
+        Constant.MyClassConstants.isShowAvailability = true
         DarwinSDK.logger.info("NEAREST CHECK-IN DATE SELECTED - We found availability close to your desired Check-in Date")
     }
     
