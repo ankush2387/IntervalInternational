@@ -555,9 +555,11 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
         exchangeSearchDateRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
         
         let exchangeDestination = ExchangeDestination()
-        let currentFromDate = Helper.convertDateToString(date: Constant.MyClassConstants.currentFromDate, format: Constant.MyClassConstants.dateFormat)
-        
-        let currentToDate = Helper.convertDateToString(date: Constant.MyClassConstants.currentToDate, format: Constant.MyClassConstants.dateFormat)
+        if(selectedSection == 0){
+            
+        }else{
+            
+        }
         
         let resort = Resort()
         resort.resortCode = Constant.MyClassConstants.selectedResort.resortCode
@@ -565,14 +567,30 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
         exchangeDestination.resort = resort
         
         let unit = InventoryUnit()
-        unit.kitchenType = Constant.MyClassConstants.exchangeInventory[selectedSection].buckets[selectedRow - 1].unit!.kitchenType!
-        unit.unitSize = Constant.MyClassConstants.exchangeInventory[selectedSection].buckets[selectedRow - 1].unit!.unitSize!
+        if(selectedSection == 0){
+            let currentFromDate = exactMatchResortsArrayExchange[selectedRow].inventory?.checkInDate
+            let currentToDate = exactMatchResortsArrayExchange[selectedRow].inventory?.checkOutDate
+        unit.kitchenType = exactMatchResortsArrayExchange[selectedRow].inventory?.buckets[0].unit!.kitchenType!
+        unit.unitSize = exactMatchResortsArrayExchange[selectedRow].inventory?.buckets[0].unit!.unitSize!
         exchangeDestination.checkInDate = currentFromDate
         exchangeDestination.checkOutDate = currentToDate
-        unit.publicSleepCapacity = Constant.MyClassConstants.exchangeInventory[selectedSection].buckets[selectedRow - 1].unit!.publicSleepCapacity
-        unit.privateSleepCapacity = Constant.MyClassConstants.exchangeInventory[selectedSection].buckets[selectedRow - 1].unit!.privateSleepCapacity
+        unit.publicSleepCapacity = (exactMatchResortsArrayExchange[selectedRow].inventory?.buckets[0].unit!.publicSleepCapacity)!
+        unit.privateSleepCapacity =
+            (exactMatchResortsArrayExchange[selectedRow].inventory?.buckets[0].unit!.privateSleepCapacity)!
         
         exchangeDestination.unit = unit
+        }else{
+            let currentFromDate = surroundingMatchResortsArrayExchange[selectedRow].inventory?.checkInDate
+            let currentToDate = surroundingMatchResortsArrayExchange[selectedRow].inventory?.checkOutDate
+            unit.kitchenType = surroundingMatchResortsArrayExchange[selectedRow].inventory?.buckets[selectedRow].unit!.kitchenType!
+            unit.unitSize = surroundingMatchResortsArrayExchange[selectedRow].inventory?.buckets[selectedRow].unit!.unitSize!
+            exchangeDestination.checkInDate = currentFromDate
+            exchangeDestination.checkOutDate = currentToDate
+            unit.publicSleepCapacity = Constant.MyClassConstants.exchangeInventory[selectedSection].buckets[selectedRow - 1].unit!.publicSleepCapacity
+            unit.privateSleepCapacity = Constant.MyClassConstants.exchangeInventory[selectedSection].buckets[selectedRow - 1].unit!.privateSleepCapacity
+            
+            exchangeDestination.unit = unit
+        }
         
         exchangeSearchDateRequest.destination = exchangeDestination
         Constant.MyClassConstants.exchangeDestination = exchangeDestination
@@ -583,10 +601,16 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
             for exchageDetail in response{
                 Constant.MyClassConstants.filterRelinquishments.append(exchageDetail.relinquishment!)
             }
+            if(self.selectedSection == 0){
+              Constant.MyClassConstants.selectedResort = self.exactMatchResortsArrayExchange[self.selectedRow].resort!
+              Constant.MyClassConstants.inventoryPrice = (self.exactMatchResortsArrayExchange[self.selectedRow].inventory?.buckets[0].unit?.prices)!
+            }else{
+              Constant.MyClassConstants.selectedResort = self.surroundingMatchResortsArrayExchange[self.selectedRow].resort!
+              Constant.MyClassConstants.inventoryPrice = (self.surroundingMatchResortsArrayExchange[self.selectedSection].inventory?.buckets[0].unit?.prices)!
+            }
             
-            Constant.MyClassConstants.selectedResort = Constant.MyClassConstants.resortsArray[self.selectedSection]
             
-            Constant.MyClassConstants.inventoryPrice = (Constant.MyClassConstants.exchangeInventory[self.selectedSection].buckets[self.selectedRow - 1].unit?.prices)!
+            
             if(Constant.MyClassConstants.filterRelinquishments.count > 1){
                 self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
             }else if(response[0].destination?.upgradeCost != nil){
@@ -838,12 +862,12 @@ extension SearchResultViewController:UICollectionViewDelegate {
             }else{
                 
                 if(Constant.MyClassConstants.isFromExchange){
-                    if(indexPath.row > Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets.count + 1)
-                    {
+                    //if(indexPath.row > Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets.count + 1)
+                    //{
                         
-                    }else{
-                        selectedSection = indexPath.section
-                        selectedRow = indexPath.row
+                   // }else{
+                        selectedSection = (collectionView.superview?.superview?.tag)!
+                        selectedRow = collectionView.tag
                         if(collectionView.superview?.superview?.tag == 0){
                             Constant.MyClassConstants.selectedResort = self.exactMatchResortsArrayExchange[collectionView.tag].resort!
                         }else{
@@ -852,7 +876,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
                         self.getFilterRelinquishments()
                         //self.getStaticFilterRelinquishments()
                         
-                    }
+                   // }
                 }else{
                     Helper.addServiceCallBackgroundView(view: self.view)
                     SVProgressHUD.show()
