@@ -660,7 +660,9 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
+        collectionView.layer.borderWidth = 0.5
+        collectionView.layer.borderColor = UIColor.lightGray.cgColor
+
         if(collectionView.tag == -1){
             if (Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)! {
                 
@@ -897,7 +899,7 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
                             imgV.image = UIImage(named: Constant.assetImageNames.promoImage)
                             let promLabel = UILabel(frame: CGRect(x:30, y: yPosition, width: cell.promotionsView.bounds.width, height: 15))
                             let attrStr = try! NSAttributedString(
-                                data: "\(promotion.offerContentFragment)".data(using: String.Encoding.unicode, allowLossyConversion: true)!,
+                                data: "\(String(describing: promotion.offerContentFragment!))".data(using: String.Encoding.unicode, allowLossyConversion: true)!,
                                 options: [ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType],
                                 documentAttributes: nil)
                             promLabel.attributedText = attrStr
@@ -937,21 +939,21 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
                     let index = indexPath.row - 1
                     if(Constant.MyClassConstants.isFromExchange){
                         let totalUnits = self.exchangeExactMatchResortsArray[index].inventory?.buckets.count
-                        return CGFloat(totalUnits!*100 + 320 + totalUnits!*10)
+                        return CGFloat(totalUnits!*100 + 320 + totalUnits!*10 + 40)
                     }else{
                         let totalUnits = self.exactMatchResortsArray[index].inventory?.units.count
-                        return CGFloat(totalUnits!*100 + 320 + totalUnits!*10)
+                        return CGFloat(totalUnits!*100 + 320 + totalUnits!*10 + 40)
                     }
                     
                 } else {
                     
                     if(Constant.MyClassConstants.isFromExchange){
                         let totalUnits = self.exchangeExactMatchResortsArray[indexPath.row].inventory?.buckets.count
-                        return CGFloat(totalUnits!*100 + 320 + totalUnits!*10)
+                        return CGFloat(totalUnits!*100 + 320 + totalUnits!*10 + 40)
 
                     }else{
                         let totalUnits = self.exactMatchResortsArray[indexPath.row].inventory?.units.count
-                        return CGFloat(totalUnits!*100 + 320 + totalUnits!*10)
+                        return CGFloat(totalUnits!*100 + 320 + totalUnits!*10 + 40)
 
                     }
                     
@@ -1171,8 +1173,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
             } else {
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.availabilityCell, for: indexPath) as! SearchTableViewCell
-                cell.tag = indexPath.section
-                cell.resortInfoCollectionView.reloadData()
+                    cell.resortInfoCollectionView.reloadData()
                 
                 if self.isShowAvailability == true {
                     cell.resortInfoCollectionView.tag = indexPath.row - 1
@@ -1180,8 +1181,8 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                     cell.resortInfoCollectionView.tag = indexPath.row
                 }
                 cell.resortInfoCollectionView.isScrollEnabled = false
-                cell.layer.borderWidth = 0.5
-                cell.layer.borderColor = UIColor.lightGray.cgColor
+//                cell.layer.borderWidth = 0.5
+//                cell.layer.borderColor = UIColor.lightGray.cgColor
                 return cell
             }
         }else{
@@ -1189,6 +1190,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
             if(!Constant.MyClassConstants.isFromExchange) {
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.getawayCell, for: indexPath) as! GetawayCell
+                
                 cell.layer.borderWidth = 0.5
                 cell.layer.borderColor = UIColor.lightGray.cgColor
                 
@@ -1393,19 +1395,21 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
         
     }
     
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    /*func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: self.resortDetailTBLView.frame.width, height: 20))
         footerView.backgroundColor = UIColor(red: 242.0/255.0, green: 242.0/255.0, blue: 242.0/255.0, alpha: 1)
+        
+        footerView.backgroundColor = UIColor.red
         return footerView
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if(section == Constant.MyClassConstants.resortsArray.count){
+        /*if(section == Constant.MyClassConstants.resortsArray.count){
             return 30
-        }
-        return 0
-    }
+        }*/
+        return 30
+    }*/
 }
 
 // Implementing custom delegate method definition
