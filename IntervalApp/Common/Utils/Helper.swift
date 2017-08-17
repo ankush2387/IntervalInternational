@@ -1806,7 +1806,7 @@ public class Helper{
             }
             
             showAvailabilityResults(vacationSearch:vacationSearch)
-            
+            hideProgressBar(senderView:senderViewController)
             print(searchAvailabilityResponse)
             senderViewController.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)        }) { (error) in
                 
