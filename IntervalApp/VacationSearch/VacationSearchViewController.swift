@@ -1406,99 +1406,111 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             Constant.MyClassConstants.isFromExchange = false
  
         } else if(self.SegmentIndex == 2) {
-
-            sender.isEnabled = false
-            Helper.showProgressBar(senderView: self)
             
-            //let destinations = Helper.getAllDestinationFromLocalStorage()
-           // let resorts = Helper.getAllResortsFromLocalStorage()
             
-            let travelPartyInfo = TravelParty()
-            travelPartyInfo.adults = Int(self.adultCounter)
-            travelPartyInfo.children = Int(self.childCounter)
             
-            Constant.MyClassConstants.travelPartyInfo = travelPartyInfo
-            
-            if Reachability.isConnectedToNetwork() == true {
+            if(Constant.MyClassConstants.relinquishmentIdArray.count == 0){
+                sender.isEnabled = true
+                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
+            }else{
                 
-                let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
+                sender.isEnabled = false
+                Helper.showProgressBar(senderView: self)
                 
-                exchangeSearchCriteria.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]//Constant.MyClassConstants.relinquishmentIdArray as? [String]
-                exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
-                exchangeSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
-                exchangeSearchCriteria.searchType = VacationSearchType.Exchange
+                //let destinations = Helper.getAllDestinationFromLocalStorage()
+                // let resorts = Helper.getAllResortsFromLocalStorage()
                 
+                let travelPartyInfo = TravelParty()
+                travelPartyInfo.adults = Int(self.adultCounter)
+                travelPartyInfo.children = Int(self.childCounter)
                 
-                let storedData = Helper.getLocalStorageWherewanttoGo()
+                Constant.MyClassConstants.travelPartyInfo = travelPartyInfo
                 
-                if(storedData.count > 0) {
+                if Reachability.isConnectedToNetwork() == true {
+                    
+                    let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
+                    
+                    exchangeSearchCriteria.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]//Constant.MyClassConstants.relinquishmentIdArray as? [String]
+                    exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
+                    exchangeSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
+                    exchangeSearchCriteria.searchType = VacationSearchType.Exchange
                     
                     
-                    let realm = try! Realm()
-                    try! realm.write {
+                    let storedData = Helper.getLocalStorageWherewanttoGo()
+                    
+                    if(storedData.count > 0) {
                         
                         
-                        self.getSavedDestinationsResorts(storedData:storedData, searchCriteria:exchangeSearchCriteria)
-                        
-                        
-                        Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(Constant.MyClassConstants.appSettings, exchangeSearchCriteria)
-                        
-                        ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
-                            sender.isEnabled = true
-                            Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
-                            
-                            //Constant.MyClassConstants.initialVacationSearch.bookingWindow.currentInterval?.checkInDates = response.checkInDates.map { $0.string!.dateFromShortFormat() }
+                        let realm = try! Realm()
+                        try! realm.write {
                             
                             
-                            // Get activeInterval (or initial search interval)
-                            let activeInterval = BookingWindowInterval(interval: Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval())
+                            self.getSavedDestinationsResorts(storedData:storedData, searchCriteria:exchangeSearchCriteria)
                             
-                            // Update active interval
-                            Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                             
-                            // Check not available checkIn dates for the active interval
-                            if (activeInterval.fetchedBefore && !activeInterval.hasCheckInDates()) {
+                            Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(Constant.MyClassConstants.appSettings, exchangeSearchCriteria)
+                            
+                            ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
+                                sender.isEnabled = true
+                                Helper.hideProgressBar(senderView: self)
+                                Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
+                                
+                                //Constant.MyClassConstants.initialVacationSearch.bookingWindow.currentInterval?.checkInDates = response.checkInDates.map { $0.string!.dateFromShortFormat() }
+                                
+                                
+                                // Get activeInterval (or initial search interval)
+                                let activeInterval = BookingWindowInterval(interval: Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval())
+                                
+                                // Update active interval
+                                Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                                
+                                // Check not available checkIn dates for the active interval
+                                if (activeInterval.fetchedBefore && !activeInterval.hasCheckInDates()) {
+                                    Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                    self.showNotAvailabilityResults()
+                                }
                                 Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-                                self.showNotAvailabilityResults()
-                            }
-                            Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-                            DarwinSDK.logger.info("Auto call to Search Availability")
-                            
-                            let dateFormatter = DateFormatter()
-                            dateFormatter.dateFormat = "yyyy-MM-dd"
-                            
-                            if (activeInterval.hasCheckInDates()){
-                                //let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.getCheckInDateForInitialSearch()
-                                Helper.helperDelegate = self
-                                DarwinSDK.logger.info("Initial Rental Search using request payload:")
-                                //DarwinSDK.logger.info(" CheckInDate = \(initialSearchCheckInDate)")
-                                DarwinSDK.logger.info(" ResortCodes = \(String(describing: activeInterval.resortCodes))")
+                                DarwinSDK.logger.info("Auto call to Search Availability")
                                 
-                                
-                                Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate:Constant.MyClassConstants.vacationSearchShowDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-                                
-                            }else{
                                 let dateFormatter = DateFormatter()
                                 dateFormatter.dateFormat = "yyyy-MM-dd"
+                                
+                                if (activeInterval.hasCheckInDates()){
+                                    //let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.getCheckInDateForInitialSearch()
+                                    Helper.helperDelegate = self
+                                    DarwinSDK.logger.info("Initial Rental Search using request payload:")
+                                    //DarwinSDK.logger.info(" CheckInDate = \(initialSearchCheckInDate)")
+                                    DarwinSDK.logger.info(" ResortCodes = \(String(describing: activeInterval.resortCodes))")
+                                    
+                                    
+                                    Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate:Constant.MyClassConstants.vacationSearchShowDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                    
+                                }else{
+                                    let dateFormatter = DateFormatter()
+                                    dateFormatter.dateFormat = "yyyy-MM-dd"
+                                    Helper.hideProgressBar(senderView: self)
+                                    Helper.helperDelegate = self
+                                    Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate:exchangeSearchCriteria.checkInDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                }
+                                
+                            }, onError: { (error) in
+                                sender.isEnabled = true
                                 Helper.hideProgressBar(senderView: self)
-                                Helper.helperDelegate = self
-                                Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate:exchangeSearchCriteria.checkInDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-                            }
-                            
-                        }, onError: { (error) in
-                            sender.isEnabled = true
-                            Helper.hideProgressBar(senderView: self)
-                            SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.noResultError)
-                        })
+                                SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.noResultError)
+                            })
+                        }
                     }
-}
+                    
+                    
+                }else{
+                    Helper.hideProgressBar(senderView: self)
+                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
+                }
                 
-
-            }else{
-                Helper.hideProgressBar(senderView: self)
-                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
+                
             }
-            Constant.MyClassConstants.isFromExchange = true
+
+               Constant.MyClassConstants.isFromExchange = true
 
             
            
