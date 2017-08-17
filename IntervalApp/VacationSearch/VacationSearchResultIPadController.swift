@@ -48,6 +48,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     
     func selectedOptionis(filteredValueIs:String, indexPath:NSIndexPath, isFromFiltered:Bool) {
         
+       Helper.showProgressBar(senderView: self)
        let selectedvalue = Helper.returnFilteredValue(filteredValue: filteredValueIs)
         
         if isFromFiltered {
@@ -126,13 +127,14 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                     let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.getCheckInDateForInitialSearch()
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     Helper.helperDelegate = self
+                    Helper.hideProgressBar(senderView: self)
                     Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     self.dismiss(animated: true, completion: nil)
                     
                 })
                 { (error) in
                     
-                    SVProgressHUD.dismiss()
+                    Helper.hideProgressBar(senderView: self)
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                     self.dismiss(animated: true, completion: nil)
                     self.resortDetailTBLView.reloadData()
@@ -162,30 +164,31 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                     let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.getCheckInDateForInitialSearch()
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     Helper.helperDelegate = self
-                    Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                    Helper.hideProgressBar(senderView: self)
+                    Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     self.dismiss(animated: true, completion: nil)
                     
                 })
                 { (error) in
                     
-                    SVProgressHUD.dismiss()
+                    Helper.hideProgressBar(senderView: self)
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                     self.dismiss(animated: true, completion: nil)
                     self.resortDetailTBLView.reloadData()
                 }
-                
             }
-            
-
         } else {
             Constant.MyClassConstants.sortingIndex = indexPath.row
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            Constant.MyClassConstants.appSettings = appDelegate.createAppSetting()
+            Constant.MyClassConstants.initialVacationSearch.sortType = AvailabilitySortType(rawValue: selectedvalue)!
             
+            let vacationSearchForSorting = VacationSearch.init(Constant.MyClassConstants.appSettings, Constant.MyClassConstants.initialVacationSearch.searchCriteria)
             
-            let vacationSearchForSorting = Constant.MyClassConstants.initialVacationSearch
             
             vacationSearchForSorting.sortType = AvailabilitySortType(rawValue: selectedvalue)!
             
-            let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
+            let activeInterval = vacationSearchForSorting.bookingWindow.getActiveInterval()
             Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
             Constant.MyClassConstants.isFromSorting = true
             let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
@@ -212,6 +215,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     
     func createSections(){
         let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
+
             if Constant.MyClassConstants.isFromExchange {
                 if(sections.count > 0) {
                     let resortsExact = sections[0].item?.exchangeInventory
@@ -223,12 +227,14 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                 }
            
             } else {
+                if(sections.count > 0) {
                 let resortsExact = sections[0].item?.rentalInventory
                 exactMatchResortsArray = resortsExact!
                 if(sections.count > 1){
                     let resortsSurrounding = sections[1].item?.rentalInventory
                     surroundingMatchResortsArray = resortsSurrounding!
                 }
+              }
             }
             
             
@@ -236,7 +242,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    
         resortDetailTBLView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 100, right: 0)
         //Adding back button on menu bar.
         let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(VacationSearchResultIPadController.menuBackButtonPressed(_:)))
@@ -898,21 +904,21 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
                     let index = indexPath.row - 1
                     if(Constant.MyClassConstants.isFromExchange){
                         let totalUnits = self.exchangeExactMatchResortsArray[index].inventory?.buckets.count
-                        return CGFloat(totalUnits!*110 + 320 + cellHeight)
+                        return CGFloat(totalUnits!*100 + 320 + totalUnits!*10)
                     }else{
                         let totalUnits = self.exactMatchResortsArray[index].inventory?.units.count
-                        return CGFloat(totalUnits!*110 + 320 + cellHeight)
+                        return CGFloat(totalUnits!*100 + 320 + totalUnits!*10)
                     }
                     
                 } else {
                     
                     if(Constant.MyClassConstants.isFromExchange){
                         let totalUnits = self.exchangeExactMatchResortsArray[indexPath.row].inventory?.buckets.count
-                        return CGFloat(totalUnits!*110 + 320 + cellHeight)
+                        return CGFloat(totalUnits!*100 + 320 + totalUnits!*10)
 
                     }else{
                         let totalUnits = self.exactMatchResortsArray[indexPath.row].inventory?.units.count
-                        return CGFloat(totalUnits!*110 + 320 + cellHeight)
+                        return CGFloat(totalUnits!*100 + 320 + totalUnits!*10)
 
                     }
                     
@@ -920,7 +926,7 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
             }
         }else{
             let totalUnits = self.surroundingMatchResortsArray[indexPath.row].inventory?.units.count
-            return CGFloat(totalUnits!*110 + 320)
+            return CGFloat(totalUnits!*100 + 320 + totalUnits!*10)
         }
     }
     
@@ -1357,14 +1363,13 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: self.resortDetailTBLView.frame.width, height: 20))
-        footerView.backgroundColor = UIColor(red: 239.0/255.0, green: 239.0/255.0, blue: 246.0/255.0, alpha: 1)
-        footerView.backgroundColor = UIColor.clear
+        footerView.backgroundColor = UIColor(red: 242.0/255.0, green: 242.0/255.0, blue: 242.0/255.0, alpha: 1)
         return footerView
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if(section == Constant.MyClassConstants.resortsArray.count){
-            return 0
+            return 30
         }
         return 0
     }

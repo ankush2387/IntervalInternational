@@ -170,6 +170,9 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
             return 0
         }
     }
+    
+
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView(frame: CGRect (x: 0, y: 0, width: Constant.MyClassConstants.runningDeviceWidth!, height: 40))
         headerView.backgroundColor = IUIKColorPalette.titleBackdrop.color
