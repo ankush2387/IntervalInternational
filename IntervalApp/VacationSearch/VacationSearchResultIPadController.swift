@@ -48,6 +48,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     
     func selectedOptionis(filteredValueIs:String, indexPath:NSIndexPath, isFromFiltered:Bool) {
         
+       Helper.showProgressBar(senderView: self)
        let selectedvalue = Helper.returnFilteredValue(filteredValue: filteredValueIs)
         
         if isFromFiltered {
@@ -126,13 +127,14 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                     let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.getCheckInDateForInitialSearch()
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     Helper.helperDelegate = self
+                    Helper.hideProgressBar(senderView: self)
                     Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     self.dismiss(animated: true, completion: nil)
                     
                 })
                 { (error) in
                     
-                    SVProgressHUD.dismiss()
+                    Helper.hideProgressBar(senderView: self)
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                     self.dismiss(animated: true, completion: nil)
                     self.resortDetailTBLView.reloadData()
@@ -162,30 +164,31 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                     let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.getCheckInDateForInitialSearch()
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     Helper.helperDelegate = self
-                    Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                    Helper.hideProgressBar(senderView: self)
+                    Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     self.dismiss(animated: true, completion: nil)
                     
                 })
                 { (error) in
                     
-                    SVProgressHUD.dismiss()
+                    Helper.hideProgressBar(senderView: self)
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                     self.dismiss(animated: true, completion: nil)
                     self.resortDetailTBLView.reloadData()
                 }
-                
             }
-            
-
         } else {
             Constant.MyClassConstants.sortingIndex = indexPath.row
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            Constant.MyClassConstants.appSettings = appDelegate.createAppSetting()
+            Constant.MyClassConstants.initialVacationSearch.sortType = AvailabilitySortType(rawValue: selectedvalue)!
             
+            let vacationSearchForSorting = VacationSearch.init(Constant.MyClassConstants.appSettings, Constant.MyClassConstants.initialVacationSearch.searchCriteria)
             
-            let vacationSearchForSorting = Constant.MyClassConstants.initialVacationSearch
             
             vacationSearchForSorting.sortType = AvailabilitySortType(rawValue: selectedvalue)!
             
-            let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
+            let activeInterval = vacationSearchForSorting.bookingWindow.getActiveInterval()
             Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
             Constant.MyClassConstants.isFromSorting = true
             let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
@@ -212,6 +215,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     
     func createSections(){
         let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
+
             if Constant.MyClassConstants.isFromExchange {
                 if(sections.count > 0) {
                     let resortsExact = sections[0].item?.exchangeInventory
@@ -223,12 +227,14 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                 }
            
             } else {
+                if(sections.count > 0) {
                 let resortsExact = sections[0].item?.rentalInventory
                 exactMatchResortsArray = resortsExact!
                 if(sections.count > 1){
                     let resortsSurrounding = sections[1].item?.rentalInventory
                     surroundingMatchResortsArray = resortsSurrounding!
                 }
+              }
             }
             
             
