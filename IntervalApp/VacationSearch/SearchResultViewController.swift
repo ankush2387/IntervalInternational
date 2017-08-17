@@ -159,11 +159,11 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
         if(sections.count == 0){
             
             let headerView = Helper.noResortView(senderView:self.view)
-            resortDetailTBLView.tableHeaderView = headerView
+            searchResultTableView.tableHeaderView = headerView
             
         }else{
             let headerView = UIView()
-            resortDetailTBLView.tableHeaderView = headerView
+            searchResultTableView.tableHeaderView = headerView
         }
         
         if(Constant.MyClassConstants.isFromExchange){
