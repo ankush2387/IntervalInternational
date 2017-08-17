@@ -134,7 +134,7 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
             
             vacationSearchForSorting.sortType = AvailabilitySortType(rawValue: selectedvalue)!
             Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: vacationSearchForSorting.bookingWindow.currentInterval)
-            Constant.MyClassConstants.isFromSorting = true
+            Constant.MyClassConstants.isFromSorting = false
             self.dismiss(animated: true, completion: nil)
             
             searchResultTableView.reloadData()
