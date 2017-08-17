@@ -156,7 +156,7 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
     func createSections(){
         let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
         
-        if(sections.count == 0){
+        /*if(sections.count == 0){
             
             let headerView = Helper.noResortView(senderView:self.view)
             searchResultTableView.tableHeaderView = headerView
@@ -164,7 +164,7 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
         }else{
             let headerView = UIView()
             searchResultTableView.tableHeaderView = headerView
-        }
+        }*/
         
         if(Constant.MyClassConstants.isFromExchange){
             if(sections.count > 0){
@@ -560,7 +560,7 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
         let currentToDate = Helper.convertDateToString(date: Constant.MyClassConstants.currentToDate, format: Constant.MyClassConstants.dateFormat)
         
         let resort = Resort()
-        resort.resortCode = Constant.MyClassConstants.resortsArray[selectedSection].resortCode
+        resort.resortCode = Constant.MyClassConstants.selectedResort.resortCode
         
         exchangeDestination.resort = resort
         
@@ -792,6 +792,152 @@ extension SearchResultViewController:UICollectionViewDelegate {
                 intervalBucketClicked(calendarItem:Constant.MyClassConstants.calendarDatesArray[indexPath.item], cell: cell!)
             }else{
                 intervalDateItemClicked(Helper.convertStringToDate(dateString: Constant.MyClassConstants.calendarDatesArray[indexPath.item].checkInDate!, format: Constant.MyClassConstants.dateFormat))
+            }
+        }else{
+            if((indexPath as NSIndexPath).section == 0) {
+                Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.vacationSearchFunctionalityCheck
+                Helper.addServiceCallBackgroundView(view: self.view)
+                SVProgressHUD.show()
+                var resortCode = ""
+                if(!Constant.MyClassConstants.isFromExchange){
+                    if(collectionView.superview?.superview?.tag == 0){
+                       resortCode = exactMatchResortsArray[collectionView.tag].resortCode!
+                    }else{
+                        resortCode = surroundingMatchResortsArray[collectionView.tag].resortCode!
+                    }
+                  
+                }else{
+                    if(collectionView.superview?.superview?.tag == 0){
+                        resortCode = (self.exactMatchResortsArrayExchange[indexPath.section].resort?.resortCode!)!
+                    }else{
+                        resortCode = (self.surroundingMatchResortsArrayExchange[indexPath.section].resort?.resortCode!)!
+                    }
+                }
+                DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode, onSuccess: { (response) in
+                    
+                    Constant.MyClassConstants.resortsDescriptionArray = response
+                    Constant.MyClassConstants.imagesArray.removeAllObjects()
+                    let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
+                    for imgStr in imagesArray {
+                        if(imgStr.size!.caseInsensitiveCompare(Constant.MyClassConstants.imageSize) == ComparisonResult.orderedSame) {
+                            
+                            Constant.MyClassConstants.imagesArray.add(imgStr.url!)
+                        }
+                    }
+                    Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = indexPath.section + 1
+                    SVProgressHUD.dismiss()
+                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    self.performSegue(withIdentifier: Constant.segueIdentifiers.vacationSearchDetailSegue, sender: nil)
+                })
+                { (error) in
+                    
+                    SVProgressHUD.dismiss()
+                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.description)
+                }
+            }else{
+                
+                if(Constant.MyClassConstants.isFromExchange){
+                    if(indexPath.row > Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets.count + 1)
+                    {
+                        
+                    }else{
+                        selectedSection = indexPath.section
+                        selectedRow = indexPath.row
+                        if(collectionView.superview?.superview?.tag == 0){
+                            Constant.MyClassConstants.selectedResort = self.exactMatchResortsArrayExchange[collectionView.tag].resort!
+                        }else{
+                            Constant.MyClassConstants.selectedResort = self.surroundingMatchResortsArrayExchange[collectionView.tag].resort!
+                        }
+                        self.getFilterRelinquishments()
+                        //self.getStaticFilterRelinquishments()
+                        
+                    }
+                }else{
+                    Helper.addServiceCallBackgroundView(view: self.view)
+                    SVProgressHUD.show()
+                    
+                    if(collectionView.superview?.superview?.tag == 0){
+                        Constant.MyClassConstants.selectedResort = self.exactMatchResortsArray[collectionView.tag]
+                    }else{
+                        Constant.MyClassConstants.selectedResort = self.surroundingMatchResortsArray[collectionView.tag]
+                    }
+                    
+                    var inventoryDict = Inventory()
+                    inventoryDict = Constant.MyClassConstants.selectedResort.inventory!
+                    let invent = inventoryDict
+                    let units = invent.units
+                    
+                    Constant.MyClassConstants.inventoryPrice = invent.units[collectionView.tag].prices
+                    
+                    let processResort = RentalProcess()
+                    processResort.holdUnitStartTimeInMillis = Constant.holdingTime
+                    
+                    let processRequest = RentalProcessStartRequest()
+                    processRequest.resort = Constant.MyClassConstants.selectedResort
+                    if(Constant.MyClassConstants.selectedResort.allInclusive){
+                        Constant.MyClassConstants.hasAdditionalCharges = true
+                    }else{
+                        Constant.MyClassConstants.hasAdditionalCharges = false
+                    }
+                    processRequest.unit = units[0]
+                    
+                    let processRequest1 = RentalProcessStartRequest.init(resortCode: Constant.MyClassConstants.selectedResort.resortCode!, checkInDate: invent.checkInDate!, checkOutDate: invent.checkOutDate!, unitSize: UnitSize(rawValue: units[0].unitSize!)!, kitchenType: KitchenType(rawValue: units[0].kitchenType!)!)
+                    
+                    RentalProcessClient.start(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest1, onSuccess: {(response) in
+                        
+                        let processResort = RentalProcess()
+                        processResort.processId = response.processId
+                        Constant.MyClassConstants.getawayBookingLastStartedProcess = processResort
+                        Constant.MyClassConstants.processStartResponse = response
+                        SVProgressHUD.dismiss()
+                        Helper.removeServiceCallBackgroundView(view: self.view)
+                        Constant.MyClassConstants.viewResponse = response.view!
+                        Constant.MyClassConstants.rentalFees = [(response.view?.fees)!]
+                        Constant.MyClassConstants.guestCertificate = response.view?.fees?.guestCertificate
+                        Constant.MyClassConstants.onsiteArray.removeAllObjects()
+                        Constant.MyClassConstants.nearbyArray.removeAllObjects()
+                        
+                        for amenity in (response.view?.resort?.amenities)!{
+                            if(amenity.nearby == false){
+                                Constant.MyClassConstants.onsiteArray.add(amenity.amenityName!)
+                                Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending(amenity.amenityName!)
+                                Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending("\n")
+                            }else{
+                                Constant.MyClassConstants.nearbyArray.add(amenity.amenityName!)
+                                Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending(amenity.amenityName!)
+                                Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending("\n")
+                            }
+                        }
+                        
+                        
+                        UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
+                            
+                            // Got an access token!  Save it for later use.
+                            SVProgressHUD.dismiss()
+                            Helper.removeServiceCallBackgroundView(view: self.view)
+                            Constant.MyClassConstants.membershipContactArray = Membership.contacts!
+                            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+                            
+                            let transitionManager = TransitionManager()
+                            self.navigationController?.transitioningDelegate = transitionManager
+                            self.navigationController!.pushViewController(viewController, animated: true)
+                            
+                        }, onError: { (error) in
+                            
+                            SVProgressHUD.dismiss()
+                            Helper.removeServiceCallBackgroundView(view: self.view)
+                            SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.description)
+                            
+                        })
+                        
+                    }, onError: {(error) in
+                        Helper.removeServiceCallBackgroundView(view: self.view)
+                        SVProgressHUD.dismiss()
+                        SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.description)
+                    })
+                }
             }
         }
 

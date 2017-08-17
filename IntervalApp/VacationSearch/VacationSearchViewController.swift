@@ -1340,21 +1340,17 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             SVProgressHUD.show()
             sender.isEnabled = false
             
-            let destinations = Helper.getAllDestinationFromLocalStorage()
-            let resorts = Helper.getAllResortsFromLocalStorage()
-            
-
             if Reachability.isConnectedToNetwork() == true{
                 
                 let appDelegate = UIApplication.shared.delegate as! AppDelegate
                 Constant.MyClassConstants.appSettings = appDelegate.createAppSetting()
-
+                
+                let storedData = Helper.getLocalStorageWherewanttoGo()
+                
+                if(storedData.count > 0) {
+                    
                 let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
-                if(destinations.count > 0) {
-                    rentalSearchCriteria.destination = destinations[0]
-                } else if (resorts.count > 0) {
-                    rentalSearchCriteria.resorts = resorts
-                }
+                self.getSavedDestinationsResorts(storedData:storedData, searchCriteria:rentalSearchCriteria)
 
                 rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                 
@@ -1397,6 +1393,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                         SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                     }
                 )
+                }
             } else{
                 sender.isEnabled = true
                 Helper.hideProgressBar(senderView: self)
@@ -1416,9 +1413,6 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 
                 sender.isEnabled = false
                 Helper.showProgressBar(senderView: self)
-                
-                //let destinations = Helper.getAllDestinationFromLocalStorage()
-                // let resorts = Helper.getAllResortsFromLocalStorage()
                 
                 let travelPartyInfo = TravelParty()
                 travelPartyInfo.adults = Int(self.adultCounter)
@@ -1440,11 +1434,6 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     
                     if(storedData.count > 0) {
                         
-                        
-                        let realm = try! Realm()
-                        try! realm.write {
-                            
-                            
                             self.getSavedDestinationsResorts(storedData:storedData, searchCriteria:exchangeSearchCriteria)
                             
                             
@@ -1498,7 +1487,6 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                 Helper.hideProgressBar(senderView: self)
                                 SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.noResultError)
                             })
-                        }
                     }
                     
                     
