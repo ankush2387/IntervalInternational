@@ -141,7 +141,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                 }
                 
             }else{
-                
+                Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]//Constant.MyClassConstants.relinquishmentIdArray as? [String]
                 Helper.helperDelegate = self
                 ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess:{ (response) in
                     
@@ -420,7 +420,6 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     func intervalDateItemClicked(_ toDate: Date){
         let activeInterval = BookingWindowInterval(interval: Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval())
         Helper.helperDelegate = self
-        Helper.showProgressBar(senderView: self)
         if(Constant.MyClassConstants.isFromExchange){
             Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: toDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
         }else{
