@@ -242,7 +242,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    
         resortDetailTBLView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 100, right: 0)
         //Adding back button on menu bar.
         let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(VacationSearchResultIPadController.menuBackButtonPressed(_:)))
@@ -904,21 +904,21 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
                     let index = indexPath.row - 1
                     if(Constant.MyClassConstants.isFromExchange){
                         let totalUnits = self.exchangeExactMatchResortsArray[index].inventory?.buckets.count
-                        return CGFloat(totalUnits!*110 + 320 + cellHeight)
+                        return CGFloat(totalUnits!*100 + 320 + totalUnits!*10)
                     }else{
                         let totalUnits = self.exactMatchResortsArray[index].inventory?.units.count
-                        return CGFloat(totalUnits!*110 + 320 + cellHeight)
+                        return CGFloat(totalUnits!*100 + 320 + totalUnits!*10)
                     }
                     
                 } else {
                     
                     if(Constant.MyClassConstants.isFromExchange){
                         let totalUnits = self.exchangeExactMatchResortsArray[indexPath.row].inventory?.buckets.count
-                        return CGFloat(totalUnits!*110 + 320 + cellHeight)
+                        return CGFloat(totalUnits!*100 + 320 + totalUnits!*10)
 
                     }else{
                         let totalUnits = self.exactMatchResortsArray[indexPath.row].inventory?.units.count
-                        return CGFloat(totalUnits!*110 + 320 + cellHeight)
+                        return CGFloat(totalUnits!*100 + 320 + totalUnits!*10)
 
                     }
                     
@@ -926,7 +926,7 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
             }
         }else{
             let totalUnits = self.surroundingMatchResortsArray[indexPath.row].inventory?.units.count
-            return CGFloat(totalUnits!*110 + 320)
+            return CGFloat(totalUnits!*100 + 320 + totalUnits!*10)
         }
     }
     
@@ -1363,14 +1363,13 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: self.resortDetailTBLView.frame.width, height: 20))
-        footerView.backgroundColor = UIColor(red: 239.0/255.0, green: 239.0/255.0, blue: 246.0/255.0, alpha: 1)
-        footerView.backgroundColor = UIColor.clear
+        footerView.backgroundColor = UIColor(red: 242.0/255.0, green: 242.0/255.0, blue: 242.0/255.0, alpha: 1)
         return footerView
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if(section == Constant.MyClassConstants.resortsArray.count){
-            return 0
+            return 30
         }
         return 0
     }

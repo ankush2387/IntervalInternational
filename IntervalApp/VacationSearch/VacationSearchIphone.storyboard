@@ -1938,21 +1938,24 @@
                                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <subviews>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="3BR" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sPj-qU-VYt">
-                                                                        <rect key="frame" x="10" y="0.0" width="65" height="57"/>
-                                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iGX-rC-YGJ">
+                                                                        <rect key="frame" x="15" y="0.0" width="361" height="1"/>
+                                                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="height" constant="1" id="hQ6-c0-sxB"/>
+                                                                        </constraints>
+                                                                    </view>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3BR" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sPj-qU-VYt">
+                                                                        <rect key="frame" x="10" y="5" width="65" height="57"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="width" constant="65" id="UTN-se-c3A"/>
+                                                                        </constraints>
                                                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="28"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
-                                                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iGX-rC-YGJ">
-                                                                        <rect key="frame" x="15" y="0.0" width="361" height="1"/>
-                                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                                                    </view>
-                                                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gc9-0B-7iB" userLabel="View Price">
-                                                                        <rect key="frame" x="75" y="0.0" width="125" height="60"/>
-                                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gc9-0B-7iB" userLabel="View Price">
+                                                                        <rect key="frame" x="75" y="0.0" width="125" height="65"/>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Limited Kitchen" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ffI-0h-aWW">
                                                                                 <rect key="frame" x="5" y="15" width="120" height="17.5"/>
@@ -1962,7 +1965,7 @@
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text=" 8 Total, 6 Private" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vEF-eC-OLt">
-                                                                                <rect key="frame" x="5" y="30" width="120" height="14"/>
+                                                                                <rect key="frame" x="5" y="30" width="120" height="15"/>
                                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                                                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -1976,7 +1979,7 @@
                                                                                 <rect key="frame" x="185" y="5" width="80" height="50"/>
                                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                                 <subviews>
-                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Per Week" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pE2-af-lvE">
+                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Exchange" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pE2-af-lvE">
                                                                                         <rect key="frame" x="0.0" y="24" width="84" height="15"/>
                                                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
@@ -1996,6 +1999,17 @@
                                                                 </subviews>
                                                             </view>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                            <constraints>
+                                                                <constraint firstItem="Gc9-0B-7iB" firstAttribute="top" secondItem="iGX-rC-YGJ" secondAttribute="top" id="G0Z-yl-stn"/>
+                                                                <constraint firstItem="Gc9-0B-7iB" firstAttribute="leading" secondItem="sPj-qU-VYt" secondAttribute="trailing" id="aL1-76-z0H"/>
+                                                                <constraint firstItem="sPj-qU-VYt" firstAttribute="leading" secondItem="ffm-wg-B2E" secondAttribute="leadingMargin" constant="2" id="ar1-kE-qHc"/>
+                                                                <constraint firstAttribute="bottomMargin" secondItem="Gc9-0B-7iB" secondAttribute="bottom" constant="7" id="dQA-ua-VpV"/>
+                                                                <constraint firstItem="sPj-qU-VYt" firstAttribute="top" secondItem="iGX-rC-YGJ" secondAttribute="bottom" constant="4" id="hcv-sZ-C6E"/>
+                                                                <constraint firstItem="iGX-rC-YGJ" firstAttribute="leading" secondItem="ffm-wg-B2E" secondAttribute="leadingMargin" constant="7" id="hhG-iH-r4d"/>
+                                                                <constraint firstItem="iGX-rC-YGJ" firstAttribute="top" secondItem="ffm-wg-B2E" secondAttribute="topMargin" constant="-8" id="mj5-Dm-4d3"/>
+                                                                <constraint firstAttribute="bottomMargin" secondItem="sPj-qU-VYt" secondAttribute="bottom" constant="10" id="unF-py-3Wn"/>
+                                                                <constraint firstAttribute="trailingMargin" secondItem="iGX-rC-YGJ" secondAttribute="trailing" constant="-9" id="ykc-Xw-kNT"/>
+                                                            </constraints>
                                                             <size key="customSize" width="375" height="80"/>
                                                             <connections>
                                                                 <outlet property="bedRoomType" destination="sPj-qU-VYt" id="2YP-s1-ZiH"/>
