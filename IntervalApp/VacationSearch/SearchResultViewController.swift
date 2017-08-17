@@ -832,9 +832,9 @@ extension SearchResultViewController:UICollectionViewDelegate {
                   
                 }else{
                     if(collectionView.superview?.superview?.tag == 0){
-                        resortCode = (self.exactMatchResortsArrayExchange[indexPath.section].resort?.resortCode!)!
+                        resortCode = (self.exactMatchResortsArrayExchange[collectionView.tag].resort?.resortCode!)!
                     }else{
-                        resortCode = (self.surroundingMatchResortsArrayExchange[indexPath.section].resort?.resortCode!)!
+                        resortCode = (self.surroundingMatchResortsArrayExchange[collectionView.tag].resort?.resortCode!)!
                     }
                 }
                 DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode, onSuccess: { (response) in

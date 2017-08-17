@@ -1403,9 +1403,6 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             Constant.MyClassConstants.isFromExchange = false
  
         } else if(self.SegmentIndex == 2) {
-            
-            
-            
             if(Constant.MyClassConstants.relinquishmentIdArray.count == 0){
                 sender.isEnabled = true
                 SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
