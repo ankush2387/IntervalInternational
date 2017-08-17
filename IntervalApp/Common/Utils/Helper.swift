@@ -1808,7 +1808,7 @@ public class Helper{
             showAvailabilityResults(vacationSearch:vacationSearch)
             hideProgressBar(senderView:senderViewController)
             print(searchAvailabilityResponse)
-            if(senderViewController.isKind(of: VacationSearchResultIPadController.self)){
+            if(senderViewController.isKind(of: VacationSearchResultIPadController.self) || senderViewController.isKind(of: SearchResultViewController.self)){
                 
             }else{
                 senderViewController.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)

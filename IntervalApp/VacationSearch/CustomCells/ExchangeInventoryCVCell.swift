@@ -13,4 +13,6 @@ class ExchangeInventoryCVCell: UICollectionViewCell {
     @IBOutlet weak var sleeps: UILabel!
     @IBOutlet weak var kitchenType: UILabel!
     
+    @IBOutlet weak var promotionsView: UIView!
+    
 }
