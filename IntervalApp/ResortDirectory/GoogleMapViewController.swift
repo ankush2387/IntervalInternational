@@ -371,7 +371,11 @@ class GoogleMapViewController: UIViewController {
             }
             
             sender.isSelected = true
-            _ = self.navigationController?.popViewController(animated: true)
+            if(Constant.RunningDevice.deviceIdiom == .pad){
+                self.navigationController?.dismiss(animated: true, completion: nil)
+            }else{
+                _ = self.navigationController?.popViewController(animated: true)
+            }
             
         }
         else {
@@ -1095,7 +1099,11 @@ class GoogleMapViewController: UIViewController {
                 realm.add(allavailabledest)
             }
             
-            _ = self.navigationController?.popViewController(animated: true)
+            if(Constant.RunningDevice.deviceIdiom == .pad){
+                self.navigationController?.dismiss(animated: true, completion: nil)
+            }else{
+                _ = self.navigationController?.popViewController(animated: true)
+            }
         }
         
     }
@@ -1118,7 +1126,11 @@ class GoogleMapViewController: UIViewController {
         Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
         Constant.MyClassConstants.realmStoredDestIdOrCodeArray.removeAllObjects()
         Constant.MyClassConstants.whereTogoContentArray.add(Constant.MyClassConstants.allDestinations)
-        _ = self.navigationController?.popViewController(animated: true)
+        if(Constant.RunningDevice.deviceIdiom == .pad){
+            self.navigationController?.dismiss(animated: true, completion: nil)
+        }else{
+            _ = self.navigationController?.popViewController(animated: true)
+        }
     }
     
     //***** Method to show pop up with searched resort or destination on table view with custom animation *****//

@@ -1789,7 +1789,7 @@ public class Helper{
      */
     
  static func executeExchangeSearchAvailability(activeInterval: BookingWindowInterval!, checkInDate:Date!, senderViewController:UIViewController, vacationSearch:VacationSearch) {
-        
+        showProgressBar(senderView: senderViewController)
         let request = ExchangeSearchAvailabilityRequest()
         request.checkInDate = checkInDate
         request.resortCodes = activeInterval.resortCodes!
@@ -1798,6 +1798,7 @@ public class Helper{
         
         ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: request, onSuccess: { (searchAvailabilityResponse) in
             // Update Exchange inventory
+            hideProgressBar(senderView: senderViewController)
             Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.inventory = searchAvailabilityResponse
             
             // Check if not has availability in the desired check-In date.
@@ -1816,7 +1817,8 @@ public class Helper{
             
         })
         { (error) in
-                
+            hideProgressBar(senderView: senderViewController)
+            SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.noResultError, message: error.localizedDescription)
         }
     }
     

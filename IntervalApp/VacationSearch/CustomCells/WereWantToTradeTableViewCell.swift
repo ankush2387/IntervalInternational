@@ -246,26 +246,6 @@ extension WereWantToTradeTableViewCell:WhereToGoCollectionViewCellDelegate {
                         }
                         
                         
-                    } else if ((openWk as AnyObject).isKind(of: Deposits.self)) {
-                        var floatWeek = Deposits()
-                        let deposit = openWk as! Deposits
-                        if(!deposit.isFloatRemoved){
-                            floatWeek = deposit
-                            isFloatRemoved = floatWeek.isFloatRemoved
-                            relinquishmentId = floatWeek.relinquishmentID
-                            relinquismentYear = floatWeek.relinquishmentYear
-                            resortName = floatWeek.resort[0].resortName
-                            if floatWeek.floatDetails.count > 0 {
-                                unitNumber = floatWeek.floatDetails[0].unitNumber
-                                unitSize = floatWeek.floatDetails[0].unitSize
-                            }
-                            Constant.MyClassConstants.floatRemovedArray.removeAllObjects()
-                            Constant.MyClassConstants.floatRemovedArray.add(floatWeek)
-                        
-                        }else{
-                            isFloat = false
-                        }
-                        
                     }
                     
                     
@@ -355,8 +335,22 @@ extension WereWantToTradeTableViewCell:WhereToGoCollectionViewCellDelegate {
                 self.collectionView.deleteItems(at: [deletionIndexPath])
                 Helper.InitializeOpenWeeksFromLocalStorage()
             }
-        }
-    }
+                    }else{
+                        
+                        Constant.MyClassConstants.whatToTradeArray.removeObject(at: Index)
+                        Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: Index)
+                        realm.delete(storedData[Index])
+                        let deletionIndexPath = IndexPath(item: Index, section: 0)
+                        self.collectionView.deleteItems(at: [deletionIndexPath])
+                        Helper.InitializeOpenWeeksFromLocalStorage()
+                    }
+                }else if((Constant.MyClassConstants.whatToTradeArray[Index] as AnyObject).isKind(of: Deposits.self)){
+                    Constant.MyClassConstants.whatToTradeArray.removeObject(at: Index)
+                    realm.delete(storedData[Index])
+                    let deletionIndexPath = IndexPath(item: Index, section: 0)
+                    self.collectionView.deleteItems(at: [deletionIndexPath])
+                   // Helper.InitializeOpenWeeksFromLocalStorage()
+                }
   }
 }
     }
