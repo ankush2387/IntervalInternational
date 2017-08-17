@@ -721,18 +721,52 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
                     DarwinSDK.logger.info("\(String(describing: Helper.resolveResortInfo(resort: inventoryItem)))")
                     return cell
                 } else {
-                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.exchangeInventoryCell, for: indexPath) as! RentalInventoryCVCell
-                    var invetoryItem = Resort()
+                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.exchangeInventoryCell, for: indexPath) as! ExchangeInventoryCVCell
+                    var invetoryItem = ExchangeInventory()
                     print(invetoryItem)
                     if(collectionView.superview?.superview?.tag == 0){
-                        invetoryItem = exchangeExactMatchResortsArray.[collectionView.tag].inventory
+                        invetoryItem = exchangeExactMatchResortsArray[collectionView.tag].inventory!
                     }else{
-                        invetoryItem = surroundingMatchResortsArray[collectionView.tag]
+                        //invetoryItem = surroundingMatchResortsArray[collectionView.tag].inventory
+                    }
+                    // for unit in (invetoryItem.inventory?.units)! {
+                    let unit = (invetoryItem.buckets[indexPath.item].unit)!
+                    DarwinSDK.logger.info("\(String(describing: Helper.resolveUnitInfo(unit: unit)))")
+                    
+                    // price
+                    let price = Int(unit.prices[0].price)
+
+                    
+                    // bedroom details
+                    
+                    var bedRoomDetails = ""
+                    if let bedType = unit.unitSize {
+                        bedRoomDetails.append(" \(String(describing: Helper.getBrEnums(brType: bedType)))")
                     }
                     
-                    // for unit in (invetoryItem.inventory?.units)! {
-                    let unit = (invetoryItem.inventory?.units[indexPath.item])!
-                    DarwinSDK.logger.info("\(String(describing: Helper.resolveUnitInfo(unit: unit)))")
+                    cell.bedRoomType.text = bedRoomDetails
+                    
+                    var kitchenDetails = ""
+                    if let kitchenType = unit.kitchenType {
+                        kitchenDetails.append(" \(String(describing: Helper.getKitchenEnums(kitchenType: kitchenType)))")
+                    }
+                    
+                    cell.kitchenType.text = kitchenDetails
+                    
+                    var totalSleepCapacity = String()
+                    
+                    if unit.publicSleepCapacity > 0 {
+                        
+                        totalSleepCapacity =  String(unit.publicSleepCapacity) + Constant.CommonLocalisedString.totalString
+                        
+                    }
+                    
+                    if unit.privateSleepCapacity > 0 {
+                        
+                        cell.sleeps.text =  totalSleepCapacity + String(unit.privateSleepCapacity) + Constant.CommonLocalisedString.privateString
+                        
+                    }
+
 
                     return cell
                     
