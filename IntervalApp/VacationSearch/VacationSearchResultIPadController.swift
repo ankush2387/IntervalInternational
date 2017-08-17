@@ -285,7 +285,57 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                                                 //expectation.fulfill()
                     }
                     )
+                }else{
+                    // Update CheckInFrom and CheckInTo dates
+                    Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.checkInFromDate = Helper.convertStringToDate(dateString:calendarItem.intervalStartDate!,format:Constant.MyClassConstants.dateFormat)
+                    Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.checkInToDate = Helper.convertStringToDate(dateString:calendarItem.intervalEndDate!,format:Constant.MyClassConstants.dateFormat)
+                    
+                    
+                    ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request,
+                                             onSuccess: { (response) in
+                                                
+                                                Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
+                                                let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
+                                                // Update active interval
+                                                Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                                                
+                                                Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                                
+                                                //expectation.fulfill()
+                                                
+                                                // Check not available checkIn dates for the active interval
+                                                if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                                                    //self.showNotAvailabilityResults()
+                                                    
+                                                } else {
+                                                    //let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.getCheckInDateForInitialSearch()
+                                                    
+                                                    //Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self , vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                                    
+                                                    //Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate:response.checkInDates[0], senderViewController: self , vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                                }
+                                                Constant.MyClassConstants.calendarDatesArray.removeAll()
+                                                
+                                                Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
+                                                
+                                                self.searchedDateCollectionView.reloadData()
+                                                
+                    },
+                                             onError:{ (error) in
+                                                
+                                                SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                                                DarwinSDK.logger.error("Error Code: \(error.code)")
+                                                DarwinSDK.logger.error("Error Description: \(error.description)")
+                                                
+                                                // TODO: Handle SDK/API errors
+                                                DarwinSDK.logger.error("Handle SDK/API errors.")
+                                                
+                                                //expectation.fulfill()
                     }
+                    )
+                    
+                    
+                }
             }else {
 
                 myActivityIndicator.stopAnimating()
@@ -725,7 +775,9 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
                     var invetoryItem = ExchangeInventory()
                     print(invetoryItem)
                     if(collectionView.superview?.superview?.tag == 0){
+
                         invetoryItem = exchangeExactMatchResortsArray[collectionView.tag].inventory!
+
                     }else{
                         //invetoryItem = surroundingMatchResortsArray[collectionView.tag].inventory
                     }
