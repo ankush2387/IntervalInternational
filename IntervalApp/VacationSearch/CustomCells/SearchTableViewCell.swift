@@ -25,6 +25,7 @@ class SearchTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        layoutMargins = UIEdgeInsetsMake(20, 0, 20, 0)
         // Initialization code
     }
 
