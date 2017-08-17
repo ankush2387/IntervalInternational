@@ -1931,7 +1931,7 @@
                                                                 <outlet property="sleeps" destination="j9q-Wi-Nz7" id="Mrg-f2-bj1"/>
                                                             </connections>
                                                         </collectionViewCell>
-                                                        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ExchangeInventory" id="ffm-wg-B2E" customClass="RentalInventoryCVCell" customModule="IntervalApp" customModuleProvider="target">
+                                                        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ExchangeInventory" id="ffm-wg-B2E" customClass="ExchangeInventoryCVCell" customModule="IntervalApp" customModuleProvider="target">
                                                             <rect key="frame" x="0.0" y="313" width="375" height="80"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -1998,10 +1998,9 @@
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <size key="customSize" width="375" height="80"/>
                                                             <connections>
-                                                                <outlet property="bedRoomType" destination="sPj-qU-VYt" id="MLI-tk-ZWe"/>
-                                                                <outlet property="getawayNameLabel" destination="pE2-af-lvE" id="FLb-Dm-OT4"/>
-                                                                <outlet property="kitchenType" destination="ffI-0h-aWW" id="fw9-CT-Nc9"/>
-                                                                <outlet property="sleeps" destination="vEF-eC-OLt" id="pmH-el-szm"/>
+                                                                <outlet property="bedRoomType" destination="sPj-qU-VYt" id="2YP-s1-ZiH"/>
+                                                                <outlet property="kitchenType" destination="ffI-0h-aWW" id="Kmb-H5-hP3"/>
+                                                                <outlet property="sleeps" destination="vEF-eC-OLt" id="xwc-0L-ZCI"/>
                                                             </connections>
                                                         </collectionViewCell>
                                                     </cells>

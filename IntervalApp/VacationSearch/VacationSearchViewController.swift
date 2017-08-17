@@ -1421,13 +1421,6 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             
             if Reachability.isConnectedToNetwork() == true {
                 
-                
-//                let appSettings = AppSettings()
-//                appSettings.searchByBothEnable = false
-//                appSettings.checkInSelectorStrategy = CheckInSelectorStrategy.First.rawValue
-//                appSettings.collapseBookingIntervalEnable = true
-//                
-                
                 let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
                 
                 exchangeSearchCriteria.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]//Constant.MyClassConstants.relinquishmentIdArray as? [String]
