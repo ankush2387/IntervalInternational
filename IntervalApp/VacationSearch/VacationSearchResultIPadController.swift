@@ -897,7 +897,7 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
                             imgV.image = UIImage(named: Constant.assetImageNames.promoImage)
                             let promLabel = UILabel(frame: CGRect(x:30, y: yPosition, width: cell.promotionsView.bounds.width, height: 15))
                             let attrStr = try! NSAttributedString(
-                                data: "\(promotion.offerContentFragment)".data(using: String.Encoding.unicode, allowLossyConversion: true)!,
+                                data: "\(String(describing: promotion.offerContentFragment!))".data(using: String.Encoding.unicode, allowLossyConversion: true)!,
                                 options: [ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType],
                                 documentAttributes: nil)
                             promLabel.attributedText = attrStr
