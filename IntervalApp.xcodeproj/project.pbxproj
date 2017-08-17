@@ -291,6 +291,7 @@
 		E95A30BB1EF9693700AB64DB /* CheckoutPromotionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95A30BA1EF9693700AB64DB /* CheckoutPromotionCell.swift */; };
 		E961268D1EE9EB2A001BA096 /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E961268C1EE9EB2A001BA096 /* WeatherViewController.swift */; };
 		E9C5EF381F19555B00E658DA /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C5EF371F19555B00E658DA /* UIViewControllerExtension.swift */; };
+		E9ED1B591F44B89A00794C53 /* CertificateInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9ED1B581F44B89A00794C53 /* CertificateInfoViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -601,6 +602,7 @@
 		E95A30BA1EF9693700AB64DB /* CheckoutPromotionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckoutPromotionCell.swift; sourceTree = "<group>"; };
 		E961268C1EE9EB2A001BA096 /* WeatherViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherViewController.swift; sourceTree = "<group>"; };
 		E9C5EF371F19555B00E658DA /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
+		E9ED1B581F44B89A00794C53 /* CertificateInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CertificateInfoViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1011,6 +1013,7 @@
 				3A59DE151F013767005280D3 /* SearchResultMapviewController.swift */,
 				3A59DE171F015E5F005280D3 /* SortingViewController.swift */,
 				3A7F44A61F17768800F4DD18 /* WhatToUseViewController.swift */,
+				E9ED1B581F44B89A00794C53 /* CertificateInfoViewController.swift */,
 			);
 			path = VacationSearch;
 			sourceTree = "<group>";
@@ -1457,6 +1460,7 @@
 				3AAA5A3E1C720F4500A5EA6D /* ActionSheetTblCell.swift in Sources */,
 				3A3A012F1C99BD0B00B7EC37 /* BedroomSizeViewController.swift in Sources */,
 				E94FB5EA1EF0609C00314C5D /* VerticalProgressView.swift in Sources */,
+				E9ED1B591F44B89A00794C53 /* CertificateInfoViewController.swift in Sources */,
 				DC27F7C61DB81B6F00AA374F /* GetawayAlertsIpadViewController.swift in Sources */,
 				3A3BE3ED1CA0441200CDE3AA /* MyOwnershipAvailablePointTooolTableViewCell.swift in Sources */,
 				3A2C728F1DDB2DC900BBF40B /* AdvisementsCell.swift in Sources */,

@@ -138,8 +138,7 @@ class LoginViewController: UIViewController
         // if touch is enabled
         if(self.touchIdButtonEnabled == true) {
             guard self.userName.characters.count > 0 && self.password.characters.count > 0 else {
-                SimpleAlert.alert(self, title:Constant.AlertPromtMessages.loginTitle , message: Constant.AlertMessages.loginMessage)
-                
+                SimpleAlert.alert(self, title:Constant.AlertPromtMessages.loginTitle , message: Constant.AlertMessages.emptyLoginIdMessage)
                 return
             }
             
@@ -149,9 +148,13 @@ class LoginViewController: UIViewController
         }
             // touch disabled, perform standard login
         else {
-            guard self.userName.characters.count > 0 && self.password.characters.count > 0 else {
-                SimpleAlert.alert(self, title:Constant.AlertPromtMessages.loginTitle , message: Constant.AlertMessages.loginMessage)
-                
+            guard self.userName.characters.count > 0 else {
+                 SimpleAlert.alert(self, title:Constant.AlertPromtMessages.loginTitle , message: Constant.AlertMessages.emptyLoginIdMessage)
+                return
+            }
+            
+            guard self.password.characters.count > 0 else {
+                SimpleAlert.alert(self, title:Constant.AlertPromtMessages.loginTitle , message: Constant.AlertMessages.emptyPasswordLoginMessage)
                 return
             }
             

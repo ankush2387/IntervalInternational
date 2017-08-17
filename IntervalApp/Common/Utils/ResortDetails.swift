@@ -20,6 +20,7 @@ protocol ResortDetailsDelegate {
 class ResortDetails: NSObject,UITableViewDataSource,UITableViewDelegate {
     
     var delegate: ResortDetailsDelegate?
+    var unfavHandler : (Int) -> Void = {_ in }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -61,8 +62,10 @@ class ResortDetails: NSObject,UITableViewDataSource,UITableViewDelegate {
         let resortAddress = resortDetails.address!
         cell.resortCountry.text = resortAddress.cityName
         cell.resortCode.text = resortDetails.resortCode
-        let tierImageName = Helper.getTierImageName(tier: resortDetails.tier!.uppercased())
-        cell.tierImageView.image = UIImage(named:tierImageName)
+        if let tier = resortDetails.tier {
+            let tierImageName = Helper.getTierImageName(tier: tier.uppercased())
+            cell.tierImageView.image = UIImage(named:tierImageName)
+        }
         cell.selectionStyle = UITableViewCellSelectionStyle.none
         cell.delegate = self
         
@@ -98,6 +101,8 @@ extension ResortDetails:SearchResultContentTableCellDelegate {
         }
         else {
             sender.isSelected = false
+            print()
+            unfavHandler(sender.tag)
         }
 
     }

@@ -455,7 +455,7 @@ class Constant: NSObject {
         static var webViewGetElementById1 = "document.getElementById('WASCInsuranceOfferOption1').checked == true;"
         static var paymentInfo = "Select your payment method"
         static var verifying = "Verifying..."
-        static var insurance = "Insurance"
+        static var insurance = "Trip Protection"
         static var guestCertificateTitle = "Guest Certificate"
         static var exchangeFeeTitle = "Exchange Fee"
         static var getawayFee = "Getaway Fee"
@@ -612,7 +612,7 @@ class Constant: NSObject {
         static var exchange = "Exchange"
         static var getaways = "Getaway"
         static var search = "All Available Destinations"
-        static var resortUnitDetails = "Resort Unit Details"
+        static var resortUnitDetails = "Unit Details"
         static var reservationDetails = "Reservation Details"
         
     }
@@ -655,7 +655,8 @@ class Constant: NSObject {
         static var searchAlertTitle = NSLocalizedString("Search All Available Destinations", comment:"")
         
         static var searchAlertMessage = NSLocalizedString("Selecting this option will remove all other currently selected destinations/resorts . Are you sure you want to do this?", comment: "")
-        static var loginMessage = NSLocalizedString("The Login ID or Password is required.", comment: "")
+        static var emptyLoginIdMessage = NSLocalizedString("Please enter your Login ID.", comment: "")
+        static var emptyPasswordLoginMessage = NSLocalizedString("Please enter your Password.", comment: "")
         static var createAlertMessage = NSLocalizedString("Alert created successfully", comment: "")
         static var editAlertMessage = NSLocalizedString("Alert updated successfully", comment: "")
         
@@ -686,7 +687,7 @@ class Constant: NSObject {
         static var searchVacationTitle = NSLocalizedString("Search Vacation", comment: "")
         static var searchVacationMessage = NSLocalizedString("Please select any destination or resort", comment: "")
         static var travellingDetailMessage = NSLocalizedString("Traveling: Tue Oct 15, 2015 - Sun May 20, 2018", comment: "")
-        static var vacationSearchMessage = NSLocalizedString("This date does not contain availability for the area you were looking for. Please check other available dates by scrolling above.", comment: "")
+        static var vacationSearchMessage = NSLocalizedString("We were unable to find any availability for the travel dates you requested. Please check other available dates by scrolling above.", comment: "")
         static var vactionSearchDateMessage = NSLocalizedString("No match found. Please select another date.", comment: "")
         static var userInterestMessage = NSLocalizedString("How's about you go favorite some resorts and when you come back they will be here all warm and toasty waiting for you!", comment: "")
         static var goGetMessage = NSLocalizedString("Go on Get! ", comment: "")
@@ -781,7 +782,7 @@ class Constant: NSObject {
         static var resendTitle = NSLocalizedString("Resend Confirmation", comment: "")
         static var emailTripTitle = NSLocalizedString("Email Trip Details", comment: "")
         static var textTripTitle = NSLocalizedString("Text Trip Details", comment: "")
-        static var purchaseInsuranceTitle = NSLocalizedString("Purchase Trip Insurance", comment: "")
+        static var purchaseInsuranceTitle = NSLocalizedString("Purchase Trip Protection", comment: "")
         static var viewResults = NSLocalizedString("View Results", comment: "")
         static var updateSwitchTitle = NSLocalizedString("Update email", comment: "")
     }
@@ -846,16 +847,16 @@ class Constant: NSObject {
     struct ControllerTitles {
         
         static var privacyLegalViewController = NSLocalizedString("Privacy/Legal", comment: "")
-        static var vacationSearchDestinationController = NSLocalizedString("Pick Destination", comment: "")
+        static var vacationSearchDestinationController = NSLocalizedString("Select Destinations or Resorts", comment: "")
         static var searchResultViewController = NSLocalizedString("Search Results", comment: "")
         static var availablePointToolViewController = NSLocalizedString("Available Point Tool", comment: "")
-        static var floatDetailViewController = NSLocalizedString("Additional Information", comment: "")
+        static var floatDetailViewController = NSLocalizedString("Additional Unit Details", comment: "")
         static var clubresortsViewController = NSLocalizedString("Club Resorts", comment: "")
         static var bedroomSizeViewController = NSLocalizedString("Bedroom_Size", comment: "")
         static var loginHelpViewController = NSLocalizedString("Login Help", comment: "")
         static var JoinTodayViewController = NSLocalizedString("Join_Today", comment: "")
         static var calendarViewController = NSLocalizedString("Pick_Date", comment: "")
-        static var accomodationCertsDetailController = NSLocalizedString("Accomodation_Certificates", comment: "")
+        static var accomodationCertsDetailController = NSLocalizedString("My Certificates", comment: "")
         static var bookYourSelectionController = NSLocalizedString("Choose What To Use", comment: "")
         static var vacationSearchTabBarController = NSLocalizedString("Vacation_Search", comment: "")
         static var dashboardTableViewController = NSLocalizedString("Home", comment: "")
@@ -872,7 +873,7 @@ class Constant: NSObject {
         static var editgetawayAlertsViewController = NSLocalizedString("Edit Getaway Alert", comment: "")
         static var intervalHDIpadControllerTitle = NSLocalizedString("Interval_HD", comment: "")
         static var magazinesControllerTitle = NSLocalizedString("Magazines", comment: "")
-        static var whoWillBeCheckingInControllerTitle = NSLocalizedString("Who Will Be Checking-In?", comment: "")
+        static var whoWillBeCheckingInControllerTitle = NSLocalizedString("Who will be checking-in?", comment: "")
         static var checkOutControllerTitle = NSLocalizedString("Check Out", comment: "")
         static var relinquishmentSelectiongControllerTitle = NSLocalizedString("Relinquishment Selection", comment: "")
         static var confirmationControllerTitle = NSLocalizedString("Confirmation", comment: "")
@@ -1430,7 +1431,7 @@ class Constant: NSObject {
         }
         //FloatSaveAndCancelButtonTableViewCell
         struct floatSaveAndCancelButtonTableViewCell {
-            static let saveFloatDetailButtonTitle = "Save and Complete"
+            static let saveFloatDetailButtonTitle = "Save Unit Details"
             static let cancelButtonTitle = NSLocalizedString("Cancel", comment:"")
         }
     }
