@@ -1759,6 +1759,10 @@
                                                                                 <nil key="textColor"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
+                                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="x9h-5i-kZi">
+                                                                                <rect key="frame" x="53" y="48" width="29" height="24"/>
+                                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                            </imageView>
                                                                         </subviews>
                                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                         <constraints>
@@ -1790,6 +1794,7 @@
                                                                 <outlet property="resortCode" destination="Lvn-cr-yW7" id="kHE-Dw-KgN"/>
                                                                 <outlet property="resortImageView" destination="3j7-jS-zrs" id="dcw-yS-U9Y"/>
                                                                 <outlet property="resortName" destination="ko0-QF-n5p" id="iCC-FE-Iec"/>
+                                                                <outlet property="tierImage" destination="x9h-5i-kZi" id="YrT-GV-XRS"/>
                                                                 <outlet property="viewGradient" destination="Nkh-8I-zv1" id="ClY-o0-reW"/>
                                                             </connections>
                                                         </collectionViewCell>
@@ -1932,10 +1937,10 @@
                                                             </connections>
                                                         </collectionViewCell>
                                                         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ExchangeInventory" id="ffm-wg-B2E" customClass="ExchangeInventoryCVCell" customModule="IntervalApp" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="313" width="375" height="80"/>
+                                                            <rect key="frame" x="0.0" y="313" width="375" height="70"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                                                <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <subviews>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iGX-rC-YGJ">
@@ -1946,7 +1951,7 @@
                                                                         </constraints>
                                                                     </view>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3BR" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sPj-qU-VYt">
-                                                                        <rect key="frame" x="10" y="5" width="65" height="57"/>
+                                                                        <rect key="frame" x="10" y="5" width="65" height="47"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="width" constant="65" id="UTN-se-c3A"/>
                                                                         </constraints>
@@ -1954,63 +1959,61 @@
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
-                                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gc9-0B-7iB" userLabel="View Price">
-                                                                        <rect key="frame" x="75" y="0.0" width="125" height="65"/>
+                                                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vUo-mC-gzM">
+                                                                        <rect key="frame" x="248" y="10" width="80" height="50"/>
+                                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                        <subviews>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Exchange" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pE2-af-lvE">
+                                                                                <rect key="frame" x="0.0" y="24" width="84" height="15"/>
+                                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
+                                                                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                                                <nil key="highlightedColor"/>
+                                                                            </label>
+                                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ExchangeIcon" translatesAutoresizingMaskIntoConstraints="NO" id="g5k-HH-XDm">
+                                                                                <rect key="frame" x="27" y="1" width="25" height="21"/>
+                                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                            </imageView>
+                                                                        </subviews>
+                                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                                    </view>
+                                                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gc9-0B-7iB" userLabel="View Price">
+                                                                        <rect key="frame" x="75" y="5" width="125" height="55"/>
+                                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Limited Kitchen" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ffI-0h-aWW">
-                                                                                <rect key="frame" x="5" y="15" width="120" height="17.5"/>
+                                                                                <rect key="frame" x="5" y="10" width="120" height="17.5"/>
                                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                                                 <nil key="textColor"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text=" 8 Total, 6 Private" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vEF-eC-OLt">
-                                                                                <rect key="frame" x="5" y="30" width="120" height="15"/>
+                                                                                <rect key="frame" x="5" y="25" width="120" height="15"/>
                                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                                                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
-                                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ForwardArrowIcon" translatesAutoresizingMaskIntoConstraints="NO" id="pnb-bQ-omS">
-                                                                                <rect key="frame" x="269" y="15" width="20" height="30"/>
-                                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                                            </imageView>
-                                                                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vUo-mC-gzM">
-                                                                                <rect key="frame" x="185" y="5" width="80" height="50"/>
-                                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                                                <subviews>
-                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Exchange" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pE2-af-lvE">
-                                                                                        <rect key="frame" x="0.0" y="24" width="84" height="15"/>
-                                                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
-                                                                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                                                                        <nil key="highlightedColor"/>
-                                                                                    </label>
-                                                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ExchangeIcon" translatesAutoresizingMaskIntoConstraints="NO" id="g5k-HH-XDm">
-                                                                                        <rect key="frame" x="27" y="1" width="25" height="21"/>
-                                                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                                                    </imageView>
-                                                                                </subviews>
-                                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                                            </view>
                                                                         </subviews>
                                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                     </view>
+                                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ForwardArrowIcon" translatesAutoresizingMaskIntoConstraints="NO" id="pnb-bQ-omS">
+                                                                        <rect key="frame" x="335" y="23" width="25" height="23"/>
+                                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                    </imageView>
                                                                 </subviews>
                                                             </view>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <constraints>
-                                                                <constraint firstItem="Gc9-0B-7iB" firstAttribute="top" secondItem="iGX-rC-YGJ" secondAttribute="top" id="G0Z-yl-stn"/>
-                                                                <constraint firstItem="Gc9-0B-7iB" firstAttribute="leading" secondItem="sPj-qU-VYt" secondAttribute="trailing" id="aL1-76-z0H"/>
                                                                 <constraint firstItem="sPj-qU-VYt" firstAttribute="leading" secondItem="ffm-wg-B2E" secondAttribute="leadingMargin" constant="2" id="ar1-kE-qHc"/>
-                                                                <constraint firstAttribute="bottomMargin" secondItem="Gc9-0B-7iB" secondAttribute="bottom" constant="7" id="dQA-ua-VpV"/>
                                                                 <constraint firstItem="sPj-qU-VYt" firstAttribute="top" secondItem="iGX-rC-YGJ" secondAttribute="bottom" constant="4" id="hcv-sZ-C6E"/>
                                                                 <constraint firstItem="iGX-rC-YGJ" firstAttribute="leading" secondItem="ffm-wg-B2E" secondAttribute="leadingMargin" constant="7" id="hhG-iH-r4d"/>
                                                                 <constraint firstItem="iGX-rC-YGJ" firstAttribute="top" secondItem="ffm-wg-B2E" secondAttribute="topMargin" constant="-8" id="mj5-Dm-4d3"/>
                                                                 <constraint firstAttribute="bottomMargin" secondItem="sPj-qU-VYt" secondAttribute="bottom" constant="10" id="unF-py-3Wn"/>
                                                                 <constraint firstAttribute="trailingMargin" secondItem="iGX-rC-YGJ" secondAttribute="trailing" constant="-9" id="ykc-Xw-kNT"/>
                                                             </constraints>
-                                                            <size key="customSize" width="375" height="80"/>
+                                                            <size key="customSize" width="375" height="70"/>
                                                             <connections>
                                                                 <outlet property="bedRoomType" destination="sPj-qU-VYt" id="2YP-s1-ZiH"/>
                                                                 <outlet property="kitchenType" destination="ffI-0h-aWW" id="Kmb-H5-hP3"/>

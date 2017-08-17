@@ -1208,21 +1208,21 @@ extension SearchResultViewController:UITableViewDelegate {
                     let index = indexPath.row - 1
                     if(Constant.MyClassConstants.isFromExchange){
                         let totalUnits = self.exactMatchResortsArrayExchange[indexPath.row].inventory?.buckets.count
-                        return CGFloat(totalUnits!*110 + 320 + cellHeight)
+                        return CGFloat(totalUnits!*80 + 300)
                     }else{
                         let totalUnits = self.exactMatchResortsArray[index].inventory?.units.count
-                        return CGFloat(totalUnits!*110 + 320 + cellHeight)
+                        return CGFloat(totalUnits!*80 + 300)
                     }
                     
                 } else {
                     
                     if(Constant.MyClassConstants.isFromExchange){
                         let totalUnits = self.exactMatchResortsArrayExchange[indexPath.row].inventory?.buckets.count
-                        return CGFloat(totalUnits!*110 + 320 + cellHeight)
+                        return CGFloat(totalUnits!*80 + 300)
                         
                     }else{
                         let totalUnits = self.exactMatchResortsArray[indexPath.row].inventory?.units.count
-                        return CGFloat(totalUnits!*110 + 320 + cellHeight)
+                        return CGFloat(totalUnits!*80 + 300)
                         
                     }
                     
@@ -1230,7 +1230,7 @@ extension SearchResultViewController:UITableViewDelegate {
             }
         }else{
             let totalUnits = self.surroundingMatchResortsArray[indexPath.row].inventory?.units.count
-            return CGFloat(totalUnits!*110 + 320)
+            return CGFloat(totalUnits!*80 + 300)
         }
       
         
@@ -1380,7 +1380,7 @@ extension SearchResultViewController:UITableViewDataSource {
                     /* self.isShowAvailability = false
                      self.resortDetailTBLView.reloadData()*/
                     
-                    UIView.animate(withDuration: 5, delay: 2, options: UIViewAnimationOptions(rawValue: 0), animations: {
+                    UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions(rawValue: 0), animations: {
                         
                         self.isShowAvailability = false
                         //cell.contentView.frame.size.height = 50.0
@@ -1514,7 +1514,7 @@ extension SearchResultViewController:UITableViewDataSource {
                         /* self.isShowAvailability = false
                          self.resortDetailTBLView.reloadData()*/
                         
-                        UIView.animate(withDuration: 5, delay: 2, options: UIViewAnimationOptions(rawValue: 0), animations: {
+                        UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions(rawValue: 0), animations: {
                             
                             self.isShowAvailability = false
                             //cell.contentView.frame.size.height = 50.0

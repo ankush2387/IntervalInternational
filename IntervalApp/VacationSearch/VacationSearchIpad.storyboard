@@ -2901,13 +2901,23 @@
                                                                             <constraint firstAttribute="height" constant="1" id="nCR-hz-7TA"/>
                                                                         </constraints>
                                                                     </view>
+                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7kr-ya-VYc" userLabel="PromotionsView">
+                                                                        <rect key="frame" x="18" y="70" width="659" height="33"/>
+                                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="height" constant="33" id="8Sy-cy-s4i"/>
+                                                                        </constraints>
+                                                                    </view>
                                                                 </subviews>
                                                             </view>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <constraints>
+                                                                <constraint firstItem="7kr-ya-VYc" firstAttribute="leading" secondItem="9y9-Mp-X4t" secondAttribute="leading" constant="18" id="3h2-Xh-P2e"/>
+                                                                <constraint firstAttribute="trailing" secondItem="7kr-ya-VYc" secondAttribute="trailing" constant="22" id="5ea-Sw-yMq"/>
                                                                 <constraint firstItem="9rk-yd-BD2" firstAttribute="centerY" secondItem="Qzm-II-mX8" secondAttribute="centerY" id="8az-VB-NVV"/>
                                                                 <constraint firstItem="7RX-KI-CYS" firstAttribute="centerY" secondItem="9y9-Mp-X4t" secondAttribute="centerY" id="AFP-ju-rfD"/>
                                                                 <constraint firstItem="7RX-KI-CYS" firstAttribute="leading" secondItem="9y9-Mp-X4t" secondAttribute="leading" constant="20" id="Dnv-Tb-bOa"/>
+                                                                <constraint firstItem="7kr-ya-VYc" firstAttribute="top" secondItem="7RX-KI-CYS" secondAttribute="bottom" constant="1" id="RmP-AF-QkR"/>
                                                                 <constraint firstAttribute="trailing" secondItem="hus-Fx-oPF" secondAttribute="trailing" id="SLg-XF-yoX"/>
                                                                 <constraint firstItem="9rk-yd-BD2" firstAttribute="leading" secondItem="Qzm-II-mX8" secondAttribute="trailing" constant="16" id="Uab-eK-6iW"/>
                                                                 <constraint firstItem="hus-Fx-oPF" firstAttribute="leading" secondItem="9y9-Mp-X4t" secondAttribute="leading" constant="30" id="Wt2-9Z-4Jo"/>
@@ -2921,6 +2931,7 @@
                                                             <connections>
                                                                 <outlet property="bedRoomType" destination="7RX-KI-CYS" id="Lz2-N1-UKI"/>
                                                                 <outlet property="kitchenType" destination="tdZ-Bg-FTn" id="s3X-vd-o0F"/>
+                                                                <outlet property="promotionsView" destination="7kr-ya-VYc" id="Y8f-Uu-Ame"/>
                                                                 <outlet property="sleeps" destination="e7H-JO-Oo0" id="gZr-8K-bcz"/>
                                                             </connections>
                                                         </collectionViewCell>

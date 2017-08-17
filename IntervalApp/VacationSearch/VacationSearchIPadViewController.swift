@@ -609,7 +609,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                 SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
             }
             Constant.MyClassConstants.isFromExchange = false
-        }else if(self.segmentIndex == 2){
+        }else if(self.segmentIndex == 2 && (Helper.getAllDestinationFromLocalStorage().count>0 || Helper.getAllResortsFromLocalStorage().count>0)){
             
             sender.isEnabled = false
             Helper.showProgressBar(senderView: self)
@@ -695,6 +695,16 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
             }
             
             Constant.MyClassConstants.isFromExchange = true
+        }else{
+            if(segmentIndex == 1){
+                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
+            }else if(segmentIndex == 2){
+                if(Constant.MyClassConstants.relinquishmentIdArray.count == 0){
+                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
+                }else{
+                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
+                }
+            }
         }
     }
 }

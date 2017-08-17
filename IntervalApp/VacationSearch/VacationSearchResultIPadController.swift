@@ -48,6 +48,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     
     func selectedOptionis(filteredValueIs:String, indexPath:NSIndexPath, isFromFiltered:Bool) {
         
+       Helper.showProgressBar(senderView: self)
        let selectedvalue = Helper.returnFilteredValue(filteredValue: filteredValueIs)
         
         if isFromFiltered {
@@ -126,13 +127,14 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                     let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.getCheckInDateForInitialSearch()
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     Helper.helperDelegate = self
+                    Helper.hideProgressBar(senderView: self)
                     Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     self.dismiss(animated: true, completion: nil)
                     
                 })
                 { (error) in
                     
-                    SVProgressHUD.dismiss()
+                    Helper.hideProgressBar(senderView: self)
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                     self.dismiss(animated: true, completion: nil)
                     self.resortDetailTBLView.reloadData()
@@ -162,30 +164,31 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                     let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.getCheckInDateForInitialSearch()
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     Helper.helperDelegate = self
-                    Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                    Helper.hideProgressBar(senderView: self)
+                    Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     self.dismiss(animated: true, completion: nil)
                     
                 })
                 { (error) in
                     
-                    SVProgressHUD.dismiss()
+                    Helper.hideProgressBar(senderView: self)
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                     self.dismiss(animated: true, completion: nil)
                     self.resortDetailTBLView.reloadData()
                 }
-                
             }
-            
-
         } else {
             Constant.MyClassConstants.sortingIndex = indexPath.row
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            Constant.MyClassConstants.appSettings = appDelegate.createAppSetting()
+            Constant.MyClassConstants.initialVacationSearch.sortType = AvailabilitySortType(rawValue: selectedvalue)!
             
+            let vacationSearchForSorting = VacationSearch.init(Constant.MyClassConstants.appSettings, Constant.MyClassConstants.initialVacationSearch.searchCriteria)
             
-            let vacationSearchForSorting = Constant.MyClassConstants.initialVacationSearch
             
             vacationSearchForSorting.sortType = AvailabilitySortType(rawValue: selectedvalue)!
             
-            let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
+            let activeInterval = vacationSearchForSorting.bookingWindow.getActiveInterval()
             Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
             Constant.MyClassConstants.isFromSorting = true
             let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
@@ -212,6 +215,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     
     func createSections(){
         let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
+
             if Constant.MyClassConstants.isFromExchange {
                 if(sections.count > 0) {
                     let resortsExact = sections[0].item?.exchangeInventory
@@ -223,12 +227,14 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                 }
            
             } else {
+                if(sections.count > 0) {
                 let resortsExact = sections[0].item?.rentalInventory
                 exactMatchResortsArray = resortsExact!
                 if(sections.count > 1){
                     let resortsSurrounding = sections[1].item?.rentalInventory
                     surroundingMatchResortsArray = resortsSurrounding!
                 }
+              }
             }
             
             
@@ -652,6 +658,7 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
         }
     }
     
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         collectionView.layer.borderWidth = 0.5
         collectionView.layer.borderColor = UIColor.lightGray.cgColor
@@ -878,6 +885,38 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
                         cell.sleeps.text =  totalSleepCapacity + String(unit.privateSleepCapacity) + Constant.CommonLocalisedString.privateString
                         
                     }
+                    
+                    let promotions = invetoryItem.buckets[indexPath.item].promotions
+                    if (promotions.count) > 0 {
+                        for view in cell.promotionsView.subviews {
+                            view.removeFromSuperview()
+                        }
+                        
+                        cellHeight = 55 + (14*(promotions.count))
+                        var yPosition: CGFloat = 0
+                        for promotion in promotions {
+                            let imgV = UIImageView(frame: CGRect(x:10, y: yPosition, width: 15, height: 15))
+                            imgV.image = UIImage(named: Constant.assetImageNames.promoImage)
+                            let promLabel = UILabel(frame: CGRect(x:30, y: yPosition, width: cell.promotionsView.bounds.width, height: 15))
+                            let attrStr = try! NSAttributedString(
+                                data: "\(promotion.offerContentFragment)".data(using: String.Encoding.unicode, allowLossyConversion: true)!,
+                                options: [ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType],
+                                documentAttributes: nil)
+                            promLabel.attributedText = attrStr
+                            //promLabel.text = promotion.offerName
+                            promLabel.adjustsFontSizeToFitWidth = true
+                            promLabel.minimumScaleFactor = 0.7
+                            promLabel.numberOfLines = 0
+                            promLabel.textColor = UIColor(red: 0, green: 119/255, blue: 190/255, alpha: 1)
+                            promLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 18)
+                            cell.promotionsView.addSubview(imgV)
+                            cell.promotionsView.addSubview(promLabel)
+                            yPosition += 15
+                        }
+                    }
+                    
+                    
+                    
                     return cell
                     
                 }
@@ -1399,3 +1438,4 @@ extension VacationSearchResultIPadController:HelperDelegate {
     func resetCalendar(){
     }
 }
+
