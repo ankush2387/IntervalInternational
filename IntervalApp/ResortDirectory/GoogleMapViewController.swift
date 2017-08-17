@@ -758,7 +758,7 @@ class GoogleMapViewController: UIViewController {
             if(Constant.RunningDevice.deviceIdiom == .phone){
             _ = self.navigationController?.popViewController(animated: true)
             }else{
-                self.navigationController?.popViewController(animated: true)
+                self.navigationController?.dismiss(animated: true, completion: nil)
             }
             
         }

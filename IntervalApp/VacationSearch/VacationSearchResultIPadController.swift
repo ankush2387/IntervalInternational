@@ -218,6 +218,16 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     
     func createSections(){
         let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
+        
+        if(sections.count == 0){
+            
+            let headerView = Helper.noResortView(senderView:self.view)
+            resortDetailTBLView.tableHeaderView = headerView
+            
+        }else{
+            let headerView = UIView()
+           resortDetailTBLView.tableHeaderView = headerView
+        }
 
             if Constant.MyClassConstants.isFromExchange {
                 if(sections.count > 0) {
