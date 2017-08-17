@@ -733,9 +733,6 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
                     let unit = (invetoryItem.buckets[indexPath.item].unit)!
                     DarwinSDK.logger.info("\(String(describing: Helper.resolveUnitInfo(unit: unit)))")
                     
-                    // price
-                    let price = Int(unit.prices[0].price)
-
                     
                     // bedroom details
                     
@@ -766,8 +763,6 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
                         cell.sleeps.text =  totalSleepCapacity + String(unit.privateSleepCapacity) + Constant.CommonLocalisedString.privateString
                         
                     }
-
-
                     return cell
                     
                 }
@@ -1199,7 +1194,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
             }
         }else{
         if(sectionsInSearchResult[section].hasItem() && sectionsInSearchResult[section].destination == nil){
-            if(sectionsInSearchResult[section].exactMatch)!{
+            if(sectionsInSearchResult[section].exactMatch == nil){
                 headerLabel.text  = "\(Constant.CommonLocalisedString.exactString) \( Constant.MyClassConstants.vacationSearchResultHeaderLabel)"
                 
                 headerView.backgroundColor = IUIKColorPalette.primary1.color
