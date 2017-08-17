@@ -96,7 +96,7 @@
         <scene sceneID="AXO-66-1Q5">
             <objects>
                 <navigationController id="YXh-lN-KMw" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="6Ru-xD-idh">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="6Ru-xD-idh">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2548,11 +2548,11 @@
                                             <outlet property="promotionWebView" destination="Nvu-4a-Quu" id="BUh-In-pnz"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AvailbilityCell" rowHeight="512" id="hTJ-2g-4PE" customClass="SearchTableViewCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="300.5" width="708" height="512"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AvailbilityCell" rowHeight="552" id="hTJ-2g-4PE" customClass="SearchTableViewCell" customModule="IntervalApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="300.5" width="708" height="552"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hTJ-2g-4PE" id="JXa-tf-WYD">
-                                            <rect key="frame" x="0.0" y="0.0" width="708" height="512"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="708" height="552"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="j4M-wW-Iom">
@@ -2573,7 +2573,7 @@
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <subviews>
                                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NoImageIcon" translatesAutoresizingMaskIntoConstraints="NO" id="rFA-A6-XVz">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="699" height="242"/>
+                                                                        <rect key="frame" x="0.0" y="-1" width="699" height="243"/>
                                                                         <color key="backgroundColor" red="0.65490196079999996" green="0.65490196079999996" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     </imageView>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f60-79-76t">
@@ -2640,7 +2640,7 @@
                                                                 <constraint firstAttribute="bottom" secondItem="f60-79-76t" secondAttribute="bottom" id="W6c-pr-TRn"/>
                                                                 <constraint firstAttribute="trailing" secondItem="rFA-A6-XVz" secondAttribute="trailing" id="d4M-GO-8xy"/>
                                                                 <constraint firstItem="f60-79-76t" firstAttribute="leading" secondItem="1TS-0R-bY0" secondAttribute="leading" id="geH-76-ZRm"/>
-                                                                <constraint firstItem="rFA-A6-XVz" firstAttribute="top" secondItem="1TS-0R-bY0" secondAttribute="top" id="jNQ-Oo-0fu"/>
+                                                                <constraint firstItem="rFA-A6-XVz" firstAttribute="top" secondItem="1TS-0R-bY0" secondAttribute="top" constant="-1" id="jNQ-Oo-0fu"/>
                                                                 <constraint firstItem="rFA-A6-XVz" firstAttribute="leading" secondItem="1TS-0R-bY0" secondAttribute="leading" id="m2e-gk-diU"/>
                                                                 <constraint firstItem="70S-h8-3f2" firstAttribute="top" secondItem="1TS-0R-bY0" secondAttribute="topMargin" constant="12" id="n9i-Pd-rD0"/>
                                                                 <constraint firstAttribute="trailing" secondItem="f60-79-76t" secondAttribute="trailing" constant="-20" id="qp8-et-Ibk"/>
@@ -2935,7 +2935,7 @@
                                                 <constraint firstItem="j4M-wW-Iom" firstAttribute="top" secondItem="JXa-tf-WYD" secondAttribute="top" id="G2N-9w-jLK"/>
                                                 <constraint firstAttribute="trailing" secondItem="j4M-wW-Iom" secondAttribute="trailing" id="qgt-xq-0I5"/>
                                                 <constraint firstItem="j4M-wW-Iom" firstAttribute="leading" secondItem="JXa-tf-WYD" secondAttribute="leading" id="vdt-tX-Xlm"/>
-                                                <constraint firstAttribute="bottom" secondItem="j4M-wW-Iom" secondAttribute="bottom" id="wVJ-oH-rdE"/>
+                                                <constraint firstAttribute="bottom" secondItem="j4M-wW-Iom" secondAttribute="bottom" constant="40" id="wVJ-oH-rdE"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -3061,7 +3061,7 @@
         <scene sceneID="hwE-GA-7Y4">
             <objects>
                 <navigationController id="Kj4-oV-nKd" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="PIk-h1-MHc">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="PIk-h1-MHc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -3490,7 +3490,7 @@
         <scene sceneID="DbV-Z9-AeY">
             <objects>
                 <navigationController id="hie-AV-xvD" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="f6g-7W-eAZ">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="f6g-7W-eAZ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -8067,7 +8067,7 @@ Units Upgrade with this selection.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Wc0-eI-yK9" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="98v-Sn-Axw">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="98v-Sn-Axw">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -8448,7 +8448,7 @@ Units Upgrade with this selection.</string>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="lDo-kQ-A9s" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="h8X-dQ-5XW"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="lNH-0Y-9a5">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="lNH-0Y-9a5">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
