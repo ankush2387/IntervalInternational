@@ -161,10 +161,10 @@ class DashboardIPadTableViewController: UITableViewController {
         switch (section) {
         case 0:
             
-            if(Constant.MyClassConstants.getawayAlertsArray.count > 0){
-                return 1
+            if(Constant.MyClassConstants.getawayAlertsArray.count >= 3){
+                return 3
             }else{
-                return 0
+                return Constant.MyClassConstants.getawayAlertsArray.count
             }
         default:
             return 1

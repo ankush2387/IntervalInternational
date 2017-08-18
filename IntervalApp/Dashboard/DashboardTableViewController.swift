@@ -213,10 +213,10 @@ class DashboardTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if(dashboardArray[section] as! String == Constant.dashboardTableScreenReusableIdentifiers.alert){
-            if(Constant.MyClassConstants.getawayAlertsArray.count > 0){
-                return 1
+            if(Constant.MyClassConstants.getawayAlertsArray.count >= 3){
+                return 3
             }else{
-                return 0
+                return Constant.MyClassConstants.getawayAlertsArray.count
             }
         }else if(dashboardArray[section] as! String == Constant.dashboardTableScreenReusableIdentifiers.upcoming){
             if( Constant.MyClassConstants.upcomingTripsArray.count <= 2) {
