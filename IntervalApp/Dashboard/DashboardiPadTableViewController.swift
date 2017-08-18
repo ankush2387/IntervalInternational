@@ -18,7 +18,7 @@ class DashboardIPadTableViewController: UITableViewController {
     @IBOutlet var homeTableView: UITableView!
     @IBOutlet var homeTableCollectionView:UICollectionView!
     var showGetaways = false
-    var showExchange = false
+    var showExchange = true
     
     override func viewWillAppear(_ animated: Bool) {
         //***** Adding notification to reload table when all alerts have been fetched *****//
@@ -38,7 +38,17 @@ class DashboardIPadTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+         Helper.showProgressBar(senderView: self)
         Helper.getTopDeals(senderVC: self)
+        
+        Helper.getFlexExchangeDeals(senderVC: self) { (success) in
+            if success {
+                self.homeTableView.reloadData()
+                Helper.hideProgressBar(senderView: self)
+            } else {
+                Helper.hideProgressBar(senderView: self)
+            }
+        }
         
         //***** Set general Nav attributes *****//
         self.title = Constant.ControllerTitles.dashboardTableViewController
@@ -63,7 +73,6 @@ class DashboardIPadTableViewController: UITableViewController {
     //***** Function called when notification for top 10 deals is fired. *****//
     func reloadTopDestinations(){
         Helper.removeServiceCallBackgroundView(view: self.view)
-        SVProgressHUD.dismiss()
         self.showGetaways = true
         homeTableView.reloadData()
     }
@@ -72,7 +81,6 @@ class DashboardIPadTableViewController: UITableViewController {
     
     func reloadUpcomingTrip(){
         Helper.removeServiceCallBackgroundView(view: self.view)
-        SVProgressHUD.dismiss()
         let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.myUpcomingTripIpad, bundle: nil)
         let resultController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.upcomingTripsViewController) as? UpComingTripDetailIPadViewController
         let navController = UINavigationController(rootViewController: resultController!)
@@ -309,13 +317,13 @@ class DashboardIPadTableViewController: UITableViewController {
             if(indexPath.section == 3) {
                 if(!showExchange){
                     let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: cell.contentView.frame.width - 20, height: 20))
-                    resortImageNameLabel.text = Constant.segmentControlItems.getawaysLabelText
+                    resortImageNameLabel.text = Constant.segmentControlItems.flexchangeLabelText
                     resortImageNameLabel.textColor = UIColor.black
                     resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
                     cell.addSubview(resortImageNameLabel)
                 }else{
                     let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: cell.contentView.frame.width - 20, height: 20))
-                    resortImageNameLabel.text = Constant.segmentControlItems.flexchangeLabelText
+                    resortImageNameLabel.text = Constant.segmentControlItems.getawaysLabelText
                     resortImageNameLabel.textColor = UIColor.black
                     resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
                     cell.addSubview(resortImageNameLabel)
@@ -325,7 +333,7 @@ class DashboardIPadTableViewController: UITableViewController {
             else {
                 
                 let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: cell.contentView.frame.width - 20, height: 20))
-                resortImageNameLabel.text = Constant.segmentControlItems.getawaysLabelText
+                resortImageNameLabel.text = Constant.segmentControlItems.flexchangeLabelText
                 
                 resortImageNameLabel.textColor = UIColor.black
                 resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
@@ -346,10 +354,10 @@ class DashboardIPadTableViewController: UITableViewController {
             homeTableCollectionView.delegate = self
             homeTableCollectionView.dataSource = self
             if(indexPath.section == 3) {
-                homeTableCollectionView.tag = 2
+                homeTableCollectionView.tag = 3
             }
             else {
-                homeTableCollectionView.tag = 3
+                homeTableCollectionView.tag = 2
             }
             
             homeTableCollectionView.isScrollEnabled = true
@@ -381,12 +389,7 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
             return Constant.MyClassConstants.upcomingTripsArray.count
         }
         else if(collectionView.tag == 2) {
-            
-            if(Constant.MyClassConstants.topDeals != nil){
-                return 0
-            }else{
-                return 0
-            }
+            return Constant.MyClassConstants.flexExchangeDeals.count
         }
         else {
             return Constant.MyClassConstants.topDeals.count
@@ -468,40 +471,51 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
                 subview.removeFromSuperview()
             }
             
-            
-            let topTenDeals = Constant.MyClassConstants.topDeals[indexPath.row]
-            let resortFlaxImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: 220) )
-            resortFlaxImageView.backgroundColor = UIColor.lightGray
-            let rentalDeal:RentalDeal = Constant.MyClassConstants.topDeals[indexPath.row]
-            if let imageURL = rentalDeal.images.first?.url {
-                resortFlaxImageView.setImageWith(URL(string: imageURL), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
-                    if (error != nil) {
-                        resortFlaxImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
-                    }
-                }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
-            }
-           
-            cell.addSubview(resortFlaxImageView)
-            
             if(collectionView.tag == 2) {
                 
-                let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: cell.contentView.frame.height - 50, width: cell.contentView.frame.width - 20, height: 50))
+                let flexDeal = Constant.MyClassConstants.flexExchangeDeals[indexPath.row]
+                let resortFlaxImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: cell.contentView.frame.height) )
+                resortFlaxImageView.backgroundColor = UIColor.lightGray
+                if let imageURL = flexDeal.images.first?.url {
+                    resortFlaxImageView.setImageWith(URL(string: imageURL), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
+                        if (error != nil) {
+                            resortFlaxImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
+                        }
+                    }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+                }
                 
-                resortImageNameLabel.text = topTenDeals.header!
+                cell.addSubview(resortFlaxImageView)
+
+                
+                let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: cell.contentView.frame.midY - 25, width: cell.contentView.frame.width - 20, height: 50))
+                
+                resortImageNameLabel.text = flexDeal.name
                 resortImageNameLabel.numberOfLines = 2
                 resortImageNameLabel.textAlignment = NSTextAlignment.center
-                resortImageNameLabel.textColor = UIColor.black
+                resortImageNameLabel.textColor = UIColor.white
                 resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 20)
                 resortImageNameLabel.backgroundColor = UIColor.clear
                 cell.addSubview(resortImageNameLabel)
                 cell.layer.borderColor = UIColor.lightGray.cgColor
                 cell.layer.borderWidth = 1.0
-                cell.layer.cornerRadius = 7
+//                cell.layer.cornerRadius = 7
                 cell.layer.masksToBounds = true
                 
             }
             else {
+                let topTenDeals = Constant.MyClassConstants.topDeals[indexPath.row]
+                let resortFlaxImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: 220) )
+                resortFlaxImageView.backgroundColor = UIColor.lightGray
+                let rentalDeal:RentalDeal = Constant.MyClassConstants.topDeals[indexPath.row]
+                if let imageURL = rentalDeal.images.first?.url {
+                    resortFlaxImageView.setImageWith(URL(string: imageURL), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
+                        if (error != nil) {
+                            resortFlaxImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
+                        }
+                    }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+                }
                 
+                cell.addSubview(resortFlaxImageView)
                 
                 
                 let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: cell.contentView.frame.height - 50, width: cell.contentView.frame.width - 20, height: 50))
