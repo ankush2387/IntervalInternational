@@ -1787,6 +1787,47 @@ public class Helper{
         )
     }
     
+    
+    
+    
+    /*
+     * Execute Exchange Search Availability
+     */
+    
+ static func executeExchangeSearchAvailability(activeInterval: BookingWindowInterval!, checkInDate:Date!, senderViewController:UIViewController, vacationSearch:VacationSearch) {
+        showProgressBar(senderView: senderViewController)
+        let request = ExchangeSearchAvailabilityRequest()
+        request.checkInDate = checkInDate
+        request.resortCodes = activeInterval.resortCodes!
+        request.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
+        request.travelParty = Constant.MyClassConstants.travelPartyInfo
+        
+        ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: request, onSuccess: { (searchAvailabilityResponse) in
+            // Update Exchange inventory
+            hideProgressBar(senderView: senderViewController)
+            Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.inventory = searchAvailabilityResponse
+            
+            // Check if not has availability in the desired check-In date.
+            if ( Constant.MyClassConstants.initialVacationSearch.searchCriteria.checkInDate != checkInDate) {
+                self.showNearestCheckInDateSelectedMessage()
+            }
+            
+            showAvailabilityResults(vacationSearch:vacationSearch)
+            hideProgressBar(senderView:senderViewController)
+            print(searchAvailabilityResponse)
+            if(senderViewController.isKind(of: VacationSearchResultIPadController.self) || senderViewController.isKind(of: SearchResultViewController.self)){
+                
+            }else{
+                senderViewController.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
+            }
+            
+        })
+        { (error) in
+            hideProgressBar(senderView: senderViewController)
+            SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.noResultError, message: error.localizedDescription)
+        }
+    }
+    
     static func showScrollingCalendar(vacationSearch:VacationSearch) {
         DarwinSDK.logger.info("-- Create Calendar based on Booking Window Intervals --")
         Constant.MyClassConstants.totalBucketArray.removeAll()
@@ -1816,6 +1857,7 @@ public class Helper{
     }
     
     static func showNearestCheckInDateSelectedMessage() {
+        Constant.MyClassConstants.isShowAvailability = true
         DarwinSDK.logger.info("NEAREST CHECK-IN DATE SELECTED - We found availability close to your desired Check-in Date")
     }
     

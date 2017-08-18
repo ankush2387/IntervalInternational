@@ -120,9 +120,17 @@ class Constant: NSObject {
         // Sorting or filter options array
         static var filteredOptiondArray = ["Crecent resort on...+3 more", "Hyatt Beach Resort House", "Key West, Florida", "Las Vegas, Nevada"]
         
-        static var sortingOptionArray = ["Resort Name:", "Resort Name:", "Price:", "Price:", "City:", "City:", "Resort Tier:", "Resort Tier:"]
+        static var rentalSortingOptionArray = ["Resort Name:", "Resort Name:", "Price:", "Price:", "City:", "City:", "Resort Tier:", "Resort Tier:"]
         
-        static var sortingRangeArray = ["A - Z", "Z - A", "Low - High", "High - Low", "A - Z", "Z - A", "Low - High", "High - Low"]
+         static var rentalSortingRangeArray = ["A - Z", "Z - A", "Low - High", "High - Low", "A - Z", "Z - A", "Low - High", "High - Low"]
+        
+        static var exchangeSortingOptionArray = ["Resort Name:", "Resort Name:", "City:", "City:", "Resort Tier:", "Resort Tier:"]
+        
+         static var exchangeSortingRangeArray = ["A - Z", "Z - A", "A - Z", "Z - A", "Low - High", "High - Low"]
+        
+       
+        
+       
         
         static var filteredIndex = 0
         static var sortingIndex = -1
@@ -466,6 +474,9 @@ class Constant: NSObject {
         static var additionalAdv = "ADDITIONAL INFORMATION"
         static var dateFormat = "yyyy-MM-dd"
         static var dateFormat1 = "yyyy-MM-dd"
+        
+        //use for no Availability Cell
+        static var isShowAvailability = false
         
         static var isTrue = "true"
         static var isFalse = "false"
@@ -1106,6 +1117,7 @@ class Constant: NSObject {
         static var buttonCell = "ButtonTableCell"
         static var resortDetailCell = "ImageCell"
         static var resortInventoryCell = "RentalInventory"
+        static var exchangeInventoryCell = "ExchangeInventory"
         static var availabilityCell = "AvailbilityCell"
         static var novailabilityCell = "noAvailbilityCell"
     }
