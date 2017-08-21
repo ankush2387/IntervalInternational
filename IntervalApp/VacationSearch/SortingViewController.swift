@@ -121,20 +121,9 @@ class SortingViewController: UIViewController {
             let indexPath = self.sortingTBLview.indexPath(for: cell!)
             
             self.selectedSortingIndex = (indexPath?.row)!
-            
-            if Constant.MyClassConstants.isFromExchange {
-                
-                     self.delegate?.selectedOptionis(filteredValueIs: Constant.MyClassConstants.exchangeSortingSetValues[(indexPath?.row)!], indexPath: indexPath! as NSIndexPath, isFromFiltered: false)
-            } else {
-                     self.delegate?.selectedOptionis(filteredValueIs: Constant.MyClassConstants.rentalSortingSetValues[(indexPath?.row)!], indexPath: indexPath! as NSIndexPath, isFromFiltered: false)
-            }
+
+            self.delegate?.selectedOptionis(filteredValueIs: Constant.MyClassConstants.sortingSetValues[(indexPath?.row)!], indexPath: indexPath! as NSIndexPath, isFromFiltered: false)
         }
-        
-        //self.navigationController?.popViewController(animated: true)
-        
-        
-       // self.sortingTBLview.reloadData()
-        
     }
     
     
@@ -169,12 +158,7 @@ extension SortingViewController:UITableViewDelegate {
                 self.delegate?.selectedOptionis(filteredValueIs: val[indexPath.row].resortName, indexPath: indexPath as NSIndexPath, isFromFiltered: true)
             }
         } else {
-            if Constant.MyClassConstants.isFromExchange {
-                self.delegate?.selectedOptionis(filteredValueIs: Constant.MyClassConstants.exchangeSortingSetValues[(indexPath.row)], indexPath: indexPath as NSIndexPath, isFromFiltered: false)
-            } else {
-                self.delegate?.selectedOptionis(filteredValueIs: Constant.MyClassConstants.rentalSortingSetValues[(indexPath.row)], indexPath: indexPath as NSIndexPath, isFromFiltered: false)
-            }
-            
+            self.delegate?.selectedOptionis(filteredValueIs: Constant.MyClassConstants.sortingSetValues[(indexPath.row)], indexPath: indexPath as NSIndexPath, isFromFiltered: false)
         }
     }
 }
