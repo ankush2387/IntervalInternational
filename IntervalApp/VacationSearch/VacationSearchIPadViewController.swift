@@ -43,6 +43,18 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.searchVacationSegementControl.removeAllSegments()
+        
+        // updating segment control number of segment according to app settings response
+        for i in 0 ..< (UserContext.sharedInstance.appSettings?.vacationSearch?.vacationSearchTypes.count)! {
+            
+            let type = UserContext.sharedInstance.appSettings?.vacationSearch?.vacationSearchTypes[i]
+            self.searchVacationSegementControl.insertSegment(withTitle: Helper.vacationSearchTypeSegemtStringToDisplay(vacationSearchType: type!), at: i, animated: true)
+            
+            self.searchVacationSegementControl.selectedSegmentIndex = 0
+        }
+        
+        
         NotificationCenter.default.addObserver(self, selector: #selector(refreshTableView), name: NSNotification.Name(rawValue: Constant.notificationNames.refreshTableNotification), object: nil)
         self.getVacationSearchDetails()
     }

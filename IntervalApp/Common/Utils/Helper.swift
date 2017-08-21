@@ -1766,7 +1766,7 @@ public class Helper{
                                     
         },
                                    onError:{ (error) in
-                                     Constant.MyClassConstants.isFromSorting = false
+                                    Constant.MyClassConstants.isFromSorting = false
                                     hideProgressBar(senderView: senderViewController)
                                     helperDelegate?.resortSearchComplete()
                                     SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
@@ -1783,6 +1783,7 @@ public class Helper{
                                         // TODO: Handle SDK/API errors
                                         DarwinSDK.logger.error("Handle SDK/API errors.")
                                     }
+                                    
         }
         )
     }
@@ -2037,6 +2038,25 @@ public class Helper{
         viewcontroller.present(resendAlert, animated: false, completion: nil)
 
     }
+    
+    //***** function to return vacation search screen segment type string to display in UI *****//
+    static func vacationSearchTypeSegemtStringToDisplay(vacationSearchType:String) -> String {
+        
+        switch vacationSearchType {
+            
+        case "COMBINED":
+            return "Search Both"
+        case "EXCHANGE":
+            return "Exchange"
+        case "RENTAL":
+            return "Getaways"
+        
+        default:
+            return ""
+        }
+    }
+
+
 }
 
 

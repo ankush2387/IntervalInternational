@@ -1645,7 +1645,7 @@ extension SearchResultViewController:UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.availabilityCell, for: indexPath) as! SearchTableViewCell
                 cell.tag = indexPath.section
                 cell.resortInfoCollectionView.reloadData()
-                if (self.isShowAvailability == true && indexPath.section == 0){
+                if (self.isShowAvailability == true){
                     cell.resortInfoCollectionView.tag = indexPath.row - 1
                 } else {
                     cell.resortInfoCollectionView.tag = indexPath.row
