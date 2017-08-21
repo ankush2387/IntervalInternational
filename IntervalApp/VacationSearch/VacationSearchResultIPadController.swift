@@ -1049,7 +1049,6 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
                 }else{
                     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.resortInventoryCell, for: indexPath) as! RentalInventoryCVCell
                     var invetoryItem = Resort()
-                    cell.backgroundColor = UIColor.green
                     print(invetoryItem)
                     if(collectionView.superview?.superview?.tag == 0){
                         invetoryItem = exactMatchResortsArray[collectionView.tag]
