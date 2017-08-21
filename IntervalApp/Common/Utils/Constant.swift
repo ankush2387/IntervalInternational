@@ -121,17 +121,13 @@ class Constant: NSObject {
         static var filteredOptiondArray = ["Crecent resort on...+3 more", "Hyatt Beach Resort House", "Key West, Florida", "Las Vegas, Nevada"]
         
         static var rentalSortingOptionArray = ["Resort Name:", "Resort Name:", "Price:", "Price:", "City:", "City:", "Resort Tier:", "Resort Tier:"]
+        static var rentalSortingSetValues = ["ResortNameAsc", "ResortNameDesc", "CityNameAsc", "CityNameDesc", "ResortTierLowToHigh", "ResortTierHighToLow", "PriceLowToHigh", "PriceHighToLow", "UNKNOWN"]
         
-         static var rentalSortingRangeArray = ["A - Z", "Z - A", "Low - High", "High - Low", "A - Z", "Z - A", "Low - High", "High - Low"]
+        static var rentalSortingRangeArray = ["A - Z", "Z - A", "Low - High", "High - Low", "A - Z", "Z - A", "Low - High", "High - Low"]
         
         static var exchangeSortingOptionArray = ["Resort Name:", "Resort Name:", "City:", "City:", "Resort Tier:", "Resort Tier:"]
-        
-         static var exchangeSortingRangeArray = ["A - Z", "Z - A", "A - Z", "Z - A", "Low - High", "High - Low"]
-        
-       
-        
-       
-        
+        static var exchangeSortingSetValues = ["ResortNameAsc", "ResortNameDesc", "CityNameAsc", "CityNameDesc", "ResortTierLowToHigh", "ResortTierHighToLow"]
+        static var exchangeSortingRangeArray = ["A - Z", "Z - A", "A - Z", "Z - A", "Low - High", "High - Low"]
         static var filteredIndex = 0
         static var sortingIndex = -1
 

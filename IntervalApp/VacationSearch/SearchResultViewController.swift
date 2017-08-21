@@ -57,12 +57,6 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
         if isFromFiltered {
             Constant.MyClassConstants.filteredIndex = indexPath.row
             
-            let appSettings = AppSettings()
-            appSettings.searchByBothEnable = false
-            appSettings.checkInSelectorStrategy = CheckInSelectorStrategy.First.rawValue
-            appSettings.collapseBookingIntervalEnable = true
-            
-            
             let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
             switch Constant.MyClassConstants.filterOptionsArray[indexPath.row] {
             case .Destination(let destination):
@@ -86,7 +80,7 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
             
             rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
             
-            Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(appSettings, rentalSearchCriteria)
+            Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(UserContext.sharedInstance.appSettings, rentalSearchCriteria)
             
             
             ADBMobile.trackAction(Constant.omnitureEvents.event9, data: nil)
@@ -111,10 +105,10 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
                 
                 DarwinSDK.logger.info("Auto call to Search Availability")
                 
-                let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.getCheckInDateForInitialSearch()
+                //let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.getCheckInDateForInitialSearch()
                 Constant.MyClassConstants.checkInDates = response.checkInDates
                 Helper.helperDelegate = self
-                Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                 self.dismiss(animated: true, completion: nil)
                 
             })
@@ -133,7 +127,8 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
             let vacationSearchForSorting = Constant.MyClassConstants.initialVacationSearch
             
             vacationSearchForSorting.sortType = AvailabilitySortType(rawValue: selectedvalue)!
-            Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: vacationSearchForSorting.bookingWindow.currentInterval)
+            self.createSections()
+           // Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: vacationSearchForSorting.bookingWindow.currentInterval)
             Constant.MyClassConstants.isFromSorting = false
             self.dismiss(animated: true, completion: nil)
             
@@ -155,18 +150,8 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
     
     func createSections(){
         let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
-        
-        /*if(sections.count == 0){
-            
-            let headerView = Helper.noResortView(senderView:self.view)
-            searchResultTableView.tableHeaderView = headerView
-            
-        }else{
-            let headerView = UIView()
-            searchResultTableView.tableHeaderView = headerView
-        }*/
-        
         if(Constant.MyClassConstants.isFromExchange){
+            
             if(sections.count > 0){
                 let resortsExact = sections[0].item?.exchangeInventory
                 exactMatchResortsArrayExchange = resortsExact!
@@ -174,11 +159,10 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
                     let resortsSurrounding = sections[1].item?.exchangeInventory
                     surroundingMatchResortsArrayExchange = resortsSurrounding!
                 }
-                
             }
-    
-        } else{
             
+        } else{
+
                 if(sections.count > 0){
                     let resortsExact = sections[0].item?.rentalInventory
                     exactMatchResortsArray = resortsExact!
@@ -904,9 +888,9 @@ extension SearchResultViewController:UICollectionViewDelegate {
                     }else{
                         Constant.MyClassConstants.hasAdditionalCharges = false
                     }
-                    processRequest.unit = units[0]
+                    processRequest.unit = units[indexPath.item]
                     
-                    let processRequest1 = RentalProcessStartRequest.init(resortCode: Constant.MyClassConstants.selectedResort.resortCode!, checkInDate: invent.checkInDate!, checkOutDate: invent.checkOutDate!, unitSize: UnitSize(rawValue: units[0].unitSize!)!, kitchenType: KitchenType(rawValue: units[0].kitchenType!)!)
+                    let processRequest1 = RentalProcessStartRequest.init(resortCode: Constant.MyClassConstants.selectedResort.resortCode!, checkInDate: invent.checkInDate!, checkOutDate: invent.checkOutDate!, unitSize: UnitSize(rawValue: units[indexPath.item].unitSize!)!, kitchenType: KitchenType(rawValue: units[indexPath.item].kitchenType!)!)
                     
                     RentalProcessClient.start(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest1, onSuccess: {(response) in
                         
@@ -1348,7 +1332,7 @@ extension SearchResultViewController:UICollectionViewDataSource {
                 }
             }else{
                 
-                if(sectionsInSearchResult[section].hasItem() && sectionsInSearchResult[section].destination == nil){
+                if(sectionsInSearchResult[section].hasItem()){
                     
                     if(sectionsInSearchResult[section].item!.rentalInventory.count > 0){
                         headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing:sectionsInSearchResult[section].item!.rentalInventory[0].resortName!))"
@@ -1362,7 +1346,7 @@ extension SearchResultViewController:UICollectionViewDataSource {
                 }else{
                     if(sectionsInSearchResult[section].exactMatch)!{
                         
-                        if sectionsInSearchResult[section].destination != nil {
+                        if sectionsInSearchResult[section].item != nil {
                             
                             print("-------------->>>>>>\(Constant.CommonLocalisedString.exactString) \( Constant.MyClassConstants.vacationSearchResultHeaderLabel)")
                             headerLabel.text  = "\(Constant.CommonLocalisedString.exactString) \( Constant.MyClassConstants.vacationSearchResultHeaderLabel)"
@@ -1372,11 +1356,6 @@ extension SearchResultViewController:UICollectionViewDataSource {
                         
                     }else{
                         
-                        if sectionsInSearchResult[section].destination != nil {
-                            headerLabel.text = Constant.CommonLocalisedString.surroundingString + "\(String(describing: Helper.resolveDestinationInfo(destination: sectionsInSearchResult[section].destination!)))"
-                            headerView.backgroundColor = Constant.CommonColor.headerGreenColor
-                            
-                        }
                     }
                 }
                 

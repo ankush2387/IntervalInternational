@@ -124,11 +124,11 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                         //Helper.showNotAvailabilityResults()
                     }
                     
-                    let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.getCheckInDateForInitialSearch()
+                    let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     Helper.helperDelegate = self
                     Helper.hideProgressBar(senderView: self)
-                    Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                    Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     self.dismiss(animated: true, completion: nil)
                     
                 })
@@ -161,14 +161,14 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                         //Helper.showNotAvailabilityResults()
                     }
                     
-                    let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.getCheckInDateForInitialSearch()
+                    let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     Helper.helperDelegate = self
                     Helper.hideProgressBar(senderView: self)
                     Constant.MyClassConstants.calendarDatesArray.removeAll()
                     Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
                     self.searchedDateCollectionView.reloadData()
-                    Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                    Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     self.dismiss(animated: true, completion: nil)
                     
                 })
@@ -187,7 +187,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
             Constant.MyClassConstants.appSettings = appDelegate.createAppSetting()
             Constant.MyClassConstants.initialVacationSearch.sortType = AvailabilitySortType(rawValue: selectedvalue)!
             
-            let vacationSearchForSorting = VacationSearch.init(Constant.MyClassConstants.appSettings, Constant.MyClassConstants.initialVacationSearch.searchCriteria)
+            let vacationSearchForSorting = VacationSearch.init(UserContext.sharedInstance.appSettings, Constant.MyClassConstants.initialVacationSearch.searchCriteria)
             
             
             vacationSearchForSorting.sortType = AvailabilitySortType(rawValue: selectedvalue)!
@@ -1576,7 +1576,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 headerView.backgroundColor = Constant.CommonColor.headerGreenColor
             }
         }else{
-        if(sectionsInSearchResult[section].hasItem() && sectionsInSearchResult[section].destination == nil){
+        if(sectionsInSearchResult[section].hasItem()){
             if(sectionsInSearchResult[section].exactMatch == nil){
                 headerLabel.text  = "\(Constant.CommonLocalisedString.exactString) \( Constant.MyClassConstants.vacationSearchResultHeaderLabel)"
                 
@@ -1589,23 +1589,13 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
             }
         }else{
             if(sectionsInSearchResult[section].exactMatch)!{
-                
-                if sectionsInSearchResult[section].destination != nil {
-                    
-                   //headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing: sectionsInSearchResult[section].destination!.destinationName!))"
                     print("-------------->>>>>>\(Constant.CommonLocalisedString.exactString) \( Constant.MyClassConstants.vacationSearchResultHeaderLabel)")
                     headerLabel.text  = "\(Constant.CommonLocalisedString.exactString) \( Constant.MyClassConstants.vacationSearchResultHeaderLabel)"
-                    
-                }
+                
                 headerView.backgroundColor = IUIKColorPalette.primary1.color
                 
             }else{
-                
-                if sectionsInSearchResult[section].destination != nil {
-                    headerLabel.text = Constant.CommonLocalisedString.surroundingString + "\(String(describing: Helper.resolveDestinationInfo(destination: sectionsInSearchResult[section].destination!)))"
-                    headerView.backgroundColor = Constant.CommonColor.headerGreenColor
-                    
-                }
+            
             }
         }
     }
