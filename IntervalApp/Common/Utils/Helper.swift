@@ -1576,16 +1576,16 @@ public class Helper{
         
         switch sectonHeader {
         case "SLEEPING_ACCOMMODATIONS":
-            return "SLEEPING ACCOMMODATION"
+            return "Sleeping Accomodations"
             
         case "BATHROOM_FACILITIES":
-            return "BATHROOM FACILITIES"
+            return "Bathroom Facilities"
             
         case "KITCHEN_FACILITIES":
-            return "KITCHEN FACILITIES"
+            return "Kitchen Facilities"
             
         case "OTHER_FACILITIES":
-            return "OTHER FACILITIES"
+            return "Other Facilities"
             
         default:
             return ""

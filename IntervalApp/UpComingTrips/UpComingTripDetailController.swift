@@ -603,7 +603,7 @@ extension UpComingTripDetailController:UITableViewDataSource {
                 
                 
                 let detailSectionLabel = UILabel(frame: CGRect(x: 20, y: Int(unitDetialsCellHeight), width: Int(self.view.frame.width - 20), height: 20))
-                detailSectionLabel.text = details.section!
+                detailSectionLabel.text = details.section!.capitalized
                 detailSectionLabel.font = UIFont(name: Constant.fontName.helveticaNeueBold, size: 16.0)
                 detailSectionLabel.sizeToFit()
                 
