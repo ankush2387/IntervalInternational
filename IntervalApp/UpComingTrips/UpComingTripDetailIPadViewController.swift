@@ -403,16 +403,16 @@ extension UpComingTripDetailIPadViewController:UITableViewDataSource {
             
         }else if((indexPath as NSIndexPath).section == 2) {
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.unitCell, for: indexPath) as! UpComingTripCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "UnitCell", for: indexPath) as! UpComingTripCell
             
             cell.backgroundColor = IUIKColorPalette.contentBackground.color
             
             
             if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise != nil){
             }else{
-                let unitsize = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.unitSize!
-                print(unitsize)
-                cell.bedRoomKitechenType.text =  "\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.unitSize!) \(Helper.getKitchenEnums(kitchenType: (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit?.kitchenType)!))"
+                if let unitsize = UnitSize.fromFriendlyName(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.unitSize!) {
+                    cell.bedRoomKitechenType.text =  "\(unitsize) \(Helper.getKitchenEnums(kitchenType: (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit?.kitchenType)!))"
+                }
                 
                 cell.sleepsTotalOrPrivate.text = "Sleeps \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.publicSleepCapacity) total, \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.privateSleepCapacity) Private"
             }
@@ -673,7 +673,7 @@ extension UpComingTripDetailIPadViewController:UITableViewDataSource {
             }
         case 2:
             if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.confirmationNumber != nil) {
-                return 0
+                return 1
             }else{
                 return 0
             }
