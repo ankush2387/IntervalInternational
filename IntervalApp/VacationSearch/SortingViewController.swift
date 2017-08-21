@@ -194,7 +194,7 @@ extension SortingViewController:UITableViewDataSource {
             case .Resort(let val):
                 cell.lblFilterOption.text = val.resortName
             case .ResortList(let val):
-                cell.lblFilterOption.text = "\(val[0].resortName) + \(val.count - 1)  + more"
+                cell.lblFilterOption.text = "\(val[0].resortName) + \(val.count - 1)  more"
             }
             
             if(self.selectedIndex == indexPath.row) {

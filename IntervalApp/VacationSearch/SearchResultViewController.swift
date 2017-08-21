@@ -98,7 +98,7 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
                 }else{
                     exchangeSearchCriteria.resorts = resortsArray
                 }
-                Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(resortList[0].resortName) + \(resortList.count - 1)  + more"
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(resortList[0].resortName) + \(resortList.count - 1) more"
                 
             }
             
@@ -246,25 +246,6 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
         searchResultColelctionView?.register(nib, forCellWithReuseIdentifier: Constant.customCellNibNames.searchResultCollectionCell)
         
         searchResultTableView.register(UINib(nibName: Constant.customCellNibNames.searchResultContentTableCell, bundle: nil), forCellReuseIdentifier:  Constant.customCellNibNames.searchResultContentTableCell)
-        
-        if(Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.getawayAlerts){
-            
-            //Show header for table if search is from exchange
-            let tableHeader = UIView(frame : CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height:0))
-            if(Constant.MyClassConstants.isFromExchange){
-                tableHeader.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 80)
-                tableHeader.backgroundColor = IUIKColorPalette.primary1.color
-                
-                let headerLabel = UILabel(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 80))
-                headerLabel.numberOfLines = 0
-                headerLabel.textColor = UIColor.white
-                headerLabel.textAlignment = NSTextAlignment.center
-                headerLabel.font = UIFont(name:Constant.fontName.helveticaNeue, size:15)
-                headerLabel.text = Constant.MyClassConstants.searchResultHeader
-                tableHeader.addSubview(headerLabel)
-            }
-            
-        }
         
         self.title = Constant.ControllerTitles.searchResultViewController
         let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(SearchResultViewController.menuBackButtonPressed(_:)))
@@ -1373,7 +1354,8 @@ extension SearchResultViewController:UICollectionViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.searchResultTableView.frame.width, height: 40))
-        let headerLabel = UILabel(frame: CGRect(x: 20, y: 0, width: self.searchResultTableView.frame.width - 40, height: 40))
+        let headerLabel = UILabel(frame: CGRect(x: 20, y: 0, width: self.searchResultTableView.frame.width - 60, height: 40))
+        headerLabel.font = UIFont(name:Constant.fontName.helveticaNeue, size:15)
         let headerButton = UIButton(frame: CGRect(x: 20, y: 0, width: self.searchResultTableView.frame.width - 40, height: 40))
         headerButton.addTarget(self, action: #selector(SearchResultViewController.filterByNameButtonPressed(_:)), for: .touchUpInside)
         let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
