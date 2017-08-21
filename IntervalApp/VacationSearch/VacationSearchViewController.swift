@@ -1486,6 +1486,14 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         }else if((storedData.first?.resorts.count)! > 0){
             
             if((storedData.first?.resorts[0].resortArray.count)! > 0){
+                var resorts = [Resort]()
+                for resortDetails in (storedData.first?.resorts[0].resortArray)!{
+                    let resort = Resort()
+                    resort.resortName = storedData[0].resorts[0].resortName
+                    resort.resortCode = storedData[0].resorts[0].resortCode
+                    resorts.append(resort)
+                }
+                searchCriteria.resorts = resorts
                 Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(String(describing: storedData.first?.resorts[0].resortArray[0].resortName)) + more"
                 
             }else{

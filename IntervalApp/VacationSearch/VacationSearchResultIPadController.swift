@@ -95,7 +95,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                 }else{
                     exchangeSearchCriteria.resorts = resortsArray
                 }
-                Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(resortList[0].resortName) + \(resortList.count - 1)  + more"
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(resortList[0].resortName) + \(resortList.count - 1) more"
                 
             }
             
@@ -158,6 +158,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                         
                         //Helper.showNotAvailabilityResults()
                     }
+                    Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
                     
                     let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
                     Constant.MyClassConstants.checkInDates = response.checkInDates
@@ -166,6 +167,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                     Constant.MyClassConstants.calendarDatesArray.removeAll()
                     Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
                     self.searchedDateCollectionView.reloadData()
+
                     Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     self.dismiss(animated: true, completion: nil)
                     
