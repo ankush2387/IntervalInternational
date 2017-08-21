@@ -86,15 +86,17 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
                 Constant.MyClassConstants.vacationSearchResultHeaderLabel = resort.resortName
                 
             case .ResortList(let resortList):
+                var resortsArray = [Resort]()
                 for resorts in resortList{
                     let resort = Resort()
                     resort.resortName = resorts.resortName
                     resort.resortCode = resorts.resortCode
-                    if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
-                        rentalSearchCriteria.resorts?.append(resort)
-                    }else{
-                        exchangeSearchCriteria.resorts?.append(resort)
-                    }
+                    resortsArray.append(resort)
+                }
+                if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
+                    rentalSearchCriteria.resorts = resortsArray
+                }else{
+                    exchangeSearchCriteria.resorts = resortsArray
                 }
                 Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(resortList[0].resortName) + \(resortList.count - 1)  + more"
                 
@@ -1377,45 +1379,14 @@ extension SearchResultViewController:UICollectionViewDataSource {
         let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
         if(sectionsInSearchResult.count > 0){
             
-            if(Constant.MyClassConstants.isFromSorting){
-                if(sectionsInSearchResult[section].exactMatch)!{
-                    headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
-                    headerView.backgroundColor = IUIKColorPalette.primary1.color
-                }else{
-                    headerLabel.text = Constant.CommonLocalisedString.surroundingString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
-                    headerView.backgroundColor = Constant.CommonColor.headerGreenColor
-                }
+            
+            if(sectionsInSearchResult[section].exactMatch)!{
+                headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
+                headerView.backgroundColor = IUIKColorPalette.primary1.color
             }else{
-                
-                if(sectionsInSearchResult[section].hasItem()){
-                    
-                    if(sectionsInSearchResult[section].item!.rentalInventory.count > 0){
-                        headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing:sectionsInSearchResult[section].item!.rentalInventory[0].resortName!))"
-                        headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
-                    }else if(sectionsInSearchResult[section].item!.exchangeInventory.count > 0){
-                        
-                        headerLabel.text = Constant.CommonLocalisedString.exactString + "\(String(describing:sectionsInSearchResult[section].item!.exchangeInventory[0].resort?.resortName!))"
-                        headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
-                    }
-                    headerView.backgroundColor = IUIKColorPalette.primary1.color
-                }else{
-                    if(sectionsInSearchResult[section].exactMatch)!{
-                        
-                        if sectionsInSearchResult[section].item != nil {
-                            
-                            print("-------------->>>>>>\(Constant.CommonLocalisedString.exactString) \( Constant.MyClassConstants.vacationSearchResultHeaderLabel)")
-                            headerLabel.text  = "\(Constant.CommonLocalisedString.exactString) \( Constant.MyClassConstants.vacationSearchResultHeaderLabel)"
-                            
-                        }
-                        headerView.backgroundColor = IUIKColorPalette.primary1.color
-                        
-                    }else{
-                        
-                    }
-                }
-                
+                headerLabel.text = Constant.CommonLocalisedString.surroundingString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
+                headerView.backgroundColor = Constant.CommonColor.headerGreenColor
             }
-
         }
         
         headerLabel.textColor = UIColor.white
