@@ -966,21 +966,33 @@ public class Helper{
     
     //***** common function that contains API call for top 10 deals *****//
     static func getTopDeals(senderVC : UIViewController){
-        showProgressBar(senderView: senderVC)
+//        showProgressBar(senderView: senderVC)
         RentalClient.getTop10Deals(UserContext.sharedInstance.accessToken,onSuccess: {(response) in
             print("Call 5",response)
             Constant.MyClassConstants.topDeals = response
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.refreshTableNotification), object: nil)
             Helper.removeServiceCallBackgroundView(view: senderVC.view)
-            SVProgressHUD.dismiss()
+//            SVProgressHUD.dismiss()
         },
                                    onError: {(error) in
                                     print("Call 5",error.localizedDescription)
                                     Helper.removeServiceCallBackgroundView(view: senderVC.view)
-                                    SVProgressHUD.dismiss()
+//                                    SVProgressHUD.dismiss()
                                     SimpleAlert.alert(senderVC, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                                     
         })
+    }
+    
+    //***** common function that contains API call for flex exchange deals *****/
+    static func getFlexExchangeDeals(senderVC: UIViewController, success: @escaping((Bool) -> ())) {
+        ExchangeClient.getFlexExchangeDeals(UserContext.sharedInstance.accessToken, onSuccess: { (response) in
+            Constant.MyClassConstants.flexExchangeDeals = response
+            success(true)
+        }) { (error) in
+            success(false)
+            SimpleAlert.alert(senderVC, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+
+        }
     }
     
     //***** common function that contains API call to get areas with access token *****//
@@ -1564,16 +1576,16 @@ public class Helper{
         
         switch sectonHeader {
         case "SLEEPING_ACCOMMODATIONS":
-            return "SLEEPING ACCOMMODATION"
+            return "Sleeping Accomodations"
             
         case "BATHROOM_FACILITIES":
-            return "BATHROOM FACILITIES"
+            return "Bathroom Facilities"
             
         case "KITCHEN_FACILITIES":
-            return "KITCHEN FACILITIES"
+            return "Kitchen Facilities"
             
         case "OTHER_FACILITIES":
-            return "OTHER FACILITIES"
+            return "Other Facilities"
             
         default:
             return ""

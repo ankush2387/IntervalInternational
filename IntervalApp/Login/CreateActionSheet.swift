@@ -201,7 +201,9 @@ class CreateActionSheet: UITableViewController {
                     
                 }
                 else {
-                    Constant.MyClassConstants.activeAlertsArray.add(alert)
+                    if Constant.MyClassConstants.activeAlertsArray.count < 1 { //TODO - JHON: forcing alerts count to be one. fix when push notifications is working. 
+                        Constant.MyClassConstants.activeAlertsArray.add(alert)
+                    }
                 }
                 if(self.activeAlertCount < Constant.MyClassConstants.getawayAlertsArray.count - 1){
                     self.activeAlertCount = self.activeAlertCount + 1

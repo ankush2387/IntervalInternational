@@ -36,7 +36,7 @@ class VacationSearchViewController: UIViewController {
     var sourceViewController:UIViewController!
     var destinationViewController:UIViewController!
     var moreButton:UIBarButtonItem?
-    var showExchange = false
+    var showExchange = true
     var showGetaways = true
     var vacationSearch = VacationSearch()
     var searchDateRequest = RentalSearchDatesRequest()
@@ -207,6 +207,23 @@ class VacationSearchViewController: UIViewController {
     
     @IBAction func searchVacationSelectedSegment(_ sender: UISegmentedControl) {
         self.SegmentIndex = sender.selectedSegmentIndex
+        
+        switch SegmentIndex {
+        case 0:
+            showGetaways = true
+            showExchange = true
+            break
+        case 1:
+            showGetaways = true
+            showExchange = false
+            break
+        case 2:
+            showGetaways = false
+            showExchange = true
+            break
+        default:
+            break
+        }
         Constant.MyClassConstants.vacationSearchSelectedSegmentIndex = sender.selectedSegmentIndex
         
         // omniture tracking with event 63
@@ -303,78 +320,120 @@ extension VacationSearchViewController:UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if((Constant.MyClassConstants.topDeals.count)>0){
-            return (Constant.MyClassConstants.topDeals.count)
-        }else{
-            return 0
+        if collectionView.tag == 1 {
+             return Constant.MyClassConstants.flexExchangeDeals.count
+        } else {
+            return Constant.MyClassConstants.topDeals.count
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if (self.SegmentIndex == 0){
+        if collectionView.tag == 1 {
+            let flexDeal = Constant.MyClassConstants.flexExchangeDeals[indexPath.row]
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cell, for: indexPath)
             
-        }
-        let deal = Constant.MyClassConstants.topDeals[indexPath.row]
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cell, for: indexPath)
-        
-        for subview in cell.subviews {
-            subview.removeFromSuperview()
-        }
-        
-        let resortFlaxImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: 180) )
-        resortFlaxImageView.backgroundColor = UIColor.lightGray
-        
-        
-        if(self.SegmentIndex == 0 || self.SegmentIndex == 1) {
+            for subview in cell.subviews {
+                subview.removeFromSuperview()
+            }
             
-            resortFlaxImageView.setImageWith(URL(string: (deal.images[0].url) ?? ""), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
-                if (error != nil) {
+            let resortFlaxImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: 180) )
+            resortFlaxImageView.backgroundColor = UIColor.lightGray
+            
+            
+            if(self.SegmentIndex == 0 || self.SegmentIndex == 2) {
+                
+                if let imgURL = flexDeal.images.first?.url {
+                    resortFlaxImageView.setImageWith(URL(string: imgURL ), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
+                        if (error != nil) {
+                            resortFlaxImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
+                            resortFlaxImageView.contentMode = .center
+                        }
+                    }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+                } else {
                     resortFlaxImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
+                    resortFlaxImageView.contentMode = .center
                 }
-            }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+                cell.addSubview(resortFlaxImageView)
+                
+                let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: cell.contentView.frame.height - 50, width: cell.contentView.frame.width - 20, height: 60))
+                resortImageNameLabel.text = flexDeal.name
+                resortImageNameLabel.numberOfLines = 2
+                resortImageNameLabel.textAlignment = NSTextAlignment.center
+                resortImageNameLabel.textColor = UIColor.black
+                resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueBold,size: 16)
+                cell.addSubview(resortImageNameLabel)
+                cell.layer.borderColor = UIColor.lightGray.cgColor
+                cell.layer.borderWidth = 1.0
+                cell.layer.cornerRadius = 7
+                cell.layer.masksToBounds = true
+            }
             
-            cell.addSubview(resortFlaxImageView)
+            return cell
+
+        } else {
+            let deal = Constant.MyClassConstants.topDeals[indexPath.row]
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cell, for: indexPath)
             
-            let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: cell.contentView.frame.height - 50, width: cell.contentView.frame.width - 20, height: 60))
-            resortImageNameLabel.text = deal.header
-            resortImageNameLabel.numberOfLines = 2
-            resortImageNameLabel.textAlignment = NSTextAlignment.center
-            resortImageNameLabel.textColor = UIColor.black
-            resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueBold,size: 16)
-            cell.addSubview(resortImageNameLabel)
+            for subview in cell.subviews {
+                subview.removeFromSuperview()
+            }
             
-            let centerView = UIView(frame: CGRect(x: 0, y: 0, width: 150, height: 75))
-            centerView.center = resortFlaxImageView.center
-            centerView.backgroundColor = UIColor(red: 176.0/255.0, green: 215.0/255.0, blue: 115.0/255.0, alpha: 1.0)
+            let resortFlaxImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: 180) )
+            resortFlaxImageView.backgroundColor = UIColor.lightGray
             
-            let unitLabel = UILabel(frame: CGRect(x: 10, y: 15, width: centerView.frame.size.width - 20, height: 25))
-            unitLabel.text = deal.details
-            unitLabel.numberOfLines = 2
-            unitLabel.textAlignment = NSTextAlignment.center
-            unitLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 12)
-            unitLabel.textColor = UIColor.white
-            unitLabel.backgroundColor = UIColor.clear
-            centerView.addSubview(unitLabel)
             
-            let priceLabel = UILabel(frame: CGRect(x: 10, y: 35, width: centerView.frame.size.width - 20, height: 20))
-            priceLabel.text = "\(Constant.getDynamicString.fromString) $" + String(describing: deal.price!.fromPrice) + "\(Constant.getDynamicString.weekString)"
-            priceLabel.numberOfLines = 2
-            priceLabel.textAlignment = NSTextAlignment.center
-            priceLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
-            priceLabel.textColor = UIColor.white
-            priceLabel.backgroundColor = UIColor.clear
-            centerView.addSubview(priceLabel)
+            if(self.SegmentIndex == 0 || self.SegmentIndex == 1) {
+                
+                resortFlaxImageView.setImageWith(URL(string: (deal.images[0].url) ?? ""), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
+                    if (error != nil) {
+                        resortFlaxImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
+                        resortFlaxImageView.contentMode = .center
+                    }
+                }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+                
+                cell.addSubview(resortFlaxImageView)
+                
+                let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: cell.contentView.frame.height - 50, width: cell.contentView.frame.width - 20, height: 60))
+                resortImageNameLabel.text = deal.header
+                resortImageNameLabel.numberOfLines = 2
+                resortImageNameLabel.textAlignment = NSTextAlignment.center
+                resortImageNameLabel.textColor = UIColor.black
+                resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueBold,size: 16)
+                cell.addSubview(resortImageNameLabel)
+                
+                let centerView = UIView(frame: CGRect(x: 0, y: 0, width: 150, height: 75))
+                centerView.center = resortFlaxImageView.center
+                centerView.backgroundColor = UIColor(red: 176.0/255.0, green: 215.0/255.0, blue: 115.0/255.0, alpha: 1.0)
+                
+                let unitLabel = UILabel(frame: CGRect(x: 10, y: 15, width: centerView.frame.size.width - 20, height: 25))
+                unitLabel.text = deal.details
+                unitLabel.numberOfLines = 2
+                unitLabel.textAlignment = NSTextAlignment.center
+                unitLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 12)
+                unitLabel.textColor = UIColor.white
+                unitLabel.backgroundColor = UIColor.clear
+                centerView.addSubview(unitLabel)
+                
+                let priceLabel = UILabel(frame: CGRect(x: 10, y: 35, width: centerView.frame.size.width - 20, height: 20))
+                priceLabel.text = "\(Constant.getDynamicString.fromString) $" + String(describing: deal.price!.fromPrice) + "\(Constant.getDynamicString.weekString)"
+                priceLabel.numberOfLines = 2
+                priceLabel.textAlignment = NSTextAlignment.center
+                priceLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
+                priceLabel.textColor = UIColor.white
+                priceLabel.backgroundColor = UIColor.clear
+                centerView.addSubview(priceLabel)
+                
+                cell.addSubview(centerView)
+                cell.layer.borderColor = UIColor.lightGray.cgColor
+                cell.layer.borderWidth = 1.0
+                cell.layer.cornerRadius = 7
+                cell.layer.masksToBounds = true
+                
+            }
             
-            cell.addSubview(centerView)
-            cell.layer.borderColor = UIColor.lightGray.cgColor
-            cell.layer.borderWidth = 1.0
-            cell.layer.cornerRadius = 7
-            cell.layer.masksToBounds = true
             
+            return cell
         }
-        
-        
-        return cell
     }
 }
 
@@ -412,7 +471,7 @@ extension VacationSearchViewController:UITableViewDelegate {
                 return 290
                 
             default :
-                return 70
+                return 290
                 
             }
         }else {
@@ -433,7 +492,7 @@ extension VacationSearchViewController:UITableViewDelegate {
             case 2:
                 return 120
             case 4:
-                return CGFloat(Constant.MyClassConstants.topDeals.count) * 240
+                return 290
                 
             default :
                 return 70
@@ -1004,7 +1063,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                 homeTableCollectionView.backgroundColor = UIColor.clear
                 homeTableCollectionView.delegate = self
                 homeTableCollectionView.dataSource = self
-                if(indexPath.section == 3) {
+                if(indexPath.section == 5) {
                     homeTableCollectionView.tag = 1
                 }
                 else {
@@ -1183,9 +1242,8 @@ extension VacationSearchViewController:UITableViewDataSource {
                 layout.itemSize = CGSize(width:280, height: 220 )
                 layout.minimumInteritemSpacing = 1.0
                 layout.minimumLineSpacing = 10.0
-                layout.scrollDirection = .vertical
-                getawayCollectionView = UICollectionView(frame: CGRect(x: 0, y: 40, width: self.view.bounds.width, height: CGFloat(Constant.MyClassConstants.topDeals.count) * 280 ), collectionViewLayout: layout)
-                
+                layout.scrollDirection = .horizontal
+                getawayCollectionView = UICollectionView(frame: CGRect(x: 0, y: 40, width: self.view.bounds.width, height: 230 ), collectionViewLayout: layout)
                 getawayCollectionView.register(CustomCollectionCell.self, forCellWithReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cell)
                 getawayCollectionView.backgroundColor = UIColor.clear
                 getawayCollectionView.delegate = self

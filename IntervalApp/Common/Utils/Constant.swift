@@ -312,6 +312,7 @@ class Constant: NSObject {
         static var bedRoomSize = ["STUDIO","ONE_BEDROOM","TWO_BEDROOM","THREE_BEDROOM","FOUR_BEDROOM"]
         static var alertSelectedUnitSizeArray:NSMutableArray = NSMutableArray()
         static var topDeals : [RentalDeal] = []
+        static var flexExchangeDeals : [FlexExchangeDeal] = []
         static var resortDirectoryRegionArray = [Region]()
         static var resortDirectorySubRegionArray = [Region]()
         static var resortDirectoryAreaListArray = [Area]()
