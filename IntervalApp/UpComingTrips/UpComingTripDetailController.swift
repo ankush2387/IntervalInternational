@@ -330,21 +330,22 @@ extension UpComingTripDetailController:UITableViewDataSource {
                     let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
                     let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkInDate)
                     
-                    
-                    let formatedCheckInDate = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday!)) \(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)). \(myComponents.year!)"
+                    cell.checkinDayLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday!))"
+                    let formatedCheckInDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)). \(myComponents.year!)"
                     
                     cell.checkInDateLabel.text = "\(myComponents.day!)"
                     if(cell.checkInDateLabel.text?.characters.count == 1){
                         cell.checkInDateLabel.text = "0\(myComponents.day!)"
                     }
                     cell.checkInMonthYearLabel.text = formatedCheckInDate
+            
                     cell.inDateHeading.text = Constant.upComingTripDetailControllerReusableIdentifiers.inHeadingString
                     
                     let checkOutDate = Helper.convertStringToDate(dateString: (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.cruise?.cabin?.returnDate!)!, format: Constant.MyClassConstants.dateFormat1)
                     
                     let myComponents1 = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkOutDate)
-                    
-                    let formatedCheckOutDate = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents1.weekday!)) \(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!)). \(myComponents1.year!)"
+                    cell.checkoutDayLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday!))"
+                    let formatedCheckOutDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!)). \(myComponents1.year!)"
                     cell.checkOutDateLabel.text = "\(myComponents1.day!)"
                     if(cell.checkOutDateLabel.text?.characters.count == 1){
                         cell.checkOutDateLabel.text = "0\(myComponents1.day!)"
@@ -374,8 +375,8 @@ extension UpComingTripDetailController:UITableViewDataSource {
                     let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
                     let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkInDate)
                     
-                    
-                    let formatedCheckInDate = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday!)) \(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)). \(myComponents.year!)"
+                    cell.checkinDayLabel.text = Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday!)
+                    let formatedCheckInDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)). \(myComponents.year!)"
                     
                     cell.checkInDateLabel.text = "\(myComponents.day!)"
                     if(cell.checkInDateLabel.text?.characters.count == 1){
@@ -386,8 +387,8 @@ extension UpComingTripDetailController:UITableViewDataSource {
                     let checkOutDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.checkOutDate!, format: Constant.MyClassConstants.dateFormat1)
                     
                     let myComponents1 = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkOutDate)
-                    
-                    let formatedCheckOutDate = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents1.weekday!)) \(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!)). \(myComponents1.year!)"
+                    cell.checkoutDayLabel.text = Helper.getWeekdayFromInt(weekDayNumber: myComponents1.weekday!)
+                    let formatedCheckOutDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!)). \(myComponents1.year!)"
                     cell.checkOutDateLabel.text = "\(myComponents1.day!)"
                     if(cell.checkOutDateLabel.text?.characters.count == 1){
                         cell.checkOutDateLabel.text = "0\(myComponents1.day!)"
