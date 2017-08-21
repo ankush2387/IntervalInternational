@@ -369,6 +369,8 @@ class DashboardTableViewController: UITableViewController {
         Constant.MyClassConstants.alertOriginationPoint = Constant.CommonStringIdentifiers.alertOriginationPoint
         let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.getawayAlertsIphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.sideMenuTitles.sideMenuInitialController) as! SWRevealViewController
+        Constant.MyClassConstants.activeAlertsArray.removeAllObjects()
+        reloadBadgeView()
         
         self.present(viewController, animated: true, completion: nil)
     }
@@ -451,8 +453,12 @@ extension DashboardTableViewController:UICollectionViewDataSource {
                 resortFlaxImageView.setImageWith(URL(string: imgURL ), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
                     if (error != nil) {
                         resortFlaxImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
+                        resortFlaxImageView.contentMode = .center
                     }
                 }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+            } else {
+                resortFlaxImageView.image = UIImage(named: "\(Constant.MyClassConstants.noImage)")
+                resortFlaxImageView.contentMode = .center
             }
             
             cell.addSubview(resortFlaxImageView)
@@ -482,8 +488,12 @@ extension DashboardTableViewController:UICollectionViewDataSource {
                 resortFlaxImageView.setImageWith(URL(string: imgURL ), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
                     if (error != nil) {
                         resortFlaxImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
+                        resortFlaxImageView.contentMode = .center
                     }
                 }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+            } else {
+                resortFlaxImageView.image = UIImage(named: "\(Constant.MyClassConstants.noImage)")
+                resortFlaxImageView.contentMode = .center
             }
             
             cell.addSubview(resortFlaxImageView)

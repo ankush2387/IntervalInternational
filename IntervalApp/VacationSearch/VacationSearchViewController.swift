@@ -346,8 +346,12 @@ extension VacationSearchViewController:UICollectionViewDataSource {
                     resortFlaxImageView.setImageWith(URL(string: imgURL ), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
                         if (error != nil) {
                             resortFlaxImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
+                            resortFlaxImageView.contentMode = .center
                         }
                     }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+                } else {
+                    resortFlaxImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
+                    resortFlaxImageView.contentMode = .center
                 }
                 cell.addSubview(resortFlaxImageView)
                 
@@ -383,6 +387,7 @@ extension VacationSearchViewController:UICollectionViewDataSource {
                 resortFlaxImageView.setImageWith(URL(string: (deal.images[0].url) ?? ""), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
                     if (error != nil) {
                         resortFlaxImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
+                        resortFlaxImageView.contentMode = .center
                     }
                 }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
                 

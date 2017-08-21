@@ -98,6 +98,9 @@ class DashboardIPadTableViewController: UITableViewController {
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.getawayAlertsIpad, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.sideMenuTitles.sideMenuInitialController) as! SWRevealViewController
+        Constant.MyClassConstants.activeAlertsArray.removeAllObjects()
+        reloadBadgeView()
+
         
         self.present(viewController, animated: true, completion: nil)
     }
@@ -410,7 +413,7 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         if(collectionView.tag == 1){
-            
+            //Top 10 Getaway
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.customCellNibNames.upcomingCell, for: indexPath) as! VacationCollectionViewCell
             
             let upcomingTrip = Constant.MyClassConstants.upcomingTripsArray[indexPath.row]
@@ -443,6 +446,7 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
             cell.iconImageView.setImageWith(URL(string: imageUrl), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
                 if (error != nil) {
                     cell.iconImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
+                    cell.iconImageView.contentMode = .center
                 }
             }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
             
@@ -464,7 +468,7 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
             
             
         }else {
-            
+            //Flexxhange Deals
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cell, for: indexPath)
             
             for subview in cell.subviews {
@@ -480,8 +484,12 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
                     resortFlaxImageView.setImageWith(URL(string: imageURL), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
                         if (error != nil) {
                             resortFlaxImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
+                            resortFlaxImageView.contentMode = .center
                         }
                     }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+                } else {
+                    resortFlaxImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
+                    resortFlaxImageView.contentMode = .center
                 }
                 
                 cell.addSubview(resortFlaxImageView)
