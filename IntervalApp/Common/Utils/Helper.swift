@@ -2037,6 +2037,25 @@ public class Helper{
         viewcontroller.present(resendAlert, animated: false, completion: nil)
 
     }
+    
+    //***** function to return vacation search screen segment type string to display in UI *****//
+    static func vacationSearchTypeSegemtStringToDisplay(vacationSearchType:String) -> String {
+        
+        switch vacationSearchType {
+            
+        case "COMBINED":
+            return "Search Both"
+        case "EXCHANGE":
+            return "Exchange"
+        case "RENTAL":
+            return "Getaways"
+        
+        default:
+            return ""
+        }
+    }
+
+
 }
 
 
