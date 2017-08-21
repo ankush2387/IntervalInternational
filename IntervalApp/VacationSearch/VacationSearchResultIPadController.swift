@@ -53,6 +53,8 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
         
         if isFromFiltered {
             Constant.MyClassConstants.filteredIndex = indexPath.row
+            let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
+            let exchangeSearchCriteria = VacationSearchCriteria(searchType:VacationSearchType.Exchange)
             
             switch Constant.MyClassConstants.filterOptionsArray[indexPath.row] {
             case .Destination(let destination):
@@ -62,11 +64,9 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                 areaOfInfluenceDestination.aoiId = destination.aoid
                 
                 if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
-                    Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.destinations = [areaOfInfluenceDestination]
-                    Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.resorts.removeAll()
+                    rentalSearchCriteria.destination = areaOfInfluenceDestination
                 }else{
-                    Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.destinations = [areaOfInfluenceDestination]
-                    Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.resorts.removeAll()
+                    exchangeSearchCriteria.destination = areaOfInfluenceDestination
                 }
                 
                 Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
@@ -76,27 +76,26 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                 resorts.resortCode = resort.resortCode
                 
                 if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
-                Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.resorts =  [resorts]
-                Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.destinations.removeAll()
+                    rentalSearchCriteria.resorts = [resorts]
                 }else{
-                    Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.resorts =  [resorts]
-                    Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.destinations.removeAll()
+                    exchangeSearchCriteria.resorts =  [resorts]
                 }
                 Constant.MyClassConstants.vacationSearchResultHeaderLabel = resort.resortName
-            
+                
             case .ResortList(let resortList):
-                Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.resorts.removeAll()
+                var resortsArray = [Resort]()
                 for resorts in resortList{
                     let resort = Resort()
                     resort.resortName = resorts.resortName
                     resort.resortCode = resorts.resortCode
-                    if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
-                    Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.resorts.append(resort)
-                    }else{
-                        Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.resorts.append(resort)
-                    }
+                    resortsArray.append(resort)
                 }
-                 Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(resortList[0].resortName) + \(resortList.count - 1)  + more"
+                if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
+                    rentalSearchCriteria.resorts = resortsArray
+                }else{
+                    exchangeSearchCriteria.resorts = resortsArray
+                }
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(resortList[0].resortName) + \(resortList.count - 1)  + more"
                 
             }
             
@@ -117,12 +116,11 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                     
                     // Check not available checkIn dates for the active interval
                     if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                        // Update active interval
-                        Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                         Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                         
                         //Helper.showNotAvailabilityResults()
                     }
+                    Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
                     
                     let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
                     Constant.MyClassConstants.checkInDates = response.checkInDates
