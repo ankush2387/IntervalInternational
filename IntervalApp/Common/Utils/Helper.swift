@@ -1766,7 +1766,7 @@ public class Helper{
                                     
         },
                                    onError:{ (error) in
-                                     Constant.MyClassConstants.isFromSorting = false
+                                    Constant.MyClassConstants.isFromSorting = false
                                     hideProgressBar(senderView: senderViewController)
                                     helperDelegate?.resortSearchComplete()
                                     SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
@@ -1783,6 +1783,7 @@ public class Helper{
                                         // TODO: Handle SDK/API errors
                                         DarwinSDK.logger.error("Handle SDK/API errors.")
                                     }
+                                    
         }
         )
     }

@@ -120,13 +120,11 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
                     
                     // Check not available checkIn dates for the active interval
                     if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                        // Update active interval
-                        Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                         Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                         
                         //Helper.showNotAvailabilityResults()
                     }
-                    
+                    Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
                     let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     Helper.helperDelegate = self
@@ -187,7 +185,7 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
             Constant.MyClassConstants.sortingIndex = indexPath.row
  
             let vacationSearchForSorting = Constant.MyClassConstants.initialVacationSearch
-            vacationSearchForSorting.sortType = AvailabilitySortType(rawValue: selectedvalue)!
+            vacationSearchForSorting.sortType = AvailabilitySortType(rawValue: Constant.MyClassConstants.sortingSetValues[indexPath.row])!
             Constant.MyClassConstants.isFromSorting = false
             self.createSections()
             self.dismiss(animated: true, completion: nil)
@@ -935,7 +933,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
                     let invent = inventoryDict
                     let units = invent.units
                     
-                    Constant.MyClassConstants.inventoryPrice = invent.units[collectionView.tag].prices
+                    Constant.MyClassConstants.inventoryPrice = invent.units[indexPath.item].prices
                     
                     let processResort = RentalProcess()
                     processResort.holdUnitStartTimeInMillis = Constant.holdingTime
@@ -1649,7 +1647,7 @@ extension SearchResultViewController:UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.availabilityCell, for: indexPath) as! SearchTableViewCell
                 cell.tag = indexPath.section
                 cell.resortInfoCollectionView.reloadData()
-                if (self.isShowAvailability == true && indexPath.section == 0){
+                if (self.isShowAvailability == true){
                     cell.resortInfoCollectionView.tag = indexPath.row - 1
                 } else {
                     cell.resortInfoCollectionView.tag = indexPath.row

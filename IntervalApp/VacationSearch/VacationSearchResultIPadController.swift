@@ -181,28 +181,15 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                 }
             }
         } else {
-            Helper.hideProgressBar(senderView: self)
             Constant.MyClassConstants.sortingIndex = indexPath.row
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            Constant.MyClassConstants.appSettings = appDelegate.createAppSetting()
-            Constant.MyClassConstants.initialVacationSearch.sortType = AvailabilitySortType(rawValue: selectedvalue)!
             
-            let vacationSearchForSorting = VacationSearch.init(UserContext.sharedInstance.appSettings, Constant.MyClassConstants.initialVacationSearch.searchCriteria)
-            
-            
-            vacationSearchForSorting.sortType = AvailabilitySortType(rawValue: selectedvalue)!
-            
-            let activeInterval = vacationSearchForSorting.bookingWindow.getActiveInterval()
-            Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
-            Constant.MyClassConstants.isFromSorting = true
-            let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
-            print(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType)
-            print(Constant.MyClassConstants.initialVacationSearch.sortType)
-            
-            Helper.showAvailabilityResults(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-            self.dismiss(animated: true, completion: nil)
+            let vacationSearchForSorting = Constant.MyClassConstants.initialVacationSearch
+            vacationSearchForSorting.sortType = AvailabilitySortType(rawValue: Constant.MyClassConstants.sortingSetValues[indexPath.row])!
+            Constant.MyClassConstants.isFromSorting = false
             self.createSections()
-            self.resortDetailTBLView.reloadData()
+            self.dismiss(animated: true, completion: nil)
+            
+            resortDetailTBLView.reloadData()
         }
     }
     
