@@ -1727,7 +1727,6 @@ public class Helper{
     static func hardProcessingWithString(input: String, completion: (_ result: String) -> String) {
            _ = completion(input)
     }
-    
 
     /*
      * Execute Rental Search Availability

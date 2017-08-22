@@ -1555,7 +1555,8 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
         headerButton.addTarget(self, action: #selector(VacationSearchResultIPadController.filterByNameButtonPressed(_:)), for: .touchUpInside)
         let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
         if(sectionsInSearchResult.count > 0){
-        if(Constant.MyClassConstants.isFromSorting){
+            
+            
             if(sectionsInSearchResult[section].exactMatch)!{
                 headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
                 headerView.backgroundColor = IUIKColorPalette.primary1.color
@@ -1563,30 +1564,6 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 headerLabel.text = Constant.CommonLocalisedString.surroundingString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
                 headerView.backgroundColor = Constant.CommonColor.headerGreenColor
             }
-        }else{
-        if(sectionsInSearchResult[section].hasItems()){
-            if(sectionsInSearchResult[section].exactMatch == nil){
-                headerLabel.text  = "\(Constant.CommonLocalisedString.exactString) \( Constant.MyClassConstants.vacationSearchResultHeaderLabel)"
-                
-                headerView.backgroundColor = IUIKColorPalette.primary1.color
-                
-            }else{
-                
-                    headerLabel.text = Constant.CommonLocalisedString.surroundingString + "\( Constant.MyClassConstants.vacationSearchResultHeaderLabel)"
-                    headerView.backgroundColor = Constant.CommonColor.headerGreenColor
-            }
-        }else{
-            if(sectionsInSearchResult[section].exactMatch)!{
-                    print("-------------->>>>>>\(Constant.CommonLocalisedString.exactString) \( Constant.MyClassConstants.vacationSearchResultHeaderLabel)")
-                    headerLabel.text  = "\(Constant.CommonLocalisedString.exactString) \( Constant.MyClassConstants.vacationSearchResultHeaderLabel)"
-                
-                headerView.backgroundColor = IUIKColorPalette.primary1.color
-                
-            }else{
-            
-            }
-        }
-    }
         }
     
         headerLabel.textColor = UIColor.white

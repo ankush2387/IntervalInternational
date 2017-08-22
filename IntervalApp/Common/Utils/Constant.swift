@@ -924,6 +924,8 @@ class Constant: NSObject {
     struct segmentControlItems {
         
         static var getaways = NSLocalizedString("Getaways", comment: "")
+        static var exchange = NSLocalizedString("Exchange", comment: "")
+        static var searchBoth = NSLocalizedString("Search Both", comment: "")
         static var flexchangeLabelText = "FLEXCHANGE"
         static var getawaysLabelText = NSLocalizedString("TOP 10 GETAWAYS", comment: "")
         static var getawaysIpadText = NSLocalizedString("Top 10 Getaway Destinations", comment: "")
