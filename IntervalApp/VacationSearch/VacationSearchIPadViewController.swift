@@ -176,6 +176,7 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
             return 4
         }
     }
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if (tableView.tag == 1){
             return 0

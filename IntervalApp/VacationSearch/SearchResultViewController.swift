@@ -30,7 +30,7 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
     var unitSizeArray = [AnyObject]()
     var alertView = UIView()
     let headerVw = UIView()
-    var isShowAvailability = true
+   // var isShowAvailability = true
     let titleLabel = UILabel()
     var offerString = String()
     var cellHeight = 50
@@ -1419,10 +1419,10 @@ extension SearchResultViewController:UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
       
         if(indexPath.section == 0){
-            if indexPath.row == 0 && self.isShowAvailability == true {
+            if indexPath.row == 0 && Constant.MyClassConstants.isShowAvailability == true {
                 return 110
             } else {
-                if self.isShowAvailability == true {
+                if Constant.MyClassConstants.isShowAvailability == true {
                     let index = indexPath.row - 1
                     if(Constant.MyClassConstants.isFromExchange){
                         let totalUnits = self.exactMatchResortsArrayExchange[indexPath.row].inventory?.buckets.count
@@ -1589,14 +1589,14 @@ extension SearchResultViewController:UITableViewDataSource {
         //***** configuring prototype cell for UpComingtrip resort details *****//
             
             
-            if indexPath.section == 0 && indexPath.row == 0 && self.isShowAvailability == true {
+            if indexPath.section == 0 && indexPath.row == 0 && Constant.MyClassConstants.isShowAvailability == true {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.novailabilityCell, for: indexPath)
                 cell.tag = indexPath.section
                 DispatchQueue.main.asyncAfter(deadline: .now() + 5.0, execute: {
                     
-                    UIView.animate(withDuration: 5, delay: 2, options: UIViewAnimationOptions(rawValue: 0), animations: {
+                    UIView.animate(withDuration: 2, delay: 1, options: UIViewAnimationOptions(rawValue: 0), animations: {
                         
-                        self.isShowAvailability = false
+                        Constant.MyClassConstants.isShowAvailability = false
                         //cell.contentView.frame.size.height = 50.0
                         self.searchResultTableView.reloadData()
                     }, completion: nil)
@@ -1608,7 +1608,7 @@ extension SearchResultViewController:UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.availabilityCell, for: indexPath) as! SearchTableViewCell
                 cell.tag = indexPath.section
                 cell.resortInfoCollectionView.reloadData()
-                if (self.isShowAvailability == true){
+                if (Constant.MyClassConstants.isShowAvailability == true){
                     cell.resortInfoCollectionView.tag = indexPath.row - 1
                 } else {
                     cell.resortInfoCollectionView.tag = indexPath.row
@@ -1638,7 +1638,7 @@ extension SearchResultViewController:UITableViewDataSource {
             if(section == 0 && exactMatchResortsArrayExchange.count == 0 || section == 1){
                 return surroundingMatchResortsArrayExchange .count
             }else{
-                if self.isShowAvailability == true && section == 0 {
+                if Constant.MyClassConstants.isShowAvailability == true && section == 0 {
                     return exactMatchResortsArrayExchange.count
                     
                 } else {
@@ -1651,7 +1651,12 @@ extension SearchResultViewController:UITableViewDataSource {
             if(section == 0 && exactMatchResortsArray.count == 0 || section == 1){
                 return surroundingMatchResortsArray.count
             }else{
-                return exactMatchResortsArray.count
+                if Constant.MyClassConstants.isShowAvailability == true && section == 0 {
+                    return exactMatchResortsArray.count + 1
+                    
+                } else {
+                    return exactMatchResortsArray.count
+                }
             }
         }
     }

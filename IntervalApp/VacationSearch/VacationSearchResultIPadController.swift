@@ -1472,7 +1472,6 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 var deletedRowIndexPath = indexPath
                 deletedRowIndexPath.row = 0
                 deletedRowIndexPath.section = 0
-               // cell.backgroundColor = UIColor.orange
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 5.0, execute: {
                     
