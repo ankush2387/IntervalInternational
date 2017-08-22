@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vGH-yr-Ujs">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F2073" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vGH-yr-Ujs">
     <device id="ipad12_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -1123,10 +1123,7 @@
                                                     </variation>
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="joL-Cd-enU">
-                                                    <rect key="frame" x="823" y="0.0" width="100" height="44"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="100" id="3uu-kK-dZy"/>
-                                                    </constraints>
+                                                    <rect key="frame" x="100" y="0.0" width="823" height="44"/>
                                                 </button>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bqh-56-Rp3">
                                                     <rect key="frame" x="100" y="43" width="824" height="1"/>
@@ -1150,6 +1147,7 @@
                                                 <constraint firstAttribute="bottom" secondItem="joL-Cd-enU" secondAttribute="bottom" id="XOB-zg-Yqh"/>
                                                 <constraint firstItem="Ipg-mW-Jqr" firstAttribute="leading" secondItem="joL-Cd-enU" secondAttribute="trailing" id="bis-I8-1CN"/>
                                                 <constraint firstItem="YyG-Ng-z1R" firstAttribute="top" secondItem="cQc-u0-1OJ" secondAttribute="top" id="c1t-0I-oDH"/>
+                                                <constraint firstItem="joL-Cd-enU" firstAttribute="leading" secondItem="cQc-u0-1OJ" secondAttribute="leading" constant="100" id="dTz-G2-hu4"/>
                                                 <constraint firstItem="j7n-8O-KFA" firstAttribute="centerY" secondItem="Ipg-mW-Jqr" secondAttribute="centerY" id="e2w-Is-Lj6"/>
                                                 <constraint firstAttribute="bottom" secondItem="Ipg-mW-Jqr" secondAttribute="bottom" id="f0Y-IV-S4D"/>
                                                 <constraint firstItem="lRb-Ie-PBn" firstAttribute="centerY" secondItem="YyG-Ng-z1R" secondAttribute="centerY" id="gtA-0x-gTD"/>
