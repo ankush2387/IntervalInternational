@@ -1589,12 +1589,12 @@ extension SearchResultViewController:UITableViewDataSource {
         //***** configuring prototype cell for UpComingtrip resort details *****//
             
             
-            if indexPath.row == 0 && self.isShowAvailability == true {
+            if indexPath.section == 0 && indexPath.row == 0 && self.isShowAvailability == true {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.novailabilityCell, for: indexPath)
                 cell.tag = indexPath.section
                 DispatchQueue.main.asyncAfter(deadline: .now() + 5.0, execute: {
                     
-                    UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions(rawValue: 0), animations: {
+                    UIView.animate(withDuration: 5, delay: 2, options: UIViewAnimationOptions(rawValue: 0), animations: {
                         
                         self.isShowAvailability = false
                         //cell.contentView.frame.size.height = 50.0
