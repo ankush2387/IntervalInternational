@@ -699,9 +699,6 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                     let storedData = Helper.getLocalStorageWherewanttoGo()
                     
                     if(storedData.count > 0) {
-                        let realm = try! Realm()
-                        try! realm.write {
-                            
                             
                             self.getSavedDestinationsResorts(storedData:storedData, searchCriteria:exchangeSearchCriteria)
                             
@@ -714,6 +711,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                                 
                                 // Get activeInterval (or initial search interval)
                                 let activeInterval = BookingWindowInterval(interval: Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval())
+                                Constant.MyClassConstants.initialVacationSearch.bookingWindow.intervals[0].fetchedBefore = true
                                 
                                 // Update active interval
                                 Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
@@ -722,7 +720,6 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                                 
                                 // Check not available checkIn dates for the active interval
                                 if (activeInterval.fetchedBefore && !activeInterval.hasCheckInDates()) {
-                                    Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                     self.showNotAvailabilityResults()
                                 }
                                 
@@ -744,7 +741,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                                 Helper.hideProgressBar(senderView: self)
                                 SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.noResultError)
                             })
-                        }}}else{
+                        }}else{
                     Helper.hideProgressBar(senderView: self)
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
                 }
