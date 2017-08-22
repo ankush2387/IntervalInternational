@@ -80,7 +80,20 @@ class MyUpcommingTripIpadViewController: UIViewController {
 
     
     func viewTripDetailsPressed(_ sender:IUIKButton){
-        self.performSegue(withIdentifier: Constant.segueIdentifiers.detailSegue, sender: self)
+        Constant.MyClassConstants.transactionNumber = "\(Constant.MyClassConstants.upcomingTripsArray[sender.tag - 1].exchangeNumber!)"
+        Helper.addServiceCallBackgroundView(view: self.view)
+        SVProgressHUD.show()
+        ExchangeClient.getExchangeTripDetails(UserContext.sharedInstance.accessToken, confirmationNumber: Constant.MyClassConstants.transactionNumber, onSuccess: { (exchangeResponse) in
+            
+            Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails = exchangeResponse
+            Helper.removeServiceCallBackgroundView(view: self.view)
+            SVProgressHUD.dismiss()
+            self.performSegue(withIdentifier:Constant.segueIdentifiers.detailSegue, sender:nil)
+        }) { (error) in
+            Helper.removeServiceCallBackgroundView(view: self.view)
+            SVProgressHUD.dismiss()
+            SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+        }
     }
 }
 
@@ -282,6 +295,7 @@ extension MyUpcommingTripIpadViewController:UICollectionViewDataSource {
             }
             Helper.addLinearGradientToView(view: cell.resortNameBaseView, colour: UIColor.white, transparntToOpaque: true, vertical: false)
             cell.backgroundColor = UIColor.white
+            cell.footerViewDetailedButton.tag = indexPath.row
             cell.footerViewDetailedButton.addTarget(self, action: #selector(MyUpcommingTripIpadViewController.viewTripDetailsPressed(_:)), for: UIControlEvents.touchUpInside)
             return cell
         }
