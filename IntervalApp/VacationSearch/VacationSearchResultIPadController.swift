@@ -219,21 +219,21 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
 
             if Constant.MyClassConstants.isFromExchange {
                 if(sections.count > 0) {
-                    let resortsExact = sections[0].item?.exchangeInventory
-                    exchangeExactMatchResortsArray = resortsExact!
+                    let resortsExact = sections[0].items?[0].exchangeAvailability
+                    exchangeExactMatchResortsArray = [resortsExact!]
                     if(sections.count > 1){
-                        let resortsSurrounding = sections[1].item?.exchangeInventory
-                        exchangeSurroundingMatchResortsArray = resortsSurrounding!
+                        let resortsSurrounding = sections[1].items?[0].exchangeAvailability
+                        exchangeSurroundingMatchResortsArray = [resortsSurrounding!]
                     }
                 }
            
             } else {
                 if(sections.count > 0) {
-                let resortsExact = sections[0].item?.rentalInventory
-                exactMatchResortsArray = resortsExact!
+                let resortsExact = sections[0].items?[0].rentalAvailability
+                exactMatchResortsArray = [resortsExact!]
                 if(sections.count > 1){
-                    let resortsSurrounding = sections[1].item?.rentalInventory
-                    surroundingMatchResortsArray = resortsSurrounding!
+                    let resortsSurrounding = sections[1].items?[0].rentalAvailability
+                    surroundingMatchResortsArray = [resortsSurrounding!]
                 }
               }
             }

@@ -210,22 +210,22 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
         if(Constant.MyClassConstants.isFromExchange){
             
             if(sections.count > 0){
-                let resortsExact = sections[0].item?.exchangeInventory
-                exactMatchResortsArrayExchange = resortsExact!
+                let resortsExact = sections[0].items?[0].exchangeAvailability
+                exactMatchResortsArrayExchange = [resortsExact!]
                 if(sections.count > 1){
-                    let resortsSurrounding = sections[1].item?.exchangeInventory
-                    surroundingMatchResortsArrayExchange = resortsSurrounding!
+                    let resortsSurrounding = sections[1].items?[0].exchangeAvailability
+                    surroundingMatchResortsArrayExchange = [resortsSurrounding!]
                 }
             }
             
         } else{
 
                 if(sections.count > 0){
-                    let resortsExact = sections[0].item?.rentalInventory
-                    exactMatchResortsArray = resortsExact!
+                    let resortsExact = sections[0].items?[0].rentalAvailability
+                    exactMatchResortsArray = [resortsExact!]
                     if(sections.count > 1){
-                        let resortsSurrounding = sections[1].item?.rentalInventory
-                        surroundingMatchResortsArray = resortsSurrounding!
+                        let resortsSurrounding = sections[1].items?[0].rentalAvailability
+                        surroundingMatchResortsArray = [resortsSurrounding!]
                     }
                     
                 }
