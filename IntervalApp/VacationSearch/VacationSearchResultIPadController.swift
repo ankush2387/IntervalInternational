@@ -206,39 +206,41 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     
     func createSections(){
         let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
-        
-        if(sections.count == 0){
+        if(Constant.MyClassConstants.isFromExchange){
             
-            let headerView = Helper.noResortView(senderView:self.view)
-            resortDetailTBLView.tableHeaderView = headerView
-            
-        }else{
-            let headerView = UIView()
-           resortDetailTBLView.tableHeaderView = headerView
-        }
-
-            if Constant.MyClassConstants.isFromExchange {
-                if(sections.count > 0) {
-                    let resortsExact = sections[0].items?[0].exchangeAvailability
-                    exchangeExactMatchResortsArray = [resortsExact!]
-                    if(sections.count > 1){
-                        let resortsSurrounding = sections[1].items?[0].exchangeAvailability
-                        exchangeSurroundingMatchResortsArray = [resortsSurrounding!]
+            if(sections.count > 0){
+                for exactResorts in (sections[0].items)!{
+                    let resortsExact = exactResorts.exchangeAvailability
+                    exchangeExactMatchResortsArray.append(resortsExact!)
+                }
+                
+                if(sections.count > 1){
+                    for surroundingResorts in (sections[1].items)!{
+                        let resortsSurrounding = surroundingResorts.exchangeAvailability
+                        exchangeSurroundingMatchResortsArray.append(resortsSurrounding!)
                     }
                 }
-           
-            } else {
-                if(sections.count > 0) {
-                let resortsExact = sections[0].items?[0].rentalAvailability
-                exactMatchResortsArray = [resortsExact!]
-                if(sections.count > 1){
-                    let resortsSurrounding = sections[1].items?[0].rentalAvailability
-                    surroundingMatchResortsArray = [resortsSurrounding!]
-                }
-              }
             }
             
+        } else{
             
+            if(sections.count > 0){
+                for exactResorts in (sections[0].items)!{
+                    let resortsExact = exactResorts.rentalAvailability
+                    exactMatchResortsArray.append(resortsExact!)
+                }
+                
+                if(sections.count > 1){
+                    for surroundingResorts in (sections[1].items)!{
+                        let resortsSurrounding = surroundingResorts.rentalAvailability
+                        surroundingMatchResortsArray.append(resortsSurrounding!)
+                    }
+                }
+                
+            }
+            
+        }
+        
     }
     
     override func viewDidLoad() {

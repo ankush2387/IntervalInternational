@@ -1337,7 +1337,6 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         
         if (self.SegmentIndex == 1 && (Helper.getAllDestinationFromLocalStorage().count>0 || Helper.getAllResortsFromLocalStorage().count>0)) {
             Helper.showProgressBar(senderView: self)
-            SVProgressHUD.show()
             sender.isEnabled = false
             
             if Reachability.isConnectedToNetwork() == true{
@@ -1377,7 +1376,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                             Constant.MyClassConstants.checkInDates = response.checkInDates
                             sender.isEnabled = true
                             Helper.helperDelegate = self
-                        
+                              Helper.hideProgressBar(senderView: self)
                             Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                         }
                     },

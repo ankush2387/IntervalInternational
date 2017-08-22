@@ -210,22 +210,32 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
         if(Constant.MyClassConstants.isFromExchange){
             
             if(sections.count > 0){
-                let resortsExact = sections[0].items?[0].exchangeAvailability
-                exactMatchResortsArrayExchange = [resortsExact!]
+                for exactResorts in (sections[0].items)!{
+                    let resortsExact = exactResorts.exchangeAvailability
+                    exactMatchResortsArrayExchange.append(resortsExact!)
+                }
+                
                 if(sections.count > 1){
-                    let resortsSurrounding = sections[1].items?[0].exchangeAvailability
-                    surroundingMatchResortsArrayExchange = [resortsSurrounding!]
+                    for surroundingResorts in (sections[1].items)!{
+                        let resortsSurrounding = surroundingResorts.exchangeAvailability
+                        surroundingMatchResortsArrayExchange.append(resortsSurrounding!)
+                    }
                 }
             }
             
         } else{
 
                 if(sections.count > 0){
-                    let resortsExact = sections[0].items?[0].rentalAvailability
-                    exactMatchResortsArray = [resortsExact!]
+                    for exactResorts in (sections[0].items)!{
+                        let resortsExact = exactResorts.rentalAvailability
+                        exactMatchResortsArray.append(resortsExact!)
+                    }
+                    
                     if(sections.count > 1){
-                        let resortsSurrounding = sections[1].items?[0].rentalAvailability
-                        surroundingMatchResortsArray = [resortsSurrounding!]
+                        for surroundingResorts in (sections[1].items)!{
+                            let resortsSurrounding = surroundingResorts.rentalAvailability
+                            surroundingMatchResortsArray.append(resortsSurrounding!)
+                        }
                     }
                     
                 }

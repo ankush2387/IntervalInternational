@@ -1734,14 +1734,14 @@ public class Helper{
      */
     static func executeRentalSearchAvailability(activeInterval:BookingWindowInterval!, checkInDate:Date!, senderViewController:UIViewController, vacationSearch:VacationSearch) {
         DarwinSDK.logger.error("----- Waiting for search availability ... -----")
-        SVProgressHUD.show()
+        showProgressBar(senderView: senderViewController)
         let request = RentalSearchResortsRequest()
         request.checkInDate = checkInDate
         request.resortCodes = activeInterval.resortCodes
         
         RentalClient.searchResorts(UserContext.sharedInstance.accessToken, request: request,
                                    onSuccess: { (response) in
-                                    SVProgressHUD.dismiss()
+                                    hideProgressBar(senderView: senderViewController)
                                     // Update Rental inventory
                                     
                                     Constant.MyClassConstants.resortsArray = response.resorts
