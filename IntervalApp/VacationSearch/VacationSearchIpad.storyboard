@@ -96,7 +96,7 @@
         <scene sceneID="AXO-66-1Q5">
             <objects>
                 <navigationController id="YXh-lN-KMw" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="6Ru-xD-idh">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="6Ru-xD-idh">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -141,7 +141,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="150" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="LAg-BZ-YMZ">
-                                <rect key="frame" x="0.0" y="50" width="768" height="960"/>
+                                <rect key="frame" x="0.0" y="50" width="768" height="861"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="wereToGo" rowHeight="170" id="SEp-Mw-Q61" customClass="WereWantToGoTableViewCell" customModule="IntervalApp" customModuleProvider="target">
@@ -1489,7 +1489,7 @@
                                 </connections>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qav-WX-Ho5">
-                                <rect key="frame" x="0.0" y="870" width="768" height="1060"/>
+                                <rect key="frame" x="0.0" y="870" width="768" height="41"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zdf-V0-YYS">
                                         <rect key="frame" x="0.0" y="0.0" width="768" height="40"/>
@@ -1515,7 +1515,7 @@
                                         </connections>
                                     </button>
                                     <tableView clipsSubviews="YES" tag="1" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="3x8-UN-nOl">
-                                        <rect key="frame" x="0.0" y="40" width="768" height="869"/>
+                                        <rect key="frame" x="0.0" y="40" width="768" height="1"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FeaturedTableCell" rowHeight="500" id="IFS-G6-43n" customClass="WereWantToGoTableViewCell" customModule="IntervalApp" customModuleProvider="target">
@@ -1539,7 +1539,7 @@
                                     <constraint firstAttribute="trailing" secondItem="zdf-V0-YYS" secondAttribute="trailing" id="0PH-Qx-twM"/>
                                     <constraint firstAttribute="trailing" secondItem="3x8-UN-nOl" secondAttribute="trailing" id="QVX-4i-OOx"/>
                                     <constraint firstAttribute="bottom" secondItem="3x8-UN-nOl" secondAttribute="bottom" id="Xf0-uL-Zlb">
-                                        <variation key="heightClass=regular-widthClass=regular" constant="151"/>
+                                        <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
                                     </constraint>
                                     <constraint firstItem="zdf-V0-YYS" firstAttribute="leading" secondItem="Qav-WX-Ho5" secondAttribute="leading" id="Yqm-7v-eUi"/>
                                     <constraint firstItem="3x8-UN-nOl" firstAttribute="top" secondItem="Qav-WX-Ho5" secondAttribute="top" id="fIx-NA-EbJ">
@@ -1603,13 +1603,13 @@
                             </constraint>
                             <constraint firstItem="LAg-BZ-YMZ" firstAttribute="leading" secondItem="3vx-OD-1TN" secondAttribute="leadingMargin" constant="-20" id="EmT-kD-cLH"/>
                             <constraint firstItem="qVV-Bt-V3j" firstAttribute="top" secondItem="LAg-BZ-YMZ" secondAttribute="bottom" id="LVJ-lJ-Tp4">
-                                <variation key="heightClass=regular-widthClass=regular" constant="-99"/>
+                                <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
                             </constraint>
                             <constraint firstItem="xrk-gZ-bcu" firstAttribute="centerX" secondItem="3vx-OD-1TN" secondAttribute="centerX" constant="0.5" id="N7U-2A-uy8"/>
                             <constraint firstItem="LAg-BZ-YMZ" firstAttribute="top" secondItem="xrk-gZ-bcu" secondAttribute="bottom" constant="14" id="Oua-kG-SDM"/>
                             <constraint firstItem="Qav-WX-Ho5" firstAttribute="leading" secondItem="3vx-OD-1TN" secondAttribute="leadingMargin" constant="-20" id="dyd-zY-18v"/>
                             <constraint firstAttribute="bottomMargin" secondItem="Qav-WX-Ho5" secondAttribute="bottom" constant="-727" id="kxk-8W-EZA">
-                                <variation key="heightClass=regular-widthClass=regular" constant="-970"/>
+                                <variation key="heightClass=regular-widthClass=regular" constant="49"/>
                             </constraint>
                             <constraint firstAttribute="trailingMargin" secondItem="LAg-BZ-YMZ" secondAttribute="trailing" constant="-20" id="wK7-Fi-GcZ"/>
                             <constraint firstItem="xrk-gZ-bcu" firstAttribute="top" secondItem="PpY-pF-cWW" secondAttribute="bottom" constant="8" id="zW8-2g-hGh"/>
@@ -3072,7 +3072,7 @@
         <scene sceneID="hwE-GA-7Y4">
             <objects>
                 <navigationController id="Kj4-oV-nKd" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="PIk-h1-MHc">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="PIk-h1-MHc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -3501,7 +3501,7 @@
         <scene sceneID="DbV-Z9-AeY">
             <objects>
                 <navigationController id="hie-AV-xvD" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="f6g-7W-eAZ">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="f6g-7W-eAZ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -8052,14 +8052,14 @@ Units Upgrade with this selection.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XPE-Xq-Ooj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2467" y="797"/>
+            <point key="canvasLocation" x="2468" y="-210"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Xhw-FQ-QJH">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Wc0-eI-yK9" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="98v-Sn-Axw">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="98v-Sn-Axw">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -8440,7 +8440,7 @@ Units Upgrade with this selection.</string>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="lDo-kQ-A9s" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="h8X-dQ-5XW"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="lNH-0Y-9a5">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="lNH-0Y-9a5">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
