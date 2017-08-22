@@ -193,6 +193,7 @@ extension IntervalHDIpadController:UICollectionViewDataSource {
 		cell.thumbnailImageView.setImageWith(URL(string: video.images[0].url!), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
 			if (error != nil) {
 				cell.thumbnailImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
+                cell.thumbnailImageView.contentMode = .center
 			}
 		}, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
 		

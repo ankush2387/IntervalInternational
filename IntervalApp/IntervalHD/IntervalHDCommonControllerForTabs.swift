@@ -200,7 +200,13 @@ extension IntervalHDCommonControllerForTabs:UITableViewDataSource {
         }
         
         cell.thumbnailimageView.backgroundColor = UIColor.lightGray
-        cell.thumbnailimageView.setImageWith(NSURL(string: video.images[0].url!) as URL!, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+        cell.thumbnailimageView.setImageWith(URL(string: video.images[0].url!), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
+            if (error != nil) {
+                cell.thumbnailimageView.image = UIImage(named: Constant.MyClassConstants.noImage)
+                cell.thumbnailimageView.contentMode = .center
+            }
+        }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+
         cell.contentView.bringSubview(toFront: cell.playButton)
         cell.nameLabel.text = video.name
         return cell
