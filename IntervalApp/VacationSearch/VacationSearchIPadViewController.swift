@@ -735,12 +735,12 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                             Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(UserContext.sharedInstance.appSettings, exchangeSearchCriteria)
                             
                             ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
+                                
                                 sender.isEnabled = true
                                 Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
                                 
                                 // Get activeInterval (or initial search interval)
-                                let activeInterval = BookingWindowInterval(interval: Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval())
-                                Constant.MyClassConstants.initialVacationSearch.bookingWindow.intervals[0].fetchedBefore = true
+                                let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
                                 
                                 // Update active interval
                                 Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
@@ -748,13 +748,13 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                                 Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                 
                                 // Check not available checkIn dates for the active interval
-                                if (activeInterval.fetchedBefore && !activeInterval.hasCheckInDates()) {
+                                if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
                                     self.showNotAvailabilityResults()
                                 }
                                 
                                 Helper.hideProgressBar(senderView: self)
                                 
-                                if (activeInterval.hasCheckInDates()){
+                                if (activeInterval?.hasCheckInDates())!{
                                     Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
                                     let initialSearchCheckInDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat)
                                     

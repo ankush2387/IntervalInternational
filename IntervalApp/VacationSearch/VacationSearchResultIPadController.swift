@@ -301,8 +301,12 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
         Helper.helperDelegate = self
         
             myActivityIndicator.hidesWhenStopped = true
+        
             // Resolve the next active interval based on the Calendar interval selected
             let activeInterval = Constant.MyClassConstants.initialVacationSearch.resolveNextActiveIntervalFor(intervalStartDate: calendarItem.intervalStartDate, intervalEndDate: calendarItem.intervalEndDate)
+        
+            
+            //Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
             
             // Fetch CheckIn dates only in the active interval doesn't have CheckIn dates
             if (activeInterval != nil && !(activeInterval?.hasCheckInDates())!) {
@@ -317,7 +321,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                                              onSuccess: { (response) in
                                                 
                                                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
-                                                let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
+                                                //let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
                                                 // Update active interval
                                                 Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                                                 
@@ -359,13 +363,14 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                     // Update CheckInFrom and CheckInTo dates
                     Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.checkInFromDate = Helper.convertStringToDate(dateString:calendarItem.intervalStartDate!,format:Constant.MyClassConstants.dateFormat)
                     Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.checkInToDate = Helper.convertStringToDate(dateString:calendarItem.intervalEndDate!,format:Constant.MyClassConstants.dateFormat)
+                    //Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                     
                     
                     ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request,
                                              onSuccess: { (response) in
                                                 
                                                 Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
-                                                let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
+                                               // let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
                                                 // Update active interval
                                                 Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                                                 
@@ -394,12 +399,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                                              onError:{ (error) in
                                                 
                                                 SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
-                                                DarwinSDK.logger.error("Error Code: \(error.code)")
-                                                DarwinSDK.logger.error("Error Description: \(error.description)")
-                                                
-                                                // TODO: Handle SDK/API errors
-                                                DarwinSDK.logger.error("Handle SDK/API errors.")
-                                                
+                                               
                                                 //expectation.fulfill()
                     }
                     )
@@ -407,7 +407,11 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                     
                 }
             }else {
-
+                if(activeInterval != nil){
+                    Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                }
+                Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                self.searchedDateCollectionView.reloadData()
                 myActivityIndicator.stopAnimating()
                 cell.alpha = 1.0
             
@@ -1556,14 +1560,16 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
         let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
         if(sectionsInSearchResult.count > 0){
             
-            
-            if(sectionsInSearchResult[section].exactMatch)!{
-                headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
-                headerView.backgroundColor = IUIKColorPalette.primary1.color
-            }else{
-                headerLabel.text = Constant.CommonLocalisedString.surroundingString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
-                headerView.backgroundColor = Constant.CommonColor.headerGreenColor
+            if(!Constant.MyClassConstants.isFromExchange){
+                if(sectionsInSearchResult[section].exactMatch)!{
+                    headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
+                    headerView.backgroundColor = IUIKColorPalette.primary1.color
+                }else{
+                    headerLabel.text = Constant.CommonLocalisedString.surroundingString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
+                    headerView.backgroundColor = Constant.CommonColor.headerGreenColor
+                }
             }
+            
         }
     
         headerLabel.textColor = UIColor.white

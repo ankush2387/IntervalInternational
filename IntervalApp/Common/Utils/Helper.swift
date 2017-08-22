@@ -1815,6 +1815,10 @@ public class Helper{
         request.travelParty = Constant.MyClassConstants.travelPartyInfo
         
         ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: request, onSuccess: { (searchAvailabilityResponse) in
+            
+            print(searchAvailabilityResponse)
+            
+            
             // Update Exchange inventory
             hideProgressBar(senderView: senderViewController)
             Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.inventory = searchAvailabilityResponse
