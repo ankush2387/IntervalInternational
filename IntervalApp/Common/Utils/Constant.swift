@@ -307,6 +307,7 @@ class Constant: NSObject {
         static var bedRoomSize = ["STUDIO","ONE_BEDROOM","TWO_BEDROOM","THREE_BEDROOM","FOUR_BEDROOM"]
         static var alertSelectedUnitSizeArray:NSMutableArray = NSMutableArray()
         static var topDeals : [RentalDeal] = []
+        static var flexExchangeDeals : [FlexExchangeDeal] = []
         static var resortDirectoryRegionArray = [Region]()
         static var resortDirectorySubRegionArray = [Region]()
         static var resortDirectoryAreaListArray = [Area]()
@@ -924,6 +925,8 @@ class Constant: NSObject {
     struct segmentControlItems {
         
         static var getaways = NSLocalizedString("Getaways", comment: "")
+        static var exchange = NSLocalizedString("Exchange", comment: "")
+        static var searchBoth = NSLocalizedString("Search Both", comment: "")
         static var flexchangeLabelText = "FLEXCHANGE"
         static var getawaysLabelText = NSLocalizedString("TOP 10 GETAWAYS", comment: "")
         static var getawaysIpadText = NSLocalizedString("Top 10 Getaway Destinations", comment: "")

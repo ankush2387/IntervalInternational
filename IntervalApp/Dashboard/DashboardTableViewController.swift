@@ -23,7 +23,7 @@ class DashboardTableViewController: UITableViewController {
     var segmentSelectedIndex:Int = 0
     var noUpcomingTrip = false
     var showGetaways = true
-    var showExchange = false
+    var showExchange = true
     var dashboardArray = NSMutableArray()
     
     override func viewWillAppear(_ animated: Bool) {
@@ -44,7 +44,7 @@ class DashboardTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        Helper.showProgressBar(senderView: self)
         // omniture tracking with event40
         let userInfo: [String: String] = [
             Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.homeDashboard
@@ -54,6 +54,18 @@ class DashboardTableViewController: UITableViewController {
         
         self.getNumberOfSections()
         Helper.getTopDeals(senderVC: self)
+
+        
+        Helper.getFlexExchangeDeals(senderVC: self) { (success) in
+            if success {
+                self.getNumberOfSections()
+                self.homeTableView.reloadData()
+                Helper.hideProgressBar(senderView: self)
+            } else {
+                Helper.hideProgressBar(senderView: self)
+            }
+        }
+
         //***** Set general Nav attributes *****//
         self.title = Constant.ControllerTitles.dashboardTableViewController
         
@@ -101,7 +113,11 @@ class DashboardTableViewController: UITableViewController {
         }
         if(showExchange && showGetaways){
             self.dashboardArray.add(Constant.dashboardTableScreenReusableIdentifiers.search)
-            self.dashboardArray.add(Constant.dashboardTableScreenReusableIdentifiers.exchange)
+            
+            if Constant.MyClassConstants.flexExchangeDeals.count > 0 {
+                self.dashboardArray.add(Constant.dashboardTableScreenReusableIdentifiers.exchange)
+            }
+            
             if((Constant.MyClassConstants.topDeals.count) > 0){
                 self.dashboardArray.add(Constant.dashboardTableScreenReusableIdentifiers.getaway)
             }
@@ -109,24 +125,12 @@ class DashboardTableViewController: UITableViewController {
         if(!showExchange && !showGetaways){
             self.dashboardArray.add(Constant.dashboardTableScreenReusableIdentifiers.search)
         }
-        if(showExchange){
-            self.dashboardArray.add(Constant.dashboardTableScreenReusableIdentifiers.search)
-            self.dashboardArray.add(Constant.dashboardTableScreenReusableIdentifiers.exchange)
-        }
-        if(showGetaways){
-            self.dashboardArray.add(Constant.dashboardTableScreenReusableIdentifiers.search)
-            if((Constant.MyClassConstants.topDeals.count) > 0){
-                self.dashboardArray.add(Constant.dashboardTableScreenReusableIdentifiers.getaway)
-            }
-        }
     }
     
     //***** Function called when notification for top 10 deals is fired. *****//
     func reloadTopDestinations(){
         self.getNumberOfSections()
         self.homeTableView.reloadData()
-        Helper.removeServiceCallBackgroundView(view: self.view)
-        SVProgressHUD.dismiss()
     }
     
     //***** MARK: - Table view delegate methods *****//
@@ -209,10 +213,10 @@ class DashboardTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if(dashboardArray[section] as! String == Constant.dashboardTableScreenReusableIdentifiers.alert){
-            if(Constant.MyClassConstants.getawayAlertsArray.count > 0){
-                return 1
+            if(Constant.MyClassConstants.getawayAlertsArray.count >= 3){
+                return 3
             }else{
-                return 0
+                return Constant.MyClassConstants.getawayAlertsArray.count
             }
         }else if(dashboardArray[section] as! String == Constant.dashboardTableScreenReusableIdentifiers.upcoming){
             if( Constant.MyClassConstants.upcomingTripsArray.count <= 2) {
@@ -285,7 +289,7 @@ class DashboardTableViewController: UITableViewController {
             
             
             return cell
-        }else {
+        } else {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cellIdentifier, for: indexPath)
             cell.selectionStyle = UITableViewCellSelectionStyle.none
@@ -294,7 +298,7 @@ class DashboardTableViewController: UITableViewController {
             }
             
             //header for top ten deals
-            if(indexPath.section == 3) {
+            if(type == "Exchange") {
                 if(!showExchange){
                     let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: cell.contentView.frame.width - 20, height: 20))
                     resortImageNameLabel.text = Constant.segmentControlItems.getawaysLabelText
@@ -334,7 +338,7 @@ class DashboardTableViewController: UITableViewController {
             homeTableCollectionView.backgroundColor = UIColor.clear
             homeTableCollectionView.delegate = self
             homeTableCollectionView.dataSource = self
-            if(indexPath.section == 3) {
+            if(type == "Exchange") {
                 homeTableCollectionView.tag = 1
             }
             else {
@@ -365,6 +369,8 @@ class DashboardTableViewController: UITableViewController {
         Constant.MyClassConstants.alertOriginationPoint = Constant.CommonStringIdentifiers.alertOriginationPoint
         let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.getawayAlertsIphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.sideMenuTitles.sideMenuInitialController) as! SWRevealViewController
+        Constant.MyClassConstants.activeAlertsArray.removeAllObjects()
+        reloadBadgeView()
         
         self.present(viewController, animated: true, completion: nil)
     }
@@ -420,7 +426,11 @@ extension DashboardTableViewController:UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return (Constant.MyClassConstants.topDeals.count)
+        if collectionView.tag == 1 {
+            return Constant.MyClassConstants.flexExchangeDeals.count
+        } else {
+            return (Constant.MyClassConstants.topDeals.count)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -430,27 +440,32 @@ extension DashboardTableViewController:UICollectionViewDataSource {
         for subview in cell.subviews {
             subview.removeFromSuperview()
         }
-        
-        let topTenDeals = Constant.MyClassConstants.topDeals[indexPath.row]
-        let resortFlaxImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: 180) )
-        resortFlaxImageView.backgroundColor = UIColor.lightGray
-        let rentalDeal:RentalDeal = Constant.MyClassConstants.topDeals[indexPath.row]
-        
-        if let imgURL = rentalDeal.images.first?.url {
-            resortFlaxImageView.setImageWith(URL(string: imgURL ), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
-                if (error != nil) {
-                    resortFlaxImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
-                }
-            }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
-        }
-        
-        cell.addSubview(resortFlaxImageView)
+
         
         if(collectionView.tag == 1) {
+            //flexDeals
+            let flexDeal = Constant.MyClassConstants.flexExchangeDeals[indexPath.row]
+            let resortFlaxImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: 180) )
+            resortFlaxImageView.backgroundColor = UIColor.lightGray
+            
+            
+            if let imgURL = flexDeal.images.first?.url {
+                resortFlaxImageView.setImageWith(URL(string: imgURL ), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
+                    if (error != nil) {
+                        resortFlaxImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
+                        resortFlaxImageView.contentMode = .center
+                    }
+                }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+            } else {
+                resortFlaxImageView.image = UIImage(named: "\(Constant.MyClassConstants.noImage)")
+                resortFlaxImageView.contentMode = .center
+            }
+            
+            cell.addSubview(resortFlaxImageView)
             
             let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: cell.contentView.frame.height - 50, width: cell.contentView.frame.width - 20, height: 60))
             
-            resortImageNameLabel.text = topTenDeals.header!
+            resortImageNameLabel.text = flexDeal.name
             resortImageNameLabel.numberOfLines = 2
             resortImageNameLabel.textAlignment = NSTextAlignment.center
             resortImageNameLabel.textColor = UIColor.black
@@ -463,7 +478,25 @@ extension DashboardTableViewController:UICollectionViewDataSource {
             cell.layer.masksToBounds = true
         }
         else {
+            //TOP10GETAWAY
+            let topTenDeals = Constant.MyClassConstants.topDeals[indexPath.row]
+            let resortFlaxImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: 180) )
+            resortFlaxImageView.backgroundColor = UIColor.lightGray
+            let rentalDeal:RentalDeal = Constant.MyClassConstants.topDeals[indexPath.row]
             
+            if let imgURL = rentalDeal.images.first?.url {
+                resortFlaxImageView.setImageWith(URL(string: imgURL ), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
+                    if (error != nil) {
+                        resortFlaxImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
+                        resortFlaxImageView.contentMode = .center
+                    }
+                }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+            } else {
+                resortFlaxImageView.image = UIImage(named: "\(Constant.MyClassConstants.noImage)")
+                resortFlaxImageView.contentMode = .center
+            }
+            
+            cell.addSubview(resortFlaxImageView)
             
             
             let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: cell.contentView.frame.height - 50, width: cell.contentView.frame.width - 20, height: 60))

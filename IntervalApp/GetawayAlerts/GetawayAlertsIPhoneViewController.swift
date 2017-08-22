@@ -277,9 +277,11 @@ extension GetawayAlertsIPhoneViewController:UITableViewDataSource {
         cell.selectionStyle = UITableViewCellSelectionStyle.none
         cell.alertNameLabel.text = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].name
         
-        let fromDate = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].earliestCheckInDate!
-
-        let toDate = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].latestCheckInDate!
+        let alertFromDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.getawayAlertsArray[indexPath.row].earliestCheckInDate!, format: Constant.MyClassConstants.dateFormat)
+        let fromDate = (Helper.getWeekDay(dateString: alertFromDate as NSDate, getValue: Constant.MyClassConstants.month)).appendingFormat(". ").appending(Helper.getWeekDay(dateString: alertFromDate as NSDate, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: alertFromDate as NSDate, getValue: Constant.MyClassConstants.year))
+        
+        let alertToDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.getawayAlertsArray[indexPath.row].latestCheckInDate!, format: Constant.MyClassConstants.dateFormat)
+        let toDate = Helper.getWeekDay(dateString: alertToDate as NSDate, getValue: Constant.MyClassConstants.month).appending(". ").appending(Helper.getWeekDay(dateString: alertToDate as NSDate, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: alertToDate as NSDate, getValue: Constant.MyClassConstants.year))
         
         let dateRange = fromDate.appending(" - " + toDate)
         

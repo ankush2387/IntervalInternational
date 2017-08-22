@@ -47,6 +47,9 @@ class CreateAlertViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //set return key on Keyboard to DONE
+        nameTextField.returnKeyType = .done
+        
         // omniture tracking with event 40
         let pageView: [String: String] = [
             Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.createAnAlert

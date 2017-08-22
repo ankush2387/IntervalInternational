@@ -352,7 +352,7 @@ extension UpComingTripDetailIPadViewController:UITableViewDataSource {
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             cell.backgroundColor = UIColor.clear
             cell.resortNameBaseView.backgroundColor = UIColor.clear
-            cell.resortNameBaseView.frame = CGRect(x: 100, y: 0, width: 568, height: 100)
+            cell.resortNameBaseView.frame = CGRect(x: 100, y: 0, width: cell.frame.width - 200, height: 100)
             
             for layer in cell.resortNameBaseView.layer.sublayers!{
                 if(layer.isKind(of: CAGradientLayer.self)) {
@@ -403,16 +403,16 @@ extension UpComingTripDetailIPadViewController:UITableViewDataSource {
             
         }else if((indexPath as NSIndexPath).section == 2) {
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.unitCell, for: indexPath) as! UpComingTripCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "UnitCell", for: indexPath) as! UpComingTripCell
             
             cell.backgroundColor = IUIKColorPalette.contentBackground.color
             
             
             if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise != nil){
             }else{
-                let unitsize = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.unitSize!
-                print(unitsize)
-                cell.bedRoomKitechenType.text =  "\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.unitSize!) \(Helper.getKitchenEnums(kitchenType: (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit?.kitchenType)!))"
+                if let unitsize = UnitSize.fromFriendlyName(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.unitSize!) {    
+                    cell.bedRoomKitechenType.text =  "\(unitsize) \(Helper.getKitchenEnums(kitchenType: (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit?.kitchenType)!))"
+                }
                 
                 cell.sleepsTotalOrPrivate.text = "Sleeps \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.publicSleepCapacity) total, \(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit!.privateSleepCapacity) Private"
             }
@@ -602,43 +602,47 @@ extension UpComingTripDetailIPadViewController:UITableViewDataSource {
     }
     
     func getDetails() -> UIView {
-        
         let unitDetils = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit
         self.unitDetialsCellHeight = 20
         
         self.detailsView = UIView()
         for amunities in unitDetils!.amenities {
             
-            let sectionLabel = UILabel(frame: CGRect(x: 120,y:Int(unitDetialsCellHeight), width: Int(self.view.frame.width - 120), height: 20))
+            let sectionLabel = UILabel(frame: CGRect(x: 120,y:Int(unitDetialsCellHeight), width: Int(self.view.frame.width - 20), height: 20))
             
-            sectionLabel.text = amunities.category!
+            sectionLabel.text = Helper.getMappedStringForDetailedHeaderSection(sectonHeader: amunities.category!)
             sectionLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 14.0)
             sectionLabel.textColor = UIColor.lightGray
             
             self.detailsView?.addSubview(sectionLabel)
             
-            self.unitDetialsCellHeight = unitDetialsCellHeight + 30
+            self.unitDetialsCellHeight = unitDetialsCellHeight + 25
             
             for details in amunities.details {
                 
                 
-                let detailSectionLabel = UILabel(frame: CGRect(x: 120, y: Int(unitDetialsCellHeight), width: Int(self.view.frame.width - 120), height: 20))
-                detailSectionLabel.text = details.section!
+                let detailSectionLabel = UILabel(frame: CGRect(x: 120, y: Int(unitDetialsCellHeight), width: Int(self.view.frame.width - 20), height: 20))
+                detailSectionLabel.text = details.section!.capitalized
                 detailSectionLabel.font = UIFont(name: Constant.fontName.helveticaNeueBold, size: 16.0)
                 detailSectionLabel.sizeToFit()
                 
                 self.detailsView?.addSubview(detailSectionLabel)
-                self.unitDetialsCellHeight = self.unitDetialsCellHeight + 20
+                if((detailSectionLabel.text?.characters.count)! > 0) {
+                    self.unitDetialsCellHeight = self.unitDetialsCellHeight + 20
+                }
+                
                 for desc in details.descriptions {
-                    let detaildescLabel = UILabel(frame: CGRect(x: 120, y: Int(unitDetialsCellHeight), width: Int(self.view.frame.width - 120), height: 20))
+                    
+                    
+                    let detaildescLabel = UILabel(frame: CGRect(x: 120, y: Int(unitDetialsCellHeight), width: Int(self.view.frame.width - 20), height: 20))
                     detaildescLabel.text = desc
                     detaildescLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 14.0)
                     detaildescLabel.sizeToFit()
                     self.detailsView?.addSubview(detaildescLabel)
-                    self.unitDetialsCellHeight = unitDetialsCellHeight + 20
+                    self.unitDetialsCellHeight = self.unitDetialsCellHeight + 20
                     
                 }
-                
+                self.unitDetialsCellHeight = self.unitDetialsCellHeight + 20
             }
             
         }
@@ -673,7 +677,7 @@ extension UpComingTripDetailIPadViewController:UITableViewDataSource {
             }
         case 2:
             if(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.confirmationNumber != nil) {
-                return 0
+                return 1
             }else{
                 return 0
             }
