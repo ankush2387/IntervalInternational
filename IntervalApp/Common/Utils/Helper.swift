@@ -1879,7 +1879,7 @@ public class Helper{
     }
     
     static func showAvailabilitySectionWithDefault(section:AvailabilitySection!) {
-        if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
+       /* if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
             for inventoryItem in (section.item?.rentalInventory)! {
                 // Show up only Resorts as header
                 DarwinSDK.logger.info("Header[R] - \(String(describing: inventoryItem.resortName))")
@@ -1893,7 +1893,7 @@ public class Helper{
                 Constant.MyClassConstants.searchAvailabilityHeader = "\(String(describing: inventoryItem.resort?.resortName))"
                 self.showAvailabilityBucketExchange(inventoryItem: inventoryItem.inventory)
             }
-        }
+        }*/
         
             
         
@@ -1903,7 +1903,7 @@ public class Helper{
 
     
     static func showAvailabilitySection(section:AvailabilitySection!) {
-        if (section.exactMatch)! {
+       /* if (section.exactMatch)! {
             // Show up exact match as header
             DarwinSDK.logger.info("Header - Exact Match")
         } else {
@@ -1919,7 +1919,7 @@ public class Helper{
             for inventoryItem in (section.item?.exchangeInventory)!{
                 self.showAvailabilityBucketExchange(inventoryItem: inventoryItem.inventory)
             }
-        }
+        }*/
         
         
         

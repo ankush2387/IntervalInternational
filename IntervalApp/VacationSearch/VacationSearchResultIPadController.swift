@@ -1562,7 +1562,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 headerView.backgroundColor = Constant.CommonColor.headerGreenColor
             }
         }else{
-        if(sectionsInSearchResult[section].hasItem()){
+        if(sectionsInSearchResult[section].hasItems()){
             if(sectionsInSearchResult[section].exactMatch == nil){
                 headerLabel.text  = "\(Constant.CommonLocalisedString.exactString) \( Constant.MyClassConstants.vacationSearchResultHeaderLabel)"
                 

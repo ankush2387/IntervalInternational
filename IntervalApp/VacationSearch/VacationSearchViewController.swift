@@ -1365,22 +1365,25 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     
                         // Always show a fresh copy of the Scrolling Calendar
 
-                        Helper.showScrollingCalendar(vacationSearch: self.vacationSearch)
+                        Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     
                         // Check not available checkIn dates for the active interval
                         if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
                             self.showNotAvailabilityResults()
                         } else {
-                           // let initialSearchCheckInDate = Helper.convertStringToDate(dateString:self.vacationSearch.searchCheckInDate!,format:Constant.MyClassConstants.dateFormat)
+                            
+                             Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
+                            let initialSearchCheckInDate = Helper.convertStringToDate(dateString:self.vacationSearch.searchCheckInDate!,format:Constant.MyClassConstants.dateFormat)
                             Constant.MyClassConstants.checkInDates = response.checkInDates
                             sender.isEnabled = true
                             Helper.helperDelegate = self
                         
-                            Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: response.checkInDates[0], senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                            Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                         }
                     },
                     onError:{ (error) in
-                        SVProgressHUD.dismiss()
+                        Helper.hideProgressBar(senderView: self)
+                        sender.isEnabled = true
                         SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                     }
                 )
@@ -1487,10 +1490,10 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             
             if((storedData.first?.resorts[0].resortArray.count)! > 0){
                 var resorts = [Resort]()
-                for resortDetails in (storedData.first?.resorts[0].resortArray)!{
+                for selectedResort in (storedData.first?.resorts[0].resortArray)!{
                     let resort = Resort()
-                    resort.resortName = storedData[0].resorts[0].resortName
-                    resort.resortCode = storedData[0].resorts[0].resortCode
+                    resort.resortName = selectedResort.resortName
+                    resort.resortCode = selectedResort.resortCode
                     resorts.append(resort)
                 }
                 searchCriteria.resorts = resorts
@@ -1528,26 +1531,26 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
     }
     
     func showAvailabilitySectionWithDefault(section:AvailabilitySection!) {
-        if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
-            for inventoryItem in (section.item?.rentalInventory)! {
+       /* if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
+            for inventoryItem in (section.items)! {
                 // Show up only Resorts as header
                 DarwinSDK.logger.info("Header[R] - \(String(describing: inventoryItem.resortName))")
                 Constant.MyClassConstants.searchAvailabilityHeader = "\(String(describing: inventoryItem.resortName))"
                 self.showAvailabilityBucket(inventoryItem: inventoryItem)
             }
         }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
-            for inventoryItem in (section.item?.exchangeInventory)! {
+            for inventoryItem in (section.items?[0].exchangeInventory)! {
                 // Show up only Resorts as header
                 DarwinSDK.logger.info("Header[R] - \(String(describing: inventoryItem.resort?.resortName))")
                 Constant.MyClassConstants.searchAvailabilityHeader = "\(String(describing: inventoryItem.resort?.resortName))"
                 self.showAvailabilityBucket(inventoryItem: inventoryItem.resort)
             }
-        }
+        }*/
         
     }
     
     func showAvailabilitySection(section:AvailabilitySection!) {
-        if (section.exactMatch)! {
+        /*if (section.exactMatch)! {
             // Show up exact match as header
             DarwinSDK.logger.info("Header - Exact Match")
         } else {
@@ -1557,7 +1560,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         
         for inventoryItem in (section.item?.rentalInventory)! {
             self.showAvailabilityBucket(inventoryItem: inventoryItem)
-        }
+        }*/
         
         DarwinSDK.logger.info("===============================================================")
     }
