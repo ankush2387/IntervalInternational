@@ -51,8 +51,28 @@ class EditMyAlertIpadViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
+        Constant.MyClassConstants.selectedGetawayAlertDestinationArray.removeAllObjects()
+        RentalClient.getAlert(UserContext.sharedInstance.accessToken, alertId: alertId, onSuccess: { (alert) in
+            let earlyDate = Helper.convertStringToDate(dateString: alert.earliestCheckInDate!, format: "yyyy-MM-dd")
+            let lateDate = Helper.convertStringToDate(dateString: alert.latestCheckInDate!, format: "yyyy-MM-dd")
+            
+            Constant.MyClassConstants.alertWindowStartDate = earlyDate
+            Constant.MyClassConstants.alertWindowEndDate = lateDate
+            
+            let destination = alert.destinations
+            for dest in destination {
+                
+                Constant.MyClassConstants.selectedGetawayAlertDestinationArray.add(dest)
+            }
+            let resorts = alert.resorts
+            for resort in resorts {
+                
+                Constant.MyClassConstants.selectedGetawayAlertDestinationArray.add(resort)
+            }
+            self.setupView()
+        }) { (error) in
+            print(error)
+        }
         // omniture tracking with event 40
         let pageView: [String: String] = [
             Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.editAnAlert
@@ -95,6 +115,9 @@ class EditMyAlertIpadViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         
         self.bedroomSize.text = Constant.MyClassConstants.selectedBedRoomSize
+    }
+    
+    fileprivate func setupView() {
         if(Constant.MyClassConstants.alertWindowStartDate != nil) {
             
             self.travelWindowEndDateSelectionButton.isEnabled = true
