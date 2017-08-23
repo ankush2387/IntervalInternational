@@ -1770,8 +1770,10 @@ public class Helper{
                                     
                                     //expectation.fulfill()
                                     hideProgressBar(senderView: senderViewController)
-                                    if Constant.MyClassConstants.isFromSorting == false {
+                                    if Constant.MyClassConstants.isFromSorting == false && Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType != VacationSearchType.Combined {
                                         helperDelegate?.resortSearchComplete()
+                                    }else{
+                                        executeExchangeSearchDates(senderVC: senderViewController)
                                     }
                                     Constant.MyClassConstants.isFromSorting = false
                                     
@@ -1842,6 +1844,46 @@ public class Helper{
             hideProgressBar(senderView: senderViewController)
             SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.noResultError, message: error.localizedDescription)
         }
+    }
+    
+    static func executeExchangeSearchDates(senderVC:UIViewController) {
+        
+        ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request,
+                                   onSuccess: { (response) in
+                                    Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
+                                    
+                                    // Get activeInterval
+                                    let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
+                                    
+                                    // Update active interval
+                                    Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                                    
+                                    // Check not available checkIn dates for the active interval
+                                    if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                                        
+                                        // We do not have available CheckInDates in Rental and Exchange
+                                        //if (self.rentalHasNotAvailableCheckInDates) {
+                                           // self.showNotAvailabilityResults()
+                                        //}
+                                        
+                                    } else {
+                                        Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
+                                           executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat) , senderViewController: senderVC, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                    }
+                                    
+                                    //expectation.fulfill()
+        },
+                                   onError:{ (error) in
+                                    DarwinSDK.logger.error("Error Code: \(error.code)")
+                                    DarwinSDK.logger.error("Error Description: \(error.description)")
+                                    
+                                    // TODO: Handle SDK/API errors
+                                    DarwinSDK.logger.error("Handle SDK/API errors.")
+                                    
+                                    
+        }
+        )
+        
     }
     
     static func showScrollingCalendar(vacationSearch:VacationSearch) {

@@ -41,6 +41,8 @@ class VacationSearchViewController: UIViewController {
     var showGetaways = true
     var vacationSearch = VacationSearch()
     var searchDateRequest = RentalSearchDatesRequest()
+    var rentalHasNotAvailableCheckInDates : Bool = false
+    var exchangeHasNotAvailableCheckInDates : Bool = false
     
     
     override func viewWillAppear(_ animated: Bool) {
@@ -316,6 +318,7 @@ class VacationSearchViewController: UIViewController {
         SVProgressHUD.dismiss()
         self.searchVacationTableView.reloadData()
     }
+    
 }
 
 //***** MARK: Extension classes starts from here *****//
@@ -1413,7 +1416,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         Helper.helperDelegate = self
         ADBMobile.trackAction(Constant.omnitureEvents.event1, data: nil)
         
-        if (self.segmentTitle == "Getaways" && (Helper.getAllDestinationFromLocalStorage().count>0 || Helper.getAllResortsFromLocalStorage().count>0)) {
+        if (self.segmentTitle == Constant.segmentControlItems.getaways && (Helper.getAllDestinationFromLocalStorage().count>0 || Helper.getAllResortsFromLocalStorage().count>0)) {
             Helper.showProgressBar(senderView: self)
             sender.isEnabled = false
             
@@ -1473,7 +1476,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             
             Constant.MyClassConstants.isFromExchange = false
             
-        } else if(self.segmentTitle == "Exchange" && (Helper.getAllDestinationFromLocalStorage().count>0 || Helper.getAllResortsFromLocalStorage().count>0)) {
+        } else if(self.segmentTitle == Constant.segmentControlItems.exchange && (Helper.getAllDestinationFromLocalStorage().count>0 || Helper.getAllResortsFromLocalStorage().count>0)) {
             if(Constant.MyClassConstants.relinquishmentIdArray.count == 0){
                 sender.isEnabled = true
                 SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
@@ -1544,9 +1547,9 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             
             Constant.MyClassConstants.isFromExchange = true
         } else {
-            if(self.segmentTitle == "Getaways"){
+            if(self.segmentTitle == Constant.segmentControlItems.getaways){
                 SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
-            }else if(self.segmentTitle == "Exchange"){
+            }else if(self.segmentTitle == Constant.segmentControlItems.exchange){
                 if((Helper.getAllDestinationFromLocalStorage().count == 0 && Helper.getAllResortsFromLocalStorage().count == 0)){
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
                 }else if(Constant.MyClassConstants.relinquishmentIdArray.count == 0){
@@ -1554,6 +1557,61 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 }else{
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
                 }
+            }else{
+                Helper.showProgressBar(senderView: self)
+                let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Combined)
+                let storedData = Helper.getLocalStorageWherewanttoGo()
+                
+                if(storedData.count > 0) {
+                    self.getSavedDestinationsResorts(storedData:storedData, searchCriteria:rentalSearchCriteria)
+                    let travelPartyInfo = TravelParty()
+                    travelPartyInfo.adults = Int(self.adultCounter)
+                    travelPartyInfo.children = Int(self.childCounter)
+                    
+                    Constant.MyClassConstants.travelPartyInfo = travelPartyInfo
+                    rentalSearchCriteria.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]//Constant.MyClassConstants.relinquishmentIdArray as? [String]
+                    rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
+                    rentalSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
+                    rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
+                    
+                    Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(UserContext.sharedInstance.appSettings, rentalSearchCriteria)
+                    
+                    ADBMobile.trackAction(Constant.omnitureEvents.event9, data: nil)
+                    
+                    
+                    RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess:{ (response) in
+                        
+                        Helper.hideProgressBar(senderView: self)
+                        Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
+                        let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
+                        // Update active interval
+                        Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                        Helper.helperDelegate = self
+                        
+                        Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                        // Check not available checkIn dates for the active interval
+                        if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                            Helper.hideProgressBar(senderView: self)
+                            self.rentalHasNotAvailableCheckInDates = true
+                            Helper.executeExchangeSearchDates(senderVC: self)
+                        }else{
+                            Helper.hideProgressBar(senderView: self)
+                            Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
+                            let vacationSearchInitialDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
+                            Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearchInitialDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                        }
+                        Constant.MyClassConstants.checkInDates = response.checkInDates
+                        sender.isEnabled = true
+                        
+                    })
+                    { (error) in
+                        
+                        Helper.hideProgressBar(senderView: self)
+                        SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                    }
+                    
+                }
+                
             }
         }
     }
@@ -1593,131 +1651,6 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 Constant.MyClassConstants.vacationSearchResultHeaderLabel = resort.resortName!
             }
         }
-    }
-    
-    
-    func showAvailabilityResults() {
-        DarwinSDK.logger.info("-- Create Sections --")
-        
-        let sections = self.vacationSearch.createSections()
-        
-        // Show up the Availability Sections in UI
-        DarwinSDK.logger.info("Sorting criteria is: \(String(describing: self.vacationSearch.sortType))")
-        for section in sections {
-            if (self.vacationSearch.sortType.isDefault()) {
-                self.showAvailabilitySectionWithDefault(section: section)
-            } else {
-                self.showAvailabilitySection(section: section);
-            }
-        }
-    }
-    
-    func showNearestCheckInDateSelectedMessage() {
-        DarwinSDK.logger.info("NEAREST CHECK-IN DATE SELECTED - We found availability close to your desired Check-in Date")
-    }
-    
-    func showAvailabilitySectionWithDefault(section:AvailabilitySection!) {
-       /* if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
-            for inventoryItem in (section.items)! {
-                // Show up only Resorts as header
-                DarwinSDK.logger.info("Header[R] - \(String(describing: inventoryItem.resortName))")
-                Constant.MyClassConstants.searchAvailabilityHeader = "\(String(describing: inventoryItem.resortName))"
-                self.showAvailabilityBucket(inventoryItem: inventoryItem)
-            }
-        }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
-            for inventoryItem in (section.items?[0].exchangeInventory)! {
-                // Show up only Resorts as header
-                DarwinSDK.logger.info("Header[R] - \(String(describing: inventoryItem.resort?.resortName))")
-                Constant.MyClassConstants.searchAvailabilityHeader = "\(String(describing: inventoryItem.resort?.resortName))"
-                self.showAvailabilityBucket(inventoryItem: inventoryItem.resort)
-            }
-        }*/
-        
-    }
-    
-    func showAvailabilitySection(section:AvailabilitySection!) {
-        /*if (section.exactMatch)! {
-            // Show up exact match as header
-            DarwinSDK.logger.info("Header - Exact Match")
-        } else {
-            // Show up surrounding match as header
-            DarwinSDK.logger.info("Header - Surrounding Match")
-        }
-        
-        for inventoryItem in (section.item?.rentalInventory)! {
-            self.showAvailabilityBucket(inventoryItem: inventoryItem)
-        }*/
-        
-        DarwinSDK.logger.info("===============================================================")
-    }
-    
-    func showAvailabilityBucket(inventoryItem:Resort!) {
-        DarwinSDK.logger.info("\(String(describing: self.resolveResortInfo(resort: inventoryItem)))")
-        
-        for unit in (inventoryItem.inventory?.units)! {
-            DarwinSDK.logger.info("\(String(describing: self.resolveUnitInfo(unit: unit)))")
-        }
-    }
-    
-    func resolveResortInfo(resort:Resort!) -> String {
-        var info = String()
-        info.append(resort.resortCode!)
-        info.append(" ")
-        info.append(resort.resortName!)
-        info.append(" ")
-        
-        if (resort.address?.cityName != nil) {
-            info.append(" ")
-            info.append((resort.address?.cityName)!)
-        }
-        
-        if (resort.address?.territoryCode != nil) {
-            info.append(" ")
-            info.append((resort.address?.territoryCode)!)
-        }
-        
-        if (resort.address?.countryCode != nil) {
-            info.append(" ")
-            info.append((resort.address?.countryCode)!)
-        }
-        
-        return info
-    }
-    
-    func resolveDestinationInfo(destination:AreaOfInfluenceDestination) -> String {
-        var info = String()
-        info.append(destination.destinationName)
-        
-        if (destination.address?.cityName != nil) {
-            info.append(" ")
-            info.append((destination.address?.cityName)!)
-        }
-        
-        if (destination.address?.territoryCode != nil) {
-            info.append(" ")
-            info.append((destination.address?.territoryCode)!)
-        }
-        
-        if (destination.address?.countryCode != nil) {
-            info.append(" ")
-            info.append((destination.address?.countryCode)!)
-        }
-        
-        return info
-    }
-    
-    func resolveUnitInfo(unit:InventoryUnit) -> String {
-        var info = String()
-        info.append("    ")
-        info.append(unit.unitSize!)
-        info.append(" ")
-        info.append(unit.kitchenType!)
-        info.append(" ")
-        info.append("\(String(describing: unit.publicSleepCapacity))")
-        info.append(" total ")
-        info.append("\(String(describing: unit.privateSleepCapacity))")
-        info.append(" private")
-        return info
     }
 }
 

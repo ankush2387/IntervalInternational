@@ -198,10 +198,7 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
         self.navigationController?.navigationBar.barTintColor = UIColor.init(colorLiteralRed: 70.0/255.0, green: 136.0/255.0, blue: 193.0/255.0, alpha: 1.0)
 
         Constant.MyClassConstants.calendarDatesArray.removeAll()
-        print(Constant.MyClassConstants.calendarDatesArray.count)
         Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
-        print(Constant.MyClassConstants.calendarDatesArray.count)
-        
         createSections()
     }
     
@@ -225,22 +222,21 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
             
         } else{
 
-                if(sections.count > 0){
-                    for exactResorts in (sections[0].items)!{
-                        let resortsExact = exactResorts.rentalAvailability
-                        exactMatchResortsArray.append(resortsExact!)
-                    }
+                for section in sections{
                     
-                    if(sections.count > 1){
-                        for surroundingResorts in (sections[1].items)!{
+                    if(section.exactMatch)!{
+                        for exactResorts in (section.items)!{
+                            let resortsExact = exactResorts.rentalAvailability
+                            exactMatchResortsArray.append(resortsExact!)
+                        }
+                    }else{
+                        for surroundingResorts in (section.items)!{
                             let resortsSurrounding = surroundingResorts.rentalAvailability
                             surroundingMatchResortsArray.append(resortsSurrounding!)
                         }
                     }
-                    
                 }
-            
-        }
+           }
         
     }
     
@@ -433,7 +429,7 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
     
     //*****Function for more button press *****//
     func intervalDateItemClicked(_ toDate: Date){
-        let activeInterval = BookingWindowInterval(interval: Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval())
+        let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
         Helper.helperDelegate = self
         Helper.showProgressBar(senderView: self)
         Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: toDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
@@ -1370,14 +1366,18 @@ extension SearchResultViewController:UICollectionViewDataSource {
         headerButton.addTarget(self, action: #selector(SearchResultViewController.filterByNameButtonPressed(_:)), for: .touchUpInside)
         let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
         if(sectionsInSearchResult.count > 0){
-            
-            
-            if(sectionsInSearchResult[section].exactMatch)!{
-                headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
-                headerView.backgroundColor = IUIKColorPalette.primary1.color
+            if(!Constant.MyClassConstants.isFromExchange){
+                    for sections in sectionsInSearchResult{
+                        if(sections.exactMatch! && section == 0){
+                            headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
+                            headerView.backgroundColor = IUIKColorPalette.primary1.color
+                        }else{
+                            headerLabel.text = Constant.CommonLocalisedString.surroundingString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
+                            headerView.backgroundColor = Constant.CommonColor.headerGreenColor
+                        }
+                    }
             }else{
-                headerLabel.text = Constant.CommonLocalisedString.surroundingString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
-                headerView.backgroundColor = Constant.CommonColor.headerGreenColor
+                headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
             }
         }
         
@@ -1389,27 +1389,7 @@ extension SearchResultViewController:UICollectionViewDataSource {
         headerView.addSubview(dropDownImgVw)
         headerView.addSubview(headerButton)
         return headerView
-        
     }
-    
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        
-        
-        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: self.searchResultTableView.frame.width, height: 20))
-        footerView.backgroundColor = UIColor(red: 239.0/255.0, green: 239.0/255.0, blue: 246.0/255.0, alpha: 1)
-        footerView.backgroundColor = UIColor.clear
-        return footerView
-
-    }
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        
-        
-        if(section == Constant.MyClassConstants.resortsArray.count){
-            return 0
-        }
-        return 20
-    }
-    
 }
 
 extension SearchResultViewController:UITableViewDelegate {
