@@ -10,12 +10,14 @@ import UIKit
 import IntervalUIKit
 import SVProgressHUD
 import DarwinSDK
+import SDWebImage
 
 class MyUpcomingTripViewController: UIViewController{
     
     //***** Outlets *****//
     @IBOutlet var myUpcommingTBL: UITableView!
     @IBOutlet var conformationNumber:String?
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,11 +94,36 @@ extension MyUpcomingTripViewController:UITableViewDataSource {
         cell.headerStatusLabel.text = upComingTrip.exchangeStatus!
         cell.resortType.text = upComingTrip.type!
         cell.resortImageView.backgroundColor = UIColor.lightGray
-        cell.resortImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
+        
+        let imagesArray = upComingTrip.resort?.images
+        var imgURL: String?
+        for largeResortImage in imagesArray!{
+            if(largeResortImage.size == Constant.MyClassConstants.imageSizeXL){
+                imgURL = largeResortImage.url
+            }else{
+                imgURL = imagesArray?.first?.url
+            }
+        }
+        
+
+        if let url = imgURL {
+            cell.resortImageView.setImageWith(URL(string: url), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
+                if (error != nil) {
+                    print("Width: \(image?.size.width) - Height: \(image?.size.height)")
+                    cell.resortImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
+                    cell.resortImageView.contentMode = .center
+                }
+            }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+        } else {
+            cell.resortImageView.image = UIImage(named: "\(Constant.MyClassConstants.noImage)")
+            cell.resortImageView.contentMode = .center
+        }
+
         cell.resortNameLabel.text = upComingTrip.resort!.resortName
         cell.resortLocationLabel.text = "\(upComingTrip.resort!.address!.cityName!), \(upComingTrip.resort!.address!.countryCode!)"
         cell.resortCodeLabel.text = upComingTrip.resort!.resortCode
-        
+        cell.footerViewDetailedButton.contentHorizontalAlignment = .left
+        cell.footerViewDetailedButton.contentEdgeInsets = UIEdgeInsetsMake(0, 20, 0, 0)
         let checkInDate = Helper.convertStringToDate(dateString:upComingTrip.unit!.checkInDate!, format: Constant.MyClassConstants.dateFormat)
         
         let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
