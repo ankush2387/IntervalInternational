@@ -43,7 +43,13 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     var dateCellSelectionColor = Constant.CommonColor.blueColor
     var myActivityIndicator = UIActivityIndicatorView()
     
-
+    //Button events
+    @IBAction func searchBothRentalClicked(_ sender: UIControl) {
+    }
+    
+    @IBAction func searchBothExchangeClicked(_ sender: UIControl) {
+    }
+    
     // sorting optionDelegate call
     
     func selectedOptionis(filteredValueIs:String, indexPath:NSIndexPath, isFromFiltered:Bool) {
@@ -201,7 +207,6 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
         Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
         print(Constant.MyClassConstants.calendarDatesArray.count)
         
-        
     }
     
     func createSections(){
@@ -224,22 +229,24 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
             
         } else{
             
-            if(sections.count > 0){
-                for exactResorts in (sections[0].items)!{
-                    let resortsExact = exactResorts.rentalAvailability
-                    exactMatchResortsArray.append(resortsExact!)
-                }
+            for section in sections{
                 
-                if(sections.count > 1){
-                    for surroundingResorts in (sections[1].items)!{
+                if(section.exactMatch)!{
+                    for exactResorts in (section.items)!{
+                        let resortsExact = exactResorts.rentalAvailability
+                        exactMatchResortsArray.append(resortsExact!)
+                    }
+                }else{
+                    for surroundingResorts in (section.items)!{
                         let resortsSurrounding = surroundingResorts.rentalAvailability
                         surroundingMatchResortsArray.append(resortsSurrounding!)
                     }
                 }
-                
             }
-            
         }
+        
+        
+        
         
     }
     
@@ -1623,6 +1630,8 @@ extension VacationSearchResultIPadController:HelperDelegate {
         self.searchedDateCollectionView.reloadData()
         self.resortDetailTBLView.reloadData()
     }
+    
+    
     
     func resetCalendar(){
     }

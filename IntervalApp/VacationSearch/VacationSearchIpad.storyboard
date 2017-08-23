@@ -2434,14 +2434,14 @@
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ResortBedroomDetailExchangeCell" rowHeight="0.0" id="oWy-8S-ytW" customClass="ResortBedroomDetails" customModule="IntervalApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="164.5" width="708" height="0.0"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oWy-8S-ytW" id="VBU-fK-36g">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="oWy-8S-ytW" id="VBU-fK-36g">
                                             <rect key="frame" x="0.0" y="0.0" width="708" height="0.0"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="ForwardArrowIcon" translatesAutoresizingMaskIntoConstraints="NO" id="O0s-Gl-qUu">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="ForwardArrowIcon" translatesAutoresizingMaskIntoConstraints="NO" id="O0s-Gl-qUu">
                                                     <rect key="frame" x="682" y="9" width="26" height="33"/>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0BR" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1hg-Ml-WEY">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="0BR" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1hg-Ml-WEY">
                                                     <rect key="frame" x="20" y="10" width="49" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="Lq4-gO-q0a"/>
@@ -2450,7 +2450,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Full Kitchen" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sQJ-fB-zXU">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Full Kitchen" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sQJ-fB-zXU">
                                                     <rect key="frame" x="77" y="8" width="133" height="17"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="133" id="xUN-GD-Nov"/>
@@ -2459,20 +2459,20 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="8 Total, 6 Private" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JM5-b9-Q2Q">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="8 Total, 6 Private" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JM5-b9-Q2Q">
                                                     <rect key="frame" x="77" y="26" width="97" height="15"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SVd-jx-Bbe">
+                                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SVd-jx-Bbe">
                                                     <rect key="frame" x="627" y="4" width="55" height="54"/>
                                                     <subviews>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TFr-ed-5V5">
+                                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TFr-ed-5V5">
                                                             <rect key="frame" x="6" y="2" width="30" height="33"/>
                                                             <state key="normal" title="Button" image="ExchangeIcon"/>
                                                         </button>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exchange" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OMW-be-Cbc">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Exchange" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OMW-be-Cbc">
                                                             <rect key="frame" x="0.0" y="33" width="55" height="21"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="21" id="8RR-Lh-bdh"/>
@@ -2860,7 +2860,7 @@
                                                                             <constraint firstAttribute="bottom" secondItem="e7H-JO-Oo0" secondAttribute="bottom" id="vjG-sd-xEp"/>
                                                                         </constraints>
                                                                     </view>
-                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qzm-II-mX8" userLabel="View Price">
+                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qzm-II-mX8" userLabel="View Price" customClass="UIControl">
                                                                         <rect key="frame" x="577" y="34.5" width="70" height="33"/>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exchange" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GE1-lA-3Tj">
@@ -2992,7 +2992,7 @@
                                                                             <constraint firstAttribute="trailing" secondItem="unJ-Wg-lnQ" secondAttribute="trailing" id="zoa-ce-hYo"/>
                                                                         </constraints>
                                                                     </view>
-                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ENw-IE-Lma" userLabel="View Exchange">
+                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ENw-IE-Lma" userLabel="View Exchange" customClass="UIControl">
                                                                         <rect key="frame" x="450" y="34" width="70" height="33"/>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exchange" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cDs-bN-EiV">
@@ -3030,6 +3030,9 @@
                                                                                 <include reference="cDs-bN-EiV"/>
                                                                             </mask>
                                                                         </variation>
+                                                                        <connections>
+                                                                            <action selector="searchBothExchangeClicked:" destination="xJQ-QW-rEx" eventType="touchUpInside" id="Rhu-6R-StZ"/>
+                                                                        </connections>
                                                                     </view>
                                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ForwardArrowIcon" translatesAutoresizingMaskIntoConstraints="NO" id="QZa-1f-W27">
                                                                         <rect key="frame" x="663" y="33" width="24" height="35"/>
@@ -3058,7 +3061,7 @@
                                                                         <color key="textColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
-                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hRT-6S-Z5S" userLabel="View Getaway">
+                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hRT-6S-Z5S" userLabel="View Getaway" customClass="UIControl">
                                                                         <rect key="frame" x="575" y="34" width="70" height="33"/>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Getaway" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pl4-2q-AOl">
@@ -3092,6 +3095,9 @@
                                                                                 <include reference="pl4-2q-AOl"/>
                                                                             </mask>
                                                                         </variation>
+                                                                        <connections>
+                                                                            <action selector="searchBothRentalClicked:" destination="xJQ-QW-rEx" eventType="touchUpInside" id="CxO-sP-Z9j"/>
+                                                                        </connections>
                                                                     </view>
                                                                 </subviews>
                                                             </view>
@@ -3259,7 +3265,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Eh-rQ-aSd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3154" y="-215"/>
+            <point key="canvasLocation" x="3153.90625" y="-215.0390625"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="hwE-GA-7Y4">
