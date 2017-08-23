@@ -2993,7 +2993,7 @@
                                                                         </constraints>
                                                                     </view>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ENw-IE-Lma" userLabel="View Exchange">
-                                                                        <rect key="frame" x="446" y="34" width="70" height="33"/>
+                                                                        <rect key="frame" x="450" y="34" width="70" height="33"/>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exchange" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cDs-bN-EiV">
                                                                                 <rect key="frame" x="3" y="16" width="67" height="15"/>
@@ -3053,22 +3053,22 @@
                                                                         </constraints>
                                                                     </view>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="or" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iUq-R7-1aM">
-                                                                        <rect key="frame" x="536" y="32" width="19" height="26"/>
-                                                                        <fontDescription key="fontDescription" type="system" pointSize="21"/>
-                                                                        <nil key="textColor"/>
+                                                                        <rect key="frame" x="540" y="35.5" width="15" height="18"/>
+                                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                        <color key="textColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hRT-6S-Z5S" userLabel="View Getaway">
                                                                         <rect key="frame" x="575" y="34" width="70" height="33"/>
                                                                         <subviews>
-                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Exchange" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pl4-2q-AOl">
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Getaway" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pl4-2q-AOl">
                                                                                 <rect key="frame" x="3" y="16" width="67" height="15"/>
                                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                                                 <color key="textColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
-                                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ExchangeIcon" translatesAutoresizingMaskIntoConstraints="NO" id="57V-gx-TXd">
+                                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PromoImage" translatesAutoresizingMaskIntoConstraints="NO" id="57V-gx-TXd" userLabel="imgView">
                                                                                 <rect key="frame" x="22" y="0.0" width="25" height="21"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="width" constant="25" id="N7Y-dS-bkH"/>
@@ -3119,6 +3119,14 @@
                                                                 <constraint firstAttribute="trailing" secondItem="QZa-1f-W27" secondAttribute="trailing" constant="12" id="zJI-f1-fiI"/>
                                                             </constraints>
                                                             <size key="customSize" width="699" height="101"/>
+                                                            <connections>
+                                                                <outlet property="bedRoomType" destination="apq-vh-Ww1" id="F5A-N2-5dJ"/>
+                                                                <outlet property="imgViewExchange" destination="1eR-sL-Jt7" id="JcP-xj-S7M"/>
+                                                                <outlet property="imgViewGetaway" destination="57V-gx-TXd" id="Yzv-ii-UHV"/>
+                                                                <outlet property="kitchenType" destination="unJ-Wg-lnQ" id="QnI-oH-4Ge"/>
+                                                                <outlet property="promotionsView" destination="0Sv-pg-rYe" id="13f-Qt-udD"/>
+                                                                <outlet property="sleeps" destination="4fb-OA-0i8" id="qF9-GT-muM"/>
+                                                            </connections>
                                                         </collectionViewCell>
                                                     </cells>
                                                     <connections>
@@ -8931,6 +8939,7 @@ Units Upgrade with this selection.</string>
         <image name="MoreNav" width="33" height="33"/>
         <image name="NoImageIcon" width="64" height="64"/>
         <image name="PlusIcon" width="33" height="33"/>
+        <image name="PromoImage" width="20" height="20"/>
         <image name="RST_CO" width="30" height="30"/>
         <image name="Search" width="33" height="33"/>
         <image name="SortIcon" width="30" height="30"/>

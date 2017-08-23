@@ -15,4 +15,7 @@ class SearchBothInventoryCVCell: UICollectionViewCell {
     
     @IBOutlet weak var promotionsView: UIView!
     
+    @IBOutlet weak var imgViewGetaway: UIImageView!
+    
+    @IBOutlet weak var imgViewExchange: UIImageView!
 }

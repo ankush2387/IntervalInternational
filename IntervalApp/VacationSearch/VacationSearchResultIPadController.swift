@@ -1256,21 +1256,21 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
                     let index = indexPath.row - 1
                     if(Constant.MyClassConstants.isFromExchange){
                         let totalUnits = self.exchangeExactMatchResortsArray[index].inventory?.buckets.count
-                        return CGFloat(totalUnits!*100 + 320 + totalUnits!*10 + 40)
+                        return CGFloat(totalUnits!*100 + 320 + 10 + 25)
                     }else{
                         let totalUnits = self.exactMatchResortsArray[index].inventory?.units.count
-                        return CGFloat(totalUnits!*100 + 320 + totalUnits!*10 + 40)
+                        return CGFloat(totalUnits!*100 + 320 + 10 + 25)
                     }
                     
                 } else {
                     
                     if(Constant.MyClassConstants.isFromExchange){
                         let totalUnits = self.exchangeExactMatchResortsArray[indexPath.row].inventory?.buckets.count
-                        return CGFloat(totalUnits!*100 + 320 + totalUnits!*10 + 40)
+                        return CGFloat(totalUnits!*100 + 320 + 10 + 25)
 
                     }else{
                         let totalUnits = self.exactMatchResortsArray[indexPath.row].inventory?.units.count
-                        return CGFloat(totalUnits!*100 + 320 + totalUnits!*10 + 40)
+                        return CGFloat(totalUnits!*100 + 320 + 10 + 25)
 
                     }
                     
@@ -1278,7 +1278,7 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
             }
         }else{
             let totalUnits = self.surroundingMatchResortsArray[indexPath.row].inventory?.units.count
-            return CGFloat(totalUnits!*100 + 320 + totalUnits!*10 + 40)
+            return CGFloat(totalUnits!*100 + 320 + 10 + 25)
         }
     }
     
