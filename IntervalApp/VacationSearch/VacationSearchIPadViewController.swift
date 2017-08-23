@@ -58,9 +58,37 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
             self.segmentTitle = searchVacationSegementControl.titleForSegment(at: 0)!
         }
         
+        var isPrePopulatedData =  Constant.AlertPromtMessages.no
+        self.searchVacationTableView.estimatedRowHeight = 100
+        
+        if(Constant.MyClassConstants.whereTogoContentArray.count > 0 || Constant.MyClassConstants.whatToTradeArray.count > 0) {
+            
+            isPrePopulatedData = Constant.AlertPromtMessages.yes
+        }
+
+        // omniture tracking with event 87
+        let userInfo: [String: Any] = [
+            Constant.omnitureEvars.eVar20 : isPrePopulatedData,
+            Constant.omnitureEvars.eVar21 : Constant.MyClassConstants.selectedDestinationNames,
+            Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch
+        ]
+
+        ADBMobile.trackAction(Constant.omnitureEvents.event87, data: userInfo)
+        
+        Helper.getTopDeals(senderVC: self)
         
         NotificationCenter.default.addObserver(self, selector: #selector(refreshTableView), name: NSNotification.Name(rawValue: Constant.notificationNames.refreshTableNotification), object: nil)
+        
         self.getVacationSearchDetails()
+        
+        
+        if(segmentIndex != 2) {
+            
+            //***** Registering the custom cell with UITabelview *****//
+            let cellNib = UINib(nibName:Constant.customCellNibNames.whoIsTravelingCell, bundle: nil)
+            self.searchVacationTableView!.register(cellNib, forCellReuseIdentifier: Constant.customCellNibNames.whoIsTravelingCell)
+        }
+
     }
     
     //**** Remove added observers ****//
@@ -192,21 +220,24 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 50))
+        let headerTextLabel = UILabel(frame: CGRect(x: 15, y: 5, width: self.view.bounds.width - 30, height: 50))
         
-        if tableView.tag == 1 {
-            let headerView = UIView(frame: CGRect (x: 0, y: 0, width: Constant.MyClassConstants.runningDeviceWidth!, height: 40))
-            headerView.backgroundColor = IUIKColorPalette.titleBackdrop.color
-            let titleLabel = UILabel(frame: CGRect (x: 20, y: 0, width: Constant.MyClassConstants.runningDeviceWidth! - 20, height: 40))
-            if section == 0 {
-                titleLabel.text = Constant.segmentControlItems.getawaysIpadText
-            } else {
-                titleLabel.text = Constant.segmentControlItems.getawaysIpadText
-            }
-    
-            headerView.addSubview(titleLabel)
-        return headerView
+        if(self.segmentIndex != 1) {
+            
+            headerView.backgroundColor = IUIKColorPalette.tertiary1.color
+            headerTextLabel.text = Constant.MyClassConstants.fourSegmentHeaderTextArray[section]
+            headerTextLabel.textColor = IUIKColorPalette.primaryText.color
+            headerView.addSubview(headerTextLabel)
+            return headerView
         }
-        return nil
+        else {
+            headerView.backgroundColor = IUIKColorPalette.tertiary1.color
+            headerTextLabel.text = Constant.MyClassConstants.threeSegmentHeaderTextArray[section]
+            headerTextLabel.textColor = IUIKColorPalette.primaryText.color
+            headerView.addSubview(headerTextLabel)
+            return headerView
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -392,10 +423,12 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
     
     @IBAction func segementValueDidChange(_ sender: AnyObject) {
         
-        self.searchVacationTableView.beginUpdates()
+        //self.searchVacationTableView.beginUpdates()
 
         self.segmentTitle = searchVacationSegementControl.titleForSegment(at: sender.selectedSegmentIndex)!
-
+        
+        Constant.MyClassConstants.vacationSearchSelectedSegmentIndex = sender.selectedSegmentIndex
+        
         self.segmentIndex = sender.selectedSegmentIndex
         
         switch segmentIndex {
@@ -415,10 +448,17 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
             break
         }
         
-        Constant.MyClassConstants.vacationSearchSelectedSegmentIndex = sender.selectedSegmentIndex
+        
         self.searchVacationTableView.reloadData()
-        self.searchVacationTableView.endUpdates()
+        //self.searchVacationTableView.endUpdates()
         featuredDestinationsTableView.reloadData()
+        
+        // omniture tracking with event 63
+        let userInfo: [String: Any] = [
+            Constant.omnitureEvars.eVar24 : Helper.selectedSegment(index: sender.selectedSegmentIndex)
+        ]
+        
+        ADBMobile.trackAction(Constant.omnitureEvents.event63, data: userInfo)
     }
     
     @IBAction func addDestinationPressed(_ sender: IUIKButton){
