@@ -217,7 +217,6 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
     }
     
 
-    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 50))

@@ -226,22 +226,22 @@ class VacationSearchViewController: UIViewController {
         //self.searchVacationTableView.beginUpdates()
         self.segmentTitle = searchVacationSegementControl.titleForSegment(at: sender.selectedSegmentIndex)!
         Constant.MyClassConstants.vacationSearchSelectedSegmentIndex = sender.selectedSegmentIndex
-        self.searchVacationTableView.reloadData()
+        
         //self.searchVacationTableView.endUpdates()
     
 
         self.SegmentIndex = sender.selectedSegmentIndex
         
-        switch SegmentIndex {
-        case 0:
+        switch segmentTitle {
+        case Constant.segmentControlItems.searchBoth:
             showGetaways = true
             showExchange = true
             break
-        case 1:
+        case Constant.segmentControlItems.getaways:
             showGetaways = true
             showExchange = false
             break
-        case 2:
+        case Constant.segmentControlItems.exchange:
             showGetaways = false
             showExchange = true
             break
@@ -249,6 +249,7 @@ class VacationSearchViewController: UIViewController {
             break
         }
         
+        self.searchVacationTableView.reloadData()
         // omniture tracking with event 63
         let userInfo: [String: Any] = [
             Constant.omnitureEvars.eVar24 : Helper.selectedSegment(index: sender.selectedSegmentIndex)
@@ -467,7 +468,7 @@ extension VacationSearchViewController:UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         //***** Checking number of sections in tableview *****//
-        if(self.SegmentIndex != 1) {
+        if(self.segmentTitle != Constant.segmentControlItems.getaways) {
             
             //***** Return height according to section cell requirement *****//
             switch((indexPath as NSIndexPath).section) {
@@ -530,7 +531,7 @@ extension VacationSearchViewController:UITableViewDelegate {
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 50))
         let headerTextLabel = UILabel(frame: CGRect(x: 15, y: 5, width: self.view.bounds.width - 30, height: 50))
         
-        if(self.SegmentIndex != 1) {
+        if(self.segmentTitle != Constant.segmentControlItems.getaways) {
             
             headerView.backgroundColor = IUIKColorPalette.tertiary1.color
             headerTextLabel.text = Constant.MyClassConstants.fourSegmentHeaderTextArray[section]
@@ -758,28 +759,11 @@ extension VacationSearchViewController:UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
-        if(self.SegmentIndex == 2) {
-            if(showExchange){
-                return 6
-            }else{
-                return 5
-            }
-        }
-        else if(self.SegmentIndex == 1) {
-            if(showGetaways){
-                return 5
-            }else{
-                return 4
-            }
+        if(self.segmentTitle == Constant.segmentControlItems.getaways) {
+            return 5
         }
         else {
-            if(showGetaways && showExchange){
-                return 7
-            }else if(!showGetaways && !showExchange){
-                return 5
-            }else{
-                return 6
-            }
+           return 6
         }
         
     }
@@ -809,7 +793,7 @@ extension VacationSearchViewController:UITableViewDataSource {
         
         //***** Checking number of sections in tableview *****//
         
-        if(self.SegmentIndex != 1) {
+        if(self.segmentTitle != Constant.segmentControlItems.getaways) {
             
             if((indexPath as NSIndexPath).section == 0 || (indexPath as NSIndexPath).section == 1) {
                 
@@ -1231,7 +1215,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                 
                 //header for top ten deals
                 if(indexPath.section == 4) {
-                    if(!showExchange){
+                    if(!self.showExchange){
                         let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: cell.contentView.frame.width - 20, height: 20))
                         resortImageNameLabel.text = Constant.segmentControlItems.getawaysLabelText
                         
