@@ -207,45 +207,53 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
         if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Exchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Combined){
             
             if(sections.count > 0){
-                for exactResorts in (sections[0].items)!{
-                    if(exactResorts.exchangeAvailability != nil){
-                    let resortsExact = exactResorts.exchangeAvailability
-                    exactMatchResortsArrayExchange.append(resortsExact!)
+                for section in sections{
+                    if(section.exactMatch)!{
+                        for exactResorts in (section.items)!{
+                            if(exactResorts.exchangeAvailability != nil){
+                                let resortsExact = exactResorts.exchangeAvailability
+                                exactMatchResortsArrayExchange.append(resortsExact!)
+                            }
+                        }
                     }
                 }
                 
                 if(sections.count > 1){
-                    for surroundingResorts in (sections[1].items)!{
-                        if(surroundingResorts.exchangeAvailability != nil){
-                        let resortsSurrounding = surroundingResorts.exchangeAvailability
-                        surroundingMatchResortsArrayExchange.append(resortsSurrounding!)
+                    for section in sections{
+                        if(!section.exactMatch!){
+                            for surroundingResorts in (section.items)!{
+                                if(surroundingResorts.exchangeAvailability != nil){
+                                    let resortsSurrounding = surroundingResorts.exchangeAvailability
+                                    surroundingMatchResortsArrayExchange.append(resortsSurrounding!)
+                                }
+                            }
+                        }
                     }
-                  }
                 }
             }
         }
         
         if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Rental || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Combined){
-
-                for section in sections{
-                    
-                    if(section.exactMatch)!{
-                        for exactResorts in (section.items)!{
-                            if(exactResorts.rentalAvailability != nil){
+            
+            for section in sections{
+                
+                if(section.exactMatch)!{
+                    for exactResorts in (section.items)!{
+                        if(exactResorts.rentalAvailability != nil){
                             let resortsExact = exactResorts.rentalAvailability
                             exactMatchResortsArray.append(resortsExact!)
-                            }
                         }
-                    }else{
-                        for surroundingResorts in (section.items)!{
-                            if(surroundingResorts.rentalAvailability != nil){
+                    }
+                }else{
+                    for surroundingResorts in (section.items)!{
+                        if(surroundingResorts.rentalAvailability != nil){
                             let resortsSurrounding = surroundingResorts.rentalAvailability
                             surroundingMatchResortsArray.append(resortsSurrounding!)
-                            }
                         }
                     }
                 }
-           }
+            }
+        }
     }
     
     override func viewDidLoad() {
@@ -1133,8 +1141,7 @@ extension SearchResultViewController:UICollectionViewDataSource {
                 return cell
             }
             
-        }
-        else{
+        }else{
             
             if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Rental {
                 if(indexPath.section == 0){
@@ -1364,9 +1371,19 @@ extension SearchResultViewController:UICollectionViewDataSource {
                     }
                     var inventoryItem = Resort()
                     if(collectionView.superview?.superview?.tag == 0){
-                        inventoryItem = exactMatchResortsArrayExchange[collectionView.tag].resort!
+                        if(exactMatchResortsArrayExchange.count>0){
+                            inventoryItem = exactMatchResortsArrayExchange[collectionView.tag].resort!
+                        }else{
+                            inventoryItem = exactMatchResortsArray[collectionView.tag]
+                        }
+                        
                     }else{
-                        inventoryItem = surroundingMatchResortsArray[collectionView.tag]
+                        if(surroundingMatchResortsArray.count > 0){
+                            inventoryItem = surroundingMatchResortsArray[collectionView.tag]
+                        }else{
+                            inventoryItem = surroundingMatchResortsArrayExchange[collectionView.tag].resort!
+                        }
+                        
                     }
                     var url = URL(string: "")
                     for imgStr in inventoryItem.images {
@@ -1385,8 +1402,15 @@ extension SearchResultViewController:UICollectionViewDataSource {
                     DarwinSDK.logger.info("\(String(describing: Helper.resolveResortInfo(resort: inventoryItem)))")
                     return cell
                 } else {
+                    
+                    if(exactMatchResortsArrayExchange.count>0 && exactMatchResortsArray.count>0){
+                        print("Search for both")
+                        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.searchBothInventoryCell, for: indexPath) as! SearchBothInventoryCVCell
+                        return cell
+                    }
+                    
                     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.exchangeInventoryCell, for: indexPath) as! ExchangeInventoryCVCell
-                    var invetoryItem = ExchangeInventory()
+                    /*var invetoryItem = ExchangeInventory()
                     print(invetoryItem)
                     if(collectionView.superview?.superview?.tag == 0){
                         invetoryItem = exactMatchResortsArrayExchange[collectionView.tag].inventory!
@@ -1460,7 +1484,7 @@ extension SearchResultViewController:UICollectionViewDataSource {
                             cell.promotionsView.addSubview(promLabel)
                             yPosition += 15
                         }
-                    }
+                    }*/
                     
                     
                     return cell
@@ -1492,9 +1516,11 @@ extension SearchResultViewController:UICollectionViewDataSource {
                         if(sections.exactMatch! && section == 0){
                             headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
                             headerView.backgroundColor = IUIKColorPalette.primary1.color
-                        }else{
+                            //break
+                        }else if !sections.exactMatch! && section == 1{
                             headerLabel.text = Constant.CommonLocalisedString.surroundingString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
                             headerView.backgroundColor = Constant.CommonColor.headerGreenColor
+                           // break
                         }
                     }
             }else{
@@ -1705,7 +1731,6 @@ extension SearchResultViewController:UITableViewDataSource {
                 
                 return cell
             }else{
-                
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.availabilityCell, for: indexPath) as! SearchTableViewCell
                 cell.tag = indexPath.section
                 cell.resortInfoCollectionView.reloadData()
