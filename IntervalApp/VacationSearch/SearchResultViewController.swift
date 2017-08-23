@@ -1159,88 +1159,22 @@ extension SearchResultViewController:UICollectionViewDataSource {
         }else{
             
             if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Rental {
+                
+                var inventoryItem = Resort()
+                if(collectionView.superview?.superview?.tag == 0){
+                    inventoryItem = exactMatchResortsArray[collectionView.tag]
+                }else{
+                    inventoryItem = surroundingMatchResortsArray[collectionView.tag]
+                }
+                
                 if(indexPath.section == 0){
-                    var inventoryItem = Resort()
-                    if(collectionView.superview?.superview?.tag == 0){
-                        inventoryItem = exactMatchResortsArray[collectionView.tag]
-                    }else{
-                        inventoryItem = surroundingMatchResortsArray[collectionView.tag]
-                    }
                     let cell = self.getResortInfoCollectionCell(indexPath: indexPath, collectionView: collectionView, resort: inventoryItem)
                     return cell
                     
-                    }else{
-                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.resortInventoryCell, for: indexPath) as! RentalInventoryCVCell
-                    var invetoryItem = Resort()
-                    print(invetoryItem)
-                    if(collectionView.superview?.superview?.tag == 0){
-                        invetoryItem = exactMatchResortsArray[collectionView.tag]
-                    }else{
-                        invetoryItem = surroundingMatchResortsArray[collectionView.tag]
-                    }
-                    // for unit in (invetoryItem.inventory?.units)! {
-                    let unit = (invetoryItem.inventory?.units[indexPath.item])!
-                    DarwinSDK.logger.info("\(String(describing: Helper.resolveUnitInfo(unit: unit)))")
+                }else{
                     
-                    // price
-                    let price = Int(unit.prices[0].price)
-                    cell.getawayPrice.text = String(price)
-                    
-                    // bedroom details
-                    
-                    var bedRoomDetails = ""
-                    if let bedType = unit.unitSize {
-                        bedRoomDetails.append(" \(String(describing: Helper.getBrEnums(brType: bedType)))")
-                    }
-                    
-                    cell.bedRoomType.text = bedRoomDetails
-                    
-                    var kitchenDetails = ""
-                    if let kitchenType = unit.kitchenType {
-                        kitchenDetails.append(" \(String(describing: Helper.getKitchenEnums(kitchenType: kitchenType)))")
-                    }
-                    
-                    cell.kitchenType.text = kitchenDetails
-                    
-                    var totalSleepCapacity = String()
-                    
-                    if unit.publicSleepCapacity > 0 {
-                        
-                        totalSleepCapacity =  String(unit.publicSleepCapacity) + Constant.CommonLocalisedString.totalString
-                        
-                    }
-                    
-                    if unit.privateSleepCapacity > 0 {
-                        
-                        cell.sleeps.text =  totalSleepCapacity + String(unit.privateSleepCapacity) + Constant.CommonLocalisedString.privateString
-                        
-                    }
-                    
-                    
-                    let promotions = invetoryItem.inventory?.units[indexPath.item].promotions
-                    if (promotions?.count)! > 0 {
-                        for view in cell.promotionsView.subviews {
-                            view.removeFromSuperview()
-                        }
-                        
-                        cellHeight = 55 + (14*(promotions?.count)!)
-                        var yPosition: CGFloat = 0
-                        for promotion in promotions! {
-                            let imgV = UIImageView(frame: CGRect(x:10, y: yPosition, width: 15, height: 15))
-                            imgV.image = UIImage(named: Constant.assetImageNames.promoImage)
-                            let promLabel = UILabel(frame: CGRect(x:30, y: yPosition, width: cell.promotionsView.bounds.width, height: 15))
-                            promLabel.text = promotion.offerName
-                            promLabel.adjustsFontSizeToFitWidth = true
-                            promLabel.minimumScaleFactor = 0.7
-                            promLabel.numberOfLines = 0
-                            promLabel.textColor = UIColor(red: 0, green: 119/255, blue: 190/255, alpha: 1)
-                            promLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 18)
-                            cell.promotionsView.addSubview(imgV)
-                            cell.promotionsView.addSubview(promLabel)
-                            yPosition += 15
-                        }
-                    }
-                    
+                    let cell = self.getGetawayCollectionCell(indexPath: indexPath, collectionView: collectionView)
+                    cell.setDataForRentalInventory(invetoryItem: inventoryItem, indexPath: indexPath)
                     return cell
                 }
             } else if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Exchange {
@@ -1257,86 +1191,17 @@ extension SearchResultViewController:UICollectionViewDataSource {
                     let cell = self.getResortInfoCollectionCell(indexPath: indexPath, collectionView: collectionView, resort: inventoryItem)
                     return cell
                 } else {
-                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.exchangeInventoryCell, for: indexPath) as! ExchangeInventoryCVCell
-                    var invetoryItem = ExchangeInventory()
-                    print(invetoryItem)
+                    
+                    var inventoryItem = ExchangeInventory()
                     if(collectionView.superview?.superview?.tag == 0){
-                        invetoryItem = exactMatchResortsArrayExchange[collectionView.tag].inventory!
+                        inventoryItem = exactMatchResortsArrayExchange[collectionView.tag].inventory!
                     }else{
-                        //invetoryItem = surroundingMatchResortsArray[collectionView.tag].inventory
-                    }
-                    // for unit in (invetoryItem.inventory?.units)! {
-                    let unit = (invetoryItem.buckets[indexPath.item].unit)!
-                    DarwinSDK.logger.info("\(String(describing: Helper.resolveUnitInfo(unit: unit)))")
-                    
-                  
-                    
-                    
-                    
-                    // bedroom details
-                    
-                    var bedRoomDetails = ""
-                    if let bedType = unit.unitSize {
-                        bedRoomDetails.append(" \(String(describing: Helper.getBrEnums(brType: bedType)))")
+                        inventoryItem = surroundingMatchResortsArrayExchange[collectionView.tag].inventory!
                     }
                     
-                    cell.bedRoomType.text = bedRoomDetails
-                    
-                    var kitchenDetails = ""
-                    if let kitchenType = unit.kitchenType {
-                        kitchenDetails.append(" \(String(describing: Helper.getKitchenEnums(kitchenType: kitchenType)))")
-                    }
-                    
-                    cell.kitchenType.text = kitchenDetails
-                    
-                    var totalSleepCapacity = String()
-                    
-                    if unit.publicSleepCapacity > 0 {
-                        
-                        totalSleepCapacity =  String(unit.publicSleepCapacity) + Constant.CommonLocalisedString.totalString
-                        
-                    }
-                    
-                    if unit.privateSleepCapacity > 0 {
-                        
-                        cell.sleeps.text =  totalSleepCapacity + String(unit.privateSleepCapacity) + Constant.CommonLocalisedString.privateString
-                        
-                    }
-                    
-                    
-                    let promotions = invetoryItem.buckets[indexPath.item].promotions
-                    if (promotions.count) > 0 {
-                        for view in cell.promotionsView.subviews {
-                            view.removeFromSuperview()
-                        }
-                        
-                        cellHeight = 55 + (14*(promotions.count))
-                        var yPosition: CGFloat = 0
-                        for promotion in promotions {
-                            let imgV = UIImageView(frame: CGRect(x:10, y: yPosition, width: 15, height: 15))
-                            imgV.image = UIImage(named: Constant.assetImageNames.promoImage)
-                            let promLabel = UILabel(frame: CGRect(x:30, y: yPosition, width: cell.promotionsView.bounds.width, height: 15))
-                            let attrStr = try! NSAttributedString(
-                                data: "\(promotion.offerContentFragment!)".data(using: String.Encoding.unicode, allowLossyConversion: true)!,
-                                options: [ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType],
-                                documentAttributes: nil)
-                            
-                            promLabel.attributedText = attrStr
-                            //promLabel.text = promotion.offerName
-                            promLabel.adjustsFontSizeToFitWidth = true
-                            promLabel.minimumScaleFactor = 0.7
-                            promLabel.numberOfLines = 0
-                            promLabel.textColor = UIColor(red: 0, green: 119/255, blue: 190/255, alpha: 1)
-                            promLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 18)
-                            cell.promotionsView.addSubview(imgV)
-                            cell.promotionsView.addSubview(promLabel)
-                            yPosition += 15
-                        }
-                    }
-                    
-                    
+                    let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
+                    cell.setUpExchangeCell(invetoryItem: inventoryItem, indexPath: indexPath)
                     return cell
-                    
                 }
             }else{
                 
@@ -1366,23 +1231,24 @@ extension SearchResultViewController:UICollectionViewDataSource {
                         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.searchBothInventoryCell, for: indexPath) as! SearchBothInventoryCVCell
                         return cell
                     }else if(collectionView.superview?.superview?.tag == 0){
-                        if(exactMatchResortsArrayExchange.count > 0){
+                        if(exactMatchResortsArray.count > 0){
+                            let cell = self.getGetawayCollectionCell(indexPath: indexPath, collectionView: collectionView)
+                            return cell
+
+                        }else{
+                            let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
+                            return cell
                         }
-                        print("Exchange Cell Exact")
-                        let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
-                        return cell
-                    }else if(exactMatchResortsArray.count > 0 && collectionView.superview?.superview?.tag == 0){
-                        print("Rental Cell Exact")
-                        let cell = self.getGetawayCollectionCell(indexPath: indexPath, collectionView: collectionView)
-                        return cell
-                        
-                    }else if(surroundingMatchResortsArrayExchange.count > 0 && collectionView.superview?.superview?.tag == 1){
-                        let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
-                        return cell
-                    }else{
-                        print("Rental Cell Surrounding")
-                        let cell = self.getGetawayCollectionCell(indexPath: indexPath, collectionView: collectionView)
-                        return cell
+                    }else {
+                        if(surroundingMatchResortsArray.count > 0){
+                            let cell = self.getGetawayCollectionCell(indexPath: indexPath, collectionView: collectionView)
+                            cell.setDataForRentalInventory(invetoryItem: surroundingMatchResortsArray[indexPath.item], indexPath: indexPath)
+                            return cell
+                        }else{
+                            let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
+                            cell.setUpExchangeCell(invetoryItem: surroundingMatchResortsArrayExchange[indexPath.item].inventory!, indexPath: indexPath)
+                            return cell
+                        }
                     }
                 }
             }
