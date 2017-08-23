@@ -121,17 +121,12 @@ class Constant: NSObject {
         static var filteredOptiondArray = ["Crecent resort on...+3 more", "Hyatt Beach Resort House", "Key West, Florida", "Las Vegas, Nevada"]
         
         static var rentalSortingOptionArray = ["Resort Name:", "Resort Name:", "Price:", "Price:", "City:", "City:", "Resort Tier:", "Resort Tier:"]
+        static var sortingSetValues = ["RESORT_NAME_ASC", "RESORT_NAME_DESC", "CITY_NAME_ASC", "CITY_NAME_DESC", "RESORT_TIER_LOW_TO_HIGH", "RESORT_TIER_HIGH_TO_LOW", "PRICE_LOW_TO_HIGH", "PRICE_HIGH_TO_LOW", "UNKNOWN"]
         
-         static var rentalSortingRangeArray = ["A - Z", "Z - A", "Low - High", "High - Low", "A - Z", "Z - A", "Low - High", "High - Low"]
+        static var rentalSortingRangeArray = ["A - Z", "Z - A", "Low - High", "High - Low", "A - Z", "Z - A", "Low - High", "High - Low"]
         
         static var exchangeSortingOptionArray = ["Resort Name:", "Resort Name:", "City:", "City:", "Resort Tier:", "Resort Tier:"]
-        
-         static var exchangeSortingRangeArray = ["A - Z", "Z - A", "A - Z", "Z - A", "Low - High", "High - Low"]
-        
-       
-        
-       
-        
+        static var exchangeSortingRangeArray = ["A - Z", "Z - A", "A - Z", "Z - A", "Low - High", "High - Low"]
         static var filteredIndex = 0
         static var sortingIndex = -1
 
@@ -564,6 +559,7 @@ class Constant: NSObject {
         static var goingToMapOrWeatherView = false
         //Global App Settings
         static var appSettings = AppSettings()
+        static var noAvailabilityView = false
     }
     
     // Enum to store resorts and destinations
@@ -930,6 +926,8 @@ class Constant: NSObject {
     struct segmentControlItems {
         
         static var getaways = NSLocalizedString("Getaways", comment: "")
+        static var exchange = NSLocalizedString("Exchange", comment: "")
+        static var searchBoth = NSLocalizedString("Search Both", comment: "")
         static var flexchangeLabelText = "FLEXCHANGE"
         static var getawaysLabelText = NSLocalizedString("TOP 10 GETAWAYS", comment: "")
         static var getawaysIpadText = NSLocalizedString("Top 10 Getaway Destinations", comment: "")
@@ -1117,6 +1115,7 @@ class Constant: NSObject {
         static var attributesCell = "attributesTableCell"
         static var buttonCell = "ButtonTableCell"
         static var resortDetailCell = "ImageCell"
+        static var searchBothInventoryCell = "SearchBothInventory"
         static var resortInventoryCell = "RentalInventory"
         static var exchangeInventoryCell = "ExchangeInventory"
         static var availabilityCell = "AvailbilityCell"

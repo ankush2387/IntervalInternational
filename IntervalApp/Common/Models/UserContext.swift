@@ -14,6 +14,7 @@ class UserContext
     var accessToken : DarwinAccessToken?
     var contact : Contact?
     var selectedMembership : Membership?
+    var appSettings : Settings?
     
     func signOut() {
         self.contact = nil

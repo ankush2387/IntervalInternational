@@ -121,20 +121,9 @@ class SortingViewController: UIViewController {
             let indexPath = self.sortingTBLview.indexPath(for: cell!)
             
             self.selectedSortingIndex = (indexPath?.row)!
-            
-            if Constant.MyClassConstants.isFromExchange {
-                
-                     self.delegate?.selectedOptionis(filteredValueIs: Constant.MyClassConstants.exchangeSortingOptionArray[(indexPath?.row)!], indexPath: indexPath! as NSIndexPath, isFromFiltered: false)
-            } else {
-                     self.delegate?.selectedOptionis(filteredValueIs: Constant.MyClassConstants.rentalSortingOptionArray[(indexPath?.row)!], indexPath: indexPath! as NSIndexPath, isFromFiltered: false)
-            }
+
+            self.delegate?.selectedOptionis(filteredValueIs: Constant.MyClassConstants.sortingSetValues[(indexPath?.row)!], indexPath: indexPath! as NSIndexPath, isFromFiltered: false)
         }
-        
-        //self.navigationController?.popViewController(animated: true)
-        
-        
-       // self.sortingTBLview.reloadData()
-        
     }
     
     
@@ -169,12 +158,7 @@ extension SortingViewController:UITableViewDelegate {
                 self.delegate?.selectedOptionis(filteredValueIs: val[indexPath.row].resortName, indexPath: indexPath as NSIndexPath, isFromFiltered: true)
             }
         } else {
-            if Constant.MyClassConstants.isFromExchange {
-                self.delegate?.selectedOptionis(filteredValueIs: Constant.MyClassConstants.exchangeSortingOptionArray[(indexPath.row)], indexPath: indexPath as NSIndexPath, isFromFiltered: false)
-            } else {
-                self.delegate?.selectedOptionis(filteredValueIs: Constant.MyClassConstants.rentalSortingOptionArray[(indexPath.row)], indexPath: indexPath as NSIndexPath, isFromFiltered: false)
-            }
-            
+            self.delegate?.selectedOptionis(filteredValueIs: Constant.MyClassConstants.sortingSetValues[(indexPath.row)], indexPath: indexPath as NSIndexPath, isFromFiltered: false)
         }
     }
 }
@@ -207,15 +191,11 @@ extension SortingViewController:UITableViewDataSource {
             switch Constant.MyClassConstants.filterOptionsArray[indexPath.row] {
             case .Destination(let val):
                 cell.lblFilterOption.text = val.destinationName
-                //Constant.MyClassConstants.vacationSearchResultHeaderLabel = val.destinationName
             case .Resort(let val):
                 cell.lblFilterOption.text = val.resortName
-                //Constant.MyClassConstants.vacationSearchResultHeaderLabel = val.resortName
             case .ResortList(let val):
-                cell.lblFilterOption.text = "\(val[0].resortName) + \(val.count - 1)  + more"
-                //Constant.MyClassConstants.vacationSearchResultHeaderLabel = cell.lblFilterOption.text!
+                cell.lblFilterOption.text = "\(val[0].resortName) + \(val.count - 1)  more"
             }
-            //cell.lblFilterOption.text = resortNameArray[indexPath.row].resortName
             
             if(self.selectedIndex == indexPath.row) {
                 

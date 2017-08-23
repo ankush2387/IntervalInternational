@@ -132,6 +132,7 @@
 		3A894C1F1C9081FF00CF2D54 /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A894C1E1C9081FF00CF2D54 /* SearchResultViewController.swift */; };
 		3A8C7EB71C85A632000A4E46 /* JoinTodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8C7EB61C85A632000A4E46 /* JoinTodayViewController.swift */; };
 		3A8C7EB91C85A7DB000A4E46 /* PrivacyLegalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8C7EB81C85A7DB000A4E46 /* PrivacyLegalViewController.swift */; };
+		3A930BCF1F4D86300052BE2A /* SearchBothInventoryCVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A930BCE1F4D86300052BE2A /* SearchBothInventoryCVCell.swift */; };
 		3A932D521C8868C2004BF665 /* UnitDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A932D501C8868C2004BF665 /* UnitDetailCell.swift */; };
 		3A932D531C8868C2004BF665 /* UnitDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A932D511C8868C2004BF665 /* UnitDetailCell.xib */; };
 		3A932D561C8868DC004BF665 /* GuestCertificateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A932D541C8868DB004BF665 /* GuestCertificateCell.swift */; };
@@ -435,6 +436,7 @@
 		3A894C1E1C9081FF00CF2D54 /* SearchResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
 		3A8C7EB61C85A632000A4E46 /* JoinTodayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JoinTodayViewController.swift; sourceTree = "<group>"; };
 		3A8C7EB81C85A7DB000A4E46 /* PrivacyLegalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacyLegalViewController.swift; sourceTree = "<group>"; };
+		3A930BCE1F4D86300052BE2A /* SearchBothInventoryCVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBothInventoryCVCell.swift; sourceTree = "<group>"; };
 		3A932D501C8868C2004BF665 /* UnitDetailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitDetailCell.swift; sourceTree = "<group>"; };
 		3A932D511C8868C2004BF665 /* UnitDetailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UnitDetailCell.xib; sourceTree = "<group>"; };
 		3A932D541C8868DB004BF665 /* GuestCertificateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GuestCertificateCell.swift; sourceTree = "<group>"; };
@@ -804,6 +806,7 @@
 		3A892F2C1CD3902F00AE6F45 /* CustomCells */ = {
 			isa = PBXGroup;
 			children = (
+				3A930BCE1F4D86300052BE2A /* SearchBothInventoryCVCell.swift */,
 				3AA88B531F44DAD8001ADC4C /* ExchangeInventoryCVCell.swift */,
 				3AD822C91F3A046A00CD68C6 /* AvailabilityCollectionViewCell.swift */,
 				3A5BDCB21F34DD1800FDA672 /* FilterCell.swift */,
@@ -1443,6 +1446,7 @@
 				DC7EF5051D709F8800E9E360 /* CustomPageControl.swift in Sources */,
 				3A586CC01DDCA22900EF6756 /* ExchangeOrProtectionCell.swift in Sources */,
 				3A476F091CEC8E8600607185 /* SearchResultDateCell.swift in Sources */,
+				3A930BCF1F4D86300052BE2A /* SearchBothInventoryCVCell.swift in Sources */,
 				3AF1700F1E96A5840021F393 /* ClubPointsCollectionViewLayout.swift in Sources */,
 				DC7EF4DC1D709F0400E9E360 /* VacationSearchCollectionViewCell.swift in Sources */,
 				DC27F7C21DB81B6F00AA374F /* AlertTableViewCell.swift in Sources */,

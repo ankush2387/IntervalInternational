@@ -1739,21 +1739,20 @@ public class Helper{
     static func hardProcessingWithString(input: String, completion: (_ result: String) -> String) {
            _ = completion(input)
     }
-    
 
     /*
      * Execute Rental Search Availability
      */
     static func executeRentalSearchAvailability(activeInterval:BookingWindowInterval!, checkInDate:Date!, senderViewController:UIViewController, vacationSearch:VacationSearch) {
         DarwinSDK.logger.error("----- Waiting for search availability ... -----")
-        SVProgressHUD.show()
+        showProgressBar(senderView: senderViewController)
         let request = RentalSearchResortsRequest()
         request.checkInDate = checkInDate
         request.resortCodes = activeInterval.resortCodes
         
         RentalClient.searchResorts(UserContext.sharedInstance.accessToken, request: request,
                                    onSuccess: { (response) in
-                                    SVProgressHUD.dismiss()
+                                    hideProgressBar(senderView: senderViewController)
                                     // Update Rental inventory
                                     
                                     Constant.MyClassConstants.resortsArray = response.resorts
@@ -1771,14 +1770,18 @@ public class Helper{
                                     
                                     //expectation.fulfill()
                                     hideProgressBar(senderView: senderViewController)
-                                    if Constant.MyClassConstants.isFromSorting == false {
+                                    if Constant.MyClassConstants.isFromSorting == false && Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType != VacationSearchType.Combined {
                                         helperDelegate?.resortSearchComplete()
+                                    }else{
+                                        executeExchangeSearchDates(senderVC: senderViewController)
                                     }
                                     Constant.MyClassConstants.isFromSorting = false
+                                    Constant.MyClassConstants.noAvailabilityView = false
                                     
         },
                                    onError:{ (error) in
-                                     Constant.MyClassConstants.isFromSorting = false
+                                    Constant.MyClassConstants.noAvailabilityView = true
+                                    Constant.MyClassConstants.isFromSorting = false
                                     hideProgressBar(senderView: senderViewController)
                                     helperDelegate?.resortSearchComplete()
                                     SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
@@ -1795,6 +1798,7 @@ public class Helper{
                                         // TODO: Handle SDK/API errors
                                         DarwinSDK.logger.error("Handle SDK/API errors.")
                                     }
+                                    
         }
         )
     }
@@ -1815,6 +1819,10 @@ public class Helper{
         request.travelParty = Constant.MyClassConstants.travelPartyInfo
         
         ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: request, onSuccess: { (searchAvailabilityResponse) in
+            
+            print(searchAvailabilityResponse)
+            
+            
             // Update Exchange inventory
             hideProgressBar(senderView: senderViewController)
             Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.inventory = searchAvailabilityResponse
@@ -1838,6 +1846,46 @@ public class Helper{
             hideProgressBar(senderView: senderViewController)
             SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.noResultError, message: error.localizedDescription)
         }
+    }
+    
+    static func executeExchangeSearchDates(senderVC:UIViewController) {
+        
+        ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request,
+                                   onSuccess: { (response) in
+                                    Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
+                                    
+                                    // Get activeInterval
+                                    let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
+                                    
+                                    // Update active interval
+                                    Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                                    
+                                    // Check not available checkIn dates for the active interval
+                                    if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                                        
+                                        // We do not have available CheckInDates in Rental and Exchange
+                                        //if (self.rentalHasNotAvailableCheckInDates) {
+                                           // self.showNotAvailabilityResults()
+                                        //}
+                                        
+                                    } else {
+                                        Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
+                                           executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat) , senderViewController: senderVC, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                    }
+                                    
+                                    //expectation.fulfill()
+        },
+                                   onError:{ (error) in
+                                    DarwinSDK.logger.error("Error Code: \(error.code)")
+                                    DarwinSDK.logger.error("Error Description: \(error.description)")
+                                    
+                                    // TODO: Handle SDK/API errors
+                                    DarwinSDK.logger.error("Handle SDK/API errors.")
+                                    
+                                    
+        }
+        )
+        
     }
     
     static func showScrollingCalendar(vacationSearch:VacationSearch) {
@@ -1890,37 +1938,31 @@ public class Helper{
     }
     
     static func showAvailabilitySectionWithDefault(section:AvailabilitySection!) {
-        if (section.hasDestination()) {
-            if (section.exactMatch)! {
-                // Show up Destination exact match as header
-                DarwinSDK.logger.info("Header[D] - \(String(describing: self.resolveDestinationInfo(destination: section.destination!)))")
-                Constant.MyClassConstants.searchAvailabilityHeader = "Resorts in \(String(describing: self.resolveDestinationInfo(destination: section.destination!)))"
-            } else {
-                // Show up Destination surrounding match as header
-                DarwinSDK.logger.info("Header[D] - Surrounding to \(String(describing: self.resolveDestinationInfo(destination: section.destination!)))")
-                Constant.MyClassConstants.searchAvailabilityHeader = "Resorts near \(String(describing: self.resolveDestinationInfo(destination: section.destination!)))"
-            }
-            
-            for inventoryItem in (section.item?.rentalInventory)! {
-                self.showAvailabilityBucket(inventoryItem: inventoryItem)
-            }
-            
-            DarwinSDK.logger.info("===============================================================")
-        } else {
+       /* if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
             for inventoryItem in (section.item?.rentalInventory)! {
                 // Show up only Resorts as header
                 DarwinSDK.logger.info("Header[R] - \(String(describing: inventoryItem.resortName))")
                 Constant.MyClassConstants.searchAvailabilityHeader = "\(String(describing: inventoryItem.resortName))"
                 self.showAvailabilityBucket(inventoryItem: inventoryItem)
             }
+        }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
+            for inventoryItem in (section.item?.exchangeInventory)! {
+                // Show up only Resorts as header
+                DarwinSDK.logger.info("Header[R] - \(String(describing: inventoryItem.resort?.resortName))")
+                Constant.MyClassConstants.searchAvailabilityHeader = "\(String(describing: inventoryItem.resort?.resortName))"
+                self.showAvailabilityBucketExchange(inventoryItem: inventoryItem.inventory)
+            }
+        }*/
+        
             
-            DarwinSDK.logger.info("===============================================================")
-        }
-    }
+        
+        
+     }
+    
 
     
     static func showAvailabilitySection(section:AvailabilitySection!) {
-        if (section.exactMatch)! {
+       /* if (section.exactMatch)! {
             // Show up exact match as header
             DarwinSDK.logger.info("Header - Exact Match")
         } else {
@@ -1928,11 +1970,28 @@ public class Helper{
             DarwinSDK.logger.info("Header - Surrounding Match")
         }
         
-        for inventoryItem in (section.item?.rentalInventory)! {
-            self.showAvailabilityBucket(inventoryItem: inventoryItem)
-        }
+        if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
+            for inventoryItem in (section.item?.rentalInventory)! {
+                self.showAvailabilityBucket(inventoryItem: inventoryItem)
+            }
+        }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
+            for inventoryItem in (section.item?.exchangeInventory)!{
+                self.showAvailabilityBucketExchange(inventoryItem: inventoryItem.inventory)
+            }
+        }*/
+        
+        
+        
         
         DarwinSDK.logger.info("===============================================================")
+    }
+    
+    static func showAvailabilityBucketExchange(inventoryItem:ExchangeInventory!) {
+        //DarwinSDK.logger.info("\(String(describing: resolveResortInfo(inventoryItem)))")
+        
+        for bucket in inventoryItem.buckets {
+            DarwinSDK.logger.info("\(String(describing: self.resolveUnitInfo(unit: bucket.unit!)))")
+        }
     }
     
     static func showAvailabilityBucket(inventoryItem:Resort!) {
@@ -1942,6 +2001,7 @@ public class Helper{
             DarwinSDK.logger.info("\(String(describing: self.resolveUnitInfo(unit: unit)))")
         }
     }
+    
     static func resolveResortInfo(resort:Resort!) -> String {
         var info = String()
         info.append(resort.resortCode!)
@@ -2037,6 +2097,25 @@ public class Helper{
         viewcontroller.present(resendAlert, animated: false, completion: nil)
 
     }
+    
+    //***** function to return vacation search screen segment type string to display in UI *****//
+    static func vacationSearchTypeSegemtStringToDisplay(vacationSearchType:String) -> String {
+        
+        switch vacationSearchType {
+            
+        case "COMBINED":
+            return "Search Both"
+        case "EXCHANGE":
+            return "Exchange"
+        case "RENTAL":
+            return "Getaways"
+        
+        default:
+            return ""
+        }
+    }
+
+
 }
 
 
