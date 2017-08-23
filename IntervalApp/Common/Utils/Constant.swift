@@ -559,6 +559,7 @@ class Constant: NSObject {
         static var goingToMapOrWeatherView = false
         //Global App Settings
         static var appSettings = AppSettings()
+        static var noAvailabilityView = false
     }
     
     // Enum to store resorts and destinations

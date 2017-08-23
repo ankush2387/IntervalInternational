@@ -1776,9 +1776,11 @@ public class Helper{
                                         executeExchangeSearchDates(senderVC: senderViewController)
                                     }
                                     Constant.MyClassConstants.isFromSorting = false
+                                    Constant.MyClassConstants.noAvailabilityView = false
                                     
         },
                                    onError:{ (error) in
+                                    Constant.MyClassConstants.noAvailabilityView = true
                                     Constant.MyClassConstants.isFromSorting = false
                                     hideProgressBar(senderView: senderViewController)
                                     helperDelegate?.resortSearchComplete()
