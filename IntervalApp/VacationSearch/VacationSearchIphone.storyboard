@@ -4175,6 +4175,12 @@ to confirm a larger unit.</string>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="bedRoomType" destination="d1z-dj-ghG" id="Fen-ns-Fa2"/>
+                                            <outlet property="currencySymbol" destination="IjX-Ik-5s5" id="707-3L-aVX"/>
+                                            <outlet property="getawayNameLabel" destination="L26-ZA-tDF" id="HOp-E0-Boc"/>
+                                            <outlet property="getawayPrice" destination="Vt2-U0-Shy" id="CXi-Ld-KoZ"/>
+                                            <outlet property="kitchenType" destination="tIc-dR-uk3" id="2Ue-j9-HAy"/>
+                                            <outlet property="sleeps" destination="Vst-uM-MzW" id="rdN-1o-fkH"/>
                                             <outlet property="viewContent" destination="Luk-EP-65k" id="6Hp-MB-a47"/>
                                         </connections>
                                     </tableViewCell>
