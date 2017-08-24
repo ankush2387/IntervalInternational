@@ -427,7 +427,7 @@ extension WhatToUseViewController:UITableViewDataSource {
         else {
             
             //***** Configure and return search vacation cell *****//
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ExchangeCell0", for: indexPath) as! AvailablePointCell
+            let cell:GetawayCell = tableView.dequeueReusableCell(withIdentifier: "GetawaysCell", for: indexPath) as! GetawayCell
             cell.tag = indexPath.row
             Helper.applyShadowOnUIView(view: cell, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
             cell.selectionStyle = UITableViewCellSelectionStyle.none

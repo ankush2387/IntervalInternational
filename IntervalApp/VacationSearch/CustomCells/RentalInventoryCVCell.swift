@@ -19,6 +19,7 @@ class RentalInventoryCVCell: UICollectionViewCell {
     @IBOutlet weak var promotionsView: UIView!
     @IBOutlet weak var currencySymbol: UILabel!
     
+    @IBOutlet weak var imgViewGetaway: UIImageView!
     func setDataForRentalInventory(invetoryItem: Resort, indexPath:IndexPath){
 
         // for unit in (invetoryItem.inventory?.units)! {
