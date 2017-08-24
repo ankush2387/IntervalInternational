@@ -289,7 +289,11 @@ extension WhatToUseViewController:UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
-        return 2
+        if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Combined){
+             return 3
+        }else{
+            return 2
+        }
         
     }
     
