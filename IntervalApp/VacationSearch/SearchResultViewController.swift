@@ -250,12 +250,12 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
     }
     
     func createSections(){
-        if(Constant.MyClassConstants.noAvailabilityView){
+       /* if(Constant.MyClassConstants.noAvailabilityView){
             searchResultTableView.tableHeaderView = Helper.noResortView(senderView: self.view)
         }else{
             let viewHeader = UIView()
             searchResultTableView.tableHeaderView = viewHeader
-        }
+        } */
         let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
         if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Exchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Combined){
             
