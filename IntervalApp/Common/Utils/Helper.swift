@@ -2004,7 +2004,7 @@ public class Helper{
     
     static func resolveResortInfo(resort:Resort!) -> String {
         var info = String()
-        info.append(resort.resortCode!)
+        /*info.append(resort.resortCode!)
         info.append(" ")
         info.append(resort.resortName!)
         info.append(" ")
@@ -2022,7 +2022,7 @@ public class Helper{
         if (resort.address?.countryCode != nil) {
             info.append(" ")
             info.append((resort.address?.countryCode)!)
-        }
+        }*/
         
         return info
     }

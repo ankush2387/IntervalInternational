@@ -56,6 +56,7 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
             Constant.MyClassConstants.filteredIndex = indexPath.row
             let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
             let exchangeSearchCriteria = VacationSearchCriteria(searchType:VacationSearchType.Exchange)
+            let bothSearchCriteria = VacationSearchCriteria(searchType:VacationSearchType.Combined)
             
             switch Constant.MyClassConstants.filterOptionsArray[indexPath.row] {
             case .Destination(let destination):
@@ -66,8 +67,10 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
                 
                 if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
                     rentalSearchCriteria.destination = areaOfInfluenceDestination
-                }else{
+                }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
                     exchangeSearchCriteria.destination = areaOfInfluenceDestination
+                }else{
+                    bothSearchCriteria.destination = areaOfInfluenceDestination
                 }
                 
                 Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
@@ -78,8 +81,10 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
                 
                 if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
                     rentalSearchCriteria.resorts = [resorts]
-                }else{
+                }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
                     exchangeSearchCriteria.resorts =  [resorts]
+                }else{
+                    bothSearchCriteria.resorts =  [resorts]
                 }
                 Constant.MyClassConstants.vacationSearchResultHeaderLabel = resort.resortName
                 
@@ -93,8 +98,10 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
                 }
                 if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
                     rentalSearchCriteria.resorts = resortsArray
-                }else{
+                }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
                     exchangeSearchCriteria.resorts = resortsArray
+                }else{
+                    bothSearchCriteria.resorts = resortsArray
                 }
                 Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(resortList[0].resortName) + \(resortList.count - 1) more"
                 
@@ -138,7 +145,7 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
                     self.searchResultTableView.reloadData()
                 }
                 
-            }else{
+            }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
                 Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]//Constant.MyClassConstants.relinquishmentIdArray as? [String]
                 Helper.helperDelegate = self
                 let vacationSearchFilter = VacationSearch(UserContext.sharedInstance.appSettings,exchangeSearchCriteria)
@@ -178,6 +185,12 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
                     self.dismiss(animated: true, completion: nil)
                     self.searchResultTableView.reloadData()
                 }
+            }else{
+                
+                Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]//Constant.MyClassConstants.relinquishmentIdArray as? [String]
+                Helper.helperDelegate = self
+                let vacationSearchFilter = VacationSearch(UserContext.sharedInstance.appSettings,bothSearchCriteria)
+                
             }
         } else {
             Constant.MyClassConstants.sortingIndex = indexPath.row
@@ -619,14 +632,14 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
         
         exchangeDestination.unit = unit
         }else{
-            let currentFromDate = surroundingMatchResortsArrayExchange[selectedRow].inventory?.checkInDate
-            let currentToDate = surroundingMatchResortsArrayExchange[selectedRow].inventory?.checkOutDate
-            unit.kitchenType = surroundingMatchResortsArrayExchange[selectedRow].inventory?.buckets[selectedRow].unit!.kitchenType!
-            unit.unitSize = surroundingMatchResortsArrayExchange[selectedRow].inventory?.buckets[selectedRow].unit!.unitSize!
+            let currentFromDate = surroundingMatchResortsArray[selectedRow].inventory?.checkInDate
+            let currentToDate = surroundingMatchResortsArray[selectedRow].inventory?.checkOutDate
+            unit.kitchenType = surroundingMatchResortsArray[selectedRow].inventory?.units[selectedSection].kitchenType
+            unit.unitSize = surroundingMatchResortsArray[selectedRow].inventory?.units[selectedSection].unitSize!
             exchangeDestination.checkInDate = currentFromDate
             exchangeDestination.checkOutDate = currentToDate
-            unit.publicSleepCapacity = Constant.MyClassConstants.exchangeInventory[selectedSection].buckets[selectedRow - 1].unit!.publicSleepCapacity
-            unit.privateSleepCapacity = Constant.MyClassConstants.exchangeInventory[selectedSection].buckets[selectedRow - 1].unit!.privateSleepCapacity
+            unit.publicSleepCapacity = (surroundingMatchResortsArray[selectedRow].inventory?.units[selectedSection].publicSleepCapacity)!
+            unit.privateSleepCapacity = (surroundingMatchResortsArray[selectedRow].inventory?.units[selectedSection].privateSleepCapacity)!
             
             exchangeDestination.unit = unit
         }
@@ -641,11 +654,11 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
                 Constant.MyClassConstants.filterRelinquishments.append(exchageDetail.relinquishment!)
             }
             if(self.selectedSection == 0){
-              Constant.MyClassConstants.selectedResort = self.exactMatchResortsArrayExchange[self.selectedRow].resort!
-              Constant.MyClassConstants.inventoryPrice = (self.exactMatchResortsArrayExchange[self.selectedRow].inventory?.buckets[0].unit?.prices)!
+              Constant.MyClassConstants.selectedResort = self.exactMatchResortsArray[self.selectedSection]
+              Constant.MyClassConstants.inventoryPrice = (self.exactMatchResortsArray[self.selectedRow].inventory?.units[self.selectedSection].prices)!
             }else{
-              Constant.MyClassConstants.selectedResort = self.surroundingMatchResortsArrayExchange[self.selectedRow].resort!
-              Constant.MyClassConstants.inventoryPrice = (self.surroundingMatchResortsArrayExchange[self.selectedSection].inventory?.buckets[0].unit?.prices)!
+              Constant.MyClassConstants.selectedResort = self.surroundingMatchResortsArray[self.selectedRow]
+              Constant.MyClassConstants.inventoryPrice = (self.surroundingMatchResortsArray[self.selectedSection].inventory?.units[self.selectedRow].prices)!
             }
             
             
@@ -1020,9 +1033,9 @@ extension SearchResultViewController:UICollectionViewDelegate {
                     selectedSection = (collectionView.superview?.superview?.tag)!
                     selectedRow = collectionView.tag
                     if(collectionView.superview?.superview?.tag == 0){
-                        Constant.MyClassConstants.selectedResort = self.exactMatchResortsArrayExchange[collectionView.tag].resort!
+                        Constant.MyClassConstants.selectedResort = self.exactMatchResortsArray[collectionView.tag]
                     }else{
-                        Constant.MyClassConstants.selectedResort = self.surroundingMatchResortsArrayExchange[collectionView.tag].resort!
+                        Constant.MyClassConstants.selectedResort = self.surroundingMatchResortsArray[collectionView.tag]
                     }
                     self.getFilterRelinquishments()
                 }
@@ -1094,8 +1107,10 @@ extension SearchResultViewController:UICollectionViewDataSource {
                         
                          return (exactMatchResortsArrayExchange[collectionView.tag].inventory?.buckets.count)!
                     }
-                    else{
+                    else if (Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Rental){
                          return (exactMatchResortsArray[collectionView.tag].inventory?.units.count)!
+                    }else{
+                        return (exactMatchResortsArray[collectionView.tag].inventory?.units.count)!
                     }
                    
                 }else{
@@ -1214,15 +1229,21 @@ extension SearchResultViewController:UICollectionViewDataSource {
                     
                     var inventoryItem = Resort()
                     if(collectionView.superview?.superview?.tag == 0){
-                        if(exactMatchResortsArrayExchange.count>0){
-                            inventoryItem = exactMatchResortsArrayExchange[collectionView.tag].resort!
-                        }else{
+                        if(exactMatchResortsArray.count>0){
+                            
                             inventoryItem = exactMatchResortsArray[collectionView.tag]
+                            
+                        }else{
+                            
+                            inventoryItem = exactMatchResortsArrayExchange[collectionView.tag].resort!
+                            
                         }
                         
                     }else{
                         if(surroundingMatchResortsArray.count > 0){
+                           
                             inventoryItem = surroundingMatchResortsArray[collectionView.tag]
+
                         }else{
                             inventoryItem = surroundingMatchResortsArrayExchange[collectionView.tag].resort!
                         }
@@ -1253,11 +1274,11 @@ extension SearchResultViewController:UICollectionViewDataSource {
                     }else {
                         if(surroundingMatchResortsArray.count > 0){
                             let cell = self.getGetawayCollectionCell(indexPath: indexPath, collectionView: collectionView)
-                            cell.setDataForRentalInventory(invetoryItem: surroundingMatchResortsArray[indexPath.item], indexPath: indexPath)
+                            cell.setDataForRentalInventory(invetoryItem: surroundingMatchResortsArray[collectionView.tag], indexPath: indexPath)
                             return cell
                         }else{
                             let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
-                            cell.setUpExchangeCell(invetoryItem: surroundingMatchResortsArrayExchange[indexPath.item].inventory!, indexPath: indexPath)
+                            cell.setUpExchangeCell(invetoryItem: surroundingMatchResortsArrayExchange[collectionView.tag].inventory!, indexPath: indexPath)
                             return cell
                         }
                     }
@@ -1373,12 +1394,15 @@ extension SearchResultViewController:UITableViewDataSource {
             }else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.availabilityCell, for: indexPath) as! SearchTableViewCell
                 cell.tag = indexPath.section
-                cell.resortInfoCollectionView.reloadData()
                 if (Constant.MyClassConstants.isShowAvailability == true){
                     cell.resortInfoCollectionView.tag = indexPath.row - 1
+                    print("----------->>>>>>>>1", cell.resortInfoCollectionView.tag)
                 } else {
                     cell.resortInfoCollectionView.tag = indexPath.row
+                    print("----------->>>>>>>>2", cell.resortInfoCollectionView.tag)
                 }
+                
+                cell.resortInfoCollectionView.reloadData()
                 cell.resortInfoCollectionView.isScrollEnabled = false
                 cell.layer.borderWidth = 0.5
                 cell.layer.borderColor = UIColor.lightGray.cgColor
@@ -1413,15 +1437,39 @@ extension SearchResultViewController:UITableViewDataSource {
             
             }
             
-        }else{
+        }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Rental){
             if(section == 0 && exactMatchResortsArray.count == 0 || section == 1){
                 return surroundingMatchResortsArray.count
             }else{
                 if Constant.MyClassConstants.isShowAvailability == true && section == 0 {
-                    return exactMatchResortsArray.count + 1
+                    return exactMatchResortsArray.count
                     
                 } else {
                     return exactMatchResortsArray.count
+                }
+            }
+        }else{
+            if((section == 0 && exactMatchResortsArray.count == 0 && exactMatchResortsArrayExchange.count == 0) || section == 1){
+                if(surroundingMatchResortsArray.count > 0){
+                     return surroundingMatchResortsArray.count
+                }else{
+                    return surroundingMatchResortsArrayExchange.count
+                }
+               
+            }else{
+                if Constant.MyClassConstants.isShowAvailability == true && section == 0 {
+                    if(exactMatchResortsArray.count > 0){
+                        return exactMatchResortsArray.count + 1
+                    }else{
+                        return exactMatchResortsArrayExchange.count + 1
+                    }
+                    
+                } else {
+                    if(exactMatchResortsArray.count > 0){
+                        return exactMatchResortsArray.count
+                    }else{
+                        return exactMatchResortsArrayExchange.count
+                    }
                 }
             }
         }

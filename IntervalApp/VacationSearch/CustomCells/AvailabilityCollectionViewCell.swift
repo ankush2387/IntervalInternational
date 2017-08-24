@@ -46,8 +46,11 @@ class AvailabilityCollectionViewCell: UICollectionViewCell {
         self.resortName.text = inventoryItem.resortName
         self.resortAddress.text = inventoryItem.address?.cityName
         self.resortCode.text = inventoryItem.resortCode
-        let tierImageName = Helper.getTierImageName(tier: inventoryItem.tier!.uppercased())
-        self.tierImage.image = UIImage(named: tierImageName)
+        if let tierImageName = inventoryItem.tier{
+             let tier = Helper.getTierImageName(tier: tierImageName.uppercased())
+            self.tierImage.image = UIImage(named: tier)
+        }
+        
         DarwinSDK.logger.info("\(String(describing: Helper.resolveResortInfo(resort: inventoryItem)))")
     }
     
