@@ -785,7 +785,6 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
 
     }
     
-    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let firstVisibleIndexPath = searchResultTableView.indexPathsForVisibleRows?.first
         let indexPath = IndexPath(item: collectionviewSelectedIndex, section: 0)
