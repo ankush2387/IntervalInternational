@@ -29,7 +29,7 @@ class DestinationResortViewController: UIViewController {
         ADBMobile.trackAction(Constant.omnitureEvents.event40, data: pageView)
         
         // omniture tracking with event 35
-        let userInfo: [String: String]
+        /* let userInfo: [String: String]
         if Constant.MyClassConstants.isFromExchange {
              userInfo = [
                 Constant.omnitureCommonString.productItem : (Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.resortCode)!,
@@ -45,7 +45,7 @@ class DestinationResortViewController: UIViewController {
         
         
         ADBMobile.trackAction(Constant.omnitureEvents.event35, data: userInfo)
-        amenitiesString = Constant.MyClassConstants.onsiteString.appending(Constant.MyClassConstants.nearbyString)
+        amenitiesString = Constant.MyClassConstants.onsiteString.appending(Constant.MyClassConstants.nearbyString)*/
         // Do any additional setup after loading the view.
         
     }

@@ -776,7 +776,7 @@ extension VacationSearchViewController:UITableViewDataSource {
             return Constant.MyClassConstants.whereTogoContentArray.count + 1
             
         case 1:
-            if(self.SegmentIndex != 1) {
+            if(self.segmentTitle != Constant.segmentControlItems.getaways) {
                 return Constant.MyClassConstants.whatToTradeArray.count + 1
             }
             else {
