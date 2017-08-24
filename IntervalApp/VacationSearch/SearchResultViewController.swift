@@ -188,8 +188,44 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
             }else{
                 
                 Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]//Constant.MyClassConstants.relinquishmentIdArray as? [String]
+                bothSearchCriteria.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]
                 Helper.helperDelegate = self
                 let vacationSearchFilter = VacationSearch(UserContext.sharedInstance.appSettings,bothSearchCriteria)
+                
+                
+                RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: vacationSearchFilter.rentalSearch?.searchContext.request, onSuccess:{ (response) in
+                    
+                    Helper.hideProgressBar(senderView: self)
+                    Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
+                    let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
+                    // Update active interval
+                    Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                    Helper.helperDelegate = self
+                    
+                    Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                    // Check not available checkIn dates for the active interval
+                    if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                        Helper.hideProgressBar(senderView: self)
+                        //self.rentalHasNotAvailableCheckInDates = true
+                        Helper.executeExchangeSearchDates(senderVC: self)
+                    }else{
+                        Helper.hideProgressBar(senderView: self)
+                        Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
+                        let vacationSearchInitialDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
+                        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearchInitialDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                    }
+                    Constant.MyClassConstants.checkInDates = response.checkInDates
+                    //sender.isEnabled = true
+                    
+                })
+                { (error) in
+                    
+                    Helper.hideProgressBar(senderView: self)
+                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                }
+                //self.createSections()
+                self.searchResultTableView.reloadData()
+                self.dismiss(animated: true, completion: nil)
                 
             }
         } else {
@@ -455,8 +491,13 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
     func intervalDateItemClicked(_ toDate: Date){
         let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
         Helper.helperDelegate = self
-        Helper.showProgressBar(senderView: self)
+        if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
         Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: toDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+        }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
+            Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: toDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+        }else{
+            
+        }
     }
     
     
@@ -620,26 +661,25 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
         
         let unit = InventoryUnit()
         if(selectedSection == 0){
-            let currentFromDate = exactMatchResortsArrayExchange[selectedRow].inventory?.checkInDate
-            let currentToDate = exactMatchResortsArrayExchange[selectedRow].inventory?.checkOutDate
-        unit.kitchenType = exactMatchResortsArrayExchange[selectedRow].inventory?.buckets[0].unit!.kitchenType!
-        unit.unitSize = exactMatchResortsArrayExchange[selectedRow].inventory?.buckets[0].unit!.unitSize!
+            let currentFromDate = exactMatchResortsArray[selectedRow].inventory?.checkInDate
+            let currentToDate = exactMatchResortsArray[selectedRow].inventory?.checkOutDate
+        unit.kitchenType = exactMatchResortsArray[selectedRow].inventory?.units[0].kitchenType!
+        unit.unitSize = exactMatchResortsArray[selectedRow].inventory?.units[0].unitSize!
         exchangeDestination.checkInDate = currentFromDate
         exchangeDestination.checkOutDate = currentToDate
-        unit.publicSleepCapacity = (exactMatchResortsArrayExchange[selectedRow].inventory?.buckets[0].unit!.publicSleepCapacity)!
-        unit.privateSleepCapacity =
-            (exactMatchResortsArrayExchange[selectedRow].inventory?.buckets[0].unit!.privateSleepCapacity)!
+        unit.publicSleepCapacity = (exactMatchResortsArray[selectedRow].inventory?.units[0].publicSleepCapacity)!
+        unit.privateSleepCapacity = (exactMatchResortsArray[selectedRow].inventory?.units[0].privateSleepCapacity)!
         
         exchangeDestination.unit = unit
         }else{
             let currentFromDate = surroundingMatchResortsArray[selectedRow].inventory?.checkInDate
             let currentToDate = surroundingMatchResortsArray[selectedRow].inventory?.checkOutDate
-            unit.kitchenType = surroundingMatchResortsArray[selectedRow].inventory?.units[selectedSection].kitchenType
-            unit.unitSize = surroundingMatchResortsArray[selectedRow].inventory?.units[selectedSection].unitSize!
+            unit.kitchenType = surroundingMatchResortsArray[selectedRow].inventory?.units[0].kitchenType
+            unit.unitSize = surroundingMatchResortsArray[selectedRow].inventory?.units[0].unitSize!
             exchangeDestination.checkInDate = currentFromDate
             exchangeDestination.checkOutDate = currentToDate
-            unit.publicSleepCapacity = (surroundingMatchResortsArray[selectedRow].inventory?.units[selectedSection].publicSleepCapacity)!
-            unit.privateSleepCapacity = (surroundingMatchResortsArray[selectedRow].inventory?.units[selectedSection].privateSleepCapacity)!
+            unit.publicSleepCapacity = (surroundingMatchResortsArray[selectedRow].inventory?.units[0].publicSleepCapacity)!
+            unit.privateSleepCapacity = (surroundingMatchResortsArray[selectedRow].inventory?.units[0].privateSleepCapacity)!
             
             exchangeDestination.unit = unit
         }
@@ -655,10 +695,10 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
             }
             if(self.selectedSection == 0){
               Constant.MyClassConstants.selectedResort = self.exactMatchResortsArray[self.selectedSection]
-              Constant.MyClassConstants.inventoryPrice = (self.exactMatchResortsArray[self.selectedRow].inventory?.units[self.selectedSection].prices)!
+              Constant.MyClassConstants.inventoryPrice = (self.exactMatchResortsArray[self.selectedRow].inventory?.units[0].prices)!
             }else{
               Constant.MyClassConstants.selectedResort = self.surroundingMatchResortsArray[self.selectedRow]
-              Constant.MyClassConstants.inventoryPrice = (self.surroundingMatchResortsArray[self.selectedSection].inventory?.units[self.selectedRow].prices)!
+              Constant.MyClassConstants.inventoryPrice = (self.surroundingMatchResortsArray[self.selectedRow].inventory?.units[0].prices)!
             }
             
             

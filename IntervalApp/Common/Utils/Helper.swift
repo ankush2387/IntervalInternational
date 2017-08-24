@@ -1189,7 +1189,7 @@ public class Helper{
         noResortView.backgroundColor = UIColor(red: 209.0/255.0, green: 226.0/255.0, blue: 237.0/255.0, alpha: 1.0)
         senderView.addSubview(noResortView)
         
-        titleView.frame = CGRect(x: 0, y: 0, width: noResortView.frame.size.width, height: noResortView.frame.size.height/5)
+        titleView.frame = CGRect(x: 0, y: 0, width: noResortView.frame.size.width + 20, height: noResortView.frame.size.height/5)
         titleView.backgroundColor = UIColor.darkGray
         noResortView.addSubview(titleView)
         

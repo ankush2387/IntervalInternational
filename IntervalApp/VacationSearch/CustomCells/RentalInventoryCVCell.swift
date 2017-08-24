@@ -27,6 +27,18 @@ class RentalInventoryCVCell: UICollectionViewCell {
         // price
         let price = Int(unit.prices[0].price)
         self.getawayPrice.text = String(price)
+        if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Combined){
+             self.getawayPrice.isHidden = true
+            self.currencySymbol.isHidden = true
+            getawayNameLabel.text = "Getaway"
+            imgViewGetaway.isHidden = false
+        }else{
+            self.getawayPrice.isHidden = false
+            self.currencySymbol.isHidden = false
+            getawayNameLabel.text = "Per Week"
+            imgViewGetaway.isHidden = true
+        }
+       
         
         // bedroom details
         
