@@ -32,7 +32,7 @@ class WhatToUseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
+        //self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
         //self.navigationController?.navigationBar.topItem?.title = ""
         
         self.title = Constant.ControllerTitles.bookYourSelectionController
@@ -419,10 +419,10 @@ extension WhatToUseViewController:UITableViewDataSource {
                     return cell
                 }
             }else{
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell0, for: indexPath) as! ExchangeCell0
+                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell0, for: indexPath) as! AvailablePointCell
                 cell.tag = indexPath.row
-                cell.contentBackgroundView.layer.cornerRadius = 7
-                Helper.applyShadowOnUIView(view: cell.contentBackgroundView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
+               // cell.contentBackgroundView.layer.cornerRadius = 7
+                //Helper.applyShadowOnUIView(view: cell.contentBackgroundView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 return cell
             }
@@ -432,10 +432,14 @@ extension WhatToUseViewController:UITableViewDataSource {
             //***** Configure and return search vacation cell *****//
             let cell:GetawayCell = tableView.dequeueReusableCell(withIdentifier: "GetawaysCell", for: indexPath) as! GetawayCell
             cell.tag = indexPath.row
-            Helper.applyShadowOnUIView(view: cell.viewContent, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
+            cell.viewContent.layer.borderWidth = 0.5
+            cell.viewContent.layer.borderColor = UIColor.lightGray.cgColor
+            cell.viewContent.layer.cornerRadius = 7
+           // Helper.applyShadowOnUIView(view: cell.viewContent, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             return cell
             
         }
+        
     }
 }
