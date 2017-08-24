@@ -32,6 +32,9 @@ class WhatToUseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
+        //self.navigationController?.navigationBar.topItem?.title = ""
+        
         self.title = Constant.ControllerTitles.bookYourSelectionController
         let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(AccomodationCertsDetailController.menuBackButtonPressed(_:)))
         menuButton.tintColor = UIColor.white
@@ -429,8 +432,7 @@ extension WhatToUseViewController:UITableViewDataSource {
             //***** Configure and return search vacation cell *****//
             let cell:GetawayCell = tableView.dequeueReusableCell(withIdentifier: "GetawaysCell", for: indexPath) as! GetawayCell
             cell.tag = indexPath.row
-            //cell.getawayNameLabel.text = Constant.MyClassConstants.selectedResort.resortName
-            Helper.applyShadowOnUIView(view: cell, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
+            Helper.applyShadowOnUIView(view: cell.viewContent, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             return cell
             

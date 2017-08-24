@@ -105,7 +105,6 @@ class ResortDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         // omniture tracking with event 35
         if(Constant.MyClassConstants.resortsDescriptionArray.resortCode != nil){
             let userInfo: [String: String] = [

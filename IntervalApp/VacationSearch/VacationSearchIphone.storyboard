@@ -4095,7 +4095,7 @@ to confirm a larger unit.</string>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                             </subviews>
-                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <constraints>
                                                                 <constraint firstItem="tIc-dR-uk3" firstAttribute="leading" secondItem="qM0-Y7-c1p" secondAttribute="leading" id="9lf-cK-aR5"/>
                                                                 <constraint firstItem="Vst-uM-MzW" firstAttribute="top" secondItem="tIc-dR-uk3" secondAttribute="bottom" constant="-1" id="BZI-Zb-PGD"/>
@@ -4174,6 +4174,9 @@ to confirm a larger unit.</string>
                                                 <constraint firstItem="Luk-EP-65k" firstAttribute="leading" secondItem="Nbc-4Y-pT8" secondAttribute="leadingMargin" constant="2" id="tD3-fk-SPk"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="viewContent" destination="Luk-EP-65k" id="6Hp-MB-a47"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -7223,6 +7226,7 @@ to confirm a larger unit.</string>
         <segue reference="Lp2-ch-oU8"/>
         <segue reference="sGp-zH-9TZ"/>
         <segue reference="xan-e8-tse"/>
+        <segue reference="sGp-zH-9TZ"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
 </document>
