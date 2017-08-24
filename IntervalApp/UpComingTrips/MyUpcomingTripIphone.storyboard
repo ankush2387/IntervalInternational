@@ -158,15 +158,9 @@
                                                     <rect key="frame" x="0.0" y="391" width="375" height="40"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HNJ-Og-FqQ" customClass="IUIKButton" customModule="IntervalUIKit">
-                                                            <rect key="frame" x="0.0" y="2" width="188" height="36"/>
+                                                            <rect key="frame" x="0.0" y="2" width="375" height="36"/>
                                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="188" id="GpB-B5-nX9"/>
-                                                            </constraints>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                                            <state key="normal" title="View Trip Details">
-                                                                <color key="titleColor" red="0.0" green="0.46666666666666667" blue="0.74509803921568629" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            </state>
+                                                            <state key="normal" title="View Trip Details"/>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                                     <real key="value" value="0.0"/>
@@ -192,6 +186,7 @@
                                                         <constraint firstItem="B0M-Fe-gn0" firstAttribute="top" secondItem="521-5q-S13" secondAttribute="top" constant="3" id="Lb0-Ga-5rm"/>
                                                         <constraint firstAttribute="bottom" secondItem="B0M-Fe-gn0" secondAttribute="bottom" constant="2" id="abx-OI-he0"/>
                                                         <constraint firstItem="HNJ-Og-FqQ" firstAttribute="top" secondItem="521-5q-S13" secondAttribute="top" constant="2" id="eIR-hn-wWG"/>
+                                                        <constraint firstAttribute="trailing" secondItem="HNJ-Og-FqQ" secondAttribute="trailing" id="pqK-19-P8z"/>
                                                     </constraints>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GETAWAY" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AS8-73-apT">

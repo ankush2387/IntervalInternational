@@ -605,8 +605,22 @@ extension UpComingTripDetailIPadViewController:UITableViewDataSource {
         let unitDetils = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit
         self.unitDetialsCellHeight = 20
         
+        //sort array to show in this order: Sleeping, Bathroom, Kitchen and Other
+        var sortedArrayAmenities = [InventoryUnitAmenity]()
+        for am in unitDetils!.amenities {
+            if am.category == "OTHER_FACILITIES" {
+                sortedArrayAmenities.insert(am, at: 0)
+            } else if am.category == "BATHROOM_FACILITIES" {
+                sortedArrayAmenities.insert(am, at: 0)
+            } else if am.category == "SLEEPING_ACCOMMODATIONS" {
+                sortedArrayAmenities.insert(am, at: 0)
+            } else {
+                sortedArrayAmenities.insert(am, at: 2)
+            }
+        }
+        
         self.detailsView = UIView()
-        for amunities in unitDetils!.amenities {
+        for amunities in sortedArrayAmenities {
             
             let sectionLabel = UILabel(frame: CGRect(x: 120,y:Int(unitDetialsCellHeight), width: Int(self.view.frame.width - 20), height: 20))
             
@@ -635,7 +649,12 @@ extension UpComingTripDetailIPadViewController:UITableViewDataSource {
                     
                     
                     let detaildescLabel = UILabel(frame: CGRect(x: 120, y: Int(unitDetialsCellHeight), width: Int(self.view.frame.width - 20), height: 20))
-                    detaildescLabel.text = desc
+                    if sectionLabel.text == "Other Facilities" || sectionLabel.text == "Kitchen Facilities" {
+                        detaildescLabel.text = "\u{2022} \(desc)"
+                    } else {
+                        detaildescLabel.text = desc
+                    }
+
                     detaildescLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 14.0)
                     detaildescLabel.sizeToFit()
                     self.detailsView?.addSubview(detaildescLabel)
