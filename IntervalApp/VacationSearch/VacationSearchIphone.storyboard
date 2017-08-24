@@ -1662,7 +1662,7 @@
                                                                     </view>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1VK-Lm-7mL">
                                                                         <rect key="frame" x="10" y="58" width="355" height="19"/>
-                                                                        <color key="backgroundColor" red="1" green="0.45882352939999999" blue="0.2274509804" alpha="1" colorSpace="calibratedRGB"/>
+                                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="19" id="uRz-RO-ddj"/>
                                                                         </constraints>
