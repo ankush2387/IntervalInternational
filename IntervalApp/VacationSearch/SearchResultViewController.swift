@@ -1339,6 +1339,7 @@ extension SearchResultViewController:UICollectionViewDataSource {
                     }else if(collectionView.superview?.superview?.tag == 0){
                         if(exactMatchResortsArray.count > 0){
                             let cell = self.getGetawayCollectionCell(indexPath: indexPath, collectionView: collectionView)
+                            cell.setDataForRentalInventory( invetoryItem: exactMatchResortsArray[collectionView.tag], indexPath: indexPath)
                             return cell
 
                         }else{
@@ -1459,8 +1460,6 @@ extension SearchResultViewController:UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         //***** configuring prototype cell for UpComingtrip resort details *****//
-            
-            
             if indexPath.section == 0 && indexPath.row == 0 && Constant.MyClassConstants.isShowAvailability == true {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.novailabilityCell, for: indexPath)
                 cell.tag = indexPath.section

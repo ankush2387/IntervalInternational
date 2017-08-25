@@ -728,7 +728,7 @@ extension VacationSearchViewController:UITableViewDataSource {
     
     //***** Function to enable Swap deletion functionality *****//
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        if(SegmentIndex == 0 || SegmentIndex == 2){
+        if(segmentTitle == Constant.segmentControlItems.searchBoth || segmentTitle == Constant.segmentControlItems.exchange){
             if(indexPath.section == 0){
                 if(Constant.MyClassConstants.whereTogoContentArray.count == 0 || (indexPath as NSIndexPath).row == Constant.MyClassConstants.whereTogoContentArray.count){
                     return false
@@ -1580,7 +1580,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                             Helper.executeExchangeSearchDates(senderVC: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                         }else{
                             Helper.hideProgressBar(senderView: self)
-                            Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
+                             Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
                             let vacationSearchInitialDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
                             Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearchInitialDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                         }
