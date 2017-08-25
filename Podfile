@@ -16,7 +16,7 @@ target 'IntervalApp' do
     pod 'Brightcove-Player-SDK'
     pod 'Realm'
     pod 'RealmSwift'
-    pod 'HockeySDK'
+    pod "HockeySDK", :subspecs => ['AllFeaturesLib']
 end
 
 post_install do |installer|

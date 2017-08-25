@@ -71,9 +71,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //Distribution through HockeyApp
         BITHockeyManager.shared().configure(withIdentifier: "bde61378ac204256b1e52748bd34f688")
+        BITHockeyManager.shared().crashManager.crashManagerStatus = .autoSend
         BITHockeyManager.shared().start()
         BITHockeyManager.shared().authenticator.authenticateInstallation()
-        
         
          NotificationCenter.default.addObserver(self, selector: #selector(AppDelegate.applicationDidTimout), name: NSNotification.Name(rawValue: TimerUIApplication.ApplicationDidTimoutNotification), object: nil)
         return true
