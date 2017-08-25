@@ -211,49 +211,76 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     }
     
     func createSections(){
+        /* if(Constant.MyClassConstants.noAvailabilityView){
+         searchResultTableView.tableHeaderView = Helper.noResortView(senderView: self.view)
+         }else{
+         let viewHeader = UIView()
+         searchResultTableView.tableHeaderView = viewHeader
+         } */
+        exactMatchResortsArray.removeAll()
+        exchangeExactMatchResortsArray.removeAll()
+        surroundingMatchResortsArray.removeAll()
+        exchangeSurroundingMatchResortsArray.removeAll()
         let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
-        if(Constant.MyClassConstants.isFromExchange){
+        if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Exchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Combined){
             
             if(sections.count > 0){
-                for exactResorts in (sections[0].items)!{
-                    let resortsExact = exactResorts.exchangeAvailability
-                    if resortsExact != nil {
-                         exchangeExactMatchResortsArray.append(resortsExact!)
-                    }
-                   
-                }
-                
-                if(sections.count > 1){
-                    for surroundingResorts in (sections[1].items)!{
-                        let resortsSurrounding = surroundingResorts.exchangeAvailability
-                        if resortsSurrounding != nil {
-                            exchangeSurroundingMatchResortsArray.append(resortsSurrounding!)
+                for section in sections{
+                    
+                    if(section.exactMatch == nil || section.exactMatch == true){
+                        for exactResorts in (section.items)!{
+                            if(exactResorts.exchangeAvailability != nil){
+                                let resortsExact = exactResorts.exchangeAvailability
+                                exchangeExactMatchResortsArray.append(resortsExact!)
+                            }
+                            if(exactResorts.rentalAvailability != nil){
+                                let resortsExact = exactResorts.rentalAvailability
+                                exactMatchResortsArray.append(resortsExact!)
+                            }
                         }
                     }
                 }
-            }
-            
-        } else{
-            
-            for section in sections{
                 
-                if(section.exactMatch)!{
-                    for exactResorts in (section.items)!{
-                        let resortsExact = exactResorts.rentalAvailability
-                        exactMatchResortsArray.append(resortsExact!)
-                    }
-                }else{
-                    for surroundingResorts in (section.items)!{
-                        let resortsSurrounding = surroundingResorts.rentalAvailability
-                        surroundingMatchResortsArray.append(resortsSurrounding!)
+                if(sections.count > 1){
+                    for section in sections{
+                        if(section.exactMatch == nil || section.exactMatch == false){
+                            for surroundingResorts in (section.items)!{
+                                if(surroundingResorts.exchangeAvailability != nil){
+                                    let resortsSurrounding = surroundingResorts.exchangeAvailability
+                                    exchangeSurroundingMatchResortsArray.append(resortsSurrounding!)
+                                }
+                                if(surroundingResorts.rentalAvailability != nil){
+                                    let resortsSurrounding = surroundingResorts.rentalAvailability
+                                    surroundingMatchResortsArray.append(resortsSurrounding!)
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
         
-        
-        
-        
+        if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Rental || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Combined){
+            
+            for section in sections{
+                
+                if(section.exactMatch == nil || section.exactMatch == false){
+                    for exactResorts in (section.items)!{
+                        if(exactResorts.rentalAvailability != nil){
+                            let resortsExact = exactResorts.rentalAvailability
+                            exactMatchResortsArray.append(resortsExact!)
+                        }
+                    }
+                }else{
+                    for surroundingResorts in (section.items)!{
+                        if(surroundingResorts.rentalAvailability != nil){
+                            let resortsSurrounding = surroundingResorts.rentalAvailability
+                            surroundingMatchResortsArray.append(resortsSurrounding!)
+                        }
+                    }
+                }
+            }
+        }
     }
     
     override func viewDidLoad() {
@@ -1487,6 +1514,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                     cell.resortInfoCollectionView.tag = indexPath.row
                 }
                 cell.resortInfoCollectionView.isScrollEnabled = false
+                cell.selectionStyle = .none
 //                cell.layer.borderWidth = 0.5
 //                cell.layer.borderColor = UIColor.lightGray.cgColor
                 return cell
@@ -1545,11 +1573,11 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
         let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
         if(sectionsInSearchResult.count > 0){
             for sections in sectionsInSearchResult{
-                if(sections.exactMatch! && section == 0){
+                if((sections.exactMatch == nil || sections.exactMatch == true) && section == 0){
                     headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
                     headerView.backgroundColor = IUIKColorPalette.primary1.color
                     //break
-                }else if !sections.exactMatch! && section == 1{
+                }else if ((sections.exactMatch == nil || sections.exactMatch == false) && section == 1){
                     headerLabel.text = Constant.CommonLocalisedString.surroundingString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
                     headerView.backgroundColor = Constant.CommonColor.headerGreenColor
                 }

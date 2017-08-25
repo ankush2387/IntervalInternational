@@ -452,11 +452,30 @@ extension WhatToUseViewController:UITableViewDataSource {
                 }
             }
             
-            if let privateSleeps = Constant.MyClassConstants.selectedResort.inventory?.units[selectedUnitIndex].privateSleepCapacity{
-                cell.sleeps.text = String(privateSleeps)
-            }
-
+            /*if let privateSleeps = Constant.MyClassConstants.selectedResort.inventory?.units[selectedUnitIndex].privateSleepCapacity{
+             cell.sleeps.text = String(privateSleeps)
+             }*/
             
+            
+            var totalSleepCapacity = String()
+            
+            if (Constant.MyClassConstants.selectedResort.inventory?.units[selectedUnitIndex].publicSleepCapacity)! > 0 {
+                
+                totalSleepCapacity =  String(describing: Constant.MyClassConstants.selectedResort.inventory?.units[selectedUnitIndex].publicSleepCapacity) + Constant.CommonLocalisedString.totalString
+                
+            }
+            
+            if (Constant.MyClassConstants.selectedResort.inventory?.units[selectedUnitIndex].privateSleepCapacity)! > 0 {
+                
+                cell.sleeps.text =  totalSleepCapacity + String(describing: Constant.MyClassConstants.selectedResort.inventory?.units[selectedUnitIndex].publicSleepCapacity) + Constant.CommonLocalisedString.privateString
+                
+            }
+            
+            
+            /*let priceString = "\(String(describing: Constant.MyClassConstants.selectedResort.inventory?.units[selectedUnitIndex].prices))"
+            let priceArray = priceString.components(separatedBy: ".")*/
+            
+            cell.getawayPrice.text = String(Int((Constant.MyClassConstants.selectedResort.inventory?.units[selectedUnitIndex].prices[0].price)!))
             
             
             cell.viewContent.layer.borderWidth = 0.5
