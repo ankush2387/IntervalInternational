@@ -439,10 +439,29 @@ extension WhatToUseViewController:UITableViewDataSource {
             let cell:GetawayCell = tableView.dequeueReusableCell(withIdentifier: "GetawaysCell", for: indexPath) as! GetawayCell
             cell.tag = indexPath.row
             cell.bedRoomType.text = Constant.MyClassConstants.selectedResort.inventory?.units[selectedUnitIndex].unitSize
+            
+            
+            
+            if let roomSize = UnitSize(rawValue: (Constant.MyClassConstants.selectedResort.inventory?.units[selectedUnitIndex].unitSize)!) {
+                
+                cell.bedRoomType.text = roomSize.rawValue
+                
+                
+                if let kitchenSize = KitchenType(rawValue: (Constant.MyClassConstants.selectedResort.inventory?.units[selectedUnitIndex].kitchenType)!) {
+                    cell.kitchenType.text = Helper.getKitchenEnums(kitchenType: kitchenSize.rawValue)
+                }
+            }
+            
+            if let privateSleeps = Constant.MyClassConstants.selectedResort.inventory?.units[selectedUnitIndex].privateSleepCapacity{
+                cell.sleeps.text = String(privateSleeps)
+            }
+
+            
+            
+            
             cell.viewContent.layer.borderWidth = 0.5
             cell.viewContent.layer.borderColor = UIColor.lightGray.cgColor
             cell.viewContent.layer.cornerRadius = 7
-           // Helper.applyShadowOnUIView(view: cell.viewContent, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             return cell
             
