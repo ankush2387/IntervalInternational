@@ -277,10 +277,8 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
             
             if(sections.count > 0){
                 for section in sections{
-                    if(section.exactMatch != nil){
-                        
-                    }
-                if(section.exactMatch != nil && section.exactMatch!){
+                
+                if(section.exactMatch == nil || section.exactMatch == true){
                     for exactResorts in (section.items)!{
                         if(exactResorts.exchangeAvailability != nil){
                             let resortsExact = exactResorts.exchangeAvailability
@@ -292,11 +290,11 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
                         }
                     }
                 }
-                }
-                
+            }
+            
                 if(sections.count > 1){
                     for section in sections{
-                    if(!section.exactMatch!){
+                    if(section.exactMatch == nil || section.exactMatch == false){
                         for surroundingResorts in (section.items)!{
                             if(surroundingResorts.exchangeAvailability != nil){
                                 let resortsSurrounding = surroundingResorts.exchangeAvailability
@@ -1370,16 +1368,14 @@ extension SearchResultViewController:UICollectionViewDataSource {
         let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
         if(sectionsInSearchResult.count > 0){
                     for sections in sectionsInSearchResult{
-                        if(sections.exactMatch != nil){
-                        if(sections.exactMatch! && section == 0){
+                        if((sections.exactMatch == nil || sections.exactMatch == true) && section == 0){
                             headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
                             headerView.backgroundColor = IUIKColorPalette.primary1.color
                             //break
-                        }else if !sections.exactMatch! && section == 1{
+                        }else if((sections.exactMatch == nil || sections.exactMatch == false) && section == 1){
                             headerLabel.text = Constant.CommonLocalisedString.surroundingString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
                             headerView.backgroundColor = Constant.CommonColor.headerGreenColor
                         }
-                      }
                     }
         }
         headerLabel.textColor = UIColor.white
