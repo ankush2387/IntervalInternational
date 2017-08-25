@@ -1577,7 +1577,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                         if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
                             Helper.hideProgressBar(senderView: self)
                             self.rentalHasNotAvailableCheckInDates = true
-                            Helper.executeExchangeSearchDates(senderVC: self)
+                            Helper.executeExchangeSearchDates(senderVC: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                         }else{
                             Helper.hideProgressBar(senderView: self)
                             Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()

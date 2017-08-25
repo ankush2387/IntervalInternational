@@ -17,6 +17,7 @@ class WhatToUseViewController: UIViewController {
     
     var isCheckedBox = false
     var showUpgrade = false
+    var selectedUnitIndex = 0
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -261,6 +262,11 @@ extension WhatToUseViewController:UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         
         if(section != 0){
+            if(section == 1 && Constant.MyClassConstants.filterRelinquishments.count == 0){
+                return 0
+            }else if (section == 2 && Constant.MyClassConstants.selectedResort.resortCode == ""){
+                return 0
+            }
             return 30
         }else{
             return 0
@@ -432,6 +438,7 @@ extension WhatToUseViewController:UITableViewDataSource {
             //***** Configure and return search vacation cell *****//
             let cell:GetawayCell = tableView.dequeueReusableCell(withIdentifier: "GetawaysCell", for: indexPath) as! GetawayCell
             cell.tag = indexPath.row
+            cell.bedRoomType.text = Constant.MyClassConstants.selectedResort.inventory?.units[selectedUnitIndex].unitSize
             cell.viewContent.layer.borderWidth = 0.5
             cell.viewContent.layer.borderColor = UIColor.lightGray.cgColor
             cell.viewContent.layer.cornerRadius = 7

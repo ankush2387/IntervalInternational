@@ -686,7 +686,7 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
                         }else{
                             Constant.MyClassConstants.selectedResort = self.exchangeSurroundingMatchResortsArray[collectionView.tag].resort!
                         }
-                        self.getFilterRelinquishments()
+                        self.getFilterRelinquishments(selectedUnitIndex: indexPath.row)
                         //self.getStaticFilterRelinquishments()
                         
                     }
@@ -781,7 +781,7 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
     
     //Dynamic API hit
     
-    func getFilterRelinquishments(){
+    func getFilterRelinquishments(selectedUnitIndex:Int){
         Helper.showProgressBar(senderView: self)
         let exchangeSearchDateRequest = ExchangeFilterRelinquishmentsRequest()
         exchangeSearchDateRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
@@ -789,12 +789,7 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
         exchangeSearchDateRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
         
         let exchangeDestination = ExchangeDestination()
-        if(selectedSection == 0){
-            
-        }else{
-            
-        }
-        
+
         let resort = Resort()
         resort.resortCode = Constant.MyClassConstants.selectedResort.resortCode
         

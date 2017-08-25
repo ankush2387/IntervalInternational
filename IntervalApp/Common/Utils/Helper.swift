@@ -1758,6 +1758,7 @@ public class Helper{
                                     Constant.MyClassConstants.resortsArray = response.resorts
                                     
                                     vacationSearch.rentalSearch?.inventory = response.resorts
+                                    Constant.MyClassConstants.initialVacationSearch = vacationSearch
                                     
                                     // Check if not has availability in the desired check-In date.
                                     if (vacationSearch.searchCriteria.checkInDate != checkInDate) {
@@ -1773,7 +1774,7 @@ public class Helper{
                                     if Constant.MyClassConstants.isFromSorting == false && Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType != VacationSearchType.Combined {
                                         helperDelegate?.resortSearchComplete()
                                     }else{
-                                        executeExchangeSearchDates(senderVC: senderViewController)
+                                        executeExchangeSearchDates(senderVC: senderViewController, vacationSearch: vacationSearch)
                                     }
                                     Constant.MyClassConstants.isFromSorting = false
                                     Constant.MyClassConstants.noAvailabilityView = false
@@ -1825,18 +1826,18 @@ public class Helper{
             
             // Update Exchange inventory
             hideProgressBar(senderView: senderViewController)
-            Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.inventory = searchAvailabilityResponse
+            vacationSearch.exchangeSearch?.inventory = searchAvailabilityResponse
             
             // Check if not has availability in the desired check-In date.
-            if ( Constant.MyClassConstants.initialVacationSearch.searchCriteria.checkInDate != checkInDate) {
+            if ( vacationSearch.searchCriteria.checkInDate != checkInDate) {
                 self.showNearestCheckInDateSelectedMessage()
             }
             
             showAvailabilityResults(vacationSearch:vacationSearch)
             hideProgressBar(senderView:senderViewController)
             print(searchAvailabilityResponse)
+            Constant.MyClassConstants.initialVacationSearch = vacationSearch
             if(senderViewController.isKind(of: VacationSearchResultIPadController.self) || senderViewController.isKind(of: SearchResultViewController.self)){
-                
             }else{
                 senderViewController.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
             }
@@ -1848,17 +1849,18 @@ public class Helper{
         }
     }
     
-    static func executeExchangeSearchDates(senderVC:UIViewController) {
+    static func executeExchangeSearchDates(senderVC:UIViewController, vacationSearch:VacationSearch) {
         
-        ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request,
+        ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request: vacationSearch.exchangeSearch?.searchContext.request,
                                    onSuccess: { (response) in
-                                    Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
+                                    vacationSearch.exchangeSearch?.searchContext.response = response
                                     
                                     // Get activeInterval
-                                    let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
+                                    let activeInterval = vacationSearch.bookingWindow.getActiveInterval()
                                     
                                     // Update active interval
-                                    Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                                    vacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                                    Constant.MyClassConstants.initialVacationSearch = vacationSearch
                                     
                                     // Check not available checkIn dates for the active interval
                                     if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
@@ -1869,8 +1871,8 @@ public class Helper{
                                         //}
                                         
                                     } else {
-                                        Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                                           executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat) , senderViewController: senderVC, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                          vacationSearch.resolveCheckInDateForInitialSearch()
+                                           executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat) , senderViewController: senderVC, vacationSearch: vacationSearch)
                                     }
                                     
                                     //expectation.fulfill()
