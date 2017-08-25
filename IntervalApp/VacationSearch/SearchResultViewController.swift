@@ -81,13 +81,13 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
                 
                 if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
                     rentalSearchCriteria.resorts = [resorts]
-                    Constant.MyClassConstants.initialVacationSearch.searchCriteria = rentalSearchCriteria
+                    //Constant.MyClassConstants.initialVacationSearch.searchCriteria = rentalSearchCriteria
                 }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
                     exchangeSearchCriteria.resorts =  [resorts]
-                    Constant.MyClassConstants.initialVacationSearch.searchCriteria = exchangeSearchCriteria
+                    //Constant.MyClassConstants.initialVacationSearch.searchCriteria = exchangeSearchCriteria
                 }else{
                     bothSearchCriteria.resorts =  [resorts]
-                    Constant.MyClassConstants.initialVacationSearch.searchCriteria = bothSearchCriteria
+                    //Constant.MyClassConstants.initialVacationSearch.searchCriteria = bothSearchCriteria
                 }
                 Constant.MyClassConstants.vacationSearchResultHeaderLabel = resort.resortName
                 
@@ -262,18 +262,21 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
     }
     
     func createSections(){
-       /* if(Constant.MyClassConstants.noAvailabilityView){
-            searchResultTableView.tableHeaderView = Helper.noResortView(senderView: self.view)
-        }else{
-            let viewHeader = UIView()
-            searchResultTableView.tableHeaderView = viewHeader
-        } */
-        exactMatchResortsArray.removeAll()
-        exactMatchResortsArrayExchange.removeAll()
-        surroundingMatchResortsArray.removeAll()
-        surroundingMatchResortsArrayExchange.removeAll()
         let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
+        
+        if(sections.count == 0){
+             searchResultTableView.tableHeaderView = Helper.noResortView(senderView: self.view)
+        }else{
+            let headerVw = UIView()
+            searchResultTableView.tableHeaderView = headerVw
+        }
+        
         if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Exchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Combined){
+            
+            exactMatchResortsArray.removeAll()
+            exactMatchResortsArrayExchange.removeAll()
+            surroundingMatchResortsArray.removeAll()
+            surroundingMatchResortsArrayExchange.removeAll()
             
             if(sections.count > 0){
                 for section in sections{
@@ -313,9 +316,14 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
         
         if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Rental || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Combined){
             
+            exactMatchResortsArray.removeAll()
+            exactMatchResortsArrayExchange.removeAll()
+            surroundingMatchResortsArray.removeAll()
+            surroundingMatchResortsArrayExchange.removeAll()
+            
             for section in sections{
                 
-                if(section.exactMatch)!{
+                if(section.exactMatch == nil || section.exactMatch == true){
                     for exactResorts in (section.items)!{
                         if(exactResorts.rentalAvailability != nil){
                             let resortsExact = exactResorts.rentalAvailability
