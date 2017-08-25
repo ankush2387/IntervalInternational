@@ -127,7 +127,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                         
                         //Helper.showNotAvailabilityResults()
                     }
-                    //Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
+                    Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
                     
                     let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
                     Constant.MyClassConstants.checkInDates = response.checkInDates
