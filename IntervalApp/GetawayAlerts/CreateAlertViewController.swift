@@ -310,14 +310,9 @@ class CreateAlertViewController: UIViewController {
         
         Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.createAlertViewController
         var mainStoryboard = UIStoryboard()
-        if(Constant.RunningDevice.deviceIdiom == .pad) {
-            //mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIpad, bundle: nil)
-            mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
-        }
-        else {
-            mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
-        }
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.bedroomSizeViewController) as! BedroomSizeViewController
+        
+        mainStoryboard = UIStoryboard(name: Constant.storyboardNames.getawayAlertsIphone, bundle: nil)
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: "BedroomSizeNav") as! UINavigationController
         
         let transitionManager = TransitionManager()
         self.navigationController?.transitioningDelegate = transitionManager
