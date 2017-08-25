@@ -1850,6 +1850,7 @@ public class Helper{
     
     static func executeExchangeSearchDates(senderVC:UIViewController, vacationSearch:VacationSearch) {
         
+        
         ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request: vacationSearch.exchangeSearch?.searchContext.request,
                                    onSuccess: { (response) in
                                     vacationSearch.exchangeSearch?.searchContext.response = response

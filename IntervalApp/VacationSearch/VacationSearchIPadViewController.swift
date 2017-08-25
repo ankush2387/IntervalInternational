@@ -831,13 +831,20 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                 }
             }else{
                 Helper.showProgressBar(senderView: self)
-                let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
+                let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Combined)
                 let storedData = Helper.getLocalStorageWherewanttoGo()
                 
                 if(storedData.count > 0) {
                     self.getSavedDestinationsResorts(storedData:storedData, searchCriteria:rentalSearchCriteria)
                     
+                    let travelPartyInfo = TravelParty()
+                    travelPartyInfo.adults = Int(self.adultCounter)
+                    travelPartyInfo.children = Int(self.childCounter)
+                    
+                    Constant.MyClassConstants.travelPartyInfo = travelPartyInfo
+                    rentalSearchCriteria.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]//Constant.MyClassConstants.relinquishmentIdArray as? [String]
                     rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
+                    rentalSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo                    //rentalSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
                     
                     Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(UserContext.sharedInstance.appSettings, rentalSearchCriteria)
                     

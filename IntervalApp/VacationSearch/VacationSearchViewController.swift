@@ -1414,6 +1414,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     
                     rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                     
+                    
                     self.vacationSearch = VacationSearch(UserContext.sharedInstance.appSettings, rentalSearchCriteria)
                     Constant.MyClassConstants.initialVacationSearch = self.vacationSearch
                     
