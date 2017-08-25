@@ -364,7 +364,7 @@ extension VacationSearchViewController:UICollectionViewDataSource {
             resortFlaxImageView.backgroundColor = UIColor.lightGray
             
             
-            if(self.SegmentIndex == 0 || self.SegmentIndex == 2) {
+            if(self.SegmentIndex == 0 || self.SegmentIndex == 1) {
                 
                 if let imgURL = flexDeal.images.first?.url {
                     resortFlaxImageView.setImageWith(URL(string: imgURL ), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
@@ -406,7 +406,7 @@ extension VacationSearchViewController:UICollectionViewDataSource {
             resortFlaxImageView.backgroundColor = UIColor.lightGray
             
             
-            if(self.SegmentIndex == 0 || self.SegmentIndex == 1) {
+            if(self.SegmentIndex == 0 || self.SegmentIndex == 2) {
                 
                 resortFlaxImageView.setImageWith(URL(string: (deal.images[0].url) ?? ""), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
                     if (error != nil) {
@@ -761,9 +761,10 @@ extension VacationSearchViewController:UITableViewDataSource {
         
         if(self.segmentTitle == Constant.segmentControlItems.getaways) {
             return 5
-        }
-        else {
-           return 6
+        } else if segmentTitle == Constant.segmentControlItems.exchange {
+            return 6
+        } else {
+           return 7
         }
         
     }
@@ -776,7 +777,7 @@ extension VacationSearchViewController:UITableViewDataSource {
             return Constant.MyClassConstants.whereTogoContentArray.count + 1
             
         case 1:
-            if(self.SegmentIndex != 1) {
+            if(self.SegmentIndex != 2) {
                 return Constant.MyClassConstants.whatToTradeArray.count + 1
             }
             else {
