@@ -1185,23 +1185,24 @@ public class Helper{
         let detailLabel = UILabel()
         
         
-        noResortView.frame = CGRect(x: 20, y: 150, width: (UIScreen.main.bounds.width) - 40, height: Constant.MyClassConstants.runningDeviceHeight!/3)
+        noResortView.frame = CGRect(x: 0, y: 150, width: (UIScreen.main.bounds.width) - 40, height: Constant.MyClassConstants.runningDeviceHeight!/3)
         noResortView.backgroundColor = UIColor(red: 209.0/255.0, green: 226.0/255.0, blue: 237.0/255.0, alpha: 1.0)
         senderView.addSubview(noResortView)
         
-        titleView.frame = CGRect(x: 0, y: 0, width: noResortView.frame.size.width + 20, height: noResortView.frame.size.height/5)
+        titleView.frame = CGRect(x: 0, y: 0, width: noResortView.frame.size.width, height: noResortView.frame.size.height/5)
         titleView.backgroundColor = UIColor.darkGray
         noResortView.addSubview(titleView)
         
-        titleLabel.frame = CGRect(x: 10, y: 0, width: noResortView.frame.size.width - 20, height: noResortView.frame.size.height/5)
+        titleLabel.frame = CGRect(x: 0, y: 0, width: noResortView.frame.size.width, height: noResortView.frame.size.height/5)
         titleLabel.text = "No match found. Please select another date."
         titleLabel.textAlignment = NSTextAlignment.center
         titleLabel.textColor = UIColor.white
         titleLabel.font = UIFont(name: "Helvetica",size: 12)
         noResortView.addSubview(titleLabel)
         
-        detailView.frame = CGRect(x: 0, y: noResortView.frame.size.height/4, width: noResortView.frame.size.width - 20, height: 3*(noResortView.frame.size.height/4))
+        detailView.frame = CGRect(x: 0, y: noResortView.frame.size.height/4, width: noResortView.frame.size.width, height: 3*(noResortView.frame.size.height/4))
         detailView.backgroundColor = UIColor(red: 209.0/255.0, green: 226.0/255.0, blue: 237.0/255.0, alpha: 1.0)
+        
         noResortView.addSubview(detailView)
         
         
@@ -1765,7 +1766,7 @@ public class Helper{
                                         showNearestCheckInDateSelectedMessage()
                                     }
                                     
-                                    //showScrollingCalendar(vacationSearch:vacationSearch)
+                                    showScrollingCalendar(vacationSearch:vacationSearch)
                                     
                                     showAvailabilityResults(vacationSearch:vacationSearch)
                                     
@@ -1820,9 +1821,6 @@ public class Helper{
         request.travelParty = Constant.MyClassConstants.travelPartyInfo
         
         ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: request, onSuccess: { (searchAvailabilityResponse) in
-            
-            print(searchAvailabilityResponse)
-            
             
             // Update Exchange inventory
             hideProgressBar(senderView: senderViewController)
@@ -1888,7 +1886,7 @@ public class Helper{
                                     
         }
         )
-        
+
     }
     
     static func showScrollingCalendar(vacationSearch:VacationSearch) {
