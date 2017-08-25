@@ -173,7 +173,7 @@ extension SortingViewController:UITableViewDataSource {
         if self.isFilterClicked {
             return Constant.MyClassConstants.filterOptionsArray.count
         } else {
-            if Constant.MyClassConstants.isFromExchange {
+            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.isFromSearchBoth {
                 return Constant.MyClassConstants.exchangeSortingOptionArray.count
             } else {
                 return Constant.MyClassConstants.rentalSortingOptionArray.count
@@ -213,7 +213,7 @@ extension SortingViewController:UITableViewDataSource {
             self.lblHeading.text = Constant.MyClassConstants.sorting
              let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.sortingOptionCell, for: indexPath) as! SortingOptionCell
             
-            if Constant.MyClassConstants.isFromExchange {
+            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.isFromSearchBoth{
                 cell.lblSortingOption.text = Constant.MyClassConstants.exchangeSortingOptionArray[indexPath.row]
                 cell.lblSortingRange.text = Constant.MyClassConstants.exchangeSortingRangeArray[indexPath.row]
             } else {
