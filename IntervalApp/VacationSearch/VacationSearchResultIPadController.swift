@@ -53,6 +53,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     // sorting optionDelegate call
     
     func selectedOptionis(filteredValueIs:String, indexPath:NSIndexPath, isFromFiltered:Bool) {
+    
         
        Helper.showProgressBar(senderView: self)
        let selectedvalue = Helper.returnFilteredValue(filteredValue: filteredValueIs)
@@ -216,7 +217,10 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
             if(sections.count > 0){
                 for exactResorts in (sections[0].items)!{
                     let resortsExact = exactResorts.exchangeAvailability
-                    exchangeExactMatchResortsArray.append(resortsExact!)
+                    if resortsExact != nil {
+                         exchangeExactMatchResortsArray.append(resortsExact!)
+                    }
+                   
                 }
                 
                 if(sections.count > 1){
@@ -1455,35 +1459,31 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.resortDetailTBLView.frame.width, height: 40))
-        let headerLabel = UILabel(frame: CGRect(x: 20, y: 0, width: self.resortDetailTBLView.frame.width - 40, height: 40))
+        let headerLabel = UILabel(frame: CGRect(x: 20, y: 0, width: self.resortDetailTBLView.frame.width - 60, height: 40))
+        headerLabel.font = UIFont(name:Constant.fontName.helveticaNeue, size:15)
         let headerButton = UIButton(frame: CGRect(x: 20, y: 0, width: self.resortDetailTBLView.frame.width - 40, height: 40))
-        headerButton.addTarget(self, action: #selector(VacationSearchResultIPadController.filterByNameButtonPressed(_:)), for: .touchUpInside)
+        headerButton.addTarget(self, action: #selector(SearchResultViewController.filterByNameButtonPressed(_:)), for: .touchUpInside)
         let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
         if(sectionsInSearchResult.count > 0){
-            
-            if(!Constant.MyClassConstants.isFromExchange){
-                if(sectionsInSearchResult[section].exactMatch)!{
+            for sections in sectionsInSearchResult{
+                if(sections.exactMatch! && section == 0){
                     headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
                     headerView.backgroundColor = IUIKColorPalette.primary1.color
-                }else{
+                    //break
+                }else if !sections.exactMatch! && section == 1{
                     headerLabel.text = Constant.CommonLocalisedString.surroundingString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
                     headerView.backgroundColor = Constant.CommonColor.headerGreenColor
                 }
             }
-            
         }
-    
         headerLabel.textColor = UIColor.white
         headerView.addSubview(headerLabel)
-        
         
         let dropDownImgVw = UIImageView(frame: CGRect(x: self.resortDetailTBLView.frame.width - 40, y: 5, width: 30, height: 30))
         dropDownImgVw.image = UIImage(named: Constant.assetImageNames.dropArrow)
         headerView.addSubview(dropDownImgVw)
         headerView.addSubview(headerButton)
-        
         return headerView
-        
     }
     
     /*func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -1521,6 +1521,10 @@ extension VacationSearchResultIPadController:HelperDelegate {
         Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
         print(Constant.MyClassConstants.calendarDatesArray.count)
         Helper.hideProgressBar(senderView: self)
+        exchangeExactMatchResortsArray.removeAll()
+        exchangeSurroundingMatchResortsArray.removeAll()
+        exactMatchResortsArray.removeAll()
+        exchangeExactMatchResortsArray.removeAll()
         self.createSections()
         self.searchedDateCollectionView.reloadData()
         self.resortDetailTBLView.reloadData()

@@ -760,7 +760,8 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                     
                     let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
                     
-                    exchangeSearchCriteria.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]//Constant.MyClassConstants.relinquishmentIdArray as? [String]
+                    //exchangeSearchCriteria.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]
+                    exchangeSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
                     exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                     exchangeSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
                     exchangeSearchCriteria.searchType = VacationSearchType.Exchange
