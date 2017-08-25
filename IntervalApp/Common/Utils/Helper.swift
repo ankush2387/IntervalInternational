@@ -1838,6 +1838,7 @@ public class Helper{
             print(searchAvailabilityResponse)
             Constant.MyClassConstants.initialVacationSearch = vacationSearch
             if(senderViewController.isKind(of: VacationSearchResultIPadController.self) || senderViewController.isKind(of: SearchResultViewController.self)){
+                helperDelegate?.resortSearchComplete()
             }else{
                 senderViewController.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
             }
