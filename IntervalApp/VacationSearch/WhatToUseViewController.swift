@@ -438,44 +438,34 @@ extension WhatToUseViewController:UITableViewDataSource {
             //***** Configure and return search vacation cell *****//
             let cell:GetawayCell = tableView.dequeueReusableCell(withIdentifier: "GetawaysCell", for: indexPath) as! GetawayCell
             cell.tag = indexPath.row
-            cell.bedRoomType.text = Constant.MyClassConstants.selectedResort.inventory?.units[selectedUnitIndex].unitSize
+            cell.bedRoomType.text = Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].unitSize
             
             
             
-            if let roomSize = UnitSize(rawValue: (Constant.MyClassConstants.selectedResort.inventory?.units[selectedUnitIndex].unitSize)!) {
+            if let roomSize = UnitSize(rawValue: (Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].unitSize)!) {
                 
-                cell.bedRoomType.text = roomSize.rawValue
+                cell.bedRoomType.text = Helper.getBrEnums(brType: roomSize.rawValue)
                 
-                
-                if let kitchenSize = KitchenType(rawValue: (Constant.MyClassConstants.selectedResort.inventory?.units[selectedUnitIndex].kitchenType)!) {
+                if let kitchenSize = KitchenType(rawValue: (Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].kitchenType)!) {
                     cell.kitchenType.text = Helper.getKitchenEnums(kitchenType: kitchenSize.rawValue)
                 }
             }
             
-            /*if let privateSleeps = Constant.MyClassConstants.selectedResort.inventory?.units[selectedUnitIndex].privateSleepCapacity{
-             cell.sleeps.text = String(privateSleeps)
-             }*/
-            
-            
             var totalSleepCapacity = String()
             
-            if (Constant.MyClassConstants.selectedResort.inventory?.units[selectedUnitIndex].publicSleepCapacity)! > 0 {
+            if (Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].publicSleepCapacity)! > 0 {
                 
-                totalSleepCapacity =  String(describing: Constant.MyClassConstants.selectedResort.inventory?.units[selectedUnitIndex].publicSleepCapacity) + Constant.CommonLocalisedString.totalString
-                
-            }
-            
-            if (Constant.MyClassConstants.selectedResort.inventory?.units[selectedUnitIndex].privateSleepCapacity)! > 0 {
-                
-                cell.sleeps.text =  totalSleepCapacity + String(describing: Constant.MyClassConstants.selectedResort.inventory?.units[selectedUnitIndex].publicSleepCapacity) + Constant.CommonLocalisedString.privateString
+                totalSleepCapacity =  String(describing: Constant.MyClassConstants.selectedResort.inventory!.units[Constant.MyClassConstants.selectedUnitIndex].publicSleepCapacity) + Constant.CommonLocalisedString.totalString
                 
             }
             
+            if (Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].privateSleepCapacity)! > 0 {
+                
+                cell.sleeps.text =  totalSleepCapacity + String(describing: Constant.MyClassConstants.selectedResort.inventory!.units[Constant.MyClassConstants.selectedUnitIndex].publicSleepCapacity) + Constant.CommonLocalisedString.privateString
+                
+            }
             
-            /*let priceString = "\(String(describing: Constant.MyClassConstants.selectedResort.inventory?.units[selectedUnitIndex].prices))"
-            let priceArray = priceString.components(separatedBy: ".")*/
-            
-            cell.getawayPrice.text = String(Int((Constant.MyClassConstants.selectedResort.inventory?.units[selectedUnitIndex].prices[0].price)!))
+            cell.getawayPrice.text = String(Int((Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].prices[0].price)!))
             
             
             cell.viewContent.layer.borderWidth = 0.5
