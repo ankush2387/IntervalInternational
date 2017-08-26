@@ -1323,11 +1323,7 @@ extension SearchResultViewController:UICollectionViewDataSource {
                     
                     if((collectionView.superview?.superview?.tag == 0 && combinedExactSearchItems[collectionView.tag].hasRentalAvailability() && combinedExactSearchItems[collectionView.tag].hasExchangeAvailability()) || (collectionView.superview?.superview?.tag == 1 && combinedSurroundingSearchItems[collectionView.tag].hasRentalAvailability() && combinedSurroundingSearchItems[collectionView.tag].hasExchangeAvailability())){
                         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.searchBothInventoryCell, for: indexPath) as! SearchBothInventoryCVCell
-                        if(indexPath.item % 2 == 0){
-                            cell.backgroundColor = UIColor.red
-                        }else{
-                            cell.backgroundColor = UIColor.green
-                        }
+                     
                         if(collectionView.superview?.superview?.tag == 0){
                             if(combinedExactSearchItems[collectionView.tag].rentalAvailability != nil){
                                 let inventory = combinedExactSearchItems[collectionView.tag].rentalAvailability
@@ -1419,10 +1415,6 @@ extension SearchResultViewController:UITableViewDelegate {
       
         if(indexPath.section == 0){
             
-            
-            
-            
-            
             if indexPath.row == 0 && Constant.MyClassConstants.isShowAvailability == true {
                 return 110
             }else {
@@ -1472,12 +1464,6 @@ extension SearchResultViewController:UITableViewDelegate {
                 }
             }
             }
-        
-        
-        
-        
-        
-        
         
         else{
             
