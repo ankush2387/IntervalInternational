@@ -55,7 +55,6 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     // sorting optionDelegate call
     
     func selectedOptionis(filteredValueIs:String, indexPath:NSIndexPath, isFromFiltered:Bool) {
-    
         
        Helper.showProgressBar(senderView: self)
        let selectedvalue = Helper.returnFilteredValue(filteredValue: filteredValueIs)
@@ -64,6 +63,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
             Constant.MyClassConstants.filteredIndex = indexPath.row
             let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
             let exchangeSearchCriteria = VacationSearchCriteria(searchType:VacationSearchType.Exchange)
+            let bothSearchCriteria = VacationSearchCriteria(searchType:VacationSearchType.Combined)
             
             switch Constant.MyClassConstants.filterOptionsArray[indexPath.row] {
             case .Destination(let destination):
@@ -662,8 +662,7 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
                 searchedDateCollectionView.reloadItems(at: [lastIndexPath, currentIndexPath])
                 intervalDateItemClicked(Helper.convertStringToDate(dateString: Constant.MyClassConstants.calendarDatesArray[indexPath.item].checkInDate!, format: Constant.MyClassConstants.dateFormat))
             }
-        } else
-        {
+        } else{
             if((indexPath as NSIndexPath).section == 0) {
                 Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.vacationSearchFunctionalityCheck
                 Helper.addServiceCallBackgroundView(view: self.view)
@@ -820,6 +819,7 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
                 }else{
                     selectedSection = (collectionView.superview?.superview?.tag)!
                     selectedRow = collectionView.tag
+                    Constant.MyClassConstants.selectedUnitIndex = indexPath.item
                     if(collectionView.superview?.superview?.tag == 0){
                         
 
@@ -835,18 +835,6 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
                         }else{
                             Constant.MyClassConstants.selectedResort = (combinedExactSearchItems[collectionView.tag].exchangeAvailability!.resort)!
                         }
-                        
-                        if self.exactMatchResortsArray[collectionView.tag].inventory?.units[collectionView.tag].vacationSearchType != VacationSearchType.Rental {
-                            
-                            
-                            self.getFilterRelinquishments(selectedInventoryUnit: self.exactMatchResortsArray[collectionView.tag].inventory!, selectedIndex: indexPath.item, selectedExchangeInventory: ExchangeInventory())
-                            
-                        } else {
-                            self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
-
-                        }
-                        
-    
                     }else{
                         
                         if(combinedSurroundingSearchItems[collectionView.tag].rentalAvailability != nil){
