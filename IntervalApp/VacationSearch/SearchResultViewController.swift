@@ -940,6 +940,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
                 SVProgressHUD.show()
                 var resortCode = ""
                 if(!Constant.MyClassConstants.isFromExchange){
+                    
                     if(collectionView.superview?.superview?.tag == 0){
                        resortCode = exactMatchResortsArray[collectionView.tag].resortCode!
                     }else{

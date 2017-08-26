@@ -1347,12 +1347,12 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
                         return CGFloat(totalUnits!*100 + 320 + 10 + 25)
 
                     }else{
-                        if(combinedSurroundingSearchItems[indexPath.row].hasRentalAvailability()){
-                            let rentalInventory = combinedSurroundingSearchItems[indexPath.row].rentalAvailability
+                        if(combinedExactSearchItems[indexPath.row].hasRentalAvailability()){
+                            let rentalInventory = combinedExactSearchItems[indexPath.row].rentalAvailability
                             let totalUnits = rentalInventory?.inventory?.units.count
                             return CGFloat(totalUnits!*100 + 320 + 10 + 25)
                         }else{
-                            let exchangeInventory = combinedSurroundingSearchItems[indexPath.row].exchangeAvailability
+                            let exchangeInventory = combinedExactSearchItems[indexPath.row].exchangeAvailability
                             let totalUnits = exchangeInventory?.inventory?.buckets.count
                             return CGFloat(totalUnits!*100 + 320 + 10 + 25)
                         }
