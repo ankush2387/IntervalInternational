@@ -211,18 +211,21 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     }
     
     func createSections(){
-        /* if(Constant.MyClassConstants.noAvailabilityView){
-         searchResultTableView.tableHeaderView = Helper.noResortView(senderView: self.view)
-         }else{
-         let viewHeader = UIView()
-         searchResultTableView.tableHeaderView = viewHeader
-         } */
-        exactMatchResortsArray.removeAll()
-        exchangeExactMatchResortsArray.removeAll()
-        surroundingMatchResortsArray.removeAll()
-        exchangeSurroundingMatchResortsArray.removeAll()
         let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
+        
+        if(sections.count == 0){
+            resortDetailTBLView.tableHeaderView = Helper.noResortView(senderView: self.view)
+        }else{
+            let headerVw = UIView()
+            resortDetailTBLView.tableHeaderView = headerVw
+        }
+        
         if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Exchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Combined){
+            
+            exactMatchResortsArray.removeAll()
+            exchangeExactMatchResortsArray.removeAll()
+            surroundingMatchResortsArray.removeAll()
+            exchangeSurroundingMatchResortsArray.removeAll()
             
             if(sections.count > 0){
                 for section in sections{
@@ -262,9 +265,14 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
         
         if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Rental || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Combined){
             
+            exactMatchResortsArray.removeAll()
+            exchangeExactMatchResortsArray.removeAll()
+            surroundingMatchResortsArray.removeAll()
+            exchangeSurroundingMatchResortsArray.removeAll()
+            
             for section in sections{
                 
-                if(section.exactMatch == nil || section.exactMatch == false){
+                if(section.exactMatch == nil || section.exactMatch == true){
                     for exactResorts in (section.items)!{
                         if(exactResorts.rentalAvailability != nil){
                             let resortsExact = exactResorts.rentalAvailability

@@ -1867,12 +1867,12 @@ public class Helper{
                                         
                                         // We do not have available CheckInDates in Rental and Exchange
                                         //if (self.rentalHasNotAvailableCheckInDates) {
-                                           // self.showNotAvailabilityResults()
+                                        // self.showNotAvailabilityResults()
                                         //}
                                         
                                     } else {
-                                          vacationSearch.resolveCheckInDateForInitialSearch()
-                                           executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat) , senderViewController: senderVC, vacationSearch: vacationSearch)
+                                        vacationSearch.resolveCheckInDateForInitialSearch()
+                                        executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat) , senderViewController: senderVC, vacationSearch: vacationSearch)
                                     }
                                     
                                     //expectation.fulfill()
@@ -1887,7 +1887,7 @@ public class Helper{
                                     
         }
         )
-
+        
     }
     
     static func showScrollingCalendar(vacationSearch:VacationSearch) {
