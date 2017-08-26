@@ -440,8 +440,6 @@ extension WhatToUseViewController:UITableViewDataSource {
             cell.tag = indexPath.row
             cell.bedRoomType.text = Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].unitSize
             
-            
-            
             if let roomSize = UnitSize(rawValue: (Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].unitSize)!) {
                 
                 cell.bedRoomType.text = Helper.getBrEnums(brType: roomSize.rawValue)
