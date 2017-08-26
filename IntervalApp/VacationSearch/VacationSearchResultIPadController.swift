@@ -629,7 +629,7 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
             let viewForActivity = UIView()
             
             if(cell?.isKind(of:MoreCell.self))!{
-               
+                
                 viewForActivity.frame = CGRect(x:0, y:0, width:(cell?.bounds.width)!, height:(cell?.bounds.height)!)
                 
                 myActivityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
@@ -642,26 +642,26 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
                 
                 // Start Activity Indicator
                 myActivityIndicator.startAnimating()
-
+                
                 cell?.alpha = 0.3
                 
                 viewForActivity.addSubview(myActivityIndicator)
                 cell?.contentView.addSubview(viewForActivity)
                 
             }
-        if(Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)!{
-            Helper.showProgressBar(senderView: self)
-            intervalBucketClicked(calendarItem:Constant.MyClassConstants.calendarDatesArray[indexPath.item], cell: cell!)
-
-        }else{
-            let lastSelectedIndex = collectionviewSelectedIndex
-            collectionviewSelectedIndex = indexPath.item
-            dateCellSelectionColor = Constant.CommonColor.blueColor
-            let lastIndexPath = IndexPath(item: lastSelectedIndex, section: 0)
-            let currentIndexPath = IndexPath(item: collectionviewSelectedIndex, section: 0)
-            searchedDateCollectionView.reloadItems(at: [lastIndexPath, currentIndexPath])
-            intervalDateItemClicked(Helper.convertStringToDate(dateString: Constant.MyClassConstants.calendarDatesArray[indexPath.item].checkInDate!, format: Constant.MyClassConstants.dateFormat))
-         }
+            if(Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)!{
+                Helper.showProgressBar(senderView: self)
+                intervalBucketClicked(calendarItem:Constant.MyClassConstants.calendarDatesArray[indexPath.item], cell: cell!)
+                
+            }else{
+                let lastSelectedIndex = collectionviewSelectedIndex
+                collectionviewSelectedIndex = indexPath.item
+                dateCellSelectionColor = Constant.CommonColor.blueColor
+                let lastIndexPath = IndexPath(item: lastSelectedIndex, section: 0)
+                let currentIndexPath = IndexPath(item: collectionviewSelectedIndex, section: 0)
+                searchedDateCollectionView.reloadItems(at: [lastIndexPath, currentIndexPath])
+                intervalDateItemClicked(Helper.convertStringToDate(dateString: Constant.MyClassConstants.calendarDatesArray[indexPath.item].checkInDate!, format: Constant.MyClassConstants.dateFormat))
+            }
         } else
         {
             if((indexPath as NSIndexPath).section == 0) {
@@ -805,14 +805,27 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
                 }else{
                     selectedSection = (collectionView.superview?.superview?.tag)!
                     selectedRow = collectionView.tag
+                    Constant.MyClassConstants.selectedResort = self.exactMatchResortsArray[collectionView.tag]
                     if(collectionView.superview?.superview?.tag == 0){
-                        Constant.MyClassConstants.selectedResort = self.exactMatchResortsArray[collectionView.tag]
-                        self.getFilterRelinquishments(selectedInventoryUnit: self.exactMatchResortsArray[collectionView.tag].inventory!, selectedIndex: indexPath.item, selectedExchangeInventory: ExchangeInventory())
+                        if self.exactMatchResortsArray[collectionView.tag].inventory?.units[collectionView.tag].vacationSearchType != VacationSearchType.Rental {
+                            
+                            
+                            self.getFilterRelinquishments(selectedInventoryUnit: self.exactMatchResortsArray[collectionView.tag].inventory!, selectedIndex: indexPath.item, selectedExchangeInventory: ExchangeInventory())
+                            
+                        } else {
+                            self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                        }
                         
                     }else{
                         Constant.MyClassConstants.selectedResort = self.surroundingMatchResortsArray[collectionView.tag]
-                        self.getFilterRelinquishments(selectedInventoryUnit: self.surroundingMatchResortsArray[collectionView.tag].inventory!, selectedIndex: indexPath.item, selectedExchangeInventory: ExchangeInventory())
                         
+                        if self.surroundingMatchResortsArray[collectionView.tag].inventory?.units[collectionView.tag].vacationSearchType != VacationSearchType.Rental {
+                            self.getFilterRelinquishments(selectedInventoryUnit: self.surroundingMatchResortsArray[collectionView.tag].inventory!, selectedIndex: indexPath.item, selectedExchangeInventory: ExchangeInventory())
+                            
+                        } else {
+                            self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                            
+                        }
                     }
                 }
             }

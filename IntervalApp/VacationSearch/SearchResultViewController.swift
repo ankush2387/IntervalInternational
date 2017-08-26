@@ -276,9 +276,7 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
         exactMatchResortsArray.removeAll()
         exactMatchResortsArrayExchange.removeAll()
         surroundingMatchResortsArray.removeAll()
-        exactMatchResortsArrayExchange.removeAll()
-        combinedExactSearchItems.removeAll()
-        combinedSurroundingSearchItems.removeAll()
+        surroundingMatchResortsArrayExchange.removeAll()
         
         if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Exchange){
             if(sections.count > 0){
@@ -329,6 +327,7 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
             }
         }else{
             for section in sections{
+                print(section.items?.count)
                 if(section.exactMatch == nil || section.exactMatch == true){
                     combinedExactSearchItems = section.items!
                 }else{
@@ -1077,13 +1076,26 @@ extension SearchResultViewController:UICollectionViewDelegate {
                     selectedSection = (collectionView.superview?.superview?.tag)!
                     selectedRow = collectionView.tag
                     if(collectionView.superview?.superview?.tag == 0){
+                        
                         Constant.MyClassConstants.selectedResort = self.exactMatchResortsArray[collectionView.tag]
-                        self.getFilterRelinquishments(selectedInventoryUnit: self.exactMatchResortsArray[collectionView.tag].inventory!, selectedIndex: indexPath.item, selectedExchangeInventory: ExchangeInventory())
+                        if self.exactMatchResortsArray[collectionView.tag].inventory?.units[collectionView.tag].vacationSearchType != VacationSearchType.Rental {
+                            self.getFilterRelinquishments(selectedInventoryUnit: self.exactMatchResortsArray[collectionView.tag].inventory!, selectedIndex: indexPath.item, selectedExchangeInventory: ExchangeInventory())
+                        } else {
+                            // TODO:-
+                            self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                        }
+                       
                         
                     }else{
                         Constant.MyClassConstants.selectedResort = self.surroundingMatchResortsArray[collectionView.tag]
-                        self.getFilterRelinquishments(selectedInventoryUnit: self.surroundingMatchResortsArray[collectionView.tag].inventory!, selectedIndex: indexPath.item, selectedExchangeInventory: ExchangeInventory())
                         
+                        if self.surroundingMatchResortsArray[collectionView.tag].inventory?.units[collectionView.tag].vacationSearchType != VacationSearchType.Rental {
+                            self.getFilterRelinquishments(selectedInventoryUnit: self.surroundingMatchResortsArray[collectionView.tag].inventory!, selectedIndex: indexPath.item, selectedExchangeInventory: ExchangeInventory())
+                            
+                        } else {
+                            //TODO:-
+                            self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                        }
                     }
                 }
             }
