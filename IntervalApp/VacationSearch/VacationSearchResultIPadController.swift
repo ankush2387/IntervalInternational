@@ -676,11 +676,26 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
                         resortCode = surroundingMatchResortsArray[collectionView.tag].resortCode!
                     }
                     
-                }else{
+                }else if(Constant.MyClassConstants.isFromExchange){
                     if(collectionView.superview?.superview?.tag == 0){
                         resortCode = (self.exchangeExactMatchResortsArray[indexPath.section].resort?.resortCode!)!
                     }else{
                         resortCode = (self.exchangeSurroundingMatchResortsArray[indexPath.section].resort?.resortCode!)!
+                    }
+                }else{
+                    if(collectionView.superview?.superview?.tag == 0){
+                        if(combinedExactSearchItems[indexPath.section].rentalAvailability != nil){
+                            resortCode = (combinedExactSearchItems[indexPath.section].rentalAvailability!.resortCode!)
+                        }else{
+                            resortCode = (combinedExactSearchItems[indexPath.section].exchangeAvailability?.resort?.resortCode!)!
+                        }
+                        
+                    }else{
+                        if(combinedSurroundingSearchItems[indexPath.section].rentalAvailability != nil){
+                            resortCode = (combinedSurroundingSearchItems[indexPath.section].rentalAvailability!.resortCode!)
+                        }else{
+                            resortCode = (combinedSurroundingSearchItems[indexPath.section].exchangeAvailability?.resort?.resortCode!)!
+                        }
                     }
                 }
                 DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode, onSuccess: { (response) in
@@ -805,27 +820,34 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
                 }else{
                     selectedSection = (collectionView.superview?.superview?.tag)!
                     selectedRow = collectionView.tag
-                    Constant.MyClassConstants.selectedResort = self.exactMatchResortsArray[collectionView.tag]
                     if(collectionView.superview?.superview?.tag == 0){
-                        if self.exactMatchResortsArray[collectionView.tag].inventory?.units[collectionView.tag].vacationSearchType != VacationSearchType.Rental {
-                            
-                            
-                            self.getFilterRelinquishments(selectedInventoryUnit: self.exactMatchResortsArray[collectionView.tag].inventory!, selectedIndex: indexPath.item, selectedExchangeInventory: ExchangeInventory())
-                            
-                        } else {
-                            self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                        
+                        if(combinedExactSearchItems[collectionView.tag].rentalAvailability != nil){
+                            Constant.MyClassConstants.selectedResort = (combinedExactSearchItems[collectionView.tag].rentalAvailability!)
+                        }else{
+                            Constant.MyClassConstants.selectedResort = (combinedExactSearchItems[collectionView.tag].exchangeAvailability!.resort)!
                         }
                         
+                        if(combinedExactSearchItems[collectionView.tag].rentalAvailability != nil || combinedExactSearchItems[collectionView.tag].exchangeAvailability != nil){
+                            self.getFilterRelinquishments(selectedInventoryUnit: (combinedExactSearchItems[collectionView.tag].rentalAvailability?.inventory!)!, selectedIndex: indexPath.item, selectedExchangeInventory: ExchangeInventory())
+                        }else{
+                            self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                        }
+    
                     }else{
-                        Constant.MyClassConstants.selectedResort = self.surroundingMatchResortsArray[collectionView.tag]
                         
-                        if self.surroundingMatchResortsArray[collectionView.tag].inventory?.units[collectionView.tag].vacationSearchType != VacationSearchType.Rental {
-                            self.getFilterRelinquishments(selectedInventoryUnit: self.surroundingMatchResortsArray[collectionView.tag].inventory!, selectedIndex: indexPath.item, selectedExchangeInventory: ExchangeInventory())
-                            
-                        } else {
-                            self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
-                            
+                        if(combinedSurroundingSearchItems[collectionView.tag].rentalAvailability != nil){
+                            Constant.MyClassConstants.selectedResort = (combinedSurroundingSearchItems[collectionView.tag].rentalAvailability!)
+                        }else{
+                            Constant.MyClassConstants.selectedResort = (combinedSurroundingSearchItems[collectionView.tag].exchangeAvailability!.resort)!
                         }
+                        
+                        if(combinedSurroundingSearchItems[collectionView.tag].rentalAvailability != nil || combinedSurroundingSearchItems[collectionView.tag].exchangeAvailability != nil){
+                            self.getFilterRelinquishments(selectedInventoryUnit: (combinedSurroundingSearchItems[collectionView.tag].rentalAvailability?.inventory!)!, selectedIndex: indexPath.item, selectedExchangeInventory: ExchangeInventory())
+                        }else{
+                            self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                        }
+
                     }
                 }
             }
