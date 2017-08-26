@@ -44,6 +44,8 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
     var surroundingMatchResortsArray = [Resort]()
     var surroundingMatchResortsArrayExchange = [ExchangeAvailability]()
     var exactMatchResortsArrayExchange = [ExchangeAvailability]()
+    var combinedExactSearchItems = [AvailabilitySectionItem]()
+    var combinedSurroundingSearchItems = [AvailabilitySectionItem]()
     var dateCellSelectionColor = Constant.CommonColor.blueColor
     var myActivityIndicator = UIActivityIndicatorView()
     
@@ -265,62 +267,48 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
         let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
         
         if(sections.count == 0){
-             searchResultTableView.tableHeaderView = Helper.noResortView(senderView: self.view)
+            searchResultTableView.tableHeaderView = Helper.noResortView(senderView: self.view)
         }else{
             let headerVw = UIView()
             searchResultTableView.tableHeaderView = headerVw
         }
         
-        if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Exchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Combined){
-            
-            exactMatchResortsArray.removeAll()
-            exactMatchResortsArrayExchange.removeAll()
-            surroundingMatchResortsArray.removeAll()
-            surroundingMatchResortsArrayExchange.removeAll()
-            
+        exactMatchResortsArray.removeAll()
+        exactMatchResortsArrayExchange.removeAll()
+        surroundingMatchResortsArray.removeAll()
+        exactMatchResortsArrayExchange.removeAll()
+        combinedExactSearchItems.removeAll()
+        combinedSurroundingSearchItems.removeAll()
+        
+        if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Exchange){
             if(sections.count > 0){
                 for section in sections{
-                
-                if(section.exactMatch == nil || section.exactMatch == true){
-                    for exactResorts in (section.items)!{
-                        if(exactResorts.exchangeAvailability != nil){
-                            let resortsExact = exactResorts.exchangeAvailability
-                            exactMatchResortsArrayExchange.append(resortsExact!)
-                        }
-                        if(exactResorts.rentalAvailability != nil){
-                            let resortsExact = exactResorts.rentalAvailability
-                            exactMatchResortsArray.append(resortsExact!)
+                    
+                    if(section.exactMatch == nil || section.exactMatch == true){
+                        for exactResorts in (section.items)!{
+                            if(exactResorts.exchangeAvailability != nil){
+                                let resortsExact = exactResorts.exchangeAvailability
+                                exactMatchResortsArrayExchange.append(resortsExact!)
+                            }
                         }
                     }
                 }
-            }
-            
+                
                 if(sections.count > 1){
                     for section in sections{
-                    if(section.exactMatch == nil || section.exactMatch == false){
-                        for surroundingResorts in (section.items)!{
-                            if(surroundingResorts.exchangeAvailability != nil){
-                                let resortsSurrounding = surroundingResorts.exchangeAvailability
-                                surroundingMatchResortsArrayExchange.append(resortsSurrounding!)
-                            }
-                            if(surroundingResorts.rentalAvailability != nil){
-                                let resortsSurrounding = surroundingResorts.rentalAvailability
-                                surroundingMatchResortsArray.append(resortsSurrounding!)
+                        if(section.exactMatch == nil || section.exactMatch == false){
+                            for surroundingResorts in (section.items)!{
+                                if(surroundingResorts.exchangeAvailability != nil){
+                                    let resortsSurrounding = surroundingResorts.exchangeAvailability
+                                    surroundingMatchResortsArrayExchange.append(resortsSurrounding!)
+                                }
                             }
                         }
                     }
-                    }
                 }
             }
-        }
-        
-        if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Rental || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Combined){
-            
+        }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Rental){
             exactMatchResortsArray.removeAll()
-            exactMatchResortsArrayExchange.removeAll()
-            surroundingMatchResortsArray.removeAll()
-            surroundingMatchResortsArrayExchange.removeAll()
-            
             for section in sections{
                 
                 if(section.exactMatch == nil || section.exactMatch == true){
@@ -337,6 +325,14 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
                             surroundingMatchResortsArray.append(resortsSurrounding!)
                         }
                     }
+                }
+            }
+        }else{
+            for section in sections{
+                if(section.exactMatch == nil || section.exactMatch == true){
+                    combinedExactSearchItems = section.items!
+                }else{
+                    combinedSurroundingSearchItems = section.items!
                 }
             }
         }
@@ -1161,10 +1157,10 @@ extension SearchResultViewController:UICollectionViewDataSource {
                     else if (Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Rental){
                          return (exactMatchResortsArray[collectionView.tag].inventory?.units.count)!
                     }else{
-                        if(exactMatchResortsArray.count > 0){
-                            return (exactMatchResortsArray[collectionView.tag].inventory?.units.count)!
+                        if(combinedExactSearchItems[collectionView.tag].rentalAvailability != nil){
+                            return (combinedExactSearchItems[collectionView.tag].rentalAvailability?.inventory?.units.count)!
                         }else{
-                            return (exactMatchResortsArrayExchange[collectionView.tag].inventory?.buckets.count)!
+                            return (combinedExactSearchItems[collectionView.tag].exchangeAvailability?.inventory?.buckets.count)!
                         }
                         
                     }
@@ -1173,12 +1169,17 @@ extension SearchResultViewController:UICollectionViewDataSource {
                     if(Constant.MyClassConstants.isFromExchange){
                         
                         return (surroundingMatchResortsArrayExchange[collectionView.tag].inventory?.buckets.count)!
-                    }
-                    else{
+                    }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Rental){
                         
                         return (surroundingMatchResortsArray[collectionView.tag].inventory?.units.count)!
+                    }else{
+                        if(combinedSurroundingSearchItems[collectionView.tag].rentalAvailability != nil){
+                            return (combinedSurroundingSearchItems[collectionView.tag].rentalAvailability?.inventory?.units.count)!
+                        }else{
+                            return (combinedSurroundingSearchItems[collectionView.tag].exchangeAvailability?.inventory?.buckets.count)!
+                        }
+
                     }
-                    
                 }
               
             }
@@ -1280,62 +1281,79 @@ extension SearchResultViewController:UICollectionViewDataSource {
                     return cell
                 }
             }else{
-                
+                collectionView.backgroundColor = UIColor.darkGray
                 if(indexPath.section == 0){
                     
                     var inventoryItem = Resort()
                     if(collectionView.superview?.superview?.tag == 0){
-                        if(exactMatchResortsArray.count>0){
-                            
-                            inventoryItem = exactMatchResortsArray[collectionView.tag]
-                            
+                        if(combinedExactSearchItems[collectionView.tag].hasRentalAvailability()){
+                            let rentalInventory = combinedExactSearchItems[collectionView.tag].rentalAvailability
+                            inventoryItem = rentalInventory!
                         }else{
-                            
-                            inventoryItem = exactMatchResortsArrayExchange[collectionView.tag].resort!
-                            
+                            let exchangeInventory = combinedSurroundingSearchItems[collectionView.tag].exchangeAvailability
+                            inventoryItem = (exchangeInventory?.resort)!
                         }
                         
                     }else{
-                        if(surroundingMatchResortsArray.count > 0){
-                           
-                            inventoryItem = surroundingMatchResortsArray[collectionView.tag]
-
+                        if(combinedSurroundingSearchItems[collectionView.tag].hasRentalAvailability()){
+                            let rentalInventory = combinedSurroundingSearchItems[collectionView.tag].rentalAvailability
+                            inventoryItem = rentalInventory!
                         }else{
-                            inventoryItem = surroundingMatchResortsArrayExchange[collectionView.tag].resort!
+                            let exchangeInventory = combinedSurroundingSearchItems[collectionView.tag].exchangeAvailability
+                            inventoryItem = (exchangeInventory?.resort)!
                         }
-                        
                     }
                     
                     let cell = self.getResortInfoCollectionCell(indexPath: indexPath, collectionView: collectionView, resort: inventoryItem)
                     return cell
                 } else {
-                    if((exactMatchResortsArrayExchange.count>0 && exactMatchResortsArray.count>0 && collectionView.superview?.superview?.tag == 0) || (surroundingMatchResortsArray.count>0 && surroundingMatchResortsArrayExchange.count>0 && collectionView.superview?.superview?.tag == 1)){
+                    
+                    if((collectionView.superview?.superview?.tag == 0 && combinedExactSearchItems[collectionView.tag].hasRentalAvailability() && combinedExactSearchItems[collectionView.tag].hasExchangeAvailability()) || (collectionView.superview?.superview?.tag == 1 && combinedSurroundingSearchItems[collectionView.tag].hasRentalAvailability() && combinedSurroundingSearchItems[collectionView.tag].hasExchangeAvailability())){
                         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.searchBothInventoryCell, for: indexPath) as! SearchBothInventoryCVCell
-                        if(collectionView.superview?.superview?.tag == 0){
-                             cell.setDataForBothInventoryType(invetoryItem: exactMatchResortsArray[collectionView.tag], indexPath: indexPath)
+                        if(indexPath.item % 2 == 0){
+                            cell.backgroundColor = UIColor.red
                         }else{
-                            cell.setDataForBothInventoryType(invetoryItem: surroundingMatchResortsArray[collectionView.tag], indexPath: indexPath)
+                            cell.backgroundColor = UIColor.green
                         }
-                       
+                        if(collectionView.superview?.superview?.tag == 0){
+                            if(combinedExactSearchItems[collectionView.tag].rentalAvailability != nil){
+                                let inventory = combinedExactSearchItems[collectionView.tag].rentalAvailability
+                                cell.setDataForBothInventoryType(invetoryItem: inventory!, indexPath: indexPath)
+                            }else{
+                                let exchangeInventory = combinedExactSearchItems[collectionView.tag].exchangeAvailability?.resort
+                                cell.setDataForBothInventoryType(invetoryItem: exchangeInventory!, indexPath: indexPath)
+                            }
+                        }else{
+                            
+                            if(combinedSurroundingSearchItems[collectionView.tag].rentalAvailability != nil){
+                                let inventory = combinedSurroundingSearchItems[collectionView.tag].rentalAvailability
+                                cell.setDataForBothInventoryType(invetoryItem: inventory!, indexPath: indexPath)
+                            }else{
+                                let exchangeInventory = combinedSurroundingSearchItems[collectionView.tag].exchangeAvailability?.resort
+                                cell.setDataForBothInventoryType(invetoryItem: exchangeInventory!, indexPath: indexPath)
+                            }
+                            
+                        }
+                        
                         return cell
                     }else if(collectionView.superview?.superview?.tag == 0){
-                        if(exactMatchResortsArray.count > 0){
+                        if(combinedExactSearchItems[collectionView.tag].hasRentalAvailability()){
                             let cell = self.getGetawayCollectionCell(indexPath: indexPath, collectionView: collectionView)
-                            cell.setDataForRentalInventory( invetoryItem: exactMatchResortsArray[collectionView.tag], indexPath: indexPath)
+                            cell.setDataForRentalInventory( invetoryItem: combinedExactSearchItems[collectionView.tag].rentalAvailability!, indexPath: indexPath)
                             return cell
-
                         }else{
                             let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
+                            cell.setUpExchangeCell(invetoryItem: (combinedExactSearchItems[collectionView.tag].exchangeAvailability?.inventory)!, indexPath:indexPath)
                             return cell
                         }
                     }else {
-                        if(surroundingMatchResortsArray.count > 0){
+                        if(combinedSurroundingSearchItems[collectionView.tag].hasRentalAvailability()){
                             let cell = self.getGetawayCollectionCell(indexPath: indexPath, collectionView: collectionView)
-                            cell.setDataForRentalInventory(invetoryItem: surroundingMatchResortsArray[collectionView.tag], indexPath: indexPath)
+                            cell.setDataForRentalInventory( invetoryItem: combinedSurroundingSearchItems[collectionView.tag].rentalAvailability!, indexPath: indexPath)
                             return cell
                         }else{
                             let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
-                            cell.setUpExchangeCell(invetoryItem: surroundingMatchResortsArrayExchange[collectionView.tag].inventory!, indexPath: indexPath)
+                            cell.setUpExchangeCell(invetoryItem: (combinedSurroundingSearchItems[collectionView.tag].exchangeAvailability?.inventory)!, indexPath:indexPath)
                             return cell
                         }
                     }
@@ -1387,51 +1405,86 @@ extension SearchResultViewController:UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
       
         if(indexPath.section == 0){
+            
+            
+            
+            
+            
             if indexPath.row == 0 && Constant.MyClassConstants.isShowAvailability == true {
                 return 110
-            } else {
+            }else {
                 if Constant.MyClassConstants.isShowAvailability == true {
                     let index = indexPath.row - 1
                     if(Constant.MyClassConstants.isFromExchange){
                         let totalUnits = self.exactMatchResortsArrayExchange[indexPath.row].inventory?.buckets.count
                         return CGFloat(totalUnits!*80 + 300)
-                    }else{
-                        if(self.exactMatchResortsArray.count>0){
+                    }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Rental){
                             let totalUnits = self.exactMatchResortsArray[index].inventory?.units.count
                             return CGFloat(totalUnits!*80 + 300)
+                    }else{
+                        if(combinedExactSearchItems[index].hasRentalAvailability()){
+                            let rentalInventory = combinedExactSearchItems[index].rentalAvailability
+                            let totalUnits = rentalInventory?.inventory?.units.count
+                            print("------------totalUnits",totalUnits)
+                            return CGFloat(totalUnits!*80 + 300)
                         }else{
-                            let totalUnits = self.exactMatchResortsArrayExchange[index].inventory?.buckets.count
+                            let exchangeInventory = combinedExactSearchItems[index].exchangeAvailability
+                            let totalUnits = exchangeInventory?.inventory?.buckets.count
+                            print("------------totalUnits",totalUnits)
                             return CGFloat(totalUnits!*80 + 300)
                         }
-                        
                     }
                     
-                } else {
-                    
+                }else {
                     if(Constant.MyClassConstants.isFromExchange){
                         let totalUnits = self.exactMatchResortsArrayExchange[indexPath.row].inventory?.buckets.count
                         return CGFloat(totalUnits!*80 + 300)
                         
+                    }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Rental){
+                        let totalUnits = self.exactMatchResortsArray[indexPath.row].inventory?.units.count
+                        return CGFloat(totalUnits!*80 + 300)
+                        
                     }else{
-                        if(exactMatchResortsArray.count > 0){
-                            let totalUnits = self.exactMatchResortsArray[indexPath.row].inventory?.units.count
+                        if(combinedExactSearchItems[indexPath.row].hasRentalAvailability()){
+                            let rentalInventory = combinedExactSearchItems[indexPath.row].rentalAvailability
+                            let totalUnits = rentalInventory?.inventory?.units.count
                             return CGFloat(totalUnits!*80 + 300)
-
                         }else{
-                            let totalUnits = self.exactMatchResortsArrayExchange[indexPath.row].inventory?.buckets.count
+                            let exchangeInventory = combinedExactSearchItems[indexPath.row].exchangeAvailability
+                            let totalUnits = exchangeInventory?.inventory?.buckets.count
                             return CGFloat(totalUnits!*80 + 300)
                         }
                     }
+                    
                 }
             }
-        }else{
-            let totalUnits = self.surroundingMatchResortsArray[indexPath.row].inventory?.units.count
-            return CGFloat(totalUnits!*80 + 300)
-        }
-      
+            }
         
+        
+        
+        
+        
+        
+        
+        else{
+            
+            if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Rental){
+                let totalUnits = self.surroundingMatchResortsArray[indexPath.row].inventory?.units.count
+                return CGFloat(totalUnits!*80 + 320)
+            }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Exchange){
+                let totalUnits = self.surroundingMatchResortsArrayExchange[indexPath.row].inventory?.buckets.count
+                return CGFloat(totalUnits!*80 + 320)
+            }else{
+                if(combinedSurroundingSearchItems[indexPath.row].rentalAvailability != nil){
+                    let totalUnits = self.combinedSurroundingSearchItems[indexPath.row].rentalAvailability?.inventory?.units.count
+                    return CGFloat(totalUnits!*80 + 320)
+                }else{
+                    let totalUnits = self.combinedSurroundingSearchItems[indexPath.row].exchangeAvailability?.inventory?.buckets.count
+                    return CGFloat(totalUnits!*80 + 320)
+                }
+            }
+        }
     }
-
 }
 
 extension SearchResultViewController:UITableViewDataSource {
@@ -1514,27 +1567,14 @@ extension SearchResultViewController:UITableViewDataSource {
                 }
             }
         }else{
-            if((section == 0 && exactMatchResortsArray.count == 0 && exactMatchResortsArrayExchange.count == 0) || section == 1){
-                if(surroundingMatchResortsArray.count > 0){
-                     return surroundingMatchResortsArray.count
-                }else{
-                    return surroundingMatchResortsArrayExchange.count
-                }
-               
+            if(section == 0 && combinedExactSearchItems.count == 0 || section == 1){
+                return combinedSurroundingSearchItems.count
             }else{
                 if Constant.MyClassConstants.isShowAvailability == true && section == 0 {
-                    if(exactMatchResortsArray.count > 0){
-                        return exactMatchResortsArray.count + 1
-                    }else{
-                        return exactMatchResortsArrayExchange.count + 1
-                    }
+                    return combinedExactSearchItems.count + 1
                     
                 } else {
-                    if(exactMatchResortsArray.count > 0){
-                        return exactMatchResortsArray.count
-                    }else{
-                        return exactMatchResortsArrayExchange.count
-                    }
+                    return combinedExactSearchItems.count
                 }
             }
         }
