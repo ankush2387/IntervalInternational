@@ -400,7 +400,7 @@ extension SortingViewController:UITableViewDataSource {
         if self.isFilterClicked {
             return Constant.MyClassConstants.filterOptionsArray.count
         } else {
-            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.isFromSearchBoth {
+            if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isCombined() {
                 return Constant.MyClassConstants.exchangeSortingOptionArray.count
             } else {
                 return Constant.MyClassConstants.rentalSortingOptionArray.count
