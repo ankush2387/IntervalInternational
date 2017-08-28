@@ -1872,7 +1872,7 @@ public class Helper{
                                         
                                     } else {
                                         vacationSearch.resolveCheckInDateForInitialSearch()
-                                        executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat) , senderViewController: senderVC, vacationSearch: vacationSearch)
+                                        executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat) , senderViewController: senderVC, vacationSearch: vacationSearch)
                                     }
                                     
                                     //expectation.fulfill()
