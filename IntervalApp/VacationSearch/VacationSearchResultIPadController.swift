@@ -57,9 +57,11 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     
     func selectedOptionis(filteredValueIs:String, indexPath:NSIndexPath, isFromFiltered:Bool) {
         
+        print("delegate fire")
+        
        //Helper.showProgressBar(senderView: self)
         
-        if isFromFiltered {
+        /*if isFromFiltered {
             Constant.MyClassConstants.filteredIndex = indexPath.row
             let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
             let exchangeSearchCriteria = VacationSearchCriteria(searchType:VacationSearchType.Exchange)
@@ -258,7 +260,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
             self.dismiss(animated: true, completion: nil)
             
             resortDetailTBLView.reloadData()
-        }
+        }*/
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -271,6 +273,11 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
         
         let nib = UINib(nibName: Constant.customCellNibNames.searchResultCollectionCell, bundle: nil)
         searchedDateCollectionView?.register(nib, forCellWithReuseIdentifier: Constant.customCellNibNames.searchResultCollectionCell)
+        
+        //create section
+        self.createSections()
+        
+        self.resortDetailTBLView.reloadData()
         
     }
     
