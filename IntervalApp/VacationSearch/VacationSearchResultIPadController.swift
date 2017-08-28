@@ -1323,7 +1323,7 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
                             let rentalInventory = combinedExactSearchItems[collectionView.tag].rentalAvailability
                             inventoryItem = rentalInventory!
                         }else{
-                            let exchangeInventory = combinedSurroundingSearchItems[collectionView.tag].exchangeAvailability
+                            let exchangeInventory = combinedExactSearchItems[collectionView.tag].exchangeAvailability
                             inventoryItem = (exchangeInventory?.resort)!
                         }
                         
@@ -1576,7 +1576,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //***** Return number of rows in section required in tableview *****//
-        if(Constant.MyClassConstants.isFromExchange){
+        if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
             if(section == 0 && exchangeExactMatchResortsArray.count == 0 || section == 1){
                 return exchangeSurroundingMatchResortsArray.count
             }else{
@@ -1590,7 +1590,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 }
                 
             }
-        }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Rental){
+        }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
             if(section == 0 && exactMatchResortsArray.count == 0 || section == 1){
                 return surroundingMatchResortsArray.count
             }else{
