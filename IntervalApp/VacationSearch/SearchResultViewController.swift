@@ -208,7 +208,6 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
                 Helper.helperDelegate = self
                 let vacationSearchFilter = VacationSearch(UserContext.sharedInstance.appSettings,bothSearchCriteria)
                 
-                
                 RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: vacationSearchFilter.rentalSearch?.searchContext.request, onSuccess:{ (response) in
                     
                     Helper.hideProgressBar(senderView: self)

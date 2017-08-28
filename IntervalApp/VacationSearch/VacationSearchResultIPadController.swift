@@ -163,7 +163,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                     self.resortDetailTBLView.reloadData()
                 }
                 
-            }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
+            } else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
                 exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                 exchangeSearchCriteria.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]//Constant.MyClassConstants.relinquishmentIdArray as? [String]
                 Helper.helperDelegate = self
@@ -194,7 +194,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                     Helper.hideProgressBar(senderView: self)
                     Constant.MyClassConstants.calendarDatesArray.removeAll()
                     Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
-                    self.resortDetailTBLView.reloadData()
+                    self.searchedDateCollectionView.reloadData()
                     Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: vacationSearchFilter)
                     self.dismiss(animated: true, completion: nil)
                     
@@ -212,7 +212,6 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
                 bothSearchCriteria.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]
                 Helper.helperDelegate = self
                 let vacationSearchFilter = VacationSearch(UserContext.sharedInstance.appSettings,bothSearchCriteria)
-                
                 
                 RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: vacationSearchFilter.rentalSearch?.searchContext.request, onSuccess:{ (response) in
                     
