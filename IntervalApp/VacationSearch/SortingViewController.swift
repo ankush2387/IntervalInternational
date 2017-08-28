@@ -33,12 +33,15 @@ class SortingViewController: UIViewController {
     var selectedSortingIndex = -1
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         self.createFilterOptions()
+        
         //remove extra separator of tableview
         self.sortingTBLview.tableFooterView = UIView()
         
         self.title = Constant.ControllerTitles.sorting
+        
         //***** Add the cancel button  as left bar button item *****//
         
         /*let cancelButton = UIBarButtonItem(title: Constant.buttonTitles.cancel, style: .plain, target: self, action: #selector(cancelButtonPressed(_:)))
@@ -57,62 +60,85 @@ class SortingViewController: UIViewController {
     
     func sortingAndFilterSelectedValue(indexPath:NSIndexPath, isFromFiltered:Bool)  {
         
-        //Helper.showProgressBar(senderView: self)
-        
         if isFromFiltered {
+            
             Constant.MyClassConstants.filteredIndex = indexPath.row
             let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
             let exchangeSearchCriteria = VacationSearchCriteria(searchType:VacationSearchType.Exchange)
             let bothSearchCriteria = VacationSearchCriteria(searchType:VacationSearchType.Combined)
             
             switch Constant.MyClassConstants.filterOptionsArray[indexPath.row] {
+                
             case .Destination(let destination):
+                
                 let areaOfInfluenceDestination = AreaOfInfluenceDestination()
                 areaOfInfluenceDestination.destinationName = destination.destinationName
                 areaOfInfluenceDestination.destinationId = destination.destinationId
                 areaOfInfluenceDestination.aoiId = destination.aoid
                 
                 if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
+                    
                     rentalSearchCriteria.destination = areaOfInfluenceDestination
+                    
                 }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
+                    
                     exchangeSearchCriteria.destination = areaOfInfluenceDestination
+                    
                 }else{
+                    
                     bothSearchCriteria.destination = areaOfInfluenceDestination
                 }
                 
                 Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
+                
             case .Resort(let resort):
+                
                 let resorts = Resort()
                 resorts.resortName = resort.resortName
                 resorts.resortCode = resort.resortCode
                 
                 if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
+                    
                     rentalSearchCriteria.resorts = [resorts]
                     //Constant.MyClassConstants.initialVacationSearch.searchCriteria = rentalSearchCriteria
+                    
                 }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
+                    
                     exchangeSearchCriteria.resorts =  [resorts]
+                    
                     //Constant.MyClassConstants.initialVacationSearch.searchCriteria = exchangeSearchCriteria
                 }else{
+                    
                     bothSearchCriteria.resorts =  [resorts]
                     //Constant.MyClassConstants.initialVacationSearch.searchCriteria = bothSearchCriteria
                 }
+                
                 Constant.MyClassConstants.vacationSearchResultHeaderLabel = resort.resortName
                 
             case .ResortList(let resortList):
+                
                 var resortsArray = [Resort]()
                 for resorts in resortList{
+                    
                     let resort = Resort()
                     resort.resortName = resorts.resortName
                     resort.resortCode = resorts.resortCode
                     resortsArray.append(resort)
                 }
+                
                 if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
+                    
                     rentalSearchCriteria.resorts = resortsArray
+                    
                 }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
+                    
                     exchangeSearchCriteria.resorts = resortsArray
+                    
                 }else{
+                    
                     bothSearchCriteria.resorts = resortsArray
                 }
+                
                 Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(resortList[0].resortName) + \(resortList.count - 1) more"
                 
             }
@@ -145,6 +171,7 @@ class SortingViewController: UIViewController {
                         
                         //Helper.showNotAvailabilityResults()
                     }
+                    
                     //Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
                     vacationSearchFilter.resolveCheckInDateForInitialSearch()
                     let initialSearchCheckInDate = vacationSearchFilter.searchCheckInDate//Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
@@ -155,6 +182,7 @@ class SortingViewController: UIViewController {
                     self.dismiss(animated: true, completion: nil)
                     
                 })
+                    
                 { (error) in
                     
                     Helper.hideProgressBar(senderView: self)
@@ -164,10 +192,15 @@ class SortingViewController: UIViewController {
                 }
                 
             } else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
+                
                 exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
+                
                 exchangeSearchCriteria.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]//Constant.MyClassConstants.relinquishmentIdArray as? [String]
+                
                 Helper.helperDelegate = self
+                
                 let vacationSearchFilter = VacationSearch(UserContext.sharedInstance.appSettings,exchangeSearchCriteria)
+                
                 ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request: vacationSearchFilter.exchangeSearch?.searchContext.request, onSuccess:{ (response) in
                     
                     vacationSearchFilter.exchangeSearch?.searchContext.response = response
@@ -180,12 +213,14 @@ class SortingViewController: UIViewController {
                     
                     // Check not available checkIn dates for the active interval
                     if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                        
                         // Update active interval
                         vacationSearchFilter.updateActiveInterval(activeInterval: activeInterval)
                         Helper.showScrollingCalendar(vacationSearch: vacationSearchFilter)
                         
                         //Helper.showNotAvailabilityResults()
                     }
+                    
                     vacationSearchFilter.resolveCheckInDateForInitialSearch()
                     
                     let initialSearchCheckInDate = vacationSearchFilter.searchCheckInDate
@@ -199,6 +234,7 @@ class SortingViewController: UIViewController {
                     self.dismiss(animated: true, completion: nil)
                     
                 })
+                    
                 { (error) in
                     
                     Helper.hideProgressBar(senderView: self)
@@ -206,6 +242,7 @@ class SortingViewController: UIViewController {
                     //self.dismiss(animated: true, completion: nil)
                     //self.resortDetailTBLView.reloadData()
                 }
+                
             } else{
                 
                 Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]//Constant.MyClassConstants.relinquishmentIdArray as? [String]
@@ -228,19 +265,24 @@ class SortingViewController: UIViewController {
                     Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     // Check not available checkIn dates for the active interval
                     if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                        
                         Helper.hideProgressBar(senderView: self)
                         //self.rentalHasNotAvailableCheckInDates = true
                         Helper.executeExchangeSearchDates(senderVC: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                        
                     }else{
+                        
                         Helper.hideProgressBar(senderView: self)
                         Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
                         let vacationSearchInitialDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
                         Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearchInitialDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     }
+                    
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     //sender.isEnabled = true
                     
                 })
+                    
                 { (error) in
                     
                     Helper.hideProgressBar(senderView: self)
@@ -251,7 +293,9 @@ class SortingViewController: UIViewController {
                 //self.dismiss(animated: true, completion: nil)
                 
             }
+            
         } else {
+            
             Constant.MyClassConstants.sortingIndex = indexPath.row
             
             let vacationSearchForSorting = Constant.MyClassConstants.initialVacationSearch
@@ -266,19 +310,18 @@ class SortingViewController: UIViewController {
         
     }
     
-    
-
-    
     // Set options for filter
     func createFilterOptions(){
 
         let storedData = Helper.getLocalStorageWherewanttoGo()
         
         if(storedData.count > 0) {
+            
             let realm = try! Realm()
             try! realm.write {
                 Constant.MyClassConstants.filterOptionsArray.removeAll()
                 for (index,object) in storedData.enumerated(){
+                    
                     if(object.destinations.count > 0){
                         Constant.MyClassConstants.filterOptionsArray.append(
                             .Destination(object.destinations[0])
@@ -287,6 +330,7 @@ class SortingViewController: UIViewController {
                     }else if(object.resorts.count > 0){
                         
                         if(object.resorts[0].resortArray.count > 0){
+                            
                             print(object.resorts[0].resortArray, object.resorts[0])
                             
                             var araayOfResorts = List<ResortByMap>()
@@ -295,8 +339,10 @@ class SortingViewController: UIViewController {
                             for resort in araayOfResorts{
                                 reswortByMap.append(resort)
                             }
+                            
                             Constant.MyClassConstants.filterOptionsArray.append(.ResortList(reswortByMap))
                         }else{
+                            
                             Constant.MyClassConstants.filterOptionsArray.append(.Resort(object.resorts[0]))
                         }
                     }
@@ -308,6 +354,7 @@ class SortingViewController: UIViewController {
     @IBAction func checkBoxClicked(_ sender: IUIKCheckbox) {
         
         if self.isFilterClicked {
+            
             let cell = sender.superview?.superview?.superview as? FilterCell
             let indexPath = self.sortingTBLview.indexPath(for: cell!)
             
@@ -352,12 +399,6 @@ class SortingViewController: UIViewController {
     @IBAction func cancelButtonPressed(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }
-    
-   /* func cancelButtonPressed(_ sender:UIBarButtonItem) {
-        
-         //self.navigationController?.dismiss(animated: true, completion: nil)
-        self.navigationController?.popViewController(animated: true)
-    }*/
 
 }
 
@@ -419,7 +460,7 @@ extension SortingViewController:UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if self.isFilterClicked  {
+        if self.isFilterClicked  { // filter option selected
             
              self.lblHeading.text = Constant.MyClassConstants.filterSearchResult
              let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.filterOptionCell, for: indexPath) as! FilterCell
@@ -476,6 +517,7 @@ extension SortingViewController:UITableViewDataSource {
 
 //Mark: Extension for Helper
 extension SortingViewController:HelperDelegate {
+    
     func resortSearchComplete(){
         self.dismiss(animated: true, completion: nil)
         
