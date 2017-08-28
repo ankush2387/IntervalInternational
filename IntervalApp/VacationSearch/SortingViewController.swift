@@ -55,6 +55,220 @@ class SortingViewController: UIViewController {
         
     }
     
+    func sortingAndFilterSelectedValue(indexPath:NSIndexPath, isFromFiltered:Bool)  {
+        
+        //Helper.showProgressBar(senderView: self)
+        
+        if isFromFiltered {
+            Constant.MyClassConstants.filteredIndex = indexPath.row
+            let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
+            let exchangeSearchCriteria = VacationSearchCriteria(searchType:VacationSearchType.Exchange)
+            let bothSearchCriteria = VacationSearchCriteria(searchType:VacationSearchType.Combined)
+            
+            switch Constant.MyClassConstants.filterOptionsArray[indexPath.row] {
+            case .Destination(let destination):
+                let areaOfInfluenceDestination = AreaOfInfluenceDestination()
+                areaOfInfluenceDestination.destinationName = destination.destinationName
+                areaOfInfluenceDestination.destinationId = destination.destinationId
+                areaOfInfluenceDestination.aoiId = destination.aoid
+                
+                if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
+                    rentalSearchCriteria.destination = areaOfInfluenceDestination
+                }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
+                    exchangeSearchCriteria.destination = areaOfInfluenceDestination
+                }else{
+                    bothSearchCriteria.destination = areaOfInfluenceDestination
+                }
+                
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
+            case .Resort(let resort):
+                let resorts = Resort()
+                resorts.resortName = resort.resortName
+                resorts.resortCode = resort.resortCode
+                
+                if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
+                    rentalSearchCriteria.resorts = [resorts]
+                    //Constant.MyClassConstants.initialVacationSearch.searchCriteria = rentalSearchCriteria
+                }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
+                    exchangeSearchCriteria.resorts =  [resorts]
+                    //Constant.MyClassConstants.initialVacationSearch.searchCriteria = exchangeSearchCriteria
+                }else{
+                    bothSearchCriteria.resorts =  [resorts]
+                    //Constant.MyClassConstants.initialVacationSearch.searchCriteria = bothSearchCriteria
+                }
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel = resort.resortName
+                
+            case .ResortList(let resortList):
+                var resortsArray = [Resort]()
+                for resorts in resortList{
+                    let resort = Resort()
+                    resort.resortName = resorts.resortName
+                    resort.resortCode = resorts.resortCode
+                    resortsArray.append(resort)
+                }
+                if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
+                    rentalSearchCriteria.resorts = resortsArray
+                }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
+                    exchangeSearchCriteria.resorts = resortsArray
+                }else{
+                    bothSearchCriteria.resorts = resortsArray
+                }
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(resortList[0].resortName) + \(resortList.count - 1) more"
+                
+            }
+            
+            ADBMobile.trackAction(Constant.omnitureEvents.event9, data: nil)
+            
+            if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
+                
+                rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
+                
+                let vacationSearchFilter = VacationSearch(UserContext.sharedInstance.appSettings,rentalSearchCriteria)
+                
+                RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: vacationSearchFilter.rentalSearch?.searchContext.request, onSuccess:{ (response) in
+                    
+                    //Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
+                    vacationSearchFilter.rentalSearch?.searchContext.response = response
+                    
+                    let activeInterval = vacationSearchFilter.bookingWindow.getActiveInterval()
+                    
+                    // Update active interval
+                    //Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                    vacationSearchFilter.updateActiveInterval(activeInterval: activeInterval)
+                    
+                    Helper.showScrollingCalendar(vacationSearch: vacationSearchFilter)
+                    
+                    // Check not available checkIn dates for the active interval
+                    if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                       // Constant.MyClassConstants.initialVacationSearch = self.vacationSearch
+                        Helper.showScrollingCalendar(vacationSearch: vacationSearchFilter)
+                        
+                        //Helper.showNotAvailabilityResults()
+                    }
+                    //Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
+                    vacationSearchFilter.resolveCheckInDateForInitialSearch()
+                    let initialSearchCheckInDate = vacationSearchFilter.searchCheckInDate//Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
+                    Constant.MyClassConstants.checkInDates = response.checkInDates
+                    Helper.helperDelegate = self
+                    Helper.hideProgressBar(senderView: self)
+                    Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch:vacationSearchFilter)
+                    self.dismiss(animated: true, completion: nil)
+                    
+                })
+                { (error) in
+                    
+                    Helper.hideProgressBar(senderView: self)
+                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                    self.dismiss(animated: true, completion: nil)
+                    //self.resortDetailTBLView.reloadData()
+                }
+                
+            } else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
+                exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
+                exchangeSearchCriteria.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]//Constant.MyClassConstants.relinquishmentIdArray as? [String]
+                Helper.helperDelegate = self
+                let vacationSearchFilter = VacationSearch(UserContext.sharedInstance.appSettings,exchangeSearchCriteria)
+                ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request: vacationSearchFilter.exchangeSearch?.searchContext.request, onSuccess:{ (response) in
+                    
+                    vacationSearchFilter.exchangeSearch?.searchContext.response = response
+                    let activeInterval = vacationSearchFilter.bookingWindow.getActiveInterval()
+                    
+                    // Update active interval
+                    vacationSearchFilter.updateActiveInterval(activeInterval: activeInterval)
+                    
+                    Helper.showScrollingCalendar(vacationSearch: vacationSearchFilter)
+                    
+                    // Check not available checkIn dates for the active interval
+                    if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                        // Update active interval
+                        vacationSearchFilter.updateActiveInterval(activeInterval: activeInterval)
+                        Helper.showScrollingCalendar(vacationSearch: vacationSearchFilter)
+                        
+                        //Helper.showNotAvailabilityResults()
+                    }
+                    vacationSearchFilter.resolveCheckInDateForInitialSearch()
+                    
+                    let initialSearchCheckInDate = vacationSearchFilter.searchCheckInDate
+                    Constant.MyClassConstants.checkInDates = response.checkInDates
+                    Helper.helperDelegate = self
+                    Helper.hideProgressBar(senderView: self)
+                    Constant.MyClassConstants.calendarDatesArray.removeAll()
+                    Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
+                    //self.searchedDateCollectionView.reloadData()
+                    Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: vacationSearchFilter)
+                    self.dismiss(animated: true, completion: nil)
+                    
+                })
+                { (error) in
+                    
+                    Helper.hideProgressBar(senderView: self)
+                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                    //self.dismiss(animated: true, completion: nil)
+                    //self.resortDetailTBLView.reloadData()
+                }
+            } else{
+                
+                Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]//Constant.MyClassConstants.relinquishmentIdArray as? [String]
+                bothSearchCriteria.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]
+                Helper.helperDelegate = self
+                let vacationSearchFilter = VacationSearch(UserContext.sharedInstance.appSettings,bothSearchCriteria)
+                
+                RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: vacationSearchFilter.rentalSearch?.searchContext.request, onSuccess:{ (response) in
+                    
+                    Helper.hideProgressBar(senderView: self)
+                    Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
+                    
+                    let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
+                    
+                    // Update active interval
+                    Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                    
+                    Helper.helperDelegate = self
+                    
+                    Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                    // Check not available checkIn dates for the active interval
+                    if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                        Helper.hideProgressBar(senderView: self)
+                        //self.rentalHasNotAvailableCheckInDates = true
+                        Helper.executeExchangeSearchDates(senderVC: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                    }else{
+                        Helper.hideProgressBar(senderView: self)
+                        Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
+                        let vacationSearchInitialDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
+                        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearchInitialDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                    }
+                    Constant.MyClassConstants.checkInDates = response.checkInDates
+                    //sender.isEnabled = true
+                    
+                })
+                { (error) in
+                    
+                    Helper.hideProgressBar(senderView: self)
+                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                }
+                //self.createSections()
+                //self.resortDetailTBLView.reloadData()
+                //self.dismiss(animated: true, completion: nil)
+                
+            }
+        } else {
+            Constant.MyClassConstants.sortingIndex = indexPath.row
+            
+            let vacationSearchForSorting = Constant.MyClassConstants.initialVacationSearch
+            vacationSearchForSorting.sortType = AvailabilitySortType(rawValue: Constant.MyClassConstants.sortingSetValues[indexPath.row])!
+            Constant.MyClassConstants.isFromSorting = false
+            //self.createSections()
+            //self.dismiss(animated: true, completion: nil)
+            
+            //resortDetailTBLView.reloadData()
+            
+        }
+        
+    }
+    
+    
+
+    
     // Set options for filter
     func createFilterOptions(){
 
@@ -151,14 +365,27 @@ extension SortingViewController:UITableViewDelegate {
         if self.isFilterClicked {
             switch Constant.MyClassConstants.filterOptionsArray[indexPath.row] {
             case .Destination(let val):
-                self.delegate?.selectedOptionis(filteredValueIs: val.destinationName, indexPath: indexPath as NSIndexPath, isFromFiltered: true)
+                
+                self.sortingAndFilterSelectedValue(indexPath: indexPath as NSIndexPath, isFromFiltered: true)
+                
+               // self.delegate?.selectedOptionis(filteredValueIs: val.destinationName, indexPath: indexPath as NSIndexPath, isFromFiltered: true)
+                
             case .Resort(let val):
-                self.delegate?.selectedOptionis(filteredValueIs: val.resortName, indexPath: indexPath as NSIndexPath, isFromFiltered: true)
+                
+                self.sortingAndFilterSelectedValue(indexPath: indexPath as NSIndexPath, isFromFiltered: true)
+                
+                //self.delegate?.selectedOptionis(filteredValueIs: val.resortName, indexPath: indexPath as NSIndexPath, isFromFiltered: true)
+                
             case .ResortList(let val):
-                self.delegate?.selectedOptionis(filteredValueIs: val[indexPath.row].resortName, indexPath: indexPath as NSIndexPath, isFromFiltered: true)
+                
+                self.sortingAndFilterSelectedValue(indexPath: indexPath as NSIndexPath, isFromFiltered: true)
+                
+                //self.delegate?.selectedOptionis(filteredValueIs: val[indexPath.row].resortName, indexPath: indexPath as NSIndexPath, isFromFiltered: true)
             }
         } else {
-            self.delegate?.selectedOptionis(filteredValueIs: Constant.MyClassConstants.sortingSetValues[(indexPath.row)], indexPath: indexPath as NSIndexPath, isFromFiltered: false)
+            //self.delegate?.selectedOptionis(filteredValueIs: Constant.MyClassConstants.sortingSetValues[(indexPath.row)], indexPath: indexPath as NSIndexPath, isFromFiltered: false)
+            
+            self.sortingAndFilterSelectedValue(indexPath: indexPath as NSIndexPath, isFromFiltered: false)
         }
     }
 }
@@ -237,5 +464,17 @@ extension SortingViewController:UITableViewDataSource {
         
     }
     
+}
+
+//Mark: Extension for Helper
+extension SortingViewController:HelperDelegate {
+    func resortSearchComplete(){
+        self.dismiss(animated: true, completion: nil)
+        
+    }
     
+    
+    func resetCalendar(){
+        
+    }
 }

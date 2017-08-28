@@ -1835,7 +1835,7 @@ public class Helper{
             hideProgressBar(senderView:senderViewController)
             print(searchAvailabilityResponse)
             Constant.MyClassConstants.initialVacationSearch = vacationSearch
-            if(senderViewController.isKind(of: VacationSearchResultIPadController.self) || senderViewController.isKind(of: SearchResultViewController.self)){
+            if(senderViewController.isKind(of: VacationSearchResultIPadController.self) || senderViewController.isKind(of: SearchResultViewController.self)  || senderViewController.isKind(of: SortingViewController.self)){
                 helperDelegate?.resortSearchComplete()
             }else{
                 senderViewController.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
