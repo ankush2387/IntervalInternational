@@ -1656,7 +1656,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
 
 extension VacationSearchViewController:HelperDelegate {
     func resortSearchComplete(){
-        print(Constant.MyClassConstants.initialVacationSearch.searchCheckInDate)
+        Helper.hideProgressBar(senderView: self)
         self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
 
     }

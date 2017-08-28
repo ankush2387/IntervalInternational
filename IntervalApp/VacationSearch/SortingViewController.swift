@@ -98,19 +98,12 @@ class SortingViewController: UIViewController {
                 resorts.resortCode = resort.resortCode
                 
                 if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
-                    
                     rentalSearchCriteria.resorts = [resorts]
-                    //Constant.MyClassConstants.initialVacationSearch.searchCriteria = rentalSearchCriteria
                     
                 }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
-                    
                     exchangeSearchCriteria.resorts =  [resorts]
-                    
-                    //Constant.MyClassConstants.initialVacationSearch.searchCriteria = exchangeSearchCriteria
                 }else{
-                    
                     bothSearchCriteria.resorts =  [resorts]
-                    //Constant.MyClassConstants.initialVacationSearch.searchCriteria = bothSearchCriteria
                 }
                 
                 Constant.MyClassConstants.vacationSearchResultHeaderLabel = resort.resortName
@@ -179,7 +172,6 @@ class SortingViewController: UIViewController {
                     Helper.helperDelegate = self
                     Helper.hideProgressBar(senderView: self)
                     Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch:vacationSearchFilter)
-                    self.dismiss(animated: true, completion: nil)
                     
                 })
                     
@@ -194,6 +186,8 @@ class SortingViewController: UIViewController {
             } else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
                 
                 exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
+                exchangeSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
+                
                 
                 exchangeSearchCriteria.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]//Constant.MyClassConstants.relinquishmentIdArray as? [String]
                 
@@ -221,9 +215,9 @@ class SortingViewController: UIViewController {
                         //Helper.showNotAvailabilityResults()
                     }
                     
-                    vacationSearchFilter.resolveCheckInDateForInitialSearch()
+                    //vacationSearchFilter.resolveCheckInDateForInitialSearch()
                     
-                    let initialSearchCheckInDate = vacationSearchFilter.searchCheckInDate
+                    let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     Helper.helperDelegate = self
                     Helper.hideProgressBar(senderView: self)
@@ -231,7 +225,6 @@ class SortingViewController: UIViewController {
                     Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
                     //self.searchedDateCollectionView.reloadData()
                     Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: vacationSearchFilter)
-                    self.dismiss(animated: true, completion: nil)
                     
                 })
                     
@@ -253,27 +246,27 @@ class SortingViewController: UIViewController {
                 RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: vacationSearchFilter.rentalSearch?.searchContext.request, onSuccess:{ (response) in
                     
                     Helper.hideProgressBar(senderView: self)
-                    Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
+                    vacationSearchFilter.rentalSearch?.searchContext.response = response
                     
-                    let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
+                    let activeInterval = vacationSearchFilter.bookingWindow.getActiveInterval()
                     
                     // Update active interval
-                    Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                    vacationSearchFilter.updateActiveInterval(activeInterval: activeInterval)
                     
                     Helper.helperDelegate = self
                     
-                    Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                    Helper.showScrollingCalendar(vacationSearch: vacationSearchFilter)
                     // Check not available checkIn dates for the active interval
                     if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
                         
                         Helper.hideProgressBar(senderView: self)
                         //self.rentalHasNotAvailableCheckInDates = true
-                        Helper.executeExchangeSearchDates(senderVC: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                        Helper.executeExchangeSearchDates(senderVC: self, vacationSearch: vacationSearchFilter)
                         
                     }else{
                         
                         Helper.hideProgressBar(senderView: self)
-                        Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
+                        //Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
                         let vacationSearchInitialDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
                         Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearchInitialDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     }

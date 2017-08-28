@@ -258,8 +258,8 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
         Constant.MyClassConstants.calendarDatesArray.removeAll()
         Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
         createSections()
-        self.searchResultColelctionView.reloadData()
-        self.searchResultTableView.reloadData()
+        //self.searchResultColelctionView.reloadData()
+        //self.searchResultTableView.reloadData()
     }
     
     func createSections(){
@@ -401,8 +401,7 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
     func intervalBucketClicked(calendarItem:CalendarItem!, cell:UICollectionViewCell){
         myActivityIndicator.hidesWhenStopped = true
         Helper.hideProgressBar(senderView: self)
-        
-        
+    
         
         // Resolve the next active interval based on the Calendar interval selected
         let activeInterval = Constant.MyClassConstants.initialVacationSearch.resolveNextActiveIntervalFor(intervalStartDate: calendarItem.intervalStartDate, intervalEndDate: calendarItem.intervalEndDate)
@@ -488,6 +487,14 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
                 
             }
         }else {
+            
+            Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+            
+            Constant.MyClassConstants.calendarDatesArray.removeAll()
+            
+            Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
+            
+            self.searchResultColelctionView.reloadData()
             myActivityIndicator.stopAnimating()
             cell.alpha = 1.0
         }
@@ -968,6 +975,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
                         }
                     }
                 }
+                
                 DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode, onSuccess: { (response) in
                     
                     Constant.MyClassConstants.resortsDescriptionArray = response
@@ -1560,7 +1568,7 @@ extension SearchResultViewController:UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         //***** Return number of rows in section required in tableview *****//
-        if(Constant.MyClassConstants.isFromExchange){
+        if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
 
             
             if(section == 0 && exactMatchResortsArrayExchange.count == 0 || section == 1){
@@ -1575,7 +1583,7 @@ extension SearchResultViewController:UITableViewDataSource {
             
             }
             
-        }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Rental){
+        }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
             if(section == 0 && exactMatchResortsArray.count == 0 || section == 1){
                 return surroundingMatchResortsArray.count
             }else{
@@ -1674,6 +1682,7 @@ extension String {
 
 extension SearchResultViewController:HelperDelegate {
     func resortSearchComplete(){
+        Helper.hideProgressBar(senderView: self)
         print(Constant.MyClassConstants.calendarDatesArray.count)
         Constant.MyClassConstants.calendarDatesArray.removeAll()
         print(Constant.MyClassConstants.calendarDatesArray.count)

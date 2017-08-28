@@ -1753,9 +1753,8 @@ public class Helper{
         
         RentalClient.searchResorts(UserContext.sharedInstance.accessToken, request: request,
                                    onSuccess: { (response) in
-                                    hideProgressBar(senderView: senderViewController)
                                     // Update Rental inventory
-                                    
+                                    Constant.MyClassConstants.resortsArray.removeAll()
                                     Constant.MyClassConstants.resortsArray = response.resorts
                                     
                                     vacationSearch.rentalSearch?.inventory = response.resorts
@@ -1787,20 +1786,6 @@ public class Helper{
                                     hideProgressBar(senderView: senderViewController)
                                     helperDelegate?.resortSearchComplete()
                                     SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
-                                    DarwinSDK.logger.error("Error Code: \(error.code)")
-                                    DarwinSDK.logger.error("Error Description: \(error.description)")
-                                    
-                                    let INVENTORY_NOT_AVAILABLE_CODE = "d67dc7030d7462db65465023262e704f"
-                                    let sdkErrorCode = String(describing: error.userInfo["errorCode"])
-                                    
-                                    if (INVENTORY_NOT_AVAILABLE_CODE == sdkErrorCode) {
-                                        // TODO: Define behavior for not available inventory
-                                        DarwinSDK.logger.error("Define behavior for not available inventory.")
-                                    } else {
-                                        // TODO: Handle SDK/API errors
-                                        DarwinSDK.logger.error("Handle SDK/API errors.")
-                                    }
-                                    
         }
         )
     }
@@ -1823,7 +1808,7 @@ public class Helper{
         ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: request, onSuccess: { (searchAvailabilityResponse) in
             
             // Update Exchange inventory
-            hideProgressBar(senderView: senderViewController)
+            //hideProgressBar(senderView: senderViewController)
             vacationSearch.exchangeSearch?.inventory = searchAvailabilityResponse
             
             // Check if not has availability in the desired check-In date.
@@ -1833,7 +1818,6 @@ public class Helper{
             
             showAvailabilityResults(vacationSearch:vacationSearch)
             hideProgressBar(senderView:senderViewController)
-            print(searchAvailabilityResponse)
             Constant.MyClassConstants.initialVacationSearch = vacationSearch
             if(senderViewController.isKind(of: VacationSearchResultIPadController.self) || senderViewController.isKind(of: SearchResultViewController.self)  || senderViewController.isKind(of: SortingViewController.self)){
                 helperDelegate?.resortSearchComplete()
