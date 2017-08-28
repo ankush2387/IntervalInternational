@@ -76,7 +76,7 @@ class ExchangeInventoryCVCell: UICollectionViewCell {
                 promLabel.minimumScaleFactor = 0.7
                 promLabel.numberOfLines = 0
                 promLabel.textColor = UIColor(red: 0, green: 119/255, blue: 190/255, alpha: 1)
-                promLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 18)
+                promLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 12)
                 self.promotionsView.addSubview(imgV)
                 self.promotionsView.addSubview(promLabel)
                 yPosition += 15
