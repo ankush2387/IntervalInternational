@@ -140,6 +140,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
         self.alertDisplayTableView.setEditing(false, animated: true)
         Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.removeAllObjects()
         Constant.MyClassConstants.alertSelectedBedroom = []
+        Constant.MyClassConstants.realmStoredDestIdOrCodeArray.removeAllObjects()
         self.performSegue(withIdentifier: Constant.segueIdentifiers.createAlertSegue, sender: self)
     }
     
