@@ -124,11 +124,13 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
                     
                     //Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
                     vacationSearchFilter.rentalSearch?.searchContext.response = response
+                    
                     let activeInterval = vacationSearchFilter.bookingWindow.getActiveInterval()
                     
                     // Update active interval
                     //Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                     vacationSearchFilter.updateActiveInterval(activeInterval: activeInterval)
+                    
                     Helper.showScrollingCalendar(vacationSearch: vacationSearchFilter)
                     
                     // Check not available checkIn dates for the active interval
