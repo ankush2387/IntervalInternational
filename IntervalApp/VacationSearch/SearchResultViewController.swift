@@ -54,7 +54,7 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
     
     func selectedOptionis(filteredValueIs:String, indexPath:NSIndexPath, isFromFiltered:Bool) {
         
-        if isFromFiltered {
+        /*if isFromFiltered {
             Constant.MyClassConstants.filteredIndex = indexPath.row
             let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
             let exchangeSearchCriteria = VacationSearchCriteria(searchType:VacationSearchType.Exchange)
@@ -249,7 +249,7 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
             self.dismiss(animated: true, completion: nil)
             
             searchResultTableView.reloadData()
-        }
+        }*/
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -258,6 +258,8 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
         Constant.MyClassConstants.calendarDatesArray.removeAll()
         Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
         createSections()
+        self.searchResultColelctionView.reloadData()
+        self.searchResultTableView.reloadData()
     }
     
     func createSections(){
