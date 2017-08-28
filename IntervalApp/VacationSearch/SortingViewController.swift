@@ -258,7 +258,7 @@ class SortingViewController: UIViewController {
             vacationSearchForSorting.sortType = AvailabilitySortType(rawValue: Constant.MyClassConstants.sortingSetValues[indexPath.row])!
             Constant.MyClassConstants.isFromSorting = false
             //self.createSections()
-            //self.dismiss(animated: true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
             
             //resortDetailTBLView.reloadData()
             
@@ -316,27 +316,35 @@ class SortingViewController: UIViewController {
             
             switch Constant.MyClassConstants.filterOptionsArray[(indexPath?.row)!] {
             case .Destination(let val):
-                self.delegate?.selectedOptionis(filteredValueIs: val.destinationName, indexPath: indexPath! as NSIndexPath, isFromFiltered: true)
+                
+                self.sortingAndFilterSelectedValue(indexPath: indexPath! as NSIndexPath, isFromFiltered: true)
+                
+               // self.delegate?.selectedOptionis(filteredValueIs: val.destinationName, indexPath: indexPath! as NSIndexPath, isFromFiltered: true)
+                
             case .Resort(let val):
-                 self.delegate?.selectedOptionis(filteredValueIs: val.resortName, indexPath: indexPath! as NSIndexPath, isFromFiltered: true)
+                
+                self.sortingAndFilterSelectedValue(indexPath: indexPath! as NSIndexPath, isFromFiltered: true)
+                
+                 //self.delegate?.selectedOptionis(filteredValueIs: val.resortName, indexPath: indexPath! as NSIndexPath, isFromFiltered: true)
+                
             case .ResortList(let val):
-                print(val)
-                self.delegate?.selectedOptionis(filteredValueIs: val[0].resortName, indexPath: indexPath! as NSIndexPath, isFromFiltered: true)
+                
+                self.sortingAndFilterSelectedValue(indexPath: indexPath! as NSIndexPath, isFromFiltered: true)
+                
+                //self.delegate?.selectedOptionis(filteredValueIs: val[0].resortName, indexPath: indexPath! as NSIndexPath, isFromFiltered: true)
             }
             
             
-            
-            //let resortName = resortNameArray[(indexPath?.row)!].resortName
-            
-            //self.delegate?.selectedOptionis(filteredValueIs: resortName!, indexPath: indexPath! as NSIndexPath, isFromFiltered: true)
-            
         } else { // sorting option clicked
             let cell = sender.superview?.superview?.superview as? SortingOptionCell
+            
             let indexPath = self.sortingTBLview.indexPath(for: cell!)
             
             self.selectedSortingIndex = (indexPath?.row)!
+            
+            self.sortingAndFilterSelectedValue(indexPath: indexPath! as NSIndexPath, isFromFiltered: false)
 
-            self.delegate?.selectedOptionis(filteredValueIs: Constant.MyClassConstants.sortingSetValues[(indexPath?.row)!], indexPath: indexPath! as NSIndexPath, isFromFiltered: false)
+           // self.delegate?.selectedOptionis(filteredValueIs: Constant.MyClassConstants.sortingSetValues[(indexPath?.row)!], indexPath: indexPath! as NSIndexPath, isFromFiltered: false)
         }
     }
     

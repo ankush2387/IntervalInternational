@@ -56,9 +56,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
     // sorting optionDelegate call
     
     func selectedOptionis(filteredValueIs:String, indexPath:NSIndexPath, isFromFiltered:Bool) {
-        
-        print("delegate fire")
-        
+                
        //Helper.showProgressBar(senderView: self)
         
         /*if isFromFiltered {
@@ -276,7 +274,7 @@ class VacationSearchResultIPadController: UIViewController, sortingOptionDelegat
         
         //create section
         self.createSections()
-        
+        self.searchedDateCollectionView.reloadData()
         self.resortDetailTBLView.reloadData()
         
     }
