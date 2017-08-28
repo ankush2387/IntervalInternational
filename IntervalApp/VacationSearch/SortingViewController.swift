@@ -37,6 +37,7 @@ class SortingViewController: UIViewController {
         super.viewDidLoad()
         self.createFilterOptions()
         
+        
         //remove extra separator of tableview
         self.sortingTBLview.tableFooterView = UIView()
         
@@ -266,9 +267,9 @@ class SortingViewController: UIViewController {
                     }else{
                         
                         Helper.hideProgressBar(senderView: self)
-                        //Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
                         let vacationSearchInitialDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
                         Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearchInitialDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+
                     }
                     
                     Constant.MyClassConstants.checkInDates = response.checkInDates
