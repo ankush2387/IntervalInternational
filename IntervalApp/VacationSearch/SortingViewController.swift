@@ -168,9 +168,7 @@ class SortingViewController: UIViewController {
                     Helper.hideProgressBar(senderView: self)
                     Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch:vacationSearchFilter)
                     
-                })
-                    
-                { (error) in
+                }){ (error) in
                     
                     Helper.hideProgressBar(senderView: self)
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
@@ -218,9 +216,7 @@ class SortingViewController: UIViewController {
                         
                     }
                     
-                })
-                    
-                { (error) in
+                }){ (error) in
                     
                     Helper.hideProgressBar(senderView: self)
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
@@ -230,8 +226,8 @@ class SortingViewController: UIViewController {
                 
             } else{
                 
-                Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]//Constant.MyClassConstants.relinquishmentIdArray as? [String]
-                bothSearchCriteria.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]
+                Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.relinquishmentsIds = (Constant.MyClassConstants.relinquishmentIdArray as? [String])!
+                bothSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
                 bothSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
                 bothSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                 Helper.helperDelegate = self
@@ -400,26 +396,20 @@ extension SortingViewController:UITableViewDelegate {
         // set selected value here from array.
         if self.isFilterClicked {
             switch Constant.MyClassConstants.filterOptionsArray[indexPath.row] {
-            case .Destination(let val):
+            case .Destination( _):
                 
                 self.sortingAndFilterSelectedValue(indexPath: indexPath as NSIndexPath, isFromFiltered: true)
                 
-               // self.delegate?.selectedOptionis(filteredValueIs: val.destinationName, indexPath: indexPath as NSIndexPath, isFromFiltered: true)
-                
-            case .Resort(let val):
+            case .Resort( _):
                 
                 self.sortingAndFilterSelectedValue(indexPath: indexPath as NSIndexPath, isFromFiltered: true)
                 
-                //self.delegate?.selectedOptionis(filteredValueIs: val.resortName, indexPath: indexPath as NSIndexPath, isFromFiltered: true)
-                
-            case .ResortList(let val):
+            case .ResortList( _):
                 
                 self.sortingAndFilterSelectedValue(indexPath: indexPath as NSIndexPath, isFromFiltered: true)
-                
-                //self.delegate?.selectedOptionis(filteredValueIs: val[indexPath.row].resortName, indexPath: indexPath as NSIndexPath, isFromFiltered: true)
             }
         } else {
-            //self.delegate?.selectedOptionis(filteredValueIs: Constant.MyClassConstants.sortingSetValues[(indexPath.row)], indexPath: indexPath as NSIndexPath, isFromFiltered: false)
+            
             
             self.sortingAndFilterSelectedValue(indexPath: indexPath as NSIndexPath, isFromFiltered: false)
         }

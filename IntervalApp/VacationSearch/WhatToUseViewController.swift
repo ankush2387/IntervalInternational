@@ -353,10 +353,11 @@ extension WhatToUseViewController:UITableViewDataSource {
                 return cell
                 
             }else if((exchange.clubPoints) != nil){
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell0, for: indexPath) as! ExchangeCell0
+                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell0, for: indexPath) as! AvailablePointCell
                 cell.tag = indexPath.row
                 cell.layer.cornerRadius = 7
-                Helper.applyShadowOnUIView(view: cell.contentBackgroundView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
+                cell.availablePointValueLabel.text = ""
+                //Helper.applyShadowOnUIView(view: cell.contentBackgroundView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 return cell
                 
