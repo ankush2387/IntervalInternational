@@ -1808,8 +1808,14 @@ public class Helper{
         ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: request, onSuccess: { (searchAvailabilityResponse) in
             
             // Update Exchange inventory
-            //hideProgressBar(senderView: senderViewController)
             vacationSearch.exchangeSearch?.inventory = searchAvailabilityResponse
+            
+            //Added resorts for resort detail screen
+            Constant.MyClassConstants.resortsArray.removeAll()
+            for resorts in searchAvailabilityResponse{
+                Constant.MyClassConstants.resortsArray.append(resorts.resort!)
+            }
+            
             
             // Check if not has availability in the desired check-In date.
             if ( vacationSearch.searchCriteria.checkInDate != checkInDate) {

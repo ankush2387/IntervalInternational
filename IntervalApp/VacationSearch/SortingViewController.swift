@@ -216,9 +216,7 @@ class SortingViewController: UIViewController {
                         
                     }
                     
-                })
-                    
-                { (error) in
+                }){ (error) in
                     
                     Helper.hideProgressBar(senderView: self)
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
@@ -398,26 +396,20 @@ extension SortingViewController:UITableViewDelegate {
         // set selected value here from array.
         if self.isFilterClicked {
             switch Constant.MyClassConstants.filterOptionsArray[indexPath.row] {
-            case .Destination(let val):
+            case .Destination( _):
                 
                 self.sortingAndFilterSelectedValue(indexPath: indexPath as NSIndexPath, isFromFiltered: true)
                 
-               // self.delegate?.selectedOptionis(filteredValueIs: val.destinationName, indexPath: indexPath as NSIndexPath, isFromFiltered: true)
-                
-            case .Resort(let val):
+            case .Resort( _):
                 
                 self.sortingAndFilterSelectedValue(indexPath: indexPath as NSIndexPath, isFromFiltered: true)
                 
-                //self.delegate?.selectedOptionis(filteredValueIs: val.resortName, indexPath: indexPath as NSIndexPath, isFromFiltered: true)
-                
-            case .ResortList(let val):
+            case .ResortList( _):
                 
                 self.sortingAndFilterSelectedValue(indexPath: indexPath as NSIndexPath, isFromFiltered: true)
-                
-                //self.delegate?.selectedOptionis(filteredValueIs: val[indexPath.row].resortName, indexPath: indexPath as NSIndexPath, isFromFiltered: true)
             }
         } else {
-            //self.delegate?.selectedOptionis(filteredValueIs: Constant.MyClassConstants.sortingSetValues[(indexPath.row)], indexPath: indexPath as NSIndexPath, isFromFiltered: false)
+            
             
             self.sortingAndFilterSelectedValue(indexPath: indexPath as NSIndexPath, isFromFiltered: false)
         }
