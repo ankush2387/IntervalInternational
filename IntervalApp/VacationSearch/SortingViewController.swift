@@ -12,13 +12,11 @@ import DarwinSDK
 import Realm
 import RealmSwift
 
-protocol sortingOptionDelegate {
-    func selectedOptionis(filteredValueIs:String, indexPath:NSIndexPath, isFromFiltered:Bool)
-}
+
 
 class SortingViewController: UIViewController {
   
-    var delegate:sortingOptionDelegate?
+    
     
     var isFilterClicked = false
      @IBOutlet weak var lblHeading: UILabel!
@@ -215,7 +213,10 @@ class SortingViewController: UIViewController {
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     Helper.helperDelegate = self
                     Helper.hideProgressBar(senderView: self)
-                    Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: vacationSearchFilter)
+                    if initialSearchCheckInDate != nil {
+                        Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: vacationSearchFilter)
+                        
+                    }
                     
                 })
                     
