@@ -755,7 +755,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
                         resortCode = surroundingMatchResortsArray[collectionView.tag].resortCode!
                     }
                   
-                }else if(Constant.MyClassConstants.isFromExchange){
+                }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
                     if(collectionView.superview?.superview?.tag == 0){
                         resortCode = (self.exactMatchResortsArrayExchange[collectionView.tag].resort?.resortCode!)!
                     }else{
@@ -996,11 +996,11 @@ extension SearchResultViewController:UICollectionViewDataSource {
             }else{
                 
                 if(collectionView.superview?.superview?.tag == 0){
-                    if(Constant.MyClassConstants.isFromExchange){
+                    if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
                         
                          return (exactMatchResortsArrayExchange[collectionView.tag].inventory?.buckets.count)!
                     }
-                    else if (Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Rental){
+                    else if (Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
                          return (exactMatchResortsArray[collectionView.tag].inventory?.units.count)!
                     }else{
                         if(combinedExactSearchItems[collectionView.tag].rentalAvailability != nil){
@@ -1012,10 +1012,10 @@ extension SearchResultViewController:UICollectionViewDataSource {
                     }
                    
                 }else{
-                    if(Constant.MyClassConstants.isFromExchange){
+                    if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
                         
                         return (surroundingMatchResortsArrayExchange[collectionView.tag].inventory?.buckets.count)!
-                    }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Rental){
+                    }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
                         
                         return (surroundingMatchResortsArray[collectionView.tag].inventory?.units.count)!
                     }else{
@@ -1253,7 +1253,7 @@ extension SearchResultViewController:UITableViewDelegate {
                 if Constant.MyClassConstants.isShowAvailability == true {
                     let index = indexPath.row - 1
                     if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
-                        let totalUnits = self.exactMatchResortsArrayExchange[indexPath.row].inventory?.buckets.count
+                        let totalUnits = self.exactMatchResortsArrayExchange[index].inventory?.buckets.count
                         return CGFloat(totalUnits!*80 + 300)
                     }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
                             let totalUnits = self.exactMatchResortsArray[index].inventory?.units.count
@@ -1321,19 +1321,27 @@ extension SearchResultViewController:UITableViewDataSource {
     
     //***** UITableview dataSource methods definition here *****//
     
-    
+    func update(){
+        //UIView.animate(withDuration: 2, delay: 0, options: UIViewAnimationOptions(rawValue: 0), animations: {
+        
+        //Constant.MyClassConstants.isShowAvailability = false
+        //cell.contentView.frame.size.height = 50.0
+        self.searchResultTableView.reloadData()
+        //}, completion: nil)
+    }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         //***** configuring prototype cell for UpComingtrip resort details *****//
             if indexPath.section == 0 && indexPath.row == 0 && Constant.MyClassConstants.isShowAvailability == true {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.novailabilityCell, for: indexPath)
                 cell.tag = indexPath.section
+               
                 DispatchQueue.main.asyncAfter(deadline: .now() + 5.0, execute: {
                     
                     UIView.animate(withDuration: 2, delay: 0, options: UIViewAnimationOptions(rawValue: 0), animations: {
                         
                         Constant.MyClassConstants.isShowAvailability = false
-                        //cell.contentView.frame.size.height = 50.0
+                        cell.contentView.frame.size.height = 50.0
                         self.searchResultTableView.reloadData()
                     }, completion: nil)
                 })
@@ -1371,13 +1379,12 @@ extension SearchResultViewController:UITableViewDataSource {
         
         //***** Return number of rows in section required in tableview *****//
         if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
-
             
             if(section == 0 && exactMatchResortsArrayExchange.count == 0 || section == 1){
                 return surroundingMatchResortsArrayExchange .count
             }else{
                 if Constant.MyClassConstants.isShowAvailability == true && section == 0 {
-                    return exactMatchResortsArrayExchange.count
+                    return exactMatchResortsArrayExchange.count + 1
                     
                 } else {
                     return exactMatchResortsArrayExchange.count
@@ -1390,7 +1397,7 @@ extension SearchResultViewController:UITableViewDataSource {
                 return surroundingMatchResortsArray.count
             }else{
                 if Constant.MyClassConstants.isShowAvailability == true && section == 0 {
-                    return exactMatchResortsArray.count
+                    return exactMatchResortsArray.count + 1
                     
                 } else {
                     return exactMatchResortsArray.count

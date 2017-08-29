@@ -184,7 +184,7 @@ class SortingViewController: UIViewController {
                 exchangeSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
                 
                 
-                exchangeSearchCriteria.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]//Constant.MyClassConstants.relinquishmentIdArray as? [String]
+                exchangeSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
                 
                 Helper.helperDelegate = self
                 
