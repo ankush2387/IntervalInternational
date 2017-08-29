@@ -312,49 +312,87 @@ class RelinquishmentSelectionViewController: UIViewController {
     }
     func addClubPointButtonPressed(_ sender:IUIKButton) {
         Constant.MyClassConstants.relinquishmentSelectedWeek = pointOpenWeeksArray[sender.tag]
-        Helper.addServiceCallBackgroundView(view: self.view)
-        SVProgressHUD.show()
-        Constant.MyClassConstants.matrixDataArray.removeAllObjects()
-        DirectoryClient.getResortClubPointsChart(UserContext.sharedInstance.accessToken, resortCode:  (Constant.MyClassConstants.relinquishmentSelectedWeek.resort?.resortCode)!, onSuccess:{ (ClubPointsChart) in
+        let pointsMatrix = OpenWeek()
+        if(pointsMatrix.pointsMatrix == false){
             
-            Constant.MyClassConstants.selectionType = 1
-            Helper.removeServiceCallBackgroundView(view: self.view)
-            SVProgressHUD.dismiss()
-            Constant.MyClassConstants.matrixType = ClubPointsChart.type!
-            Constant.MyClassConstants.matrixDescription =
-                ClubPointsChart.matrices[0].description!
-            if(Constant.MyClassConstants.matrixDescription == Constant.MyClassConstants.matrixTypeSingle || Constant.MyClassConstants.matrixDescription == Constant.MyClassConstants.matrixTypeColor){
-                Constant.MyClassConstants.showSegment = false
+            print("false")
+            let storedata = OpenWeeksStorage()
+            let Membership = UserContext.sharedInstance.selectedMembership
+            let relinquishmentList = TradeLocalData()
+            
+            let selectedOpenWeek = OpenWeeks()
+            selectedOpenWeek.weekNumber = Constant.MyClassConstants.relinquishmentSelectedWeek.weekNumber!
+            selectedOpenWeek.relinquishmentID = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!
+            selectedOpenWeek.relinquishmentYear = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentYear!
+            
+            let resort = ResortList()
+            resort.resortName = (Constant.MyClassConstants.relinquishmentSelectedWeek.resort?.resortName)!
+            
+            
+            selectedOpenWeek.resort.append(resort)
+            relinquishmentList.openWeeks.append(selectedOpenWeek)
+            storedata.openWeeks.append(relinquishmentList)
+            storedata.membeshipNumber = Membership!.memberNumber!
+            let realm = try! Realm()
+            try! realm.write {
+                realm.add(storedata)
+            }
+            
+            if(Constant.RunningDevice.deviceIdiom == .pad){
+                self.dismiss(animated: true, completion: nil)
             }else{
-                Constant.MyClassConstants.showSegment = true
+                _ = self.navigationController?.popViewController(animated: true)
             }
-            for matrices in ClubPointsChart.matrices {
-                let pointsDictionary = NSMutableDictionary()
-                for grids in matrices.grids {
-                    
-                    Constant.MyClassConstants.fromdatearray.add(grids.fromDate!)
-                    Constant.MyClassConstants.todatearray.add(grids.toDate!)
-                    
-                    for rows in grids.rows
-                    {
-                        Constant.MyClassConstants.labelarray.add(rows.label!)
-                    }
-                    let dictKey = "\(grids.fromDate!) - \(grids.toDate!)"
-                    pointsDictionary.setObject(grids.rows, forKey: String(describing: dictKey) as NSCopying)
+            
+            
+        }
+        else{
+            
+            Helper.addServiceCallBackgroundView(view: self.view)
+            SVProgressHUD.show()
+            Constant.MyClassConstants.matrixDataArray.removeAllObjects()
+            DirectoryClient.getResortClubPointsChart(UserContext.sharedInstance.accessToken, resortCode:  (Constant.MyClassConstants.relinquishmentSelectedWeek.resort?.resortCode)!, onSuccess:{ (ClubPointsChart) in
+                
+                Constant.MyClassConstants.selectionType = 1
+                Helper.removeServiceCallBackgroundView(view: self.view)
+                SVProgressHUD.dismiss()
+                Constant.MyClassConstants.matrixType = ClubPointsChart.type!
+                Constant.MyClassConstants.matrixDescription =
+                    ClubPointsChart.matrices[0].description!
+                if(Constant.MyClassConstants.matrixDescription == Constant.MyClassConstants.matrixTypeSingle || Constant.MyClassConstants.matrixDescription == Constant.MyClassConstants.matrixTypeColor){
+                    Constant.MyClassConstants.showSegment = false
+                }else{
+                    Constant.MyClassConstants.showSegment = true
                 }
-                Constant.MyClassConstants.matrixDataArray.add(pointsDictionary)
-            }
-            
-            let storyboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
-            let clubPointselectionViewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.clubPointSelectionViewController)as? ClubPointSelectionViewController
-            self.navigationController?.pushViewController(clubPointselectionViewController!, animated: true)
-            
-        }, onError:{ (error) in
-            
-            Helper.removeServiceCallBackgroundView(view: self.view)
-            SVProgressHUD.dismiss()
-            print(error.description)
-        })
+                for matrices in ClubPointsChart.matrices {
+                    let pointsDictionary = NSMutableDictionary()
+                    for grids in matrices.grids {
+                        
+                        Constant.MyClassConstants.fromdatearray.add(grids.fromDate!)
+                        Constant.MyClassConstants.todatearray.add(grids.toDate!)
+                        
+                        for rows in grids.rows
+                        {
+                            Constant.MyClassConstants.labelarray.add(rows.label!)
+                        }
+                        let dictKey = "\(grids.fromDate!) - \(grids.toDate!)"
+                        pointsDictionary.setObject(grids.rows, forKey: String(describing: dictKey) as NSCopying)
+                    }
+                    Constant.MyClassConstants.matrixDataArray.add(pointsDictionary)
+                }
+                
+                let storyboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
+                let clubPointselectionViewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.clubPointSelectionViewController)as? ClubPointSelectionViewController
+                self.navigationController?.pushViewController(clubPointselectionViewController!, animated: true)
+                
+            }, onError:{ (error) in
+                
+                Helper.removeServiceCallBackgroundView(view: self.view)
+                SVProgressHUD.dismiss()
+                print(error.description)
+            })
+        }
+
     }
     func addAvailablePoinButtonPressed(_ sender:IUIKButton) {
         if(sender.tag == 0){

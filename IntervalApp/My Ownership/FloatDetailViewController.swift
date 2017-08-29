@@ -20,6 +20,7 @@ class FloatDetailViewController: UIViewController {
     
     // variable declaration
     var isKeyBoardOpen = false
+    var detailsStatusForFloat: Bool = false
     var moved: Bool = false
     var activeField:UITextField?
     var isFromLockOff = false
@@ -29,6 +30,8 @@ class FloatDetailViewController: UIViewController {
     var floatAttributesArray = NSMutableArray()
     var atrributesRowArray = NSMutableArray()
     var checkInDate = ""
+    var proceedStatus = false
+    
     
     /**
      PopcurrentViewcontroller from NavigationController
@@ -85,6 +88,7 @@ class FloatDetailViewController: UIViewController {
         
         self.navigationItem.leftBarButtonItem = menuButton
         getOrderedSections()
+        Constant.AdditionalUnitDetailsData.bedroomUnit.removeAll()
         
     }
     
@@ -126,6 +130,35 @@ class FloatDetailViewController: UIViewController {
             self.floatDetailsTableView.scrollIndicatorInsets = contentInsets
         }
     }
+    
+    // Check for FloatDetails.
+    
+    func checkForFloatDetails() ->Bool{
+        
+        if(Constant.AdditionalUnitDetailsData.clubresort != "" && Constant.FloatDetails.reservationNumber != "" && Constant.FloatDetails.unitNumber != "" && Constant.AdditionalUnitDetailsData.bedroomUnit != "" ){
+            
+            if(proceedStatus) {
+                
+                proceedStatus = true
+                //floatDetailsTableView.reloadData()
+
+            }
+            else {
+                
+                
+            }
+        }
+        else{
+           proceedStatus = false
+        }
+        
+    
+    
+    return proceedStatus
+    
+    }
+    
+    
     
     //adding done button on keyboard type numberPad
     func addDoneButtonOnNumpad(textField: UITextField) {
@@ -196,20 +229,24 @@ class FloatDetailViewController: UIViewController {
         }
         
         //API call for update fix week reservation
-       let fixedWeekReservation = FixWeekReservation()
-        
+        let fixedWeekReservation = FixWeekReservation()
+        var myComponents: DateComponents
+   
         let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-        let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate)
-        let year = String(describing: myComponents.year!)
-        var month = String(describing: myComponents.month!)
-        if(month.characters.count == 1){
-            month = month.appending("0")
+        if(Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate == nil){
+            
+        }else{
+        myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate)
+            let year = String(describing: myComponents.year!)
+            var  month = String(describing: myComponents.month!)
+            if(month.characters.count == 1){
+                month = month.appending("0")
+            }
+            let day   = myComponents.day!
+            fixedWeekReservation.checkInDate = "\(year)-\(month)-\(day)"//checkInDate
+
         }
-        let day   = myComponents.day!
-        
-        
-        
-        fixedWeekReservation.checkInDate = "\(year)-\(month)-\(day)"//checkInDate
+
         fixedWeekReservation.reservationNumber = Constant.FloatDetails.reservationNumber
         fixedWeekReservation.weekNumber = Constant.MyClassConstants.relinquishmentSelectedWeek.weekNumber!
         
@@ -486,6 +523,10 @@ extension FloatDetailViewController : UITableViewDataSource{
                 combination.append(textValueString)
                 
                 selectClubresortcell.selectResortLabel.attributedText = combination
+                proceedStatus = true
+                Constant.AdditionalUnitDetailsData.clubresort = "Club Resort"
+                detailsStatusForFloat = checkForFloatDetails()
+            
             }
             return selectClubresortcell!
             
@@ -511,13 +552,15 @@ extension FloatDetailViewController : UITableViewDataSource{
                 if(Constant.MyClassConstants.selectedFloatWeek.floatDetails.count > 0){
                     registrationNumbercell.resortAttributeLabel.text = Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].unitSize
                 }
-                
-                
-                if(Constant.MyClassConstants.savedBedroom != ""){
+                registrationNumbercell.resortAttributeLabel.text  = Constant.MyClassConstants.savedBedroom
+                if (Constant.MyClassConstants.savedBedroom != "") {
                     
                     registrationNumbercell.resortAttributeLabel.text  = Constant.MyClassConstants.savedBedroom
-
+                    proceedStatus = true
+                    Constant.AdditionalUnitDetailsData.bedroomUnit = Constant.MyClassConstants.savedBedroom
                 }
+                
+                
                
                 registrationNumbercell.resortAttributeLabel.placeholder = Constant.textFieldTitles.numberOfBedrooms
                 
@@ -525,6 +568,7 @@ extension FloatDetailViewController : UITableViewDataSource{
                 if(Constant.ControllerTitles.selectedControllerTitle != Constant.storyboardControllerID.floatViewController){
                     registrationNumbercell.viewButton.addTarget(self, action: #selector(self.selectBedroom(_sender:)), for: .touchUpInside)
                 }
+                detailsStatusForFloat = checkForFloatDetails()
                 return registrationNumbercell
                 
             case Constant.MyClassConstants.checkInDateAttribute:
@@ -571,7 +615,19 @@ extension FloatDetailViewController : UITableViewDataSource{
             
         case Constant.MyClassConstants.saveAttribute:
             saveandcancelCell = tableView.dequeueReusableCell(withIdentifier: Constant.floatDetailViewController.saveandcancelcellIdentifier) as? FloatSaveAndCancelButtonTableViewCell
-            return saveandcancelCell!
+            
+            if(detailsStatusForFloat == true){
+                saveandcancelCell?.saveFloatDetailButton.alpha =  1.0
+                //saveandcancelCell?.saveFloatDetailButton.isEnabled = true
+                return saveandcancelCell!
+
+            }
+            else{
+                saveandcancelCell?.saveFloatDetailButton.alpha = 0.35
+                return saveandcancelCell!
+            }
+            
+            
             
         default:
             resortcallCell  = tableView.dequeueReusableCell(withIdentifier: Constant.floatDetailViewController.resortcallidentifer) as? CallYourResortTableViewCell
@@ -664,8 +720,8 @@ extension FloatDetailViewController : UITextFieldDelegate{
         self.activeField?.resignFirstResponder()
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+       
         
-        print(string)
         if (range.length == 1 && string.characters.count == 0) {
             print("backspace tapped")
         }
@@ -674,20 +730,27 @@ extension FloatDetailViewController : UITextFieldDelegate{
                     
                 if (range.length == 1 && string.characters.count == 0) {
                     Constant.FloatDetails.reservationNumber.characters.removeLast()
+                    proceedStatus = false
                 }
                 else {
                     Constant.FloatDetails.reservationNumber = "\(textField.text!)\(string)"
+                    proceedStatus = true
                 }
+                detailsStatusForFloat = checkForFloatDetails()
                 return true
                 
             }else {
                 
                 if (range.length == 1 && string.characters.count == 0) {
-                    Constant.FloatDetails.unitNumber.characters.removeLast()
+                    Constant.FloatDetails.unitNumber.characters.removeAll()
+                    proceedStatus = false
                 }
                 else {
                     Constant.FloatDetails.unitNumber = "\(textField.text!)\(string)"
+                    proceedStatus = true
                 }
+                detailsStatusForFloat = checkForFloatDetails()
+                floatDetailsTableView.reloadData()
                 return true
             }
         

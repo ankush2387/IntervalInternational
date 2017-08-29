@@ -1029,7 +1029,7 @@ extension WhoWillBeCheckingInViewController:UITextFieldDelegate {
                         Constant.GetawaySearchResultGuestFormDetailData.firstName = "\(textField.text!)\(string)"
                     }
                     
-                    let vfnm =  self.validateUsername(str: Constant.GetawaySearchResultGuestFormDetailData.firstName)
+                     let vfnm =  self.validateUsername(str: Constant.GetawaySearchResultGuestFormDetailData.firstName)
                     if(vfnm || Constant.GetawaySearchResultGuestFormDetailData.firstName.characters.count == 0) {
                         
                         proceedStatus = true

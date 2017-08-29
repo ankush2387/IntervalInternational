@@ -53,9 +53,10 @@ class ClubPointSelectionViewController: UIViewController {
     
     let infoImageView = UIImageView()
     var labelsCollectionView:UICollectionView!
+    var clublabel:String = ""
     var clubIntervalValuesCollectionView:UICollectionView!
     
-    
+   
     var testArr = [1]
     var firstCheckedCheckBoxTag = 0
     var secondCheckedCheckBoxTag = 0
@@ -107,8 +108,6 @@ class ClubPointSelectionViewController: UIViewController {
         
         travelingDetailView.backgroundColor = UIColor(red: 255/255.0, green: 255/255.0, blue: 255.0/255.0, alpha: 1.0)
         indisefirstview.backgroundColor = UIColor(red: 255/255.0, green: 255/255.0, blue: 255.0/255.0, alpha: 1.0)
-        //firstdiffrencelabel.textColor = UIColor(red: 0/255.0, green: 143/255.0, blue: 198/255.0, alpha: 1.0)
-        //seconddiffrencelabel.textColor = UIColor(red: 255/255.0, green: 255/255.0, blue: 255.0/255.0, alpha: 1.0)
         
         startdatefirstbtn.textColor = UIColor(red: 0/255.0, green: 143/255.0, blue: 198/255.0, alpha: 1.0)
         startmonthfirstbtn.textColor = UIColor(red: 0/255.0, green: 143/255.0, blue: 198/255.0, alpha: 1.0)
@@ -124,6 +123,45 @@ class ClubPointSelectionViewController: UIViewController {
     
     //Function for done button click
     @IBAction func doneButtonClicked(_ sender:IUIKButton){
+        
+        let relinquishmentID: String
+        relinquishmentID = "eD8O5PvNvjgEANyRGyCWlSp1mzAcJlqpEj2GLtKHvcQ"
+            //Constant.MyClassConstants.realmOpenWeeksID as? [String]
+        
+        let pointMatrixType = PointsMatrixReservation()
+        pointMatrixType.clubPointsMatrixType = Constant.MyClassConstants.matrixType
+        pointMatrixType.clubPointsMatrixDescription = Constant.MyClassConstants.matrixDescription
+        pointMatrixType.clubPointsMatrixGridRowLabel = Constant.MyClassConstants.labelarray[0] as? String
+        print(Constant.MyClassConstants.fromdatearray[0])
+        pointMatrixType.fromDate = Constant.MyClassConstants.fromdatearray[0] as? String
+        pointMatrixType.toDate = Constant.MyClassConstants.todatearray[0] as? String
+        
+        let units = Constant.MyClassConstants.relinquishmentOpenWeeks
+        
+        
+        for unit in units
+        {
+            
+            
+            let invenUnit:InventoryUnit = InventoryUnit()
+                invenUnit.unitSize = unit.unit?.unitSize
+                invenUnit.clubPoints = (unit.unit?.clubPoints)!
+            
+                pointMatrixType.unit = invenUnit
+            
+        
+        }
+        
+        
+        
+         ExchangeClient.updatePointsMatrixReservation(UserContext.sharedInstance.accessToken, relinquishmentId: relinquishmentID, reservation: pointMatrixType, onSuccess: {(response) in
+            print(response)
+            
+         },onError:{ (error) in
+            
+          print(error)
+         })
+
         
     }
     
@@ -714,7 +752,7 @@ extension ClubPointSelectionViewController:UICollectionViewDataSource{
                     let formatter = numberFormatter
                     formatter.numberStyle = .decimal
                     formatter.maximumFractionDigits = 0
-                    contentCell.contentLabel.text = formatter.string(from: labelUnitArray[indexPath.section] as! NSNumber)
+                   contentCell.contentLabel.text = formatter.string(from: labelUnitArray[indexPath.section] as! NSNumber)
                     
                 }
                 contentCell.checkButton.tag = Int("\(indexPath.section )\(indexPath.row)")!
