@@ -54,7 +54,7 @@ class VacationSearchResultIPadController: UIViewController {
     @IBAction func searchBothExchangeClicked(_ sender: UIControl) {
     }
     
-
+    // Function for header animation
     func runTimer()  {
         UIView.animate(withDuration: 1, delay: 0, options: UIViewAnimationOptions(rawValue: 0), animations: {
             

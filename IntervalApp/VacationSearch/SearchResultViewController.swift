@@ -58,7 +58,6 @@ class SearchResultViewController: UIViewController {
     
     func runTimer()  {
         UIView.animate(withDuration: 1, delay: 0, options: UIViewAnimationOptions(rawValue: 0), animations: {
-            
             Constant.MyClassConstants.isShowAvailability = false
             self.searchResultTableView.reloadData()
         }, completion: nil)
@@ -249,6 +248,8 @@ class SearchResultViewController: UIViewController {
                             SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                     }
                 )
+            }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isCombined()){
+                
             }else{
                 
                 // Update CheckInFrom and CheckInTo dates
@@ -266,18 +267,10 @@ class SearchResultViewController: UIViewController {
                                             
                                             Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                             
-                                            //expectation.fulfill()
-                                            
                                             // Check not available checkIn dates for the active interval
                                             if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                                                //self.showNotAvailabilityResults()
+                                                Helper.showNotAvailabilityResults()
                                                 
-                                            } else {
-                                                //let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.getCheckInDateForInitialSearch()
-                                                
-                                                //Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self , vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-                                                
-                                                //Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate:response.checkInDates[0], senderViewController: self , vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                             }
                                             Constant.MyClassConstants.calendarDatesArray.removeAll()
                                             
@@ -289,17 +282,8 @@ class SearchResultViewController: UIViewController {
                                            onError:{ (error) in
                                             
                                             SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
-                                            DarwinSDK.logger.error("Error Code: \(error.code)")
-                                            DarwinSDK.logger.error("Error Description: \(error.description)")
-                                            
-                                            // TODO: Handle SDK/API errors
-                                            DarwinSDK.logger.error("Handle SDK/API errors.")
-                                            
-                                            //expectation.fulfill()
                 }
                 )
-                
-                
             }
         }else {
             
@@ -333,45 +317,6 @@ class SearchResultViewController: UIViewController {
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
         
         _ = self.navigationController?.popViewController(animated: true)
-    }
-    
-    func moreButtonClicked(_ toDate: Date, fromDate: Date, index: String){
-        self.enablePreviousMore = enableDisablePreviousMoreButton(Constant.MyClassConstants.left as NSString)
-        self.enableNextMore = enableDisablePreviousMoreButton(Constant.MyClassConstants.right as NSString)
-        SVProgressHUD.show()
-        let searchDateRequest = RentalSearchDatesRequest()
-        searchDateRequest.checkInToDate = toDate
-        searchDateRequest.checkInFromDate = fromDate
-        
-        Constant.MyClassConstants.currentToDate = toDate
-        Constant.MyClassConstants.currentFromDate = fromDate
-        searchDateRequest.destinations = Helper.getAllDestinationFromLocalStorage()
-        searchDateRequest.resorts = Helper.getAllResortsFromLocalStorage()
-        Helper.addServiceCallBackgroundView(view: self.view)
-        RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: searchDateRequest, onSuccess:{ (searchDates) in
-            SVProgressHUD.dismiss()
-            Helper.removeServiceCallBackgroundView(view: self.view)
-            if(searchDates.checkInDates.count == 0){
-                if(index == Constant.MyClassConstants.first){
-                    self.enablePreviousMore = false
-                }else{
-                    self.enableNextMore = false
-                }
-                self.searchResultColelctionView.reloadData()
-            }
-            Constant.MyClassConstants.checkInDates = Constant.MyClassConstants.checkInDates + searchDates.checkInDates
-            
-            Constant.MyClassConstants.checkInDates = Constant.MyClassConstants.checkInDates.sorted( by: { (first, second ) -> Bool in
-                
-                return first.timeIntervalSince1970 < second.timeIntervalSince1970
-            })
-            
-            self.searchResultColelctionView.reloadData()
-            
-        }) { (error) in
-            Helper.removeServiceCallBackgroundView(view: self.view)
-            SVProgressHUD.dismiss()
-        }
     }
     
     func resortDetailsClicked(_ toDate: Date){
@@ -568,12 +513,9 @@ class SearchResultViewController: UIViewController {
             Constant.MyClassConstants.exchangeBookingLastStartedProcess = processResort
             Constant.MyClassConstants.exchangeProcessStartResponse = response
             Constant.MyClassConstants.exchangeViewResponse = response.view!
-            //Constant.MyClassConstants.rentalFees = [(response.view?.fees)!]
             Constant.MyClassConstants.guestCertificate = response.view?.fees?.guestCertificate
             Constant.MyClassConstants.onsiteArray.removeAllObjects()
             Constant.MyClassConstants.nearbyArray.removeAllObjects()
-            //cell?.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
-            
             
             for amenity in (response.view?.destination?.resort?.amenities)!{
                 if(amenity.nearby == false){
@@ -656,7 +598,9 @@ class SearchResultViewController: UIViewController {
         }
         
         if(indexPath.row <= Constant.MyClassConstants.calendarDatesArray.count){
-            searchResultColelctionView.reloadItems(at: [indexPath])
+            if(searchResultColelctionView != nil){
+                //searchResultColelctionView.reloadItems(at: [indexPath])
+            }
         }
     }
     
@@ -1070,23 +1014,23 @@ extension SearchResultViewController:UICollectionViewDataSource {
                     }else{
                         cell.backgroundColor = IUIKColorPalette.primary1.color
                     }
-                    cell.dateLabel.textColor = UIColor.white
-                    cell.daynameWithyearLabel.textColor = UIColor.white
-                    cell.monthYearLabel.textColor = UIColor.white
+                    //cell.dateLabel.textColor = UIColor.white
+                    //cell.daynameWithyearLabel.textColor = UIColor.white
+                    //cell.monthYearLabel.textColor = UIColor.white
 
                 }
                 else {
                     cell.backgroundColor = UIColor.white
-                    cell.dateLabel.textColor = IUIKColorPalette.primary1.color
-                    cell.daynameWithyearLabel.textColor = IUIKColorPalette.primary1.color
-                    cell.monthYearLabel.textColor = IUIKColorPalette.primary1.color
+                    //cell.dateLabel.textColor = IUIKColorPalette.primary1.color
+                    //cell.daynameWithyearLabel.textColor = IUIKColorPalette.primary1.color
+                    //cell.monthYearLabel.textColor = IUIKColorPalette.primary1.color
                 }
                 cell.layer.cornerRadius = 7
                 cell.layer.borderWidth = 2
                 cell.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
                 cell.layer.masksToBounds = true
                 
-                cell.setSingleDateItems(index: indexPath.item)
+                //cell.setSingleDateItems(index: indexPath.item)
                 return cell
             }
             
@@ -1361,7 +1305,7 @@ extension SearchResultViewController:UITableViewDataSource {
             }else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.availabilityCell, for: indexPath) as! SearchTableViewCell
                 cell.tag = indexPath.section
-                if (Constant.MyClassConstants.isShowAvailability == true){
+                if (Constant.MyClassConstants.isShowAvailability == true && indexPath.section == 0){
                     cell.resortInfoCollectionView.tag = indexPath.row - 1
                     print("----------->>>>>>>>1", cell.resortInfoCollectionView.tag)
                 } else {

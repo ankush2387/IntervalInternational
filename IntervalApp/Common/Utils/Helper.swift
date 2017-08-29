@@ -1185,7 +1185,7 @@ public class Helper{
         let detailLabel = UILabel()
         
         
-        noResortView.frame = CGRect(x: 0, y: 150, width: (UIScreen.main.bounds.width) - 40, height: Constant.MyClassConstants.runningDeviceHeight!/3)
+        noResortView.frame = CGRect(x: 0, y: 150, width: (UIScreen.main.bounds.width), height: Constant.MyClassConstants.runningDeviceHeight!/3)
         noResortView.backgroundColor = UIColor(red: 209.0/255.0, green: 226.0/255.0, blue: 237.0/255.0, alpha: 1.0)
         senderView.addSubview(noResortView)
         
@@ -1875,6 +1875,7 @@ public class Helper{
     }
     
     static func showNotAvailabilityResults() {
+        Constant.MyClassConstants.noAvailabilityView = true
         DarwinSDK.logger.info("Show the Not Availability Screen.")
     }
     

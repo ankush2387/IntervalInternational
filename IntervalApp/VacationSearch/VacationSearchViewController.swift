@@ -1510,6 +1510,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                             // Check not available checkIn dates for the active interval
                             if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
                                 self.showNotAvailabilityResults()
+                                self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
                             }else{
                                 Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
                                 Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate:  Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
@@ -1565,7 +1566,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                         travelPartyInfo.children = Int(self.childCounter)
                         
                         Constant.MyClassConstants.travelPartyInfo = travelPartyInfo
-                        rentalSearchCriteria.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]//Constant.MyClassConstants.relinquishmentIdArray as? [String]
+                        rentalSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
                         rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                         rentalSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
                         rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
@@ -1592,7 +1593,9 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                 Helper.executeExchangeSearchDates(senderVC: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                             }else{
                                 Helper.hideProgressBar(senderView: self)
-                                Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
+                                if(response.checkInDates.count>0){
+                                    Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
+                                }
                                 let vacationSearchInitialDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
                                 Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearchInitialDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                             }
@@ -1622,6 +1625,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
     
     // Get data from local storage
     func getSavedDestinationsResorts(storedData:Results <RealmLocalStorage>, searchCriteria:VacationSearchCriteria){
+        Constant.MyClassConstants.filteredIndex = 0
         if((storedData.first?.destinations.count)! > 0){
             let destination = AreaOfInfluenceDestination()
             destination.destinationName  = storedData[0].destinations[0].destinationName
