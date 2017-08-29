@@ -1249,15 +1249,15 @@ extension SearchResultViewController:UITableViewDelegate {
             
             if indexPath.row == 0 && Constant.MyClassConstants.isShowAvailability == true {
                 return 110
-            }else {
+            }else{
                 if Constant.MyClassConstants.isShowAvailability == true {
                     let index = indexPath.row - 1
                     if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
                         let totalUnits = self.exactMatchResortsArrayExchange[index].inventory?.buckets.count
                         return CGFloat(totalUnits!*80 + 300)
                     }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
-                            let totalUnits = self.exactMatchResortsArray[index].inventory?.units.count
-                            return CGFloat(totalUnits!*80 + 300)
+                        let totalUnits = self.exactMatchResortsArray[index].inventory?.units.count
+                        return CGFloat(totalUnits!*80 + 300)
                     }else{
                         if(combinedExactSearchItems[index].hasRentalAvailability()){
                             let rentalInventory = combinedExactSearchItems[index].rentalAvailability
@@ -1270,8 +1270,8 @@ extension SearchResultViewController:UITableViewDelegate {
                             return CGFloat(totalUnits!*80 + 300)
                         }
                     }
-                    
                 }else {
+                    
                     if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
                         let totalUnits = self.exactMatchResortsArrayExchange[indexPath.row].inventory?.buckets.count
                         return CGFloat(totalUnits!*80 + 300)
@@ -1291,12 +1291,9 @@ extension SearchResultViewController:UITableViewDelegate {
                             return CGFloat(totalUnits!*80 + 300)
                         }
                     }
-                    
                 }
             }
-            }
-        
-        else{
+        }else{
             
             if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
                 let totalUnits = self.surroundingMatchResortsArray[indexPath.row].inventory?.units.count
@@ -1313,6 +1310,7 @@ extension SearchResultViewController:UITableViewDelegate {
                     return CGFloat(totalUnits!*80 + 320)
                 }
             }
+            
         }
     }
 }

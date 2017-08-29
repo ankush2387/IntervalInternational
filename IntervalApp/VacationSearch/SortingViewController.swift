@@ -168,9 +168,7 @@ class SortingViewController: UIViewController {
                     Helper.hideProgressBar(senderView: self)
                     Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch:vacationSearchFilter)
                     
-                })
-                    
-                { (error) in
+                }){ (error) in
                     
                     Helper.hideProgressBar(senderView: self)
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
@@ -230,8 +228,8 @@ class SortingViewController: UIViewController {
                 
             } else{
                 
-                Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]//Constant.MyClassConstants.relinquishmentIdArray as? [String]
-                bothSearchCriteria.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]
+                Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.relinquishmentsIds = (Constant.MyClassConstants.relinquishmentIdArray as? [String])!
+                bothSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
                 bothSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
                 bothSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                 Helper.helperDelegate = self
