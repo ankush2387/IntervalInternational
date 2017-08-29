@@ -13,7 +13,7 @@ import SDWebImage
 import SVProgressHUD
 import RealmSwift
 
-class SearchResultViewController: UIViewController, sortingOptionDelegate {
+class SearchResultViewController: UIViewController {
     
      var selectedIndex = -1
     
@@ -619,7 +619,6 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
     @IBAction func sortByNameButtonPressed(_ sender: UIButton) {
         
         let viewController = self.storyboard?.instantiateViewController(withIdentifier: Constant.storyboardControllerID.sortingViewController) as! SortingViewController
-        viewController.delegate = self
         viewController.selectedSortingIndex = Constant.MyClassConstants.sortingIndex
         self.present(viewController, animated: true, completion: nil)
 
@@ -629,7 +628,6 @@ class SearchResultViewController: UIViewController, sortingOptionDelegate {
     @IBAction func filterByNameButtonPressed(_ sender: Any) {
         
         let viewController = self.storyboard?.instantiateViewController(withIdentifier: Constant.storyboardControllerID.sortingViewController) as! SortingViewController
-        viewController.delegate = self
         viewController.isFilterClicked = true
         viewController.resortNameArray = Constant.MyClassConstants.resortsArray
         viewController.selectedIndex = Constant.MyClassConstants.filteredIndex
