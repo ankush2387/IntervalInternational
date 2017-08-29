@@ -599,7 +599,7 @@ class SearchResultViewController: UIViewController {
         
         if(indexPath.row <= Constant.MyClassConstants.calendarDatesArray.count){
             if(searchResultColelctionView != nil){
-                //searchResultColelctionView.reloadItems(at: [indexPath])
+                searchResultColelctionView.reloadItems(at: [indexPath])
             }
         }
     }
