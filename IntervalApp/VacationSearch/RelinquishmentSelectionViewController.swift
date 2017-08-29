@@ -313,7 +313,7 @@ class RelinquishmentSelectionViewController: UIViewController {
     func addClubPointButtonPressed(_ sender:IUIKButton) {
         Constant.MyClassConstants.relinquishmentSelectedWeek = pointOpenWeeksArray[sender.tag]
         let pointsMatrix = OpenWeek()
-        if(pointsMatrix.pointsMatrix == true){
+        if(pointsMatrix.pointsMatrix == false){
             
             print("false")
             let storedata = OpenWeeksStorage()
