@@ -31,6 +31,7 @@ class VacationSearchResultIPadController: UIViewController {
     var alertView = UIView()
     let headerVw = UIView()
     let titleLabel = UILabel()
+    var timer = Timer()
     var cellHeight = 80
     var selectedIndex = 0
     var selectedUnitIndex = 0
@@ -54,7 +55,15 @@ class VacationSearchResultIPadController: UIViewController {
     }
     
 
-    
+    func runTimer()  {
+        UIView.animate(withDuration: 1, delay: 0, options: UIViewAnimationOptions(rawValue: 0), animations: {
+            
+            Constant.MyClassConstants.isShowAvailability = false
+            self.resortDetailTBLView.reloadData()
+        }, completion: nil)
+        
+        timer.invalidate()
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         
@@ -510,6 +519,7 @@ func enableDisablePreviousMoreButtoniPad(_ position : String) -> Bool {
         return false
     }
 }
+
 
 //Extension for Collection View
 extension VacationSearchResultIPadController:UICollectionViewDelegate {
@@ -1146,10 +1156,7 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
                         let inventory = combinedSurroundingSearchItems[collectionView.tag].rentalAvailability
                         cell.setDataForBothInventoryType(invetoryItem: inventory!, indexPath: indexPath)
                         
-                        
                         return cell
-                        
-                        
                         
                     }else if(collectionView.superview?.superview?.tag == 0){
                         
@@ -1266,6 +1273,7 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
                     
                 }
             }
+            
         }else{
             
             if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Combined){
@@ -1295,6 +1303,7 @@ extension VacationSearchResultIPadController:UITableViewDelegate {
     }
 }
 
+
 extension VacationSearchResultIPadController:UITableViewDataSource {
     
     //***** UITableview dataSource methods definition here *****//
@@ -1311,7 +1320,9 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 deletedRowIndexPath.row = 0
                 deletedRowIndexPath.section = 0
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 5.0, execute: {
+                timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector:#selector(runTimer), userInfo: nil, repeats: false)
+                
+               /* DispatchQueue.main.asyncAfter(deadline: .now() + 5.0, execute: {
                     
                     UIView.animate(withDuration: 5, delay: 2, options: UIViewAnimationOptions(rawValue: 0), animations: {
                         
@@ -1319,7 +1330,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                         //cell.contentView.frame.size.height = 50.0
                         self.resortDetailTBLView.reloadData()
                     }, completion: nil)
-                })
+                })*/
                 return cell
                 
             } else {
@@ -1423,6 +1434,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 }
             }
         }
+        
         headerLabel.textColor = UIColor.white
         headerView.addSubview(headerLabel)
         

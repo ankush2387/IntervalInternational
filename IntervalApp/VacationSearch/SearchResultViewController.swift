@@ -36,9 +36,8 @@ class SearchResultViewController: UIViewController {
     var cellHeight = 50
     var selectedSection = 0
     var selectedRow = 0
-
+    var timer = Timer()
     var bucketIndex = 0
-
     var vacationSearch = VacationSearch()
     var exactMatchResortsArray = [Resort]()
     var surroundingMatchResortsArray = [Resort]()
@@ -49,11 +48,22 @@ class SearchResultViewController: UIViewController {
     var dateCellSelectionColor = Constant.CommonColor.blueColor
     var myActivityIndicator = UIActivityIndicatorView()
     
+    
 
     // sorting optionDelegate call
     
     func selectedOptionis(filteredValueIs:String, indexPath:NSIndexPath, isFromFiltered:Bool) {
         
+    }
+    
+    func runTimer()  {
+        UIView.animate(withDuration: 1, delay: 0, options: UIViewAnimationOptions(rawValue: 0), animations: {
+            
+            Constant.MyClassConstants.isShowAvailability = false
+            self.searchResultTableView.reloadData()
+        }, completion: nil)
+        
+        timer.invalidate()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -240,6 +250,7 @@ class SearchResultViewController: UIViewController {
                     }
                 )
             }else{
+                
                 // Update CheckInFrom and CheckInTo dates
                 Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.checkInFromDate = Helper.convertStringToDate(dateString:calendarItem.intervalStartDate!,format:Constant.MyClassConstants.dateFormat)
                 Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.checkInToDate = Helper.convertStringToDate(dateString:calendarItem.intervalEndDate!,format:Constant.MyClassConstants.dateFormat)
@@ -1335,8 +1346,10 @@ extension SearchResultViewController:UITableViewDataSource {
             if indexPath.section == 0 && indexPath.row == 0 && Constant.MyClassConstants.isShowAvailability == true {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.novailabilityCell, for: indexPath)
                 cell.tag = indexPath.section
+                
+                 timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector:#selector(runTimer), userInfo: nil, repeats: false)
                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 5.0, execute: {
+               /* DispatchQueue.main.asyncAfter(deadline: .now() + 5.0, execute: {
                     
                     UIView.animate(withDuration: 2, delay: 0, options: UIViewAnimationOptions(rawValue: 0), animations: {
                         
@@ -1344,7 +1357,7 @@ extension SearchResultViewController:UITableViewDataSource {
                         cell.contentView.frame.size.height = 50.0
                         self.searchResultTableView.reloadData()
                     }, completion: nil)
-                })
+                })*/
                 
                 return cell
             }else{
