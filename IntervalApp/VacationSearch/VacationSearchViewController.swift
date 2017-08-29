@@ -1480,7 +1480,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     
                     let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
                     
-                    exchangeSearchCriteria.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]//Constant.MyClassConstants.relinquishmentIdArray as? [String]
+                    exchangeSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
                     exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                     exchangeSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
                     exchangeSearchCriteria.searchType = VacationSearchType.Exchange
@@ -1517,7 +1517,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                         }, onError: { (error) in
                             sender.isEnabled = true
                             Helper.hideProgressBar(senderView: self)
-                            SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.noResultError)
+                            SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                         })
                     }
                     

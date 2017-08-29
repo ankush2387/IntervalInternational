@@ -1862,12 +1862,7 @@ public class Helper{
                                     //expectation.fulfill()
         },
                                    onError:{ (error) in
-                                    DarwinSDK.logger.error("Error Code: \(error.code)")
-                                    DarwinSDK.logger.error("Error Description: \(error.description)")
-                                    
-                                    // TODO: Handle SDK/API errors
-                                    DarwinSDK.logger.error("Handle SDK/API errors.")
-                                    
+                                    SimpleAlert.alert(senderVC, title: Constant.AlertErrorMessages.noResultError, message: error.localizedDescription)
                                     
         }
         )
