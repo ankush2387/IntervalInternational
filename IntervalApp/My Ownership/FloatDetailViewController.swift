@@ -618,7 +618,7 @@ extension FloatDetailViewController : UITableViewDataSource{
             
             if(detailsStatusForFloat == true){
                 saveandcancelCell?.saveFloatDetailButton.alpha =  1.0
-                //saveandcancelCell?.saveFloatDetailButton.isEnabled = true
+                saveandcancelCell?.saveFloatDetailButton.isEnabled = true
                 return saveandcancelCell!
 
             }
