@@ -545,7 +545,7 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
                                         
                                         // We do not have available CheckInDates in Rental and Exchange
                                         if (self.rentalHasNotAvailableCheckInDates) {
-                                            self.showNotAvailabilityResults()
+                                            Helper.showNotAvailabilityResults()
                                         }
                                         
                                     } else {
@@ -618,10 +618,6 @@ extension VacationSearchIPadViewController:DateAndPassengerSelectionTableViewCel
     func calendarIconClicked(_ sender:UIButton) {
         
         self.performSegue(withIdentifier: Constant.segueIdentifiers.CalendarViewSegue, sender: nil)
-    }
-    
-    func showNotAvailabilityResults() {
-        DarwinSDK.logger.info("Show the Not Availability Screen.")
     }
     
     func getSavedDestinationsResorts(storedData:Results <RealmLocalStorage>, searchCriteria:VacationSearchCriteria){
@@ -714,7 +710,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                             if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
                                 Helper.hideProgressBar(senderView: self)
                                 Helper.showScrollingCalendar(vacationSearch:  Constant.MyClassConstants.initialVacationSearch)
-                                self.showNotAvailabilityResults()
+                                Helper.showNotAvailabilityResults()
                                 self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
                             }else{
                                 Helper.hideProgressBar(senderView: self)
@@ -790,7 +786,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                                 
                                 // Check not available checkIn dates for the active interval
                                 if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                                    self.showNotAvailabilityResults()
+                                    Helper.showNotAvailabilityResults()
                                 }
                                 
                                 Helper.hideProgressBar(senderView: self)

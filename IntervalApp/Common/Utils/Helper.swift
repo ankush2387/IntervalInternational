@@ -1784,7 +1784,6 @@ public class Helper{
                                     Constant.MyClassConstants.noAvailabilityView = true
                                     Constant.MyClassConstants.isFromSorting = false
                                     hideProgressBar(senderView: senderViewController)
-                                    helperDelegate?.resortSearchComplete()
                                     SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
         }
         )
@@ -1873,6 +1872,10 @@ public class Helper{
         }
         )
         
+    }
+    
+    static func showNotAvailabilityResults() {
+        DarwinSDK.logger.info("Show the Not Availability Screen.")
     }
     
     static func showScrollingCalendar(vacationSearch:VacationSearch) {

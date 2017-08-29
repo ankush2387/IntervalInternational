@@ -41,15 +41,6 @@ class SortingViewController: UIViewController {
         
         self.title = Constant.ControllerTitles.sorting
         
-        //***** Add the cancel button  as left bar button item *****//
-        
-        /*let cancelButton = UIBarButtonItem(title: Constant.buttonTitles.cancel, style: .plain, target: self, action: #selector(cancelButtonPressed(_:)))
-
-        cancelButton.tintColor = UIColor.init(colorLiteralRed: 52.0/255.0, green: 152.0/255.0, blue: 200.0/255.0, alpha: 1.0)
-        self.navigationItem.rightBarButtonItem = cancelButton
-        
-        self.navigationController?.navigationBar.barTintColor = UIColor.white*/
-        
     }
     
     override func didReceiveMemoryWarning() {
@@ -156,24 +147,26 @@ class SortingViewController: UIViewController {
                     
                     // Check not available checkIn dates for the active interval
                     if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                       // Constant.MyClassConstants.initialVacationSearch = self.vacationSearch
                         Helper.showScrollingCalendar(vacationSearch: vacationSearchFilter)
                         
-                        //Helper.showNotAvailabilityResults()
+                        Helper.showNotAvailabilityResults()
                     }
                     
                     let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     Helper.helperDelegate = self
                     Helper.hideProgressBar(senderView: self)
-                    Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch:vacationSearchFilter)
+                    if(response.checkInDates.count > 0){
+                        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: response.checkInDates[0], senderViewController: self, vacationSearch:vacationSearchFilter)
+                    }else{
+                        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch:vacationSearchFilter)
+                    }
+                    
                     
                 }){ (error) in
                     
                     Helper.hideProgressBar(senderView: self)
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
-                    self.dismiss(animated: true, completion: nil)
-                    //self.resortDetailTBLView.reloadData()
                 }
                 
             } else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
@@ -205,23 +198,23 @@ class SortingViewController: UIViewController {
                         vacationSearchFilter.updateActiveInterval(activeInterval: activeInterval)
                         Helper.showScrollingCalendar(vacationSearch: vacationSearchFilter)
                         
-                        //Helper.showNotAvailabilityResults()
+                        Helper.showNotAvailabilityResults()
                     }
                     let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     Helper.helperDelegate = self
                     Helper.hideProgressBar(senderView: self)
-                    if initialSearchCheckInDate != nil {
-                        Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: vacationSearchFilter)
+                    if response.checkInDates.count > 0 {
+                        Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: response.checkInDates[0], senderViewController: self, vacationSearch: vacationSearchFilter)
                         
+                    }else{
+                        Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: vacationSearchFilter)
                     }
                     
                 }){ (error) in
                     
                     Helper.hideProgressBar(senderView: self)
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
-                    //self.dismiss(animated: true, completion: nil)
-                    //self.resortDetailTBLView.reloadData()
                 }
                 
             } else{
@@ -257,24 +250,23 @@ class SortingViewController: UIViewController {
                         
                         Helper.hideProgressBar(senderView: self)
                         let vacationSearchInitialDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
-                        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearchInitialDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: vacationSearchFilter)
+                        if(response.checkInDates.count > 0){
+                            Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: response.checkInDates[0], senderViewController: self, vacationSearch: vacationSearchFilter)
+                        }else{
+                           Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearchInitialDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: vacationSearchFilter)
+                        }
+                        
 
                     }
                     
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     //sender.isEnabled = true
                     
-                })
-                    
-                { (error) in
+                }){ (error) in
                     
                     Helper.hideProgressBar(senderView: self)
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                 }
-                //self.createSections()
-                //self.resortDetailTBLView.reloadData()
-                //self.dismiss(animated: true, completion: nil)
-                
             }
             
         } else {
