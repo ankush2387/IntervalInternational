@@ -571,6 +571,7 @@ class Constant: NSObject {
         //Global App Settings
         static var appSettings = AppSettings()
         static var noAvailabilityView = false
+        static var selectedUnitIndex = 0
     }
     
     // Enum to store resorts and destinations

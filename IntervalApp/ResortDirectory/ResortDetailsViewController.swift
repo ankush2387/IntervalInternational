@@ -55,9 +55,9 @@ class ResortDetailsViewController: UIViewController {
 //            self.forwordButton?.isHidden = true
 //            self.headerTextForShowingResortCounter?.isHidden = true
 //        }
-        self.previousButton?.isHidden = true
-        self.forwordButton?.isHidden = true
-        self.headerTextForShowingResortCounter?.isHidden = true
+        //self.previousButton?.isHidden = true
+       // self.forwordButton?.isHidden = true
+       // self.headerTextForShowingResortCounter?.isHidden = true
         //self.navigationController?.isNavigationBarHidden = true
         //self.tabBarController?.tabBar.isHidden = true
         

@@ -1414,6 +1414,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     
                     rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                     
+                    
                     self.vacationSearch = VacationSearch(UserContext.sharedInstance.appSettings, rentalSearchCriteria)
                     Constant.MyClassConstants.initialVacationSearch = self.vacationSearch
                     
@@ -1655,7 +1656,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
 
 extension VacationSearchViewController:HelperDelegate {
     func resortSearchComplete(){
-        print(Constant.MyClassConstants.initialVacationSearch.searchCheckInDate)
+        Helper.hideProgressBar(senderView: self)
         self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
 
     }
