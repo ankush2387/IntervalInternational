@@ -50,6 +50,16 @@ class Constant: NSObject {
         
     }
     
+    struct AdditionalUnitDetailsData  {
+        
+        static var clubresort = ""
+        static var reservationNumber = ""
+        static var unitNumber = ""
+        static var bedroomUnit = ""
+        static var checkInDate = ""
+    
+    }
+    
     //Float additional info textfield variabls
     struct FloatDetails {
         
@@ -732,6 +742,7 @@ class Constant: NSObject {
         static var refreshTableNotification = "refreshMyTableView"
         static var updateResortHoldingTime = "updateResortHoldingTime"
         static var enableGuestFormCheckout = "enableGuestFormCheckout"
+        static var enableSaveUnitDetails = "enableSaveButtonUnitDetails"
         static var changeSliderStatus = "ChangeLabel"
         static var showHelp = "showHelp"
         static var showUnfavorite = "showUnFav"
