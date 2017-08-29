@@ -27,6 +27,9 @@ class GetawayAlertsIPhoneViewController: UIViewController {
         
         //***** Adding notification to reload table when all alerts have been fetched *****//
         NotificationCenter.default.addObserver(self, selector: #selector(reloadAlertsTableView), name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
+        //TODO-JHON: Forcing alertBadge to disappear, review after pushnotifications are working.
+        Constant.MyClassConstants.activeAlertsArray.removeAllObjects()
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
         alertDisplayTableView.reloadData()
     }
     
@@ -136,6 +139,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     @IBAction func createNewAlertButtonPressed(_ sender: AnyObject){
         self.alertDisplayTableView.setEditing(false, animated: true)
         Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.removeAllObjects()
+        Constant.MyClassConstants.alertSelectedBedroom = []
         self.performSegue(withIdentifier: Constant.segueIdentifiers.createAlertSegue, sender: self)
     }
     
@@ -233,7 +237,7 @@ extension GetawayAlertsIPhoneViewController:UITableViewDelegate {
         }else{
             
             let edit = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.edit) { (action,index) -> Void in
-                
+                Constant.MyClassConstants.selectedBedRoomSize = "All Bedroom Sizes"
                 Constant.MyClassConstants.selectedGetawayAlertDestinationArray.removeAllObjects()
         
                 let destination = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].destinations

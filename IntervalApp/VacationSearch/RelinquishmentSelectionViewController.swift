@@ -823,17 +823,17 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                             if relinquishmentOpenWeeksArray.count > 0 {
                                 if let promotion = relinquishmentOpenWeeksArray[indexPath.row].promotion {
                                     cell.promLabel.text = promotion.offerName
-                                    cellHeight = 90
+                                    cellHeight = 100
                                 } else {
                                     cell.promLabel.isHidden = true
                                     cell.promImgView.isHidden = true
-                                    cellHeight = 80
+                                    cellHeight = 90
                                 }
 
                             } else {
                                 cell.promLabel.isHidden = true
                                 cell.promImgView.isHidden = true
-                                cellHeight = 80
+                                cellHeight = 90
                             }
                             
                             return cell
@@ -866,17 +866,17 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                             if relinquishmentOpenWeeksArray.count > 0 {
                                 if let promotion = relinquishmentOpenWeeksArray[indexPath.row].promotion {
                                     cell.promLabel.text = promotion.offerName
-                                    cellHeight = 90
+                                    cellHeight = 100
                                 } else {
                                     cell.promLabel.isHidden = true
                                     cell.promImgView.isHidden = true
-                                    cellHeight = 80
+                                    cellHeight = 90
                                 }
                                 
                             } else {
                                 cell.promLabel.isHidden = true
                                 cell.promImgView.isHidden = true
-                                cellHeight = 80
+                                cellHeight = 90
                             }
                             return cell
                         }
@@ -903,17 +903,17 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                         if relinquishmentOpenWeeksArray.count > 0 {
                             if let promotion = relinquishmentOpenWeeksArray[indexPath.row].promotion {
                                 cell.promLabel.text = promotion.offerName
-                                cellHeight = 90
+                                cellHeight = 100
                             } else {
                                 cell.promLabel.isHidden = true
                                 cell.promImgView.isHidden = true
-                                cellHeight = 80
+                                cellHeight = 90
                             }
                             
                         } else {
                             cell.promLabel.isHidden = true
                             cell.promImgView.isHidden = true
-                            cellHeight = 80
+                            cellHeight = 90
                         }
                         
                         return cell
@@ -962,17 +962,17 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                     if relinquishmentOpenWeeksArray.count > 0 {
                         if let promotion = relinquishmentOpenWeeksArray[indexPath.row].promotion {
                             cell.promLabel.text = promotion.offerName
-                            cellHeight = 90
+                            cellHeight = 100
                         } else {
                             cell.promLabel.isHidden = true
                             cell.promImgView.isHidden = true
-                            cellHeight = 80
+                            cellHeight = 90
                         }
                         
                     } else {
                         cell.promLabel.isHidden = true
                         cell.promImgView.isHidden = true
-                        cellHeight = 80
+                        cellHeight = 90
                     }
                     
                     return cell
@@ -1034,16 +1034,16 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                 if relinquishmentOpenWeeksArray.count > 0 {
                     if let promotion = relinquishmentOpenWeeksArray[0].promotion {
                         intervalWeekCell.promLabel.text = promotion.offerName
-                        cellHeight = 90
+                        cellHeight = 100
                     } else {
                         intervalWeekCell.promLabel.isHidden = true
                         intervalWeekCell.promImgView.isHidden = true
-                        cellHeight = 80
+                        cellHeight = 90
                     }
                 } else {
                     intervalWeekCell.promLabel.isHidden = true
                     intervalWeekCell.promImgView.isHidden = true
-                    cellHeight = 80
+                    cellHeight = 90
                 }
 
 
