@@ -199,7 +199,7 @@ class Constant: NSObject {
         static var webviewTtile:String!
         static var resortDirectoryTitle = "Resort Directory"
         static var resortDirectoryCommonHearderText = "Choose Region"
-        static var selectedBedRoomSize = "All BedRoom Sizes"
+        static var selectedBedRoomSize = "All Bedroom Sizes"
         //***** global array that contains background images *****//
         static let backgroundImageArray = ["BackgroundImgLogin-A","BackgroundImgLogin-B","BackgroundImgLogin-C","BackgroundImgLogin-D","BackgroundImgLogin-E","BackgroundImgLogin-F","BackgroundImgLogin-G"]
         
@@ -332,6 +332,7 @@ class Constant: NSObject {
         static var collectionViewScrolledIndex:Int = 0
         static var imagesArray:NSMutableArray = []
         static var bedRoomSizeSelectedIndexArray:NSMutableArray = []
+        static var alertSelectedBedroom: NSMutableArray = []
         static var unitNumberSelectedArray:NSMutableArray = []
         static var amenitiesDictionary = NSMutableDictionary()
         static var advisementsDictionary = NSMutableDictionary()

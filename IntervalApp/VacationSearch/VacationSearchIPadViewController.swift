@@ -430,16 +430,16 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
         
         self.segmentIndex = sender.selectedSegmentIndex
         
-        switch segmentIndex {
-        case 0:
+        switch segmentTitle {
+        case Constant.segmentControlItems.searchBoth:
             showGetaways = true
             showExchange = true
             break
-        case 1:
+        case Constant.segmentControlItems.getaways:
             showGetaways = true
             showExchange = false
             break
-        case 2:
+        case Constant.segmentControlItems.exchange:
             showGetaways = false
             showExchange = true
             break
