@@ -1290,19 +1290,22 @@ public class Helper{
                     
                     if(Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.isFromSearchBoth){
                         
-                        
-                        let storyBoard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
-                        let viewController = storyBoard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortVC)
-                        let transition = CATransition()
-                        transition.duration = 0.4
-                        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-                        transition.type = kCATransitionMoveIn
-                        transition.subtype = kCATransitionFromTop
-                        
-                        viewcontroller.navigationController!.view.layer.add(transition, forKey: kCATransition)
-                        viewcontroller.navigationController?.pushViewController(viewController, animated: false)
+                        var storyBoard = UIStoryboard()
+                        if(viewcontroller.isKind(of:WhatToUseViewController.self)) {
+                            storyBoard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                            let viewController = storyBoard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortVC)
+                            let transition = CATransition()
+                            transition.duration = 0.4
+                            transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+                            transition.type = kCATransitionMoveIn
+                            transition.subtype = kCATransitionFromTop
+                            
+                            viewcontroller.navigationController!.view.layer.add(transition, forKey: kCATransition)
+                            //viewcontroller.navigationController?.pushViewController(viewController, animated: false)
+                            viewcontroller.present(viewController, animated: true, completion: nil)
+                            
+                            }
 
-                        
                     }
                     else{
                         
