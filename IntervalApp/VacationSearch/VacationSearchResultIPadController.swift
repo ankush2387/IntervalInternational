@@ -482,7 +482,7 @@ class VacationSearchResultIPadController: UIViewController {
         }
         
         if(indexPath.row <= Constant.MyClassConstants.calendarDatesArray.count){
-           // searchedDateCollectionView.reloadItems(at: [indexPath])
+            searchedDateCollectionView.reloadItems(at: [indexPath])
         }
     }
     
