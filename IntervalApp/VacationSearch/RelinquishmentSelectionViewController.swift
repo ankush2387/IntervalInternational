@@ -862,9 +862,10 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                                 }
                             }
                             
-                            //display promotion
-                            if relinquishmentOpenWeeksArray.count > 0 {
-                                if let promotion = relinquishmentOpenWeeksArray[indexPath.row].promotion {
+                        
+                            
+                            //display promotion 
+                                if let promotion = openWeek.promotion {
                                     cell.promLabel.text = promotion.offerName
                                     cellHeight = 100
                                 } else {
@@ -872,12 +873,7 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                                     cell.promImgView.isHidden = true
                                     cellHeight = 90
                                 }
-                                
-                            } else {
-                                cell.promLabel.isHidden = true
-                                cell.promImgView.isHidden = true
-                                cellHeight = 90
-                            }
+                            
                             return cell
                         }
                     }
@@ -1031,8 +1027,8 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                 intervalWeekCell.addButton.addTarget(self, action:  #selector(RelinquishmentSelectionViewController.addIntervalWeekButtonPressed(_:)), for: .touchUpInside)
                 
                 //display promotion
-                if relinquishmentOpenWeeksArray.count > 0 {
-                    if let promotion = relinquishmentOpenWeeksArray[0].promotion {
+                if intervalOpenWeeksArray.count > 0 {
+                    if let promotion = openWeek.promotion {
                         intervalWeekCell.promLabel.text = promotion.offerName
                         cellHeight = 100
                     } else {

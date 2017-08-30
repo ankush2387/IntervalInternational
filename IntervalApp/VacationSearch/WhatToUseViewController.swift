@@ -337,7 +337,11 @@ extension WhatToUseViewController:UITableViewDelegate {
             if showUpgrade == true {
                 return 150
             } else {
-                return 100
+                if UIDevice.current.userInterfaceIdiom == .pad {
+                    return 115
+                } else {
+                    return 100
+                }
             }
             //}else{
             //    return 70
@@ -612,6 +616,14 @@ extension WhatToUseViewController:UITableViewDataSource {
                         month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \(day)"
                     }
                     
+                   //display Promotion
+                    if let promotion = exchange.openWeek?.promotion {
+                        cell.promLabel.text = promotion.offerName
+                    } else {
+                        cell.promLabel.isHidden = true
+                        cell.promImgView.isHidden = true
+                    }
+
                     cell.dayAndDateLabel.text = month.uppercased()
                     cell.selectionStyle = UITableViewCellSelectionStyle.none
                     return cell
