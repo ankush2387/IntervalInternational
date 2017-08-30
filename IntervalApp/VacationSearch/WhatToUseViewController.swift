@@ -18,6 +18,8 @@ class WhatToUseViewController: UIViewController {
     var isCheckedBox = false
     var showUpgrade = false
     var selectedUnitIndex = 0
+    var selectedRow = -1
+    var selectedRowSection = -1
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -53,16 +55,14 @@ class WhatToUseViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func checkBoxPressed(_ sender: Any) {
+    @IBAction func checkBoxPressed(_ sender: IUIKCheckbox) {
         
-        let cell = (sender as AnyObject).superview??.superview?.superview as? RelinquishmentSelectionOpenWeeksCell
-        if self.isCheckedBox == true {
-            cell?.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
-            self.isCheckedBox = false
-        } else {
-            cell?.mainView.layer.borderColor = UIColor.orange.cgColor
-            self.isCheckedBox = true
-            
+        self.selectedRow = sender.tag
+        self.selectedRowSection = sender.accessibilityElements?.first as! Int
+        
+        
+            let indexPath = NSIndexPath(row: self.selectedRow, section: self.selectedRowSection)
+            tableView.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.none)
             //Start process request
             
             //Exchange process request parameters
@@ -76,11 +76,14 @@ class WhatToUseViewController: UIViewController {
             processRequest.destination = Constant.MyClassConstants.exchangeDestination
             processRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
             
-            if(Constant.MyClassConstants.filterRelinquishments[(cell?.tag)!].openWeek != nil){
-                processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[(cell?.tag)!].openWeek?.relinquishmentId
+            if(Constant.MyClassConstants.filterRelinquishments[self.selectedRow].openWeek != nil){
+                processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[self.selectedRow].openWeek?.relinquishmentId
             }
             
             ExchangeProcessClient.start(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: {(response) in
+                
+                self.selectedRow = -1
+                self.selectedRowSection = -1
                 let processResort = ExchangeProcess()
                 processResort.processId = response.processId
                 Constant.MyClassConstants.exchangeBookingLastStartedProcess = processResort
@@ -153,23 +156,126 @@ class WhatToUseViewController: UIViewController {
                 }, onError: { (error) in
                     
                     Helper.hideProgressBar(senderView: self)
-                    cell?.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
-                    cell?.checkBox.checked = false
-                    self.isCheckedBox = false
+                    self.selectedRow = -1
+                    self.selectedRowSection = -1
+                    self.tableView.reloadData()
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                     
                 })
                 
             }, onError: {(error) in
                 Helper.hideProgressBar(senderView: self)
-                cell?.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
-                cell?.checkBox.checked = false
-                self.isCheckedBox = false
+                self.selectedRow = -1
+                self.selectedRowSection = -1
+                self.tableView.reloadData()
                 SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
             })
-        }
+        
         
     }
+    
+    
+    @IBAction func checkBoxGetawayPressed(_ sender: IUIKCheckbox) {
+        
+        
+        self.selectedRow = sender.tag
+        self.selectedRowSection = sender.accessibilityElements?.first as! Int
+       
+       
+        let indexPath = NSIndexPath(row: self.selectedRow, section: self.selectedRowSection)
+        tableView.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.none)
+        
+        Helper.showProgressBar(senderView: self)
+        var inventoryDict = Inventory()
+        inventoryDict = Constant.MyClassConstants.selectedResort.inventory!
+        let invent = inventoryDict
+        let units = invent.units
+        
+        Constant.MyClassConstants.inventoryPrice = invent.units[indexPath.item].prices
+        
+        let processResort = RentalProcess()
+        processResort.holdUnitStartTimeInMillis = Constant.holdingTime
+        
+        let processRequest = RentalProcessStartRequest()
+        processRequest.resort = Constant.MyClassConstants.selectedResort
+        if(Constant.MyClassConstants.selectedResort.allInclusive){
+            Constant.MyClassConstants.hasAdditionalCharges = true
+        }else{
+            Constant.MyClassConstants.hasAdditionalCharges = false
+        }
+        processRequest.unit = units[indexPath.item]
+        
+        let processRequest1 = RentalProcessStartRequest.init(resortCode: Constant.MyClassConstants.selectedResort.resortCode!, checkInDate: invent.checkInDate!, checkOutDate: invent.checkOutDate!, unitSize: UnitSize(rawValue: units[indexPath.item].unitSize!)!, kitchenType: KitchenType(rawValue: units[indexPath.item].kitchenType!)!)
+        RentalProcessClient.start(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest1, onSuccess: {(response) in
+            
+            self.selectedRow = -1
+            self.selectedRowSection = -1
+            Helper.hideProgressBar(senderView: self)
+            let processResort = RentalProcess()
+            processResort.processId = response.processId
+            Constant.MyClassConstants.getawayBookingLastStartedProcess = processResort
+            Constant.MyClassConstants.processStartResponse = response
+            SVProgressHUD.dismiss()
+            Helper.removeServiceCallBackgroundView(view: self.view)
+            Constant.MyClassConstants.viewResponse = response.view!
+            Constant.MyClassConstants.rentalFees = [(response.view?.fees)!]
+            Constant.MyClassConstants.guestCertificate = response.view?.fees?.guestCertificate
+            Constant.MyClassConstants.onsiteArray.removeAllObjects()
+            Constant.MyClassConstants.nearbyArray.removeAllObjects()
+            
+            for amenity in (response.view?.resort?.amenities)!{
+                if(amenity.nearby == false){
+                    Constant.MyClassConstants.onsiteArray.add(amenity.amenityName!)
+                    Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending(amenity.amenityName!)
+                    Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending("\n")
+                }else{
+                    Constant.MyClassConstants.nearbyArray.add(amenity.amenityName!)
+                    Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending(amenity.amenityName!)
+                    Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending("\n")
+                }
+            }
+            
+            
+            UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
+                
+                // Got an access token!  Save it for later use.
+                SVProgressHUD.dismiss()
+                Helper.removeServiceCallBackgroundView(view: self.view)
+                Constant.MyClassConstants.membershipContactArray = Membership.contacts!
+                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+                
+                let transitionManager = TransitionManager()
+                self.navigationController?.transitioningDelegate = transitionManager
+                self.navigationController!.pushViewController(viewController, animated: true)
+                
+            }, onError: { (error) in
+                
+                Helper.hideProgressBar(senderView: self)
+                SVProgressHUD.dismiss()
+                Helper.removeServiceCallBackgroundView(view: self.view)
+                self.selectedRow = -1
+                self.selectedRowSection = -1
+                self.tableView.reloadData()
+                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.description)
+                
+            })
+            
+        }, onError: {(error) in
+            
+            self.selectedRow = -1
+            self.selectedRowSection = -1
+            self.tableView.reloadData()
+            Helper.hideProgressBar(senderView: self)
+            Helper.removeServiceCallBackgroundView(view: self.view)
+            SVProgressHUD.dismiss()
+            SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.description)
+        })
+
+        
+    }
+  
+    
     
     @IBAction func onClickDetailsButton(_ sender: Any) {
         Helper.getResortWithResortCode(code:Constant.MyClassConstants.selectedResort.resortCode! , viewcontroller:self)
@@ -190,9 +296,23 @@ extension WhatToUseViewController:UITableViewDelegate {
     //***** UITableview delegate methods definition here *****//
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let indexPath = tableView.indexPathForSelectedRow
-        let currentCell = tableView.cellForRow(at: indexPath!) as! RelinquishmentSelectionOpenWeeksCell
-        self.checkBoxPressed(currentCell.checkBox)
+        
+        
+        if(indexPath.section == 1) {
+            
+                let checkBox = IUIKCheckbox()
+                checkBox.tag = indexPath.row
+                checkBox.accessibilityElements = [indexPath.section]
+                self.checkBoxPressed(checkBox)
+        }
+        else if (indexPath.section == 2){
+            
+            let checkBox = IUIKCheckbox()
+            checkBox.tag = indexPath.row
+            checkBox.accessibilityElements = [indexPath.section]
+            self.checkBoxGetawayPressed(checkBox)
+           
+        }
     }
     
     
@@ -345,16 +465,54 @@ extension WhatToUseViewController:UITableViewDataSource {
             let exchange = Constant.MyClassConstants.filterRelinquishments[indexPath.row]
             
             if((exchange.pointsProgram) != nil){
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell0, for: indexPath) as! ExchangeCell0
+                
+                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell0, for: indexPath) as! AvailablePointCell
+                
                 cell.tag = indexPath.row
-                cell.contentBackgroundView.layer.cornerRadius = 7
-                Helper.applyShadowOnUIView(view: cell.contentBackgroundView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
+                cell.checkBOx.tag = indexPath.row
+                cell.checkBOx.accessibilityElements = [indexPath.section]
+                if(self.selectedRow == indexPath.row && self.selectedRowSection == indexPath.section) {
+                    
+                    cell.mainView.layer.cornerRadius = 7
+                    cell.mainView.layer.borderWidth = 2
+                    cell.mainView.layer.borderColor = UIColor.orange.cgColor
+                    cell.checkBOx.checked = true
+                }
+                else {
+                    
+                    cell.mainView.layer.cornerRadius = 7
+                    cell.mainView.layer.borderWidth = 2
+                    cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
+                    cell.checkBOx.checked = false
+                }
+
+                
+                //cell.contentBackgroundView.layer.cornerRadius = 7
+               // Helper.applyShadowOnUIView(view: cell.contentBackgroundView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
+                
                 return cell
                 
             }else if((exchange.clubPoints) != nil){
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell0, for: indexPath) as! AvailablePointCell
+                
                 cell.tag = indexPath.row
+                cell.checkBOx.tag = indexPath.row
+                cell.checkBOx.accessibilityElements = [indexPath.section]
+                if(self.selectedRow == indexPath.row && self.selectedRowSection == indexPath.section) {
+                    
+                    cell.mainView.layer.cornerRadius = 7
+                    cell.mainView.layer.borderWidth = 2
+                    cell.mainView.layer.borderColor = UIColor.orange.cgColor
+                    cell.checkBOx.checked = true
+                }
+                else {
+                    
+                    cell.mainView.layer.cornerRadius = 7
+                    cell.mainView.layer.borderWidth = 2
+                    cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
+                    cell.checkBOx.checked = false
+                }
                 cell.layer.cornerRadius = 7
                 //cell.availablePointValueLabel.text = ""
               //  Helper.applyShadowOnUIView(view: cell.contentBackgroundView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
@@ -362,16 +520,28 @@ extension WhatToUseViewController:UITableViewDataSource {
                 return cell
                 
             }else if((exchange.openWeek) != nil){
-                //let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell1, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
-                
-                
-                
+               
                 if showUpgrade == true {
+                    
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell2, for: indexPath) as! RelinquishmentSelectionOpenWeeksCellWithUpgrade
                     cell.tag = indexPath.row
-                    cell.mainView.layer.cornerRadius = 7
-                    cell.mainView.layer.borderWidth = 2
-                    cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
+                    cell.checkBox.tag = indexPath.row
+                    cell.checkBox.accessibilityElements = [indexPath.section]
+                    if(self.selectedRow == indexPath.row && self.selectedRowSection == indexPath.section) {
+                        
+                        cell.mainView.layer.cornerRadius = 7
+                        cell.mainView.layer.borderWidth = 2
+                        cell.mainView.layer.borderColor = UIColor.orange.cgColor
+                        cell.checkBox.checked = true
+                    }
+                    else {
+                        
+                        cell.mainView.layer.cornerRadius = 7
+                        cell.mainView.layer.borderWidth = 2
+                        cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
+                        cell.checkBox.checked = false
+                    }
+                    
                     
                     //Helper.applyShadowOnUIView(view: cell.contentView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
                     cell.resortName.text = exchange.openWeek?.resort?.resortName!
@@ -398,11 +568,25 @@ extension WhatToUseViewController:UITableViewDataSource {
                     
                 } else {
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell1, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
+                    
                     cell.tag = indexPath.row
-                    cell.mainView.layer.cornerRadius = 7
-                    cell.mainView.layer.borderWidth = 2
-                    cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
-                    //Helper.applyShadowOnUIView(view: cell.contentView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
+                    cell.checkBox.tag = indexPath.row
+                    cell.checkBox.accessibilityElements = [indexPath.section]
+                    if(self.selectedRow == indexPath.row && self.selectedRowSection == indexPath.section) {
+                        
+                        cell.mainView.layer.cornerRadius = 7
+                        cell.mainView.layer.borderWidth = 2
+                        cell.mainView.layer.borderColor = UIColor.orange.cgColor
+                        cell.checkBox.checked = true
+                    }
+                    else {
+                        
+                        cell.mainView.layer.cornerRadius = 7
+                        cell.mainView.layer.borderWidth = 2
+                        cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
+                        cell.checkBox.checked = false
+                    }
+
                     cell.resortName.text = exchange.openWeek?.resort?.resortName!
                     cell.yearLabel.text = "\(String(describing: (exchange.openWeek?.relinquishmentYear!)!))"
                     cell.totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: (exchange.openWeek?.weekNumber!)!))"
@@ -427,7 +611,25 @@ extension WhatToUseViewController:UITableViewDataSource {
                 }
             }else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell0, for: indexPath) as! AvailablePointCell
+                
                 cell.tag = indexPath.row
+                cell.checkBOx.tag = indexPath.row
+                cell.checkBOx.accessibilityElements = [indexPath.section]
+                if(self.selectedRow == indexPath.row && self.selectedRowSection == indexPath.section) {
+                    
+                    cell.mainView.layer.cornerRadius = 7
+                    cell.mainView.layer.borderWidth = 2
+                    cell.mainView.layer.borderColor = UIColor.orange.cgColor
+                    cell.checkBOx.checked = true
+                }
+                else {
+                    
+                    cell.mainView.layer.cornerRadius = 7
+                    cell.mainView.layer.borderWidth = 2
+                    cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
+                    cell.checkBOx.checked = false
+                }
+
                // cell.contentBackgroundView.layer.cornerRadius = 7
                 //Helper.applyShadowOnUIView(view: cell.contentBackgroundView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
@@ -439,6 +641,24 @@ extension WhatToUseViewController:UITableViewDataSource {
             //***** Configure and return search vacation cell *****//
             let cell:GetawayCell = tableView.dequeueReusableCell(withIdentifier: "GetawaysCell", for: indexPath) as! GetawayCell
             cell.tag = indexPath.row
+            cell.checkbox.tag = indexPath.row
+            cell.checkbox.accessibilityElements = [indexPath.section]
+            if(self.selectedRow == indexPath.row && self.selectedRowSection == indexPath.section) {
+                
+                cell.mainView.layer.cornerRadius = 7
+                cell.mainView.layer.borderWidth = 2
+                cell.mainView.layer.borderColor = UIColor.orange.cgColor
+                cell.checkbox.checked = true
+                
+            }
+            else {
+                
+                cell.mainView.layer.cornerRadius = 7
+                cell.mainView.layer.borderWidth = 2
+                cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
+                cell.checkbox.checked = false
+            }
+          
             cell.bedRoomType.text = Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].unitSize
             
             if let roomSize = UnitSize(rawValue: (Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].unitSize)!) {
@@ -467,9 +687,9 @@ extension WhatToUseViewController:UITableViewDataSource {
             cell.getawayPrice.text = String(Int((Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].prices[0].price)!))
             
             
-            cell.viewContent.layer.borderWidth = 0.5
-            cell.viewContent.layer.borderColor = UIColor.lightGray.cgColor
-            cell.viewContent.layer.cornerRadius = 7
+//            cell.viewContent.layer.borderWidth = 0.5
+//            cell.viewContent.layer.borderColor = UIColor.lightGray.cgColor
+//            cell.viewContent.layer.cornerRadius = 7
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             return cell
             
