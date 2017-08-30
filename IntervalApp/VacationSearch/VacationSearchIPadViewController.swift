@@ -815,6 +815,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
             }
             Constant.MyClassConstants.isFromExchange = true
         }else{
+            Constant.MyClassConstants.isFromSearchBoth = true
             if(self.segmentTitle == Constant.segmentControlItems.getaways){
                 SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
             }else if(self.segmentTitle == Constant.segmentControlItems.exchange){
@@ -826,57 +827,70 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
                 }
             }else{
-                Helper.showProgressBar(senderView: self)
-                let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Combined)
-                let storedData = Helper.getLocalStorageWherewanttoGo()
                 
-                if(storedData.count > 0) {
-                    self.getSavedDestinationsResorts(storedData:storedData, searchCriteria:rentalSearchCriteria)
-                    
-                    let travelPartyInfo = TravelParty()
-                    travelPartyInfo.adults = Int(self.adultCounter)
-                    travelPartyInfo.children = Int(self.childCounter)
-                    
-                    Constant.MyClassConstants.travelPartyInfo = travelPartyInfo
-                    rentalSearchCriteria.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]//Constant.MyClassConstants.relinquishmentIdArray as? [String]
-                    rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
-                    rentalSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo                    //rentalSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
-                    
-                    Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(UserContext.sharedInstance.appSettings, rentalSearchCriteria)
-                    
-                    ADBMobile.trackAction(Constant.omnitureEvents.event9, data: nil)
+                if(Constant.MyClassConstants.relinquishmentIdArray.count == 0){
+                    sender.isEnabled = true
+                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
                     
                     
-                    RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess:{ (response) in
+                }else if((Helper.getAllDestinationFromLocalStorage().count == 0 && Helper.getAllResortsFromLocalStorage().count == 0)){
+                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
+                } else {
+                    
+                    Helper.showProgressBar(senderView: self)
+                    let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Combined)
+                    let storedData = Helper.getLocalStorageWherewanttoGo()
+                    
+                    if(storedData.count > 0) {
+                        self.getSavedDestinationsResorts(storedData:storedData, searchCriteria:rentalSearchCriteria)
                         
-                        Helper.hideProgressBar(senderView: self)
-                        Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
-                        let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
-                        // Update active interval
-                        Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
-                        Helper.helperDelegate = self
-                        Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-                        // Check not available checkIn dates for the active interval
-                        if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                        let travelPartyInfo = TravelParty()
+                        travelPartyInfo.adults = Int(self.adultCounter)
+                        travelPartyInfo.children = Int(self.childCounter)
+                        
+                        Constant.MyClassConstants.travelPartyInfo = travelPartyInfo
+                        rentalSearchCriteria.relinquishmentsIds = ["Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"]//Constant.MyClassConstants.relinquishmentIdArray as? [String]
+                        rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
+                        rentalSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo                    //rentalSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
+                        
+                        Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(UserContext.sharedInstance.appSettings, rentalSearchCriteria)
+                        
+                        ADBMobile.trackAction(Constant.omnitureEvents.event9, data: nil)
+                        
+                        
+                        RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess:{ (response) in
+                            
                             Helper.hideProgressBar(senderView: self)
-                            self.rentalHasNotAvailableCheckInDates = true
-                        }else{
+                            Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
+                            let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
+                            // Update active interval
+                            Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                            Helper.helperDelegate = self
+                            Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                            // Check not available checkIn dates for the active interval
+                            if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                                Helper.hideProgressBar(senderView: self)
+                                self.rentalHasNotAvailableCheckInDates = true
+                            }else{
+                                Helper.hideProgressBar(senderView: self)
+                                Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
+                                let vacationSearchInitialDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
+                                Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearchInitialDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                            }
+                            Constant.MyClassConstants.checkInDates = response.checkInDates
+                            sender.isEnabled = true
+                            
+                        })
+                        { (error) in
+                            
                             Helper.hideProgressBar(senderView: self)
-                            Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                            let vacationSearchInitialDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
-                            Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearchInitialDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                            SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                         }
-                        Constant.MyClassConstants.checkInDates = response.checkInDates
-                        sender.isEnabled = true
                         
-                    })
-                    { (error) in
-                        
-                        Helper.hideProgressBar(senderView: self)
-                        SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                     }
                     
                 }
+                
                 
             }
         }

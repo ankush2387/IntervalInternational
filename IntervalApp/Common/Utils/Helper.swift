@@ -1288,7 +1288,7 @@ public class Helper{
                 if(Constant.RunningDevice.deviceIdiom == .pad) {
                     
                     
-                    if(Constant.MyClassConstants.isFromExchange){
+                    if(Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.isFromSearchBoth){
                         
                         
                         let storyBoard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
