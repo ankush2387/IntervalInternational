@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Zmr-d0-xh5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Zmr-d0-xh5">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -43,11 +43,11 @@
                         <viewControllerLayoutGuide type="bottom" id="KNp-0U-MOL"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="PuY-eU-RQN">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="950"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dPC-06-hhy">
-                                <rect key="frame" x="-4" y="61" width="383" height="49"/>
+                                <rect key="frame" x="-4" y="17" width="383" height="49"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Resort 1 of 7" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IdW-Ty-pEh">
                                         <rect key="frame" x="87" y="5" width="233" height="42"/>
@@ -110,7 +110,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Z7H-la-zBu">
-                                <rect key="frame" x="0.0" y="108" width="375" height="793"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="536" id="xAh-Ay-Djq"/>
@@ -1243,12 +1243,12 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="July - Sep" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b10-6d-HIU">
-                                                    <rect key="frame" x="11" y="17" width="135" height="24"/>
+                                                    <rect key="frame" x="8" y="17" width="141" height="24"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="24" id="mLQ-Gi-QqE"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.46666666666666667" blue="0.74509803921568629" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -1283,10 +1283,10 @@
                                             <constraint firstItem="Qw7-R0-Rfm" firstAttribute="centerX" secondItem="HeT-Ba-0Un" secondAttribute="centerX" constant="-22" id="KVr-rR-26H"/>
                                             <constraint firstItem="Qw7-R0-Rfm" firstAttribute="top" secondItem="b10-6d-HIU" secondAttribute="bottom" constant="-1" id="N5s-Jt-E8b"/>
                                             <constraint firstItem="F3N-l3-zU0" firstAttribute="leading" secondItem="HeT-Ba-0Un" secondAttribute="leadingMargin" constant="25" id="PGW-rR-DR8"/>
-                                            <constraint firstAttribute="trailingMargin" secondItem="b10-6d-HIU" secondAttribute="trailing" constant="3" id="ZdV-UH-54w"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="b10-6d-HIU" secondAttribute="trailing" id="ZdV-UH-54w"/>
                                             <constraint firstItem="b10-6d-HIU" firstAttribute="top" secondItem="F3N-l3-zU0" secondAttribute="bottom" constant="-3" id="iIq-Qz-H1Z"/>
                                             <constraint firstItem="R6r-SE-ypC" firstAttribute="centerX" secondItem="HeT-Ba-0Un" secondAttribute="centerX" constant="23.5" id="jqa-eK-Rjb"/>
-                                            <constraint firstItem="b10-6d-HIU" firstAttribute="leading" secondItem="HeT-Ba-0Un" secondAttribute="leadingMargin" constant="3" id="jug-SG-raO"/>
+                                            <constraint firstItem="b10-6d-HIU" firstAttribute="leading" secondItem="HeT-Ba-0Un" secondAttribute="leadingMargin" id="jug-SG-raO"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="F3N-l3-zU0" secondAttribute="trailing" constant="18" id="mfi-dz-asH"/>
                                         </constraints>
                                         <size key="customSize" width="157" height="62"/>
@@ -7229,9 +7229,9 @@ to confirm a larger unit.</string>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Lp2-ch-oU8"/>
-        <segue reference="sGp-zH-9TZ"/>
-        <segue reference="Gma-QI-cCT"/>
+        <segue reference="4gU-cx-AAf"/>
         <segue reference="xan-e8-tse"/>
+        <segue reference="Gma-QI-cCT"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
 </document>
