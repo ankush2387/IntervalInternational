@@ -135,26 +135,16 @@ class FloatDetailViewController: UIViewController {
     
     func checkForFloatDetails() ->Bool{
         
-        if(Constant.AdditionalUnitDetailsData.clubresort != "" && Constant.FloatDetails.reservationNumber != "" && Constant.FloatDetails.unitNumber != "" && Constant.AdditionalUnitDetailsData.bedroomUnit != "" ){
+        if( Constant.FloatDetails.reservationNumber != "" && Constant.FloatDetails.unitNumber != "" && Constant.AdditionalUnitDetailsData.bedroomUnit != "" ){
             
-            if(proceedStatus) {
-                
-                proceedStatus = true
-                //floatDetailsTableView.reloadData()
-
-            }
-            else {
-                
-                
-            }
+            proceedStatus = true
+            return proceedStatus
         }
-        else{
-           proceedStatus = false
+        else {
+            
+            return proceedStatus
         }
         
-    
-    
-    return proceedStatus
     
     }
     
@@ -207,6 +197,7 @@ class FloatDetailViewController: UIViewController {
     
     // Select check - in date action
     @IBAction func selectCheckInDate(_sender:UIButton){
+        
         Helper.getCheckInDatesForCalendar(senderViewController: self, resortCode: (floatResortDetails?.resortCode)!, relinquishmentYear: Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentYear!)
     }
     
@@ -224,6 +215,7 @@ class FloatDetailViewController: UIViewController {
             Constant.FloatDetails.unitNumber = Constant.MyClassConstants.unitNumberLockOff
         }
         if(atrributesRowArray.contains(Constant.MyClassConstants.checkInDateAttribute)){
+            
             tableViewCell = floatDetailsTableView.cellForRow(at: IndexPath(row: atrributesRowArray.index(of: Constant.MyClassConstants.checkInDateAttribute), section: floatAttributesArray.index(of: Constant.MyClassConstants.resortAttributes)))!
             checkInDate = getTableViewCellSubviews(tableViewCell:tableViewCell)
         }
@@ -462,7 +454,8 @@ class FloatDetailViewController: UIViewController {
             atrributesRowArray.add(Constant.MyClassConstants.checkInDateAttribute)
         }
         
-        floatAttributesArray.add(Constant.MyClassConstants.saveAttribute)
+            floatAttributesArray.add(Constant.MyClassConstants.saveAttribute)
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -523,7 +516,6 @@ extension FloatDetailViewController : UITableViewDataSource{
                 combination.append(textValueString)
                 
                 selectClubresortcell.selectResortLabel.attributedText = combination
-                proceedStatus = true
                 Constant.AdditionalUnitDetailsData.clubresort = "Club Resort"
                 detailsStatusForFloat = checkForFloatDetails()
             
@@ -556,7 +548,6 @@ extension FloatDetailViewController : UITableViewDataSource{
                 if (Constant.MyClassConstants.savedBedroom != "") {
                     
                     registrationNumbercell.resortAttributeLabel.text  = Constant.MyClassConstants.savedBedroom
-                    proceedStatus = true
                     Constant.AdditionalUnitDetailsData.bedroomUnit = Constant.MyClassConstants.savedBedroom
                 }
                 
@@ -598,6 +589,7 @@ extension FloatDetailViewController : UITableViewDataSource{
                 return registrationNumbercell
             
             case Constant.MyClassConstants.resortReservationAttribute:
+                
                 registrationNumbercell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.attributesCell) as! ReservationTableViewCell
                 registrationNumbercell.textFieldView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
                 if(Constant.MyClassConstants.selectedFloatWeek.floatDetails.count > 0){
@@ -614,9 +606,10 @@ extension FloatDetailViewController : UITableViewDataSource{
             }
             
         case Constant.MyClassConstants.saveAttribute:
+    
             saveandcancelCell = tableView.dequeueReusableCell(withIdentifier: Constant.floatDetailViewController.saveandcancelcellIdentifier) as? FloatSaveAndCancelButtonTableViewCell
             
-            if(detailsStatusForFloat == true){
+            if(proceedStatus == true){
                 saveandcancelCell?.saveFloatDetailButton.alpha =  1.0
                 saveandcancelCell?.saveFloatDetailButton.isEnabled = true
                 return saveandcancelCell!
@@ -730,27 +723,56 @@ extension FloatDetailViewController : UITextFieldDelegate{
                     
                 if (range.length == 1 && string.characters.count == 0) {
                     Constant.FloatDetails.reservationNumber.characters.removeLast()
-                    proceedStatus = false
+                    if(Constant.FloatDetails.reservationNumber.characters.count == 0) {
+                        self.proceedStatus = false
+                        let indexPath = NSIndexPath(row: 0, section: floatAttributesArray.index(of: Constant.MyClassConstants.saveAttribute))
+                        floatDetailsTableView.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.none)
+
+                    }
                 }
                 else {
                     Constant.FloatDetails.reservationNumber = "\(textField.text!)\(string)"
-                    proceedStatus = true
+                    print(Constant.FloatDetails.reservationNumber)
                 }
-                detailsStatusForFloat = checkForFloatDetails()
+               let status = checkForFloatDetails()
+                
+                if(status) {
+                    
+                    let indexPath = NSIndexPath(row: 0, section: floatAttributesArray.index(of: Constant.MyClassConstants.saveAttribute))
+                    floatDetailsTableView.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.none)
+                }
+                
                 return true
                 
             }else {
                 
                 if (range.length == 1 && string.characters.count == 0) {
-                    Constant.FloatDetails.unitNumber.characters.removeAll()
-                    proceedStatus = false
+                    
+                    Constant.FloatDetails.unitNumber.characters.removeLast()
+                    if(Constant.FloatDetails.unitNumber.characters.count == 0) {
+                        
+                        self.proceedStatus = false
+                        let indexPath = NSIndexPath(row: 0, section: floatAttributesArray.index(of: Constant.MyClassConstants.saveAttribute))
+                        floatDetailsTableView.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.none)
+                        
+                    }
+
+                   
                 }
                 else {
+                    
                     Constant.FloatDetails.unitNumber = "\(textField.text!)\(string)"
-                    proceedStatus = true
                 }
-                detailsStatusForFloat = checkForFloatDetails()
-                floatDetailsTableView.reloadData()
+                
+               let status =  checkForFloatDetails()
+                
+                if(status) {
+                    
+                    let indexPath = NSIndexPath(row: 0, section: floatAttributesArray.index(of: Constant.MyClassConstants.saveAttribute))
+                    floatDetailsTableView.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.none)
+
+                }
+                
                 return true
             }
         
@@ -767,7 +789,8 @@ extension FloatDetailViewController : UITextFieldDelegate{
             }
             else {
                 self.moved = true
-                textField.keyboardType = .default
+                textField.keyboardType = .numberPad
+                self.addDoneButtonOnNumpad(textField: textField)
                
             }
         }
