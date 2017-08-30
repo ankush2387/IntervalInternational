@@ -506,17 +506,10 @@ class SearchResultViewController: UIViewController {
         ExchangeClient.filterRelinquishments(UserContext.sharedInstance.accessToken, request: exchangeSearchDateRequest, onSuccess: { (response) in
             Helper.hideProgressBar(senderView: self)
             Constant.MyClassConstants.filterRelinquishments.removeAll()
+            
             for exchageDetail in response{
                 Constant.MyClassConstants.filterRelinquishments.append(exchageDetail.relinquishment!)
             }
-            /*if(self.selectedSection == 0){
-              Constant.MyClassConstants.selectedResort = self.exactMatchResortsArray[self.selectedSection]
-              Constant.MyClassConstants.inventoryPrice = (self.exactMatchResortsArray[self.selectedRow].inventory?.units[0].prices)!
-            }else{
-              Constant.MyClassConstants.selectedResort = self.surroundingMatchResortsArray[self.selectedRow]
-              Constant.MyClassConstants.inventoryPrice = (self.surroundingMatchResortsArray[self.selectedRow].inventory?.units[0].prices)!
-            }*/
-            
             
             Constant.MyClassConstants.selectedUnitIndex = selectedIndex
             
@@ -525,7 +518,7 @@ class SearchResultViewController: UIViewController {
             }else{
                 if(Constant.MyClassConstants.filterRelinquishments.count > 1){
                     self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
-                }else if(response[0].destination?.upgradeCost != nil){
+                }else if(response.count > 0 && response[0].destination?.upgradeCost != nil){
                     self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
                 }else {
                     self.startProcess()
@@ -1306,7 +1299,7 @@ extension SearchResultViewController:UICollectionViewDataSource {
                         if((sections.exactMatch == nil || sections.exactMatch == true) && section == 0){
                             headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
                             headerView.backgroundColor = IUIKColorPalette.primary1.color
-                            //break
+                            break
                         }else if((sections.exactMatch == nil || sections.exactMatch == false) && section == 1){
                             headerLabel.text = Constant.CommonLocalisedString.surroundingString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
                             headerView.backgroundColor = Constant.CommonColor.headerGreenColor
