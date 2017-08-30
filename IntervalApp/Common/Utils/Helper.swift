@@ -1840,6 +1840,7 @@ public class Helper{
         }
     }
     
+    //Search both perform exchange search after rental
     static func executeExchangeSearchDates(senderVC:UIViewController, vacationSearch:VacationSearch) {
         
         
@@ -1875,6 +1876,76 @@ public class Helper{
         }
         )
         
+    }
+    
+    /*
+     * Execute Exchange Search Dates After Select Interval
+     */
+    static func executeExchangeSearchDatesAfterSelectInterval(senderVC:UIViewController, datesCV:UICollectionView) {
+        ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request,
+                                   onSuccess: { (response) in
+                                    Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
+                                    
+                                    // Get activeInterval
+                                    let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
+                                    
+                                    // Update active interval
+                                    Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                                    
+                                    // Check not available checkIn dates for the active interval
+                                    if (!(activeInterval?.hasCheckInDates())!) {
+                                        
+                                        // We do not have available CheckInDates in Rental and Exchange
+                                        if (Constant.MyClassConstants.rentalHasNotAvailableCheckInDatesForInitial) {
+                                            self.showNotAvailabilityResults()
+                                        }
+                                        
+                                    } else {
+                                        
+                                        self.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                        
+                                        Constant.MyClassConstants.calendarDatesArray.removeAll()
+                                        
+                                        Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
+                                        
+                                       datesCV.reloadData()
+                                    }
+                                    
+        },
+                                   onError:{ (error) in
+                                    SimpleAlert.alert(senderVC, title: Constant.AlertErrorMessages.noResultError, message: error.localizedDescription)
+                                  }
+        )
+    }
+    
+    /*
+     * Execute Exchnage Search Availability After Select CheckInDate
+     */
+    static func executeExchangeSearchAvailabilityAfterSelectCheckInDate(activeInterval:BookingWindowInterval!, checkInDate:Date!, searchCriteria:VacationSearchCriteria, senderVC:UIViewController) {
+        DarwinSDK.logger.error("----- Exchange - Waiting for search availability ... -----")
+        
+        let request = ExchangeSearchAvailabilityRequest()
+        request.checkInDate = checkInDate
+        request.resortCodes = activeInterval.resortCodes!
+        request.travelParty = searchCriteria.travelParty
+        request.relinquishmentsIds = searchCriteria.relinquishmentsIds!
+        
+        ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: request,
+                                          onSuccess: { (response) in
+                                            // Update Exchange inventory
+                                            Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.inventory = response
+                                            
+                                            self.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                            
+                                            DarwinSDK.logger.info(" ==== Rental/Exchange -> AvailabilityResults === ")
+                                            self.showAvailabilityResults(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                            helperDelegate?.resortSearchComplete()
+                    
+        },
+                                          onError:{ (error) in
+                                            SimpleAlert.alert(senderVC, title: Constant.AlertErrorMessages.noResultError, message: error.localizedDescription)
+        }
+        )
     }
     
     static func showNotAvailabilityResults() {

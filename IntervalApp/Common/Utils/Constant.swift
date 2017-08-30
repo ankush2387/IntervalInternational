@@ -575,6 +575,14 @@ class Constant: NSObject {
         static var appSettings = AppSettings()
         static var noAvailabilityView = false
         static var selectedUnitIndex = 0
+        
+        // Search both check for rental and exchange
+        
+        static var rentalHasNotAvailableCheckInDatesForInitial : Bool = false
+        static var exchangeHasNotAvailableCheckInDatesForInitial : Bool = false
+        
+        static var rentalHasNotAvailableCheckInDatesAfterSelectInterval : Bool = false
+        static var exchangeHasNotAvailableCheckInDatesAfterSelectInterval : Bool = false
     }
     
     // Enum to store resorts and destinations
