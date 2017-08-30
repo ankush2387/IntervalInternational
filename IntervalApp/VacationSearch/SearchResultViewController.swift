@@ -868,13 +868,22 @@ extension SearchResultViewController:UICollectionViewDelegate {
                         if(combinedExactSearchItems[collectionView.tag].rentalAvailability != nil || combinedExactSearchItems[collectionView.tag].exchangeAvailability != nil){
                             Constant.MyClassConstants.selectedResort = (combinedExactSearchItems[collectionView.tag].rentalAvailability!)
                             
-                            if(combinedExactSearchItems[collectionView.tag].hasRentalAvailability()) {
+                            if(combinedExactSearchItems[collectionView.tag].hasRentalAvailability() && combinedExactSearchItems[collectionView.tag].hasExchangeAvailability())  {
                                
+                                
+                                self.getFilterRelinquishments(selectedInventoryUnit: (combinedExactSearchItems[collectionView.tag].rentalAvailability?.inventory!)!, selectedIndex: indexPath.item, selectedExchangeInventory: ExchangeInventory())
+                                
+                                
+                            }
+                            else if(combinedExactSearchItems[collectionView.tag].hasRentalAvailability()) {
+                                
                                 Constant.MyClassConstants.filterRelinquishments.removeAll()
                                 self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
                             }
                             else {
-                              self.getFilterRelinquishments(selectedInventoryUnit: (combinedExactSearchItems[collectionView.tag].rentalAvailability?.inventory!)!, selectedIndex: indexPath.item, selectedExchangeInventory: ExchangeInventory())
+                              
+                                  self.getFilterRelinquishments(selectedInventoryUnit: (combinedExactSearchItems[collectionView.tag].rentalAvailability?.inventory!)!, selectedIndex: indexPath.item, selectedExchangeInventory: ExchangeInventory())
+                               
                             }
                             
                         }else{
@@ -890,16 +899,23 @@ extension SearchResultViewController:UICollectionViewDelegate {
                         
                         if(combinedSurroundingSearchItems[collectionView.tag].rentalAvailability != nil || combinedSurroundingSearchItems[collectionView.tag].exchangeAvailability != nil){
                             
-                            if(combinedSurroundingSearchItems[collectionView.tag].hasRentalAvailability()) {
+                            if(combinedSurroundingSearchItems[collectionView.tag].hasRentalAvailability() && combinedSurroundingSearchItems[collectionView.tag].hasExchangeAvailability())  {
+                                
+                                
+                                self.getFilterRelinquishments(selectedInventoryUnit: (combinedSurroundingSearchItems[collectionView.tag].rentalAvailability?.inventory!)!, selectedIndex: indexPath.item, selectedExchangeInventory: ExchangeInventory())
+                                
+                                
+                            }
+                            else if(combinedSurroundingSearchItems[collectionView.tag].hasRentalAvailability()) {
                                 
                                 Constant.MyClassConstants.filterRelinquishments.removeAll()
                                 self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
                             }
                             else {
                                 
-                                 Constant.MyClassConstants.filterRelinquishments.removeAll()
-                                 self.getFilterRelinquishments(selectedInventoryUnit: (combinedSurroundingSearchItems[collectionView.tag].rentalAvailability?.inventory!)!, selectedIndex: indexPath.item, selectedExchangeInventory: ExchangeInventory())
-                        }
+                                self.getFilterRelinquishments(selectedInventoryUnit: (combinedExactSearchItems[collectionView.tag].rentalAvailability?.inventory!)!, selectedIndex: indexPath.item, selectedExchangeInventory: ExchangeInventory())
+                                
+                            }
                             
                        
                         }else{
