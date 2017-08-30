@@ -1005,12 +1005,10 @@ public class Helper{
             DirectoryClient.getRegions(Constant.MyClassConstants.systemAccessToken, onSuccess: {(response) in
                 Constant.MyClassConstants.resortDirectoryRegionArray = response[0].regions
                 if(!(viewController is ResortDirectoryTabController)){
-                    
                     viewController.performSegue(withIdentifier: Constant.segueIdentifiers.resortDirectorySegue, sender: self)
-                    
                 }
                 removeServiceCallBackgroundView(view: viewController.view)
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reloadRegionTable"), object: nil)
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadRegionNotification), object: nil)
                 SVProgressHUD.dismiss()
             },    onError: {(error) in
                 removeServiceCallBackgroundView(view: viewController.view)
