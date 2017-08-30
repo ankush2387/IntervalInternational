@@ -609,6 +609,9 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
             
         if((indexPath as NSIndexPath).section == 0) {
             
+            // set isFrom Search true
+            Constant.MyClassConstants.isFromSearchResult = true
+            
             Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.vacationSearchFunctionalityCheck
             Helper.addServiceCallBackgroundView(view: self.view)
             SVProgressHUD.show()
@@ -673,7 +676,7 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
         }
             
         }else{
-            
+        
             //Second section for inventory items
             if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
                 selectedSection = (collectionView.superview?.superview?.tag)!

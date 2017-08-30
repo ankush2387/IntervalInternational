@@ -172,6 +172,9 @@ class WhatToUseViewController: UIViewController {
     }
     
     @IBAction func onClickDetailsButton(_ sender: Any) {
+        // set isFrom Search false
+        Constant.MyClassConstants.isFromSearchResult = false
+        
         Helper.getResortWithResortCode(code:Constant.MyClassConstants.selectedResort.resortCode! , viewcontroller:self)
         //self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
     }
@@ -460,7 +463,7 @@ extension WhatToUseViewController:UITableViewDataSource {
             
             if (Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].privateSleepCapacity)! > 0 {
                 
-                cell.sleeps.text =  totalSleepCapacity + String(describing: Constant.MyClassConstants.selectedResort.inventory!.units[Constant.MyClassConstants.selectedUnitIndex].publicSleepCapacity) + Constant.CommonLocalisedString.privateString
+                cell.sleeps.text =  totalSleepCapacity + String(describing: Constant.MyClassConstants.selectedResort.inventory!.units[Constant.MyClassConstants.selectedUnitIndex].privateSleepCapacity) + Constant.CommonLocalisedString.privateString
                 
             }
             
