@@ -42,9 +42,11 @@ class CheckOutViewController: UIViewController {
     var recapSelectedPromotion: String?
     var recapFeesTotal: Float?
     var filterRelinquishments = ExchangeRelinquishment()
+    var isDepositPromotionAvailable = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        checkPromotionsAvailable()
         
         // omniture tracking with event 40
         let pageView: [String: String] = [
@@ -309,6 +311,16 @@ class CheckOutViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(changeLabelStatus), name: NSNotification.Name(rawValue: Constant.notificationNames.changeSliderStatus), object: nil)
         
+    }
+    
+    func checkPromotionsAvailable() {
+        if Constant.MyClassConstants.filterRelinquishments.count > 0 {
+            if let  _ = Constant.MyClassConstants.filterRelinquishments[0].openWeek?.promotion {
+                isDepositPromotionAvailable = true
+            }
+            
+        }
+
     }
     
     //***** Function called switch state is 'On' so as to update user's email. *****//
@@ -727,10 +739,16 @@ extension CheckOutViewController:UITableViewDataSource {
                 return advisementCount
             }
         }else if(section == 2) {
-            if Constant.MyClassConstants.recapViewPromotionCodeArray.count > 0 {
-                return 1
+            var numberOfCells = 0
+            if isDepositPromotionAvailable {
+                numberOfCells += 1
             }
-            return 0
+            
+            if Constant.MyClassConstants.recapViewPromotionCodeArray.count > 0 {
+                numberOfCells += 1
+            }
+            
+            return numberOfCells
         }else if(section == 3){
             if(Constant.MyClassConstants.isFromExchange){
                 return 1
@@ -775,14 +793,19 @@ extension CheckOutViewController:UITableViewDataSource {
                 
                 if(Constant.MyClassConstants.vacationSearchSelectedSegmentIndex == 1) {
                     
-                    return 0
+                    return 50
                 }
                 else {
+                    if Constant.MyClassConstants.exchangeFees.count > 0 {
                     if(Constant.MyClassConstants.exchangeFees[0].eplus == nil){
                         return 0
                     }else{
                         return 50
                     }
+                    }
+                    
+                    return 0
+                    
                 }
                 
             }else if(section == 3 && !showInsurance){
@@ -864,6 +887,9 @@ extension CheckOutViewController:UITableViewDataSource {
             }
             
         }else if(indexPath.section == 2 || indexPath.section == 9) {
+            if isDepositPromotionAvailable && indexPath.row == 0 {
+                return 80
+            }
             return 60
         }else if(indexPath.section == 4) {
             if(Constant.MyClassConstants.isFromExchange){
@@ -983,18 +1009,28 @@ extension CheckOutViewController:UITableViewDataSource {
             }
             
         }else if(indexPath.section == 2) {
-            
-            let cell = tableView.dequeueReusableCell(withIdentifier: "CheckoutPromotionCell", for: indexPath) as! CheckoutPromotionCell
-            cell.setupCell(selectedPromotion: destinationPromotionSelected)
-            cell.promotionSelectionCheckBox.tag = indexPath.row
-            if cell.promotionSelectionCheckBox.isHidden {
-                 cell.forwardArrowButton.addTarget(self, action: #selector(CheckOutViewController.checkBoxCheckedAtIndex(_:)), for: .touchUpInside)
+            if isDepositPromotionAvailable && indexPath.row == 0 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "CheckoutPromotionCell", for: indexPath) as! CheckoutPromotionCell
+                cell.setupDepositPromotion()
+                cell.promotionSelectionCheckBox.tag = indexPath.row
+                
+                cell.selectionStyle = .none
+                return cell
+
             } else {
-                cell.promotionSelectionCheckBox.addTarget(self, action: #selector(CheckOutViewController.checkBoxCheckedAtIndex(_:)), for: .touchUpInside)
+                let cell = tableView.dequeueReusableCell(withIdentifier: "CheckoutPromotionCell", for: indexPath) as! CheckoutPromotionCell
+                cell.setupCell(selectedPromotion: destinationPromotionSelected)
+                cell.promotionSelectionCheckBox.tag = indexPath.row
+                if cell.promotionSelectionCheckBox.isHidden {
+                    cell.forwardArrowButton.addTarget(self, action: #selector(CheckOutViewController.checkBoxCheckedAtIndex(_:)), for: .touchUpInside)
+                } else {
+                    cell.promotionSelectionCheckBox.addTarget(self, action: #selector(CheckOutViewController.checkBoxCheckedAtIndex(_:)), for: .touchUpInside)
+                }
+                
+                cell.selectionStyle = .none
+                return cell
             }
-           
-            cell.selectionStyle = .none
-            return cell
+            
         }else if(indexPath.section == 3){
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeOptionsCell, for: indexPath) as! ExchangeOptionsCell

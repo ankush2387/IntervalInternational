@@ -43,11 +43,11 @@
                         <viewControllerLayoutGuide type="bottom" id="KNp-0U-MOL"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="PuY-eU-RQN">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="950"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dPC-06-hhy">
-                                <rect key="frame" x="-4" y="17" width="383" height="49"/>
+                                <rect key="frame" x="-4" y="61" width="383" height="49"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Resort 1 of 7" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IdW-Ty-pEh">
                                         <rect key="frame" x="87" y="5" width="233" height="42"/>
@@ -110,7 +110,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Z7H-la-zBu">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="108" width="375" height="793"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="536" id="xAh-Ay-Djq"/>
@@ -2640,32 +2640,32 @@
                                             <outlet property="cigImageView" destination="Fdu-dV-Ko9" id="A1T-me-RZA"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="RelinquishmentSelectionOpenWeeksCell" rowHeight="90" id="z9N-FV-hwP" customClass="RelinquishmentSelectionOpenWeeksCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="180" width="375" height="90"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="RelinquishmentSelectionOpenWeeksCell" rowHeight="115" id="z9N-FV-hwP" customClass="RelinquishmentSelectionOpenWeeksCell" customModule="IntervalApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="180" width="375" height="115"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="z9N-FV-hwP" id="f4T-iX-3x4">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="115"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WSX-5x-nJC">
-                                                    <rect key="frame" x="16" y="89" width="359" height="1"/>
+                                                    <rect key="frame" x="16" y="114" width="359" height="1"/>
                                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="1" id="bGd-ux-KM7"/>
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zkr-l2-3VA">
-                                                    <rect key="frame" x="0.0" y="9" width="91" height="71"/>
+                                                    <rect key="frame" x="0.0" y="9" width="91" height="78"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DEC 09" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ua0-jZ-TWW">
-                                                            <rect key="frame" x="0.0" y="0.0" width="91" height="26"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="91" height="29"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="15"/>
                                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Week 16" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ot-Y7-5u6">
-                                                            <rect key="frame" x="0.0" y="45" width="91" height="18"/>
+                                                            <rect key="frame" x="0.0" y="48" width="91" height="18"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
@@ -2756,14 +2756,14 @@
                                                     </constraints>
                                                 </view>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ExchangeIcon" translatesAutoresizingMaskIntoConstraints="NO" id="boD-Px-ZJQ">
-                                                    <rect key="frame" x="18" y="88" width="17" height="17"/>
+                                                    <rect key="frame" x="18" y="95" width="17" height="17"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="17" id="N0Q-lq-JS1"/>
                                                         <constraint firstAttribute="height" constant="17" id="hAj-7X-U5o"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Promotion" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="DaH-5w-LMb">
-                                                    <rect key="frame" x="40" y="88" width="327" height="17"/>
+                                                    <rect key="frame" x="40" y="95" width="327" height="17"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="17" id="wiQ-uL-P0u"/>
                                                     </constraints>
@@ -2786,7 +2786,7 @@
                                                 <constraint firstAttribute="trailingMargin" secondItem="WSX-5x-nJC" secondAttribute="trailing" constant="-8" id="e8k-ix-xPd"/>
                                                 <constraint firstItem="DaH-5w-LMb" firstAttribute="leading" secondItem="boD-Px-ZJQ" secondAttribute="trailing" constant="5" id="hbh-98-sR5"/>
                                                 <constraint firstItem="5B2-zO-apr" firstAttribute="leading" secondItem="Zkr-l2-3VA" secondAttribute="trailing" id="i36-KA-rfc"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="Zkr-l2-3VA" secondAttribute="bottom" constant="2" id="jLy-yi-epk"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="Zkr-l2-3VA" secondAttribute="bottom" constant="20" id="jLy-yi-epk"/>
                                                 <constraint firstAttribute="leadingMargin" secondItem="Zkr-l2-3VA" secondAttribute="leading" constant="8" id="l7A-JQ-jDV"/>
                                                 <constraint firstAttribute="trailing" secondItem="DaH-5w-LMb" secondAttribute="trailing" constant="8" id="uLr-Fw-2MU"/>
                                             </constraints>
@@ -2804,7 +2804,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ClubPointCell" rowHeight="80" id="Yh9-g9-3ce" customClass="clubPointCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="270" width="375" height="80"/>
+                                        <rect key="frame" x="0.0" y="295" width="375" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Yh9-g9-3ce" id="tzz-3a-6a4">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
@@ -2897,7 +2897,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="FloatUnsavedCell" rowHeight="90" id="7mK-At-C4O" customClass="RelinquishmentSelectionOpenWeeksCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="350" width="375" height="90"/>
+                                        <rect key="frame" x="0.0" y="375" width="375" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7mK-At-C4O" id="u1f-IC-cAU">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
@@ -3005,7 +3005,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="FloatSavedCell" rowHeight="120" id="S36-RP-oXy" customClass="RelinquishmentSelectionOpenWeeksCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="440" width="375" height="120"/>
+                                        <rect key="frame" x="0.0" y="465" width="375" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="S36-RP-oXy" id="evI-yC-rTj">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
@@ -3174,7 +3174,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="DepositedCell" rowHeight="120" id="gzZ-8u-PhW" customClass="RelinquishmentSelectionOpenWeeksCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="560" width="375" height="120"/>
+                                        <rect key="frame" x="0.0" y="585" width="375" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gzZ-8u-PhW" id="EKq-PQ-EdJ">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
@@ -3398,7 +3398,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nMh-hq-gqH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3976.0869565217395" y="-337.5"/>
+            <point key="canvasLocation" x="3975.1999999999998" y="-338.23088455772114"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Dl3-9N-Lfx">
@@ -3678,15 +3678,15 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ExchangeCell1" rowHeight="80" id="CGQ-55-EkQ" customClass="RelinquishmentSelectionOpenWeeksCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="218" width="375" height="80"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ExchangeCell1" rowHeight="100" id="CGQ-55-EkQ" customClass="RelinquishmentSelectionOpenWeeksCell" customModule="IntervalApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="218" width="375" height="100"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CGQ-55-EkQ" id="UBF-I3-nY0">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y39-oo-O1h">
-                                                    <rect key="frame" x="8" y="2" width="359" height="76"/>
+                                                    <rect key="frame" x="8" y="2" width="359" height="96"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sjl-t5-WFu">
                                                             <rect key="frame" x="0.0" y="5" width="80" height="60"/>
@@ -3730,7 +3730,7 @@
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BQm-Z3-R3y">
-                                                            <rect key="frame" x="80" y="10" width="235" height="60"/>
+                                                            <rect key="frame" x="80" y="5" width="235" height="60"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Westwood at Split Rock Westwood at Split Rock" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LFV-5h-tuB">
                                                                     <rect key="frame" x="4" y="0.0" width="231" height="33.5"/>
@@ -3772,10 +3772,11 @@
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5J4-54-kml" customClass="IUIKCheckbox" customModule="IntervalUIKit">
-                                                            <rect key="frame" x="316" y="27" width="40" height="26"/>
+                                                            <rect key="frame" x="316" y="5" width="40" height="40"/>
                                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="40" id="ydX-CE-uYx"/>
+                                                                <constraint firstAttribute="height" constant="40" id="zF4-NH-fH9"/>
                                                             </constraints>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="color" keyPath="uncheckedFillColor">
@@ -3793,17 +3794,37 @@
                                                                 <action selector="checkBoxPressed:" destination="X80-Wg-GJ4" eventType="valueChanged" id="cEz-2H-kCy"/>
                                                             </connections>
                                                         </view>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Some Offer Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="I5a-4e-Cb2">
+                                                            <rect key="frame" x="30" y="75" width="319" height="21"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="21" id="bs4-hu-B0L"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                                                            <color key="textColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="OfferIcon" translatesAutoresizingMaskIntoConstraints="NO" id="4td-1l-KTX">
+                                                            <rect key="frame" x="10" y="76" width="20" height="20"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="20" id="FLA-vd-JdG"/>
+                                                                <constraint firstAttribute="width" constant="20" id="PhG-vQ-NI3"/>
+                                                            </constraints>
+                                                        </imageView>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstItem="5J4-54-kml" firstAttribute="top" secondItem="Y39-oo-O1h" secondAttribute="top" constant="27" id="1Ra-gy-F4l"/>
-                                                        <constraint firstItem="Sjl-t5-WFu" firstAttribute="centerY" secondItem="Y39-oo-O1h" secondAttribute="centerY" constant="-3" id="H3Z-IK-lXp"/>
+                                                        <constraint firstItem="BQm-Z3-R3y" firstAttribute="top" secondItem="Y39-oo-O1h" secondAttribute="top" constant="5" id="1Np-x0-ibm"/>
+                                                        <constraint firstAttribute="trailing" secondItem="I5a-4e-Cb2" secondAttribute="trailing" constant="10" id="8GF-Oc-NuY"/>
+                                                        <constraint firstItem="4td-1l-KTX" firstAttribute="leading" secondItem="Y39-oo-O1h" secondAttribute="leading" constant="10" id="CwV-Cu-q02"/>
                                                         <constraint firstItem="BQm-Z3-R3y" firstAttribute="leading" secondItem="Sjl-t5-WFu" secondAttribute="trailing" id="H9q-QU-LeQ"/>
+                                                        <constraint firstItem="I5a-4e-Cb2" firstAttribute="top" secondItem="BQm-Z3-R3y" secondAttribute="bottom" constant="10" id="UcJ-Zu-jiA"/>
                                                         <constraint firstAttribute="trailing" secondItem="5J4-54-kml" secondAttribute="trailing" constant="3" id="WqM-Qz-02Z"/>
+                                                        <constraint firstItem="4td-1l-KTX" firstAttribute="top" secondItem="Sjl-t5-WFu" secondAttribute="bottom" constant="11" id="XW7-do-iL2"/>
                                                         <constraint firstItem="5J4-54-kml" firstAttribute="leading" secondItem="BQm-Z3-R3y" secondAttribute="trailing" constant="1" id="gjH-Lu-08S"/>
+                                                        <constraint firstItem="Sjl-t5-WFu" firstAttribute="top" secondItem="Y39-oo-O1h" secondAttribute="top" constant="5" id="h2w-Ut-p4g"/>
                                                         <constraint firstItem="Sjl-t5-WFu" firstAttribute="leading" secondItem="Y39-oo-O1h" secondAttribute="leading" id="j2E-zq-Wo5"/>
-                                                        <constraint firstItem="BQm-Z3-R3y" firstAttribute="centerY" secondItem="Y39-oo-O1h" secondAttribute="centerY" constant="2" id="t7T-xm-kC9"/>
-                                                        <constraint firstItem="5J4-54-kml" firstAttribute="centerY" secondItem="Y39-oo-O1h" secondAttribute="centerY" constant="2" id="y6q-td-IJ0"/>
+                                                        <constraint firstItem="5J4-54-kml" firstAttribute="top" secondItem="Y39-oo-O1h" secondAttribute="top" constant="5" id="uRY-wQ-bqA"/>
+                                                        <constraint firstItem="I5a-4e-Cb2" firstAttribute="leading" secondItem="4td-1l-KTX" secondAttribute="trailing" id="vpf-Xd-D8Y"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>
@@ -3819,6 +3840,8 @@
                                             <outlet property="checkBox" destination="5J4-54-kml" id="Vx6-ER-QFU"/>
                                             <outlet property="dayAndDateLabel" destination="Vtl-gi-9sc" id="A9q-W5-U4S"/>
                                             <outlet property="mainView" destination="Y39-oo-O1h" id="Yb5-o4-7oV"/>
+                                            <outlet property="promImgView" destination="4td-1l-KTX" id="7L8-zk-D0O"/>
+                                            <outlet property="promLabel" destination="I5a-4e-Cb2" id="X2e-1j-yl0"/>
                                             <outlet property="resortName" destination="LFV-5h-tuB" id="Hgz-Km-w5c"/>
                                             <outlet property="totalSleepAndPrivate" destination="GjR-Nr-Xy8" id="YRW-5o-n4C"/>
                                             <outlet property="totalWeekLabel" destination="3nd-Ka-44I" id="lUc-c0-vPa"/>
@@ -3826,7 +3849,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ExchangeCell2" rowHeight="150" id="jHh-Bx-j5m" userLabel="ExchangeCell2" customClass="RelinquishmentSelectionOpenWeeksCellWithUpgrade" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="298" width="375" height="150"/>
+                                        <rect key="frame" x="0.0" y="318" width="375" height="150"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jHh-Bx-j5m" id="s0t-R7-au2">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="150"/>
@@ -4030,7 +4053,7 @@ to confirm a larger unit.</string>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="GetawaysCell" rowHeight="70" id="QbV-7R-IHJ" customClass="GetawaysCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="448" width="375" height="70"/>
+                                        <rect key="frame" x="0.0" y="468" width="375" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QbV-7R-IHJ" id="Nbc-4Y-pT8">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
@@ -4351,7 +4374,7 @@ to confirm a larger unit.</string>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select a Promotion" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Xgb-LD-ISr">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select a Promotion" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="5" translatesAutoresizingMaskIntoConstraints="NO" id="Xgb-LD-ISr">
                                                     <rect key="frame" x="20" y="22" width="297" height="17"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                                     <nil key="textColor"/>
@@ -7167,6 +7190,7 @@ to confirm a larger unit.</string>
         <image name="MapIcon" width="33" height="33"/>
         <image name="MapPinIcon" width="30" height="30"/>
         <image name="NoImageIcon" width="64" height="64"/>
+        <image name="OfferIcon" width="33" height="33"/>
         <image name="PromoImage" width="20" height="20"/>
         <image name="Resorts-Getaway_Icon" width="25" height="25"/>
         <image name="SearchTab-Off" width="33" height="33"/>
@@ -7178,9 +7202,9 @@ to confirm a larger unit.</string>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Lp2-ch-oU8"/>
-        <segue reference="4gU-cx-AAf"/>
-        <segue reference="xan-e8-tse"/>
-        <segue reference="Gma-QI-cCT"/>
+        <segue reference="kmp-5Q-mdc"/>
+        <segue reference="4Eo-F1-CbC"/>
+        <segue reference="sGp-zH-9TZ"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
 </document>
