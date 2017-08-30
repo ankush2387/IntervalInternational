@@ -356,8 +356,8 @@ extension WhatToUseViewController:UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell0, for: indexPath) as! AvailablePointCell
                 cell.tag = indexPath.row
                 cell.layer.cornerRadius = 7
-                cell.availablePointValueLabel.text = ""
-                //Helper.applyShadowOnUIView(view: cell.contentBackgroundView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
+                //cell.availablePointValueLabel.text = ""
+              //  Helper.applyShadowOnUIView(view: cell.contentBackgroundView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 return cell
                 
