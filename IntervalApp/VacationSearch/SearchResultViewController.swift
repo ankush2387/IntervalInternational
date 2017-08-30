@@ -249,6 +249,37 @@ class SearchResultViewController: UIViewController {
                     }
                 )
             }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isCombined()){
+                 
+                // Update CheckInFrom and CheckInTo dates
+                Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.checkInFromDate = Helper.convertStringToDate(dateString: calendarItem.intervalStartDate!, format: Constant.MyClassConstants.dateFormat)
+                Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.checkInToDate = Helper.convertStringToDate(dateString: calendarItem.intervalEndDate!, format: Constant.MyClassConstants.dateFormat)
+                Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.checkInFromDate = Helper.convertStringToDate(dateString: calendarItem.intervalStartDate!, format: Constant.MyClassConstants.dateFormat)
+                Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.checkInToDate = Helper.convertStringToDate(dateString: calendarItem.intervalEndDate!, format: Constant.MyClassConstants.dateFormat)
+                
+                // Execute Rental Search Dates
+                RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
+                                         onSuccess: { (response) in
+                                            Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
+                                            
+                                            // Update active interval
+                                            Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                                            
+                                            // Check not available checkIn dates for the active interval for Rental
+                                            if (!(activeInterval?.hasCheckInDates())!) {
+                                                Constant.MyClassConstants.rentalHasNotAvailableCheckInDatesAfterSelectInterval = true
+                                            }
+                                            
+                                            // Run Exchange Search Dates
+                                            Helper.executeExchangeSearchDatesAfterSelectInterval(senderVC: self, datesCV:self.searchResultColelctionView)
+                                            
+                                            //expectation.fulfill()
+                },
+                                         onError:{ (error) in
+                                            // Run Exchange Search Dates
+                                            Helper.executeExchangeSearchDatesAfterSelectInterval(senderVC: self, datesCV: self.searchResultColelctionView)
+                }
+                )
+                
                 
             }else{
                 
@@ -309,6 +340,25 @@ class SearchResultViewController: UIViewController {
         }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
             Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: toDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
         }else{
+            Helper.showProgressBar(senderView: self)
+            let request = RentalSearchResortsRequest()
+            request.checkInDate = toDate
+            request.resortCodes = activeInterval?.resortCodes
+            
+            RentalClient.searchResorts(UserContext.sharedInstance.accessToken, request: request,
+                                       onSuccess: { (response) in
+                                        // Update Rental inventory
+                                        Constant.MyClassConstants.initialVacationSearch.rentalSearch?.inventory = response.resorts
+                                        
+                                        // Run Exchange Search Dates
+                                        Helper.executeExchangeSearchAvailabilityAfterSelectCheckInDate(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat), searchCriteria: Constant.MyClassConstants.initialVacationSearch.searchCriteria, senderVC: self)
+                                        
+                                        
+            },
+                                       onError:{ (error) in
+                                       SimpleAlert.alert(self, title: Constant.AlertMessages.noResultMessage, message: error.localizedDescription)
+            }
+            )
             
         }
     }
