@@ -1765,12 +1765,6 @@ public class Helper{
                                     
                                     vacationSearch.rentalSearch?.inventory = response.resorts
                                     Constant.MyClassConstants.initialVacationSearch = vacationSearch
-                                    
-                                    // Check if not has availability in the desired check-In date.
-                                    if (vacationSearch.searchCriteria.checkInDate != checkInDate) {
-                                        showNearestCheckInDateSelectedMessage()
-                                    }
-                                    
                                     showScrollingCalendar(vacationSearch:vacationSearch)
                                     
                                     showAvailabilityResults(vacationSearch:vacationSearch)
@@ -1819,12 +1813,6 @@ public class Helper{
             Constant.MyClassConstants.resortsArray.removeAll()
             for resorts in searchAvailabilityResponse{
                 Constant.MyClassConstants.resortsArray.append(resorts.resort!)
-            }
-            
-            
-            // Check if not has availability in the desired check-In date.
-            if ( vacationSearch.searchCriteria.checkInDate != checkInDate) {
-                self.showNearestCheckInDateSelectedMessage()
             }
             
             showAvailabilityResults(vacationSearch:vacationSearch)

@@ -21,6 +21,7 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
     @IBOutlet weak var featuredDestinationsTableView:UITableView!
     @IBOutlet weak var featuredDestinationsTopConstraint: NSLayoutConstraint!
     @IBOutlet var homeTableCollectionView:UICollectionView!
+    let dateString = ""
     
     //***** class variables *****//
     var childCounter = 0
@@ -716,6 +717,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                                 Helper.hideProgressBar(senderView: self)
                                 Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
                                 let vacationSearchInitialDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
+                                
                                  Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearchInitialDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                             }
                             Constant.MyClassConstants.checkInDates = response.checkInDates
@@ -1081,9 +1083,12 @@ extension VacationSearchIPadViewController:WereWantToGoTableViewCellDelegate {
     
 }
 
-//Mark: Extension for Helper
+// Mark: Extension for Helper
 extension VacationSearchIPadViewController:HelperDelegate {
     func resortSearchComplete(){
+        if (Constant.MyClassConstants.initialVacationSearch.searchCheckInDate != Helper.convertDateToString(date: Constant.MyClassConstants.vacationSearchShowDate, format: Constant.MyClassConstants.dateFormat) ) {
+            Helper.showNearestCheckInDateSelectedMessage()
+        }
         self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
     }
     func resetCalendar(){

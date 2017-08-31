@@ -1434,7 +1434,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                 
                                 // Check not available checkIn dates for the active interval
                                 if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                                    self.showNotAvailabilityResults()
+                                    Helper.showNotAvailabilityResults()
                                 } else {
                                     
                                     Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
@@ -1508,7 +1508,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                             
                             // Check not available checkIn dates for the active interval
                             if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                                self.showNotAvailabilityResults()
+                                Helper.showNotAvailabilityResults()
                                 self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
                             }else{
                                 Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
@@ -1661,6 +1661,10 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
 extension VacationSearchViewController:HelperDelegate {
     func resortSearchComplete(){
         Helper.hideProgressBar(senderView: self)
+        // Check if not has availability in the desired check-In date.
+        if (Constant.MyClassConstants.initialVacationSearch.searchCheckInDate != Helper.convertDateToString(date: Constant.MyClassConstants.vacationSearchShowDate, format: Constant.MyClassConstants.dateFormat)) {
+            Helper.showNearestCheckInDateSelectedMessage()
+        }
         self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
 
     }

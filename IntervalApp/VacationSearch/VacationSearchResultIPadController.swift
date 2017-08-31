@@ -72,7 +72,6 @@ class VacationSearchResultIPadController: UIViewController {
         Constant.MyClassConstants.calendarDatesArray.removeAll()
         print(Constant.MyClassConstants.calendarDatesArray.count)
         Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
-        print(Constant.MyClassConstants.calendarDatesArray.count)
         
         let nib = UINib(nibName: Constant.customCellNibNames.searchResultCollectionCell, bundle: nil)
         searchedDateCollectionView?.register(nib, forCellWithReuseIdentifier: Constant.customCellNibNames.searchResultCollectionCell)
@@ -1637,6 +1636,8 @@ extension VacationSearchResultIPadController:HelperDelegate {
         self.createSections()
         self.searchedDateCollectionView.reloadData()
         self.resortDetailTBLView.reloadData()
+        let indexPath = IndexPath(row: 0, section: 0)
+        resortDetailTBLView.scrollToRow(at: indexPath, at: .top, animated: true)
     }
     
     

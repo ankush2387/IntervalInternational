@@ -1598,6 +1598,8 @@ extension SearchResultViewController:HelperDelegate {
         self.createSections()
         self.searchResultColelctionView.reloadData()
         self.searchResultTableView.reloadData()
+        let indexPath = IndexPath(row: 0, section: 0)
+        searchResultTableView.scrollToRow(at: indexPath, at: .top, animated: true)
     }
     func resetCalendar(){
         
