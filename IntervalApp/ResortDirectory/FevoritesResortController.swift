@@ -80,8 +80,9 @@ class FevoritesResortController: UIViewController {
         }
     }
     override func viewWillAppear(_ animated: Bool) {
-        Helper.showProgressBar(senderView: self)
         
+        if(UserContext.sharedInstance.accessToken != nil){
+        Helper.showProgressBar(senderView: self)
         UserClient.getFavoriteResorts(UserContext.sharedInstance.accessToken, onSuccess: { (response) in
             Constant.MyClassConstants.favoritesResortArray.removeAll()
             for item in [response][0] {
@@ -101,8 +102,7 @@ class FevoritesResortController: UIViewController {
             self.setupView()
             Helper.hideProgressBar(senderView: self)
         }
-        
-        
+      }
     }
     
     fileprivate func setupView() {

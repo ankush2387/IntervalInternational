@@ -355,6 +355,7 @@ class SearchResultViewController: UIViewController {
     
     //*****Function for more button press *****//
     func intervalDateItemClicked(_ toDate: Date){
+        searchResultColelctionView.reloadData()
         let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
         Helper.helperDelegate = self
         if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){

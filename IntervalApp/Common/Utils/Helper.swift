@@ -676,7 +676,12 @@ public class Helper{
             for obj in realmLocalStorage {
                 let destination = obj.destinations
                 for destname in destination {
-                    Constant.MyClassConstants.whereTogoContentArray.add("\(destname.destinationName), \(destname.territorrycode)")
+                    if(destname.territorrycode == ""){
+                        Constant.MyClassConstants.whereTogoContentArray.add("\(destname.destinationName)")
+                    }else{
+                        Constant.MyClassConstants.whereTogoContentArray.add("\(destname.destinationName), \(destname.territorrycode)")
+                    }
+                    
                     Constant.MyClassConstants.selectedDestinationNames = Constant.MyClassConstants.selectedDestinationNames.appending("\(destname.destinationName) \(destname.territorrycode) ,")
                     Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(destname.destinationId)
                     

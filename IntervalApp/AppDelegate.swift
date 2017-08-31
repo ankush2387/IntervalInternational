@@ -54,11 +54,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 //UserContext.sharedInstance.accessToken = accessToken
                 Constant.MyClassConstants.systemAccessToken = accessToken
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.accessTokenAlertNotification), object: nil)
+                if(accessToken.token != nil){
                 SupportClient.getSettings(accessToken, onSuccess: { (settings) in
                     UserContext.sharedInstance.appSettings = settings
                 }, onError: { (error) in
                     print(error)
                 })
+                }
                 },
                 onError:{ (error) in
                 SimpleAlert.alert((self.window?.rootViewController)!, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)

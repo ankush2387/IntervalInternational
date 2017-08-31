@@ -845,7 +845,6 @@ extension VacationSearchViewController:UITableViewDataSource {
                             }
                             
                             if let restcode = (object as! Resort).resortCode {
-                                
                                 resortCode = restcode
                             }
                             var resortNameString = "\(resortNm) (\(resortCode))"

@@ -387,7 +387,7 @@ class VacationSearchResultIPadController: UIViewController {
     
     //*****Function for single date item press *****//
     func intervalDateItemClicked(_ toDate: Date){
-        
+        searchedDateCollectionView.reloadData()
         let activeInterval = BookingWindowInterval(interval: Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval())
         Helper.helperDelegate = self
         
