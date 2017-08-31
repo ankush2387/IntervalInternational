@@ -676,7 +676,12 @@ public class Helper{
             for obj in realmLocalStorage {
                 let destination = obj.destinations
                 for destname in destination {
-                    Constant.MyClassConstants.whereTogoContentArray.add("\(destname.destinationName), \(destname.territorrycode)")
+                    if(destname.territorrycode == ""){
+                        Constant.MyClassConstants.whereTogoContentArray.add("\(destname.destinationName)")
+                    }else{
+                        Constant.MyClassConstants.whereTogoContentArray.add("\(destname.destinationName), \(destname.territorrycode)")
+                    }
+                    
                     Constant.MyClassConstants.selectedDestinationNames = Constant.MyClassConstants.selectedDestinationNames.appending("\(destname.destinationName) \(destname.territorrycode) ,")
                     Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(destname.destinationId)
                     
@@ -1005,12 +1010,10 @@ public class Helper{
             DirectoryClient.getRegions(Constant.MyClassConstants.systemAccessToken, onSuccess: {(response) in
                 Constant.MyClassConstants.resortDirectoryRegionArray = response[0].regions
                 if(!(viewController is ResortDirectoryTabController)){
-                    
                     viewController.performSegue(withIdentifier: Constant.segueIdentifiers.resortDirectorySegue, sender: self)
-                    
                 }
                 removeServiceCallBackgroundView(view: viewController.view)
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reloadRegionTable"), object: nil)
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadRegionNotification), object: nil)
                 SVProgressHUD.dismiss()
             },    onError: {(error) in
                 removeServiceCallBackgroundView(view: viewController.view)
@@ -1185,7 +1188,7 @@ public class Helper{
         let detailLabel = UILabel()
         
         
-        noResortView.frame = CGRect(x: 20, y: 150, width: (UIScreen.main.bounds.width) - 40, height: Constant.MyClassConstants.runningDeviceHeight!/3)
+        noResortView.frame = CGRect(x: 0, y: 150, width: (UIScreen.main.bounds.width), height: Constant.MyClassConstants.runningDeviceHeight!/3)
         noResortView.backgroundColor = UIColor(red: 209.0/255.0, green: 226.0/255.0, blue: 237.0/255.0, alpha: 1.0)
         senderView.addSubview(noResortView)
         
@@ -1193,15 +1196,16 @@ public class Helper{
         titleView.backgroundColor = UIColor.darkGray
         noResortView.addSubview(titleView)
         
-        titleLabel.frame = CGRect(x: 10, y: 0, width: noResortView.frame.size.width - 20, height: noResortView.frame.size.height/5)
+        titleLabel.frame = CGRect(x: 0, y: 0, width: noResortView.frame.size.width, height: noResortView.frame.size.height/5)
         titleLabel.text = "No match found. Please select another date."
         titleLabel.textAlignment = NSTextAlignment.center
         titleLabel.textColor = UIColor.white
         titleLabel.font = UIFont(name: "Helvetica",size: 12)
         noResortView.addSubview(titleLabel)
         
-        detailView.frame = CGRect(x: 0, y: noResortView.frame.size.height/4, width: noResortView.frame.size.width - 20, height: 3*(noResortView.frame.size.height/4))
+        detailView.frame = CGRect(x: 0, y: noResortView.frame.size.height/4, width: noResortView.frame.size.width, height: 3*(noResortView.frame.size.height/4))
         detailView.backgroundColor = UIColor(red: 209.0/255.0, green: 226.0/255.0, blue: 237.0/255.0, alpha: 1.0)
+        
         noResortView.addSubview(detailView)
         
         
@@ -1287,21 +1291,24 @@ public class Helper{
                 if(Constant.RunningDevice.deviceIdiom == .pad) {
                     
                     
-                    if(Constant.MyClassConstants.isFromExchange){
+                    if(Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.isFromSearchBoth){
                         
-                        
-                        let storyBoard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
-                        let viewController = storyBoard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortVC)
-                        let transition = CATransition()
-                        transition.duration = 0.4
-                        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-                        transition.type = kCATransitionMoveIn
-                        transition.subtype = kCATransitionFromTop
-                        
-                        viewcontroller.navigationController!.view.layer.add(transition, forKey: kCATransition)
-                        viewcontroller.navigationController?.pushViewController(viewController, animated: false)
+                        var storyBoard = UIStoryboard()
+                        if(viewcontroller.isKind(of:WhatToUseViewController.self)) {
+                            storyBoard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                            let viewController = storyBoard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortVC)
+                            let transition = CATransition()
+                            transition.duration = 0.4
+                            transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+                            transition.type = kCATransitionMoveIn
+                            transition.subtype = kCATransitionFromTop
+                            
+                            viewcontroller.navigationController!.view.layer.add(transition, forKey: kCATransition)
+                            //viewcontroller.navigationController?.pushViewController(viewController, animated: false)
+                            viewcontroller.present(viewController, animated: true, completion: nil)
+                            
+                            }
 
-                        
                     }
                     else{
                         
@@ -1752,19 +1759,13 @@ public class Helper{
         
         RentalClient.searchResorts(UserContext.sharedInstance.accessToken, request: request,
                                    onSuccess: { (response) in
-                                    hideProgressBar(senderView: senderViewController)
                                     // Update Rental inventory
-                                    
+                                    Constant.MyClassConstants.resortsArray.removeAll()
                                     Constant.MyClassConstants.resortsArray = response.resorts
                                     
                                     vacationSearch.rentalSearch?.inventory = response.resorts
-                                    
-                                    // Check if not has availability in the desired check-In date.
-                                    if (vacationSearch.searchCriteria.checkInDate != checkInDate) {
-                                        showNearestCheckInDateSelectedMessage()
-                                    }
-                                    
-                                    //showScrollingCalendar(vacationSearch:vacationSearch)
+                                    Constant.MyClassConstants.initialVacationSearch = vacationSearch
+                                    showScrollingCalendar(vacationSearch:vacationSearch)
                                     
                                     showAvailabilityResults(vacationSearch:vacationSearch)
                                     
@@ -1773,7 +1774,7 @@ public class Helper{
                                     if Constant.MyClassConstants.isFromSorting == false && Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType != VacationSearchType.Combined {
                                         helperDelegate?.resortSearchComplete()
                                     }else{
-                                        executeExchangeSearchDates(senderVC: senderViewController)
+                                        executeExchangeSearchDates(senderVC: senderViewController, vacationSearch: vacationSearch)
                                     }
                                     Constant.MyClassConstants.isFromSorting = false
                                     Constant.MyClassConstants.noAvailabilityView = false
@@ -1783,22 +1784,7 @@ public class Helper{
                                     Constant.MyClassConstants.noAvailabilityView = true
                                     Constant.MyClassConstants.isFromSorting = false
                                     hideProgressBar(senderView: senderViewController)
-                                    helperDelegate?.resortSearchComplete()
                                     SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
-                                    DarwinSDK.logger.error("Error Code: \(error.code)")
-                                    DarwinSDK.logger.error("Error Description: \(error.description)")
-                                    
-                                    let INVENTORY_NOT_AVAILABLE_CODE = "d67dc7030d7462db65465023262e704f"
-                                    let sdkErrorCode = String(describing: error.userInfo["errorCode"])
-                                    
-                                    if (INVENTORY_NOT_AVAILABLE_CODE == sdkErrorCode) {
-                                        // TODO: Define behavior for not available inventory
-                                        DarwinSDK.logger.error("Define behavior for not available inventory.")
-                                    } else {
-                                        // TODO: Handle SDK/API errors
-                                        DarwinSDK.logger.error("Handle SDK/API errors.")
-                                    }
-                                    
         }
         )
     }
@@ -1820,23 +1806,20 @@ public class Helper{
         
         ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: request, onSuccess: { (searchAvailabilityResponse) in
             
-            print(searchAvailabilityResponse)
-            
-            
             // Update Exchange inventory
-            hideProgressBar(senderView: senderViewController)
-            Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.inventory = searchAvailabilityResponse
+            vacationSearch.exchangeSearch?.inventory = searchAvailabilityResponse
             
-            // Check if not has availability in the desired check-In date.
-            if ( Constant.MyClassConstants.initialVacationSearch.searchCriteria.checkInDate != checkInDate) {
-                self.showNearestCheckInDateSelectedMessage()
+            //Added resorts for resort detail screen
+            Constant.MyClassConstants.resortsArray.removeAll()
+            for resorts in searchAvailabilityResponse{
+                Constant.MyClassConstants.resortsArray.append(resorts.resort!)
             }
             
             showAvailabilityResults(vacationSearch:vacationSearch)
             hideProgressBar(senderView:senderViewController)
-            print(searchAvailabilityResponse)
-            if(senderViewController.isKind(of: VacationSearchResultIPadController.self) || senderViewController.isKind(of: SearchResultViewController.self)){
-                
+            Constant.MyClassConstants.initialVacationSearch = vacationSearch
+            if(senderViewController.isKind(of: VacationSearchResultIPadController.self) || senderViewController.isKind(of: SearchResultViewController.self)  || senderViewController.isKind(of: SortingViewController.self)){
+                helperDelegate?.resortSearchComplete()
             }else{
                 senderViewController.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
             }
@@ -1848,8 +1831,48 @@ public class Helper{
         }
     }
     
-    static func executeExchangeSearchDates(senderVC:UIViewController) {
+    //Search both perform exchange search after rental
+    static func executeExchangeSearchDates(senderVC:UIViewController, vacationSearch:VacationSearch) {
         
+        
+        ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request: vacationSearch.exchangeSearch?.searchContext.request,
+                                   onSuccess: { (response) in
+                                    vacationSearch.exchangeSearch?.searchContext.response = response
+                                    
+                                    // Get activeInterval
+                                    let activeInterval = vacationSearch.bookingWindow.getActiveInterval()
+                                    
+                                    // Update active interval
+                                    vacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                                    Constant.MyClassConstants.initialVacationSearch = vacationSearch
+                                    
+                                    // Check not available checkIn dates for the active interval
+                                    if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                                        
+                                        // We do not have available CheckInDates in Rental and Exchange
+                                        //if (self.rentalHasNotAvailableCheckInDates) {
+                                        // self.showNotAvailabilityResults()
+                                        //}
+                                        
+                                    } else {
+                                        vacationSearch.resolveCheckInDateForInitialSearch()
+                                        executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat) , senderViewController: senderVC, vacationSearch: vacationSearch)
+                                    }
+                                    
+                                    //expectation.fulfill()
+        },
+                                   onError:{ (error) in
+                                    SimpleAlert.alert(senderVC, title: Constant.AlertErrorMessages.noResultError, message: error.localizedDescription)
+                                    
+        }
+        )
+        
+    }
+    
+    /*
+     * Execute Exchange Search Dates After Select Interval
+     */
+    static func executeExchangeSearchDatesAfterSelectInterval(senderVC:UIViewController, datesCV:UICollectionView) {
         ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request,
                                    onSuccess: { (response) in
                                     Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
@@ -1861,31 +1884,64 @@ public class Helper{
                                     Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                                     
                                     // Check not available checkIn dates for the active interval
-                                    if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                                    if (!(activeInterval?.hasCheckInDates())!) {
                                         
                                         // We do not have available CheckInDates in Rental and Exchange
-                                        //if (self.rentalHasNotAvailableCheckInDates) {
-                                           // self.showNotAvailabilityResults()
-                                        //}
+                                        if (Constant.MyClassConstants.rentalHasNotAvailableCheckInDatesForInitial) {
+                                            self.showNotAvailabilityResults()
+                                        }
                                         
                                     } else {
-                                        Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                                           executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat) , senderViewController: senderVC, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                        
+                                        self.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                        
+                                        Constant.MyClassConstants.calendarDatesArray.removeAll()
+                                        
+                                        Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
+                                        
+                                       datesCV.reloadData()
                                     }
                                     
-                                    //expectation.fulfill()
         },
                                    onError:{ (error) in
-                                    DarwinSDK.logger.error("Error Code: \(error.code)")
-                                    DarwinSDK.logger.error("Error Description: \(error.description)")
-                                    
-                                    // TODO: Handle SDK/API errors
-                                    DarwinSDK.logger.error("Handle SDK/API errors.")
-                                    
-                                    
+                                    SimpleAlert.alert(senderVC, title: Constant.AlertErrorMessages.noResultError, message: error.localizedDescription)
+                                  }
+        )
+    }
+    
+    /*
+     * Execute Exchnage Search Availability After Select CheckInDate
+     */
+    static func executeExchangeSearchAvailabilityAfterSelectCheckInDate(activeInterval:BookingWindowInterval!, checkInDate:Date!, searchCriteria:VacationSearchCriteria, senderVC:UIViewController) {
+        DarwinSDK.logger.error("----- Exchange - Waiting for search availability ... -----")
+        
+        let request = ExchangeSearchAvailabilityRequest()
+        request.checkInDate = checkInDate
+        request.resortCodes = activeInterval.resortCodes!
+        request.travelParty = searchCriteria.travelParty
+        request.relinquishmentsIds = searchCriteria.relinquishmentsIds!
+        
+        ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: request,
+                                          onSuccess: { (response) in
+                                            // Update Exchange inventory
+                                            Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.inventory = response
+                                            
+                                            self.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                            
+                                            DarwinSDK.logger.info(" ==== Rental/Exchange -> AvailabilityResults === ")
+                                            self.showAvailabilityResults(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                            helperDelegate?.resortSearchComplete()
+                    
+        },
+                                          onError:{ (error) in
+                                            SimpleAlert.alert(senderVC, title: Constant.AlertErrorMessages.noResultError, message: error.localizedDescription)
         }
         )
-        
+    }
+    
+    static func showNotAvailabilityResults() {
+        Constant.MyClassConstants.noAvailabilityView = true
+        DarwinSDK.logger.info("Show the Not Availability Screen.")
     }
     
     static func showScrollingCalendar(vacationSearch:VacationSearch) {
@@ -2004,7 +2060,7 @@ public class Helper{
     
     static func resolveResortInfo(resort:Resort!) -> String {
         var info = String()
-        info.append(resort.resortCode!)
+        /*info.append(resort.resortCode!)
         info.append(" ")
         info.append(resort.resortName!)
         info.append(" ")
@@ -2022,7 +2078,7 @@ public class Helper{
         if (resort.address?.countryCode != nil) {
             info.append(" ")
             info.append((resort.address?.countryCode)!)
-        }
+        }*/
         
         return info
     }

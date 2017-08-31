@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import IntervalUIKit
 
 class GetawayCell: UITableViewCell {
     
@@ -17,4 +18,10 @@ class GetawayCell: UITableViewCell {
     @IBOutlet weak var kitchenType: UILabel!
     @IBOutlet weak var promotionsView: UIView!
     @IBOutlet weak var currencySymbol: UILabel!
+    @IBOutlet weak var mainView: UIView!
+    @IBOutlet weak var checkbox: IUIKCheckbox!
+   
+    
+    //@IBOutlet weak var contentView: UIView!
+    @IBOutlet weak var viewContent: UIView!
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import IntervalUIKit
 
 class AvailablePointCell: UITableViewCell {
     
@@ -14,8 +15,10 @@ class AvailablePointCell: UITableViewCell {
     
     @IBOutlet weak var availablePointValueLabel: UILabel!
 
+    @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var borderView: UIView!
 
+    @IBOutlet weak var checkBOx: IUIKCheckbox!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

@@ -223,7 +223,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
         
         SVProgressHUD.show()
         Helper.addServiceCallBackgroundView(view: self.view)
-        if(Constant.MyClassConstants.isFromExchange){
+        if(Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
             Constant.holdingTimer.invalidate()
             
             ExchangeProcessClient.backToChooseExchange(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess:{(response) in
@@ -389,7 +389,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
     //***** Function to perform checkout *****//
     @IBAction func proceedToCheckoutPressed(_ sender: AnyObject) {
         
-        if(Constant.MyClassConstants.isFromExchange){
+        if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() || Constant.MyClassConstants.searchBothExchange){
             let exchangeProcessRequest = ExchangeProcessContinueToCheckoutRequest()
                 
                 if(self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count) {
@@ -580,12 +580,12 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
         
         if(section == 0) {
             
-            if(Constant.MyClassConstants.vacationSearchSelectedSegmentIndex == 1) || Constant.MyClassConstants.vacationSearchSelectedSegmentIndex == 0 {
+            if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() || Constant.MyClassConstants.searchBothExchange){
                 
-                return 1
+                return 2
             }
             else {
-                return 2
+                return 1
             }
         }
         else if(section == 1) {
@@ -1029,7 +1029,7 @@ extension WhoWillBeCheckingInViewController:UITextFieldDelegate {
                         Constant.GetawaySearchResultGuestFormDetailData.firstName = "\(textField.text!)\(string)"
                     }
                     
-                    let vfnm =  self.validateUsername(str: Constant.GetawaySearchResultGuestFormDetailData.firstName)
+                     let vfnm =  self.validateUsername(str: Constant.GetawaySearchResultGuestFormDetailData.firstName)
                     if(vfnm || Constant.GetawaySearchResultGuestFormDetailData.firstName.characters.count == 0) {
                         
                         proceedStatus = true

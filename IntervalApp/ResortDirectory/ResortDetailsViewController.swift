@@ -22,6 +22,7 @@ class ResortDetailsViewController: UIViewController {
     @IBOutlet weak var imageIndexLabel:UILabel!
     @IBOutlet weak var headerTextForShowingResortCounter: UILabel?
     
+    @IBOutlet weak var cancelButton: UIButton?
     @IBOutlet weak var previousButton: UIButton?
     
     @IBOutlet weak var forwordButton: UIButton?
@@ -50,22 +51,27 @@ class ResortDetailsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-//        if (Constant.MyClassConstants.isFromExchange && Constant.RunningDevice.deviceIdiom == .phone) {
-//            self.previousButton?.isHidden = true
-//            self.forwordButton?.isHidden = true
-//            self.headerTextForShowingResortCounter?.isHidden = true
-//        }
-        self.previousButton?.isHidden = true
-        self.forwordButton?.isHidden = true
-        self.headerTextForShowingResortCounter?.isHidden = true
-        //self.navigationController?.isNavigationBarHidden = true
-        //self.tabBarController?.tabBar.isHidden = true
-        
-//        if(Constant.RunningDevice.deviceIdiom == .phone){
-//            self.navigationController?.isNavigationBarHidden = true
-//            self.tabBarController?.tabBar.isHidden = true
-//        }
-        // Notification to perform vacation search after user pre-login
+        if !Constant.MyClassConstants.isFromSearchResult {
+             self.cancelButton?.setTitle("Done", for: .normal)
+            if (Constant.MyClassConstants.isFromExchange && Constant.RunningDevice.deviceIdiom == .phone) {
+                self.previousButton?.isHidden = true
+                self.forwordButton?.isHidden = true
+                self.headerTextForShowingResortCounter?.isHidden = true
+            }
+            self.previousButton?.isHidden = true
+            self.forwordButton?.isHidden = true
+            self.headerTextForShowingResortCounter?.isHidden = true
+            //self.navigationController?.isNavigationBarHidden = true
+            //self.tabBarController?.tabBar.isHidden = true
+            
+            if(Constant.RunningDevice.deviceIdiom == .phone){
+                self.navigationController?.isNavigationBarHidden = true
+                self.tabBarController?.tabBar.isHidden = true
+            }
+
+        } else {
+        }
+                // Notification to perform vacation search after user pre-login
         NotificationCenter.default.addObserver(self, selector: #selector(showVacationSearch), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
         
         
@@ -104,7 +110,6 @@ class ResortDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         // omniture tracking with event 35
         if(Constant.MyClassConstants.resortsDescriptionArray.resortCode != nil){
@@ -232,7 +237,6 @@ class ResortDetailsViewController: UIViewController {
                 
                 Helper.addServiceCallBackgroundView(view: self.view)
                 SVProgressHUD.show()
-                
                 
                 
                 DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode:resortCode!, onSuccess: { (response) in

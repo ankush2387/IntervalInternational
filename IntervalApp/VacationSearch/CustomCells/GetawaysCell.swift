@@ -11,6 +11,7 @@ import UIKit
 class GetawaysCell: UITableViewCell {
 
     @IBOutlet weak var contentBackgroundView: UIView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

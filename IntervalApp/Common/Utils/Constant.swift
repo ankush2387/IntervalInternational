@@ -50,6 +50,16 @@ class Constant: NSObject {
         
     }
     
+    struct AdditionalUnitDetailsData  {
+        
+        static var clubresort = ""
+        static var reservationNumber = ""
+        static var unitNumber = ""
+        static var bedroomUnit = ""
+        static var checkInDate = ""
+    
+    }
+    
     //Float additional info textfield variabls
     struct FloatDetails {
         
@@ -179,6 +189,8 @@ class Constant: NSObject {
         static var isLoginSuccessfull = false
         
         static var isFromSorting = false
+        
+        static var isFromSearchResult = false
         
         //***** global variable that contains running device width from appdelegate method *****//
         static var runningDeviceWidth:CGFloat? = UIScreen.main.bounds.width
@@ -531,6 +543,7 @@ class Constant: NSObject {
         static var searchResultHeader = NSLocalizedString("Nearest Check-in Date selected.\nWe found availibility close to your desired date.", comment: "")
         static var isFromExchange = false
         static var isFromWhatToUse = false
+        static var isFromSearchBoth = false
         static var travelPartyInfo = TravelParty()
         static var bucketsArray = [ExchangeBucket]()
         static var exchangeInventory = [ExchangeInventory]()
@@ -561,6 +574,16 @@ class Constant: NSObject {
         //Global App Settings
         static var appSettings = AppSettings()
         static var noAvailabilityView = false
+        static var selectedUnitIndex = 0
+        
+        // Search both check for rental and exchange
+        
+        static var rentalHasNotAvailableCheckInDatesForInitial : Bool = false
+        static var exchangeHasNotAvailableCheckInDatesForInitial : Bool = false
+        
+        static var rentalHasNotAvailableCheckInDatesAfterSelectInterval : Bool = false
+        static var exchangeHasNotAvailableCheckInDatesAfterSelectInterval : Bool = false
+        static var searchBothExchange = false
     }
     
     // Enum to store resorts and destinations
@@ -732,6 +755,7 @@ class Constant: NSObject {
         static var refreshTableNotification = "refreshMyTableView"
         static var updateResortHoldingTime = "updateResortHoldingTime"
         static var enableGuestFormCheckout = "enableGuestFormCheckout"
+        static var enableSaveUnitDetails = "enableSaveButtonUnitDetails"
         static var changeSliderStatus = "ChangeLabel"
         static var showHelp = "showHelp"
         static var showUnfavorite = "showUnFav"

@@ -20,6 +20,7 @@ class FloatDetailViewController: UIViewController {
     
     // variable declaration
     var isKeyBoardOpen = false
+    var detailsStatusForFloat: Bool = false
     var moved: Bool = false
     var activeField:UITextField?
     var isFromLockOff = false
@@ -29,6 +30,8 @@ class FloatDetailViewController: UIViewController {
     var floatAttributesArray = NSMutableArray()
     var atrributesRowArray = NSMutableArray()
     var checkInDate = ""
+    var proceedStatus = false
+    
     
     /**
      PopcurrentViewcontroller from NavigationController
@@ -85,6 +88,7 @@ class FloatDetailViewController: UIViewController {
         
         self.navigationItem.leftBarButtonItem = menuButton
         getOrderedSections()
+        Constant.AdditionalUnitDetailsData.bedroomUnit.removeAll()
         
     }
     
@@ -126,6 +130,25 @@ class FloatDetailViewController: UIViewController {
             self.floatDetailsTableView.scrollIndicatorInsets = contentInsets
         }
     }
+    
+    // Check for FloatDetails.
+    
+    func checkForFloatDetails() ->Bool{
+        
+        if( Constant.FloatDetails.reservationNumber != "" && Constant.FloatDetails.unitNumber != "" && Constant.AdditionalUnitDetailsData.bedroomUnit != "" ){
+            
+            proceedStatus = true
+            return proceedStatus
+        }
+        else {
+            
+            return proceedStatus
+        }
+        
+    
+    }
+    
+    
     
     //adding done button on keyboard type numberPad
     func addDoneButtonOnNumpad(textField: UITextField) {
@@ -174,6 +197,7 @@ class FloatDetailViewController: UIViewController {
     
     // Select check - in date action
     @IBAction func selectCheckInDate(_sender:UIButton){
+        
         Helper.getCheckInDatesForCalendar(senderViewController: self, resortCode: (floatResortDetails?.resortCode)!, relinquishmentYear: Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentYear!)
     }
     
@@ -191,25 +215,30 @@ class FloatDetailViewController: UIViewController {
             Constant.FloatDetails.unitNumber = Constant.MyClassConstants.unitNumberLockOff
         }
         if(atrributesRowArray.contains(Constant.MyClassConstants.checkInDateAttribute)){
+            
             tableViewCell = floatDetailsTableView.cellForRow(at: IndexPath(row: atrributesRowArray.index(of: Constant.MyClassConstants.checkInDateAttribute), section: floatAttributesArray.index(of: Constant.MyClassConstants.resortAttributes)))!
             checkInDate = getTableViewCellSubviews(tableViewCell:tableViewCell)
         }
         
         //API call for update fix week reservation
-       let fixedWeekReservation = FixWeekReservation()
-        
+        let fixedWeekReservation = FixWeekReservation()
+        var myComponents: DateComponents
+   
         let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-        let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate)
-        let year = String(describing: myComponents.year!)
-        var month = String(describing: myComponents.month!)
-        if(month.characters.count == 1){
-            month = month.appending("0")
+        if(Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate == nil){
+            
+        }else{
+        myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate)
+            let year = String(describing: myComponents.year!)
+            var  month = String(describing: myComponents.month!)
+            if(month.characters.count == 1){
+                month = month.appending("0")
+            }
+            let day   = myComponents.day!
+            fixedWeekReservation.checkInDate = "\(year)-\(month)-\(day)"//checkInDate
+
         }
-        let day   = myComponents.day!
-        
-        
-        
-        fixedWeekReservation.checkInDate = "\(year)-\(month)-\(day)"//checkInDate
+
         fixedWeekReservation.reservationNumber = Constant.FloatDetails.reservationNumber
         fixedWeekReservation.weekNumber = Constant.MyClassConstants.relinquishmentSelectedWeek.weekNumber!
         
@@ -425,7 +454,8 @@ class FloatDetailViewController: UIViewController {
             atrributesRowArray.add(Constant.MyClassConstants.checkInDateAttribute)
         }
         
-        floatAttributesArray.add(Constant.MyClassConstants.saveAttribute)
+            floatAttributesArray.add(Constant.MyClassConstants.saveAttribute)
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -486,6 +516,9 @@ extension FloatDetailViewController : UITableViewDataSource{
                 combination.append(textValueString)
                 
                 selectClubresortcell.selectResortLabel.attributedText = combination
+                Constant.AdditionalUnitDetailsData.clubresort = "Club Resort"
+                detailsStatusForFloat = checkForFloatDetails()
+            
             }
             return selectClubresortcell!
             
@@ -511,13 +544,14 @@ extension FloatDetailViewController : UITableViewDataSource{
                 if(Constant.MyClassConstants.selectedFloatWeek.floatDetails.count > 0){
                     registrationNumbercell.resortAttributeLabel.text = Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].unitSize
                 }
-                
-                
-                if(Constant.MyClassConstants.savedBedroom != ""){
+                registrationNumbercell.resortAttributeLabel.text  = Constant.MyClassConstants.savedBedroom
+                if (Constant.MyClassConstants.savedBedroom != "") {
                     
                     registrationNumbercell.resortAttributeLabel.text  = Constant.MyClassConstants.savedBedroom
-
+                    Constant.AdditionalUnitDetailsData.bedroomUnit = Constant.MyClassConstants.savedBedroom
                 }
+                
+                
                
                 registrationNumbercell.resortAttributeLabel.placeholder = Constant.textFieldTitles.numberOfBedrooms
                 
@@ -525,6 +559,7 @@ extension FloatDetailViewController : UITableViewDataSource{
                 if(Constant.ControllerTitles.selectedControllerTitle != Constant.storyboardControllerID.floatViewController){
                     registrationNumbercell.viewButton.addTarget(self, action: #selector(self.selectBedroom(_sender:)), for: .touchUpInside)
                 }
+                detailsStatusForFloat = checkForFloatDetails()
                 return registrationNumbercell
                 
             case Constant.MyClassConstants.checkInDateAttribute:
@@ -554,6 +589,7 @@ extension FloatDetailViewController : UITableViewDataSource{
                 return registrationNumbercell
             
             case Constant.MyClassConstants.resortReservationAttribute:
+                
                 registrationNumbercell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.attributesCell) as! ReservationTableViewCell
                 registrationNumbercell.textFieldView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
                 if(Constant.MyClassConstants.selectedFloatWeek.floatDetails.count > 0){
@@ -570,8 +606,21 @@ extension FloatDetailViewController : UITableViewDataSource{
             }
             
         case Constant.MyClassConstants.saveAttribute:
+    
             saveandcancelCell = tableView.dequeueReusableCell(withIdentifier: Constant.floatDetailViewController.saveandcancelcellIdentifier) as? FloatSaveAndCancelButtonTableViewCell
-            return saveandcancelCell!
+            
+            if(proceedStatus == true){
+                saveandcancelCell?.saveFloatDetailButton.alpha =  1.0
+                saveandcancelCell?.saveFloatDetailButton.isEnabled = true
+                return saveandcancelCell!
+
+            }
+            else{
+                saveandcancelCell?.saveFloatDetailButton.alpha = 0.35
+                return saveandcancelCell!
+            }
+            
+            
             
         default:
             resortcallCell  = tableView.dequeueReusableCell(withIdentifier: Constant.floatDetailViewController.resortcallidentifer) as? CallYourResortTableViewCell
@@ -664,8 +713,8 @@ extension FloatDetailViewController : UITextFieldDelegate{
         self.activeField?.resignFirstResponder()
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+       
         
-        print(string)
         if (range.length == 1 && string.characters.count == 0) {
             print("backspace tapped")
         }
@@ -674,20 +723,56 @@ extension FloatDetailViewController : UITextFieldDelegate{
                     
                 if (range.length == 1 && string.characters.count == 0) {
                     Constant.FloatDetails.reservationNumber.characters.removeLast()
+                    if(Constant.FloatDetails.reservationNumber.characters.count == 0) {
+                        self.proceedStatus = false
+                        let indexPath = NSIndexPath(row: 0, section: floatAttributesArray.index(of: Constant.MyClassConstants.saveAttribute))
+                        floatDetailsTableView.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.none)
+
+                    }
                 }
                 else {
                     Constant.FloatDetails.reservationNumber = "\(textField.text!)\(string)"
+                    print(Constant.FloatDetails.reservationNumber)
                 }
+               let status = checkForFloatDetails()
+                
+                if(status) {
+                    
+                    let indexPath = NSIndexPath(row: 0, section: floatAttributesArray.index(of: Constant.MyClassConstants.saveAttribute))
+                    floatDetailsTableView.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.none)
+                }
+                
                 return true
                 
             }else {
                 
                 if (range.length == 1 && string.characters.count == 0) {
+                    
                     Constant.FloatDetails.unitNumber.characters.removeLast()
+                    if(Constant.FloatDetails.unitNumber.characters.count == 0) {
+                        
+                        self.proceedStatus = false
+                        let indexPath = NSIndexPath(row: 0, section: floatAttributesArray.index(of: Constant.MyClassConstants.saveAttribute))
+                        floatDetailsTableView.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.none)
+                        
+                    }
+
+                   
                 }
                 else {
+                    
                     Constant.FloatDetails.unitNumber = "\(textField.text!)\(string)"
                 }
+                
+               let status =  checkForFloatDetails()
+                
+                if(status) {
+                    
+                    let indexPath = NSIndexPath(row: 0, section: floatAttributesArray.index(of: Constant.MyClassConstants.saveAttribute))
+                    floatDetailsTableView.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.none)
+
+                }
+                
                 return true
             }
         
@@ -704,7 +789,8 @@ extension FloatDetailViewController : UITextFieldDelegate{
             }
             else {
                 self.moved = true
-                textField.keyboardType = .default
+                textField.keyboardType = .numberPad
+                self.addDoneButtonOnNumpad(textField: textField)
                
             }
         }
