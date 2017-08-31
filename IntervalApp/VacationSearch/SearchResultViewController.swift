@@ -68,6 +68,8 @@ class SearchResultViewController: UIViewController {
         Constant.MyClassConstants.calendarDatesArray.removeAll()
         Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
         createSections()
+        
+        self.searchResultTableView.setContentOffset(CGPoint(x:0, y:0), animated: true)
         self.searchResultColelctionView.reloadData()
         self.searchResultTableView.reloadData()
     }

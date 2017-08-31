@@ -2603,17 +2603,17 @@
                                                                                 <nil key="textColor"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
-                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SVV" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5WU-vR-ab2">
-                                                                                <rect key="frame" x="20" y="51" width="35" height="18"/>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SVV" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5WU-vR-ab2">
+                                                                                <rect key="frame" x="20" y="51" width="40" height="18"/>
                                                                                 <constraints>
-                                                                                    <constraint firstAttribute="width" constant="35" id="17E-ON-pzF"/>
+                                                                                    <constraint firstAttribute="width" constant="40" id="17E-ON-pzF"/>
                                                                                 </constraints>
                                                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                                 <color key="textColor" red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bSs-fe-cZn">
-                                                                                <rect key="frame" x="65" y="47.5" width="25" height="25"/>
+                                                                                <rect key="frame" x="70" y="47.5" width="25" height="25"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" constant="25" id="8a6-9c-tDQ"/>
                                                                                     <constraint firstAttribute="width" constant="25" id="vLR-kx-O8h"/>
