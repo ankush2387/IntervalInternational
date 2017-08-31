@@ -676,6 +676,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
             let cell = collectionView.cellForItem(at: indexPath)
             
             if(cell?.isKind(of:MoreCell.self))!{
+                
                 let viewForActivity = UIView()
                 viewForActivity.frame = CGRect(x:0, y:0, width:(cell?.bounds.width)!, height:(cell?.bounds.height)!)
                 

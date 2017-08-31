@@ -458,7 +458,7 @@ extension SortingViewController:UITableViewDataSource {
             self.lblHeading.text = Constant.MyClassConstants.sorting
              let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.sortingOptionCell, for: indexPath) as! SortingOptionCell
             
-            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.isFromSearchBoth{
+            if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isCombined() || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange(){
                 cell.lblSortingOption.text = Constant.MyClassConstants.exchangeSortingOptionArray[indexPath.row]
                 cell.lblSortingRange.text = Constant.MyClassConstants.exchangeSortingRangeArray[indexPath.row]
             } else {

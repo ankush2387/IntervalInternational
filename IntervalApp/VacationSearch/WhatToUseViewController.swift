@@ -56,6 +56,7 @@ class WhatToUseViewController: UIViewController {
     }
     
     @IBAction func checkBoxPressed(_ sender: IUIKCheckbox) {
+        Constant.MyClassConstants.searchBothExchange = true
         
         self.selectedRow = sender.tag
         self.selectedRowSection = sender.accessibilityElements?.first as! Int
@@ -175,7 +176,7 @@ class WhatToUseViewController: UIViewController {
     
     @IBAction func checkBoxGetawayPressed(_ sender: IUIKCheckbox) {
         
-        
+        Constant.MyClassConstants.searchBothExchange = false
         self.selectedRow = sender.tag
         self.selectedRowSection = sender.accessibilityElements?.first as! Int
        
@@ -240,12 +241,21 @@ class WhatToUseViewController: UIViewController {
                 SVProgressHUD.dismiss()
                 Helper.removeServiceCallBackgroundView(view: self.view)
                 Constant.MyClassConstants.membershipContactArray = Membership.contacts!
-                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
-                
-                let transitionManager = TransitionManager()
-                self.navigationController?.transitioningDelegate = transitionManager
-                self.navigationController!.pushViewController(viewController, animated: true)
+                if(Constant.RunningDevice.deviceIdiom == .phone){
+                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                    let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+                    
+                    let transitionManager = TransitionManager()
+                    self.navigationController?.transitioningDelegate = transitionManager
+                    self.navigationController!.pushViewController(viewController, animated: true)
+                }else{
+                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                    let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as! WhoWillBeCheckingInIPadViewController
+                    
+                    let transitionManager = TransitionManager()
+                    self.navigationController?.transitioningDelegate = transitionManager
+                    self.navigationController!.pushViewController(viewController, animated: true)
+                }
                 
             }, onError: { (error) in
                 

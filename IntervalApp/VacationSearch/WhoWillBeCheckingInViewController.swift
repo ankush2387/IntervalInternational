@@ -223,7 +223,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
         
         SVProgressHUD.show()
         Helper.addServiceCallBackgroundView(view: self.view)
-        if(Constant.MyClassConstants.isFromExchange){
+        if(Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
             Constant.holdingTimer.invalidate()
             
             ExchangeProcessClient.backToChooseExchange(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess:{(response) in
@@ -389,7 +389,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
     //***** Function to perform checkout *****//
     @IBAction func proceedToCheckoutPressed(_ sender: AnyObject) {
         
-        if(Constant.MyClassConstants.isFromExchange){
+        if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() || Constant.MyClassConstants.searchBothExchange){
             let exchangeProcessRequest = ExchangeProcessContinueToCheckoutRequest()
                 
                 if(self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count) {
@@ -580,7 +580,7 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
         
         if(section == 0) {
             
-            if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isCombined()){
+            if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() || Constant.MyClassConstants.searchBothExchange){
                 
                 return 2
             }
