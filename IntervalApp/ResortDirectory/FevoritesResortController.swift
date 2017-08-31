@@ -46,7 +46,6 @@ class FevoritesResortController: UIViewController {
         resortTableView.dataSource = datasource
         resortTableView.delegate = datasource
         datasource.unfavHandler = {(rowNumber) in
-            print("hello")
             self.unfavClicked(rowNumber: rowNumber)
             
         }
@@ -82,31 +81,38 @@ class FevoritesResortController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         Helper.showProgressBar(senderView: self)
         
-        UserClient.getFavoriteResorts(UserContext.sharedInstance.accessToken, onSuccess: { (response) in
-            Constant.MyClassConstants.favoritesResortArray.removeAll()
-            for item in [response][0] {
-                if let resortFav = item as? ResortFavorite {
-                    if let resort = resortFav.resort{
-                        let code = resort.resortCode
-                        Constant.MyClassConstants.favoritesResortCodeArray.add(code)
-                        Constant.MyClassConstants.favoritesResortArray.append(resort)
+        if UserContext.sharedInstance.accessToken != nil {
+            UserClient.getFavoriteResorts(UserContext.sharedInstance.accessToken, onSuccess: { (response) in
+                Constant.MyClassConstants.favoritesResortArray.removeAll()
+                for item in [response][0] {
+                    if let resortFav = item as? ResortFavorite {
+                        if let resort = resortFav.resort{
+                            let code = resort.resortCode
+                            Constant.MyClassConstants.favoritesResortCodeArray.add(code)
+                            Constant.MyClassConstants.favoritesResortArray.append(resort)
+                        }
                     }
+                    
                 }
-                
+                self.setupView()
+                Helper.hideProgressBar(senderView: self)
+            })
+            { (error) in
+                self.setupView()
+                Helper.hideProgressBar(senderView: self)
             }
-            self.setupView()
-            Helper.hideProgressBar(senderView: self)
-        })
-        { (error) in
-            self.setupView()
-            Helper.hideProgressBar(senderView: self)
+        } else {
+            setupView()
         }
+        
+        
         
         
     }
     
     fileprivate func setupView() {
         if(UserContext.sharedInstance.accessToken == nil) {
+            Helper.hideProgressBar(senderView: self)
             self.signInView.isHidden = false
             self.resortTableBaseView.isHidden = true
         }
@@ -339,43 +345,20 @@ class FevoritesResortController: UIViewController {
             }
         }
         //TODO - Jhon: review this code.
-//        let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-//        DispatchQueue.main.asyncAfter(deadline: delayTime) {
-//            
-//            if(Constant.MyClassConstants.favoritesResortArray.count>0){
-//                
-//                indexPath = IndexPath(row:(rowNumber) - 1,section: 0)
-//                
-//                self.resortTableView.reloadSections(IndexSet(integer:0), with: .automatic)
-//                
-//            }
-//            else {
-//                
-//                self.emptyFavoritesMessageView = Helper.displayEmptyFavoritesMessage(requestedView: self.view)
-//                self.backgroundView.frame = CGRect(x: 0, y: 0, width: self.resortTableView.frame.size.width-20, height: UIScreen.main.bounds.height)
-//                self.backgroundView.backgroundColor = UIColor.white
-//                self.view.addSubview(self.backgroundView)
-//                if(UIDevice().userInterfaceIdiom == .pad) {
-//                    
-//                    let messageView = UIView()
-//                    
-//                    messageView.frame = CGRect(x: 20, y: 60, width: self.resortTableView.frame.size.width-20, height: 600)
-//                    
-//                    self.emptyFavoritesMessageView = Helper.displayEmptyFavoritesMessage(requestedView: messageView)
-//                    self.backgroundView.addSubview(self.emptyFavoritesMessageView)
-//                    
-//                    if(self.containerView != nil){
-//                        self.containerView.isHidden = true
-//                    }
-//                    
-//                    
-//                }
-//                else {
-//                    
-//                    self.view.superview?.addSubview(self.emptyFavoritesMessageView)
-//                }
-//            }
-//        }
+        let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+        DispatchQueue.main.asyncAfter(deadline: delayTime) {
+            
+            if(Constant.MyClassConstants.favoritesResortArray.count>0){
+                
+                indexPath = IndexPath(row:(rowNumber) - 1,section: 0)
+                
+                self.resortTableView.reloadSections(IndexSet(integer:0), with: .automatic)
+                
+            }
+            else {
+                self.setupView()
+            }
+        }
         
     }
 

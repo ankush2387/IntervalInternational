@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="x1F-lN-3Vb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F2073" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="x1F-lN-3Vb">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -338,29 +338,27 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign In" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2YO-Cm-pZy">
-                                <rect key="frame" x="123.5" y="84" width="128" height="48"/>
+                                <rect key="frame" x="123.5" y="128" width="128" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="L8d-bM-uNR"/>
                                     <constraint firstAttribute="width" constant="128" id="LXv-z2-N4X"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="30"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="31C-MC-g95">
-                                <rect key="frame" x="45.5" y="142" width="284" height="93"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To view or use this feature, you will need to sign in to your Interval account." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="31C-MC-g95">
+                                <rect key="frame" x="45.5" y="186" width="284" height="93"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="93" id="IXG-lq-gh2"/>
                                     <constraint firstAttribute="width" constant="284" id="J4T-zC-mT1"/>
                                 </constraints>
-                                <string key="text">To view or use this feature we will need you to Sign In to your
-Interval Account</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Login ID" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="H96-KM-efE" customClass="PaddingTextField" customModule="IntervalApp" customModuleProvider="target">
-                                <rect key="frame" x="16" y="251" width="343" height="46"/>
+                                <rect key="frame" x="16" y="295" width="343" height="46"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="46" id="2Ko-U1-uPN"/>
                                 </constraints>
@@ -377,7 +375,7 @@ Interval Account</string>
                                 </userDefinedRuntimeAttributes>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BLq-zI-hot" customClass="PaddingTextField" customModule="IntervalApp" customModuleProvider="target">
-                                <rect key="frame" x="16" y="305" width="343" height="46"/>
+                                <rect key="frame" x="16" y="349" width="343" height="46"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="46" id="fVP-if-zp2"/>
                                 </constraints>
@@ -393,7 +391,7 @@ Interval Account</string>
                                 </userDefinedRuntimeAttributes>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qsc-5a-TLe" customClass="IUIKButton" customModule="IntervalUIKit">
-                                <rect key="frame" x="16" y="425" width="343" height="48"/>
+                                <rect key="frame" x="16" y="469" width="343" height="48"/>
                                 <color key="backgroundColor" red="0.94117647059999998" green="0.43529411759999997" blue="0.21176470589999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="fCQ-Ur-WHi"/>
@@ -412,7 +410,7 @@ Interval Account</string>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IgG-TZ-piO">
-                                <rect key="frame" x="16" y="368" width="89" height="29"/>
+                                <rect key="frame" x="16" y="412" width="89" height="29"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="29" id="c4y-YB-kh4"/>
                                     <constraint firstAttribute="width" constant="89" id="h9S-EK-W8U"/>
@@ -426,14 +424,14 @@ Interval Account</string>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TouchID-Off" translatesAutoresizingMaskIntoConstraints="NO" id="ihH-pe-kQX">
-                                <rect key="frame" x="182" y="368" width="37" height="36"/>
+                                <rect key="frame" x="182" y="412" width="37" height="36"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="36" id="4pp-lv-XD2"/>
                                     <constraint firstAttribute="width" constant="37" id="rwn-79-gVG"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enable Touch ID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nT3-eW-h6G">
-                                <rect key="frame" x="227" y="375" width="132" height="20.5"/>
+                                <rect key="frame" x="227" y="419" width="132" height="20.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="132" id="vZb-V6-WlY"/>
                                 </constraints>
@@ -442,7 +440,7 @@ Interval Account</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hud-AJ-QYn" userLabel="close">
-                                <rect key="frame" x="316" y="23" width="60" height="60"/>
+                                <rect key="frame" x="316" y="67" width="60" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="kJl-mS-Tkv"/>
                                     <constraint firstAttribute="height" constant="60" id="laE-SM-F5m"/>
@@ -453,7 +451,7 @@ Interval Account</string>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Txv-HP-Trs" userLabel="EnableTouch">
-                                <rect key="frame" x="172" y="368" width="187" height="36"/>
+                                <rect key="frame" x="172" y="412" width="187" height="36"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="187" id="PCn-4k-YgP"/>
                                 </constraints>
@@ -604,13 +602,13 @@ Interval Account</string>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jbk-J9-c8S">
                                 <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your favorite resorts  are specific to your account. Please Sign In to add, view and edit your favorites." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D1q-3X-BLw">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To view or use this feature, you will need to sign in to your Interval account." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D1q-3X-BLw">
                                         <rect key="frame" x="20" y="180" width="335" height="83"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="335" id="R6J-K3-G8J"/>
                                             <constraint firstAttribute="height" constant="83" id="lgb-c6-SLc"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                         <color key="textColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -627,13 +625,13 @@ Interval Account</string>
                                             <action selector="signInButtonPressed:" destination="vpY-1i-zON" eventType="touchUpInside" id="JCX-gf-IbE"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Favorites requires you Sign In" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lp6-U3-paS">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Favorites requires you to be signed in" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lp6-U3-paS">
                                         <rect key="frame" x="20" y="44" width="335" height="122"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="335" id="0Li-tl-AfG"/>
                                             <constraint firstAttribute="height" constant="122" id="wvO-Tv-lJT"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="30"/>
                                         <color key="textColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -1546,9 +1544,9 @@ Interval Account</string>
         <image name="close" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="KTW-Os-bqS"/>
-        <segue reference="LB4-mY-QYy"/>
-        <segue reference="PVi-Ym-AGy"/>
         <segue reference="1yd-In-YGU"/>
+        <segue reference="KTW-Os-bqS"/>
+        <segue reference="VDv-Ib-XnN"/>
+        <segue reference="v5y-Uh-olM"/>
     </inferredMetricsTieBreakers>
 </document>
