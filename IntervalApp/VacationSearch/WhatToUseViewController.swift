@@ -15,16 +15,20 @@ import SVProgressHUD
 
 class WhatToUseViewController: UIViewController {
     
+    //IBOutlets
+    @IBOutlet weak var tableView: UITableView!
+    
+    
+    // Class variables
     var isCheckedBox = false
     var showUpgrade = false
     var selectedUnitIndex = 0
     var selectedRow = -1
     var selectedRowSection = -1
     
-    @IBOutlet weak var tableView: UITableView!
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        
         // Get dynamic rows
         tableView.reloadData()
         self.getNumberOfRows()
@@ -35,13 +39,9 @@ class WhatToUseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
-        //self.navigationController?.navigationBar.topItem?.title = ""
-        
         self.title = Constant.ControllerTitles.bookYourSelectionController
         let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(AccomodationCertsDetailController.menuBackButtonPressed(_:)))
         menuButton.tintColor = UIColor.white
-        
         self.navigationItem.leftBarButtonItem = menuButton
     }
     
@@ -61,52 +61,50 @@ class WhatToUseViewController: UIViewController {
         self.selectedRowSection = sender.accessibilityElements?.first as! Int
         
         
-            let indexPath = NSIndexPath(row: self.selectedRow, section: self.selectedRowSection)
-            tableView.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.none)
-            //Start process request
+        let indexPath = NSIndexPath(row: self.selectedRow, section: self.selectedRowSection)
+        tableView.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.none)
+        //Start process request
+        
+        //Exchange process request parameters
+        Helper.showProgressBar(senderView: self)
+        let processResort = ExchangeProcess()
+        processResort.holdUnitStartTimeInMillis = Constant.holdingTime
+        
+        
+        let processRequest = ExchangeProcessStartRequest()
+        
+        processRequest.destination = Constant.MyClassConstants.exchangeDestination
+        processRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
+        
+        if(Constant.MyClassConstants.filterRelinquishments[self.selectedRow].openWeek != nil){
             
-            //Exchange process request parameters
-            Helper.showProgressBar(senderView: self)
-            let processResort = ExchangeProcess()
-            processResort.holdUnitStartTimeInMillis = Constant.holdingTime
+            processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[self.selectedRow].openWeek?.relinquishmentId
+        }
             
-            
-            let processRequest = ExchangeProcessStartRequest()
-            
-            processRequest.destination = Constant.MyClassConstants.exchangeDestination
-            processRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
-            
-            if(Constant.MyClassConstants.filterRelinquishments[self.selectedRow].openWeek != nil){
-                processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[self.selectedRow].openWeek?.relinquishmentId
+        ExchangeProcessClient.start(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: {(response) in
+        
+        self.selectedRow = -1
+        self.selectedRowSection = -1
+        let processResort = ExchangeProcess()
+        processResort.processId = response.processId
+        Constant.MyClassConstants.exchangeBookingLastStartedProcess = processResort
+        Constant.MyClassConstants.exchangeProcessStartResponse = response
+        Constant.MyClassConstants.exchangeViewResponse = response.view!
+        Constant.MyClassConstants.guestCertificate = response.view?.fees?.guestCertificate
+        Constant.MyClassConstants.onsiteArray.removeAllObjects()
+        Constant.MyClassConstants.nearbyArray.removeAllObjects()
+        
+        for amenity in (response.view?.destination?.resort?.amenities)!{
+            if(amenity.nearby == false){
+                Constant.MyClassConstants.onsiteArray.add(amenity.amenityName!)
+                Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending(amenity.amenityName!)
+                Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending("\n")
+            }else{
+                Constant.MyClassConstants.nearbyArray.add(amenity.amenityName!)
+                Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending(amenity.amenityName!)
+                Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending("\n")
             }
-            
-            ExchangeProcessClient.start(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: {(response) in
-                
-                self.selectedRow = -1
-                self.selectedRowSection = -1
-                let processResort = ExchangeProcess()
-                processResort.processId = response.processId
-                Constant.MyClassConstants.exchangeBookingLastStartedProcess = processResort
-                Constant.MyClassConstants.exchangeProcessStartResponse = response
-                Constant.MyClassConstants.exchangeViewResponse = response.view!
-                //Constant.MyClassConstants.rentalFees = [(response.view?.fees)!]
-                Constant.MyClassConstants.guestCertificate = response.view?.fees?.guestCertificate
-                Constant.MyClassConstants.onsiteArray.removeAllObjects()
-                Constant.MyClassConstants.nearbyArray.removeAllObjects()
-                //cell?.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
-
-                
-                for amenity in (response.view?.destination?.resort?.amenities)!{
-                    if(amenity.nearby == false){
-                        Constant.MyClassConstants.onsiteArray.add(amenity.amenityName!)
-                        Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending(amenity.amenityName!)
-                        Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending("\n")
-                    }else{
-                        Constant.MyClassConstants.nearbyArray.add(amenity.amenityName!)
-                        Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending(amenity.amenityName!)
-                        Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending("\n")
-                    }
-                }
+        }
                 UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
                     
                     // Got an access token!  Save it for later use.
@@ -318,7 +316,6 @@ extension WhatToUseViewController:UITableViewDelegate {
         }
     }
     
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         //***** Return height according to section cell requirement *****//
@@ -368,7 +365,7 @@ extension WhatToUseViewController:UITableViewDelegate {
             
             let bottomLabel = UILabel(frame: CGRect(x: 15, y: 30, width: self.view.bounds.width - 30, height: 30))
             bottomLabel.textColor = UIColor.gray
-            bottomLabel.text = "4 of the 6 relquishments are avialable for exchange"
+            bottomLabel.text = "\(Constant.MyClassConstants.filterRelinquishments.count) of the \(Constant.MyClassConstants.whatToTradeArray.count) relquishments are avialable for exchange"
             return headerView
         }
         else {
@@ -449,17 +446,18 @@ extension WhatToUseViewController:UITableViewDataSource {
         
         if((indexPath as NSIndexPath).section == 0 ) {
             
-            //***** Configure and return cell according to sections in tableview *****//
+        //***** Configure and return cell according to sections in tableview *****//
             
-            let cell: DestinationResortDetailCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.destinationResortDetailCell, for: indexPath) as! DestinationResortDetailCell
+        let cell: DestinationResortDetailCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.destinationResortDetailCell, for: indexPath) as! DestinationResortDetailCell
             
             cell.destinationImageView.image = UIImage(named: Constant.assetImageNames.resortImage)
             
-            if let resortName = Constant.MyClassConstants.selectedResort.resortName{
+            if let resortName = Constant.MyClassConstants.selectedResort.resortName {
+                
                 cell.resortName.text = resortName
             }
-            cell.selectionStyle = UITableViewCellSelectionStyle.none
             
+            cell.selectionStyle = UITableViewCellSelectionStyle.none
             return cell
         }
             
@@ -489,19 +487,18 @@ extension WhatToUseViewController:UITableViewDataSource {
                     cell.checkBOx.checked = false
                 }
 
-                
-                //cell.contentBackgroundView.layer.cornerRadius = 7
-               // Helper.applyShadowOnUIView(view: cell.contentBackgroundView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 
                 return cell
                 
             }else if((exchange.clubPoints) != nil){
+                
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell0, for: indexPath) as! AvailablePointCell
                 
                 cell.tag = indexPath.row
                 cell.checkBOx.tag = indexPath.row
                 cell.checkBOx.accessibilityElements = [indexPath.section]
+                
                 if(self.selectedRow == indexPath.row && self.selectedRowSection == indexPath.section) {
                     
                     cell.mainView.layer.cornerRadius = 7
@@ -517,8 +514,6 @@ extension WhatToUseViewController:UITableViewDataSource {
                     cell.checkBOx.checked = false
                 }
                 cell.layer.cornerRadius = 7
-                //cell.availablePointValueLabel.text = ""
-              //  Helper.applyShadowOnUIView(view: cell.contentBackgroundView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 return cell
                 
@@ -545,8 +540,6 @@ extension WhatToUseViewController:UITableViewDataSource {
                         cell.checkBox.checked = false
                     }
                     
-                    
-                    //Helper.applyShadowOnUIView(view: cell.contentView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
                     cell.resortName.text = exchange.openWeek?.resort?.resortName!
                     cell.yearLabel.text = "\(String(describing: (exchange.openWeek?.relinquishmentYear!)!))"
                     cell.totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: (exchange.openWeek?.weekNumber!)!))"
@@ -570,6 +563,7 @@ extension WhatToUseViewController:UITableViewDataSource {
                     return cell
                     
                 } else {
+                    
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell1, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
                     
                     cell.tag = indexPath.row
@@ -613,6 +607,7 @@ extension WhatToUseViewController:UITableViewDataSource {
                     return cell
                 }
             }else{
+                
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell0, for: indexPath) as! AvailablePointCell
                 
                 cell.tag = indexPath.row
@@ -633,8 +628,6 @@ extension WhatToUseViewController:UITableViewDataSource {
                     cell.checkBOx.checked = false
                 }
 
-               // cell.contentBackgroundView.layer.cornerRadius = 7
-                //Helper.applyShadowOnUIView(view: cell.contentBackgroundView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 return cell
             }
@@ -652,8 +645,8 @@ extension WhatToUseViewController:UITableViewDataSource {
                 cell.mainView.layer.borderWidth = 2
                 cell.mainView.layer.borderColor = UIColor.orange.cgColor
                 cell.checkbox.checked = true
-                
             }
+                
             else {
                 
                 cell.mainView.layer.cornerRadius = 7
@@ -689,10 +682,6 @@ extension WhatToUseViewController:UITableViewDataSource {
             
             cell.getawayPrice.text = String(Int((Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].prices[0].price)!))
             
-            
-//            cell.viewContent.layer.borderWidth = 0.5
-//            cell.viewContent.layer.borderColor = UIColor.lightGray.cgColor
-//            cell.viewContent.layer.cornerRadius = 7
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             return cell
             

@@ -431,16 +431,17 @@ extension WhoWillBeCheckingInIPadViewController:UITableViewDataSource {
         return self.requiredSectionIntTBLview
         
     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if(section == 0) {
             
-            if(Constant.MyClassConstants.vacationSearchSelectedSegmentIndex == 1) || Constant.MyClassConstants.vacationSearchSelectedSegmentIndex == 0 {
-                
-                return 1
-            }
-            else {
+            if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isCombined() || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
                 return 2
+            }
+                
+            else {
+                return 1
             }
         }
         else if(section == 1) {

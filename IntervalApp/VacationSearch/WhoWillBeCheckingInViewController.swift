@@ -580,12 +580,12 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
         
         if(section == 0) {
             
-            if(Constant.MyClassConstants.vacationSearchSelectedSegmentIndex == 1) || Constant.MyClassConstants.vacationSearchSelectedSegmentIndex == 0 {
+            if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isCombined()){
                 
-                return 1
+                return 2
             }
             else {
-                return 2
+                return 1
             }
         }
         else if(section == 1) {
