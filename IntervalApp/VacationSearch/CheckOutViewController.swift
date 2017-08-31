@@ -497,7 +497,7 @@ class CheckOutViewController: UIViewController {
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
         
         Helper.showProgressBar(senderView: self)
-        if(Constant.MyClassConstants.isFromExchange){
+        if(Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
             ExchangeProcessClient.backToChooseExchange(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess: {(response) in
                 Helper.hideProgressBar(senderView: self)
             }, onError: {(error) in
@@ -773,7 +773,7 @@ extension CheckOutViewController:UITableViewDataSource {
             }
             else if(section == 2) {
                 
-                if(Constant.MyClassConstants.vacationSearchSelectedSegmentIndex == 1) {
+                if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental() || !Constant.MyClassConstants.searchBothExchange) {
                     
                     return 0
                 }

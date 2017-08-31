@@ -583,6 +583,7 @@ class Constant: NSObject {
         
         static var rentalHasNotAvailableCheckInDatesAfterSelectInterval : Bool = false
         static var exchangeHasNotAvailableCheckInDatesAfterSelectInterval : Bool = false
+        static var searchBothExchange = false
     }
     
     // Enum to store resorts and destinations

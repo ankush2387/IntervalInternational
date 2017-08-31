@@ -158,7 +158,7 @@ class CheckOutIPadViewController: UIViewController {
         
         SVProgressHUD.show()
        
-        if(Constant.MyClassConstants.isFromExchange){
+        if(Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
             ExchangeProcessClient.backToChooseExchange(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess: {(response) in
                 Helper.hideProgressBar(senderView: self)
             }, onError: {(error) in

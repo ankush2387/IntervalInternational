@@ -315,6 +315,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     
     //***** Function for proceed to checkout button click. *****//
     @IBAction func proceedToCheckoutPressed(_ sender: AnyObject) {
+        if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
         let exchangeProcessRequest = ExchangeProcessContinueToCheckoutRequest()
         
         if(self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count) {
@@ -404,6 +405,81 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             Helper.removeServiceCallBackgroundView(view: self.view)
             
         })
+        }else{
+            let processRequest1 = RentalProcessPrepareContinueToCheckoutRequest()
+            
+            if(self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count) {
+                
+                let guest = Guest()
+                
+                guest.firstName = Constant.GetawaySearchResultGuestFormDetailData.firstName
+                guest.lastName = Constant.GetawaySearchResultGuestFormDetailData.lastName
+                guest.primaryTraveler = true
+                
+                
+                let guestAddress = Address()
+                var address = [String]()
+                address.append(Constant.GetawaySearchResultCardFormDetailData.address1)
+                address.append(Constant.GetawaySearchResultCardFormDetailData.address2)
+                guestAddress.addressLines = address
+                
+                
+                guestAddress.cityName = Constant.GetawaySearchResultGuestFormDetailData.city
+                guestAddress.postalCode = Constant.GetawaySearchResultGuestFormDetailData.pinCode
+                guestAddress.addressType = "HADDR"
+                guestAddress.territoryCode = Constant.GetawaySearchResultCardFormDetailData.stateCode
+                guestAddress.countryCode = Constant.GetawaySearchResultCardFormDetailData.countryCode
+                
+                var phoneNumbers = [Phone]()
+                let homePhoneNo = Phone()
+                homePhoneNo.phoneNumber = Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber
+                homePhoneNo.countryPhoneCode = "1"
+                homePhoneNo.phoneType = "HOME_PRIMARY"
+                homePhoneNo.areaCode = "305"
+                homePhoneNo.countryCode = Constant.GetawaySearchResultCardFormDetailData.countryCode
+                phoneNumbers.append(homePhoneNo)
+                
+                guest.phones = phoneNumbers
+                guest.address = guestAddress
+                processRequest1.guest = guest
+                
+                Constant.MyClassConstants.enableGuestCertificate = true
+            }
+            Helper.showProgressBar(senderView: self)
+            let processResort = RentalProcess()
+            processResort.holdUnitStartTimeInMillis = Constant.holdingTime
+            processResort.processId = Constant.MyClassConstants.processStartResponse.processId
+            
+            RentalProcessClient.continueToCheckout(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest1, onSuccess: {(response) in
+                DarwinSDK.logger.debug(response)
+                SVProgressHUD.dismiss()
+                Helper.removeServiceCallBackgroundView(view: self.view)
+                Constant.MyClassConstants.continueToCheckoutResponse = response
+                
+                if let promotions = response.view?.fees?.rental?.promotions {
+                    Constant.MyClassConstants.recapViewPromotionCodeArray = promotions
+                }
+                Constant.MyClassConstants.allowedCreditCardType = (response.view?.allowedCreditCardTypes)!
+                Constant.MyClassConstants.rentalFees = [(response.view?.fees)!]
+                if(Int((response.view?.fees?.rental?.rentalPrice?.tax)!) != 0){
+                    Constant.MyClassConstants.enableTaxes = true
+                }else{
+                    Constant.MyClassConstants.enableTaxes = false
+                }
+                Constant.MyClassConstants.memberCreditCardList = (UserContext.sharedInstance.contact?.creditcards)!
+                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.checkOutViewController) as! CheckOutIPadViewController
+                
+                let transitionManager = TransitionManager()
+                self.navigationController?.transitioningDelegate = transitionManager
+                self.navigationController!.pushViewController(viewController, animated: true)
+            }, onError: {(error) in
+                SVProgressHUD.dismiss()
+                Helper.removeServiceCallBackgroundView(view: self.view)
+                SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                
+            })
+        }
      }
     
     func showCertificateInfo() {
@@ -436,7 +512,7 @@ extension WhoWillBeCheckingInIPadViewController:UITableViewDataSource {
         
         if(section == 0) {
             
-            if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isCombined() || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
+            if(Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
                 return 2
             }
                 

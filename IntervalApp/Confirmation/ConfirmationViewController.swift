@@ -166,6 +166,11 @@ class ConfirmationViewController: UIViewController {
         }
         actionSheetController.addAction(cancelAction)
         
+        if(Constant.RunningDevice.deviceIdiom == .pad){
+            actionSheetController.popoverPresentationController?.sourceView = self.view
+            actionSheetController.popoverPresentationController?.sourceRect = self.view.bounds
+        }
+        
         //Present the AlertController
         self.present(actionSheetController, animated: true, completion: nil)
     }
