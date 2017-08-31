@@ -15,7 +15,7 @@ import RealmSwift
 
 class SearchResultViewController: UIViewController {
     
-     var selectedIndex = -1
+    
     
     //***** Outlets ****//
     @IBOutlet weak var searchResultColelctionView: UICollectionView!
@@ -23,14 +23,13 @@ class SearchResultViewController: UIViewController {
     
     //***** variable declaration *****//
     var collectionviewSelectedIndex = Constant.MyClassConstants.searchResultCollectionViewScrollToIndex
-    //var checkInDatesArray = Constant.MyClassConstants.checkInDates
+    var selectedIndex = -1
     var loadFirst = true
     var enablePreviousMore = true
     var enableNextMore = true
     var unitSizeArray = [AnyObject]()
     var alertView = UIView()
     let headerVw = UIView()
-   // var isShowAvailability = true
     let titleLabel = UILabel()
     var offerString = String()
     var cellHeight = 50
@@ -48,8 +47,6 @@ class SearchResultViewController: UIViewController {
     var dateCellSelectionColor = Constant.CommonColor.blueColor
     var myActivityIndicator = UIActivityIndicatorView()
     
-    
-
     // sorting optionDelegate call
     
     func selectedOptionis(filteredValueIs:String, indexPath:NSIndexPath, isFromFiltered:Bool) {
@@ -91,6 +88,7 @@ class SearchResultViewController: UIViewController {
         surroundingMatchResortsArrayExchange.removeAll()
         
         if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Exchange){
+            
             if(sections.count > 0){
                 
               for section in sections{
@@ -428,61 +426,6 @@ class SearchResultViewController: UIViewController {
         
     }
 
-
-
-    //Static Calling API for filterRelinquishments
-    
-    func getStaticFilterRelinquishments(){
-        Helper.showProgressBar(senderView: self)
-        let exchangeSearchDateRequest = ExchangeFilterRelinquishmentsRequest()
-        exchangeSearchDateRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
-        
-        let relinquishmentIDArray = ["Ek83chJmdS6ESNRpVfhH8QaTBeXh5rpNm_2AJLhV_4jRTiVySvOk2NKFm4iHOtEK",
-                                     "Ek83chJmdS6ESNRpVfhH8RFxFgvpS1HHCzYyrvzw42rRTiVySvOk2NKFm4iHOtEK",
-                                     "Ek83chJmdS6ESNRpVfhH8SOcpMOEqw1KO8bsQKhjLZnRTiVySvOk2NKFm4iHOtEK",
-                                     "Ek83chJmdS6ESNRpVfhH8YMAv0D39MaVmh75YJgm_IDRTiVySvOk2NKFm4iHOtEK"]
-        exchangeSearchDateRequest.relinquishmentsIds = relinquishmentIDArray//Constant.MyClassConstants.relinquishmentIdArray as! [String]
-        
-    
-        let exchangeDestination = ExchangeDestination()
-        
-        let resort = Resort()
-        //resort.resortName = Constant.MyClassConstants.resortsArray[selectedIndex].resortName
-        resort.resortCode = "CZP"//Constant.MyClassConstants.resortsArray[selectedIndex].resortCode
-        
-        exchangeDestination.resort = resort
-        
-        let unit = InventoryUnit()
-        unit.kitchenType = "NO_KITCHEN"//Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.kitchenType!
-        unit.unitSize = "STUDIO"//Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitSize!
-        exchangeDestination.checkInDate = "2017-07-17"//currentFromDate
-        exchangeDestination.checkOutDate = "2017-07-24"//currentToDate
-        //unit.unitNumber = Constant.MyClassConstants.exchangeInventory[indexPath.section].buckets[0].unit!.unitNumber!
-        unit.publicSleepCapacity = 4
-        unit.privateSleepCapacity = 2
-        
-        exchangeDestination.unit = unit
-        
-        exchangeSearchDateRequest.destination = exchangeDestination
-        
-        ExchangeClient.filterRelinquishments(UserContext.sharedInstance.accessToken, request: exchangeSearchDateRequest, onSuccess: { (response) in
-            Helper.hideProgressBar(senderView: self)
-            for exchageDetail in response{
-                Constant.MyClassConstants.filterRelinquishments.append(exchageDetail.relinquishment!)
-            }
-            
-            Constant.MyClassConstants.selectedResort = Constant.MyClassConstants.resortsArray[self.selectedSection]
-            
-            Constant.MyClassConstants.inventoryPrice = (Constant.MyClassConstants.exchangeInventory[self.selectedSection].buckets[0].unit?.prices)!
-            Constant.MyClassConstants.exchangeDestination = exchangeDestination
-            
-            self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
-        }, onError: { (error) in
-            print(Error.self)
-            Helper.hideProgressBar(senderView: self)
-        })
-    }
-    
 
     //Dynamic API hit
     
@@ -1431,6 +1374,7 @@ extension SearchResultViewController:UITableViewDelegate {
                             return CGFloat(totalUnits!*80 + 300)
                         }
                         }else{
+                            
                             if(combinedSurroundingSearchItems[indexPath.row].hasRentalAvailability()){
                                 let rentalInventory = combinedSurroundingSearchItems[indexPath.row].rentalAvailability
                                 let totalUnits = rentalInventory?.inventory?.units.count
@@ -1471,42 +1415,33 @@ extension SearchResultViewController:UITableViewDataSource {
     //***** UITableview dataSource methods definition here *****//
     
     func update(){
-        //UIView.animate(withDuration: 2, delay: 0, options: UIViewAnimationOptions(rawValue: 0), animations: {
         
-        //Constant.MyClassConstants.isShowAvailability = false
-        //cell.contentView.frame.size.height = 50.0
         self.searchResultTableView.reloadData()
-        //}, completion: nil)
+       
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         //***** configuring prototype cell for UpComingtrip resort details *****//
             if indexPath.section == 0 && indexPath.row == 0 && Constant.MyClassConstants.isShowAvailability == true {
+                
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.novailabilityCell, for: indexPath)
-                cell.tag = indexPath.section
+                    cell.tag = indexPath.section
                 
-                 timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector:#selector(runTimer), userInfo: nil, repeats: false)
+                    timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector:#selector(runTimer), userInfo: nil, repeats: false)
                
-               /* DispatchQueue.main.asyncAfter(deadline: .now() + 5.0, execute: {
-                    
-                    UIView.animate(withDuration: 2, delay: 0, options: UIViewAnimationOptions(rawValue: 0), animations: {
-                        
-                        Constant.MyClassConstants.isShowAvailability = false
-                        cell.contentView.frame.size.height = 50.0
-                        self.searchResultTableView.reloadData()
-                    }, completion: nil)
-                })*/
-                
                 return cell
+                
             }else{
+                
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.availabilityCell, for: indexPath) as! SearchTableViewCell
                 cell.tag = indexPath.section
                 if (Constant.MyClassConstants.isShowAvailability == true && indexPath.section == 0){
+                    
                     cell.resortInfoCollectionView.tag = indexPath.row - 1
-                    print("----------->>>>>>>>1", cell.resortInfoCollectionView.tag)
+                   
                 } else {
                     cell.resortInfoCollectionView.tag = indexPath.row
-                    print("----------->>>>>>>>2", cell.resortInfoCollectionView.tag)
+                   
                 }
                 
                 cell.resortInfoCollectionView.reloadData()
@@ -1576,16 +1511,16 @@ extension SearchResultViewController:UITableViewDataSource {
 
 extension SearchResultViewController:SearchResultContentTableCellDelegate{
     func favoriteButtonClicked(_ sender: UIButton){
+        
         if((UserContext.sharedInstance.accessToken) != nil) {
             
             if (sender.isSelected == false){
                 
-                print(Constant.MyClassConstants.resortsArray[sender.tag].resortCode!)
                 SVProgressHUD.show()
                 Helper.addServiceCallBackgroundView(view: self.view)
                 UserClient.addFavoriteResort(UserContext.sharedInstance.accessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
                     
-                    print(response)
+                   
                     Helper.removeServiceCallBackgroundView(view: self.view)
                     SVProgressHUD.dismiss()
                     sender.isSelected = true
@@ -1593,12 +1528,14 @@ extension SearchResultViewController:SearchResultContentTableCellDelegate{
                     self.searchResultTableView.reloadData()
                     
                 }, onError: {(error) in
+                    
                     SVProgressHUD.dismiss()
                     Helper.removeServiceCallBackgroundView(view: self.view)
-                    print(error)
+                    
                 })
             }
             else {
+                
                 SVProgressHUD.show()
                 Helper.addServiceCallBackgroundView(view: self.view)
                 UserClient.removeFavoriteResort(UserContext.sharedInstance.accessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
@@ -1614,11 +1551,12 @@ extension SearchResultViewController:SearchResultContentTableCellDelegate{
                     
                     SVProgressHUD.dismiss()
                     Helper.removeServiceCallBackgroundView(view: self.view)
-                    print(error)
+                   
                 })
                 
             }
         }else{
+            
             Constant.MyClassConstants.btnTag = sender.tag
             self.performSegue(withIdentifier: Constant.segueIdentifiers.preLoginSegue, sender: self)
         }
@@ -1646,20 +1584,20 @@ extension String {
 
 
 extension SearchResultViewController:HelperDelegate {
+    
     func resortSearchComplete(){
+        
         Helper.hideProgressBar(senderView: self)
-        print(Constant.MyClassConstants.calendarDatesArray.count)
         Constant.MyClassConstants.calendarDatesArray.removeAll()
-        print(Constant.MyClassConstants.calendarDatesArray.count)
         Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
-        print(Constant.MyClassConstants.calendarDatesArray.count)
         Helper.hideProgressBar(senderView: self)
         self.createSections()
         self.searchResultColelctionView.reloadData()
         self.searchResultTableView.reloadData()
     }
-        func resetCalendar(){
-        }
+    func resetCalendar(){
+        
+    }
 
 }
 
