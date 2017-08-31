@@ -29,7 +29,7 @@ class CheckOutIPadViewController: UIViewController {
     //Class variables
     var remainingHoldingTime:Int!
     var requiredSectionIntTBLview = 10
-    var isPromotionsEnabled = false
+    var isPromotionsEnabled = true
     var isTripProtectionEnabled = false
     var bookingCostRequiredRows = 1
     var promotionSelectedIndex = 0
@@ -49,6 +49,7 @@ class CheckOutIPadViewController: UIViewController {
     var recapPromotionsArray = [Promotion]()
     var recapSelectedPromotion: String?
     var recapFeesTotal: Float?
+    var isDepositPromotionAvailable = false
     
     var filterRelinquishments = ExchangeRelinquishment()
     
@@ -68,6 +69,7 @@ class CheckOutIPadViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        checkPromotionsAvailable()
         
         Helper.getCountry(viewController: self)
         // omniture tracking with event 40
@@ -153,6 +155,15 @@ class CheckOutIPadViewController: UIViewController {
         
         ADBMobile.trackAction(Constant.omnitureEvents.event37, data: userInfo)
     }
+    
+    func checkPromotionsAvailable() {
+        if Constant.MyClassConstants.filterRelinquishments.count > 0 {
+            if let  _ = Constant.MyClassConstants.filterRelinquishments[0].openWeek?.promotion {
+                isDepositPromotionAvailable = true
+            }
+        }
+    }
+
     
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
         
@@ -747,10 +758,16 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                     return advisementCount
                 }
             case 2:
-                if Constant.MyClassConstants.recapViewPromotionCodeArray.count > 0 {
-                    return 1
+                
+                var numberOfCells = 0
+                if isDepositPromotionAvailable {
+                    numberOfCells += 1
                 }
-                return 0
+                
+                if Constant.MyClassConstants.recapViewPromotionCodeArray.count > 0 {
+                    numberOfCells += 1
+                }
+                return numberOfCells
             case 4 :
                 
                 if(!showInsurance){
@@ -1020,6 +1037,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                         subviews.isHidden = true
                     }
                 }
+                
                 return cell
                 
             case 3:
@@ -1152,16 +1170,27 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                     
                 
             case 2:
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.cellIdentifiers.checkoutPromotionCell, for: indexPath) as! CheckoutPromotionCell
-                cell.setupCell(selectedPromotion: destinationPromotionSelected)
-                cell.promotionSelectionCheckBox.tag = indexPath.row
-                if cell.promotionSelectionCheckBox.isHidden {
-                    cell.forwardArrowButton.addTarget(self, action: #selector(CheckOutIPadViewController.checkBoxCheckedAtIndex(_:)), for: .touchUpInside)
+                if isDepositPromotionAvailable && indexPath.row == 0 {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "CheckoutPromotionCell", for: indexPath) as! CheckoutPromotionCell
+                    cell.setupDepositPromotion()
+                    cell.promotionSelectionCheckBox.tag = indexPath.row
+                    
+                    cell.selectionStyle = .none
+                    return cell
+                    
                 } else {
-                    cell.promotionSelectionCheckBox.addTarget(self, action: #selector(CheckOutIPadViewController.checkBoxCheckedAtIndex(_:)), for: .touchUpInside)
+                    
+                    let cell = tableView.dequeueReusableCell(withIdentifier: Constant.cellIdentifiers.checkoutPromotionCell, for: indexPath) as! CheckoutPromotionCell
+                    cell.setupCell(selectedPromotion: destinationPromotionSelected)
+                    cell.promotionSelectionCheckBox.tag = indexPath.row
+                    if cell.promotionSelectionCheckBox.isHidden {
+                        cell.forwardArrowButton.addTarget(self, action: #selector(CheckOutIPadViewController.checkBoxCheckedAtIndex(_:)), for: .touchUpInside)
+                    } else {
+                        cell.promotionSelectionCheckBox.addTarget(self, action: #selector(CheckOutIPadViewController.checkBoxCheckedAtIndex(_:)), for: .touchUpInside)
+                    }
+                    cell.selectionStyle = .none
+                    return cell
                 }
-                cell.selectionStyle = .none
-                return cell
                 
             case 3:
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeOptionsCell, for: indexPath) as! ExchangeOptionsCell

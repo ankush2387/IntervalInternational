@@ -1715,13 +1715,13 @@ extension GoogleMapViewController:UITableViewDataSource {
                 cell.tag = indexPath.section
                 let dicValue = Constant.MyClassConstants.destinations![indexPath.row]
                 cell.resortLocationName.text = dicValue.destinationName
+                
                 //TODO (jhon) - aplication was crashing when lookin for resort name (Paris, Cancun)
-                guard let territoryCode = dicValue.address?.territoryCode
-                    
-                    else{
-                        return cell
+                if let territoryCode = dicValue.address?.territoryCode {
+                  cell.resortCodeLabel.text =  territoryCode
+                } else {
+                    cell.resortCodeLabel.text =  dicValue.address?.countryCode
                 }
-                cell.resortCodeLabel.text =  territoryCode
                 
                 return cell
                 

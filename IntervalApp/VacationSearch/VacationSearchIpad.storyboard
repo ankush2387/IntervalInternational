@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="5vv-7r-MH2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F2073" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="5vv-7r-MH2">
     <device id="ipad9_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -5166,8 +5166,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="708" height="130"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Check - In Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SQB-YM-glr">
-                                                    <rect key="frame" x="53" y="3" width="120" height="32"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Check-In Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SQB-YM-glr">
+                                                    <rect key="frame" x="53" y="3" width="110" height="32"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="32" id="U8I-Eh-Gor"/>
                                                     </constraints>
@@ -5175,8 +5175,8 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Check - Out Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cvm-gr-g2Z">
-                                                    <rect key="frame" x="405.5" y="3" width="134" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Check-Out Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cvm-gr-g2Z">
+                                                    <rect key="frame" x="405.5" y="3" width="124.5" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="ecg-Ct-fob"/>
                                                     </constraints>
@@ -6780,18 +6780,18 @@ Units Upgrade with this selection.</string>
                                             <outlet property="yearLabel" destination="QlB-Uh-L6k" id="l8v-K5-UgL"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ExchangeCell1" rowHeight="80" id="SkV-Kr-nAS" customClass="RelinquishmentSelectionOpenWeeksCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="368" width="768" height="80"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ExchangeCell1" rowHeight="120" id="SkV-Kr-nAS" customClass="RelinquishmentSelectionOpenWeeksCell" customModule="IntervalApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="368" width="768" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SkV-Kr-nAS" id="c1O-2T-Dst">
-                                            <rect key="frame" x="0.0" y="0.0" width="768" height="80"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="768" height="120"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KnN-I7-3wV">
-                                                    <rect key="frame" x="8" y="10" width="752" height="60"/>
+                                                    <rect key="frame" x="8" y="10" width="752" height="100"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1fU-fm-dBf">
-                                                            <rect key="frame" x="0.0" y="0.0" width="80" height="60"/>
+                                                            <rect key="frame" x="0.0" y="5" width="80" height="60"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="APR 07" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cHD-cG-kGg">
                                                                     <rect key="frame" x="5" y="0.0" width="70" height="21"/>
@@ -6832,7 +6832,7 @@ Units Upgrade with this selection.</string>
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gdm-CW-cTi">
-                                                            <rect key="frame" x="80" y="0.0" width="628" height="60"/>
+                                                            <rect key="frame" x="80" y="5" width="628" height="60"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Westwood at Split Rock" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ndF-a0-ivl">
                                                                     <rect key="frame" x="4" y="0.0" width="624" height="21"/>
@@ -6875,9 +6875,10 @@ Units Upgrade with this selection.</string>
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ey9-oL-bnv" customClass="IUIKCheckbox" customModule="IntervalUIKit">
-                                                            <rect key="frame" x="709" y="17" width="40" height="26"/>
+                                                            <rect key="frame" x="709" y="5" width="40" height="40"/>
                                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
+                                                                <constraint firstAttribute="height" constant="40" id="kmF-fE-Bnu"/>
                                                                 <constraint firstAttribute="width" constant="40" id="shF-os-2WG"/>
                                                             </constraints>
                                                             <userDefinedRuntimeAttributes>
@@ -6896,17 +6897,37 @@ Units Upgrade with this selection.</string>
                                                                 <action selector="checkBoxPressed:" destination="v1i-It-4l8" eventType="valueChanged" id="jcW-t3-bfg"/>
                                                             </connections>
                                                         </view>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Some Offer Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="BzF-Bv-K76">
+                                                            <rect key="frame" x="42" y="71" width="695" height="21"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="21" id="SzB-lA-773"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                                            <color key="textColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="OfferIcon" translatesAutoresizingMaskIntoConstraints="NO" id="KQJ-AF-HtB">
+                                                            <rect key="frame" x="12" y="70" width="25" height="25"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="25" id="PGF-cB-4kj"/>
+                                                                <constraint firstAttribute="height" constant="25" id="UP4-dO-JDW"/>
+                                                            </constraints>
+                                                        </imageView>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstItem="Gdm-CW-cTi" firstAttribute="leading" secondItem="1fU-fm-dBf" secondAttribute="trailing" id="35y-O2-c8t"/>
+                                                        <constraint firstItem="KQJ-AF-HtB" firstAttribute="leading" secondItem="KnN-I7-3wV" secondAttribute="leading" constant="12" id="6Bc-Mb-gV9"/>
                                                         <constraint firstAttribute="trailing" secondItem="Ey9-oL-bnv" secondAttribute="trailing" constant="3" id="Db3-dx-Qsx"/>
+                                                        <constraint firstItem="1fU-fm-dBf" firstAttribute="top" secondItem="KnN-I7-3wV" secondAttribute="top" constant="5" id="HlQ-cJ-uIx"/>
+                                                        <constraint firstItem="KQJ-AF-HtB" firstAttribute="top" secondItem="1fU-fm-dBf" secondAttribute="bottom" constant="5" id="Oc5-ch-raf"/>
                                                         <constraint firstItem="Ey9-oL-bnv" firstAttribute="leading" secondItem="Gdm-CW-cTi" secondAttribute="trailing" constant="1" id="Qng-Uu-A0t"/>
-                                                        <constraint firstItem="1fU-fm-dBf" firstAttribute="centerY" secondItem="KnN-I7-3wV" secondAttribute="centerY" id="Smx-XK-1ER"/>
+                                                        <constraint firstAttribute="trailing" secondItem="BzF-Bv-K76" secondAttribute="trailing" constant="15" id="VTJ-ut-3kh"/>
                                                         <constraint firstItem="1fU-fm-dBf" firstAttribute="leading" secondItem="KnN-I7-3wV" secondAttribute="leading" id="WDx-xP-CWd"/>
-                                                        <constraint firstItem="Ey9-oL-bnv" firstAttribute="top" secondItem="KnN-I7-3wV" secondAttribute="top" constant="17" id="WQi-dd-eVY"/>
-                                                        <constraint firstItem="Gdm-CW-cTi" firstAttribute="centerY" secondItem="KnN-I7-3wV" secondAttribute="centerY" id="lZr-1K-jm9"/>
-                                                        <constraint firstItem="Ey9-oL-bnv" firstAttribute="centerY" secondItem="KnN-I7-3wV" secondAttribute="centerY" id="uZb-ZY-cCK"/>
+                                                        <constraint firstItem="Gdm-CW-cTi" firstAttribute="top" secondItem="KnN-I7-3wV" secondAttribute="top" constant="5" id="X4F-07-Sf0"/>
+                                                        <constraint firstItem="Ey9-oL-bnv" firstAttribute="top" secondItem="KnN-I7-3wV" secondAttribute="top" constant="5" id="ndW-T8-urB"/>
+                                                        <constraint firstItem="BzF-Bv-K76" firstAttribute="leading" secondItem="KQJ-AF-HtB" secondAttribute="trailing" constant="5" id="oDi-sI-J74"/>
+                                                        <constraint firstItem="BzF-Bv-K76" firstAttribute="top" secondItem="Gdm-CW-cTi" secondAttribute="bottom" constant="6" id="vGc-u0-fdo"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>
@@ -6922,6 +6943,8 @@ Units Upgrade with this selection.</string>
                                             <outlet property="checkBox" destination="Ey9-oL-bnv" id="wt7-vh-Rqd"/>
                                             <outlet property="dayAndDateLabel" destination="cHD-cG-kGg" id="np2-vg-YWA"/>
                                             <outlet property="mainView" destination="KnN-I7-3wV" id="Yh2-rm-DdN"/>
+                                            <outlet property="promImgView" destination="KQJ-AF-HtB" id="SRl-61-NTF"/>
+                                            <outlet property="promLabel" destination="BzF-Bv-K76" id="zDX-rT-OVA"/>
                                             <outlet property="resortName" destination="ndF-a0-ivl" id="RdA-8r-BEa"/>
                                             <outlet property="totalSleepAndPrivate" destination="a8H-YG-1hR" id="wsG-zx-lPY"/>
                                             <outlet property="totalWeekLabel" destination="WR4-DP-8HB" id="cDd-aF-bp8"/>
@@ -6929,7 +6952,7 @@ Units Upgrade with this selection.</string>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="GetawaysCell1" rowHeight="70" id="M0V-C1-ig4" userLabel="OldGetawaysCell1" customClass="GetawayCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="448" width="768" height="70"/>
+                                        <rect key="frame" x="0.0" y="488" width="768" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="M0V-C1-ig4" id="NhY-ow-10Y">
                                             <rect key="frame" x="0.0" y="0.0" width="768" height="70"/>
@@ -7030,7 +7053,7 @@ Units Upgrade with this selection.</string>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="GetawaysCell" rowHeight="70" id="the-tP-dZF" customClass="GetawayCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="518" width="768" height="70"/>
+                                        <rect key="frame" x="0.0" y="558" width="768" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="the-tP-dZF" id="1dy-wT-DZO">
                                             <rect key="frame" x="0.0" y="0.0" width="768" height="70"/>
@@ -7200,7 +7223,7 @@ Units Upgrade with this selection.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S0U-Hp-yc6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5615" y="-177"/>
+            <point key="canvasLocation" x="5614.84375" y="-177.5390625"/>
         </scene>
         <!--Relinquishment Selection View Controller-->
         <scene sceneID="ios-Xo-eED">
@@ -9105,6 +9128,7 @@ Units Upgrade with this selection.</string>
         <image name="MapPinIcon" width="30" height="30"/>
         <image name="MoreNav" width="33" height="33"/>
         <image name="NoImageIcon" width="64" height="64"/>
+        <image name="OfferIcon" width="33" height="33"/>
         <image name="PlusIcon" width="33" height="33"/>
         <image name="RST_CO" width="30" height="30"/>
         <image name="Resorts-Getaway_Icon" width="25" height="25"/>

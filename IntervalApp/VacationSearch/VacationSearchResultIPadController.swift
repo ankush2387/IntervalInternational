@@ -961,9 +961,9 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
                 Constant.MyClassConstants.membershipContactArray = Membership.contacts!
                 var viewController = UIViewController()
                 viewController = WhoWillBeCheckingInViewController()
-                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-                viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
-                (viewController as! WhoWillBeCheckingInViewController).filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[0]
+                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as! WhoWillBeCheckingInIPadViewController
+                (viewController as! WhoWillBeCheckingInIPadViewController).filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[0]
                 
                 
                 

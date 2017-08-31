@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="g4N-VP-z9h">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F2073" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="g4N-VP-z9h">
     <device id="ipad12_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -118,7 +118,7 @@
             <objects>
                 <navigationController id="MqJ-3b-541" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Map" id="EC6-ig-0BN"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="tSJ-c4-iId">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="tSJ-c4-iId">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -774,7 +774,7 @@
             <objects>
                 <navigationController id="4EV-Sm-76Z" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="1" title="List" id="Nsq-3s-bAJ"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="fb0-9A-GmL">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="fb0-9A-GmL">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -912,7 +912,7 @@
             <objects>
                 <navigationController id="UGW-nC-qAL" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="2" title="Favorites" id="eVy-g1-q88"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="lic-ed-GcV">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="lic-ed-GcV">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -944,16 +944,16 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wnz-01-5rD">
                                 <rect key="frame" x="0.0" y="64" width="1024" height="1253"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Favorites requires you Sign In" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ocd-AG-FZy">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Favorites requires you to be signed in" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ocd-AG-FZy">
                                         <rect key="frame" x="140" y="426.5" width="744" height="75"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="75" id="r4V-nJ-Rcc"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="31"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="30"/>
                                         <color key="textColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your favorite resorts  are specific to your account. Please Sign In to add, view and edit your favorites." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p2p-hb-DLM">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To view or use this feature, you will need to be signed in to your Interval account." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p2p-hb-DLM">
                                         <rect key="frame" x="347" y="591.5" width="330" height="70"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="330" id="RYY-b6-P5X"/>
@@ -1601,13 +1601,11 @@
                                             <outlet property="delegate" destination="NIS-m0-EaE" id="keW-XG-IiR"/>
                                         </connections>
                                     </textField>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eHm-qt-aKt">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="To view or use this feature, you will need to be signed in to your Interval account." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eHm-qt-aKt">
                                         <rect key="frame" x="10" y="0.0" width="420" height="110"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="420" id="Q0R-Io-6A6"/>
                                         </constraints>
-                                        <string key="text">To view or use this feature we will need you to Sign In to your
-Interval Account</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>

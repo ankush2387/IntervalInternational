@@ -157,7 +157,7 @@ extension ResortFavoritesTableViewCell:ResortDirectoryCollectionViewCellDelegate
             
             if (sender.isSelected == false){
                 
-                UserClient.addFavoriteResort(UserContext.sharedInstance.accessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
+                UserClient.addFavoriteResort(UserContext.sharedInstance.accessToken, resortCode:  Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!, onSuccess: {(response) in
                     
                     print(response)
                     sender.isSelected = true

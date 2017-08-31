@@ -48,5 +48,15 @@ class CheckoutPromotionCell: UITableViewCell {
         
 
     }
+    
+    func setupDepositPromotion() {
+        forwardArrowButton.isHidden = true
+        promotionSelectionCheckBox.checked = true
+        promotionSelectionCheckBox.isHidden = false
+        promotionStatusLabel.isHidden = false
+        promotionNameLabel.text = Constant.MyClassConstants.filterRelinquishments[0].openWeek?.promotion?.offerName
+        promotionTypeLabel.text = "Deposit Promotion"
+        promotionStatusLabel.text = "Automatically Appplied"
+    }
 
 }

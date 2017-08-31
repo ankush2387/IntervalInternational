@@ -487,6 +487,7 @@ extension CreateAlertViewController:UITableViewDelegate {
             if(Constant.MyClassConstants.selectedGetawayAlertDestinationArray.count > 0) {
                 
                 Constant.MyClassConstants.selectedGetawayAlertDestinationArray.removeObject(at: indexPath.row)
+                Constant.MyClassConstants.realmStoredDestIdOrCodeArray.removeObject(at: indexPath.row)
             }
             tableView.deleteRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
             let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC)))
