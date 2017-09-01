@@ -256,6 +256,7 @@ class Constant: NSObject {
         
         static var surroundingResortCodesArray : [String] = []
         static var resortsArray = [Resort]()
+        static var regionArray = [RentalSearchRegion]()
         static var favoritesResortArray = [Resort]()
         static var favoritesResortCodeArray:NSMutableArray = []
         static var getawayAlertsArray = [RentalAlert]()
@@ -1268,6 +1269,8 @@ class Constant: NSObject {
         static var exchange = "Exchange"
         static var sortingOptionCell = "sortingOptionCell"
         static var filterOptionCell = "filterOptionCell"
+        static var areaCell = "areaCell"
+        static var regionCell = "regionCell"
         static var whereToGoCell = "WhereToGoCell"
         static var availablePoints = "AvailablePoints"
     }
