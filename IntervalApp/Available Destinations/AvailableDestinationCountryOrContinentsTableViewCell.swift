@@ -15,6 +15,9 @@ class AvailableDestinationCountryOrContinentsTableViewCell: UITableViewCell {
     @IBOutlet weak var countryOrContinentLabel: UILabel!
     
     @IBOutlet weak var selectdDestinationCountLabel: UILabel!
+    
+    @IBOutlet weak var expandRegionButton: UIButton!
+    
    
         
     
