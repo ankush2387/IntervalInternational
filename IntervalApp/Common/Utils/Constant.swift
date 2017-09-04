@@ -1273,6 +1273,7 @@ class Constant: NSObject {
         static var regionCell = "regionCell"
         static var whereToGoCell = "WhereToGoCell"
         static var availablePoints = "AvailablePoints"
+        static var selectedResortsCell = "selectedResortsCell"
     }
     
     //***** Common structure for dynamic strings combinining strings *****//
@@ -1353,6 +1354,7 @@ class Constant: NSObject {
         static var whatToUseSegue = "whatToUse"
         static var bookingSelectionSegue = "BookYourSelectionSegue"
         static var chooseWhatToUse = "ChooseWhatToUse"
+        static var showSelectedResortsIpad = "showSelectedResorts"
     }
     
     //***** common  structure to provide all actionSheetAttributedString *****//

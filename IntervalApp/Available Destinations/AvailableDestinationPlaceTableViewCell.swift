@@ -10,6 +10,7 @@ import UIKit
 import IntervalUIKit
 class AvailableDestinationPlaceTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var lblAreaName: UILabel!
     @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var placeSelectionCheckBox: IUIKCheckbox!
     @IBOutlet weak var tdiImageView: UIImageView!

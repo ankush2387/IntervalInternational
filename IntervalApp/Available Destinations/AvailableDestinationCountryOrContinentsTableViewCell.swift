@@ -14,15 +14,19 @@ class AvailableDestinationCountryOrContinentsTableViewCell: UITableViewCell {
     
     @IBOutlet weak var countryOrContinentLabel: UILabel!
     
-    @IBOutlet weak var selectdDestinationCountLabel: UILabel!
+    @IBOutlet weak var selectdDestinationCountLabel: UILabel?
     
     @IBOutlet weak var expandRegionButton: UIButton!
     
    
+    @IBOutlet weak var imgIconPlus: UIImageView?
         
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        self.selectdDestinationCountLabel?.layer.cornerRadius = 10
+        self.selectdDestinationCountLabel?.layer.masksToBounds = true
         // Initialization code
     }
     /**
