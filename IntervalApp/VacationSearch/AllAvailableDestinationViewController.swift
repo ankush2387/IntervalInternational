@@ -68,24 +68,16 @@ class AllAvailableDestinationViewController: UIViewController {
             let selectedAreasArray = selectedAreaDictionary.value(forKey: region.regionName!) as! [String]
             let areaAtIndex = region.areas[indexPathForSelectedRegion.row]
             var newSelectedArray:[String] = selectedAreasArray
-            for (index,areaName) in selectedAreasArray.enumerated(){
             if(selectedAreasArray.contains(areaAtIndex.areaName!)){
-                newSelectedArray.remove(at: index)
-                break
+                let index1 = selectedAreasArray.index(of: areaAtIndex.areaName!)
+                newSelectedArray.remove(at: index1!)
+                //break
             }else{
                 newSelectedArray.append(areaAtIndex.areaName!)
+                //break
             }
-            }
-            /*for (index,areaName) in selectedAreasArray.enumerated(){
-                if(areaName == areaAtIndex.areaName){
-                    newSelectedArray.remove(at: index)
-                }else{
-                    newSelectedArray.append(areaName)
-                }
-            }*/
             if(newSelectedArray.count != 0){
                 selectedAreaDictionary.setValue(newSelectedArray, forKey: region.regionName!)
-                //regionCounterDict = [1,region.regionName]
             }else{
                 selectedAreaDictionary.removeObject(forKey: region.regionName!)
             }
@@ -170,24 +162,29 @@ extension AllAvailableDestinationViewController:UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.areaCell, for: indexPath) as! AvailableDestinationPlaceTableViewCell
-        let areasArray = Constant.MyClassConstants.regionAreaDictionary.value(forKey: Constant.MyClassConstants.regionArray[indexPath.section].regionCode!) as! [RegionArea]
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.areaCell, for: indexPath) as! AvailableDestinationPlaceTableViewCell
+        cell.selectionStyle = UITableViewCellSelectionStyle.none
+        let areasInRegionArray = Constant.MyClassConstants.regionAreaDictionary.value(forKey: Constant.MyClassConstants.regionArray[indexPath.section].regionCode!) as! [RegionArea]
         self.areaArray.removeAll()
         if(selectedAreaDictionary.count > 0){
             if let selectedAreas = selectedAreaDictionary.value(forKey: Constant.MyClassConstants.regionArray[indexPath.section].regionName!){
                 let area = selectedAreas as! [String]
                 print(area.count,area,area.count)
                 
-                let areaName = areasArray[indexPath.row].areaName
+                let areaName = areasInRegionArray[indexPath.row].areaName
                 if(area.contains(areaName!)){
                     cell.placeSelectionCheckBox.checked = true
                 }else{
                     cell.placeSelectionCheckBox.checked = false
                 }
+            }else{
+                cell.placeSelectionCheckBox.checked = false
             }
+        }else{
+            cell.placeSelectionCheckBox.checked = false
         }
         
-        for areas in areasArray{
+        for areas in areasInRegionArray{
             self.areaArray.append(areas)
         }
         
@@ -203,17 +200,20 @@ extension AllAvailableDestinationViewController:UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let selectedCell = tableView.cellForRow(at: indexPath) as! AvailableDestinationPlaceTableViewCell
+        // Only six items can be selected
         if(selectedCell.placeSelectionCheckBox.checked){
             sectionCounter = sectionCounter - 1
             selectedSectionArray.remove(indexPath.section)
-            //selectedCell.placeSelectionCheckBox.checked = false
+            self.addRemoveAreasInRegion(indexPathForSelectedRegion:indexPath)
         }else{
+            if(sectionCounter == 6){
+                SimpleAlert.alert(self, title: "Alert!", message: "Maximum limit reached")
+            }else{
             selectedSectionArray.add(indexPath.section)
             sectionCounter = sectionCounter + 1
-            //selectedCell.placeSelectionCheckBox.checked = true
+            self.addRemoveAreasInRegion(indexPathForSelectedRegion:indexPath)
+            }
         }
-       
-        self.addRemoveAreasInRegion(indexPathForSelectedRegion:indexPath)
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -230,8 +230,6 @@ extension AllAvailableDestinationViewController:UITableViewDelegate{
                     let totalAreas = selectedAreaDictionary.value(forKey: selectedRegion as! String) as! [String]
                     cell.selectdDestinationCountLabel?.text = String(totalAreas.count)
                     cell.selectdDestinationCountLabel?.isHidden = false
-                }else{
-                    //cell.selectdDestinationCountLabel?.isHidden = true
                 }
             }
             
