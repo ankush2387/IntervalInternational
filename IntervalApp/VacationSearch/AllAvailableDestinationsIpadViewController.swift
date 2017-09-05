@@ -16,6 +16,8 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
     //Class Varaiables
     var areaArray = [RegionArea]()
 
+    @IBOutlet weak var searchButtonHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var viewButtonHeightConstraint: NSLayoutConstraint!
     override func viewDidLoad() {
         super.viewDidLoad()
         
