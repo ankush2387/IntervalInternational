@@ -39,7 +39,7 @@
                 <navigationController id="7Cr-fl-4w0" sceneMemberID="viewController">
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="667"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="TUK-gZ-lVf">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="TUK-gZ-lVf">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -765,8 +765,8 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ykP-oh-x73" userLabel="ContentView">
                                         <rect key="frame" x="0.0" y="-70" width="374" height="700"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Getaway Alerts" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="agg-F1-kqZ">
-                                                <rect key="frame" x="20" y="16" width="334" height="21"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About Getaway Alerts" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="agg-F1-kqZ">
+                                                <rect key="frame" x="20" y="30" width="334" height="21"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="21" id="are-SS-fMG"/>
                                                 </constraints>
@@ -775,7 +775,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create a Getaway Alert" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ccj-M2-SwQ">
-                                                <rect key="frame" x="20" y="45" width="334" height="21"/>
+                                                <rect key="frame" x="20" y="81" width="334" height="21"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="21" id="OxW-xU-8bp"/>
                                                 </constraints>
@@ -784,7 +784,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notifications" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IJ9-DD-Vn5">
-                                                <rect key="frame" x="20" y="321" width="334" height="21"/>
+                                                <rect key="frame" x="20" y="316" width="334" height="21"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="21" id="v59-Az-TvQ"/>
                                                 </constraints>
@@ -793,7 +793,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Availability" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pdh-Qn-b8e">
-                                                <rect key="frame" x="20" y="566" width="334" height="21"/>
+                                                <rect key="frame" x="20" y="561" width="334" height="21"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="21" id="Xwr-G8-dWC"/>
                                                 </constraints>
@@ -802,7 +802,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stay in the know where ever you go with Getaway Alerts!" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XWQ-8o-8ud">
-                                                <rect key="frame" x="20" y="71" width="334" height="40"/>
+                                                <rect key="frame" x="20" y="107" width="334" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="STY-wn-3by"/>
                                                     <constraint firstAttribute="height" constant="40" id="vxx-Xa-hAu"/>
@@ -823,7 +823,7 @@
                                                 </variation>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" minimumFontSize="13" translatesAutoresizingMaskIntoConstraints="NO" id="yHr-dU-QGB">
-                                                <rect key="frame" x="20" y="162" width="334" height="130"/>
+                                                <rect key="frame" x="20" y="157" width="334" height="130"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="1fa-sb-xmo"/>
                                                     <constraint firstAttribute="height" constant="130" id="RLV-33-knE">
@@ -831,7 +831,7 @@
                                                     </constraint>
                                                     <constraint firstAttribute="height" constant="100" id="UHx-WJ-AAW"/>
                                                 </constraints>
-                                                <string key="text">It’s easy to customize your search and create a Getaway Alert.  Simply enter the destination(s) or resort(s), travel dates, and number of bedrooms you are looking for and then name your Getaway Alert.  The more resorts you add to your alert the greater your chances of getting matched. Once you’ve been matched, we’ll deliver a Getaway Alert right to your device. </string>
+                                                <string key="text">It's easy to customize your search and create a Getaway Alert. Keep in mind all fields are required and the more resorts you add to your alert the greater your changes of getting matched! Once you've been matched, we'll deliver a Getaway Alert to your device via a notification.</string>
                                                 <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="15"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -850,12 +850,12 @@
                                                 </variation>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="12" baselineAdjustment="alignBaselines" minimumFontSize="13" translatesAutoresizingMaskIntoConstraints="NO" id="bKW-yq-nd0">
-                                                <rect key="frame" x="20" y="342" width="334" height="200"/>
+                                                <rect key="frame" x="20" y="337" width="334" height="200"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="200" id="LIZ-Xo-KT8"/>
                                                     <constraint firstAttribute="height" constant="100" id="dtI-Lc-lli"/>
                                                 </constraints>
-                                                <string key="text">To receive Getaway Alerts, please make sure your Notifications are turned on for the Interval International App under “Settings”.  Notifications are sent once every 24 hours for each Getaway Alert.  If you miss out on a Getaway, you’ll be notified as more Getaways matching your search become available.  To unsubscribe from Getaway Alerts, you can either turn off the Notification settings on your device or change your Getaway Alert to “inactive”.</string>
+                                                <string key="text">To receive Getaway Alerts, please make sure your notifications are turned on for the Interval App under settings. Notifications are sent once every 24 hours for each Getaway Alert. If you miss out on an Getaway, you'll be notified as more matches become available. To unsubscribe from Getaway alerts, you can delete them, or make them inactive via editting them or turn them off via your Notification setting on your device.</string>
                                                 <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="15"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -872,26 +872,26 @@
                                                 </variation>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bUl-oq-zFc">
-                                                <rect key="frame" x="20" y="300" width="334" height="1"/>
+                                                <rect key="frame" x="20" y="295" width="334" height="1"/>
                                                 <color key="backgroundColor" red="0.8980392157" green="0.90588235289999997" blue="0.89411764709999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="j1i-2r-O4P"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ev0-fX-d3r">
-                                                <rect key="frame" x="20" y="550" width="334" height="1"/>
+                                                <rect key="frame" x="20" y="545" width="334" height="1"/>
                                                 <color key="backgroundColor" red="0.8980392157" green="0.90588235289999997" blue="0.89411764709999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="3c0-Jl-vpf"/>
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" minimumFontSize="13" translatesAutoresizingMaskIntoConstraints="NO" id="x0T-f6-WuC">
-                                                <rect key="frame" x="20" y="587" width="334" height="80"/>
+                                                <rect key="frame" x="20" y="582" width="334" height="80"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="80" id="7XQ-Ko-Aab"/>
                                                     <constraint firstAttribute="height" constant="40" id="OOT-PA-8mz"/>
                                                 </constraints>
-                                                <string key="text">Getaway inventory is on a first-come, first-served basis, so it is important to book your Getaway as soon as you receive a notification.</string>
+                                                <string key="text">Getaway inventory is on a first-come, first-serve basis, so it is important to view your alert as soon as your receive a notification.</string>
                                                 <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="15"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -907,15 +907,6 @@
                                                     </mask>
                                                 </variation>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To Create a Getaway Alert" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dEQ-L4-kBy">
-                                                <rect key="frame" x="20" y="131" width="334" height="21"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="21" id="M7Y-qW-WPc"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="15"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -924,28 +915,25 @@
                                             <constraint firstItem="bUl-oq-zFc" firstAttribute="top" secondItem="yHr-dU-QGB" secondAttribute="bottom" constant="8" id="28T-6B-iw0"/>
                                             <constraint firstItem="Ccj-M2-SwQ" firstAttribute="leading" secondItem="ykP-oh-x73" secondAttribute="leading" constant="20" id="516-pU-SCT"/>
                                             <constraint firstItem="Pdh-Qn-b8e" firstAttribute="leading" secondItem="ykP-oh-x73" secondAttribute="leading" constant="20" id="6Bc-Xi-I1S"/>
+                                            <constraint firstItem="yHr-dU-QGB" firstAttribute="top" secondItem="XWQ-8o-8ud" secondAttribute="bottom" constant="10" id="70p-LC-PKe"/>
                                             <constraint firstAttribute="trailing" secondItem="IJ9-DD-Vn5" secondAttribute="trailing" constant="20" id="9M4-cp-nNE"/>
                                             <constraint firstItem="Ev0-fX-d3r" firstAttribute="top" secondItem="bKW-yq-nd0" secondAttribute="bottom" constant="8" id="CKP-nS-u9N"/>
                                             <constraint firstItem="bKW-yq-nd0" firstAttribute="leading" secondItem="ykP-oh-x73" secondAttribute="leading" constant="20" id="COs-xp-Ggs"/>
-                                            <constraint firstItem="yHr-dU-QGB" firstAttribute="top" secondItem="dEQ-L4-kBy" secondAttribute="bottom" constant="10" id="CZj-wn-cGE"/>
                                             <constraint firstItem="x0T-f6-WuC" firstAttribute="top" secondItem="Pdh-Qn-b8e" secondAttribute="bottom" id="Eae-2G-fXb"/>
                                             <constraint firstAttribute="trailing" secondItem="XWQ-8o-8ud" secondAttribute="trailing" constant="20" id="KDG-1V-ZY7"/>
                                             <constraint firstAttribute="trailing" secondItem="agg-F1-kqZ" secondAttribute="trailing" constant="20" id="Kdg-HK-UgS"/>
                                             <constraint firstItem="IJ9-DD-Vn5" firstAttribute="leading" secondItem="ykP-oh-x73" secondAttribute="leading" constant="20" id="LZo-TL-Gl2"/>
                                             <constraint firstAttribute="height" constant="700" id="Lpf-uP-ScK"/>
                                             <constraint firstItem="agg-F1-kqZ" firstAttribute="leading" secondItem="ykP-oh-x73" secondAttribute="leading" constant="20" id="Q0s-By-Lrd"/>
-                                            <constraint firstAttribute="trailing" secondItem="dEQ-L4-kBy" secondAttribute="trailing" constant="20" id="Q7Z-Zt-R6F"/>
-                                            <constraint firstItem="dEQ-L4-kBy" firstAttribute="leading" secondItem="ykP-oh-x73" secondAttribute="leading" constant="20" id="TBn-qz-MCi"/>
                                             <constraint firstAttribute="trailing" secondItem="Ccj-M2-SwQ" secondAttribute="trailing" constant="20" id="WHb-DS-8Nv"/>
                                             <constraint firstItem="XWQ-8o-8ud" firstAttribute="top" secondItem="Ccj-M2-SwQ" secondAttribute="bottom" constant="5" id="Xp9-tz-IBn"/>
                                             <constraint firstAttribute="trailing" secondItem="bKW-yq-nd0" secondAttribute="trailing" constant="20" id="Xvr-e0-XbS"/>
                                             <constraint firstAttribute="trailing" secondItem="Ev0-fX-d3r" secondAttribute="trailing" constant="20" id="ZzT-Zg-ZNF"/>
                                             <constraint firstItem="bKW-yq-nd0" firstAttribute="top" secondItem="IJ9-DD-Vn5" secondAttribute="bottom" id="aDt-Wr-sFf"/>
-                                            <constraint firstItem="agg-F1-kqZ" firstAttribute="top" secondItem="ykP-oh-x73" secondAttribute="top" constant="16" id="bui-R9-lex"/>
+                                            <constraint firstItem="agg-F1-kqZ" firstAttribute="top" secondItem="ykP-oh-x73" secondAttribute="top" constant="30" id="bui-R9-lex"/>
                                             <constraint firstAttribute="trailing" secondItem="bUl-oq-zFc" secondAttribute="trailing" constant="20" id="c4L-Sf-ksl"/>
-                                            <constraint firstItem="Ccj-M2-SwQ" firstAttribute="top" secondItem="agg-F1-kqZ" secondAttribute="bottom" constant="8" id="cj0-PF-ABj"/>
+                                            <constraint firstItem="Ccj-M2-SwQ" firstAttribute="top" secondItem="agg-F1-kqZ" secondAttribute="bottom" constant="30" id="cj0-PF-ABj"/>
                                             <constraint firstAttribute="trailing" secondItem="Pdh-Qn-b8e" secondAttribute="trailing" constant="20" id="gK7-BD-BhF"/>
-                                            <constraint firstItem="dEQ-L4-kBy" firstAttribute="top" secondItem="XWQ-8o-8ud" secondAttribute="bottom" constant="20" id="geP-nZ-jZk"/>
                                             <constraint firstItem="yHr-dU-QGB" firstAttribute="leading" secondItem="ykP-oh-x73" secondAttribute="leading" constant="20" id="i2Y-tk-mjk"/>
                                             <constraint firstItem="bUl-oq-zFc" firstAttribute="leading" secondItem="ykP-oh-x73" secondAttribute="leading" constant="20" id="kgl-DU-q2i"/>
                                             <constraint firstItem="x0T-f6-WuC" firstAttribute="leading" secondItem="ykP-oh-x73" secondAttribute="leading" constant="20" id="pAI-Qx-oAu"/>
@@ -1675,7 +1663,7 @@
                                         <rect key="frame" x="0.0" y="28" width="414" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gwY-qz-Ya7" id="dxG-B3-D0B">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="89.666666666666671"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="89"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1683,7 +1671,7 @@
                                         <rect key="frame" x="0.0" y="118" width="414" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KuN-de-hL8" id="6Oh-Wn-ZKQ">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="59.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="59"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1826,7 +1814,7 @@
             <objects>
                 <navigationController storyboardIdentifier="BedroomSizeNav" automaticallyAdjustsScrollViewInsets="NO" id="gIi-bU-P42" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="gs0-FK-luP">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="gs0-FK-luP">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
