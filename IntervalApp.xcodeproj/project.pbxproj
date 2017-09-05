@@ -100,6 +100,7 @@
 		3A59DE181F015E5F005280D3 /* SortingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A59DE171F015E5F005280D3 /* SortingViewController.swift */; };
 		3A59DE1A1F015FDE005280D3 /* SortingOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A59DE191F015FDE005280D3 /* SortingOptionCell.swift */; };
 		3A59DE1C1F0182D3005280D3 /* OwnershipIpad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A59DE1B1F0182D3005280D3 /* OwnershipIpad.storyboard */; };
+		3A5AFDDF1F5ED1CD00A44138 /* AllAvailableDestinationsIpadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5AFDDE1F5ED1CD00A44138 /* AllAvailableDestinationsIpadViewController.swift */; };
 		3A5BDCB31F34DD1800FDA672 /* FilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5BDCB21F34DD1800FDA672 /* FilterCell.swift */; };
 		3A5D1AEC1CE34D2D00F28076 /* VacationSearchResultIPadController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5D1AEB1CE34D2D00F28076 /* VacationSearchResultIPadController.swift */; };
 		3A623C671CF707A400389708 /* SideMenuLogoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A623C661CF707A400389708 /* SideMenuLogoCell.swift */; };
@@ -109,6 +110,7 @@
 		3A795A8D1CF5D22E0098C26D /* HeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A795A8C1CF5D22E0098C26D /* HeaderTableViewCell.swift */; };
 		3A7F44A71F17768800F4DD18 /* WhatToUseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7F44A61F17768800F4DD18 /* WhatToUseViewController.swift */; };
 		3A8618C81EA679660092A804 /* ClubPoints.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A8618C71EA679660092A804 /* ClubPoints.xib */; };
+		3A8668021F5D595D00D43755 /* AllAvailableDestinationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8668011F5D595D00D43755 /* AllAvailableDestinationViewController.swift */; };
 		3A892F411CD3902F00AE6F45 /* CaledarDateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A892F2D1CD3902F00AE6F45 /* CaledarDateCell.swift */; };
 		3A892F421CD3902F00AE6F45 /* CellHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A892F2E1CD3902F00AE6F45 /* CellHeaderTableViewCell.swift */; };
 		3A892F431CD3902F00AE6F45 /* CertificateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A892F2F1CD3902F00AE6F45 /* CertificateCell.swift */; };
@@ -145,6 +147,7 @@
 		3A9983D91DE723E800CE44A5 /* SlideTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9983D81DE723E800CE44A5 /* SlideTableViewCell.swift */; };
 		3A9983DB1DE72A5A00CE44A5 /* MMSlidingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9983DA1DE72A5A00CE44A5 /* MMSlidingButton.swift */; };
 		3A9983E11DE7331C00CE44A5 /* Confirmation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A9983E01DE7331C00CE44A5 /* Confirmation.storyboard */; };
+		3A9AFE651F597A3500BDDD6D /* FloatLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9AFE641F597A3500BDDD6D /* FloatLabelTextField.swift */; };
 		3AA6BC251EA8BD1A00B5DD7F /* CheckCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AA6BC241EA8BD1A00B5DD7F /* CheckCollectionCell.xib */; };
 		3AA6BC271EA91CDB00B5DD7F /* HeaderCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AA6BC261EA91CDB00B5DD7F /* HeaderCollectionCell.xib */; };
 		3AA88B541F44DAD8001ADC4C /* ExchangeInventoryCVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA88B531F44DAD8001ADC4C /* ExchangeInventoryCVCell.swift */; };
@@ -403,6 +406,7 @@
 		3A59DE171F015E5F005280D3 /* SortingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortingViewController.swift; sourceTree = "<group>"; };
 		3A59DE191F015FDE005280D3 /* SortingOptionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortingOptionCell.swift; sourceTree = "<group>"; };
 		3A59DE1B1F0182D3005280D3 /* OwnershipIpad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = OwnershipIpad.storyboard; sourceTree = "<group>"; };
+		3A5AFDDE1F5ED1CD00A44138 /* AllAvailableDestinationsIpadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllAvailableDestinationsIpadViewController.swift; sourceTree = "<group>"; };
 		3A5BDCB21F34DD1800FDA672 /* FilterCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterCell.swift; sourceTree = "<group>"; };
 		3A5D1AEB1CE34D2D00F28076 /* VacationSearchResultIPadController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VacationSearchResultIPadController.swift; sourceTree = "<group>"; };
 		3A623C661CF707A400389708 /* SideMenuLogoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuLogoCell.swift; sourceTree = "<group>"; };
@@ -413,6 +417,7 @@
 		3A795A8C1CF5D22E0098C26D /* HeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderTableViewCell.swift; sourceTree = "<group>"; };
 		3A7F44A61F17768800F4DD18 /* WhatToUseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhatToUseViewController.swift; sourceTree = "<group>"; };
 		3A8618C71EA679660092A804 /* ClubPoints.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClubPoints.xib; sourceTree = "<group>"; };
+		3A8668011F5D595D00D43755 /* AllAvailableDestinationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllAvailableDestinationViewController.swift; sourceTree = "<group>"; };
 		3A892F2D1CD3902F00AE6F45 /* CaledarDateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaledarDateCell.swift; sourceTree = "<group>"; };
 		3A892F2E1CD3902F00AE6F45 /* CellHeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellHeaderTableViewCell.swift; sourceTree = "<group>"; };
 		3A892F2F1CD3902F00AE6F45 /* CertificateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CertificateCell.swift; sourceTree = "<group>"; };
@@ -449,6 +454,7 @@
 		3A9983D81DE723E800CE44A5 /* SlideTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideTableViewCell.swift; sourceTree = "<group>"; };
 		3A9983DA1DE72A5A00CE44A5 /* MMSlidingButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MMSlidingButton.swift; sourceTree = "<group>"; };
 		3A9983E01DE7331C00CE44A5 /* Confirmation.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Confirmation.storyboard; sourceTree = "<group>"; };
+		3A9AFE641F597A3500BDDD6D /* FloatLabelTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextField.swift; sourceTree = "<group>"; };
 		3AA6BC241EA8BD1A00B5DD7F /* CheckCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CheckCollectionCell.xib; sourceTree = "<group>"; };
 		3AA6BC261EA91CDB00B5DD7F /* HeaderCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeaderCollectionCell.xib; sourceTree = "<group>"; };
 		3AA88B531F44DAD8001ADC4C /* ExchangeInventoryCVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExchangeInventoryCVCell.swift; sourceTree = "<group>"; };
@@ -926,6 +932,7 @@
 				3A623C681CF728BC00389708 /* UIImageView+UIActivityIndicatorForSDWebImage.h */,
 				3A623C691CF728BC00389708 /* UIImageView+UIActivityIndicatorForSDWebImage.m */,
 				3A9983DA1DE72A5A00CE44A5 /* MMSlidingButton.swift */,
+				3A9AFE641F597A3500BDDD6D /* FloatLabelTextField.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -995,6 +1002,7 @@
 				3AAA5A1E1C720F4500A5EA6D /* VacationSearchIpad.storyboard */,
 				3AAA5A1F1C720F4500A5EA6D /* VacationSearchIphone.storyboard */,
 				3AB122B01CD283AF00204EB7 /* VacationSearchIPadViewController.swift */,
+				3A5AFDDE1F5ED1CD00A44138 /* AllAvailableDestinationsIpadViewController.swift */,
 				3AAA5A201C720F4500A5EA6D /* VacationSearchTabBarController.swift */,
 				08E3BCF51F2A30F80021F2BC /* RelinquishmentDetailsViewController.swift */,
 				3AAA5A211C720F4500A5EA6D /* VacationSearchViewController.swift */,
@@ -1013,6 +1021,7 @@
 				3A18D7B91DE05DEC00966472 /* AddDebitOrCreditCardViewController.swift */,
 				3A2089DB1E2525C1001AFFD2 /* RelinquishmentSelectionViewController.swift */,
 				E94C7E081EF84DDE003D0EB5 /* PromotionsViewController.swift */,
+				3A8668011F5D595D00D43755 /* AllAvailableDestinationViewController.swift */,
 				3A59DE151F013767005280D3 /* SearchResultMapviewController.swift */,
 				3A59DE171F015E5F005280D3 /* SortingViewController.swift */,
 				3A7F44A61F17768800F4DD18 /* WhatToUseViewController.swift */,
@@ -1357,7 +1366,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		E487CA22C7876FB2B6E5A39D /* [CP] Copy Pods Resources */ = {
@@ -1369,7 +1378,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-IntervalApp/Pods-IntervalApp-resources.sh",
 				"$PODS_CONFIGURATION_BUILD_DIR/Brightcove-Player-SDK/BCOVPUIResources.bundle",
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle",
-				"$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle",
+				$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle,
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -1392,6 +1401,7 @@
 				3A3A014E1C99BED600B7EC37 /* MemberShipDetailTableViewCell.swift in Sources */,
 				DC7EF4D51D709EBF00E9E360 /* ResortDetails.swift in Sources */,
 				3A623C671CF707A400389708 /* SideMenuLogoCell.swift in Sources */,
+				3A5AFDDF1F5ED1CD00A44138 /* AllAvailableDestinationsIpadViewController.swift in Sources */,
 				E90C365A1F058C9800CCBE92 /* main.swift in Sources */,
 				DC7EF5091D709F8800E9E360 /* GoogleMapViewController.swift in Sources */,
 				E9573D1F1F3CFA3A00656C99 /* nonCoreProductView.swift in Sources */,
@@ -1426,6 +1436,7 @@
 				3AAA5A2F1C720F4500A5EA6D /* CustomHeaderCell.swift in Sources */,
 				3AE0D8681E4B38B500FFF635 /* ResortDestinationCell.swift in Sources */,
 				3ABC81A21DF971FD003CE64A /* EmailTableViewCell.swift in Sources */,
+				3A8668021F5D595D00D43755 /* AllAvailableDestinationViewController.swift in Sources */,
 				3AF4AFD71CD35D5600554506 /* SideMenuiPadTableViewController.swift in Sources */,
 				3A2C728D1DDB2D9A00BBF40B /* PromotionsCell.swift in Sources */,
 				3A202C731F3B0ABA00678C50 /* RentalInventoryCVCell.swift in Sources */,
@@ -1441,6 +1452,7 @@
 				3AF7CC111C847CDD00FB9AC6 /* UpComingTripDetailController.swift in Sources */,
 				3A591E0E1E82AF1C007FB4E8 /* EPlusTableViewCell.swift in Sources */,
 				DC04BB431DB829F100227FF5 /* VideoTBLCell.swift in Sources */,
+				3A9AFE651F597A3500BDDD6D /* FloatLabelTextField.swift in Sources */,
 				3A591E101E82B1FA007FB4E8 /* TransactionDetailsTableViewCell.swift in Sources */,
 				3A2F32421C80742300FCC111 /* UpComingTripCell.swift in Sources */,
 				3A3A01501C99BED600B7EC37 /* MemberShipViewController.swift in Sources */,

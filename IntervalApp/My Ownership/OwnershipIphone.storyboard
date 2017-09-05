@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="QDb-Au-ZGK">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="QDb-Au-ZGK">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -1694,7 +1694,7 @@
         <!--Float Detail View Controller-->
         <scene sceneID="fvS-Zm-tiz">
             <objects>
-                <viewController storyboardIdentifier="FloatDetailViewController" id="XVn-Fp-la9" customClass="FloatDetailViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FloatDetailViewController" automaticallyAdjustsScrollViewInsets="NO" id="XVn-Fp-la9" customClass="FloatDetailViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="7jt-go-EpS"/>
                         <viewControllerLayoutGuide type="bottom" id="AQy-Dh-fpL"/>
@@ -1704,7 +1704,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="100" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="1ma-vD-7mA">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="1200"/>
+                                <rect key="frame" x="0.0" y="64" width="600" height="1136"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="CallYourResortTableViewCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="resortcallidentifer" rowHeight="70" id="e8o-2y-OWr" customClass="CallYourResortTableViewCell" customModule="IntervalApp" customModuleProvider="target">
@@ -2157,13 +2157,85 @@ EFJlc2VydmF0aW9uIERldGFpbHM
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="resortAttributeLabel" destination="PSf-9j-baE" id="14H-U0-e3P"/>
+                                            <outlet property="resortAttributeLabel" destination="PSf-9j-baE" id="oCD-j5-Q4R"/>
                                             <outlet property="textFieldView" destination="AjS-eg-a3V" id="6ie-Vr-PTF"/>
                                             <outlet property="viewButton" destination="ico-bz-1xM" id="AVb-qI-XXK"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="attributesTableCell" rowHeight="60" id="5Dk-X6-cXy" customClass="ReservationTableViewCell" customModule="IntervalApp" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DatesCell" rowHeight="60" id="YQj-4J-y1z" customClass="ReservationTableViewCell" customModule="IntervalApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="911" width="600" height="60"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YQj-4J-y1z" id="fEy-5Z-OgW">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="60"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="juZ-E2-QWC">
+                                                    <rect key="frame" x="10" y="5" width="580" height="50"/>
+                                                    <subviews>
+                                                        <textField opaque="NO" clipsSubviews="YES" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Date" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NDJ-wV-wPN" customClass="FloatLabelTextField" customModule="IntervalApp" customModuleProvider="target">
+                                                            <rect key="frame" x="15" y="5" width="550" height="40"/>
+                                                            <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="18"/>
+                                                            <textInputTraits key="textInputTraits"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="hintYPadding">
+                                                                    <integer key="value" value="0"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                            <connections>
+                                                                <outlet property="delegate" destination="XVn-Fp-la9" id="Dd7-co-euA"/>
+                                                            </connections>
+                                                        </textField>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ForwardArrowIcon" translatesAutoresizingMaskIntoConstraints="NO" id="tYp-cF-fqJ">
+                                                            <rect key="frame" x="530" y="10" width="30" height="30"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="30" id="X1m-k0-DZU"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZDE-EP-1Uy">
+                                                            <rect key="frame" x="0.0" y="0.0" width="580" height="50"/>
+                                                        </button>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="bottom" secondItem="ZDE-EP-1Uy" secondAttribute="bottom" id="27e-HX-gcs"/>
+                                                        <constraint firstAttribute="trailing" secondItem="tYp-cF-fqJ" secondAttribute="trailing" constant="20" id="CaD-HY-3Lb"/>
+                                                        <constraint firstItem="NDJ-wV-wPN" firstAttribute="centerX" secondItem="juZ-E2-QWC" secondAttribute="centerX" id="LEA-s1-TRK"/>
+                                                        <constraint firstItem="ZDE-EP-1Uy" firstAttribute="leading" secondItem="juZ-E2-QWC" secondAttribute="leading" id="NHk-9Q-Iw6"/>
+                                                        <constraint firstItem="NDJ-wV-wPN" firstAttribute="leading" secondItem="juZ-E2-QWC" secondAttribute="leading" constant="15" id="RT8-wL-Ofh"/>
+                                                        <constraint firstItem="ZDE-EP-1Uy" firstAttribute="top" secondItem="juZ-E2-QWC" secondAttribute="top" id="SA5-F3-zDz"/>
+                                                        <constraint firstItem="NDJ-wV-wPN" firstAttribute="centerY" secondItem="juZ-E2-QWC" secondAttribute="centerY" id="Sq0-2b-ckc"/>
+                                                        <constraint firstAttribute="bottom" secondItem="tYp-cF-fqJ" secondAttribute="bottom" constant="10" id="Sxg-QS-fZ0"/>
+                                                        <constraint firstItem="tYp-cF-fqJ" firstAttribute="top" secondItem="juZ-E2-QWC" secondAttribute="top" constant="10" id="Ugm-Si-HfC"/>
+                                                        <constraint firstItem="NDJ-wV-wPN" firstAttribute="top" secondItem="juZ-E2-QWC" secondAttribute="top" constant="5" id="dea-4E-IQV"/>
+                                                        <constraint firstAttribute="trailing" secondItem="ZDE-EP-1Uy" secondAttribute="trailing" id="qYQ-VD-Ewp"/>
+                                                        <constraint firstAttribute="height" constant="50" id="sgK-Pv-qXm"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                            <integer key="value" value="2"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <integer key="value" value="4"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="juZ-E2-QWC" firstAttribute="centerX" secondItem="fEy-5Z-OgW" secondAttribute="centerX" id="0Ze-nJ-KIK"/>
+                                                <constraint firstItem="juZ-E2-QWC" firstAttribute="leading" secondItem="fEy-5Z-OgW" secondAttribute="leadingMargin" constant="2" id="FZF-cO-Tc1"/>
+                                                <constraint firstItem="juZ-E2-QWC" firstAttribute="centerY" secondItem="fEy-5Z-OgW" secondAttribute="centerY" id="NVL-Yb-4QZ"/>
+                                                <constraint firstItem="juZ-E2-QWC" firstAttribute="top" secondItem="fEy-5Z-OgW" secondAttribute="topMargin" constant="-3" id="ZDH-1m-bXq"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="resortAttributeLabel" destination="NDJ-wV-wPN" id="8GG-k5-vBZ"/>
+                                            <outlet property="textFieldView" destination="juZ-E2-QWC" id="YOD-cY-ieS"/>
+                                            <outlet property="viewButton" destination="ZDE-EP-1Uy" id="pkN-sr-UpX"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="attributesTableCell" rowHeight="60" id="5Dk-X6-cXy" customClass="ReservationTableViewCell" customModule="IntervalApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="971" width="600" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5Dk-X6-cXy" id="GBH-lC-XSg">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="60"/>
@@ -2225,7 +2297,7 @@ EFJlc2VydmF0aW9uIERldGFpbHM
                             </tableView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="1ma-vD-7mA" firstAttribute="top" secondItem="h7h-ZG-Yp1" secondAttribute="top" id="AoG-t0-U8U"/>
+                            <constraint firstItem="1ma-vD-7mA" firstAttribute="top" secondItem="h7h-ZG-Yp1" secondAttribute="top" constant="64" id="AoG-t0-U8U"/>
                             <constraint firstItem="1ma-vD-7mA" firstAttribute="leading" secondItem="h7h-ZG-Yp1" secondAttribute="leading" id="CDI-Uy-sao"/>
                             <constraint firstAttribute="trailing" secondItem="1ma-vD-7mA" secondAttribute="trailing" id="jBB-Nd-rsc"/>
                             <constraint firstItem="AQy-Dh-fpL" firstAttribute="top" secondItem="1ma-vD-7mA" secondAttribute="bottom" id="lnh-AG-O7O"/>
@@ -2245,7 +2317,7 @@ EFJlc2VydmF0aW9uIERldGFpbHM
             <objects>
                 <navigationController storyboardIdentifier="ownershipnavigation" automaticallyAdjustsScrollViewInsets="NO" id="4ES-vh-RAq" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="6Rg-8O-31A">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="6Rg-8O-31A">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
