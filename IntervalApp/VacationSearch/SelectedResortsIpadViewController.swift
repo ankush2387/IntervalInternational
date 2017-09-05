@@ -9,11 +9,16 @@
 import UIKit
 
 class SelectedResortsIpadViewController: UIViewController {
+    
+    
+    
+    var areaDictionary = NSMutableDictionary()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        print(areaDictionary)
     }
 
     override func didReceiveMemoryWarning() {
