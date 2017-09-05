@@ -557,6 +557,7 @@ class Constant: NSObject {
 
         //UserDefaults
         static var userName = "userName"
+        static var firstTimeRunning = "firstTimeRunnig"
         static var exchangeDestination = ExchangeDestination()
         
         //Changed promotions to global

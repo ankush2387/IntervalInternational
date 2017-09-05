@@ -86,10 +86,46 @@ class LoginViewController: UIViewController
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        let firstTimeRunning = UserDefaults.standard.bool(forKey: Constant.MyClassConstants.firstTimeRunning)
+
+        if !firstTimeRunning {
+            presentOnboardingScreen()
+        }
+        
         // attempt auto touch login
         if (TouchID.isTouchIDAvailable() && touchID.haveCredentials()) {
             performAutoTouchLogin()
         }
+    }
+    
+    fileprivate func presentOnboardingScreen() {
+        //blur
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = view.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        blurEffectView.alpha = 0.8
+        blurEffectView.tag = 100
+        view.addSubview(blurEffectView)
+        
+        //onboarding
+        let storyboard: UIStoryboard = UIStoryboard(name: "LoginIPhone", bundle: nil)
+        let onboardingVC = storyboard.instantiateViewController(withIdentifier: "OnboardingBaseViewController") as! OnboardingBaseViewController
+        addChildViewController(onboardingVC)
+        onboardingVC.view.frame = CGRect(x: 30, y: 40, width: self.view.bounds.width - 60, height: self.view.bounds.height - 60)
+        onboardingVC.view.tag = 101
+        onboardingVC.handler = { result in
+            UserDefaults.standard.set(true, forKey: "firstTimeRunnig")
+            for v in self.view.subviews {
+                if v.tag == 100 || v.tag == 101 {
+                    v.removeFromSuperview()
+                }
+            }
+        }
+        
+        view.addSubview(onboardingVC.view)
+        onboardingVC.didMove(toParentViewController: self)
+
     }
     
     @IBAction func loginHelp(_ sender: AnyObject) {
