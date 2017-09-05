@@ -222,10 +222,10 @@ extension AllAvailableDestinationViewController:UITableViewDelegate{
         cell.setDataForAllAvailableDestinations(index: section)
         cell.expandRegionButton.tag = section
         if(sectionCounter == 0){
-            cell.selectdDestinationCountLabel.isHidden = true
+            cell.selectdDestinationCountLabel?.isHidden = true
         }else{
-            cell.selectdDestinationCountLabel.text = String(sectionCounter)
-            cell.selectdDestinationCountLabel.isHidden = false
+            cell.selectdDestinationCountLabel?.text = String(sectionCounter)
+            cell.selectdDestinationCountLabel?.isHidden = false
         }
         cell.expandRegionButton.addTarget(self, action: #selector(AllAvailableDestinationViewController.expandClicked(_:)), for: .touchUpInside)
         
