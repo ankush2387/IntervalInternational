@@ -32,7 +32,14 @@ class AvailableDestinationPlaceTableViewCell: UITableViewCell {
     }
     
     func setAllAvailableAreaCell(index:Int, area:RegionArea){
-        infoLabel.text = area.areaName
+        if(Constant.RunningDevice.deviceIdiom == .pad) {
+            self.lblAreaName.text = area.areaName
+            
+        } else {
+            infoLabel?.text = area.areaName
+            
+        }
+        
     }
     
 
