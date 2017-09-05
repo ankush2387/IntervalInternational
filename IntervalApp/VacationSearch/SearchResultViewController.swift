@@ -68,8 +68,7 @@ class SearchResultViewController: UIViewController {
         Constant.MyClassConstants.calendarDatesArray.removeAll()
         Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
         createSections()
-        
-        self.searchResultTableView.setContentOffset(CGPoint(x:0, y:0), animated: true)
+
         self.searchResultColelctionView.reloadData()
         self.searchResultTableView.reloadData()
     }
@@ -358,6 +357,8 @@ class SearchResultViewController: UIViewController {
     //*****Function for more button press *****//
     func intervalDateItemClicked(_ toDate: Date){
         searchResultColelctionView.reloadData()
+        let indexPath = IndexPath(row: 0, section: 0)
+        searchResultTableView.scrollToRow(at: indexPath, at: .top, animated: true)
         let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
         Helper.helperDelegate = self
         if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
@@ -1101,7 +1102,7 @@ extension SearchResultViewController:UICollectionViewDataSource {
                 if((indexPath as NSIndexPath).row == collectionviewSelectedIndex) {
                     
                     if(dateCellSelectionColor == Constant.CommonColor.greenColor){
-                        cell.backgroundColor = Constant.CommonColor.headerGreenColor//IUIKColorPalette.secondary1.color
+                        cell.backgroundColor = Constant.CommonColor.headerGreenColor
                     }else{
                         cell.backgroundColor = IUIKColorPalette.primary1.color
                     }
@@ -1598,8 +1599,10 @@ extension SearchResultViewController:HelperDelegate {
         self.createSections()
         self.searchResultColelctionView.reloadData()
         self.searchResultTableView.reloadData()
-        let indexPath = IndexPath(row: 0, section: 0)
-        searchResultTableView.scrollToRow(at: indexPath, at: .top, animated: true)
+        if(combinedExactSearchItems.isEmpty && combinedSurroundingSearchItems.isEmpty && exactMatchResortsArray.isEmpty && exactMatchResortsArrayExchange.isEmpty && surroundingMatchResortsArray.isEmpty && surroundingMatchResortsArrayExchange.isEmpty){
+            let indexPath = IndexPath(row: 0, section: 0)
+            searchResultTableView.scrollToRow(at: indexPath, at: .top, animated: true)
+        }
     }
     func resetCalendar(){
         

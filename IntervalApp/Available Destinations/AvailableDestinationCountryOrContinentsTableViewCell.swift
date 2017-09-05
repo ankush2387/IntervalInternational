@@ -18,9 +18,6 @@ class AvailableDestinationCountryOrContinentsTableViewCell: UITableViewCell {
     
     @IBOutlet weak var expandRegionButton: UIButton!
     
-   
-        
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -54,6 +51,12 @@ class AvailableDestinationCountryOrContinentsTableViewCell: UITableViewCell {
         //selectdDestinationCountLabel.layer.cornerRadius = selectdDestinationCountLabel.bounds.size.width/2
        // selectdDestinationCountLabel.layer.masksToBounds = true
        // selectdDestinationCountLabel.backgroundColor = UIColor(rgb:IUIKColorPalette.Alert.rawValue)
+    }
+    func setDataForAllAvailableDestinations(index:Int){
+        guard let region = Constant.MyClassConstants.regionArray[index].regionName else {
+            return
+        }
+        countryOrContinentLabel.text = region
     }
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

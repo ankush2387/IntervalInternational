@@ -1401,7 +1401,34 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
     func searchButtonClicked(_ sender : IUIKButton) {
         Helper.helperDelegate = self
         ADBMobile.trackAction(Constant.omnitureEvents.event1, data: nil)
-
+        
+        
+        if(Constant.MyClassConstants.whereTogoContentArray.contains(Constant.MyClassConstants.allDestinations) && self.segmentTitle == Constant.segmentControlItems.getaways){
+            
+            let (toDateTop,fromDateTop) = getSearchDatesTop()
+            let searchDateRequest = RentalSearchRegionsRequest()
+            searchDateRequest.checkInToDate = toDateTop
+            searchDateRequest.checkInFromDate = fromDateTop
+            
+            Helper.showProgressBar(senderView: self)
+            sender.isEnabled = false
+            Constant.MyClassConstants.regionArray.removeAll()
+            Constant.MyClassConstants.regionAreaDictionary.removeAllObjects()
+            RentalClient.searchRegions(UserContext.sharedInstance.accessToken, request: searchDateRequest, onSuccess: {(response)in
+                print(response)
+                
+                for rsregion in response {
+                    
+                    Constant.MyClassConstants.regionArray.append(rsregion)
+                    Helper.hideProgressBar(senderView: self)
+                    
+                }
+                self.performSegue(withIdentifier:"allAvailableDestination", sender: self)
+                
+            }, onError: { (error) in
+                print(error)
+            })
+        }else{
         if (self.segmentTitle == Constant.segmentControlItems.getaways && (Helper.getAllDestinationFromLocalStorage().count>0 || Helper.getAllResortsFromLocalStorage().count>0) || Constant.MyClassConstants.whereTogoContentArray.count>0) {
             
             
@@ -1649,6 +1676,8 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 
             }
         }
+        
+    }
     }
     
     func showNotAvailabilityResults() {

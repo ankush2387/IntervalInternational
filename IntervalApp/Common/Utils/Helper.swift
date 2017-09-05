@@ -1092,9 +1092,33 @@ public class Helper{
         if(isFromLockOff){
             viewController.isFromLockOff = true
         }
+        getOrderedSections(floatAttributesArray: viewController.floatAttributesArray, atrributesRowArray: viewController.atrributesRowArray)
         let transitionManager = TransitionManager()
         senderViewController.navigationController?.transitioningDelegate = transitionManager
         senderViewController.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    //Function to get ordered sections
+    static func getOrderedSections(floatAttributesArray:NSMutableArray, atrributesRowArray:NSMutableArray){
+        
+        floatAttributesArray.add(Constant.MyClassConstants.callResortAttribute)
+        floatAttributesArray.add(Constant.MyClassConstants.resortDetailsAttribute)
+        if (Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.resortClubAttribute)){
+            floatAttributesArray.add(Constant.MyClassConstants.resortClubAttribute)
+        }
+        floatAttributesArray.add(Constant.MyClassConstants.resortAttributes)
+        if(Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.resortReservationAttribute)){
+            atrributesRowArray.add(Constant.MyClassConstants.resortReservationAttribute)
+        }
+        if(Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.unitNumberAttribute)){
+            atrributesRowArray.add(Constant.MyClassConstants.unitNumberAttribute)
+        }
+        atrributesRowArray.add(Constant.MyClassConstants.noOfBedroomAttribute)
+        if(Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.checkInDateAttribute)){
+            atrributesRowArray.add(Constant.MyClassConstants.checkInDateAttribute)
+        }
+        
+        floatAttributesArray.add(Constant.MyClassConstants.saveAttribute)
     }
     
     /***** Get check-in dates API to show in calendar ******/
