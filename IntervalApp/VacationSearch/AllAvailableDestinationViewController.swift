@@ -39,7 +39,12 @@ class AllAvailableDestinationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        
+        self.title = "Available Destinations"
+        
+        let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.MoreNav), style: .plain, target: self, action:#selector(AllAvailableDestinationsIpadViewController.menuButtonClicked))
+        menuButton.tintColor = UIColor.white
+        self.navigationItem.rightBarButtonItem = menuButton
     }
 
     override func didReceiveMemoryWarning() {
@@ -47,6 +52,7 @@ class AllAvailableDestinationViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+
     //Function for checkBox click
     
     func checkBoxClicked(){
@@ -106,6 +112,39 @@ class AllAvailableDestinationViewController: UIViewController {
         
     }
     
+    func menuButtonClicked()  {
+        print("menu button clicked");
+        
+        
+        let optionMenu = UIAlertController(title: nil, message: "All Destinations Options", preferredStyle: .actionSheet)
+        
+        let viewSelectedResorts = UIAlertAction(title: "View My Selected Resorts", style: .default, handler:
+        {
+            (alert: UIAlertAction!) -> Void in
+            
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.showSelectedResortsIpad, sender: self)
+        })
+        
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler:
+        {
+            (alert: UIAlertAction!) -> Void in
+        })
+        
+        optionMenu.addAction(viewSelectedResorts)
+        optionMenu.addAction(cancelAction)
+        
+        if(Constant.RunningDevice.deviceIdiom == .pad){
+            optionMenu.popoverPresentationController?.sourceView = self.view
+            optionMenu.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.size.width,y: 0, width: 100, height: 60)
+            optionMenu.popoverPresentationController!.permittedArrowDirections = .up;
+        }
+        
+        //Present the AlertController
+        self.present(optionMenu, animated: true, completion: nil)
+        
+    }
+
 }
 
 

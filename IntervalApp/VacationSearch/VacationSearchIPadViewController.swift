@@ -678,16 +678,42 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
     
     func searchButtonClicked(_ sender : IUIKButton) {
         
-        if (self.segmentTitle == Constant.segmentControlItems.getaways && (Helper.getAllDestinationFromLocalStorage().count>0 || Helper.getAllResortsFromLocalStorage().count>0)) {
-            Helper.showProgressBar(senderView: self)
-            Constant.MyClassConstants.selectedSegment =  Constant.MyClassConstants.selectedSegmentExchange
-            sender.isEnabled = false
-
-            if Reachability.isConnectedToNetwork() == true {
-                let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
-                let storedData = Helper.getLocalStorageWherewanttoGo()
+        if (self.segmentTitle == Constant.segmentControlItems.getaways && (Helper.getAllDestinationFromLocalStorage().count>0 || Helper.getAllResortsFromLocalStorage().count>0) || Constant.MyClassConstants.whereTogoContentArray.count>0) {
+            
+            if(Constant.MyClassConstants.whereTogoContentArray.contains(Constant.MyClassConstants.allDestinations) ){
                 
-                if(storedData.count > 0) {
+                let (toDateTop,fromDateTop) = getSearchDatesTop()
+                let searchDateRequest = RentalSearchRegionsRequest()
+                searchDateRequest.checkInToDate = toDateTop
+                searchDateRequest.checkInFromDate = fromDateTop
+                
+                Helper.showProgressBar(senderView: self)
+                //sender.isEnabled = false
+                RentalClient.searchRegions(UserContext.sharedInstance.accessToken, request: searchDateRequest, onSuccess: {(response)in
+                    print(response)
+                    
+                    for rsregion in response {
+                        
+                        Constant.MyClassConstants.regionArray.append(rsregion)
+                        Helper.hideProgressBar(senderView: self)
+                        
+                    }
+                    self.performSegue(withIdentifier:"allAvailableDestination", sender: self)
+                    
+                }, onError: { (error) in
+                    print(error)
+                })
+                
+            }else {
+                Helper.showProgressBar(senderView: self)
+                Constant.MyClassConstants.selectedSegment =  Constant.MyClassConstants.selectedSegmentExchange
+                sender.isEnabled = false
+                
+                if Reachability.isConnectedToNetwork() == true {
+                    let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
+                    let storedData = Helper.getLocalStorageWherewanttoGo()
+                    
+                    if(storedData.count > 0) {
                         self.getSavedDestinationsResorts(storedData:storedData, searchCriteria:rentalSearchCriteria)
                         
                         rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
@@ -718,7 +744,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                                 Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
                                 let vacationSearchInitialDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
                                 
-                                 Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearchInitialDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearchInitialDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                             }
                             Constant.MyClassConstants.checkInDates = response.checkInDates
                             sender.isEnabled = true
@@ -729,16 +755,20 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                             Helper.hideProgressBar(senderView: self)
                             SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                         }
-                    
+                        
+                    }
                 }
+                else {
+                    sender.isEnabled = true
+                    Helper.hideProgressBar(senderView: self)
+                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
+                }
+                Constant.MyClassConstants.isFromExchange = false
+
             }
-            else {
-                sender.isEnabled = true
-                Helper.hideProgressBar(senderView: self)
-                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
-            }
-            Constant.MyClassConstants.isFromExchange = false
-        }else if(self.segmentTitle == Constant.segmentControlItems.exchange && (Helper.getAllDestinationFromLocalStorage().count>0 || Helper.getAllResortsFromLocalStorage().count>0)){
+            
+            
+        } else if(self.segmentTitle == Constant.segmentControlItems.exchange && (Helper.getAllDestinationFromLocalStorage().count>0 || Helper.getAllResortsFromLocalStorage().count>0)){
             
             if(Constant.MyClassConstants.relinquishmentIdArray.count == 0){
                 sender.isEnabled = true
