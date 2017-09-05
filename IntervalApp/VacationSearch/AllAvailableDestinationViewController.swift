@@ -145,6 +145,13 @@ class AllAvailableDestinationViewController: UIViewController {
         self.present(optionMenu, animated: true, completion: nil)
         
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        let selectedResort = segue.destination as! SelectedResortsIpadViewController
+        selectedResort.areaDictionary = self.selectedAreaDictionary
+        print(selectedResort.areaDictionary)
+    }
 
 }
 
