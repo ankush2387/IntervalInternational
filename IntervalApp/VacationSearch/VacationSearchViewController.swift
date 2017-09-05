@@ -1423,9 +1423,11 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     Helper.hideProgressBar(senderView: self)
                     
                 }
+                sender.isEnabled = true
                 self.performSegue(withIdentifier:"allAvailableDestination", sender: self)
                 
             }, onError: { (error) in
+                sender.isEnabled = true
                 print(error)
             })
         }else{

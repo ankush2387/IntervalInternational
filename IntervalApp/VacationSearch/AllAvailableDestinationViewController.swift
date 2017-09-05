@@ -24,6 +24,7 @@ class AllAvailableDestinationViewController: UIViewController {
     var mainCounter = 0
     var sectionCounter = 0
     var selectedSectionArray = NSMutableArray()
+    var regionCounterDict = [Int:String]()
     
     override func viewWillAppear(_ animated: Bool) {
         //***** Creating and adding right bar button for more option button *****//
@@ -63,7 +64,6 @@ class AllAvailableDestinationViewController: UIViewController {
     
     func addRemoveAreasInRegion(indexPathForSelectedRegion:IndexPath){
         let region = Constant.MyClassConstants.regionArray[indexPathForSelectedRegion.section]
-        print(region.regionCode!,region.areas)
         if(selectedAreaDictionary.value(forKey: region.regionName!) != nil){
             let selectedAreasArray = selectedAreaDictionary.value(forKey: region.regionName!) as! [String]
             let areaAtIndex = region.areas[indexPathForSelectedRegion.row]
@@ -85,6 +85,7 @@ class AllAvailableDestinationViewController: UIViewController {
             }*/
             if(newSelectedArray.count != 0){
                 selectedAreaDictionary.setValue(newSelectedArray, forKey: region.regionName!)
+                //regionCounterDict = [1,region.regionName]
             }else{
                 selectedAreaDictionary.removeObject(forKey: region.regionName!)
             }
@@ -173,18 +174,17 @@ extension AllAvailableDestinationViewController:UITableViewDataSource{
         let areasArray = Constant.MyClassConstants.regionAreaDictionary.value(forKey: Constant.MyClassConstants.regionArray[indexPath.section].regionCode!) as! [RegionArea]
         self.areaArray.removeAll()
         if(selectedAreaDictionary.count > 0){
-        let selectedAreas = selectedAreaDictionary.value(forKey: Constant.MyClassConstants.regionArray[indexPath.section].regionName!) as! [String]
-        print(selectedAreas.count,selectedAreas,areasArray.count)
-            
-       // if(areasArray[indexPath.row].areaCode)
-            
-        //for areas in areasArray{
-            /*if(selectedAreas.contains(where: {$0.areaCode == areasArray[indexPath.row].areaCode})){
-                cell.placeSelectionCheckBox.checked = true
-            }else{
-                cell.placeSelectionCheckBox.checked = false
-            }*/
-        //}
+            if let selectedAreas = selectedAreaDictionary.value(forKey: Constant.MyClassConstants.regionArray[indexPath.section].regionName!){
+                let area = selectedAreas as! [String]
+                print(area.count,area,area.count)
+                
+                let areaName = areasArray[indexPath.row].areaName
+                if(area.contains(areaName!)){
+                    cell.placeSelectionCheckBox.checked = true
+                }else{
+                    cell.placeSelectionCheckBox.checked = false
+                }
+            }
         }
         
         for areas in areasArray{
@@ -224,8 +224,17 @@ extension AllAvailableDestinationViewController:UITableViewDelegate{
         if(sectionCounter == 0){
             cell.selectdDestinationCountLabel?.isHidden = true
         }else{
-            cell.selectdDestinationCountLabel?.text = String(sectionCounter)
-            cell.selectdDestinationCountLabel?.isHidden = false
+            let region = Constant.MyClassConstants.regionArray[section]
+            for selectedRegion in selectedAreaDictionary.allKeys{
+                if String(describing: selectedRegion) == region.regionName{
+                    let totalAreas = selectedAreaDictionary.value(forKey: selectedRegion as! String) as! [String]
+                    cell.selectdDestinationCountLabel?.text = String(totalAreas.count)
+                    cell.selectdDestinationCountLabel?.isHidden = false
+                }else{
+                    //cell.selectdDestinationCountLabel?.isHidden = true
+                }
+            }
+            
         }
         cell.expandRegionButton.addTarget(self, action: #selector(AllAvailableDestinationViewController.expandClicked(_:)), for: .touchUpInside)
         
