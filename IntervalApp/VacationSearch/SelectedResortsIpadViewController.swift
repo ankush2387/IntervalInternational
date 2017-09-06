@@ -17,7 +17,7 @@ class SelectedResortsIpadViewController: UIViewController {
     
     // class varibles
     var areaDictionary = NSMutableDictionary()
-    
+    var areasInRegionArray = [String]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,17 +96,20 @@ extension SelectedResortsIpadViewController:UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.selectedResortsCell) as! SelectedResortsCell
         
-        let sectionArray : NSMutableArray
-        sectionArray = areaDictionary.allKeys as! NSMutableArray
-        
-        if let areas = areaDictionary.value(forKey: sectionArray[indexPath.section] as! String){
+        let dicKey = Array(areaDictionary)[indexPath.section].key
+        if let areas = areaDictionary.value(forKey: dicKey as! String){
             
-            let areasInRegionArray = areas as? NSArray
+            let localArray:NSMutableArray = NSMutableArray()
             
-            cell.lblResortsName.text = areasInRegionArray?[indexPath.row] as? String
+            for object in areas as! [String]{
+                
+                localArray.add(object)
+            }
+            cell.lblResortsName.text = localArray[indexPath.row] as? String
         }
         
         return cell
+        
     }
     
 }
@@ -125,7 +128,23 @@ extension SelectedResortsIpadViewController:UITableViewDelegate {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
         if (editingStyle == UITableViewCellEditingStyle.delete) {
-            print("row deleted")
+           
+            let dicKey = Array(areaDictionary)[indexPath.section].key
+            if let areas = areaDictionary.value(forKey: dicKey as! String){
+                
+                let localArray:NSMutableArray = NSMutableArray()
+                
+                for object in areas as! [String]{
+                    
+                    localArray.add(object)
+                }
+                localArray.removeObject(at: indexPath.row)
+                
+                areaDictionary.setValue(localArray, forKey: dicKey as! String)
+            }
+            tableView.reloadData()
+            
+            
         }
         
     }

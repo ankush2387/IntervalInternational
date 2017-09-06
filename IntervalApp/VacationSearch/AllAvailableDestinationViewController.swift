@@ -38,6 +38,7 @@ class AllAvailableDestinationViewController: UIViewController {
         moreButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.MoreNav), style: .plain, target: self, action:#selector(moreNavButtonPressed(_:)))
         moreButton!.tintColor = UIColor.white
         self.navigationController?.navigationItem.rightBarButtonItem = moreButton
+        allAvailableDestinatontableview.reloadData()
     }
     
     func moreNavButtonPressed(_ sender:UIBarButtonItem) {
@@ -279,7 +280,7 @@ extension AllAvailableDestinationViewController:UITableViewDelegate{
         // Only six items can be selected
         
         UIView.animate(withDuration: 15, delay: 20, options: UIViewAnimationOptions(rawValue: 0), animations: {
-            self.viewButtonHeightConstraint.constant = 100
+            self.viewButtonHeightConstraint.constant = 115
             self.searchButtonHeightConstraint.constant = 50
             self.searchButton.isHidden = false
         }, completion: nil)
