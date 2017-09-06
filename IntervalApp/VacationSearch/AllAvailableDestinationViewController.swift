@@ -44,6 +44,52 @@ class AllAvailableDestinationViewController: UIViewController {
     }
     
     @IBAction func searchButtonClicked(_ sender: Any) {
+        
+        let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
+        
+        rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
+        
+        let vacationSearch = VacationSearch(UserContext.sharedInstance.appSettings, rentalSearchCriteria)
+        let area = Area()
+        area.areaCode = 1
+        area.areaName = "Mexico, Cancun"//selectedAreaDictionary.value(forKey: "Mexico, Cancun") as! String
+        vacationSearch.rentalSearch?.searchContext.request.areas = [area]
+        Constant.MyClassConstants.initialVacationSearch = vacationSearch
+        
+        RentalClient.searchDates(UserContext.sharedInstance.accessToken, request:vacationSearch.rentalSearch?.searchContext.request,
+                                 onSuccess: { (response) in
+                                    vacationSearch.rentalSearch?.searchContext.response = response
+                                    
+                                    // Get activeInterval
+                                    let activeInterval = vacationSearch.bookingWindow.getActiveInterval()
+                                    
+                                    // Update active interval
+                                    Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                                    
+                                    // Always show a fresh copy of the Scrolling Calendar
+                                    
+                                    Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                    
+                                    // Check not available checkIn dates for the active interval
+                                    if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                                        Helper.showNotAvailabilityResults()
+                                    } else {
+                                        
+                                        Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
+                                        let initialSearchCheckInDate = Helper.convertStringToDate(dateString:vacationSearch.searchCheckInDate!,format:Constant.MyClassConstants.dateFormat)
+                                        Constant.MyClassConstants.checkInDates = response.checkInDates
+                                        //sender.isEnabled = true
+                                        Helper.helperDelegate = self
+                                        Helper.hideProgressBar(senderView: self)
+                                        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                    }
+        },
+                                 onError:{ (error) in
+                                    Helper.hideProgressBar(senderView: self)
+                                    //sender.isEnabled = true
+                                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+        }
+        )
     }
     
     override func viewDidLoad() {
@@ -108,6 +154,7 @@ class AllAvailableDestinationViewController: UIViewController {
     func expandClicked(_ sender:UIButton){
         
         let rsregion = Constant.MyClassConstants.regionArray [sender.tag]
+        print(Constant.MyClassConstants.regionAreaDictionary)
         if Constant.MyClassConstants.regionAreaDictionary[rsregion.regionCode] == nil {
             Constant.MyClassConstants.regionAreaDictionary.setValue(rsregion.areas, forKey: String(rsregion.regionCode))
         }else{
@@ -158,57 +205,6 @@ class AllAvailableDestinationViewController: UIViewController {
         selectedResort.areaDictionary = self.selectedAreaDictionary
         print(selectedResort.areaDictionary)
     }
-    
-    //Function to perfor search
-    
-    func performAllAvailableSearch(){
-        
-        let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
-        
-        rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
-        
-        let vacationSearch = VacationSearch(UserContext.sharedInstance.appSettings, rentalSearchCriteria)
-        let area = Area()
-        area.areaCode = 1
-        area.areaName = "Mexico, Cancun"//selectedAreaDictionary.value(forKey: "Mexico, Cancun") as! String
-        vacationSearch.rentalSearch?.searchContext.request.areas = [area]
-        Constant.MyClassConstants.initialVacationSearch = vacationSearch
-        
-        RentalClient.searchDates(UserContext.sharedInstance.accessToken, request:vacationSearch.rentalSearch?.searchContext.request,
-                                 onSuccess: { (response) in
-                                    vacationSearch.rentalSearch?.searchContext.response = response
-                                    
-                                    // Get activeInterval
-                                    let activeInterval = vacationSearch.bookingWindow.getActiveInterval()
-                                    
-                                    // Update active interval
-                                    Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
-                                    
-                                    // Always show a fresh copy of the Scrolling Calendar
-                                    
-                                    Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-                                    
-                                    // Check not available checkIn dates for the active interval
-                                    if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                                        Helper.showNotAvailabilityResults()
-                                    } else {
-                                        
-                                        Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                                        let initialSearchCheckInDate = Helper.convertStringToDate(dateString:vacationSearch.searchCheckInDate!,format:Constant.MyClassConstants.dateFormat)
-                                        Constant.MyClassConstants.checkInDates = response.checkInDates
-                                        //sender.isEnabled = true
-                                        Helper.helperDelegate = self
-                                        Helper.hideProgressBar(senderView: self)
-                                        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-                                    }
-        },
-                                 onError:{ (error) in
-                                    Helper.hideProgressBar(senderView: self)
-                                    //sender.isEnabled = true
-                                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
-        }
-        )
-    }
 
 }
 
@@ -230,6 +226,14 @@ extension AllAvailableDestinationViewController:UITableViewDataSource{
             return 0
         }
         
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat{
+        return 60
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -295,7 +299,6 @@ extension AllAvailableDestinationViewController:UITableViewDelegate{
         }else{
             if(sectionCounter == 6){
                 SimpleAlert.alert(self, title: "Alert!", message: "Maximum limit reached")
-                performAllAvailableSearch()
             }else{
             selectedSectionArray.add(indexPath.section)
             sectionCounter = sectionCounter + 1
@@ -326,18 +329,21 @@ extension AllAvailableDestinationViewController:UITableViewDelegate{
         
          return cell
     }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        
-        return 60
-    }
-    
 }
 
 extension AllAvailableDestinationViewController:HelperDelegate{
     
     func resortSearchComplete(){
         Constant.MyClassConstants.vacationSearchResultHeaderLabel = "Mexico, Cancun"
+        
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
+        
+        let transitionManager = TransitionManager()
+        self.navigationController?.transitioningDelegate = transitionManager
+        
+        self.navigationController!.pushViewController(viewController, animated: true)
+
     }
     
     func resetCalendar(){
