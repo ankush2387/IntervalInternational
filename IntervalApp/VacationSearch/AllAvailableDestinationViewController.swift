@@ -155,13 +155,13 @@ class AllAvailableDestinationViewController: UIViewController {
         
         let rsregion = Constant.MyClassConstants.regionArray [sender.tag]
         print(Constant.MyClassConstants.regionAreaDictionary)
-        if Constant.MyClassConstants.regionAreaDictionary[rsregion.regionCode] == nil {
+        if Constant.MyClassConstants.regionAreaDictionary.count == 0 {
+            Constant.MyClassConstants.regionAreaDictionary.setValue(rsregion.areas, forKey: String(rsregion.regionCode))
+        }else if (Constant.MyClassConstants.regionAreaDictionary.value(forKey:"\(rsregion.regionCode)") == nil){
             Constant.MyClassConstants.regionAreaDictionary.setValue(rsregion.areas, forKey: String(rsregion.regionCode))
         }else{
             Constant.MyClassConstants.regionAreaDictionary.removeObject(forKey: String(rsregion.regionCode))
         }
-        
-        //self.allAvailableDestinatontableview.reloadSections(IndexSet(integer: sender.tag), with:.automatic)
         self.allAvailableDestinatontableview.reloadData()
         
     }
