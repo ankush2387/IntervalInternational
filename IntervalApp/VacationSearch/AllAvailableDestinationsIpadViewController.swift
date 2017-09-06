@@ -62,29 +62,22 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
     //Function to add and remove areas and destinations
     
     func addRemoveAreasInRegion(indexPathForSelectedRegion:IndexPath){
+        
         let region = Constant.MyClassConstants.regionArray[indexPathForSelectedRegion.section]
         if(selectedAreaDictionary.value(forKey: region.regionName!) != nil){
             let selectedAreasArray = selectedAreaDictionary.value(forKey: region.regionName!) as! [String]
             let areaAtIndex = region.areas[indexPathForSelectedRegion.row]
             var newSelectedArray:[String] = selectedAreasArray
-            for (index,areaName) in selectedAreasArray.enumerated(){
-                if(selectedAreasArray.contains(areaAtIndex.areaName!)){
-                    newSelectedArray.remove(at: index)
-                    break
-                }else{
-                    newSelectedArray.append(areaAtIndex.areaName!)
-                }
+            if(selectedAreasArray.contains(areaAtIndex.areaName!)){
+                let index1 = selectedAreasArray.index(of: areaAtIndex.areaName!)
+                newSelectedArray.remove(at: index1!)
+                //break
+            }else{
+                newSelectedArray.append(areaAtIndex.areaName!)
+                //break
             }
-            /*for (index,areaName) in selectedAreasArray.enumerated(){
-             if(areaName == areaAtIndex.areaName){
-             newSelectedArray.remove(at: index)
-             }else{
-             newSelectedArray.append(areaName)
-             }
-             }*/
             if(newSelectedArray.count != 0){
                 selectedAreaDictionary.setValue(newSelectedArray, forKey: region.regionName!)
-                //regionCounterDict = [1,region.regionName]
             }else{
                 selectedAreaDictionary.removeObject(forKey: region.regionName!)
             }
@@ -267,7 +260,12 @@ extension AllAvailableDestinationsIpadViewController:UITableViewDelegate {
             self.addRemoveAreasInRegion(indexPathForSelectedRegion:indexPath)
         }else{
             if(sectionCounter == 6){
-                SimpleAlert.alert(self, title: "Alert!", message: "Maximum limit reached")
+                
+                DispatchQueue.main.async(execute: {
+                    SimpleAlert.alert(self, title: "Alert!", message: "Maximum limit reached")
+                })
+                
+                
             }else{
                 selectedSectionArray.add(indexPath.section)
                 sectionCounter = sectionCounter + 1

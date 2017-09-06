@@ -5608,7 +5608,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="selectedResortsTableView" destination="RKq-hg-Kb2" id="Dhg-c5-Nhl"/>
+                        <outlet property="selectedResortsTableView" destination="RKq-hg-Kb2" id="Gy4-RM-MDU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PTO-Tc-sLM" userLabel="First Responder" sceneMemberID="firstResponder"/>

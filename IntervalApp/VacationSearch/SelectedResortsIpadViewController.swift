@@ -12,8 +12,10 @@ import IntervalUIKit
 
 class SelectedResortsIpadViewController: UIViewController {
     
+    // clas  outlets
+    @IBOutlet weak var selectedResortsTableView: UITableView!
     
-    
+    // class varibles
     var areaDictionary = NSMutableDictionary()
     
 
@@ -46,6 +48,23 @@ class SelectedResortsIpadViewController: UIViewController {
 }
 
 
+/*
+ {
+ "Australia & New Zealand" =     (
+ "Australia, New South Wales, Central",
+ "Australia, New South Wales, North Coast"
+ );
+ "Canada - Eastern" =     (
+ "Nova Scotia",
+ "Ontario, Calabogie"
+ );
+ "Caribbean & Atlantic Islands" =     (
+ Antigua,
+ Anguilla
+ );
+ }
+ */
+
 
 extension SelectedResortsIpadViewController:UITableViewDataSource {
     
@@ -76,6 +95,16 @@ extension SelectedResortsIpadViewController:UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.selectedResortsCell) as! SelectedResortsCell
+        
+        let sectionArray : NSMutableArray
+        sectionArray = areaDictionary.allKeys as! NSMutableArray
+        
+        if let areas = areaDictionary.value(forKey: sectionArray[indexPath.section] as! String){
+            
+            let areasInRegionArray = areas as? NSArray
+            
+            cell.lblResortsName.text = areasInRegionArray?[indexPath.row] as? String
+        }
         
         return cell
     }
