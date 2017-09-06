@@ -7,12 +7,15 @@
 //
 
 import UIKit
+import DarwinSDK
+import IntervalUIKit
 
 class SelectedResortsIpadViewController: UIViewController {
     
     
     
     var areaDictionary = NSMutableDictionary()
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,11 +50,27 @@ class SelectedResortsIpadViewController: UIViewController {
 extension SelectedResortsIpadViewController:UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        
+        return areaDictionary.allKeys.count
+        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+       
+        let sectionArray : NSMutableArray
+        sectionArray = areaDictionary.allKeys as! NSMutableArray
+        
+        if let areas = areaDictionary.value(forKey: sectionArray[section] as! String){
+            
+            let areasInRegionArray = areas
+            return (areasInRegionArray as AnyObject).count
+            
+        }else{
+            
+            return 0
+        }
+        
+        
     }
     
     
@@ -95,7 +114,9 @@ extension SelectedResortsIpadViewController:UITableViewDelegate {
         
         let headerNameLabel = UILabel(frame: CGRect(x: 20, y: 5, width: view.frame.size.width-20, height: 30))
         
-        headerNameLabel.text = "USA"
+        let headerArray : NSMutableArray
+        headerArray = areaDictionary.allKeys as! NSMutableArray
+        headerNameLabel.text = headerArray[section] as? String
         headerNameLabel.textColor = UIColor.white
         
         view.addSubview(headerNameLabel)
