@@ -141,6 +141,15 @@ extension SelectedResortsIpadViewController:UITableViewDelegate {
         
         view.backgroundColor = UIColor.init(colorLiteralRed: 102/255.0, green: 102/255.0, blue: 102/255.0, alpha: 1.0)
         
+        // set shadow color
+        
+        view.layer.shadowColor = UIColor.blue.cgColor
+        view.layer.shadowOpacity = 1
+        view.layer.masksToBounds = false
+        view.layer.shadowOffset = CGSize(width: 0.0, height: 0.0)
+        view.layer.shadowRadius = 2
+       view.layer.shadowPath = UIBezierPath(rect: view.bounds).cgPath
+        
         let headerNameLabel = UILabel(frame: CGRect(x: 20, y: 5, width: view.frame.size.width-20, height: 30))
         
         let headerArray : NSMutableArray

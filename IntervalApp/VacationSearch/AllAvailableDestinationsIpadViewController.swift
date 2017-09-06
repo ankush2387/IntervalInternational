@@ -12,7 +12,6 @@ import IntervalUIKit
 
 class AllAvailableDestinationsIpadViewController: UIViewController {
     
-    
     // class outlet
     @IBOutlet weak var allAvailableDestinatontableview: UITableView!
     
@@ -43,19 +42,16 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
         
         // set corneer radius of search button
         self.searchButton.layer.cornerRadius = 5
-        // set navigation right bar buttons
         
+        //set title
         self.title = "Available Destinations"
         
+        // set navigation right bar buttons
         let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.MoreNav), style: .plain, target: self, action:#selector(AllAvailableDestinationsIpadViewController.menuButtonClicked))
         menuButton.tintColor = UIColor.white
+        
         self.navigationItem.rightBarButtonItem = menuButton
 
-    }
-    
-    
-    @IBAction func searchButtonClicked(_ sender: UIButton) {
-        print("search button clicked")
     }
     
     
@@ -90,39 +86,7 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
         allAvailableDestinatontableview.reloadData()
         
     }
-    
-    func menuButtonClicked()  {
-        print("menu button clicked");
-        
-        
-        let optionMenu = UIAlertController(title: nil, message: "All Destinations Options", preferredStyle: .actionSheet)
-        
-        let viewSelectedResorts = UIAlertAction(title: "View My Selected Resorts", style: .default, handler:
-        {
-            (alert: UIAlertAction!) -> Void in
-            
-            self.performSegue(withIdentifier: Constant.segueIdentifiers.showSelectedResortsIpad, sender: self)
-        })
-        
-     
-        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler:
-        {
-            (alert: UIAlertAction!) -> Void in
-        })
-        
-        optionMenu.addAction(viewSelectedResorts)
-        optionMenu.addAction(cancelAction)
-        
-        if(Constant.RunningDevice.deviceIdiom == .pad){
-            optionMenu.popoverPresentationController?.sourceView = self.view
-            optionMenu.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.size.width,y: 0, width: 100, height: 60)
-            optionMenu.popoverPresentationController!.permittedArrowDirections = .up;
-        }
-        
-        //Present the AlertController
-        self.present(optionMenu, animated: true, completion: nil)
 
-    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -130,15 +94,15 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
     }
     
 
-    /*
+    
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        
+        let selectedResort = segue.destination as! SelectedResortsIpadViewController
+        selectedResort.areaDictionary = self.selectedAreaDictionary
+        print(selectedResort.areaDictionary)
     }
-    */
 
     // MARK: - Buttons  Clicked
     
@@ -174,16 +138,47 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
         
     }
     
+    func menuButtonClicked()  {
+        print("menu button clicked");
+        
+        
+        let optionMenu = UIAlertController(title: nil, message: "All Destinations Options", preferredStyle: .actionSheet)
+        
+        let viewSelectedResorts = UIAlertAction(title: "View My Selected Resorts", style: .default, handler:
+        {
+            (alert: UIAlertAction!) -> Void in
+            
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.showSelectedResortsIpad, sender: self)
+        })
+        
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler:
+        {
+            (alert: UIAlertAction!) -> Void in
+        })
+        
+        optionMenu.addAction(viewSelectedResorts)
+        optionMenu.addAction(cancelAction)
+        
+        if(Constant.RunningDevice.deviceIdiom == .pad){
+            optionMenu.popoverPresentationController?.sourceView = self.view
+            optionMenu.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.size.width,y: 0, width: 100, height: 60)
+            optionMenu.popoverPresentationController!.permittedArrowDirections = .up;
+        }
+        
+        //Present the AlertController
+        self.present(optionMenu, animated: true, completion: nil)
+        
+    }
+    
     @IBAction func checkBoxClicked(_ sender: IUIKCheckbox) {
         
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        let selectedResort = segue.destination as! SelectedResortsIpadViewController
-        selectedResort.areaDictionary = self.selectedAreaDictionary
-        print(selectedResort.areaDictionary)
+    @IBAction func searchButtonClicked(_ sender: UIButton) {
+        print("search button clicked")
     }
+    
 }
 
 
@@ -275,8 +270,11 @@ extension AllAvailableDestinationsIpadViewController:UITableViewDelegate {
         }else{
             if(sectionCounter == 6){
                 
-                SimpleAlert.alert(self, title: "Alert!", message: "Maximum limit reached")
-                //performAllAvailableSearch()
+                // show alert when maximum limit is reached
+                DispatchQueue.main.async(execute: {
+                    SimpleAlert.alert(self, title: "Alert!", message: "Maximum limit reached")
+                })
+                
             }else{
                 
                 selectedSectionArray.add(indexPath.section)
