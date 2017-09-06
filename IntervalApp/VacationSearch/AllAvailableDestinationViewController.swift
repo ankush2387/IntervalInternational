@@ -22,7 +22,7 @@ class AllAvailableDestinationViewController: UIViewController {
     
     
     //Class Varaiables
-    var areaArray = [RegionArea]()
+    var areaArray = [Area]()
     var regionAreaDictionary = NSMutableDictionary()
     var selectedAreaDictionary = NSMutableDictionary()
     var moreButton:UIBarButtonItem?
@@ -31,6 +31,7 @@ class AllAvailableDestinationViewController: UIViewController {
     var sectionCounter = 0
     var selectedSectionArray = NSMutableArray()
     var regionCounterDict = [Int:String]()
+    let areaCode = [String]()
     
     override func viewWillAppear(_ animated: Bool) {
         //***** Creating and adding right bar button for more option button *****//
@@ -86,10 +87,8 @@ class AllAvailableDestinationViewController: UIViewController {
             if(selectedAreasArray.contains(areaAtIndex.areaName!)){
                 let index1 = selectedAreasArray.index(of: areaAtIndex.areaName!)
                 newSelectedArray.remove(at: index1!)
-                //break
             }else{
                 newSelectedArray.append(areaAtIndex.areaName!)
-                //break
             }
             if(newSelectedArray.count != 0){
                 selectedAreaDictionary.setValue(newSelectedArray, forKey: region.regionName!)
@@ -109,10 +108,10 @@ class AllAvailableDestinationViewController: UIViewController {
     func expandClicked(_ sender:UIButton){
         
         let rsregion = Constant.MyClassConstants.regionArray [sender.tag]
-        if Constant.MyClassConstants.regionAreaDictionary[rsregion.regionCode!] == nil {
-            Constant.MyClassConstants.regionAreaDictionary.setValue(rsregion.areas, forKey: rsregion.regionCode!)
+        if Constant.MyClassConstants.regionAreaDictionary[rsregion.regionCode] == nil {
+            Constant.MyClassConstants.regionAreaDictionary.setValue(rsregion.areas, forKey: String(rsregion.regionCode))
         }else{
-            Constant.MyClassConstants.regionAreaDictionary.removeObject(forKey: rsregion.regionCode!)
+            Constant.MyClassConstants.regionAreaDictionary.removeObject(forKey: String(rsregion.regionCode))
         }
         
         //self.allAvailableDestinatontableview.reloadSections(IndexSet(integer: sender.tag), with:.automatic)
@@ -159,6 +158,57 @@ class AllAvailableDestinationViewController: UIViewController {
         selectedResort.areaDictionary = self.selectedAreaDictionary
         print(selectedResort.areaDictionary)
     }
+    
+    //Function to perfor search
+    
+    func performAllAvailableSearch(){
+        
+        let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
+        
+        rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
+        
+        let vacationSearch = VacationSearch(UserContext.sharedInstance.appSettings, rentalSearchCriteria)
+        let area = Area()
+        area.areaCode = 1
+        area.areaName = "Mexico, Cancun"//selectedAreaDictionary.value(forKey: "Mexico, Cancun") as! String
+        vacationSearch.rentalSearch?.searchContext.request.areas = [area]
+        Constant.MyClassConstants.initialVacationSearch = vacationSearch
+        
+        RentalClient.searchDates(UserContext.sharedInstance.accessToken, request:vacationSearch.rentalSearch?.searchContext.request,
+                                 onSuccess: { (response) in
+                                    vacationSearch.rentalSearch?.searchContext.response = response
+                                    
+                                    // Get activeInterval
+                                    let activeInterval = vacationSearch.bookingWindow.getActiveInterval()
+                                    
+                                    // Update active interval
+                                    Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                                    
+                                    // Always show a fresh copy of the Scrolling Calendar
+                                    
+                                    Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                    
+                                    // Check not available checkIn dates for the active interval
+                                    if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                                        Helper.showNotAvailabilityResults()
+                                    } else {
+                                        
+                                        Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
+                                        let initialSearchCheckInDate = Helper.convertStringToDate(dateString:vacationSearch.searchCheckInDate!,format:Constant.MyClassConstants.dateFormat)
+                                        Constant.MyClassConstants.checkInDates = response.checkInDates
+                                        //sender.isEnabled = true
+                                        //Helper.helperDelegate = self
+                                        Helper.hideProgressBar(senderView: self)
+                                        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                    }
+        },
+                                 onError:{ (error) in
+                                    Helper.hideProgressBar(senderView: self)
+                                    //sender.isEnabled = true
+                                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+        }
+        )
+    }
 
 }
 
@@ -173,8 +223,8 @@ extension AllAvailableDestinationViewController:UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if let areas = Constant.MyClassConstants.regionAreaDictionary.value(forKey: Constant.MyClassConstants.regionArray[section].regionCode!){
-            let areasInRegionArray = areas as! [RegionArea]
+        if let areas = Constant.MyClassConstants.regionAreaDictionary.value(forKey: String(Constant.MyClassConstants.regionArray[section].regionCode)){
+            let areasInRegionArray = areas as! [Region]
             return areasInRegionArray.count
         }else{
             return 0
@@ -186,7 +236,7 @@ extension AllAvailableDestinationViewController:UITableViewDataSource{
         
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.areaCell, for: indexPath) as! AvailableDestinationPlaceTableViewCell
         cell.selectionStyle = UITableViewCellSelectionStyle.none
-        let areasInRegionArray = Constant.MyClassConstants.regionAreaDictionary.value(forKey: Constant.MyClassConstants.regionArray[indexPath.section].regionCode!) as! [RegionArea]
+        let areasInRegionArray = Constant.MyClassConstants.regionAreaDictionary.value(forKey: String(Constant.MyClassConstants.regionArray[indexPath.section].regionCode)) as! [Area]
         self.areaArray.removeAll()
         if(selectedAreaDictionary.count > 0){
             if let selectedAreas = selectedAreaDictionary.value(forKey: Constant.MyClassConstants.regionArray[indexPath.section].regionName!){
@@ -230,6 +280,7 @@ extension AllAvailableDestinationViewController:UITableViewDelegate{
         }else{
             if(sectionCounter == 6){
                 SimpleAlert.alert(self, title: "Alert!", message: "Maximum limit reached")
+                performAllAvailableSearch()
             }else{
             selectedSectionArray.add(indexPath.section)
             sectionCounter = sectionCounter + 1
