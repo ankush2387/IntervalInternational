@@ -197,7 +197,7 @@ class AllAvailableDestinationViewController: UIViewController {
                                         let initialSearchCheckInDate = Helper.convertStringToDate(dateString:vacationSearch.searchCheckInDate!,format:Constant.MyClassConstants.dateFormat)
                                         Constant.MyClassConstants.checkInDates = response.checkInDates
                                         //sender.isEnabled = true
-                                        //Helper.helperDelegate = self
+                                        Helper.helperDelegate = self
                                         Helper.hideProgressBar(senderView: self)
                                         Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                     }
@@ -317,5 +317,15 @@ extension AllAvailableDestinationViewController:UITableViewDelegate{
         return 60
     }
     
+}
+
+extension AllAvailableDestinationViewController:HelperDelegate{
     
+    func resortSearchComplete(){
+        Constant.MyClassConstants.vacationSearchResultHeaderLabel = "Mexico, Cancun"
+    }
+    
+    func resetCalendar(){
+        
+    }
 }

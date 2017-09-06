@@ -1996,6 +1996,18 @@ public class Helper{
         helperDelegate?.resetCalendar()
     }
     
+    static func createSettings() -> Settings {
+        let vacationSearchSettings = VacationSearchSettings()
+        vacationSearchSettings.bookingIntervalDateStrategy = BookingIntervalDateStrategy.First.rawValue
+        vacationSearchSettings.collapseBookingIntervalsOnChange = true
+        vacationSearchSettings.vacationSearchTypes = [String] (arrayLiteral: VacationSearchType.Combined.rawValue, VacationSearchType.Exchange.rawValue, VacationSearchType.Rental.rawValue)
+        
+        let settings = Settings()
+        settings.vacationSearch = vacationSearchSettings
+        
+        return settings
+    }
+    
     static func showNearestCheckInDateSelectedMessage() {
         Constant.MyClassConstants.isShowAvailability = true
         DarwinSDK.logger.info("NEAREST CHECK-IN DATE SELECTED - We found availability close to your desired Check-in Date")

@@ -182,16 +182,6 @@ class VacationSearchViewController: UIViewController {
         return searchCriteria
     }
     
-    func createAppSetting()-> Settings{
-        
-        let appSettings = Settings()
-        //appSettings.searchByBothEnable = false
-        //appSettings.collapseBookingIntervalEnable = true
-        //appSettings.checkInSelectorStrategy = CheckInSelectorStrategy.First.rawValue
-        return appSettings
-    }
-    
-    
     // function to get vacation search details from nsuser defaults local storage
     func getVacationSearchDetails() {
         
@@ -1405,16 +1395,28 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         
         if(Constant.MyClassConstants.whereTogoContentArray.contains(Constant.MyClassConstants.allDestinations) && self.segmentTitle == Constant.segmentControlItems.getaways){
             
-            let (toDateTop,fromDateTop) = getSearchDatesTop()
-            let searchDateRequest = RentalSearchRegionsRequest()
-            searchDateRequest.checkInToDate = toDateTop
-            searchDateRequest.checkInFromDate = fromDateTop
+            let (_,fromDateTop) = getSearchDatesTop()
+            
+            let settings = Helper.createSettings()
+            let searchType = VacationSearchType.Rental
+            let checkInDate = fromDateTop
+            
+            let bookingWindow = BookingWindow()
+            bookingWindow.calculateIntervals(checkInDate: checkInDate)
+            
+            let activeInterval = bookingWindow.getActiveInterval()
+            
+            let request = RentalSearchRegionsRequest()
+            request.checkInFromDate = activeInterval?.startDate
+            request.checkInToDate = activeInterval?.endDate
             
             Helper.showProgressBar(senderView: self)
             sender.isEnabled = false
             Constant.MyClassConstants.regionArray.removeAll()
             Constant.MyClassConstants.regionAreaDictionary.removeAllObjects()
-            RentalClient.searchRegions(UserContext.sharedInstance.accessToken, request: searchDateRequest, onSuccess: {(response)in
+            
+            if ((settings.vacationSearch?.vacationSearchTypes.contains(searchType.rawValue))! && searchType.isRental()) {
+            RentalClient.searchRegions(UserContext.sharedInstance.accessToken, request: request, onSuccess: {(response)in
                 print(response)
                 
                 for rsregion in response {
@@ -1434,6 +1436,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 sender.isEnabled = true
                 print(error)
             })
+        }
         }else{
         if (self.segmentTitle == Constant.segmentControlItems.getaways && (Helper.getAllDestinationFromLocalStorage().count>0 || Helper.getAllResortsFromLocalStorage().count>0) || Constant.MyClassConstants.whereTogoContentArray.count>0) {
             
