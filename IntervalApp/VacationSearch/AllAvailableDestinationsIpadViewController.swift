@@ -24,7 +24,7 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
     
     
     //Class Varaiables
-    var areaArray = [Area]()
+    var areaArray = [RegionArea]()
     var regionAreaDictionary = NSMutableDictionary()
     var selectedAreaDictionary = NSMutableDictionary()
     var moreButton:UIBarButtonItem?
@@ -191,6 +191,13 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
         
         
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        let selectedResort = segue.destination as! SelectedResortsIpadViewController
+        selectedResort.areaDictionary = self.selectedAreaDictionary
+        print(selectedResort.areaDictionary)
+    }
 }
 
 
@@ -215,23 +222,28 @@ extension AllAvailableDestinationsIpadViewController:UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.areaCell, for: indexPath) as! AvailableDestinationPlaceTableViewCell
-        let areasArray = Constant.MyClassConstants.regionAreaDictionary.value(forKey: String(Constant.MyClassConstants.regionArray[indexPath.section].regionCode)) as! [Area]
+        cell.selectionStyle = UITableViewCellSelectionStyle.none
+        let areasInRegionArray = Constant.MyClassConstants.regionAreaDictionary.value(forKey: Constant.MyClassConstants.regionArray[indexPath.section].regionCode!) as! [RegionArea]
         self.areaArray.removeAll()
         if(selectedAreaDictionary.count > 0){
             if let selectedAreas = selectedAreaDictionary.value(forKey: Constant.MyClassConstants.regionArray[indexPath.section].regionName!){
                 let area = selectedAreas as! [String]
                 print(area.count,area,area.count)
                 
-                let areaName = areasArray[indexPath.row].areaName
+                let areaName = areasInRegionArray[indexPath.row].areaName
                 if(area.contains(areaName!)){
                     cell.placeSelectionCheckBox.checked = true
                 }else{
                     cell.placeSelectionCheckBox.checked = false
                 }
+            }else{
+                cell.placeSelectionCheckBox.checked = false
             }
+        }else{
+            cell.placeSelectionCheckBox.checked = false
         }
         
-        for areas in areasArray{
+        for areas in areasInRegionArray{
             self.areaArray.append(areas)
         }
         
@@ -248,17 +260,20 @@ extension AllAvailableDestinationsIpadViewController:UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)  {
         
         let selectedCell = tableView.cellForRow(at: indexPath) as! AvailableDestinationPlaceTableViewCell
+        // Only six items can be selected
         if(selectedCell.placeSelectionCheckBox.checked){
             sectionCounter = sectionCounter - 1
             selectedSectionArray.remove(indexPath.section)
-            //selectedCell.placeSelectionCheckBox.checked = false
+            self.addRemoveAreasInRegion(indexPathForSelectedRegion:indexPath)
         }else{
-            selectedSectionArray.add(indexPath.section)
-            sectionCounter = sectionCounter + 1
-            //selectedCell.placeSelectionCheckBox.checked = true
+            if(sectionCounter == 6){
+                SimpleAlert.alert(self, title: "Alert!", message: "Maximum limit reached")
+            }else{
+                selectedSectionArray.add(indexPath.section)
+                sectionCounter = sectionCounter + 1
+                self.addRemoveAreasInRegion(indexPathForSelectedRegion:indexPath)
+            }
         }
-        
-        self.addRemoveAreasInRegion(indexPathForSelectedRegion:indexPath)
     }
     
     
@@ -281,8 +296,6 @@ extension AllAvailableDestinationsIpadViewController:UITableViewDelegate {
                     let totalAreas = selectedAreaDictionary.value(forKey: selectedRegion as! String) as! [String]
                     cell.selectdDestinationCountLabel?.text = String(totalAreas.count)
                     cell.selectdDestinationCountLabel?.isHidden = false
-                }else{
-                    //cell.selectdDestinationCountLabel?.isHidden = true
                 }
             }
             
