@@ -31,7 +31,7 @@ class AvailableDestinationPlaceTableViewCell: UITableViewCell {
         
     }
     
-    func setAllAvailableAreaCell(index:Int, area:RegionArea){
+    func setAllAvailableAreaCell(index:Int, area:Area){
         if(Constant.RunningDevice.deviceIdiom == .pad) {
             self.lblAreaName.text = area.areaName
             

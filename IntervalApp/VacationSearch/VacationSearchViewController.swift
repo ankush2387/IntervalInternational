@@ -1418,11 +1418,15 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 print(response)
                 
                 for rsregion in response {
-                    
+                    let region = Region()
+                    region.regionName = rsregion.regionName
+                    region.regionCode = rsregion.regionCode
+                    region.areas = rsregion.areas
                     Constant.MyClassConstants.regionArray.append(rsregion)
                     Helper.hideProgressBar(senderView: self)
                     
                 }
+                Helper.hideProgressBar(senderView: self)
                 sender.isEnabled = true
                 self.performSegue(withIdentifier:"allAvailableDestination", sender: self)
                 
