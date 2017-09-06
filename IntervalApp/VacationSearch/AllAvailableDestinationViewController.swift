@@ -15,6 +15,12 @@ class AllAvailableDestinationViewController: UIViewController {
     //IBOutlets
     @IBOutlet weak var allAvailableDestinatontableview: UITableView!
     
+    @IBOutlet weak var searchButton: UIButton!
+    @IBOutlet weak var searchButtonHeightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var viewButtonHeightConstraint: NSLayoutConstraint!
+    
+    
     //Class Varaiables
     var areaArray = [RegionArea]()
     var regionAreaDictionary = NSMutableDictionary()
@@ -36,10 +42,15 @@ class AllAvailableDestinationViewController: UIViewController {
     func moreNavButtonPressed(_ sender:UIBarButtonItem) {
     }
     
+    @IBAction func searchButtonClicked(_ sender: Any) {
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.viewButtonHeightConstraint.constant = 0
+        self.searchButtonHeightConstraint.constant = 0
+        self.searchButton.isHidden = true
         
         self.title = "Available Destinations"
         
@@ -55,9 +66,13 @@ class AllAvailableDestinationViewController: UIViewController {
     
 
     //Function for checkBox click
-    
-    func checkBoxClicked(){
+    @IBAction func checkBoxClicked(_ sender: Any) {
         
+        UIView.animate(withDuration: 15, delay: 20, options: UIViewAnimationOptions(rawValue: 0), animations: {
+            self.viewButtonHeightConstraint.constant = 100
+            self.searchButtonHeightConstraint.constant = 50
+            self.searchButton.isHidden = false
+        }, completion: nil)
     }
     
     //Function to add and remove areas and destinations
