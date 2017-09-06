@@ -24,7 +24,7 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
     
     
     //Class Varaiables
-    var areaArray = [RegionArea]()
+    var areaArray = [Area]()
     var regionAreaDictionary = NSMutableDictionary()
     var selectedAreaDictionary = NSMutableDictionary()
     var moreButton:UIBarButtonItem?
@@ -223,7 +223,7 @@ extension AllAvailableDestinationsIpadViewController:UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.areaCell, for: indexPath) as! AvailableDestinationPlaceTableViewCell
         cell.selectionStyle = UITableViewCellSelectionStyle.none
-        let areasInRegionArray = Constant.MyClassConstants.regionAreaDictionary.value(forKey: Constant.MyClassConstants.regionArray[indexPath.section].regionCode!) as! [RegionArea]
+        let areasInRegionArray = Constant.MyClassConstants.regionAreaDictionary.value(forKey: String(Constant.MyClassConstants.regionArray[indexPath.section].regionCode)) as! [Area]
         self.areaArray.removeAll()
         if(selectedAreaDictionary.count > 0){
             if let selectedAreas = selectedAreaDictionary.value(forKey: Constant.MyClassConstants.regionArray[indexPath.section].regionName!){
