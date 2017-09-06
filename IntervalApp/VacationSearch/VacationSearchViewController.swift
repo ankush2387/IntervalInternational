@@ -226,7 +226,7 @@ class VacationSearchViewController: UIViewController {
         //self.searchVacationTableView.beginUpdates()
         self.segmentTitle = searchVacationSegementControl.titleForSegment(at: sender.selectedSegmentIndex)!
         Constant.MyClassConstants.vacationSearchSelectedSegmentIndex = sender.selectedSegmentIndex
-        
+        Constant.segmentControlItems.selectedSearchSegment = segmentTitle
         //self.searchVacationTableView.endUpdates()
     
 
