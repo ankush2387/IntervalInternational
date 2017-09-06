@@ -176,13 +176,6 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
     
     @IBAction func checkBoxClicked(_ sender: IUIKCheckbox) {
         
-        UIView.animate(withDuration: 15, delay: 20, options: UIViewAnimationOptions(rawValue: 0), animations: {
-            self.viewButtonHeightConstraint.constant = 100
-            self.searchButtonHeightConstraint.constant = 50
-            self.searchButton.isHidden = false
-        }, completion: nil)
-        
-        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -206,6 +199,7 @@ extension AllAvailableDestinationsIpadViewController:UITableViewDataSource {
         if let areas = Constant.MyClassConstants.regionAreaDictionary.value(forKey: String(Constant.MyClassConstants.regionArray[section].regionCode)){
             let areasInRegionArray = areas as! [Region]
             return areasInRegionArray.count
+            
         }else{
             return 0
         }
@@ -216,9 +210,11 @@ extension AllAvailableDestinationsIpadViewController:UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.areaCell, for: indexPath) as! AvailableDestinationPlaceTableViewCell
         cell.selectionStyle = UITableViewCellSelectionStyle.none
+        
         let areasInRegionArray = Constant.MyClassConstants.regionAreaDictionary.value(forKey: String(Constant.MyClassConstants.regionArray[indexPath.section].regionCode)) as! [Area]
         self.areaArray.removeAll()
         if(selectedAreaDictionary.count > 0){
+            
             if let selectedAreas = selectedAreaDictionary.value(forKey: Constant.MyClassConstants.regionArray[indexPath.section].regionName!){
                 let area = selectedAreas as! [String]
                 print(area.count,area,area.count)
@@ -253,20 +249,36 @@ extension AllAvailableDestinationsIpadViewController:UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)  {
         
         let selectedCell = tableView.cellForRow(at: indexPath) as! AvailableDestinationPlaceTableViewCell
+        
         // Only six items can be selected
+        self.viewButtonHeightConstraint.constant = 100
+        self.searchButtonHeightConstraint.constant = 50
+        self.searchButton.isHidden = false
+        UIView.animate(withDuration: 0.5) {
+            self.view.layoutIfNeeded()
+        }
+        
         if(selectedCell.placeSelectionCheckBox.checked){
             sectionCounter = sectionCounter - 1
             selectedSectionArray.remove(indexPath.section)
             self.addRemoveAreasInRegion(indexPathForSelectedRegion:indexPath)
+            if(sectionCounter == 0){
+                
+                self.viewButtonHeightConstraint.constant = 0
+                self.searchButtonHeightConstraint.constant = 0
+                self.searchButton.isHidden = true
+                UIView.animate(withDuration: 0.5) {
+                    self.view.layoutIfNeeded()
+                }
+            }
+            
         }else{
             if(sectionCounter == 6){
                 
-                DispatchQueue.main.async(execute: {
-                    SimpleAlert.alert(self, title: "Alert!", message: "Maximum limit reached")
-                })
-                
-                
+                SimpleAlert.alert(self, title: "Alert!", message: "Maximum limit reached")
+                //performAllAvailableSearch()
             }else{
+                
                 selectedSectionArray.add(indexPath.section)
                 sectionCounter = sectionCounter + 1
                 self.addRemoveAreasInRegion(indexPathForSelectedRegion:indexPath)
