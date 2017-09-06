@@ -52,7 +52,7 @@ class AllAvailableDestinationViewController: UIViewController {
         self.viewButtonHeightConstraint.constant = 0
         self.searchButtonHeightConstraint.constant = 0
         self.searchButton.isHidden = true
-        
+        searchButton.layer.cornerRadius = 5
         self.title = "Available Destinations"
         
         let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.MoreNav), style: .plain, target: self, action:#selector(AllAvailableDestinationsIpadViewController.menuButtonClicked))
@@ -273,10 +273,25 @@ extension AllAvailableDestinationViewController:UITableViewDelegate{
         
         let selectedCell = tableView.cellForRow(at: indexPath) as! AvailableDestinationPlaceTableViewCell
         // Only six items can be selected
+        
+        UIView.animate(withDuration: 15, delay: 20, options: UIViewAnimationOptions(rawValue: 0), animations: {
+            self.viewButtonHeightConstraint.constant = 100
+            self.searchButtonHeightConstraint.constant = 50
+            self.searchButton.isHidden = false
+        }, completion: nil)
+        
         if(selectedCell.placeSelectionCheckBox.checked){
             sectionCounter = sectionCounter - 1
             selectedSectionArray.remove(indexPath.section)
             self.addRemoveAreasInRegion(indexPathForSelectedRegion:indexPath)
+            if(sectionCounter == 0){
+                
+                UIView.animate(withDuration: 15, delay: 20, options: UIViewAnimationOptions(rawValue: 0), animations: {
+                    self.viewButtonHeightConstraint.constant = 0
+                    self.searchButtonHeightConstraint.constant = 0
+                    self.searchButton.isHidden = false
+                }, completion: nil)
+            }
         }else{
             if(sectionCounter == 6){
                 SimpleAlert.alert(self, title: "Alert!", message: "Maximum limit reached")
