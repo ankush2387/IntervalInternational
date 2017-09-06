@@ -228,6 +228,10 @@ extension AllAvailableDestinationViewController:UITableViewDataSource{
         
     }
     
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat{
+        return 60
+    }
+    
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0
     }
