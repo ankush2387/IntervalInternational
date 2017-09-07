@@ -25,6 +25,7 @@ class AllAvailableDestinationViewController: UIViewController {
     var areaArray = [Area]()
     var regionAreaDictionary = NSMutableDictionary()
     var selectedAreaDictionary = NSMutableDictionary()
+    //var selectedAreaCodeDictionary = NSMutableDictionary()
     var moreButton:UIBarButtonItem?
     var selectedCheckBox = IUIKCheckbox()
     var mainCounter = 0
@@ -45,49 +46,55 @@ class AllAvailableDestinationViewController: UIViewController {
     
     @IBAction func searchButtonClicked(_ sender: Any) {
         
+        print(Constant.MyClassConstants.selectedAreaCodeDictionary)
+        
         let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
         
         rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
         
         let vacationSearch = VacationSearch(UserContext.sharedInstance.appSettings, rentalSearchCriteria)
         let area = Area()
-        area.areaCode = 1
-        area.areaName = "Mexico, Cancun"//selectedAreaDictionary.value(forKey: "Mexico, Cancun") as! String
+        area.areaCode = Int(Constant.MyClassConstants.selectedAreaCodeDictionary.allKeys[0] as! String)!
+        area.areaName = Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: Constant.MyClassConstants.selectedAreaCodeDictionary.allKeys[0] as! String) as? String//selectedAreaDictionary.value(forKey: "Mexico, Cancun") as! String
         vacationSearch.rentalSearch?.searchContext.request.areas = [area]
         Constant.MyClassConstants.initialVacationSearch = vacationSearch
         
         RentalClient.searchDates(UserContext.sharedInstance.accessToken, request:vacationSearch.rentalSearch?.searchContext.request,
-                                 onSuccess: { (response) in
-                                    vacationSearch.rentalSearch?.searchContext.response = response
-                                    
-                                    // Get activeInterval
-                                    let activeInterval = vacationSearch.bookingWindow.getActiveInterval()
-                                    
-                                    // Update active interval
-                                    Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
-                                    
-                                    // Always show a fresh copy of the Scrolling Calendar
-                                    
-                                    Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-                                    
-                                    // Check not available checkIn dates for the active interval
-                                    if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                                        Helper.showNotAvailabilityResults()
-                                    } else {
-                                        
-                                        Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                                        let initialSearchCheckInDate = Helper.convertStringToDate(dateString:vacationSearch.searchCheckInDate!,format:Constant.MyClassConstants.dateFormat)
-                                        Constant.MyClassConstants.checkInDates = response.checkInDates
-                                        //sender.isEnabled = true
-                                        Helper.helperDelegate = self
-                                        Helper.hideProgressBar(senderView: self)
-                                        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-                                    }
-        },
-                                 onError:{ (error) in
-                                    Helper.hideProgressBar(senderView: self)
-                                    //sender.isEnabled = true
-                                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                 onSuccess: { (response) in
+                    vacationSearch.rentalSearch?.searchContext.response = response
+                    
+                    // Get activeInterval
+                    let activeInterval = vacationSearch.bookingWindow.getActiveInterval()
+                    
+                    // Update active interval
+                    Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                    Constant.MyClassConstants.initialVacationSearch = vacationSearch
+                    
+                    // Always show a fresh copy of the Scrolling Calendar
+                    
+                    Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                    
+                    // Check not available checkIn dates for the active interval
+                    if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                        
+                        Helper.showNotAvailabilityResults()
+                        self.navigateToSearchResults()
+                        
+                    } else {
+                        
+                        Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
+                        let initialSearchCheckInDate = Helper.convertStringToDate(dateString:vacationSearch.searchCheckInDate!,format:Constant.MyClassConstants.dateFormat)
+                        Constant.MyClassConstants.checkInDates = response.checkInDates
+                        //sender.isEnabled = true
+                        Helper.helperDelegate = self
+                        Helper.hideProgressBar(senderView: self)
+                        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                    }
+            },
+                 onError:{ (error) in
+                    Helper.hideProgressBar(senderView: self)
+                    //sender.isEnabled = true
+                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
         }
         )
     }
@@ -142,10 +149,18 @@ class AllAvailableDestinationViewController: UIViewController {
                 selectedAreaDictionary.removeObject(forKey: region.regionName!)
             }
             
+            //Manage dictionary for performing search with area codes
+            if(Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: "\(areaAtIndex.areaCode)") != nil){
+                Constant.MyClassConstants.selectedAreaCodeDictionary.removeObject(forKey: "\(areaAtIndex.areaCode)")
+            }else{
+                Constant.MyClassConstants.selectedAreaCodeDictionary.setValue(areaAtIndex.areaName!, forKey: "\(areaAtIndex.areaCode)")
+            }
+            
         }else{
             var areasArray = [String]()
             areasArray.append(region.areas[indexPathForSelectedRegion.row].areaName!)
             selectedAreaDictionary.setValue(areasArray, forKey: region.regionName!)
+            Constant.MyClassConstants.selectedAreaCodeDictionary.setValue("\(String(describing: region.areas[indexPathForSelectedRegion.row].areaName!))", forKey: "\(region.areas[indexPathForSelectedRegion.row].areaCode)")
         }
         allAvailableDestinatontableview.reloadData()
        
@@ -204,6 +219,19 @@ class AllAvailableDestinationViewController: UIViewController {
         let selectedResort = segue.destination as! SelectedResortsIpadViewController
         selectedResort.areaDictionary = self.selectedAreaDictionary
         print(selectedResort.areaDictionary)
+    }
+    
+    //Function for navigating to search results
+    func navigateToSearchResults(){
+        Constant.MyClassConstants.vacationSearchResultHeaderLabel = (Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: Constant.MyClassConstants.selectedAreaCodeDictionary.allKeys[0] as! String) as? String)!
+        
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
+        
+        let transitionManager = TransitionManager()
+        self.navigationController?.transitioningDelegate = transitionManager
+        
+        self.navigationController!.pushViewController(viewController, animated: true)
     }
 
 }
@@ -334,16 +362,7 @@ extension AllAvailableDestinationViewController:UITableViewDelegate{
 extension AllAvailableDestinationViewController:HelperDelegate{
     
     func resortSearchComplete(){
-        Constant.MyClassConstants.vacationSearchResultHeaderLabel = "Mexico, Cancun"
-        
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
-        
-        let transitionManager = TransitionManager()
-        self.navigationController?.transitioningDelegate = transitionManager
-        
-        self.navigationController!.pushViewController(viewController, animated: true)
-
+       self.navigateToSearchResults()
     }
     
     func resetCalendar(){

@@ -1414,6 +1414,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             sender.isEnabled = false
             Constant.MyClassConstants.regionArray.removeAll()
             Constant.MyClassConstants.regionAreaDictionary.removeAllObjects()
+            Constant.MyClassConstants.selectedAreaCodeDictionary.removeAllObjects()
             
             if ((settings.vacationSearch?.vacationSearchTypes.contains(searchType.rawValue))! && searchType.isRental()) {
             RentalClient.searchRegions(UserContext.sharedInstance.accessToken, request: request, onSuccess: {(response)in
