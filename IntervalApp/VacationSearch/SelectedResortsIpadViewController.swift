@@ -151,13 +151,13 @@ extension SelectedResortsIpadViewController:UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
+        return 30
         
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        let view  = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
+        let view  = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 30))
         
         view.backgroundColor = UIColor.init(colorLiteralRed: 102/255.0, green: 102/255.0, blue: 102/255.0, alpha: 1.0)
         
@@ -168,14 +168,15 @@ extension SelectedResortsIpadViewController:UITableViewDelegate {
         view.layer.masksToBounds = false
         view.layer.shadowOffset = CGSize(width: 0.0, height: 0.0)
         view.layer.shadowRadius = 2
-       view.layer.shadowPath = UIBezierPath(rect: view.bounds).cgPath
+        view.layer.shadowPath = UIBezierPath(rect: view.bounds).cgPath
         
-        let headerNameLabel = UILabel(frame: CGRect(x: 20, y: 5, width: view.frame.size.width-20, height: 30))
+        let headerNameLabel = UILabel(frame: CGRect(x: 20, y: 0, width: view.frame.size.width-20, height: 30))
         
         let headerArray : NSMutableArray
         headerArray = areaDictionary.allKeys as! NSMutableArray
         headerNameLabel.text = headerArray[section] as? String
-        headerNameLabel.textColor = UIColor.white
+        headerNameLabel.textColor = UIColor.lightGray
+        headerNameLabel.font = UIFont(name:Constant.fontName.helveticaNeue, size:15)
         
         view.addSubview(headerNameLabel)
        
@@ -183,7 +184,7 @@ extension SelectedResortsIpadViewController:UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70
+        return 60
     }
     
 }
