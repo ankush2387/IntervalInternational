@@ -66,7 +66,7 @@ class AllAvailableDestinationViewController: UIViewController {
     }
     
     @IBAction func searchButtonClicked(_ sender: Any) {
-
+        
         let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
         
         rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate

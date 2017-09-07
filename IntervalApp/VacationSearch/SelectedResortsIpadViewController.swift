@@ -138,9 +138,29 @@ extension SelectedResortsIpadViewController:UITableViewDelegate {
                     
                     localArray.add(object)
                 }
+                
+                for value in Constant.MyClassConstants.selectedAreaCodeDictionary.allValues{
+                    if(value as! String == localArray[indexPath.row] as! String){
+                        let key = Constant.MyClassConstants.selectedAreaCodeDictionary.allKeys(for: value)
+                        print(key)
+                        Constant.MyClassConstants.selectedAreaCodeDictionary.removeObject(forKey: "\(key[0])")
+                        print(Constant.MyClassConstants.selectedAreaCodeDictionary)
+                        Constant.MyClassConstants.selectedAreaCodeArray.remove("\(key[0])")
+                        
+                    }
+                }
                 localArray.removeObject(at: indexPath.row)
                 selectedCounter = -1
-                areaDictionary.setValue(localArray, forKey: dicKey as! String)
+                
+                if(localArray.count > 0){
+                    areaDictionary.setValue(localArray, forKey: dicKey as! String)
+                }else{
+                    areaDictionary.removeObject(forKey: dicKey as! String)
+                    //Constant.MyClassConstant.
+                }
+                print(areaDictionary)
+                print(Constant.MyClassConstants.selectedAreaCodeDictionary)
+                print(Constant.MyClassConstants.selectedAreaCodeArray)
             
             }
             tableView.reloadData()
@@ -187,4 +207,10 @@ extension SelectedResortsIpadViewController:UITableViewDelegate {
         return 60
     }
     
+}
+
+extension Dictionary where Value: Equatable {
+    func someKey(forValue val: Value) -> Key? {
+        return first(where: { $1 == val })?.key
+    }
 }
