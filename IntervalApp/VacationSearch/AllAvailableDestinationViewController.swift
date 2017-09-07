@@ -64,15 +64,15 @@ class AllAvailableDestinationViewController: UIViewController {
     }
     
     @IBAction func searchButtonClicked(_ sender: Any) {
-        
+        print(Constant.MyClassConstants.selectedAreaCodeArray)
         let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
         
         rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
         
         let vacationSearch = VacationSearch(UserContext.sharedInstance.appSettings, rentalSearchCriteria)
         let area = Area()
-        area.areaCode = Int(Constant.MyClassConstants.selectedAreaCodeDictionary.allKeys[0] as! String)!
-        area.areaName = Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: Constant.MyClassConstants.selectedAreaCodeDictionary.allKeys[0] as! String) as? String
+        area.areaCode = Int(Constant.MyClassConstants.selectedAreaCodeArray[0] as! String)!
+        area.areaName = Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: Constant.MyClassConstants.selectedAreaCodeArray[0] as! String) as? String
         vacationSearch.rentalSearch?.searchContext.request.areas = [area]
         Constant.MyClassConstants.initialVacationSearch = vacationSearch
         
@@ -182,8 +182,10 @@ class AllAvailableDestinationViewController: UIViewController {
             //Manage dictionary for performing search with area codes
             if(Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: "\(areaAtIndex.areaCode)") != nil){
                 Constant.MyClassConstants.selectedAreaCodeDictionary.removeObject(forKey: "\(areaAtIndex.areaCode)")
+                Constant.MyClassConstants.selectedAreaCodeArray.remove("\(areaAtIndex.areaCode)")
             }else{
                 Constant.MyClassConstants.selectedAreaCodeDictionary.setValue(areaAtIndex.areaName!, forKey: "\(areaAtIndex.areaCode)")
+                Constant.MyClassConstants.selectedAreaCodeArray.add("\(areaAtIndex.areaCode)")
             }
             
         }else{
@@ -191,6 +193,7 @@ class AllAvailableDestinationViewController: UIViewController {
             areasArray.append(region.areas[indexPathForSelectedRegion.row].areaName!)
             selectedAreaDictionary.setValue(areasArray, forKey: region.regionName!)
             Constant.MyClassConstants.selectedAreaCodeDictionary.setValue("\(String(describing: region.areas[indexPathForSelectedRegion.row].areaName!))", forKey: "\(region.areas[indexPathForSelectedRegion.row].areaCode)")
+            Constant.MyClassConstants.selectedAreaCodeArray.add("\(region.areas[indexPathForSelectedRegion.row].areaCode)")
         }
         allAvailableDestinatontableview.reloadData()
        
@@ -253,7 +256,8 @@ class AllAvailableDestinationViewController: UIViewController {
     
     //Function for navigating to search results
     func navigateToSearchResults(){
-        Constant.MyClassConstants.vacationSearchResultHeaderLabel = (Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: Constant.MyClassConstants.selectedAreaCodeDictionary.allKeys[0] as! String) as? String)!
+        Constant.MyClassConstants.vacationSearchResultHeaderLabel = (Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: Constant.MyClassConstants.selectedAreaCodeArray[0] as! String) as? String)!
+        Constant.MyClassConstants.sortingIndex = 0
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
@@ -336,7 +340,7 @@ extension AllAvailableDestinationViewController:UITableViewDelegate{
         let selectedCell = tableView.cellForRow(at: indexPath) as! AvailableDestinationPlaceTableViewCell
         
         // Only six items can be selected
-        self.viewButtonHeightConstraint.constant = 115
+        self.viewButtonHeightConstraint.constant = 70
         self.searchButtonHeightConstraint.constant = 50
         self.searchButton.isHidden = false
         UIView.animate(withDuration: 0.5) {
@@ -386,7 +390,14 @@ extension AllAvailableDestinationViewController:UITableViewDelegate{
                 if String(describing: selectedRegion) == region.regionName{
                     let totalAreas = selectedAreaDictionary.value(forKey: selectedRegion as! String) as! [String]
                     cell.selectdDestinationCountLabel?.text = String(totalAreas.count)
-                    cell.selectdDestinationCountLabel?.isHidden = false
+                    if(totalAreas.count > 0){
+                        
+                        cell.selectdDestinationCountLabel?.isHidden = false
+                    }else{
+                        
+                        cell.selectdDestinationCountLabel?.isHidden = true
+                    }
+                    
                 }
             }
             
