@@ -224,33 +224,40 @@ class AllAvailableDestinationViewController: UIViewController {
     func menuButtonClicked()  {
         
         
-        
-        let optionMenu = UIAlertController(title: nil, message: "All Destinations Options", preferredStyle: .actionSheet)
-        
-        let viewSelectedResorts = UIAlertAction(title: "View My Selected Resorts", style: .default, handler:
-        {
-            (alert: UIAlertAction!) -> Void in
+        if(selectedAreaDictionary.allKeys.count == 0){
             
-            self.performSegue(withIdentifier: Constant.segueIdentifiers.showSelectedResortsIpad, sender: self)
-        })
-        
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler:
-        {
-            (alert: UIAlertAction!) -> Void in
-        })
-        
-        optionMenu.addAction(viewSelectedResorts)
-        optionMenu.addAction(cancelAction)
-        
-        if(Constant.RunningDevice.deviceIdiom == .pad){
-            optionMenu.popoverPresentationController?.sourceView = self.view
-            optionMenu.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.size.width,y: 0, width: 100, height: 60)
-            optionMenu.popoverPresentationController!.permittedArrowDirections = .up;
+            SimpleAlert.alert(self, title: "Alert!", message: "Select At least one Destination")
+            
+        }else{
+            
+            let optionMenu = UIAlertController(title: nil, message: "All Destinations Options", preferredStyle: .actionSheet)
+            
+            let viewSelectedResorts = UIAlertAction(title: "View Selected Destinations", style: .default, handler:
+            {
+                (alert: UIAlertAction!) -> Void in
+                
+                self.performSegue(withIdentifier: Constant.segueIdentifiers.showSelectedResortsIpad, sender: self)
+            })
+            
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler:
+            {
+                (alert: UIAlertAction!) -> Void in
+            })
+            
+            optionMenu.addAction(viewSelectedResorts)
+            optionMenu.addAction(cancelAction)
+            
+            if(Constant.RunningDevice.deviceIdiom == .pad){
+                optionMenu.popoverPresentationController?.sourceView = self.view
+                optionMenu.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.size.width,y: 0, width: 100, height: 60)
+                optionMenu.popoverPresentationController!.permittedArrowDirections = .up;
+            }
+            
+            //Present the AlertController
+            self.present(optionMenu, animated: true, completion: nil)
         }
         
-        //Present the AlertController
-        self.present(optionMenu, animated: true, completion: nil)
         
     }
     
