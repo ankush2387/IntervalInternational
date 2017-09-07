@@ -12,7 +12,6 @@ import IntervalUIKit
 
 class AllAvailableDestinationsIpadViewController: UIViewController {
     
-    
     // class outlet
     @IBOutlet weak var allAvailableDestinatontableview: UITableView!
     
@@ -33,6 +32,8 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
     var sectionCounter = 0
     var selectedSectionArray = NSMutableArray()
     var regionCounterDict = [Int:String]()
+    var isExpandCell = false
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,19 +44,16 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
         
         // set corneer radius of search button
         self.searchButton.layer.cornerRadius = 5
-        // set navigation right bar buttons
         
+        //set title
         self.title = "Available Destinations"
         
+        // set navigation right bar buttons
         let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.MoreNav), style: .plain, target: self, action:#selector(AllAvailableDestinationsIpadViewController.menuButtonClicked))
         menuButton.tintColor = UIColor.white
+        
         self.navigationItem.rightBarButtonItem = menuButton
 
-    }
-    
-    
-    @IBAction func searchButtonClicked(_ sender: UIButton) {
-        print("search button clicked")
     }
     
     
@@ -90,39 +88,7 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
         allAvailableDestinatontableview.reloadData()
         
     }
-    
-    func menuButtonClicked()  {
-        print("menu button clicked");
-        
-        
-        let optionMenu = UIAlertController(title: nil, message: "All Destinations Options", preferredStyle: .actionSheet)
-        
-        let viewSelectedResorts = UIAlertAction(title: "View My Selected Resorts", style: .default, handler:
-        {
-            (alert: UIAlertAction!) -> Void in
-            
-            self.performSegue(withIdentifier: Constant.segueIdentifiers.showSelectedResortsIpad, sender: self)
-        })
-        
-     
-        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler:
-        {
-            (alert: UIAlertAction!) -> Void in
-        })
-        
-        optionMenu.addAction(viewSelectedResorts)
-        optionMenu.addAction(cancelAction)
-        
-        if(Constant.RunningDevice.deviceIdiom == .pad){
-            optionMenu.popoverPresentationController?.sourceView = self.view
-            optionMenu.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.size.width,y: 0, width: 100, height: 60)
-            optionMenu.popoverPresentationController!.permittedArrowDirections = .up;
-        }
-        
-        //Present the AlertController
-        self.present(optionMenu, animated: true, completion: nil)
 
-    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -130,15 +96,15 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
     }
     
 
-    /*
+    
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        
+        let selectedResort = segue.destination as! SelectedResortsIpadViewController
+        selectedResort.areaDictionary = self.selectedAreaDictionary
+        print(selectedResort.areaDictionary)
     }
-    */
 
     // MARK: - Buttons  Clicked
     
@@ -160,17 +126,55 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
         }
         
         
-       /* if sender.isSelected {
+        if sender.isSelected {
             cell?.imgIconPlus?.image = UIImage.init(named: "DropArrowIcon")
             sender.isSelected = false
-
+            self.isExpandCell = false
+            
         } else {
             sender.isSelected = true
+            self.isExpandCell = true
             cell?.imgIconPlus?.image = UIImage.init(named: "up_arrow_icon")
             
-        }*/
+        }
         
-        self.allAvailableDestinatontableview.reloadData()
+        //self.allAvailableDestinatontableview.reloadData()
+         self.allAvailableDestinatontableview.reloadSections(IndexSet(integer: 0), with:.automatic)
+     
+        
+        
+    }
+    
+    func menuButtonClicked()  {
+        print("menu button clicked");
+        
+        
+        let optionMenu = UIAlertController(title: nil, message: "All Destinations Options", preferredStyle: .actionSheet)
+        
+        let viewSelectedResorts = UIAlertAction(title: "View My Selected Resorts", style: .default, handler:
+        {
+            (alert: UIAlertAction!) -> Void in
+            
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.showSelectedResortsIpad, sender: self)
+        })
+        
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler:
+        {
+            (alert: UIAlertAction!) -> Void in
+        })
+        
+        optionMenu.addAction(viewSelectedResorts)
+        optionMenu.addAction(cancelAction)
+        
+        if(Constant.RunningDevice.deviceIdiom == .pad){
+            optionMenu.popoverPresentationController?.sourceView = self.view
+            optionMenu.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.size.width,y: 0, width: 100, height: 60)
+            optionMenu.popoverPresentationController!.permittedArrowDirections = .up;
+        }
+        
+        //Present the AlertController
+        self.present(optionMenu, animated: true, completion: nil)
         
     }
     
@@ -178,12 +182,55 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
         
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    @IBAction func searchButtonClicked(_ sender: UIButton) {
         
-        let selectedResort = segue.destination as! SelectedResortsIpadViewController
-        selectedResort.areaDictionary = self.selectedAreaDictionary
-        print(selectedResort.areaDictionary)
+        Helper.showProgressBar(senderView: self)
+        let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
+        
+        rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
+        
+        let vacationSearch = VacationSearch(UserContext.sharedInstance.appSettings, rentalSearchCriteria)
+        
+        let area = Area()
+        area.areaCode = 1
+        area.areaName = "Mexico, Cancun"//selectedAreaDictionary.value(forKey: "Mexico, Cancun") as! String
+        vacationSearch.rentalSearch?.searchContext.request.areas = [area]
+        Constant.MyClassConstants.initialVacationSearch = vacationSearch
+        
+        RentalClient.searchDates(UserContext.sharedInstance.accessToken, request:vacationSearch.rentalSearch?.searchContext.request,
+                                 onSuccess: { (response) in
+                                    vacationSearch.rentalSearch?.searchContext.response = response
+                                    
+                                    // Get activeInterval
+                                    let activeInterval = vacationSearch.bookingWindow.getActiveInterval()
+                                    
+                                    // Update active interval
+                                    Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                                    
+                                    // Always show a fresh copy of the Scrolling Calendar
+                                    
+                                    Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                    
+                                    // Check not available checkIn dates for the active interval
+                                    if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                                        Helper.showNotAvailabilityResults()
+                                    } else {
+                                        
+                                        Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
+                                        let initialSearchCheckInDate = Helper.convertStringToDate(dateString:vacationSearch.searchCheckInDate!,format:Constant.MyClassConstants.dateFormat)
+                                        Constant.MyClassConstants.checkInDates = response.checkInDates
+                                        Helper.helperDelegate = self
+                                        Helper.hideProgressBar(senderView: self)
+                                        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                    }
+        },
+                                 onError:{ (error) in
+                                    Helper.hideProgressBar(senderView: self)
+                                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+        }
+        )
     }
+    
 }
 
 
@@ -275,8 +322,11 @@ extension AllAvailableDestinationsIpadViewController:UITableViewDelegate {
         }else{
             if(sectionCounter == 6){
                 
-                SimpleAlert.alert(self, title: "Alert!", message: "Maximum limit reached")
-                //performAllAvailableSearch()
+                // show alert when maximum limit is reached
+                DispatchQueue.main.async(execute: {
+                    SimpleAlert.alert(self, title: "Alert!", message: "Maximum limit reached")
+                })
+                
             }else{
                 
                 selectedSectionArray.add(indexPath.section)
@@ -297,8 +347,10 @@ extension AllAvailableDestinationsIpadViewController:UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.regionCell) as! AvailableDestinationCountryOrContinentsTableViewCell
         cell.setDataForAllAvailableDestinations(index: section)
         cell.expandRegionButton.tag = section
+        
         if(sectionCounter == 0){
             cell.selectdDestinationCountLabel?.isHidden = true
+            
         }else{
             let region = Constant.MyClassConstants.regionArray[section]
             for selectedRegion in selectedAreaDictionary.allKeys{
@@ -317,7 +369,25 @@ extension AllAvailableDestinationsIpadViewController:UITableViewDelegate {
 }
 
 
-
+extension AllAvailableDestinationsIpadViewController:HelperDelegate {
+    
+    func resortSearchComplete(){
+        Constant.MyClassConstants.vacationSearchResultHeaderLabel = "Mexico, Cancun"
+        
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
+        
+        let transitionManager = TransitionManager()
+        self.navigationController?.transitioningDelegate = transitionManager
+        
+        self.navigationController!.pushViewController(viewController, animated: true)
+        
+    }
+    
+    func resetCalendar(){
+        
+    }
+}
     
 
 

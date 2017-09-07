@@ -17,7 +17,7 @@ class SelectedResortsIpadViewController: UIViewController {
     
     // class varibles
     var areaDictionary = NSMutableDictionary()
-    
+    var areasInRegionArray = [String]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,17 +96,20 @@ extension SelectedResortsIpadViewController:UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.selectedResortsCell) as! SelectedResortsCell
         
-        let sectionArray : NSMutableArray
-        sectionArray = areaDictionary.allKeys as! NSMutableArray
-        
-        if let areas = areaDictionary.value(forKey: sectionArray[indexPath.section] as! String){
+        let dicKey = Array(areaDictionary)[indexPath.section].key
+        if let areas = areaDictionary.value(forKey: dicKey as! String){
             
-            let areasInRegionArray = areas as? NSArray
+            let localArray:NSMutableArray = NSMutableArray()
             
-            cell.lblResortsName.text = areasInRegionArray?[indexPath.row] as? String
+            for object in areas as! [String]{
+                
+                localArray.add(object)
+            }
+            cell.lblResortsName.text = localArray[indexPath.row] as? String
         }
         
         return cell
+        
     }
     
 }
@@ -125,7 +128,23 @@ extension SelectedResortsIpadViewController:UITableViewDelegate {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
         if (editingStyle == UITableViewCellEditingStyle.delete) {
-            print("row deleted")
+           
+            let dicKey = Array(areaDictionary)[indexPath.section].key
+            if let areas = areaDictionary.value(forKey: dicKey as! String){
+                
+                let localArray:NSMutableArray = NSMutableArray()
+                
+                for object in areas as! [String]{
+                    
+                    localArray.add(object)
+                }
+                localArray.removeObject(at: indexPath.row)
+                
+                areaDictionary.setValue(localArray, forKey: dicKey as! String)
+            }
+            tableView.reloadData()
+            
+            
         }
         
     }
@@ -140,6 +159,15 @@ extension SelectedResortsIpadViewController:UITableViewDelegate {
         let view  = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
         
         view.backgroundColor = UIColor.init(colorLiteralRed: 102/255.0, green: 102/255.0, blue: 102/255.0, alpha: 1.0)
+        
+        // set shadow color
+        
+        view.layer.shadowColor = UIColor.blue.cgColor
+        view.layer.shadowOpacity = 1
+        view.layer.masksToBounds = false
+        view.layer.shadowOffset = CGSize(width: 0.0, height: 0.0)
+        view.layer.shadowRadius = 2
+       view.layer.shadowPath = UIBezierPath(rect: view.bounds).cgPath
         
         let headerNameLabel = UILabel(frame: CGRect(x: 20, y: 5, width: view.frame.size.width-20, height: 30))
         
