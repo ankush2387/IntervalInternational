@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Zmr-d0-xh5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Zmr-d0-xh5">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -7001,7 +7001,7 @@ to confirm a larger unit.</string>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="61" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="Ti4-j6-tNR">
-                                <rect key="frame" x="0.0" y="115" width="375" height="503"/>
+                                <rect key="frame" x="0.0" y="115" width="375" height="435"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="AvailableDestinationCountryOrContinentsTableViewCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="regionCell" rowHeight="60" id="6eA-Rl-6eq" customClass="AvailableDestinationCountryOrContinentsTableViewCell" customModule="IntervalApp" customModuleProvider="target">
@@ -7011,14 +7011,14 @@ to confirm a larger unit.</string>
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PlusIcon" translatesAutoresizingMaskIntoConstraints="NO" id="eNh-LA-WMH">
-                                                    <rect key="frame" x="20" y="13.5" width="30" height="33"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DropArrowIcon" translatesAutoresizingMaskIntoConstraints="NO" id="eNh-LA-WMH">
+                                                    <rect key="frame" x="20" y="12.5" width="30" height="33"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="30" id="1GE-W0-aBq"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="United States of America" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GHs-le-Rfc">
-                                                    <rect key="frame" x="60" y="13" width="196" height="33"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GHs-le-Rfc">
+                                                    <rect key="frame" x="60" y="9" width="253" height="41"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -7048,14 +7048,15 @@ to confirm a larger unit.</string>
                                             <constraints>
                                                 <constraint firstItem="7TA-iY-gCt" firstAttribute="leading" secondItem="YRp-8q-xAS" secondAttribute="leadingMargin" constant="-8" id="0hR-yr-er3"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="7TA-iY-gCt" secondAttribute="trailing" constant="-8" id="2Pd-hI-Pgs"/>
-                                                <constraint firstItem="eNh-LA-WMH" firstAttribute="centerY" secondItem="GHs-le-Rfc" secondAttribute="centerY" id="IRA-JG-DDI"/>
+                                                <constraint firstItem="yez-VP-bqt" firstAttribute="leading" secondItem="GHs-le-Rfc" secondAttribute="trailing" constant="14" id="Bg4-zv-Htr"/>
+                                                <constraint firstItem="eNh-LA-WMH" firstAttribute="centerY" secondItem="GHs-le-Rfc" secondAttribute="centerY" constant="-1" id="IRA-JG-DDI"/>
                                                 <constraint firstItem="7TA-iY-gCt" firstAttribute="top" secondItem="YRp-8q-xAS" secondAttribute="topMargin" constant="-8" id="JAj-na-bMY"/>
-                                                <constraint firstItem="GHs-le-Rfc" firstAttribute="top" secondItem="YRp-8q-xAS" secondAttribute="topMargin" constant="5" id="QG1-jL-Qmk"/>
-                                                <constraint firstItem="yez-VP-bqt" firstAttribute="top" secondItem="GHs-le-Rfc" secondAttribute="bottom" constant="-26" id="YGa-Ax-0Sm"/>
+                                                <constraint firstItem="GHs-le-Rfc" firstAttribute="top" secondItem="YRp-8q-xAS" secondAttribute="topMargin" constant="1" id="QG1-jL-Qmk"/>
+                                                <constraint firstItem="yez-VP-bqt" firstAttribute="top" secondItem="GHs-le-Rfc" secondAttribute="bottom" constant="-30" id="YGa-Ax-0Sm"/>
                                                 <constraint firstItem="eNh-LA-WMH" firstAttribute="leading" secondItem="YRp-8q-xAS" secondAttribute="leadingMargin" constant="12" id="ZnO-ID-gna"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="yez-VP-bqt" secondAttribute="trailing" constant="20" id="ova-S0-aiY"/>
                                                 <constraint firstItem="GHs-le-Rfc" firstAttribute="leading" secondItem="eNh-LA-WMH" secondAttribute="trailing" constant="10" id="rn8-Gf-ywO"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="GHs-le-Rfc" secondAttribute="bottom" constant="5.5" id="zAN-e1-Ih9"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="GHs-le-Rfc" secondAttribute="bottom" constant="1.5" id="zAN-e1-Ih9"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="7TA-iY-gCt" secondAttribute="bottom" constant="-8.5" id="zwo-Gz-3E5"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -7072,8 +7073,8 @@ to confirm a larger unit.</string>
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="60.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Arizona Lake" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ecw-Jm-YKA">
-                                                    <rect key="frame" x="26" y="10" width="283" height="40"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ecw-Jm-YKA">
+                                                    <rect key="frame" x="26" y="9" width="283" height="41"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="17"/>
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
@@ -7115,7 +7116,7 @@ to confirm a larger unit.</string>
                                                 <constraint firstAttribute="bottomMargin" secondItem="oIe-qH-5AM" secondAttribute="bottom" constant="2.5" id="25j-5M-qS9"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="Ecw-Jm-YKA" secondAttribute="bottom" constant="2.5" id="Bd5-pQ-xTm"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="oIe-qH-5AM" secondAttribute="trailing" constant="10" id="GJb-2M-muV"/>
-                                                <constraint firstItem="Ecw-Jm-YKA" firstAttribute="top" secondItem="Iya-ZR-M1b" secondAttribute="topMargin" constant="2" id="Q0W-D7-phs"/>
+                                                <constraint firstItem="Ecw-Jm-YKA" firstAttribute="top" secondItem="Iya-ZR-M1b" secondAttribute="topMargin" constant="1" id="Q0W-D7-phs"/>
                                                 <constraint firstItem="Ecw-Jm-YKA" firstAttribute="leading" secondItem="Iya-ZR-M1b" secondAttribute="leadingMargin" constant="18" id="pEU-5c-eGM"/>
                                                 <constraint firstItem="oIe-qH-5AM" firstAttribute="leading" secondItem="Ecw-Jm-YKA" secondAttribute="trailing" constant="8" id="rcE-he-A4K"/>
                                                 <constraint firstItem="oIe-qH-5AM" firstAttribute="top" secondItem="Iya-ZR-M1b" secondAttribute="topMargin" constant="2" id="sYd-Kv-lOR"/>
@@ -7133,7 +7134,7 @@ to confirm a larger unit.</string>
                                 </connections>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5MD-BH-UJU" userLabel="View Button">
-                                <rect key="frame" x="0.0" y="550" width="375" height="117"/>
+                                <rect key="frame" x="0.0" y="550" width="375" height="68"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K97-OK-5ly">
                                         <rect key="frame" x="20" y="8" width="335" height="40"/>
@@ -7154,7 +7155,7 @@ to confirm a larger unit.</string>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="K97-OK-5ly" secondAttribute="trailing" constant="20" id="0dD-rY-5xt"/>
                                     <constraint firstItem="K97-OK-5ly" firstAttribute="top" secondItem="5MD-BH-UJU" secondAttribute="top" constant="8" id="6eE-re-WjM"/>
-                                    <constraint firstAttribute="height" constant="117" id="E4F-4m-jHH"/>
+                                    <constraint firstAttribute="height" constant="68" id="E4F-4m-jHH"/>
                                     <constraint firstItem="K97-OK-5ly" firstAttribute="leading" secondItem="5MD-BH-UJU" secondAttribute="leading" constant="20" id="cfu-GR-Daj"/>
                                     <constraint firstAttribute="width" constant="375" id="he4-5L-ygl"/>
                                 </constraints>
@@ -7165,13 +7166,13 @@ to confirm a larger unit.</string>
                             <constraint firstItem="Ti4-j6-tNR" firstAttribute="top" secondItem="Qay-yD-mVm" secondAttribute="bottom" id="7KC-RM-x4D"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Ti4-j6-tNR" secondAttribute="trailing" constant="-16" id="87w-sd-2JD"/>
                             <constraint firstItem="5MD-BH-UJU" firstAttribute="leading" secondItem="L7u-op-8iF" secondAttribute="leadingMargin" constant="-16" id="Hsa-ml-cHP"/>
-                            <constraint firstItem="myQ-JZ-ari" firstAttribute="top" secondItem="5MD-BH-UJU" secondAttribute="bottom" constant="-49" id="IPR-Ld-Vp8"/>
+                            <constraint firstItem="myQ-JZ-ari" firstAttribute="top" secondItem="5MD-BH-UJU" secondAttribute="bottom" id="IPR-Ld-Vp8"/>
                             <constraint firstAttribute="trailingMargin" secondItem="5MD-BH-UJU" secondAttribute="trailing" constant="-16" id="JzI-OB-aXj"/>
                             <constraint firstItem="Ti4-j6-tNR" firstAttribute="leading" secondItem="L7u-op-8iF" secondAttribute="leadingMargin" constant="-16" id="OwB-v2-D8s"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Qay-yD-mVm" secondAttribute="trailing" constant="-16" id="aBW-Hx-OcC"/>
                             <constraint firstItem="Qay-yD-mVm" firstAttribute="top" secondItem="Aql-sn-hhf" secondAttribute="bottom" constant="1" id="aHk-4G-MGM"/>
                             <constraint firstItem="Qay-yD-mVm" firstAttribute="leading" secondItem="L7u-op-8iF" secondAttribute="leadingMargin" constant="-16" id="p4A-qn-aDN"/>
-                            <constraint firstItem="5MD-BH-UJU" firstAttribute="top" secondItem="Ti4-j6-tNR" secondAttribute="bottom" constant="-68" id="pjK-7c-Wf9"/>
+                            <constraint firstItem="5MD-BH-UJU" firstAttribute="top" secondItem="Ti4-j6-tNR" secondAttribute="bottom" id="pjK-7c-Wf9"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="aVs-U7-coY"/>
@@ -7587,7 +7588,6 @@ to confirm a larger unit.</string>
         <image name="MapPinIcon" width="30" height="30"/>
         <image name="NoImageIcon" width="64" height="64"/>
         <image name="OfferIcon" width="33" height="33"/>
-        <image name="PlusIcon" width="33" height="33"/>
         <image name="PromoImage" width="20" height="20"/>
         <image name="Resorts-Getaway_Icon" width="25" height="25"/>
         <image name="SearchTab-Off" width="33" height="33"/>
