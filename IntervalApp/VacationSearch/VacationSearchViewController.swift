@@ -218,7 +218,7 @@ class VacationSearchViewController: UIViewController {
         //self.searchVacationTableView.beginUpdates()
         self.segmentTitle = searchVacationSegementControl.titleForSegment(at: sender.selectedSegmentIndex)!
         Constant.MyClassConstants.vacationSearchSelectedSegmentIndex = sender.selectedSegmentIndex
-        
+        Constant.segmentControlItems.selectedSearchSegment = segmentTitle
         //self.searchVacationTableView.endUpdates()
     
 
@@ -1324,10 +1324,6 @@ extension VacationSearchViewController:UITableViewDataSource {
             self.searchVacationTableView.reloadData()
         }
         actionSheetController.addAction(resetMySearchAction)
-        //***** Create and add help *****//
-        let helpAction: UIAlertAction = UIAlertAction(title: Constant.buttonTitles.help, style: .default) { action -> Void in
-        }
-        actionSheetController.addAction(helpAction)
         
         //***** Create and add the cancel button *****//
         let cancelAction: UIAlertAction = UIAlertAction(title: Constant.buttonTitles.cancel, style: .cancel) { action -> Void in

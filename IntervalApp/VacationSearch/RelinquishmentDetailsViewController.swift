@@ -7,10 +7,13 @@
 //
 
 import UIKit
+import DarwinSDK
+import SDWebImage
 
 class RelinquishmentDetailsViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
+    var resort: Resort?
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -19,6 +22,8 @@ class RelinquishmentDetailsViewController: UIViewController {
         self.tableView.layer.borderWidth = 2.0
         //self.tableView.layer.masksToBounds = true
         self.tableView.layer.borderColor = UIColor.lightGray.cgColor
+        
+        resort = Constant.MyClassConstants.resortsDescriptionArray
     }
 
     override func didReceiveMemoryWarning() {
@@ -55,39 +60,34 @@ extension RelinquishmentDetailsViewController:UITableViewDataSource, UITableView
             cell.layer.borderColor = UIColor.lightGray.cgColor  // set cell border color here
             cell.layer.borderWidth = 2*/
             
-            if(Constant.MyClassConstants.resortsArray.count != 0){
+            if(resort != nil){
                 if (Constant.MyClassConstants.resortsArray[indexPath.section].images.count>0){
-                    var url = URL(string: "")
                     
-                    let imagesArray = Constant.MyClassConstants.resortsArray[0].images
                     
-                    for imgStr in imagesArray {
-                        if(imgStr.size!.caseInsensitiveCompare(Constant.MyClassConstants.imageSize) == ComparisonResult.orderedSame) {
-                            
-                            url = URL(string: imgStr.url!)!
-                            break
+                    
+                    cell.resortImage.setImageWith(URL(string: Constant.MyClassConstants.imagesArray[(indexPath as NSIndexPath).row] as! String), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
+                        if (error != nil) {
+                            cell.resortImage.image = UIImage(named: Constant.MyClassConstants.noImage)
                         }
-                    }
-                    cell.resortImage.image = UIImage(named: Constant.MyClassConstants.noImage)
-                    cell.resortImage.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+                    }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
                 }
                 else {
                     
                 }
             }
             
-            cell.resortName.text = objRelinquishment.openWeek?.resort?.resortName!
+            cell.resortName.text = resort?.resortName
             
-            if let city = objRelinquishment.openWeek?.resort!.address?.cityName {
+            if let city = resort?.address?.cityName {
                 
                 cell.resortCountry.text = city
             }
-            if let Country = objRelinquishment.openWeek?.resort!.address?.countryCode! {
+            if let Country = resort?.address?.countryCode {
                 
-                cell.resortCountry.text = cell.resortCountry.text?.appending(", \(Country)")
+                cell.resortCountry.text?.append(", \(Country)")
             }
 
-            cell.resortCode.text = objRelinquishment.openWeek?.resort?.resortCode
+            cell.resortCode.text = resort?.resortCode
             
             cell.gradientView.frame = CGRect(x: cell.gradientView.frame.origin.x, y: cell.gradientView.frame.origin.y, width: cell.contentView.frame.width, height: cell.gradientView.frame.height)
             Helper.addLinearGradientToView(view: cell.gradientView, colour: UIColor.white, transparntToOpaque: true, vertical: true)

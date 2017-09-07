@@ -3706,7 +3706,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W0A-1T-ut6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3180.46875" y="1285.546875"/>
+            <point key="canvasLocation" x="3628" y="1480"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="DbV-Z9-AeY">
@@ -4218,6 +4218,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="lblHeading" destination="MY1-Yc-2aY" id="nvu-m6-MUt"/>
                                             <outlet property="resortDetailsButton" destination="fmM-5f-Kyj" id="1lJ-Ns-b1B"/>
                                             <outlet property="resortImageView" destination="HUA-f9-VDj" id="Jyc-Zl-pBv"/>
                                             <outlet property="resortName" destination="kXg-gG-ess" id="j58-Uc-72p"/>
@@ -4468,6 +4469,7 @@
                         <segue destination="vWj-V8-QCO" kind="presentation" identifier="selectPaymentSegue" id="IuN-SZ-Un7"/>
                         <segue destination="5vQ-ut-G3U" kind="show" identifier="showResortDetails" id="5di-wX-yoy"/>
                         <segue destination="yEv-v7-OpQ" kind="presentation" identifier="confirmationSegue" id="kWp-Z6-fLd"/>
+                        <segue destination="5BT-QX-6Zq" kind="presentation" identifier="showRelinguishmentsDetails" id="bm5-1w-IwW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z3P-Iw-v1G" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -5018,7 +5020,7 @@
                         <viewControllerLayoutGuide type="bottom" id="eSZ-FK-Dat"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="q0Z-GI-P7H">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1500"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RU4-ms-tnh">
@@ -5073,7 +5075,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="170" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="UQr-UE-QNt">
-                                <rect key="frame" x="30" y="60" width="315" height="607"/>
+                                <rect key="frame" x="30" y="60" width="708" height="1391"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ViewDetailsTBLcell" rowHeight="130" id="nh8-hF-3hI" customClass="ViewDetailsTBLcell" customModule="IntervalApp" customModuleProvider="target">
@@ -9421,6 +9423,7 @@ Units Upgrade with this selection.</string>
                             <constraint firstItem="ZR6-m9-XXY" firstAttribute="leading" secondItem="mLY-Yn-IUT" secondAttribute="leading" constant="30" id="lqY-7a-u8n"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="bi4-2B-Xl2"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="tableView" destination="ZR6-m9-XXY" id="8U2-ki-3Xt"/>
@@ -9428,7 +9431,7 @@ Units Upgrade with this selection.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Udq-L7-j8z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2495" y="969"/>
+            <point key="canvasLocation" x="2271" y="1520"/>
         </scene>
     </scenes>
     <resources>
@@ -9464,6 +9467,7 @@ Units Upgrade with this selection.</string>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="hgo-Jq-z8A"/>
-        <segue reference="sel-eD-RNr"/>
+        <segue reference="5di-wX-yoy"/>
+        <segue reference="bm5-1w-IwW"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -419,6 +419,7 @@ class CheckOutIPadViewController: UIViewController {
         if(sender.tag == 0){
             self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
         }else{
+            Helper.getRelinquishmentDetails(resortCode: ((filterRelinquishments.openWeek?.resort?.resortCode)!!), viewController: self)
             //Helper.sho
         }
         
@@ -1128,10 +1129,12 @@ extension CheckOutIPadViewController:UITableViewDataSource {
             case 0:
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.CheckOutIPadViewControllerCellIdentifiersAndHardCodedStrings.headerCell, for: indexPath) as! ViewDetailsTBLcell
                     cell.resortDetailsButton.addTarget(self, action: #selector(self.resortDetailsClicked(_:)), for: .touchUpInside)
+                    cell.resortDetailsButton.tag = indexPath.row
                     if(indexPath.row == 0){
                         cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.resortImage)
                         cell.resortName?.text = Constant.MyClassConstants.selectedResort.resortName
                     }else{
+                        cell.lblHeading.text = Constant.MyClassConstants.relinquishment
                         cell.labelFirstHeading?.text = "Relinquishment"
                         cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.relinquishmentImage)
                         cell.resortName?.text = filterRelinquishments.openWeek?.resort?.resortName

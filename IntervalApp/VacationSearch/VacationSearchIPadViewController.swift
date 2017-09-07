@@ -396,10 +396,6 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
             self.searchVacationTableView.reloadData()
         }
         actionSheetController.addAction(resetMySearchAction)
-        //***** Create and add help *****//
-        let helpAction: UIAlertAction = UIAlertAction(title: Constant.buttonTitles.help, style: .default) { action -> Void in
-        }
-        actionSheetController.addAction(helpAction)
         
         //***** Create and add the cancel button *****//
         let cancelAction: UIAlertAction = UIAlertAction(title: Constant.buttonTitles.cancel, style: .cancel) { action -> Void in

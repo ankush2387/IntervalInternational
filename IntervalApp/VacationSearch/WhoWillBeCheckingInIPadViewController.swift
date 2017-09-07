@@ -598,6 +598,7 @@ extension WhoWillBeCheckingInIPadViewController:UITableViewDataSource {
             } else {
                 cell.resortDetailsButton.tag = indexPath.row
                 cell.lblHeading.text = "Relinquishment"
+                cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.relinquishmentImage)
                  cell.resortName?.text = filterRelinquishments.openWeek?.resort?.resortName
             }
 
