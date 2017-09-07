@@ -88,6 +88,8 @@
 		3A45F5C21CA051FE0045B2EF /* MyownershipClubIntervalGoldPointsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A45F5C11CA051FE0045B2EF /* MyownershipClubIntervalGoldPointsTableViewCell.swift */; };
 		3A476F091CEC8E8600607185 /* SearchResultDateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A476F081CEC8E8600607185 /* SearchResultDateCell.swift */; };
 		3A476F111CECE07F00607185 /* MoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A476F101CECE07F00607185 /* MoreCell.swift */; };
+		3A4801E31F60050600AB6D68 /* SelectedResortsIpadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4801E21F60050600AB6D68 /* SelectedResortsIpadViewController.swift */; };
+		3A4801E51F60055F00AB6D68 /* SelectedResortsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4801E41F60055F00AB6D68 /* SelectedResortsCell.swift */; };
 		3A586CC01DDCA22900EF6756 /* ExchangeOrProtectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A586CBE1DDCA22900EF6756 /* ExchangeOrProtectionCell.swift */; };
 		3A586CC11DDCA22900EF6756 /* ExchangeOrProtectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A586CBF1DDCA22900EF6756 /* ExchangeOrProtectionCell.xib */; };
 		3A586CC41DDCA24F00EF6756 /* TotalCostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A586CC21DDCA24F00EF6756 /* TotalCostCell.swift */; };
@@ -394,6 +396,8 @@
 		3A45F5C11CA051FE0045B2EF /* MyownershipClubIntervalGoldPointsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyownershipClubIntervalGoldPointsTableViewCell.swift; sourceTree = "<group>"; };
 		3A476F081CEC8E8600607185 /* SearchResultDateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultDateCell.swift; sourceTree = "<group>"; };
 		3A476F101CECE07F00607185 /* MoreCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreCell.swift; sourceTree = "<group>"; };
+		3A4801E21F60050600AB6D68 /* SelectedResortsIpadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedResortsIpadViewController.swift; sourceTree = "<group>"; };
+		3A4801E41F60055F00AB6D68 /* SelectedResortsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedResortsCell.swift; sourceTree = "<group>"; };
 		3A586CBE1DDCA22900EF6756 /* ExchangeOrProtectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExchangeOrProtectionCell.swift; sourceTree = "<group>"; };
 		3A586CBF1DDCA22900EF6756 /* ExchangeOrProtectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExchangeOrProtectionCell.xib; sourceTree = "<group>"; };
 		3A586CC21DDCA24F00EF6756 /* TotalCostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TotalCostCell.swift; sourceTree = "<group>"; };
@@ -690,6 +694,7 @@
 				3A06C0A21CA9385A009A9574 /* AvailableDestinationPlaceTableViewCell.swift */,
 				3A06C0A31CA9385A009A9574 /* AvailableDestinationsIphone.storyboard */,
 				3A06C0A41CA9385A009A9574 /* AvailableDestinationsTableViewController.swift */,
+				3A4801E41F60055F00AB6D68 /* SelectedResortsCell.swift */,
 			);
 			path = "Available Destinations";
 			sourceTree = "<group>";
@@ -1001,6 +1006,7 @@
 				3A892F2C1CD3902F00AE6F45 /* CustomCells */,
 				3AAA5A1E1C720F4500A5EA6D /* VacationSearchIpad.storyboard */,
 				3AAA5A1F1C720F4500A5EA6D /* VacationSearchIphone.storyboard */,
+				3A4801E21F60050600AB6D68 /* SelectedResortsIpadViewController.swift */,
 				3AB122B01CD283AF00204EB7 /* VacationSearchIPadViewController.swift */,
 				3A5AFDDE1F5ED1CD00A44138 /* AllAvailableDestinationsIpadViewController.swift */,
 				3AAA5A201C720F4500A5EA6D /* VacationSearchTabBarController.swift */,
@@ -1420,6 +1426,7 @@
 				3AAA5A351C720F4500A5EA6D /* SideMenuBackgroundTableCell.swift in Sources */,
 				3A733AC61CEF2A2E0068CF15 /* ImageWithNameCell.swift in Sources */,
 				3AB122C31CD284A000204EB7 /* WereWantToGoTableViewCell.swift in Sources */,
+				3A4801E51F60055F00AB6D68 /* SelectedResortsCell.swift in Sources */,
 				3A892F4E1CD3902F00AE6F45 /* SearchTableViewCell.swift in Sources */,
 				3A3A013A1C99BD0B00B7EC37 /* FloatDetailsCheckIndateTableViewCell.swift in Sources */,
 				DC7EF4CB1D709E9600E9E360 /* ClubPointSelectionViewController.swift in Sources */,
@@ -1574,6 +1581,7 @@
 				3AFA86681DF305A300DCAECF /* CheckOutIPadViewController.swift in Sources */,
 				3AAA5A4A1C720F4500A5EA6D /* VacationSearchTabBarController.swift in Sources */,
 				3A29B4901EF034E4008995A5 /* ReservationTableViewCell.swift in Sources */,
+				3A4801E31F60050600AB6D68 /* SelectedResortsIpadViewController.swift in Sources */,
 				087A875A1E951A2D009B1387 /* UnitSizeTdiCollectionViewCell.swift in Sources */,
 				3A0B25DC1CD241B50080BF3F /* DummyTableViewCell.swift in Sources */,
 				E9057F911F02DDA000E20047 /* ShareActivityImage.swift in Sources */,

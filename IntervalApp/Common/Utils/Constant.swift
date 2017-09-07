@@ -253,6 +253,8 @@ class Constant: NSObject {
         static var resortCodesArray : [String] = []
         static var searchAvailabilityHeader = ""
         static var filterOptionsArray: [ResortDestination] = []
+        static var areaWithAreaCode: [AreaInfo] = []
+        static var selectedAreaCodeDictionary = NSMutableDictionary()
         
         static var surroundingResortCodesArray : [String] = []
         static var resortsArray = [Resort]()
@@ -593,6 +595,13 @@ class Constant: NSObject {
         case Resort(ResortList)
         case Destination(DestinationList)
         case ResortList([ResortByMap])
+        case Area(NSMutableDictionary)
+    }
+    
+    // Enum to store area and area code
+    enum AreaInfo {
+        static var area = [Area]()
+        static var areaCode = ""
     }
     
     struct CommonColor {
