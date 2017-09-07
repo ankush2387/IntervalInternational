@@ -38,7 +38,7 @@ class SortingViewController: UIViewController {
         
         //remove extra separator of tableview
         self.sortingTBLview.tableFooterView = UIView()
-        selectedIndex = 0
+        //selectedIndex = 0
         self.title = Constant.ControllerTitles.sorting
         
     }
@@ -352,8 +352,8 @@ class SortingViewController: UIViewController {
                 }
             }
         }else if(allDest.count > 0){
-            for areaCodes in Constant.MyClassConstants.selectedAreaCodeDictionary.allKeys{
-                let dictionaryArea = ["\(areaCodes)": Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: areaCodes as! String)]
+            for areaCode in Constant.MyClassConstants.selectedAreaCodeArray{
+                let dictionaryArea = ["\(areaCode)": Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: areaCode as! String)]
                 Constant.MyClassConstants.filterOptionsArray.append(.Area(dictionaryArea as! NSMutableDictionary))
             }
         }
@@ -366,7 +366,7 @@ class SortingViewController: UIViewController {
             let cell = sender.superview?.superview?.superview as? FilterCell
             let indexPath = self.sortingTBLview.indexPath(for: cell!)
             
-            self.selectedIndex = (indexPath?.row)!
+             self.selectedIndex = (indexPath?.row)!
              self.sortingTBLview.reloadData()
             
             switch Constant.MyClassConstants.filterOptionsArray[(indexPath?.row)!] {
