@@ -56,10 +56,34 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
         menuButton.tintColor = UIColor.white
         
         self.navigationItem.rightBarButtonItem = menuButton
+        
+        // custom back button
+        
+        let menuButtonleft = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(SearchResultViewController.menuBackButtonPressed(_:)))
+        menuButton.tintColor = UIColor.white
+        self.navigationItem.leftBarButtonItem = menuButtonleft
 
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.allAvailableDestinatontableview.reloadData()
+        self.resetCounter()
+        
+    }
     
+    func resetCounter(){
+        sectionCounter = 0
+        
+        for values in selectedAreaDictionary {
+            
+            print(values)
+            let counter:[String]  = values.value as! [String]
+            print(counter.count)
+            self.sectionCounter = self.sectionCounter + counter.count
+            
+        }
+    }
+
     //Function to add and remove areas and destinations
     
     func addRemoveAreasInRegion(indexPathForSelectedRegion:IndexPath){
@@ -80,10 +104,18 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
                 selectedAreaDictionary.removeObject(forKey: region.regionName!)
             }
             
+            //Manage dictionary for performing search with area codes
+            if(Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: "\(areaAtIndex.areaCode)") != nil){
+                Constant.MyClassConstants.selectedAreaCodeDictionary.removeObject(forKey: "\(areaAtIndex.areaCode)")
+            }else{
+                Constant.MyClassConstants.selectedAreaCodeDictionary.setValue(areaAtIndex.areaName!, forKey: "\(areaAtIndex.areaCode)")
+            }
+            
         }else{
             var areasArray = [String]()
             areasArray.append(region.areas[indexPathForSelectedRegion.row].areaName!)
             selectedAreaDictionary.setValue(areasArray, forKey: region.regionName!)
+            Constant.MyClassConstants.selectedAreaCodeDictionary.setValue("\(String(describing: region.areas[indexPathForSelectedRegion.row].areaName!))", forKey: "\(region.areas[indexPathForSelectedRegion.row].areaCode)")
         }
         allAvailableDestinatontableview.reloadData()
         
@@ -98,12 +130,30 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
 
     
     // MARK: - Navigation
+    
+    func menuBackButtonPressed(_ sender:UIBarButtonItem) {
+        
+        _ = self.navigationController?.popViewController(animated: true)
+    }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         let selectedResort = segue.destination as! SelectedResortsIpadViewController
         selectedResort.areaDictionary = self.selectedAreaDictionary
         print(selectedResort.areaDictionary)
+    }
+    
+    //Function for navigating to search results
+    func navigateToSearchResults(){
+        Constant.MyClassConstants.vacationSearchResultHeaderLabel = (Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: Constant.MyClassConstants.selectedAreaCodeDictionary.allKeys[0] as! String) as? String)!
+        
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
+        
+        let transitionManager = TransitionManager()
+        self.navigationController?.transitioningDelegate = transitionManager
+        
+        self.navigationController!.pushViewController(viewController, animated: true)
     }
 
     // MARK: - Buttons  Clicked
@@ -185,16 +235,14 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
     
     @IBAction func searchButtonClicked(_ sender: UIButton) {
         
-        Helper.showProgressBar(senderView: self)
         let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
         
         rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
         
         let vacationSearch = VacationSearch(UserContext.sharedInstance.appSettings, rentalSearchCriteria)
-        
         let area = Area()
-        area.areaCode = 1
-        area.areaName = "Mexico, Cancun"//selectedAreaDictionary.value(forKey: "Mexico, Cancun") as! String
+        area.areaCode = Int(Constant.MyClassConstants.selectedAreaCodeDictionary.allKeys[0] as! String)!
+        area.areaName = Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: Constant.MyClassConstants.selectedAreaCodeDictionary.allKeys[0] as! String) as? String
         vacationSearch.rentalSearch?.searchContext.request.areas = [area]
         Constant.MyClassConstants.initialVacationSearch = vacationSearch
         
@@ -207,6 +255,7 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
                                     
                                     // Update active interval
                                     Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                                    Constant.MyClassConstants.initialVacationSearch = vacationSearch
                                     
                                     // Always show a fresh copy of the Scrolling Calendar
                                     
@@ -214,12 +263,16 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
                                     
                                     // Check not available checkIn dates for the active interval
                                     if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                                        
                                         Helper.showNotAvailabilityResults()
+                                        self.navigateToSearchResults()
+                                        
                                     } else {
                                         
                                         Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
                                         let initialSearchCheckInDate = Helper.convertStringToDate(dateString:vacationSearch.searchCheckInDate!,format:Constant.MyClassConstants.dateFormat)
                                         Constant.MyClassConstants.checkInDates = response.checkInDates
+                                        //sender.isEnabled = true
                                         Helper.helperDelegate = self
                                         Helper.hideProgressBar(senderView: self)
                                         Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
@@ -227,6 +280,7 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
         },
                                  onError:{ (error) in
                                     Helper.hideProgressBar(senderView: self)
+                                    //sender.isEnabled = true
                                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
         }
         )
@@ -381,15 +435,7 @@ extension AllAvailableDestinationsIpadViewController:UITableViewDelegate {
 extension AllAvailableDestinationsIpadViewController:HelperDelegate {
     
     func resortSearchComplete(){
-        Constant.MyClassConstants.vacationSearchResultHeaderLabel = "Mexico, Cancun"
-        
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
-        
-        let transitionManager = TransitionManager()
-        self.navigationController?.transitioningDelegate = transitionManager
-        
-        self.navigationController!.pushViewController(viewController, animated: true)
+     self.navigateToSearchResults()
         
     }
     
