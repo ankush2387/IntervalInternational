@@ -39,6 +39,7 @@ class AllAvailableDestinationViewController: UIViewController {
         moreButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.MoreNav), style: .plain, target: self, action:#selector(moreNavButtonPressed(_:)))
         moreButton!.tintColor = UIColor.white
         self.navigationController?.navigationItem.rightBarButtonItem = moreButton
+        //allAvailableDestinatontableview.tableHeaderView?.frame = CGRectZero
         allAvailableDestinatontableview.reloadData()
     }
     
@@ -47,8 +48,6 @@ class AllAvailableDestinationViewController: UIViewController {
     
     @IBAction func searchButtonClicked(_ sender: Any) {
         
-        print(Constant.MyClassConstants.selectedAreaCodeDictionary)
-        
         let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
         
         rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
@@ -56,7 +55,7 @@ class AllAvailableDestinationViewController: UIViewController {
         let vacationSearch = VacationSearch(UserContext.sharedInstance.appSettings, rentalSearchCriteria)
         let area = Area()
         area.areaCode = Int(Constant.MyClassConstants.selectedAreaCodeDictionary.allKeys[0] as! String)!
-        area.areaName = Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: Constant.MyClassConstants.selectedAreaCodeDictionary.allKeys[0] as! String) as? String//selectedAreaDictionary.value(forKey: "Mexico, Cancun") as! String
+        area.areaName = Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: Constant.MyClassConstants.selectedAreaCodeDictionary.allKeys[0] as! String) as? String
         vacationSearch.rentalSearch?.searchContext.request.areas = [area]
         Constant.MyClassConstants.initialVacationSearch = vacationSearch
         
@@ -106,7 +105,7 @@ class AllAvailableDestinationViewController: UIViewController {
         self.viewButtonHeightConstraint.constant = 0
         self.searchButtonHeightConstraint.constant = 0
         self.searchButton.isHidden = true
-        searchButton.layer.cornerRadius = 5
+        searchButton.layer.cornerRadius = 4
         self.title = "Available Destinations"
         
         let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.MoreNav), style: .plain, target: self, action:#selector(AllAvailableDestinationsIpadViewController.menuButtonClicked))
@@ -123,11 +122,13 @@ class AllAvailableDestinationViewController: UIViewController {
     //Function for checkBox click
     @IBAction func checkBoxClicked(_ sender: Any) {
         
-        UIView.animate(withDuration: 15, delay: 20, options: UIViewAnimationOptions(rawValue: 0), animations: {
-            self.viewButtonHeightConstraint.constant = 100
-            self.searchButtonHeightConstraint.constant = 50
-            self.searchButton.isHidden = false
-        }, completion: nil)
+        self.viewButtonHeightConstraint.constant = 100
+        self.searchButtonHeightConstraint.constant = 50
+        self.searchButton.isHidden = false
+        UIView.animate(withDuration: 0.5) {
+            self.view.layoutIfNeeded()
+        }
+       
     }
     
     //Function to add and remove areas and destinations
@@ -262,7 +263,7 @@ extension AllAvailableDestinationViewController:UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 0
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -305,13 +306,15 @@ extension AllAvailableDestinationViewController:UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let selectedCell = tableView.cellForRow(at: indexPath) as! AvailableDestinationPlaceTableViewCell
-        // Only six items can be selected
         
-        UIView.animate(withDuration: 15, delay: 20, options: UIViewAnimationOptions(rawValue: 0), animations: {
-            self.viewButtonHeightConstraint.constant = 115
-            self.searchButtonHeightConstraint.constant = 50
-            self.searchButton.isHidden = false
-        }, completion: nil)
+        // Only six items can be selected
+        self.viewButtonHeightConstraint.constant = 115
+        self.searchButtonHeightConstraint.constant = 50
+        self.searchButton.isHidden = false
+        UIView.animate(withDuration: 0.5) {
+            self.view.layoutIfNeeded()
+        }
+        
         
         if(selectedCell.placeSelectionCheckBox.checked){
             sectionCounter = sectionCounter - 1
@@ -319,11 +322,13 @@ extension AllAvailableDestinationViewController:UITableViewDelegate{
             self.addRemoveAreasInRegion(indexPathForSelectedRegion:indexPath)
             if(sectionCounter == 0){
                 
-                UIView.animate(withDuration: 15, delay: 20, options: UIViewAnimationOptions(rawValue: 0), animations: {
-                    self.viewButtonHeightConstraint.constant = 0
-                    self.searchButtonHeightConstraint.constant = 0
-                    self.searchButton.isHidden = false
-                }, completion: nil)
+                self.viewButtonHeightConstraint.constant = 0
+                self.searchButtonHeightConstraint.constant = 0
+                self.searchButton.isHidden = false
+                UIView.animate(withDuration: 0.5) {
+                    self.view.layoutIfNeeded()
+                }
+                
             }
         }else{
             if(sectionCounter == 6){
