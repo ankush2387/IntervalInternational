@@ -18,6 +18,7 @@ class SelectedResortsIpadViewController: UIViewController {
     // class varibles
     var areaDictionary = NSMutableDictionary()
     var areasInRegionArray = [String]()
+    var selectedCounter = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -139,7 +140,7 @@ extension SelectedResortsIpadViewController:UITableViewDelegate {
                     localArray.add(object)
                 }
                 localArray.removeObject(at: indexPath.row)
-                
+                selectedCounter = -1
                 areaDictionary.setValue(localArray, forKey: dicKey as! String)
             }
             tableView.reloadData()
