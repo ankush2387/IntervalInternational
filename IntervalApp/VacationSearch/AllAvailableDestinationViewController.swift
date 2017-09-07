@@ -336,7 +336,7 @@ extension AllAvailableDestinationViewController:UITableViewDelegate{
         let selectedCell = tableView.cellForRow(at: indexPath) as! AvailableDestinationPlaceTableViewCell
         
         // Only six items can be selected
-        self.viewButtonHeightConstraint.constant = 115
+        self.viewButtonHeightConstraint.constant = 70
         self.searchButtonHeightConstraint.constant = 50
         self.searchButton.isHidden = false
         UIView.animate(withDuration: 0.5) {
