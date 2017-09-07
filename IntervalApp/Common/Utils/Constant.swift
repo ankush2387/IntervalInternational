@@ -255,6 +255,7 @@ class Constant: NSObject {
         static var filterOptionsArray: [ResortDestination] = []
         static var areaWithAreaCode: [AreaInfo] = []
         static var selectedAreaCodeDictionary = NSMutableDictionary()
+        static var selectedAreaCodeArray = NSMutableArray()
         
         static var surroundingResortCodesArray : [String] = []
         static var resortsArray = [Resort]()
