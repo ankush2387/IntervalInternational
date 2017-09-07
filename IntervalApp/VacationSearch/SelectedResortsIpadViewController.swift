@@ -150,6 +150,7 @@ extension SelectedResortsIpadViewController:UITableViewDelegate {
                     }
                 }
                 localArray.removeObject(at: indexPath.row)
+
                 selectedCounter = -1
                 
                 if(localArray.count > 0){
@@ -161,6 +162,7 @@ extension SelectedResortsIpadViewController:UITableViewDelegate {
                 print(areaDictionary)
                 print(Constant.MyClassConstants.selectedAreaCodeDictionary)
                 print(Constant.MyClassConstants.selectedAreaCodeArray)
+
             
             }
             tableView.reloadData()
