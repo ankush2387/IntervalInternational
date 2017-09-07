@@ -713,12 +713,12 @@ extension CheckOutViewController:UITableViewDataSource {
             
 
             if(Constant.MyClassConstants.isFromExchange) {
-
-            if(Constant.MyClassConstants.vacationSearchSelectedSegmentIndex == 1) || Constant.MyClassConstants.vacationSearchSelectedSegmentIndex == 0{
-                return 1
-            }else{
-
-                return 2
+                
+                if(Constant.segmentControlItems.selectedSearchSegment == Constant.segmentControlItems.searchBoth) || Constant.segmentControlItems.selectedSearchSegment == Constant.segmentControlItems.exchange{
+                    return 2
+                }else{
+                    
+                    return 1
                 }
             }else{
                 return 1

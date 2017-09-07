@@ -144,6 +144,12 @@ class LoginIPadViewController: UIViewController
     }
 	
 	override func viewDidAppear(_ animated: Bool) {
+        let firstTimeRunning = UserDefaults.standard.bool(forKey: Constant.MyClassConstants.firstTimeRunning)
+        
+        if !firstTimeRunning {
+            presentOnboardingScreen()
+        }
+        
 		// attemp to auto-login the user if touch is enabled and credentails were saved
 		if (TouchID.isTouchIDAvailable() && touchID.haveCredentials()) {
 			userNameTextField.text = touchID.getAssociatedUsername() ?? ""
@@ -151,6 +157,38 @@ class LoginIPadViewController: UIViewController
 			performAutoTouchLogin()
 		}
 	}
+    
+    fileprivate func presentOnboardingScreen() {
+        //blur
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = view.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        blurEffectView.alpha = 0.8
+        blurEffectView.tag = 100
+        view.addSubview(blurEffectView)
+        
+        //onboarding
+        let storyboard: UIStoryboard = UIStoryboard(name: "LoginIPhone", bundle: nil)
+        let onboardingVC = storyboard.instantiateViewController(withIdentifier: "OnboardingBaseViewController") as! OnboardingBaseViewController
+        addChildViewController(onboardingVC)
+        let viewWidth = (self.view.bounds.width / 2) + 100
+        let viewHeight = (self.view.bounds.height / 2) + 100
+        onboardingVC.view.frame = CGRect(x: (self.view.bounds.midX) - (viewWidth / 2), y: self.view.bounds.midY - (viewHeight / 2), width: viewWidth, height: viewHeight)
+        onboardingVC.view.tag = 101
+        onboardingVC.handler = { result in
+            UserDefaults.standard.set(true, forKey: "firstTimeRunnig")
+            for v in self.view.subviews {
+                if v.tag == 100 || v.tag == 101 {
+                    v.removeFromSuperview()
+                }
+            }
+        }
+
+        view.addSubview(onboardingVC.view)
+        onboardingVC.didMove(toParentViewController: self)
+        
+    }
 	
     override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
       if(UIDeviceOrientationIsLandscape(UIDevice.current.orientation))

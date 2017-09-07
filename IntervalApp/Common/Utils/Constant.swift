@@ -557,6 +557,7 @@ class Constant: NSObject {
 
         //UserDefaults
         static var userName = "userName"
+        static var firstTimeRunning = "firstTimeRunnig"
         static var exchangeDestination = ExchangeDestination()
         
         //Changed promotions to global
@@ -949,7 +950,7 @@ class Constant: NSObject {
     
     //***** common  structure to provide all segment control item  strings *****//
     struct segmentControlItems {
-        
+        static var selectedSearchSegment = "Exchange"
         static var getaways = NSLocalizedString("Getaways", comment: "")
         static var exchange = NSLocalizedString("Exchange", comment: "")
         static var searchBoth = NSLocalizedString("Search Both", comment: "")
