@@ -41,7 +41,24 @@ class AllAvailableDestinationViewController: UIViewController {
         self.navigationController?.navigationItem.rightBarButtonItem = moreButton
         //allAvailableDestinatontableview.tableHeaderView?.frame = CGRectZero
         allAvailableDestinatontableview.reloadData()
+        self.resetCounter()
     }
+    
+    func resetCounter(){
+        sectionCounter = 0
+        
+        for values in selectedAreaDictionary {
+            
+            print(values)
+            let counter:[String]  = values.value as! [String]
+            print(counter.count)
+            self.sectionCounter = self.sectionCounter + counter.count
+            
+        }
+        
+        
+    }
+    
     
     func moreNavButtonPressed(_ sender:UIBarButtonItem) {
     }
@@ -343,7 +360,11 @@ extension AllAvailableDestinationViewController:UITableViewDelegate{
             }
         }else{
             if(sectionCounter == 6){
-                SimpleAlert.alert(self, title: "Alert!", message: "Maximum limit reached")
+                
+                DispatchQueue.main.async(execute: {
+                    SimpleAlert.alert(self, title: "Alert!", message: "Maximum limit reached")
+                })
+                
             }else{
             selectedSectionArray.add(indexPath.section)
             sectionCounter = sectionCounter + 1
