@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Zmr-d0-xh5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Zmr-d0-xh5">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -7063,6 +7063,7 @@ to confirm a larger unit.</string>
                                         <connections>
                                             <outlet property="countryOrContinentLabel" destination="GHs-le-Rfc" id="AmC-2e-tiF"/>
                                             <outlet property="expandRegionButton" destination="7TA-iY-gCt" id="sUv-NN-LhC"/>
+                                            <outlet property="imgIconPlus" destination="eNh-LA-WMH" id="YtZ-sZ-9G4"/>
                                             <outlet property="selectdDestinationCountLabel" destination="yez-VP-bqt" id="W4K-D4-Y8M"/>
                                         </connections>
                                     </tableViewCell>
