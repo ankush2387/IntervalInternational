@@ -386,7 +386,14 @@ extension AllAvailableDestinationViewController:UITableViewDelegate{
                 if String(describing: selectedRegion) == region.regionName{
                     let totalAreas = selectedAreaDictionary.value(forKey: selectedRegion as! String) as! [String]
                     cell.selectdDestinationCountLabel?.text = String(totalAreas.count)
-                    cell.selectdDestinationCountLabel?.isHidden = false
+                    if(totalAreas.count > 0){
+                        
+                        cell.selectdDestinationCountLabel?.isHidden = false
+                    }else{
+                        
+                        cell.selectdDestinationCountLabel?.isHidden = true
+                    }
+                    
                 }
             }
             
