@@ -32,7 +32,10 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
     var sectionCounter = 0
     var selectedSectionArray = NSMutableArray()
     var regionCounterDict = [Int:String]()
-    var isExpandCell = false
+    let areaCode = [String]()
+    var isExpandCellIndex = -1
+    var isHeadrExpand = false
+    
     
 
     override func viewDidLoad() {
@@ -60,7 +63,6 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
     //Function to add and remove areas and destinations
     
     func addRemoveAreasInRegion(indexPathForSelectedRegion:IndexPath){
-        
         let region = Constant.MyClassConstants.regionArray[indexPathForSelectedRegion.section]
         if(selectedAreaDictionary.value(forKey: region.regionName!) != nil){
             let selectedAreasArray = selectedAreaDictionary.value(forKey: region.regionName!) as! [String]
@@ -69,10 +71,8 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
             if(selectedAreasArray.contains(areaAtIndex.areaName!)){
                 let index1 = selectedAreasArray.index(of: areaAtIndex.areaName!)
                 newSelectedArray.remove(at: index1!)
-                //break
             }else{
                 newSelectedArray.append(areaAtIndex.areaName!)
-                //break
             }
             if(newSelectedArray.count != 0){
                 selectedAreaDictionary.setValue(newSelectedArray, forKey: region.regionName!)
@@ -111,37 +111,38 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
     @IBAction func headerButtonClicked(_ sender: UIButton) {
         let cell = sender.superview?.superview as? AvailableDestinationCountryOrContinentsTableViewCell
         
-        
         let rsregion = Constant.MyClassConstants.regionArray [sender.tag]
-        if Constant.MyClassConstants.regionAreaDictionary[rsregion.regionCode] == nil {
+        print(Constant.MyClassConstants.regionAreaDictionary)
+        
+        if Constant.MyClassConstants.regionAreaDictionary.count == 0 {
             Constant.MyClassConstants.regionAreaDictionary.setValue(rsregion.areas, forKey: String(rsregion.regionCode))
+            //self.isHeadrExpand = true
             
-            cell?.imgIconPlus?.image = UIImage.init(named: "up_arrow_icon")
-            
+        }else if (Constant.MyClassConstants.regionAreaDictionary.value(forKey:"\(rsregion.regionCode)") == nil){
+            Constant.MyClassConstants.regionAreaDictionary.setValue(rsregion.areas, forKey: String(rsregion.regionCode))
         }else{
-            Constant.MyClassConstants.regionAreaDictionary.removeObject(forKey: rsregion.regionCode)
             
-            cell?.imgIconPlus?.image = UIImage.init(named: "DropArrowIcon")
-            
+            Constant.MyClassConstants.regionAreaDictionary.removeObject(forKey: String(rsregion.regionCode))
+            //self.isHeadrExpand = false
         }
         
         
-        if sender.isSelected {
-            cell?.imgIconPlus?.image = UIImage.init(named: "DropArrowIcon")
+        /*if sender.isSelected {
             sender.isSelected = false
-            self.isExpandCell = false
+            self.isHeadrExpand = false
+            cell?.imgIconPlus?.image = UIImage.init(named: "DropArrowIcon")
             
         } else {
             sender.isSelected = true
-            self.isExpandCell = true
+            self.isHeadrExpand = true
             cell?.imgIconPlus?.image = UIImage.init(named: "up_arrow_icon")
             
-        }
+        }*/
         
-        //self.allAvailableDestinatontableview.reloadData()
-         self.allAvailableDestinatontableview.reloadSections(IndexSet(integer: 0), with:.automatic)
+        self.allAvailableDestinatontableview.reloadData()
+       
+         //self.allAvailableDestinatontableview.reloadSections(IndexSet(integer: sender.tag), with:.automatic)
      
-        
         
     }
     
@@ -257,11 +258,9 @@ extension AllAvailableDestinationsIpadViewController:UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.areaCell, for: indexPath) as! AvailableDestinationPlaceTableViewCell
         cell.selectionStyle = UITableViewCellSelectionStyle.none
-        
         let areasInRegionArray = Constant.MyClassConstants.regionAreaDictionary.value(forKey: String(Constant.MyClassConstants.regionArray[indexPath.section].regionCode)) as! [Area]
         self.areaArray.removeAll()
         if(selectedAreaDictionary.count > 0){
-            
             if let selectedAreas = selectedAreaDictionary.value(forKey: Constant.MyClassConstants.regionArray[indexPath.section].regionName!){
                 let area = selectedAreas as! [String]
                 print(area.count,area,area.count)
@@ -362,6 +361,16 @@ extension AllAvailableDestinationsIpadViewController:UITableViewDelegate {
             }
             
         }
+        
+        /*if cell.expandRegionButton.isSelected {
+             cell.imgIconPlus?.image = UIImage.init(named: "up_arrow_icon")
+             self.isHeadrExpand = false
+            
+        } else {
+            self.isHeadrExpand = true
+            cell.imgIconPlus?.image = UIImage.init(named: "DropArrowIcon")
+           
+        }*/
         
         return cell
     }
