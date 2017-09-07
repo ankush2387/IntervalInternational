@@ -24,7 +24,6 @@ class SelectedResortsIpadViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        print(areaDictionary)
     }
 
     override func didReceiveMemoryWarning() {
@@ -142,6 +141,7 @@ extension SelectedResortsIpadViewController:UITableViewDelegate {
                 localArray.removeObject(at: indexPath.row)
                 selectedCounter = -1
                 areaDictionary.setValue(localArray, forKey: dicKey as! String)
+            
             }
             tableView.reloadData()
             

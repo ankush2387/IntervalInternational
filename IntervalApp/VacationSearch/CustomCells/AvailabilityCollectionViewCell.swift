@@ -42,7 +42,13 @@ class AvailabilityCollectionViewCell: UICollectionViewCell {
             }
         }
         Helper.addLinearGradientToView(view: self.viewGradient, colour: UIColor.white, transparntToOpaque: true, vertical: false)
-        self.resortImageView?.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+        if(url == nil){
+            self.resortImageView?.image = UIImage(named: Constant.MyClassConstants.noImage)
+            self.resortImageView.contentMode = .scaleAspectFit
+        }else{
+            self.resortImageView.contentMode = .scaleToFill
+            self.resortImageView?.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+        }
         self.resortName.text = inventoryItem.resortName
         self.resortAddress.text = inventoryItem.address?.cityName
         self.resortCode.text = inventoryItem.resortCode

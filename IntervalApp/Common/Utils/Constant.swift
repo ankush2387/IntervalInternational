@@ -1366,6 +1366,7 @@ class Constant: NSObject {
         static var bookingSelectionSegue = "BookYourSelectionSegue"
         static var chooseWhatToUse = "ChooseWhatToUse"
         static var showSelectedResortsIpad = "showSelectedResorts"
+        static var allAvailableDestinations = "allAvailableDestination"
     }
     
     //***** common  structure to provide all actionSheetAttributedString *****//
