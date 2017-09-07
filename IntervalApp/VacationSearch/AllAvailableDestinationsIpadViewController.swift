@@ -202,7 +202,7 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
         
         let optionMenu = UIAlertController(title: nil, message: "All Destinations Options", preferredStyle: .actionSheet)
         
-        let viewSelectedResorts = UIAlertAction(title: "View My Selected Resorts", style: .default, handler:
+        let viewSelectedResorts = UIAlertAction(title: "View  Selected Destinations", style: .default, handler:
         {
             (alert: UIAlertAction!) -> Void in
             
