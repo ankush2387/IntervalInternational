@@ -111,6 +111,11 @@ class AllAvailableDestinationViewController: UIViewController {
         let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.MoreNav), style: .plain, target: self, action:#selector(AllAvailableDestinationsIpadViewController.menuButtonClicked))
         menuButton.tintColor = UIColor.white
         self.navigationItem.rightBarButtonItem = menuButton
+        
+        let menuButtonleft = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(SearchResultViewController.menuBackButtonPressed(_:)))
+        menuButton.tintColor = UIColor.white
+        self.navigationItem.leftBarButtonItem = menuButtonleft
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -118,6 +123,12 @@ class AllAvailableDestinationViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    
+    // Back Button Pressed.
+    func menuBackButtonPressed(_ sender:UIBarButtonItem) {
+        
+        _ = self.navigationController?.popViewController(animated: true)
+    }
 
     //Function for checkBox click
     @IBAction func checkBoxClicked(_ sender: Any) {
@@ -184,7 +195,7 @@ class AllAvailableDestinationViewController: UIViewController {
     }
     
     func menuButtonClicked()  {
-        print("menu button clicked");
+        
         
         
         let optionMenu = UIAlertController(title: nil, message: "All Destinations Options", preferredStyle: .actionSheet)
