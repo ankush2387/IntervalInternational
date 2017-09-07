@@ -301,7 +301,6 @@ class VacationSearchResultIPadController: UIViewController {
                                 onSuccess: { (response) in
                                                 
                                                 Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
-                                               // let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
                                                 // Update active interval
                                                 Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                                                 
@@ -314,11 +313,7 @@ class VacationSearchResultIPadController: UIViewController {
                                                     //self.showNotAvailabilityResults()
                                                     
                                                 } else {
-                                                    //let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.getCheckInDateForInitialSearch()
-                                                    
-                                                    //Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self , vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-                                                    
-                                                    //Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate:response.checkInDates[0], senderViewController: self , vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+            
                                                 }
                                                 Constant.MyClassConstants.calendarDatesArray.removeAll()
                                                 
@@ -1108,9 +1103,9 @@ extension VacationSearchResultIPadController:UICollectionViewDataSource {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.customCellNibNames.searchResultCollectionCell, for: indexPath) as! SearchResultCollectionCell
                 if(indexPath.item == collectionviewSelectedIndex) {
                     if(dateCellSelectionColor == Constant.CommonColor.greenColor){
-                        cell.backgroundColor = Constant.CommonColor.headerGreenColor
-                    }else{
                         cell.backgroundColor = IUIKColorPalette.primary1.color
+                    }else{
+                        cell.backgroundColor = Constant.CommonColor.headerGreenColor
                     }
                     cell.dateLabel.textColor = UIColor.white
                     cell.daynameWithyearLabel.textColor = UIColor.white
@@ -1572,14 +1567,14 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
             for sections in sectionsInSearchResult{
                 if((sections.exactMatch == nil || sections.exactMatch == true) && section == 0){
                     headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
-                    headerView.backgroundColor = IUIKColorPalette.primary1.color
+                    headerView.backgroundColor = Constant.CommonColor.headerGreenColor
                     break
                 }else if((sections.exactMatch == nil || sections.exactMatch! == false) && section == 1){
                     headerLabel.text = Constant.CommonLocalisedString.surroundingString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
-                    headerView.backgroundColor = Constant.CommonColor.headerGreenColor
+                    headerView.backgroundColor = IUIKColorPalette.primary1.color
                 }else {
                     headerLabel.text = Constant.CommonLocalisedString.surroundingString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
-                    headerView.backgroundColor = Constant.CommonColor.headerGreenColor
+                    headerView.backgroundColor = IUIKColorPalette.primary1.color
                 }
             }
         }

@@ -1102,9 +1102,9 @@ extension SearchResultViewController:UICollectionViewDataSource {
                 if((indexPath as NSIndexPath).row == collectionviewSelectedIndex) {
                     
                     if(dateCellSelectionColor == Constant.CommonColor.greenColor){
-                        cell.backgroundColor = Constant.CommonColor.headerGreenColor
-                    }else{
                         cell.backgroundColor = IUIKColorPalette.primary1.color
+                    }else{
+                        cell.backgroundColor = Constant.CommonColor.headerGreenColor
                     }
                     cell.dateLabel.textColor = UIColor.white
                     cell.daynameWithyearLabel.textColor = UIColor.white
@@ -1272,14 +1272,14 @@ extension SearchResultViewController:UICollectionViewDataSource {
                     for sections in sectionsInSearchResult{
                         if((sections.exactMatch == nil || sections.exactMatch == true) && section == 0){
                             headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
-                            headerView.backgroundColor = IUIKColorPalette.primary1.color
+                            headerView.backgroundColor = Constant.CommonColor.headerGreenColor
                             break
                         }else if((sections.exactMatch == nil || sections.exactMatch == false) && section == 1){
                             headerLabel.text = Constant.CommonLocalisedString.surroundingString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
-                            headerView.backgroundColor = Constant.CommonColor.headerGreenColor
+                            headerView.backgroundColor = IUIKColorPalette.primary1.color
                         }else{
                             headerLabel.text = Constant.CommonLocalisedString.surroundingString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
-                            headerView.backgroundColor = Constant.CommonColor.headerGreenColor
+                            headerView.backgroundColor = IUIKColorPalette.primary1.color
                         }
                     }
         }
