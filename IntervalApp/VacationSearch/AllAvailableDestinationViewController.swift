@@ -64,6 +64,7 @@ class AllAvailableDestinationViewController: UIViewController {
     }
     
     @IBAction func searchButtonClicked(_ sender: Any) {
+        
         print(Constant.MyClassConstants.selectedAreaCodeArray)
         let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
         
