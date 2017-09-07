@@ -25,10 +25,12 @@ class AllAvailableDestinationViewController: UIViewController {
     var areaArray = [Area]()
     var regionAreaDictionary = NSMutableDictionary()
     var selectedAreaDictionary = NSMutableDictionary()
+    var expand = false
+    var sectionSelected = 0
     //var selectedAreaCodeDictionary = NSMutableDictionary()
     var moreButton:UIBarButtonItem?
     var selectedCheckBox = IUIKCheckbox()
-    var mainCounter = 0
+    var senderButton = UIButton()
     var sectionCounter = 0
     var selectedSectionArray = NSMutableArray()
     var regionCounterDict = [Int:String]()
@@ -64,7 +66,7 @@ class AllAvailableDestinationViewController: UIViewController {
     }
     
     @IBAction func searchButtonClicked(_ sender: Any) {
-        print(Constant.MyClassConstants.selectedAreaCodeArray)
+
         let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
         
         rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
@@ -162,6 +164,7 @@ class AllAvailableDestinationViewController: UIViewController {
     //Function to add and remove areas and destinations
     
     func addRemoveAreasInRegion(indexPathForSelectedRegion:IndexPath){
+        
         let region = Constant.MyClassConstants.regionArray[indexPathForSelectedRegion.section]
         if(selectedAreaDictionary.value(forKey: region.regionName!) != nil){
             let selectedAreasArray = selectedAreaDictionary.value(forKey: region.regionName!) as! [String]
@@ -201,49 +204,60 @@ class AllAvailableDestinationViewController: UIViewController {
     
     func expandClicked(_ sender:UIButton){
         
+        senderButton = sender
+        sectionSelected = sender.tag
         let rsregion = Constant.MyClassConstants.regionArray [sender.tag]
         print(Constant.MyClassConstants.regionAreaDictionary)
         if Constant.MyClassConstants.regionAreaDictionary.count == 0 {
             Constant.MyClassConstants.regionAreaDictionary.setValue(rsregion.areas, forKey: String(rsregion.regionCode))
+            expand = true
         }else if (Constant.MyClassConstants.regionAreaDictionary.value(forKey:"\(rsregion.regionCode)") == nil){
             Constant.MyClassConstants.regionAreaDictionary.setValue(rsregion.areas, forKey: String(rsregion.regionCode))
+            expand = true
         }else{
             Constant.MyClassConstants.regionAreaDictionary.removeObject(forKey: String(rsregion.regionCode))
+            expand = false
         }
         self.allAvailableDestinatontableview.reloadData()
-        
     }
     
     func menuButtonClicked()  {
         
         
-        
-        let optionMenu = UIAlertController(title: nil, message: "All Destinations Options", preferredStyle: .actionSheet)
-        
-        let viewSelectedResorts = UIAlertAction(title: "View My Selected Resorts", style: .default, handler:
-        {
-            (alert: UIAlertAction!) -> Void in
+        if(selectedAreaDictionary.allKeys.count == 0){
             
-            self.performSegue(withIdentifier: Constant.segueIdentifiers.showSelectedResortsIpad, sender: self)
-        })
-        
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler:
-        {
-            (alert: UIAlertAction!) -> Void in
-        })
-        
-        optionMenu.addAction(viewSelectedResorts)
-        optionMenu.addAction(cancelAction)
-        
-        if(Constant.RunningDevice.deviceIdiom == .pad){
-            optionMenu.popoverPresentationController?.sourceView = self.view
-            optionMenu.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.size.width,y: 0, width: 100, height: 60)
-            optionMenu.popoverPresentationController!.permittedArrowDirections = .up;
+            SimpleAlert.alert(self, title: "Alert!", message: "Select At least one Destination")
+            
+        }else{
+            
+            let optionMenu = UIAlertController(title: nil, message: "All Destinations Options", preferredStyle: .actionSheet)
+            
+            let viewSelectedResorts = UIAlertAction(title: "View Selected Destinations", style: .default, handler:
+            {
+                (alert: UIAlertAction!) -> Void in
+                
+                self.performSegue(withIdentifier: Constant.segueIdentifiers.showSelectedResortsIpad, sender: self)
+            })
+            
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler:
+            {
+                (alert: UIAlertAction!) -> Void in
+            })
+            
+            optionMenu.addAction(viewSelectedResorts)
+            optionMenu.addAction(cancelAction)
+            
+            if(Constant.RunningDevice.deviceIdiom == .pad){
+                optionMenu.popoverPresentationController?.sourceView = self.view
+                optionMenu.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.size.width,y: 0, width: 100, height: 60)
+                optionMenu.popoverPresentationController!.permittedArrowDirections = .up;
+            }
+            
+            //Present the AlertController
+            self.present(optionMenu, animated: true, completion: nil)
         }
         
-        //Present the AlertController
-        self.present(optionMenu, animated: true, completion: nil)
         
     }
     
@@ -257,7 +271,7 @@ class AllAvailableDestinationViewController: UIViewController {
     //Function for navigating to search results
     func navigateToSearchResults(){
         Constant.MyClassConstants.vacationSearchResultHeaderLabel = (Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: Constant.MyClassConstants.selectedAreaCodeArray[0] as! String) as? String)!
-        Constant.MyClassConstants.sortingIndex = 0
+        Constant.MyClassConstants.filteredIndex = 0
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
@@ -403,6 +417,12 @@ extension AllAvailableDestinationViewController:UITableViewDelegate{
             
         }
         cell.expandRegionButton.addTarget(self, action: #selector(AllAvailableDestinationViewController.expandClicked(_:)), for: .touchUpInside)
+        
+        if(expand && sectionSelected == section){
+            UIView.animate(withDuration:0.1, animations: {
+                cell.imgIconPlus?.transform = CGAffineTransform(rotationAngle: (180.0 * CGFloat(Double.pi)) / 180.0)
+            })
+        }
         
          return cell
     }
