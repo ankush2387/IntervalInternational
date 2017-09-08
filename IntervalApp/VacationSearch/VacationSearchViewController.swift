@@ -1323,6 +1323,7 @@ extension VacationSearchViewController:UITableViewDataSource {
             }
             let allAvailableDestinations = Helper.getLocalStorageAllDest()
             if(allAvailableDestinations.count > 0){
+            Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
                 Helper.deleteObjectFromAllDest()
             }
             self.searchVacationTableView.reloadData()
@@ -1393,22 +1394,40 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         ADBMobile.trackAction(Constant.omnitureEvents.event1, data: nil)
         
         
-        if(Constant.MyClassConstants.whereTogoContentArray.contains(Constant.MyClassConstants.allDestinations) && self.segmentTitle == Constant.segmentControlItems.getaways){
+        if(Constant.MyClassConstants.whereTogoContentArray.contains(Constant.MyClassConstants.allDestinations)){
             
             let (_,fromDateTop) = getSearchDatesTop()
-            
+            var searchType: VacationSearchType
             let settings = Helper.createSettings()
-            let searchType = VacationSearchType.Rental
+            if(segmentTitle == Constant.segmentControlItems.exchange){
+                
+                 searchType = VacationSearchType.Exchange
+            }
+            else{
+                
+                 searchType = VacationSearchType.Rental
+            }
+            
             let checkInDate = fromDateTop
             
             let bookingWindow = BookingWindow()
             bookingWindow.calculateIntervals(checkInDate: checkInDate)
             
             let activeInterval = bookingWindow.getActiveInterval()
+            let requestRental = RentalSearchRegionsRequest()
+            let requestExchange = ExchangeSearchRegionsRequest()
+            if (segmentTitle  == Constant.segmentControlItems.exchange) {
+                
+                requestExchange.checkInFromDate = activeInterval?.startDate
+                requestExchange.checkInToDate = activeInterval?.endDate
+            }else{
+                
+                requestRental.checkInFromDate = activeInterval?.startDate
+                requestRental.checkInToDate = activeInterval?.endDate
+            }
             
-            let request = RentalSearchRegionsRequest()
-            request.checkInFromDate = activeInterval?.startDate
-            request.checkInToDate = activeInterval?.endDate
+            
+           
             
             Helper.showProgressBar(senderView: self)
             sender.isEnabled = false
@@ -1418,7 +1437,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             Constant.MyClassConstants.selectedAreaCodeArray.removeAllObjects()
             
             if ((settings.vacationSearch?.vacationSearchTypes.contains(searchType.rawValue))! && searchType.isRental()) {
-            RentalClient.searchRegions(UserContext.sharedInstance.accessToken, request: request, onSuccess: {(response)in
+            RentalClient.searchRegions(UserContext.sharedInstance.accessToken, request: requestRental, onSuccess: {(response)in
                 print(response)
                 
                 for rsregion in response {
@@ -1438,7 +1457,32 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 sender.isEnabled = true
                 print(error)
             })
-        }
+            }else{
+                
+              ExchangeClient.searchRegions(UserContext.sharedInstance.accessToken, request: requestExchange, onSuccess: { (response) in
+                
+                print(response)
+                
+                for rsregion in response {
+                    let region = Region()
+                    region.regionName = rsregion.regionName
+                    region.regionCode = rsregion.regionCode
+                    region.areas = rsregion.areas
+                    Constant.MyClassConstants.regionArray.append(rsregion)
+                    Helper.hideProgressBar(senderView: self)
+                    
+                }
+                Helper.hideProgressBar(senderView: self)
+                sender.isEnabled = true
+                self.performSegue(withIdentifier:"allAvailableDestination", sender: self)
+                
+                
+              }, onError: { (error) in
+                
+                print(error)
+              })
+                
+            }
         }else{
         if (self.segmentTitle == Constant.segmentControlItems.getaways && (Helper.getAllResortsFromLocalStorage().count>0 || Constant.MyClassConstants.whereTogoContentArray.count>0)) {
             
