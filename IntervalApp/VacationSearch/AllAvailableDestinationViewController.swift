@@ -62,6 +62,7 @@ class AllAvailableDestinationViewController: UIViewController {
     
     
     func moreNavButtonPressed(_ sender:UIBarButtonItem) {
+        
     }
     
     @IBAction func searchButtonClicked(_ sender: Any) {
