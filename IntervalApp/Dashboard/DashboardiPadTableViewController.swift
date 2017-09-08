@@ -441,6 +441,7 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
             cell.resortAvailabilityLabel.text = "\(formatedCheckInDate) - \(formatedCheckOutDate)"
             
             let imageUrls = upcomingTrip.resort!.images
+            if(imageUrls.count > 0){
             let imageUrl = (imageUrls[(imageUrls.count) - 1].url)! as String
             
             cell.iconImageView.setImageWith(URL(string: imageUrl), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
@@ -449,6 +450,9 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
                     cell.iconImageView.contentMode = .center
                 }
             }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+            }else{
+                cell.iconImageView.image = UIImage(named:Constant.MyClassConstants.noImage)
+            }
             
             if(cell.gradientView.layer.sublayers != nil) {
                 for layer in cell.gradientView.layer.sublayers!{

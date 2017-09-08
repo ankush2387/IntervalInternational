@@ -604,6 +604,7 @@ public class Helper{
             
             let realm = try! Realm()
             let allDest = realm.objects(AllAvailableDestination.self)
+            Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
             for obj in allDest {
                 print(obj.destination)
                 Constant.MyClassConstants.whereTogoContentArray.add(obj.destination)
