@@ -674,32 +674,54 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
     
     func searchButtonClicked(_ sender : IUIKButton) {
         
-        if (self.segmentTitle == Constant.segmentControlItems.getaways && (Helper.getAllDestinationFromLocalStorage().count>0 || Helper.getAllResortsFromLocalStorage().count>0) || Constant.MyClassConstants.whereTogoContentArray.count>0) {
+        if(Constant.MyClassConstants.whereTogoContentArray.contains(Constant.MyClassConstants.allDestinations) && self.segmentTitle == Constant.segmentControlItems.getaways) {
             
             if(Constant.MyClassConstants.whereTogoContentArray.contains(Constant.MyClassConstants.allDestinations) ){
                 
-                let (toDateTop,fromDateTop) = getSearchDatesTop()
-                let searchDateRequest = RentalSearchRegionsRequest()
-                searchDateRequest.checkInToDate = toDateTop
-                searchDateRequest.checkInFromDate = fromDateTop
+                let (_,fromDateTop) = getSearchDatesTop()
+                
+                let settings = Helper.createSettings()
+                let searchType = VacationSearchType.Rental
+                let checkInDate = fromDateTop
+                
+                let bookingWindow = BookingWindow()
+                bookingWindow.calculateIntervals(checkInDate: checkInDate)
+                
+                let activeInterval = bookingWindow.getActiveInterval()
+                
+                let request = RentalSearchRegionsRequest()
+                request.checkInFromDate = activeInterval?.startDate
+                request.checkInToDate = activeInterval?.endDate
                 
                 Helper.showProgressBar(senderView: self)
-                //sender.isEnabled = false
-                RentalClient.searchRegions(UserContext.sharedInstance.accessToken, request: searchDateRequest, onSuccess: {(response)in
-                    print(response)
-                    
-                    for rsregion in response {
-                        
-                        Constant.MyClassConstants.regionArray.append(rsregion)
-                        Helper.hideProgressBar(senderView: self)
-                        
-                    }
-                    self.performSegue(withIdentifier:"allAvailableDestination", sender: self)
-                    
-                }, onError: { (error) in
-                    print(error)
-                })
+                sender.isEnabled = false
+                Constant.MyClassConstants.regionArray.removeAll()
+                Constant.MyClassConstants.regionAreaDictionary.removeAllObjects()
+                Constant.MyClassConstants.selectedAreaCodeDictionary.removeAllObjects()
+                Constant.MyClassConstants.selectedAreaCodeArray.removeAllObjects()
                 
+                if ((settings.vacationSearch?.vacationSearchTypes.contains(searchType.rawValue))! && searchType.isRental()) {
+                    RentalClient.searchRegions(UserContext.sharedInstance.accessToken, request: request, onSuccess: {(response)in
+                        print(response)
+                        
+                        for rsregion in response {
+                            let region = Region()
+                            region.regionName = rsregion.regionName
+                            region.regionCode = rsregion.regionCode
+                            region.areas = rsregion.areas
+                            Constant.MyClassConstants.regionArray.append(rsregion)
+                            Helper.hideProgressBar(senderView: self)
+                            
+                        }
+                        Helper.hideProgressBar(senderView: self)
+                        sender.isEnabled = true
+                        self.performSegue(withIdentifier:"allAvailableDestination", sender: self)
+                        
+                    }, onError: { (error) in
+                        sender.isEnabled = true
+                        print(error)
+                    })
+                }
             }else {
                 Helper.showProgressBar(senderView: self)
                 Constant.MyClassConstants.selectedSegment =  Constant.MyClassConstants.selectedSegmentExchange
