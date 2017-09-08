@@ -153,13 +153,18 @@ extension WereWantToGoTableViewCell:WhereToGoCollectionViewCellDelegate {
             
         }
         if(Constant.MyClassConstants.whereTogoContentArray.count > 0) {
+            print( Constant.MyClassConstants.whereTogoContentArray)
             Constant.MyClassConstants.whereTogoContentArray.removeObject(at: Index)
+            print( Constant.MyClassConstants.whereTogoContentArray)
             selectedIndex = -1
         }
         if(Constant.MyClassConstants.realmStoredDestIdOrCodeArray.count > 0){
             Constant.MyClassConstants.realmStoredDestIdOrCodeArray.removeObject(at: Index)
         }
-        
+        let allDest = Helper.getLocalStorageAllDest()
+        if (allDest.count > 0){
+        Helper.deleteObjectFromAllDest()
+        }
         let deletionIndexPath = IndexPath(item: Index, section: 0)
         self.collectionView.deleteItems(at: [deletionIndexPath])
         
