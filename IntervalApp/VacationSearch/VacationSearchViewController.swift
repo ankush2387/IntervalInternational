@@ -1321,6 +1321,10 @@ extension VacationSearchViewController:UITableViewDataSource {
                     realm.deleteAll()
                 }
             }
+            let allAvailableDestinations = Helper.getLocalStorageAllDest()
+            if(allAvailableDestinations.count > 0){
+                Helper.deleteObjectFromAllDest()
+            }
             self.searchVacationTableView.reloadData()
         }
         actionSheetController.addAction(resetMySearchAction)

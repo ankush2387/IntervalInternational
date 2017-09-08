@@ -25,8 +25,7 @@ class AllAvailableDestinationViewController: UIViewController {
     var areaArray = [Area]()
     var regionAreaDictionary = NSMutableDictionary()
     var selectedAreaDictionary = NSMutableDictionary()
-    var expand = false
-    var sectionSelected = 0
+    var upDownArray = NSMutableArray()
     //var selectedAreaCodeDictionary = NSMutableDictionary()
     var moreButton:UIBarButtonItem?
     var selectedCheckBox = IUIKCheckbox()
@@ -205,19 +204,17 @@ class AllAvailableDestinationViewController: UIViewController {
     
     func expandClicked(_ sender:UIButton){
         
-        senderButton = sender
-        sectionSelected = sender.tag
         let rsregion = Constant.MyClassConstants.regionArray [sender.tag]
         print(Constant.MyClassConstants.regionAreaDictionary)
         if Constant.MyClassConstants.regionAreaDictionary.count == 0 {
             Constant.MyClassConstants.regionAreaDictionary.setValue(rsregion.areas, forKey: String(rsregion.regionCode))
-            expand = true
+            upDownArray.add("\(sender.tag)")
         }else if (Constant.MyClassConstants.regionAreaDictionary.value(forKey:"\(rsregion.regionCode)") == nil){
             Constant.MyClassConstants.regionAreaDictionary.setValue(rsregion.areas, forKey: String(rsregion.regionCode))
-            expand = true
+            upDownArray.add("\(sender.tag)")
         }else{
             Constant.MyClassConstants.regionAreaDictionary.removeObject(forKey: String(rsregion.regionCode))
-            expand = false
+            upDownArray.remove("\(sender.tag)")
         }
         self.allAvailableDestinatontableview.reloadData()
     }
@@ -419,8 +416,9 @@ extension AllAvailableDestinationViewController:UITableViewDelegate{
         }
         cell.expandRegionButton.addTarget(self, action: #selector(AllAvailableDestinationViewController.expandClicked(_:)), for: .touchUpInside)
         
-        if(expand && sectionSelected == section){
+        if(upDownArray.contains("\(section)")){
             UIView.animate(withDuration:0.1, animations: {
+                cell.imgIconPlus?.transform = CGAffineTransform.identity
                 cell.imgIconPlus?.transform = CGAffineTransform(rotationAngle: (180.0 * CGFloat(Double.pi)) / 180.0)
             })
         }
