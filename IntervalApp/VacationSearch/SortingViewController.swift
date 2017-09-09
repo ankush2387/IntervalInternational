@@ -171,6 +171,7 @@ class SortingViewController: UIViewController {
                     
                     let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
                     Constant.MyClassConstants.checkInDates = response.checkInDates
+                    Constant.MyClassConstants.initialVacationSearch = vacationSearchFilter
                     Helper.helperDelegate = self
                     Helper.hideProgressBar(senderView: self)
                     

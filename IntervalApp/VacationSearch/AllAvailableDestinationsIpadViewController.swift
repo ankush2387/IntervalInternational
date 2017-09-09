@@ -37,7 +37,7 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
     var isExpandCellIndex = -1
     var expand = false
     var sectionSelected = 0
-    var headerIndexArray = NSMutableArray()
+    var upDownArray = NSMutableArray()
     
     
     
@@ -169,7 +169,6 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
     
     @IBAction func headerButtonClicked(_ sender: UIButton) {
         
-        senderButton = sender
         sectionSelected = sender.tag
        // let strNew = String(sectionSelected)
         
@@ -177,16 +176,13 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
         print(Constant.MyClassConstants.regionAreaDictionary)
         if Constant.MyClassConstants.regionAreaDictionary.count == 0 {
             Constant.MyClassConstants.regionAreaDictionary.setValue(rsregion.areas, forKey: String(rsregion.regionCode))
-            expand = true
-            self.headerIndexArray.add(sectionSelected)
+            self.upDownArray.add("\(sender.tag)")
         }else if (Constant.MyClassConstants.regionAreaDictionary.value(forKey:"\(rsregion.regionCode)") == nil){
             Constant.MyClassConstants.regionAreaDictionary.setValue(rsregion.areas, forKey: String(rsregion.regionCode))
-            expand = true
-            self.headerIndexArray.add(sectionSelected)
+            self.upDownArray.add("\(sender.tag)")
         }else{
             Constant.MyClassConstants.regionAreaDictionary.removeObject(forKey: String(rsregion.regionCode))
-            expand = false
-            self.headerIndexArray.remove(sectionSelected)
+            self.upDownArray.remove("\(sender.tag)")
         }
         self.allAvailableDestinatontableview.reloadData()
     }
@@ -418,20 +414,11 @@ extension AllAvailableDestinationsIpadViewController:UITableViewDelegate {
             
         }
         
-        if(expand){
-            for item in self.headerIndexArray {
-                let strSectionSelected  = String(describing: item)
-                let strSection1 = String(describing: section)
-                
-                if strSection1.isEqual(strSectionSelected) {
-                    cell.imgIconPlus?.image = UIImage.init(named: "up_arrow_icon")
-                }
-            }
-
-        } else {
-            cell.imgIconPlus?.image = UIImage.init(named: "DropArrowIcon")
-            expand = true
-            
+        if upDownArray.contains("\(section)") {
+            UIView.animate(withDuration:0.1, animations: {
+                cell.imgIconPlus?.transform = CGAffineTransform.identity
+                cell.imgIconPlus?.transform = CGAffineTransform(rotationAngle: (180.0 * CGFloat(Double.pi)) / 180.0)
+            })
         }
         
         return cell

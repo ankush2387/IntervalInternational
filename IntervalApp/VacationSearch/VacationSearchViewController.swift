@@ -1323,6 +1323,7 @@ extension VacationSearchViewController:UITableViewDataSource {
             }
             let allAvailableDestinations = Helper.getLocalStorageAllDest()
             if(allAvailableDestinations.count > 0){
+            Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
                 Helper.deleteObjectFromAllDest()
             }
             self.searchVacationTableView.reloadData()
