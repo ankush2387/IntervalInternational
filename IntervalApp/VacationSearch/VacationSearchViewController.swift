@@ -1389,6 +1389,14 @@ extension VacationSearchViewController:WhoIsTravelingCellDelegate {
 
 extension VacationSearchViewController:SearchTableViewCellDelegate {
     func searchButtonClicked(_ sender : IUIKButton) {
+        
+        //Set travel PartyInfo
+        let travelPartyInfo = TravelParty()
+        travelPartyInfo.adults = Int(self.adultCounter)
+        travelPartyInfo.children = Int(self.childCounter)
+        
+        Constant.MyClassConstants.travelPartyInfo = travelPartyInfo
+        
         Helper.helperDelegate = self
         ADBMobile.trackAction(Constant.omnitureEvents.event1, data: nil)
         
@@ -1426,8 +1434,6 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             }
             
             
-           
-            
             Helper.showProgressBar(senderView: self)
             sender.isEnabled = false
             Constant.MyClassConstants.regionArray.removeAll()
@@ -1451,6 +1457,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 Helper.hideProgressBar(senderView: self)
                 sender.isEnabled = true
                 self.performSegue(withIdentifier:"allAvailableDestination", sender: self)
+                Constant.MyClassConstants.isFromExchangeAllavialble = false
                 
             }, onError: { (error) in
                 sender.isEnabled = true
@@ -1458,28 +1465,38 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             })
             }else{
                 
-              ExchangeClient.searchRegions(UserContext.sharedInstance.accessToken, request: requestExchange, onSuccess: { (response) in
-                
-                print(response)
-                
-                for rsregion in response {
-                    let region = Region()
-                    region.regionName = rsregion.regionName
-                    region.regionCode = rsregion.regionCode
-                    region.areas = rsregion.areas
-                    Constant.MyClassConstants.regionArray.append(rsregion)
-                    Helper.hideProgressBar(senderView: self)
+                if(Constant.MyClassConstants.relinquishmentIdArray.count == 0){
                     
+                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
+                    Helper.hideProgressBar(senderView: self)
+                    sender.isEnabled = true
+                    
+                }else{
+                    
+                    ExchangeClient.searchRegions(UserContext.sharedInstance.accessToken, request: requestExchange, onSuccess: { (response) in
+                        
+                        print(response)
+                        
+                        for rsregion in response {
+                            let region = Region()
+                            region.regionName = rsregion.regionName
+                            region.regionCode = rsregion.regionCode
+                            region.areas = rsregion.areas
+                            Constant.MyClassConstants.regionArray.append(rsregion)
+                            Helper.hideProgressBar(senderView: self)
+                            
+                        }
+                        Helper.hideProgressBar(senderView: self)
+                        sender.isEnabled = true
+                        Constant.MyClassConstants.isFromExchangeAllavialble = true
+                        self.performSegue(withIdentifier:"allAvailableDestination", sender: self)
+                        
+                        
+                    }, onError: { (error) in
+                        
+                        print(error)
+                    })
                 }
-                Helper.hideProgressBar(senderView: self)
-                sender.isEnabled = true
-                self.performSegue(withIdentifier:"allAvailableDestination", sender: self)
-                
-                
-              }, onError: { (error) in
-                
-                print(error)
-              })
                 
             }
         }else{
@@ -1555,12 +1572,6 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 
                 sender.isEnabled = false
                 Helper.showProgressBar(senderView: self)
-                
-                let travelPartyInfo = TravelParty()
-                travelPartyInfo.adults = Int(self.adultCounter)
-                travelPartyInfo.children = Int(self.childCounter)
-                
-                Constant.MyClassConstants.travelPartyInfo = travelPartyInfo
                 
                 if Reachability.isConnectedToNetwork() == true {
                     
