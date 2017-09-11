@@ -373,18 +373,13 @@ class AllAvailableDestinationViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        if (Constant.MyClassConstants.isFromExchangeAllAvailable) {
+        if (segue.destination.isKind(of: SelectedResortsIpadViewController.self)) {
             
-           
-            //segue.destination as! SearchResultViewController
-            
-        }else{
-           
-//            let selectedResort = segue.destination as! SelectedResortsIpadViewController
-//            selectedResort.areaDictionary = self.selectedAreaDictionary
-//            print(selectedResort.areaDictionary)
-        }
+            let selectedResort = segue.destination as! SelectedResortsIpadViewController
+            selectedResort.areaDictionary = self.selectedAreaDictionary
+            print(selectedResort.areaDictionary)
         
+        }
      
     }
     
