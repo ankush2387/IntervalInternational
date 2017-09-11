@@ -379,7 +379,13 @@ class WhoWillBeCheckingInViewController: UIViewController {
             self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
 
         } else {
-            Helper.getRelinquishmentDetails(resortCode: ((filterRelinquishments.openWeek?.resort?.resortCode)!!), viewController: self)
+            if let openWeek = filterRelinquishments.openWeek{
+                Helper.getRelinquishmentDetails(resortCode: ((openWeek.resort?.resortCode)!!), viewController: self)
+            }
+            
+            if let deposits = filterRelinquishments.deposit{
+                Helper.getRelinquishmentDetails(resortCode: ((deposits.resort?.resortCode)!!), viewController: self)
+            }
             /*self.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: nil)*/
 
         }

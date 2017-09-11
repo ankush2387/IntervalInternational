@@ -517,7 +517,12 @@ class SearchResultViewController: UIViewController {
         
         processRequest.destination = Constant.MyClassConstants.exchangeDestination
         processRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
-        processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[0].openWeek?.relinquishmentId
+        if(Constant.MyClassConstants.filterRelinquishments[0].openWeek?.relinquishmentId != nil){
+            processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[0].openWeek?.relinquishmentId
+        }else{
+            processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[0].deposit?.relinquishmentId
+        }
+        
         
         ExchangeProcessClient.start(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: {(response) in
             let processResort = ExchangeProcess()
@@ -711,6 +716,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
         }else{
             if((indexPath as NSIndexPath).section == 0) {
                 Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.vacationSearchFunctionalityCheck
+                Constant.MyClassConstants.isFromSearchResult = true
                 Helper.addServiceCallBackgroundView(view: self.view)
                 SVProgressHUD.show()
                 var resortCode = ""

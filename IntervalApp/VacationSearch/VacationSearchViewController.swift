@@ -1400,22 +1400,13 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         
         Helper.helperDelegate = self
         ADBMobile.trackAction(Constant.omnitureEvents.event1, data: nil)
-        
-        
+    
+        // MARK: All Available Destinations Vacation Search
         if(Constant.MyClassConstants.whereTogoContentArray.contains(Constant.MyClassConstants.allDestinations)){
             
             let (_,fromDateTop) = getSearchDatesTop()
             var searchType: VacationSearchType
             let settings = Helper.createSettings()
-            if(segmentTitle == Constant.segmentControlItems.exchange){
-                
-                 searchType = VacationSearchType.Exchange
-            }
-            else{
-                
-                 searchType = VacationSearchType.Rental
-            }
-            
             let checkInDate = fromDateTop
             
             let bookingWindow = BookingWindow()
@@ -1424,25 +1415,37 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             let activeInterval = bookingWindow.getActiveInterval()
             let requestRental = RentalSearchRegionsRequest()
             let requestExchange = ExchangeSearchRegionsRequest()
+            
+            //Seprate exchange, rental and search both region search
             if (segmentTitle  == Constant.segmentControlItems.exchange) {
                 
                 requestExchange.checkInFromDate = activeInterval?.startDate
                 requestExchange.checkInToDate = activeInterval?.endDate
+                searchType = VacationSearchType.Exchange
+                
+            }else if (segmentTitle  == Constant.segmentControlItems.getaways){
+                
+                requestRental.checkInFromDate = activeInterval?.startDate
+                requestRental.checkInToDate = activeInterval?.endDate
+                searchType = VacationSearchType.Rental
+                
             }else{
                 
                 requestRental.checkInFromDate = activeInterval?.startDate
                 requestRental.checkInToDate = activeInterval?.endDate
+                searchType = VacationSearchType.Combined
+                
             }
-            
             
             Helper.showProgressBar(senderView: self)
             sender.isEnabled = false
+            
             Constant.MyClassConstants.regionArray.removeAll()
             Constant.MyClassConstants.regionAreaDictionary.removeAllObjects()
             Constant.MyClassConstants.selectedAreaCodeDictionary.removeAllObjects()
             Constant.MyClassConstants.selectedAreaCodeArray.removeAllObjects()
             
-            if ((settings.vacationSearch?.vacationSearchTypes.contains(searchType.rawValue))! && searchType.isRental()) {
+            if ((settings.vacationSearch?.vacationSearchTypes.contains(searchType.rawValue))! && (searchType.isRental() || searchType.isCombined()) ) {
             RentalClient.searchRegions(UserContext.sharedInstance.accessToken, request: requestRental, onSuccess: {(response)in
                 print(response)
                 
@@ -1457,8 +1460,14 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 }
                 Helper.hideProgressBar(senderView: self)
                 sender.isEnabled = true
-                self.performSegue(withIdentifier:"allAvailableDestination", sender: self)
-                Constant.MyClassConstants.isFromExchangeAllavialble = false
+                self.performSegue(withIdentifier:Constant.segueIdentifiers.allAvailableDestinations, sender: self)
+                Constant.MyClassConstants.isFromExchangeAllAvailable = false
+                if(searchType.isCombined()){
+                    Constant.MyClassConstants.isFromRentalAllAvailable = false
+                }else{
+                    Constant.MyClassConstants.isFromRentalAllAvailable = true
+                }
+                
                 
             }, onError: { (error) in
                 sender.isEnabled = true
@@ -1489,8 +1498,9 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                         }
                         Helper.hideProgressBar(senderView: self)
                         sender.isEnabled = true
-                        Constant.MyClassConstants.isFromExchangeAllavialble = true
-                        self.performSegue(withIdentifier:"allAvailableDestination", sender: self)
+                        Constant.MyClassConstants.isFromExchangeAllAvailable = true
+                        Constant.MyClassConstants.isFromRentalAllAvailable = false
+                        self.performSegue(withIdentifier:Constant.segueIdentifiers.allAvailableDestinations, sender: self)
                         
                         
                     }, onError: { (error) in
@@ -1510,6 +1520,8 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 let storedData = Helper.getLocalStorageWherewanttoGo()
                 
                 if(storedData.count > 0) {
+                    
+                    // MARK: Rental Vacation Search
                     
                     let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
                     self.getSavedDestinationsResorts(storedData:storedData, searchCriteria:rentalSearchCriteria)
@@ -1566,6 +1578,8 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
 
             
         } else if(self.segmentTitle == Constant.segmentControlItems.exchange && (Helper.getAllDestinationFromLocalStorage().count>0 || Helper.getAllResortsFromLocalStorage().count>0)) {
+            
+            // MARK: Exchange Vacation Search
             if(Constant.MyClassConstants.relinquishmentIdArray.count == 0){
                 sender.isEnabled = true
                 SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
@@ -1658,11 +1672,6 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     
                     if(storedData.count > 0) {
                         self.getSavedDestinationsResorts(storedData:storedData, searchCriteria:rentalSearchCriteria)
-                        let travelPartyInfo = TravelParty()
-                        travelPartyInfo.adults = Int(self.adultCounter)
-                        travelPartyInfo.children = Int(self.childCounter)
-                        
-                        Constant.MyClassConstants.travelPartyInfo = travelPartyInfo
                         rentalSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
                         rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                         rentalSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
@@ -1708,10 +1717,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                         }
                         
                     }
-                    
                 }
-                
-                
             }
         }
         
