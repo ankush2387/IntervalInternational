@@ -67,6 +67,8 @@ class AllAvailableDestinationViewController: UIViewController {
     
     @IBAction func searchButtonClicked(_ sender: Any) {
         
+        Helper.helperDelegate = self
+        
         if(Constant.MyClassConstants.isFromExchangeAllAvailable == true){
             
             
