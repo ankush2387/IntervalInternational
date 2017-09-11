@@ -689,8 +689,6 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
             let (_,fromDateTop) = getSearchDatesTop()
             var searchType: VacationSearchType
             let settings = Helper.createSettings()
-      
-            
             let checkInDate = fromDateTop
             
             let bookingWindow = BookingWindow()
@@ -699,29 +697,44 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
             let activeInterval = bookingWindow.getActiveInterval()
             let requestRental = RentalSearchRegionsRequest()
             let requestExchange = ExchangeSearchRegionsRequest()
-        
-            if(segmentTitle == Constant.segmentControlItems.exchange){
+            
+            //Seprate exchange, rental and search both region search
+            if (segmentTitle  == Constant.segmentControlItems.exchange) {
                 
-                searchType = VacationSearchType.Exchange
                 requestExchange.checkInFromDate = activeInterval?.startDate
                 requestExchange.checkInToDate = activeInterval?.endDate
-            }
-            else{
+                searchType = VacationSearchType.Exchange
                 
-                searchType = VacationSearchType.Rental
+                if(Constant.MyClassConstants.relinquishmentIdArray.count == 0) {
+                    return SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
+                    
+                }
+                
+            }else if (segmentTitle  == Constant.segmentControlItems.getaways){
+                
                 requestRental.checkInFromDate = activeInterval?.startDate
                 requestRental.checkInToDate = activeInterval?.endDate
+                searchType = VacationSearchType.Rental
+                
+            }else {
+                
+                requestRental.checkInFromDate = activeInterval?.startDate
+                requestRental.checkInToDate = activeInterval?.endDate
+                searchType = VacationSearchType.Combined
+                
             }
+            
             
             
             Helper.showProgressBar(senderView: self)
             sender.isEnabled = false
+            
             Constant.MyClassConstants.regionArray.removeAll()
             Constant.MyClassConstants.regionAreaDictionary.removeAllObjects()
             Constant.MyClassConstants.selectedAreaCodeDictionary.removeAllObjects()
             Constant.MyClassConstants.selectedAreaCodeArray.removeAllObjects()
             
-            if ((settings.vacationSearch?.vacationSearchTypes.contains(searchType.rawValue))! && searchType.isRental()) {
+            if ((settings.vacationSearch?.vacationSearchTypes.contains(searchType.rawValue))! && (searchType.isRental() || searchType.isCombined()) ) {
                 RentalClient.searchRegions(UserContext.sharedInstance.accessToken, request: requestRental, onSuccess: {(response)in
                     print(response)
                     
@@ -736,8 +749,14 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                     }
                     Helper.hideProgressBar(senderView: self)
                     sender.isEnabled = true
-                    self.performSegue(withIdentifier:"allAvailableDestination", sender: self)
-                    Constant.MyClassConstants.isFromExchangeAllavialble = false
+                    self.performSegue(withIdentifier:Constant.segueIdentifiers.allAvailableDestinations, sender: self)
+                    Constant.MyClassConstants.isFromExchangeAllAvailable = false
+                    if(searchType.isCombined()){
+                        Constant.MyClassConstants.isFromRentalAllAvailable = false
+                    }else{
+                        Constant.MyClassConstants.isFromRentalAllAvailable = true
+                    }
+                    
                     
                 }, onError: { (error) in
                     sender.isEnabled = true
@@ -745,14 +764,6 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                 })
             }else{
                 
-                if(Constant.MyClassConstants.relinquishmentIdArray.count == 0){
-                    
-                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
-                    Helper.hideProgressBar(senderView: self)
-                    sender.isEnabled = true
-                    
-                }else{
-                    
                     ExchangeClient.searchRegions(UserContext.sharedInstance.accessToken, request: requestExchange, onSuccess: { (response) in
                         
                         print(response)
@@ -768,15 +779,15 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                         }
                         Helper.hideProgressBar(senderView: self)
                         sender.isEnabled = true
-                        Constant.MyClassConstants.isFromExchangeAllavialble = true
-                        self.performSegue(withIdentifier:"allAvailableDestination", sender: self)
+                        Constant.MyClassConstants.isFromExchangeAllAvailable = true
+                        Constant.MyClassConstants.isFromRentalAllAvailable = false
+                        self.performSegue(withIdentifier:Constant.segueIdentifiers.allAvailableDestinations, sender: self)
                         
                         
                     }, onError: { (error) in
                         
                         print(error)
                     })
-                }
                 
             }
         } else {
