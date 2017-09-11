@@ -134,9 +134,10 @@ class SortingViewController: UIViewController {
                     rentalSearchCriteria.area = area
                     
                 }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
+                    exchangeSearchCriteria.area = area
 
                 }else{
-    
+                    bothSearchCriteria.area = area
                 }
                 
                 Constant.MyClassConstants.vacationSearchResultHeaderLabel = area.areaName!
@@ -217,25 +218,29 @@ class SortingViewController: UIViewController {
                     vacationSearchFilter.updateActiveInterval(activeInterval: activeInterval)
                     
                     Helper.showScrollingCalendar(vacationSearch: vacationSearchFilter)
+                    Constant.MyClassConstants.initialVacationSearch = vacationSearchFilter
                     
                     // Check not available checkIn dates for the active interval
                     if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                        
-                        // Update active interval
-                        vacationSearchFilter.updateActiveInterval(activeInterval: activeInterval)
-                        Helper.showScrollingCalendar(vacationSearch: vacationSearchFilter)
-                        
                         Helper.showNotAvailabilityResults()
                     }
                     let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     Helper.helperDelegate = self
                     Helper.hideProgressBar(senderView: self)
+                    
+                    if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                        
+                        Helper.showNotAvailabilityResults()
+                        self.dismiss(animated: true, completion: nil)
+                        
+                    } else {
 
                     if response.checkInDates.count > 0 {
                         Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: response.checkInDates[0], senderViewController: self, vacationSearch: vacationSearchFilter)
                     }else{
                         Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: vacationSearchFilter)
+                    }
                     }
                     
                 }){ (error) in

@@ -547,7 +547,8 @@ class Constant: NSObject {
         //Header for search results
         static var searchResultHeader = NSLocalizedString("Nearest Check-in Date selected.\nWe found availibility close to your desired date.", comment: "")
         static var isFromExchange = false
-        static var isFromExchangeAllavialble = false
+        static var isFromExchangeAllAvailable = false
+        static var isFromRentalAllAvailable = false
         static var isFromWhatToUse = false
         static var isFromSearchBoth = false
         static var travelPartyInfo = TravelParty()

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F2073" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="g4N-VP-z9h">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="g4N-VP-z9h">
     <device id="ipad12_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -118,7 +118,7 @@
             <objects>
                 <navigationController id="MqJ-3b-541" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Map" id="EC6-ig-0BN"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="tSJ-c4-iId">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="tSJ-c4-iId">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -774,7 +774,7 @@
             <objects>
                 <navigationController id="4EV-Sm-76Z" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="1" title="List" id="Nsq-3s-bAJ"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="fb0-9A-GmL">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="fb0-9A-GmL">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -912,7 +912,7 @@
             <objects>
                 <navigationController id="UGW-nC-qAL" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="2" title="Favorites" id="eVy-g1-q88"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="lic-ed-GcV">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="lic-ed-GcV">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2350,8 +2350,8 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="eSC-QV-oQA"/>
-        <segue reference="jWh-Yi-Khg"/>
-        <segue reference="hcL-G1-Kx1"/>
+        <segue reference="HvM-Cf-vhw"/>
         <segue reference="FJe-xK-8HZ"/>
+        <segue reference="urI-DU-i2l"/>
     </inferredMetricsTieBreakers>
 </document>
