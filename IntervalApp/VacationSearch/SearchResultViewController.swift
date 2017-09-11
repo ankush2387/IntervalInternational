@@ -362,7 +362,7 @@ class SearchResultViewController: UIViewController {
         let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
         Helper.helperDelegate = self
         if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
-        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: toDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+            Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: toDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
         }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
             Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: toDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
         }else{
