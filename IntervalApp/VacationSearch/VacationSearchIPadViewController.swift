@@ -674,6 +674,13 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
     
     func searchButtonClicked(_ sender : IUIKButton) {
         
+        //Set travel PartyInfo
+        let travelPartyInfo = TravelParty()
+        travelPartyInfo.adults = Int(self.adultCounter)
+        travelPartyInfo.children = Int(self.childCounter)
+        
+        Constant.MyClassConstants.travelPartyInfo = travelPartyInfo
+        
         Helper.helperDelegate = self
         ADBMobile.trackAction(Constant.omnitureEvents.event1, data: nil)
         
@@ -682,15 +689,6 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
             let (_,fromDateTop) = getSearchDatesTop()
             var searchType: VacationSearchType
             let settings = Helper.createSettings()
-            if(segmentTitle == Constant.segmentControlItems.exchange){
-                
-                searchType = VacationSearchType.Exchange
-            }
-            else{
-                
-                searchType = VacationSearchType.Rental
-            }
-            
             let checkInDate = fromDateTop
             
             let bookingWindow = BookingWindow()
@@ -699,29 +697,44 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
             let activeInterval = bookingWindow.getActiveInterval()
             let requestRental = RentalSearchRegionsRequest()
             let requestExchange = ExchangeSearchRegionsRequest()
+            
+            //Seprate exchange, rental and search both region search
             if (segmentTitle  == Constant.segmentControlItems.exchange) {
-                
-                if(Constant.MyClassConstants.relinquishmentIdArray.count == 0){
-                    return SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
-                }
                 
                 requestExchange.checkInFromDate = activeInterval?.startDate
                 requestExchange.checkInToDate = activeInterval?.endDate
-            }else{
+                searchType = VacationSearchType.Exchange
+                
+                if(Constant.MyClassConstants.relinquishmentIdArray.count == 0) {
+                    return SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
+                    
+                }
+                
+            }else if (segmentTitle  == Constant.segmentControlItems.getaways){
                 
                 requestRental.checkInFromDate = activeInterval?.startDate
                 requestRental.checkInToDate = activeInterval?.endDate
+                searchType = VacationSearchType.Rental
+                
+            }else {
+                
+                requestRental.checkInFromDate = activeInterval?.startDate
+                requestRental.checkInToDate = activeInterval?.endDate
+                searchType = VacationSearchType.Combined
+                
             }
+            
             
             
             Helper.showProgressBar(senderView: self)
             sender.isEnabled = false
+            
             Constant.MyClassConstants.regionArray.removeAll()
             Constant.MyClassConstants.regionAreaDictionary.removeAllObjects()
             Constant.MyClassConstants.selectedAreaCodeDictionary.removeAllObjects()
             Constant.MyClassConstants.selectedAreaCodeArray.removeAllObjects()
             
-            if ((settings.vacationSearch?.vacationSearchTypes.contains(searchType.rawValue))! && searchType.isRental()) {
+            if ((settings.vacationSearch?.vacationSearchTypes.contains(searchType.rawValue))! && (searchType.isRental() || searchType.isCombined()) ) {
                 RentalClient.searchRegions(UserContext.sharedInstance.accessToken, request: requestRental, onSuccess: {(response)in
                     print(response)
                     
@@ -736,7 +749,14 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                     }
                     Helper.hideProgressBar(senderView: self)
                     sender.isEnabled = true
-                    self.performSegue(withIdentifier:"allAvailableDestination", sender: self)
+                    self.performSegue(withIdentifier:Constant.segueIdentifiers.allAvailableDestinations, sender: self)
+                    Constant.MyClassConstants.isFromExchangeAllAvailable = false
+                    if(searchType.isCombined()){
+                        Constant.MyClassConstants.isFromRentalAllAvailable = false
+                    }else{
+                        Constant.MyClassConstants.isFromRentalAllAvailable = true
+                    }
+                    
                     
                 }, onError: { (error) in
                     sender.isEnabled = true
@@ -744,28 +764,30 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                 })
             }else{
                 
-                ExchangeClient.searchRegions(UserContext.sharedInstance.accessToken, request: requestExchange, onSuccess: { (response) in
-                    
-                    print(response)
-                    
-                    for rsregion in response {
-                        let region = Region()
-                        region.regionName = rsregion.regionName
-                        region.regionCode = rsregion.regionCode
-                        region.areas = rsregion.areas
-                        Constant.MyClassConstants.regionArray.append(rsregion)
-                        Helper.hideProgressBar(senderView: self)
+                    ExchangeClient.searchRegions(UserContext.sharedInstance.accessToken, request: requestExchange, onSuccess: { (response) in
                         
-                    }
-                    Helper.hideProgressBar(senderView: self)
-                    sender.isEnabled = true
-                    self.performSegue(withIdentifier:"allAvailableDestination", sender: self)
-                    
-                    
-                }, onError: { (error) in
-                    
-                    print(error)
-                })
+                        print(response)
+                        
+                        for rsregion in response {
+                            let region = Region()
+                            region.regionName = rsregion.regionName
+                            region.regionCode = rsregion.regionCode
+                            region.areas = rsregion.areas
+                            Constant.MyClassConstants.regionArray.append(rsregion)
+                            Helper.hideProgressBar(senderView: self)
+                            
+                        }
+                        Helper.hideProgressBar(senderView: self)
+                        sender.isEnabled = true
+                        Constant.MyClassConstants.isFromExchangeAllAvailable = true
+                        Constant.MyClassConstants.isFromRentalAllAvailable = false
+                        self.performSegue(withIdentifier:Constant.segueIdentifiers.allAvailableDestinations, sender: self)
+                        
+                        
+                    }, onError: { (error) in
+                        
+                        print(error)
+                    })
                 
             }
         } else {
