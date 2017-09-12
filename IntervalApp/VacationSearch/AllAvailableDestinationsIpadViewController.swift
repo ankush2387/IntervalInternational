@@ -70,6 +70,17 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        
+        if(sectionCounter == 0){
+            
+            self.viewButtonHeightConstraint.constant = 0
+            self.searchButtonHeightConstraint.constant = 0
+            self.searchButton.isHidden = false
+            UIView.animate(withDuration: 0.5) {
+                self.view.layoutIfNeeded()
+            }
+        }
+        
         self.allAvailableDestinatontableview.reloadData()
         self.resetCounter()
         
@@ -252,8 +263,6 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
                 exchangeSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
                 exchangeSearchCriteria.searchType = VacationSearchType.Exchange
                 
-                
-                
                 //let storedData = Helper.getLocalStorageWherewanttoGo()
                 
                 exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
@@ -262,7 +271,6 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
                 area.areaCode = Int(Constant.MyClassConstants.selectedAreaCodeArray[0] as! String)!
                 area.areaName = Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: Constant.MyClassConstants.selectedAreaCodeArray[0] as! String) as? String
                 Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.areas = [area]
-                
                 
                 
                 ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
