@@ -1446,6 +1446,15 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             Constant.MyClassConstants.selectedAreaCodeArray.removeAllObjects()
             
             if ((settings.vacationSearch?.vacationSearchTypes.contains(searchType.rawValue))! && (searchType.isRental() || searchType.isCombined()) ) {
+                
+                if(Constant.MyClassConstants.relinquishmentIdArray.count == 0 && searchType.isCombined()){
+                    
+                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
+                    Helper.hideProgressBar(senderView: self)
+                    sender.isEnabled = true
+                    
+                }else{
+                
             RentalClient.searchRegions(UserContext.sharedInstance.accessToken, request: requestRental, onSuccess: {(response)in
                 print(response)
                 
@@ -1473,6 +1482,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 sender.isEnabled = true
                 print(error)
             })
+                }
             }else{
                 
                 if(Constant.MyClassConstants.relinquishmentIdArray.count == 0){
