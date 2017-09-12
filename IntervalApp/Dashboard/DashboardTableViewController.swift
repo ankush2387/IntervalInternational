@@ -549,9 +549,9 @@ extension DashboardTableViewController:UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if(collectionView.tag == 1){
-            self.topTenGetawaySelected(selectedIndexPath: indexPath)
-        }else{
             self.flexchangeSelected(selectedIndexPath: indexPath)
+        }else{
+            self.topTenGetawaySelected(selectedIndexPath: indexPath)
         }
     }
 }

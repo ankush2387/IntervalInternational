@@ -357,6 +357,9 @@ class SearchResultViewController: UIViewController {
     //*****Function for more button press *****//
     func intervalDateItemClicked(_ toDate: Date){
         searchResultColelctionView.reloadData()
+         if(combinedExactSearchItems.isEmpty && combinedSurroundingSearchItems.isEmpty && exactMatchResortsArray.isEmpty && exactMatchResortsArrayExchange.isEmpty && surroundingMatchResortsArray.isEmpty && surroundingMatchResortsArrayExchange.isEmpty){
+            print("All empty")
+         }else{
         let indexPath = IndexPath(row: 0, section: 0)
         searchResultTableView.scrollToRow(at: indexPath, at: .top, animated: true)
         let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
@@ -386,6 +389,7 @@ class SearchResultViewController: UIViewController {
             }
             )
             
+        }
         }
     }
     
