@@ -87,6 +87,8 @@ class SearchResultViewController: UIViewController {
         exactMatchResortsArrayExchange.removeAll()
         surroundingMatchResortsArray.removeAll()
         surroundingMatchResortsArrayExchange.removeAll()
+        combinedExactSearchItems.removeAll()
+        combinedSurroundingSearchItems.removeAll()
         
         if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Exchange){
             
@@ -613,9 +615,9 @@ class SearchResultViewController: UIViewController {
         let firstVisibleIndexPath = searchResultTableView.indexPathsForVisibleRows?.first
         let indexPath = IndexPath(item: collectionviewSelectedIndex, section: 0)
         if(firstVisibleIndexPath?.section == 1){
-            dateCellSelectionColor = Constant.CommonColor.greenColor
-        }else{
             dateCellSelectionColor = Constant.CommonColor.blueColor
+        }else{
+            dateCellSelectionColor = Constant.CommonColor.greenColor
         }
         
         if(indexPath.row <= Constant.MyClassConstants.calendarDatesArray.count){
@@ -708,7 +710,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
             
             let lastSelectedIndex = collectionviewSelectedIndex
             collectionviewSelectedIndex = indexPath.item
-            dateCellSelectionColor = Constant.CommonColor.blueColor
+            //dateCellSelectionColor = Constant.CommonColor.blueColor
             if(Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)!{
                 
                 Helper.showProgressBar(senderView: self)

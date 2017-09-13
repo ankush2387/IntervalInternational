@@ -107,10 +107,9 @@ class VacationSearchViewController: UIViewController {
         self.searchVacationSegementControl.removeAllSegments()
         
         // updating segment control number of segment according to app settings response
-        for i in 0 ..< (UserContext.sharedInstance.appSettings?.vacationSearch?.vacationSearchTypes.count)! {
+        for (i,searchType) in (UserContext.sharedInstance.appSettings?.vacationSearch?.vacationSearchTypes.enumerated())! {
             
-            let type = UserContext.sharedInstance.appSettings?.vacationSearch?.vacationSearchTypes[i]
-            self.searchVacationSegementControl.insertSegment(withTitle: Helper.vacationSearchTypeSegemtStringToDisplay(vacationSearchType: type!), at: i, animated: true)
+            self.searchVacationSegementControl.insertSegment(withTitle: Helper.vacationSearchTypeSegemtStringToDisplay(vacationSearchType: searchType), at: i, animated: true)
             
             self.searchVacationSegementControl.selectedSegmentIndex = 0
             self.segmentTitle = searchVacationSegementControl.titleForSegment(at: 0)!
@@ -543,7 +542,7 @@ extension VacationSearchViewController:UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         
-        if(tableView.numberOfSections == 6) {
+        if(tableView.numberOfSections == 6 || tableView.numberOfSections == 7) {
             
             if( section < 4) {
                 
@@ -1314,18 +1313,8 @@ extension VacationSearchViewController:UITableViewDataSource {
             Constant.MyClassConstants.checkInClosestContentArray.removeAllObjects()
             Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
             Constant.MyClassConstants.realmStoredDestIdOrCodeArray.removeAllObjects()
-            let realm = try! Realm()
-            let allDest = Helper.getLocalStorageWherewanttoGo()
-            if (allDest.count > 0) {
-                try! realm.write{
-                    realm.deleteAll()
-                }
-            }
-            let allAvailableDestinations = Helper.getLocalStorageAllDest()
-            if(allAvailableDestinations.count > 0){
             Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
-                Helper.deleteObjectFromAllDest()
-            }
+            Helper.deleteObjectsFromLocalStorage()
             self.searchVacationTableView.reloadData()
         }
         actionSheetController.addAction(resetMySearchAction)
