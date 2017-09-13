@@ -319,7 +319,11 @@ extension VacationSearchViewController:UICollectionViewDelegate {
     
     //***** UICollectonview delegate methods definition here *****//
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.topTenGetawaySelected(selectedIndexPath: indexPath)
+        if(collectionView.tag == 1){
+            
+        }else{
+            self.topTenGetawaySelected(selectedIndexPath: indexPath)
+        }
     }
     
     
