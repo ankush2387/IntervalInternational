@@ -604,6 +604,7 @@ public class Helper{
             
             let realm = try! Realm()
             let allDest = realm.objects(AllAvailableDestination.self)
+            Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
             for obj in allDest {
                 print(obj.destination)
                 Constant.MyClassConstants.whereTogoContentArray.add(obj.destination)
@@ -1092,9 +1093,33 @@ public class Helper{
         if(isFromLockOff){
             viewController.isFromLockOff = true
         }
+        getOrderedSections(floatAttributesArray: viewController.floatAttributesArray, atrributesRowArray: viewController.atrributesRowArray)
         let transitionManager = TransitionManager()
         senderViewController.navigationController?.transitioningDelegate = transitionManager
         senderViewController.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    //Function to get ordered sections
+    static func getOrderedSections(floatAttributesArray:NSMutableArray, atrributesRowArray:NSMutableArray){
+        
+        floatAttributesArray.add(Constant.MyClassConstants.callResortAttribute)
+        floatAttributesArray.add(Constant.MyClassConstants.resortDetailsAttribute)
+        if (Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.resortClubAttribute)){
+            floatAttributesArray.add(Constant.MyClassConstants.resortClubAttribute)
+        }
+        floatAttributesArray.add(Constant.MyClassConstants.resortAttributes)
+        if(Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.resortReservationAttribute)){
+            atrributesRowArray.add(Constant.MyClassConstants.resortReservationAttribute)
+        }
+        if(Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.unitNumberAttribute)){
+            atrributesRowArray.add(Constant.MyClassConstants.unitNumberAttribute)
+        }
+        atrributesRowArray.add(Constant.MyClassConstants.noOfBedroomAttribute)
+        if(Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.checkInDateAttribute)){
+            atrributesRowArray.add(Constant.MyClassConstants.checkInDateAttribute)
+        }
+        
+        floatAttributesArray.add(Constant.MyClassConstants.saveAttribute)
     }
     
     /***** Get check-in dates API to show in calendar ******/
@@ -1818,7 +1843,7 @@ public class Helper{
             showAvailabilityResults(vacationSearch:vacationSearch)
             hideProgressBar(senderView:senderViewController)
             Constant.MyClassConstants.initialVacationSearch = vacationSearch
-            if(senderViewController.isKind(of: VacationSearchResultIPadController.self) || senderViewController.isKind(of: SearchResultViewController.self)  || senderViewController.isKind(of: SortingViewController.self)){
+            if(senderViewController.isKind(of: VacationSearchResultIPadController.self) || senderViewController.isKind(of: SearchResultViewController.self)  || senderViewController.isKind(of: SortingViewController.self) || senderViewController.isKind(of:AllAvailableDestinationViewController.self) || senderViewController.isKind(of: AllAvailableDestinationsIpadViewController.self)){
                 helperDelegate?.resortSearchComplete()
             }else{
                 senderViewController.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
@@ -1970,6 +1995,18 @@ public class Helper{
         }
         print(Constant.MyClassConstants.totalBucketArray)
         helperDelegate?.resetCalendar()
+    }
+    
+    static func createSettings() -> Settings {
+        let vacationSearchSettings = VacationSearchSettings()
+        vacationSearchSettings.bookingIntervalDateStrategy = BookingIntervalDateStrategy.First.rawValue
+        vacationSearchSettings.collapseBookingIntervalsOnChange = true
+        vacationSearchSettings.vacationSearchTypes = [String] (arrayLiteral: VacationSearchType.Combined.rawValue, VacationSearchType.Exchange.rawValue, VacationSearchType.Rental.rawValue)
+        
+        let settings = Settings()
+        settings.vacationSearch = vacationSearchSettings
+        
+        return settings
     }
     
     static func showNearestCheckInDateSelectedMessage() {

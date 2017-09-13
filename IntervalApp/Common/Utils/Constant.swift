@@ -253,9 +253,14 @@ class Constant: NSObject {
         static var resortCodesArray : [String] = []
         static var searchAvailabilityHeader = ""
         static var filterOptionsArray: [ResortDestination] = []
+        static var areaWithAreaCode: [AreaInfo] = []
+        static var selectedAreaCodeDictionary = NSMutableDictionary()
+        static var selectedAreaCodeArray = NSMutableArray()
         
         static var surroundingResortCodesArray : [String] = []
         static var resortsArray = [Resort]()
+        static var regionArray = [Region]()
+        static var regionAreaDictionary = NSMutableDictionary()
         static var favoritesResortArray = [Resort]()
         static var favoritesResortCodeArray:NSMutableArray = []
         static var getawayAlertsArray = [RentalAlert]()
@@ -542,6 +547,8 @@ class Constant: NSObject {
         //Header for search results
         static var searchResultHeader = NSLocalizedString("Nearest Check-in Date selected.\nWe found availibility close to your desired date.", comment: "")
         static var isFromExchange = false
+        static var isFromExchangeAllAvailable = false
+        static var isFromRentalAllAvailable = false
         static var isFromWhatToUse = false
         static var isFromSearchBoth = false
         static var travelPartyInfo = TravelParty()
@@ -592,6 +599,13 @@ class Constant: NSObject {
         case Resort(ResortList)
         case Destination(DestinationList)
         case ResortList([ResortByMap])
+        case Area(NSMutableDictionary)
+    }
+    
+    // Enum to store area and area code
+    enum AreaInfo {
+        static var area = [Area]()
+        static var areaCode = ""
     }
     
     struct CommonColor {
@@ -1269,8 +1283,11 @@ class Constant: NSObject {
         static var exchange = "Exchange"
         static var sortingOptionCell = "sortingOptionCell"
         static var filterOptionCell = "filterOptionCell"
+        static var areaCell = "areaCell"
+        static var regionCell = "regionCell"
         static var whereToGoCell = "WhereToGoCell"
         static var availablePoints = "AvailablePoints"
+        static var selectedResortsCell = "selectedResortsCell"
     }
     
     //***** Common structure for dynamic strings combinining strings *****//
@@ -1351,6 +1368,8 @@ class Constant: NSObject {
         static var whatToUseSegue = "whatToUse"
         static var bookingSelectionSegue = "BookYourSelectionSegue"
         static var chooseWhatToUse = "ChooseWhatToUse"
+        static var showSelectedResortsIpad = "showSelectedResorts"
+        static var allAvailableDestinations = "allAvailableDestination"
     }
     
     //***** common  structure to provide all actionSheetAttributedString *****//

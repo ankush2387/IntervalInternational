@@ -68,8 +68,7 @@ class SearchResultViewController: UIViewController {
         Constant.MyClassConstants.calendarDatesArray.removeAll()
         Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
         createSections()
-        
-        self.searchResultTableView.setContentOffset(CGPoint(x:0, y:0), animated: true)
+
         self.searchResultColelctionView.reloadData()
         self.searchResultTableView.reloadData()
     }
@@ -88,6 +87,8 @@ class SearchResultViewController: UIViewController {
         exactMatchResortsArrayExchange.removeAll()
         surroundingMatchResortsArray.removeAll()
         surroundingMatchResortsArrayExchange.removeAll()
+        combinedExactSearchItems.removeAll()
+        combinedSurroundingSearchItems.removeAll()
         
         if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Exchange){
             
@@ -358,10 +359,15 @@ class SearchResultViewController: UIViewController {
     //*****Function for more button press *****//
     func intervalDateItemClicked(_ toDate: Date){
         searchResultColelctionView.reloadData()
+         if(combinedExactSearchItems.isEmpty && combinedSurroundingSearchItems.isEmpty && exactMatchResortsArray.isEmpty && exactMatchResortsArrayExchange.isEmpty && surroundingMatchResortsArray.isEmpty && surroundingMatchResortsArrayExchange.isEmpty){
+            print("All empty")
+         }else{
+        let indexPath = IndexPath(row: 0, section: 0)
+        searchResultTableView.scrollToRow(at: indexPath, at: .top, animated: true)
         let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
         Helper.helperDelegate = self
         if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
-        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: toDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+            Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: toDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
         }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
             Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: toDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
         }else{
@@ -385,6 +391,7 @@ class SearchResultViewController: UIViewController {
             }
             )
             
+        }
         }
     }
     
@@ -516,7 +523,12 @@ class SearchResultViewController: UIViewController {
         
         processRequest.destination = Constant.MyClassConstants.exchangeDestination
         processRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
-        processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[0].openWeek?.relinquishmentId
+        if(Constant.MyClassConstants.filterRelinquishments[0].openWeek?.relinquishmentId != nil){
+            processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[0].openWeek?.relinquishmentId
+        }else{
+            processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[0].deposit?.relinquishmentId
+        }
+        
         
         ExchangeProcessClient.start(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: {(response) in
             let processResort = ExchangeProcess()
@@ -603,9 +615,9 @@ class SearchResultViewController: UIViewController {
         let firstVisibleIndexPath = searchResultTableView.indexPathsForVisibleRows?.first
         let indexPath = IndexPath(item: collectionviewSelectedIndex, section: 0)
         if(firstVisibleIndexPath?.section == 1){
-            dateCellSelectionColor = Constant.CommonColor.greenColor
-        }else{
             dateCellSelectionColor = Constant.CommonColor.blueColor
+        }else{
+            dateCellSelectionColor = Constant.CommonColor.greenColor
         }
         
         if(indexPath.row <= Constant.MyClassConstants.calendarDatesArray.count){
@@ -698,7 +710,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
             
             let lastSelectedIndex = collectionviewSelectedIndex
             collectionviewSelectedIndex = indexPath.item
-            dateCellSelectionColor = Constant.CommonColor.blueColor
+            //dateCellSelectionColor = Constant.CommonColor.blueColor
             if(Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)!{
                 
                 Helper.showProgressBar(senderView: self)
@@ -710,6 +722,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
         }else{
             if((indexPath as NSIndexPath).section == 0) {
                 Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.vacationSearchFunctionalityCheck
+                Constant.MyClassConstants.isFromSearchResult = true
                 Helper.addServiceCallBackgroundView(view: self.view)
                 SVProgressHUD.show()
                 var resortCode = ""
@@ -1101,9 +1114,9 @@ extension SearchResultViewController:UICollectionViewDataSource {
                 if((indexPath as NSIndexPath).row == collectionviewSelectedIndex) {
                     
                     if(dateCellSelectionColor == Constant.CommonColor.greenColor){
-                        cell.backgroundColor = Constant.CommonColor.headerGreenColor//IUIKColorPalette.secondary1.color
-                    }else{
                         cell.backgroundColor = IUIKColorPalette.primary1.color
+                    }else{
+                        cell.backgroundColor = Constant.CommonColor.headerGreenColor
                     }
                     cell.dateLabel.textColor = UIColor.white
                     cell.daynameWithyearLabel.textColor = UIColor.white
@@ -1271,14 +1284,14 @@ extension SearchResultViewController:UICollectionViewDataSource {
                     for sections in sectionsInSearchResult{
                         if((sections.exactMatch == nil || sections.exactMatch == true) && section == 0){
                             headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
-                            headerView.backgroundColor = IUIKColorPalette.primary1.color
+                            headerView.backgroundColor = Constant.CommonColor.headerGreenColor
                             break
                         }else if((sections.exactMatch == nil || sections.exactMatch == false) && section == 1){
                             headerLabel.text = Constant.CommonLocalisedString.surroundingString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
-                            headerView.backgroundColor = Constant.CommonColor.headerGreenColor
+                            headerView.backgroundColor = IUIKColorPalette.primary1.color
                         }else{
                             headerLabel.text = Constant.CommonLocalisedString.surroundingString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
-                            headerView.backgroundColor = Constant.CommonColor.headerGreenColor
+                            headerView.backgroundColor = IUIKColorPalette.primary1.color
                         }
                     }
         }
@@ -1598,8 +1611,10 @@ extension SearchResultViewController:HelperDelegate {
         self.createSections()
         self.searchResultColelctionView.reloadData()
         self.searchResultTableView.reloadData()
-        let indexPath = IndexPath(row: 0, section: 0)
-        searchResultTableView.scrollToRow(at: indexPath, at: .top, animated: true)
+        if(combinedExactSearchItems.isEmpty && combinedSurroundingSearchItems.isEmpty && exactMatchResortsArray.isEmpty && exactMatchResortsArrayExchange.isEmpty && surroundingMatchResortsArray.isEmpty && surroundingMatchResortsArrayExchange.isEmpty){
+            let indexPath = IndexPath(row: 0, section: 0)
+            searchResultTableView.scrollToRow(at: indexPath, at: .top, animated: true)
+        }
     }
     func resetCalendar(){
         

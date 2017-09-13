@@ -38,7 +38,7 @@ class SortingViewController: UIViewController {
         
         //remove extra separator of tableview
         self.sortingTBLview.tableFooterView = UIView()
-        
+        //selectedIndex = 0
         self.title = Constant.ControllerTitles.sorting
         
     }
@@ -124,6 +124,24 @@ class SortingViewController: UIViewController {
                 
                 Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(resortList[0].resortName) + \(resortList.count - 1) more"
                 
+            case .Area(let areaList):
+                print(areaList)
+                let area = Area()
+                area.areaName = (areaList.allValues[0] as! String)
+                area.areaCode = Int(areaList.allKeys[0] as! String)!
+                
+                if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
+                    rentalSearchCriteria.area = area
+                    
+                }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
+                    exchangeSearchCriteria.area = area
+
+                }else{
+                    bothSearchCriteria.area = area
+                }
+                
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel = area.areaName!
+                
             }
             
             ADBMobile.trackAction(Constant.omnitureEvents.event9, data: nil)
@@ -154,13 +172,23 @@ class SortingViewController: UIViewController {
                     
                     let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
                     Constant.MyClassConstants.checkInDates = response.checkInDates
+                    Constant.MyClassConstants.initialVacationSearch = vacationSearchFilter
                     Helper.helperDelegate = self
                     Helper.hideProgressBar(senderView: self)
+                    
+                    if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                        
+                        Helper.showNotAvailabilityResults()
+                        self.dismiss(animated: true, completion: nil)
+                        
+                    } else {
+                    
                     if(response.checkInDates.count > 0){
                         Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: response.checkInDates[0], senderViewController: self, vacationSearch:vacationSearchFilter)
                     }else{
                         Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch:vacationSearchFilter)
                     }
+                }
                     
                     
                 }){ (error) in
@@ -190,25 +218,29 @@ class SortingViewController: UIViewController {
                     vacationSearchFilter.updateActiveInterval(activeInterval: activeInterval)
                     
                     Helper.showScrollingCalendar(vacationSearch: vacationSearchFilter)
+                    Constant.MyClassConstants.initialVacationSearch = vacationSearchFilter
                     
                     // Check not available checkIn dates for the active interval
                     if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                        
-                        // Update active interval
-                        vacationSearchFilter.updateActiveInterval(activeInterval: activeInterval)
-                        Helper.showScrollingCalendar(vacationSearch: vacationSearchFilter)
-                        
                         Helper.showNotAvailabilityResults()
                     }
                     let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     Helper.helperDelegate = self
                     Helper.hideProgressBar(senderView: self)
+                    
+                    if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                        
+                        Helper.showNotAvailabilityResults()
+                        self.dismiss(animated: true, completion: nil)
+                        
+                    } else {
 
                     if response.checkInDates.count > 0 {
                         Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: response.checkInDates[0], senderViewController: self, vacationSearch: vacationSearchFilter)
                     }else{
                         Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: vacationSearchFilter)
+                    }
                     }
                     
                 }){ (error) in
@@ -287,8 +319,10 @@ class SortingViewController: UIViewController {
     
     // Set options for filter
     func createFilterOptions(){
-
+        
+        Constant.MyClassConstants.filterOptionsArray.removeAll()
         let storedData = Helper.getLocalStorageWherewanttoGo()
+        let allDest = Helper.getLocalStorageAllDest()
         
         if(storedData.count > 0) {
             
@@ -323,6 +357,11 @@ class SortingViewController: UIViewController {
                     }
                 }
             }
+        }else if(allDest.count > 0){
+            for areaCode in Constant.MyClassConstants.selectedAreaCodeArray{
+                let dictionaryArea = ["\(areaCode)": Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: areaCode as! String)]
+                Constant.MyClassConstants.filterOptionsArray.append(.Area(dictionaryArea as! NSMutableDictionary))
+            }
         }
     }
     
@@ -333,7 +372,7 @@ class SortingViewController: UIViewController {
             let cell = sender.superview?.superview?.superview as? FilterCell
             let indexPath = self.sortingTBLview.indexPath(for: cell!)
             
-            self.selectedIndex = (indexPath?.row)!
+             self.selectedIndex = (indexPath?.row)!
              self.sortingTBLview.reloadData()
             
             switch Constant.MyClassConstants.filterOptionsArray[(indexPath?.row)!] {
@@ -354,7 +393,13 @@ class SortingViewController: UIViewController {
                 self.sortingAndFilterSelectedValue(indexPath: indexPath! as NSIndexPath, isFromFiltered: true)
                 
                 //self.delegate?.selectedOptionis(filteredValueIs: val[0].resortName, indexPath: indexPath! as NSIndexPath, isFromFiltered: true)
+                
+            case .Area(let val):
+                
+                self.sortingAndFilterSelectedValue(indexPath: indexPath! as NSIndexPath, isFromFiltered: true)
             }
+            
+            
             
             
         } else { // sorting option clicked
@@ -399,6 +444,10 @@ extension SortingViewController:UITableViewDelegate {
             case .ResortList( _):
                 
                 self.sortingAndFilterSelectedValue(indexPath: indexPath as NSIndexPath, isFromFiltered: true)
+                
+            case .Area( _):
+                
+                self.sortingAndFilterSelectedValue(indexPath: indexPath as NSIndexPath, isFromFiltered: true)
             }
         } else {
             
@@ -416,6 +465,14 @@ extension SortingViewController:UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.isFilterClicked {
+//            print(Constant.MyClassConstants.filterOptionsArray.count)
+//            switch(Constant.MyClassConstants.filterOptionsArray[section]){
+//            case .Area(let areas):
+//                return areas.count
+//            case .Destination( _): break
+//            case .Resort( _): break
+//            case .ResortList( _): break
+//            }
             return Constant.MyClassConstants.filterOptionsArray.count
         } else {
             if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isCombined() {
@@ -440,6 +497,11 @@ extension SortingViewController:UITableViewDataSource {
                 cell.lblFilterOption.text = val.resortName
             case .ResortList(let val):
                 cell.lblFilterOption.text = "\(val[0].resortName) + \(val.count - 1)  more"
+            case .Area(let area):
+                let array = area.allKeys
+                
+                print(array)
+                cell.lblFilterOption.text = area.allValues[0] as! String
             }
             
             if(self.selectedIndex == indexPath.row) {

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AvailableDestinationsTableViewController: UITableViewController {
+class AvailableDestinationsTableViewController: UIViewController {
 
     //Outlets
     @IBOutlet var availableCountryListTableView: UITableView!
@@ -83,19 +83,21 @@ class AvailableDestinationsTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 
-    override func didReceiveMemoryWarning() {
+     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    
+       
+    func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 4
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         if let isOpen = tappedButtonDictionary[section]{
             if isOpen{
@@ -110,7 +112,7 @@ class AvailableDestinationsTableViewController: UITableViewController {
     }
 
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var availabledestionCountryOrContinentsCell :AvailableDestinationCountryOrContinentsTableViewCell?
         var availableCountryCell:AvailableDestinationPlaceTableViewCell?
        
@@ -154,14 +156,14 @@ class AvailableDestinationsTableViewController: UITableViewController {
         return "A"
     }*/
 
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 30
     }
     
-    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0.01
     }
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         var leading:NSLayoutConstraint?
         var trailing:NSLayoutConstraint?

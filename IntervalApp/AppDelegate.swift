@@ -57,6 +57,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 if(accessToken.token != nil){
                 SupportClient.getSettings(accessToken, onSuccess: { (settings) in
                     UserContext.sharedInstance.appSettings = settings
+                    if(settings.vacationSearch == nil){
+                        let vacationSearchSettings = VacationSearchSettings()
+                        vacationSearchSettings.vacationSearchTypes = [VacationSearchType.Combined.rawValue, VacationSearchType.Exchange.rawValue, VacationSearchType.Rental.rawValue]
+                        
+                        UserContext.sharedInstance.appSettings?.vacationSearch = vacationSearchSettings
+                    }
                 }, onError: { (error) in
                     print(error)
                 })

@@ -13,7 +13,7 @@ class ReservationTableViewCell: UITableViewCell {
     //Outlets
     @IBOutlet var registrationTextFieldsCollection: [UITextField]!
     @IBOutlet var selectResortLabel: UILabel!
-    @IBOutlet var resortAttributeLabel: UITextField!
+    @IBOutlet var resortAttributeLabel: FloatLabelTextField!
     @IBOutlet var resortPlaceHolderLabel: UILabel!
     @IBOutlet var textFieldView: UIView!
     @IBOutlet var viewButton:UIButton!

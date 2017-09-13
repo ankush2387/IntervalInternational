@@ -8,9 +8,12 @@
 
 import UIKit
 import IntervalUIKit
+import DarwinSDK
 class AvailableDestinationPlaceTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var lblAreaName: UILabel!
     @IBOutlet weak var infoLabel: UILabel!
+    @IBOutlet weak var counterLabel: UILabel!
     @IBOutlet weak var placeSelectionCheckBox: IUIKCheckbox!
     @IBOutlet weak var tdiImageView: UIImageView!
     
@@ -25,6 +28,17 @@ class AvailableDestinationPlaceTableViewCell: UITableViewCell {
      */
     
     func getCell(_ indexpath:IndexPath,selectedPlaceDictionary:[Int:Bool] = [Int:Bool]()){
+        
+    }
+    
+    func setAllAvailableAreaCell(index:Int, area:Area){
+        if(Constant.RunningDevice.deviceIdiom == .pad) {
+            self.lblAreaName.text = area.areaName
+            
+        } else {
+            infoLabel?.text = area.areaName
+            
+        }
         
     }
     

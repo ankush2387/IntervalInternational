@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Gs8-51-JGL">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Gs8-51-JGL">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Available Destinations Table View Controller-->
+        <!--Table View Controller-->
         <scene sceneID="9vm-yW-5bo">
             <objects>
-                <tableViewController storyboardIdentifier="AvailableDestinationsTableViewController" id="97N-Es-jNr" customClass="AvailableDestinationsTableViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="AvailableDestinationsTableViewController" id="97N-Es-jNr" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="61" sectionHeaderHeight="18" sectionFooterHeight="18" id="evB-jD-Rg6">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="AvailableDestinationCountryOrContinentsTableViewCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="continentsorcountrycell" rowHeight="61" id="y3T-vz-Gah" customClass="AvailableDestinationCountryOrContinentsTableViewCell" customModule="IntervalApp" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="56" width="375" height="61"/>
+                                <rect key="frame" x="0.0" y="55.5" width="375" height="61"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="y3T-vz-Gah" id="gxc-0g-lFe">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="60.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="United States of America" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r91-5S-BtN">
@@ -32,8 +32,8 @@
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Did-Bx-gn8">
-                                            <rect key="frame" x="552" y="11" width="40" height="40"/>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Did-Bx-gn8">
+                                            <rect key="frame" x="326" y="11" width="40" height="40"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="40" id="0ZC-ko-RuI"/>
                                                 <constraint firstAttribute="width" constant="40" id="Fom-o9-2lH"/>
@@ -57,7 +57,7 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="r91-5S-BtN" firstAttribute="centerY" secondItem="gxc-0g-lFe" secondAttribute="centerY" id="1Am-zD-oWK"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="Did-Bx-gn8" secondAttribute="trailing" id="5AO-hW-IQ9"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Did-Bx-gn8" secondAttribute="trailing" constant="1" id="5AO-hW-IQ9"/>
                                         <constraint firstItem="r91-5S-BtN" firstAttribute="leading" secondItem="gxc-0g-lFe" secondAttribute="leadingMargin" constant="15" id="8Jl-5e-k75"/>
                                         <constraint firstItem="Did-Bx-gn8" firstAttribute="top" secondItem="gxc-0g-lFe" secondAttribute="topMargin" constant="3" id="S3O-ID-pei"/>
                                         <constraint firstAttribute="topMargin" secondItem="A7h-qQ-a5U" secondAttribute="top" id="lh4-Ty-di5"/>
@@ -71,10 +71,10 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="AvailableDestinationPlaceTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="placecell" id="FaT-Np-bDX" customClass="AvailableDestinationPlaceTableViewCell" customModule="IntervalApp" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="117" width="375" height="61"/>
+                                <rect key="frame" x="0.0" y="116.5" width="375" height="61"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FaT-Np-bDX" id="ptC-la-1y3">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="60.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Arizona Lake" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cFZ-Ky-SHh">
@@ -149,7 +149,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Gs8-51-JGL" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="EKo-1K-YV4">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="EKo-1K-YV4">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
