@@ -53,7 +53,6 @@ class AllAvailableDestinationViewController: UIViewController {
             
         }
         
-        
         allAvailableDestinatontableview.reloadData()
         self.resetCounter()
     }

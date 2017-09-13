@@ -21,6 +21,7 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
     
     @IBOutlet weak var searchButton: UIButton!
     
+    @IBOutlet weak var viewSearchButton: UIView!
     
     //Class Varaiables
     var areaArray = [Area]()
@@ -71,16 +72,6 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         
-        if(sectionCounter == 0){
-            
-            self.viewButtonHeightConstraint.constant = 0
-            self.searchButtonHeightConstraint.constant = 0
-            self.searchButton.isHidden = false
-            UIView.animate(withDuration: 0.5) {
-                self.view.layoutIfNeeded()
-            }
-        }
-        
         self.allAvailableDestinatontableview.reloadData()
         self.resetCounter()
         
@@ -88,6 +79,16 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
     
     func resetCounter(){
         sectionCounter = 0
+        
+        /*if(sectionCounter == 0){
+            
+            self.viewButtonHeightConstraint.constant = 0
+            self.searchButtonHeightConstraint.constant = 0
+            self.searchButton.isHidden = false
+            UIView.animate(withDuration: 0.5) {
+                self.view.layoutIfNeeded()
+            }
+        }*/
         
         for values in selectedAreaDictionary {
             
@@ -477,6 +478,7 @@ extension AllAvailableDestinationsIpadViewController:UITableViewDelegate {
         self.viewButtonHeightConstraint.constant = 100
         self.searchButtonHeightConstraint.constant = 50
         self.searchButton.isHidden = false
+        self.viewSearchButton.isHidden = false
         UIView.animate(withDuration: 0.5) {
             self.view.layoutIfNeeded()
         }
@@ -490,6 +492,7 @@ extension AllAvailableDestinationsIpadViewController:UITableViewDelegate {
                 self.viewButtonHeightConstraint.constant = 0
                 self.searchButtonHeightConstraint.constant = 0
                 self.searchButton.isHidden = true
+                self.viewSearchButton.isHidden = true
                 UIView.animate(withDuration: 0.5) {
                     self.view.layoutIfNeeded()
                 }
@@ -534,7 +537,8 @@ extension AllAvailableDestinationsIpadViewController:UITableViewDelegate {
                 self.view.layoutIfNeeded()
             }
             
-        }else{
+        }
+    else{
             let region = Constant.MyClassConstants.regionArray[section]
             for selectedRegion in selectedAreaDictionary.allKeys{
                 if String(describing: selectedRegion) == region.regionName{
