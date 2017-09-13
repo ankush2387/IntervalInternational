@@ -2575,10 +2575,10 @@
                                                     </constraints>
                                                     <state key="normal" image="VS_List-Plus_ORNG"/>
                                                 </button>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="69,000" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m1v-ar-A3h">
-                                                    <rect key="frame" x="12" y="111" width="84" height="23"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="69,000" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m1v-ar-A3h">
+                                                    <rect key="frame" x="20" y="111" width="76" height="23"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="84" id="S7h-gT-PEo"/>
+                                                        <constraint firstAttribute="width" constant="76" id="S7h-gT-PEo"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
                                                     <color key="textColor" red="0.90196078430000004" green="0.52156862749999999" blue="0.2470588235" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -2640,7 +2640,7 @@
                                                 <constraint firstItem="26Y-3M-AWi" firstAttribute="leading" secondItem="NaN-5r-c7Q" secondAttribute="trailing" constant="7" id="Xpn-Bp-DVt"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="A0q-Lq-VB1" secondAttribute="bottom" constant="-8" id="aOa-g7-BYc"/>
                                                 <constraint firstItem="O8s-3R-Rnj" firstAttribute="top" secondItem="mWT-2Z-meK" secondAttribute="bottom" constant="29" id="bEs-TX-dGy"/>
-                                                <constraint firstItem="m1v-ar-A3h" firstAttribute="leading" secondItem="RPr-yC-FA0" secondAttribute="leadingMargin" constant="4" id="c3y-hZ-vTm"/>
+                                                <constraint firstItem="m1v-ar-A3h" firstAttribute="leading" secondItem="RPr-yC-FA0" secondAttribute="leadingMargin" constant="12" id="c3y-hZ-vTm"/>
                                                 <constraint firstItem="mWT-2Z-meK" firstAttribute="top" secondItem="RPr-yC-FA0" secondAttribute="topMargin" constant="4" id="dk1-ro-3wJ"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="NaN-5r-c7Q" secondAttribute="bottom" constant="10" id="ilq-dA-dre"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="m1v-ar-A3h" secondAttribute="bottom" constant="10" id="uHp-RP-HC7"/>
@@ -2651,7 +2651,8 @@
                                         <connections>
                                             <outlet property="addAvailablePointButton" destination="26Y-3M-AWi" id="Rqm-4u-53J"/>
                                             <outlet property="availablePointToolButton" destination="mWT-2Z-meK" id="MPP-WD-uey"/>
-                                            <outlet property="availablePointValueLabel" destination="m1v-ar-A3h" id="hke-wN-k3h"/>
+                                            <outlet property="availablePointValueLabel" destination="m1v-ar-A3h" id="q8K-a6-e9G"/>
+                                            <outlet property="availablePointValueWidth" destination="S7h-gT-PEo" id="cS0-gO-sGD"/>
                                             <outlet property="cigImageView" destination="Fdu-dV-Ko9" id="A1T-me-RZA"/>
                                         </connections>
                                     </tableViewCell>
@@ -6127,7 +6128,7 @@ to confirm a larger unit.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6bz-QP-2D5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4149.6000000000004" y="375.56221889055473"/>
+            <point key="canvasLocation" x="4135" y="445"/>
         </scene>
         <!--Relinquishment Details View Controller-->
         <scene sceneID="ZWc-Ia-re2">

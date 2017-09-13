@@ -20,7 +20,10 @@ class RelinquishmentSelectionCIGCell: UITableViewCell {
     
     @IBOutlet weak var availablePointValueLabel: UILabel!
     
-
+  
+    @IBOutlet weak var availablePointValueWidth: NSLayoutConstraint!
+    
+  
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

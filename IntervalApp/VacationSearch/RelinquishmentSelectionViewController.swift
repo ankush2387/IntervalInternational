@@ -779,6 +779,10 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                 let numberFormatter = NumberFormatter()
                 numberFormatter.numberStyle = NumberFormatter.Style.decimal
                 let formattedString = numberFormatter.string(for: largeNumber)
+                if((formattedString?.characters.count)! > 5){
+                    
+                    cell.availablePointValueWidth.constant = 120
+                }
                 cell.availablePointValueLabel.text = formattedString
             }
             
