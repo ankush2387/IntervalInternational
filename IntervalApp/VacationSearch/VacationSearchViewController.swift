@@ -107,10 +107,9 @@ class VacationSearchViewController: UIViewController {
         self.searchVacationSegementControl.removeAllSegments()
         
         // updating segment control number of segment according to app settings response
-        for i in 0 ..< (UserContext.sharedInstance.appSettings?.vacationSearch?.vacationSearchTypes.count)! {
+        for (i,searchType) in (UserContext.sharedInstance.appSettings?.vacationSearch?.vacationSearchTypes.enumerated())! {
             
-            let type = UserContext.sharedInstance.appSettings?.vacationSearch?.vacationSearchTypes[i]
-            self.searchVacationSegementControl.insertSegment(withTitle: Helper.vacationSearchTypeSegemtStringToDisplay(vacationSearchType: type!), at: i, animated: true)
+            self.searchVacationSegementControl.insertSegment(withTitle: Helper.vacationSearchTypeSegemtStringToDisplay(vacationSearchType: searchType), at: i, animated: true)
             
             self.searchVacationSegementControl.selectedSegmentIndex = 0
             self.segmentTitle = searchVacationSegementControl.titleForSegment(at: 0)!
@@ -543,7 +542,7 @@ extension VacationSearchViewController:UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         
-        if(tableView.numberOfSections == 6) {
+        if(tableView.numberOfSections == 6 || tableView.numberOfSections == 7) {
             
             if( section < 4) {
                 
@@ -1314,18 +1313,8 @@ extension VacationSearchViewController:UITableViewDataSource {
             Constant.MyClassConstants.checkInClosestContentArray.removeAllObjects()
             Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
             Constant.MyClassConstants.realmStoredDestIdOrCodeArray.removeAllObjects()
-            let realm = try! Realm()
-            let allDest = Helper.getLocalStorageWherewanttoGo()
-            if (allDest.count > 0) {
-                try! realm.write{
-                    realm.deleteAll()
-                }
-            }
-            let allAvailableDestinations = Helper.getLocalStorageAllDest()
-            if(allAvailableDestinations.count > 0){
             Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
-                Helper.deleteObjectFromAllDest()
-            }
+            Helper.deleteObjectsFromLocalStorage()
             self.searchVacationTableView.reloadData()
         }
         actionSheetController.addAction(resetMySearchAction)
@@ -1446,6 +1435,15 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             Constant.MyClassConstants.selectedAreaCodeArray.removeAllObjects()
             
             if ((settings.vacationSearch?.vacationSearchTypes.contains(searchType.rawValue))! && (searchType.isRental() || searchType.isCombined()) ) {
+                
+                if(Constant.MyClassConstants.relinquishmentIdArray.count == 0 && searchType.isCombined()){
+                    
+                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
+                    Helper.hideProgressBar(senderView: self)
+                    sender.isEnabled = true
+                    
+                }else{
+                
             RentalClient.searchRegions(UserContext.sharedInstance.accessToken, request: requestRental, onSuccess: {(response)in
                 print(response)
                 
@@ -1473,6 +1471,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 sender.isEnabled = true
                 print(error)
             })
+                }
             }else{
                 
                 if(Constant.MyClassConstants.relinquishmentIdArray.count == 0){

@@ -528,6 +528,13 @@ extension AllAvailableDestinationViewController:UITableViewDelegate{
         cell.expandRegionButton.tag = section
         if(sectionCounter == 0){
             cell.selectdDestinationCountLabel?.isHidden = true
+            
+            self.viewButtonHeightConstraint.constant = 0
+            self.searchButtonHeightConstraint.constant = 0
+            self.searchButton.isHidden = false
+            UIView.animate(withDuration: 0.5) {
+                self.view.layoutIfNeeded()
+            }
         }else{
             let region = Constant.MyClassConstants.regionArray[section]
             for selectedRegion in selectedAreaDictionary.allKeys{
