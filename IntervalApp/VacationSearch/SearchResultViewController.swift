@@ -1505,10 +1505,10 @@ extension SearchResultViewController:UITableViewDataSource {
         if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
             
             if(section == 0 && exactMatchResortsArrayExchange.count == 0 || section == 1){
-                if Constant.MyClassConstants.isShowAvailability == true{
-                     return surroundingMatchResortsArrayExchange .count + 1
+                if(exactMatchResortsArrayExchange.count == 0 && Constant.MyClassConstants.isShowAvailability == true){
+                    return surroundingMatchResortsArrayExchange.count + 1
                 }else{
-                    return surroundingMatchResortsArrayExchange .count
+                    return surroundingMatchResortsArrayExchange.count
                 }
             }else{
                 if Constant.MyClassConstants.isShowAvailability == true && section == 0 {
@@ -1522,11 +1522,12 @@ extension SearchResultViewController:UITableViewDataSource {
             
         }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
             if(section == 0 && exactMatchResortsArray.count == 0 || section == 1){
-                if Constant.MyClassConstants.isShowAvailability == true{
+                if(exactMatchResortsArray.count == 0 && Constant.MyClassConstants.isShowAvailability == true){
                     return surroundingMatchResortsArray.count + 1
                 }else{
                     return surroundingMatchResortsArray.count
                 }
+                
             }else{
                 if Constant.MyClassConstants.isShowAvailability == true && section == 0 {
                     return exactMatchResortsArray.count + 1
@@ -1537,7 +1538,8 @@ extension SearchResultViewController:UITableViewDataSource {
             }
         }else{
             if(section == 0 && combinedExactSearchItems.count == 0 || section == 1){
-                if(section == 0 && Constant.MyClassConstants.isShowAvailability == true){
+                
+                if(combinedExactSearchItems.count == 0 && Constant.MyClassConstants.isShowAvailability == true){
                     return combinedSurroundingSearchItems.count + 1
                 }else{
                     return combinedSurroundingSearchItems.count
