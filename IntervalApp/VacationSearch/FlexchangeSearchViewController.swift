@@ -10,6 +10,7 @@ import UIKit
 import IntervalUIKit
 import DarwinSDK
 import RealmSwift
+import SVProgressHUD
 
 class FlexchangeSearchViewController: UIViewController {
 
@@ -32,6 +33,39 @@ class FlexchangeSearchViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    
+    
+    func addRelinquishmentSectionButtonPressed(_ sender:IUIKButton) {
+        Helper.showProgressBar(senderView: self)
+        ExchangeClient.getMyUnits(UserContext.sharedInstance.accessToken, onSuccess: { (Relinquishments) in
+            
+            Constant.MyClassConstants.relinquishmentDeposits = Relinquishments.deposits
+            Constant.MyClassConstants.relinquishmentOpenWeeks = Relinquishments.openWeeks
+            
+            if(Relinquishments.pointsProgram != nil){
+                Constant.MyClassConstants.relinquishmentProgram = Relinquishments.pointsProgram!
+                
+                if (Relinquishments.pointsProgram!.availablePoints != nil) {
+                    Constant.MyClassConstants.relinquishmentAvailablePointsProgram = Relinquishments.pointsProgram!.availablePoints!
+                }
+                
+            }
+            
+            
+            SVProgressHUD.dismiss()
+            Helper.removeServiceCallBackgroundView(view: self.view)
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.relinquishmentSelectionViewController) as! RelinquishmentSelectionViewController
+            
+            let transitionManager = TransitionManager()
+            self.navigationController?.transitioningDelegate = transitionManager
+            self.navigationController!.pushViewController(viewController, animated: true)
+            
+        }, onError: {(error) in
+            Helper.hideProgressBar(senderView: self)
+        })
+        
+    }
 
 }
 
@@ -106,6 +140,68 @@ extension FlexchangeSearchViewController:UITableViewDelegate{
     }
     
     
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        
+        let delete = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.delete) { (action,index) -> Void in
+            // var isFloat = true
+            let storedData = Helper.getLocalStorageWherewanttoTrade()
+            
+            if(storedData.count > 0) {
+                
+                
+                let realm = try! Realm()
+                try! realm.write {
+                    
+                    if((Constant.MyClassConstants.whatToTradeArray[indexPath.row] as AnyObject).isKind(of: OpenWeeks.self)){
+                        
+                        var floatWeekIndex = -1
+                        let dataSelected = Constant.MyClassConstants.whatToTradeArray[indexPath.row] as! OpenWeeks
+                        if(dataSelected.isFloat){
+                            
+                            
+                            for (index,object) in storedData.enumerated(){
+                                let openWk1 = object.openWeeks[0].openWeeks[0]
+                                if(openWk1.relinquishmentID == dataSelected.relinquishmentID){
+                                    floatWeekIndex = index
+                                }
+                            }
+                            
+                            storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFloatRemoved = true
+                            storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFloat = true
+                            storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFromRelinquishment = false
+                            
+                            if(Constant.MyClassConstants.whatToTradeArray.count > 0){
+                                
+                                ADBMobile.trackAction(Constant.omnitureEvents.event43, data: nil)
+                                Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
+                                Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: indexPath.row)
+                                Constant.MyClassConstants.relinquishmentUnitsArray.removeObject(at: indexPath.row)
+                            }
+                        }else{
+                            Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
+                            Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: indexPath.row)
+                            realm.delete(storedData[indexPath.row])
+                        }
+                    }else{
+                        Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
+                        Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: indexPath.row)
+                        realm.delete(storedData[indexPath.row])
+                    }
+                    
+                    tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+                    
+                    tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
+                    Helper.InitializeOpenWeeksFromLocalStorage()
+                }
+            }
+        }
+        
+        delete.backgroundColor = UIColor(red: 224/255.0, green: 96.0/255.0, blue: 84.0/255.0, alpha: 1.0)
+        return [delete]
+    }
+    
+    
     
 
 
@@ -143,9 +239,6 @@ extension FlexchangeSearchViewController:UITableViewDataSource{
             return cell
         }else if(indexPath.section == 1){
             
-            
-            
-            
             if((Constant.MyClassConstants.whatToTradeArray.count == 0 && Constant.MyClassConstants.pointsArray.count == 0) || (indexPath as NSIndexPath).row == (Constant.MyClassConstants.whatToTradeArray.count)) {
                 
                 
@@ -155,21 +248,19 @@ extension FlexchangeSearchViewController:UITableViewDataSource{
                     subview.removeFromSuperview()
                 }
                 
-                
                 let addLocationButton = IUIKButton(frame: CGRect(x: cell.contentView.bounds.width/2 - (cell.contentView.bounds.width/5)/2, y: 15, width: cell.contentView.bounds.width/5, height: 30))
                 addLocationButton.setTitle(Constant.buttonTitles.add, for: UIControlState.normal)
                 addLocationButton.setTitleColor(IUIKColorPalette.primary3.color, for: UIControlState.normal)
                 addLocationButton.layer.borderColor = IUIKColorPalette.primary3.color.cgColor
                 addLocationButton.layer.cornerRadius = 6
                 addLocationButton.layer.borderWidth = 2
-                addLocationButton.addTarget(self, action: #selector(VacationSearchViewController.addRelinquishmentSectionButtonPressed(_:)), for: .touchUpInside)
+                addLocationButton.addTarget(self, action: #selector(FlexchangeSearchViewController.addRelinquishmentSectionButtonPressed(_:)), for: .touchUpInside)
                 
                 cell.addSubview(addLocationButton)
                 cell.backgroundColor = UIColor.clear
                 return cell
             }
             else {
-                
                 
                 let cell: WhereToGoContentCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.whereToGoContentCell, for: indexPath) as! WhereToGoContentCell
                 
@@ -260,12 +351,10 @@ extension FlexchangeSearchViewController:UITableViewDataSource{
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "FlexchangeSearchButtonCell", for: indexPath) as! SearchFlexchangeButtonCell
             
-            cell.searchButton.layer.cornerRadius = 2
+            cell.searchButton.layer.cornerRadius = 5
             return cell
         }
-        
     
-
     }
     
     
