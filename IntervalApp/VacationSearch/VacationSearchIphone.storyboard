@@ -1195,6 +1195,7 @@
                         <segue destination="Kfb-6S-lgg" kind="show" identifier="CalendarViewSegue" id="PRM-tr-sAl"/>
                         <segue destination="Gf2-qV-Yg5" kind="show" identifier="relinquishmentSelection" action="showDetailViewController:sender:" id="TuR-eR-5fk"/>
                         <segue destination="RGk-Wn-fkT" kind="show" identifier="allAvailableDestination" id="QVa-Yi-A6G"/>
+                        <segue destination="ICS-f7-xq2" kind="show" identifier="flexChangeViewController" id="oQK-an-ki1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ha8-FK-015" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2336,7 +2337,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="hBB-OJ-Y0k" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="w8Z-0z-EGh">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="w8Z-0z-EGh">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -3421,7 +3422,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="eMV-Px-Ad8" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Zma-bI-0pT">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Zma-bI-0pT">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -4935,10 +4936,10 @@ to confirm a larger unit.</string>
             </objects>
             <point key="canvasLocation" x="5856.8000000000002" y="2121.5892053973016"/>
         </scene>
-        <!--View Controller-->
+        <!--Flexchange Search View Controller-->
         <scene sceneID="feD-Xy-WJD">
             <objects>
-                <viewController id="ICS-f7-xq2" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="ICS-f7-xq2" customClass="FlexchangeSearchViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="KDd-di-Ngl"/>
                         <viewControllerLayoutGuide type="bottom" id="xho-a9-Jlr"/>
@@ -4946,12 +4947,146 @@ to confirm a larger unit.</string>
                     <view key="view" contentMode="scaleToFill" id="DAs-XU-WFd">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="uRa-c8-RDA">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="FlexChangeDestination" rowHeight="83" id="HmQ-6r-2W8" customClass="FlexchangeDestinationCell" customModule="IntervalApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="55.5" width="375" height="83"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HmQ-6r-2W8" id="LLx-dJ-vJ0">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="82.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="South African Cost" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NjE-LH-nQE">
+                                                    <rect key="frame" x="76" y="8" width="223" height="40"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="40" id="KJl-S9-Oxt"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Flexchange Destination" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XTn-s7-ym3">
+                                                    <rect key="frame" x="93" y="45" width="189" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="topMargin" secondItem="NjE-LH-nQE" secondAttribute="top" id="5UV-2s-j6f"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="NjE-LH-nQE" secondAttribute="trailing" constant="68" id="79l-WU-UPT"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="XTn-s7-ym3" secondAttribute="trailing" constant="85" id="Wjc-lf-3GE"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="XTn-s7-ym3" secondAttribute="bottom" constant="8.5" id="uIw-JL-eiG"/>
+                                                <constraint firstItem="NjE-LH-nQE" firstAttribute="leading" secondItem="LLx-dJ-vJ0" secondAttribute="leadingMargin" constant="68" id="yR8-HQ-xRH"/>
+                                                <constraint firstItem="XTn-s7-ym3" firstAttribute="leading" secondItem="LLx-dJ-vJ0" secondAttribute="leadingMargin" constant="85" id="z8O-eG-XOm"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="lblFlexchangeDestination" destination="NjE-LH-nQE" id="V4q-Cb-cmX"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="WhereToGoContentCell" rowHeight="75" id="DgA-Vh-YsC" customClass="WhereToGoContentCell" customModule="IntervalApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="138.5" width="375" height="75"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DgA-Vh-YsC" id="dD8-5k-Dw3">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="74.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3EK-dq-PJe">
+                                                    <rect key="frame" x="20" y="5" width="335" height="0.0"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="749" fixedFrame="YES" text="or" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aLL-jk-gu7">
+                                                    <rect key="frame" x="169.5" y="26" width="36" height="11"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                                    <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.61568627450000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IBN-4K-q23">
+                                                    <rect key="frame" x="20" y="5" width="335" height="18"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="bedroomLabel" destination="IBN-4K-q23" id="6bK-ZH-6fL"/>
+                                            <outlet property="sepratorOr" destination="aLL-jk-gu7" id="5za-OH-Kud"/>
+                                            <outlet property="whereTogoTextLabel" destination="3EK-dq-PJe" id="r3k-aT-Vjj"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CellIdentifier" rowHeight="75" id="xRl-P4-P79">
+                                        <rect key="frame" x="0.0" y="213.5" width="375" height="75"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xRl-P4-P79" id="1ER-aA-0iA">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="74.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FlexchangeSearchButtonCell" rowHeight="75" id="1z4-Fp-mRT" customClass="SearchFlexchangeButtonCell" customModule="IntervalApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="288.5" width="375" height="75"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1z4-Fp-mRT" id="e3t-cP-xIx">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="74.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GmY-tt-gPB">
+                                                    <rect key="frame" x="27" y="8" width="327" height="58"/>
+                                                    <color key="backgroundColor" red="0.96078431369999995" green="0.49803921569999998" blue="0.14117647059999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="31"/>
+                                                    <state key="normal" title="Search"/>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="topMargin" secondItem="GmY-tt-gPB" secondAttribute="top" id="7ox-fe-QWc"/>
+                                                <constraint firstItem="GmY-tt-gPB" firstAttribute="leading" secondItem="e3t-cP-xIx" secondAttribute="leadingMargin" constant="19" id="D0j-96-IGA"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="GmY-tt-gPB" secondAttribute="trailing" constant="13" id="bUW-I5-he0"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="GmY-tt-gPB" secondAttribute="bottom" id="dGP-d4-4Pi"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="searchButton" destination="GmY-tt-gPB" id="A6a-cq-F3f"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="ICS-f7-xq2" id="Xjs-W5-epM"/>
+                                    <outlet property="delegate" destination="ICS-f7-xq2" id="b6f-tF-9BW"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="uRa-c8-RDA" secondAttribute="trailing" constant="-16" id="PGV-hd-460"/>
+                            <constraint firstItem="uRa-c8-RDA" firstAttribute="top" secondItem="KDd-di-Ngl" secondAttribute="bottom" id="QcP-r6-Nvt"/>
+                            <constraint firstItem="xho-a9-Jlr" firstAttribute="top" secondItem="uRa-c8-RDA" secondAttribute="bottom" constant="-49" id="TJi-IY-ElJ"/>
+                            <constraint firstItem="uRa-c8-RDA" firstAttribute="leading" secondItem="DAs-XU-WFd" secondAttribute="leadingMargin" constant="-16" id="WMc-sJ-upb"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="JJq-yB-3oA"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="375" height="667"/>
+                    <connections>
+                        <outlet property="flexChangeTableView" destination="uRa-c8-RDA" id="PSq-51-7DK"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TGv-Xe-h2M" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7082" y="313"/>
+            <point key="canvasLocation" x="3973.5999999999999" y="-1173.4632683658172"/>
         </scene>
         <!--Payment Selection View Controller-->
         <scene sceneID="6qU-aw-Pzn">
@@ -5687,7 +5822,7 @@ to confirm a larger unit.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0yH-QX-dYW" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="HRh-g1-Okf">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="HRh-g1-Okf">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -5705,7 +5840,7 @@ to confirm a larger unit.</string>
             <objects>
                 <navigationController storyboardIdentifier="AccomodationCertsDetailController" automaticallyAdjustsScrollViewInsets="NO" id="6AW-3c-VGG" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="r65-jV-lcs">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="r65-jV-lcs">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -5723,7 +5858,7 @@ to confirm a larger unit.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Wnj-OU-Bqx" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="lsp-Nf-AIz">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="lsp-Nf-AIz">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -6962,7 +7097,7 @@ to confirm a larger unit.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="QCd-cg-p7T" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="FDW-qy-gN2">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="FDW-qy-gN2">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -6980,7 +7115,7 @@ to confirm a larger unit.</string>
             <objects>
                 <navigationController id="qIE-7i-him" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="84h-Ep-h1O"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="HPN-5h-mIu">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="HPN-5h-mIu">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -7216,7 +7351,7 @@ to confirm a larger unit.</string>
         <scene sceneID="woz-M3-99b">
             <objects>
                 <navigationController id="ngh-TZ-XZu" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="s8P-VH-HG7">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="s8P-VH-HG7">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -7266,7 +7401,7 @@ to confirm a larger unit.</string>
         <scene sceneID="iMz-Os-rBf">
             <objects>
                 <navigationController id="7wx-gU-8rb" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Vfi-ic-Xub">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Vfi-ic-Xub">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -7524,7 +7659,7 @@ to confirm a larger unit.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="bmL-3i-9ap" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="biQ-JT-fNk">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="biQ-JT-fNk">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -7542,7 +7677,7 @@ to confirm a larger unit.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="UeM-gf-1oQ" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="vSk-wg-ocj">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="vSk-wg-ocj">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -7560,7 +7695,7 @@ to confirm a larger unit.</string>
             <objects>
                 <navigationController storyboardIdentifier="DepositPromotionsNav" automaticallyAdjustsScrollViewInsets="NO" id="1g4-hf-v3R" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="A6D-xj-RBR">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="A6D-xj-RBR">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -7578,7 +7713,7 @@ to confirm a larger unit.</string>
             <objects>
                 <navigationController storyboardIdentifier="GestCertificateInfo" automaticallyAdjustsScrollViewInsets="NO" id="z0g-mm-AET" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="n7E-OE-dLc">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="n7E-OE-dLc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -7621,10 +7756,10 @@ to confirm a larger unit.</string>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Lp2-ch-oU8"/>
-        <segue reference="u0k-hc-uRI"/>
+        <segue reference="Rpo-cQ-qF4"/>
         <segue reference="4gU-cx-AAf"/>
-        <segue reference="xan-e8-tse"/>
         <segue reference="Gma-QI-cCT"/>
+        <segue reference="xan-e8-tse"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
 </document>

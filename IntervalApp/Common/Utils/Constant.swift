@@ -223,6 +223,7 @@ class Constant: NSObject {
         
         
         //***** Vacation search screen constant string header array *****//
+        
         static var threeSegmentHeaderTextArray = [NSLocalizedString("Where_do_you_want_to_go", comment: ""),NSLocalizedString("Check_in_closest_to", comment: ""),NSLocalizedString("Who_is_travelling", comment: "")]
         
         //***** Who will be checking-In header text array *****//

@@ -7,9 +7,19 @@
 //
 
 import UIKit
+import IntervalUIKit
+import DarwinSDK
+import RealmSwift
 
 class FlexchangeSearchViewController: UIViewController {
 
+    //IBOutlets.
+    
+    var selectedFlexchange: FlexExchangeDeal?
+    var destinationOrResort = Helper.getLocalStorageWherewanttoGo()
+    
+    @IBOutlet weak var flexChangeTableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -23,14 +33,240 @@ class FlexchangeSearchViewController: UIViewController {
     }
     
 
-    /*
-    // MARK: - Navigation
+}
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+
+
+
+extension FlexchangeSearchViewController:UITableViewDelegate{
+    
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        //***** return height for  row in each section of tableview *****//
+        if(indexPath.section == 0){
+           
+            return 80
+            
+        }else if (indexPath.section == 1){
+            
+            return 60
+            
+        } else{
+            
+            return 60
+        }
+        
     }
-    */
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        
+                let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.flexChangeTableView.frame.size.width, height: 50))
+                let headerTextLabel = UILabel(frame: CGRect(x: 15, y: 0, width: self.view.bounds.width, height: 50))
+        
+        if section == 1 {
+            
+            headerView.backgroundColor = IUIKColorPalette.tertiary1.color
+            headerTextLabel.text = "Where do you want to trade"
+            headerTextLabel.textColor = IUIKColorPalette.primaryText.color
+            headerView.addSubview(headerTextLabel)
+            return headerView
+         
+        }else if section == 0 {
+            
+            headerView.backgroundColor = IUIKColorPalette.tertiary1.color
+            headerTextLabel.text = "Your selected flexchange destination"
+            headerTextLabel.textColor = IUIKColorPalette.primaryText.color
+            headerView.addSubview(headerTextLabel)
+            return headerView
+            
+        }else{
+            
+            return nil
+        }
+        
+        
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 1{
+            
+            return 50
+        }
+        else if section == 0{
+            
+            return 50
+            
+        } else{
+            
+            return 0
+        }
+        
+    }
+    
+    
+    
 
+
+}
+
+
+extension FlexchangeSearchViewController:UITableViewDataSource{
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 3
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if section == 1 {
+           
+            return Constant.MyClassConstants.whatToTradeArray.count + 1
+            
+        }else {
+            
+            return 1
+        }
+        
+        
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if(indexPath.section == 0){
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "FlexChangeDestination", for: indexPath) as! FlexchangeDestinationCell
+            
+            cell.lblFlexchangeDestination.text = selectedFlexchange?.name
+            
+            return cell
+        }else if(indexPath.section == 1){
+            
+            
+            
+            
+            if((Constant.MyClassConstants.whatToTradeArray.count == 0 && Constant.MyClassConstants.pointsArray.count == 0) || (indexPath as NSIndexPath).row == (Constant.MyClassConstants.whatToTradeArray.count)) {
+                
+                
+                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cellIdentifier, for: indexPath)
+                cell.selectionStyle = UITableViewCellSelectionStyle.none
+                for subview in cell.subviews {
+                    subview.removeFromSuperview()
+                }
+                
+                
+                let addLocationButton = IUIKButton(frame: CGRect(x: cell.contentView.bounds.width/2 - (cell.contentView.bounds.width/5)/2, y: 15, width: cell.contentView.bounds.width/5, height: 30))
+                addLocationButton.setTitle(Constant.buttonTitles.add, for: UIControlState.normal)
+                addLocationButton.setTitleColor(IUIKColorPalette.primary3.color, for: UIControlState.normal)
+                addLocationButton.layer.borderColor = IUIKColorPalette.primary3.color.cgColor
+                addLocationButton.layer.cornerRadius = 6
+                addLocationButton.layer.borderWidth = 2
+                addLocationButton.addTarget(self, action: #selector(VacationSearchViewController.addRelinquishmentSectionButtonPressed(_:)), for: .touchUpInside)
+                
+                cell.addSubview(addLocationButton)
+                cell.backgroundColor = UIColor.clear
+                return cell
+            }
+            else {
+                
+                
+                let cell: WhereToGoContentCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.whereToGoContentCell, for: indexPath) as! WhereToGoContentCell
+                
+                if((indexPath as NSIndexPath).row == Constant.MyClassConstants.whatToTradeArray.count - 1) {
+                    
+                    cell.sepratorOr.isHidden = true
+                }
+                else {
+                    
+                    cell.sepratorOr.isHidden = false
+                }
+                let object = Constant.MyClassConstants.whatToTradeArray[indexPath.row]
+                if((object as AnyObject) .isKind(of: OpenWeek.self)){
+                    let weekNumber = Constant.getWeekNumber(weekType: ((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeek).weekNumber)!)
+                    cell.whereTogoTextLabel.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeek).resort!.resortName!), \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeek).relinquishmentYear!) Week \(weekNumber)"
+                    cell.bedroomLabel.isHidden = true
+                }else if((object as AnyObject).isKind(of: OpenWeeks.self)){
+                    let weekNumber = Constant.getWeekNumber(weekType: ((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).weekNumber))
+                    print((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff)
+                    if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff || (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isFloat){
+                        cell.bedroomLabel.isHidden = false
+                        
+                        let resortList = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).unitDetails
+                        if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isFloat){
+                            let floatDetails = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).floatDetails
+                            if(floatDetails[0].showUnitNumber){
+                                cell.bedroomLabel.text = "\(floatDetails[0].unitSize), \(floatDetails[0].unitNumber), \(resortList[0].kitchenType)"
+                            }else{
+                                cell.bedroomLabel.text = "\(floatDetails[0].unitSize), \(resortList[0].kitchenType)"
+                            }
+                        }else{
+                            cell.bedroomLabel.text = "\(resortList[0].unitSize), \(resortList[0].kitchenType)"
+                        }
+                    }else{
+                        cell.bedroomLabel.isHidden = true
+                    }
+                    if(weekNumber != ""){
+                        cell.whereTogoTextLabel.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).resort[0].resortName)/ \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).relinquishmentYear), Wk\(weekNumber)"
+                    }else{
+                        cell.whereTogoTextLabel.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).resort[0].resortName)/ \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).relinquishmentYear)"
+                    }
+                } else if((object as AnyObject) .isKind(of: Deposits.self)){
+                    //Deposits
+                    let weekNumber = Constant.getWeekNumber(weekType: ((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).weekNumber))
+                    
+                    if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isLockOff || (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isFloat){
+                        cell.bedroomLabel.isHidden = false
+                        
+                        let resortList = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).unitDetails
+                        print((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).resort[0].resortName, resortList.count)
+                        if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isFloat){
+                            let floatDetails = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).floatDetails
+                            cell.bedroomLabel.text = "\(resortList[0].unitSize), \(floatDetails[0].unitNumber), \(resortList[0].kitchenType)"
+                        }else{
+                            cell.bedroomLabel.text = "\(resortList[0].unitSize), \(resortList[0].kitchenType)"
+                        }
+                    }else{
+                        cell.bedroomLabel.isHidden = true
+                    }
+                    if(weekNumber != ""){
+                        cell.whereTogoTextLabel.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).resort[0].resortName)/ \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).relinquishmentYear), Wk\(weekNumber)"
+                    }else{
+                        cell.whereTogoTextLabel.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).resort[0].resortName)/ \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).relinquishmentYear)"
+                    }
+                    
+                } else{
+                    
+                    let availablePointsNumber = Constant.MyClassConstants.relinquishmentAvailablePointsProgram as NSNumber
+                    
+                    let numberFormatter = NumberFormatter()
+                    numberFormatter.numberStyle = .decimal
+                    
+                    let availablePoints = numberFormatter.string(from: availablePointsNumber)
+                    
+                    cell.whereTogoTextLabel.text = "\(Constant.getDynamicString.clubInterValPointsUpTo) \(availablePoints!)"
+                    cell.bedroomLabel.isHidden = true
+                }
+                
+                cell.selectionStyle = UITableViewCellSelectionStyle.none
+                cell.backgroundColor = UIColor.clear
+                return cell
+            }
+            
+            
+          
+            
+        }else {
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "FlexchangeSearchButtonCell", for: indexPath) as! SearchFlexchangeButtonCell
+            
+            cell.searchButton.layer.cornerRadius = 2
+            return cell
+        }
+        
+    
+
+    }
+    
+    
 }
