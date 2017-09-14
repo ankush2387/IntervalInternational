@@ -4959,29 +4959,30 @@ to confirm a larger unit.</string>
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="82.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="South African Cost" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NjE-LH-nQE">
-                                                    <rect key="frame" x="76" y="8" width="223" height="40"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="South African Cost" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NjE-LH-nQE">
+                                                    <rect key="frame" x="76" y="3" width="250" height="56"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="40" id="KJl-S9-Oxt"/>
+                                                        <constraint firstAttribute="height" constant="56" id="KJl-S9-Oxt"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Flexchange Destination" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XTn-s7-ym3">
-                                                    <rect key="frame" x="93" y="45" width="189" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <rect key="frame" x="126" y="61" width="149" height="16"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="topMargin" secondItem="NjE-LH-nQE" secondAttribute="top" id="5UV-2s-j6f"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="NjE-LH-nQE" secondAttribute="trailing" constant="68" id="79l-WU-UPT"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="XTn-s7-ym3" secondAttribute="trailing" constant="85" id="Wjc-lf-3GE"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="XTn-s7-ym3" secondAttribute="bottom" constant="8.5" id="uIw-JL-eiG"/>
+                                                <constraint firstAttribute="topMargin" secondItem="NjE-LH-nQE" secondAttribute="top" constant="5" id="5UV-2s-j6f"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="NjE-LH-nQE" secondAttribute="trailing" constant="41" id="79l-WU-UPT"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="XTn-s7-ym3" secondAttribute="trailing" constant="92" id="Wjc-lf-3GE"/>
+                                                <constraint firstItem="XTn-s7-ym3" firstAttribute="top" secondItem="NjE-LH-nQE" secondAttribute="bottom" constant="2" id="j9I-x8-3oh"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="XTn-s7-ym3" secondAttribute="bottom" constant="-2.5" id="uIw-JL-eiG"/>
                                                 <constraint firstItem="NjE-LH-nQE" firstAttribute="leading" secondItem="LLx-dJ-vJ0" secondAttribute="leadingMargin" constant="68" id="yR8-HQ-xRH"/>
-                                                <constraint firstItem="XTn-s7-ym3" firstAttribute="leading" secondItem="LLx-dJ-vJ0" secondAttribute="leadingMargin" constant="85" id="z8O-eG-XOm"/>
+                                                <constraint firstItem="XTn-s7-ym3" firstAttribute="leading" secondItem="LLx-dJ-vJ0" secondAttribute="leadingMargin" constant="118" id="z8O-eG-XOm"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
