@@ -96,7 +96,7 @@
         <scene sceneID="AXO-66-1Q5">
             <objects>
                 <navigationController id="YXh-lN-KMw" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="6Ru-xD-idh">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="6Ru-xD-idh">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -3283,7 +3283,7 @@
         <scene sceneID="hwE-GA-7Y4">
             <objects>
                 <navigationController id="Kj4-oV-nKd" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="PIk-h1-MHc">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="PIk-h1-MHc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -3712,7 +3712,7 @@
         <scene sceneID="DbV-Z9-AeY">
             <objects>
                 <navigationController id="hie-AV-xvD" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="f6g-7W-eAZ">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="f6g-7W-eAZ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -5529,7 +5529,7 @@
         <!--Selected Resorts Ipad View Controller-->
         <scene sceneID="zu8-lw-Oz3">
             <objects>
-                <viewController id="WVT-aD-hGD" customClass="SelectedResortsIpadViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="WVT-aD-hGD" customClass="SelectedResortsIpadViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="tUk-hq-F6e"/>
                         <viewControllerLayoutGuide type="bottom" id="7DC-qc-uL2"/>
@@ -6407,10 +6407,10 @@
             </objects>
             <point key="canvasLocation" x="4463" y="557"/>
         </scene>
-        <!--View Controller-->
+        <!--Flex Change Search Ipad View Controller-->
         <scene sceneID="Ihd-tH-vkc">
             <objects>
-                <viewController id="uTS-tL-bD9" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FlexChangeSearchIpadViewController" automaticallyAdjustsScrollViewInsets="NO" id="uTS-tL-bD9" customClass="FlexChangeSearchIpadViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="hh9-9J-bBH"/>
                         <viewControllerLayoutGuide type="bottom" id="foM-27-6pY"/>
@@ -6419,15 +6419,41 @@
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="84" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Xyg-fE-jYN">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="84" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="Xyg-fE-jYN">
                                 <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <view key="tableFooterView" contentMode="scaleToFill" id="THC-1I-isq">
+                                    <rect key="frame" x="0.0" y="235.5" width="768" height="118"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ViQ-D5-ES9">
+                                            <rect key="frame" x="40" y="34" width="688" height="50"/>
+                                            <color key="backgroundColor" red="0.93725490196078431" green="0.50196078431372548" blue="0.1764705882352941" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="50" id="Hqo-rv-aXq"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="25"/>
+                                            <state key="normal" title="Search">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="searchButtonClicked:" destination="uTS-tL-bD9" eventType="touchUpInside" id="hEK-vd-BLj"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstItem="ViQ-D5-ES9" firstAttribute="leading" secondItem="THC-1I-isq" secondAttribute="leading" constant="40" id="HM2-xb-w1f"/>
+                                        <constraint firstItem="ViQ-D5-ES9" firstAttribute="centerY" secondItem="THC-1I-isq" secondAttribute="centerY" id="Vej-rv-JtQ"/>
+                                        <constraint firstAttribute="trailing" secondItem="ViQ-D5-ES9" secondAttribute="trailing" constant="40" id="rZ0-so-Ioj"/>
+                                    </constraints>
+                                </view>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FlexchangeDestinationCell" rowHeight="84" id="liu-gI-Pve" customClass="FlexchangeDestinationCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="768" height="84"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="768" height="84"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="liu-gI-Pve" id="QbL-wy-Pn7">
-                                            <rect key="frame" x="0.0" y="0.0" width="768" height="83.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="768" height="84"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="South Africa Coast" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nAu-PI-D2X">
@@ -6457,7 +6483,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="WhereToGoContentCell" rowHeight="45" id="vie-e7-t7f" customClass="WhereToGoContentCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="112" width="768" height="45"/>
+                                        <rect key="frame" x="0.0" y="139.5" width="768" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vie-e7-t7f" id="szJ-sF-tt9">
                                             <rect key="frame" x="0.0" y="0.0" width="768" height="45"/>
@@ -6499,12 +6525,25 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="bedroomLabel" destination="FIg-ML-IqX" id="iMc-IR-0Zr"/>
-                                            <outlet property="sepratorOr" destination="eUl-yK-HrX" id="Vhv-Hx-Ydw"/>
-                                            <outlet property="whereTogoTextLabel" destination="x5y-cs-FWg" id="vx8-Jj-tcQ"/>
+                                            <outlet property="bedroomLabel" destination="FIg-ML-IqX" id="QHT-M3-eqe"/>
+                                            <outlet property="sepratorOr" destination="eUl-yK-HrX" id="mVM-6C-pUI"/>
+                                            <outlet property="whereTogoTextLabel" destination="x5y-cs-FWg" id="PUV-P2-W8F"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CellIdentifier" rowHeight="50" id="bjg-y1-GK3">
+                                        <rect key="frame" x="0.0" y="184.5" width="768" height="50"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bjg-y1-GK3" id="WT6-TE-Klp">
+                                            <rect key="frame" x="0.0" y="0.0" width="768" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="uTS-tL-bD9" id="D96-OP-rYz"/>
+                                    <outlet property="delegate" destination="uTS-tL-bD9" id="InK-CP-o5f"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -6515,6 +6554,10 @@
                             <constraint firstItem="Xyg-fE-jYN" firstAttribute="top" secondItem="hh9-9J-bBH" secondAttribute="bottom" id="vgj-cE-62O"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="flexchangeSearchTableView" destination="Xyg-fE-jYN" id="ufH-PE-z1L"/>
+                        <outlet property="searchButton" destination="ViQ-D5-ES9" id="dNp-Zt-F7Y"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vzW-MJ-aFP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -8881,7 +8924,7 @@ Units Upgrade with this selection.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Wc0-eI-yK9" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="98v-Sn-Axw">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="98v-Sn-Axw">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -9262,7 +9305,7 @@ Units Upgrade with this selection.</string>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="lDo-kQ-A9s" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="h8X-dQ-5XW"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="lNH-0Y-9a5">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="lNH-0Y-9a5">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

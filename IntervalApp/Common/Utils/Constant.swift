@@ -1007,6 +1007,7 @@ class Constant: NSObject {
         static var signInPreLoginViewController = "SignInPreLoginViewController"
         static var whatToUseViewController = "WhatToUseViewController"
         static var sortingViewController = "SortingViewController"
+        static var flexChangeSearchIpadViewController = "FlexChangeSearchIpadViewController"
         
     }
     
@@ -1288,6 +1289,7 @@ class Constant: NSObject {
         static var whereToGoCell = "WhereToGoCell"
         static var availablePoints = "AvailablePoints"
         static var selectedResortsCell = "selectedResortsCell"
+        static var flexChangeDestinationCell = "FlexchangeDestinationCell"
     }
     
     //***** Common structure for dynamic strings combinining strings *****//
