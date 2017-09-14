@@ -1032,6 +1032,7 @@ extension VacationSearchIPadViewController:UICollectionViewDelegate {
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.flexChangeSearchIpadViewController) as! FlexChangeSearchIpadViewController
             
+            viewController.selectedFlexchange = Constant.MyClassConstants.flexExchangeDeals[indexPath.row]
             let transitionManager = TransitionManager()
             self.navigationController?.transitioningDelegate = transitionManager
             

@@ -1166,8 +1166,18 @@ extension RelinquishmentSelectionViewController:BedroomSizeViewControllerDelegat
         }
         else{
             
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-            viewcontroller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as! SWRevealViewController
+            if(Constant.MyClassConstants.viewController.isKind(of:FlexChangeSearchIpadViewController.self)) {
+                /*viewcontroller = Constant.MyClassConstants.viewController
+                 self.dismiss(animated: true, completion: nil)*/
+                
+                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                viewcontroller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.flexChangeSearchIpadViewController) as! FlexChangeSearchIpadViewController
+            } else {
+                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                viewcontroller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as! SWRevealViewController
+                
+            }
+            
         }
         
         

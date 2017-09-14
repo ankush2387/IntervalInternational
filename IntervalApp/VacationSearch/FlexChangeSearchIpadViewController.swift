@@ -19,7 +19,11 @@ class FlexChangeSearchIpadViewController: UIViewController {
     @IBOutlet weak var flexchangeSearchTableView: UITableView!
     
     @IBOutlet weak var searchButton: UIButton!
+    
     //MARK:- class varibles
+    
+    var selectedFlexchange: FlexExchangeDeal?
+    var destinationOrResort = Helper.getLocalStorageWherewanttoGo()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,30 +48,33 @@ class FlexChangeSearchIpadViewController: UIViewController {
 
     }
     
-    func menuButtonClicked() {
-        print("menu button clicked")
-    }
-    
-    @IBAction func searchButtonClicked(_ sender: UIButton) {
-    }
-    func menuBackButtonPressed(_ sender:UIBarButtonItem) {
-        
-        _ = self.navigationController?.popViewController(animated: true)
-    }
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
+    //MARK:- button events
     
-    func addLocationInSection0Pressed(_ sender:IUIKButton) {
+    func menuButtonClicked() {
+        print("menu button clicked")
+    }
+    
+    @IBAction func searchButtonClicked(_ sender: UIButton) {
         
-        SVProgressHUD.show()
-        Helper.addServiceCallBackgroundView(view: self.view)
+    }
+    
+    
+    func menuBackButtonPressed(_ sender:UIBarButtonItem) {
+        
+        _ = self.navigationController?.popViewController(animated: true)
+    }
+    
+    func addRelinquishmentSectionButtonPressed(_ sender:IUIKButton) {
+        Helper.showProgressBar(senderView: self)
         ExchangeClient.getMyUnits(UserContext.sharedInstance.accessToken, onSuccess: { (Relinquishments) in
             
-            DarwinSDK.logger.debug(Relinquishments)
             Constant.MyClassConstants.relinquishmentDeposits = Relinquishments.deposits
             Constant.MyClassConstants.relinquishmentOpenWeeks = Relinquishments.openWeeks
             
@@ -80,29 +87,26 @@ class FlexChangeSearchIpadViewController: UIViewController {
                 
             }
             
+            
             SVProgressHUD.dismiss()
             Helper.removeServiceCallBackgroundView(view: self.view)
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.relinquishmentSelectionViewController) as! RelinquishmentSelectionViewController
             
             let transitionManager = TransitionManager()
             self.navigationController?.transitioningDelegate = transitionManager
-            let navController = UINavigationController(rootViewController: viewController)
-            self.navigationController!.present(navController, animated: true)
+            Constant.MyClassConstants.viewController = self
+            self.navigationController!.pushViewController(viewController, animated: true)
             
         }, onError: {(error) in
-            
-            print(error.description)
-            SVProgressHUD.dismiss()
-            Helper.removeServiceCallBackgroundView(view: self.view)
-            SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
-            
+            Helper.hideProgressBar(senderView: self)
         })
+        
     }
 
 }
 
-
+//MARK:- table view datasource
 extension FlexChangeSearchIpadViewController:UITableViewDataSource {
     
     
@@ -112,7 +116,14 @@ extension FlexChangeSearchIpadViewController:UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return 1
+        if section == 1 {
+            
+            return Constant.MyClassConstants.whatToTradeArray.count + 1
+            
+        }else {
+            
+            return 1
+        }
     }
     
     
@@ -120,13 +131,14 @@ extension FlexChangeSearchIpadViewController:UITableViewDataSource {
         
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.flexChangeDestinationCell, for: indexPath) as! FlexchangeDestinationCell
+            cell.lblFlexchangeDestination.text = selectedFlexchange?.name
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             return cell
             
         } else {
             
-            
-            if(Constant.MyClassConstants.whereTogoContentArray.count == 0 || (indexPath as NSIndexPath).row == Constant.MyClassConstants.whereTogoContentArray.count) {
+            if((Constant.MyClassConstants.whatToTradeArray.count == 0 && Constant.MyClassConstants.pointsArray.count == 0) || (indexPath as NSIndexPath).row == (Constant.MyClassConstants.whatToTradeArray.count)) {
+                
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cellIdentifier, for: indexPath)
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
@@ -134,85 +146,101 @@ extension FlexChangeSearchIpadViewController:UITableViewDataSource {
                     subview.removeFromSuperview()
                 }
                 
-                let addLocationButton = IUIKButton(frame: CGRect(x: cell.contentView.bounds.width/2 - 25, y: 15, width: 50, height: 50))
                 
-                //addLocationButton.setTitle(Constant.buttonTitles.add, for: UIControlState.normal)
+                let addLocationButton = IUIKButton(frame: CGRect(x: cell.contentView.bounds.width/2 - (cell.contentView.bounds.width/5)/2, y: 15, width: cell.contentView.bounds.width/5, height: 30))
+                addLocationButton.setTitle(Constant.buttonTitles.add, for: UIControlState.normal)
+                addLocationButton.setTitleColor(IUIKColorPalette.primary3.color, for: UIControlState.normal)
+                addLocationButton.layer.borderColor = IUIKColorPalette.primary3.color.cgColor
+                addLocationButton.layer.cornerRadius = 6
+                addLocationButton.layer.borderWidth = 2
+                addLocationButton.addTarget(self, action: #selector(FlexChangeSearchIpadViewController.addRelinquishmentSectionButtonPressed(_:)), for: .touchUpInside)
                 
-                addLocationButton.setBackgroundImage(UIImage.init(named: "PlusIcon"), for: .normal)
-                
-                //addLocationButton.setTitle("+", for: .normal)
-                
-                addLocationButton.setTitleColor(UIColor.white, for: UIControlState.normal)
-                
-                //addLocationButton.setTitleColor(UIColor.white, for: .normal)
-                
-                //addLocationButton.layer.borderColor = IUIKColorPalette.primary3.color.cgColor
-                
-                addLocationButton.layer.cornerRadius = 25
-                
-                //addLocationButton.backgroundColor = IUIKColorPalette.primary3.color
-                
-                //addLocationButton.layer.borderWidth = 2
-                addLocationButton.addTarget(self, action: #selector(VacationSearchViewController.addLocationInSection0Pressed(_:)), for: .touchUpInside)
                 cell.addSubview(addLocationButton)
-                
+                cell.backgroundColor = UIColor.white
                 return cell
-                
-            } else {
-                
-                let cell: WhereToGoContentCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.whereToGoCell, for: indexPath) as! WhereToGoContentCell
+            }
+            else {
                 
                 
+                let cell: WhereToGoContentCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.whereToGoContentCell, for: indexPath) as! WhereToGoContentCell
                 
-                /*if((indexPath as NSIndexPath).row == destinationOrResort.count - 1 || destinationOrResort.count == 0) {
+                if((indexPath as NSIndexPath).row == Constant.MyClassConstants.whatToTradeArray.count - 1) {
                     
                     cell.sepratorOr.isHidden = true
                 }
                 else {
                     
                     cell.sepratorOr.isHidden = false
-                }*/
-                
-                let object = Constant.MyClassConstants.whereTogoContentArray[(indexPath as NSIndexPath).row] as AnyObject
-                if(object.isKind(of:Resort.self)){
-                    
-                    var resortNm = ""
-                    var resortCode = ""
-                    if let restName = (object as! Resort).resortName {
-                        resortNm = restName
-                    }
-                    
-                    if let restcode = (object as! Resort).resortCode {
-                        resortCode = restcode
-                    }
-                    var resortNameString = "\(resortNm) (\(resortCode))"
-                    if((object as AnyObject).count > 1){
-                        resortNameString = resortNameString + " \(Constant.getDynamicString.andString) \((object as AnyObject).count - 1) \(Constant.getDynamicString.moreString)"
-                    }
-                    cell.whereTogoTextLabel.text = resortNameString
-                    
-                }else if (object.isKind(of: List<ResortByMap>.self)){
-                    
-                    let object = Constant.MyClassConstants.whereTogoContentArray[(indexPath as NSIndexPath).row] as! List<ResortByMap>
-                    
-                    let resort = object[0]
-                    
-                    var resortNameString = "\(resort.resortName) (\(resort.resortCode))"
-                    if(object.count > 1){
-                        resortNameString = resortNameString + " \(Constant.getDynamicString.andString) \(object.count - 1) \(Constant.getDynamicString.moreString)"
-                    }
-                    
-                    cell.whereTogoTextLabel.text = resortNameString
                 }
+                let object = Constant.MyClassConstants.whatToTradeArray[indexPath.row]
+                if((object as AnyObject) .isKind(of: OpenWeek.self)){
+                    let weekNumber = Constant.getWeekNumber(weekType: ((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeek).weekNumber)!)
+                    cell.whereTogoTextLabel.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeek).resort!.resortName!), \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeek).relinquishmentYear!) Week \(weekNumber)"
+                    cell.bedroomLabel.isHidden = true
+                }else if((object as AnyObject).isKind(of: OpenWeeks.self)){
+                    let weekNumber = Constant.getWeekNumber(weekType: ((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).weekNumber))
+                    print((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff)
+                    if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff || (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isFloat){
+                        cell.bedroomLabel.isHidden = false
+                        
+                        let resortList = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).unitDetails
+                        if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isFloat){
+                            let floatDetails = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).floatDetails
+                            if(floatDetails[0].showUnitNumber){
+                                cell.bedroomLabel.text = "\(floatDetails[0].unitSize), \(floatDetails[0].unitNumber), \(resortList[0].kitchenType)"
+                            }else{
+                                cell.bedroomLabel.text = "\(floatDetails[0].unitSize), \(resortList[0].kitchenType)"
+                            }
+                        }else{
+                            cell.bedroomLabel.text = "\(resortList[0].unitSize), \(resortList[0].kitchenType)"
+                        }
+                    }else{
+                        cell.bedroomLabel.isHidden = true
+                    }
+                    if(weekNumber != ""){
+                        cell.whereTogoTextLabel.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).resort[0].resortName)/ \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).relinquishmentYear), Wk\(weekNumber)"
+                    }else{
+                        cell.whereTogoTextLabel.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).resort[0].resortName)/ \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).relinquishmentYear)"
+                    }
+                } else if((object as AnyObject) .isKind(of: Deposits.self)){
+                    //Deposits
+                    let weekNumber = Constant.getWeekNumber(weekType: ((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).weekNumber))
                     
-                else {
-                    print(Constant.MyClassConstants.whereTogoContentArray[indexPath.row] as! String)
-                    cell.whereTogoTextLabel.text = Constant.MyClassConstants.whereTogoContentArray[(indexPath as NSIndexPath).row] as? String
+                    if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isLockOff || (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isFloat){
+                        cell.bedroomLabel.isHidden = false
+                        
+                        let resortList = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).unitDetails
+                        print((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).resort[0].resortName, resortList.count)
+                        if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isFloat){
+                            let floatDetails = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).floatDetails
+                            cell.bedroomLabel.text = "\(resortList[0].unitSize), \(floatDetails[0].unitNumber), \(resortList[0].kitchenType)"
+                        }else{
+                            cell.bedroomLabel.text = "\(resortList[0].unitSize), \(resortList[0].kitchenType)"
+                        }
+                    }else{
+                        cell.bedroomLabel.isHidden = true
+                    }
+                    if(weekNumber != ""){
+                        cell.whereTogoTextLabel.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).resort[0].resortName)/ \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).relinquishmentYear), Wk\(weekNumber)"
+                    }else{
+                        cell.whereTogoTextLabel.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).resort[0].resortName)/ \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).relinquishmentYear)"
+                    }
+                    
+                } else{
+                    
+                    let availablePointsNumber = Constant.MyClassConstants.relinquishmentAvailablePointsProgram as NSNumber
+                    
+                    let numberFormatter = NumberFormatter()
+                    numberFormatter.numberStyle = .decimal
+                    
+                    let availablePoints = numberFormatter.string(from: availablePointsNumber)
+                    
+                    cell.whereTogoTextLabel.text = "\(Constant.getDynamicString.clubInterValPointsUpTo) \(availablePoints!)"
+                    cell.bedroomLabel.isHidden = true
                 }
                 
-                //cell.bedroomLabel.isHidden = true
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
-                cell.backgroundColor = UIColor.clear
+                cell.backgroundColor = UIColor.white
                 return cell
             }
             
@@ -221,7 +249,7 @@ extension FlexChangeSearchIpadViewController:UITableViewDataSource {
     
 }
 
-
+//MARK:- table view delegate
 extension FlexChangeSearchIpadViewController:UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)  {
@@ -235,14 +263,14 @@ extension FlexChangeSearchIpadViewController:UITableViewDelegate {
             if((indexPath as NSIndexPath).row < Constant.MyClassConstants.whereTogoContentArray.count) {
                 return UITableViewAutomaticDimension
             }else {
-                return 60
+                return 80
             }
         case 1:
             if((indexPath as NSIndexPath).row < Constant.MyClassConstants.whatToTradeArray.count) {
                 return UITableViewAutomaticDimension
             }
             else {
-                return 60
+                return 80
             }
             
         default :
@@ -283,6 +311,90 @@ extension FlexChangeSearchIpadViewController:UITableViewDelegate {
         return view
         
     }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if (indexPath.section == 1 && Constant.MyClassConstants.whatToTradeArray.count > 0) {
+            if indexPath.row == 0 {
+                return true
+            } else {
+                return false
+                
+            }
+            
+            
+        } else {
+            return false
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        if (indexPath.section == 1 && Constant.MyClassConstants.whatToTradeArray.count > 0) {
+            
+                
+                let delete = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.delete) { (action,index) -> Void in
+                    // var isFloat = true
+                    let storedData = Helper.getLocalStorageWherewanttoTrade()
+                    
+                    if(storedData.count > 0) {
+                        
+                        
+                        let realm = try! Realm()
+                        try! realm.write {
+                            
+                            if((Constant.MyClassConstants.whatToTradeArray[indexPath.row] as AnyObject).isKind(of: OpenWeeks.self)){
+                                
+                                var floatWeekIndex = -1
+                                let dataSelected = Constant.MyClassConstants.whatToTradeArray[indexPath.row] as! OpenWeeks
+                                if(dataSelected.isFloat){
+                                    
+                                    
+                                    for (index,object) in storedData.enumerated(){
+                                        let openWk1 = object.openWeeks[0].openWeeks[0]
+                                        if(openWk1.relinquishmentID == dataSelected.relinquishmentID){
+                                            floatWeekIndex = index
+                                        }
+                                    }
+                                    
+                                    storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFloatRemoved = true
+                                    storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFloat = true
+                                    storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFromRelinquishment = false
+                                    
+                                    if(Constant.MyClassConstants.whatToTradeArray.count > 0){
+                                        
+                                        ADBMobile.trackAction(Constant.omnitureEvents.event43, data: nil)
+                                        Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
+                                        Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: indexPath.row)
+                                        Constant.MyClassConstants.relinquishmentUnitsArray.removeObject(at: indexPath.row)
+                                    }
+                                }else{
+                                    Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
+                                    Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: indexPath.row)
+                                    realm.delete(storedData[indexPath.row])
+                                }
+                            }else{
+                                Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
+                                Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: indexPath.row)
+                                realm.delete(storedData[indexPath.row])
+                            }
+                            
+                            tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+                            
+                            tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
+                            Helper.InitializeOpenWeeksFromLocalStorage()
+                        }
+                    }
+                }
+                
+                delete.backgroundColor = UIColor(red: 224/255.0, green: 96.0/255.0, blue: 84.0/255.0, alpha: 1.0)
+                return [delete]
+                
+        } else {
+            return nil
+        }
+        
+    }
+    
     
 }
 
