@@ -42,17 +42,6 @@ class AllAvailableDestinationViewController: UIViewController {
         self.navigationController?.navigationItem.rightBarButtonItem = moreButton
         //allAvailableDestinatontableview.tableHeaderView?.frame = CGRectZero
         
-        if(sectionCounter == 0){
-            
-            self.viewButtonHeightConstraint.constant = 0
-            self.searchButtonHeightConstraint.constant = 0
-            self.searchButton.isHidden = false
-            UIView.animate(withDuration: 0.5) {
-                self.view.layoutIfNeeded()
-            }
-            
-        }
-        
         allAvailableDestinatontableview.reloadData()
         self.resetCounter()
     }
