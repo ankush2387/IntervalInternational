@@ -65,6 +65,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     }
                 }, onError: { (error) in
                     print(error)
+                    let vacationSearchSettings = VacationSearchSettings()
+                    vacationSearchSettings.vacationSearchTypes = [VacationSearchType.Combined.rawValue, VacationSearchType.Exchange.rawValue, VacationSearchType.Rental.rawValue]
+                    
+                    UserContext.sharedInstance.appSettings?.vacationSearch = vacationSearchSettings
                 })
                 }
                 },
