@@ -40,6 +40,7 @@ class VacationSearchViewController: UIViewController {
     var showExchange = true
     var showGetaways = true
     var vacationSearch = VacationSearch()
+    var selectedFlexchange: FlexExchangeDeal?
    // var regionInfo = [RentalSearchRegion]()
    // var regionarea = [RegionArea]()
     var searchDateRequest = RentalSearchDatesRequest()
@@ -311,6 +312,19 @@ class VacationSearchViewController: UIViewController {
         self.searchVacationTableView.reloadData()
     }
     
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if (segue.destination.isKind(of: FlexchangeSearchViewController.self)) {
+            
+            let selectedFlexchange = segue.destination as! FlexchangeSearchViewController
+            selectedFlexchange.selectedFlexchange = self.selectedFlexchange
+            
+            
+        }
+        
+    }
+    
 }
 
 //***** MARK: Extension classes starts from here *****//
@@ -321,6 +335,10 @@ extension VacationSearchViewController:UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if(collectionView.tag == 1){
             
+            selectedFlexchange = Constant.MyClassConstants.flexExchangeDeals[indexPath.row]
+             
+            
+            self.performSegue(withIdentifier: "flexChangeViewController", sender: self)
         }else{
             self.topTenGetawaySelected(selectedIndexPath: indexPath)
         }
@@ -340,6 +358,8 @@ extension VacationSearchViewController:UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView.tag == 1 {
+            
+           
              return Constant.MyClassConstants.flexExchangeDeals.count
         } else {
             return Constant.MyClassConstants.topDeals.count
