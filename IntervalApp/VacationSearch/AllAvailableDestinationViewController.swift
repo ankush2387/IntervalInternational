@@ -41,6 +41,7 @@ class AllAvailableDestinationViewController: UIViewController {
         moreButton!.tintColor = UIColor.white
         self.navigationController?.navigationItem.rightBarButtonItem = moreButton
         //allAvailableDestinatontableview.tableHeaderView?.frame = CGRectZero
+        
         allAvailableDestinatontableview.reloadData()
         self.resetCounter()
     }

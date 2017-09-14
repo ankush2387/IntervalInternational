@@ -12,14 +12,15 @@ import IntervalUIKit
 
 class SelectedResortsIpadViewController: UIViewController {
     
-    // clas  outlets
+    //MARK:- clas  outlets
     @IBOutlet weak var selectedResortsTableView: UITableView!
     
-    // class varibles
+    //MARK:- class varibles
     var areaDictionary = NSMutableDictionary()
     var areasInRegionArray = [String]()
     var selectedCounter = 0
 
+    //MARK:- life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -31,7 +32,7 @@ class SelectedResortsIpadViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
+    //MARK:- button events
     @IBAction func doneButtonClicked(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -47,27 +48,9 @@ class SelectedResortsIpadViewController: UIViewController {
     */
 }
 
-
-/*
- {
- "Australia & New Zealand" =     (
- "Australia, New South Wales, Central",
- "Australia, New South Wales, North Coast"
- );
- "Canada - Eastern" =     (
- "Nova Scotia",
- "Ontario, Calabogie"
- );
- "Caribbean & Atlantic Islands" =     (
- Antigua,
- Anguilla
- );
- }
- */
-
-
+//MARK:- table view datasource
 extension SelectedResortsIpadViewController:UITableViewDataSource {
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
         
         return areaDictionary.allKeys.count
@@ -114,7 +97,7 @@ extension SelectedResortsIpadViewController:UITableViewDataSource {
     
 }
 
-
+//MARK:- table view delegate
 extension SelectedResortsIpadViewController:UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)  {
@@ -157,16 +140,15 @@ extension SelectedResortsIpadViewController:UITableViewDelegate {
                     areaDictionary.setValue(localArray, forKey: dicKey as! String)
                 }else{
                     areaDictionary.removeObject(forKey: dicKey as! String)
-                    //Constant.MyClassConstant.
                 }
-                print(areaDictionary)
-                print(Constant.MyClassConstants.selectedAreaCodeDictionary)
-                print(Constant.MyClassConstants.selectedAreaCodeArray)
-
-            
+                
+                // dismiss controller
+                if areaDictionary.allKeys.count == 0 {
+                    return self.dismiss(animated: true, completion: nil)
+                }
             }
-            tableView.reloadData()
             
+            tableView.reloadData()
             
         }
         

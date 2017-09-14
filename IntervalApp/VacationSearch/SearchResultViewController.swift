@@ -98,6 +98,8 @@ class SearchResultViewController: UIViewController {
                     
                 if(section.exactMatch == nil || section.exactMatch == true){
                     
+                    dateCellSelectionColor = Constant.CommonColor.blueColor
+                    
                     for exactResorts in (section.items)!{
                         
                         if(exactResorts.exchangeAvailability != nil){
@@ -106,10 +108,21 @@ class SearchResultViewController: UIViewController {
                                 exactMatchResortsArrayExchange.append(resortsExact!)
                             }
                         }
+                }else{
+                    if(sections.count == 1){
+                        dateCellSelectionColor = Constant.CommonColor.greenColor
                     }
+                    for surroundingResorts in (section.items)!{
+                        
+                        if(surroundingResorts.exchangeAvailability != nil){
+                            let resortsSurrounding = surroundingResorts.exchangeAvailability
+                            exactMatchResortsArrayExchange.append(resortsSurrounding!)
+                        }
+                    }
+                 }
                 }
                 
-                if(sections.count > 1){
+                /*if(sections.count > 1){
                     
                     for section in sections{
                         
@@ -125,7 +138,7 @@ class SearchResultViewController: UIViewController {
                             }
                         }
                     }
-                }
+                }*/
             }
         }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Rental){
             
@@ -143,7 +156,9 @@ class SearchResultViewController: UIViewController {
                         }
                     }
                 }else{
-                    
+                    if(sections.count == 1){
+                        dateCellSelectionColor = Constant.CommonColor.greenColor
+                    }
                     for surroundingResorts in (section.items)!{
                         
                         if(surroundingResorts.rentalAvailability != nil){
@@ -161,6 +176,10 @@ class SearchResultViewController: UIViewController {
                     combinedExactSearchItems = section.items!
                     
                 }else{
+                    
+                    if(sections.count == 1){
+                        dateCellSelectionColor = Constant.CommonColor.greenColor
+                    }
                     
                     combinedSurroundingSearchItems = section.items!
                 }
@@ -358,12 +377,14 @@ class SearchResultViewController: UIViewController {
     
     //*****Function for more button press *****//
     func intervalDateItemClicked(_ toDate: Date){
-        searchResultColelctionView.reloadData()
+         searchResultColelctionView.reloadData()
          if(combinedExactSearchItems.isEmpty && combinedSurroundingSearchItems.isEmpty && exactMatchResortsArray.isEmpty && exactMatchResortsArrayExchange.isEmpty && surroundingMatchResortsArray.isEmpty && surroundingMatchResortsArrayExchange.isEmpty){
             print("All empty")
          }else{
-        let indexPath = IndexPath(row: 0, section: 0)
-        searchResultTableView.scrollToRow(at: indexPath, at: .top, animated: true)
+            let indexPath = IndexPath(row: 0, section: 0)
+            searchResultTableView.scrollToRow(at: indexPath, at: .top, animated: true)
+        }
+        
         let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
         Helper.helperDelegate = self
         if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
@@ -377,22 +398,22 @@ class SearchResultViewController: UIViewController {
             request.resortCodes = activeInterval?.resortCodes
             
             RentalClient.searchResorts(UserContext.sharedInstance.accessToken, request: request,
-               onSuccess: { (response) in
-                // Update Rental inventory
-                Constant.MyClassConstants.initialVacationSearch.rentalSearch?.inventory = response.resorts
-                
-                // Run Exchange Search Dates
-                Helper.executeExchangeSearchAvailabilityAfterSelectCheckInDate(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat), searchCriteria: Constant.MyClassConstants.initialVacationSearch.searchCriteria, senderVC: self)
-                
+                                       onSuccess: { (response) in
+                                        // Update Rental inventory
+                                        Constant.MyClassConstants.initialVacationSearch.rentalSearch?.inventory = response.resorts
+                                        
+                                        // Run Exchange Search Dates
+                                        Helper.executeExchangeSearchAvailabilityAfterSelectCheckInDate(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat), searchCriteria: Constant.MyClassConstants.initialVacationSearch.searchCriteria, senderVC: self)
+                                        
                                         
             },
-               onError:{ (error) in
-               SimpleAlert.alert(self, title: Constant.AlertMessages.noResultMessage, message: error.localizedDescription)
+                                       onError:{ (error) in
+                                        SimpleAlert.alert(self, title: Constant.AlertMessages.noResultMessage, message: error.localizedDescription)
             }
             )
             
         }
-        }
+        
     }
     
     
@@ -615,9 +636,9 @@ class SearchResultViewController: UIViewController {
         let firstVisibleIndexPath = searchResultTableView.indexPathsForVisibleRows?.first
         let indexPath = IndexPath(item: collectionviewSelectedIndex, section: 0)
         if(firstVisibleIndexPath?.section == 1){
-            dateCellSelectionColor = Constant.CommonColor.blueColor
-        }else{
             dateCellSelectionColor = Constant.CommonColor.greenColor
+        }else{
+            //dateCellSelectionColor = Constant.CommonColor.blueColor
         }
         
         if(indexPath.row <= Constant.MyClassConstants.calendarDatesArray.count){
@@ -710,7 +731,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
             
             let lastSelectedIndex = collectionviewSelectedIndex
             collectionviewSelectedIndex = indexPath.item
-            //dateCellSelectionColor = Constant.CommonColor.blueColor
+            dateCellSelectionColor = Constant.CommonColor.blueColor
             if(Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)!{
                 
                 Helper.showProgressBar(senderView: self)
@@ -1484,7 +1505,11 @@ extension SearchResultViewController:UITableViewDataSource {
         if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
             
             if(section == 0 && exactMatchResortsArrayExchange.count == 0 || section == 1){
-                return surroundingMatchResortsArrayExchange .count
+                if(exactMatchResortsArrayExchange.count == 0 && Constant.MyClassConstants.isShowAvailability == true){
+                    return surroundingMatchResortsArrayExchange.count + 1
+                }else{
+                    return surroundingMatchResortsArrayExchange.count
+                }
             }else{
                 if Constant.MyClassConstants.isShowAvailability == true && section == 0 {
                     return exactMatchResortsArrayExchange.count + 1
@@ -1497,7 +1522,12 @@ extension SearchResultViewController:UITableViewDataSource {
             
         }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
             if(section == 0 && exactMatchResortsArray.count == 0 || section == 1){
-                return surroundingMatchResortsArray.count
+                if(exactMatchResortsArray.count == 0 && Constant.MyClassConstants.isShowAvailability == true){
+                    return surroundingMatchResortsArray.count + 1
+                }else{
+                    return surroundingMatchResortsArray.count
+                }
+                
             }else{
                 if Constant.MyClassConstants.isShowAvailability == true && section == 0 {
                     return exactMatchResortsArray.count + 1
@@ -1508,7 +1538,8 @@ extension SearchResultViewController:UITableViewDataSource {
             }
         }else{
             if(section == 0 && combinedExactSearchItems.count == 0 || section == 1){
-                if(section == 0 && Constant.MyClassConstants.isShowAvailability == true){
+                
+                if(combinedExactSearchItems.count == 0 && Constant.MyClassConstants.isShowAvailability == true){
                     return combinedSurroundingSearchItems.count + 1
                 }else{
                     return combinedSurroundingSearchItems.count
