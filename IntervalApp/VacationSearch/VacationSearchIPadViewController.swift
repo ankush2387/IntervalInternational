@@ -472,6 +472,8 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
     
     @IBAction func addWhereToTradePressed(_ sender: IUIKButton){
         
+        Constant.MyClassConstants.viewController = self
+        
         SVProgressHUD.show()
         Helper.addServiceCallBackgroundView(view: self.view)
         ExchangeClient.getMyUnits(UserContext.sharedInstance.accessToken, onSuccess: { (Relinquishments) in
@@ -1028,9 +1030,17 @@ extension VacationSearchIPadViewController:UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
+        // navigate to flex chane screen
         if collectionView.tag == 1 {
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.flexChangeSearchIpadViewController) as! FlexChangeSearchIpadViewController
+            
+            // set travel party info
+            let travelPartyInfo = TravelParty()
+            travelPartyInfo.adults = Int(self.adultCounter)
+            travelPartyInfo.children = Int(self.childCounter)
+            
+            Constant.MyClassConstants.travelPartyInfo = travelPartyInfo
             
             viewController.selectedFlexchange = Constant.MyClassConstants.flexExchangeDeals[indexPath.row]
             let transitionManager = TransitionManager()

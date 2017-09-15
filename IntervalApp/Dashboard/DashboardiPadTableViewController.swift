@@ -14,11 +14,15 @@ import SVProgressHUD
 
 class DashboardIPadTableViewController: UITableViewController {
     
-    
+    // class outlets
     @IBOutlet var homeTableView: UITableView!
     @IBOutlet var homeTableCollectionView:UICollectionView!
+    
+    // class variables
     var showGetaways = false
     var showExchange = true
+    var childCounter = 0
+    var adultCounter = 2
     
     override func viewWillAppear(_ animated: Bool) {
         //***** Adding notification to reload table when all alerts have been fetched *****//
@@ -407,6 +411,25 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
         
         if collectionView.tag == 3 {
             self.topTenGetawaySelected(selectedIndexPath: indexPath)
+        }
+        
+        // navigate to flex chane screen
+        if collectionView.tag == 2 {
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.flexChangeSearchIpadViewController) as! FlexChangeSearchIpadViewController
+            
+            // set travel party info
+            let travelPartyInfo = TravelParty()
+            travelPartyInfo.adults = Int(self.adultCounter)
+            travelPartyInfo.children = Int(self.childCounter)
+            
+            Constant.MyClassConstants.travelPartyInfo = travelPartyInfo
+            
+            viewController.selectedFlexchange = Constant.MyClassConstants.flexExchangeDeals[indexPath.row]
+            let transitionManager = TransitionManager()
+            self.navigationController?.transitioningDelegate = transitionManager
+            
+            self.navigationController!.pushViewController(viewController, animated: true)
         }
         
     }

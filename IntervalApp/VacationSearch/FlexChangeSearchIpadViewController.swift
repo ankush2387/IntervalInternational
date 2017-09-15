@@ -48,7 +48,27 @@ class FlexChangeSearchIpadViewController: UIViewController {
 
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.flexchangeSearchTableView.reloadData()
+    }
+    
 
+    func navigateToSearchResults(){
+        
+       // Constant.MyClassConstants.vacationSearchResultHeaderLabel = (Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: Constant.MyClassConstants.selectedAreaCodeArray[0] as! String) as? String)!
+        Constant.MyClassConstants.filteredIndex = 0
+        
+        Constant.MyClassConstants.vacationSearchResultHeaderLabel = (selectedFlexchange?.name)!
+        
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! VacationSearchResultIPadController
+        
+        
+        let transitionManager = TransitionManager()
+        self.navigationController?.transitioningDelegate = transitionManager
+        
+        self.navigationController!.pushViewController(viewController, animated: true)
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -62,6 +82,68 @@ class FlexChangeSearchIpadViewController: UIViewController {
     }
     
     @IBAction func searchButtonClicked(_ sender: UIButton) {
+        
+        if(Constant.MyClassConstants.relinquishmentIdArray.count == 0) {
+            return SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
+            
+        }
+        
+        Helper.helperDelegate = self
+        
+        Helper.showProgressBar(senderView: self)
+        if Reachability.isConnectedToNetwork() == true {
+            
+            let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
+            
+            exchangeSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
+            exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
+            exchangeSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
+            exchangeSearchCriteria.searchType = VacationSearchType.Exchange
+            
+            
+            
+            //let storedData = Helper.getLocalStorageWherewanttoGo()
+            
+            exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
+            Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(UserContext.sharedInstance.appSettings, exchangeSearchCriteria)
+            let area = Area()
+            area.areaCode = (selectedFlexchange?.areaCode)!
+            area.areaName = selectedFlexchange?.name
+            
+            
+            Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.areas = [area]
+            
+            
+            
+            ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
+                
+                Helper.hideProgressBar(senderView: self)
+                Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
+                Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                // Get activeInterval (or initial search interval)
+                let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
+                
+                // Update active interval
+                Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                
+                // Check not available checkIn dates for the active interval
+                if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                    Helper.showNotAvailabilityResults()
+                    //self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
+                    self.navigateToSearchResults()
+                }else{
+                    Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
+                    Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate:  Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                }
+                
+            }, onError: { (error) in
+                
+                Helper.hideProgressBar(senderView: self)
+                SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+            })
+            
+            
+        }
         
     }
     
@@ -397,9 +479,20 @@ extension FlexChangeSearchIpadViewController:UITableViewDelegate {
         
     }
     
-    
 }
 
 
+//MARK:- Helper delegate
+extension FlexChangeSearchIpadViewController:HelperDelegate {
+    
+    func resortSearchComplete(){
+        self.navigateToSearchResults()
+        
+    }
+    
+    func resetCalendar(){
+        
+    }
+}
 
 
