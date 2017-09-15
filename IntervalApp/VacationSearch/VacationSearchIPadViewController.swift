@@ -169,7 +169,7 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
             self.parent!.navigationItem.rightBarButtonItem = moreButton
             self.view.addGestureRecognizer( rvc.panGestureRecognizer() )
         }
-        Helper.InitializeArrayFromLocalStorage()
+        
         self.searchVacationTableView.reloadData()
     }
     

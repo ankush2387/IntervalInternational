@@ -30,6 +30,8 @@ class DashboardIPadTableViewController: UITableViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(reloadTopDestinations), name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadUpcomingTrip), name: NSNotification.Name(rawValue:Constant.notificationNames.reloadTripDetailsNotification), object: nil)
         
+        Helper.InitializeOpenWeeksFromLocalStorage()
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -418,6 +420,7 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.flexChangeSearchIpadViewController) as! FlexChangeSearchIpadViewController
             
+            Constant.MyClassConstants.viewController = self
             // set travel party info
             let travelPartyInfo = TravelParty()
             travelPartyInfo.adults = Int(self.adultCounter)

@@ -50,6 +50,7 @@ class FlexChangeSearchIpadViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         self.flexchangeSearchTableView.reloadData()
+        Helper.getLocalStorageWherewanttoTrade()
     }
     
 
@@ -323,7 +324,7 @@ extension FlexChangeSearchIpadViewController:UITableViewDataSource {
                 }
                 
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
-                cell.backgroundColor = UIColor.white
+                cell.backgroundColor = UIColor.green
                 return cell
             }
             
@@ -354,7 +355,7 @@ extension FlexChangeSearchIpadViewController:UITableViewDelegate {
                 //return UITableViewAutomaticDimension
             }
             else {
-                return 80
+                return 70
             }
             
         default :
@@ -398,10 +399,10 @@ extension FlexChangeSearchIpadViewController:UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         if (indexPath.section == 1 && Constant.MyClassConstants.whatToTradeArray.count > 0) {
-            if indexPath.row == 0 {
-                return true
-            } else {
+            if (indexPath.row == Constant.MyClassConstants.whatToTradeArray.count) {
                 return false
+            } else {
+                return true
                 
             }
             

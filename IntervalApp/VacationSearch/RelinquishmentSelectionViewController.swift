@@ -211,6 +211,12 @@ class RelinquishmentSelectionViewController: UIViewController {
         return self.requiredSection
     }
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
+        if(Constant.MyClassConstants.viewController.isKind(of:FlexChangeSearchIpadViewController.self)) {
+             _ = self.navigationController?.popViewController(animated: true)
+            
+            return
+            
+        }
         if(Constant.RunningDevice.deviceIdiom == .pad){
             self.dismiss(animated: true, completion: nil)
         }else{
@@ -303,6 +309,13 @@ class RelinquishmentSelectionViewController: UIViewController {
                 realm.add(storedata)
             }
             
+            if(Constant.MyClassConstants.viewController.isKind(of:FlexChangeSearchIpadViewController.self)) {
+                _ = self.navigationController?.popViewController(animated: true)
+                
+                return
+            }
+
+            
             if(Constant.RunningDevice.deviceIdiom == .pad){
                 self.dismiss(animated: true, completion: nil)
             }else{
@@ -337,6 +350,13 @@ class RelinquishmentSelectionViewController: UIViewController {
             try! realm.write {
                 realm.add(storedata)
             }
+            
+            if(Constant.MyClassConstants.viewController.isKind(of:FlexChangeSearchIpadViewController.self)) {
+                _ = self.navigationController?.popViewController(animated: true)
+                
+                return
+            }
+
             
             if(Constant.RunningDevice.deviceIdiom == .pad){
                 self.dismiss(animated: true, completion: nil)
@@ -419,6 +439,12 @@ class RelinquishmentSelectionViewController: UIViewController {
                 realm.add(storedata)
             }
             
+            if(Constant.MyClassConstants.viewController.isKind(of:FlexChangeSearchIpadViewController.self)) {
+                _ = self.navigationController?.popViewController(animated: true)
+                
+                return
+            }
+            
             if(Constant.RunningDevice.deviceIdiom == .pad){
                 self.dismiss(animated: true, completion: nil)
             }else{
@@ -490,6 +516,13 @@ class RelinquishmentSelectionViewController: UIViewController {
                 try! realm.write {
                     realm.add(storedata)
                 }
+                
+               if(Constant.MyClassConstants.viewController.isKind(of:FlexChangeSearchIpadViewController.self)) {
+                    _ = self.navigationController?.popViewController(animated: true)
+                    
+                    return
+                }
+                
                 if(Constant.RunningDevice.deviceIdiom == .pad){
                     self.dismiss(animated: true, completion: nil)
                 }else{
@@ -607,6 +640,12 @@ class RelinquishmentSelectionViewController: UIViewController {
         let realm = try! Realm()
         try! realm.write {
             realm.add(storedata)
+        }
+        
+        if(Constant.MyClassConstants.viewController.isKind(of:FlexChangeSearchIpadViewController.self)) {
+            _ = self.navigationController?.popViewController(animated: true)
+            
+            return
         }
         
         if(Constant.RunningDevice.deviceIdiom == .pad){
