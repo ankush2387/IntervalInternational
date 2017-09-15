@@ -275,10 +275,10 @@ extension FlexchangeSearchViewController:UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         if (indexPath.section == 1 && Constant.MyClassConstants.whatToTradeArray.count > 0) {
-            if indexPath.row == 0 {
-                return true
-            }else {
+            if indexPath.row == Constant.MyClassConstants.whatToTradeArray.count {
                 return false
+            }else {
+                return true
             }
             
         }else {
