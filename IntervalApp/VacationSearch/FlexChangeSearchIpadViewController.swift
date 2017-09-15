@@ -230,7 +230,7 @@ extension FlexChangeSearchIpadViewController:UITableViewDataSource {
                 }
                 
                 
-                let addLocationButton = IUIKButton(frame: CGRect(x: cell.contentView.bounds.width/2 - (cell.contentView.bounds.width/5)/2, y: 20, width: cell.contentView.bounds.width/5, height: 40))
+                let addLocationButton = IUIKButton(frame: CGRect(x: cell.contentView.bounds.width/2 - (cell.contentView.bounds.width/5)/2, y: 15, width: cell.contentView.bounds.width/5, height: 30))
                 
                 addLocationButton.setTitle(Constant.buttonTitles.add, for: UIControlState.normal)
                 addLocationButton.setTitleColor(IUIKColorPalette.primary3.color, for: UIControlState.normal)
@@ -324,7 +324,7 @@ extension FlexChangeSearchIpadViewController:UITableViewDataSource {
                 }
                 
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
-                cell.backgroundColor = UIColor.green
+                cell.backgroundColor = UIColor.white
                 return cell
             }
             
@@ -351,11 +351,11 @@ extension FlexChangeSearchIpadViewController:UITableViewDelegate {
             }
         case 1:
             if((indexPath as NSIndexPath).row < Constant.MyClassConstants.whatToTradeArray.count) {
-                return 100
+                return 80
                 //return UITableViewAutomaticDimension
             }
             else {
-                return 70
+                return 60
             }
             
         default :
@@ -463,9 +463,9 @@ extension FlexChangeSearchIpadViewController:UITableViewDelegate {
                                 realm.delete(storedData[indexPath.row])
                             }
                             
-                            tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+                            tableView.deleteRows(at: [indexPath], with: .none)
                             
-                            tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
+                            tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .none)
                             Helper.InitializeOpenWeeksFromLocalStorage()
                         }
                     }
