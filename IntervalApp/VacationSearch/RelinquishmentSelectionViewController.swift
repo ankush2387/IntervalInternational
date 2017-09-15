@@ -211,7 +211,7 @@ class RelinquishmentSelectionViewController: UIViewController {
         return self.requiredSection
     }
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
-        if(Constant.MyClassConstants.viewController.isKind(of:FlexChangeSearchIpadViewController.self)) {
+        if(Constant.MyClassConstants.viewController.isKind(of:FlexChangeSearchIpadViewController.self) || Constant.MyClassConstants.viewController.isKind(of:FlexchangeSearchViewController.self)) {
              _ = self.navigationController?.popViewController(animated: true)
             
             return
@@ -309,7 +309,7 @@ class RelinquishmentSelectionViewController: UIViewController {
                 realm.add(storedata)
             }
             
-            if(Constant.MyClassConstants.viewController.isKind(of:FlexChangeSearchIpadViewController.self)) {
+            if(Constant.MyClassConstants.viewController.isKind(of:FlexChangeSearchIpadViewController.self) || Constant.MyClassConstants.viewController.isKind(of:FlexchangeSearchViewController.self)) {
                 _ = self.navigationController?.popViewController(animated: true)
                 
                 return
@@ -351,7 +351,7 @@ class RelinquishmentSelectionViewController: UIViewController {
                 realm.add(storedata)
             }
             
-            if(Constant.MyClassConstants.viewController.isKind(of:FlexChangeSearchIpadViewController.self)) {
+            if(Constant.MyClassConstants.viewController.isKind(of:FlexChangeSearchIpadViewController.self) || Constant.MyClassConstants.viewController.isKind(of:FlexchangeSearchViewController.self)) {
                 _ = self.navigationController?.popViewController(animated: true)
                 
                 return
@@ -439,7 +439,7 @@ class RelinquishmentSelectionViewController: UIViewController {
                 realm.add(storedata)
             }
             
-            if(Constant.MyClassConstants.viewController.isKind(of:FlexChangeSearchIpadViewController.self)) {
+            if(Constant.MyClassConstants.viewController.isKind(of:FlexChangeSearchIpadViewController.self) || Constant.MyClassConstants.viewController.isKind(of:FlexchangeSearchViewController.self)) {
                 _ = self.navigationController?.popViewController(animated: true)
                 
                 return
@@ -517,7 +517,7 @@ class RelinquishmentSelectionViewController: UIViewController {
                     realm.add(storedata)
                 }
                 
-               if(Constant.MyClassConstants.viewController.isKind(of:FlexChangeSearchIpadViewController.self)) {
+               if(Constant.MyClassConstants.viewController.isKind(of:FlexChangeSearchIpadViewController.self) || Constant.MyClassConstants.viewController.isKind(of:FlexchangeSearchViewController.self)) {
                     _ = self.navigationController?.popViewController(animated: true)
                     
                     return
@@ -642,7 +642,7 @@ class RelinquishmentSelectionViewController: UIViewController {
             realm.add(storedata)
         }
         
-        if(Constant.MyClassConstants.viewController.isKind(of:FlexChangeSearchIpadViewController.self)) {
+        if(Constant.MyClassConstants.viewController.isKind(of:FlexChangeSearchIpadViewController.self) || Constant.MyClassConstants.viewController.isKind(of:FlexchangeSearchViewController.self)) {
             _ = self.navigationController?.popViewController(animated: true)
             
             return
@@ -1199,21 +1199,28 @@ extension RelinquishmentSelectionViewController:BedroomSizeViewControllerDelegat
         // Open vacation search view controller
         var viewcontroller:UIViewController
         if (Constant.RunningDevice.deviceIdiom == .phone) {
-            
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-            viewcontroller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as! SWRevealViewController
-        }
-        else{
-            
-            if(Constant.MyClassConstants.viewController.isKind(of:FlexChangeSearchIpadViewController.self)) {
-                /*viewcontroller = Constant.MyClassConstants.viewController
-                 self.dismiss(animated: true, completion: nil)*/
-                
-                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-                viewcontroller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.flexChangeSearchIpadViewController) as! FlexChangeSearchIpadViewController
+            if(Constant.MyClassConstants.viewController.isKind(of:FlexchangeSearchViewController.self)) {
+                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                viewcontroller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.flexchangeViewController) as! FlexchangeSearchViewController
                 
                 self.dismiss(animated: true, completion: nil)
                 self.navigationController?.popViewController(animated: true)
+                return
+            }else{
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+            viewcontroller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as! SWRevealViewController
+            }
+        }
+        else{
+            
+            if(Constant.MyClassConstants.viewController.isKind(of:FlexChangeSearchIpadViewController.self) || Constant.MyClassConstants.viewController.isKind(of:FlexchangeSearchViewController.self)) {
+                /*viewcontroller = Constant.MyClassConstants.viewController
+                 self.dismiss(animated: true, completion: nil)*/
+                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                    viewcontroller = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.flexChangeSearchIpadViewController) as! FlexChangeSearchIpadViewController
+                    
+                    self.dismiss(animated: true, completion: nil)
+                    self.navigationController?.popViewController(animated: true)
                 return
             } else {
                 let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
