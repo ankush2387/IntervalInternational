@@ -23,7 +23,6 @@ class FlexchangeSearchViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         
         let menuButtonright = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.MoreNav), style: .plain, target: self, action:#selector(FlexchangeSearchViewController.menuButtonClicked))
         menuButtonright.tintColor = UIColor.white
@@ -116,7 +115,7 @@ class FlexchangeSearchViewController: UIViewController {
     
     @IBAction func searchButtonPressed(_ sender: Any) {
         
-        
+        Helper.helperDelegate = self
         if(Constant.MyClassConstants.relinquishmentIdArray.count == 0){
             
             SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
@@ -277,13 +276,11 @@ extension FlexchangeSearchViewController:UITableViewDelegate{
         if (indexPath.section == 1 && Constant.MyClassConstants.whatToTradeArray.count > 0) {
             if indexPath.row == 0 {
                 return true
-            } else {
+            }else {
                 return false
-                
             }
             
-            
-        } else {
+        }else {
             return false
         }
     }
@@ -508,3 +505,20 @@ extension FlexchangeSearchViewController:UITableViewDataSource{
     
     
 }
+
+
+extension FlexchangeSearchViewController:HelperDelegate {
+    
+    func resetCalendar() {
+        
+    }
+
+ 
+    func resortSearchComplete(){
+       
+        self.navigateToSearchResults()
+    }
+    
+
+}
+
