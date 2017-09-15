@@ -335,6 +335,13 @@ extension VacationSearchViewController:UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if(collectionView.tag == 1){
             
+            //Set travel PartyInfo
+            let travelPartyInfo = TravelParty()
+            travelPartyInfo.adults = Int(self.adultCounter)
+            travelPartyInfo.children = Int(self.childCounter)
+            
+            Constant.MyClassConstants.travelPartyInfo = travelPartyInfo
+            
             selectedFlexchange = Constant.MyClassConstants.flexExchangeDeals[indexPath.row]
              
             
