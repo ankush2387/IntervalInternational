@@ -162,12 +162,13 @@ extension FlexchangeSearchViewController:UITableViewDelegate{
             
         }else if (indexPath.section == 1){
             
-            return 60
+            return 80
             
         } else{
             
             return 60
         }
+        
         
     }
     
@@ -215,6 +216,21 @@ extension FlexchangeSearchViewController:UITableViewDelegate{
             return 0
         }
         
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if (indexPath.section == 1 && Constant.MyClassConstants.whatToTradeArray.count > 0) {
+            if indexPath.row == 0 {
+                return true
+            } else {
+                return false
+                
+            }
+            
+            
+        } else {
+            return false
+        }
     }
     
     
