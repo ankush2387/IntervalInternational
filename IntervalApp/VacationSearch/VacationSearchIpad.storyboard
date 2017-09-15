@@ -6503,7 +6503,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="749" text="or" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eUl-yK-HrX">
-                                                    <rect key="frame" x="366" y="39" width="36" height="17.5"/>
+                                                    <rect key="frame" x="366" y="31" width="36" height="17.5"/>
                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="36" id="Xaw-vh-MCs"/>
@@ -6518,12 +6518,13 @@
                                                 <constraint firstAttribute="trailing" secondItem="x5y-cs-FWg" secondAttribute="trailing" constant="20" id="BIy-X6-Gqg"/>
                                                 <constraint firstItem="x5y-cs-FWg" firstAttribute="leading" secondItem="szJ-sF-tt9" secondAttribute="leading" constant="20" id="ERn-NK-2Sk"/>
                                                 <constraint firstItem="eUl-yK-HrX" firstAttribute="centerX" secondItem="szJ-sF-tt9" secondAttribute="centerX" id="LoV-Ch-gpC"/>
-                                                <constraint firstAttribute="bottom" secondItem="eUl-yK-HrX" secondAttribute="bottom" constant="3.5" id="Os2-0m-xMI"/>
+                                                <constraint firstItem="eUl-yK-HrX" firstAttribute="top" secondItem="FIg-ML-IqX" secondAttribute="bottom" constant="5" id="XIW-fv-ndv"/>
                                                 <constraint firstItem="FIg-ML-IqX" firstAttribute="top" secondItem="x5y-cs-FWg" secondAttribute="bottom" constant="5" id="agm-qQ-kft"/>
                                                 <constraint firstAttribute="trailing" secondItem="FIg-ML-IqX" secondAttribute="trailing" constant="12" id="cbE-i8-mAY"/>
                                                 <constraint firstItem="FIg-ML-IqX" firstAttribute="leading" secondItem="szJ-sF-tt9" secondAttribute="leading" constant="12" id="qpz-6B-WZv"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="bedroomLabel" destination="FIg-ML-IqX" id="bJA-2A-DBv"/>
                                             <outlet property="sepratorOr" destination="eUl-yK-HrX" id="PBI-1H-A7R"/>

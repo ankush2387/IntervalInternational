@@ -1579,7 +1579,7 @@ public class Helper{
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
         
-        let date = dateFormatter.date(from: dateString)
+        let date = dateFormatter.date(from: "2017-08-24")
         
         return date!
     }

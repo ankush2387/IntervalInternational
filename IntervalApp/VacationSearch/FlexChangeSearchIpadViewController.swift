@@ -147,7 +147,8 @@ extension FlexChangeSearchIpadViewController:UITableViewDataSource {
                 }
                 
                 
-                let addLocationButton = IUIKButton(frame: CGRect(x: cell.contentView.bounds.width/2 - (cell.contentView.bounds.width/5)/2, y: 15, width: cell.contentView.bounds.width/5, height: 30))
+                let addLocationButton = IUIKButton(frame: CGRect(x: cell.contentView.bounds.width/2 - (cell.contentView.bounds.width/5)/2, y: 20, width: cell.contentView.bounds.width/5, height: 40))
+                
                 addLocationButton.setTitle(Constant.buttonTitles.add, for: UIControlState.normal)
                 addLocationButton.setTitleColor(IUIKColorPalette.primary3.color, for: UIControlState.normal)
                 addLocationButton.layer.borderColor = IUIKColorPalette.primary3.color.cgColor
@@ -267,7 +268,8 @@ extension FlexChangeSearchIpadViewController:UITableViewDelegate {
             }
         case 1:
             if((indexPath as NSIndexPath).row < Constant.MyClassConstants.whatToTradeArray.count) {
-                return UITableViewAutomaticDimension
+                return 100
+                //return UITableViewAutomaticDimension
             }
             else {
                 return 80
