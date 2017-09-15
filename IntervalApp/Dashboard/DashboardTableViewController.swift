@@ -34,6 +34,8 @@ class DashboardTableViewController: UITableViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(reloadTopDestinations), name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadUpcomingTrip), name: NSNotification.Name(rawValue:Constant.notificationNames.reloadTripDetailsNotification), object: nil)
         self.getNumberOfSections()
+        Helper.InitializeOpenWeeksFromLocalStorage()
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
