@@ -80,6 +80,7 @@ class FlexchangeSearchViewController: UIViewController {
    
     
     func addRelinquishmentSectionButtonPressed(_ sender:IUIKButton) {
+        Constant.MyClassConstants.viewController = self
         Helper.showProgressBar(senderView: self)
         ExchangeClient.getMyUnits(UserContext.sharedInstance.accessToken, onSuccess: { (Relinquishments) in
             
