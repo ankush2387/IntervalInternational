@@ -920,6 +920,7 @@ class Constant: NSObject {
         static var selectedControllerTitle = ""
         static var sorting = NSLocalizedString("Sorting", comment: "")
         static var choosewhattouse = NSLocalizedString("Choose what to use", comment: "")
+        static var flexChangeSearch = NSLocalizedString("Flexchange Search", comment: "")
     }
     
     //***** Common structure for custom cell identifiers ******//

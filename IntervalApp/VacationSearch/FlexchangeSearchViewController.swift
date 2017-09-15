@@ -24,8 +24,19 @@ class FlexchangeSearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        print("Testing")
-        // Do any additional setup after loading the view.
+        
+        let menuButtonright = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.MoreNav), style: .plain, target: self, action:#selector(FlexchangeSearchViewController.menuButtonClicked))
+        menuButtonright.tintColor = UIColor.white
+        self.navigationItem.rightBarButtonItem = menuButtonright
+        
+        
+        // Adding navigation back button
+        let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(FlexchangeSearchViewController.menuBackButtonPressed(_:)))
+        menuButton.tintColor = UIColor.white
+        self.navigationItem.leftBarButtonItem = menuButton
+        
+        // Adding controller title
+        self.title = Constant.ControllerTitles.flexChangeSearch
     }
 
     override func didReceiveMemoryWarning() {
@@ -34,6 +45,40 @@ class FlexchangeSearchViewController: UIViewController {
     }
     
     
+    func menuBackButtonPressed(_ sender:UIBarButtonItem) {
+     
+        _ = self.navigationController?.popViewController(animated: true)
+      
+        
+    }
+    
+     //**** Option to open menu from bottom ***//
+    
+    func menuButtonClicked()  {
+        
+        
+        let actionSheetController: UIAlertController = UIAlertController(title:Constant.buttonTitles.searchOption, message: "", preferredStyle: .actionSheet)
+        
+        
+        let helpAction: UIAlertAction = UIAlertAction(title:Constant.buttonTitles.help, style: .default) { action -> Void in
+            //Just dismiss the action sheet
+        }
+            
+         actionSheetController.addAction(helpAction)
+        
+        //***** Create and add the cancel button *****//
+        let cancelAction: UIAlertAction = UIAlertAction(title: Constant.buttonTitles.cancel, style: .cancel) { action -> Void in
+            //Just dismiss the action sheet
+        }
+        actionSheetController.addAction(cancelAction)
+        
+        //Present the AlertController
+        self.present(actionSheetController, animated: true, completion: nil)
+        
+        
+    }
+    
+   
     
     func addRelinquishmentSectionButtonPressed(_ sender:IUIKButton) {
         Helper.showProgressBar(senderView: self)
@@ -72,6 +117,13 @@ class FlexchangeSearchViewController: UIViewController {
     @IBAction func searchButtonPressed(_ sender: Any) {
         
         
+        if(Constant.MyClassConstants.relinquishmentIdArray.count == 0){
+            
+            SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
+            Helper.hideProgressBar(senderView: self)
+            
+        }else{
+            
             Helper.showProgressBar(senderView: self)
             if Reachability.isConnectedToNetwork() == true {
                 
@@ -91,7 +143,7 @@ class FlexchangeSearchViewController: UIViewController {
                 let area = Area()
                 area.areaCode = (selectedFlexchange?.areaCode)!
                 area.areaName = selectedFlexchange?.name
-                
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel = area.areaName!
                 
                 Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.areas = [area]
                 
@@ -127,6 +179,9 @@ class FlexchangeSearchViewController: UIViewController {
                 
             }
             
+        }
+        
+        
     }
     
 
