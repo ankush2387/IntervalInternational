@@ -1027,7 +1027,20 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
 extension VacationSearchIPadViewController:UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.topTenGetawaySelected(selectedIndexPath: indexPath)
+        
+        if collectionView.tag == 1 {
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.flexChangeSearchIpadViewController) as! FlexChangeSearchIpadViewController
+            
+            viewController.selectedFlexchange = Constant.MyClassConstants.flexExchangeDeals[indexPath.row]
+            let transitionManager = TransitionManager()
+            self.navigationController?.transitioningDelegate = transitionManager
+            
+            self.navigationController!.pushViewController(viewController, animated: true)
+        } else {
+            self.topTenGetawaySelected(selectedIndexPath: indexPath)
+        }
+        
     }
 }
 

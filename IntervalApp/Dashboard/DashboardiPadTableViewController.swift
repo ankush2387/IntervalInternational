@@ -408,6 +408,7 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
         if collectionView.tag == 3 {
             self.topTenGetawaySelected(selectedIndexPath: indexPath)
         }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
