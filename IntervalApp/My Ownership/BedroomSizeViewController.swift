@@ -87,6 +87,24 @@ class BedroomSizeViewController: UIViewController {
         }
     }
     
+    //*** Change frame layout while change iPad in Portrait and Landscape mode.***//
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        if(Constant.RunningDevice.deviceIdiom == .pad){
+            frameChangeOnPortraitandLandscape()
+        }
+        
+    }
+    
+    func frameChangeOnPortraitandLandscape(){
+        
+        if(UIDevice.current.orientation == .landscapeLeft || UIDevice.current.orientation == .landscapeRight){
+            
+        }
+        
+        self.bedroomSizeTableView.reloadData()
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         getSelectedUnitAndRelinquismentID()

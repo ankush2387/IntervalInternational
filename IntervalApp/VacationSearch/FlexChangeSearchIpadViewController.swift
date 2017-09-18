@@ -27,6 +27,7 @@ class FlexChangeSearchIpadViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
 
         self.title = "Flexchange Search"
         
@@ -53,6 +54,25 @@ class FlexChangeSearchIpadViewController: UIViewController {
         Helper.getLocalStorageWherewanttoTrade()
     }
     
+    
+    //*** Change frame layout while change iPad in Portrait and Landscape mode.***//
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        if(Constant.RunningDevice.deviceIdiom == .pad){
+            frameChangeOnPortraitandLandscape()
+        }
+        
+    }
+    
+    func frameChangeOnPortraitandLandscape(){
+        
+        if(UIDevice.current.orientation == .landscapeLeft || UIDevice.current.orientation == .landscapeRight){
+            self.flexchangeSearchTableView.reloadData()
+            
+        }
+        
+        self.flexchangeSearchTableView.reloadData()
+    
+    }
 
     func navigateToSearchResults(){
         
@@ -378,9 +398,7 @@ extension FlexChangeSearchIpadViewController:UITableViewDelegate {
         view.backgroundColor = UIColor.clear
 
         let headerNameLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 30))
-        
-        headerNameLabel.textAlignment = .center
-        
+
         if section == 0 {
             headerNameLabel.text = "Your selected Flexchange Destination"
         } else {
@@ -388,6 +406,7 @@ extension FlexChangeSearchIpadViewController:UITableViewDelegate {
             
         }
         
+        headerNameLabel.textAlignment = .center
         headerNameLabel.textColor = UIColor.lightGray
         headerNameLabel.font = UIFont(name:Constant.fontName.helveticaNeue, size:18)
         
