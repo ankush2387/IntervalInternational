@@ -568,7 +568,7 @@ extension UIViewController {
         areas.areaCode = Constant.MyClassConstants.topDeals[selectedIndexPath.row].areaCodes.first!
         Constant.MyClassConstants.vacationSearchShowDate = Constant.MyClassConstants.topDeals[selectedIndexPath.row].fromDate
         Constant.MyClassConstants.vacationSearchResultHeaderLabel = Constant.MyClassConstants.topDeals[selectedIndexPath.row].header!
-        Constant.MyClassConstants.whereTogoContentArray = [Constant.MyClassConstants.topDeals[selectedIndexPath.row].header!]
+        //Constant.MyClassConstants.whereTogoContentArray = [Constant.MyClassConstants.topDeals[selectedIndexPath.row].header!]
         let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
         
         rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate

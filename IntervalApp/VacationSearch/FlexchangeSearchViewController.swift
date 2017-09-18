@@ -21,6 +21,11 @@ class FlexchangeSearchViewController: UIViewController {
     
     @IBOutlet weak var flexChangeTableView: UITableView!
     
+    override func viewWillAppear(_ animated: Bool) {
+        Helper.getLocalStorageWherewanttoTrade()
+        flexChangeTableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
