@@ -240,6 +240,8 @@ class Constant: NSObject {
         
         static var fourSegmentHeaderTextArray = [NSLocalizedString("Where_do_you_want_to_go", comment: ""),NSLocalizedString("What_do_you_want_to_trade", comment: ""),NSLocalizedString("Check_in_closest_to", comment: ""),NSLocalizedString("Who_is_travelling", comment: "")]
         
+         static var headerTextFlexchangeDestination = NSLocalizedString("Your_selected_Flexchange_Destination", comment: "")
+        
         static var sectionHeaderArray = [NSLocalizedString("Destinations", comment: ""),NSLocalizedString("Resorts", comment: "")]
         
         static var relinquishmentHeaderArray = [NSLocalizedString("Club Interval Gold Weeks", comment: ""),NSLocalizedString("", comment: ""),NSLocalizedString("Club Points", comment: ""),NSLocalizedString("Interval Weeks", comment: ""),NSLocalizedString("Deposited", comment: "")]
@@ -593,6 +595,10 @@ class Constant: NSObject {
         static var rentalHasNotAvailableCheckInDatesAfterSelectInterval : Bool = false
         static var exchangeHasNotAvailableCheckInDatesAfterSelectInterval : Bool = false
         static var searchBothExchange = false
+        
+        // flex change
+        static var flexChangeSearch = NSLocalizedString("Flexchange Search", comment: "")
+        
     }
     
     // Enum to store resorts and destinations
