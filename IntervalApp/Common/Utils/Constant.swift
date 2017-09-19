@@ -810,7 +810,7 @@ class Constant: NSObject {
         static var select = NSLocalizedString("Select", comment: "")
         static var viewAllAlerts = NSLocalizedString("View All Alerts", comment: "")
         static var viewAllTrips = NSLocalizedString("View All Trips", comment: "")
-        static var searchVacation = NSLocalizedString("Search Vacations",comment:"")
+        static var searchVacation = NSLocalizedString("Search",comment:"")
         static var favoritesTitle = NSLocalizedString("Favorites", comment: "")
         static var resortTitle = NSLocalizedString("Resort_Directory", comment: "")
         static var magazineTitle = NSLocalizedString("Magazines", comment: "")
@@ -1605,6 +1605,16 @@ class Constant: NSObject {
         holdingTime = holdingTime - decreaseValue
         self.holdingResortForRemainingMinutes = "We are holding this unit for \(holdingTime) minutes"
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
+    }
+    
+    static func getPointWeek(weektype:String) -> String{
+        
+        return "POINT WEEK"
+    }
+    
+    static func getFlotWeek(weekType:String) -> String{
+        
+        return "FLOAT WEEK"
     }
     
     static func  getWeekNumber(weekType:String) -> String {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Zmr-d0-xh5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Zmr-d0-xh5">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -7771,11 +7771,11 @@ to confirm a larger unit.</string>
         <image name="sanci_main01_r" width="1200" height="550"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ryk-nj-17Y"/>
+        <segue reference="Rpo-cQ-qF4"/>
         <segue reference="Lp2-ch-oU8"/>
         <segue reference="4gU-cx-AAf"/>
-        <segue reference="xan-e8-tse"/>
         <segue reference="Gma-QI-cCT"/>
+        <segue reference="xan-e8-tse"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
 </document>
