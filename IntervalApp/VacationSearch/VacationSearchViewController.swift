@@ -161,27 +161,6 @@ class VacationSearchViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func createSearchCriteriaForCancunMex() -> VacationSearchCriteria{
-        
-        let cancunMEXDestination = AreaOfInfluenceDestination()
-        cancunMEXDestination.destinationId = "7EEF0188E4DC4B45B4A757E3DF950E1F"
-        cancunMEXDestination.aoiId = "2F8C1FBA1ADA41C49E3CFE0619795FD4"
-        cancunMEXDestination.destinationName = Constant.MyClassConstants.selectedDestinationNames
-        cancunMEXDestination.address = Address()
-        cancunMEXDestination.address?.countryCode = "MEX"
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        
-        
-        
-        let searchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
-        searchCriteria.destination = cancunMEXDestination
-        searchCriteria.checkInDate = searchDateRequest.checkInToDate
-        
-        return searchCriteria
-    }
-    
     // function to get vacation search details from nsuser defaults local storage
     func getVacationSearchDetails() {
         
