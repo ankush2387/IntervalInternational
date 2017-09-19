@@ -23,8 +23,8 @@ class PaymentSelectionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
     }
+    
 
     // function to dismis current controller on cancel button button pressed
     @IBAction func cancelButtonPressed(_ sender: AnyObject) {
