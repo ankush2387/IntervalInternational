@@ -5125,7 +5125,9 @@ to confirm a larger unit.</string>
                                             <constraint firstAttribute="width" constant="88" id="AYa-0L-eXd"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="17"/>
-                                        <state key="normal" title="Cancel"/>
+                                        <state key="normal" title="Cancel">
+                                            <color key="titleColor" red="0.050980392159999999" green="0.5450980392" blue="0.69411764710000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
                                         <connections>
                                             <action selector="cancelButtonPressed:" destination="zRd-2y-rpH" eventType="touchUpInside" id="EJk-NO-QIe"/>
                                         </connections>
@@ -5369,7 +5371,9 @@ to confirm a larger unit.</string>
                                     <constraint firstAttribute="width" constant="88" id="vYO-gI-vdO"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="17"/>
-                                <state key="normal" title="Cancel"/>
+                                <state key="normal" title="Cancel">
+                                    <color key="titleColor" red="0.050980392159999999" green="0.5450980392" blue="0.69411764710000001" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="cancelButtonPressed:" destination="eeQ-jr-nXA" eventType="touchUpInside" id="wqO-U2-hIo"/>
                                 </connections>

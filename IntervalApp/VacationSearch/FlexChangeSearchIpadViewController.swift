@@ -385,9 +385,9 @@ extension FlexChangeSearchIpadViewController:UITableViewDelegate {
         switch((indexPath as NSIndexPath).section) {
         case 0 :
             if((indexPath as NSIndexPath).row < Constant.MyClassConstants.whereTogoContentArray.count) {
-                return UITableViewAutomaticDimension
+                return 60
             }else {
-                return 80
+                return 60
             }
             
         case 1:

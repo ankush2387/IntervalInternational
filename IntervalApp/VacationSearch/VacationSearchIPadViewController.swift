@@ -724,6 +724,11 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                 requestRental.checkInToDate = activeInterval?.endDate
                 searchType = VacationSearchType.Combined
                 
+                if(Constant.MyClassConstants.relinquishmentIdArray.count == 0) {
+                    return SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
+                    
+                }
+                
             }
             
             

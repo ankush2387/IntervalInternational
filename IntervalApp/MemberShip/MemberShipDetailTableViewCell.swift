@@ -74,7 +74,7 @@ class MemberShipDetailTableViewCell: UITableViewCell {
         }
         
         if let memberSinceDate = contactInfo.lastVerifiedDate {
-            dateString = Helper.convertDateToString(date: memberSinceDate, format: "dd/MM/YYYY")
+            dateString = Helper.convertDateToString(date: memberSinceDate, format: Constant.MyClassConstants.dateFormat)
         }
         
         if let count = contactInfo.memberships?.count {
@@ -137,7 +137,7 @@ class MemberShipDetailTableViewCell: UITableViewCell {
             
             var dateString = ""
             if let expDate = prod.expirationDate {
-                dateString = Helper.convertDateToString(date: expDate, format: "mm/DD/YYYY")
+                dateString = Helper.convertDateToString(date: expDate, format: Constant.MyClassConstants.dateFormat)
             }
 
             prodView.expirationDateLabel.text = dateString
