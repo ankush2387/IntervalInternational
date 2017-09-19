@@ -205,6 +205,7 @@
 		3ADA43AA1CA56603003F5373 /* CertificateWhoIsTravelingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADA43A91CA56603003F5373 /* CertificateWhoIsTravelingController.swift */; };
 		3AE0D8681E4B38B500FFF635 /* ResortDestinationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE0D8671E4B38B500FFF635 /* ResortDestinationCell.swift */; };
 		3AE0D86A1E4B396400FFF635 /* ResortsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE0D8691E4B396400FFF635 /* ResortsTableViewCell.swift */; };
+		3AE1A6191F6AC5D50069A118 /* FlexChangeSearchIpadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE1A6181F6AC5D50069A118 /* FlexChangeSearchIpadViewController.swift */; };
 		3AE81DBF1E814DF7005C2CEA /* clubPointCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE81DBE1E814DF7005C2CEA /* clubPointCell.swift */; };
 		3AEC48171C7F21BA0044612B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AEC48161C7F21BA0044612B /* QuartzCore.framework */; };
 		3AEF71091DDF1B0A00FA076D /* DestinationResortViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEF71081DDF1B0A00FA076D /* DestinationResortViewController.swift */; };
@@ -522,6 +523,7 @@
 		3ADA43A91CA56603003F5373 /* CertificateWhoIsTravelingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CertificateWhoIsTravelingController.swift; sourceTree = "<group>"; };
 		3AE0D8671E4B38B500FFF635 /* ResortDestinationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResortDestinationCell.swift; sourceTree = "<group>"; };
 		3AE0D8691E4B396400FFF635 /* ResortsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResortsTableViewCell.swift; sourceTree = "<group>"; };
+		3AE1A6181F6AC5D50069A118 /* FlexChangeSearchIpadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlexChangeSearchIpadViewController.swift; sourceTree = "<group>"; };
 		3AE81DBE1E814DF7005C2CEA /* clubPointCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = clubPointCell.swift; sourceTree = "<group>"; };
 		3AEC48161C7F21BA0044612B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		3AEF71081DDF1B0A00FA076D /* DestinationResortViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DestinationResortViewController.swift; sourceTree = "<group>"; };
@@ -1015,6 +1017,7 @@
 		3AAA5A1A1C720F4500A5EA6D /* VacationSearch */ = {
 			isa = PBXGroup;
 			children = (
+				3AE1A6181F6AC5D50069A118 /* FlexChangeSearchIpadViewController.swift */,
 				DC7EF4E51D709F2000E9E360 /* RelinquishmentSearchViewController.swift */,
 				3AAA5A121C720F4500A5EA6D /* Login */,
 				3A892F2C1CD3902F00AE6F45 /* CustomCells */,
@@ -1624,6 +1627,7 @@
 				DC7EF5121D709F8800E9E360 /* ResortDirectoryViewController.swift in Sources */,
 				DC7EF5131D709F8800E9E360 /* ResortFavoritesTableViewCell.swift in Sources */,
 				3A2089DC1E2525C1001AFFD2 /* RelinquishmentSelectionViewController.swift in Sources */,
+				3AE1A6191F6AC5D50069A118 /* FlexChangeSearchIpadViewController.swift in Sources */,
 				3AA88B541F44DAD8001ADC4C /* ExchangeInventoryCVCell.swift in Sources */,
 				E9C5EF381F19555B00E658DA /* UIViewControllerExtension.swift in Sources */,
 				3A59DE181F015E5F005280D3 /* SortingViewController.swift in Sources */,
