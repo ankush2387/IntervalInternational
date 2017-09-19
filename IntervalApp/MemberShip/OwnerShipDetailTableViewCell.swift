@@ -55,6 +55,16 @@ class OwnerShipDetailTableViewCell: UITableViewCell {
         placeCode.text = ownership.resort?.resortCode
         let bedroomSize = Helper.getBedroomNumbers(bedroomType: (ownership.unit?.unitSize)!)
         bedroomDetailLabel.text = bedroomSize
+
+        weekNumberLabel.text = ownership.weekNumber
+        if((ownership.resort?.images.count)! > 0){
+            let imageURLStr = ownership.resort?.images[1].url
+            ownerShipimageView.setImageWith(URL(string: imageURLStr!), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
+                if (error != nil) {
+                    self.ownerShipimageView.image = UIImage(named: Constant.MyClassConstants.noImage)
+                }
+            }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+
         if ownership.weekNumber == "POINTS_WEEK" {
             
             weekNumberLabel.text = Constant.getPointWeek(weektype: ownership.weekNumber!)
@@ -66,18 +76,7 @@ class OwnerShipDetailTableViewCell: UITableViewCell {
         }else{
            weekNumberLabel.text = "Week \(Constant.getWeekNumber(weekType: ownership.weekNumber!))"
         }
-        
-        
-        if((ownership.resort?.images.count)! > 0){
-            
-            let imageURLStr = ownership.resort?.images[0].url
-            if((ownership.resort?.images.count)! > 0){
-                ownerShipimageView.setImageWith(URL(string: imageURLStr!), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
-                    if (error != nil) {
-                        self.ownerShipimageView.image = UIImage(named: Constant.MyClassConstants.noImage)
-                    }
-                }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
-            }
+    
         }
 
     }

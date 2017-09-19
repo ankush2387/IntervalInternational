@@ -332,7 +332,7 @@ class Constant: NSObject {
         static var resortDirectorySubRegionArray = [Region]()
         static var resortDirectoryAreaListArray = [Area]()
         static var resortDirectoryResortArray = [Resort]()
-        static var viewController:UIViewController!
+        static var viewController = UIViewController()
         static var btnTag:Int! = -1
         static var showAlert : Bool = false
         static let arrayResortInfo = ["Resort Information","Amenities","Member Ratings","Travel Demand Index"]

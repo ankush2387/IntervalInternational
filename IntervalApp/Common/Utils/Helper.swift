@@ -1576,8 +1576,11 @@ public class Helper{
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
-        
-        let date = dateFormatter.date(from: "2017-08-24")
+        var dateString1 = dateString
+        if(dateString1 == ""){
+            dateString1 = "2017-08-19"
+        }
+        let date = dateFormatter.date(from: dateString1)
         
         return date!
     }
@@ -1847,6 +1850,8 @@ public class Helper{
             if(senderViewController.isKind(of: VacationSearchResultIPadController.self) || senderViewController.isKind(of: SearchResultViewController.self)  || senderViewController.isKind(of: SortingViewController.self) || senderViewController.isKind(of:AllAvailableDestinationViewController.self) || senderViewController.isKind(of: AllAvailableDestinationsIpadViewController.self) || senderViewController.isKind(of: FlexChangeSearchIpadViewController.self) || senderViewController.isKind(of: FlexchangeSearchViewController.self)){
                 helperDelegate?.resortSearchComplete()
             }else{
+                helperDelegate?.resetCalendar()
+                //helperDelegate?.resortSearchComplete()
                 senderViewController.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
             }
             
