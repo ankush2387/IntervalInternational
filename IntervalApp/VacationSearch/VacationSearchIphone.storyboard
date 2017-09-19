@@ -7403,6 +7403,11 @@ to confirm a larger unit.</string>
                             <constraint firstItem="x4D-lz-rme" firstAttribute="top" secondItem="Voz-W3-m8j" secondAttribute="bottom" id="hmp-gg-lKv"/>
                             <constraint firstItem="x4D-lz-rme" firstAttribute="leading" secondItem="y09-EO-3df" secondAttribute="leading" id="sxA-H2-CRD"/>
                         </constraints>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="constraints">
+                                <include reference="hmp-gg-lKv"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="p1G-u5-si0"/>
                     <connections>

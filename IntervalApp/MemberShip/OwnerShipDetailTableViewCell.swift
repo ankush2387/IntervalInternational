@@ -56,8 +56,8 @@ class OwnerShipDetailTableViewCell: UITableViewCell {
         let bedroomSize = Helper.getBedroomNumbers(bedroomType: (ownership.unit?.unitSize)!)
         bedroomDetailLabel.text = bedroomSize
         weekNumberLabel.text = ownership.weekNumber
-        let imageURLStr = ownership.resort?.images[1].url
         if((ownership.resort?.images.count)! > 0){
+            let imageURLStr = ownership.resort?.images[1].url
             ownerShipimageView.setImageWith(URL(string: imageURLStr!), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
                 if (error != nil) {
                     self.ownerShipimageView.image = UIImage(named: Constant.MyClassConstants.noImage)

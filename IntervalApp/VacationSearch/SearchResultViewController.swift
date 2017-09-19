@@ -1647,6 +1647,7 @@ extension SearchResultViewController:HelperDelegate {
             searchResultTableView.scrollToRow(at: indexPath, at: .top, animated: true)
         }
     }
+    
     func resetCalendar(){
         
     }
