@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F2073" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="SaZ-sZ-ZgK">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16D30" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="SaZ-sZ-ZgK">
     <device id="ipad9_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -315,7 +315,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rM5-eS-7Iu">
-                                        <rect key="frame" x="70" y="25" width="462" height="20"/>
+                                        <rect key="frame" x="70" y="25" width="462" height="58"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                         <nil key="textColor"/>
@@ -342,7 +342,7 @@
                                     <constraint firstItem="qbD-mC-D0R" firstAttribute="leading" secondItem="PL5-9L-87x" secondAttribute="leading" constant="20" id="XxU-dZ-gfp"/>
                                     <constraint firstItem="fLq-oC-BNl" firstAttribute="leading" secondItem="PL5-9L-87x" secondAttribute="leading" id="jo8-VZ-JZt"/>
                                     <constraint firstItem="rM5-eS-7Iu" firstAttribute="leading" secondItem="qbD-mC-D0R" secondAttribute="trailing" constant="-30" id="oSA-TC-Ex3"/>
-                                    <constraint firstAttribute="bottom" secondItem="rM5-eS-7Iu" secondAttribute="bottom" constant="63" id="qQ5-zu-IXU"/>
+                                    <constraint firstAttribute="bottom" secondItem="rM5-eS-7Iu" secondAttribute="bottom" constant="25" id="qQ5-zu-IXU"/>
                                     <constraint firstAttribute="bottom" secondItem="qbD-mC-D0R" secondAttribute="bottom" constant="18" id="xue-3H-DIW"/>
                                     <constraint firstAttribute="trailing" secondItem="fLq-oC-BNl" secondAttribute="trailing" id="y4z-zj-l9o"/>
                                 </constraints>
@@ -1919,7 +1919,7 @@ EFJlc2VydmF0aW9uIERldGFpbHM
         <scene sceneID="IHZ-cg-0j1">
             <objects>
                 <navigationController id="FaW-3K-Ojt" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="n7N-rY-jbp">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="n7N-rY-jbp">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

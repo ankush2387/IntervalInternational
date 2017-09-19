@@ -241,7 +241,7 @@ extension FlexchangeSearchViewController:UITableViewDelegate{
         if section == 1 {
             
             headerView.backgroundColor = IUIKColorPalette.tertiary1.color
-            headerTextLabel.text = "Where do you want to trade"
+            headerTextLabel.text = Constant.MyClassConstants.fourSegmentHeaderTextArray[1]
             headerTextLabel.textColor = IUIKColorPalette.primaryText.color
             headerView.addSubview(headerTextLabel)
             return headerView
@@ -249,7 +249,7 @@ extension FlexchangeSearchViewController:UITableViewDelegate{
         }else if section == 0 {
             
             headerView.backgroundColor = IUIKColorPalette.tertiary1.color
-            headerTextLabel.text = "Your selected flexchange destination"
+            headerTextLabel.text = Constant.MyClassConstants.headerTextFlexchangeDestination
             headerTextLabel.textColor = IUIKColorPalette.primaryText.color
             headerView.addSubview(headerTextLabel)
             return headerView
