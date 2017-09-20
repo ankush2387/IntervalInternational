@@ -384,7 +384,7 @@ extension FlexchangeSearchViewController:UITableViewDataSource{
         
         if(indexPath.section == 0){
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: "FlexChangeDestination", for: indexPath) as! FlexchangeDestinationCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.flexChangeDestinationCell, for: indexPath) as! FlexchangeDestinationCell
             
             cell.lblFlexchangeDestination.text = selectedFlexchange?.name
             
@@ -501,7 +501,7 @@ extension FlexchangeSearchViewController:UITableViewDataSource{
             
         }else {
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: "FlexchangeSearchButtonCell", for: indexPath) as! SearchFlexchangeButtonCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.flexchangeSearchButtonCell, for: indexPath) as! SearchFlexchangeButtonCell
             
             cell.searchButton.layer.cornerRadius = 5
             return cell
