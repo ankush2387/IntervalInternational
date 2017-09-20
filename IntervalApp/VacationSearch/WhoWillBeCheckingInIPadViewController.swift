@@ -134,7 +134,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         
         // add a done button to the numberpad
         keypadToolbar.items=[
-            UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.done, target: textField, action: #selector(UITextField.resignFirstResponder)),
+            UIBarButtonItem(title: Constant.AlertPromtMessages.done, style: UIBarButtonItemStyle.done, target: textField, action: #selector(UITextField.resignFirstResponder)),
             UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: self, action: nil)
         ]
         keypadToolbar.sizeToFit()
@@ -483,7 +483,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
      }
     
     func showCertificateInfo() {
-        let storyboard = UIStoryboard(name: "VacationSearchIphone", bundle: nil)
+        let storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         let nav = storyboard.instantiateViewController(withIdentifier: "GestCertificateInfo") as! UINavigationController
         
         self.present(nav, animated: true, completion: nil)
