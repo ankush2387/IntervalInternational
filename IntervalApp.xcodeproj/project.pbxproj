@@ -12,6 +12,8 @@
 		087A875A1E951A2D009B1387 /* UnitSizeTdiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087A87591E951A2D009B1387 /* UnitSizeTdiCollectionViewCell.swift */; };
 		0887C9791F6A80ED007F57C3 /* FlexchangeDestinationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0887C9781F6A80ED007F57C3 /* FlexchangeDestinationCell.swift */; };
 		0887C97B1F6A99F5007F57C3 /* SearchFlexchangeButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0887C97A1F6A99F5007F57C3 /* SearchFlexchangeButtonCell.swift */; };
+		089416711F72D93A00F03229 /* SelectBedroomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089416701F72D93A00F03229 /* SelectBedroomViewController.swift */; };
+		089416731F72D94300F03229 /* BedroomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089416721F72D94300F03229 /* BedroomTableViewCell.swift */; };
 		0895D7141E966F0D004EAA91 /* ContainerContentTBLviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0895D7131E966F0D004EAA91 /* ContainerContentTBLviewController.swift */; };
 		08A4D4321F69A51B00C63CDC /* FlexchangeSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A4D4311F69A51B00C63CDC /* FlexchangeSearchViewController.swift */; };
 		08E3BCF61F2A30F80021F2BC /* RelinquishmentDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E3BCF51F2A30F80021F2BC /* RelinquishmentDetailsViewController.swift */; };
@@ -325,6 +327,8 @@
 		087A87591E951A2D009B1387 /* UnitSizeTdiCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitSizeTdiCollectionViewCell.swift; sourceTree = "<group>"; };
 		0887C9781F6A80ED007F57C3 /* FlexchangeDestinationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlexchangeDestinationCell.swift; sourceTree = "<group>"; };
 		0887C97A1F6A99F5007F57C3 /* SearchFlexchangeButtonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchFlexchangeButtonCell.swift; sourceTree = "<group>"; };
+		089416701F72D93A00F03229 /* SelectBedroomViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectBedroomViewController.swift; sourceTree = "<group>"; };
+		089416721F72D94300F03229 /* BedroomTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BedroomTableViewCell.swift; sourceTree = "<group>"; };
 		0895D7131E966F0D004EAA91 /* ContainerContentTBLviewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerContentTBLviewController.swift; sourceTree = "<group>"; };
 		08A4D4311F69A51B00C63CDC /* FlexchangeSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlexchangeSearchViewController.swift; sourceTree = "<group>"; };
 		08E3BCF51F2A30F80021F2BC /* RelinquishmentDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentDetailsViewController.swift; sourceTree = "<group>"; };
@@ -1111,6 +1115,8 @@
 				DC27F7C01DB81B6F00AA374F /* GetawayAlertsIPhoneViewController.swift */,
 				DC27F7C11DB81B6F00AA374F /* InfoDetailViewController.swift */,
 				E951BC4C1EE71D800070A04B /* AlertHelpViewController.swift */,
+				089416701F72D93A00F03229 /* SelectBedroomViewController.swift */,
+				089416721F72D94300F03229 /* BedroomTableViewCell.swift */,
 			);
 			path = GetawayAlerts;
 			sourceTree = "<group>";
@@ -1539,6 +1545,7 @@
 				E9ED1B591F44B89A00794C53 /* CertificateInfoViewController.swift in Sources */,
 				DC27F7C61DB81B6F00AA374F /* GetawayAlertsIpadViewController.swift in Sources */,
 				3A3BE3ED1CA0441200CDE3AA /* MyOwnershipAvailablePointTooolTableViewCell.swift in Sources */,
+				089416731F72D94300F03229 /* BedroomTableViewCell.swift in Sources */,
 				3A2C728F1DDB2DC900BBF40B /* AdvisementsCell.swift in Sources */,
 				3A3A012D1C99BD0B00B7EC37 /* AvailablePointToolViewController.swift in Sources */,
 				3A3A01411C99BD0B00B7EC37 /* OwnershipDetailWithDepositinformationTableViewCell.swift in Sources */,
@@ -1553,6 +1560,7 @@
 				DC7EF50C1D709F8800E9E360 /* ResortDetailsViewController.swift in Sources */,
 				3AAA5A401C720F4500A5EA6D /* LoginFormTableViewCell.swift in Sources */,
 				3A3A013C1C99BD0B00B7EC37 /* DepositedPointHistoryTableViewCell.swift in Sources */,
+				089416711F72D93A00F03229 /* SelectBedroomViewController.swift in Sources */,
 				3A3A01521C99BED600B7EC37 /* TriangeView.swift in Sources */,
 				3AAA5A261C720F4500A5EA6D /* AppDelegate.swift in Sources */,
 				3A892F421CD3902F00AE6F45 /* CellHeaderTableViewCell.swift in Sources */,

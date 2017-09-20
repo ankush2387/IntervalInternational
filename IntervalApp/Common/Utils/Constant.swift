@@ -599,6 +599,10 @@ class Constant: NSObject {
         // flex change
         static var flexChangeSearch = NSLocalizedString("Flexchange Search", comment: "")
         
+        // All available destinations
+        static var allDestinationsOption = NSLocalizedString("All Destinations Options", comment: "")
+         static var viewSelectedDestination = NSLocalizedString("View Selected Destinations", comment: "")
+        
     }
     
     // Enum to store resorts and destinations
@@ -713,6 +717,11 @@ class Constant: NSObject {
         static var editAlertEmptyWidowStartDateMessage = NSLocalizedString("Please select window start date. ", comment: "")
         static var editAlertEmptyWidowEndDateMessage = NSLocalizedString("Please select window End date. ", comment: "")
         static var editAlertdetinationrequiredMessage = NSLocalizedString("Please select at least one destination or resort. ", comment: "")
+        
+        static var editAlertdetinationMessage = NSLocalizedString("Select at least one Destination", comment: "")
+        
+        static var maximumLimitReachedMessage = NSLocalizedString("Maximum limit reached", comment: "")
+        
         //static var bedroomSizeAlertMessage = NSLocalizedString("Please select at least one bedroom size. ", comment: "")
         static var bedroomSizeAlertMessage = NSLocalizedString("Please select at least one master or lock-off portion. ", comment: "")
         static var feesAlertMessage = NSLocalizedString("Slide to agree to fees. ", comment:"")
@@ -927,6 +936,7 @@ class Constant: NSObject {
         static var sorting = NSLocalizedString("Sorting", comment: "")
         static var choosewhattouse = NSLocalizedString("Choose what to use", comment: "")
         static var flexChangeSearch = NSLocalizedString("Flexchange Search", comment: "")
+         static var availableDestinations = NSLocalizedString("Available Destinations", comment: "")
     }
     
     //***** Common structure for custom cell identifiers ******//
@@ -1299,6 +1309,8 @@ class Constant: NSObject {
         static var availablePoints = "AvailablePoints"
         static var selectedResortsCell = "selectedResortsCell"
         static var flexChangeDestinationCell = "FlexchangeDestinationCell"
+        static var flexchangeSearchButtonCell = "FlexchangeSearchButtonCell"
+        
     }
     
     //***** Common structure for dynamic strings combinining strings *****//

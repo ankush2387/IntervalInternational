@@ -83,7 +83,7 @@ class MagazinesIPadViewController: UIViewController {
         
         let detailedVC = segue.destination as! DetailedIssueViewController
         detailedVC.issueUrl = magazine.url
-        detailedVC.magazinTitile = "\(magazine.label!) \(magazine.year!)"
+        detailedVC.magazinTitile = magazine.label!
         
     }
     //***** Method for back button *****//

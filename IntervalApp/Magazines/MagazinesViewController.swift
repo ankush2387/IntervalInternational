@@ -82,9 +82,8 @@ class MagazinesViewController: UIViewController {
         
         let detailedVC = segue.destination as! DetailedIssueViewController
         detailedVC.issueUrl = magazine.url
-        var magazineTitle = magazine.label
-        magazineTitle = magazineTitle?.appendingFormat(" ")
-        magazineTitle = "\(magazineTitle) \(magazine.year!)"
+        let magazineTitle = magazine.label!
+       // magazineTitle = "\(String(describing: magazineTitle)) \(magazine.year!)"
         detailedVC.magazinTitile = magazineTitle
         
     }

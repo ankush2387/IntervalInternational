@@ -13,14 +13,15 @@ class DetailedIssueViewController: UIViewController {
     
     
     internal var issueUrl : String?
-    internal var magazinTitile:String?
+    internal var magazinTitile:String!
     @IBOutlet weak var webView:UIWebView?
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = self.magazinTitile
+        self.title = self.magazinTitile!
+        
         //1. Load web site into my web view
         let myURL = NSURL(string: issueUrl!)
         let myURLRequest:NSURLRequest = NSURLRequest(url: myURL! as URL);
