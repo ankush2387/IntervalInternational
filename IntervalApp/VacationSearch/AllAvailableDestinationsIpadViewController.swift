@@ -54,7 +54,7 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
         self.searchButton.layer.cornerRadius = 5
         
         //set title
-        self.title = "Available Destinations"
+        self.title = Constant.ControllerTitles.availableDestinations
         
         // set navigation right bar buttons
         let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.MoreNav), style: .plain, target: self, action:#selector(AllAvailableDestinationsIpadViewController.menuButtonClicked))
@@ -207,13 +207,13 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
         
         if(selectedAreaDictionary.allKeys.count == 0){
             
-            SimpleAlert.alert(self, title: "Alert!", message: "Select At least one Destination")
+            SimpleAlert.alert(self, title: Constant.dashboardTableScreenReusableIdentifiers.alert, message: Constant.AlertMessages.editAlertdetinationMessage)
             
         }else{
             
-            let optionMenu = UIAlertController(title: nil, message: "All Destinations Options", preferredStyle: .actionSheet)
+            let optionMenu = UIAlertController(title: nil, message: Constant.MyClassConstants.allDestinationsOption, preferredStyle: .actionSheet)
             
-            let viewSelectedResorts = UIAlertAction(title: "View Selected Destinations", style: .default, handler:
+            let viewSelectedResorts = UIAlertAction(title: Constant.MyClassConstants.viewSelectedDestination, style: .default, handler:
             {
                 (alert: UIAlertAction!) -> Void in
                 
@@ -239,7 +239,6 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
             self.present(optionMenu, animated: true, completion: nil)
         }
         
-
         
     }
     
@@ -503,7 +502,7 @@ extension AllAvailableDestinationsIpadViewController:UITableViewDelegate {
                 
                 // show alert when maximum limit is reached
                 DispatchQueue.main.async(execute: {
-                    SimpleAlert.alert(self, title: "Alert!", message: "Maximum limit reached")
+                    SimpleAlert.alert(self, title: Constant.dashboardTableScreenReusableIdentifiers.alert, message: Constant.AlertMessages.maximumLimitReachedMessage)
                 })
                 
             }else{

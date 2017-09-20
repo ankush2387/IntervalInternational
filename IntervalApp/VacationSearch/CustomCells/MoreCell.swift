@@ -28,6 +28,9 @@ class MoreCell: UICollectionViewCell {
         let startDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.calendarDatesArray[index].intervalStartDate!, format: Constant.MyClassConstants.dateFormat)
         let endDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.calendarDatesArray[index].intervalEndDate!, format: Constant.MyClassConstants.dateFormat)
         
+        
+        print(startDate,endDate)
+        
         let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
         let startComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: startDate)
         let endComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: endDate)

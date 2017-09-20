@@ -252,6 +252,7 @@ extension MemberShipViewController:UITableViewDataSource{
             let contact = UserContext.sharedInstance.contact
                 if contact!.memberships!.count == 1 {
                     membershipCell.switchMembershipButton.isHidden = true
+                    membershipCell.activememberOutOfTotalMemberLabel.isHidden = true
             }
             membershipCell.getCell(contactInfo: self.contactInfo, products: membershipProductsArray)
             return membershipCell

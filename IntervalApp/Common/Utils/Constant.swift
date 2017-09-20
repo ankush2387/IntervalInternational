@@ -223,6 +223,7 @@ class Constant: NSObject {
         
         
         //***** Vacation search screen constant string header array *****//
+        
         static var threeSegmentHeaderTextArray = [NSLocalizedString("Where_do_you_want_to_go", comment: ""),NSLocalizedString("Check_in_closest_to", comment: ""),NSLocalizedString("Who_is_travelling", comment: "")]
         
         //***** Who will be checking-In header text array *****//
@@ -238,6 +239,8 @@ class Constant: NSObject {
         static var policyListTblCellContentArray = ["Terms & Conditions","Privacy Policy","Legal Information","Contact Us","Email Us","Our Offices","Interval World","Version \(Helper.getBuildVersion())"]
         
         static var fourSegmentHeaderTextArray = [NSLocalizedString("Where_do_you_want_to_go", comment: ""),NSLocalizedString("What_do_you_want_to_trade", comment: ""),NSLocalizedString("Check_in_closest_to", comment: ""),NSLocalizedString("Who_is_travelling", comment: "")]
+        
+         static var headerTextFlexchangeDestination = NSLocalizedString("Your_selected_Flexchange_Destination", comment: "")
         
         static var sectionHeaderArray = [NSLocalizedString("Destinations", comment: ""),NSLocalizedString("Resorts", comment: "")]
         
@@ -329,7 +332,7 @@ class Constant: NSObject {
         static var resortDirectorySubRegionArray = [Region]()
         static var resortDirectoryAreaListArray = [Area]()
         static var resortDirectoryResortArray = [Resort]()
-        static var viewController:UIViewController!
+        static var viewController = UIViewController()
         static var btnTag:Int! = -1
         static var showAlert : Bool = false
         static let arrayResortInfo = ["Resort Information","Amenities","Member Ratings","Travel Demand Index"]
@@ -592,6 +595,14 @@ class Constant: NSObject {
         static var rentalHasNotAvailableCheckInDatesAfterSelectInterval : Bool = false
         static var exchangeHasNotAvailableCheckInDatesAfterSelectInterval : Bool = false
         static var searchBothExchange = false
+        
+        // flex change
+        static var flexChangeSearch = NSLocalizedString("Flexchange Search", comment: "")
+        
+        // All available destinations
+        static var allDestinationsOption = NSLocalizedString("All Destinations Options", comment: "")
+         static var viewSelectedDestination = NSLocalizedString("View Selected Destinations", comment: "")
+        
     }
     
     // Enum to store resorts and destinations
@@ -706,6 +717,11 @@ class Constant: NSObject {
         static var editAlertEmptyWidowStartDateMessage = NSLocalizedString("Please select window start date. ", comment: "")
         static var editAlertEmptyWidowEndDateMessage = NSLocalizedString("Please select window End date. ", comment: "")
         static var editAlertdetinationrequiredMessage = NSLocalizedString("Please select at least one destination or resort. ", comment: "")
+        
+        static var editAlertdetinationMessage = NSLocalizedString("Select at least one Destination", comment: "")
+        
+        static var maximumLimitReachedMessage = NSLocalizedString("Maximum limit reached", comment: "")
+        
         //static var bedroomSizeAlertMessage = NSLocalizedString("Please select at least one bedroom size. ", comment: "")
         static var bedroomSizeAlertMessage = NSLocalizedString("Please select at least one master or lock-off portion. ", comment: "")
         static var feesAlertMessage = NSLocalizedString("Slide to agree to fees. ", comment:"")
@@ -809,7 +825,7 @@ class Constant: NSObject {
         static var select = NSLocalizedString("Select", comment: "")
         static var viewAllAlerts = NSLocalizedString("View All Alerts", comment: "")
         static var viewAllTrips = NSLocalizedString("View All Trips", comment: "")
-        static var searchVacation = NSLocalizedString("Search Vacations",comment:"")
+        static var searchVacation = NSLocalizedString("Search",comment:"")
         static var favoritesTitle = NSLocalizedString("Favorites", comment: "")
         static var resortTitle = NSLocalizedString("Resort_Directory", comment: "")
         static var magazineTitle = NSLocalizedString("Magazines", comment: "")
@@ -919,6 +935,8 @@ class Constant: NSObject {
         static var selectedControllerTitle = ""
         static var sorting = NSLocalizedString("Sorting", comment: "")
         static var choosewhattouse = NSLocalizedString("Choose what to use", comment: "")
+        static var flexChangeSearch = NSLocalizedString("Flexchange Search", comment: "")
+         static var availableDestinations = NSLocalizedString("Available Destinations", comment: "")
     }
     
     //***** Common structure for custom cell identifiers ******//
@@ -1007,6 +1025,8 @@ class Constant: NSObject {
         static var signInPreLoginViewController = "SignInPreLoginViewController"
         static var whatToUseViewController = "WhatToUseViewController"
         static var sortingViewController = "SortingViewController"
+        static var flexChangeSearchIpadViewController = "FlexChangeSearchIpadViewController"
+        static var flexchangeViewController = "FlexchangeViewController"
         
     }
     
@@ -1288,6 +1308,9 @@ class Constant: NSObject {
         static var whereToGoCell = "WhereToGoCell"
         static var availablePoints = "AvailablePoints"
         static var selectedResortsCell = "selectedResortsCell"
+        static var flexChangeDestinationCell = "FlexchangeDestinationCell"
+        static var flexchangeSearchButtonCell = "FlexchangeSearchButtonCell"
+        
     }
     
     //***** Common structure for dynamic strings combinining strings *****//
@@ -1600,6 +1623,16 @@ class Constant: NSObject {
         holdingTime = holdingTime - decreaseValue
         self.holdingResortForRemainingMinutes = "We are holding this unit for \(holdingTime) minutes"
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
+    }
+    
+    static func getPointWeek(weektype:String) -> String{
+        
+        return "POINT WEEK"
+    }
+    
+    static func getFlotWeek(weekType:String) -> String{
+        
+        return "FLOAT WEEK"
     }
     
     static func  getWeekNumber(weekType:String) -> String {
@@ -2051,6 +2084,8 @@ class Constant: NSObject {
     }
 
 }
+
+
 
 
 

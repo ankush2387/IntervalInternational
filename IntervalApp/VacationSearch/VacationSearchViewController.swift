@@ -40,6 +40,7 @@ class VacationSearchViewController: UIViewController {
     var showExchange = true
     var showGetaways = true
     var vacationSearch = VacationSearch()
+    var selectedFlexchange: FlexExchangeDeal?
    // var regionInfo = [RentalSearchRegion]()
    // var regionarea = [RegionArea]()
     var searchDateRequest = RentalSearchDatesRequest()
@@ -158,27 +159,6 @@ class VacationSearchViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    
-    func createSearchCriteriaForCancunMex() -> VacationSearchCriteria{
-        
-        let cancunMEXDestination = AreaOfInfluenceDestination()
-        cancunMEXDestination.destinationId = "7EEF0188E4DC4B45B4A757E3DF950E1F"
-        cancunMEXDestination.aoiId = "2F8C1FBA1ADA41C49E3CFE0619795FD4"
-        cancunMEXDestination.destinationName = Constant.MyClassConstants.selectedDestinationNames
-        cancunMEXDestination.address = Address()
-        cancunMEXDestination.address?.countryCode = "MEX"
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        
-        
-        
-        let searchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
-        searchCriteria.destination = cancunMEXDestination
-        searchCriteria.checkInDate = searchDateRequest.checkInToDate
-        
-        return searchCriteria
     }
     
     // function to get vacation search details from nsuser defaults local storage
@@ -311,6 +291,19 @@ class VacationSearchViewController: UIViewController {
         self.searchVacationTableView.reloadData()
     }
     
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if (segue.destination.isKind(of: FlexchangeSearchViewController.self)) {
+            
+            let selectedFlexchange = segue.destination as! FlexchangeSearchViewController
+            selectedFlexchange.selectedFlexchange = self.selectedFlexchange
+            
+            
+        }
+        
+    }
+    
 }
 
 //***** MARK: Extension classes starts from here *****//
@@ -321,6 +314,17 @@ extension VacationSearchViewController:UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if(collectionView.tag == 1){
             
+            //Set travel PartyInfo
+            let travelPartyInfo = TravelParty()
+            travelPartyInfo.adults = Int(self.adultCounter)
+            travelPartyInfo.children = Int(self.childCounter)
+            
+            Constant.MyClassConstants.travelPartyInfo = travelPartyInfo
+            
+            selectedFlexchange = Constant.MyClassConstants.flexExchangeDeals[indexPath.row]
+             
+            
+            self.performSegue(withIdentifier: "flexChangeViewController", sender: self)
         }else{
             self.topTenGetawaySelected(selectedIndexPath: indexPath)
         }
@@ -340,6 +344,8 @@ extension VacationSearchViewController:UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView.tag == 1 {
+            
+           
              return Constant.MyClassConstants.flexExchangeDeals.count
         } else {
             return Constant.MyClassConstants.topDeals.count
