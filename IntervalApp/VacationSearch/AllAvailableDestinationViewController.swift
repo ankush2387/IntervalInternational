@@ -58,7 +58,6 @@ class AllAvailableDestinationViewController: UIViewController {
             
         }
         
-        
     }
     
     
@@ -240,7 +239,7 @@ class AllAvailableDestinationViewController: UIViewController {
         self.searchButtonHeightConstraint.constant = 0
         self.searchButton.isHidden = true
         searchButton.layer.cornerRadius = 4
-        self.title = "Available Destinations"
+        self.title = Constant.ControllerTitles.availableDestinations
         
         let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.MoreNav), style: .plain, target: self, action:#selector(AllAvailableDestinationsIpadViewController.menuButtonClicked))
         menuButton.tintColor = UIColor.white
@@ -339,13 +338,13 @@ class AllAvailableDestinationViewController: UIViewController {
         
         if(selectedAreaDictionary.allKeys.count == 0){
             
-            SimpleAlert.alert(self, title: "Alert!", message: "Select At least one Destination")
+            SimpleAlert.alert(self, title: Constant.dashboardTableScreenReusableIdentifiers.alert, message: Constant.AlertMessages.editAlertdetinationMessage)
             
         }else{
             
-            let optionMenu = UIAlertController(title: nil, message: "All Destinations Options", preferredStyle: .actionSheet)
+            let optionMenu = UIAlertController(title: nil, message: Constant.MyClassConstants.allDestinationsOption, preferredStyle: .actionSheet)
             
-            let viewSelectedResorts = UIAlertAction(title: "View Selected Destinations", style: .default, handler:
+            let viewSelectedResorts = UIAlertAction(title: Constant.MyClassConstants.viewSelectedDestination, style: .default, handler:
             {
                 (alert: UIAlertAction!) -> Void in
                 
@@ -353,7 +352,7 @@ class AllAvailableDestinationViewController: UIViewController {
             })
             
             
-            let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler:
+            let cancelAction = UIAlertAction(title: Constant.buttonTitles.cancel, style: .default, handler:
             {
                 (alert: UIAlertAction!) -> Void in
             })
@@ -498,7 +497,7 @@ extension AllAvailableDestinationViewController:UITableViewDelegate{
             if(sectionCounter == 6){
                 
                 DispatchQueue.main.async(execute: {
-                    SimpleAlert.alert(self, title: "Alert!", message: "Maximum limit reached")
+                    SimpleAlert.alert(self, title: Constant.dashboardTableScreenReusableIdentifiers.alert, message: Constant.AlertMessages.maximumLimitReachedMessage)
                 })
                 
             }else{
