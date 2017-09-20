@@ -39,7 +39,7 @@
                 <navigationController id="7Cr-fl-4w0" sceneMemberID="viewController">
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="667"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="TUK-gZ-lVf">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="TUK-gZ-lVf">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -211,7 +211,7 @@
                 <navigationController id="fF4-24-G1u" sceneMemberID="viewController">
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="667"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="oi2-ln-2lP">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="oi2-ln-2lP">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1663,7 +1663,7 @@
                                         <rect key="frame" x="0.0" y="28" width="414" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gwY-qz-Ya7" id="dxG-B3-D0B">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="89.666666666666671"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="89"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1671,7 +1671,7 @@
                                         <rect key="frame" x="0.0" y="118" width="414" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KuN-de-hL8" id="6Oh-Wn-ZKQ">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="59.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="59"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1796,7 +1796,7 @@
             <objects>
                 <navigationController storyboardIdentifier="AboutHelpNav" automaticallyAdjustsScrollViewInsets="NO" id="5pZ-7o-otW" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="1vD-f1-oL0">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="1vD-f1-oL0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1814,7 +1814,7 @@
             <objects>
                 <navigationController storyboardIdentifier="BedroomSizeNav" automaticallyAdjustsScrollViewInsets="NO" id="gIi-bU-P42" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="gs0-FK-luP">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="gs0-FK-luP">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

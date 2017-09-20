@@ -1299,6 +1299,8 @@ class Constant: NSObject {
         static var availablePoints = "AvailablePoints"
         static var selectedResortsCell = "selectedResortsCell"
         static var flexChangeDestinationCell = "FlexchangeDestinationCell"
+        static var flexchangeSearchButtonCell = "FlexchangeSearchButtonCell"
+        
     }
     
     //***** Common structure for dynamic strings combinining strings *****//
