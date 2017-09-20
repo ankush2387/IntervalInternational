@@ -46,7 +46,7 @@ class OwnerShipDetailTableViewCell: UITableViewCell {
         - returns : No value is return.
     */
     fileprivate func updateCell(ownership: Ownership){
-        /// update Label text
+        // update Label text
         placeNameLabel.text = ownership.resort?.resortName
         placeAddressLabel.text = ownership.resort?.address?.cityName
         if let countryCode = ownership.resort?.address?.countryCode {
@@ -55,15 +55,30 @@ class OwnerShipDetailTableViewCell: UITableViewCell {
         placeCode.text = ownership.resort?.resortCode
         let bedroomSize = Helper.getBedroomNumbers(bedroomType: (ownership.unit?.unitSize)!)
         bedroomDetailLabel.text = bedroomSize
+
         weekNumberLabel.text = ownership.weekNumber
-        let imageURLStr = ownership.resort?.images[1].url
         if((ownership.resort?.images.count)! > 0){
+            let imageURLStr = ownership.resort?.images[1].url
             ownerShipimageView.setImageWith(URL(string: imageURLStr!), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
                 if (error != nil) {
                     self.ownerShipimageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                 }
             }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+
+        if ownership.weekNumber == "POINTS_WEEK" {
+            
+            weekNumberLabel.text = Constant.getPointWeek(weektype: ownership.weekNumber!)
+            
+        }else if ownership.weekNumber == "FLOAT_WEEK"{
+            
+            weekNumberLabel.text = Constant.getFlotWeek(weekType: ownership.weekNumber!)
+           
+        }else{
+           weekNumberLabel.text = "Week \(Constant.getWeekNumber(weekType: ownership.weekNumber!))"
         }
+    
+        }
+
     }
     
     //MARK:set commonPrperties to cell

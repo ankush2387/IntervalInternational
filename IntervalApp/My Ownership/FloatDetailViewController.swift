@@ -134,16 +134,32 @@ class FloatDetailViewController: UIViewController {
     
     func checkForFloatDetails() ->Bool{
         
-        if( Constant.FloatDetails.reservationNumber != "" && Constant.FloatDetails.unitNumber != "" && Constant.AdditionalUnitDetailsData.bedroomUnit != "" ){
-            
-            proceedStatus = true
-            return proceedStatus
-        }
-        else {
-            
-            return proceedStatus
+        var count = 0
+        for attribute in atrributesRowArray{
+            if(attribute as! String == Constant.MyClassConstants.resortReservationAttribute && Constant.FloatDetails.reservationNumber != ""){
+                count = count + 1
+            }
+            if(attribute as! String == Constant.MyClassConstants.noOfBedroomAttribute && Constant.MyClassConstants.savedBedroom != ""){
+                count = count + 1
+            }
+            if(attribute as! String == Constant.MyClassConstants.checkInDateAttribute && Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate != nil){
+                count = count + 1
+            }
+            if(attribute as! String == Constant.MyClassConstants.unitNumberAttribute && Constant.FloatDetails.unitNumber != ""){
+                count = count + 1
+            }
+            if(attribute as! String == Constant.MyClassConstants.resortClubAttribute && Constant.MyClassConstants.savedClubFloatResort != ""){
+                count = count + 1
+            }
         }
         
+        if(count == atrributesRowArray.count){
+            proceedStatus = true
+        }else{
+            proceedStatus = false
+        }
+        
+        return proceedStatus
     
     }
     

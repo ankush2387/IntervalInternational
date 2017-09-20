@@ -60,7 +60,7 @@ class CheckOutViewController: UIViewController {
         Constant.MyClassConstants.additionalAdvisementsArray.removeAll()
         Constant.MyClassConstants.generalAdvisementsArray.removeAll()
         
-        if(Constant.MyClassConstants.isFromExchange){
+        if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() || Constant.MyClassConstants.searchBothExchange) {
             for advisement in (Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements)!{
                 
                 if(advisement.title == Constant.MyClassConstants.additionalAdv){

@@ -74,7 +74,7 @@ class MemberShipDetailTableViewCell: UITableViewCell {
         }
         
         if let memberSinceDate = contactInfo.lastVerifiedDate {
-            dateString = Helper.convertDateToString(date: memberSinceDate, format: "dd/MM/YYYY")
+            dateString = Helper.convertDateToString(date: memberSinceDate, format: Constant.MyClassConstants.dateFormat)
         }
         
         if let count = contactInfo.memberships?.count {
@@ -106,7 +106,9 @@ class MemberShipDetailTableViewCell: UITableViewCell {
          loginIdLabel.text = loginID
          emailLabel.text = email
          memberNumberLabel.text = Constant.MyClassConstants.memberNumber
-         memberSinceDateLabel.text = date
+       let date  =  Helper.convertStringToDate(dateString: date, format: Constant.MyClassConstants.dateFormat)
+        memberSinceDateLabel.text = Helper.getWeekDay(dateString: date as NSDate, getValue: Constant.MyClassConstants.month).appending(". ").appending(Helper.getWeekDay(dateString: date as NSDate, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: date as NSDate, getValue: Constant.MyClassConstants.year))
+        
         activeLabel.text = status
         
         //setup Products View depending on number of Products
@@ -135,7 +137,7 @@ class MemberShipDetailTableViewCell: UITableViewCell {
             
             var dateString = ""
             if let expDate = prod.expirationDate {
-                dateString = Helper.convertDateToString(date: expDate, format: "mm/DD/YYYY")
+                dateString = Helper.convertDateToString(date: expDate, format: Constant.MyClassConstants.dateFormat)
             }
 
             prodView.expirationDateLabel.text = dateString

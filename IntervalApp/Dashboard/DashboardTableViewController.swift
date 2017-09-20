@@ -34,6 +34,8 @@ class DashboardTableViewController: UITableViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(reloadTopDestinations), name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadUpcomingTrip), name: NSNotification.Name(rawValue:Constant.notificationNames.reloadTripDetailsNotification), object: nil)
         self.getNumberOfSections()
+        Helper.InitializeOpenWeeksFromLocalStorage()
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -549,7 +551,8 @@ extension DashboardTableViewController:UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if(collectionView.tag == 1){
-            //self.flexchangeSelected(selectedIndexPath: indexPath)
+            Constant.MyClassConstants.viewController = self
+            self.flexchangeSelected(selectedIndexPath: indexPath)
         }else{
             self.topTenGetawaySelected(selectedIndexPath: indexPath)
         }
@@ -564,7 +567,8 @@ extension UIViewController {
         let areas = Area()
         areas.areaCode = Constant.MyClassConstants.topDeals[selectedIndexPath.row].areaCodes.first!
         Constant.MyClassConstants.vacationSearchShowDate = Constant.MyClassConstants.topDeals[selectedIndexPath.row].fromDate
-        Constant.MyClassConstants.whereTogoContentArray = [Constant.MyClassConstants.topDeals[selectedIndexPath.row].header!]
+        Constant.MyClassConstants.vacationSearchResultHeaderLabel = Constant.MyClassConstants.topDeals[selectedIndexPath.row].header!
+        //Constant.MyClassConstants.whereTogoContentArray = [Constant.MyClassConstants.topDeals[selectedIndexPath.row].header!]
         let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
         
         rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
@@ -642,7 +646,7 @@ extension UIViewController {
     
     func flexchangeSelected(selectedIndexPath: IndexPath) {
         
-        let areas = Area()
+       /* let areas = Area()
         areas.areaCode = Constant.MyClassConstants.topDeals[selectedIndexPath.row].areaCodes.first!
         //Constant.MyClassConstants.vacationSearchShowDate = Constant.MyClassConstants.flexExchangeDeals[selectedIndexPath.row].fromDate
         Constant.MyClassConstants.whereTogoContentArray = [Constant.MyClassConstants.flexExchangeDeals[selectedIndexPath.row].name!]
@@ -652,7 +656,13 @@ extension UIViewController {
         exchangeSearchCriteria.searchType = VacationSearchType.Exchange
         Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(UserContext.sharedInstance.appSettings, exchangeSearchCriteria)
         
-        Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.areas = [areas]
+        Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.areas = [areas]*/
+        
+        
+        let storyboard = UIStoryboard(name: "VacationSearchIphone", bundle: nil)
+        let viewController = storyboard.instantiateViewController(withIdentifier: "FlexchangeViewController") as! FlexchangeSearchViewController
+        viewController.selectedFlexchange = Constant.MyClassConstants.flexExchangeDeals[selectedIndexPath.row]
+        self.navigationController!.pushViewController(viewController, animated: true)
         
     }
     

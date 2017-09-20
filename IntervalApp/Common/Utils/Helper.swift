@@ -974,14 +974,12 @@ public class Helper{
     static func getTopDeals(senderVC : UIViewController){
 //        showProgressBar(senderView: senderVC)
         RentalClient.getTop10Deals(UserContext.sharedInstance.accessToken,onSuccess: {(response) in
-            print("Call 5",response)
             Constant.MyClassConstants.topDeals = response
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.refreshTableNotification), object: nil)
             Helper.removeServiceCallBackgroundView(view: senderVC.view)
 //            SVProgressHUD.dismiss()
         },
                                    onError: {(error) in
-                                    print("Call 5",error.localizedDescription)
                                     Helper.removeServiceCallBackgroundView(view: senderVC.view)
 //                                    SVProgressHUD.dismiss()
                                     SimpleAlert.alert(senderVC, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
@@ -1578,8 +1576,11 @@ public class Helper{
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
-        
-        let date = dateFormatter.date(from: dateString)
+        var dateString1 = dateString
+        if(dateString1 == ""){
+            dateString1 = "2017-08-19"
+        }
+        let date = dateFormatter.date(from: dateString1)
         
         return date!
     }
@@ -1842,10 +1843,15 @@ public class Helper{
             
             showAvailabilityResults(vacationSearch:vacationSearch)
             hideProgressBar(senderView:senderViewController)
+            // Get activeInterval
+            let activeInterval = vacationSearch.bookingWindow.getActiveInterval()
+            vacationSearch.updateActiveInterval(activeInterval: activeInterval)
             Constant.MyClassConstants.initialVacationSearch = vacationSearch
-            if(senderViewController.isKind(of: VacationSearchResultIPadController.self) || senderViewController.isKind(of: SearchResultViewController.self)  || senderViewController.isKind(of: SortingViewController.self) || senderViewController.isKind(of:AllAvailableDestinationViewController.self) || senderViewController.isKind(of: AllAvailableDestinationsIpadViewController.self)){
+            if(senderViewController.isKind(of: VacationSearchResultIPadController.self) || senderViewController.isKind(of: SearchResultViewController.self)  || senderViewController.isKind(of: SortingViewController.self) || senderViewController.isKind(of:AllAvailableDestinationViewController.self) || senderViewController.isKind(of: AllAvailableDestinationsIpadViewController.self) || senderViewController.isKind(of: FlexChangeSearchIpadViewController.self) || senderViewController.isKind(of: FlexchangeSearchViewController.self)){
                 helperDelegate?.resortSearchComplete()
             }else{
+                helperDelegate?.resetCalendar()
+                //helperDelegate?.resortSearchComplete()
                 senderViewController.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
             }
             
@@ -1863,6 +1869,7 @@ public class Helper{
         ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request: vacationSearch.exchangeSearch?.searchContext.request,
                                    onSuccess: { (response) in
                                     vacationSearch.exchangeSearch?.searchContext.response = response
+                                    Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
                                     
                                     // Get activeInterval
                                     let activeInterval = vacationSearch.bookingWindow.getActiveInterval()
@@ -1870,6 +1877,8 @@ public class Helper{
                                     // Update active interval
                                     vacationSearch.updateActiveInterval(activeInterval: activeInterval)
                                     Constant.MyClassConstants.initialVacationSearch = vacationSearch
+                                    
+                                    self.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                     
                                     // Check not available checkIn dates for the active interval
                                     if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
@@ -1881,7 +1890,7 @@ public class Helper{
                                         
                                     } else {
                                         vacationSearch.resolveCheckInDateForInitialSearch()
-                                        executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat) , senderViewController: senderVC, vacationSearch: vacationSearch)
+                                        executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat) , senderViewController: senderVC, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                     }
                                     
                                     //expectation.fulfill()

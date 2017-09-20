@@ -23,8 +23,8 @@ class PaymentSelectionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
     }
+    
 
     // function to dismis current controller on cancel button button pressed
     @IBAction func cancelButtonPressed(_ sender: AnyObject) {
@@ -134,24 +134,16 @@ class PaymentSelectionViewController: UIViewController {
                     expiryDate?.layer.borderColor = UIColor.red.cgColor
                     return
                 }
-                debugPrint(Constant.MyClassConstants.memberCreditCardList[self.selectedCardIndex].expirationDate)
                 
                 (Constant.MyClassConstants.memberCreditCardList[self.selectedCardIndex]).cvv = (cvv?.text)
-              
-                //Optional("2013-07-01T00:00:00-04:00")
-                //Optional("09/17")
-                
-                var expirydate = expiryDate?.text
+                let expirydate = expiryDate?.text
                 let dateArr : [String] = expirydate!.components(separatedBy: "/")
                 
                 // And then to access the individual words:
-                
                 let month : String = dateArr[0]
                 let year : String = "20" + dateArr[1]
                 
-                
-                
-                let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
+                //creating date component with new exp date 
                 var dateComponents = DateComponents()
                 dateComponents.year = Int(year)
                 dateComponents.month = Int(month)
@@ -159,21 +151,16 @@ class PaymentSelectionViewController: UIViewController {
         
                 
                 let dt = Calendar(identifier: Calendar.Identifier.gregorian).date(from: dateComponents)
-                
-                debugPrint(dt)
                 let df = DateFormatter()
                 df.dateFormat = Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.dateTimeFormat
                 let dateString: String = df.string(from: dt!)
-                print("Date format \(dateString)")
-                
+
                 (Constant.MyClassConstants.memberCreditCardList[self.selectedCardIndex]).expirationDate = dateString
                 
                 if(self.selectedCardIndex < (UserContext.sharedInstance.contact?.creditcards?.count)!) {
                     
                     Constant.MyClassConstants.selectedCreditCard.removeAll()
                     let existingCard = Constant.MyClassConstants.memberCreditCardList[self.selectedCardIndex]
-                    
-                    debugPrint(existingCard.expirationDate)
                     Constant.MyClassConstants.selectedCreditCard.append(existingCard)
                     self.dismiss(animated: true, completion: nil)
                     
@@ -229,10 +216,6 @@ class PaymentSelectionViewController: UIViewController {
                 
                 Constant.MyClassConstants.selectedCreditCard.removeAll()
                 let existingCard = Constant.MyClassConstants.memberCreditCardList[self.selectedCardIndex]
-                
-                
-                debugPrint("existing credit card id \(existingCard.creditcardId)")
-                 debugPrint("existing credit card expiration data \(existingCard.expirationDate)")
                 Constant.MyClassConstants.selectedCreditCard.append(existingCard)
                 self.dismiss(animated: true, completion: nil)
                 
