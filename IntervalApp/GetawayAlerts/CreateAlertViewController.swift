@@ -617,7 +617,7 @@ extension CreateAlertViewController:UITableViewDataSource {
                 
                 let destName = (object as! AreaOfInfluenceDestination).destinationName!
                 
-                let terocode = (object as! AreaOfInfluenceDestination).address!.territoryCode!
+                let terocode = (object as! AreaOfInfluenceDestination).address?.territoryCode ?? ""
                 cell.whereTogoTextLabel.text = "\(destName), \(String(describing: terocode))"
             }
             cell.selectionStyle = UITableViewCellSelectionStyle.none
