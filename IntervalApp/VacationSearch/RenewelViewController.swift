@@ -65,7 +65,7 @@ extension RenewelViewController:UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.renewelCell) as! RenewelCell
         
-        cell.renewelLbl.text = "Users/chetu/Documents/Developer/chetu_dev/Interval-app-ios/IntervalApp/VacationSearch/RenewelViewController.swift Users/chetu/Documents/Developer/chetu_dev/Interval-app-ios/IntervalApp/VacationSearch/RenewelViewController.swift Users/chetu/Documents/Developer/chetu_dev/Interval-app-ios/IntervalApp/VacationSearch/RenewelViewController.swift roller.swift Users/chetu/Documents/Developer/chetu_dev/Interval-app-ios/IntervalApp/VacationSearch/RenewelViewController.swift RenewelViewController.swift Users/chetu/Documents/Developer/chetu_dev/Interval-app-ios/IntervalApp/VacationSearch/RenewelViewController.swift Users/chetu/Documents/Developer/chetu_dev/Interval-app-ios/IntervalApp/VacationSearch/RenewelViewController.swift roller.swift Users/chetu/Documents/Developer/chetu_dev/Interval-app-ios1234567"
+        cell.renewelLbl.text = "Your interval membership expire before your travel date.To continue, a 1 year membership fee of $89.00 USD will be included with this transaction."
         
         
         cell.viewContent.layer.cornerRadius = 7

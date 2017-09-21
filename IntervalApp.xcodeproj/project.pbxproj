@@ -33,6 +33,8 @@
 		3A18D7BA1DE05DEC00966472 /* AddDebitOrCreditCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A18D7B91DE05DEC00966472 /* AddDebitOrCreditCardViewController.swift */; };
 		3A18D7BC1DE0949D00966472 /* AddYourCardButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A18D7BB1DE0949D00966472 /* AddYourCardButtonCell.swift */; };
 		3A18D7BE1DE0967C00966472 /* SaveCardOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A18D7BD1DE0967C00966472 /* SaveCardOptionCell.swift */; };
+		3A1B3DAB1F73CFAB0040B081 /* RenewelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1B3DAA1F73CFAB0040B081 /* RenewelViewController.swift */; };
+		3A1B3DAD1F73D0370040B081 /* RenewelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1B3DAC1F73D0370040B081 /* RenewelCell.swift */; };
 		3A202C731F3B0ABA00678C50 /* RentalInventoryCVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A202C721F3B0ABA00678C50 /* RentalInventoryCVCell.swift */; };
 		3A2089DC1E2525C1001AFFD2 /* RelinquishmentSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2089DB1E2525C1001AFFD2 /* RelinquishmentSelectionViewController.swift */; };
 		3A2089DE1E2544D0001AFFD2 /* RelinquishmentSelectionCIGCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2089DD1E2544D0001AFFD2 /* RelinquishmentSelectionCIGCell.swift */; };
@@ -349,6 +351,8 @@
 		3A18D7B91DE05DEC00966472 /* AddDebitOrCreditCardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDebitOrCreditCardViewController.swift; sourceTree = "<group>"; };
 		3A18D7BB1DE0949D00966472 /* AddYourCardButtonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddYourCardButtonCell.swift; sourceTree = "<group>"; };
 		3A18D7BD1DE0967C00966472 /* SaveCardOptionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveCardOptionCell.swift; sourceTree = "<group>"; };
+		3A1B3DAA1F73CFAB0040B081 /* RenewelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenewelViewController.swift; sourceTree = "<group>"; };
+		3A1B3DAC1F73D0370040B081 /* RenewelCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenewelCell.swift; sourceTree = "<group>"; };
 		3A202C721F3B0ABA00678C50 /* RentalInventoryCVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RentalInventoryCVCell.swift; sourceTree = "<group>"; };
 		3A2089DB1E2525C1001AFFD2 /* RelinquishmentSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentSelectionViewController.swift; sourceTree = "<group>"; };
 		3A2089DD1E2544D0001AFFD2 /* RelinquishmentSelectionCIGCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentSelectionCIGCell.swift; sourceTree = "<group>"; };
@@ -902,6 +906,7 @@
 				3A59DE191F015FDE005280D3 /* SortingOptionCell.swift */,
 				3A202C721F3B0ABA00678C50 /* RentalInventoryCVCell.swift */,
 				0887C97A1F6A99F5007F57C3 /* SearchFlexchangeButtonCell.swift */,
+				3A1B3DAC1F73D0370040B081 /* RenewelCell.swift */,
 			);
 			path = CustomCells;
 			sourceTree = "<group>";
@@ -1054,6 +1059,7 @@
 				3A59DE171F015E5F005280D3 /* SortingViewController.swift */,
 				3A7F44A61F17768800F4DD18 /* WhatToUseViewController.swift */,
 				E9ED1B581F44B89A00794C53 /* CertificateInfoViewController.swift */,
+				3A1B3DAA1F73CFAB0040B081 /* RenewelViewController.swift */,
 			);
 			path = VacationSearch;
 			sourceTree = "<group>";
@@ -1604,11 +1610,13 @@
 				DC7EF4F11D709F2900E9E360 /* FeaturedDestinationsTableViewCell.swift in Sources */,
 				3A932D561C8868DC004BF665 /* GuestCertificateCell.swift in Sources */,
 				3A932D521C8868C2004BF665 /* UnitDetailCell.swift in Sources */,
+				3A1B3DAD1F73D0370040B081 /* RenewelCell.swift in Sources */,
 				3AEF710E1DDF513D00FA076D /* SlideAgreeButtonCell.swift in Sources */,
 				3A1780BA1CDE3038006D2E44 /* File.swift in Sources */,
 				3AFA86681DF305A300DCAECF /* CheckOutIPadViewController.swift in Sources */,
 				3AAA5A4A1C720F4500A5EA6D /* VacationSearchTabBarController.swift in Sources */,
 				3A29B4901EF034E4008995A5 /* ReservationTableViewCell.swift in Sources */,
+				3A1B3DAB1F73CFAB0040B081 /* RenewelViewController.swift in Sources */,
 				3A4801E31F60050600AB6D68 /* SelectedResortsIpadViewController.swift in Sources */,
 				087A875A1E951A2D009B1387 /* UnitSizeTdiCollectionViewCell.swift in Sources */,
 				3A0B25DC1CD241B50080BF3F /* DummyTableViewCell.swift in Sources */,
