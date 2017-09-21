@@ -1308,6 +1308,7 @@ class Constant: NSObject {
         static var whereToGoCell = "WhereToGoCell"
         static var availablePoints = "AvailablePoints"
         static var selectedResortsCell = "selectedResortsCell"
+        static var renewelCell = "renewelCell"
         static var flexChangeDestinationCell = "FlexchangeDestinationCell"
         static var flexchangeSearchButtonCell = "FlexchangeSearchButtonCell"
         
@@ -1379,6 +1380,7 @@ class Constant: NSObject {
         static var selectPaymentMethodSegue = "selectPaymentSegue"
         static var showResortDetailsSegue = "showResortDetails"
         static var showRelinguishmentsDetailsSegue = "showRelinguishmentsDetails"
+        static var showRenewelSegue = "RenewelSegue"
 
         static var confirmationUpcomingTripSegue = "confirmationUpcomingTripSegue"
         static var newCreditCardSegue = "newCreditCardSegue"

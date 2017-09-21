@@ -308,6 +308,8 @@ extension WhatToUseViewController:UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
+        return
         
         if(indexPath.section == 1) {
             
@@ -324,6 +326,7 @@ extension WhatToUseViewController:UITableViewDelegate {
             self.checkBoxGetawayPressed(checkBox)
            
         }
+        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
