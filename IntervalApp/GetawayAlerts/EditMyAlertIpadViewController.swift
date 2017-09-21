@@ -37,7 +37,7 @@ class EditMyAlertIpadViewController: UIViewController {
     
     //***** class variable outlets *****//
     var editAlertName = ""
-    var alertId:Int64 = 123456
+    var alertId = Int64()
     var selectedIndex:Int = -1
     var anlyticsBedroomSize:String = ""
     
