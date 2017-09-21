@@ -68,9 +68,7 @@ extension RenewelViewController:UITableViewDataSource {
         cell.renewelLbl.text = "Your interval membership expire before your travel date.To continue, a 1 year membership fee of $89.00 USD will be included with this transaction."
         
         
-        cell.viewContent.layer.cornerRadius = 7
-        cell.viewContent.layer.borderWidth = 2
-        cell.viewContent.layer.borderColor = UIColor.init(red: 204.0/255.0, green: 204.0/255.0, blue: 204.0/255.0, alpha: 1.0).cgColor
+        
         
         return cell
         

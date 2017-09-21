@@ -213,7 +213,11 @@ class WhatToUseViewController: UIViewController {
             let processResort = RentalProcess()
             processResort.processId = response.processId
             Constant.MyClassConstants.getawayBookingLastStartedProcess = processResort
+            // store response
             Constant.MyClassConstants.processStartResponse = response
+            
+            let view = Constant.MyClassConstants.processStartResponse.view
+            //let dictForceRenewel =
             SVProgressHUD.dismiss()
             Helper.removeServiceCallBackgroundView(view: self.view)
             Constant.MyClassConstants.viewResponse = response.view!
@@ -221,6 +225,10 @@ class WhatToUseViewController: UIViewController {
             Constant.MyClassConstants.guestCertificate = response.view?.fees?.guestCertificate
             Constant.MyClassConstants.onsiteArray.removeAllObjects()
             Constant.MyClassConstants.nearbyArray.removeAllObjects()
+            
+             self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
+            
+            return
             
             for amenity in (response.view?.resort?.amenities)!{
                 if(amenity.nearby == false){
@@ -307,9 +315,6 @@ extension WhatToUseViewController:UITableViewDelegate {
     //***** UITableview delegate methods definition here *****//
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
-        return
         
         if(indexPath.section == 1) {
             
