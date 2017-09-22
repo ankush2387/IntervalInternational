@@ -92,7 +92,7 @@ extension MyUpcomingTripViewController:UITableViewDataSource {
         cell.headerLabel.text = "Confirmation #\(upComingTrip.exchangeNumber!)"
         Constant.MyClassConstants.transactionNumber = "\(upComingTrip.exchangeNumber!)"
         cell.headerStatusLabel.text = upComingTrip.exchangeStatus!
-        cell.resortType.text = upComingTrip.type!
+        cell.resortType.text = Helper.vacationSearchTypeSegemtStringToDisplay(vacationSearchType: upComingTrip.type!)
         cell.resortImageView.backgroundColor = UIColor.lightGray
         
         let imagesArray = upComingTrip.resort?.images
@@ -109,7 +109,7 @@ extension MyUpcomingTripViewController:UITableViewDataSource {
         if let url = imgURL {
             cell.resortImageView.setImageWith(URL(string: url), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
                 if (error != nil) {
-                    print("Width: \(image?.size.width) - Height: \(image?.size.height)")
+                    print("Width: \(String(describing: image?.size.width)) - Height: \(image?.size.height)")
                     cell.resortImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                     cell.resortImageView.contentMode = .center
                 }
