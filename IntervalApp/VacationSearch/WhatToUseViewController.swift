@@ -216,8 +216,6 @@ class WhatToUseViewController: UIViewController {
             // store response
             Constant.MyClassConstants.processStartResponse = response
             
-            let view = Constant.MyClassConstants.processStartResponse.view
-            //let dictForceRenewel =
             SVProgressHUD.dismiss()
             Helper.removeServiceCallBackgroundView(view: self.view)
             Constant.MyClassConstants.viewResponse = response.view!
@@ -226,9 +224,6 @@ class WhatToUseViewController: UIViewController {
             Constant.MyClassConstants.onsiteArray.removeAllObjects()
             Constant.MyClassConstants.nearbyArray.removeAllObjects()
             
-             self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
-            
-            return
             
             for amenity in (response.view?.resort?.amenities)!{
                 if(amenity.nearby == false){
@@ -244,6 +239,18 @@ class WhatToUseViewController: UIViewController {
             
             
             UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
+                
+                print(Membership)
+                
+                let products = Membership.products?[0]
+                
+                if (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.productEligibility[0].productCode == products?.productCode && Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.productEligibility[0].isEligible == true) {
+                    
+                    self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
+                    
+                    return
+                    
+                }
                 
                 // Got an access token!  Save it for later use.
                 SVProgressHUD.dismiss()
