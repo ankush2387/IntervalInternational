@@ -16,6 +16,7 @@ class RenewelViewController: UIViewController {
     var arrayProductStorage = NSMutableArray()
     var renewelMessage = ""
     
+    // MARK:- lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -55,17 +56,16 @@ extension RenewelViewController:UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
+        return 3
+
         return (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.products.count)!
-        
         
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
         
-        
     }
-    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.renewelCell) as! RenewelCell
@@ -84,7 +84,6 @@ extension RenewelViewController:UITableViewDataSource {
             , NSForegroundColorAttributeName : UIColor(red: 0.0/255.0, green: 201.0/255.0, blue: 11.0/255.0, alpha: 1.0)], range: range)
         
         cell.renewelLbl.attributedText = attributeString
-   
         
         /*let arrProducts = Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.products
         

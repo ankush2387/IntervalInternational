@@ -83,6 +83,9 @@ class WhatToUseViewController: UIViewController {
         }
             
         ExchangeProcessClient.start(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: {(response) in
+            
+            // store response
+            Constant.MyClassConstants.exchangeProcessStartResponse = response
         
         self.selectedRow = -1
         self.selectedRowSection = -1
@@ -108,9 +111,22 @@ class WhatToUseViewController: UIViewController {
         }
                 UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
                     
+                    
                     // Got an access token!  Save it for later use.
                     Helper.hideProgressBar(senderView: self)
                     Constant.MyClassConstants.membershipContactArray = Membership.contacts!
+                    
+                    
+                    let products = Membership.products?[0]
+                    
+                    if (Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals?.productEligibility[0].productCode == products?.productCode && Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals?.productEligibility[0].isEligible == true) {
+                        
+                        self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
+                        
+                        return
+                        
+                    }
+                    
                     var viewController = UIViewController()
                     if Constant.RunningDevice.deviceIdiom == .phone {
                         viewController = WhoWillBeCheckingInViewController()
@@ -213,6 +229,7 @@ class WhatToUseViewController: UIViewController {
             let processResort = RentalProcess()
             processResort.processId = response.processId
             Constant.MyClassConstants.getawayBookingLastStartedProcess = processResort
+            
             // store response
             Constant.MyClassConstants.processStartResponse = response
             
