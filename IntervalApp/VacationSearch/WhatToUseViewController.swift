@@ -259,15 +259,43 @@ class WhatToUseViewController: UIViewController {
                 
                 print(Membership)
                 
-                let products = Membership.products?[0]
                 
-                if (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.productEligibility[0].productCode == products?.productCode && Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.productEligibility[0].isEligible == true) {
+                
+                //let products = Membership.products?[0]
+                
+                for products in Membership.products! {
+                    
+                    
+                    if (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.productEligibility[0].productCode == products.productCode && Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.productEligibility[0].isEligible == true) {
+                        
+                        
+                        
+                        
+                        self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
+                        
+                        return
+                        
+                    } else {
+                        
+                        // to do later
+                        print("check condition later")
+                        return
+                    }
+                    
+                    
+                }
+                
+                
+                
+               /* if (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.productEligibility[0].productCode == products?.productCode && Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.productEligibility[0].isEligible == true) {
                     
                     self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
                     
                     return
                     
-                }
+                } else if () {
+                    
+                }*/
                 
                 // Got an access token!  Save it for later use.
                 SVProgressHUD.dismiss()

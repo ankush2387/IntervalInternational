@@ -748,6 +748,18 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
                     
                     UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
                         
+                        
+                        let products = Membership.products?[0]
+                        
+                        if(Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.productEligibility[0].productCode == products?.productCode && Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.productEligibility[0].isEligible == true) {
+                            
+                            self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
+                            
+                            return
+                            
+                        }
+
+                        
                         // Got an access token!  Save it for later use.
                         SVProgressHUD.dismiss()
                         Helper.removeServiceCallBackgroundView(view: self.view)
@@ -772,7 +784,7 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
                     SVProgressHUD.dismiss()
                     SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.description)
                 })
-                }else{
+                }else{ // search both case
                     selectedSection = (collectionView.superview?.superview?.tag)!
                     selectedRow = collectionView.tag
                     Constant.MyClassConstants.selectedUnitIndex = indexPath.item

@@ -56,9 +56,14 @@ extension RenewelViewController:UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
-        return 3
-
-        return (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.products.count)!
+        if(Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()) {
+            return (Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals?.products.count)!
+            
+        } else {
+            return (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.products.count)!
+            
+        }
+        
         
     }
     
@@ -71,26 +76,47 @@ extension RenewelViewController:UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.renewelCell) as! RenewelCell
         
         let term = "1 year"
-        let priceAndCurrency = "$89.00" + " " + (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.currencyCode)!
         
-        // make attributed string
-        let mainString = "Your interval membership expire before your travel date.To continue, a \(term) membership fee of \(priceAndCurrency) will be included with this transaction."
+        var priceAndCurrency = ""
         
-        let range = (mainString as NSString).range(of: priceAndCurrency)
+        var arrProducts = NSMutableArray()
         
-        let attributeString = NSMutableAttributedString.init(string: mainString)
         
-        attributeString.setAttributes([NSFontAttributeName : UIFont(name: "HelveticaNeue-Light", size: CGFloat(23.0))!
-            , NSForegroundColorAttributeName : UIColor(red: 0.0/255.0, green: 201.0/255.0, blue: 11.0/255.0, alpha: 1.0)], range: range)
+        if(Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()) {
+            
+            arrProducts = Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals?.products as! NSMutableArray
+            
+        } else {
+            
+            arrProducts = Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.products as! NSMutableArray
+           
+        }
         
-        cell.renewelLbl.attributedText = attributeString
-        
-        /*let arrProducts = Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.products
-        
-        for products in arrProducts! {
-            print(products)
-        }*/
-        
+        for products in arrProducts as! [Renewal] {
+            
+            if products.term == 12 {
+                
+                let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals?.currencyCode)!)
+                
+                let price = String(format:"%.2f", products.price)
+                
+                priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals?.currencyCode)!
+                
+                // make attributed string
+                let mainString = "Your interval membership expire before your travel date.To continue, a \(term) membership fee of \(priceAndCurrency) will be included with this transaction."
+                
+                let range = (mainString as NSString).range(of: priceAndCurrency)
+                
+                let attributeString = NSMutableAttributedString.init(string: mainString)
+                
+                attributeString.setAttributes([NSFontAttributeName : UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(26.0))!
+                    , NSForegroundColorAttributeName : UIColor(red: 0.0/255.0, green: 201.0/255.0, blue: 11.0/255.0, alpha: 1.0)], range: range)
+                
+                cell.renewelLbl.attributedText = attributeString
+                break
+            }
+            
+        }
         
         return cell
         
@@ -115,6 +141,15 @@ extension RenewelViewController:UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 50
+        
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let view   = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 50))
+        
+        view.backgroundColor = .clear
+        
+        return view
         
     }
   
