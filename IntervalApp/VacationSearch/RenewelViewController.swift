@@ -11,9 +11,21 @@ import IntervalUIKit
 import DarwinSDK
 
 class RenewelViewController: UIViewController {
+    //MARK:- clas  outlets
+    @IBOutlet weak var renewalsTableView: UITableView!
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if(Constant.RunningDevice.deviceIdiom == .phone){
+            //Set title for table view
+            let headerLabel = UILabel(frame:CGRect(x: 0, y: 0, width: 375, height: 40))
+            headerLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0)
+            headerLabel.textAlignment = .center
+            headerLabel.text = Constant.MyClassConstants.renewalsHeaderTitle
+            renewalsTableView.tableHeaderView = headerLabel
+        }
 
         // Do any additional setup after loading the view.
     }
@@ -25,7 +37,7 @@ class RenewelViewController: UIViewController {
     
     // MARK: - Button Clicked
     
-    @IBAction func selecteClicked(_ sender: UIButton) {
+    @IBAction func selectClicked(_ sender: UIButton) {
     }
 
     
@@ -65,7 +77,7 @@ extension RenewelViewController:UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.renewelCell) as! RenewelCell
         
-        cell.renewelLbl.text = "Your interval membership expire before your travel date.To continue, a 1 year membership fee of $89.00 USD will be included with this transaction."
+        //cell.renewelLbl?.text = "Your interval membership expire before your travel date.To continue, a 1 year membership fee of $89.00 USD will be included with this transaction."
         
         
         

@@ -596,12 +596,16 @@ class Constant: NSObject {
         static var exchangeHasNotAvailableCheckInDatesAfterSelectInterval : Bool = false
         static var searchBothExchange = false
         
-        // flex change
+        // Flex change
         static var flexChangeSearch = NSLocalizedString("Flexchange Search", comment: "")
         
         // All available destinations
         static var allDestinationsOption = NSLocalizedString("All Destinations Options", comment: "")
          static var viewSelectedDestination = NSLocalizedString("View Selected Destinations", comment: "")
+        
+        // Renewals
+        static var renewalsHeaderTitle = NSLocalizedString("You Must Renew to Continue", comment: "")
+        
         
     }
     
