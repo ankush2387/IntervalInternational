@@ -11,14 +11,27 @@ import IntervalUIKit
 import DarwinSDK
 
 class RenewelViewController: UIViewController {
+
+    //MARK:- clas  outlets
+    @IBOutlet weak var renewalsTableView: UITableView!
     
     // class variables
     var arrayProductStorage = NSMutableArray()
     var renewelMessage = ""
     
     // MARK:- lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if(Constant.RunningDevice.deviceIdiom == .phone){
+            //Set title for table view
+            let headerLabel = UILabel(frame:CGRect(x: 0, y: 0, width: 375, height: 40))
+            headerLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0)
+            headerLabel.textAlignment = .center
+            headerLabel.text = Constant.MyClassConstants.renewalsHeaderTitle
+            renewalsTableView.tableHeaderView = headerLabel
+        }
 
         // Do any additional setup after loading the view.
     }
@@ -30,7 +43,7 @@ class RenewelViewController: UIViewController {
     
     // MARK: - Button Clicked
     
-    @IBAction func selecteClicked(_ sender: UIButton) {
+    @IBAction func selectClicked(_ sender: UIButton) {
     }
 
     
@@ -63,7 +76,6 @@ extension RenewelViewController:UITableViewDataSource {
             return (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.products.count)!
             
         }
-        
         
     }
     

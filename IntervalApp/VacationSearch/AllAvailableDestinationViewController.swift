@@ -501,9 +501,9 @@ extension AllAvailableDestinationViewController:UITableViewDelegate{
                 })
                 
             }else{
-            selectedSectionArray.add(indexPath.section)
-            sectionCounter = sectionCounter + 1
-            self.addRemoveAreasInRegion(indexPathForSelectedRegion:indexPath)
+                selectedSectionArray.add(indexPath.section)
+                sectionCounter = sectionCounter + 1
+                self.addRemoveAreasInRegion(indexPathForSelectedRegion:indexPath)
             }
         }
     }

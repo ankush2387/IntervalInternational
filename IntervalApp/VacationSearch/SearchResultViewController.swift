@@ -47,12 +47,16 @@ class SearchResultViewController: UIViewController {
     var dateCellSelectionColor = Constant.CommonColor.blueColor
     var myActivityIndicator = UIActivityIndicatorView()
     
+    // Only one section with surroundings found
+    var onlySurroundingsFound = false
+    
     // sorting optionDelegate call
     
     func selectedOptionis(filteredValueIs:String, indexPath:NSIndexPath, isFromFiltered:Bool) {
         
     }
     
+    //MARK:- Timer to show availability header
     func runTimer()  {
         
         Constant.MyClassConstants.isShowAvailability = false
@@ -121,24 +125,6 @@ class SearchResultViewController: UIViewController {
                     }
                  }
                 }
-                
-                /*if(sections.count > 1){
-                    
-                    for section in sections{
-                        
-                        if(section.exactMatch == nil || section.exactMatch == false){
-                            
-                            for surroundingResorts in (section.items)!{
-                                
-                                if(surroundingResorts.exchangeAvailability != nil){
-                                    
-                                    let resortsSurrounding = surroundingResorts.exchangeAvailability
-                                    surroundingMatchResortsArrayExchange.append(resortsSurrounding!)
-                                }
-                            }
-                        }
-                    }
-                }*/
             }
         }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Rental){
             
@@ -183,6 +169,31 @@ class SearchResultViewController: UIViewController {
                     
                     combinedSurroundingSearchItems = section.items!
                 }
+            }
+        }
+        
+        checkExactSurroundingSections()
+    }
+    
+    func checkExactSurroundingSections(){
+        if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
+            if(exactMatchResortsArray.count > 0){
+                onlySurroundingsFound = false
+            }else{
+                onlySurroundingsFound = true
+            }
+            
+        }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
+            if(exactMatchResortsArrayExchange.count > 0){
+                onlySurroundingsFound = false
+            }else{
+                onlySurroundingsFound = true
+            }
+        }else{
+            if(combinedExactSearchItems.count > 0){
+                onlySurroundingsFound = false
+            }else{
+                onlySurroundingsFound = true
             }
         }
     }
@@ -638,7 +649,12 @@ class SearchResultViewController: UIViewController {
         if(firstVisibleIndexPath?.section == 1){
             dateCellSelectionColor = Constant.CommonColor.greenColor
         }else{
-            //dateCellSelectionColor = Constant.CommonColor.blueColor
+            checkExactSurroundingSections()
+            if(onlySurroundingsFound == true){
+                dateCellSelectionColor = Constant.CommonColor.greenColor
+            }else{
+                dateCellSelectionColor = Constant.CommonColor.blueColor
+            }
         }
         
         if(indexPath.row <= Constant.MyClassConstants.calendarDatesArray.count){
