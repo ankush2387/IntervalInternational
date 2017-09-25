@@ -951,6 +951,18 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
             }
             UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
                 
+                let products = Membership.products?[0]
+                
+                if (Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals?.productEligibility[0].productCode == products?.productCode && Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals?.productEligibility[0].isEligible == true) {
+                    
+                    self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
+                    
+                    return
+                    
+                }
+                
+                
+                
                 // Got an access token!  Save it for later use.
                 Helper.hideProgressBar(senderView: self)
                 Constant.MyClassConstants.membershipContactArray = Membership.contacts!
