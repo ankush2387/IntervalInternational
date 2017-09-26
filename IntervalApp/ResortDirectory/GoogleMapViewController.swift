@@ -1164,7 +1164,7 @@ class GoogleMapViewController: UIViewController {
             headerView.addSubview(selectButton)
             if(Constant.MyClassConstants.whereTogoContentArray.contains(Constant.MyClassConstants.allDestinations)) {
                 selectButton.isEnabled = false
-                   headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.searchDisplayTableView.bounds.width, height: 0))
+                headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.searchDisplayTableView.bounds.width, height: 0))
             }
             else {
                 selectButton.isEnabled = true
