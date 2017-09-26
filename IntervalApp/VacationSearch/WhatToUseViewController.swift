@@ -117,15 +117,26 @@ class WhatToUseViewController: UIViewController {
                     Constant.MyClassConstants.membershipContactArray = Membership.contacts!
                     
                     
-                    let products = Membership.products?[0]
-                    
-                    if (Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals?.productEligibility[0].productCode == products?.productCode && Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals?.productEligibility[0].isEligible == true) {
+                    // checking only for core products
+                    for products in (Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals?.products)! {
                         
-                        self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
-                        
-                        return
-                        
+                        if (products.term == 12) {
+                            
+                            if (products.isCoreProduct == true) {
+                                
+                                self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
+                                
+                                return
+                                
+                            } else { // for non core products
+                                
+                            }
+                            
+                        }
                     }
+                        
+            
+                    
                     
                     var viewController = UIViewController()
                     if Constant.RunningDevice.deviceIdiom == .phone {
@@ -258,44 +269,25 @@ class WhatToUseViewController: UIViewController {
             UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
                 
                 print(Membership)
-                
-                
-                
-                //let products = Membership.products?[0]
-                
-                for products in Membership.products! {
+            
+                // checking only for core products
+                for products in (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.products)! {
                     
-                    
-                    if (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.productEligibility[0].productCode == products.productCode && Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.productEligibility[0].isEligible == true) {
+                    if (products.term == 12) {
                         
+                        if (products.isCoreProduct == true) {
+                            
+                            self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
+                            
+                            return
+                            
+                        } else {
+                            
+                        }
                         
-                        
-                        
-                        self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
-                        
-                        return
-                        
-                    } else {
-                        
-                        // to do later
-                        print("check condition later")
-                        return
                     }
-                    
-                    
                 }
                 
-                
-                
-               /* if (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.productEligibility[0].productCode == products?.productCode && Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.productEligibility[0].isEligible == true) {
-                    
-                    self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
-                    
-                    return
-                    
-                } else if () {
-                    
-                }*/
                 
                 // Got an access token!  Save it for later use.
                 SVProgressHUD.dismiss()
@@ -398,14 +390,11 @@ extension WhatToUseViewController:UITableViewDelegate {
                 return 150
             } else {
                 if UIDevice.current.userInterfaceIdiom == .pad {
-                    return 115
+                    return 80
                 } else {
-                    return 100
+                    return 80
                 }
             }
-            //}else{
-            //    return 70
-            //}
             
         case 2:
             return 70
@@ -546,6 +535,11 @@ extension WhatToUseViewController:UITableViewDataSource {
                 cell.tag = indexPath.row
                 cell.checkBOx.tag = indexPath.row
                 cell.checkBOx.accessibilityElements = [indexPath.section]
+           
+                let points:Int = (exchange.pointsProgram?.availablePoints)!
+                
+                cell.availablePointValueLabel.text = String(points)
+                
                 if(self.selectedRow == indexPath.row && self.selectedRowSection == indexPath.section) {
                     
                     cell.mainView.layer.cornerRadius = 7
@@ -571,6 +565,10 @@ extension WhatToUseViewController:UITableViewDataSource {
                 
                 cell.tag = indexPath.row
                 cell.checkBOx.tag = indexPath.row
+                let points:Int = (exchange.clubPoints?.pointsSpent)!
+                
+                cell.availablePointValueLabel.text = String(points)
+                
                 cell.checkBOx.accessibilityElements = [indexPath.section]
                 
                 if(self.selectedRow == indexPath.row && self.selectedRowSection == indexPath.section) {
@@ -695,6 +693,10 @@ extension WhatToUseViewController:UITableViewDataSource {
                 cell.tag = indexPath.row
                 cell.checkBOx.tag = indexPath.row
                 cell.checkBOx.accessibilityElements = [indexPath.section]
+                
+                
+                cell.availablePointValueLabel.text = ""
+                
                 if(self.selectedRow == indexPath.row && self.selectedRowSection == indexPath.section) {
                     
                     cell.mainView.layer.cornerRadius = 7

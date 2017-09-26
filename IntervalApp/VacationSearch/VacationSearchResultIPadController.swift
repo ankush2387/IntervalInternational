@@ -749,14 +749,22 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
                     UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
                         
                         
-                        let products = Membership.products?[0]
-                        
-                        if(Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.productEligibility[0].productCode == products?.productCode && Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.productEligibility[0].isEligible == true) {
+                        // checking only for core products
+                        for products in (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.products)! {
                             
-                            self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
-                            
-                            return
-                            
+                            if (products.term == 12) {
+                                
+                                if (products.isCoreProduct == true) {
+                                    
+                                    self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
+                                    
+                                    return
+                                    
+                                } else { // for non core products
+                                    
+                                }
+                                
+                            }
                         }
 
                         
@@ -963,14 +971,22 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
             }
             UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
                 
-                let products = Membership.products?[0]
-                
-                if (Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals?.productEligibility[0].productCode == products?.productCode && Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals?.productEligibility[0].isEligible == true) {
+                // checking only for core products
+                for products in (Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals?.products)! {
                     
-                    self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
-                    
-                    return
-                    
+                    if (products.term == 12) {
+                        
+                        if (products.isCoreProduct == true) {
+                            
+                            self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
+                            
+                            return
+                            
+                        } else { // for non core products
+                            
+                        }
+                        
+                    }
                 }
                 
                 

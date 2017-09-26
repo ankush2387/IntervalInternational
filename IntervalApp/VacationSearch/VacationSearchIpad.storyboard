@@ -6765,7 +6765,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7mu-hh-Vek">
-                                                    <rect key="frame" x="10" y="0.0" width="748" height="60"/>
+                                                    <rect key="frame" x="10" y="5" width="748" height="60"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7650" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4g3-da-93F">
                                                             <rect key="frame" x="0.0" y="20" width="69" height="20.5"/>
@@ -6777,15 +6777,16 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use Club Interval Gold Points" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FSn-i5-qBL">
-                                                            <rect key="frame" x="75" y="5" width="631" height="49.5"/>
+                                                            <rect key="frame" x="75" y="5" width="622" height="49.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qJp-jv-EJB" customClass="IUIKCheckbox" customModule="IntervalUIKit">
-                                                            <rect key="frame" x="712" y="17" width="40" height="24.5"/>
+                                                            <rect key="frame" x="703" y="17" width="40" height="25"/>
                                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
+                                                                <constraint firstAttribute="height" constant="25" id="HJ7-1j-0Vc"/>
                                                                 <constraint firstAttribute="width" constant="40" id="udf-hs-heb"/>
                                                             </constraints>
                                                             <userDefinedRuntimeAttributes>
@@ -6802,10 +6803,10 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </view>
                                                     </subviews>
-                                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstItem="4g3-da-93F" firstAttribute="top" secondItem="7mu-hh-Vek" secondAttribute="top" constant="20" id="1pW-zf-Ens"/>
-                                                        <constraint firstAttribute="trailing" secondItem="qJp-jv-EJB" secondAttribute="trailing" constant="-4" id="Aa8-Q7-50h"/>
+                                                        <constraint firstAttribute="trailing" secondItem="qJp-jv-EJB" secondAttribute="trailing" constant="5" id="Aa8-Q7-50h"/>
                                                         <constraint firstItem="4g3-da-93F" firstAttribute="leading" secondItem="7mu-hh-Vek" secondAttribute="leading" id="FN7-pj-6yh"/>
                                                         <constraint firstAttribute="bottom" secondItem="FSn-i5-qBL" secondAttribute="bottom" constant="5" id="MaV-HI-KB3"/>
                                                         <constraint firstItem="FSn-i5-qBL" firstAttribute="leading" secondItem="4g3-da-93F" secondAttribute="trailing" constant="6" id="Mvi-V9-rpp"/>
@@ -6819,14 +6820,16 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="trailingMargin" secondItem="7mu-hh-Vek" secondAttribute="trailing" constant="2" id="4v8-vo-aRx"/>
-                                                <constraint firstItem="7mu-hh-Vek" firstAttribute="top" secondItem="sYW-96-QOh" secondAttribute="top" id="6Ie-Cd-hjg"/>
-                                                <constraint firstAttribute="bottom" secondItem="7mu-hh-Vek" secondAttribute="bottom" id="KG9-zm-Q5y"/>
+                                                <constraint firstItem="7mu-hh-Vek" firstAttribute="top" secondItem="sYW-96-QOh" secondAttribute="top" constant="5" id="6Ie-Cd-hjg"/>
                                                 <constraint firstItem="7mu-hh-Vek" firstAttribute="leading" secondItem="sYW-96-QOh" secondAttribute="leadingMargin" constant="2" id="MI4-TA-tdY"/>
-                                                <constraint firstAttribute="trailing" secondItem="7mu-hh-Vek" secondAttribute="trailing" constant="10" id="a8I-bQ-LWF"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="7mu-hh-Vek" secondAttribute="bottom" constant="-8" id="fNh-jm-RFQ"/>
-                                                <constraint firstItem="7mu-hh-Vek" firstAttribute="leading" secondItem="sYW-96-QOh" secondAttribute="leading" constant="10" id="sfK-s8-pdo"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="7mu-hh-Vek" secondAttribute="bottom" constant="5" id="fNh-jm-RFQ"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="availablePointValueLabel" destination="4g3-da-93F" id="oXY-yE-06k"/>
+                                            <outlet property="checkBOx" destination="qJp-jv-EJB" id="fc2-1I-e2a"/>
+                                            <outlet property="mainView" destination="7mu-hh-Vek" id="4Sh-IE-8OK"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ExchangeCell2" rowHeight="150" id="WSb-ri-bsd" userLabel="ExchangeCell2" customClass="RelinquishmentSelectionOpenWeeksCellWithUpgrade" customModule="IntervalApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="218" width="768" height="150"/>
@@ -7242,8 +7245,8 @@ Units Upgrade with this selection.</string>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DMN-tW-ib8" customClass="IUIKCheckbox" customModule="IntervalUIKit">
-                                                            <rect key="frame" x="319" y="17" width="40" height="26"/>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DMN-tW-ib8" customClass="IUIKCheckbox" customModule="IntervalUIKit">
+                                                            <rect key="frame" x="708" y="8" width="40" height="40"/>
                                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="40" id="1dm-4h-o3Y"/>
@@ -7476,7 +7479,7 @@ Units Upgrade with this selection.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S0U-Hp-yc6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5614.84375" y="-177.5390625"/>
+            <point key="canvasLocation" x="5573" y="-217"/>
         </scene>
         <!--Renewel View Controller-->
         <scene sceneID="DJy-E0-8EP">
@@ -9802,8 +9805,8 @@ Units Upgrade with this selection.</string>
     <inferredMetricsTieBreakers>
         <segue reference="zQf-x1-cmb"/>
         <segue reference="hgo-Jq-z8A"/>
-        <segue reference="m4o-mh-cv9"/>
         <segue reference="5di-wX-yoy"/>
         <segue reference="bm5-1w-IwW"/>
+        <segue reference="0aK-Ez-4ka"/>
     </inferredMetricsTieBreakers>
 </document>
