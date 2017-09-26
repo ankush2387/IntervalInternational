@@ -1146,7 +1146,7 @@ class GoogleMapViewController: UIViewController {
         }
         if(Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.resortFunctionalityCheck && Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.createAlert && Constant.MyClassConstants.runningFunctionality != Constant.MyClassConstants.editAlert){
             //**** Create table view header ****//
-            let  headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.searchDisplayTableView.bounds.width, height: 40))
+            var  headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.searchDisplayTableView.bounds.width, height: 40))
             let nameLabel = UILabel(frame: CGRect(x: 15, y: 5, width: self.searchDisplayTableView.bounds.width - 130, height: 30))
             
             nameLabel.text = Constant.HeaderViewConstantStrings.search
@@ -1164,6 +1164,7 @@ class GoogleMapViewController: UIViewController {
             headerView.addSubview(selectButton)
             if(Constant.MyClassConstants.whereTogoContentArray.contains(Constant.MyClassConstants.allDestinations)) {
                 selectButton.isEnabled = false
+                   headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.searchDisplayTableView.bounds.width, height: 0))
             }
             else {
                 selectButton.isEnabled = true
