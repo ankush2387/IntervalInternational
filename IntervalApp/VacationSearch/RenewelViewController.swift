@@ -18,6 +18,8 @@ class RenewelViewController: UIViewController {
     // class variables
     var arrayProductStorage = NSMutableArray()
     var renewelMessage = ""
+    var arrayProducts = [Renewal]()
+    
     
     // MARK:- lifecycle
 
@@ -87,20 +89,29 @@ extension RenewelViewController:UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.renewelCell) as! RenewelCell
         
-        let term = "1 year"
-        
         var priceAndCurrency = ""
         
-        var arrProducts = NSMutableArray()
+        var currencyCodeWithSymbol = ""
         
+        var currencyCode = ""
+        
+        var arrProducts = NSMutableArray()
         
         if(Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()) {
             
             arrProducts = Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals?.products as! NSMutableArray
             
+            currencyCode = (Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals?.currencyCode)!
+            
+            currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals?.currencyCode)!)
+            
         } else {
             
             arrProducts = Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.products as! NSMutableArray
+            
+            currencyCode = (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.currencyCode)!
+            
+            currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.currencyCode)!)
            
         }
         
@@ -108,11 +119,13 @@ extension RenewelViewController:UITableViewDataSource {
             
             if products.term == 12 {
                 
-                let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals?.currencyCode)!)
+                let term = "1 year"
                 
                 let price = String(format:"%.2f", products.price)
                 
-                priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals?.currencyCode)!
+               // priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals?.currencyCode)!
+                
+                priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + currencyCode
                 
                 // make attributed string
                 let mainString = "Your interval membership expire before your travel date.To continue, a \(term) membership fee of \(priceAndCurrency) will be included with this transaction."

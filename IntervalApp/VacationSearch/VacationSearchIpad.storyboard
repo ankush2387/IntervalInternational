@@ -96,7 +96,7 @@
         <scene sceneID="AXO-66-1Q5">
             <objects>
                 <navigationController id="YXh-lN-KMw" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="6Ru-xD-idh">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="6Ru-xD-idh">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -3284,7 +3284,7 @@
         <scene sceneID="hwE-GA-7Y4">
             <objects>
                 <navigationController id="Kj4-oV-nKd" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="PIk-h1-MHc">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="PIk-h1-MHc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -3713,7 +3713,7 @@
         <scene sceneID="DbV-Z9-AeY">
             <objects>
                 <navigationController id="hie-AV-xvD" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="f6g-7W-eAZ">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="f6g-7W-eAZ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -7554,17 +7554,35 @@ Units Upgrade with this selection.</string>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XWP-Ga-J73" userLabel="View Image">
                                                             <rect key="frame" x="40" y="20" width="508" height="150"/>
                                                             <subviews>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BSC" translatesAutoresizingMaskIntoConstraints="NO" id="SJw-Hz-ZCb">
+                                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BSC" translatesAutoresizingMaskIntoConstraints="NO" id="SJw-Hz-ZCb">
                                                                     <rect key="frame" x="50" y="20" width="408" height="110"/>
+                                                                </imageView>
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BSC" translatesAutoresizingMaskIntoConstraints="NO" id="LDY-pM-eB1">
+                                                                    <rect key="frame" x="40" y="20" width="200" height="110"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" constant="200" id="Xj9-Ak-G2r"/>
+                                                                    </constraints>
+                                                                </imageView>
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PLT" translatesAutoresizingMaskIntoConstraints="NO" id="anZ-Aq-WMz">
+                                                                    <rect key="frame" x="268" y="20" width="200" height="110"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" constant="200" id="f95-Of-WGO"/>
+                                                                    </constraints>
                                                                 </imageView>
                                                             </subviews>
                                                             <color key="backgroundColor" red="0.92156862745098034" green="0.96078431372549022" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="150" id="0SE-PZ-6hu"/>
+                                                                <constraint firstItem="LDY-pM-eB1" firstAttribute="top" secondItem="XWP-Ga-J73" secondAttribute="top" constant="20" id="1t8-Er-Z0u"/>
+                                                                <constraint firstAttribute="bottom" secondItem="LDY-pM-eB1" secondAttribute="bottom" constant="20" id="2bE-B9-FkQ"/>
+                                                                <constraint firstAttribute="bottom" secondItem="anZ-Aq-WMz" secondAttribute="bottom" constant="20" id="B9u-yK-QeZ"/>
                                                                 <constraint firstAttribute="bottom" secondItem="SJw-Hz-ZCb" secondAttribute="bottom" constant="20" id="Ds0-O2-82p"/>
+                                                                <constraint firstItem="LDY-pM-eB1" firstAttribute="leading" secondItem="XWP-Ga-J73" secondAttribute="leading" constant="40" id="L9H-ze-HfK"/>
                                                                 <constraint firstItem="SJw-Hz-ZCb" firstAttribute="top" secondItem="XWP-Ga-J73" secondAttribute="top" constant="20" id="OxH-0b-4U1"/>
                                                                 <constraint firstItem="SJw-Hz-ZCb" firstAttribute="leading" secondItem="XWP-Ga-J73" secondAttribute="leading" constant="50" id="WaK-9Y-dVa"/>
                                                                 <constraint firstAttribute="trailing" secondItem="SJw-Hz-ZCb" secondAttribute="trailing" constant="50" id="Zen-0x-PY5"/>
+                                                                <constraint firstAttribute="trailing" secondItem="anZ-Aq-WMz" secondAttribute="trailing" constant="40" id="jwF-ID-WQ4"/>
+                                                                <constraint firstItem="anZ-Aq-WMz" firstAttribute="top" secondItem="XWP-Ga-J73" secondAttribute="top" constant="20" id="rIv-Pe-xjk"/>
                                                             </constraints>
                                                         </view>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hpl-yW-zuj">
@@ -7620,8 +7638,10 @@ Units Upgrade with this selection.</string>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="renewelCoreImageView" destination="LDY-pM-eB1" id="xxX-eT-jTO"/>
                                             <outlet property="renewelImageView" destination="SJw-Hz-ZCb" id="YLq-dv-2xD"/>
                                             <outlet property="renewelLbl" destination="Hpl-yW-zuj" id="aAK-dA-dCy"/>
+                                            <outlet property="renewelnonCoreImageView" destination="anZ-Aq-WMz" id="6dH-GF-ADU"/>
                                             <outlet property="viewContent" destination="aQ6-el-ZDV" id="KOf-2S-28q"/>
                                             <outlet property="viewImage" destination="XWP-Ga-J73" id="eTM-9l-XT9"/>
                                         </connections>
@@ -7650,7 +7670,7 @@ Units Upgrade with this selection.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J1y-ug-Ajd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6610" y="-278"/>
+            <point key="canvasLocation" x="6609.375" y="-278.3203125"/>
         </scene>
         <!--Relinquishment Selection View Controller-->
         <scene sceneID="ios-Xo-eED">
@@ -9101,7 +9121,7 @@ Units Upgrade with this selection.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Wc0-eI-yK9" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="98v-Sn-Axw">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="98v-Sn-Axw">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -9482,7 +9502,7 @@ Units Upgrade with this selection.</string>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="lDo-kQ-A9s" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="h8X-dQ-5XW"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="lNH-0Y-9a5">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="lNH-0Y-9a5">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -9790,6 +9810,7 @@ Units Upgrade with this selection.</string>
         <image name="MoreNav" width="33" height="33"/>
         <image name="NoImageIcon" width="64" height="64"/>
         <image name="OfferIcon" width="33" height="33"/>
+        <image name="PLT" width="150" height="98"/>
         <image name="PlusIcon" width="33" height="33"/>
         <image name="RST_CO" width="30" height="30"/>
         <image name="Resorts-Getaway_Icon" width="25" height="25"/>

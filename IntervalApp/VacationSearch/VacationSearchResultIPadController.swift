@@ -750,24 +750,27 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
                         
                         
                         // checking only for core products
-                        for products in (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.products)! {
+                        if(Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.products != nil) {
                             
-                            if (products.term == 12) {
+                            for products in (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.products)! {
                                 
-                                if (products.isCoreProduct == true) {
+                                if (products.term == 12) {
                                     
-                                    self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
-                                    
-                                    return
-                                    
-                                } else { // for non core products
+                                    if (products.isCoreProduct == true) {
+                                        
+                                        self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
+                                        
+                                        return
+                                        
+                                    } else { // for non core products
+                                        
+                                    }
                                     
                                 }
-                                
                             }
                         }
-
                         
+
                         // Got an access token!  Save it for later use.
                         SVProgressHUD.dismiss()
                         Helper.removeServiceCallBackgroundView(view: self.view)

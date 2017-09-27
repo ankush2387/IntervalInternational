@@ -12,6 +12,12 @@ class RenewelCell: UITableViewCell {
     
     
     @IBOutlet weak var renewelImageView: UIImageView!
+    
+    @IBOutlet weak var renewelCoreImageView: UIImageView!
+    
+    @IBOutlet weak var renewelnonCoreImageView: UIImageView!
+    
+
 
     @IBOutlet weak var viewContent: UIView!
     

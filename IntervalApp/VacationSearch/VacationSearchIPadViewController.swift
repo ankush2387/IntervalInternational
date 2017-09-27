@@ -674,6 +674,7 @@ extension Foundation.Date {
 
 extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
     
+    //MARK:- Button events
     func searchButtonClicked(_ sender : IUIKButton) {
         
         //Set travel PartyInfo
