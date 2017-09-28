@@ -1588,6 +1588,12 @@ class Constant: NSObject {
         
     }
     
+    struct myUpcomingTripCommonString {
+        
+        static let rental = "RENTAL"
+        static let getaway = "GETAWAY"
+    }
+    
    
     
     //***** Availabel Destination viewcontroller *****//
