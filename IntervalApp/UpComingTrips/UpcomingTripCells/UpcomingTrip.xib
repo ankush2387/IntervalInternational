@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="ipad12_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -148,6 +148,17 @@
                                     <constraint firstItem="eoW-RR-99b" firstAttribute="top" secondItem="kxp-Bl-rMk" secondAttribute="top" constant="10" id="vi9-I7-ncH"/>
                                 </constraints>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Getaway" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aru-cA-Rat">
+                                <rect key="frame" x="639.5" y="259" width="126.5" height="37.5"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="37.5" id="ubh-fy-BSr"/>
+                                    <constraint firstAttribute="width" constant="126.5" id="yLr-4Q-gA4"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="25"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <accessibility key="accessibilityConfiguration" identifier="Cell"/>
@@ -156,7 +167,9 @@
                             <constraint firstItem="CZe-t6-uRT" firstAttribute="top" secondItem="BUY-nP-qrO" secondAttribute="bottom" id="4MJ-KW-lsa"/>
                             <constraint firstAttribute="trailing" secondItem="BUY-nP-qrO" secondAttribute="trailing" id="5G4-Bp-c8k"/>
                             <constraint firstItem="n3f-qB-qQF" firstAttribute="top" secondItem="CZe-t6-uRT" secondAttribute="bottom" id="BTB-br-Kb9"/>
+                            <constraint firstAttribute="bottom" secondItem="aru-cA-Rat" secondAttribute="bottom" constant="254.5" id="FPV-MB-mJc"/>
                             <constraint firstAttribute="trailing" secondItem="zDC-1h-YLx" secondAttribute="trailing" id="KwI-50-GZR"/>
+                            <constraint firstItem="aru-cA-Rat" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="259" id="L5j-nw-0uZ"/>
                             <constraint firstAttribute="trailing" secondItem="je2-84-3ad" secondAttribute="trailing" id="NFH-yS-KTe"/>
                             <constraint firstAttribute="trailing" secondItem="mWF-Nq-b1H" secondAttribute="trailing" id="R2w-eO-QNB"/>
                             <constraint firstItem="dAC-GL-oi4" firstAttribute="top" secondItem="n3f-qB-qQF" secondAttribute="bottom" constant="5" id="TLn-cU-osy"/>
@@ -175,6 +188,7 @@
                             <constraint firstItem="BUY-nP-qrO" firstAttribute="top" secondItem="zDC-1h-YLx" secondAttribute="bottom" id="rWx-ZF-lI2"/>
                             <constraint firstAttribute="trailing" secondItem="CZe-t6-uRT" secondAttribute="trailing" constant="20" id="uhT-8u-t1b"/>
                             <constraint firstItem="n3f-qB-qQF" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" id="vEl-B0-5HU"/>
+                            <constraint firstAttribute="trailing" secondItem="aru-cA-Rat" secondAttribute="trailing" constant="2" id="wzs-xC-cEM"/>
                             <constraint firstAttribute="bottom" secondItem="kxp-Bl-rMk" secondAttribute="bottom" id="xBv-Cj-csD"/>
                         </constraints>
                     </view>
@@ -196,9 +210,10 @@
                 <outlet property="resortLocationLabel" destination="CZe-t6-uRT" id="BgM-gS-RnO"/>
                 <outlet property="resortNameBaseView" destination="mWF-Nq-b1H" id="Xaz-lV-y4E"/>
                 <outlet property="resortNameLabel" destination="TpP-X2-W9T" id="YQD-ra-gaq"/>
+                <outlet property="resortType" destination="aru-cA-Rat" id="2f5-yF-Pz6"/>
                 <outlet property="tripDateLabel" destination="dAC-GL-oi4" id="WNR-NY-sC0"/>
             </connections>
-            <point key="canvasLocation" x="-29" y="299"/>
+            <point key="canvasLocation" x="-29" y="298.5"/>
         </collectionViewCell>
     </objects>
     <resources>

@@ -92,7 +92,11 @@ extension MyUpcomingTripViewController:UITableViewDataSource {
         cell.headerLabel.text = "Confirmation #\(upComingTrip.exchangeNumber!)"
         Constant.MyClassConstants.transactionNumber = "\(upComingTrip.exchangeNumber!)"
         cell.headerStatusLabel.text = upComingTrip.exchangeStatus!
-        cell.resortType.text = Helper.vacationSearchTypeSegemtStringToDisplay(vacationSearchType: upComingTrip.type!)
+        if(upComingTrip.type == Constant.myUpcomingTripCommonString.rental){
+            
+            upComingTrip.type = Constant.myUpcomingTripCommonString.getaway
+        }
+        cell.resortType.text = ExchangeTransactionType.fromName(name: upComingTrip.type!).rawValue
         cell.resortImageView.backgroundColor = UIColor.lightGray
         
         let imagesArray = upComingTrip.resort?.images

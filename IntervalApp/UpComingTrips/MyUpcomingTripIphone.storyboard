@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F2073" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="GhM-vd-SHY">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="GhM-vd-SHY">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -285,7 +285,7 @@
             <objects>
                 <navigationController storyboardIdentifier="TripDetailsNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="pTt-D9-k2s" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="n7A-te-LHS">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="n7A-te-LHS">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2256,7 +2256,7 @@
                 <navigationController storyboardIdentifier="mapDetailNav" automaticallyAdjustsScrollViewInsets="NO" id="qfy-4T-k0q" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="Ur2-iw-wXE"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="I74-zs-TtO">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="I74-zs-TtO">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2274,7 +2274,7 @@
             <objects>
                 <navigationController storyboardIdentifier="weatherNav" automaticallyAdjustsScrollViewInsets="NO" id="vdo-WX-Ega" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Gd9-qi-lxn">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Gd9-qi-lxn">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
