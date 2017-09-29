@@ -1313,6 +1313,7 @@ class Constant: NSObject {
         static var availablePoints = "AvailablePoints"
         static var selectedResortsCell = "selectedResortsCell"
         static var renewelCell = "renewelCell"
+        static var renewalAdditionalCell = "renewalAdditionalCell"
         static var flexChangeDestinationCell = "FlexchangeDestinationCell"
         static var flexchangeSearchButtonCell = "FlexchangeSearchButtonCell"
         

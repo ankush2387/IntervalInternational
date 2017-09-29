@@ -111,33 +111,21 @@ class WhatToUseViewController: UIViewController {
         }
                 UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
                     
-                    
                     // Got an access token!  Save it for later use.
                     Helper.hideProgressBar(senderView: self)
                     Constant.MyClassConstants.membershipContactArray = Membership.contacts!
                     
+                    // check force renewals here
+                    let forceRenewals = Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals
                     
-                    // checking only for core products
-                    for products in (Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals?.products)! {
+                    if (forceRenewals != nil) {
                         
-                        if (products.term == 12) {
-                            
-                            if (products.isCoreProduct == true) {
-                                
-                                self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
-                                
-                                return
-                                
-                            } else { // for non core products
-                                
-                            }
-                            
-                        }
+                        return  self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
+                        
                     }
-                        
-            
                     
-                    
+                   
+       
                     var viewController = UIViewController()
                     if Constant.RunningDevice.deviceIdiom == .phone {
                         viewController = WhoWillBeCheckingInViewController()
@@ -268,31 +256,21 @@ class WhatToUseViewController: UIViewController {
             
             UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
                 
-                print(Membership)
-            
-                // checking only for core products
-                for products in (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.products)! {
-                    
-                    if (products.term == 12) {
-                        
-                        if (products.isCoreProduct == true) {
-                            
-                            self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
-                            
-                            return
-                            
-                        } else {
-                            
-                        }
-                        
-                    }
-                }
-                
-                
                 // Got an access token!  Save it for later use.
                 SVProgressHUD.dismiss()
                 Helper.removeServiceCallBackgroundView(view: self.view)
                 Constant.MyClassConstants.membershipContactArray = Membership.contacts!
+
+                // check force renewals here
+                let forceRenewals = Constant.MyClassConstants.processStartResponse.view?.forceRenewals
+                
+                if (forceRenewals != nil) {
+                    
+                    return  self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
+                    
+                }
+                
+               
                 if(Constant.RunningDevice.deviceIdiom == .phone){
                     let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
                     let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController

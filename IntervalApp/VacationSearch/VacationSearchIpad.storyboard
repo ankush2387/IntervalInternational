@@ -7554,16 +7554,16 @@ Units Upgrade with this selection.</string>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XWP-Ga-J73" userLabel="View Image">
                                                             <rect key="frame" x="40" y="20" width="508" height="150"/>
                                                             <subviews>
-                                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BSC" translatesAutoresizingMaskIntoConstraints="NO" id="SJw-Hz-ZCb">
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BSC" translatesAutoresizingMaskIntoConstraints="NO" id="SJw-Hz-ZCb">
                                                                     <rect key="frame" x="50" y="20" width="408" height="110"/>
                                                                 </imageView>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BSC" translatesAutoresizingMaskIntoConstraints="NO" id="LDY-pM-eB1">
+                                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BSC" translatesAutoresizingMaskIntoConstraints="NO" id="LDY-pM-eB1">
                                                                     <rect key="frame" x="40" y="20" width="200" height="110"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="200" id="Xj9-Ak-G2r"/>
                                                                     </constraints>
                                                                 </imageView>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PLT" translatesAutoresizingMaskIntoConstraints="NO" id="anZ-Aq-WMz">
+                                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PLT" translatesAutoresizingMaskIntoConstraints="NO" id="anZ-Aq-WMz">
                                                                     <rect key="frame" x="268" y="20" width="200" height="110"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="200" id="f95-Of-WGO"/>
@@ -7585,7 +7585,7 @@ Units Upgrade with this selection.</string>
                                                                 <constraint firstItem="anZ-Aq-WMz" firstAttribute="top" secondItem="XWP-Ga-J73" secondAttribute="top" constant="20" id="rIv-Pe-xjk"/>
                                                             </constraints>
                                                         </view>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hpl-yW-zuj">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hpl-yW-zuj">
                                                             <rect key="frame" x="60" y="180" width="468" height="68"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="24"/>
                                                             <nil key="textColor"/>
@@ -7644,6 +7644,38 @@ Units Upgrade with this selection.</string>
                                             <outlet property="renewelnonCoreImageView" destination="anZ-Aq-WMz" id="6dH-GF-ADU"/>
                                             <outlet property="viewContent" destination="aQ6-el-ZDV" id="KOf-2S-28q"/>
                                             <outlet property="viewImage" destination="XWP-Ga-J73" id="eTM-9l-XT9"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="renewalAdditionalCell" rowHeight="84" id="szi-pn-zW6" customClass="RenewalAdditionalCell" customModule="IntervalApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="339" width="708" height="84"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="szi-pn-zW6" id="POs-q0-gfx">
+                                            <rect key="frame" x="0.0" y="0.0" width="708" height="84"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="McL-Zw-oeI">
+                                                    <rect key="frame" x="204" y="22" width="300" height="40"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="40" id="36T-sD-P5H"/>
+                                                        <constraint firstAttribute="width" constant="300" id="CF5-6t-1Dz"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
+                                                    <state key="normal" title="No thanks">
+                                                        <color key="titleColor" red="0.19607843137254902" green="0.61568627450980395" blue="0.81176470588235294" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="onClickNoThanks:" destination="udK-XJ-PmO" eventType="touchUpInside" id="ruo-Zz-eCc"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstItem="McL-Zw-oeI" firstAttribute="centerY" secondItem="POs-q0-gfx" secondAttribute="centerY" id="1HK-pC-Gnz"/>
+                                                <constraint firstItem="McL-Zw-oeI" firstAttribute="centerX" secondItem="POs-q0-gfx" secondAttribute="centerX" id="Zka-td-ZQf"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="noThanksButton" destination="McL-Zw-oeI" id="rd7-t4-Eyo"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

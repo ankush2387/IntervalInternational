@@ -45,15 +45,24 @@ class RenewelViewController: UIViewController {
     func checkForComboNonCombo(){
         if(Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
            forceRenewals = (Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals)!
+            
         }else{
+            
             forceRenewals = (Constant.MyClassConstants.processStartResponse.view?.forceRenewals)!
         }
+        
+        // case for core product
         if(forceRenewals.comboProducts.count == 0 && forceRenewals.crossSelling.count == 0 && forceRenewals.products.count > 0){
             sectionCount = 1
+            
+            // case for como
         }else if(forceRenewals.comboProducts.count > 0 || (forceRenewals.crossSelling.count == 0 && forceRenewals.products.count == 0)){
+            
            sectionCount = 2
            isCombo = true
+            
         }else{
+            
             sectionCount = 2
         }
         
@@ -67,11 +76,33 @@ class RenewelViewController: UIViewController {
     // MARK: - Button Clicked
     
     @IBAction func selectClicked(_ sender: UIButton) {
+        
     }
 
     
     @IBAction func cancelClicked(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func onClickNoThanks(_ sender: UIButton) {
+        
+        if(Constant.RunningDevice.deviceIdiom == .phone){
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+            
+            let transitionManager = TransitionManager()
+            self.navigationController?.transitioningDelegate = transitionManager
+            self.navigationController!.pushViewController(viewController, animated: true)
+        }else{
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as! WhoWillBeCheckingInIPadViewController
+            
+            let transitionManager = TransitionManager()
+            self.navigationController?.transitioningDelegate = transitionManager
+            self.present(viewController, animated: true, completion: nil)
+            //self.navigationController?.pushViewController(viewController, animated: true)
+           // self.navigationController!.pushViewController(viewController, animated: true)
+        }
     }
     
     /*
@@ -110,13 +141,23 @@ extension RenewelViewController:UITableViewDataSource {
         //Combo
         if((forceRenewals.comboProducts.count) > 0) {
             print("A Combo")
+            
         }else if(((forceRenewals.crossSelling.count) > 0 && (forceRenewals.products.count) > 0) || (forceRenewals.products.count) > 0){
             
-            //Core Non combo both
+            //Core, Non combo both
             
             for product in (forceRenewals.products) {
                 
                 if product.term == 12 {
+                    
+                    cell.renewelImageView?.image = UIImage.init(named: product.productCode!)
+                    
+                    cell.renewelCoreImageView?.image = UIImage.init(named: product.productCode!)
+                    
+                    // hide core and non core here
+                    
+                    cell.renewelCoreImageView?.isHidden = true
+                    cell.renewelnonCoreImageView?.isHidden = true
                     
                     let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.currencyCode)!)
                     
@@ -131,7 +172,7 @@ extension RenewelViewController:UITableViewDataSource {
                     
                     let attributeString = NSMutableAttributedString.init(string: mainString)
                     
-                    attributeString.setAttributes([NSFontAttributeName : UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0))!
+                    attributeString.setAttributes([NSFontAttributeName : UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(25.0))!
                         , NSForegroundColorAttributeName : UIColor(red: 0.0/255.0, green: 201.0/255.0, blue: 11.0/255.0, alpha: 1.0)], range: range)
                     
                     cell.renewelLbl?.attributedText = attributeString
@@ -140,9 +181,19 @@ extension RenewelViewController:UITableViewDataSource {
                 
             }
             
-            if(indexPath.section == 0){
+            if(indexPath.section == 0 && forceRenewals.crossSelling.count > 0){
                 for nonCoreProduct in (forceRenewals.crossSelling){
                     if nonCoreProduct.term == 12{
+                        
+                        // hide renewel image  here
+                        cell.renewelImageView?.isHidden = true
+                        
+                        
+                        // show core and non core image here
+                        cell.renewelCoreImageView?.isHidden = false
+                        cell.renewelnonCoreImageView?.isHidden = false
+                        
+                        cell.renewelnonCoreImageView?.image = UIImage.init(named: nonCoreProduct.productCode!)
                         
                         let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.currencyCode)!)
                         
@@ -151,7 +202,7 @@ extension RenewelViewController:UITableViewDataSource {
                         priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                         
                         // Create attributed string
-                        let mainString = "In addition, your \(String(describing: nonCoreProduct.displayName!)) membership expires before your travel date. To keep your Interval Platinum benefits, a 1 year membership fee of \(term) membership fee of \n\(priceAndCurrency)\nwill be included with this transaction."
+                        let mainString = "In addition, your \(String(describing: nonCoreProduct.displayName!)) membership expires before your travel date. To keep your Interval Platinum benefits, a \(term) membership fee of \n\(priceAndCurrency)\nwill be included with this transaction."
                         
                         let range = (mainString as NSString).range(of: priceAndCurrency)
                         
@@ -172,6 +223,7 @@ extension RenewelViewController:UITableViewDataSource {
                         
                         
                         cell.renewelLbl?.attributedText = combination
+                        cell.renewelLbl?.backgroundColor = UIColor.orange
                         break
                     }
                 }
@@ -180,6 +232,56 @@ extension RenewelViewController:UITableViewDataSource {
             
         }else if((forceRenewals.crossSelling.count) > 0){
             //Non core
+            
+            if indexPath.section == 0 {
+                for nonCoreProduct in (forceRenewals.crossSelling){
+                    if nonCoreProduct.term == 12{
+                        
+                        // show renewel image  here
+                        cell.renewelImageView?.isHidden = false
+                        cell.renewelImageView?.image = UIImage.init(named: nonCoreProduct.productCode!)
+                        
+                        // show core and non core image here
+                        cell.renewelCoreImageView?.isHidden = true
+                        cell.renewelnonCoreImageView?.isHidden = true
+                        
+                        
+                        let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.currencyCode)!)
+                        
+                        let price = String(format:"%.2f", nonCoreProduct.price)
+                        
+                        priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
+                        
+                        // Create attributed string
+                        let mainString = "Your \(String(describing: nonCoreProduct.displayName!)) membership expires before your travel date. To continue booking your Getaway at the current discounted rate, a \(term) interval platinum a, membership fee of \n\(priceAndCurrency)\nwill be included with this transaction."
+                        
+                        let range = (mainString as NSString).range(of: priceAndCurrency)
+                        
+                        let attributeString = NSMutableAttributedString.init(string: mainString)
+                        
+                        attributeString.setAttributes([NSFontAttributeName : UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0))!
+                            , NSForegroundColorAttributeName : UIColor(red: 0.0/255.0, green: 201.0/255.0, blue: 11.0/255.0, alpha: 1.0)], range: range)
+                        
+                        //let nextLine = NSMutableAttributedString.init(string: "\n\n")
+                        
+                        //let attributedString = cell.renewelLbl?.attributedText
+                        
+                        let combination = NSMutableAttributedString()
+                        
+                        //combination.append(attributedString!)
+                        //combination.append(nextLine)
+                        combination.append(attributeString)
+                        
+                        
+                        cell.renewelLbl?.attributedText = combination
+                        break
+                    }
+                }
+            } else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.renewalAdditionalCell) as! RenewalAdditionalCell
+                
+                return cell
+            }
             
         }
         

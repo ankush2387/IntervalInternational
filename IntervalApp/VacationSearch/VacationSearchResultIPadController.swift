@@ -748,33 +748,22 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
                     
                     UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
                         
-                        
-                        // checking only for core products
-                        if(Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.products != nil) {
-                            
-                            for products in (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.products)! {
-                                
-                                if (products.term == 12) {
-                                    
-                                    if (products.isCoreProduct == true) {
-                                        
-                                        self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
-                                        
-                                        return
-                                        
-                                    } else { // for non core products
-                                        
-                                    }
-                                    
-                                }
-                            }
-                        }
-                        
-
                         // Got an access token!  Save it for later use.
                         SVProgressHUD.dismiss()
                         Helper.removeServiceCallBackgroundView(view: self.view)
                         Constant.MyClassConstants.membershipContactArray = Membership.contacts!
+                        
+                        
+                        // check force renewals here
+                        let forceRenewals = Constant.MyClassConstants.processStartResponse.view?.forceRenewals
+                        
+                        if (forceRenewals != nil) {
+                            
+                            return  self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
+                            
+                        }
+                        
+                        
                         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
                         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as! WhoWillBeCheckingInIPadViewController
                         
@@ -974,36 +963,25 @@ extension VacationSearchResultIPadController:UICollectionViewDelegate {
             }
             UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
                 
-                // checking only for core products
-                for products in (Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals?.products)! {
-                    
-                    if (products.term == 12) {
-                        
-                        if (products.isCoreProduct == true) {
-                            
-                            self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
-                            
-                            return
-                            
-                        } else { // for non core products
-                            
-                        }
-                        
-                    }
-                }
-                
-                
-                
                 // Got an access token!  Save it for later use.
                 Helper.hideProgressBar(senderView: self)
                 Constant.MyClassConstants.membershipContactArray = Membership.contacts!
+                
+
+                // check force renewals here
+                let forceRenewals = Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals
+                
+                if (forceRenewals != nil) {
+                    
+                    return  self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
+                    
+                }
+                
                 var viewController = UIViewController()
                 viewController = WhoWillBeCheckingInViewController()
                 let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
                 viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as! WhoWillBeCheckingInIPadViewController
                 (viewController as! WhoWillBeCheckingInIPadViewController).filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[0]
-                
-                
                 
                 let transitionManager = TransitionManager()
                 self.navigationController?.transitioningDelegate = transitionManager
