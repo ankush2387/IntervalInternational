@@ -86,6 +86,16 @@ class RenewelViewController: UIViewController {
     
     @IBAction func onClickNoThanks(_ sender: UIButton) {
         
+        if self.isCombo {
+            let viewController = self.storyboard!.instantiateViewController(withIdentifier: Constant.storyboardControllerID.renewalOtherOptionsVC) as! RenewalOtherOptionsVC
+            
+            viewController.forceRenewals = self.forceRenewals
+            self.present(viewController, animated:true, completion: nil)
+            
+            return
+            
+        }
+        
         if(Constant.RunningDevice.deviceIdiom == .phone){
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
@@ -94,14 +104,46 @@ class RenewelViewController: UIViewController {
             self.navigationController?.transitioningDelegate = transitionManager
             self.navigationController!.pushViewController(viewController, animated: true)
         }else{
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+            /*let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as! WhoWillBeCheckingInIPadViewController
             
             let transitionManager = TransitionManager()
             self.navigationController?.transitioningDelegate = transitionManager
-            self.present(viewController, animated: true, completion: nil)
+            //self.present(viewController, animated: true, completion: nil)
             //self.navigationController?.pushViewController(viewController, animated: true)
-           // self.navigationController!.pushViewController(viewController, animated: true)
+            self.navigationController!.pushViewController(viewController, animated: true)
+            
+            
+            
+            let VC1 = self.storyboard!.instantiateViewControllerWithIdentifier("MyViewController") as! ViewController*/
+            
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+            
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as! WhoWillBeCheckingInIPadViewController
+            let transitionManager = TransitionManager()
+            self.navigationController?.transitioningDelegate = transitionManager
+            viewController.isFromRenewals = true
+            
+            let navController = UINavigationController(rootViewController: viewController)
+            
+            self.present(navController, animated:true, completion: nil)
+            
+            //self.navigationController?.pushViewController(viewController, animated: true)
+            
+            
+            
+           /* let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "WhoWillBeCheckingInIPadViewController") as! WhoWillBeCheckingInIPadViewController
+             
+             self.navigationController!.pushViewController(VC1, animated: true)
+             
+            let navController = UINavigationController(rootViewController: VC1) // Creating a navigation controller with VC1 at the root of the navigation stack.
+             
+            self.present(navController, animated:true, completion: nil)*/
+            
+            
+            
+            
+            
         }
     }
     
@@ -138,9 +180,100 @@ extension RenewelViewController:UITableViewDataSource {
         let term = "1 year"
         
         var priceAndCurrency = ""
+        
         //Combo
         if((forceRenewals.comboProducts.count) > 0) {
             print("A Combo")
+            
+            for comboProduct in (forceRenewals.comboProducts) {
+                
+                for renewalComboProduct in comboProduct.renewalComboProducts {
+                    if renewalComboProduct.term == 12 {
+                        
+                        //hide renewal image here
+                        cell.renewelImageView?.isHidden = true
+                        
+                        // show core and non core here
+                        
+                        cell.renewelCoreImageView?.isHidden = false
+                        cell.renewelnonCoreImageView?.isHidden = false
+                        
+                        // currency code
+                        let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.currencyCode)!)
+                        
+                        if (renewalComboProduct.isCoreProduct) {
+                            cell.renewelCoreImageView?.image = UIImage.init(named: renewalComboProduct.productCode!)
+                            
+                            
+                            let price = String(format:"%.2f", renewalComboProduct.price)
+                            
+                            priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
+                            
+                            // make attributed string
+                            let mainString = "Your interval membership expire before your travel date.To continue, a \(term) membership fee of \n\(priceAndCurrency)\nwill be included with this transaction."
+                            
+                            let range = (mainString as NSString).range(of: priceAndCurrency)
+                            
+                            let attributeString = NSMutableAttributedString.init(string: mainString)
+                            
+                            attributeString.setAttributes([NSFontAttributeName : UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(25.0))!
+                                , NSForegroundColorAttributeName : UIColor(red: 0.0/255.0, green: 201.0/255.0, blue: 11.0/255.0, alpha: 1.0)], range: range)
+                            
+                            cell.renewelLbl?.attributedText = attributeString
+                            
+                            
+                        } else {
+                            cell.renewelnonCoreImageView?.image = UIImage.init(named: renewalComboProduct.productCode!)
+                            
+                            let price = String(format:"%.2f", renewalComboProduct.price)
+                            
+                            priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
+                            
+                            // Create attributed string
+                            let mainString = "In addition, your \(String(describing: renewalComboProduct.displayName!)) membership expires before your travel date. To keep your Interval Platinum benefits, a \(term) membership fee of \n\(priceAndCurrency)\nwill be included with this transaction."
+                            
+                            let range = (mainString as NSString).range(of: priceAndCurrency)
+                            
+                            let attributeString = NSMutableAttributedString.init(string: mainString)
+                            
+                            attributeString.setAttributes([NSFontAttributeName : UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0))!
+                                , NSForegroundColorAttributeName : UIColor(red: 0.0/255.0, green: 201.0/255.0, blue: 11.0/255.0, alpha: 1.0)], range: range)
+                            
+                            let nextLine = NSMutableAttributedString.init(string: "\n\n")
+                            
+                            let attributedString = cell.renewelLbl?.attributedText
+                            
+                            let combination = NSMutableAttributedString()
+                            
+                            combination.append(attributedString!)
+                            combination.append(nextLine)
+                            combination.append(attributeString)
+                            
+                            cell.renewelLbl?.attributedText = combination
+                            break
+                            
+                        }
+                        
+                        
+                    }
+                }
+                
+                
+            }
+            
+            // show other option button
+            
+            if ((forceRenewals.crossSelling.count) > 0 && (forceRenewals.products.count) > 0) {
+                if indexPath.section == 1 {
+                    self.isCombo = true
+                    let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.renewalAdditionalCell) as! RenewalAdditionalCell
+                    cell.noThanksButton.setTitle(Constant.MyClassConstants.otherOptions, for: .normal)
+                    
+                    return cell
+                }
+            }
+            
+            
             
         }else if(((forceRenewals.crossSelling.count) > 0 && (forceRenewals.products.count) > 0) || (forceRenewals.products.count) > 0){
             
@@ -223,7 +356,6 @@ extension RenewelViewController:UITableViewDataSource {
                         
                         
                         cell.renewelLbl?.attributedText = combination
-                        cell.renewelLbl?.backgroundColor = UIColor.orange
                         break
                     }
                 }
@@ -262,14 +394,9 @@ extension RenewelViewController:UITableViewDataSource {
                         attributeString.setAttributes([NSFontAttributeName : UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0))!
                             , NSForegroundColorAttributeName : UIColor(red: 0.0/255.0, green: 201.0/255.0, blue: 11.0/255.0, alpha: 1.0)], range: range)
                         
-                        //let nextLine = NSMutableAttributedString.init(string: "\n\n")
-                        
-                        //let attributedString = cell.renewelLbl?.attributedText
                         
                         let combination = NSMutableAttributedString()
                         
-                        //combination.append(attributedString!)
-                        //combination.append(nextLine)
                         combination.append(attributeString)
                         
                         

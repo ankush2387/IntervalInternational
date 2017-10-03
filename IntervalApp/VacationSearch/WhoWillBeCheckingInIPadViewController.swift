@@ -34,6 +34,8 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     var holdingTime = 17
     var decreaseValue = 1
     var selectedCountryIndex: Int?
+    var isFromRenewals = false
+    
     
     var filterRelinquishments = ExchangeRelinquishment()
     
@@ -65,7 +67,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = menuButton
         
         
-        
+    
         // omniture tracking with event 37
         let userInfo: [String: String] = [
             Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch,
@@ -145,7 +147,15 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     
     // Function to dismis current controller on back button pressed.
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
-        Helper.showProgressBar(senderView: self)
+        
+        let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
+        for aViewController:UIViewController in viewControllers {
+            if aViewController.isKind(of: WhatToUseViewController.self) {
+                _ = self.navigationController?.popToViewController(aViewController, animated: true)
+            }
+        }
+        
+        /*Helper.showProgressBar(senderView: self)
         if(Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
             Constant.holdingTimer.invalidate()
             
@@ -153,6 +163,12 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                 
                 Constant.MyClassConstants.selectedCreditCard.removeAll()
                 Helper.hideProgressBar(senderView: self)
+                if (self.isFromRenewals) {
+                    
+                    self.dismiss(animated: true, completion: nil)
+                    //_ = self.navigationController?.popToRootViewController(animated: true)
+              
+                }
                 _ = self.navigationController?.popViewController(animated: true)
                 
             }, onError: {(error) in
@@ -168,15 +184,24 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             Constant.MyClassConstants.selectedCreditCard.removeAll()
             SVProgressHUD.dismiss()
             Helper.removeServiceCallBackgroundView(view: self.view)
+            
+            if (self.isFromRenewals) {
+                
+                self.dismiss(animated: true, completion: nil)
+                //_ = self.navigationController?.popToRootViewController(animated: true)
+              
+            }
             _ = self.navigationController?.popViewController(animated: true)
             
         }, onError: {(error) in
+            
+         
             
             SVProgressHUD.dismiss()
             Helper.removeServiceCallBackgroundView(view: self.view)
             SimpleAlert.alert(self, title: "Who will be checking in", message: Constant.AlertMessages.operationFailedMessage)
         })
-    }
+    }*/
 
     }
     

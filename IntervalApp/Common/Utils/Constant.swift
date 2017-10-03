@@ -606,6 +606,7 @@ class Constant: NSObject {
         // Renewals
         static var renewalsHeaderTitle = NSLocalizedString("You Must Renew to Continue", comment: "")
         
+        static var otherOptions = NSLocalizedString("Other Options", comment: "")
         
     }
     
@@ -1031,6 +1032,8 @@ class Constant: NSObject {
         static var sortingViewController = "SortingViewController"
         static var flexChangeSearchIpadViewController = "FlexChangeSearchIpadViewController"
         static var flexchangeViewController = "FlexchangeViewController"
+        
+        static var renewalOtherOptionsVC = "RenewalOtherOptionsVC"
         
     }
     
@@ -1544,6 +1547,8 @@ class Constant: NSObject {
             static let clubInfoLabeltext = "Club"
             static let pointInfoLabelText = "Points"
         }
+        
+    
         //OwnershipDetailWithFreeDepositTableViewCell
         struct ownershipDetailWithFreeDepositTableViewCell {
             static let depositForFreeButtonTitle = "Deposit for a free \n Exchange"
