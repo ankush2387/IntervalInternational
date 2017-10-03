@@ -1256,7 +1256,7 @@
 				TargetAttributes = {
 					26D24CA91C4015290008EF39 = {
 						CreatedOnToolsVersion = 7.1.1;
-						DevelopmentTeam = 4CR2ZD7GRK;
+						DevelopmentTeam = 4KV2X5Z9W4;
 						LastSwiftMigration = 0800;
 						ProvisioningStyle = Manual;
 					};
@@ -1790,7 +1790,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Frank Nogueiras (438L8U78T7)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Frank Nogueiras (438L8U78T7)";
-				DEVELOPMENT_TEAM = 4CR2ZD7GRK;
+				DEVELOPMENT_TEAM = 4KV2X5Z9W4;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					RealmSwift.framework,
@@ -1806,8 +1806,8 @@
 				MACH_O_TYPE = mh_execute;
 				PRODUCT_BUNDLE_IDENTIFIER = com.intervalintl.Interval;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d7e3f15f-9620-4761-b28e-53ecf031229c";
-				PROVISIONING_PROFILE_SPECIFIER = "IntervalApp-DEV";
+				PROVISIONING_PROFILE = "b1c554f8-1c26-4866-81fc-3cb31c00c330";
+				PROVISIONING_PROFILE_SPECIFIER = "XC Ad Hoc: *";
 				SWIFT_OBJC_BRIDGING_HEADER = "IntervalApp/IntervalApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
