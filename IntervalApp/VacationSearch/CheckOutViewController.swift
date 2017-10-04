@@ -808,7 +808,7 @@ extension CheckOutViewController:UITableViewDataSource {
                 
                 if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental() || !Constant.MyClassConstants.searchBothExchange) {
                     
-                    return 50
+                    return 0
                 }
                 else {
                     if Constant.MyClassConstants.exchangeFees.count > 0 {

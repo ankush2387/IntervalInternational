@@ -1323,7 +1323,7 @@ extension SearchResultViewController:UICollectionViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if(section == 0){
-           return 20
+           return 0
         }else{
             return 0
         }
