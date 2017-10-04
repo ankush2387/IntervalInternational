@@ -42,6 +42,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
     var holdingTime = 2
     var decreaseValue = 1
     var selectedCountryIndex: Int?
+    var renewalsArray = [Renewal()]
 
     
     override func viewWillAppear(_ animated: Bool) {
@@ -520,6 +521,10 @@ class WhoWillBeCheckingInViewController: UIViewController {
             
             Constant.MyClassConstants.enableGuestCertificate = true
         }
+            
+            if(renewalsArray.count > 0){
+                processRequest1.renewals = renewalsArray
+            }
         Helper.showProgressBar(senderView: self)
         let processResort = RentalProcess()
         processResort.holdUnitStartTimeInMillis = Constant.holdingTime

@@ -26,6 +26,8 @@ class RenewelCell: UITableViewCell {
     
     @IBOutlet weak var viewImage: UIView?
     
+    @IBOutlet weak var selectButton: UIButton?
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()

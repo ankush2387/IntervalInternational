@@ -43,6 +43,8 @@ class CheckOutViewController: UIViewController {
     var recapFeesTotal: Float?
     var filterRelinquishments = ExchangeRelinquishment()
     var isDepositPromotionAvailable = false
+    var renewalsArray = [Renewal]()
+    var totalRowsInCost = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -305,6 +307,10 @@ class CheckOutViewController: UIViewController {
                     destinationPromotionSelected = true
                 }
             }
+            
+            renewalsArray.removeAll()
+            renewalsArray = Constant.MyClassConstants.rentalFees[0].renewals
+            
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateResortHoldingTime), name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
@@ -757,8 +763,17 @@ extension CheckOutViewController:UITableViewDataSource {
             }
         }else if(section == 4 && !showInsurance){
             return 0
-        }else if((section == 5 && (Constant.MyClassConstants.isFromExchange || !Constant.MyClassConstants.isFromExchange) && Constant.MyClassConstants.enableTaxes)){
-            return 2
+        }else if(section == 5){
+            if(Constant.MyClassConstants.enableTaxes && eplusAdded){
+                totalRowsInCost = 3 + renewalsArray.count
+                return totalRowsInCost
+            }else if(Constant.MyClassConstants.enableTaxes || eplusAdded){
+                totalRowsInCost = 2 + renewalsArray.count
+                return totalRowsInCost
+            }else{
+                totalRowsInCost = 1 + renewalsArray.count
+                return totalRowsInCost
+            }
         }else if (section == 6){
             if(Constant.MyClassConstants.enableGuestCertificate && self.isTripProtectionEnabled){
                 return 2
@@ -925,7 +940,7 @@ extension CheckOutViewController:UITableViewDataSource {
         }else if(indexPath.section == 8){
             return 60
         }else if(indexPath.section == 5 || indexPath.section == 6){
-            return 30
+            return UITableViewAutomaticDimension
         }else if(indexPath.section == 3) {
             if(!Constant.MyClassConstants.isFromExchange) {
                 return 0
@@ -1227,6 +1242,39 @@ extension CheckOutViewController:UITableViewDataSource {
                         }
 
                         
+                    }else if(Constant.MyClassConstants.enableTaxes && indexPath.row == 1){
+                        cell.priceLabel.text = Constant.MyClassConstants.taxesTitle
+                        var rentalTax = 0.0
+                        if(Constant.MyClassConstants.isFromExchange){
+                            rentalTax = Double(Int((Constant.MyClassConstants.exchangeContinueToCheckoutResponse.view?.fees?.total)!))
+                        }else{
+                            rentalTax = Double(Int((Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.rental?.rentalPrice?.tax)!))
+                        }
+                        
+                        cell.primaryPriceLabel.text = "\(rentalTax)"
+                        let priceString = "\(Constant.MyClassConstants.continueToCheckoutResponse.view!.fees!.rental!.rentalPrice!.tax)"
+                        let priceArray = priceString.components(separatedBy: ".")
+                        cell.primaryPriceLabel.text = priceArray.first
+                        if((priceArray.last?.characters.count)! > 1) {
+                            cell.fractionalPriceLabel.text = "\(priceArray.last!)"
+                        }else{
+                            cell.fractionalPriceLabel.text = "00"
+                        }
+                    }else if(renewalsArray.count > 0){
+                        let renewalIndex = indexPath.row - (totalRowsInCost - renewalsArray.count)
+                        
+                        cell.priceLabel.numberOfLines = 0
+                        cell.priceLabel.text = "\(String(describing: renewalsArray[renewalIndex].displayName!)) Renewal Fee"
+                        
+                        let priceString = "\(renewalsArray[renewalIndex].price)"
+                        let priceArray = priceString.components(separatedBy: ".")
+                        cell.primaryPriceLabel.text = priceArray.first
+                        if((priceArray.last?.characters.count)! > 1) {
+                            cell.fractionalPriceLabel.text = "\(String(describing: priceArray.last!))"
+                        }else{
+                            cell.fractionalPriceLabel.text = "00"
+                        }
+                        
                     }else{
                         cell.priceLabel.text = Constant.MyClassConstants.taxesTitle
                         var rentalTax = 0.0
@@ -1245,7 +1293,7 @@ extension CheckOutViewController:UITableViewDataSource {
                         }else{
                             cell.fractionalPriceLabel.text = "00"
                         }
-                    }
+                    }                }else{
                     
                     let font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 16.0)
                     
@@ -1259,7 +1307,7 @@ extension CheckOutViewController:UITableViewDataSource {
                     cell.periodLabel.frame.origin.x = cell.primaryPriceLabel.frame.origin.x + width
                     cell.fractionalPriceLabel.frame.origin.x = cell.periodLabel.frame.origin.x + cell.periodLabel.frame.size.width + 5
                     
-                }else{
+
                     isHeightZero = false
                     for subviews in cell.subviews {
                         

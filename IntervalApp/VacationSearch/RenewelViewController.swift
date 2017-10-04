@@ -20,6 +20,11 @@ class RenewelViewController: UIViewController {
     var renewelMessage = ""
     var sectionCount = 0
     var isCombo = false
+    var isNonCombo = false
+    var isCore = false
+    var isNonCore = false
+    var renewalArray = [Renewal()]
+    
     var forceRenewals = ForceRenewals()
     
     // MARK:- lifecycle
@@ -76,6 +81,46 @@ class RenewelViewController: UIViewController {
     // MARK: - Button Clicked
     
     @IBAction func selectClicked(_ sender: UIButton) {
+        
+        
+        renewalArray.removeAll()
+        if(sender.tag == 0 && isNonCombo){
+            for renewal in forceRenewals.products{
+                if(renewal.term == 12){
+                    let renewalItem = Renewal()
+                    renewalItem.id = renewal.id
+                    renewalArray.append(renewalItem)
+                    break
+                }
+            }
+            for renewal in forceRenewals.crossSelling{
+                if(renewal.term == 12){
+                    let renewalItem = Renewal()
+                    renewalItem.id = renewal.id
+                    renewalArray.append(renewalItem)
+                    break
+                }
+            }
+        }else if(sender.tag == 1 && isNonCombo){
+            for renewal in forceRenewals.products{
+                if(renewal.term == 12){
+                    let renewalItem = Renewal()
+                    renewalItem.id = renewal.id
+                    renewalArray.append(renewalItem)
+                }
+            }
+        }
+        
+        if(Constant.RunningDevice.deviceIdiom == .phone){
+            
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+            viewController.renewalsArray = renewalArray
+            
+            let transitionManager = TransitionManager()
+            self.navigationController?.transitioningDelegate = transitionManager
+            self.navigationController!.pushViewController(viewController, animated: true)
+        }
         
     }
 
@@ -147,15 +192,20 @@ class RenewelViewController: UIViewController {
         }
     }
     
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if(segue.destination.isKind(of: WhoWillBeCheckingInViewController.self)){
+            print("ghadkjs")
+            let whoWillBeCheckingInVwController = segue.destination as! WhoWillBeCheckingInViewController
+            whoWillBeCheckingInVwController.renewalsArray = renewalArray
+        }
     }
-    */
+    
 
 }
 
@@ -176,6 +226,7 @@ extension RenewelViewController:UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.renewelCell) as! RenewelCell
+        cell.selectButton?.tag = indexPath.section
         
         let term = "1 year"
         
@@ -184,6 +235,7 @@ extension RenewelViewController:UITableViewDataSource {
         //Combo
         if((forceRenewals.comboProducts.count) > 0) {
             print("A Combo")
+            
             
             for comboProduct in (forceRenewals.comboProducts) {
                 
@@ -278,6 +330,7 @@ extension RenewelViewController:UITableViewDataSource {
         }else if(((forceRenewals.crossSelling.count) > 0 && (forceRenewals.products.count) > 0) || (forceRenewals.products.count) > 0){
             
             //Core, Non combo both
+            isCore = true
             
             for product in (forceRenewals.products) {
                 
@@ -315,6 +368,8 @@ extension RenewelViewController:UITableViewDataSource {
             }
             
             if(indexPath.section == 0 && forceRenewals.crossSelling.count > 0){
+                isCore = false
+                isNonCombo = true
                 for nonCoreProduct in (forceRenewals.crossSelling){
                     if nonCoreProduct.term == 12{
                         
@@ -360,8 +415,6 @@ extension RenewelViewController:UITableViewDataSource {
                     }
                 }
             }
-            
-            
         }else if((forceRenewals.crossSelling.count) > 0){
             //Non core
             

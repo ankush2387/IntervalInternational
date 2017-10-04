@@ -262,7 +262,8 @@ class FloatDetailViewController: UIViewController {
         
         
         let unit = InventoryUnit()
-        unit.unitNumber = Constant.MyClassConstants.relinquishmentSelectedWeek.unit!.unitNumber!
+        //if(Constant.MyClassConstants)
+        //unit.unitNumber = Constant.MyClassConstants.relinquishmentSelectedWeek.unit!.unitNumber!
         unit.unitSize = Constant.MyClassConstants.relinquishmentSelectedWeek.unit!.unitSize
         
         fixedWeekReservation.resort = resort
