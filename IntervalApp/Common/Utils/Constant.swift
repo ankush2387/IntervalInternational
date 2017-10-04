@@ -267,6 +267,7 @@ class Constant: NSObject {
         static var favoritesResortArray = [Resort]()
         static var favoritesResortCodeArray:NSMutableArray = []
         static var getawayAlertsArray = [RentalAlert]()
+        static var dashBoardAlertsArray = [RentalAlert]()
         static var upcomingTripsArray = [UpcomingTrip]()
         static var activeAlertsArray:NSMutableArray = []
         static var membershipdetails = [Membership]()

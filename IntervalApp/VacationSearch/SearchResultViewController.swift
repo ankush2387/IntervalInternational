@@ -684,6 +684,37 @@ class SearchResultViewController: UIViewController {
         return cell
     }
     
+    //MARK:- Call for membership
+    func checkUserMembership(response:RentalProcessPrepareResponse){
+        UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
+            
+            // Got an access token!  Save it for later use.
+            SVProgressHUD.dismiss()
+            Helper.removeServiceCallBackgroundView(view: self.view)
+            Constant.MyClassConstants.membershipContactArray = Membership.contacts!
+            
+            
+            
+            if(response.view?.forceRenewals != nil){
+                self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: self)
+            }else{
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+            
+            let transitionManager = TransitionManager()
+            self.navigationController?.transitioningDelegate = transitionManager
+            self.navigationController!.pushViewController(viewController, animated: true)
+            }
+            
+        }, onError: { (error) in
+            
+            SVProgressHUD.dismiss()
+            Helper.removeServiceCallBackgroundView(view: self.view)
+            SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.description)
+            
+        })
+    }
+    
 }
 
 func enableDisablePreviousMoreButton(_ position : NSString) -> Bool{
@@ -887,27 +918,8 @@ extension SearchResultViewController:UICollectionViewDelegate {
                         }
                         
                         
-                        UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
-                            
-                            // Got an access token!  Save it for later use.
-                            SVProgressHUD.dismiss()
-                            Helper.removeServiceCallBackgroundView(view: self.view)
-                            Constant.MyClassConstants.membershipContactArray = Membership.contacts!
-                            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-                            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
-                            
-                            let transitionManager = TransitionManager()
-                            self.navigationController?.transitioningDelegate = transitionManager
-                            self.navigationController!.pushViewController(viewController, animated: true)
-                            
-                        }, onError: { (error) in
-                            
-                            SVProgressHUD.dismiss()
-                            Helper.removeServiceCallBackgroundView(view: self.view)
-                            SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.description)
-                            
-                        })
-                        
+                        //MARK:- Check forced renewals before calling membership
+                        self.checkUserMembership(response: response)
                     }, onError: {(error) in
                         Helper.removeServiceCallBackgroundView(view: self.view)
                         SVProgressHUD.dismiss()
