@@ -1315,6 +1315,7 @@ extension CheckOutViewController:UITableViewDataSource {
                     }
                 }
                 cell.selectionStyle = .none
+                cell.primaryPriceLabel.sizeToFit()
                 return cell
                 
             }else if(indexPath.section == 6){
