@@ -56,6 +56,17 @@ class RenewalOtherOptionsVC: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func selectClicked(_ sender: UIButton) {
+        // core select clicked
+        if sender.tag == 0 {
+            print("core selecte clicked")
+            
+        } else { // non core select clicked
+            print("non core selecte clicked")
+            
+        }
+    }
+    
 }
 
 
@@ -112,6 +123,9 @@ extension RenewalOtherOptionsVC:UITableViewDataSource {
                         , NSForegroundColorAttributeName : UIColor(red: 0.0/255.0, green: 201.0/255.0, blue: 11.0/255.0, alpha: 1.0)], range: range)
                     
                     cell.renewelLbl?.attributedText = attributeString
+                    
+                    // set button select tag
+                    cell.buttonSelect.tag = indexPath.section
                     break
                 }
                 
@@ -122,15 +136,13 @@ extension RenewalOtherOptionsVC:UITableViewDataSource {
             for nonCoreProduct in (forceRenewals.crossSelling){
                 if nonCoreProduct.term == 12{
                     
-                    // hide renewel image  here
-                    cell.renewelImageView?.isHidden = true
+                 
+                    // hide core and non core image here
+                    cell.renewelCoreImageView?.isHidden = true
+                    cell.renewelnonCoreImageView?.isHidden = true
                     
-                    
-                    // show core and non core image here
-                    cell.renewelCoreImageView?.isHidden = false
-                    cell.renewelnonCoreImageView?.isHidden = false
-                    
-                    cell.renewelnonCoreImageView?.image = UIImage.init(named: nonCoreProduct.productCode!)
+                    // show only non core image
+                    cell.renewelImageView?.image = UIImage.init(named: nonCoreProduct.productCode!)
                     
                     let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.currencyCode)!)
                     
@@ -158,8 +170,10 @@ extension RenewalOtherOptionsVC:UITableViewDataSource {
                     combination.append(nextLine)
                     combination.append(attributeString)
                     
-                    
                     cell.renewelLbl?.attributedText = combination
+                    
+                    // set button select tag
+                    cell.buttonSelect.tag = indexPath.section
                     break
                 }
             }

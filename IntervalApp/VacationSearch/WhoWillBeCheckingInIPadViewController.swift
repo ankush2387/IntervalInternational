@@ -148,14 +148,14 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     // Function to dismis current controller on back button pressed.
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
         
-        let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
+       /* let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
         for aViewController:UIViewController in viewControllers {
             if aViewController.isKind(of: WhatToUseViewController.self) {
                 _ = self.navigationController?.popToViewController(aViewController, animated: true)
             }
-        }
+        }*/
         
-        /*Helper.showProgressBar(senderView: self)
+        Helper.showProgressBar(senderView: self)
         if(Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
             Constant.holdingTimer.invalidate()
             
@@ -164,8 +164,13 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                 Constant.MyClassConstants.selectedCreditCard.removeAll()
                 Helper.hideProgressBar(senderView: self)
                 if (self.isFromRenewals) {
-                    
-                    self.dismiss(animated: true, completion: nil)
+                    let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
+                    for aViewController:UIViewController in viewControllers {
+                        if aViewController.isKind(of: WhatToUseViewController.self) {
+                            _ = self.navigationController?.popToViewController(aViewController, animated: true)
+                        }
+                    }
+                    //self.dismiss(animated: true, completion: nil)
                     //_ = self.navigationController?.popToRootViewController(animated: true)
               
                 }
@@ -187,7 +192,14 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             
             if (self.isFromRenewals) {
                 
-                self.dismiss(animated: true, completion: nil)
+                let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
+                for aViewController:UIViewController in viewControllers {
+                    if aViewController.isKind(of: WhatToUseViewController.self) {
+                        _ = self.navigationController?.popToViewController(aViewController, animated: true)
+                    }
+                }
+                
+               // self.dismiss(animated: true, completion: nil)
                 //_ = self.navigationController?.popToRootViewController(animated: true)
               
             }
@@ -201,7 +213,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             Helper.removeServiceCallBackgroundView(view: self.view)
             SimpleAlert.alert(self, title: "Who will be checking in", message: Constant.AlertMessages.operationFailedMessage)
         })
-    }*/
+    }
 
     }
     

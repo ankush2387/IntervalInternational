@@ -266,7 +266,13 @@ class WhatToUseViewController: UIViewController {
                 
                 if (forceRenewals != nil) {
                     
+                   /* let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                    let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
+                    
+                    self.pushLikeModalViewController(controller: viewController)*/
+                    
                     return  self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
+                    
                     
                 }
                 
@@ -313,6 +319,16 @@ class WhatToUseViewController: UIViewController {
         
     }
   
+    
+    func pushLikeModalViewController(controller : UIViewController)  {
+        let transition = CATransition()
+        transition.duration = 0.2
+        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        transition.type = kCATransitionPush
+        transition.subtype = kCATransitionFromTop
+        self.navigationController!.view.layer.add(transition, forKey: kCATransition)
+        self.navigationController?.pushViewController(controller, animated: false)
+    }
     
     
     @IBAction func onClickDetailsButton(_ sender: Any) {
