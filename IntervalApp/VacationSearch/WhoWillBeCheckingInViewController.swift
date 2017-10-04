@@ -43,6 +43,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
     var decreaseValue = 1
     var selectedCountryIndex: Int?
     var renewalsArray = [Renewal()]
+    var isFromRenewals = false
 
     
     override func viewWillAppear(_ animated: Bool) {

@@ -48,7 +48,7 @@
                         <viewControllerLayoutGuide type="bottom" id="LAs-Ph-HM9"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="WCY-hQ-eZ1">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="750"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="668"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0cS-LU-dOL">
@@ -66,7 +66,7 @@
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="310" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ONH-ON-53y">
-                                <rect key="frame" x="16" y="64" width="343" height="601"/>
+                                <rect key="frame" x="16" y="64" width="343" height="519"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="renewelCell" rowHeight="310" id="SGu-DM-qo4" customClass="RenewelCell" customModule="IntervalApp" customModuleProvider="target">
@@ -247,14 +247,14 @@ transaction.</string>
                     </view>
                     <navigationItem key="navigationItem" id="bXE-LX-Wu6"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="375" height="750"/>
+                    <size key="freeformSize" width="375" height="668"/>
                     <connections>
                         <outlet property="renewalsTableView" destination="ONH-ON-53y" id="zgZ-Gi-0mc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="02p-Jb-XGO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2616.666666666667" y="2344.5652173913045"/>
+            <point key="canvasLocation" x="2505" y="2334"/>
         </scene>
         <!--Resort Details View Controller-->
         <scene sceneID="Vsu-bG-mub">
@@ -2560,7 +2560,7 @@ transaction.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="hBB-OJ-Y0k" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="w8Z-0z-EGh">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="w8Z-0z-EGh">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -3645,7 +3645,7 @@ transaction.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="eMV-Px-Ad8" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Zma-bI-0pT">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Zma-bI-0pT">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -6064,7 +6064,7 @@ to confirm a larger unit.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0yH-QX-dYW" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="HRh-g1-Okf">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="HRh-g1-Okf">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -6082,7 +6082,7 @@ to confirm a larger unit.</string>
             <objects>
                 <navigationController storyboardIdentifier="AccomodationCertsDetailController" automaticallyAdjustsScrollViewInsets="NO" id="6AW-3c-VGG" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="r65-jV-lcs">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="r65-jV-lcs">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -6100,7 +6100,7 @@ to confirm a larger unit.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Wnj-OU-Bqx" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="lsp-Nf-AIz">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="lsp-Nf-AIz">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -7339,7 +7339,7 @@ to confirm a larger unit.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="QCd-cg-p7T" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="FDW-qy-gN2">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="FDW-qy-gN2">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -7579,7 +7579,7 @@ to confirm a larger unit.</string>
         <scene sceneID="woz-M3-99b">
             <objects>
                 <navigationController id="ngh-TZ-XZu" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="s8P-VH-HG7">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="s8P-VH-HG7">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -7634,7 +7634,7 @@ to confirm a larger unit.</string>
         <scene sceneID="iMz-Os-rBf">
             <objects>
                 <navigationController id="7wx-gU-8rb" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Vfi-ic-Xub">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Vfi-ic-Xub">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -7892,7 +7892,7 @@ to confirm a larger unit.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="bmL-3i-9ap" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="biQ-JT-fNk">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="biQ-JT-fNk">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -7910,7 +7910,7 @@ to confirm a larger unit.</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="UeM-gf-1oQ" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="vSk-wg-ocj">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="vSk-wg-ocj">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -7928,7 +7928,7 @@ to confirm a larger unit.</string>
             <objects>
                 <navigationController storyboardIdentifier="DepositPromotionsNav" automaticallyAdjustsScrollViewInsets="NO" id="1g4-hf-v3R" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="A6D-xj-RBR">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="A6D-xj-RBR">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -7946,7 +7946,7 @@ to confirm a larger unit.</string>
             <objects>
                 <navigationController storyboardIdentifier="GestCertificateInfo" automaticallyAdjustsScrollViewInsets="NO" id="z0g-mm-AET" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="n7E-OE-dLc">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="n7E-OE-dLc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -7958,6 +7958,171 @@ to confirm a larger unit.</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5XC-Vs-VVE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="7278" y="2893"/>
+        </scene>
+        <!--Renewal Other OptionsVC-->
+        <scene sceneID="azv-iE-cbQ">
+            <objects>
+                <viewController storyboardIdentifier="RenewalOtherOptionsVC" id="Jgg-mE-yQF" customClass="RenewalOtherOptionsVC" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="0cv-aZ-o4g"/>
+                        <viewControllerLayoutGuide type="bottom" id="bRi-To-s7P"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="NDb-5G-VyZ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="668"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0gz-aE-Vfz">
+                                <rect key="frame" x="275" y="0.0" width="100" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="SjQ-O9-S8n"/>
+                                    <constraint firstAttribute="width" constant="100" id="nJK-0A-IRu"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                                <state key="normal" title="Cancel">
+                                    <color key="titleColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="cancelClicked:" destination="Jgg-mE-yQF" eventType="touchUpInside" id="yMK-WC-hfT"/>
+                                </connections>
+                            </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="310" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Ocf-1o-kZ4">
+                                <rect key="frame" x="16" y="64" width="343" height="568"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="renewelCell" rowHeight="310" id="2mt-x7-AXt" customClass="RenewelCell" customModule="IntervalApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="343" height="310"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2mt-x7-AXt" id="ULX-0F-E4d">
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="309.66666666666669"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8ku-sX-Oe3">
+                                                    <rect key="frame" x="15" y="0.0" width="314" height="309"/>
+                                                    <subviews>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ysj-4M-Jg6" userLabel="View Image">
+                                                            <rect key="frame" x="20" y="20" width="274" height="150"/>
+                                                            <subviews>
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BSC" translatesAutoresizingMaskIntoConstraints="NO" id="Lcg-lC-Gnn">
+                                                                    <rect key="frame" x="37" y="10" width="200" height="131"/>
+                                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                                </imageView>
+                                                            </subviews>
+                                                            <color key="backgroundColor" red="0.90196078430000004" green="0.96078431369999995" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <constraints>
+                                                                <constraint firstItem="Lcg-lC-Gnn" firstAttribute="centerX" secondItem="Ysj-4M-Jg6" secondAttribute="centerX" id="CFD-64-oNa"/>
+                                                                <constraint firstItem="Lcg-lC-Gnn" firstAttribute="centerY" secondItem="Ysj-4M-Jg6" secondAttribute="centerY" id="Lwt-oZ-poJ"/>
+                                                                <constraint firstAttribute="height" constant="150" id="oZF-oX-aey"/>
+                                                            </constraints>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                    <integer key="value" value="8"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                                <userDefinedRuntimeAttribute type="boolean" keyPath="clipsToBounds" value="YES"/>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                                    <integer key="value" value="1"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </view>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yL9-9c-2Yb">
+                                                            <rect key="frame" x="20" y="190" width="274" height="47"/>
+                                                            <string key="text">Your Interval membership expires before your travel date. To continue, a 1 year
+membership fee of
+$89.00 USD
+will be included with this
+transaction.</string>
+                                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zkV-KH-2nf" userLabel="View Separator">
+                                                            <rect key="frame" x="0.0" y="257" width="314" height="1"/>
+                                                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="1" id="umf-3c-490"/>
+                                                            </constraints>
+                                                        </view>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bLq-9g-sh6">
+                                                            <rect key="frame" x="0.0" y="258" width="314" height="50"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="50" id="Fdt-da-RgH"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                                                            <state key="normal" title="Select">
+                                                                <color key="titleColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
+                                                            </state>
+                                                            <connections>
+                                                                <action selector="selectClicked:" destination="Jgg-mE-yQF" eventType="touchUpInside" id="Mpi-Xy-Bvo"/>
+                                                            </connections>
+                                                        </button>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="bottom" secondItem="bLq-9g-sh6" secondAttribute="bottom" constant="1" id="7XE-m5-mc1"/>
+                                                        <constraint firstAttribute="trailing" secondItem="bLq-9g-sh6" secondAttribute="trailing" id="8Ei-jn-HFY"/>
+                                                        <constraint firstAttribute="trailing" secondItem="zkV-KH-2nf" secondAttribute="trailing" id="8XD-qI-3wc"/>
+                                                        <constraint firstItem="bLq-9g-sh6" firstAttribute="leading" secondItem="8ku-sX-Oe3" secondAttribute="leading" id="B5E-aU-daI"/>
+                                                        <constraint firstAttribute="trailing" secondItem="yL9-9c-2Yb" secondAttribute="trailing" constant="20" id="XZA-Od-aQ0"/>
+                                                        <constraint firstItem="yL9-9c-2Yb" firstAttribute="top" secondItem="Ysj-4M-Jg6" secondAttribute="bottom" constant="20" id="YrO-LF-rdX"/>
+                                                        <constraint firstItem="yL9-9c-2Yb" firstAttribute="leading" secondItem="8ku-sX-Oe3" secondAttribute="leading" constant="20" id="a5V-N2-nMa"/>
+                                                        <constraint firstItem="zkV-KH-2nf" firstAttribute="top" secondItem="yL9-9c-2Yb" secondAttribute="bottom" constant="20" id="c5d-GD-xvb"/>
+                                                        <constraint firstItem="bLq-9g-sh6" firstAttribute="top" secondItem="zkV-KH-2nf" secondAttribute="bottom" id="hBc-ad-tNO"/>
+                                                        <constraint firstAttribute="trailing" secondItem="Ysj-4M-Jg6" secondAttribute="trailing" constant="20" id="hXv-sf-omX"/>
+                                                        <constraint firstItem="Ysj-4M-Jg6" firstAttribute="leading" secondItem="8ku-sX-Oe3" secondAttribute="leading" constant="20" id="kOM-LN-Ji7"/>
+                                                        <constraint firstItem="zkV-KH-2nf" firstAttribute="leading" secondItem="8ku-sX-Oe3" secondAttribute="leading" id="pUL-xF-Ety"/>
+                                                        <constraint firstItem="Ysj-4M-Jg6" firstAttribute="top" secondItem="8ku-sX-Oe3" secondAttribute="top" constant="20" id="wgm-aV-9cn"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <integer key="value" value="8"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                            <integer key="value" value="1"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="clipsToBounds" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="8ku-sX-Oe3" firstAttribute="top" secondItem="ULX-0F-E4d" secondAttribute="top" id="10J-Bh-DYE"/>
+                                                <constraint firstAttribute="bottom" secondItem="8ku-sX-Oe3" secondAttribute="bottom" id="EBa-LX-sJg"/>
+                                                <constraint firstAttribute="trailing" secondItem="8ku-sX-Oe3" secondAttribute="trailing" constant="14" id="QNm-pB-76u"/>
+                                                <constraint firstItem="8ku-sX-Oe3" firstAttribute="leading" secondItem="ULX-0F-E4d" secondAttribute="leading" constant="15" id="gOn-gs-d8r"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="buttonSelect" destination="bLq-9g-sh6" id="mh3-Rq-G1B"/>
+                                            <outlet property="renewelImageView" destination="Lcg-lC-Gnn" id="F6x-QJ-D1T"/>
+                                            <outlet property="renewelLbl" destination="yL9-9c-2Yb" id="uzC-ej-ZBr"/>
+                                            <outlet property="viewContent" destination="Ysj-4M-Jg6" id="zac-6a-F4Z"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="Jgg-mE-yQF" id="ozq-MZ-BgW"/>
+                                    <outlet property="delegate" destination="Jgg-mE-yQF" id="xkJ-xJ-qph"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.83529411760000005" green="0.83529411760000005" blue="0.83529411760000005" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="Ocf-1o-kZ4" firstAttribute="leading" secondItem="NDb-5G-VyZ" secondAttribute="leadingMargin" id="RMH-yv-GRy"/>
+                            <constraint firstItem="0gz-aE-Vfz" firstAttribute="top" secondItem="NDb-5G-VyZ" secondAttribute="top" id="UoA-w9-XUv"/>
+                            <constraint firstItem="bRi-To-s7P" firstAttribute="top" secondItem="Ocf-1o-kZ4" secondAttribute="bottom" constant="36" id="WMd-qa-JmU"/>
+                            <constraint firstItem="Ocf-1o-kZ4" firstAttribute="trailing" secondItem="NDb-5G-VyZ" secondAttribute="trailingMargin" id="fqR-ic-4LD"/>
+                            <constraint firstAttribute="trailing" secondItem="0gz-aE-Vfz" secondAttribute="trailing" id="uZZ-ZI-XrL"/>
+                            <constraint firstItem="Ocf-1o-kZ4" firstAttribute="top" secondItem="0gz-aE-Vfz" secondAttribute="bottom" id="z13-HO-U3P"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="jCG-Y4-aqc"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="375" height="668"/>
+                    <connections>
+                        <outlet property="renewalOtherOptionsTableView" destination="Ocf-1o-kZ4" id="Rrq-hi-j6z"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6Gy-WL-82w" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3236" y="2334"/>
         </scene>
     </scenes>
     <resources>

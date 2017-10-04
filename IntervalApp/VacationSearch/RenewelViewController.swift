@@ -15,6 +15,8 @@ class RenewelViewController: UIViewController {
     //MARK:- clas  outlets
     @IBOutlet weak var renewalsTableView: UITableView!
     
+    @IBOutlet weak var lblHeaderTitle: UILabel!
+    
     // class variables
     var arrayProductStorage = NSMutableArray()
     var renewelMessage = ""
@@ -132,36 +134,48 @@ class RenewelViewController: UIViewController {
     @IBAction func onClickNoThanks(_ sender: UIButton) {
         
         if self.isCombo {
-            let viewController = self.storyboard!.instantiateViewController(withIdentifier: Constant.storyboardControllerID.renewalOtherOptionsVC) as! RenewalOtherOptionsVC
             
-            viewController.forceRenewals = self.forceRenewals
-            self.present(viewController, animated:true, completion: nil)
-            
-            return
-            
+            if(Constant.RunningDevice.deviceIdiom == .phone) {
+                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                
+                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.renewalOtherOptionsVC) as! RenewalOtherOptionsVC
+                
+                viewController.forceRenewals = self.forceRenewals
+                self.present(viewController, animated:true, completion: nil)
+                
+                return
+                
+            } else {
+                
+                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                
+                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.renewalOtherOptionsVC) as! RenewalOtherOptionsVC
+                
+                viewController.forceRenewals = self.forceRenewals
+                self.present(viewController, animated:true, completion: nil)
+                
+                return
+                
+            }
+        
         }
         
         if(Constant.RunningDevice.deviceIdiom == .phone){
+            
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
             
             let transitionManager = TransitionManager()
             self.navigationController?.transitioningDelegate = transitionManager
-            self.navigationController!.pushViewController(viewController, animated: true)
+            viewController.isFromRenewals = true
+            let navController = UINavigationController(rootViewController: viewController)
+            
+            self.present(navController, animated:true, completion: nil)
+            
+           // self.navigationController!.pushViewController(viewController, animated: true)
+            
         }else{
-            /*let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as! WhoWillBeCheckingInIPadViewController
-            
-            let transitionManager = TransitionManager()
-            self.navigationController?.transitioningDelegate = transitionManager
-            //self.present(viewController, animated: true, completion: nil)
-            //self.navigationController?.pushViewController(viewController, animated: true)
-            self.navigationController!.pushViewController(viewController, animated: true)
-            
-            
-            
-            let VC1 = self.storyboard!.instantiateViewControllerWithIdentifier("MyViewController") as! ViewController*/
-            
+  
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
             
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as! WhoWillBeCheckingInIPadViewController
@@ -174,21 +188,6 @@ class RenewelViewController: UIViewController {
             self.present(navController, animated:true, completion: nil)
             
             //self.navigationController?.pushViewController(viewController, animated: true)
-            
-            
-            
-           /* let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "WhoWillBeCheckingInIPadViewController") as! WhoWillBeCheckingInIPadViewController
-             
-             self.navigationController!.pushViewController(VC1, animated: true)
-             
-            let navController = UINavigationController(rootViewController: VC1) // Creating a navigation controller with VC1 at the root of the navigation stack.
-             
-            self.present(navController, animated:true, completion: nil)*/
-            
-            
-            
-            
-            
         }
     }
     
