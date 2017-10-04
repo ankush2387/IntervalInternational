@@ -20,7 +20,7 @@ class MagazinesIPadViewController: UIViewController {
         self.title = Constant.ControllerTitles.magazinesControllerTitle
         
         //***** Handle hamburgur menu button for prelogin and post login case *****//
-        if((UserContext.sharedInstance.accessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
+        if((Session.sharedSession.userAccessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
             
             if let rvc = self.revealViewController() {
                 //set SWRevealViewController's Delegate
@@ -52,14 +52,14 @@ class MagazinesIPadViewController: UIViewController {
         
         Helper.getMagazines()
         NotificationCenter.default.addObserver(self, selector: #selector(reloadMagazines), name: NSNotification.Name(rawValue: Constant.notificationNames.magazineAlertNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(getAllMagazines), name: NSNotification.Name(rawValue: Constant.notificationNames.accessTokenAlertNotification), object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(getAllMagazines), name: NSNotification.Name(rawValue: Constant.notificationNames.accessTokenAlertNotification), object: nil)
     }
     
     //**** Remove added observers ****//
     override func viewDidDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.magazineAlertNotification), object: nil)
         
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.accessTokenAlertNotification), object: nil)
+//        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.accessTokenAlertNotification), object: nil)
         
     }
 
@@ -88,11 +88,8 @@ class MagazinesIPadViewController: UIViewController {
     }
     //***** Method for back button *****//
     func menuBackButtonPressed(sender:UIBarButtonItem) {
-        
-        self.navigationController?.dismiss(animated: true, completion: nil)
-
+        NotificationCenter.default.post(name:NSNotification.Name(rawValue: "PopToLoginView"), object: nil)
     }
-    
 }
 
 //***** MARK: Extension classes starts from here *****//

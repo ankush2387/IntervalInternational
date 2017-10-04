@@ -281,7 +281,7 @@ class SearchResultViewController: UIViewController {
                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.checkInFromDate = Helper.convertStringToDate(dateString: calendarItem.intervalStartDate!, format: Constant.MyClassConstants.dateFormat)
                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.checkInToDate = Helper.convertStringToDate(dateString: calendarItem.intervalEndDate!, format: Constant.MyClassConstants.dateFormat)
                 
-                RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
+                RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
              onSuccess: { (response) in
                 
                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
@@ -311,7 +311,7 @@ class SearchResultViewController: UIViewController {
             Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.checkInToDate = Helper.convertStringToDate(dateString: calendarItem.intervalEndDate!, format: Constant.MyClassConstants.dateFormat)
             
             // Execute Rental Search Dates
-            RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
+            RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
             onSuccess: { (response) in
             
                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
@@ -343,7 +343,7 @@ class SearchResultViewController: UIViewController {
                 Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.checkInToDate = Helper.convertStringToDate(dateString:calendarItem.intervalEndDate!,format:Constant.MyClassConstants.dateFormat)
                 
                 
-                ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request,
+                ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request,
                    onSuccess: { (response) in
                     
                     Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
@@ -408,7 +408,7 @@ class SearchResultViewController: UIViewController {
             request.checkInDate = toDate
             request.resortCodes = activeInterval?.resortCodes
             
-            RentalClient.searchResorts(UserContext.sharedInstance.accessToken, request: request,
+            RentalClient.searchResorts(Session.sharedSession.userAccessToken, request: request,
                                        onSuccess: { (response) in
                                         // Update Rental inventory
                                         Constant.MyClassConstants.initialVacationSearch.rentalSearch?.inventory = response.resorts
@@ -449,7 +449,7 @@ class SearchResultViewController: UIViewController {
         Constant.MyClassConstants.resortsArray.removeAll()
         Helper.showProgressBar(senderView: self)
         
-        RentalClient.searchResorts(UserContext.sharedInstance.accessToken, request: searchResortRequest, onSuccess: { (response) in
+        RentalClient.searchResorts(Session.sharedSession.userAccessToken, request: searchResortRequest, onSuccess: { (response) in
             Constant.MyClassConstants.resortsArray = response.resorts
             if(self.alertView.isHidden == false){
                 self.alertView.isHidden = true
@@ -509,7 +509,7 @@ class SearchResultViewController: UIViewController {
         exchangeSearchDateRequest.destination = exchangeDestination
         Constant.MyClassConstants.exchangeDestination = exchangeDestination
         
-        ExchangeClient.filterRelinquishments(UserContext.sharedInstance.accessToken, request: exchangeSearchDateRequest, onSuccess: { (response) in
+        ExchangeClient.filterRelinquishments(Session.sharedSession.userAccessToken, request: exchangeSearchDateRequest, onSuccess: { (response) in
             Helper.hideProgressBar(senderView: self)
             Constant.MyClassConstants.filterRelinquishments.removeAll()
             
@@ -599,7 +599,7 @@ class SearchResultViewController: UIViewController {
             }
         }
     
-        ExchangeProcessClient.start(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: {(response) in
+        ExchangeProcessClient.start(Session.sharedSession.userAccessToken, process: processResort, request: processRequest, onSuccess: {(response) in
             let processResort = ExchangeProcess()
             processResort.processId = response.processId
             Constant.MyClassConstants.exchangeBookingLastStartedProcess = processResort
@@ -624,7 +624,7 @@ class SearchResultViewController: UIViewController {
                     Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending("\n")
                 }
             }
-            UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
+            UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: {(Membership) in
                 
                 // Got an access token!  Save it for later use.
                 Helper.hideProgressBar(senderView: self)
@@ -744,7 +744,7 @@ class SearchResultViewController: UIViewController {
     
     //MARK:- Call for membership
     func checkUserMembership(response:RentalProcessPrepareResponse){
-        UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
+        UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: {(Membership) in
             
             // Got an access token!  Save it for later use.
             SVProgressHUD.dismiss()
@@ -956,7 +956,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
                     
                     let processRequest1 = RentalProcessStartRequest.init(resortCode: Constant.MyClassConstants.selectedResort.resortCode!, checkInDate: invent.checkInDate!, checkOutDate: invent.checkOutDate!, unitSize: UnitSize(rawValue: units[indexPath.item].unitSize!)!, kitchenType: KitchenType(rawValue: units[indexPath.item].kitchenType!)!)
                     
-                    RentalProcessClient.start(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest1, onSuccess: {(response) in
+                    RentalProcessClient.start(Session.sharedSession.userAccessToken, process: processResort, request: processRequest1, onSuccess: {(response) in
                         
                         let processResort = RentalProcess()
                         processResort.processId = response.processId
@@ -1673,13 +1673,13 @@ extension SearchResultViewController:UITableViewDataSource {
 extension SearchResultViewController:SearchResultContentTableCellDelegate{
     func favoriteButtonClicked(_ sender: UIButton){
         
-        if((UserContext.sharedInstance.accessToken) != nil) {
+        if((Session.sharedSession.userAccessToken) != nil) {
             
             if (sender.isSelected == false){
                 
                 SVProgressHUD.show()
                 Helper.addServiceCallBackgroundView(view: self.view)
-                UserClient.addFavoriteResort(UserContext.sharedInstance.accessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
+                UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
                     
                    
                     Helper.removeServiceCallBackgroundView(view: self.view)
@@ -1699,7 +1699,7 @@ extension SearchResultViewController:SearchResultContentTableCellDelegate{
                 
                 SVProgressHUD.show()
                 Helper.addServiceCallBackgroundView(view: self.view)
-                UserClient.removeFavoriteResort(UserContext.sharedInstance.accessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
+                UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
                     
                     print(response)
                     sender.isSelected = false

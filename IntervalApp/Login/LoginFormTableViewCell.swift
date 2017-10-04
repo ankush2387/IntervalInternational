@@ -86,7 +86,7 @@ class LoginFormTableViewCell: UITableViewCell
 		{
 			enableTouchIdTextLabel.textColor = IUIKColorPalette.primary1.color
 			self.touchIdImageView.image = UIImage(named: Constant.assetImageNames.TouchIdOn)
-			LoginViewController().touchIdButtonEnabled = true
+			OldLoginViewController().touchIdButtonEnabled = true
 		}
 		else
 		{

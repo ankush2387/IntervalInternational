@@ -20,7 +20,7 @@ class CreateActionSheet: UITableViewController {
     var activeAlertCount = 0
     
     override func viewWillAppear(_ animated: Bool) {
-        let rect = CGRect(x: 0, y: 0, width: self.view.bounds.width - 20, height: CGFloat((UserContext.sharedInstance.contact?.memberships?.count)! * 100))
+        let rect = CGRect(x: 0, y: 0, width: self.view.bounds.width - 20, height: CGFloat((Session.sharedSession.contact?.memberships?.count)! * 100))
         self.tableView.frame = rect
         self.automaticallyAdjustsScrollViewInsets = false
         self.view.bounds = rect
@@ -28,10 +28,10 @@ class CreateActionSheet: UITableViewController {
     
     override func viewDidLoad(){
         super.viewDidLoad()
-        let rect = CGRect(x: 0, y: 0, width: self.view.bounds.width - 20, height: CGFloat((UserContext.sharedInstance.contact?.memberships?.count)! * 100))
+        let rect = CGRect(x: 0, y: 0, width: self.view.bounds.width - 20, height: CGFloat((Session.sharedSession.contact?.memberships?.count)! * 100))
         self.tableView.frame = rect
         
-        let height:NSLayoutConstraint = NSLayoutConstraint(item: self.tableView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: CGFloat((UserContext.sharedInstance.contact?.memberships?.count)! * 70))
+        let height:NSLayoutConstraint = NSLayoutConstraint(item: self.tableView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: CGFloat((Session.sharedSession.contact?.memberships?.count)! * 70))
         tableView.addConstraint(height);
         tableView.dataSource = dataSource
         tableView.delegate = dataSource
@@ -43,7 +43,7 @@ class CreateActionSheet: UITableViewController {
         
         tableViewController = viewController
         Constant.MyClassConstants.signInRequestedController = viewController
-        if(Constant.MyClassConstants.signInRequestedController .isKind(of: LoginViewController.self)){
+        if(Constant.MyClassConstants.signInRequestedController .isKind(of: OldLoginViewController.self)){
         }
         
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.none
@@ -51,7 +51,7 @@ class CreateActionSheet: UITableViewController {
         self.tableView.allowsSelection = true
         if(viewController.isKind(of:GetawayAlertsIPhoneViewController.self)){
             self.tableView.tag = 100
-            let height:NSLayoutConstraint = NSLayoutConstraint(item: self.tableView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: CGFloat((UserContext.sharedInstance.contact?.memberships?.count)! * 100))
+            let height:NSLayoutConstraint = NSLayoutConstraint(item: self.tableView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: CGFloat((Session.sharedSession.contact?.memberships?.count)! * 100))
             self.tableView.addConstraint(height);
         }
         let actionSheet:UIAlertController = UIAlertController(title: "", message: "", preferredStyle: UIAlertControllerStyle.actionSheet)
@@ -91,19 +91,19 @@ class CreateActionSheet: UITableViewController {
         Helper.addServiceCallBackgroundView(view: Constant.MyClassConstants.signInRequestedController .view)
         
         //***** Update the API session for the current access token *****//
-        let context = UserContext.sharedInstance
-        UserClient.putSessionsUser(context.accessToken, member: context.selectedMembership!,
+        let context = Session.sharedSession
+        UserClient.putSessionsUser(context.userAccessToken, member: context.selectedMembership!,
         onSuccess:{
             SVProgressHUD.dismiss()
             Helper.removeServiceCallBackgroundView(view: Constant.MyClassConstants.signInRequestedController .view)
             Constant.MyClassConstants.isLoginSuccessfull = true
             
-            let Product = UserContext.sharedInstance.selectedMembership?.getProductWithHighestTier()
+            let Product = Session.sharedSession.selectedMembership?.getProductWithHighestTier()
             
             // omniture tracking with event 2
             let userInfo: [String: String] = [
-                Constant.omnitureEvars.eVar1 : (UserContext.sharedInstance.selectedMembership?.memberNumber!)!,
-                Constant.omnitureEvars.eVar3 : "\(String(describing: Product?.productCode!))-\(String(describing: UserContext.sharedInstance.selectedMembership?.membershipTypeCode))",
+                Constant.omnitureEvars.eVar1 : (Session.sharedSession.selectedMembership?.memberNumber!)!,
+                Constant.omnitureEvars.eVar3 : "\(String(describing: Product?.productCode!))-\(String(describing: Session.sharedSession.selectedMembership?.membershipTypeCode))",
                 Constant.omnitureEvars.eVar4 : "",
                 Constant.omnitureEvars.eVar5 : Constant.MyClassConstants.loginOriginationPoint,
                 Constant.omnitureEvars.eVar6 : "",
@@ -113,7 +113,7 @@ class CreateActionSheet: UITableViewController {
             
             
     //***** Done!  Segue to the Home page *****//
-    let contact = UserContext.sharedInstance.contact
+    let contact = Session.sharedSession.contact
         if(contact!.memberships!.count > 1) {
             Constant.MyClassConstants.signInRequestedController.dismiss(animated: true, completion: nil)
         }
@@ -134,7 +134,7 @@ class CreateActionSheet: UITableViewController {
 
 
     //***** Getaway Alerts API call after successfull login *****//
-    RentalClient.getAlerts(UserContext.sharedInstance.accessToken, onSuccess: { (response) in
+    RentalClient.getAlerts(Session.sharedSession.userAccessToken, onSuccess: { (response) in
         Constant.MyClassConstants.getawayAlertsArray = response
         Constant.MyClassConstants.activeAlertsArray.removeAllObjects()
         self.getStatusForAllAlerts()
@@ -161,7 +161,7 @@ class CreateActionSheet: UITableViewController {
     }
     
     func callForIndividualAlert(_ alert:RentalAlert){
-        RentalClient.getAlert(UserContext.sharedInstance.accessToken, alertId: alert.alertId!, onSuccess: { (response) in
+        RentalClient.getAlert(Session.sharedSession.userAccessToken, alertId: alert.alertId!, onSuccess: { (response) in
             
             var alertVacationInfo = RentalAlert()
             alertVacationInfo = response
@@ -193,9 +193,9 @@ class CreateActionSheet: UITableViewController {
         Constant.MyClassConstants.dashBoardAlertsArray = Constant.MyClassConstants.getawayAlertsArray
         
         if Reachability.isConnectedToNetwork() == true {
-            if(UserContext.sharedInstance.accessToken != nil){
+            if(Session.sharedSession.userAccessToken != nil){
 
-            RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: searchResortRequest, onSuccess:{ (searchDates) in
+            RentalClient.searchDates(Session.sharedSession.userAccessToken, request: searchResortRequest, onSuccess:{ (searchDates) in
                 
                 Constant.MyClassConstants.resortCodesArray = searchDates.resortCodes
                 Constant.MyClassConstants.alertsResortCodeDictionary.setValue(searchDates.resortCodes, forKey: String(describing: alert.alertId!))
@@ -245,13 +245,13 @@ class CreateActionSheet: UITableViewController {
 // function to send omniture tracking event2
 func sendOmnitureTrackCallForEvent2() {
     
-    let Product = UserContext.sharedInstance.selectedMembership?.getProductWithHighestTier()
+    let Product = Session.sharedSession.selectedMembership?.getProductWithHighestTier()
     
     // omniture tracking with event 2
     let userInfo = NSMutableDictionary()
-    userInfo.addEntries(from: [Constant.omnitureEvars.eVar1 : (UserContext.sharedInstance.selectedMembership?.memberNumber!) as Any])
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar1 : (Session.sharedSession.selectedMembership?.memberNumber!) as Any])
     
-    userInfo.addEntries(from: [Constant.omnitureEvars.eVar3 : "\(Product!.productCode!)-\(UserContext.sharedInstance.selectedMembership!.membershipTypeCode!)"])
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar3 : "\(Product!.productCode!)-\(Session.sharedSession.selectedMembership!.membershipTypeCode!)"])
     userInfo.addEntries(from: [Constant.omnitureEvars.eVar4 : ""])
     
     userInfo.addEntries(from: [Constant.omnitureEvars.eVar5 : Constant.MyClassConstants.loginOriginationPoint])
@@ -278,7 +278,7 @@ func sendOmnitureTrackCallForEvent2() {
     
     userInfo.addEntries(from: [Constant.omnitureEvars.eVar11 :Constant.MyClassConstants.activeAlertsArray.count])
     userInfo.addEntries(from: [Constant.omnitureEvars.eVar14 :""])
-    userInfo.addEntries(from: [Constant.omnitureEvars.eVar16 :(UserContext.sharedInstance.contact?.memberships?.count)! > 0 ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no])
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar16 :(Session.sharedSession.contact?.memberships?.count)! > 0 ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no])
     var tripTypeString = ""
     if(Constant.MyClassConstants.exchangeCounter > 0) {
         tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.exchage)-\(Constant.MyClassConstants.exchangeCounter)")
@@ -324,7 +324,7 @@ func sendOmnitureTrackCallForEvent2() {
     
     
     userInfo.addEntries(from: [Constant.omnitureEvars.eVar17 :tripTypeString])
-    userInfo.addEntries(from: [Constant.omnitureEvars.eVar27 :UserContext.sharedInstance.contact?.contactId as Any])
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar27 :Session.sharedSession.contact?.contactId as Any])
     
     print(userInfo)
     

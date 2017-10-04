@@ -130,7 +130,7 @@ class ResortDirectoryViewController: UIViewController {
         //***** handle hamberger menu button for prelogin and post login case *****//
         self.navigationController?.navigationBar.barTintColor = UIColor(red: 0/255, green: 119.0/255, blue: 190.0/255, alpha: 1.0)
         print("------> self.navigationController?.viewControllers.count", self.navigationController?.viewControllers.count as Any)
-        if((UserContext.sharedInstance.accessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
+        if((Session.sharedSession.userAccessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
             if(self.navigationController?.viewControllers.count > 1) {
                 
                 let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(ResortDirectoryViewController.menuBackButtonPressed(_:)))
@@ -182,17 +182,7 @@ class ResortDirectoryViewController: UIViewController {
     
     //*****Function for back button press.*****//
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
-        print("------> self.navigationController?.viewControllers.count", self.navigationController?.viewControllers.count as Any)
-        if(self.navigationController?.viewControllers.count == 1) {
-            if((UserContext.sharedInstance.accessToken) == nil && !Constant.MyClassConstants.isLoginSuccessfull){
-                //_ = self.navigationController?.popViewController(animated: false)
-                self.navigationController?.dismiss(animated: true, completion: nil)
-            }
-        }
-        else {
-            _ = self.navigationController?.popViewController(animated: false)
-            //self.navigationController?.dismiss(animated: true, completion: nil)
-        }
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PopToLoginView"), object: nil)
         setNavigationBar()
     }
     func reloadView() {
@@ -299,13 +289,13 @@ class ResortDirectoryViewController: UIViewController {
     
     func favoriteButtonClicked(_ sender:UIButton) {
         
-        if((UserContext.sharedInstance.accessToken) != nil) {
+        if((Session.sharedSession.userAccessToken) != nil) {
             
             if (sender.isSelected == false){
                 
                 SVProgressHUD.show()
                 Helper.addServiceCallBackgroundView(view: self.view)
-                UserClient.addFavoriteResort(UserContext.sharedInstance.accessToken, resortCode: Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!, onSuccess: {(response) in
+                UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!, onSuccess: {(response) in
                     print(response)
                     SVProgressHUD.dismiss()
                     Helper.removeServiceCallBackgroundView(view: self.view)
@@ -322,7 +312,7 @@ class ResortDirectoryViewController: UIViewController {
             else {
                 Helper.addServiceCallBackgroundView(view: self.view)
                 SVProgressHUD.show()
-                UserClient.removeFavoriteResort(UserContext.sharedInstance.accessToken, resortCode: Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!, onSuccess: {(response) in
+                UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!, onSuccess: {(response) in
                     
                     print(response)
                     SVProgressHUD.dismiss()
@@ -403,12 +393,12 @@ extension ResortDirectoryViewController:UITableViewDelegate {
             
             let area = Constant.MyClassConstants.resortDirectoryAreaListArray[indexPath.row]
             Constant.MyClassConstants.resortDirectoryCommonHearderText = area.areaName!
-            Constant.MyClassConstants.resortDescriptionString = area.description
+//            Constant.MyClassConstants.resortDescriptionString = area.description
             
             if(area.images.count > 0 && backgroundImageView != nil) {
                 
                 Constant.MyClassConstants.backgroundImageUrl = area.images[1].url!
-                Constant.MyClassConstants.resortDescriptionString = area.description
+//                Constant.MyClassConstants.resortDescriptionString = area.description
                 self.backgroundImageView.setImageWith(URL(string: area.images[1].url!), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
                     if (error != nil) {
                         self.backgroundImageView.image = UIImage(named: Constant.MyClassConstants.noImage)

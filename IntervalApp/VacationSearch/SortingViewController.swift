@@ -150,9 +150,9 @@ class SortingViewController: UIViewController {
                 
                 rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                 
-                let vacationSearchFilter = VacationSearch(UserContext.sharedInstance.appSettings,rentalSearchCriteria)
+                let vacationSearchFilter = VacationSearch(Session.sharedSession.appSettings,rentalSearchCriteria)
                 
-                RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: vacationSearchFilter.rentalSearch?.searchContext.request, onSuccess:{ (response) in
+                RentalClient.searchDates(Session.sharedSession.userAccessToken, request: vacationSearchFilter.rentalSearch?.searchContext.request, onSuccess:{ (response) in
                 
                     vacationSearchFilter.rentalSearch?.searchContext.response = response
                     
@@ -207,9 +207,9 @@ class SortingViewController: UIViewController {
                 
                 Helper.helperDelegate = self
                 
-                let vacationSearchFilter = VacationSearch(UserContext.sharedInstance.appSettings,exchangeSearchCriteria)
+                let vacationSearchFilter = VacationSearch(Session.sharedSession.appSettings,exchangeSearchCriteria)
                 
-                ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request: vacationSearchFilter.exchangeSearch?.searchContext.request, onSuccess:{ (response) in
+                ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request: vacationSearchFilter.exchangeSearch?.searchContext.request, onSuccess:{ (response) in
                     
                     vacationSearchFilter.exchangeSearch?.searchContext.response = response
                     let activeInterval = vacationSearchFilter.bookingWindow.getActiveInterval()
@@ -256,9 +256,9 @@ class SortingViewController: UIViewController {
                 bothSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
                 bothSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                 Helper.helperDelegate = self
-                let vacationSearchFilter = VacationSearch(UserContext.sharedInstance.appSettings,bothSearchCriteria)
+                let vacationSearchFilter = VacationSearch(Session.sharedSession.appSettings,bothSearchCriteria)
                 
-                RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: vacationSearchFilter.rentalSearch?.searchContext.request, onSuccess:{ (response) in
+                RentalClient.searchDates(Session.sharedSession.userAccessToken, request: vacationSearchFilter.rentalSearch?.searchContext.request, onSuccess:{ (response) in
                     
                     Helper.hideProgressBar(senderView: self)
                     vacationSearchFilter.rentalSearch?.searchContext.response = response

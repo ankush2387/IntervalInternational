@@ -52,7 +52,7 @@ class EditMyAlertIpadViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         Constant.MyClassConstants.selectedGetawayAlertDestinationArray.removeAllObjects()
-        RentalClient.getAlert(UserContext.sharedInstance.accessToken, alertId: alertId, onSuccess: { (alert) in
+        RentalClient.getAlert(Session.sharedSession.userAccessToken, alertId: alertId, onSuccess: { (alert) in
             let earlyDate = Helper.convertStringToDate(dateString: alert.earliestCheckInDate!, format: "yyyy-MM-dd")
             let lateDate = Helper.convertStringToDate(dateString: alert.latestCheckInDate!, format: "yyyy-MM-dd")
             
@@ -308,7 +308,7 @@ class EditMyAlertIpadViewController: UIViewController {
                             rentalAlert.unitSizes = unitsizearray
                         }
                         
-                        RentalClient.updateAlert(UserContext.sharedInstance.accessToken, alert: rentalAlert, onSuccess:{ (response) in
+                        RentalClient.updateAlert(Session.sharedSession.userAccessToken, alert: rentalAlert, onSuccess:{ (response) in
                             
                             SVProgressHUD.dismiss()
                             

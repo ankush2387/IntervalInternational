@@ -157,7 +157,7 @@ class PaymentSelectionViewController: UIViewController {
 
                 (Constant.MyClassConstants.memberCreditCardList[self.selectedCardIndex]).expirationDate = dateString
                 
-                if(self.selectedCardIndex < (UserContext.sharedInstance.contact?.creditcards?.count)!) {
+                if(self.selectedCardIndex < (Session.sharedSession.contact?.creditcards?.count)!) {
                     
                     Constant.MyClassConstants.selectedCreditCard.removeAll()
                     let existingCard = Constant.MyClassConstants.memberCreditCardList[self.selectedCardIndex]
@@ -212,7 +212,7 @@ class PaymentSelectionViewController: UIViewController {
            
           (Constant.MyClassConstants.memberCreditCardList[self.selectedCardIndex]).cvv = (textField?.text)
             
-            if(self.selectedCardIndex < (UserContext.sharedInstance.contact?.creditcards?.count)!) {
+            if(self.selectedCardIndex < (Session.sharedSession.contact?.creditcards?.count)!) {
                 
                 Constant.MyClassConstants.selectedCreditCard.removeAll()
                 let existingCard = Constant.MyClassConstants.memberCreditCardList[self.selectedCardIndex]

@@ -87,7 +87,7 @@ class AllAvailableDestinationViewController: UIViewController {
                 //let storedData = Helper.getLocalStorageWherewanttoGo()
                 
                 exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
-                Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(UserContext.sharedInstance.appSettings, exchangeSearchCriteria)
+                Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(Session.sharedSession.appSettings, exchangeSearchCriteria)
                 let area = Area()
                 area.areaCode = Int(Constant.MyClassConstants.selectedAreaCodeArray[0] as! String)!
                 area.areaName = Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: Constant.MyClassConstants.selectedAreaCodeArray[0] as! String) as? String
@@ -95,7 +95,7 @@ class AllAvailableDestinationViewController: UIViewController {
                 
                 
                 
-                ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
+                ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
                     
                     Helper.hideProgressBar(senderView: self)
                     Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
@@ -142,12 +142,12 @@ class AllAvailableDestinationViewController: UIViewController {
                 combinedSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                 combinedSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
                 combinedSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
-                vacationSearch = VacationSearch(UserContext.sharedInstance.appSettings, combinedSearchCriteria)
+                vacationSearch = VacationSearch(Session.sharedSession.appSettings, combinedSearchCriteria)
                 vacationSearch.rentalSearch?.searchContext.request.areas = [area]
                 Constant.MyClassConstants.initialVacationSearch = vacationSearch
                 
                 
-                RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess:{ (response) in
+                RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess:{ (response) in
                     
                     Helper.hideProgressBar(senderView: self)
                     Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
@@ -183,11 +183,11 @@ class AllAvailableDestinationViewController: UIViewController {
                 
             }else{
                 rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
-                vacationSearch = VacationSearch(UserContext.sharedInstance.appSettings, rentalSearchCriteria)
+                vacationSearch = VacationSearch(Session.sharedSession.appSettings, rentalSearchCriteria)
                 vacationSearch.rentalSearch?.searchContext.request.areas = [area]
                 Constant.MyClassConstants.initialVacationSearch = vacationSearch
                 
-                RentalClient.searchDates(UserContext.sharedInstance.accessToken, request:vacationSearch.rentalSearch?.searchContext.request,
+                RentalClient.searchDates(Session.sharedSession.userAccessToken, request:vacationSearch.rentalSearch?.searchContext.request,
                                          onSuccess: { (response) in
                                             vacationSearch.rentalSearch?.searchContext.response = response
                                             

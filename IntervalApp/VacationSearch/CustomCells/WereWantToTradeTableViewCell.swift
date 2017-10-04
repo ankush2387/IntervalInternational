@@ -274,7 +274,7 @@ extension WereWantToTradeTableViewCell:WhereToGoCollectionViewCellDelegate {
                     if(!isFloatRemoved! && isFloat!){
                         //Realm local storage for selected relinquishment
                         let storedata = OpenWeeksStorage()
-                        let Membership = UserContext.sharedInstance.selectedMembership
+                        let Membership = Session.sharedSession.selectedMembership
                         let relinquishmentList = TradeLocalData()
                         
                         let selectedOpenWeek = OpenWeeks()

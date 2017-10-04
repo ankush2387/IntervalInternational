@@ -108,7 +108,7 @@ class VacationSearchViewController: UIViewController {
         self.searchVacationSegementControl.removeAllSegments()
         
         // updating segment control number of segment according to app settings response
-        for (i,searchType) in (UserContext.sharedInstance.appSettings?.vacationSearch?.vacationSearchTypes.enumerated())! {
+        for (i,searchType) in (Session.sharedSession.appSettings?.vacationSearch?.vacationSearchTypes.enumerated())! {
             
             self.searchVacationSegementControl.insertSegment(withTitle: Helper.vacationSearchTypeSegemtStringToDisplay(vacationSearchType: searchType), at: i, animated: true)
             
@@ -255,7 +255,7 @@ class VacationSearchViewController: UIViewController {
     //***** Add location pressed action to show map screen with list of location to select *****//
     func addRelinquishmentSectionButtonPressed(_ sender:IUIKButton) {
         Helper.showProgressBar(senderView: self)
-        ExchangeClient.getMyUnits(UserContext.sharedInstance.accessToken, onSuccess: { (Relinquishments) in
+        ExchangeClient.getMyUnits(Session.sharedSession.userAccessToken, onSuccess: { (Relinquishments) in
             
             Constant.MyClassConstants.relinquishmentDeposits = Relinquishments.deposits
             Constant.MyClassConstants.relinquishmentOpenWeeks = Relinquishments.openWeeks
@@ -1454,7 +1454,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     
                 }else{
                 
-            RentalClient.searchRegions(UserContext.sharedInstance.accessToken, request: requestRental, onSuccess: {(response)in
+            RentalClient.searchRegions(Session.sharedSession.userAccessToken, request: requestRental, onSuccess: {(response)in
                 print(response)
                 
                 for rsregion in response {
@@ -1492,7 +1492,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     
                 }else{
                     
-                    ExchangeClient.searchRegions(UserContext.sharedInstance.accessToken, request: requestExchange, onSuccess: { (response) in
+                    ExchangeClient.searchRegions(Session.sharedSession.userAccessToken, request: requestExchange, onSuccess: { (response) in
                         
                         print(response)
                         
@@ -1538,10 +1538,10 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                     
                     
-                    self.vacationSearch = VacationSearch(UserContext.sharedInstance.appSettings, rentalSearchCriteria)
+                    self.vacationSearch = VacationSearch(Session.sharedSession.appSettings, rentalSearchCriteria)
                     Constant.MyClassConstants.initialVacationSearch = self.vacationSearch
                     
-                    RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: self.vacationSearch.rentalSearch?.searchContext.request,
+                    RentalClient.searchDates(Session.sharedSession.userAccessToken, request: self.vacationSearch.rentalSearch?.searchContext.request,
                                              onSuccess: { (response) in
                                                 self.vacationSearch.rentalSearch?.searchContext.response = response
                                                 
@@ -1614,9 +1614,9 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                         self.getSavedDestinationsResorts(storedData:storedData, searchCriteria:exchangeSearchCriteria)
                         
                         
-                        Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(UserContext.sharedInstance.appSettings, exchangeSearchCriteria)
+                        Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(Session.sharedSession.appSettings, exchangeSearchCriteria)
                         
-                        ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
+                        ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
                             sender.isEnabled = true
                             Helper.hideProgressBar(senderView: self)
                             Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
@@ -1686,12 +1686,12 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                         rentalSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
                         rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                         
-                        Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(UserContext.sharedInstance.appSettings, rentalSearchCriteria)
+                        Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(Session.sharedSession.appSettings, rentalSearchCriteria)
                         
                         ADBMobile.trackAction(Constant.omnitureEvents.event9, data: nil)
                         
                         
-                        RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess:{ (response) in
+                        RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess:{ (response) in
                             
                             Helper.hideProgressBar(senderView: self)
                             Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response

@@ -104,7 +104,6 @@ class LoginIPadViewController: UIViewController
         //**** Set UI Elements ****//
         
         buildLabel.text = Helper.getBuildVersion()
-        self.backgroundImageView.image = UIImage(named: Constant.MyClassConstants.backgroundImageArray[Constant.MyClassConstants.random!] as String)
         self.viewSignIn.backgroundColor = UIColor.white.withAlphaComponent(0.9)
         self.viewLower.backgroundColor = UIColor.white.withAlphaComponent(0.9)
         self.viewActionSheet.backgroundColor = UIColor.black.withAlphaComponent(0.7)
@@ -332,12 +331,12 @@ class LoginIPadViewController: UIViewController
     func accessTokenDidChange() {
         
         //***** Try to do the OAuth Request to obtain an access token *****//
-        UserClient.getCurrentProfile(UserContext.sharedInstance.accessToken,
+        UserClient.getCurrentProfile(Session.sharedSession.userAccessToken,
                 onSuccess:{(contact) in
                 // Got an access token!  Save it for later use.
                 SVProgressHUD.dismiss()
                 Helper.removeServiceCallBackgroundView(view: self.view)
-                UserContext.sharedInstance.contact = contact
+                Session.sharedSession.contact = contact
                                         
     //***** Next, get the contact information.  See how many memberships this user has. *****//
             self.perform(#selector(LoginIPadViewController.contactDidChange), with: nil, afterDelay: 0.5)
@@ -345,7 +344,7 @@ class LoginIPadViewController: UIViewController
             onError:{(error) in
                 SVProgressHUD.dismiss()
                 Helper.removeServiceCallBackgroundView(view: self.view)
-                logger.warning(error.description)
+                Logger.sharedInstance.warning(error.description)
                 SimpleAlert.alert(self, title:Constant.AlertErrorMessages.loginFailed, message: error.localizedDescription)
             }
         )
@@ -356,13 +355,13 @@ class LoginIPadViewController: UIViewController
     func contactDidChange() {
         
         //***** If this contact has more than one membership, then show the Choose Member form.Otherwise, select the default (only) membership and continue.  There must always be at lease one membership. *****//
-        if let contact = UserContext.sharedInstance.contact {
+        if let contact = Session.sharedSession.contact {
             
             if contact.hasMembership() {
                 
                 if contact.memberships!.count == 1 {
                     
-                    UserContext.sharedInstance.selectedMembership = contact.memberships![0]
+                    Session.sharedSession.selectedMembership = contact.memberships![0]
                     //self.membershipWasSelected()
                     
                     CreateActionSheet().membershipWasSelected()
@@ -378,7 +377,7 @@ class LoginIPadViewController: UIViewController
             }
             else {
                 
-                logger.error("The contact \(contact.contactId) has no membership information!")
+                Logger.sharedInstance.error("The contact \(contact.contactId) has no membership information!")
                 SimpleAlert.alert(self, title:Constant.AlertErrorMessages.loginFailed, message: Constant.AlertMessages.noMembershipMessage)
             }
         }
@@ -391,7 +390,7 @@ class LoginIPadViewController: UIViewController
 		{
 			enableTouchIdTextLabel.textColor = IUIKColorPalette.primary1.color
 			self.touchIdImageView.image = UIImage(named: Constant.assetImageNames.TouchIdOn)
-			LoginViewController().touchIdButtonEnabled = true
+			OldLoginViewController().touchIdButtonEnabled = true
 		}
 		else
 		{
@@ -429,16 +428,16 @@ class LoginIPadViewController: UIViewController
     func membershipWasSelected() {
         
         //***** Update the API session for the current access token *****//
-        let context = UserContext.sharedInstance
+        let context = Session.sharedSession
         
-        UserClient.putSessionsUser(context.accessToken, member: context.selectedMembership!,
+        UserClient.putSessionsUser(context.userAccessToken, member: context.selectedMembership!,
         onSuccess:{
         //***** Favorites resort API call after successfull call *****//
         Helper.getUserFavorites()
         //***** Get upcoming trips for user API call after successfull call *****//
         Helper.getUpcomingTripsForUser()
         //***** Getaway Alerts API call after successfull login *****//
-        RentalClient.getAlerts(UserContext.sharedInstance.accessToken, onSuccess: { (response) in
+        RentalClient.getAlerts(Session.sharedSession.userAccessToken, onSuccess: { (response) in
                                         
             Constant.MyClassConstants.getawayAlertsArray = response
                                         
@@ -469,7 +468,7 @@ class LoginIPadViewController: UIViewController
     
     func callForIndividualAlert(_ alert:RentalAlert){
         Constant.MyClassConstants.activeAlertsArray.removeAllObjects()
-        RentalClient.getAlert(UserContext.sharedInstance.accessToken, alertId: alert.alertId!, onSuccess: { (response) in
+        RentalClient.getAlert(Session.sharedSession.userAccessToken, alertId: alert.alertId!, onSuccess: { (response) in
             
             var alertVacationInfo = RentalAlert()
             alertVacationInfo = response
@@ -493,7 +492,7 @@ class LoginIPadViewController: UIViewController
         
         if Reachability.isConnectedToNetwork() == true {
             
-            RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: searchResortRequest, onSuccess:{ (searchDates) in
+            RentalClient.searchDates(Session.sharedSession.userAccessToken, request: searchResortRequest, onSuccess:{ (searchDates) in
                 Constant.MyClassConstants.resortCodesArray = searchDates.resortCodes
                 Constant.MyClassConstants.alertsResortCodeDictionary.setValue(searchDates.resortCodes, forKey: String(describing: alert.alertId!))
                 Constant.MyClassConstants.alertsSearchDatesDictionary.setValue(searchDates.checkInDates, forKey: String(describing: alert.alertId!))
@@ -640,9 +639,9 @@ extension LoginIPadViewController:UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let contact = UserContext.sharedInstance.contact
+        let contact = Session.sharedSession.contact
         let membership = contact?.memberships![indexPath.row]
-        UserContext.sharedInstance.selectedMembership = membership
+        Session.sharedSession.selectedMembership = membership
         membershipWasSelected()
         
     }
@@ -671,14 +670,14 @@ extension LoginIPadViewController:UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        let contact = UserContext.sharedInstance.contact
+        let contact = Session.sharedSession.contact
         return (contact?.memberships?.count)!
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         
-        let contact = UserContext.sharedInstance.contact
+        let contact = Session.sharedSession.contact
         let membership = contact?.memberships![indexPath.row]
         let cell: ActionSheetTblCell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.CustomCell, for: indexPath) as! ActionSheetTblCell
        

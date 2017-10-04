@@ -49,7 +49,7 @@ class ResortCollectionViewCell: UICollectionViewCell {
         
         if(favoriteButton.isSelected == false) {
             
-            if(UserContext.sharedInstance.accessToken == nil) {
+            if(Session.sharedSession.userAccessToken == nil) {
                 self.delegate?.favoritesButtonSelectedAtIndex(sender.tag)
             }
             else {
