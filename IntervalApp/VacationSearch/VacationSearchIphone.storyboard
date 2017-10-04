@@ -83,14 +83,32 @@
                                                             <rect key="frame" x="20" y="20" width="274" height="150"/>
                                                             <subviews>
                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BSC" translatesAutoresizingMaskIntoConstraints="NO" id="Onk-kV-8JI">
-                                                                    <rect key="frame" x="37.666666666666686" y="10" width="200" height="131"/>
+                                                                    <rect key="frame" x="37" y="10" width="200" height="131"/>
                                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                                </imageView>
+                                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CIG" translatesAutoresizingMaskIntoConstraints="NO" id="hW9-Ne-7bs">
+                                                                    <rect key="frame" x="10" y="35" width="120" height="80"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="80" id="5UX-gX-rUM"/>
+                                                                        <constraint firstAttribute="width" constant="120" id="AHG-TN-eQ2"/>
+                                                                    </constraints>
+                                                                </imageView>
+                                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PLT" translatesAutoresizingMaskIntoConstraints="NO" id="pws-Ja-T9z">
+                                                                    <rect key="frame" x="144" y="35" width="120" height="80"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" constant="120" id="c6O-z1-H2y"/>
+                                                                        <constraint firstAttribute="height" constant="80" id="zF5-Wr-cey"/>
+                                                                    </constraints>
                                                                 </imageView>
                                                             </subviews>
                                                             <color key="backgroundColor" red="0.90196078431372551" green="0.96078431372549022" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
+                                                                <constraint firstItem="hW9-Ne-7bs" firstAttribute="leading" secondItem="012-cZ-PgI" secondAttribute="leading" constant="10" id="8CS-xF-9H9"/>
+                                                                <constraint firstItem="hW9-Ne-7bs" firstAttribute="centerY" secondItem="012-cZ-PgI" secondAttribute="centerY" id="Ffs-aN-Go1"/>
                                                                 <constraint firstItem="Onk-kV-8JI" firstAttribute="centerY" secondItem="012-cZ-PgI" secondAttribute="centerY" id="Hav-Ce-SSN"/>
+                                                                <constraint firstItem="pws-Ja-T9z" firstAttribute="centerY" secondItem="012-cZ-PgI" secondAttribute="centerY" id="T8t-3y-dKn"/>
                                                                 <constraint firstAttribute="height" constant="150" id="jgy-EN-9fA"/>
+                                                                <constraint firstAttribute="trailing" secondItem="pws-Ja-T9z" secondAttribute="trailing" constant="10" id="mAP-Gj-Kfi"/>
                                                                 <constraint firstItem="Onk-kV-8JI" firstAttribute="centerX" secondItem="012-cZ-PgI" secondAttribute="centerX" id="tkm-k7-ZZf"/>
                                                             </constraints>
                                                             <userDefinedRuntimeAttributes>
@@ -170,10 +188,12 @@ transaction.</string>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="renewelCoreImageView" destination="hW9-Ne-7bs" id="KQz-5p-XkX"/>
+                                            <outlet property="renewelImageView" destination="Onk-kV-8JI" id="cao-3X-EUS"/>
                                             <outlet property="renewelLbl" destination="B8X-iy-xeQ" id="BV0-ec-vqH"/>
+                                            <outlet property="renewelnonCoreImageView" destination="pws-Ja-T9z" id="Gpc-lf-5K9"/>
                                             <outlet property="selectButton" destination="ahY-VT-7X5" id="cPm-pw-P7u"/>
                                             <outlet property="viewContent" destination="012-cZ-PgI" id="0cg-NA-alK"/>
-                                            <outlet property="viewImage" destination="Onk-kV-8JI" id="5H8-q2-zTf"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="renewalAdditionalCell" rowHeight="84" id="2SM-95-hER" customClass="RenewalAdditionalCell" customModule="IntervalApp" customModuleProvider="target">
@@ -234,7 +254,7 @@ transaction.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="02p-Jb-XGO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2617" y="2345"/>
+            <point key="canvasLocation" x="2616.666666666667" y="2344.5652173913045"/>
         </scene>
         <!--Resort Details View Controller-->
         <scene sceneID="Vsu-bG-mub">
@@ -7959,6 +7979,7 @@ to confirm a larger unit.</string>
         <image name="MapPinIcon" width="30" height="30"/>
         <image name="NoImageIcon" width="64" height="64"/>
         <image name="OfferIcon" width="33" height="33"/>
+        <image name="PLT" width="200" height="131"/>
         <image name="PromoImage" width="20" height="20"/>
         <image name="Resorts-Getaway_Icon" width="25" height="25"/>
         <image name="SearchTab-Off" width="33" height="33"/>
