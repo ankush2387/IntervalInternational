@@ -32,6 +32,12 @@ class RenewelViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if(forceRenewals.comboProducts.count > 0 || (forceRenewals.crossSelling.count > 0 && forceRenewals.products.count > 0)){
+            Constant.MyClassConstants.renewalsHeaderTitle = Constant.MyClassConstants.comboHeaderTitle
+        }else{
+            Constant.MyClassConstants.renewalsHeaderTitle = Constant.MyClassConstants.coreHeaderTitle
+        }
+        
         if(Constant.RunningDevice.deviceIdiom == .phone){
             //Set title for table view
             let headerLabel = UILabel(frame:CGRect(x: 0, y: 0, width: 375, height: 40))
@@ -109,6 +115,34 @@ class RenewelViewController: UIViewController {
                     renewalArray.append(renewalItem)
                 }
             }
+        }else if(isCombo){
+            for renewalComboArray in forceRenewals.comboProducts{
+                for renewals in renewalComboArray.renewalComboProducts{
+                    if(renewals.term == 12){
+                        let renewalItem = Renewal()
+                        renewalItem.id = renewals.id
+                        renewalArray.append(renewalItem)
+                    }
+                }
+            }
+        }else if(isNonCore){
+            for renewal in forceRenewals.crossSelling{
+                if(renewal.term == 12){
+                    let renewalItem = Renewal()
+                    renewalItem.id = renewal.id
+                    renewalArray.append(renewalItem)
+                    break
+                }
+            }
+        }else if(isCore){
+            for renewal in forceRenewals.products{
+                if(renewal.term == 12){
+                    let renewalItem = Renewal()
+                    renewalItem.id = renewal.id
+                    renewalArray.append(renewalItem)
+                    break
+                }
+            }
         }
         
         if(Constant.RunningDevice.deviceIdiom == .phone){
@@ -144,6 +178,7 @@ class RenewelViewController: UIViewController {
         if(Constant.RunningDevice.deviceIdiom == .phone){
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+            viewController.noThanksSelected = true
             
             let transitionManager = TransitionManager()
             self.navigationController?.transitioningDelegate = transitionManager
@@ -268,7 +303,7 @@ extension RenewelViewController:UITableViewDataSource {
                             
                             let attributeString = NSMutableAttributedString.init(string: mainString)
                             
-                            attributeString.setAttributes([NSFontAttributeName : UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(25.0))!
+                            attributeString.setAttributes([NSFontAttributeName : UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0))!
                                 , NSForegroundColorAttributeName : UIColor(red: 0.0/255.0, green: 201.0/255.0, blue: 11.0/255.0, alpha: 1.0)], range: range)
                             
                             cell.renewelLbl?.attributedText = attributeString
@@ -417,6 +452,7 @@ extension RenewelViewController:UITableViewDataSource {
             }
         }else if((forceRenewals.crossSelling.count) > 0){
             //Non core
+            isNonCore = true
             
             if indexPath.section == 0 {
                 for nonCoreProduct in (forceRenewals.crossSelling){

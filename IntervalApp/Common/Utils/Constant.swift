@@ -605,7 +605,10 @@ class Constant: NSObject {
          static var viewSelectedDestination = NSLocalizedString("View Selected Destinations", comment: "")
         
         // Renewals
-        static var renewalsHeaderTitle = NSLocalizedString("You Must Renew to Continue", comment: "")
+        static var renewalsHeaderTitle = ""
+        static var comboHeaderTitle = NSLocalizedString("Keep your Interval Benefits", comment: "")
+        static var coreHeaderTitle = NSLocalizedString("Renew your Membership", comment: "")
+        
         
         static var otherOptions = NSLocalizedString("Other Options", comment: "")
         

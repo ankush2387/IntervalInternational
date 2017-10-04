@@ -43,6 +43,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
     var decreaseValue = 1
     var selectedCountryIndex: Int?
     var renewalsArray = [Renewal()]
+    var noThanksSelected = false
 
     
     override func viewWillAppear(_ animated: Bool) {
@@ -396,6 +397,10 @@ class WhoWillBeCheckingInViewController: UIViewController {
     //***** Function to perform checkout *****//
     @IBAction func proceedToCheckoutPressed(_ sender: AnyObject) {
         
+        if(noThanksSelected){
+            noThanksSelected = false
+            
+        }else{
         if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() || Constant.MyClassConstants.searchBothExchange){
             let exchangeProcessRequest = ExchangeProcessContinueToCheckoutRequest()
                 
@@ -563,6 +568,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 
         })
     }
+  }
 }
     
     func showCertificateInfo() {
