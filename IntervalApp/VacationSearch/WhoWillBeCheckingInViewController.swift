@@ -44,6 +44,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
     var selectedCountryIndex: Int?
     var renewalsArray = [Renewal()]
     var noThanksSelected = false
+    var isFromRenewals = false
 
     
     override func viewWillAppear(_ animated: Bool) {
