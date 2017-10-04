@@ -116,6 +116,7 @@
 		3A623C671CF707A400389708 /* SideMenuLogoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A623C661CF707A400389708 /* SideMenuLogoCell.swift */; };
 		3A623C6A1CF728BC00389708 /* UIImageView+UIActivityIndicatorForSDWebImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A623C691CF728BC00389708 /* UIImageView+UIActivityIndicatorForSDWebImage.m */; };
 		3A645C0E1CF853180033EEB7 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A645C0D1CF853180033EEB7 /* Reachability.swift */; };
+		3A6931B61F83B5B800B35A77 /* RenewalOtherOptionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6931B51F83B5B800B35A77 /* RenewalOtherOptionsVC.swift */; };
 		3A733AC61CEF2A2E0068CF15 /* ImageWithNameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A733AC51CEF2A2E0068CF15 /* ImageWithNameCell.swift */; };
 		3A795A8D1CF5D22E0098C26D /* HeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A795A8C1CF5D22E0098C26D /* HeaderTableViewCell.swift */; };
 		3A7F44A71F17768800F4DD18 /* WhatToUseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7F44A61F17768800F4DD18 /* WhatToUseViewController.swift */; };
@@ -436,6 +437,7 @@
 		3A623C681CF728BC00389708 /* UIImageView+UIActivityIndicatorForSDWebImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+UIActivityIndicatorForSDWebImage.h"; sourceTree = "<group>"; };
 		3A623C691CF728BC00389708 /* UIImageView+UIActivityIndicatorForSDWebImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+UIActivityIndicatorForSDWebImage.m"; sourceTree = "<group>"; };
 		3A645C0D1CF853180033EEB7 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		3A6931B51F83B5B800B35A77 /* RenewalOtherOptionsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenewalOtherOptionsVC.swift; sourceTree = "<group>"; };
 		3A733AC51CEF2A2E0068CF15 /* ImageWithNameCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageWithNameCell.swift; sourceTree = "<group>"; };
 		3A795A8C1CF5D22E0098C26D /* HeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderTableViewCell.swift; sourceTree = "<group>"; };
 		3A7F44A61F17768800F4DD18 /* WhatToUseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhatToUseViewController.swift; sourceTree = "<group>"; };
@@ -1063,6 +1065,7 @@
 				3A7F44A61F17768800F4DD18 /* WhatToUseViewController.swift */,
 				E9ED1B581F44B89A00794C53 /* CertificateInfoViewController.swift */,
 				3A1B3DAA1F73CFAB0040B081 /* RenewelViewController.swift */,
+				3A6931B51F83B5B800B35A77 /* RenewalOtherOptionsVC.swift */,
 			);
 			path = VacationSearch;
 			sourceTree = "<group>";
@@ -1572,6 +1575,7 @@
 				089416711F72D93A00F03229 /* SelectBedroomViewController.swift in Sources */,
 				3A3A01521C99BED600B7EC37 /* TriangeView.swift in Sources */,
 				3AAA5A261C720F4500A5EA6D /* AppDelegate.swift in Sources */,
+				3A6931B61F83B5B800B35A77 /* RenewalOtherOptionsVC.swift in Sources */,
 				3A892F421CD3902F00AE6F45 /* CellHeaderTableViewCell.swift in Sources */,
 				3AF7CC131C848C5900FB9AC6 /* AccomodationCertsDetailController.swift in Sources */,
 				3A3A01391C99BD0B00B7EC37 /* AvailablePointsAsOfTableViewCell.swift in Sources */,
