@@ -1790,6 +1790,7 @@ extension VacationSearchViewController:HelperDelegate {
         let transitionManager = TransitionManager()
         self.navigationController?.transitioningDelegate = transitionManager
         let navController = UINavigationController(rootViewController: viewController)
+        
         self.present(navController, animated:true, completion: nil)
 
         

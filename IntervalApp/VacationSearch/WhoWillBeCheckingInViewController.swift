@@ -233,8 +233,8 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 
                 Constant.MyClassConstants.selectedCreditCard.removeAll()
                 Helper.hideProgressBar(senderView: self)
-                //_ = self.navigationController?.popViewController(animated: true)
-                self.dismiss(animated: true, completion: nil)
+                _ = self.navigationController?.popViewController(animated: true)
+                //self.dismiss(animated: true, completion: nil)
                 
             }, onError: {(error) in
                 
@@ -250,8 +250,8 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 Helper.removeStoredGuestFormDetials()
                 SVProgressHUD.dismiss()
                 Helper.removeServiceCallBackgroundView(view: self.view)
-                 //_ = self.navigationController?.popViewController(animated: true)
-               self.dismiss(animated: true, completion: nil)
+                 _ = self.navigationController?.popViewController(animated: true)
+               //self.dismiss(animated: true, completion: nil)
             
             }, onError: {(error) in
               
@@ -1325,6 +1325,11 @@ extension WhoWillBeCheckingInViewController:RenewelViewControllerDelegate{
     func noThanks(){
         let button = UIButton()
         self.proceedToCheckoutPressed(button)
+    }
+    
+    func otherOptions(forceRenewals: ForceRenewals) {
+
+        print("remove later")
     }
 }
 
