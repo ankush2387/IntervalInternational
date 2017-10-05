@@ -10,7 +10,16 @@ import UIKit
 import IntervalUIKit
 import DarwinSDK
 
+//***** Custom delegate method declaration *****//
+protocol RenewelViewControllerDelegate {
+    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray:[Renewal])
+}
+
+
 class RenewelViewController: UIViewController {
+    
+    //MARK:- Delegate
+    var delegate: RenewelViewControllerDelegate?
 
     //MARK:- clas  outlets
     @IBOutlet weak var renewalsTableView: UITableView!
@@ -39,8 +48,9 @@ class RenewelViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        if(forceRenewals.comboProducts.count > 0 || (forceRenewals.crossSelling.count > 0 && forceRenewals.products.count > 0)){
+        if(Constant.MyClassConstants.noThanksForNonCore){
+             Constant.MyClassConstants.renewalsHeaderTitle = Constant.MyClassConstants.noThanksTitle
+        }else if(forceRenewals.comboProducts.count > 0 || (forceRenewals.crossSelling.count > 0 && forceRenewals.products.count > 0)){
             Constant.MyClassConstants.renewalsHeaderTitle = Constant.MyClassConstants.comboHeaderTitle
         }else{
             Constant.MyClassConstants.renewalsHeaderTitle = Constant.MyClassConstants.coreHeaderTitle
@@ -154,14 +164,18 @@ class RenewelViewController: UIViewController {
         }
         
         if(Constant.RunningDevice.deviceIdiom == .phone){
-            
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
-            viewController.renewalsArray = renewalArray
-            
-            let transitionManager = TransitionManager()
-            self.navigationController?.transitioningDelegate = transitionManager
-            self.navigationController!.pushViewController(viewController, animated: true)
+            if(Constant.MyClassConstants.noThanksForNonCore){
+                self.dismiss(animated: true, completion: nil)
+                delegate?.selectedRenewalFromWhoWillBeCheckingIn(renewalArray: renewalArray)
+            }else{
+                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+                viewController.renewalsArray = renewalArray
+                
+                let transitionManager = TransitionManager()
+                self.navigationController?.transitioningDelegate = transitionManager
+                self.navigationController!.pushViewController(viewController, animated: true)
+            }
         }
         
     }
@@ -172,6 +186,10 @@ class RenewelViewController: UIViewController {
     }
     
     @IBAction func onClickNoThanks(_ sender: UIButton) {
+        
+        if(Constant.MyClassConstants.noThanksForNonCore){
+            print("NO Thanks ")
+        }
         
         if self.isCombo {
             
@@ -279,9 +297,7 @@ extension RenewelViewController:UITableViewDataSource {
         
         //Combo
         if((forceRenewals.comboProducts.count) > 0) {
-            print("A Combo")
-            
-            
+    
             for comboProduct in (forceRenewals.comboProducts) {
                 
                 for renewalComboProduct in comboProduct.renewalComboProducts {
@@ -484,7 +500,16 @@ extension RenewelViewController:UITableViewDataSource {
                         priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                         
                         // Create attributed string
-                        let mainString = "Your \(String(describing: nonCoreProduct.displayName!)) membership expires before your travel date. To continue booking your Getaway at the current discounted rate, a \(term) interval platinum a, membership fee of \n\(priceAndCurrency)\nwill be included with this transaction."
+                        var mainString = "Your \(String(describing: nonCoreProduct.displayName!)) membership expires before your travel date. To continue booking your Getaway at the current discounted rate, a \(term) \(String(describing: nonCoreProduct.displayName!)) membership fee of \n\(priceAndCurrency)\nwill be included with this transaction."
+                        if(Constant.MyClassConstants.noThanksForNonCore){
+                            mainString = "Get a FREE Guest Certificate now and every time with \(String(describing: nonCoreProduct.displayName!)). Your Interval Platinum must be active through your travel dates to receive FREE Guest Certificates. To upgrade or renew, a \(term) \(String(describing: nonCoreProduct.displayName!)) fee of \n\(priceAndCurrency)\nwill be included with this transaction."
+                        }
+                        
+                        if(Constant.MyClassConstants.noThanksForNonCore){
+                            cell.selectButton?.setTitle(Constant.MyClassConstants.renewNow, for: .normal)
+                        }else{
+                            cell.selectButton?.setTitle(Constant.MyClassConstants.select, for: .normal)
+                        }
                         
                         let range = (mainString as NSString).range(of: priceAndCurrency)
                         

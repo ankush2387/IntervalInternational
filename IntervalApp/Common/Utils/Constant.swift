@@ -608,10 +608,12 @@ class Constant: NSObject {
         static var renewalsHeaderTitle = ""
         static var comboHeaderTitle = NSLocalizedString("Keep your Interval Benefits", comment: "")
         static var coreHeaderTitle = NSLocalizedString("Renew your Membership", comment: "")
+        static var noThanksTitle = NSLocalizedString("FREE GUEST CERTIFICATES", comment: "")
         
         
         static var otherOptions = NSLocalizedString("Other Options", comment: "")
         static var renewNow = NSLocalizedString("Renew Now", comment: "")
+        static var select = NSLocalizedString("Select", comment: "")
         static var noThanks = NSLocalizedString("No Thanks", comment: "")
         
         static var noThanksForNonCore = false

@@ -401,6 +401,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
         if(noThanksSelected){
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
+            viewController.delegate = self
             
             let transitionManager = TransitionManager()
             self.navigationController?.transitioningDelegate = transitionManager
@@ -1308,6 +1309,16 @@ extension WhoWillBeCheckingInViewController:UITextFieldDelegate {
         }
     }
     
+}
+
+//MARK:- Extension for renewals
+extension WhoWillBeCheckingInViewController:RenewelViewControllerDelegate{
+    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray:[Renewal]){
+        self.renewalsArray = renewalArray
+        noThanksSelected = false
+        let button = UIButton()
+        self.proceedToCheckoutPressed(button)
+    }
 }
 
 

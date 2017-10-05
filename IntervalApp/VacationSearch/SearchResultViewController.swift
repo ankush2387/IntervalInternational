@@ -794,6 +794,10 @@ extension SearchResultViewController:UICollectionViewDelegate {
                 intervalDateItemClicked(Helper.convertStringToDate(dateString: Constant.MyClassConstants.calendarDatesArray[indexPath.item].checkInDate!, format: Constant.MyClassConstants.dateFormat))
             }
         }else{
+            
+            // Check for renewals no thanks
+            Constant.MyClassConstants.noThanksForNonCore = false
+            
             if((indexPath as NSIndexPath).section == 0) {
                 Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.vacationSearchFunctionalityCheck
                 Constant.MyClassConstants.isFromSearchResult = true
