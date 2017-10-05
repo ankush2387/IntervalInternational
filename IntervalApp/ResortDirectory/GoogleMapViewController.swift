@@ -1259,6 +1259,18 @@ class GoogleMapViewController: UIViewController {
             mapTableView.reloadData()
         }
     }
+    
+    
+    func nameLablePressed(_ sender: UITapGestureRecognizer) {
+        
+        if(Constant.MyClassConstants.systemAccessToken != nil) {
+            let selectedResort = Constant.MyClassConstants.resortsArray[index]
+            Constant.MyClassConstants.isgetResortFromGoogleSearch = false
+            Helper.getUserFavorites()
+            Helper.getResortWithResortCode(code: selectedResort.resortCode!,viewcontroller:self)
+        }
+    }
+    
 }
 
 //***** Map view delegate methods to handle map *****//
@@ -1502,6 +1514,9 @@ extension GoogleMapViewController:UICollectionViewDataSource {
         let resortNameLabel = UILabel(frame: CGRect(x: 20, y: 0, width: cell.contentView.frame.width - 40, height: 20))
         resortNameLabel.text = resort.resortName
         resortNameLabel.textColor = IUIKColorPalette.primary1.color
+        resortNameLabel.isUserInteractionEnabled = true
+        let resortNamePressed =  UITapGestureRecognizer(target: self, action: #selector(self.nameLablePressed(_:)))
+        resortNameLabel.addGestureRecognizer(resortNamePressed)
         resortNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
         resortNameGradientView.addSubview(resortNameLabel)
         
