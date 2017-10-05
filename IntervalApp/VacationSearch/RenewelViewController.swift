@@ -13,13 +13,22 @@ import DarwinSDK
 //***** Custom delegate method declaration *****//
 protocol RenewelViewControllerDelegate {
     func selectedRenewalFromWhoWillBeCheckingIn(renewalArray:[Renewal])
+    func noThanks()
 }
 
+//protocol SelectRenewalsOptionDelegate {
+//    
+//    func selecteButtonClicked(renewalArray:[Renewal])
+//    
+//}
 
 class RenewelViewController: UIViewController {
     
     //MARK:- Delegate
     var delegate: RenewelViewControllerDelegate?
+    
+    // delegate
+    //var delegate:SelectRenewalsOptionDelegate?
 
     //MARK:- clas  outlets
     @IBOutlet weak var renewalsTableView: UITableView!
@@ -168,13 +177,17 @@ class RenewelViewController: UIViewController {
                 self.dismiss(animated: true, completion: nil)
                 delegate?.selectedRenewalFromWhoWillBeCheckingIn(renewalArray: renewalArray)
             }else{
-                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                
+                self.dismiss(animated: false, completion: nil)
+                delegate?.selectedRenewalFromWhoWillBeCheckingIn(renewalArray: renewalArray)
+                
+                /*let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
                 let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
                 viewController.renewalsArray = renewalArray
                 
                 let transitionManager = TransitionManager()
                 self.navigationController?.transitioningDelegate = transitionManager
-                self.navigationController!.pushViewController(viewController, animated: true)
+                self.navigationController!.pushViewController(viewController, animated: true)*/
             }
         }
         
@@ -189,10 +202,13 @@ class RenewelViewController: UIViewController {
         
         if(Constant.MyClassConstants.noThanksForNonCore){
             print("NO Thanks ")
-        }
+            self.dismiss(animated: true, completion: nil)
+            Constant.MyClassConstants.noThanksForNonCore = false
+            self.delegate?.noThanks()
+        }else{
         
         if self.isCombo {
-            
+            //self.dismiss(animated: true, completion: nil)
             if(Constant.RunningDevice.deviceIdiom == .phone) {
                 let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
                 
@@ -226,17 +242,17 @@ class RenewelViewController: UIViewController {
             
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
-            viewController.noThanksSelected = true
+            Constant.MyClassConstants.noThanksForNonCore = true
             
             let transitionManager = TransitionManager()
             self.navigationController?.transitioningDelegate = transitionManager
             viewController.isFromRenewals = true
-            viewController.noThanksSelected = true
+            Constant.MyClassConstants.noThanksForNonCore = true
             let navController = UINavigationController(rootViewController: viewController)
             
-            //self.present(navController, animated:true, completion: nil)
+            self.present(navController, animated:true, completion: nil)
             
-            self.navigationController!.pushViewController(viewController, animated: true)
+            //self.navigationController!.pushViewController(viewController, animated: true)
             
         }else{
   
@@ -252,6 +268,7 @@ class RenewelViewController: UIViewController {
             self.present(navController, animated:true, completion: nil)
             
             //self.navigationController?.pushViewController(viewController, animated: true)
+        }
         }
     }
     
@@ -419,7 +436,7 @@ extension RenewelViewController:UITableViewDataSource {
                     
                     let attributeString = NSMutableAttributedString.init(string: mainString)
                     
-                    attributeString.setAttributes([NSFontAttributeName : UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(25.0))!
+                    attributeString.setAttributes([NSFontAttributeName : UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0))!
                         , NSForegroundColorAttributeName : UIColor(red: 0.0/255.0, green: 201.0/255.0, blue: 11.0/255.0, alpha: 1.0)], range: range)
                     
                     cell.renewelLbl?.attributedText = attributeString
@@ -606,7 +623,8 @@ extension RenewelViewController:RenewalOtherOptionsVCDelegate{
         viewController.isFromRenewals = true
         viewController.renewalsArray = renewalArray
         let navController = UINavigationController(rootViewController: viewController)
-        self.navigationController!.pushViewController(viewController, animated: true)
+       // self.navigationController!.pushViewController(viewController, animated: true)
+        self.present(navController, animated: true, completion: nil)
     }
 }
 

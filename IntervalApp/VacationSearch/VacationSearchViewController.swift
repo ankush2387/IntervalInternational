@@ -1780,7 +1780,21 @@ extension VacationSearchViewController:HelperDelegate {
         if (Constant.MyClassConstants.initialVacationSearch.searchCheckInDate != Helper.convertDateToString(date: Constant.MyClassConstants.vacationSearchShowDate, format: Constant.MyClassConstants.dateFormat)) {
             Helper.showNearestCheckInDateSelectedMessage()
         }
-        self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
+        
+        
+        
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
+        
+        let transitionManager = TransitionManager()
+        self.navigationController?.transitioningDelegate = transitionManager
+        let navController = UINavigationController(rootViewController: viewController)
+        self.present(navController, animated:true, completion: nil)
+
+        
+        
+        //self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
 
     }
     func resetCalendar(){

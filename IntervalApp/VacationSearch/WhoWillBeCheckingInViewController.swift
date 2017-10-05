@@ -233,7 +233,8 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 
                 Constant.MyClassConstants.selectedCreditCard.removeAll()
                 Helper.hideProgressBar(senderView: self)
-                _ = self.navigationController?.popViewController(animated: true)
+                //_ = self.navigationController?.popViewController(animated: true)
+                self.dismiss(animated: true, completion: nil)
                 
             }, onError: {(error) in
                 
@@ -249,7 +250,8 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 Helper.removeStoredGuestFormDetials()
                 SVProgressHUD.dismiss()
                 Helper.removeServiceCallBackgroundView(view: self.view)
-                 _ = self.navigationController?.popViewController(animated: true)
+                 //_ = self.navigationController?.popViewController(animated: true)
+               self.dismiss(animated: true, completion: nil)
             
             }, onError: {(error) in
               
@@ -398,7 +400,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
     //***** Function to perform checkout *****//
     @IBAction func proceedToCheckoutPressed(_ sender: AnyObject) {
         
-        if(noThanksSelected){
+        if(Constant.MyClassConstants.noThanksForNonCore){
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
             viewController.delegate = self
@@ -1315,7 +1317,12 @@ extension WhoWillBeCheckingInViewController:UITextFieldDelegate {
 extension WhoWillBeCheckingInViewController:RenewelViewControllerDelegate{
     func selectedRenewalFromWhoWillBeCheckingIn(renewalArray:[Renewal]){
         self.renewalsArray = renewalArray
-        noThanksSelected = false
+        Constant.MyClassConstants.noThanksForNonCore = false
+        let button = UIButton()
+        self.proceedToCheckoutPressed(button)
+    }
+    
+    func noThanks(){
         let button = UIButton()
         self.proceedToCheckoutPressed(button)
     }

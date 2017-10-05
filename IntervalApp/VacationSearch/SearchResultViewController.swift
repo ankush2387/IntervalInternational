@@ -430,7 +430,8 @@ class SearchResultViewController: UIViewController {
     
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
         
-        _ = self.navigationController?.popViewController(animated: true)
+        //_ = self.navigationController?.popViewController(animated: true)
+        self.dismiss(animated: true, completion: nil)
     }
     
     func resortDetailsClicked(_ toDate: Date){
@@ -698,11 +699,12 @@ class SearchResultViewController: UIViewController {
             if(response.view?.forceRenewals != nil){
                 let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
                 let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
+                viewController.delegate = self
                 
                 let transitionManager = TransitionManager()
                 self.navigationController?.transitioningDelegate = transitionManager
-                let navController = UINavigationController(rootViewController: viewController)
-                self.present(navController, animated:true, completion: nil)
+               // let navController = UINavigationController(rootViewController: viewController)
+                self.present(viewController, animated:true, completion: nil)
             }else{
                 let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
                 let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
@@ -1704,4 +1706,34 @@ extension SearchResultViewController:HelperDelegate {
     }
 
 }
+
+
+// Implementing custom delegate method definition
+extension SearchResultViewController:RenewelViewControllerDelegate {
+    
+    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray:[Renewal]){
+        
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+        viewController.renewalsArray = renewalArray
+        
+        let transitionManager = TransitionManager()
+        self.navigationController?.transitioningDelegate = transitionManager
+        
+        //let navController = UINavigationController(rootViewController: viewController)
+        
+        //self.dismiss(animated: true, completion: nil)
+        //self.present(navController, animated: true, completion: nil)
+        self.navigationController!.pushViewController(viewController, animated: true)
+    }
+    
+    func noThanks(){
+        
+    }
+    
+}
+
+
+
+
 
