@@ -158,7 +158,7 @@ extension RenewalOtherOptionsVC:UITableViewDataSource {
                     priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                     
                     // Create attributed string
-                    let mainString = "In addition, your \(String(describing: nonCoreProduct.displayName!)) membership expires before your travel date. To keep your Interval Platinum benefits, a \(term) membership fee of \n\(priceAndCurrency)\nwill be included with this transaction."
+                    let mainString = "Your \(String(describing: nonCoreProduct.displayName!)) membership expires before your travel date. To keep your Interval Platinum benefits, a \(term) membership fee of \n\(priceAndCurrency)\nwill be included with this transaction."
                     
                     let range = (mainString as NSString).range(of: priceAndCurrency)
                     
@@ -167,7 +167,7 @@ extension RenewalOtherOptionsVC:UITableViewDataSource {
                     attributeString.setAttributes([NSFontAttributeName : UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0))!
                         , NSForegroundColorAttributeName : UIColor(red: 0.0/255.0, green: 201.0/255.0, blue: 11.0/255.0, alpha: 1.0)], range: range)
                     
-                    let nextLine = NSMutableAttributedString.init(string: "\n\n")
+                    /*let nextLine = NSMutableAttributedString.init(string: "\n\n")
                     
                     let attributedString = cell.renewelLbl?.attributedText
                     
@@ -175,9 +175,9 @@ extension RenewalOtherOptionsVC:UITableViewDataSource {
                     
                     combination.append(attributedString!)
                     combination.append(nextLine)
-                    combination.append(attributeString)
+                    combination.append(attributeString)*/
                     
-                    cell.renewelLbl?.attributedText = combination
+                    cell.renewelLbl?.attributedText = attributeString
                     
                     // set button select tag
                     cell.buttonSelect.tag = indexPath.section
