@@ -17,7 +17,6 @@ class RenewelCell: UITableViewCell {
     
     @IBOutlet weak var renewelnonCoreImageView: UIImageView?
     
-
     @IBOutlet weak var buttonSelect: UIButton!
 
     @IBOutlet weak var viewContent: UIView?

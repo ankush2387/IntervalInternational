@@ -291,7 +291,7 @@ extension RenewelViewController:UITableViewDataSource {
                             cell.renewelCoreImageView?.image = UIImage.init(named: renewalComboProduct.productCode!)
                             
                             
-                            let price = String(format:"%.2f", renewalComboProduct.price)
+                            let price = String(format:"%.0f", renewalComboProduct.price)
                             
                             priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                             
@@ -311,7 +311,7 @@ extension RenewelViewController:UITableViewDataSource {
                         } else {
                             cell.renewelnonCoreImageView?.image = UIImage.init(named: renewalComboProduct.productCode!)
                             
-                            let price = String(format:"%.2f", renewalComboProduct.price)
+                            let price = String(format:"%.0f", renewalComboProduct.price)
                             
                             priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                             
@@ -381,7 +381,7 @@ extension RenewelViewController:UITableViewDataSource {
                     
                     let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.currencyCode)!)
                     
-                    let price = String(format:"%.2f", product.price)
+                    let price = String(format:"%.0f", product.price)
                     
                     priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                     
@@ -419,7 +419,7 @@ extension RenewelViewController:UITableViewDataSource {
                         
                         let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.currencyCode)!)
                         
-                        let price = String(format:"%.2f", nonCoreProduct.price)
+                        let price = String(format:"%.0f", nonCoreProduct.price)
                         
                         priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                         
@@ -468,7 +468,7 @@ extension RenewelViewController:UITableViewDataSource {
                         
                         let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.currencyCode)!)
                         
-                        let price = String(format:"%.2f", nonCoreProduct.price)
+                        let price = String(format:"%.0f", nonCoreProduct.price)
                         
                         priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                         
