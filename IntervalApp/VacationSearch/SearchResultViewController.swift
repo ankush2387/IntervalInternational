@@ -696,14 +696,20 @@ class SearchResultViewController: UIViewController {
             
             
             if(response.view?.forceRenewals != nil){
-                self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: self)
+                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
+                
+                let transitionManager = TransitionManager()
+                self.navigationController?.transitioningDelegate = transitionManager
+                let navController = UINavigationController(rootViewController: viewController)
+                self.present(navController, animated:true, completion: nil)
             }else{
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
-            
-            let transitionManager = TransitionManager()
-            self.navigationController?.transitioningDelegate = transitionManager
-            self.navigationController!.pushViewController(viewController, animated: true)
+                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+                
+                let transitionManager = TransitionManager()
+                self.navigationController?.transitioningDelegate = transitionManager
+                self.navigationController!.pushViewController(viewController, animated: true)
             }
             
         }, onError: { (error) in
