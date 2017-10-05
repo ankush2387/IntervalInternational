@@ -611,6 +611,10 @@ class Constant: NSObject {
         
         
         static var otherOptions = NSLocalizedString("Other Options", comment: "")
+        static var renewNow = NSLocalizedString("Renew Now", comment: "")
+        static var noThanks = NSLocalizedString("No Thanks", comment: "")
+        
+        static var noThanksForNonCore = false
         
     }
     

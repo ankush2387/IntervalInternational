@@ -10,7 +10,15 @@ import UIKit
 import IntervalUIKit
 import DarwinSDK
 
+//***** Custom delegate method declaration *****//
+protocol RenewalOtherOptionsVCDelegate {
+    func selectedRenewal(selectedRenewal:String)
+}
+
 class RenewalOtherOptionsVC: UIViewController {
+    
+    //***** Custom cell delegate to access the delegate method *****//
+    var delegate: RenewalOtherOptionsVCDelegate?
     
     //MARK:- clas  outlets
     @IBOutlet weak var renewalOtherOptionsTableView: UITableView!
@@ -59,12 +67,11 @@ class RenewalOtherOptionsVC: UIViewController {
     @IBAction func selectClicked(_ sender: UIButton) {
         // core select clicked
         if sender.tag == 0 {
-            print("core selecte clicked")
-            
+            delegate?.selectedRenewal(selectedRenewal: "Core")
         } else { // non core select clicked
-            print("non core selecte clicked")
-            
+            delegate?.selectedRenewal(selectedRenewal: "NonCore")
         }
+        self.dismiss(animated: true, completion: nil)
     }
     
 }
