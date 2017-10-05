@@ -942,6 +942,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                         }
                         
                         
+                        
                     }else if(indexPath.row == 0 && !Constant.MyClassConstants.isFromExchange){
                         cell.priceLabel.text = Constant.MyClassConstants.getawayFee
                         cell.primaryPriceLabel.text = String(Int(Float(Constant.MyClassConstants.inventoryPrice[0].price)))
@@ -975,6 +976,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                         subviews.isHidden = true
                     }
                 }
+                cell.primaryPriceLabel.sizeToFit()
                 return cell
             case 2:
                 

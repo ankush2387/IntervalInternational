@@ -115,7 +115,7 @@ extension RenewalOtherOptionsVC:UITableViewDataSource {
                     
                     let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.currencyCode)!)
                     
-                    let price = String(format:"%.2f", product.price)
+                    let price = String(format:"%.0f", product.price)
                     
                     priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                     
@@ -153,7 +153,7 @@ extension RenewalOtherOptionsVC:UITableViewDataSource {
                     
                     let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.currencyCode)!)
                     
-                    let price = String(format:"%.2f", nonCoreProduct.price)
+                    let price = String(format:"%.0f", nonCoreProduct.price)
                     
                     priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                     
