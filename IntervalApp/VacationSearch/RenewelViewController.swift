@@ -78,6 +78,13 @@ class RenewelViewController: UIViewController {
             renewalsTableView.tableHeaderView = headerLabel
         }
         checkForComboNonCombo()
+        
+        /*let value: Int = 1605436
+        
+        // "1,605,436" where Locale == en_US
+        let formattedInt = String(format: "%d", locale: Locale.current, value)
+        
+        print("formated price is \(formattedInt)")*/
 
         // Do any additional setup after loading the view.
     }
@@ -572,12 +579,7 @@ extension RenewelViewController:UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        if (indexPath.section == 1) { // change condition later when working on non combo
-            return 80
-        } else {
-            return 250
-        }
-        
+        return 250
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
