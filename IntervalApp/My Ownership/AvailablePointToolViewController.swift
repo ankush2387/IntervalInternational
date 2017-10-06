@@ -163,7 +163,7 @@ extension AvailablePointToolViewController:UITableViewDataSource{
                 
                 cell.pointsLabel.text = String(usage.points!)
                 cell.expirationdateLabel.text = "\(month) \(year)"
-                cell.depositstatusLabel.text = usage.pointsEarnedBy?.capitalized
+                cell.depositstatusLabel.text = usage.pointsType?.capitalized
                 
                 return cell
 
