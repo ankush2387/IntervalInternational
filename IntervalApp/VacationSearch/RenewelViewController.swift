@@ -213,36 +213,34 @@ class RenewelViewController: UIViewController {
         
         if self.isCombo {
             self.dismiss(animated: false, completion: nil)
-            //self.navigationController?.popViewController(animated: true)
             self.delegate?.otherOptions(forceRenewals: self.forceRenewals)
             return
-            /*if(Constant.RunningDevice.deviceIdiom == .phone) {
-                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-                
-                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.renewalOtherOptionsVC) as! RenewalOtherOptionsVC
-                viewController.delegate = self
-                
-                viewController.forceRenewals = self.forceRenewals
-                self.present(viewController, animated:true, completion: nil)
-                
-                return
-                
-            } else {
-                
-                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-                
-                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.renewalOtherOptionsVC) as! RenewalOtherOptionsVC
-                viewController.delegate = self
-                
-                viewController.forceRenewals = self.forceRenewals
-                self.present(viewController, animated:true, completion: nil)
-                
-                return
-                
-            }*/
-        
-        }else{
-            Constant.MyClassConstants.noThanksForNonCore = true
+        }else if(isNonCore){
+            if(Constant.MyClassConstants.noThanksForNonCore){
+                Constant.MyClassConstants.noThanksForNonCore = false
+            }else{
+                if(Constant.MyClassConstants.isNoThanksFromRenewalAgain){
+                    Constant.MyClassConstants.isNoThanksFromRenewalAgain = false
+                    self.dismiss(animated: true, completion: nil)
+                    self.delegate?.noThanks()
+                    return
+                }else{
+                    Constant.MyClassConstants.noThanksForNonCore = true
+                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                    let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+                    Constant.MyClassConstants.noThanksForNonCore = true
+                    
+                    let transitionManager = TransitionManager()
+                    self.navigationController?.transitioningDelegate = transitionManager
+                    viewController.isFromRenewals = true
+                    Constant.MyClassConstants.noThanksForNonCore = true
+                    let navController = UINavigationController(rootViewController: viewController)
+                    
+                    self.present(navController, animated:true, completion: nil)
+                }
+            }
+
+            return
         }
         
         if(Constant.RunningDevice.deviceIdiom == .phone){
@@ -287,7 +285,7 @@ class RenewelViewController: UIViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         if(segue.destination.isKind(of: WhoWillBeCheckingInViewController.self)){
-            print("ghadkjs")
+            
             let whoWillBeCheckingInVwController = segue.destination as! WhoWillBeCheckingInViewController
             whoWillBeCheckingInVwController.renewalsArray = renewalArray
         }
@@ -556,7 +554,6 @@ extension RenewelViewController:UITableViewDataSource {
             
         }
         
-        
         return cell
         
     }
@@ -575,7 +572,12 @@ extension RenewelViewController:UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 250
+        if (indexPath.section == 1) { // change condition later when working on non combo
+            return 80
+        } else {
+            return 250
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
