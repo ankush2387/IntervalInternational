@@ -1631,6 +1631,10 @@ extension VacationSearchResultIPadController:HelperDelegate {
 
 //MARK:- Implementing RenewelViewControllerDelegate definition
 extension VacationSearchResultIPadController:RenewelViewControllerDelegate {
+    func otherOptions(forceRenewals: ForceRenewals) {
+        
+    }
+
     
     func selectedRenewalFromWhoWillBeCheckingIn(renewalArray:[Renewal]){
         

@@ -12,7 +12,7 @@ import DarwinSDK
 
 //***** Custom delegate method declaration *****//
 protocol RenewalOtherOptionsVCDelegate {
-    func selectedRenewal(selectedRenewal:String)
+    func selectedRenewal(selectedRenewal:String, forceRenewals: ForceRenewals)
 }
 
 class RenewalOtherOptionsVC: UIViewController {
@@ -67,9 +67,9 @@ class RenewalOtherOptionsVC: UIViewController {
     @IBAction func selectClicked(_ sender: UIButton) {
         // core select clicked
         if sender.tag == 0 {
-            delegate?.selectedRenewal(selectedRenewal: "Core")
+            delegate?.selectedRenewal(selectedRenewal: "Core", forceRenewals: forceRenewals)
         } else { // non core select clicked
-            delegate?.selectedRenewal(selectedRenewal: "NonCore")
+            delegate?.selectedRenewal(selectedRenewal: "NonCore", forceRenewals: forceRenewals)
         }
         self.dismiss(animated: true, completion: nil)
     }
@@ -223,4 +223,6 @@ extension RenewalOtherOptionsVC:UITableViewDelegate {
     
     
 }
+
+
 

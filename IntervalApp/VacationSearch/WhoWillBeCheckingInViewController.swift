@@ -233,8 +233,15 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 
                 Constant.MyClassConstants.selectedCreditCard.removeAll()
                 Helper.hideProgressBar(senderView: self)
-                //_ = self.navigationController?.popViewController(animated: true)
-                self.dismiss(animated: true, completion: nil)
+                
+                // pop and dismiss view according to conditions
+                if (Constant.MyClassConstants.noThanksForNonCore) {
+                    self.dismiss(animated: true, completion: nil)
+                    
+                } else {
+                    _ = self.navigationController?.popViewController(animated: true)
+                }
+                
                 
             }, onError: {(error) in
                 
@@ -250,11 +257,16 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 Helper.removeStoredGuestFormDetials()
                 SVProgressHUD.dismiss()
                 Helper.removeServiceCallBackgroundView(view: self.view)
-                 //_ = self.navigationController?.popViewController(animated: true)
-               self.dismiss(animated: true, completion: nil)
+            
+            // pop and dismiss view according to conditions
+            if (Constant.MyClassConstants.noThanksForNonCore) {
+                self.dismiss(animated: true, completion: nil)
+                
+            } else {
+                _ = self.navigationController?.popViewController(animated: true)
+            }
             
             }, onError: {(error) in
-              
                 SVProgressHUD.dismiss()
                 Helper.removeServiceCallBackgroundView(view: self.view)
                 SimpleAlert.alert(self, title: Constant.ControllerTitles.whoWillBeCheckingInControllerTitle, message: Constant.AlertMessages.operationFailedMessage)
@@ -401,8 +413,10 @@ class WhoWillBeCheckingInViewController: UIViewController {
     @IBAction func proceedToCheckoutPressed(_ sender: AnyObject) {
         
         if(Constant.MyClassConstants.noThanksForNonCore){
+            Constant.MyClassConstants.isNoThanksFromRenewalAgain = true
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
+            Constant.MyClassConstants.noThanksForNonCore = false
             viewController.delegate = self
             
             let transitionManager = TransitionManager()
@@ -1325,6 +1339,11 @@ extension WhoWillBeCheckingInViewController:RenewelViewControllerDelegate{
     func noThanks(){
         let button = UIButton()
         self.proceedToCheckoutPressed(button)
+    }
+    
+    func otherOptions(forceRenewals: ForceRenewals) {
+
+        print("remove later")
     }
 }
 

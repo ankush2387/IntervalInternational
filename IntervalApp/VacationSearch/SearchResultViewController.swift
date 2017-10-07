@@ -906,7 +906,10 @@ extension SearchResultViewController:UICollectionViewDelegate {
                         SVProgressHUD.dismiss()
                         Helper.removeServiceCallBackgroundView(view: self.view)
                         Constant.MyClassConstants.viewResponse = response.view!
-                        Constant.MyClassConstants.rentalFees = [(response.view?.fees)!]
+                        if let rentalFees = response.view?.fees{
+                            Constant.MyClassConstants.rentalFees = [rentalFees]
+                        }
+                        
                         Constant.MyClassConstants.guestCertificate = response.view?.fees?.guestCertificate
                         Constant.MyClassConstants.onsiteArray.removeAllObjects()
                         Constant.MyClassConstants.nearbyArray.removeAllObjects()
@@ -1725,6 +1728,82 @@ extension SearchResultViewController:RenewelViewControllerDelegate {
         
     }
     
+    func otherOptions(forceRenewals: ForceRenewals) {
+        
+        print("other options")
+        
+        if(Constant.RunningDevice.deviceIdiom == .phone) {
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+            
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.renewalOtherOptionsVC) as! RenewalOtherOptionsVC
+            viewController.delegate = self
+            
+            viewController.forceRenewals = forceRenewals
+            self.present(viewController, animated:true, completion: nil)
+            
+            return
+            
+        } else {
+            
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+            
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.renewalOtherOptionsVC) as! RenewalOtherOptionsVC
+            viewController.delegate = self
+            
+            viewController.forceRenewals = forceRenewals
+            self.present(viewController, animated:true, completion: nil)
+            
+            return
+            
+        }
+
+        
+        
+    }
+    
+}
+
+
+
+//Mark:- Other Options Delegate
+extension SearchResultViewController:RenewalOtherOptionsVCDelegate{
+    func selectedRenewal(selectedRenewal: String, forceRenewals: ForceRenewals) {
+        var renewalArray = [Renewal]()
+        renewalArray.removeAll()
+        if(selectedRenewal == "Core"){
+            // Selected core renewal
+            for renewal in forceRenewals.products{
+                if(renewal.term == 12){
+                    let renewalItem = Renewal()
+                    renewalItem.id = renewal.id
+                    renewalArray.append(renewalItem)
+                    break
+                }
+            }
+        }else{
+            // Selected non core renewal
+            for renewal in forceRenewals.crossSelling{
+                if(renewal.term == 12){
+                    let renewalItem = Renewal()
+                    renewalItem.id = renewal.id
+                    renewalArray.append(renewalItem)
+                    break
+                }
+            }
+        }
+        
+        // Selected single renewal from other options. Navigate to WhoWillBeCheckingIn screen
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+        
+        let transitionManager = TransitionManager()
+        self.navigationController?.transitioningDelegate = transitionManager
+        viewController.isFromRenewals = true
+        viewController.renewalsArray = renewalArray
+        //let navController = UINavigationController(rootViewController: viewController)
+        self.navigationController!.pushViewController(viewController, animated: true)
+        //self.present(navController, animated: true, completion: nil)
+    }
 }
 
 

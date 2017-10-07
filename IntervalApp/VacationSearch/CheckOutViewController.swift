@@ -1312,6 +1312,7 @@ extension CheckOutViewController:UITableViewDataSource {
                 }
                 cell.selectionStyle = .none
                 cell.primaryPriceLabel.sizeToFit()
+
                 return cell
                 
             }else if(indexPath.section == 6){
@@ -1407,7 +1408,15 @@ extension CheckOutViewController:UITableViewDataSource {
                 }else{
                     cell.priceLabel.text = String(Int(Float(Constant.MyClassConstants.rentalFees[0].total)))
                     var priceString = "\(Constant.MyClassConstants.rentalFees[0].total)"
-                    var targetString = String(Int(Float(Constant.MyClassConstants.rentalFees[0].total)))
+                    
+                    let formatter = NumberFormatter()
+                    formatter.numberStyle = .decimal
+                    let formattedprice = formatter.string(for: Int(cell.priceLabel.text!))
+                    
+                   // var targetString = String(Int(Float(Constant.MyClassConstants.rentalFees[0].total)))
+                    
+                    var targetString = formattedprice!
+                    
                     if let total = recapFeesTotal {
                         cell.priceLabel.text = String(Int(Float(total)))
                         priceString = "\(total)"
@@ -1417,8 +1426,10 @@ extension CheckOutViewController:UITableViewDataSource {
                     let priceArray = priceString.components(separatedBy: ".")
                     
                     if((priceArray.last?.characters.count)! > 1) {
+                        
                         cell.fractionalPriceLabel.text = "\(priceArray.last!)"
                     }else{
+                        
                         cell.fractionalPriceLabel.text = "\(priceArray.last!)0"
                     }
                     
@@ -1430,9 +1441,11 @@ extension CheckOutViewController:UITableViewDataSource {
                     let range = NSMakeRange(0, targetString.characters.count)
                     
                     cell.priceLabel.attributedText = Helper.attributedString(from: targetString, nonBoldRange: range, font: font!)
+                    
                     cell.periodLabel.frame.origin.x = cell.priceLabel.frame.origin.x + width
                     cell.fractionalPriceLabel.frame.origin.x = cell.periodLabel.frame.origin.x + cell.periodLabel.frame.size.width + 5
                 }
+                
                 return cell
                 
             }else {
@@ -1447,6 +1460,7 @@ extension CheckOutViewController:UITableViewDataSource {
                     cell.priceLabel.text = String(Int(Float(total)))
                     
                 }
+                
                 return cell
             }
         }
