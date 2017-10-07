@@ -653,8 +653,7 @@ class CheckOutViewController: UIViewController {
 
 }
 
-//Extension class starts from here
-
+//MARK:- Table View Delegate
 extension CheckOutViewController:UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -703,14 +702,11 @@ extension CheckOutViewController:UITableViewDelegate {
     
 }
 
-
+//MARK:- Table View Data Source
 extension CheckOutViewController:UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        
-        
         return self.requiredSectionIntTBLview
-        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -1457,7 +1453,7 @@ extension CheckOutViewController:UITableViewDataSource {
     }
   }
 
-
+//MARK:- Gesture Recognizer Delegate
 extension CheckOutViewController:UIGestureRecognizerDelegate{
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool{
         return true
@@ -1473,7 +1469,7 @@ extension CheckOutViewController:UIGestureRecognizerDelegate{
     }
 }
 
-
+//MARK:- Web View Delegate
 extension CheckOutViewController:UIWebViewDelegate {
     
     func webViewDidStartLoad(_ webView: UIWebView)
@@ -1495,6 +1491,7 @@ extension CheckOutViewController:UIWebViewDelegate {
     }
 }
 
+//MARK:- Text Field Delegate
 extension CheckOutViewController:UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {

@@ -589,7 +589,7 @@ extension FloatDetailViewController : UITableViewDataSource{
     
             let saveandcancelCell = tableView.dequeueReusableCell(withIdentifier: Constant.floatDetailViewController.saveandcancelcellIdentifier) as? FloatSaveAndCancelButtonTableViewCell
             
-            if(proceedStatus == true && Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate != nil){
+            if(proceedStatus == true){
                 saveandcancelCell?.saveFloatDetailButton.alpha =  1.0
                 saveandcancelCell?.saveFloatDetailButton.isEnabled = true
                 return saveandcancelCell!

@@ -693,24 +693,18 @@ class SearchResultViewController: UIViewController {
             SVProgressHUD.dismiss()
             Helper.removeServiceCallBackgroundView(view: self.view)
             Constant.MyClassConstants.membershipContactArray = Membership.contacts!
-            
-            
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+            let transitionManager = TransitionManager()
+            self.navigationController?.transitioningDelegate = transitionManager
             
             if(response.view?.forceRenewals != nil){
-                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                // Navigate to Renewals Screen
                 let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
                 viewController.delegate = self
-                
-                let transitionManager = TransitionManager()
-                self.navigationController?.transitioningDelegate = transitionManager
-               // let navController = UINavigationController(rootViewController: viewController)
                 self.present(viewController, animated:true, completion: nil)
             }else{
-                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                // Navigate to Who Will Be Checking in Screen
                 let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
-                
-                let transitionManager = TransitionManager()
-                self.navigationController?.transitioningDelegate = transitionManager
                 self.navigationController!.pushViewController(viewController, animated: true)
             }
             

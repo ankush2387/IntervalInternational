@@ -52,6 +52,8 @@ class CheckOutIPadViewController: UIViewController {
     var isDepositPromotionAvailable = false
     
     var filterRelinquishments = ExchangeRelinquishment()
+    var totalRowsInCost = 0
+    var renewalsArray = [Renewal]()
     
     override func viewWillAppear(_ animated: Bool) {
         Helper.removeServiceCallBackgroundView(view: self.view)
@@ -127,6 +129,9 @@ class CheckOutIPadViewController: UIViewController {
             }
             
         }
+        
+        renewalsArray.removeAll()
+        renewalsArray = Constant.MyClassConstants.rentalFees[0].renewals
         
         //Register custom cell xib with tableview
         self.remainingResortHoldingTimeLabel.text = Constant.holdingResortForRemainingMinutes
@@ -636,7 +641,7 @@ class CheckOutIPadViewController: UIViewController {
 
 }
 
-//Extension class starts from here
+//MARK:- Table View Delegate
 
 extension CheckOutIPadViewController:UITableViewDelegate {
     
@@ -680,7 +685,7 @@ extension CheckOutIPadViewController:UITableViewDelegate {
     }
 }
 
-
+//MARK:- Table View Datasource
 extension CheckOutIPadViewController:UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -702,19 +707,25 @@ extension CheckOutIPadViewController:UITableViewDataSource {
             switch section{
             case 1:
                 
-                if((Constant.MyClassConstants.isFromExchange || !Constant.MyClassConstants.isFromExchange) && Constant.MyClassConstants.enableTaxes) || ( Constant.MyClassConstants.enableGuestCertificate && self.isTripProtectionEnabled){
+                if(Constant.MyClassConstants.enableTaxes || ( Constant.MyClassConstants.enableGuestCertificate && self.isTripProtectionEnabled)){
                     if(eplusAdded){
-                        return 3
+                        totalRowsInCost = 3 + renewalsArray.count
+                        return totalRowsInCost
                     }else{
-                        return 2
+                        totalRowsInCost = 2 + renewalsArray.count
+                        return totalRowsInCost
+
                     }
                 }else{
                     if(eplusAdded){
-                        return 2
+                        totalRowsInCost = 2 + renewalsArray.count
+                        return totalRowsInCost
+
                     }else{
-                        return 1
+                        totalRowsInCost = 1 + renewalsArray.count
+                        return totalRowsInCost
+
                     }
-                    
                 }
                 
             case 2:
@@ -794,7 +805,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
         //showInsurance = false
         switch tableView.tag {
         case 2:
-            if ((indexPath.section == 3 && !self.isPromotionsEnabled) || (indexPath.section == 2 && !self.isTripProtectionEnabled && !Constant.MyClassConstants.enableGuestCertificate) || (indexPath.section == 1 && !Constant.MyClassConstants.isFromExchange && !Constant.MyClassConstants.enableTaxes)) {
+            if ((indexPath.section == 3 && !self.isPromotionsEnabled) || (indexPath.section == 2 && !self.isTripProtectionEnabled && !Constant.MyClassConstants.enableGuestCertificate)) {
                 isHeightZero = true
                 return 0
             }else if(indexPath.section == 3 && self.isPromotionsEnabled && destinationPromotionSelected){
@@ -804,7 +815,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
             }else if(indexPath.section == 4){
                 return 60
             }else if(indexPath.section == 1 || indexPath.section == 2){
-                return 50 
+                return UITableViewAutomaticDimension
             }else{
                 return 80
             }
@@ -946,7 +957,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                     }else if(indexPath.row == 0 && !Constant.MyClassConstants.isFromExchange){
                         cell.priceLabel.text = Constant.MyClassConstants.getawayFee
                         cell.primaryPriceLabel.text = String(Int(Float(Constant.MyClassConstants.inventoryPrice[0].price)))
-                    }else{
+                    }else if(indexPath.row == 1 && Constant.MyClassConstants.enableTaxes){
                         cell.priceLabel.text = Constant.MyClassConstants.taxesTitle
                         var rentalTax = 0
                         if(Constant.MyClassConstants.isFromExchange){
@@ -955,6 +966,23 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                             rentalTax = Int((Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.rental?.rentalPrice?.tax)!)
                         }
                         cell.primaryPriceLabel.text = "\(rentalTax)"
+                    }else{
+                        if(renewalsArray.count > 0){
+                            let renewalIndex = indexPath.row - (totalRowsInCost - renewalsArray.count)
+                            
+                            cell.priceLabel.numberOfLines = 0
+                            cell.priceLabel.text = "\(String(describing: renewalsArray[renewalIndex].displayName!)) Renewal Fee"
+                            
+                            let priceString = "\(renewalsArray[renewalIndex].price)"
+                            let priceArray = priceString.components(separatedBy: ".")
+                            cell.primaryPriceLabel.text = priceArray.first
+                            if((priceArray.last?.characters.count)! > 1) {
+                                cell.fractionalPriceLabel.text = "\(String(describing: priceArray.last!))"
+                            }else{
+                                cell.fractionalPriceLabel.text = "00"
+                            }
+                            
+                        }
                     }
                     
                     let font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 16.0)
@@ -1402,6 +1430,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
     }
 }
 
+//MARK:- Gesture Recognizer Delegate
 extension CheckOutIPadViewController:UIGestureRecognizerDelegate{
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool{
         return true
@@ -1417,6 +1446,7 @@ extension CheckOutIPadViewController:UIGestureRecognizerDelegate{
     }
 }
 
+//MARK:- WebView Delegate
 extension CheckOutIPadViewController:UIWebViewDelegate {
     
     func webViewDidStartLoad(_ webView: UIWebView)
@@ -1438,6 +1468,7 @@ extension CheckOutIPadViewController:UIWebViewDelegate {
     }
 }
 
+//MARK:- Text Field Delegate
 extension CheckOutIPadViewController:UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {

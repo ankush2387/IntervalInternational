@@ -35,6 +35,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     var decreaseValue = 1
     var selectedCountryIndex: Int?
     var isFromRenewals = false
+    var renewalsArray = [Renewal()]
     
     
     var filterRelinquishments = ExchangeRelinquishment()
@@ -352,6 +353,17 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     
     //***** Function for proceed to checkout button click. *****//
     @IBAction func proceedToCheckoutPressed(_ sender: AnyObject) {
+        
+        if(Constant.MyClassConstants.noThanksForNonCore){
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
+            viewController.delegate = self
+            
+            let transitionManager = TransitionManager()
+            self.navigationController?.transitioningDelegate = transitionManager
+            let navController = UINavigationController(rootViewController: viewController)
+            self.present(navController, animated:true, completion: nil)
+        }else{
         if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
         let exchangeProcessRequest = ExchangeProcessContinueToCheckoutRequest()
         
@@ -482,6 +494,10 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                 
                 Constant.MyClassConstants.enableGuestCertificate = true
             }
+            
+            if(renewalsArray.count > 0){
+                processRequest1.renewals = renewalsArray
+            }
             Helper.showProgressBar(senderView: self)
             let processResort = RentalProcess()
             processResort.holdUnitStartTimeInMillis = Constant.holdingTime
@@ -516,6 +532,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                 SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                 
             })
+        }
         }
      }
     
@@ -1186,4 +1203,19 @@ extension WhoWillBeCheckingInIPadViewController:UITextFieldDelegate{
     }
     
 }
+//MARK:- Extension for renewals
+extension WhoWillBeCheckingInIPadViewController:RenewelViewControllerDelegate{
+    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray:[Renewal]){
+        self.renewalsArray = renewalArray
+        Constant.MyClassConstants.noThanksForNonCore = false
+        let button = UIButton()
+        self.proceedToCheckoutPressed(button)
+    }
+    
+    func noThanks(){
+        let button = UIButton()
+        self.proceedToCheckoutPressed(button)
+    }
+}
+
 
