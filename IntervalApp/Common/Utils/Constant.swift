@@ -619,6 +619,8 @@ class Constant: NSObject {
         
         static var noThanksForNonCore = false
         
+        static var isDismissWhoWillBeCheckin = false
+        
     }
     
     // Enum to store resorts and destinations

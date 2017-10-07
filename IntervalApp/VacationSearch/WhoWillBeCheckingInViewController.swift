@@ -235,7 +235,8 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 Helper.hideProgressBar(senderView: self)
                 
                 // pop and dismiss view according to conditions
-                if (Constant.MyClassConstants.noThanksForNonCore) {
+                if (Constant.MyClassConstants.isDismissWhoWillBeCheckin) {
+                    Constant.MyClassConstants.isDismissWhoWillBeCheckin = false
                     self.dismiss(animated: true, completion: nil)
                     
                 } else {
@@ -259,7 +260,8 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 Helper.removeServiceCallBackgroundView(view: self.view)
             
             // pop and dismiss view according to conditions
-            if (Constant.MyClassConstants.noThanksForNonCore) {
+            if (Constant.MyClassConstants.isDismissWhoWillBeCheckin) {
+                Constant.MyClassConstants.isDismissWhoWillBeCheckin = false
                 self.dismiss(animated: true, completion: nil)
                 
             } else {
@@ -424,7 +426,10 @@ class WhoWillBeCheckingInViewController: UIViewController {
             let navController = UINavigationController(rootViewController: viewController)
             self.present(navController, animated:true, completion: nil)
         }else{
+           
+            
             if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() || Constant.MyClassConstants.searchBothExchange){
+                
                 let exchangeProcessRequest = ExchangeProcessContinueToCheckoutRequest()
                 
                 if(self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count) {
@@ -1337,6 +1342,7 @@ extension WhoWillBeCheckingInViewController:RenewelViewControllerDelegate{
     }
     
     func noThanks(){
+        Constant.MyClassConstants.isDismissWhoWillBeCheckin = true
         let button = UIButton()
         self.proceedToCheckoutPressed(button)
     }
