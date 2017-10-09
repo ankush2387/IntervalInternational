@@ -556,10 +556,16 @@ class SearchResultViewController: UIViewController {
         
         processRequest.destination = Constant.MyClassConstants.exchangeDestination
         processRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
-        if(Constant.MyClassConstants.filterRelinquishments[0].openWeek?.relinquishmentId != nil){
-            processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[0].openWeek?.relinquishmentId
-        }else{
-            processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[0].deposit?.relinquishmentId
+        if let openWeek = Constant.MyClassConstants.filterRelinquishments[0].openWeek{
+            processRequest.relinquishmentId = openWeek.relinquishmentId
+        }
+        
+        if let deposit = Constant.MyClassConstants.filterRelinquishments[0].deposit{
+            processRequest.relinquishmentId = deposit.relinquishmentId
+        }
+        
+        if let pointsProgram = Constant.MyClassConstants.filterRelinquishments[0].pointsProgram{
+            processRequest.relinquishmentId = pointsProgram.relinquishmentId
         }
         
         
@@ -1725,7 +1731,12 @@ extension SearchResultViewController:RenewelViewControllerDelegate {
     }
     
     func noThanks(){
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
         
+        let transitionManager = TransitionManager()
+        self.navigationController?.transitioningDelegate = transitionManager
+        self.navigationController!.pushViewController(viewController, animated: true)
     }
     
     func otherOptions(forceRenewals: ForceRenewals) {
