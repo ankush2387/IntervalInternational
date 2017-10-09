@@ -49,6 +49,7 @@ class GoogleMapViewController: UIViewController {
     var listTableView:UITableView!
     var drawButtonView:UIView!
     var applyButton:UIBarButtonItem!
+    var locationManager = CLLocationManager()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -229,8 +230,17 @@ class GoogleMapViewController: UIViewController {
         }
         
         
+        //Location Manager code to fetch current location
+        self.locationManager.delegate = self
+        self.locationManager.startUpdatingLocation()
+        
+        
         mapView.delegate = self
         mapView.animate(toZoom: 8)
+        
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        
         
         self.searchDisplayTableView.isHidden = true
         
@@ -1261,7 +1271,7 @@ class GoogleMapViewController: UIViewController {
     }
     
     
-    func nameLablePressed(_ sender: UITapGestureRecognizer) {
+    func nameLabelPressed(_ sender: UITapGestureRecognizer) {
         
         if(Constant.MyClassConstants.systemAccessToken != nil) {
             let selectedResort = Constant.MyClassConstants.resortsArray[index]
@@ -1273,8 +1283,43 @@ class GoogleMapViewController: UIViewController {
     
 }
 
+// **** To Show user current location on map. **** //
+extension GoogleMapViewController:CLLocationManagerDelegate{
+    
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        // According to MOBI-879 changes made for centre map on cuurent location of user.
+        if status == .authorizedWhenInUse {
+            locationManager.startUpdatingLocation()
+            
+            mapView.isMyLocationEnabled = true
+           
+        }else{
+           
+            let latitude: Double = 40.68
+            let longitude: Double = -97.83
+            mapView.camera = GMSCameraPosition.camera(withLatitude: latitude,longitude: longitude, zoom: self.mapView.camera.zoom)
+            
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.last {
+            mapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
+            locationManager.stopUpdatingLocation()
+        
+        }
+    }
+    
+}
+    
+
+
+
 //***** Map view delegate methods to handle map *****//
 extension GoogleMapViewController:GMSMapViewDelegate {
+    
+    
     
     //***** this method called when map will move *****//
     func mapView(_ mapView: GMSMapView, willMove gesture: Bool) {
@@ -1515,7 +1560,7 @@ extension GoogleMapViewController:UICollectionViewDataSource {
         resortNameLabel.text = resort.resortName
         resortNameLabel.textColor = IUIKColorPalette.primary1.color
         resortNameLabel.isUserInteractionEnabled = true
-        let resortNamePressed =  UITapGestureRecognizer(target: self, action: #selector(self.nameLablePressed(_:)))
+        let resortNamePressed =  UITapGestureRecognizer(target: self, action: #selector(self.nameLabelPressed(_:)))
         resortNameLabel.addGestureRecognizer(resortNamePressed)
         resortNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
         resortNameGradientView.addSubview(resortNameLabel)

@@ -108,14 +108,15 @@ extension CalendarViewController:FSCalendarDelegate {
         
          if(self.requestedController == Constant.MyClassConstants.relinquishment) {
         
-            if(Constant.MyClassConstants.floatDetailsCalendarDateArray.contains(date)) {
-            
-                return true
-            }
-            else {
-            
-                return false
-            }
+//            if(Constant.MyClassConstants.floatDetailsCalendarDateArray.contains(date)) {
+//            
+//                return true
+//            }
+//            else {
+//            
+//                return false
+//            }
+            return true
         }
          else {
             
