@@ -149,13 +149,6 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     // Function to dismis current controller on back button pressed.
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
         
-       /* let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
-        for aViewController:UIViewController in viewControllers {
-            if aViewController.isKind(of: WhatToUseViewController.self) {
-                _ = self.navigationController?.popToViewController(aViewController, animated: true)
-            }
-        }*/
-        
         Helper.showProgressBar(senderView: self)
         if(Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
             Constant.holdingTimer.invalidate()
@@ -164,18 +157,16 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                 
                 Constant.MyClassConstants.selectedCreditCard.removeAll()
                 Helper.hideProgressBar(senderView: self)
-                if (self.isFromRenewals) {
-                    let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
-                    for aViewController:UIViewController in viewControllers {
-                        if aViewController.isKind(of: WhatToUseViewController.self) {
-                            _ = self.navigationController?.popToViewController(aViewController, animated: true)
-                        }
-                    }
-                    //self.dismiss(animated: true, completion: nil)
-                    //_ = self.navigationController?.popToRootViewController(animated: true)
-              
+                
+                // pop and dismiss view according to conditions
+                if (Constant.MyClassConstants.isDismissWhoWillBeCheckin) {
+                    Constant.MyClassConstants.isDismissWhoWillBeCheckin = false
+                    self.dismiss(animated: true, completion: nil)
+                    
+                } else {
+                    _ = self.navigationController?.popViewController(animated: true)
                 }
-                _ = self.navigationController?.popViewController(animated: true)
+                
                 
             }, onError: {(error) in
                 
@@ -191,20 +182,15 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             SVProgressHUD.dismiss()
             Helper.removeServiceCallBackgroundView(view: self.view)
             
-            if (self.isFromRenewals) {
+            // pop and dismiss view according to conditions
+            if (Constant.MyClassConstants.isDismissWhoWillBeCheckin) {
+                Constant.MyClassConstants.isDismissWhoWillBeCheckin = false
+                self.dismiss(animated: true, completion: nil)
                 
-                let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
-                for aViewController:UIViewController in viewControllers {
-                    if aViewController.isKind(of: WhatToUseViewController.self) {
-                        _ = self.navigationController?.popToViewController(aViewController, animated: true)
-                    }
-                }
-                
-               // self.dismiss(animated: true, completion: nil)
-                //_ = self.navigationController?.popToRootViewController(animated: true)
-              
+            } else {
+                _ = self.navigationController?.popViewController(animated: true)
             }
-            _ = self.navigationController?.popViewController(animated: true)
+
             
         }, onError: {(error) in
             
@@ -1218,6 +1204,7 @@ extension WhoWillBeCheckingInIPadViewController:RenewelViewControllerDelegate{
     
     func noThanks(){
         let button = UIButton()
+        Constant.MyClassConstants.isDismissWhoWillBeCheckin = true
         self.proceedToCheckoutPressed(button)
     }
 }
