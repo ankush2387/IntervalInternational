@@ -1852,7 +1852,26 @@ public class Helper{
             }else{
                 helperDelegate?.resetCalendar()
                 //helperDelegate?.resortSearchComplete()
-                senderViewController.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
+                //senderViewController.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
+                
+                
+                if(Constant.RunningDevice.deviceIdiom == .pad){
+                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                    let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! VacationSearchResultIPadController
+                    
+                    let transitionManager = TransitionManager()
+                    senderViewController.navigationController?.transitioningDelegate = transitionManager
+                    let navController = UINavigationController(rootViewController: viewController)
+                    senderViewController.present(navController, animated:true, completion: nil)
+                }else{
+                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                    let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
+                    
+                    let transitionManager = TransitionManager()
+                    senderViewController.navigationController?.transitioningDelegate = transitionManager
+                    let navController = UINavigationController(rootViewController: viewController)
+                    senderViewController.present(navController, animated:true, completion: nil)
+                }
             }
             
         })

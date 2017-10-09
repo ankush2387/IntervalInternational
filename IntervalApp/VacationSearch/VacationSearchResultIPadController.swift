@@ -631,7 +631,6 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
             
             // set isFrom Search true
             Constant.MyClassConstants.isFromSearchResult = true
-            
             Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.vacationSearchFunctionalityCheck
             Helper.addServiceCallBackgroundView(view: self.view)
             SVProgressHUD.show()
@@ -961,6 +960,25 @@ func startProcess(){
     
     processRequest.destination = Constant.MyClassConstants.exchangeDestination
     processRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
+    if let openWeek = Constant.MyClassConstants.filterRelinquishments[0].openWeek{
+        processRequest.relinquishmentId = openWeek.relinquishmentId
+    }
+    
+    if let openWeek = Constant.MyClassConstants.filterRelinquishments[0].openWeek{
+        processRequest.relinquishmentId = openWeek.relinquishmentId
+    }
+    
+    if let pointsProgram = Constant.MyClassConstants.filterRelinquishments[0].pointsProgram{
+        processRequest.relinquishmentId = pointsProgram.relinquishmentId
+    }
+    
+    if let clubPoints = Constant.MyClassConstants.filterRelinquishments[0].clubPoints{
+        processRequest.relinquishmentId = ""
+    }
+    
+    if let deposit = Constant.MyClassConstants.filterRelinquishments[0].deposit{
+        processRequest.relinquishmentId = deposit.relinquishmentId
+    }
     processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[0].openWeek?.relinquishmentId
     
     ExchangeProcessClient.start(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: {(response) in
@@ -1608,11 +1626,8 @@ extension VacationSearchIPadViewController:ImageWithNameCellDelegate {
 extension VacationSearchResultIPadController:HelperDelegate {
     
     func resortSearchComplete(){
-        print(Constant.MyClassConstants.calendarDatesArray.count)
         Constant.MyClassConstants.calendarDatesArray.removeAll()
-        print(Constant.MyClassConstants.calendarDatesArray.count)
         Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
-        print(Constant.MyClassConstants.calendarDatesArray.count)
         Helper.hideProgressBar(senderView: self)
         exchangeExactMatchResortsArray.removeAll()
         exchangeSurroundingMatchResortsArray.removeAll()
@@ -1633,6 +1648,16 @@ extension VacationSearchResultIPadController:HelperDelegate {
 extension VacationSearchResultIPadController:RenewelViewControllerDelegate {
     func otherOptions(forceRenewals: ForceRenewals) {
         
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+        
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.renewalOtherOptionsVC) as! RenewalOtherOptionsVC
+        viewController.delegate = self
+        
+        viewController.forceRenewals = forceRenewals
+        self.present(viewController, animated:true, completion: nil)
+        
+        return
+        
     }
 
     
@@ -1648,8 +1673,48 @@ extension VacationSearchResultIPadController:RenewelViewControllerDelegate {
     }
     
     func noThanks(){
-        
+        //Constant.MyClassConstants.
     }
     
 }
+
+//Mark:- Other Options Delegate
+extension VacationSearchResultIPadController:RenewalOtherOptionsVCDelegate{
+    func selectedRenewal(selectedRenewal: String, forceRenewals: ForceRenewals) {
+        var renewalArray = [Renewal]()
+        renewalArray.removeAll()
+        if(selectedRenewal == "Core"){
+            // Selected core renewal
+            for renewal in forceRenewals.products{
+                if(renewal.term == 12){
+                    let renewalItem = Renewal()
+                    renewalItem.id = renewal.id
+                    renewalArray.append(renewalItem)
+                    break
+                }
+            }
+        }else{
+            // Selected non core renewal
+            for renewal in forceRenewals.crossSelling{
+                if(renewal.term == 12){
+                    let renewalItem = Renewal()
+                    renewalItem.id = renewal.id
+                    renewalArray.append(renewalItem)
+                    break
+                }
+            }
+        }
+        
+        // Selected single renewal from other options. Navigate to WhoWillBeCheckingIn screen
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as! WhoWillBeCheckingInIPadViewController
+        
+        let transitionManager = TransitionManager()
+        self.navigationController?.transitioningDelegate = transitionManager
+        viewController.isFromRenewals = true
+        viewController.renewalsArray = renewalArray
+        self.navigationController!.pushViewController(viewController, animated: true)
+    }
+}
+
 

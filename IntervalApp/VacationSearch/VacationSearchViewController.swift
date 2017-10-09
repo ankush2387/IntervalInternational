@@ -1792,11 +1792,6 @@ extension VacationSearchViewController:HelperDelegate {
         let navController = UINavigationController(rootViewController: viewController)
         
         self.present(navController, animated:true, completion: nil)
-
-        
-        
-        //self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
-
     }
     func resetCalendar(){
         Constant.MyClassConstants.calendarDatesArray.removeAll()

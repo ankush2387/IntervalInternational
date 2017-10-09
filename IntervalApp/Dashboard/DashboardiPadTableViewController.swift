@@ -113,7 +113,16 @@ class DashboardIPadTableViewController: UITableViewController {
     
     func searchVacationButtonPressed(_ sender:IUIKButton) {
         
-        self.performSegue(withIdentifier: Constant.segueIdentifiers.searchVacation, sender: nil)
+        
+        Constant.MyClassConstants.searchOriginationPoint = Constant.omnitureCommonString.homeDashboard
+        
+        let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.sideMenuTitles.sideMenuInitialController) as! SWRevealViewController
+        self.present(viewController, animated: true, completion: nil)
+        
+
+        
+        //self.performSegue(withIdentifier: Constant.segueIdentifiers.searchVacation, sender: nil)
         
         //        let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.myUpcomingTripIpad, bundle: nil)
         //        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.upcomingTripsViewController) as! UpComingTripDetailIPadViewController

@@ -232,17 +232,31 @@ class RenewelViewController: UIViewController {
                     return
                 }else{
                     Constant.MyClassConstants.noThanksForNonCore = true
-                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-                    let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
-                    Constant.MyClassConstants.noThanksForNonCore = true
-                    
-                    let transitionManager = TransitionManager()
-                    self.navigationController?.transitioningDelegate = transitionManager
-                    viewController.isFromRenewals = true
-                    Constant.MyClassConstants.noThanksForNonCore = true
-                    let navController = UINavigationController(rootViewController: viewController)
-                    
-                    self.present(navController, animated:true, completion: nil)
+                    if(Constant.RunningDevice.deviceIdiom == .phone){
+                        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+                        Constant.MyClassConstants.noThanksForNonCore = true
+                        
+                        let transitionManager = TransitionManager()
+                        self.navigationController?.transitioningDelegate = transitionManager
+                        viewController.isFromRenewals = true
+                        Constant.MyClassConstants.noThanksForNonCore = true
+                        let navController = UINavigationController(rootViewController: viewController)
+                        
+                        self.present(navController, animated:true, completion: nil)
+                    }else{
+                        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as! WhoWillBeCheckingInIPadViewController
+                        Constant.MyClassConstants.noThanksForNonCore = true
+                        
+                        let transitionManager = TransitionManager()
+                        self.navigationController?.transitioningDelegate = transitionManager
+                        viewController.isFromRenewals = true
+                        Constant.MyClassConstants.noThanksForNonCore = true
+                        let navController = UINavigationController(rootViewController: viewController)
+                        
+                        self.present(navController, animated:true, completion: nil)
+                    }
                 }
             }
 
