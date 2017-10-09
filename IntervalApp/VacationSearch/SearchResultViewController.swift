@@ -595,17 +595,34 @@ class SearchResultViewController: UIViewController {
                 // Got an access token!  Save it for later use.
                 Helper.hideProgressBar(senderView: self)
                 Constant.MyClassConstants.membershipContactArray = Membership.contacts!
-                var viewController = UIViewController()
+                
+                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                let transitionManager = TransitionManager()
+                self.navigationController?.transitioningDelegate = transitionManager
+                
+                if(response.view?.forceRenewals != nil) {
+                    // Navigate to Renewals Screen
+                    let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
+                    viewController.delegate = self
+                    self.present(viewController, animated:true, completion: nil)
+                    
+                } else {
+                    let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+                    viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[0]
+                    self.navigationController!.pushViewController(viewController, animated: true)
+                    
+                }
+                
+                
+                /*var viewController = UIViewController()
                     viewController = WhoWillBeCheckingInViewController()
                     let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
                     viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
                     (viewController as! WhoWillBeCheckingInViewController).filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[0]
-                    
-                    
-                
                 let transitionManager = TransitionManager()
                 self.navigationController?.transitioningDelegate = transitionManager
-                self.navigationController!.pushViewController(viewController, animated: true)
+                
+                self.navigationController!.pushViewController(viewController, animated: true)*/
             }, onError: { (error) in
                 
                 Helper.hideProgressBar(senderView: self)
@@ -1769,14 +1786,13 @@ extension SearchResultViewController:RenewelViewControllerDelegate {
         }
 
         
-        
     }
     
 }
 
 
 
-//Mark:- Other Options Delegate
+//Mark:- Delegate
 extension SearchResultViewController:RenewalOtherOptionsVCDelegate{
     func selectedRenewal(selectedRenewal: String, forceRenewals: ForceRenewals) {
         var renewalArray = [Renewal]()

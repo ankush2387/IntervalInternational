@@ -120,6 +120,7 @@ class WhatToUseViewController: UIViewController {
                     
                     if (forceRenewals != nil) {
                         
+                        self.dismiss(animated: true, completion: nil)
                         return  self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
                         
                     }
@@ -266,10 +267,21 @@ class WhatToUseViewController: UIViewController {
                 
                 if (forceRenewals != nil) {
                     
-                   /* let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-                    let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
+                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                    let transitionManager = TransitionManager()
+                    self.navigationController?.transitioningDelegate = transitionManager
                     
-                    self.pushLikeModalViewController(controller: viewController)*/
+                    if(Constant.RunningDevice.deviceIdiom == .phone){
+                        
+                        // Navigate to Renewals Screen
+                        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
+                        //viewController.delegate = self
+                        self.present(viewController, animated:true, completion: nil)
+                    }else{
+                        // Navigate to Who Will Be Checking in Screen
+                        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+                        self.navigationController!.pushViewController(viewController, animated: true)
+                    }
                     
                     return  self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
                     
