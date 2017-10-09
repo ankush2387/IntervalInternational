@@ -1334,6 +1334,10 @@ extension WhoWillBeCheckingInViewController:UITextFieldDelegate {
 
 //MARK:- Extension for renewals
 extension WhoWillBeCheckingInViewController:RenewelViewControllerDelegate{
+    func dismissWhatToUse(renewalArray:[Renewal]) {
+        
+    }
+
     func selectedRenewalFromWhoWillBeCheckingIn(renewalArray:[Renewal]){
         self.renewalsArray = renewalArray
         Constant.MyClassConstants.noThanksForNonCore = false

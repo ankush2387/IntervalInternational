@@ -11,14 +11,18 @@ import IntervalUIKit
 import DarwinSDK
 
 //***** Custom delegate method declaration *****//
- protocol RenewelViewControllerDelegate {
+   protocol RenewelViewControllerDelegate {
+    
     func selectedRenewalFromWhoWillBeCheckingIn(renewalArray:[Renewal])
     
     func noThanks()
     
     func otherOptions(forceRenewals:ForceRenewals)
     
+    func dismissWhatToUse(renewalArray:[Renewal])
+
 }
+
 
 //protocol SelectRenewalsOptionDelegate {
 //    
@@ -27,6 +31,8 @@ import DarwinSDK
 //}
 
 class RenewelViewController: UIViewController {
+ 
+
     
     //MARK:- Delegate
     var delegate: RenewelViewControllerDelegate?
@@ -189,7 +195,14 @@ class RenewelViewController: UIViewController {
             }else{
                 
                 self.dismiss(animated: false, completion: nil)
-                delegate?.selectedRenewalFromWhoWillBeCheckingIn(renewalArray: renewalArray)
+                
+                if Constant.MyClassConstants.isFromWhatToUse {
+                    self.delegate?.dismissWhatToUse(renewalArray: renewalArray)
+                } else {
+                    delegate?.selectedRenewalFromWhoWillBeCheckingIn(renewalArray: renewalArray)
+                    
+                }
+                
                 
                 /*let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
                 let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController

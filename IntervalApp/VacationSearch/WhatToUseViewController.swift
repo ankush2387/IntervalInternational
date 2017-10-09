@@ -13,11 +13,18 @@ import SDWebImage
 import DarwinSDK
 import SVProgressHUD
 
+protocol WhoWillBeCheckInDelegate {
+    func navigateToWhoWillBeCheckIn(renewalArray:[Renewal])
+    
+}
+
 class WhatToUseViewController: UIViewController {
     
     //IBOutlets
     @IBOutlet weak var tableView: UITableView!
     
+    //MARK:- Delegate
+    var delegate: WhoWillBeCheckInDelegate?
     
     // Class variables
     var isCheckedBox = false
@@ -52,7 +59,8 @@ class WhatToUseViewController: UIViewController {
     
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
         
-        self.dismiss(animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: true)
+       // self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func checkBoxPressed(_ sender: IUIKCheckbox) {
@@ -267,23 +275,36 @@ class WhatToUseViewController: UIViewController {
                 
                 if (forceRenewals != nil) {
                     
-                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-                    let transitionManager = TransitionManager()
-                    self.navigationController?.transitioningDelegate = transitionManager
-                    
                     if(Constant.RunningDevice.deviceIdiom == .phone){
+                        
+                        //self.dismiss(animated: true, completion: nil)
+                        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                        let transitionManager = TransitionManager()
+                        self.navigationController?.transitioningDelegate = transitionManager
                         
                         // Navigate to Renewals Screen
                         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
-                        //viewController.delegate = self
+                        viewController.delegate = self
+                        Constant.MyClassConstants.isFromWhatToUse = true
                         self.present(viewController, animated:true, completion: nil)
+                        
+                        return
                     }else{
+                        
+                        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                        let transitionManager = TransitionManager()
+                        self.navigationController?.transitioningDelegate = transitionManager
+                        
                         // Navigate to Who Will Be Checking in Screen
-                        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
-                        self.navigationController!.pushViewController(viewController, animated: true)
+                        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
+                        viewController.delegate = self
+                        Constant.MyClassConstants.isFromWhatToUse = true
+                        self.present(viewController, animated:true, completion: nil)
+                        
+                        return
                     }
                     
-                    return  self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
+                   // return  self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
                     
                     
                 }
@@ -777,5 +798,112 @@ extension WhatToUseViewController:UITableViewDataSource {
             
         }
         
+    }
+}
+
+
+//MARK:- Delegate Methods
+
+// Implementing custom delegate method definition
+extension WhatToUseViewController:RenewelViewControllerDelegate {
+    
+    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray:[Renewal]){
+        
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+        viewController.renewalsArray = renewalArray
+        
+        let transitionManager = TransitionManager()
+        self.navigationController?.transitioningDelegate = transitionManager
+        
+        //let navController = UINavigationController(rootViewController: viewController)
+        
+        //self.dismiss(animated: true, completion: nil)
+        //self.present(navController, animated: true, completion: nil)
+        self.navigationController!.pushViewController(viewController, animated: true)
+    }
+    
+    func noThanks(){
+        
+    }
+    
+    func dismissWhatToUse(renewalArray:[Renewal]) {
+        //self.dismiss(animated: true, completion: nil)
+        self.delegate?.navigateToWhoWillBeCheckIn(renewalArray: renewalArray)
+    }
+    
+    func otherOptions(forceRenewals: ForceRenewals) {
+        
+        print("other options")
+        
+        if(Constant.RunningDevice.deviceIdiom == .phone) {
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+            
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.renewalOtherOptionsVC) as! RenewalOtherOptionsVC
+            viewController.delegate = self
+            
+            viewController.forceRenewals = forceRenewals
+            self.present(viewController, animated:true, completion: nil)
+            
+            return
+            
+        } else {
+            
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+            
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.renewalOtherOptionsVC) as! RenewalOtherOptionsVC
+            viewController.delegate = self
+            
+            viewController.forceRenewals = forceRenewals
+            self.present(viewController, animated:true, completion: nil)
+            
+            return
+            
+        }
+        
+        
+    }
+    
+}
+
+
+//Mark:- Delegate
+extension WhatToUseViewController:RenewalOtherOptionsVCDelegate{
+    func selectedRenewal(selectedRenewal: String, forceRenewals: ForceRenewals) {
+        var renewalArray = [Renewal]()
+        renewalArray.removeAll()
+        if(selectedRenewal == "Core"){
+            // Selected core renewal
+            for renewal in forceRenewals.products{
+                if(renewal.term == 12){
+                    let renewalItem = Renewal()
+                    renewalItem.id = renewal.id
+                    renewalArray.append(renewalItem)
+                    break
+                }
+            }
+        }else{
+            // Selected non core renewal
+            for renewal in forceRenewals.crossSelling{
+                if(renewal.term == 12){
+                    let renewalItem = Renewal()
+                    renewalItem.id = renewal.id
+                    renewalArray.append(renewalItem)
+                    break
+                }
+            }
+        }
+        
+        // Selected single renewal from other options. Navigate to WhoWillBeCheckingIn screen
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+        
+        let transitionManager = TransitionManager()
+        self.navigationController?.transitioningDelegate = transitionManager
+        viewController.isFromRenewals = true
+        viewController.renewalsArray = renewalArray
+        //let navController = UINavigationController(rootViewController: viewController)
+        self.navigationController!.pushViewController(viewController, animated: true)
+        //self.present(navController, animated: true, completion: nil)
     }
 }

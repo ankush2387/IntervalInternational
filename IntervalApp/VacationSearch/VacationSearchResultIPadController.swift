@@ -1646,6 +1646,15 @@ extension VacationSearchResultIPadController:HelperDelegate {
 
 //MARK:- Implementing RenewelViewControllerDelegate definition
 extension VacationSearchResultIPadController:RenewelViewControllerDelegate {
+    
+    func dismissWhatToUse(renewalArray: [Renewal]) {
+    }
+
+    
+    func dismissWhatToUse() {
+        
+    }
+
     func otherOptions(forceRenewals: ForceRenewals) {
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
