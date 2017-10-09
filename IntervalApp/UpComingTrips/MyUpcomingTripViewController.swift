@@ -150,11 +150,15 @@ extension MyUpcomingTripViewController:UITableViewDataSource {
             }
         }
         Helper.addLinearGradientToView(view: cell.resortNameBaseView, colour: UIColor.white, transparntToOpaque: true, vertical: false)
-        
+        cell.footerViewDetailedButton.tag = indexPath.section
         return cell
     }
     
     @IBAction func viewTripDetailsClicked(_ sender:UIButton){
+        
+      Constant.MyClassConstants.transactionNumber = "\(Constant.MyClassConstants.upcomingTripsArray[sender.tag].exchangeNumber!)"
+        Constant.MyClassConstants.transactionType = Constant.MyClassConstants.upcomingTripsArray[sender.tag].type!
+        
         Helper.addServiceCallBackgroundView(view: self.view)
         SVProgressHUD.show()
         ExchangeClient.getExchangeTripDetails(UserContext.sharedInstance.accessToken, confirmationNumber: Constant.MyClassConstants.transactionNumber, onSuccess: { (exchangeResponse) in
