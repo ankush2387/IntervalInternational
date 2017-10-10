@@ -1046,6 +1046,7 @@ class Constant: NSObject {
         static var whatToUseViewController = "WhatToUseViewController"
         static var sortingViewController = "SortingViewController"
         static var flexChangeSearchIpadViewController = "FlexChangeSearchIpadViewController"
+                
         static var flexchangeViewController = "FlexchangeViewController"
         
         static var RenewelViewController = "RenewelViewController"

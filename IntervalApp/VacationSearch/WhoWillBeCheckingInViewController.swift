@@ -1337,6 +1337,10 @@ extension WhoWillBeCheckingInViewController:UITextFieldDelegate {
 
 //MARK:- Extension for renewals
 extension WhoWillBeCheckingInViewController:RenewelViewControllerDelegate{
+    func dismissWhatToUse(renewalArray:[Renewal]) {
+        
+    }
+
     func selectedRenewalFromWhoWillBeCheckingIn(renewalArray:[Renewal]){
         self.renewalsArray = renewalArray
         Constant.MyClassConstants.noThanksForNonCore = false
@@ -1345,7 +1349,7 @@ extension WhoWillBeCheckingInViewController:RenewelViewControllerDelegate{
     }
     
     func noThanks(){
-        Constant.MyClassConstants.isDismissWhoWillBeCheckin = true
+       // Constant.MyClassConstants.isDismissWhoWillBeCheckin = true
         let button = UIButton()
         self.proceedToCheckoutPressed(button)
     }

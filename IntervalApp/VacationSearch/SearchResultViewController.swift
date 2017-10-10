@@ -522,12 +522,15 @@ class SearchResultViewController: UIViewController {
             Constant.MyClassConstants.selectedUnitIndex = selectedIndex
             
             if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Combined){
-                self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                self.navigateToWhatToUseViewController()
+                //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
             }else{
                 if(Constant.MyClassConstants.filterRelinquishments.count > 1){
-                    self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                    //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                    self.navigateToWhatToUseViewController()
                 }else if(response.count > 0 && response[0].destination?.upgradeCost != nil){
-                    self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                    //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                    self.navigateToWhatToUseViewController()
                 }else {
                     self.startProcess()
                 }
@@ -537,6 +540,32 @@ class SearchResultViewController: UIViewController {
             Helper.hideProgressBar(senderView: self)
             SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.description)
         })
+    }
+    
+    func navigateToWhatToUseViewController()  {
+        if(Constant.RunningDevice.deviceIdiom == .phone) {
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+            
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whatToUseViewController) as! WhatToUseViewController
+            viewController.delegate = self
+            
+            self.navigationController?.pushViewController(viewController, animated: true)
+           // self.present(viewController, animated:true, completion: nil)
+            
+            return
+            
+        } else {
+            
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+            
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whatToUseViewController) as! WhatToUseViewController
+            viewController.delegate = self
+            
+            self.present(viewController, animated:true, completion: nil)
+            
+            return
+            
+        }
     }
     
     //Start process function call
@@ -639,8 +668,8 @@ class SearchResultViewController: UIViewController {
 
     //Passing information while preparing for segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        
+        
     }
 
     // function called when search result page map view button pressed
@@ -991,7 +1020,8 @@ extension SearchResultViewController:UICollectionViewDelegate {
                             else if(combinedExactSearchItems[collectionView.tag].hasRentalAvailability()) {
                                 
                                 Constant.MyClassConstants.filterRelinquishments.removeAll()
-                                self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                                self.navigateToWhatToUseViewController()
+                                //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
                             }
                             else {
                               
@@ -1009,7 +1039,8 @@ extension SearchResultViewController:UICollectionViewDelegate {
                                 if(combinedSurroundingSearchItems[collectionView.tag].hasRentalAvailability()) {
                                     
                                     Constant.MyClassConstants.filterRelinquishments.removeAll()
-                                    self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                                    self.navigateToWhatToUseViewController()
+                                    //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
                                 }
                                 else {
                                     self.getFilterRelinquishments(selectedInventoryUnit: (combinedSurroundingSearchItems[collectionView.tag].rentalAvailability?.inventory!)!, selectedIndex: indexPath.item, selectedExchangeInventory: ExchangeInventory())
@@ -1039,7 +1070,8 @@ extension SearchResultViewController:UICollectionViewDelegate {
                             else if(combinedSurroundingSearchItems[collectionView.tag].hasRentalAvailability()) {
                                 
                                 Constant.MyClassConstants.filterRelinquishments.removeAll()
-                                self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                                self.navigateToWhatToUseViewController()
+                                //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
                             }
                             else {
                                 
@@ -1049,7 +1081,8 @@ extension SearchResultViewController:UICollectionViewDelegate {
                             
                        
                         }else{
-                            self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                            self.navigateToWhatToUseViewController()
+                            //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
                         }
                         
                     }
@@ -1733,7 +1766,13 @@ extension SearchResultViewController:HelperDelegate {
 // Implementing custom delegate method definition
 extension SearchResultViewController:RenewelViewControllerDelegate {
     
-    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray:[Renewal]){
+    //remove later
+    func dismissWhatToUse(renewalArray:[Renewal]) {
+        
+    }
+    
+  
+     func selectedRenewalFromWhoWillBeCheckingIn(renewalArray:[Renewal]){
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
@@ -1749,12 +1788,18 @@ extension SearchResultViewController:RenewelViewControllerDelegate {
         self.navigationController!.pushViewController(viewController, animated: true)
     }
     
+
     func noThanks(){
+        self.dismiss(animated: true, completion: nil)
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
         
         let transitionManager = TransitionManager()
         self.navigationController?.transitioningDelegate = transitionManager
+        
+        /*let navController = UINavigationController(rootViewController: viewController)
+        
+        self.present(viewController, animated:true, completion: nil)*/
         self.navigationController!.pushViewController(viewController, animated: true)
     }
     
@@ -1847,7 +1892,23 @@ extension SearchResultViewController:RenewalOtherOptionsVCDelegate{
     }
 }
 
-
+extension SearchResultViewController:WhoWillBeCheckInDelegate {
+    func navigateToWhoWillBeCheckIn(renewalArray:[Renewal]) {
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+        viewController.renewalsArray = renewalArray
+        
+        let transitionManager = TransitionManager()
+        self.navigationController?.transitioningDelegate = transitionManager
+        
+        //let navController = UINavigationController(rootViewController: viewController)
+        
+        //self.dismiss(animated: true, completion: nil)
+        //self.present(navController, animated: true, completion: nil)
+        self.navigationController!.pushViewController(viewController, animated: true)
+        
+    }
+}
 
 
 
