@@ -1722,6 +1722,18 @@ extension VacationSearchResultIPadController:RenewalOtherOptionsVCDelegate{
                     break
                 }
             }
+        }else if(selectedRenewal == "Combo"){
+            // Selected combo renewal
+            
+            for comboProduct in (forceRenewals.comboProducts){
+                for renewalComboProduct in comboProduct.renewalComboProducts {
+                    if renewalComboProduct.term == 12 {
+                        let renewalItem = Renewal()
+                        renewalItem.id = renewalComboProduct.id
+                        renewalArray.append(renewalItem)
+                    }
+                }
+            }
         }else{
             // Selected non core renewal
             for renewal in forceRenewals.crossSelling{

@@ -340,7 +340,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     //***** Function for proceed to checkout button click. *****//
     @IBAction func proceedToCheckoutPressed(_ sender: AnyObject) {
         
-        if(Constant.MyClassConstants.noThanksForNonCore){
+        if(Constant.MyClassConstants.noThanksForNonCore && self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count){
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
             viewController.delegate = self

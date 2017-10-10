@@ -1750,6 +1750,8 @@ extension SearchResultViewController:HelperDelegate {
         self.searchResultColelctionView.reloadData()
         self.searchResultTableView.reloadData()
         if(combinedExactSearchItems.isEmpty && combinedSurroundingSearchItems.isEmpty && exactMatchResortsArray.isEmpty && exactMatchResortsArrayExchange.isEmpty && surroundingMatchResortsArray.isEmpty && surroundingMatchResortsArrayExchange.isEmpty){
+            print("All empty")
+        }else{
             let indexPath = IndexPath(row: 0, section: 0)
             searchResultTableView.scrollToRow(at: indexPath, at: .top, animated: true)
         }
@@ -1851,6 +1853,18 @@ extension SearchResultViewController:RenewalOtherOptionsVCDelegate{
                     renewalItem.id = renewal.id
                     renewalArray.append(renewalItem)
                     break
+                }
+            }
+        }else if(selectedRenewal == "Combo"){
+            // Selected combo renewal
+            
+            for comboProduct in (forceRenewals.comboProducts){
+                for renewalComboProduct in comboProduct.renewalComboProducts {
+                    if renewalComboProduct.term == 12 {
+                        let renewalItem = Renewal()
+                        renewalItem.id = renewalComboProduct.id
+                        renewalArray.append(renewalItem)
+                    }
                 }
             }
         }else{

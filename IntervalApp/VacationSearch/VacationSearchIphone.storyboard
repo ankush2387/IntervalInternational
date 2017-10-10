@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16D30" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Zmr-d0-xh5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Zmr-d0-xh5">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -8009,7 +8009,7 @@ to confirm a larger unit.</string>
                                         <rect key="frame" x="0.0" y="28" width="343" height="310"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2mt-x7-AXt" id="ULX-0F-E4d">
-                                            <rect key="frame" x="0.0" y="0.0" width="343" height="309.66666666666669"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="310"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8ku-sX-Oe3">
@@ -8022,12 +8022,30 @@ to confirm a larger unit.</string>
                                                                     <rect key="frame" x="37" y="10" width="200" height="131"/>
                                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                 </imageView>
+                                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CIG" translatesAutoresizingMaskIntoConstraints="NO" id="QTH-Ww-0VI">
+                                                                    <rect key="frame" x="10" y="35" width="120" height="80"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="80" id="SqE-F8-O6t"/>
+                                                                        <constraint firstAttribute="width" constant="120" id="jmO-m6-Y7E"/>
+                                                                    </constraints>
+                                                                </imageView>
+                                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PLT" translatesAutoresizingMaskIntoConstraints="NO" id="K65-rR-RGm">
+                                                                    <rect key="frame" x="144" y="35" width="120" height="80"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" constant="120" id="kfd-aa-1JD"/>
+                                                                        <constraint firstAttribute="height" constant="80" id="pVn-3f-m6s"/>
+                                                                    </constraints>
+                                                                </imageView>
                                                             </subviews>
                                                             <color key="backgroundColor" red="0.90196078430000004" green="0.96078431369999995" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstItem="Lcg-lC-Gnn" firstAttribute="centerX" secondItem="Ysj-4M-Jg6" secondAttribute="centerX" id="CFD-64-oNa"/>
+                                                                <constraint firstItem="K65-rR-RGm" firstAttribute="leading" secondItem="QTH-Ww-0VI" secondAttribute="trailing" constant="14" id="CZG-NJ-cvP"/>
                                                                 <constraint firstItem="Lcg-lC-Gnn" firstAttribute="centerY" secondItem="Ysj-4M-Jg6" secondAttribute="centerY" id="Lwt-oZ-poJ"/>
+                                                                <constraint firstItem="QTH-Ww-0VI" firstAttribute="top" secondItem="K65-rR-RGm" secondAttribute="top" id="Vvo-os-hDo"/>
+                                                                <constraint firstItem="QTH-Ww-0VI" firstAttribute="leading" secondItem="Ysj-4M-Jg6" secondAttribute="leading" constant="10" id="hZL-8u-Bz6"/>
                                                                 <constraint firstAttribute="height" constant="150" id="oZF-oX-aey"/>
+                                                                <constraint firstItem="QTH-Ww-0VI" firstAttribute="centerY" secondItem="Lcg-lC-Gnn" secondAttribute="centerY" id="oxg-hi-2cv"/>
                                                             </constraints>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -8107,8 +8125,10 @@ transaction.</string>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="buttonSelect" destination="bLq-9g-sh6" id="mh3-Rq-G1B"/>
+                                            <outlet property="renewelCoreImageView" destination="QTH-Ww-0VI" id="Zqk-ah-j9t"/>
                                             <outlet property="renewelImageView" destination="Lcg-lC-Gnn" id="F6x-QJ-D1T"/>
                                             <outlet property="renewelLbl" destination="yL9-9c-2Yb" id="uzC-ej-ZBr"/>
+                                            <outlet property="renewelnonCoreImageView" destination="K65-rR-RGm" id="waq-mv-mN6"/>
                                             <outlet property="viewContent" destination="Ysj-4M-Jg6" id="zac-6a-F4Z"/>
                                         </connections>
                                     </tableViewCell>

@@ -438,6 +438,7 @@ class Constant: NSObject {
         static var  relinquishmentFloatDetialMinDate:Date!
         static var  relinquishmentFloatDetialMaxDate:Date!
         static var  floatDetailsCalendarDateArray = [Date]()
+        static var  floatDetailsCalendarWeekArray = NSMutableArray()
         static var relinquishmentFlaotWeek = "RelinquishmentFloatWeek"
         static var realmOpenWeeksID = NSMutableArray()
         
@@ -527,6 +528,7 @@ class Constant: NSObject {
         static var segmentThirdString = "Third"
         static var clubFloatResorts = [Resort]()
         static var savedClubFloatResort = ""
+        static var savedClubFloatResortCode = ""
         static var savedBedroom = ""
         static var buttontitle = ""
         static var resortAttributedString = ""

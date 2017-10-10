@@ -596,6 +596,7 @@ class RelinquishmentSelectionViewController: UIViewController {
             }
             
             for floatWeek in Constant.MyClassConstants.whatToTradeArray{
+                
                 let floatWeekTraversed = floatWeek as! OpenWeeks
                 if(floatWeekTraversed.isFloat && Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId! == floatWeekTraversed.relinquishmentID){
                     Constant.MyClassConstants.selectedFloatWeek = floatWeekTraversed

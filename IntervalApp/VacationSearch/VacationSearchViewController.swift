@@ -1711,8 +1711,13 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                 if(response.checkInDates.count>0){
                                     Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
                                 }
-                                let vacationSearchInitialDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
-                                Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearchInitialDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                if let vacationSearchInitialDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate{
+                                    Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearchInitialDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                }else if Constant.MyClassConstants.initialVacationSearch.rentalSearch != nil{
+                                    Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate:response.checkInDates[0], senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                }
+
+                                
                             }
                             Constant.MyClassConstants.checkInDates = response.checkInDates
                             sender.isEnabled = true
