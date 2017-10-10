@@ -13,11 +13,8 @@ import DarwinSDK
 //***** Custom delegate method declaration *****//
  protocol RenewelViewControllerDelegate {
     func selectedRenewalFromWhoWillBeCheckingIn(renewalArray:[Renewal])
-    
     func noThanks()
-    
     func otherOptions(forceRenewals:ForceRenewals)
-    
 }
 
 //protocol SelectRenewalsOptionDelegate {
@@ -322,7 +319,7 @@ extension RenewelViewController:UITableViewDataSource {
                         cell.renewelnonCoreImageView?.isHidden = false
                         
                         // currency code
-                        let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.currencyCode)!)
+                        let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (forceRenewals.currencyCode)!)
                         
                         if (renewalComboProduct.isCoreProduct) {
                             cell.renewelCoreImageView?.image = UIImage.init(named: renewalComboProduct.productCode!)
@@ -416,7 +413,7 @@ extension RenewelViewController:UITableViewDataSource {
                     cell.renewelCoreImageView?.isHidden = true
                     cell.renewelnonCoreImageView?.isHidden = true
                     
-                    let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.currencyCode)!)
+                    let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (forceRenewals.currencyCode)!)
                     
                     let price = String(format:"%.0f", product.price)
                     
@@ -454,7 +451,7 @@ extension RenewelViewController:UITableViewDataSource {
                         
                         cell.renewelnonCoreImageView?.image = UIImage.init(named: nonCoreProduct.productCode!)
                         
-                        let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.currencyCode)!)
+                        let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (forceRenewals.currencyCode)!)
                         
                         let price = String(format:"%.0f", nonCoreProduct.price)
                         
@@ -503,7 +500,7 @@ extension RenewelViewController:UITableViewDataSource {
                         cell.renewelnonCoreImageView?.isHidden = true
                         
                         
-                        let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.currencyCode)!)
+                        let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (forceRenewals.currencyCode)!)
                         
                         let price = String(format:"%.0f", nonCoreProduct.price)
                         

@@ -247,27 +247,31 @@ class FloatDetailViewController: UIViewController {
             let year = String(describing: myComponents.year!)
             var  month = String(describing: myComponents.month!)
             if(month.characters.count == 1){
-                month = month.appending("0")
+                month = ("0").appending("\(month)")
             }
             let day   = myComponents.day!
-            fixedWeekReservation.checkInDate = "\(year)-\(month)-\(day)"//checkInDate
-
+            fixedWeekReservation.checkInDate = "\(year)-\(month)-\(day)"
+            if(Constant.MyClassConstants.floatDetailsCalendarDateArray.contains(Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate)){
+                let index = Constant.MyClassConstants.floatDetailsCalendarDateArray.index(of: Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate)
+                fixedWeekReservation.weekNumber = String(describing: Constant.MyClassConstants.floatDetailsCalendarWeekArray[index!])
+            }
         }
-
-        fixedWeekReservation.reservationNumber = Constant.FloatDetails.reservationNumber
-        fixedWeekReservation.weekNumber = Constant.MyClassConstants.relinquishmentSelectedWeek.weekNumber!
-        
-        let resort = Resort()
-        resort.resortCode = Constant.MyClassConstants.relinquishmentSelectedWeek.resort!.resortCode!
-        
-        
+        if(atrributesRowArray.contains(Constant.MyClassConstants.resortReservationAttribute)){
+            fixedWeekReservation.reservationNumber = Constant.FloatDetails.reservationNumber
+        }
         let unit = InventoryUnit()
-        //if(Constant.MyClassConstants)
-        //unit.unitNumber = Constant.MyClassConstants.relinquishmentSelectedWeek.unit!.unitNumber!
-        unit.unitSize = Constant.MyClassConstants.relinquishmentSelectedWeek.unit!.unitSize
+        if(atrributesRowArray.contains(Constant.MyClassConstants.unitNumberAttribute)){
+          unit.unitNumber = Constant.FloatDetails.unitNumber
+          unit.unitSize = Constant.MyClassConstants.savedBedroom
+          fixedWeekReservation.unit = unit
+        }
         
-        fixedWeekReservation.resort = resort
-        fixedWeekReservation.unit = unit
+        if(floatAttributesArray.contains(Constant.MyClassConstants.resortClubAttribute)){
+            let resort = Resort()
+            resort.resortCode = Constant
+                .MyClassConstants.savedClubFloatResortCode
+            fixedWeekReservation.resort = resort
+        }
         
         updateFixWeekReservation(relinqishmentID: Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!, fixedWeekReservation: fixedWeekReservation, viewController:self)
     }

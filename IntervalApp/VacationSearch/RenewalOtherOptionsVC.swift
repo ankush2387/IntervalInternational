@@ -67,9 +67,9 @@ class RenewalOtherOptionsVC: UIViewController {
     @IBAction func selectClicked(_ sender: UIButton) {
         // core select clicked
         if sender.tag == 0 {
-            delegate?.selectedRenewal(selectedRenewal: "Core", forceRenewals: forceRenewals)
+            delegate?.selectedRenewal(selectedRenewal: "Combo", forceRenewals: forceRenewals)
         } else { // non core select clicked
-            delegate?.selectedRenewal(selectedRenewal: "NonCore", forceRenewals: forceRenewals)
+            delegate?.selectedRenewal(selectedRenewal: "Core", forceRenewals: forceRenewals)
         }
         self.dismiss(animated: true, completion: nil)
     }
@@ -100,48 +100,85 @@ extension RenewalOtherOptionsVC:UITableViewDataSource {
         var priceAndCurrency = ""
         
         if indexPath.section == 0 {
-            for product in (forceRenewals.products) {
+            for comboProduct in (forceRenewals.comboProducts) {
                 
-                if product.term == 12 {
-                    
-                    cell.renewelImageView?.image = UIImage.init(named: product.productCode!)
-                    
-                    cell.renewelCoreImageView?.image = UIImage.init(named: product.productCode!)
-                    
-                    // hide core and non core here
-                    
-                    cell.renewelCoreImageView?.isHidden = true
-                    cell.renewelnonCoreImageView?.isHidden = true
-                    
-                    let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.currencyCode)!)
-                    
-                    let price = String(format:"%.0f", product.price)
-                    
-                    priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
-                    
-                    // make attributed string
-                    let mainString = "Your interval membership expire before your travel date.To continue, a \(term) membership fee of \n\(priceAndCurrency)\nwill be included with this transaction."
-                    
-                    let range = (mainString as NSString).range(of: priceAndCurrency)
-                    
-                    let attributeString = NSMutableAttributedString.init(string: mainString)
-                    
-                    attributeString.setAttributes([NSFontAttributeName : UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(25.0))!
-                        , NSForegroundColorAttributeName : UIColor(red: 0.0/255.0, green: 201.0/255.0, blue: 11.0/255.0, alpha: 1.0)], range: range)
-                    
-                    cell.renewelLbl?.attributedText = attributeString
-                    
-                    // set button select tag
-                    cell.buttonSelect.tag = indexPath.section
-                    break
+                for renewalComboProduct in comboProduct.renewalComboProducts {
+                    if renewalComboProduct.term == 12 {
+                        
+                        //hide renewal image here
+                        cell.renewelImageView?.isHidden = true
+                        
+                        // show core and non core here
+                        
+                        cell.renewelCoreImageView?.isHidden = false
+                        cell.renewelnonCoreImageView?.isHidden = false
+                        
+                        // currency code
+                        let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (forceRenewals.currencyCode)!)
+                        
+                        if (renewalComboProduct.isCoreProduct) {
+                            cell.renewelCoreImageView?.image = UIImage.init(named: renewalComboProduct.productCode!)
+                            
+                            
+                            let price = String(format:"%.0f", renewalComboProduct.price)
+                            
+                            priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
+                            
+                            // make attributed string
+                            let mainString = "Your interval membership expire before your travel date.To continue, a \(term) membership fee of \n\(priceAndCurrency)\nwill be included with this transaction."
+                            
+                            let range = (mainString as NSString).range(of: priceAndCurrency)
+                            
+                            let attributeString = NSMutableAttributedString.init(string: mainString)
+                            
+                            attributeString.setAttributes([NSFontAttributeName : UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0))!
+                                , NSForegroundColorAttributeName : UIColor(red: 0.0/255.0, green: 201.0/255.0, blue: 11.0/255.0, alpha: 1.0)], range: range)
+                            
+                            cell.renewelLbl?.attributedText = attributeString
+                            
+                            
+                        } else {
+                            cell.renewelnonCoreImageView?.image = UIImage.init(named: renewalComboProduct.productCode!)
+                            
+                            let price = String(format:"%.0f", renewalComboProduct.price)
+                            
+                            priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
+                            
+                            // Create attributed string
+                            let mainString = "In addition, your \(String(describing: renewalComboProduct.displayName!)) membership expires before your travel date. To keep your Interval Platinum benefits, a \(term) membership fee of \n\(priceAndCurrency)\nwill be included with this transaction."
+                            
+                            let range = (mainString as NSString).range(of: priceAndCurrency)
+                            
+                            let attributeString = NSMutableAttributedString.init(string: mainString)
+                            
+                            attributeString.setAttributes([NSFontAttributeName : UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0))!
+                                , NSForegroundColorAttributeName : UIColor(red: 0.0/255.0, green: 201.0/255.0, blue: 11.0/255.0, alpha: 1.0)], range: range)
+                            
+                            let nextLine = NSMutableAttributedString.init(string: "\n\n")
+                            
+                            let attributedString = cell.renewelLbl?.attributedText
+                            
+                            let combination = NSMutableAttributedString()
+                            
+                            combination.append(attributedString!)
+                            combination.append(nextLine)
+                            combination.append(attributeString)
+                            
+                            cell.renewelLbl?.attributedText = combination
+                            break
+                            
+                        }
+                        
+                        
+                    }
                 }
                 
+                
             }
-            
         } else {
             
-            for nonCoreProduct in (forceRenewals.crossSelling){
-                if nonCoreProduct.term == 12{
+            for coreProduct in (forceRenewals.products){
+                if coreProduct.term == 12{
                     
                  
                     // hide core and non core image here
@@ -149,16 +186,16 @@ extension RenewalOtherOptionsVC:UITableViewDataSource {
                     cell.renewelnonCoreImageView?.isHidden = true
                     
                     // show only non core image
-                    cell.renewelImageView?.image = UIImage.init(named: nonCoreProduct.productCode!)
+                    cell.renewelImageView?.image = UIImage.init(named: coreProduct.productCode!)
                     
                     let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.currencyCode)!)
                     
-                    let price = String(format:"%.0f", nonCoreProduct.price)
+                    let price = String(format:"%.0f", coreProduct.price)
                     
                     priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                     
                     // Create attributed string
-                    let mainString = "Your \(String(describing: nonCoreProduct.displayName!)) membership expires before your travel date. To keep your Interval Platinum benefits, a \(term) membership fee of \n\(priceAndCurrency)\nwill be included with this transaction."
+                    let mainString = "Your \(String(describing: coreProduct.displayName!)) membership expires before your travel date. To keep your Interval Platinum benefits, a \(term) membership fee of \n\(priceAndCurrency)\nwill be included with this transaction."
                     
                     let range = (mainString as NSString).range(of: priceAndCurrency)
                     
@@ -166,17 +203,6 @@ extension RenewalOtherOptionsVC:UITableViewDataSource {
                     
                     attributeString.setAttributes([NSFontAttributeName : UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0))!
                         , NSForegroundColorAttributeName : UIColor(red: 0.0/255.0, green: 201.0/255.0, blue: 11.0/255.0, alpha: 1.0)], range: range)
-                    
-                    /*let nextLine = NSMutableAttributedString.init(string: "\n\n")
-                    
-                    let attributedString = cell.renewelLbl?.attributedText
-                    
-                    let combination = NSMutableAttributedString()
-                    
-                    combination.append(attributedString!)
-                    combination.append(nextLine)
-                    combination.append(attributeString)*/
-                    
                     cell.renewelLbl?.attributedText = attributeString
                     
                     // set button select tag

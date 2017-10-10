@@ -1131,8 +1131,8 @@ public class Helper{
             Constant.MyClassConstants.relinquishmentFloatDetialMinDate = self.convertStringToDate(dateString: resortCalendar[0].checkInDate!, format: Constant.MyClassConstants.dateFormat)
             Constant.MyClassConstants.relinquishmentFloatDetialMaxDate = self.convertStringToDate(dateString: (resortCalendar.last?.checkInDate!)!, format: Constant.MyClassConstants.dateFormat)
             for calendarDetails in resortCalendar{
-               print(calendarDetails.checkInDate!)
                Constant.MyClassConstants.floatDetailsCalendarDateArray.append((Helper.convertStringToDate(dateString: calendarDetails.checkInDate!, format: Constant.MyClassConstants.dateFormat)))
+               Constant.MyClassConstants.floatDetailsCalendarWeekArray.add(calendarDetails.weekNumber!)
             }
             
             var mainStoryboard = UIStoryboard()

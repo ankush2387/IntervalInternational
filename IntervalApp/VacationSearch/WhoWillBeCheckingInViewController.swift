@@ -423,7 +423,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
     //***** Function to perform checkout *****//
     @IBAction func proceedToCheckoutPressed(_ sender: AnyObject) {
         
-        if(Constant.MyClassConstants.noThanksForNonCore){
+        if(Constant.MyClassConstants.noThanksForNonCore && self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count){
             Constant.MyClassConstants.isNoThanksFromRenewalAgain = true
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
@@ -476,15 +476,9 @@ class WhoWillBeCheckingInViewController: UIViewController {
                     exchangeProcessRequest.guest = guest
                     
                     Constant.MyClassConstants.enableGuestCertificate = true
-                }else{
-                    /*let guest = Guest()
-                     guest.firstName = ""
-                     guest.lastName = ""
-                     var phoneNumbers = [Phone]()
-                     guest.phones = phoneNumbers
-                     let guestAddress = Address()
-                     guest.address = guestAddress
-                     exchangeProcessRequest.guest = guest*/
+                }
+                if(renewalsArray.count > 0){
+                    exchangeProcessRequest.renewals = renewalsArray
                 }
                 let processResort = ExchangeProcess()
                 processResort.holdUnitStartTimeInMillis = Constant.holdingTime
