@@ -832,7 +832,8 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
                             
                         } else if (combinedExactSearchItems[collectionView.tag].hasRentalAvailability()) {
                             Constant.MyClassConstants.filterRelinquishments.removeAll()
-                            self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                            self.navigateToWhatToUseViewController()
+                            //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
                         } else {
                             Constant.MyClassConstants.filterRelinquishments.removeAll()
                             self.getFilterRelinquishments(selectedInventoryUnit: (combinedExactSearchItems[collectionView.tag].rentalAvailability?.inventory!)!, selectedIndex: indexPath.item, selectedExchangeInventory: ExchangeInventory())
@@ -862,7 +863,8 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
                         } else if (combinedSurroundingSearchItems[collectionView.tag].hasRentalAvailability()) {
                             
                             Constant.MyClassConstants.filterRelinquishments.removeAll()
-                            self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                            self.navigateToWhatToUseViewController()
+                           // self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
                             
                         } else {
                             Constant.MyClassConstants.filterRelinquishments.removeAll()
@@ -871,7 +873,8 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
                         }
                         
                     }else{
-                        self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                        self.navigateToWhatToUseViewController()
+                       // self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
                     }
                     
                 }
@@ -927,12 +930,15 @@ func getFilterRelinquishments(selectedInventoryUnit:Inventory, selectedIndex:Int
         }
         
         if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Combined){
-            self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+            self.navigateToWhatToUseViewController()
+            //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
         }else{
             if(Constant.MyClassConstants.filterRelinquishments.count > 1){
-                self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                self.navigateToWhatToUseViewController()
+                //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
             }else if(response.count > 0 && response[0].destination?.upgradeCost != nil){
-                self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                self.navigateToWhatToUseViewController()
+                //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
             }else {
                 self.startProcess()
             }
@@ -943,6 +949,23 @@ func getFilterRelinquishments(selectedInventoryUnit:Inventory, selectedIndex:Int
         SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.description)
     })
 }
+    
+    
+
+    //MARK:- navigation Methods
+    func navigateToWhatToUseViewController() {
+        
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+        
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whatToUseViewController) as! WhatToUseViewController
+        viewController.delegate = self
+        
+        self.present(viewController, animated:true, completion: nil)
+        
+        return
+    }
+
+    
 
 //Start process function call
 
@@ -1644,10 +1667,6 @@ extension VacationSearchResultIPadController:RenewelViewControllerDelegate {
     }
 
     
-    func dismissWhatToUse() {
-        
-    }
-
     func otherOptions(forceRenewals: ForceRenewals) {
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
@@ -1675,7 +1694,15 @@ extension VacationSearchResultIPadController:RenewelViewControllerDelegate {
     }
     
     func noThanks(){
-        //Constant.MyClassConstants.
+        self.dismiss(animated: true, completion: nil)
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+        
+        let transitionManager = TransitionManager()
+        self.navigationController?.transitioningDelegate = transitionManager
+        
+        self.navigationController!.pushViewController(viewController, animated: true)
+
     }
     
 }
@@ -1719,4 +1746,18 @@ extension VacationSearchResultIPadController:RenewalOtherOptionsVCDelegate{
     }
 }
 
+
+extension VacationSearchResultIPadController:WhoWillBeCheckInDelegate {
+    func navigateToWhoWillBeCheckIn(renewalArray:[Renewal]) {
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+        viewController.renewalsArray = renewalArray
+        
+        let transitionManager = TransitionManager()
+        self.navigationController?.transitioningDelegate = transitionManager
+        
+        self.navigationController!.pushViewController(viewController, animated: true)
+        
+    }
+}
 

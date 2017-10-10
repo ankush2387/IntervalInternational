@@ -542,6 +542,7 @@ class SearchResultViewController: UIViewController {
         })
     }
     
+    //MARK:- navigation Methods
     func navigateToWhatToUseViewController()  {
         if(Constant.RunningDevice.deviceIdiom == .phone) {
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
@@ -986,7 +987,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
                         SVProgressHUD.dismiss()
                         SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.description)
                     })
-                }else{
+                }else{ // search both
                     selectedSection = (collectionView.superview?.superview?.tag)!
                     selectedRow = collectionView.tag
                     Constant.MyClassConstants.selectedUnitIndex = indexPath.item
