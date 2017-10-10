@@ -272,6 +272,15 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 SVProgressHUD.dismiss()
                 Helper.removeServiceCallBackgroundView(view: self.view)
                 SimpleAlert.alert(self, title: Constant.ControllerTitles.whoWillBeCheckingInControllerTitle, message: Constant.AlertMessages.operationFailedMessage)
+                // pop and dismiss view according to conditions
+                if (Constant.MyClassConstants.isDismissWhoWillBeCheckin) {
+                    Constant.MyClassConstants.isDismissWhoWillBeCheckin = false
+                    self.dismiss(animated: true, completion: nil)
+                    
+                } else {
+                    _ = self.navigationController?.popViewController(animated: true)
+                }
+                
         })
         
         }
@@ -1346,7 +1355,7 @@ extension WhoWillBeCheckingInViewController:RenewelViewControllerDelegate{
     }
     
     func noThanks(){
-        Constant.MyClassConstants.isDismissWhoWillBeCheckin = true
+       // Constant.MyClassConstants.isDismissWhoWillBeCheckin = true
         let button = UIButton()
         self.proceedToCheckoutPressed(button)
     }

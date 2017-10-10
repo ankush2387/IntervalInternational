@@ -960,9 +960,6 @@ func startProcess(){
     
     processRequest.destination = Constant.MyClassConstants.exchangeDestination
     processRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
-    if let openWeek = Constant.MyClassConstants.filterRelinquishments[0].openWeek{
-        processRequest.relinquishmentId = openWeek.relinquishmentId
-    }
     
     if let openWeek = Constant.MyClassConstants.filterRelinquishments[0].openWeek{
         processRequest.relinquishmentId = openWeek.relinquishmentId
@@ -970,10 +967,6 @@ func startProcess(){
     
     if let pointsProgram = Constant.MyClassConstants.filterRelinquishments[0].pointsProgram{
         processRequest.relinquishmentId = pointsProgram.relinquishmentId
-    }
-    
-    if let clubPoints = Constant.MyClassConstants.filterRelinquishments[0].clubPoints{
-        processRequest.relinquishmentId = ""
     }
     
     if let deposit = Constant.MyClassConstants.filterRelinquishments[0].deposit{

@@ -122,19 +122,43 @@ class WhatToUseViewController: UIViewController {
                     // Got an access token!  Save it for later use.
                     Helper.hideProgressBar(senderView: self)
                     Constant.MyClassConstants.membershipContactArray = Membership.contacts!
-                    
+    
                     // check force renewals here
-                    let forceRenewals = Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals
+                    let forceRenewals = Constant.MyClassConstants.processStartResponse.view?.forceRenewals
                     
                     if (forceRenewals != nil) {
                         
-                        self.dismiss(animated: true, completion: nil)
-                        return  self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
+                        if(Constant.RunningDevice.deviceIdiom == .phone){
+                            
+                            //self.dismiss(animated: true, completion: nil)
+                            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                            let transitionManager = TransitionManager()
+                            self.navigationController?.transitioningDelegate = transitionManager
+                            
+                            // Navigate to Renewals Screen
+                            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
+                            viewController.delegate = self
+                            Constant.MyClassConstants.isFromWhatToUse = true
+                            self.present(viewController, animated:true, completion: nil)
+                            
+                            return
+                        }else{
+                            
+                            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                            let transitionManager = TransitionManager()
+                            self.navigationController?.transitioningDelegate = transitionManager
+                            
+                            // Navigate to Who Will Be Checking in Screen
+                            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
+                            viewController.delegate = self
+                            Constant.MyClassConstants.isFromWhatToUse = true
+                            self.present(viewController, animated:true, completion: nil)
+                            
+                            return
+                        }
                         
                     }
-                    
-                   
-       
+  
                     var viewController = UIViewController()
                     if Constant.RunningDevice.deviceIdiom == .phone {
                         viewController = WhoWillBeCheckingInViewController()
@@ -307,23 +331,23 @@ class WhatToUseViewController: UIViewController {
                    // return  self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
                     
                     
-                }
-                
-               
-                if(Constant.RunningDevice.deviceIdiom == .phone){
-                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-                    let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+                } else {
+                    if(Constant.RunningDevice.deviceIdiom == .phone){
+                        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+                        
+                        let transitionManager = TransitionManager()
+                        self.navigationController?.transitioningDelegate = transitionManager
+                        self.navigationController!.pushViewController(viewController, animated: true)
+                    }else{
+                        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as! WhoWillBeCheckingInIPadViewController
+                        
+                        let transitionManager = TransitionManager()
+                        self.navigationController?.transitioningDelegate = transitionManager
+                        self.navigationController!.pushViewController(viewController, animated: true)
+                    }
                     
-                    let transitionManager = TransitionManager()
-                    self.navigationController?.transitioningDelegate = transitionManager
-                    self.navigationController!.pushViewController(viewController, animated: true)
-                }else{
-                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-                    let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as! WhoWillBeCheckingInIPadViewController
-                    
-                    let transitionManager = TransitionManager()
-                    self.navigationController?.transitioningDelegate = transitionManager
-                    self.navigationController!.pushViewController(viewController, animated: true)
                 }
                 
             }, onError: { (error) in
@@ -824,6 +848,18 @@ extension WhatToUseViewController:RenewelViewControllerDelegate {
     }
     
     func noThanks(){
+        self.dismiss(animated: true, completion: nil)
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+        
+        let transitionManager = TransitionManager()
+        self.navigationController?.transitioningDelegate = transitionManager
+        
+        /*let navController = UINavigationController(rootViewController: viewController)
+         
+         self.present(viewController, animated:true, completion: nil)*/
+        self.navigationController!.pushViewController(viewController, animated: true)
+
         
     }
     

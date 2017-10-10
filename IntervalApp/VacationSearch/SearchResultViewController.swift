@@ -585,10 +585,16 @@ class SearchResultViewController: UIViewController {
         
         processRequest.destination = Constant.MyClassConstants.exchangeDestination
         processRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
-        if(Constant.MyClassConstants.filterRelinquishments[0].openWeek?.relinquishmentId != nil){
-            processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[0].openWeek?.relinquishmentId
-        }else{
-            processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[0].deposit?.relinquishmentId
+        if let openWeek = Constant.MyClassConstants.filterRelinquishments[0].openWeek{
+            processRequest.relinquishmentId = openWeek.relinquishmentId
+        }
+        
+        if let deposit = Constant.MyClassConstants.filterRelinquishments[0].deposit{
+            processRequest.relinquishmentId = deposit.relinquishmentId
+        }
+        
+        if let pointsProgram = Constant.MyClassConstants.filterRelinquishments[0].pointsProgram{
+            processRequest.relinquishmentId = pointsProgram.relinquishmentId
         }
         
         
@@ -1014,7 +1020,8 @@ extension SearchResultViewController:UICollectionViewDelegate {
                             else if(combinedExactSearchItems[collectionView.tag].hasRentalAvailability()) {
                                 
                                 Constant.MyClassConstants.filterRelinquishments.removeAll()
-                                self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                                self.navigateToWhatToUseViewController()
+                                //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
                             }
                             else {
                               
@@ -1032,7 +1039,8 @@ extension SearchResultViewController:UICollectionViewDelegate {
                                 if(combinedSurroundingSearchItems[collectionView.tag].hasRentalAvailability()) {
                                     
                                     Constant.MyClassConstants.filterRelinquishments.removeAll()
-                                    self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                                    self.navigateToWhatToUseViewController()
+                                    //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
                                 }
                                 else {
                                     self.getFilterRelinquishments(selectedInventoryUnit: (combinedSurroundingSearchItems[collectionView.tag].rentalAvailability?.inventory!)!, selectedIndex: indexPath.item, selectedExchangeInventory: ExchangeInventory())
@@ -1062,7 +1070,8 @@ extension SearchResultViewController:UICollectionViewDelegate {
                             else if(combinedSurroundingSearchItems[collectionView.tag].hasRentalAvailability()) {
                                 
                                 Constant.MyClassConstants.filterRelinquishments.removeAll()
-                                self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                                self.navigateToWhatToUseViewController()
+                                //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
                             }
                             else {
                                 
@@ -1072,7 +1081,8 @@ extension SearchResultViewController:UICollectionViewDelegate {
                             
                        
                         }else{
-                            self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                            self.navigateToWhatToUseViewController()
+                            //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
                         }
                         
                     }
@@ -1759,11 +1769,7 @@ extension SearchResultViewController:RenewelViewControllerDelegate {
         
     }
     
-    //remove later
-    func noThanks(){
-        
-    }
-    
+  
      func selectedRenewalFromWhoWillBeCheckingIn(renewalArray:[Renewal]){
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
@@ -1780,7 +1786,20 @@ extension SearchResultViewController:RenewelViewControllerDelegate {
         self.navigationController!.pushViewController(viewController, animated: true)
     }
     
-  
+
+    func noThanks(){
+        self.dismiss(animated: true, completion: nil)
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+        
+        let transitionManager = TransitionManager()
+        self.navigationController?.transitioningDelegate = transitionManager
+        
+        /*let navController = UINavigationController(rootViewController: viewController)
+        
+        self.present(viewController, animated:true, completion: nil)*/
+        self.navigationController!.pushViewController(viewController, animated: true)
+    }
     
     func otherOptions(forceRenewals: ForceRenewals) {
         
