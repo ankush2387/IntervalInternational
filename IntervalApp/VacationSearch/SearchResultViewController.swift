@@ -562,8 +562,7 @@ class SearchResultViewController: UIViewController {
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whatToUseViewController) as! WhatToUseViewController
             viewController.delegate = self
             
-            self.present(viewController, animated:true, completion: nil)
-            
+            self.navigationController?.pushViewController(viewController, animated: true)
             return
             
         }

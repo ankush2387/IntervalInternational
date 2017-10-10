@@ -960,8 +960,7 @@ func getFilterRelinquishments(selectedInventoryUnit:Inventory, selectedIndex:Int
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whatToUseViewController) as! WhatToUseViewController
         viewController.delegate = self
         
-        self.present(viewController, animated:true, completion: nil)
-        
+        self.navigationController?.pushViewController(viewController, animated: true)        
         return
     }
 
@@ -1664,6 +1663,15 @@ extension VacationSearchResultIPadController:HelperDelegate {
 extension VacationSearchResultIPadController:RenewelViewControllerDelegate {
     
     func dismissWhatToUse(renewalArray: [Renewal]) {
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as! WhoWillBeCheckingInIPadViewController
+        viewController.renewalsArray = renewalArray
+        
+        let transitionManager = TransitionManager()
+        self.navigationController?.transitioningDelegate = transitionManager
+        
+        self.navigationController!.pushViewController(viewController, animated: true)
+
     }
 
     
@@ -1696,7 +1704,7 @@ extension VacationSearchResultIPadController:RenewelViewControllerDelegate {
     func noThanks(){
         self.dismiss(animated: true, completion: nil)
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as! WhoWillBeCheckingInIPadViewController
         
         let transitionManager = TransitionManager()
         self.navigationController?.transitioningDelegate = transitionManager
@@ -1762,7 +1770,7 @@ extension VacationSearchResultIPadController:RenewalOtherOptionsVCDelegate{
 extension VacationSearchResultIPadController:WhoWillBeCheckInDelegate {
     func navigateToWhoWillBeCheckIn(renewalArray:[Renewal]) {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as! WhoWillBeCheckingInIPadViewController
         viewController.renewalsArray = renewalArray
         
         let transitionManager = TransitionManager()
