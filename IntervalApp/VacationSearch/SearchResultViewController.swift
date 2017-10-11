@@ -540,6 +540,7 @@ class SearchResultViewController: UIViewController {
         })
     }
     
+    //MARK:- navigation Methods
     func navigateToWhatToUseViewController()  {
         if(Constant.RunningDevice.deviceIdiom == .phone) {
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
@@ -559,8 +560,7 @@ class SearchResultViewController: UIViewController {
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whatToUseViewController) as! WhatToUseViewController
             viewController.delegate = self
             
-            self.present(viewController, animated:true, completion: nil)
-            
+            self.navigationController?.pushViewController(viewController, animated: true)
             return
             
         }
@@ -984,7 +984,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
                         SVProgressHUD.dismiss()
                         SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.description)
                     })
-                }else{
+                }else{ // search both
                     selectedSection = (collectionView.superview?.superview?.tag)!
                     selectedRow = collectionView.tag
                     Constant.MyClassConstants.selectedUnitIndex = indexPath.item

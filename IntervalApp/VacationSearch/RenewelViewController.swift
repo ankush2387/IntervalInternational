@@ -187,7 +187,14 @@ class RenewelViewController: UIViewController {
         if(Constant.RunningDevice.deviceIdiom == .phone || Constant.RunningDevice.deviceIdiom == .pad){
             if(Constant.MyClassConstants.noThanksForNonCore){
                 self.dismiss(animated: true, completion: nil)
-                delegate?.selectedRenewalFromWhoWillBeCheckingIn(renewalArray: renewalArray)
+                
+                if Constant.MyClassConstants.isFromWhatToUse {
+                    self.delegate?.dismissWhatToUse(renewalArray: renewalArray)
+                } else {
+                    delegate?.selectedRenewalFromWhoWillBeCheckingIn(renewalArray: renewalArray)
+                    
+                }
+                
             }else{
                 
                 self.dismiss(animated: false, completion: nil)
@@ -198,15 +205,6 @@ class RenewelViewController: UIViewController {
                     delegate?.selectedRenewalFromWhoWillBeCheckingIn(renewalArray: renewalArray)
                     
                 }
-                
-                
-                /*let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
-                viewController.renewalsArray = renewalArray
-                
-                let transitionManager = TransitionManager()
-                self.navigationController?.transitioningDelegate = transitionManager
-                self.navigationController!.pushViewController(viewController, animated: true)*/
 
             }
         }
@@ -222,7 +220,7 @@ class RenewelViewController: UIViewController {
         
         if(Constant.MyClassConstants.noThanksForNonCore){
             print("NO Thanks ")
-            self.dismiss(animated: true, completion: nil)
+            //self.dismiss(animated: true, completion: nil)
             Constant.MyClassConstants.noThanksForNonCore = false
             self.delegate?.noThanks()
         }else{
