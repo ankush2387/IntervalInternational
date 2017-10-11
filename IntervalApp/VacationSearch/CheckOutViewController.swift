@@ -45,10 +45,12 @@ class CheckOutViewController: UIViewController {
     var isDepositPromotionAvailable = false
     var renewalsArray = [Renewal]()
     var totalRowsInCost = 0
+    var totalFeesArray = NSMutableArray()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         checkPromotionsAvailable()
+        checkSectionsForFees()
         
         // omniture tracking with event 40
         let pageView: [String: String] = [
@@ -73,14 +75,24 @@ class CheckOutViewController: UIViewController {
             }
             
                 if(Constant.MyClassConstants.exchangeFees.count > 0){
-                    if let _: String? = Constant.MyClassConstants.exchangeFees[0].insurance?.insuranceOfferHTML!{
-                        showInsurance = true
-                        self.isTripProtectionEnabled = true
+                    
+                    
+                    if let insurance = Constant.MyClassConstants.exchangeFees[0].insurance{
+                        if insurance.selected != nil{
+                            if(insurance.selected)!{
+                                showInsurance = true
+                                self.isTripProtectionEnabled = true
+                            }else{
+                                showInsurance = false
+                                self.isTripProtectionEnabled = false
+                            }
+                        }
                     }else{
                         showInsurance = false
                         self.isTripProtectionEnabled = false
                     }
-                
+                    
+                   
                     if(Constant.MyClassConstants.exchangeFees[0].eplus != nil && (Constant.MyClassConstants.exchangeFees[0].eplus?.selected)!){
                         //let chckBoxButton = IUIKCheckbox()
                        // chckBoxButton.checked = true
@@ -298,6 +310,9 @@ class CheckOutViewController: UIViewController {
                 renewalsArray.removeAll()
                 renewalsArray = Constant.MyClassConstants.exchangeFees[0].renewals
             }
+            
+            renewalsArray.removeAll()
+            renewalsArray = Constant.MyClassConstants.exchangeFees[0].renewals
         }else{
             if let selectedPromotion = Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName {
                 self.recapSelectedPromotion = selectedPromotion
@@ -329,6 +344,52 @@ class CheckOutViewController: UIViewController {
             
         }
 
+    }
+    
+    //MARK:- Check Fees applied for user
+    func checkSectionsForFees (){
+        totalFeesArray.removeAllObjects()
+       if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() || Constant.MyClassConstants.searchBothExchange) {
+        
+        totalFeesArray.add(Constant.MyClassConstants.exchangeFeeTitle)
+        
+        if(Constant.MyClassConstants.enableTaxes){
+            totalFeesArray.add(Constant.MyClassConstants.taxesTitle)
+        }
+        
+        if let ePlus = Constant.MyClassConstants.exchangeFees[0].eplus{
+            if(ePlus.selected)!{
+                totalFeesArray.add(Constant.MyClassConstants.eplus)
+            }
+        }
+
+        
+        if Constant.MyClassConstants.exchangeFees[0].unitSizeUpgrade != nil{
+            totalFeesArray.add(Constant.MyClassConstants.upgradeCost)
+        }
+        
+        if Constant.MyClassConstants.exchangeFees[0].renewals.count > 0{
+            for _ in Constant.MyClassConstants.exchangeFees[0].renewals{
+                totalFeesArray.add(Constant.MyClassConstants.renewals)
+            }
+            
+        }
+        
+       }else{
+        
+        totalFeesArray.add(Constant.MyClassConstants.getawayFee)
+        
+        if(Constant.MyClassConstants.enableTaxes){
+            totalFeesArray.add(Constant.MyClassConstants.taxesTitle)
+        }
+        
+        if Constant.MyClassConstants.rentalFees[0].renewals.count > 0{
+            for _ in Constant.MyClassConstants.rentalFees[0].renewals{
+                totalFeesArray.add(Constant.MyClassConstants.renewals)
+            }
+        }
+       }
+        print(totalFeesArray)
     }
     
     //***** Function called switch state is 'On' so as to update user's email. *****//
@@ -642,12 +703,14 @@ class CheckOutViewController: UIViewController {
                 self.eplusAdded = sender.checked
                 Constant.MyClassConstants.exchangeFees = [(recapResponse.view?.fees)!]
                 Helper.hideProgressBar(senderView: self)
+                self.checkSectionsForFees()
                 self.checkoutOptionTBLview.reloadData()
             }, onError: { (error) in
                self.eplusAdded = !sender.checked
                Constant.MyClassConstants.exchangeFees[0].eplus?.selected = sender.checked
                 Helper.hideProgressBar(senderView: self)
                 SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: error.description)
+                self.checkSectionsForFees()
                 self.checkoutOptionTBLview.reloadData()
             })
     }
@@ -762,16 +825,18 @@ extension CheckOutViewController:UITableViewDataSource {
         }else if(section == 4 && !showInsurance){
             return 0
         }else if(section == 5){
-            if(Constant.MyClassConstants.enableTaxes && eplusAdded){
-                totalRowsInCost = 3 + renewalsArray.count
-                return totalRowsInCost
-            }else if(Constant.MyClassConstants.enableTaxes || eplusAdded){
-                totalRowsInCost = 2 + renewalsArray.count
-                return totalRowsInCost
-            }else{
-                totalRowsInCost = 1 + renewalsArray.count
-                return totalRowsInCost
-            }
+//            if(Constant.MyClassConstants.enableTaxes && eplusAdded){
+//                totalRowsInCost = 3 + renewalsArray.count
+//                return totalRowsInCost
+//            }else if(Constant.MyClassConstants.enableTaxes || eplusAdded){
+//                totalRowsInCost = 2 + renewalsArray.count
+//                return totalRowsInCost
+//            }else{
+//                totalRowsInCost = 1 + renewalsArray.count
+//                return totalRowsInCost
+//            }
+            totalRowsInCost = totalFeesArray.count
+            return totalRowsInCost
         }else if (section == 6){
             if(Constant.MyClassConstants.enableGuestCertificate && self.isTripProtectionEnabled){
                 return 2
@@ -1204,7 +1269,11 @@ extension CheckOutViewController:UITableViewDataSource {
                         
                         subviews.isHidden = false
                     }
-                    if(indexPath.row == 0 && Constant.MyClassConstants.isFromExchange){
+                    
+                    switch totalFeesArray[indexPath.row] as! String{
+                    
+                    case Constant.MyClassConstants.exchangeFeeTitle:
+                        
                         cell.priceLabel.text = Constant.MyClassConstants.exchangeFeeTitle
                         cell.primaryPriceLabel.text = String(Int(Float((Constant.MyClassConstants.exchangeFees[0].shopExchange?.rentalPrice?.price)!)))
                         let priceString = "\(Constant.MyClassConstants.exchangeFees[0].shopExchange!.rentalPrice!.price)"
@@ -1215,7 +1284,9 @@ extension CheckOutViewController:UITableViewDataSource {
                         }else{
                             cell.fractionalPriceLabel.text = "00"
                         }
-                    }else if(indexPath.row == 0 && !Constant.MyClassConstants.isFromExchange){
+                        
+                    case Constant.MyClassConstants.getawayFee:
+                        
                         cell.priceLabel.text = Constant.MyClassConstants.getawayFee
                         cell.primaryPriceLabel.text = String(Int(Float((Constant.MyClassConstants.rentalFees[0].rental?.rentalPrice?.price)!)))
                         let priceString = "\(Constant.MyClassConstants.rentalFees[0].rental!.rentalPrice!.price)"
@@ -1227,9 +1298,9 @@ extension CheckOutViewController:UITableViewDataSource {
                             cell.fractionalPriceLabel.text = "00"
                         }
                         
-                    }else if(Constant.MyClassConstants.isFromExchange && eplusAdded){
+                    
+                    case Constant.MyClassConstants.eplus:
                         cell.priceLabel.text = Constant.MyClassConstants.eplus
-                        
                         let priceString = "\(Constant.MyClassConstants.exchangeFees[0].eplus!.price)"
                         let priceArray = priceString.components(separatedBy: ".")
                         cell.primaryPriceLabel.text = priceArray.first
@@ -1238,27 +1309,9 @@ extension CheckOutViewController:UITableViewDataSource {
                         }else{
                             cell.fractionalPriceLabel.text = "00"
                         }
-
                         
-                    }else if(Constant.MyClassConstants.enableTaxes && indexPath.row == 1){
-                        cell.priceLabel.text = Constant.MyClassConstants.taxesTitle
-                        var rentalTax = 0.0
-                        if(Constant.MyClassConstants.isFromExchange){
-                            rentalTax = Double(Int((Constant.MyClassConstants.exchangeContinueToCheckoutResponse.view?.fees?.total)!))
-                        }else{
-                            rentalTax = Double(Int((Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.rental?.rentalPrice?.tax)!))
-                        }
+                    default:
                         
-                        cell.primaryPriceLabel.text = "\(rentalTax)"
-                        let priceString = "\(Constant.MyClassConstants.continueToCheckoutResponse.view!.fees!.rental!.rentalPrice!.tax)"
-                        let priceArray = priceString.components(separatedBy: ".")
-                        cell.primaryPriceLabel.text = priceArray.first
-                        if((priceArray.last?.characters.count)! > 1) {
-                            cell.fractionalPriceLabel.text = "\(priceArray.last!)"
-                        }else{
-                            cell.fractionalPriceLabel.text = "00"
-                        }
-                    }else if(renewalsArray.count > 0){
                         let renewalIndex = indexPath.row - (totalRowsInCost - renewalsArray.count)
                         
                         cell.priceLabel.numberOfLines = 0
@@ -1273,25 +1326,8 @@ extension CheckOutViewController:UITableViewDataSource {
                             cell.fractionalPriceLabel.text = "00"
                         }
                         
-                    }else{
-                        cell.priceLabel.text = Constant.MyClassConstants.taxesTitle
-                        var rentalTax = 0.0
-                        if(Constant.MyClassConstants.isFromExchange){
-                            rentalTax = Double(Int((Constant.MyClassConstants.exchangeContinueToCheckoutResponse.view?.fees?.total)!))
-                        }else{
-                            rentalTax = Double(Int((Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.rental?.rentalPrice?.tax)!))
-                        }
-                        
-                        cell.primaryPriceLabel.text = "\(rentalTax)"
-                        let priceString = "\(Constant.MyClassConstants.continueToCheckoutResponse.view!.fees!.rental!.rentalPrice!.tax)"
-                        let priceArray = priceString.components(separatedBy: ".")
-                        cell.primaryPriceLabel.text = priceArray.first
-                        if((priceArray.last?.characters.count)! > 1) {
-                            cell.fractionalPriceLabel.text = "\(priceArray.last!)"
-                        }else{
-                            cell.fractionalPriceLabel.text = "00"
-                        }
-                    }                }else{
+                    }
+                }else{
                     
                     let font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 16.0)
                     

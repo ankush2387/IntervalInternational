@@ -430,8 +430,7 @@ class SearchResultViewController: UIViewController {
     
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
         
-        //_ = self.navigationController?.popViewController(animated: true)
-        self.dismiss(animated: true, completion: nil)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     func resortDetailsClicked(_ toDate: Date){
@@ -476,7 +475,6 @@ class SearchResultViewController: UIViewController {
         Helper.showProgressBar(senderView: self)
         let exchangeSearchDateRequest = ExchangeFilterRelinquishmentsRequest()
         exchangeSearchDateRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
-        
         exchangeSearchDateRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
         
         let exchangeDestination = ExchangeDestination()

@@ -108,7 +108,7 @@ class DashboardTableViewController: UITableViewController {
     
     func getNumberOfSections(){
         self.dashboardArray.removeAllObjects()
-        if(Constant.MyClassConstants.getawayAlertsArray.count > 0){
+        if(Constant.MyClassConstants.dashBoardAlertsArray.count > 0){
             self.getDashBoardAlertsWithSearchResults()
             self.dashboardArray.add(Constant.dashboardTableScreenReusableIdentifiers.alert)
         }
