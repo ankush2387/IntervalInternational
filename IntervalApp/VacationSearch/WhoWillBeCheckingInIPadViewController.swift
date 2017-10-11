@@ -401,6 +401,10 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
              guest.address = guestAddress
              exchangeProcessRequest.guest = guest*/
         }
+            
+            if(renewalsArray.count > 0){
+                exchangeProcessRequest.renewals = renewalsArray
+            }
        
         let processResort = ExchangeProcess()
         processResort.holdUnitStartTimeInMillis = Constant.holdingTime
@@ -438,6 +442,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             print(error.localizedDescription)
             SVProgressHUD.dismiss()
             Helper.removeServiceCallBackgroundView(view: self.view)
+            SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
             
         })
         }else{

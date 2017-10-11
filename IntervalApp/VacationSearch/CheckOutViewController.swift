@@ -295,6 +295,8 @@ class CheckOutViewController: UIViewController {
                     Constant.MyClassConstants.isPromotionsEnabled = true
                     destinationPromotionSelected = true
                 }
+                renewalsArray.removeAll()
+                renewalsArray = Constant.MyClassConstants.exchangeFees[0].renewals
             }
         }else{
             if let selectedPromotion = Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName {

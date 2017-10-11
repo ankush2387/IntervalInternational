@@ -57,10 +57,46 @@ class CheckOutIPadViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         Helper.removeServiceCallBackgroundView(view: self.view)
-        NotificationCenter.default.addObserver(self, selector: #selector(changeLabelStatus), name: NSNotification.Name(rawValue: Constant.notificationNames.changeSliderStatus), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(updateResortHoldingTime), name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
+        
         self.emailTextToEnter = (UserContext.sharedInstance.contact?.emailAddress)!
         self.checkoutTableView.reloadData()
+        
+        if(Constant.MyClassConstants.isFromExchange){
+            if let selectedPromotion = Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName {
+                self.recapSelectedPromotion = selectedPromotion
+                if(selectedPromotion == ""){
+                    Constant.MyClassConstants.isPromotionsEnabled = false
+                    destinationPromotionSelected = false
+                }else{
+                    Constant.MyClassConstants.isPromotionsEnabled = true
+                    destinationPromotionSelected = true
+                }
+                
+                renewalsArray.removeAll()
+                renewalsArray = Constant.MyClassConstants.exchangeFees[0].renewals
+            }
+        }else{
+            if let selectedPromotion = Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName {
+                self.recapSelectedPromotion = selectedPromotion
+                if(selectedPromotion == ""){
+                    Constant.MyClassConstants.isPromotionsEnabled = false
+                    destinationPromotionSelected = false
+                }else{
+                    Constant.MyClassConstants.isPromotionsEnabled = true
+                    destinationPromotionSelected = true
+                }
+            }
+            
+            renewalsArray.removeAll()
+            renewalsArray = Constant.MyClassConstants.rentalFees[0].renewals
+            
+        }
+        
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(changeLabelStatus), name: NSNotification.Name(rawValue: Constant.notificationNames.changeSliderStatus), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateResortHoldingTime), name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
+        
+        
     }
     
     //**** Remove added observers ****//
@@ -80,12 +116,10 @@ class CheckOutIPadViewController: UIViewController {
         ]
         ADBMobile.trackAction(Constant.omnitureEvents.event40, data: pageView)
         
-        
-       
-        
         if(!Constant.MyClassConstants.hasAdditionalCharges){
             isAgreedToFees = true
         }
+        
         Constant.MyClassConstants.additionalAdvisementsArray.removeAll()
         Constant.MyClassConstants.generalAdvisementsArray.removeAll()
         if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() || Constant.MyClassConstants.searchBothExchange){
@@ -129,9 +163,6 @@ class CheckOutIPadViewController: UIViewController {
             }
             
         }
-        
-        renewalsArray.removeAll()
-        renewalsArray = Constant.MyClassConstants.rentalFees[0].renewals
         
         //Register custom cell xib with tableview
         self.remainingResortHoldingTimeLabel.text = Constant.holdingResortForRemainingMinutes
@@ -197,7 +228,6 @@ class CheckOutIPadViewController: UIViewController {
                 SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.operationFailedMessage)
             })
         }
-        
     }
     override func viewDidLayoutSubviews() {
         
@@ -266,7 +296,6 @@ class CheckOutIPadViewController: UIViewController {
                         SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: error.description)
                     })
 
-                    
                     
                 }else{
                     
@@ -414,8 +443,6 @@ class CheckOutIPadViewController: UIViewController {
                 SVProgressHUD.dismiss()
             })
         }
-        
-
         
     }
     

@@ -1026,13 +1026,21 @@ func startProcess(){
             Helper.hideProgressBar(senderView: self)
             Constant.MyClassConstants.membershipContactArray = Membership.contacts!
             
-            
             // check force renewals here
             let forceRenewals = Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals
             
             if (forceRenewals != nil) {
                 
-                return  self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
+                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                
+                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
+                viewController.delegate = self
+                
+                viewController.forceRenewals = forceRenewals!
+                self.present(viewController, animated:true, completion: nil)
+                
+                return
+                //return  self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
                 
             }
             
@@ -1059,7 +1067,7 @@ func startProcess(){
 }
 
 func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-    if (loadFirst){
+    if (loadFirst) {
         let indexPath = IndexPath(row: Constant.MyClassConstants.searchResultCollectionViewScrollToIndex , section: 0)
         
         //self.searchedDateCollectionView.scrollToItem(at: indexPath,at: .centeredHorizontally,animated: true)

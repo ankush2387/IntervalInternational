@@ -832,7 +832,6 @@ extension WhatToUseViewController:UITableViewDataSource {
 extension WhatToUseViewController:RenewelViewControllerDelegate {
     
     func selectedRenewalFromWhoWillBeCheckingIn(renewalArray:[Renewal]){
-        
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
         viewController.renewalsArray = renewalArray
@@ -860,7 +859,6 @@ extension WhatToUseViewController:RenewelViewControllerDelegate {
          self.present(viewController, animated:true, completion: nil)*/
         self.navigationController!.pushViewController(viewController, animated: true)
 
-        
     }
     
     func dismissWhatToUse(renewalArray:[Renewal]) {
@@ -896,7 +894,6 @@ extension WhatToUseViewController:RenewelViewControllerDelegate {
             return
             
         }
-        
         
     }
     
