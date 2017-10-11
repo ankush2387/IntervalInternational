@@ -1794,9 +1794,10 @@ extension VacationSearchViewController:HelperDelegate {
         
         let transitionManager = TransitionManager()
         self.navigationController?.transitioningDelegate = transitionManager
-        let navController = UINavigationController(rootViewController: viewController)
+        self.navigationController?.pushViewController(viewController, animated: true)
+        //let navController = UINavigationController(rootViewController: viewController)
         
-        self.present(navController, animated:true, completion: nil)
+        //self.present(navController, animated:true, completion: nil)
     }
     func resetCalendar(){
         Constant.MyClassConstants.calendarDatesArray.removeAll()

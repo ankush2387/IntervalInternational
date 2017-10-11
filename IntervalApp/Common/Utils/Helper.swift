@@ -746,11 +746,15 @@ public class Helper{
                                 Constant.MyClassConstants.floatRemovedArray.add(object)
                             }else if(object.floatDetails.count > 0 && !object.isFloatRemoved && object.isFromRelinquishment){
                                 Constant.MyClassConstants.whatToTradeArray.add(object)
-                                Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
+                                if(!Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID)){
+                                    Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
+                                }
                             }
                             }else{
                                 Constant.MyClassConstants.whatToTradeArray.add(object)
+                                if(!Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID)){
                                 Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
+                                }
                             }
                             Constant.MyClassConstants.idUnitsRelinquishmentDictionary.setValue(object.unitDetails, forKey: object.relinquishmentID)
                             tempDict.setValue(object.unitDetails, forKey: object.relinquishmentID)
@@ -769,11 +773,15 @@ public class Helper{
                                     Constant.MyClassConstants.floatRemovedArray.add(object)
                                 }else if(object.floatDetails.count > 0 && !object.isFloatRemoved && object.isFromRelinquishment){
                                     Constant.MyClassConstants.whatToTradeArray.add(object)
+                                    if(!Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID)){
                                     Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
+                                    }
                                 }
                             }else{
                                 Constant.MyClassConstants.whatToTradeArray.add(object)
+                                if(!Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID)){
                                 Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
+                                }
                             }
                             Constant.MyClassConstants.idUnitsRelinquishmentDictionary.setValue(object.unitDetails, forKey: object.relinquishmentID)
                             tempDict.setValue(object.unitDetails, forKey: object.relinquishmentID)
@@ -785,7 +793,9 @@ public class Helper{
                     } else{
                         
                         Constant.MyClassConstants.whatToTradeArray.add(openWk.pProgram)
+                        if(!Constant.MyClassConstants.relinquishmentIdArray.contains(openWk.pProgram[0].relinquishmentId)){
                         Constant.MyClassConstants.relinquishmentIdArray.add(openWk.pProgram[0].relinquishmentId)
+                        }
                         Constant.MyClassConstants.relinquishmentAvailablePointsProgram = Int((openWk.pProgram[0].availablePoints))
                     }
                 }
@@ -1861,8 +1871,7 @@ public class Helper{
                     
                     let transitionManager = TransitionManager()
                     senderViewController.navigationController?.transitioningDelegate = transitionManager
-                    let navController = UINavigationController(rootViewController: viewController)
-                    senderViewController.present(navController, animated:true, completion: nil)
+                    senderViewController.navigationController?.pushViewController(viewController, animated: true)
                 }else{
                     let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
                     let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
