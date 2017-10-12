@@ -1840,6 +1840,7 @@ extension SearchResultViewController:RenewalOtherOptionsVCDelegate{
                 if(renewal.term == 12){
                     let renewalItem = Renewal()
                     renewalItem.id = renewal.id
+                    renewalItem.productCode = renewal.productCode
                     renewalArray.append(renewalItem)
                     break
                 }
@@ -1852,6 +1853,7 @@ extension SearchResultViewController:RenewalOtherOptionsVCDelegate{
                     if renewalComboProduct.term == 12 {
                         let renewalItem = Renewal()
                         renewalItem.id = renewalComboProduct.id
+                        renewalItem.productCode = renewalComboProduct.productCode
                         renewalArray.append(renewalItem)
                     }
                 }

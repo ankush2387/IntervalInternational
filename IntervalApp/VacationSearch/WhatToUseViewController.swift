@@ -111,6 +111,10 @@ class WhatToUseViewController: UIViewController {
         Constant.MyClassConstants.guestCertificate = response.view?.fees?.guestCertificate
         Constant.MyClassConstants.onsiteArray.removeAllObjects()
         Constant.MyClassConstants.nearbyArray.removeAllObjects()
+            
+        if let exchangeFees = response.view?.fees{
+            Constant.MyClassConstants.exchangeFees = [exchangeFees]
+        }
         
         for amenity in (response.view?.destination?.resort?.amenities)!{
             if(amenity.nearby == false){
@@ -591,6 +595,7 @@ extension WhatToUseViewController:UITableViewDataSource {
                 
                 cell.tag = indexPath.row
                 cell.checkBOx.tag = indexPath.row
+                cell.checkBOx.isUserInteractionEnabled = false
                 cell.checkBOx.accessibilityElements = [indexPath.section]
            
                 let points:Int = (exchange.pointsProgram?.availablePoints)!
@@ -622,6 +627,7 @@ extension WhatToUseViewController:UITableViewDataSource {
                 
                 cell.tag = indexPath.row
                 cell.checkBOx.tag = indexPath.row
+                cell.checkBOx.isUserInteractionEnabled = false
                 let points:Int = (exchange.clubPoints?.pointsSpent)!
                 
                 cell.availablePointValueLabel.text = String(points)
@@ -654,6 +660,7 @@ extension WhatToUseViewController:UITableViewDataSource {
                     cell.tag = indexPath.row
                     cell.checkBox.tag = indexPath.row
                     cell.checkBox.accessibilityElements = [indexPath.section]
+                    cell.checkBox.isUserInteractionEnabled = false
                     if(self.selectedRow == indexPath.row && self.selectedRowSection == indexPath.section) {
                         
                         cell.mainView.layer.cornerRadius = 7
@@ -749,6 +756,7 @@ extension WhatToUseViewController:UITableViewDataSource {
                     
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell2, for: indexPath) as! RelinquishmentSelectionOpenWeeksCellWithUpgrade
                     cell.tag = indexPath.row
+                    cell.checkBox.isUserInteractionEnabled = false
                     cell.checkBox.tag = indexPath.row
                     cell.checkBox.accessibilityElements = [indexPath.section]
                     if(self.selectedRow == indexPath.row && self.selectedRowSection == indexPath.section) {
@@ -795,6 +803,7 @@ extension WhatToUseViewController:UITableViewDataSource {
                     cell.tag = indexPath.row
                     cell.checkBox.tag = indexPath.row
                     cell.checkBox.accessibilityElements = [indexPath.section]
+                    cell.checkBox.isUserInteractionEnabled = false
                     if(self.selectedRow == indexPath.row && self.selectedRowSection == indexPath.section) {
                         
                         cell.mainView.layer.cornerRadius = 7
@@ -847,7 +856,7 @@ extension WhatToUseViewController:UITableViewDataSource {
                 cell.tag = indexPath.row
                 cell.checkBOx.tag = indexPath.row
                 cell.checkBOx.accessibilityElements = [indexPath.section]
-                
+                cell.checkBOx.isUserInteractionEnabled = false
                 
                 cell.availablePointValueLabel.text = ""
                 
