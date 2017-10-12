@@ -134,6 +134,7 @@ class RenewelViewController: UIViewController {
                 if(renewal.term == 12){
                     let renewalItem = Renewal()
                     renewalItem.id = renewal.id
+                    renewalItem.productCode = renewal.productCode
                     renewalArray.append(renewalItem)
                     break
                 }
@@ -142,6 +143,7 @@ class RenewelViewController: UIViewController {
                 if(renewal.term == 12){
                     let renewalItem = Renewal()
                     renewalItem.id = renewal.id
+                    renewalItem.productCode = renewal.productCode
                     renewalArray.append(renewalItem)
                     break
                 }
@@ -151,6 +153,7 @@ class RenewelViewController: UIViewController {
                 if(renewal.term == 12){
                     let renewalItem = Renewal()
                     renewalItem.id = renewal.id
+                    renewalItem.productCode = renewal.productCode
                     renewalArray.append(renewalItem)
                 }
             }
@@ -160,6 +163,7 @@ class RenewelViewController: UIViewController {
                     if(renewals.term == 12){
                         let renewalItem = Renewal()
                         renewalItem.id = renewals.id
+                        renewalItem.productCode = renewals.productCode
                         renewalArray.append(renewalItem)
                     }
                 }
@@ -169,6 +173,7 @@ class RenewelViewController: UIViewController {
                 if(renewal.term == 12){
                     let renewalItem = Renewal()
                     renewalItem.id = renewal.id
+                    renewalItem.productCode = renewal.productCode
                     renewalArray.append(renewalItem)
                     break
                 }
@@ -178,6 +183,7 @@ class RenewelViewController: UIViewController {
                 if(renewal.term == 12){
                     let renewalItem = Renewal()
                     renewalItem.id = renewal.id
+                    renewalItem.productCode = renewal.productCode
                     renewalArray.append(renewalItem)
                     break
                 }
@@ -315,6 +321,7 @@ extension RenewelViewController:UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.renewelCell) as! RenewelCell
+        cell.selectionStyle = .none
         cell.selectButton?.tag = indexPath.section
         
         let term = "1 year"
@@ -392,12 +399,8 @@ extension RenewelViewController:UITableViewDataSource {
                             break
                             
                         }
-                        
-                        
                     }
                 }
-                
-                
             }
             
             // show other option button

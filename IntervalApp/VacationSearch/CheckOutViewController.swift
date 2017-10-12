@@ -823,16 +823,6 @@ extension CheckOutViewController:UITableViewDataSource {
         }else if(section == 4 && !showInsurance){
             return 0
         }else if(section == 5){
-//            if(Constant.MyClassConstants.enableTaxes && eplusAdded){
-//                totalRowsInCost = 3 + renewalsArray.count
-//                return totalRowsInCost
-//            }else if(Constant.MyClassConstants.enableTaxes || eplusAdded){
-//                totalRowsInCost = 2 + renewalsArray.count
-//                return totalRowsInCost
-//            }else{
-//                totalRowsInCost = 1 + renewalsArray.count
-//                return totalRowsInCost
-//            }
             totalRowsInCost = totalFeesArray.count
             return totalRowsInCost
         }else if (section == 6){

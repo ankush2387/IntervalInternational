@@ -188,7 +188,7 @@ extension RenewalOtherOptionsVC:UITableViewDataSource {
                     // show only non core image
                     cell.renewelImageView?.image = UIImage.init(named: coreProduct.productCode!)
                     
-                    let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.processStartResponse.view?.forceRenewals?.currencyCode)!)
+                    let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (forceRenewals.currencyCode)!)
                     
                     let price = String(format:"%.0f", coreProduct.price)
                     

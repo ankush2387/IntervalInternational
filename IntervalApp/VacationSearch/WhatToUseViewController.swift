@@ -88,6 +88,12 @@ class WhatToUseViewController: UIViewController {
         if(Constant.MyClassConstants.filterRelinquishments[self.selectedRow].openWeek != nil){
             
             processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[self.selectedRow].openWeek?.relinquishmentId
+        }else if(Constant.MyClassConstants.filterRelinquishments[self.selectedRow].deposit != nil){
+            
+            processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[self.selectedRow].deposit?.relinquishmentId
+        }else if(Constant.MyClassConstants.filterRelinquishments[self.selectedRow].pointsProgram != nil){
+            
+            processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[self.selectedRow].pointsProgram?.relinquishmentId
         }
             
         ExchangeProcessClient.start(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: {(response) in
@@ -733,6 +739,103 @@ extension WhatToUseViewController:UITableViewDataSource {
                         cell.promImgView.isHidden = true
                     }
 
+                    cell.dayAndDateLabel.text = month.uppercased()
+                    cell.selectionStyle = UITableViewCellSelectionStyle.none
+                    return cell
+                }
+            }else if(exchange.deposit != nil){
+                
+                if showUpgrade == true {
+                    
+                    let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell2, for: indexPath) as! RelinquishmentSelectionOpenWeeksCellWithUpgrade
+                    cell.tag = indexPath.row
+                    cell.checkBox.tag = indexPath.row
+                    cell.checkBox.accessibilityElements = [indexPath.section]
+                    if(self.selectedRow == indexPath.row && self.selectedRowSection == indexPath.section) {
+                        
+                        cell.mainView.layer.cornerRadius = 7
+                        cell.mainView.layer.borderWidth = 2
+                        cell.mainView.layer.borderColor = UIColor.orange.cgColor
+                        cell.checkBox.checked = true
+                    }
+                    else {
+                        
+                        cell.mainView.layer.cornerRadius = 7
+                        cell.mainView.layer.borderWidth = 2
+                        cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
+                        cell.checkBox.checked = false
+                    }
+                    
+                    cell.resortName.text = exchange.deposit?.resort?.resortName!
+                    cell.yearLabel.text = "\(String(describing: (exchange.deposit?.relinquishmentYear!)!))"
+                    cell.totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: (exchange.deposit?.weekNumber!)!))"
+                    cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType:(exchange.deposit?.unit!.unitSize!)!))), \(Helper.getKitchenEnums(kitchenType:(exchange.deposit?.unit!.kitchenType!)!))"
+                    cell.totalSleepAndPrivate.text = "Sleeps \(String(describing: exchange.deposit!.unit!.publicSleepCapacity)), \(String(describing: exchange.deposit!.unit!.privateSleepCapacity)) Private"
+                    let dateString = exchange.deposit!.checkInDate
+                    let date =  Helper.convertStringToDate(dateString: dateString!, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
+                    let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
+                    let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: date)
+                    let day = myComponents.day!
+                    var month = ""
+                    if(day < 10) {
+                        month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) 0\(day)"
+                    }
+                    else {
+                        month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \(day)"
+                    }
+                    
+                    cell.dayAndDateLabel.text = month.uppercased()
+                    cell.selectionStyle = UITableViewCellSelectionStyle.none
+                    return cell
+                    
+                } else {
+                    
+                    let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell1, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
+                    
+                    cell.tag = indexPath.row
+                    cell.checkBox.tag = indexPath.row
+                    cell.checkBox.accessibilityElements = [indexPath.section]
+                    if(self.selectedRow == indexPath.row && self.selectedRowSection == indexPath.section) {
+                        
+                        cell.mainView.layer.cornerRadius = 7
+                        cell.mainView.layer.borderWidth = 2
+                        cell.mainView.layer.borderColor = UIColor.orange.cgColor
+                        cell.checkBox.checked = true
+                    }
+                    else {
+                        
+                        cell.mainView.layer.cornerRadius = 7
+                        cell.mainView.layer.borderWidth = 2
+                        cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
+                        cell.checkBox.checked = false
+                    }
+                    
+                    cell.resortName.text = exchange.deposit?.resort?.resortName!
+                    cell.yearLabel.text = "\(String(describing: (exchange.deposit?.relinquishmentYear!)!))"
+                    cell.totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: (exchange.deposit?.weekNumber!)!))"
+                    cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType:(exchange.deposit?.unit!.unitSize!)!))), \(Helper.getKitchenEnums(kitchenType:(exchange.deposit?.unit!.kitchenType!)!))"
+                    cell.totalSleepAndPrivate.text = "Sleeps \(String(describing: exchange.deposit!.unit!.publicSleepCapacity)), \(String(describing: exchange.deposit!.unit!.privateSleepCapacity)) Private"
+                    let dateString = exchange.deposit!.checkInDate
+                    let date =  Helper.convertStringToDate(dateString: dateString!, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
+                    let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
+                    let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: date)
+                    let day = myComponents.day!
+                    var month = ""
+                    if(day < 10) {
+                        month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) 0\(day)"
+                    }
+                    else {
+                        month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \(day)"
+                    }
+                    
+                    //display Promotion
+                    /*if let promotion = exchange.deposit?.promotion {
+                        cell.promLabel.text = promotion.offerName
+                    } else {
+                        cell.promLabel.isHidden = true
+                        cell.promImgView.isHidden = true
+                    }*/
+                    
                     cell.dayAndDateLabel.text = month.uppercased()
                     cell.selectionStyle = UITableViewCellSelectionStyle.none
                     return cell

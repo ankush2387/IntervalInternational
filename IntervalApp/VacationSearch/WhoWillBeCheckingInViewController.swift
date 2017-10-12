@@ -423,7 +423,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
     //***** Function to perform checkout *****//
     @IBAction func proceedToCheckoutPressed(_ sender: AnyObject) {
         
-        if(Constant.MyClassConstants.noThanksForNonCore && self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count){
+        if(Constant.MyClassConstants.noThanksForNonCore){
             Constant.MyClassConstants.enableGuestCertificate = false
             Constant.MyClassConstants.isNoThanksFromRenewalAgain = true
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
@@ -787,13 +787,27 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
             var memberTier = ""
             if(Constant.MyClassConstants.isFromExchange){
                 if(Constant.MyClassConstants.exchangeFees.count > 0){
-                memberTier = Constant.MyClassConstants.exchangeFees[0].memberTier!
+                    for renewal in renewalsArray{
+                        if(renewal.productCode == "PLT"){
+                            memberTier = "PLT"
+                        }else{
+                            memberTier = Constant.MyClassConstants.exchangeFees[0].memberTier!
+                        }
+                    }
+                
                 }else{
                   memberTier = ""
                 }
                 
             }else{
-                memberTier = Constant.MyClassConstants.rentalFees[0].memberTier!
+                
+                for renewal in renewalsArray{
+                    if(renewal.productCode == "PLT"){
+                        memberTier = "PLT"
+                    }else{
+                        memberTier = Constant.MyClassConstants.rentalFees[0].memberTier!
+                    }
+                }
             }
             
             for price in guestPrices {
@@ -1352,7 +1366,8 @@ extension WhoWillBeCheckingInViewController:RenewelViewControllerDelegate{
     }
     
     func noThanks(){
-       // Constant.MyClassConstants.isDismissWhoWillBeCheckin = true
+        SimpleAlert.alert(self, title: "Alert", message: "Guest")
+        
         let button = UIButton()
         self.proceedToCheckoutPressed(button)
     }
