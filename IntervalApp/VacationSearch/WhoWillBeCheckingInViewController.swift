@@ -423,7 +423,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
     //***** Function to perform checkout *****//
     @IBAction func proceedToCheckoutPressed(_ sender: AnyObject) {
         
-        if(Constant.MyClassConstants.noThanksForNonCore){
+        if(Constant.MyClassConstants.noThanksForNonCore && self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count){
             Constant.MyClassConstants.enableGuestCertificate = false
             Constant.MyClassConstants.isNoThanksFromRenewalAgain = true
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
