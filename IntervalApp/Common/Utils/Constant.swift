@@ -1593,6 +1593,8 @@ class Constant: NSObject {
         
         static let rental = "RENTAL"
         static let getaway = "GETAWAY"
+        static let shop = "SHOP"
+        static let exchange = "Exchange"
     }
     
    
