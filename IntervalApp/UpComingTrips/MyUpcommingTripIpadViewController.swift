@@ -266,11 +266,19 @@ extension MyUpcommingTripIpadViewController:UICollectionViewDataSource {
                     cell.resortImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                 }
             }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
-            if(upcomingTrip.type == Constant.myUpcomingTripCommonString.rental ){
+
+            var type = ExchangeTransactionType.fromName(name: upcomingTrip.type!).rawValue
+            if(upcomingTrip.type == Constant.myUpcomingTripCommonString.rental){
                 
-                upcomingTrip.type = Constant.myUpcomingTripCommonString.getaway
+                 type = Constant.myUpcomingTripCommonString.getaway
+                
             }
-            cell.resortType.text = ExchangeTransactionType.fromName(name: upcomingTrip.type!).rawValue
+            if (upcomingTrip.type == Constant.myUpcomingTripCommonString.shop) {
+                
+                 type  = Constant.myUpcomingTripCommonString.exchange
+               
+            }
+            cell.resortType.text = type
             cell.headerLabel.text = "Confirmation #\(upcomingTrip.exchangeNumber!)"
             cell.headerStatusLabel.text = upcomingTrip.exchangeStatus!
             cell.resortNameLabel.text = upcomingTrip.resort!.resortName
