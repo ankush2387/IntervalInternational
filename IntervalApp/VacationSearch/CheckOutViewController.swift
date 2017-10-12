@@ -825,16 +825,6 @@ extension CheckOutViewController:UITableViewDataSource {
         }else if(section == 4 && !showInsurance){
             return 0
         }else if(section == 5){
-//            if(Constant.MyClassConstants.enableTaxes && eplusAdded){
-//                totalRowsInCost = 3 + renewalsArray.count
-//                return totalRowsInCost
-//            }else if(Constant.MyClassConstants.enableTaxes || eplusAdded){
-//                totalRowsInCost = 2 + renewalsArray.count
-//                return totalRowsInCost
-//            }else{
-//                totalRowsInCost = 1 + renewalsArray.count
-//                return totalRowsInCost
-//            }
             totalRowsInCost = totalFeesArray.count
             return totalRowsInCost
         }else if (section == 6){
@@ -1309,6 +1299,28 @@ extension CheckOutViewController:UITableViewDataSource {
                         }else{
                             cell.fractionalPriceLabel.text = "00"
                         }
+                        
+                    case Constant.MyClassConstants.taxesTitle:
+                        
+                        cell.priceLabel.text = Constant.MyClassConstants.taxesTitle
+                        var rentalTax = 0.0
+                        if(Constant.MyClassConstants.isFromExchange){
+                            rentalTax = Double(Int((Constant.MyClassConstants.exchangeContinueToCheckoutResponse.view?.fees?.total)!))
+                        }else{
+                            rentalTax = Double(Int((Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.rental?.rentalPrice?.tax)!))
+                        }
+                        
+                        cell.primaryPriceLabel.text = "\(rentalTax)"
+                        let priceString = "\(Constant.MyClassConstants.continueToCheckoutResponse.view!.fees!.rental!.rentalPrice!.tax)"
+                        let priceArray = priceString.components(separatedBy: ".")
+                        cell.primaryPriceLabel.text = priceArray.first
+                        if((priceArray.last?.characters.count)! > 1) {
+                            cell.fractionalPriceLabel.text = "\(priceArray.last!)"
+                        }else{
+                            cell.fractionalPriceLabel.text = "00"
+                        }
+                        
+                        
                         
                     default:
                         

@@ -1386,7 +1386,7 @@ extension VacationSearchViewController:WhoIsTravelingCellDelegate {
 
 //***** Custom SearchTableViewCell delegate method implementation *****//
 
-
+//MARK:- Search Button Click
 extension VacationSearchViewController:SearchTableViewCellDelegate {
     func searchButtonClicked(_ sender : IUIKButton) {
         
@@ -1785,8 +1785,6 @@ extension VacationSearchViewController:HelperDelegate {
         if (Constant.MyClassConstants.initialVacationSearch.searchCheckInDate != Helper.convertDateToString(date: Constant.MyClassConstants.vacationSearchShowDate, format: Constant.MyClassConstants.dateFormat)) {
             Helper.showNearestCheckInDateSelectedMessage()
         }
-        
-        
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         

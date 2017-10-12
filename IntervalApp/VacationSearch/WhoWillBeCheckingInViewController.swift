@@ -198,6 +198,12 @@ class WhoWillBeCheckingInViewController: UIViewController {
         
         return proceedStatus
     }
+    
+    //MARK:- NO THANKS from alert
+    func noThanksPressed(){
+        let button = UIButton()
+        self.proceedToCheckoutPressed(button)
+    }
  
     
     //***** Checkout using guest. *****//
@@ -423,7 +429,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
     //***** Function to perform checkout *****//
     @IBAction func proceedToCheckoutPressed(_ sender: AnyObject) {
         
-        if(Constant.MyClassConstants.noThanksForNonCore && self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count){
+        if(Constant.MyClassConstants.noThanksForNonCore){
             Constant.MyClassConstants.enableGuestCertificate = false
             Constant.MyClassConstants.isNoThanksFromRenewalAgain = true
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
@@ -787,13 +793,30 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
             var memberTier = ""
             if(Constant.MyClassConstants.isFromExchange){
                 if(Constant.MyClassConstants.exchangeFees.count > 0){
-                memberTier = Constant.MyClassConstants.exchangeFees[0].memberTier!
+                    for renewal in renewalsArray{
+                            for price in guestPrices{
+                                if (price.productCode == renewal.productCode){
+                                    memberTier = price.productCode!
+                                    break
+                                }else{
+                                    memberTier = Constant.MyClassConstants.exchangeFees[0].memberTier!
+                                }
+                          }
+                    }
+                
                 }else{
                   memberTier = ""
                 }
                 
             }else{
-                memberTier = Constant.MyClassConstants.rentalFees[0].memberTier!
+                
+                for renewal in renewalsArray{
+                    if(renewal.productCode == "PLT"){
+                        memberTier = "PLT"
+                    }else{
+                        memberTier = Constant.MyClassConstants.rentalFees[0].memberTier!
+                    }
+                }
             }
             
             for price in guestPrices {
@@ -1352,9 +1375,7 @@ extension WhoWillBeCheckingInViewController:RenewelViewControllerDelegate{
     }
     
     func noThanks(){
-       // Constant.MyClassConstants.isDismissWhoWillBeCheckin = true
-        let button = UIButton()
-        self.proceedToCheckoutPressed(button)
+        SimpleAlert.searchAlert(self, title: "Alert", message: "Guest Certificate Fees will be charged")
     }
     
     func otherOptions(forceRenewals: ForceRenewals) {

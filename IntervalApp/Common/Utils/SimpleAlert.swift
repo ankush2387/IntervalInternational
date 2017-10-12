@@ -49,16 +49,29 @@ class SimpleAlert : NSObject{
         sender.present(alertController, animated: true, completion:nil)
     }
     
-    static func searchAlert(_ sender:GoogleMapViewController, title:String, message:String ) {
+    static func searchAlert(_ sender:UIViewController, title:String, message:String ) {
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
-        let cancel = UIAlertAction(title: Constant.AlertPromtMessages.no, style: .cancel) { (action:UIAlertAction!) in
+        var cancelTitle = "Cancel"
+        var okTitle = "Ok"
+        if(sender.isKind(of: GoogleMapViewController.self)){
+            cancelTitle = Constant.AlertPromtMessages.no
+            okTitle = Constant.AlertPromtMessages.yes
         }
         
-        let ok = UIAlertAction(title: Constant.AlertPromtMessages.yes, style:  .default){
+        let cancel = UIAlertAction(title: cancelTitle, style: .cancel) { (action:UIAlertAction!) in
+        }
+        
+        let ok = UIAlertAction(title: okTitle, style:  .default){
             (action:UIAlertAction!) in
-            sender.searchYesClicked()
+            
+            if(sender.isKind(of: GoogleMapViewController.self)){
+                (sender as! GoogleMapViewController).searchYesClicked()
+            }else if(sender.isKind(of: WhoWillBeCheckingInViewController.self)){
+                (sender as! WhoWillBeCheckingInViewController).noThanksPressed()
+            }
+            
         }
         //Add Custom Actions to Alert viewController
         alertController.addAction(cancel)
@@ -83,4 +96,5 @@ class SimpleAlert : NSObject{
         
         sender.present(alertController, animated: true, completion:nil)
     }
+
 }

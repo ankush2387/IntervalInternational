@@ -606,6 +606,10 @@ class SearchResultViewController: UIViewController {
             Constant.MyClassConstants.onsiteArray.removeAllObjects()
             Constant.MyClassConstants.nearbyArray.removeAllObjects()
             
+            if let exchangeFees = response.view?.fees{
+                Constant.MyClassConstants.exchangeFees = [exchangeFees]
+            }
+            
             for amenity in (response.view?.destination?.resort?.amenities)!{
                 if(amenity.nearby == false){
                     Constant.MyClassConstants.onsiteArray.add(amenity.amenityName!)
@@ -1778,11 +1782,6 @@ extension SearchResultViewController:RenewelViewControllerDelegate {
         
         let transitionManager = TransitionManager()
         self.navigationController?.transitioningDelegate = transitionManager
-        
-        //let navController = UINavigationController(rootViewController: viewController)
-        
-        //self.dismiss(animated: true, completion: nil)
-        //self.present(navController, animated: true, completion: nil)
         self.navigationController!.pushViewController(viewController, animated: true)
     }
     
@@ -1794,17 +1793,10 @@ extension SearchResultViewController:RenewelViewControllerDelegate {
         
         let transitionManager = TransitionManager()
         self.navigationController?.transitioningDelegate = transitionManager
-        
-        /*let navController = UINavigationController(rootViewController: viewController)
-        
-        self.present(viewController, animated:true, completion: nil)*/
         self.navigationController!.pushViewController(viewController, animated: true)
     }
     
     func otherOptions(forceRenewals: ForceRenewals) {
-        
-        print("other options")
-        
         if(Constant.RunningDevice.deviceIdiom == .phone) {
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             
@@ -1848,6 +1840,7 @@ extension SearchResultViewController:RenewalOtherOptionsVCDelegate{
                 if(renewal.term == 12){
                     let renewalItem = Renewal()
                     renewalItem.id = renewal.id
+                    renewalItem.productCode = renewal.productCode
                     renewalArray.append(renewalItem)
                     break
                 }
@@ -1860,6 +1853,7 @@ extension SearchResultViewController:RenewalOtherOptionsVCDelegate{
                     if renewalComboProduct.term == 12 {
                         let renewalItem = Renewal()
                         renewalItem.id = renewalComboProduct.id
+                        renewalItem.productCode = renewalComboProduct.productCode
                         renewalArray.append(renewalItem)
                     }
                 }
@@ -1884,9 +1878,7 @@ extension SearchResultViewController:RenewalOtherOptionsVCDelegate{
         self.navigationController?.transitioningDelegate = transitionManager
         viewController.isFromRenewals = true
         viewController.renewalsArray = renewalArray
-        //let navController = UINavigationController(rootViewController: viewController)
         self.navigationController!.pushViewController(viewController, animated: true)
-        //self.present(navController, animated: true, completion: nil)
     }
 }
 
@@ -1898,11 +1890,6 @@ extension SearchResultViewController:WhoWillBeCheckInDelegate {
         
         let transitionManager = TransitionManager()
         self.navigationController?.transitioningDelegate = transitionManager
-        
-        //let navController = UINavigationController(rootViewController: viewController)
-        
-        //self.dismiss(animated: true, completion: nil)
-        //self.present(navController, animated: true, completion: nil)
         self.navigationController!.pushViewController(viewController, animated: true)
         
     }
