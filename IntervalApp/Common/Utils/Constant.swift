@@ -612,8 +612,9 @@ class Constant: NSObject {
         static var renewalsHeaderTitle = ""
         static var comboHeaderTitle = NSLocalizedString("Keep your Interval Benefits", comment: "")
         static var coreHeaderTitle = NSLocalizedString("Renew your Membership", comment: "")
-        static var noThanksTitle = NSLocalizedString("FREE GUEST CERTIFICATES", comment: "")
+        static var freeGuestCertificateTitle = NSLocalizedString("FREE GUEST CERTIFICATES", comment: "")
         static var isNoThanksFromRenewalAgain = false
+        
         
         
         static var otherOptions = NSLocalizedString("Other Options", comment: "")
@@ -622,6 +623,8 @@ class Constant: NSObject {
         static var noThanks = NSLocalizedString("No Thanks", comment: "")
         
         static var noThanksForNonCore = false
+        
+        static var isChangeNoThanksButtonTitle = false
         
         static var isDismissWhoWillBeCheckin = false
         

@@ -1001,8 +1001,6 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                 return cell
             case 1:
                 
-                
-                
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.exchangeOrProtectionCell, for: indexPath) as! ExchangeOrProtectionCell
                 
                 if(!isHeightZero){

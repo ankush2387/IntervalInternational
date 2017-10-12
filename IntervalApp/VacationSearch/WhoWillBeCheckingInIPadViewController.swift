@@ -340,7 +340,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     //***** Function for proceed to checkout button click. *****//
     @IBAction func proceedToCheckoutPressed(_ sender: AnyObject) {
         
-        if(Constant.MyClassConstants.noThanksForNonCore && self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count){
+        if(Constant.MyClassConstants.noThanksForNonCore || self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count){
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
             viewController.delegate = self
@@ -1215,6 +1215,7 @@ extension WhoWillBeCheckingInIPadViewController:RenewelViewControllerDelegate{
     }
     
     func noThanks(){
+        self.dismiss(animated: true, completion: nil)
         let button = UIButton()
         Constant.MyClassConstants.isDismissWhoWillBeCheckin = true
         self.proceedToCheckoutPressed(button)

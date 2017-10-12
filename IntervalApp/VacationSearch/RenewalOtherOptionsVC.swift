@@ -69,7 +69,26 @@ class RenewalOtherOptionsVC: UIViewController {
         if sender.tag == 0 {
             delegate?.selectedRenewal(selectedRenewal: "Combo", forceRenewals: forceRenewals)
         } else { // non core select clicked
-            delegate?.selectedRenewal(selectedRenewal: "Core", forceRenewals: forceRenewals)
+            
+            // show guest certificate
+            for renewal in forceRenewals.crossSelling {
+                if (renewal.productCode == "PLT" && renewal.term == 12) {
+                    Constant.MyClassConstants.isChangeNoThanksButtonTitle = true
+                    Constant.MyClassConstants.noThanksForNonCore = true
+             self.dismiss(animated: true, completion: nil)
+                    delegate?.selectedRenewal(selectedRenewal: "Core", forceRenewals: forceRenewals)
+                    return
+                    
+                } else {
+                    Constant.MyClassConstants.noThanksForNonCore = false
+                    Constant.MyClassConstants.isChangeNoThanksButtonTitle = false
+                    self.dismiss(animated: true, completion: nil)
+                    delegate?.selectedRenewal(selectedRenewal: "Core", forceRenewals: forceRenewals)
+                    return
+                }
+            }
+            
+            
         }
         self.dismiss(animated: true, completion: nil)
     }
