@@ -201,6 +201,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
     
     //MARK:- NO THANKS from alert
     func noThanksPressed(){
+        self.dismiss(animated: true, completion: nil)
         let button = UIButton()
         self.proceedToCheckoutPressed(button)
     }
