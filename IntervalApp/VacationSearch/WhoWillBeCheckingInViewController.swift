@@ -48,6 +48,20 @@ class WhoWillBeCheckingInViewController: UIViewController {
 
     
     override func viewWillAppear(_ animated: Bool) {
+        
+        Constant.GetawaySearchResultGuestFormDetailData.firstName = ""
+        Constant.GetawaySearchResultGuestFormDetailData.lastName = ""
+        Constant.GetawaySearchResultGuestFormDetailData.country = ""
+        Constant.GetawaySearchResultGuestFormDetailData.address1 = ""
+        Constant.GetawaySearchResultGuestFormDetailData.address2 = ""
+        Constant.GetawaySearchResultGuestFormDetailData.city = ""
+        Constant.GetawaySearchResultGuestFormDetailData.state = ""
+        Constant.GetawaySearchResultGuestFormDetailData.pinCode = ""
+        Constant.GetawaySearchResultGuestFormDetailData.email = ""
+        Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber = ""
+        Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber = ""
+        
+        
         NotificationCenter.default.addObserver(self, selector: #selector(updateResortHoldingTime), name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(enableGuestFormCheckout), name: NSNotification.Name(rawValue: Constant.notificationNames.enableGuestFormCheckout), object: nil)
@@ -1036,10 +1050,14 @@ extension WhoWillBeCheckingInViewController:UIPickerViewDelegate {
             Constant.GetawaySearchResultCardFormDetailData.countryCode = Constant.GetawaySearchResultGuestFormDetailData.countryCodeArray[row]
             Helper.getStates(country: Constant.GetawaySearchResultCardFormDetailData.countryCode, viewController: self)
         }else {
-            guard let stateName = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name else { return }
-            
-            Constant.GetawaySearchResultGuestFormDetailData.state = stateName
-            Constant.GetawaySearchResultCardFormDetailData.stateCode = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].code!
+            if (Constant.GetawaySearchResultGuestFormDetailData.stateListArray.count > 0) {
+                guard let stateName = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name else { return }
+                
+                Constant.GetawaySearchResultGuestFormDetailData.state = stateName
+                Constant.GetawaySearchResultCardFormDetailData.stateCode = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].code!
+                
+            }
+       
         }
     }
 }
