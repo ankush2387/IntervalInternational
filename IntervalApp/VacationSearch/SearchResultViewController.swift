@@ -583,19 +583,22 @@ class SearchResultViewController: UIViewController {
         
         processRequest.destination = Constant.MyClassConstants.exchangeDestination
         processRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
-        if let openWeek = Constant.MyClassConstants.filterRelinquishments[0].openWeek{
-            processRequest.relinquishmentId = openWeek.relinquishmentId
+        
+        if (Constant.MyClassConstants.filterRelinquishments.count > 0) {
+            
+            if let openWeek = Constant.MyClassConstants.filterRelinquishments[0].openWeek{
+                processRequest.relinquishmentId = openWeek.relinquishmentId
+            }
+            
+            if let deposit = Constant.MyClassConstants.filterRelinquishments[0].deposit{
+                processRequest.relinquishmentId = deposit.relinquishmentId
+            }
+            
+            if let pointsProgram = Constant.MyClassConstants.filterRelinquishments[0].pointsProgram{
+                processRequest.relinquishmentId = pointsProgram.relinquishmentId
+            }
         }
-        
-        if let deposit = Constant.MyClassConstants.filterRelinquishments[0].deposit{
-            processRequest.relinquishmentId = deposit.relinquishmentId
-        }
-        
-        if let pointsProgram = Constant.MyClassConstants.filterRelinquishments[0].pointsProgram{
-            processRequest.relinquishmentId = pointsProgram.relinquishmentId
-        }
-        
-        
+    
         ExchangeProcessClient.start(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: {(response) in
             let processResort = ExchangeProcess()
             processResort.processId = response.processId
