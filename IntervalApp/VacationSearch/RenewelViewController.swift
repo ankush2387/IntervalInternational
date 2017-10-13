@@ -164,6 +164,8 @@ class RenewelViewController: UIViewController {
                     for renewal in forceRenewals.crossSelling {
                         if (renewal.productCode == "PLT" && renewal.term == 12) {
                             Constant.MyClassConstants.noThanksForNonCore = true
+                        }else{
+                            Constant.MyClassConstants.noThanksForNonCore = false
                         }
                     }
                    
@@ -268,7 +270,15 @@ class RenewelViewController: UIViewController {
                     self.delegate?.noThanks()
                     return
                 }else{
-                    Constant.MyClassConstants.noThanksForNonCore = true
+                    
+                    // show guest certificate
+                    for renewal in forceRenewals.crossSelling {
+                        if (renewal.productCode == "PLT" && renewal.term == 12) {
+                            Constant.MyClassConstants.noThanksForNonCore = true
+                        }else{
+                             Constant.MyClassConstants.noThanksForNonCore = false
+                        }
+                    }
                     self.delegate?.noThanks()
                 }
             }
