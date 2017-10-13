@@ -909,6 +909,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
                 }
             }else{
                 
+                // it is used in renewal screen to change the title of header
                 Constant.MyClassConstants.isChangeNoThanksButtonTitle = false
                 if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
                         selectedSection = (collectionView.superview?.superview?.tag)!
