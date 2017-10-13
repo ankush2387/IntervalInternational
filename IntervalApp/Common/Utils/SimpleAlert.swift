@@ -17,6 +17,8 @@ class SimpleAlert : NSObject{
         let ok = UIAlertAction(title: Constant.AlertPromtMessages.ok, style: .default) { (action:UIAlertAction!) in
             if(title == "CheckOut"){
                 sender.navigationController?.popViewController(animated: true)
+            }else if(sender.isKind(of: CheckOutViewController.self)){
+                sender.navigationController?.popViewController(animated: true)
             }
         }
         //Add Custom Actions to Alert viewController

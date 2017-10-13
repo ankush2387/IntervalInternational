@@ -345,13 +345,13 @@ extension RenewelViewController:UITableViewDataSource {
     
              if (lblHeaderTitle?.text == Constant.MyClassConstants.freeGuestCertificateTitle || Constant.MyClassConstants.renewalsHeaderTitle == Constant.MyClassConstants.freeGuestCertificateTitle) {
                 
-                for product in (forceRenewals.products) {
+                for crossSelling in (forceRenewals.crossSelling) {
                     
-                    if product.term == 12 {
+                    if crossSelling.term == 12 {
                         
-                        cell.renewelImageView?.image = UIImage.init(named: product.productCode!)
+                        cell.renewelImageView?.image = UIImage.init(named: crossSelling.productCode!)
                         
-                        cell.renewelCoreImageView?.image = UIImage.init(named: product.productCode!)
+                        cell.renewelCoreImageView?.image = UIImage.init(named: crossSelling.productCode!)
                         
                         // hide core and non core here
                         
@@ -360,12 +360,12 @@ extension RenewelViewController:UITableViewDataSource {
                         
                         let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (forceRenewals.currencyCode)!)
                         
-                        let price = String(format:"%.0f", product.price)
+                        let price = String(format:"%.0f", crossSelling.price)
                         
                         priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                         
                         // make attributed string
-                        let mainString = "Your interval membership expire before your travel date.To continue, a \(term) membership fee of \n\(priceAndCurrency)\nwill be included with this transaction."
+                        let mainString = "Get a FREE Guest Certificate now and every time with Interval Platinum. Your Interval Platinum must be active through your travel dates to receive FREE Guest Certificates. To upgrade or renew, a \(term) Interval Platinum fee of  membership fee of \n\(priceAndCurrency)\n will be included with this transaction."
                         
                         let range = (mainString as NSString).range(of: priceAndCurrency)
                         
@@ -668,7 +668,10 @@ extension RenewelViewController:UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 50
+        if(isNonCombo){
+            return 50
+        }
+        return 10
         
     }
     
