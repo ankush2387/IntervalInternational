@@ -638,7 +638,7 @@ class SearchResultViewController: UIViewController {
         if(firstVisibleIndexPath?.section == 1){
             dateCellSelectionColor = Constant.CommonColor.greenColor
         }else{
-            //dateCellSelectionColor = Constant.CommonColor.blueColor
+            dateCellSelectionColor = Constant.CommonColor.blueColor
         }
         
         if(indexPath.row <= Constant.MyClassConstants.calendarDatesArray.count){
