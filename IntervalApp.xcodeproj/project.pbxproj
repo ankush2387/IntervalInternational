@@ -22,6 +22,8 @@
 		3A05D4501C7B7CF400258C72 /* CertificateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A05D44F1C7B7CF400258C72 /* CertificateViewController.swift */; };
 		3A0666381F912C40002AA92A /* RenewelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0666371F912C40002AA92A /* RenewelViewController.swift */; };
 		3A06663A1F912C56002AA92A /* RenewalOtherOptionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0666391F912C56002AA92A /* RenewalOtherOptionsVC.swift */; };
+		3A06663C1F912EBD002AA92A /* RenewelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A06663B1F912EBD002AA92A /* RenewelCell.swift */; };
+		3A06663E1F912EE3002AA92A /* RenewalAdditionalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A06663D1F912EE3002AA92A /* RenewalAdditionalCell.swift */; };
 		3A06C0A51CA9385A009A9574 /* AvailableDestinationCountryOrContinentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A06C0A11CA9385A009A9574 /* AvailableDestinationCountryOrContinentsTableViewCell.swift */; };
 		3A06C0A61CA9385A009A9574 /* AvailableDestinationPlaceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A06C0A21CA9385A009A9574 /* AvailableDestinationPlaceTableViewCell.swift */; };
 		3A06C0A71CA9385A009A9574 /* AvailableDestinationsIphone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A06C0A31CA9385A009A9574 /* AvailableDestinationsIphone.storyboard */; };
@@ -340,6 +342,8 @@
 		3A05D44F1C7B7CF400258C72 /* CertificateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CertificateViewController.swift; sourceTree = "<group>"; };
 		3A0666371F912C40002AA92A /* RenewelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenewelViewController.swift; sourceTree = "<group>"; };
 		3A0666391F912C56002AA92A /* RenewalOtherOptionsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenewalOtherOptionsVC.swift; sourceTree = "<group>"; };
+		3A06663B1F912EBD002AA92A /* RenewelCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenewelCell.swift; sourceTree = "<group>"; };
+		3A06663D1F912EE3002AA92A /* RenewalAdditionalCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenewalAdditionalCell.swift; sourceTree = "<group>"; };
 		3A06C0A11CA9385A009A9574 /* AvailableDestinationCountryOrContinentsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvailableDestinationCountryOrContinentsTableViewCell.swift; sourceTree = "<group>"; };
 		3A06C0A21CA9385A009A9574 /* AvailableDestinationPlaceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvailableDestinationPlaceTableViewCell.swift; sourceTree = "<group>"; };
 		3A06C0A31CA9385A009A9574 /* AvailableDestinationsIphone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AvailableDestinationsIphone.storyboard; sourceTree = "<group>"; };
@@ -859,6 +863,7 @@
 				3A892F331CD3902F00AE6F45 /* ExchangeCell0.swift */,
 				3A892F341CD3902F00AE6F45 /* ExchangeCell1.swift */,
 				3A892F351CD3902F00AE6F45 /* GetawaysCell.swift */,
+				3A06663B1F912EBD002AA92A /* RenewelCell.swift */,
 				3A892F371CD3902F00AE6F45 /* SearchResultCollectionCell.xib */,
 				3A892F381CD3902F00AE6F45 /* SearchResultContentTableCell.swift */,
 				3A892F391CD3902F00AE6F45 /* SearchResultContentTableCell.xib */,
@@ -906,6 +911,7 @@
 				3A59DE191F015FDE005280D3 /* SortingOptionCell.swift */,
 				3A202C721F3B0ABA00678C50 /* RentalInventoryCVCell.swift */,
 				0887C97A1F6A99F5007F57C3 /* SearchFlexchangeButtonCell.swift */,
+				3A06663D1F912EE3002AA92A /* RenewalAdditionalCell.swift */,
 			);
 			path = CustomCells;
 			sourceTree = "<group>";
@@ -1402,7 +1408,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		E487CA22C7876FB2B6E5A39D /* [CP] Copy Pods Resources */ = {
@@ -1512,6 +1518,7 @@
 				3A586CC81DDCA28200EF6756 /* PromotionsDiscountCell.swift in Sources */,
 				DC7BA8311DB911D600BB0C3B /* MagazineCollectionViewCell.swift in Sources */,
 				DC7EF4DB1D709F0400E9E360 /* VacationCollectionViewCell.swift in Sources */,
+				3A06663E1F912EE3002AA92A /* RenewalAdditionalCell.swift in Sources */,
 				E961268D1EE9EB2A001BA096 /* WeatherViewController.swift in Sources */,
 				087A87561E9519E2009B1387 /* TdiTableViewCell.swift in Sources */,
 				3A3D56891DD33B3300922FA9 /* DestinationResortDetailCell.swift in Sources */,
@@ -1526,6 +1533,7 @@
 				3A06C0A81CA9385A009A9574 /* AvailableDestinationsTableViewController.swift in Sources */,
 				DC7EF4CD1D709E9600E9E360 /* ClubPointWithCheckBoxTableViewCell.swift in Sources */,
 				3A2089DE1E2544D0001AFFD2 /* RelinquishmentSelectionCIGCell.swift in Sources */,
+				3A06663C1F912EBD002AA92A /* RenewelCell.swift in Sources */,
 				3A4006A41CA161A40014DBF3 /* ResortBedroomDetailWithInfoCell.swift in Sources */,
 				DC7EF5051D709F8800E9E360 /* CustomPageControl.swift in Sources */,
 				3A586CC01DDCA22900EF6756 /* ExchangeOrProtectionCell.swift in Sources */,
