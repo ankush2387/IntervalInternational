@@ -134,7 +134,7 @@ class WhatToUseViewController: UIViewController {
                     Constant.MyClassConstants.membershipContactArray = Membership.contacts!
     
                     // check force renewals here
-                    let forceRenewals = Constant.MyClassConstants.processStartResponse.view?.forceRenewals
+                    let forceRenewals = Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals
                     
                     if (forceRenewals != nil) {
                         

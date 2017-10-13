@@ -201,6 +201,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
     
     //MARK:- NO THANKS from alert
     func noThanksPressed(){
+        self.dismiss(animated: true, completion: nil)
         let button = UIButton()
         self.proceedToCheckoutPressed(button)
     }
@@ -1368,7 +1369,7 @@ extension WhoWillBeCheckingInViewController:RenewelViewControllerDelegate{
     }
     
     func noThanks(){
-        SimpleAlert.searchAlert(self, title: "Alert", message: "Guest Certificate Fees will be charged")
+        SimpleAlert.searchAlert(self, title: "Alert", message: "Guest Certificate Fee will be charged. To proceed further please click on OK button else click on cancel to select the renewal of membership.")
     }
     
     func otherOptions(forceRenewals: ForceRenewals) {

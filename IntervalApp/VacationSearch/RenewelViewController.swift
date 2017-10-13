@@ -254,7 +254,7 @@ class RenewelViewController: UIViewController {
             }else{
                 if(Constant.MyClassConstants.isNoThanksFromRenewalAgain){
                     Constant.MyClassConstants.isNoThanksFromRenewalAgain = false
-                    self.dismiss(animated: true, completion: nil)
+                    //self.dismiss(animated: true, completion: nil)
                     self.delegate?.noThanks()
                     return
                 }else{
