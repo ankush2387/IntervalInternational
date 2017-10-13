@@ -628,6 +628,14 @@ class Constant: NSObject {
         
         static var isDismissWhoWillBeCheckin = false
         
+        static var intervalMembership = NSLocalizedString("Your interval membership expires before your travel date.To continue, a", comment: "")
+        
+        static var intervalTransaction = NSLocalizedString("will be included with this transaction.", comment: "")
+        
+        static var guestCertificateString = NSLocalizedString("Get a FREE Guest Certificate now and every time with Interval Platinum. Your Interval Platinum must be active through your travel dates to receive FREE Guest Certificates. To upgrade or renew, a", comment: "")
+        
+        
+        
     }
     
     // Enum to store resorts and destinations

@@ -2241,6 +2241,12 @@ public class Helper{
     }
 
 
-}
+ static func returnStringWithPriceAndTerm(price:String, term:String) -> String {
+    
+    let mainString = "Get a FREE Guest Certificate now and every time with Interval Platinum. Your Interval Platinum must be active through your travel dates to receive FREE Guest Certificates. To upgrade or renew, a \(term) Interval Platinum fee of  membership fee of \n\(price)\n will be included with this transaction."
+    
+    return mainString
+    }
 
+}
 

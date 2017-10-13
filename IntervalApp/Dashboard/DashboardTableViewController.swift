@@ -409,18 +409,7 @@ class DashboardTableViewController: UITableViewController {
         let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.sideMenuTitles.sideMenuInitialController) as! SWRevealViewController
         self.present(viewController, animated: true, completion: nil)
-        
-        //let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.myUpcomingTripIphone, bundle: nil)
-        //let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.sideMenuTitles.sideMenuInitialController) as! SWRevealViewController
-        
-        
-        //let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.upcomingTripsViewController) as! UpComingTripDetailController
-        //self.present(viewController, animated: true, completion: nil)
-        
-        //
-        //        let resultController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.upcomingTripsViewController) as? UpComingTripDetailController
-        //        let navController = UINavigationController(rootViewController: resultController!) // Creating a navigation controller with resultController at the root of the navigation stack.
-        //        self.present(navController, animated:true, completion: nil)
+
     }
 }
 

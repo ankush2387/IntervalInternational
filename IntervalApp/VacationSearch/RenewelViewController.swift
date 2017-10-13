@@ -255,68 +255,37 @@ class RenewelViewController: UIViewController {
             Constant.MyClassConstants.noThanksForNonCore = false
             self.delegate?.noThanks()
         }else{
-        
-        if self.isCombo {
-            self.dismiss(animated: false, completion: nil)
-            self.delegate?.otherOptions(forceRenewals: self.forceRenewals)
-            return
-        }else if(isNonCore){
-            if(Constant.MyClassConstants.noThanksForNonCore){
-                Constant.MyClassConstants.noThanksForNonCore = false
-            }else{
-                if(Constant.MyClassConstants.isNoThanksFromRenewalAgain){
-                    Constant.MyClassConstants.isNoThanksFromRenewalAgain = false
-                    //self.dismiss(animated: true, completion: nil)
-                    self.delegate?.noThanks()
-                    return
+            
+            if self.isCombo {
+                self.dismiss(animated: false, completion: nil)
+                self.delegate?.otherOptions(forceRenewals: self.forceRenewals)
+                return
+            }else if(isNonCore){
+                if(Constant.MyClassConstants.noThanksForNonCore){
+                    Constant.MyClassConstants.noThanksForNonCore = false
                 }else{
-                    
-                    // show guest certificate
-                    for renewal in forceRenewals.crossSelling {
-                        if (renewal.productCode == "PLT" && renewal.term == 12) {
-                            Constant.MyClassConstants.noThanksForNonCore = true
-                        }else{
-                             Constant.MyClassConstants.noThanksForNonCore = false
+                    if(Constant.MyClassConstants.isNoThanksFromRenewalAgain){
+                        Constant.MyClassConstants.isNoThanksFromRenewalAgain = false
+                        //self.dismiss(animated: true, completion: nil)
+                        self.delegate?.noThanks()
+                        return
+                    }else{
+                        
+                        // show guest certificate
+                        for renewal in forceRenewals.crossSelling {
+                            if (renewal.productCode == Constant.productCodeImageNames.platinum && renewal.term == 12) {
+                                Constant.MyClassConstants.noThanksForNonCore = true
+                            }else{
+                                Constant.MyClassConstants.noThanksForNonCore = false
+                            }
                         }
+                        self.delegate?.noThanks()
                     }
-                    self.delegate?.noThanks()
                 }
+                
+                return
             }
-
-            return
-        }
-        
-        if(Constant.RunningDevice.deviceIdiom == .phone){
             
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
-            Constant.MyClassConstants.noThanksForNonCore = true
-            
-            let transitionManager = TransitionManager()
-            self.navigationController?.transitioningDelegate = transitionManager
-            viewController.isFromRenewals = true
-            Constant.MyClassConstants.noThanksForNonCore = true
-            let navController = UINavigationController(rootViewController: viewController)
-            
-            self.present(navController, animated:true, completion: nil)
-            
-            //self.navigationController!.pushViewController(viewController, animated: true)
-            
-        }else{
-  
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-            
-            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as! WhoWillBeCheckingInIPadViewController
-            let transitionManager = TransitionManager()
-            self.navigationController?.transitioningDelegate = transitionManager
-            viewController.isFromRenewals = true
-            
-            let navController = UINavigationController(rootViewController: viewController)
-            
-            self.present(navController, animated:true, completion: nil)
-            
-            //self.navigationController?.pushViewController(viewController, animated: true)
-        }
         }
     }
     
@@ -386,11 +355,11 @@ extension RenewelViewController:UITableViewDataSource {
                         priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                         
                         // make attributed string
-                        let mainString = "Get a FREE Guest Certificate now and every time with Interval Platinum. Your Interval Platinum must be active through your travel dates to receive FREE Guest Certificates. To upgrade or renew, a \(term) Interval Platinum fee of  membership fee of \n\(priceAndCurrency)\n will be included with this transaction."
+                       let formattedString = Helper.returnStringWithPriceAndTerm(price: priceAndCurrency, term: term)
                         
-                        let range = (mainString as NSString).range(of: priceAndCurrency)
+                        let range = (formattedString as NSString).range(of: priceAndCurrency)
                         
-                        let attributeString = NSMutableAttributedString.init(string: mainString)
+                        let attributeString = NSMutableAttributedString.init(string: formattedString)
                         
                         attributeString.setAttributes([NSFontAttributeName : UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0))!
                             , NSForegroundColorAttributeName : UIColor(red: 0.0/255.0, green: 201.0/255.0, blue: 11.0/255.0, alpha: 1.0)], range: range)
@@ -429,7 +398,7 @@ extension RenewelViewController:UITableViewDataSource {
                                 priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                                 
                                 // make attributed string
-                                let mainString = "Your interval membership expires before your travel date.To continue, a \(term) membership fee of \n\(priceAndCurrency)\nwill be included with this transaction."
+                                let mainString = "\(Constant.MyClassConstants.intervalMembership) \(term) membership fee of \n\(priceAndCurrency)\n\(Constant.MyClassConstants.intervalTransaction)"
                                 
                                 let range = (mainString as NSString).range(of: priceAndCurrency)
                                 
@@ -450,9 +419,9 @@ extension RenewelViewController:UITableViewDataSource {
                                 var mainString = ""
                                 // Create attributed string
                                 if(Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange){
-                                    mainString = "In addition, to keep your \(String(describing: renewalComboProduct.displayName!)) benefits, a \(term) membership fee of \n\(priceAndCurrency)\nwill be included with this transaction."
+                                    mainString = "In addition, to keep your \(String(describing: renewalComboProduct.displayName!)) benefits, a \(term) membership fee of \n\(priceAndCurrency)\n\(Constant.MyClassConstants.intervalTransaction)"
                                 }else{
-                                     mainString = "In addition, your \(String(describing: renewalComboProduct.displayName!)) membership expires before your travel date. To continue booking your Getaway at the current discounted rate, a \(term) membership fee of \n\(priceAndCurrency)\nwill be included with this transaction."
+                                     mainString = "In addition, your \(String(describing: renewalComboProduct.displayName!)) membership expires before your travel date. To continue booking your Getaway at the current discounted rate, a \(term) membership fee of \n\(priceAndCurrency)\n\(Constant.MyClassConstants.intervalTransaction)"
                                 }
                                 
                                 
@@ -543,7 +512,7 @@ extension RenewelViewController:UITableViewDataSource {
                         priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                         
                         // make attributed string
-                        let mainString = "Your interval membership expire before your travel date.To continue, a \(term) membership fee of \n\(priceAndCurrency)\nwill be included with this transaction."
+                        let mainString = "\(Constant.MyClassConstants.intervalMembership) \(term) membership fee of \n\(priceAndCurrency)\n\(Constant.MyClassConstants.intervalTransaction)"
                         
                         let range = (mainString as NSString).range(of: priceAndCurrency)
                         
@@ -584,7 +553,7 @@ extension RenewelViewController:UITableViewDataSource {
                         priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                         
                         // Create attributed string
-                        let mainString = "In addition, your \(String(describing: nonCoreProduct.displayName!)) membership expires before your travel date. To keep your Interval Platinum benefits, a \(term) membership fee of \n\(priceAndCurrency)\nwill be included with this transaction."
+                        let mainString = "In addition, your \(String(describing: nonCoreProduct.displayName!)) membership expires before your travel date. To keep your Interval Platinum benefits, a \(term) membership fee of \n\(priceAndCurrency)\n\(Constant.MyClassConstants.intervalTransaction)"
                         
                         let range = (mainString as NSString).range(of: priceAndCurrency)
                         
@@ -641,9 +610,9 @@ extension RenewelViewController:UITableViewDataSource {
                         priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                         
                         // Create attributed string
-                        var mainString = "Your \(String(describing: nonCoreProduct.displayName!)) membership expires before your travel date. To continue booking your Getaway at the current discounted rate, a \(term) \(String(describing: nonCoreProduct.displayName!)) membership fee of \n\(priceAndCurrency)\nwill be included with this transaction."
+                        var mainString = "Your \(String(describing: nonCoreProduct.displayName!)) membership expires before your travel date. To continue booking your Getaway at the current discounted rate, a \(term) \(String(describing: nonCoreProduct.displayName!)) membership fee of \n\(priceAndCurrency)\n\(Constant.MyClassConstants.intervalTransaction)"
                         if(Constant.MyClassConstants.noThanksForNonCore){
-                            mainString = "Get a FREE Guest Certificate now and every time with \(String(describing: nonCoreProduct.displayName!)). Your Interval Platinum must be active through your travel dates to receive FREE Guest Certificates. To upgrade or renew, a \(term) \(String(describing: nonCoreProduct.displayName!)) fee of \n\(priceAndCurrency)\nwill be included with this transaction."
+                            mainString = "Get a FREE Guest Certificate now and every time with \(String(describing: nonCoreProduct.displayName!)). Your Interval Platinum must be active through your travel dates to receive FREE Guest Certificates. To upgrade or renew, a \(term) \(String(describing: nonCoreProduct.displayName!)) fee of \n\(priceAndCurrency)\n\(Constant.MyClassConstants.intervalTransaction)"
                         }
                         
                         if(Constant.MyClassConstants.noThanksForNonCore){
@@ -711,60 +680,8 @@ extension RenewelViewController:UITableViewDelegate {
         
     }
   
-    
 }
 
-////Mark:- Other Options Delegate
-//extension RenewelViewController:RenewalOtherOptionsVCDelegate{
-//    func selectedRenewal(selectedRenewal: String) {
-//        renewalArray.removeAll()
-//        if(selectedRenewal == "Core"){
-//            // Selected core renewal
-//            for renewal in forceRenewals.products{
-//                if(renewal.term == 12){
-//                    let renewalItem = Renewal()
-//                    renewalItem.id = renewal.id
-//                    renewalArray.append(renewalItem)
-//                    break
-//                }
-//            }
-//        }else{
-//            // Selected non core renewal
-//            for renewal in forceRenewals.crossSelling{
-//                if(renewal.term == 12){
-//                    let renewalItem = Renewal()
-//                    renewalItem.id = renewal.id
-//                    renewalArray.append(renewalItem)
-//                    break
-//                }
-//            }
-//        }
-//        
-//        if(Constant.RunningDevice.deviceIdiom == .pad){
-//            // Selected single renewal from other options. Navigate to WhoWillBeCheckingIn screen
-//            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-//            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as! WhoWillBeCheckingInIPadViewController
-//            
-//            let transitionManager = TransitionManager()
-//            self.navigationController?.transitioningDelegate = transitionManager
-//            viewController.isFromRenewals = true
-//            viewController.renewalsArray = renewalArray
-//            let navController = UINavigationController(rootViewController: viewController)
-//            self.present(navController, animated: true, completion: nil)
-//        }else{
-//            // Selected single renewal from other options. Navigate to WhoWillBeCheckingIn screen
-//            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-//            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
-//            
-//            let transitionManager = TransitionManager()
-//            self.navigationController?.transitioningDelegate = transitionManager
-//            viewController.isFromRenewals = true
-//            viewController.renewalsArray = renewalArray
-//            let navController = UINavigationController(rootViewController: viewController)
-//            self.present(navController, animated: true, completion: nil)
-//        }
-//    }
-//}
 
 
 

@@ -204,7 +204,7 @@ class VacationSearchResultIPadController: UIViewController {
     
     // Function called to dismiss current controller when back button pressed.
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
-        self.dismiss(animated: true, completion: nil)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     //**** Function for orientation change for iPad ****//

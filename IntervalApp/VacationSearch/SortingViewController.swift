@@ -125,7 +125,7 @@ class SortingViewController: UIViewController {
                 Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(resortList[0].resortName) + \(resortList.count - 1) more"
                 
             case .Area(let areaList):
-                print(areaList)
+        
                 let area = Area()
                 area.areaName = (areaList.allValues[0] as! String)
                 area.areaCode = Int(areaList.allKeys[0] as! String)!
@@ -331,7 +331,7 @@ class SortingViewController: UIViewController {
             let realm = try! Realm()
             try! realm.write {
                 Constant.MyClassConstants.filterOptionsArray.removeAll()
-                for (index,object) in storedData.enumerated(){
+                for object in storedData {
                     
                     if(object.destinations.count > 0){
                         Constant.MyClassConstants.filterOptionsArray.append(
@@ -341,8 +341,6 @@ class SortingViewController: UIViewController {
                     }else if(object.resorts.count > 0){
                         
                         if(object.resorts[0].resortArray.count > 0){
-                            
-                            print(object.resorts[0].resortArray, object.resorts[0])
                             
                             var araayOfResorts = List<ResortByMap>()
                             var reswortByMap = [ResortByMap]()
@@ -378,25 +376,22 @@ class SortingViewController: UIViewController {
              self.sortingTBLview.reloadData()
             
             switch Constant.MyClassConstants.filterOptionsArray[(indexPath?.row)!] {
-            case .Destination(let val):
+            case .Destination:
                 
                 self.sortingAndFilterSelectedValue(indexPath: indexPath! as NSIndexPath, isFromFiltered: true)
                 
-               // self.delegate?.selectedOptionis(filteredValueIs: val.destinationName, indexPath: indexPath! as NSIndexPath, isFromFiltered: true)
                 
-            case .Resort(let val):
-                
-                self.sortingAndFilterSelectedValue(indexPath: indexPath! as NSIndexPath, isFromFiltered: true)
-                
-                 //self.delegate?.selectedOptionis(filteredValueIs: val.resortName, indexPath: indexPath! as NSIndexPath, isFromFiltered: true)
-                
-            case .ResortList(let val):
+            case .Resort:
                 
                 self.sortingAndFilterSelectedValue(indexPath: indexPath! as NSIndexPath, isFromFiltered: true)
                 
-                //self.delegate?.selectedOptionis(filteredValueIs: val[0].resortName, indexPath: indexPath! as NSIndexPath, isFromFiltered: true)
                 
-            case .Area(let val):
+            case .ResortList:
+                
+                self.sortingAndFilterSelectedValue(indexPath: indexPath! as NSIndexPath, isFromFiltered: true)
+                
+                
+            case .Area:
                 
                 self.sortingAndFilterSelectedValue(indexPath: indexPath! as NSIndexPath, isFromFiltered: true)
             }
@@ -412,8 +407,6 @@ class SortingViewController: UIViewController {
             self.selectedSortingIndex = (indexPath?.row)!
             
             self.sortingAndFilterSelectedValue(indexPath: indexPath! as NSIndexPath, isFromFiltered: false)
-
-           // self.delegate?.selectedOptionis(filteredValueIs: Constant.MyClassConstants.sortingSetValues[(indexPath?.row)!], indexPath: indexPath! as NSIndexPath, isFromFiltered: false)
         }
     }
     
@@ -467,16 +460,11 @@ extension SortingViewController:UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.isFilterClicked {
-//            print(Constant.MyClassConstants.filterOptionsArray.count)
-//            switch(Constant.MyClassConstants.filterOptionsArray[section]){
-//            case .Area(let areas):
-//                return areas.count
-//            case .Destination( _): break
-//            case .Resort( _): break
-//            case .ResortList( _): break
-//            }
+            
             return Constant.MyClassConstants.filterOptionsArray.count
+            
         } else {
+            
             if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isCombined() {
                 return Constant.MyClassConstants.exchangeSortingOptionArray.count
             } else {
@@ -500,10 +488,7 @@ extension SortingViewController:UITableViewDataSource {
             case .ResortList(let val):
                 cell.lblFilterOption.text = "\(val[0].resortName) + \(val.count - 1)  more"
             case .Area(let area):
-                let array = area.allKeys
-                
-                print(array)
-                cell.lblFilterOption.text = area.allValues[0] as! String
+                cell.lblFilterOption.text = area.allValues[0] as? String
             }
             
             if(self.selectedIndex == indexPath.row) {
