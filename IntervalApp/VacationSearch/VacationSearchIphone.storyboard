@@ -4030,7 +4030,7 @@ transaction.</string>
                                                             </constraints>
                                                         </view>
                                                         <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5J4-54-kml" customClass="IUIKCheckbox" customModule="IntervalUIKit">
-                                                            <rect key="frame" x="316" y="5" width="40" height="40"/>
+                                                            <rect key="frame" x="316" y="27.666666666666671" width="40" height="40"/>
                                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="40" id="wp4-MY-gxf"/>
@@ -4068,18 +4068,18 @@ transaction.</string>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstItem="Sjl-t5-WFu" firstAttribute="top" secondItem="Y39-oo-O1h" secondAttribute="top" constant="5" id="8wf-bp-nR2"/>
                                                         <constraint firstItem="zyO-AD-oBa" firstAttribute="top" secondItem="BQm-Z3-R3y" secondAttribute="bottom" constant="10" id="9zJ-tH-cDv"/>
                                                         <constraint firstItem="BQm-Z3-R3y" firstAttribute="leading" secondItem="Sjl-t5-WFu" secondAttribute="trailing" id="H9q-QU-LeQ"/>
                                                         <constraint firstItem="zyO-AD-oBa" firstAttribute="leading" secondItem="MoF-c4-Fhl" secondAttribute="trailing" constant="5" id="KI9-dE-q1z"/>
+                                                        <constraint firstItem="5J4-54-kml" firstAttribute="centerY" secondItem="9SB-YE-Ejr" secondAttribute="centerY" id="WCm-4d-qWh"/>
                                                         <constraint firstAttribute="trailing" secondItem="5J4-54-kml" secondAttribute="trailing" constant="3" id="WqM-Qz-02Z"/>
-                                                        <constraint firstItem="5J4-54-kml" firstAttribute="top" secondItem="Y39-oo-O1h" secondAttribute="top" constant="5" id="aYZ-Hg-iFM"/>
                                                         <constraint firstAttribute="trailing" secondItem="zyO-AD-oBa" secondAttribute="trailing" constant="8" id="bMg-Az-wp0"/>
                                                         <constraint firstItem="5J4-54-kml" firstAttribute="leading" secondItem="BQm-Z3-R3y" secondAttribute="trailing" constant="1" id="gjH-Lu-08S"/>
                                                         <constraint firstItem="MoF-c4-Fhl" firstAttribute="leading" secondItem="Y39-oo-O1h" secondAttribute="leading" constant="12" id="iHv-0T-CnZ"/>
                                                         <constraint firstItem="MoF-c4-Fhl" firstAttribute="top" secondItem="Sjl-t5-WFu" secondAttribute="bottom" constant="8" id="ikz-ew-76f"/>
                                                         <constraint firstItem="Sjl-t5-WFu" firstAttribute="leading" secondItem="Y39-oo-O1h" secondAttribute="leading" id="j2E-zq-Wo5"/>
                                                         <constraint firstItem="BQm-Z3-R3y" firstAttribute="top" secondItem="Y39-oo-O1h" secondAttribute="top" constant="5" id="jPh-WR-cyN"/>
+                                                        <constraint firstItem="9SB-YE-Ejr" firstAttribute="top" secondItem="Sjl-t5-WFu" secondAttribute="bottom" constant="-26.333333333333336" id="z6T-WZ-QAY"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>

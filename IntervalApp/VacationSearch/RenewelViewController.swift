@@ -238,7 +238,7 @@ class RenewelViewController: UIViewController {
     @IBAction func onClickNoThanks(_ sender: UIButton) {
         
         if(Constant.MyClassConstants.noThanksForNonCore){
-            //self.dismiss(animated: true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
             Constant.MyClassConstants.noThanksForNonCore = false
             self.delegate?.noThanks()
         }else{
