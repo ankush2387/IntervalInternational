@@ -695,7 +695,8 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
             }
             
         }else{
-            
+            // it is used in renewal screen to change the title of header
+            Constant.MyClassConstants.isChangeNoThanksButtonTitle = false
             //Second section for inventory items
             if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
                 selectedSection = (collectionView.superview?.superview?.tag)!
