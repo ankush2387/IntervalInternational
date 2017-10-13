@@ -909,6 +909,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
                 }
             }else{
                 
+                Constant.MyClassConstants.isChangeNoThanksButtonTitle = false
                 if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
                         selectedSection = (collectionView.superview?.superview?.tag)!
                         selectedRow = collectionView.tag
