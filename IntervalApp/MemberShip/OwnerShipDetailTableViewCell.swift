@@ -49,6 +49,9 @@ class OwnerShipDetailTableViewCell: UITableViewCell {
         // update Label text
         placeNameLabel.text = ownership.resort?.resortName
         placeAddressLabel.text = ownership.resort?.address?.cityName
+        if let state = ownership.resort?.address?.territoryCode{
+            placeAddressLabel.text?.append(", \(state)")
+        }
         if let countryCode = ownership.resort?.address?.countryCode {
             placeAddressLabel.text?.append(", \(countryCode)")
         }

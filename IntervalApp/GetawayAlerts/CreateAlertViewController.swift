@@ -180,7 +180,6 @@ class CreateAlertViewController: UIViewController {
                         
                         SVProgressHUD.show()
                         let rentalAlert = RentalAlert()
-                        rentalAlert.alertId = 123456
                         rentalAlert.earliestCheckInDate = Helper.convertDateToString(date: Constant.MyClassConstants.alertWindowStartDate, format: Constant.MyClassConstants.dateFormat)
                         rentalAlert.latestCheckInDate = Helper.convertDateToString(date: Constant.MyClassConstants.alertWindowEndDate, format: Constant.MyClassConstants.dateFormat)
                         
@@ -237,6 +236,7 @@ class CreateAlertViewController: UIViewController {
                             
                             Constant.MyClassConstants.getawayAlertsArray.insert(rentalAlert, at: Constant.MyClassConstants.getawayAlertsArray.count)
                             SimpleAlert.alertTodismissController(self, title:Constant.AlertPromtMessages.createAlertTitle , message: Constant.AlertMessages.createAlertMessage)
+                            rentalAlert.alertId = response.alertId
                             
                         })
                         { (error) in

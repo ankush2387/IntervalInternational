@@ -69,23 +69,23 @@ class BedroomSizeViewController: UIViewController {
             }
         }
         if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController){
-            self.changeLabelColor(checkBox: checkBox)
+            //self.changeLabelColor(checkBox: checkBox)
         }
     }
     
     // Function to change label colors on checkbox selection
-    func changeLabelColor(checkBox:IUIKCheckbox){
-        
-        let checkedLabel = self.view.viewWithTag(checkBox.tag%10 + 100) as! UILabel
-        let unitLabel = self.view.viewWithTag(checkBox.tag%10 + 10) as! UILabel
-        if(checkBox.checked){
-            checkedLabel.textColor = IUIKColorPalette.secondaryB.color
-            unitLabel.textColor = IUIKColorPalette.secondaryB.color
-        }else{
-            checkedLabel.textColor = UIColor.black
-            unitLabel.textColor = UIColor.black
-        }
-    }
+//    func changeLabelColor(checkBox:IUIKCheckbox){
+//        
+//        let checkedLabel = self.view.viewWithTag(checkBox.tag%10 + 100) as! UILabel
+//        let unitLabel = self.view.viewWithTag(checkBox.tag%10 + 10) as! UILabel
+//        if(checkBox.checked){
+//            checkedLabel.textColor = IUIKColorPalette.secondaryB.color
+//            unitLabel.textColor = IUIKColorPalette.secondaryB.color
+//        }else{
+//            checkedLabel.textColor = UIColor.black
+//            unitLabel.textColor = UIColor.black
+//        }
+//    }
     
     //*** Change frame layout while change iPad in Portrait and Landscape mode.***//
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -297,7 +297,12 @@ extension BedroomSizeViewController : UITableViewDataSource{
             var unitDetails = ""
             if(indexPath.row < Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count - 1 ){
                 if selectedUnit.lockOffUnits.count > 0 {
-                    unitDetails = "\(String(describing: selectedUnit.lockOffUnits[indexPath.row].unitNumber!)), \(String(describing: Helper.getKitchenEnums(kitchenType:selectedUnit.lockOffUnits[indexPath.row].kitchenType!)))"
+                    //unitDetails = "\(String(describing: selectedUnit.lockOffUnits[indexPath.row].unitNumber!)), \(String(describing: Helper.getKitchenEnums(kitchenType:selectedUnit.lockOffUnits[indexPath.row].kitchenType!)))"
+                    
+                        let units = "\((selectedUnit.lockOffUnits[indexPath.row].unitNumber) ?? "")"
+                        let unitnumber =  units.replacingOccurrences(of: "/", with: "")
+                        unitDetails = "\(Optional(unitnumber) ?? ""), \(String(describing: Helper.getKitchenEnums(kitchenType:selectedUnit.lockOffUnits[indexPath.row].kitchenType!)))"
+                    
                 }
             }else{
                 if let unitNumber = selectedUnit.unitNumber {
@@ -384,9 +389,9 @@ extension BedroomSizeViewController : UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let tableCell = tableView.cellForRow(at: indexPath) as! BedroomSizeTableViewCell
-        tableCell.backgroundCellView.layer.borderColor = IUIKColorPalette.secondaryB.color.cgColor
-        tableCell.bedroomSizelabel.textColor = IUIKColorPalette.secondaryB.color
-        tableCell.unitSizeLabel.textColor = IUIKColorPalette.secondaryB.color
+        //tableCell.backgroundCellView.layer.borderColor = IUIKColorPalette.secondaryB.color.cgColor
+       // tableCell.bedroomSizelabel.textColor = IUIKColorPalette.secondaryB.color
+       // tableCell.unitSizeLabel.textColor = IUIKColorPalette.secondaryB.color
         if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController){
             let selectedBedroom = Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as! String
             Constant.MyClassConstants.selectedBedRoomSize = selectedBedroom

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16D30" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="5vv-7r-MH2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="5vv-7r-MH2">
     <device id="ipad9_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -4906,19 +4906,6 @@
                                             <rect key="frame" x="0.0" y="0.0" width="618" height="90"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bNg-pM-MQ6">
-                                                    <rect key="frame" x="20" y="23" width="40" height="43"/>
-                                                    <color key="backgroundColor" red="0.65490196079999996" green="0.65490196079999996" blue="0.66666666669999997" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="40" id="jCS-Ru-B5R"/>
-                                                    </constraints>
-                                                </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Save this Credit Card" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0m3-Bh-IH0">
-                                                    <rect key="frame" x="68" y="17" width="467" height="57"/>
-                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
-                                                    <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xaO-bK-ksk" customClass="IUIKCheckbox" customModule="IntervalUIKit">
                                                     <rect key="frame" x="543" y="10" width="53" height="72"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -4938,17 +4925,20 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Save this Credit Card" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0m3-Bh-IH0">
+                                                    <rect key="frame" x="30" y="25" width="312" height="57"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
+                                                    <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="0m3-Bh-IH0" firstAttribute="top" secondItem="pwM-EE-pIN" secondAttribute="topMargin" constant="9" id="2m6-ej-sfo"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="bNg-pM-MQ6" secondAttribute="bottom" constant="16" id="2oh-n8-bd8"/>
-                                                <constraint firstItem="bNg-pM-MQ6" firstAttribute="leading" secondItem="pwM-EE-pIN" secondAttribute="leadingMargin" constant="12" id="4qD-GP-fuR"/>
-                                                <constraint firstItem="xaO-bK-ksk" firstAttribute="leading" secondItem="0m3-Bh-IH0" secondAttribute="trailing" constant="8" id="8mc-Ij-8iJ"/>
+                                                <constraint firstItem="0m3-Bh-IH0" firstAttribute="top" secondItem="pwM-EE-pIN" secondAttribute="topMargin" constant="17" id="2m6-ej-sfo"/>
+                                                <constraint firstItem="0m3-Bh-IH0" firstAttribute="leading" secondItem="pwM-EE-pIN" secondAttribute="leadingMargin" constant="22" id="53I-SK-tzC"/>
+                                                <constraint firstItem="xaO-bK-ksk" firstAttribute="leading" secondItem="0m3-Bh-IH0" secondAttribute="trailing" constant="201" id="8mc-Ij-8iJ"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="xaO-bK-ksk" secondAttribute="bottom" id="B80-82-Iaa"/>
-                                                <constraint firstItem="0m3-Bh-IH0" firstAttribute="leading" secondItem="bNg-pM-MQ6" secondAttribute="trailing" constant="8" id="Mcj-sI-iDs"/>
                                                 <constraint firstItem="xaO-bK-ksk" firstAttribute="top" secondItem="pwM-EE-pIN" secondAttribute="topMargin" constant="2" id="WZZ-te-v03"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="0m3-Bh-IH0" secondAttribute="bottom" constant="8" id="dBh-Iz-Mhm"/>
-                                                <constraint firstItem="bNg-pM-MQ6" firstAttribute="top" secondItem="pwM-EE-pIN" secondAttribute="topMargin" constant="15" id="kQG-b9-PGB"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="0m3-Bh-IH0" secondAttribute="bottom" id="dBh-Iz-Mhm"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="xaO-bK-ksk" secondAttribute="trailing" constant="14" id="uDd-eL-nav"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -5015,7 +5005,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y4U-nQ-uX4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6455" y="3919"/>
+            <point key="canvasLocation" x="6454.6875" y="3918.7499999999995"/>
         </scene>
         <!--Destination Resort View Controller-->
         <scene sceneID="vMR-D7-dFM">

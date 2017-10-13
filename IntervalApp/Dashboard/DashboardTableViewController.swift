@@ -277,9 +277,10 @@ class DashboardTableViewController: UITableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.dashboardTableScreenReusableIdentifiers.sectionCell, for: indexPath) as! UpcomingTripSegmentCell
             
             let upcomingTrip  =  Constant.MyClassConstants.upcomingTripsArray[indexPath.row]
-            
+            let statename = upcomingTrip.resort?.address?.territoryCode
+            print(statename as Any)
             cell.resortNameLabel.text = upcomingTrip.resort!.resortName
-            cell.resortLocationLabel.text = "\(upcomingTrip.resort!.address!.cityName!), \(upcomingTrip.resort!.address!.countryCode!)"
+            cell.resortLocationLabel.text = "\(upcomingTrip.resort!.address!.cityName!), \(String(describing: upcomingTrip.resort?.address?.territoryCode)), \(upcomingTrip.resort!.address!.countryCode!)"
             let upcomingTripDate = Helper.convertStringToDate(dateString: upcomingTrip.unit!.checkInDate!, format: Constant.MyClassConstants.dateFormat)
             cell.dayDateLabel.text = Helper.getWeekDay(dateString: upcomingTripDate as NSDate, getValue: Constant.MyClassConstants.date)
             
