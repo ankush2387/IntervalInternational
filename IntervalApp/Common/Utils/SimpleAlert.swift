@@ -18,7 +18,7 @@ class SimpleAlert : NSObject{
             if(title == "CheckOut"){
                 sender.navigationController?.popViewController(animated: true)
             }else if(sender.isKind(of: CheckOutViewController.self) || sender.isKind(of: WhoWillBeCheckingInViewController.self)){
-                sender.navigationController?.popViewController(animated: true)
+                //sender.navigationController?.popViewController(animated: true)
             }
         }
         //Add Custom Actions to Alert viewController

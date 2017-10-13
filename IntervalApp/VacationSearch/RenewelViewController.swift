@@ -408,7 +408,7 @@ extension RenewelViewController:UITableViewDataSource {
                                 priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                                 
                                 // make attributed string
-                                let mainString = "Your interval membership expire before your travel date.To continue, a \(term) membership fee of \n\(priceAndCurrency)\nwill be included with this transaction."
+                                let mainString = "Your interval membership expires before your travel date.To continue, a \(term) membership fee of \n\(priceAndCurrency)\nwill be included with this transaction."
                                 
                                 let range = (mainString as NSString).range(of: priceAndCurrency)
                                 
@@ -426,9 +426,14 @@ extension RenewelViewController:UITableViewDataSource {
                                 let price = String(format:"%.0f", renewalComboProduct.price)
                                 
                                 priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
-                                
+                                var mainString = ""
                                 // Create attributed string
-                                let mainString = "In addition, your \(String(describing: renewalComboProduct.displayName!)) membership expires before your travel date. To keep your Interval Platinum benefits, a \(term) membership fee of \n\(priceAndCurrency)\nwill be included with this transaction."
+                                if(Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange){
+                                    mainString = "In addition, to keep your \(String(describing: renewalComboProduct.displayName!)) benefits, a \(term) membership fee of \n\(priceAndCurrency)\nwill be included with this transaction."
+                                }else{
+                                     mainString = "In addition, your \(String(describing: renewalComboProduct.displayName!)) membership expires before your travel date. To continue booking your Getaway at the current discounted rate, a \(term) membership fee of \n\(priceAndCurrency)\nwill be included with this transaction."
+                                }
+                                
                                 
                                 let range = (mainString as NSString).range(of: priceAndCurrency)
                                 
