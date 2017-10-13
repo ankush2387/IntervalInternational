@@ -188,6 +188,17 @@ class RenewelViewController: UIViewController {
                     renewalItem.id = renewal.id
                     renewalItem.productCode = renewal.productCode
                     renewalArray.append(renewalItem)
+                    
+                    for renewal in forceRenewals.crossSelling {
+                        if (renewal.productCode == "PLT" && renewal.term == 12) {
+                            Constant.MyClassConstants.noThanksForNonCore = true
+                        } else {
+                            Constant.MyClassConstants.noThanksForNonCore = false
+                
+                        }
+                    }
+
+                    
                     break
                 }
             }
