@@ -344,7 +344,8 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
             viewController.delegate = self
-            
+            Constant.MyClassConstants.enableGuestCertificate = false
+            Constant.MyClassConstants.noThanksForNonCore = false
             let transitionManager = TransitionManager()
             self.navigationController?.transitioningDelegate = transitionManager
             let navController = UINavigationController(rootViewController: viewController)
@@ -391,6 +392,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             Constant.MyClassConstants.enableGuestCertificate = true
         }
         else{
+            Constant.MyClassConstants.enableGuestCertificate = false
             
             /*let guest = Guest()
              guest.firstName = ""
@@ -1198,6 +1200,8 @@ extension WhoWillBeCheckingInIPadViewController:UITextFieldDelegate{
 extension WhoWillBeCheckingInIPadViewController:RenewelViewControllerDelegate{
     
     func otherOptions(forceRenewals: ForceRenewals) {
+        let button = UIButton()
+        self.proceedToCheckoutPressed(button)
         
     }
 

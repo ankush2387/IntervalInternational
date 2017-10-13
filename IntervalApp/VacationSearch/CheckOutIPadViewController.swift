@@ -112,7 +112,7 @@ class CheckOutIPadViewController: UIViewController {
         Helper.getCountry(viewController: self)
         // omniture tracking with event 40
         let pageView: [String: String] = [
-        Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.vacationSearchPaymentInformation
+            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.vacationSearchPaymentInformation
         ]
         ADBMobile.trackAction(Constant.omnitureEvents.event40, data: pageView)
         
@@ -199,12 +199,12 @@ class CheckOutIPadViewController: UIViewController {
             }
         }
     }
-
+    
     
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
         
         SVProgressHUD.show()
-       
+        
         if(Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
             ExchangeProcessClient.backToChooseExchange(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess: {(response) in
                 Helper.hideProgressBar(senderView: self)
@@ -234,7 +234,7 @@ class CheckOutIPadViewController: UIViewController {
     }
     
     func changeLabelStatus(notification:NSNotification){
-
+        
         let imageSlider = notification.object as! UIImageView
         if (Constant.MyClassConstants.indexSlideButton == 8){
             
@@ -252,7 +252,7 @@ class CheckOutIPadViewController: UIViewController {
                 strAccept = Constant.MyClassConstants.status
                 strReject = Constant.MyClassConstants.status
             }
-
+            
             
             if((isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && (strAccept == Constant.MyClassConstants.status || strReject == Constant.MyClassConstants.status) && Constant.MyClassConstants.selectedCreditCard.count > 0){
                 
@@ -295,7 +295,7 @@ class CheckOutIPadViewController: UIViewController {
                         self.checkoutTableView.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                         SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: error.description)
                     })
-
+                    
                     
                 }else{
                     
@@ -329,7 +329,7 @@ class CheckOutIPadViewController: UIViewController {
                     })
                 }
                 
-
+                
             }else if(!isAgreedToFees && Constant.MyClassConstants.hasAdditionalCharges){
                 let indexPath = NSIndexPath(row: 0, section: 7)
                 checkoutTableView.scrollToRow(at: indexPath as IndexPath, at: .top, animated: true)
@@ -485,7 +485,7 @@ class CheckOutIPadViewController: UIViewController {
         /*}else{
          
          }*/
-
+        
     }
     
     //MARK:- Check Fees applied for user
@@ -710,11 +710,11 @@ class CheckOutIPadViewController: UIViewController {
                     SVProgressHUD.dismiss()
                 })
             }
-
+            
         }
         self.present(promotionsNav, animated: true, completion: nil)
     }
-
+    
 }
 
 //MARK:- Table View Delegate
@@ -728,23 +728,23 @@ extension CheckOutIPadViewController:UITableViewDelegate {
             SVProgressHUD.show()
             Helper.addServiceCallBackgroundView(view: self.view)
             UserClient.getCreditCards(UserContext.sharedInstance.accessToken!, onSuccess: { (response) in
-    
+                
                 Constant.MyClassConstants.memberCreditCardList = response
                 
                 if(Constant.MyClassConstants.selectedCreditCard.count == 0) {
                     
                     SVProgressHUD.dismiss()
                     Helper.removeServiceCallBackgroundView(view: self.view)
-                 self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
+                    self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
                 }
                 else {
                     
-                     let selectedCard = Constant.MyClassConstants.selectedCreditCard[0]
+                    let selectedCard = Constant.MyClassConstants.selectedCreditCard[0]
                     if(selectedCard.creditcardId == 0) {
                         Constant.MyClassConstants.memberCreditCardList.append(selectedCard)
                         SVProgressHUD.dismiss()
                         Helper.removeServiceCallBackgroundView(view: self.view)
-                         self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
+                        self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
                     }else{
                         SVProgressHUD.dismiss()
                         Helper.removeServiceCallBackgroundView(view: self.view)
@@ -752,10 +752,10 @@ extension CheckOutIPadViewController:UITableViewDelegate {
                     }
                 }
                 
-               
-                }, onError: { (error) in
-                    SVProgressHUD.dismiss()
-                    Helper.removeServiceCallBackgroundView(view: self.view)
+                
+            }, onError: { (error) in
+                SVProgressHUD.dismiss()
+                Helper.removeServiceCallBackgroundView(view: self.view)
             })
         }
     }
@@ -784,32 +784,32 @@ extension CheckOutIPadViewController:UITableViewDataSource {
             case 1:
                 
                 /*if(Constant.MyClassConstants.enableTaxes || ( Constant.MyClassConstants.enableGuestCertificate && self.isTripProtectionEnabled)){
-                    if(eplusAdded){
-                        totalRowsInCost = 3 + renewalsArray.count
-                        return totalRowsInCost
-                    }else{
-                        totalRowsInCost = 2 + renewalsArray.count
-                        return totalRowsInCost
-
-                    }
-                }else{
-                    if(eplusAdded){
-                        totalRowsInCost = 2 + renewalsArray.count
-                        return totalRowsInCost
-
-                    }else{
-                        totalRowsInCost = 1 + renewalsArray.count
-                        return totalRowsInCost
-
-                    }
-                }*/
+                 if(eplusAdded){
+                 totalRowsInCost = 3 + renewalsArray.count
+                 return totalRowsInCost
+                 }else{
+                 totalRowsInCost = 2 + renewalsArray.count
+                 return totalRowsInCost
+                 
+                 }
+                 }else{
+                 if(eplusAdded){
+                 totalRowsInCost = 2 + renewalsArray.count
+                 return totalRowsInCost
+                 
+                 }else{
+                 totalRowsInCost = 1 + renewalsArray.count
+                 return totalRowsInCost
+                 
+                 }
+                 }*/
                 
                 totalRowsInCost = totalFeesArray.count
                 return totalRowsInCost
                 
             case 2:
                 if(self.isTripProtectionEnabled && Constant.MyClassConstants.enableGuestCertificate){
-                        return 2
+                    return 2
                     
                 }else if(!self.isTripProtectionEnabled && !Constant.MyClassConstants.enableGuestCertificate){
                     return 0
@@ -822,7 +822,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                 } else {
                     return 0
                 }
-
+                
             default:
                 return 1
             }
@@ -867,7 +867,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                 }else{
                     return 1
                 }
-
+                
                 
             default:
                 return 1
@@ -965,7 +965,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                     
                 }
                 
-
+                
             case 5:
                 return 50
             case 6:
@@ -1049,6 +1049,28 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                             cell.fractionalPriceLabel.text = "00"
                         }
                         
+                        
+                    case Constant.MyClassConstants.taxesTitle:
+                        
+                        cell.priceLabel.text = Constant.MyClassConstants.taxesTitle
+                        var rentalTax = 0.0
+                        if(Constant.MyClassConstants.isFromExchange){
+                            rentalTax = Double(Int((Constant.MyClassConstants.exchangeContinueToCheckoutResponse.view?.fees?.total)!))
+                        }else{
+                            rentalTax = Double(Int((Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.rental?.rentalPrice?.tax)!))
+                        }
+                        
+                        cell.primaryPriceLabel.text = "\(rentalTax)"
+                        let priceString = "\(Constant.MyClassConstants.continueToCheckoutResponse.view!.fees!.rental!.rentalPrice!.tax)"
+                        let priceArray = priceString.components(separatedBy: ".")
+                        cell.primaryPriceLabel.text = priceArray.first
+                        if((priceArray.last?.characters.count)! > 1) {
+                            cell.fractionalPriceLabel.text = "\(priceArray.last!)"
+                        }else{
+                            cell.fractionalPriceLabel.text = "00"
+                        }
+                        
+                        
                     default:
                         
                         let renewalIndex = indexPath.row - (totalRowsInCost - renewalsArray.count)
@@ -1099,91 +1121,91 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                 
                 
                 /*let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.exchangeOrProtectionCell, for: indexPath) as! ExchangeOrProtectionCell
-                
-                if(!isHeightZero){
-                    for subviews in cell.subviews {
-                        
-                        subviews.isHidden = false
-                    }
-                    if(indexPath.row == 0 && Constant.MyClassConstants.isFromExchange){
-                        cell.priceLabel.text = Constant.MyClassConstants.exchangeFeeTitle
-                        cell.priceLabel.numberOfLines = 0
-                        cell.primaryPriceLabel.text = String(Int(Float((Constant.MyClassConstants.exchangeFees[0].shopExchange?.rentalPrice?.price)!)))
-                        let priceString = "\(Constant.MyClassConstants.exchangeFees[0].shopExchange!.rentalPrice!.price)"
-                        let priceArray = priceString.components(separatedBy: ".")
-                        print(priceArray.last!)
-                        if((priceArray.last!.characters.count) > 1) {
-                            cell.fractionalPriceLabel.text = "\(priceArray.last!)"
-                        }else{
-                            cell.fractionalPriceLabel.text = "00"
-                        }
-                    }else if(Constant.MyClassConstants.isFromExchange && eplusAdded){
-                        cell.priceLabel.text = totalFeesArray[indexPath.row] as? String
-                        //cell.priceLabel.text = "EPlus"
-                        
-                        let priceString = "\(Constant.MyClassConstants.exchangeFees[0].eplus!.price)"
-                        let priceArray = priceString.components(separatedBy: ".")
-                        cell.primaryPriceLabel.text = priceArray.first
-                        if((priceArray.last?.characters.count)! > 1) {
-                            cell.fractionalPriceLabel.text = "\(String(describing: priceArray.last!))"
-                        }else{
-                            cell.fractionalPriceLabel.text = "00"
-                        }
-                        
-                        
-                        
-                    }else if(indexPath.row == 0 && !Constant.MyClassConstants.isFromExchange){
-                        cell.priceLabel.text = Constant.MyClassConstants.getawayFee
-                        cell.primaryPriceLabel.text = String(Int(Float(Constant.MyClassConstants.inventoryPrice[0].price)))
-                    }else if(indexPath.row == 1 && Constant.MyClassConstants.enableTaxes){
-                        cell.priceLabel.text = Constant.MyClassConstants.taxesTitle
-                        var rentalTax = 0
-                        if(Constant.MyClassConstants.isFromExchange){
-                            rentalTax = Int((Constant.MyClassConstants.exchangeContinueToCheckoutResponse.view?.fees?.shopExchange?.rentalPrice?.tax)!)
-                        }else{
-                            rentalTax = Int((Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.rental?.rentalPrice?.tax)!)
-                        }
-                        cell.primaryPriceLabel.text = "\(rentalTax)"
-                    }else{
-                        if(renewalsArray.count > 0){
-                            let renewalIndex = indexPath.row - (totalRowsInCost - renewalsArray.count)
-                            
-                            cell.priceLabel.numberOfLines = 0
-                            cell.priceLabel.text = "\(String(describing: renewalsArray[renewalIndex].displayName!)) Renewal Fee"
-                            
-                            let priceString = "\(renewalsArray[renewalIndex].price)"
-                            let priceArray = priceString.components(separatedBy: ".")
-                            cell.primaryPriceLabel.text = priceArray.first
-                            if((priceArray.last?.characters.count)! > 1) {
-                                cell.fractionalPriceLabel.text = "\(String(describing: priceArray.last!))"
-                            }else{
-                                cell.fractionalPriceLabel.text = "00"
-                            }
-                            
-                        }
-                    }
-                    
-                    let font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 16.0)
-                    
-                    let width = widthForView(cell.primaryPriceLabel.text!, font: font!, height: cell.priceLabel.frame.size.height)
-                    cell.primaryPriceLabel.frame.size.width = width + 5
-                    
-                    let targetString = cell.primaryPriceLabel.text
-                    let range = NSMakeRange(0, (targetString?.characters.count)!)
-                    
-                    cell.primaryPriceLabel.attributedText = Helper.attributedString(from: targetString!, nonBoldRange: range, font: font!)
-                    cell.periodLabel.frame.origin.x = cell.primaryPriceLabel.frame.origin.x + width
-                    cell.fractionalPriceLabel.frame.origin.x = cell.periodLabel.frame.origin.x + cell.periodLabel.frame.size.width
-                    
-                }else{
-                    isHeightZero = false
-                    for subviews in cell.subviews {
-                        
-                        subviews.isHidden = true
-                    }
-                }
-                cell.primaryPriceLabel.sizeToFit()
-                return cell*/
+                 
+                 if(!isHeightZero){
+                 for subviews in cell.subviews {
+                 
+                 subviews.isHidden = false
+                 }
+                 if(indexPath.row == 0 && Constant.MyClassConstants.isFromExchange){
+                 cell.priceLabel.text = Constant.MyClassConstants.exchangeFeeTitle
+                 cell.priceLabel.numberOfLines = 0
+                 cell.primaryPriceLabel.text = String(Int(Float((Constant.MyClassConstants.exchangeFees[0].shopExchange?.rentalPrice?.price)!)))
+                 let priceString = "\(Constant.MyClassConstants.exchangeFees[0].shopExchange!.rentalPrice!.price)"
+                 let priceArray = priceString.components(separatedBy: ".")
+                 print(priceArray.last!)
+                 if((priceArray.last!.characters.count) > 1) {
+                 cell.fractionalPriceLabel.text = "\(priceArray.last!)"
+                 }else{
+                 cell.fractionalPriceLabel.text = "00"
+                 }
+                 }else if(Constant.MyClassConstants.isFromExchange && eplusAdded){
+                 cell.priceLabel.text = totalFeesArray[indexPath.row] as? String
+                 //cell.priceLabel.text = "EPlus"
+                 
+                 let priceString = "\(Constant.MyClassConstants.exchangeFees[0].eplus!.price)"
+                 let priceArray = priceString.components(separatedBy: ".")
+                 cell.primaryPriceLabel.text = priceArray.first
+                 if((priceArray.last?.characters.count)! > 1) {
+                 cell.fractionalPriceLabel.text = "\(String(describing: priceArray.last!))"
+                 }else{
+                 cell.fractionalPriceLabel.text = "00"
+                 }
+                 
+                 
+                 
+                 }else if(indexPath.row == 0 && !Constant.MyClassConstants.isFromExchange){
+                 cell.priceLabel.text = Constant.MyClassConstants.getawayFee
+                 cell.primaryPriceLabel.text = String(Int(Float(Constant.MyClassConstants.inventoryPrice[0].price)))
+                 }else if(indexPath.row == 1 && Constant.MyClassConstants.enableTaxes){
+                 cell.priceLabel.text = Constant.MyClassConstants.taxesTitle
+                 var rentalTax = 0
+                 if(Constant.MyClassConstants.isFromExchange){
+                 rentalTax = Int((Constant.MyClassConstants.exchangeContinueToCheckoutResponse.view?.fees?.shopExchange?.rentalPrice?.tax)!)
+                 }else{
+                 rentalTax = Int((Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.rental?.rentalPrice?.tax)!)
+                 }
+                 cell.primaryPriceLabel.text = "\(rentalTax)"
+                 }else{
+                 if(renewalsArray.count > 0){
+                 let renewalIndex = indexPath.row - (totalRowsInCost - renewalsArray.count)
+                 
+                 cell.priceLabel.numberOfLines = 0
+                 cell.priceLabel.text = "\(String(describing: renewalsArray[renewalIndex].displayName!)) Renewal Fee"
+                 
+                 let priceString = "\(renewalsArray[renewalIndex].price)"
+                 let priceArray = priceString.components(separatedBy: ".")
+                 cell.primaryPriceLabel.text = priceArray.first
+                 if((priceArray.last?.characters.count)! > 1) {
+                 cell.fractionalPriceLabel.text = "\(String(describing: priceArray.last!))"
+                 }else{
+                 cell.fractionalPriceLabel.text = "00"
+                 }
+                 
+                 }
+                 }
+                 
+                 let font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 16.0)
+                 
+                 let width = widthForView(cell.primaryPriceLabel.text!, font: font!, height: cell.priceLabel.frame.size.height)
+                 cell.primaryPriceLabel.frame.size.width = width + 5
+                 
+                 let targetString = cell.primaryPriceLabel.text
+                 let range = NSMakeRange(0, (targetString?.characters.count)!)
+                 
+                 cell.primaryPriceLabel.attributedText = Helper.attributedString(from: targetString!, nonBoldRange: range, font: font!)
+                 cell.periodLabel.frame.origin.x = cell.primaryPriceLabel.frame.origin.x + width
+                 cell.fractionalPriceLabel.frame.origin.x = cell.periodLabel.frame.origin.x + cell.periodLabel.frame.size.width
+                 
+                 }else{
+                 isHeightZero = false
+                 for subviews in cell.subviews {
+                 
+                 subviews.isHidden = true
+                 }
+                 }
+                 cell.primaryPriceLabel.sizeToFit()
+                 return cell*/
             case 2:
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.exchangeOrProtectionCell, for: indexPath) as! ExchangeOrProtectionCell
@@ -1220,7 +1242,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                                 cell.fractionalPriceLabel.text = "\(priceArray.last!)0"
                             }
                         }
-
+                        
                     }else{
                         cell.priceLabel.text = Constant.MyClassConstants.guestCertificateTitle
                         let guestPrice = Int(Constant.MyClassConstants.guestCertificatePrice)
@@ -1284,7 +1306,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
             case 4:
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.totalCostCell, for: indexPath) as! TotalCostCell
                 if(Constant.MyClassConstants.isFromExchange){
-                     cell.priceLabel.text = String(Int(Float(Constant.MyClassConstants.exchangeFees[0].total)))
+                    cell.priceLabel.text = String(Int(Float(Constant.MyClassConstants.exchangeFees[0].total)))
                 }
                 else{
                     
@@ -1317,10 +1339,10 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                     cell.periodLabel.frame.origin.x = cell.priceLabel.frame.origin.x + width
                     cell.fractionalPriceLabel.frame.origin.x = cell.periodLabel.frame.origin.x + cell.periodLabel.frame.size.width
                     
-
+                    
                 }
                 
-
+                
                 return cell
             case 5:
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.termsConditionsCell, for: indexPath) as! ViewDetailsTBLcell
@@ -1335,50 +1357,50 @@ extension CheckOutIPadViewController:UITableViewDataSource {
             switch indexPath.section {
                 
             case 0:
-                    let cell = tableView.dequeueReusableCell(withIdentifier: Constant.CheckOutIPadViewControllerCellIdentifiersAndHardCodedStrings.headerCell, for: indexPath) as! ViewDetailsTBLcell
-                    cell.resortDetailsButton.addTarget(self, action: #selector(self.resortDetailsClicked(_:)), for: .touchUpInside)
-                    cell.resortDetailsButton.tag = indexPath.row
-                    if(indexPath.row == 0){
-                        cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.resortImage)
-                        cell.resortName?.text = Constant.MyClassConstants.selectedResort.resortName
-                    }else{
-                        cell.lblHeading.text = Constant.MyClassConstants.relinquishment
-                        cell.labelFirstHeading?.text = "Relinquishment"
-                        cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.relinquishmentImage)
-                        cell.resortName?.text = filterRelinquishments.openWeek?.resort?.resortName
-                    }
-                    
-                    return cell
+                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.CheckOutIPadViewControllerCellIdentifiersAndHardCodedStrings.headerCell, for: indexPath) as! ViewDetailsTBLcell
+                cell.resortDetailsButton.addTarget(self, action: #selector(self.resortDetailsClicked(_:)), for: .touchUpInside)
+                cell.resortDetailsButton.tag = indexPath.row
+                if(indexPath.row == 0){
+                    cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.resortImage)
+                    cell.resortName?.text = Constant.MyClassConstants.selectedResort.resortName
+                }else{
+                    cell.lblHeading.text = Constant.MyClassConstants.relinquishment
+                    cell.labelFirstHeading?.text = "Relinquishment"
+                    cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.relinquishmentImage)
+                    cell.resortName?.text = filterRelinquishments.openWeek?.resort?.resortName
+                }
+                
+                return cell
             case 1:
                 
-                    if(indexPath.row == (Constant.MyClassConstants.generalAdvisementsArray.count)) {
-                        
-                        let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.advisementsCellIdentifier, for: indexPath) as! AvailableDestinationCountryOrContinentsTableViewCell
-                        cell.tooglebutton.addTarget(self, action: #selector(CheckOutViewController.toggleButtonIsTapped(_:)), for: .touchUpInside)
-                        cell.tooglebutton.tag = indexPath.section
-                        cell.selectionStyle = .none
-                        return cell
-                        
-                    }
-                    else {
-                        
-                        let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.advisementsCell, for: indexPath) as! AdvisementsCell
-                        if(indexPath.row != (Constant.MyClassConstants.generalAdvisementsArray.count) + 1){
-                            cell.advisementType.text = (Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].title)?.capitalized
-                            cell.advisementTextLabel.text = Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description
-                        }else{
-                            cell.advisementType.text = ""
-                            cell.advisementTextLabel.text = Constant.MyClassConstants.additionalAdvisementsArray.last?.description
-                        }
-                        cell.advisementType.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0)
-                        cell.advisementTextLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0)
-                        cell.advisementTextLabel.numberOfLines = 0
-                        cell.advisementTextLabel.sizeToFit()
-                        cell.selectionStyle = .none
-                        return cell
-                        
-                    }
+                if(indexPath.row == (Constant.MyClassConstants.generalAdvisementsArray.count)) {
                     
+                    let cell = tableView.dequeueReusableCell(withIdentifier: Constant.reUsableIdentifiers.advisementsCellIdentifier, for: indexPath) as! AvailableDestinationCountryOrContinentsTableViewCell
+                    cell.tooglebutton.addTarget(self, action: #selector(CheckOutViewController.toggleButtonIsTapped(_:)), for: .touchUpInside)
+                    cell.tooglebutton.tag = indexPath.section
+                    cell.selectionStyle = .none
+                    return cell
+                    
+                }
+                else {
+                    
+                    let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.advisementsCell, for: indexPath) as! AdvisementsCell
+                    if(indexPath.row != (Constant.MyClassConstants.generalAdvisementsArray.count) + 1){
+                        cell.advisementType.text = (Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].title)?.capitalized
+                        cell.advisementTextLabel.text = Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description
+                    }else{
+                        cell.advisementType.text = ""
+                        cell.advisementTextLabel.text = Constant.MyClassConstants.additionalAdvisementsArray.last?.description
+                    }
+                    cell.advisementType.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0)
+                    cell.advisementTextLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0)
+                    cell.advisementTextLabel.numberOfLines = 0
+                    cell.advisementTextLabel.sizeToFit()
+                    cell.selectionStyle = .none
+                    return cell
+                    
+                }
+                
                 
             case 2:
                 if isDepositPromotionAvailable && indexPath.row == 0 {
@@ -1433,7 +1455,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                         
                         let str = (Constant.MyClassConstants.exchangeFees[0].insurance?.insuranceOfferHTML!)!
                         cellWebView.loadHTMLString(str, baseURL: nil)
-
+                        
                     }
                     cellWebView.delegate = self
                     cellWebView.backgroundColor = UIColor.gray

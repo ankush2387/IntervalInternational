@@ -63,7 +63,7 @@ class RenewelViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        if(Constant.MyClassConstants.noThanksForNonCore){
+        if(Constant.MyClassConstants.noThanksForNonCore || Constant.MyClassConstants.isChangeNoThanksButtonTitle) {
              Constant.MyClassConstants.renewalsHeaderTitle = Constant.MyClassConstants.freeGuestCertificateTitle
             lblHeaderTitle?.text = Constant.MyClassConstants.freeGuestCertificateTitle
         }else if(forceRenewals.comboProducts.count > 0 || (forceRenewals.crossSelling.count > 0 && forceRenewals.products.count > 0)){
@@ -343,7 +343,7 @@ extension RenewelViewController:UITableViewDataSource {
         //Combo
         if((forceRenewals.comboProducts.count) > 0) {
     
-             if (lblHeaderTitle?.text == Constant.MyClassConstants.freeGuestCertificateTitle) {
+             if (lblHeaderTitle?.text == Constant.MyClassConstants.freeGuestCertificateTitle || Constant.MyClassConstants.renewalsHeaderTitle == Constant.MyClassConstants.freeGuestCertificateTitle) {
                 
                 for product in (forceRenewals.products) {
                     
@@ -467,7 +467,7 @@ extension RenewelViewController:UITableViewDataSource {
                     self.isCombo = true
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.renewalAdditionalCell) as! RenewalAdditionalCell
                     
-                    if (Constant.MyClassConstants.noThanksForNonCore ){
+                    if (Constant.MyClassConstants.noThanksForNonCore || Constant.MyClassConstants.isChangeNoThanksButtonTitle){
                         cell.noThanksButton.setTitle(Constant.MyClassConstants.noThanks, for: .normal)
                     } else {
                         cell.noThanksButton.setTitle(Constant.MyClassConstants.otherOptions, for: .normal)
@@ -485,7 +485,7 @@ extension RenewelViewController:UITableViewDataSource {
             //Core, Non combo both
             isCore = true
             
-            if (lblHeaderTitle?.text == Constant.MyClassConstants.freeGuestCertificateTitle) {
+            if (lblHeaderTitle?.text == Constant.MyClassConstants.freeGuestCertificateTitle || Constant.MyClassConstants.renewalsHeaderTitle == Constant.MyClassConstants.freeGuestCertificateTitle) {
                 
                 if indexPath.section == 1 {
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.renewalAdditionalCell) as! RenewalAdditionalCell
