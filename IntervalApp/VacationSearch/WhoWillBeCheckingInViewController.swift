@@ -461,8 +461,8 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 
                 let guestAddress = Address()
                 var address = [String]()
-                address.append(Constant.GetawaySearchResultCardFormDetailData.address1)
-                address.append(Constant.GetawaySearchResultCardFormDetailData.address2)
+                address.append(Constant.GetawaySearchResultGuestFormDetailData.address1)
+                address.append(Constant.GetawaySearchResultGuestFormDetailData.address2)
                 guestAddress.addressLines = address
                 
                 guestAddress.cityName = Constant.GetawaySearchResultGuestFormDetailData.city
@@ -543,8 +543,8 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 
                 let guestAddress = Address()
                 var address = [String]()
-                address.append(Constant.GetawaySearchResultCardFormDetailData.address1)
-                address.append(Constant.GetawaySearchResultCardFormDetailData.address2)
+                address.append(Constant.GetawaySearchResultGuestFormDetailData.address1)
+                address.append(Constant.GetawaySearchResultGuestFormDetailData.address2)
                 guestAddress.addressLines = address
                 
                 
