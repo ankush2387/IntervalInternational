@@ -1386,7 +1386,7 @@ extension VacationSearchViewController:WhoIsTravelingCellDelegate {
 
 //***** Custom SearchTableViewCell delegate method implementation *****//
 
-
+//MARK:- Search Button Click
 extension VacationSearchViewController:SearchTableViewCellDelegate {
     func searchButtonClicked(_ sender : IUIKButton) {
         
@@ -1711,8 +1711,13 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                 if(response.checkInDates.count>0){
                                     Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
                                 }
-                                let vacationSearchInitialDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
-                                Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearchInitialDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                if let vacationSearchInitialDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate{
+                                    Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearchInitialDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                }else if Constant.MyClassConstants.initialVacationSearch.rentalSearch != nil{
+                                    Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate:response.checkInDates[0], senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                }
+
+                                
                             }
                             Constant.MyClassConstants.checkInDates = response.checkInDates
                             sender.isEnabled = true
@@ -1780,8 +1785,17 @@ extension VacationSearchViewController:HelperDelegate {
         if (Constant.MyClassConstants.initialVacationSearch.searchCheckInDate != Helper.convertDateToString(date: Constant.MyClassConstants.vacationSearchShowDate, format: Constant.MyClassConstants.dateFormat)) {
             Helper.showNearestCheckInDateSelectedMessage()
         }
-        self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
-
+        
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
+        
+        let transitionManager = TransitionManager()
+        self.navigationController?.transitioningDelegate = transitionManager
+        self.navigationController?.pushViewController(viewController, animated: true)
+        //let navController = UINavigationController(rootViewController: viewController)
+        
+        //self.present(navController, animated:true, completion: nil)
     }
     func resetCalendar(){
         Constant.MyClassConstants.calendarDatesArray.removeAll()

@@ -173,7 +173,10 @@ class CreateActionSheet: UITableViewController {
             //}
             
         }) { (error) in
-            
+            if(self.activeAlertCount < Constant.MyClassConstants.getawayAlertsArray.count - 1){
+            self.activeAlertCount = self.activeAlertCount + 1
+                self.getStatusForAllAlerts()
+            }
         }
         
     }
@@ -187,6 +190,7 @@ class CreateActionSheet: UITableViewController {
         searchResortRequest.checkInFromDate = Helper.convertStringToDate(dateString:getawayAlert.earliestCheckInDate!,format:Constant.MyClassConstants.dateFormat)
         searchResortRequest.resorts = getawayAlert.resorts
         searchResortRequest.destinations = getawayAlert.destinations
+        Constant.MyClassConstants.dashBoardAlertsArray = Constant.MyClassConstants.getawayAlertsArray
         
         if Reachability.isConnectedToNetwork() == true {
             if(UserContext.sharedInstance.accessToken != nil){
@@ -198,7 +202,12 @@ class CreateActionSheet: UITableViewController {
                 Constant.MyClassConstants.alertsSearchDatesDictionary.setValue(searchDates.checkInDates, forKey: String(describing: alert.alertId!))
                 
                 if(searchDates.checkInDates.count == 0 || alert.alertId == 123456) {
-                    
+                    for (index,selectedAlert) in Constant.MyClassConstants.getawayAlertsArray.enumerated(){
+                        if(alert.alertId == selectedAlert.alertId){
+                            Constant.MyClassConstants.dashBoardAlertsArray.remove(at: index)
+                        }
+                    }
+                    NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
                 }
                 else {
                     if Constant.MyClassConstants.activeAlertsArray.count < 1 { //TODO - JHON: forcing alerts count to be one. fix when push notifications is working. 
@@ -209,6 +218,7 @@ class CreateActionSheet: UITableViewController {
                     self.activeAlertCount = self.activeAlertCount + 1
                     self.getStatusForAllAlerts()
                 }else{
+                    print(Constant.MyClassConstants.activeAlertsArray, Constant.MyClassConstants.alertsSearchDatesDictionary, Constant.MyClassConstants.alertsResortCodeDictionary)
                     NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
                     
                     Constant.MyClassConstants.isEvent2Ready = Constant.MyClassConstants.isEvent2Ready + 1

@@ -25,6 +25,7 @@ class DashboardTableViewController: UITableViewController {
     var showGetaways = true
     var showExchange = true
     var dashboardArray = NSMutableArray()
+    var alertWithResultsArray = [RentalAlert]()
     
     override func viewWillAppear(_ animated: Bool) {
         //***** Adding notification to reload alert badge *****//
@@ -107,7 +108,8 @@ class DashboardTableViewController: UITableViewController {
     
     func getNumberOfSections(){
         self.dashboardArray.removeAllObjects()
-        if(Constant.MyClassConstants.getawayAlertsArray.count > 0){
+        if(Constant.MyClassConstants.dashBoardAlertsArray.count > 0){
+            self.getDashBoardAlertsWithSearchResults()
             self.dashboardArray.add(Constant.dashboardTableScreenReusableIdentifiers.alert)
         }
         if(Constant.MyClassConstants.upcomingTripsArray.count > 0){
@@ -126,6 +128,19 @@ class DashboardTableViewController: UITableViewController {
         }
         if(!showExchange && !showGetaways){
             self.dashboardArray.add(Constant.dashboardTableScreenReusableIdentifiers.search)
+        }
+    }
+    
+    func getDashBoardAlertsWithSearchResults(){
+        self.alertWithResultsArray.removeAll()
+        for resultAlerts in Constant.MyClassConstants.alertsResortCodeDictionary{
+            if((resultAlerts.value as AnyObject).count > 0){
+                for alertWithDates in Constant.MyClassConstants.getawayAlertsArray{
+                    if(alertWithDates.alertId == Int64("\(resultAlerts.key)")){
+                      alertWithResultsArray.append(alertWithDates)
+                    }
+                }
+            }
         }
     }
     
@@ -215,10 +230,10 @@ class DashboardTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if(dashboardArray[section] as! String == Constant.dashboardTableScreenReusableIdentifiers.alert){
-            if(Constant.MyClassConstants.getawayAlertsArray.count >= 3){
+            if(self.alertWithResultsArray.count >= 3){
                 return 3
             }else{
-                return Constant.MyClassConstants.getawayAlertsArray.count
+                return self.alertWithResultsArray.count
             }
         }else if(dashboardArray[section] as! String == Constant.dashboardTableScreenReusableIdentifiers.upcoming){
             if( Constant.MyClassConstants.upcomingTripsArray.count <= 2) {
@@ -243,8 +258,8 @@ class DashboardTableViewController: UITableViewController {
         
         if(type == Constant.dashboardTableScreenReusableIdentifiers.alert){
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.dashboardTableScreenReusableIdentifiers.secCell, for: indexPath) as! HomeAlertTableViewCell
-            
-            cell.alertTitleLabel.text = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].name
+
+            cell.alertTitleLabel.text = self.alertWithResultsArray[indexPath.row].name
             
             let alertFromDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.getawayAlertsArray[indexPath.row].earliestCheckInDate!, format: Constant.MyClassConstants.dateFormat)
             
@@ -395,18 +410,7 @@ class DashboardTableViewController: UITableViewController {
         let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.sideMenuTitles.sideMenuInitialController) as! SWRevealViewController
         self.present(viewController, animated: true, completion: nil)
-        
-        //let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.myUpcomingTripIphone, bundle: nil)
-        //let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.sideMenuTitles.sideMenuInitialController) as! SWRevealViewController
-        
-        
-        //let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.upcomingTripsViewController) as! UpComingTripDetailController
-        //self.present(viewController, animated: true, completion: nil)
-        
-        //
-        //        let resultController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.upcomingTripsViewController) as? UpComingTripDetailController
-        //        let navController = UINavigationController(rootViewController: resultController!) // Creating a navigation controller with resultController at the root of the navigation stack.
-        //        self.present(navController, animated:true, completion: nil)
+
     }
 }
 

@@ -16,7 +16,7 @@ class Constant: NSObject {
     static var holdingTimer:Timer!
     static var holdingTime = 17
     static var decreaseValue = 1
-    static var holdingResortForRemainingMinutes = "We are holding this unit for \(holdingTime) minutes"
+    static var holdingResortForRemainingMinutes = NSLocalizedString("We are holding this unit for \(holdingTime) minutes", comment: "")
     
     struct RunningDevice {
         static var deviceOrientation:UIDeviceOrientation?
@@ -267,6 +267,7 @@ class Constant: NSObject {
         static var favoritesResortArray = [Resort]()
         static var favoritesResortCodeArray:NSMutableArray = []
         static var getawayAlertsArray = [RentalAlert]()
+        static var dashBoardAlertsArray = [RentalAlert]()
         static var upcomingTripsArray = [UpcomingTrip]()
         static var transactionType = ""
         static var activeAlertsArray:NSMutableArray = []
@@ -438,6 +439,7 @@ class Constant: NSObject {
         static var  relinquishmentFloatDetialMinDate:Date!
         static var  relinquishmentFloatDetialMaxDate:Date!
         static var  floatDetailsCalendarDateArray = [Date]()
+        static var  floatDetailsCalendarWeekArray = NSMutableArray()
         static var relinquishmentFlaotWeek = "RelinquishmentFloatWeek"
         static var realmOpenWeeksID = NSMutableArray()
         
@@ -474,7 +476,9 @@ class Constant: NSObject {
         static var paymentInfo = "Select your payment method"
         static var verifying = "Verifying..."
         static var insurance = "Trip Protection"
+        static var upgradeCost = "Upgrade"
         static var guestCertificateTitle = "Guest Certificate"
+        static var renewals = "Renewals"
         static var exchangeFeeTitle = "Exchange Fee"
         static var getawayFee = "Getaway Fee"
         static var eplus = "EPlus"
@@ -527,6 +531,7 @@ class Constant: NSObject {
         static var segmentThirdString = "Third"
         static var clubFloatResorts = [Resort]()
         static var savedClubFloatResort = ""
+        static var savedClubFloatResortCode = ""
         static var savedBedroom = ""
         static var buttontitle = ""
         static var resortAttributedString = ""
@@ -597,12 +602,40 @@ class Constant: NSObject {
         static var exchangeHasNotAvailableCheckInDatesAfterSelectInterval : Bool = false
         static var searchBothExchange = false
         
-        // flex change
+        // Flex change
         static var flexChangeSearch = NSLocalizedString("Flexchange Search", comment: "")
         
         // All available destinations
         static var allDestinationsOption = NSLocalizedString("All Destinations Options", comment: "")
          static var viewSelectedDestination = NSLocalizedString("View Selected Destinations", comment: "")
+        
+        // Renewals
+        static var renewalsHeaderTitle = ""
+        static var comboHeaderTitle = NSLocalizedString("Keep your Interval Benefits", comment: "")
+        static var coreHeaderTitle = NSLocalizedString("Renew your Membership", comment: "")
+        static var freeGuestCertificateTitle = NSLocalizedString("FREE GUEST CERTIFICATES", comment: "")
+        static var isNoThanksFromRenewalAgain = false
+        
+        
+        
+        static var otherOptions = NSLocalizedString("Other Options", comment: "")
+        static var renewNow = NSLocalizedString("Renew Now", comment: "")
+        static var select = NSLocalizedString("Select", comment: "")
+        static var noThanks = NSLocalizedString("No Thanks", comment: "")
+        
+        static var noThanksForNonCore = false
+        
+        static var isChangeNoThanksButtonTitle = false
+        
+        static var isDismissWhoWillBeCheckin = false
+        
+        static var intervalMembership = NSLocalizedString("Your interval membership expires before your travel date.To continue, a", comment: "")
+        
+        static var intervalTransaction = NSLocalizedString("will be included with this transaction.", comment: "")
+        
+        static var guestCertificateString = NSLocalizedString("Get a FREE Guest Certificate now and every time with Interval Platinum. Your Interval Platinum must be active through your travel dates to receive FREE Guest Certificates. To upgrade or renew, a", comment: "")
+        
+        
         
     }
     
@@ -1027,7 +1060,12 @@ class Constant: NSObject {
         static var whatToUseViewController = "WhatToUseViewController"
         static var sortingViewController = "SortingViewController"
         static var flexChangeSearchIpadViewController = "FlexChangeSearchIpadViewController"
+                
         static var flexchangeViewController = "FlexchangeViewController"
+        
+        static var RenewelViewController = "RenewelViewController"
+        
+        static var renewalOtherOptionsVC = "RenewalOtherOptionsVC"
         
     }
     
@@ -1309,6 +1347,8 @@ class Constant: NSObject {
         static var whereToGoCell = "WhereToGoCell"
         static var availablePoints = "AvailablePoints"
         static var selectedResortsCell = "selectedResortsCell"
+        static var renewelCell = "renewelCell"
+        static var renewalAdditionalCell = "renewalAdditionalCell"
         static var flexChangeDestinationCell = "FlexchangeDestinationCell"
         static var flexchangeSearchButtonCell = "FlexchangeSearchButtonCell"
         
@@ -1380,6 +1420,7 @@ class Constant: NSObject {
         static var selectPaymentMethodSegue = "selectPaymentSegue"
         static var showResortDetailsSegue = "showResortDetails"
         static var showRelinguishmentsDetailsSegue = "showRelinguishmentsDetails"
+        static var showRenewelSegue = "RenewelSegue"
 
         static var confirmationUpcomingTripSegue = "confirmationUpcomingTripSegue"
         static var newCreditCardSegue = "newCreditCardSegue"
@@ -1538,6 +1579,8 @@ class Constant: NSObject {
             static let clubInfoLabeltext = "Club"
             static let pointInfoLabelText = "Points"
         }
+        
+    
         //OwnershipDetailWithFreeDepositTableViewCell
         struct ownershipDetailWithFreeDepositTableViewCell {
             static let depositForFreeButtonTitle = "Deposit for a free \n Exchange"

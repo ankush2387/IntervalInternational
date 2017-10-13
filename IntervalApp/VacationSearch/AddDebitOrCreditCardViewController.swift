@@ -43,10 +43,26 @@ class AddDebitOrCreditCardViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector:#selector(keyboardWasShown), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateResortHoldingTime), name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
+
         
        ADBMobile.trackAction(Constant.omnitureEvents.event57, data: nil)
        modalTransitionStyle = .flipHorizontal
     }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
+    }
+    
+    //MARK:- Function to pop to search results if holding time is lost
+    func updateResortHoldingTime() {
+        
+        if(Constant.holdingTime != 0){
+        }else{
+            SimpleAlert.alertTodismissController(self, title: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage)
+        }
+    }
+
     
     func keyboardWasShown(aNotification: NSNotification) {
         

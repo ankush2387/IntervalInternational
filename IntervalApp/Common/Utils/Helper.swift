@@ -746,11 +746,15 @@ public class Helper{
                                 Constant.MyClassConstants.floatRemovedArray.add(object)
                             }else if(object.floatDetails.count > 0 && !object.isFloatRemoved && object.isFromRelinquishment){
                                 Constant.MyClassConstants.whatToTradeArray.add(object)
-                                Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
+                                if(!Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID)){
+                                    Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
+                                }
                             }
                             }else{
                                 Constant.MyClassConstants.whatToTradeArray.add(object)
+                                if(!Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID)){
                                 Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
+                                }
                             }
                             Constant.MyClassConstants.idUnitsRelinquishmentDictionary.setValue(object.unitDetails, forKey: object.relinquishmentID)
                             tempDict.setValue(object.unitDetails, forKey: object.relinquishmentID)
@@ -769,11 +773,15 @@ public class Helper{
                                     Constant.MyClassConstants.floatRemovedArray.add(object)
                                 }else if(object.floatDetails.count > 0 && !object.isFloatRemoved && object.isFromRelinquishment){
                                     Constant.MyClassConstants.whatToTradeArray.add(object)
+                                    if(!Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID)){
                                     Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
+                                    }
                                 }
                             }else{
                                 Constant.MyClassConstants.whatToTradeArray.add(object)
+                                if(!Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID)){
                                 Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
+                                }
                             }
                             Constant.MyClassConstants.idUnitsRelinquishmentDictionary.setValue(object.unitDetails, forKey: object.relinquishmentID)
                             tempDict.setValue(object.unitDetails, forKey: object.relinquishmentID)
@@ -785,7 +793,9 @@ public class Helper{
                     } else{
                         
                         Constant.MyClassConstants.whatToTradeArray.add(openWk.pProgram)
+                        if(!Constant.MyClassConstants.relinquishmentIdArray.contains(openWk.pProgram[0].relinquishmentId)){
                         Constant.MyClassConstants.relinquishmentIdArray.add(openWk.pProgram[0].relinquishmentId)
+                        }
                         Constant.MyClassConstants.relinquishmentAvailablePointsProgram = Int((openWk.pProgram[0].availablePoints))
                     }
                 }
@@ -1131,8 +1141,8 @@ public class Helper{
             Constant.MyClassConstants.relinquishmentFloatDetialMinDate = self.convertStringToDate(dateString: resortCalendar[0].checkInDate!, format: Constant.MyClassConstants.dateFormat)
             Constant.MyClassConstants.relinquishmentFloatDetialMaxDate = self.convertStringToDate(dateString: (resortCalendar.last?.checkInDate!)!, format: Constant.MyClassConstants.dateFormat)
             for calendarDetails in resortCalendar{
-               print(calendarDetails.checkInDate!)
                Constant.MyClassConstants.floatDetailsCalendarDateArray.append((Helper.convertStringToDate(dateString: calendarDetails.checkInDate!, format: Constant.MyClassConstants.dateFormat)))
+               Constant.MyClassConstants.floatDetailsCalendarWeekArray.add(calendarDetails.weekNumber!)
             }
             
             var mainStoryboard = UIStoryboard()
@@ -1851,8 +1861,21 @@ public class Helper{
                 helperDelegate?.resortSearchComplete()
             }else{
                 helperDelegate?.resetCalendar()
-                //helperDelegate?.resortSearchComplete()
-                senderViewController.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
+                if(Constant.RunningDevice.deviceIdiom == .pad){
+                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                    let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! VacationSearchResultIPadController
+                    
+                    let transitionManager = TransitionManager()
+                    senderViewController.navigationController?.transitioningDelegate = transitionManager
+                    senderViewController.navigationController?.pushViewController(viewController, animated: true)
+                }else{
+                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                    let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
+                    
+                    let transitionManager = TransitionManager()
+                    senderViewController.navigationController?.transitioningDelegate = transitionManager
+                    senderViewController.navigationController?.pushViewController(viewController, animated: true)
+                }
             }
             
         })
@@ -2218,6 +2241,12 @@ public class Helper{
     }
 
 
-}
+ static func returnStringWithPriceAndTerm(price:String, term:String) -> String {
+    
+    let mainString = "Get a FREE Guest Certificate now and every time with Interval Platinum. Your Interval Platinum must be active through your travel dates to receive FREE Guest Certificates. To upgrade or renew, a \(term) Interval Platinum fee of  membership fee of \n\(price)\n will be included with this transaction."
+    
+    return mainString
+    }
 
+}
 

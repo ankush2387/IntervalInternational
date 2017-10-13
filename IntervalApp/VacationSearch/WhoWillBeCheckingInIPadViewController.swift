@@ -34,6 +34,9 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     var holdingTime = 17
     var decreaseValue = 1
     var selectedCountryIndex: Int?
+    var isFromRenewals = false
+    var renewalsArray = [Renewal()]
+    
     
     var filterRelinquishments = ExchangeRelinquishment()
     
@@ -65,7 +68,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = menuButton
         
         
-        
+    
         // omniture tracking with event 37
         let userInfo: [String: String] = [
             Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch,
@@ -145,15 +148,25 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     
     // Function to dismis current controller on back button pressed.
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
+        
         Helper.showProgressBar(senderView: self)
-        if(Constant.MyClassConstants.isFromExchange){
+        if(Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
             Constant.holdingTimer.invalidate()
             
             ExchangeProcessClient.backToChooseExchange(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess:{(response) in
                 
                 Constant.MyClassConstants.selectedCreditCard.removeAll()
                 Helper.hideProgressBar(senderView: self)
-                _ = self.navigationController?.popViewController(animated: true)
+                
+                // pop and dismiss view according to conditions
+                if (Constant.MyClassConstants.isDismissWhoWillBeCheckin) {
+                    Constant.MyClassConstants.isDismissWhoWillBeCheckin = false
+                    self.dismiss(animated: true, completion: nil)
+                    
+                } else {
+                    _ = self.navigationController?.popViewController(animated: true)
+                }
+                
                 
             }, onError: {(error) in
                 
@@ -168,9 +181,20 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             Constant.MyClassConstants.selectedCreditCard.removeAll()
             SVProgressHUD.dismiss()
             Helper.removeServiceCallBackgroundView(view: self.view)
-            _ = self.navigationController?.popViewController(animated: true)
+            
+            // pop and dismiss view according to conditions
+            if (Constant.MyClassConstants.isDismissWhoWillBeCheckin) {
+                Constant.MyClassConstants.isDismissWhoWillBeCheckin = false
+                self.dismiss(animated: true, completion: nil)
+                
+            } else {
+                _ = self.navigationController?.popViewController(animated: true)
+            }
+
             
         }, onError: {(error) in
+            
+         
             
             SVProgressHUD.dismiss()
             Helper.removeServiceCallBackgroundView(view: self.view)
@@ -315,6 +339,18 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     
     //***** Function for proceed to checkout button click. *****//
     @IBAction func proceedToCheckoutPressed(_ sender: AnyObject) {
+        
+        if(Constant.MyClassConstants.noThanksForNonCore || self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count){
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
+            viewController.delegate = self
+            Constant.MyClassConstants.enableGuestCertificate = false
+            Constant.MyClassConstants.noThanksForNonCore = false
+            let transitionManager = TransitionManager()
+            self.navigationController?.transitioningDelegate = transitionManager
+            let navController = UINavigationController(rootViewController: viewController)
+            self.present(navController, animated:true, completion: nil)
+        }else{
         if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
         let exchangeProcessRequest = ExchangeProcessContinueToCheckoutRequest()
         
@@ -356,6 +392,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             Constant.MyClassConstants.enableGuestCertificate = true
         }
         else{
+            Constant.MyClassConstants.enableGuestCertificate = false
             
             /*let guest = Guest()
              guest.firstName = ""
@@ -366,6 +403,10 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
              guest.address = guestAddress
              exchangeProcessRequest.guest = guest*/
         }
+            
+            if(renewalsArray.count > 0){
+                exchangeProcessRequest.renewals = renewalsArray
+            }
        
         let processResort = ExchangeProcess()
         processResort.holdUnitStartTimeInMillis = Constant.holdingTime
@@ -403,6 +444,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             print(error.localizedDescription)
             SVProgressHUD.dismiss()
             Helper.removeServiceCallBackgroundView(view: self.view)
+            SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
             
         })
         }else{
@@ -445,6 +487,10 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                 
                 Constant.MyClassConstants.enableGuestCertificate = true
             }
+            
+            if(renewalsArray.count > 0){
+                processRequest1.renewals = renewalsArray
+            }
             Helper.showProgressBar(senderView: self)
             let processResort = RentalProcess()
             processResort.holdUnitStartTimeInMillis = Constant.holdingTime
@@ -479,6 +525,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                 SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                 
             })
+        }
         }
      }
     
@@ -1149,4 +1196,34 @@ extension WhoWillBeCheckingInIPadViewController:UITextFieldDelegate{
     }
     
 }
+//MARK:- Extension for renewals
+extension WhoWillBeCheckingInIPadViewController:RenewelViewControllerDelegate{
+    
+    func otherOptions(forceRenewals: ForceRenewals) {
+        let button = UIButton()
+        self.proceedToCheckoutPressed(button)
+        
+    }
+
+    
+    
+    func dismissWhatToUse(renewalArray:[Renewal]) {
+        
+    }
+    
+    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray:[Renewal]){
+        self.renewalsArray = renewalArray
+        Constant.MyClassConstants.noThanksForNonCore = false
+        let button = UIButton()
+        self.proceedToCheckoutPressed(button)
+    }
+    
+    func noThanks(){
+        self.dismiss(animated: true, completion: nil)
+        let button = UIButton()
+        Constant.MyClassConstants.isDismissWhoWillBeCheckin = true
+        self.proceedToCheckoutPressed(button)
+    }
+}
+
 

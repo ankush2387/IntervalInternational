@@ -17,6 +17,8 @@ class SimpleAlert : NSObject{
         let ok = UIAlertAction(title: Constant.AlertPromtMessages.ok, style: .default) { (action:UIAlertAction!) in
             if(title == "CheckOut"){
                 sender.navigationController?.popViewController(animated: true)
+            }else if(sender.isKind(of: CheckOutViewController.self) || sender.isKind(of: WhoWillBeCheckingInViewController.self)){
+                //sender.navigationController?.popViewController(animated: true)
             }
         }
         //Add Custom Actions to Alert viewController
@@ -36,8 +38,15 @@ class SimpleAlert : NSObject{
                 sender.dismiss(animated: true, completion: nil)
             }
             else if (sender.isKind(of:WhoWillBeCheckingInViewController.self) || sender.isKind(of:WhoWillBeCheckingInIPadViewController.self) || sender.isKind(of:CheckOutViewController.self) || sender.isKind(of:CheckOutIPadViewController.self)) {
-                sender.dismiss(animated: true, completion: nil)
-                _ = sender.navigationController?.popViewController(animated: true)
+                //sender.dismiss(animated: true, completion: nil)
+                //_ = sender.navigationController?.popViewController(animated: true)
+                
+                for controller in sender.navigationController!.viewControllers as Array {
+                    if controller.isKind(of: SearchResultViewController.self) {
+                        sender.navigationController!.popToViewController(controller, animated: true)
+                        break
+                    }
+                }
             }
             else if( sender .isKind(of:EditMyAlertIpadViewController.self)) {
                 _ = sender.navigationController?.popViewController(animated: true)
@@ -49,16 +58,29 @@ class SimpleAlert : NSObject{
         sender.present(alertController, animated: true, completion:nil)
     }
     
-    static func searchAlert(_ sender:GoogleMapViewController, title:String, message:String ) {
+    static func searchAlert(_ sender:UIViewController, title:String, message:String ) {
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
-        let cancel = UIAlertAction(title: Constant.AlertPromtMessages.no, style: .cancel) { (action:UIAlertAction!) in
+        var cancelTitle = "Cancel"
+        var okTitle = "Ok"
+        if(sender.isKind(of: GoogleMapViewController.self)){
+            cancelTitle = Constant.AlertPromtMessages.no
+            okTitle = Constant.AlertPromtMessages.yes
         }
         
-        let ok = UIAlertAction(title: Constant.AlertPromtMessages.yes, style:  .default){
+        let cancel = UIAlertAction(title: cancelTitle, style: .cancel) { (action:UIAlertAction!) in
+        }
+        
+        let ok = UIAlertAction(title: okTitle, style:  .default){
             (action:UIAlertAction!) in
-            sender.searchYesClicked()
+            
+            if(sender.isKind(of: GoogleMapViewController.self)){
+                (sender as! GoogleMapViewController).searchYesClicked()
+            }else if(sender.isKind(of: WhoWillBeCheckingInViewController.self)){
+                (sender as! WhoWillBeCheckingInViewController).noThanksPressed()
+            }
+            
         }
         //Add Custom Actions to Alert viewController
         alertController.addAction(cancel)
@@ -83,4 +105,5 @@ class SimpleAlert : NSObject{
         
         sender.present(alertController, animated: true, completion:nil)
     }
+
 }

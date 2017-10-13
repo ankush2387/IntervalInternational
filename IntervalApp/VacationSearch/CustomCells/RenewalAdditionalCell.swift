@@ -1,27 +1,25 @@
+
 //
-//  AvailablePointCell.swift
+//  RenewalAdditionalCell.swift
 //  IntervalApp
 //
-//  Created by Chetu on 14/01/17.
+//  Created by CHETUMAC043 on 9/28/17.
 //  Copyright © 2017 Interval International. All rights reserved.
 //
 
 import UIKit
-import IntervalUIKit
 
-class AvailablePointCell: UITableViewCell {
+class RenewalAdditionalCell: UITableViewCell {
     
-    //Outlets
-    
-    @IBOutlet weak var availablePointValueLabel: UILabel!
-    @IBOutlet weak var mainView: UIView!
-   
-    @IBOutlet weak var checkBOx: IUIKCheckbox!
+        @IBOutlet weak var noThanksButton: UIButton!
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
 
+
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 

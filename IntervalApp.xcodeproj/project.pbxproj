@@ -20,6 +20,10 @@
 		08E3BCF81F2A31330021F2BC /* RelinquishmentDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E3BCF71F2A31330021F2BC /* RelinquishmentDetailsCell.swift */; };
 		3A0326221C8EE684000758E3 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0326211C8EE684000758E3 /* CalendarViewController.swift */; };
 		3A05D4501C7B7CF400258C72 /* CertificateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A05D44F1C7B7CF400258C72 /* CertificateViewController.swift */; };
+		3A0666381F912C40002AA92A /* RenewelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0666371F912C40002AA92A /* RenewelViewController.swift */; };
+		3A06663A1F912C56002AA92A /* RenewalOtherOptionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0666391F912C56002AA92A /* RenewalOtherOptionsVC.swift */; };
+		3A06663C1F912EBD002AA92A /* RenewelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A06663B1F912EBD002AA92A /* RenewelCell.swift */; };
+		3A06663E1F912EE3002AA92A /* RenewalAdditionalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A06663D1F912EE3002AA92A /* RenewalAdditionalCell.swift */; };
 		3A06C0A51CA9385A009A9574 /* AvailableDestinationCountryOrContinentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A06C0A11CA9385A009A9574 /* AvailableDestinationCountryOrContinentsTableViewCell.swift */; };
 		3A06C0A61CA9385A009A9574 /* AvailableDestinationPlaceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A06C0A21CA9385A009A9574 /* AvailableDestinationPlaceTableViewCell.swift */; };
 		3A06C0A71CA9385A009A9574 /* AvailableDestinationsIphone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A06C0A31CA9385A009A9574 /* AvailableDestinationsIphone.storyboard */; };
@@ -336,6 +340,10 @@
 		26D24CAA1C4015290008EF39 /* IntervalApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IntervalApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A0326211C8EE684000758E3 /* CalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		3A05D44F1C7B7CF400258C72 /* CertificateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CertificateViewController.swift; sourceTree = "<group>"; };
+		3A0666371F912C40002AA92A /* RenewelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenewelViewController.swift; sourceTree = "<group>"; };
+		3A0666391F912C56002AA92A /* RenewalOtherOptionsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenewalOtherOptionsVC.swift; sourceTree = "<group>"; };
+		3A06663B1F912EBD002AA92A /* RenewelCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenewelCell.swift; sourceTree = "<group>"; };
+		3A06663D1F912EE3002AA92A /* RenewalAdditionalCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenewalAdditionalCell.swift; sourceTree = "<group>"; };
 		3A06C0A11CA9385A009A9574 /* AvailableDestinationCountryOrContinentsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvailableDestinationCountryOrContinentsTableViewCell.swift; sourceTree = "<group>"; };
 		3A06C0A21CA9385A009A9574 /* AvailableDestinationPlaceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvailableDestinationPlaceTableViewCell.swift; sourceTree = "<group>"; };
 		3A06C0A31CA9385A009A9574 /* AvailableDestinationsIphone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AvailableDestinationsIphone.storyboard; sourceTree = "<group>"; };
@@ -855,6 +863,7 @@
 				3A892F331CD3902F00AE6F45 /* ExchangeCell0.swift */,
 				3A892F341CD3902F00AE6F45 /* ExchangeCell1.swift */,
 				3A892F351CD3902F00AE6F45 /* GetawaysCell.swift */,
+				3A06663B1F912EBD002AA92A /* RenewelCell.swift */,
 				3A892F371CD3902F00AE6F45 /* SearchResultCollectionCell.xib */,
 				3A892F381CD3902F00AE6F45 /* SearchResultContentTableCell.swift */,
 				3A892F391CD3902F00AE6F45 /* SearchResultContentTableCell.xib */,
@@ -902,6 +911,7 @@
 				3A59DE191F015FDE005280D3 /* SortingOptionCell.swift */,
 				3A202C721F3B0ABA00678C50 /* RentalInventoryCVCell.swift */,
 				0887C97A1F6A99F5007F57C3 /* SearchFlexchangeButtonCell.swift */,
+				3A06663D1F912EE3002AA92A /* RenewalAdditionalCell.swift */,
 			);
 			path = CustomCells;
 			sourceTree = "<group>";
@@ -1054,6 +1064,8 @@
 				3A59DE171F015E5F005280D3 /* SortingViewController.swift */,
 				3A7F44A61F17768800F4DD18 /* WhatToUseViewController.swift */,
 				E9ED1B581F44B89A00794C53 /* CertificateInfoViewController.swift */,
+				3A0666371F912C40002AA92A /* RenewelViewController.swift */,
+				3A0666391F912C56002AA92A /* RenewalOtherOptionsVC.swift */,
 			);
 			path = VacationSearch;
 			sourceTree = "<group>";
@@ -1396,7 +1408,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		E487CA22C7876FB2B6E5A39D /* [CP] Copy Pods Resources */ = {
@@ -1459,6 +1471,7 @@
 				3AAA5A2D1C720F4500A5EA6D /* SWRevealViewController.m in Sources */,
 				0895D7141E966F0D004EAA91 /* ContainerContentTBLviewController.swift in Sources */,
 				3A892F511CD3902F00AE6F45 /* WhereToGoCollectionViewCell.swift in Sources */,
+				3A06663A1F912C56002AA92A /* RenewalOtherOptionsVC.swift in Sources */,
 				3AB122C91CD2858400204EB7 /* LoginIPadViewController.swift in Sources */,
 				3A3A01361C99BD0B00B7EC37 /* ClubpointTableViewCell.swift in Sources */,
 				3A2C728B1DDB2D8500BBF40B /* ExchangeOptionsCell.swift in Sources */,
@@ -1505,6 +1518,7 @@
 				3A586CC81DDCA28200EF6756 /* PromotionsDiscountCell.swift in Sources */,
 				DC7BA8311DB911D600BB0C3B /* MagazineCollectionViewCell.swift in Sources */,
 				DC7EF4DB1D709F0400E9E360 /* VacationCollectionViewCell.swift in Sources */,
+				3A06663E1F912EE3002AA92A /* RenewalAdditionalCell.swift in Sources */,
 				E961268D1EE9EB2A001BA096 /* WeatherViewController.swift in Sources */,
 				087A87561E9519E2009B1387 /* TdiTableViewCell.swift in Sources */,
 				3A3D56891DD33B3300922FA9 /* DestinationResortDetailCell.swift in Sources */,
@@ -1519,6 +1533,7 @@
 				3A06C0A81CA9385A009A9574 /* AvailableDestinationsTableViewController.swift in Sources */,
 				DC7EF4CD1D709E9600E9E360 /* ClubPointWithCheckBoxTableViewCell.swift in Sources */,
 				3A2089DE1E2544D0001AFFD2 /* RelinquishmentSelectionCIGCell.swift in Sources */,
+				3A06663C1F912EBD002AA92A /* RenewelCell.swift in Sources */,
 				3A4006A41CA161A40014DBF3 /* ResortBedroomDetailWithInfoCell.swift in Sources */,
 				DC7EF5051D709F8800E9E360 /* CustomPageControl.swift in Sources */,
 				3A586CC01DDCA22900EF6756 /* ExchangeOrProtectionCell.swift in Sources */,
@@ -1609,6 +1624,7 @@
 				3AFA86681DF305A300DCAECF /* CheckOutIPadViewController.swift in Sources */,
 				3AAA5A4A1C720F4500A5EA6D /* VacationSearchTabBarController.swift in Sources */,
 				3A29B4901EF034E4008995A5 /* ReservationTableViewCell.swift in Sources */,
+				3A0666381F912C40002AA92A /* RenewelViewController.swift in Sources */,
 				3A4801E31F60050600AB6D68 /* SelectedResortsIpadViewController.swift in Sources */,
 				087A875A1E951A2D009B1387 /* UnitSizeTdiCollectionViewCell.swift in Sources */,
 				3A0B25DC1CD241B50080BF3F /* DummyTableViewCell.swift in Sources */,

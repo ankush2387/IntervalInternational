@@ -33,6 +33,8 @@ class ClubresortsViewController: UIViewController {
             else if( Constant.MyClassConstants.buttontitle == Constant.buttonId.resortSelection){
                 
                    Constant.MyClassConstants.savedClubFloatResort = Constant.MyClassConstants.clubFloatResorts[sender.tag].resortName!
+                   Constant
+                .MyClassConstants.savedClubFloatResortCode = Constant.MyClassConstants.clubFloatResorts[sender.tag].resortCode!
             }
             
 
