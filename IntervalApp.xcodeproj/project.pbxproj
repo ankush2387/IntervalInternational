@@ -1268,7 +1268,7 @@
 				TargetAttributes = {
 					26D24CA91C4015290008EF39 = {
 						CreatedOnToolsVersion = 7.1.1;
-						DevelopmentTeam = 38C9P4UYM3;
+						DevelopmentTeam = 4KV2X5Z9W4;
 						LastSwiftMigration = 0800;
 						ProvisioningStyle = Manual;
 					};
@@ -1408,7 +1408,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		E487CA22C7876FB2B6E5A39D /* [CP] Copy Pods Resources */ = {
@@ -1804,9 +1804,9 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: abhilasha41235@gmail.com (GK76A9SM59)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 38C9P4UYM3;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Frank Nogueiras (438L8U78T7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Frank Nogueiras (438L8U78T7)";
+				DEVELOPMENT_TEAM = 4KV2X5Z9W4;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					RealmSwift.framework,
@@ -1820,10 +1820,14 @@
 					"$(PROJECT_DIR)/IntervalApp/AdobeMobileLibrary",
 				);
 				MACH_O_TYPE = mh_execute;
+<<<<<<< HEAD
 				PRODUCT_BUNDLE_IDENTIFIER = com.intervalintl.interval;
+=======
+				PRODUCT_BUNDLE_IDENTIFIER = com.intervalintl.Interval;
+>>>>>>> develop
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d033d5ff-f6ba-4c36-9372-c18a32ce7cae";
-				PROVISIONING_PROFILE_SPECIFIER = "Chetu Generic Developement";
+				PROVISIONING_PROFILE = "b1c554f8-1c26-4866-81fc-3cb31c00c330";
+				PROVISIONING_PROFILE_SPECIFIER = "XC Ad Hoc: *";
 				SWIFT_OBJC_BRIDGING_HEADER = "IntervalApp/IntervalApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -1838,9 +1842,9 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: abhilasha41235@gmail.com (GK76A9SM59)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Frank Nogueiras (438L8U78T7)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Frank Nogueiras (438L8U78T7)";
+				DEVELOPMENT_TEAM = 4CR2ZD7GRK;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					RealmSwift.framework,
@@ -1854,10 +1858,14 @@
 					"$(PROJECT_DIR)/IntervalApp/AdobeMobileLibrary",
 				);
 				MACH_O_TYPE = mh_execute;
+<<<<<<< HEAD
 				PRODUCT_BUNDLE_IDENTIFIER = com.intervalintl.interval;
+=======
+				PRODUCT_BUNDLE_IDENTIFIER = com.intervalintl.Interval;
+>>>>>>> develop
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "d7e3f15f-9620-4761-b28e-53ecf031229c";
+				PROVISIONING_PROFILE_SPECIFIER = "IntervalApp-DEV";
 				SWIFT_OBJC_BRIDGING_HEADER = "IntervalApp/IntervalApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;

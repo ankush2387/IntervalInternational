@@ -65,6 +65,8 @@ class SearchResultMapviewController: UIViewController {
         let notificationNames = [Constant.notificationNames.closeButtonClickedNotification, Constant.notificationNames.closeButtonClickedNotification, ]
         
             NotificationCenter.default.addObserver(self, selector: #selector(closeDetailView), name: NSNotification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
+        
+        self.navigationController?.isNavigationBarHidden = false
     }
     
     override func didReceiveMemoryWarning() {
@@ -153,7 +155,11 @@ class SearchResultMapviewController: UIViewController {
                 self.view.bringSubview(toFront: self.resortView)
             }, completion: { _ in
                 
-                self.drarButton.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
+                if  UIDevice.current.userInterfaceIdiom == .pad{
+                    self.drarButton.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
+                }
+                
+                
                 
             })
             self.view.bringSubview(toFront: self.resortView)
@@ -261,7 +267,6 @@ class SearchResultMapviewController: UIViewController {
             }else {
                 
                 self.resortView.frame = CGRect(x: 0, y: self.view.frame.height, width: self.view.frame.width, height: self.bottomResortHeight)
-                self.dragView.frame = CGRect(x: 0, y:self.dragView.frame.origin.y, width: self.dragView.frame.size.width, height: self.dragView.frame.size.height)
             }
             
             

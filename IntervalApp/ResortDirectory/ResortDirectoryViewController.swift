@@ -469,9 +469,15 @@ extension ResortDirectoryViewController:UITableViewDelegate {
         headerView.backgroundColor = IUIKColorPalette.titleBackdrop.color
         let nameLabel = UILabel(frame: CGRect(x: 20, y: 0, width: tableView.bounds.width - 40, height: 30))
         
-        nameLabel.text = Constant.MyClassConstants.resortDirectoryCommonHearderText
-        nameLabel.textColor = IUIKColorPalette.secondaryText.color
-        headerView.addSubview(nameLabel)
+        if(tableView.tag == 0){
+            nameLabel.text = "Choose Region"
+            nameLabel.textColor = IUIKColorPalette.secondaryText.color
+            headerView.addSubview(nameLabel)
+        }else{
+            nameLabel.text = Constant.MyClassConstants.resortDirectoryCommonHearderText
+            nameLabel.textColor = IUIKColorPalette.secondaryText.color
+            headerView.addSubview(nameLabel)
+        }
         
         return headerView
     }

@@ -58,7 +58,8 @@ final public class TouchID
                     .authenticationPrompt("Authenticate to login to server")
                     .get(TouchID.TouchIDPassKey)
                 
-                completionHandler(AuthenticationInfo(touchIDUser: username!, touchIDPass: password!))
+                Constant.MyClassConstants.loginOriginationPoint = "TouchID"
+                completionHandler(AuthenticationInfo(touchIDUser: username ?? "", touchIDPass: password ?? ""))
             } catch _ {
                 // failed to gather authentication info from keychain
                 completionHandler(nil)

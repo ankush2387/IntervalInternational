@@ -269,6 +269,7 @@ class Constant: NSObject {
         static var getawayAlertsArray = [RentalAlert]()
         static var dashBoardAlertsArray = [RentalAlert]()
         static var upcomingTripsArray = [UpcomingTrip]()
+        static var transactionType = ""
         static var activeAlertsArray:NSMutableArray = []
         static var membershipdetails = [Membership]()
         static var memberdetailsarray:NSMutableArray = []
@@ -1621,6 +1622,14 @@ class Constant: NSObject {
             
         }
         
+    }
+    
+    struct myUpcomingTripCommonString {
+        
+        static let rental = "RENTAL"
+        static let getaway = "GETAWAY"
+        static let shop = "SHOP"
+        static let exchange = "Exchange"
     }
     
    

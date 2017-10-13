@@ -403,7 +403,10 @@ extension UpComingTripDetailController:UITableViewDataSource {
                     }
                 }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
             }
-            cell.transactionType.text = ExchangeTransactionType.fromName(name: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.exchangeTransactionType!).friendlyNameForUpcomingTrip()
+       
+           // cell.transactionType.text = ExchangeTransactionType.fromName(name: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.exchangeTransactionType!).friendlyNameForUpcomingTrip()
+            
+            cell.transactionType.text = Constant.MyClassConstants.transactionType
             
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             cell.backgroundColor = UIColor.clear
