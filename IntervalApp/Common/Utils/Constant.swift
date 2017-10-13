@@ -16,7 +16,7 @@ class Constant: NSObject {
     static var holdingTimer:Timer!
     static var holdingTime = 17
     static var decreaseValue = 1
-    static var holdingResortForRemainingMinutes = "We are holding this unit for \(holdingTime) minutes"
+    static var holdingResortForRemainingMinutes = NSLocalizedString("We are holding this unit for \(holdingTime) minutes", comment: "")
     
     struct RunningDevice {
         static var deviceOrientation:UIDeviceOrientation?

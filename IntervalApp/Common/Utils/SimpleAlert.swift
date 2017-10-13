@@ -37,7 +37,14 @@ class SimpleAlert : NSObject{
             }
             else if (sender.isKind(of:WhoWillBeCheckingInViewController.self) || sender.isKind(of:WhoWillBeCheckingInIPadViewController.self) || sender.isKind(of:CheckOutViewController.self) || sender.isKind(of:CheckOutIPadViewController.self)) {
                 //sender.dismiss(animated: true, completion: nil)
-                _ = sender.navigationController?.popViewController(animated: true)
+                //_ = sender.navigationController?.popViewController(animated: true)
+                
+                for controller in sender.navigationController!.viewControllers as Array {
+                    if controller.isKind(of: SearchResultViewController.self) {
+                        sender.navigationController!.popToViewController(controller, animated: true)
+                        break
+                    }
+                }
             }
             else if( sender .isKind(of:EditMyAlertIpadViewController.self)) {
                 _ = sender.navigationController?.popViewController(animated: true)

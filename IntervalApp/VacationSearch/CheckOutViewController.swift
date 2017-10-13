@@ -19,7 +19,6 @@ class CheckOutViewController: UIViewController {
     fileprivate var tappedButtonDictionary = [Int:Bool]()
     
     //class variables
-    var remainingHoldingTime:Int!
     var requiredSectionIntTBLview = 13
     //var isPromotionsEnabled = false
     var isTripProtectionEnabled = false
@@ -336,6 +335,16 @@ class CheckOutViewController: UIViewController {
         
     }
     
+    func updateResortHoldingTime() {
+        
+        if(Constant.holdingTime != 0){
+            self.remainingResortHoldingTimeLable.text = Constant.holdingResortForRemainingMinutes
+        }else{
+            SimpleAlert.alertTodismissController(self, title: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage)
+        }
+    }
+
+    
     func checkPromotionsAvailable() {
         if Constant.MyClassConstants.filterRelinquishments.count > 0 {
             if let  _ = Constant.MyClassConstants.filterRelinquishments[0].openWeek?.promotion {
@@ -419,15 +428,6 @@ class CheckOutViewController: UIViewController {
         
         let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
         return emailTest.evaluate(with: testStr)
-    }
-    
-    func updateResortHoldingTime() {
-        
-        if(Constant.holdingTime != 0){
-            self.remainingResortHoldingTimeLable.text = Constant.holdingResortForRemainingMinutes
-        }else{
-            SimpleAlert.alertTodismissController(self, title: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage)
-        }
     }
     
     func checkBoxCheckedAtIndex(_ sender:IUIKCheckbox) {
