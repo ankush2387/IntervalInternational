@@ -375,6 +375,7 @@ extension RenewelViewController:UITableViewDataSource {
                             , NSForegroundColorAttributeName : UIColor(red: 0.0/255.0, green: 201.0/255.0, blue: 11.0/255.0, alpha: 1.0)], range: range)
                         
                         cell.renewelLbl?.attributedText = attributeString
+                        cell.selectButton?.setTitle(Constant.MyClassConstants.renewNow, for: .normal)
                         
                         break
                     }
