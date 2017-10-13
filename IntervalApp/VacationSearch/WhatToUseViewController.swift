@@ -451,7 +451,7 @@ extension WhatToUseViewController:UITableViewDelegate {
                 return 150
             } else {
                 if UIDevice.current.userInterfaceIdiom == .pad {
-                    return 80
+                    return 120
                 } else {
                     return 120
                 }
