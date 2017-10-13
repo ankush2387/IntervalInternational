@@ -200,11 +200,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 proceedStatus = true
             }
             else {
-                
-                
             }
-            
-            
         }
         else {
             proceedStatus = false
@@ -215,7 +211,6 @@ class WhoWillBeCheckingInViewController: UIViewController {
     
     //MARK:- NO THANKS from alert
     func noThanksPressed(){
-        self.dismiss(animated: true, completion: nil)
         let button = UIButton()
         self.proceedToCheckoutPressed(button)
     }
@@ -441,7 +436,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
         Constant.MyClassConstants.isNoThanksFromRenewalAgain = true
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
-        Constant.MyClassConstants.noThanksForNonCore = false
+        //Constant.MyClassConstants.noThanksForNonCore = false
         viewController.delegate = self
         
         let transitionManager = TransitionManager()
@@ -799,7 +794,7 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
             
             let guestPrices = Constant.MyClassConstants.guestCertificate.prices
             var memberTier = ""
-            if(Constant.MyClassConstants.isFromExchange){
+            if(Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange){
                 if(Constant.MyClassConstants.exchangeFees.count > 0){
                     for renewal in renewalsArray{
                             for price in guestPrices{
@@ -816,13 +811,16 @@ extension WhoWillBeCheckingInViewController:UITableViewDataSource {
                   memberTier = ""
                 }
                 
-            }else{
+            }else {
                 
                 for renewal in renewalsArray{
-                    if(renewal.productCode == "PLT"){
-                        memberTier = "PLT"
-                    }else{
-                        memberTier = Constant.MyClassConstants.rentalFees[0].memberTier!
+                    for price in guestPrices{
+                        if (price.productCode == renewal.productCode){
+                            memberTier = price.productCode!
+                            break
+                        }else{
+                            memberTier = Constant.MyClassConstants.rentalFees[0].memberTier!
+                        }
                     }
                 }
             }
