@@ -767,7 +767,8 @@ class Constant: NSObject {
         static var failureTitle = NSLocalizedString("Failure", comment: "")
         static var noUpComingTrips = NSLocalizedString("No upcoming trips.", comment: "")
         static var membershipFailureMessage = NSLocalizedString("Please contact your servicing office.  Could not select membership", comment: "")
-        static var upcomingTripMessage = NSLocalizedString("Good news! \nYour next Trip to Fizi is in 3 months.", comment: "")
+        static var upcomingTripMessage = NSLocalizedString("Hmmm no trips planned yet \n Thats weird. Let's fix it.", comment: "")
+        static var upcomingTripSearchVacationButtonMessage = NSLocalizedString(" Search for a Vacation", comment: "")
         
     }
     
@@ -1079,6 +1080,7 @@ class Constant: NSObject {
         static var modifyInsuranceCell = "ModifyTripInsurance"
         static var purchasedInsuranceCell = "PurchasedTripInsurence"
         static var upComingTripCell = "UpComingTripCell"
+        static var emptyUpcomingTrip = "EmptyUpcomingTrip"
         static var guestCertificateCell = "GuestCertificateCell"
         static var resortCell = "Deposit"
         static var unitCell = "RelinquishmentUnitCell"

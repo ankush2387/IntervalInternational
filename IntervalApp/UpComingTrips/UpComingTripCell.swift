@@ -44,6 +44,8 @@ class UpComingTripCell: UITableViewCell {
     
     @IBOutlet weak var resortFixedWeekLabel: UILabel!
     
+    @IBOutlet weak var searchVacationButton: UIButton!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         //***** Initialization code *****//
