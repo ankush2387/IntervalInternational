@@ -2241,11 +2241,86 @@ public class Helper{
     }
 
 
- static func returnStringWithPriceAndTerm(price:String, term:String) -> String {
+    static func returnStringWithPriceAndTerm(price:String, term:String) -> String {
+        
+        let mainString = "Get a FREE Guest Certificate now and every time with Interval Platinum. Your Interval Platinum must be active through your travel dates to receive FREE Guest Certificates. To upgrade or renew, a \(term) Interval Platinum fee of  membership fee of \n\(price)\n will be included with this transaction."
+        
+        return mainString
+    }
     
-    let mainString = "Get a FREE Guest Certificate now and every time with Interval Platinum. Your Interval Platinum must be active through your travel dates to receive FREE Guest Certificates. To upgrade or renew, a \(term) Interval Platinum fee of  membership fee of \n\(price)\n will be included with this transaction."
     
-    return mainString
+    static func returnIntervalMembershipString(price:String, term:String) -> String {
+        
+        let mainString = "Your interval membership expires before your travel date.To continue, a \(term) membership fee of \n\(price)\nwill be included with this transaction."
+        
+        return mainString
+    }
+    
+    
+    static func returnIntervalMembershipStringWithDisplayName(displayName:String, price:String, term:String) -> String {
+        
+        let mainString = "In addition, to keep your \(displayName) benefits, a \(term) membership fee of \n\(price)\nwill be included with this transaction."
+        
+        return mainString
+    }
+    
+    static func returnIntervalMembershipStringWithDisplayName1(displayName:String, price:String, term:String) -> String {
+        
+        let mainString = "In addition, your \(displayName) membership expires before your travel date. To continue booking your Getaway at the current discounted rate, a \(term) membership fee of \n\(price)\nwill be included with this transaction."
+        
+        return mainString
+    }
+    
+    
+    static func returnIntervalMembershipStringWithDisplayName2(displayName:String, price:String, term:String) -> String {
+        
+        let mainString = "In addition, your \(displayName) membership expires before your travel date. To keep your Interval Platinum benefits, a \(term) membership fee of \n\(price)\nwill be included with this transaction."
+        
+        return mainString
+    }
+    
+    
+    static func returnIntervalMembershipStringWithDisplayName3(displayName:String, price:String, term:String) -> String {
+        
+        let mainString = "Your \(displayName) membership expires before your travel date. To continue booking your Getaway at the current discounted rate, a \(term) \(displayName) membership fee of \n\(price)\nwill be included with this transaction."
+        
+        return mainString
+    }
+    
+    
+    static func returnIntervalMembershipStringWithDisplayName4(displayName:String, price:String, term:String) -> String {
+        
+        let mainString = "Get a FREE Guest Certificate now and every time with \(displayName). Your Interval Platinum must be active through your travel dates to receive FREE Guest Certificates. To upgrade or renew, a \(term) \(displayName) fee of \n\(price)\nwill be included with this transaction."
+        
+        return mainString
+    }
+    
+    static func returnIntervalMembershipStringWithDisplayName5(displayName:String, price:String, term:String) -> String {
+        
+        let mainString = "Your \(displayName) membership expires before your travel date. To keep your Interval Platinum benefits, a \(term) membership fee of \n\(price)\nwill be included with this transaction."
+        
+        return mainString
+    }
+    
+    
+    //function to return renewal type name
+    static func renewalType(type:Int) -> String{
+        switch type {
+        case 0:
+            return "Core"
+            
+        case 1:
+            return "Non Core"
+            
+        case 2:
+            return "Combo"
+            
+        case 3:
+            return "Non Combo"
+            
+        default:
+            return ""
+        }
     }
 
 }

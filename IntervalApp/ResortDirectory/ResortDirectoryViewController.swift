@@ -403,12 +403,12 @@ extension ResortDirectoryViewController:UITableViewDelegate {
             
             let area = Constant.MyClassConstants.resortDirectoryAreaListArray[indexPath.row]
             Constant.MyClassConstants.resortDirectoryCommonHearderText = area.areaName!
-            Constant.MyClassConstants.resortDescriptionString = area.longDescription
+            Constant.MyClassConstants.resortDescriptionString = area.description
             
             if(area.images.count > 0 && backgroundImageView != nil) {
                 
                 Constant.MyClassConstants.backgroundImageUrl = area.images[1].url!
-                Constant.MyClassConstants.resortDescriptionString = area.longDescription
+                Constant.MyClassConstants.resortDescriptionString = area.description
                 self.backgroundImageView.setImageWith(URL(string: area.images[1].url!), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
                     if (error != nil) {
                         self.backgroundImageView.image = UIImage(named: Constant.MyClassConstants.noImage)

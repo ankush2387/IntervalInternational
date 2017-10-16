@@ -1839,7 +1839,7 @@ extension SearchResultViewController:RenewalOtherOptionsVCDelegate{
     func selectedRenewal(selectedRenewal: String, forceRenewals: ForceRenewals) {
         var renewalArray = [Renewal]()
         renewalArray.removeAll()
-        if(selectedRenewal == "Core"){
+        if(selectedRenewal == Helper.renewalType(type: 0)){
             // Selected core renewal
             for renewal in forceRenewals.products{
                 if(renewal.term == 12){
@@ -1850,7 +1850,7 @@ extension SearchResultViewController:RenewalOtherOptionsVCDelegate{
                     break
                 }
             }
-        }else if(selectedRenewal == "Combo"){
+        }else if(selectedRenewal == Helper.renewalType(type: 2)){
             // Selected combo renewal
             
             for comboProduct in (forceRenewals.comboProducts){
