@@ -397,12 +397,13 @@ extension RenewelViewController:UITableViewDataSource {
                                 
                                 priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                                 
-                                // make attributed string
-                                let mainString = "\(Constant.MyClassConstants.intervalMembership) \(term) membership fee of \n\(priceAndCurrency)\n\(Constant.MyClassConstants.intervalTransaction)"
+                            
+                                //formatted string
+                                let formattedString = Helper.returnIntervalMembershipString(price: priceAndCurrency, term: term)
                                 
-                                let range = (mainString as NSString).range(of: priceAndCurrency)
+                                let range = (formattedString as NSString).range(of: priceAndCurrency)
                                 
-                                let attributeString = NSMutableAttributedString.init(string: mainString)
+                                let attributeString = NSMutableAttributedString.init(string: formattedString)
                                 
                                 attributeString.setAttributes([NSFontAttributeName : UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0))!
                                     , NSForegroundColorAttributeName : UIColor(red: 0.0/255.0, green: 201.0/255.0, blue: 11.0/255.0, alpha: 1.0)], range: range)
@@ -419,9 +420,12 @@ extension RenewelViewController:UITableViewDataSource {
                                 var mainString = ""
                                 // Create attributed string
                                 if(Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange){
-                                    mainString = "In addition, to keep your \(String(describing: renewalComboProduct.displayName!)) benefits, a \(term) membership fee of \n\(priceAndCurrency)\n\(Constant.MyClassConstants.intervalTransaction)"
+                                    
+                                    mainString = Helper.returnIntervalMembershipStringWithDisplayName(displayName: String(describing: renewalComboProduct.displayName!), price: priceAndCurrency, term: term)
                                 }else{
-                                     mainString = "In addition, your \(String(describing: renewalComboProduct.displayName!)) membership expires before your travel date. To continue booking your Getaway at the current discounted rate, a \(term) membership fee of \n\(priceAndCurrency)\n\(Constant.MyClassConstants.intervalTransaction)"
+                                    
+                                    mainString = Helper.returnIntervalMembershipStringWithDisplayName1(displayName: String(describing: renewalComboProduct.displayName!), price: priceAndCurrency, term: term)
+                                    
                                 }
                                 
                                 
@@ -511,12 +515,12 @@ extension RenewelViewController:UITableViewDataSource {
                         
                         priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                         
-                        // make attributed string
-                        let mainString = "\(Constant.MyClassConstants.intervalMembership) \(term) membership fee of \n\(priceAndCurrency)\n\(Constant.MyClassConstants.intervalTransaction)"
+                        //formatted string
+                        let formattedString = Helper.returnIntervalMembershipString(price: priceAndCurrency, term: term)
                         
-                        let range = (mainString as NSString).range(of: priceAndCurrency)
+                        let range = (formattedString as NSString).range(of: priceAndCurrency)
                         
-                        let attributeString = NSMutableAttributedString.init(string: mainString)
+                        let attributeString = NSMutableAttributedString.init(string: formattedString)
                         
                         attributeString.setAttributes([NSFontAttributeName : UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0))!
                             , NSForegroundColorAttributeName : UIColor(red: 0.0/255.0, green: 201.0/255.0, blue: 11.0/255.0, alpha: 1.0)], range: range)
@@ -552,8 +556,10 @@ extension RenewelViewController:UITableViewDataSource {
                         
                         priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                         
-                        // Create attributed string
-                        let mainString = "In addition, your \(String(describing: nonCoreProduct.displayName!)) membership expires before your travel date. To keep your Interval Platinum benefits, a \(term) membership fee of \n\(priceAndCurrency)\n\(Constant.MyClassConstants.intervalTransaction)"
+                        // formatted string
+                        
+                        let mainString  = Helper.returnIntervalMembershipStringWithDisplayName2(displayName: String(describing: nonCoreProduct.displayName!), price: priceAndCurrency, term: term)
+                        
                         
                         let range = (mainString as NSString).range(of: priceAndCurrency)
                         
@@ -610,9 +616,13 @@ extension RenewelViewController:UITableViewDataSource {
                         priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                         
                         // Create attributed string
-                        var mainString = "Your \(String(describing: nonCoreProduct.displayName!)) membership expires before your travel date. To continue booking your Getaway at the current discounted rate, a \(term) \(String(describing: nonCoreProduct.displayName!)) membership fee of \n\(priceAndCurrency)\n\(Constant.MyClassConstants.intervalTransaction)"
+                        var mainString = Helper.returnIntervalMembershipStringWithDisplayName3(displayName: String(describing: nonCoreProduct.displayName!), price: priceAndCurrency, term: term)
+                        
                         if(Constant.MyClassConstants.noThanksForNonCore){
-                            mainString = "Get a FREE Guest Certificate now and every time with \(String(describing: nonCoreProduct.displayName!)). Your Interval Platinum must be active through your travel dates to receive FREE Guest Certificates. To upgrade or renew, a \(term) \(String(describing: nonCoreProduct.displayName!)) fee of \n\(priceAndCurrency)\n\(Constant.MyClassConstants.intervalTransaction)"
+                            
+                            mainString = Helper.returnIntervalMembershipStringWithDisplayName4(displayName: String(describing: nonCoreProduct.displayName!), price: priceAndCurrency, term: term)
+                            
+                            
                         }
                         
                         if(Constant.MyClassConstants.noThanksForNonCore){

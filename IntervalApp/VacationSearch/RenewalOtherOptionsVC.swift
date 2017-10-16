@@ -67,23 +67,23 @@ class RenewalOtherOptionsVC: UIViewController {
     @IBAction func selectClicked(_ sender: UIButton) {
         // core select clicked
         if sender.tag == 0 {
-            delegate?.selectedRenewal(selectedRenewal: "Combo", forceRenewals: forceRenewals)
+            delegate?.selectedRenewal(selectedRenewal: Helper.renewalType(type: 2), forceRenewals: forceRenewals)
         } else { // non core select clicked
             
             // show guest certificate
             for renewal in forceRenewals.crossSelling {
-                if (renewal.productCode == "PLT" && renewal.term == 12) {
+                if (renewal.productCode == Constant.productCodeImageNames.platinum && renewal.term == 12) {
                     Constant.MyClassConstants.isChangeNoThanksButtonTitle = true
                     Constant.MyClassConstants.noThanksForNonCore = true
              self.dismiss(animated: true, completion: nil)
-                    delegate?.selectedRenewal(selectedRenewal: "Core", forceRenewals: forceRenewals)
+                    delegate?.selectedRenewal(selectedRenewal: Helper.renewalType(type: 0), forceRenewals: forceRenewals)
                     return
                     
                 } else {
                     Constant.MyClassConstants.noThanksForNonCore = false
                     Constant.MyClassConstants.isChangeNoThanksButtonTitle = false
                     self.dismiss(animated: true, completion: nil)
-                    delegate?.selectedRenewal(selectedRenewal: "Core", forceRenewals: forceRenewals)
+                    delegate?.selectedRenewal(selectedRenewal: Helper.renewalType(type: 0), forceRenewals: forceRenewals)
                     return
                 }
             }
@@ -143,8 +143,9 @@ extension RenewalOtherOptionsVC:UITableViewDataSource {
                             
                             priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                             
-                            // make attributed string
-                            let mainString = "Your interval membership expire before your travel date.To continue, a \(term) membership fee of \n\(priceAndCurrency)\nwill be included with this transaction."
+                            // formatted string
+                    
+                            let mainString = Helper.returnIntervalMembershipString(price: priceAndCurrency, term: term)
                             
                             let range = (mainString as NSString).range(of: priceAndCurrency)
                             
@@ -163,8 +164,10 @@ extension RenewalOtherOptionsVC:UITableViewDataSource {
                             
                             priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                             
-                            // Create attributed string
-                            let mainString = "In addition, your \(String(describing: renewalComboProduct.displayName!)) membership expires before your travel date. To keep your Interval Platinum benefits, a \(term) membership fee of \n\(priceAndCurrency)\nwill be included with this transaction."
+                            // formatted string
+                            
+                            let mainString = Helper.returnIntervalMembershipStringWithDisplayName2(displayName: String(describing: renewalComboProduct.displayName!), price: priceAndCurrency, term: term)
+                            
                             
                             let range = (mainString as NSString).range(of: priceAndCurrency)
                             
@@ -213,8 +216,9 @@ extension RenewalOtherOptionsVC:UITableViewDataSource {
                     
                     priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                     
-                    // Create attributed string
-                    let mainString = "Your \(String(describing: coreProduct.displayName!)) membership expires before your travel date. To keep your Interval Platinum benefits, a \(term) membership fee of \n\(priceAndCurrency)\nwill be included with this transaction."
+                    // formatted string
+                    
+                    let mainString = Helper.returnIntervalMembershipStringWithDisplayName5(displayName: String(describing: coreProduct.displayName!), price: priceAndCurrency, term: term)
                     
                     let range = (mainString as NSString).range(of: priceAndCurrency)
                     

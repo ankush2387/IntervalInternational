@@ -340,7 +340,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     //***** Function for proceed to checkout button click. *****//
     @IBAction func proceedToCheckoutPressed(_ sender: AnyObject) {
         
-        if(Constant.MyClassConstants.noThanksForNonCore || self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count){
+        if(Constant.MyClassConstants.noThanksForNonCore && self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count){
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
             viewController.delegate = self
@@ -365,8 +365,8 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             
             let guestAddress = Address()
             var address = [String]()
-            address.append(Constant.GetawaySearchResultCardFormDetailData.address1)
-            address.append(Constant.GetawaySearchResultCardFormDetailData.address2)
+            address.append(Constant.GetawaySearchResultGuestFormDetailData.address1)
+            address.append(Constant.GetawaySearchResultGuestFormDetailData.address2)
             guestAddress.addressLines = address
             
             
@@ -461,8 +461,8 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                 
                 let guestAddress = Address()
                 var address = [String]()
-                address.append(Constant.GetawaySearchResultCardFormDetailData.address1)
-                address.append(Constant.GetawaySearchResultCardFormDetailData.address2)
+                address.append(Constant.GetawaySearchResultGuestFormDetailData.address1)
+                address.append(Constant.GetawaySearchResultGuestFormDetailData.address2)
                 guestAddress.addressLines = address
                 
                 
@@ -781,6 +781,7 @@ extension WhoWillBeCheckingInIPadViewController:UITableViewDataSource {
                 
             }
             cell.nameTF.tag = indexPath.row
+            self.cellUsedFor = Constant.MyClassConstants.guestString
             cell.nameTF.accessibilityValue = "\(indexPath.section)"
             cell.borderView.layer.borderColor = UIColor(red: 233.0/255.0, green: 233.0/255.0, blue: 235.0/255.0, alpha: 1.0).cgColor
             cell.borderView.layer.borderWidth = 2
@@ -848,6 +849,8 @@ extension WhoWillBeCheckingInIPadViewController:UITableViewDataSource {
                 else {
                     cell.nameTF.placeholder = Constant.textFieldTitles.guestFormPostalCode
                 }
+                
+                self.cellUsedFor = Constant.MyClassConstants.guestString
                 cell.nameTF.tag = indexPath.row
                 cell.nameTF.accessibilityValue = "\(indexPath.section)"
                 cell.borderView.layer.borderColor = UIColor(red: 233.0/255.0, green: 233.0/255.0, blue: 235.0/255.0, alpha: 1.0).cgColor
