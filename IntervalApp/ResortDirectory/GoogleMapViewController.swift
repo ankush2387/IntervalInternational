@@ -58,8 +58,6 @@ class GoogleMapViewController: UIViewController {
         
         //***** Adding notifications so that it invoke the specific method when the notification is fired *****//
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-        let notificationNames = [Constant.notificationNames.closeButtonClickedNotification, Constant.notificationNames.closeButtonClickedNotification, ]
-        //Helper.addNotifications(notificationNames: notificationNames, senderVC: self)
         NotificationCenter.default.addObserver(self, selector: #selector(closeButtonClicked), name: NSNotification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadView), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(resortSelectedFromsearchResultWithlatlong), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadMapNotification), object: nil)
@@ -964,11 +962,24 @@ class GoogleMapViewController: UIViewController {
             resortView.addGestureRecognizer(topSwipe)
             resortView.addGestureRecognizer(bottomSwipe)
             self.view.addSubview(resortView)
+            let indexPath = IndexPath(row: self.index, section: 0)
+            self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.right, animated: true)
         }
     }
     
     // ***** This method executes when we want to hide bottom resort view *****//
     func removeBottomView() {
+        
+        self.index = 0
+        
+        for selectedMarker in Constant.MyClassConstants.googleMarkerArray {
+            
+            selectedMarker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
+            selectedMarker.isFlat = false
+            
+        }
+        self.mapView.selectedMarker = nil
+        
         if(self.navigationItem.rightBarButtonItem != nil){
             self.navigationItem.rightBarButtonItem!.isEnabled = false
         }
@@ -1209,18 +1220,6 @@ class GoogleMapViewController: UIViewController {
         })
     }
     
-    //***** Function to get collection view visible index. *****//
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        
-        if(resortCollectionView != nil){
-            
-            for collectionCell in resortCollectionView.visibleCells{
-                let indexPath = resortCollectionView.indexPath(for: collectionCell)
-                index = (indexPath?.item)!
-            }
-        }
-    }
-    
     //***** Show screen in landscape/potrait mode. *****//
     func getScreenFrameForOrientation(){
         if(Constant.RunningDevice.deviceIdiom == .pad){
@@ -1390,6 +1389,7 @@ extension GoogleMapViewController:GMSMapViewDelegate {
                 
                 marker.icon = UIImage(named:Constant.assetImageNames.pinFocusImage)
                 marker.isFlat = true
+                self.index = marker.userData as! Int
                 self.mapView.selectedMarker = marker
                 self.createBottomResortView(marker: marker)
                 
@@ -1397,15 +1397,63 @@ extension GoogleMapViewController:GMSMapViewDelegate {
                 if(marker == mapView.selectedMarker){
                     marker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
                     marker.isFlat = false
-                    self.createBottomResortView(marker: marker)
+                    self.removeBottomView()
                 }else{
-                    mapView.selectedMarker?.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
-                    mapView.selectedMarker?.isFlat = false
                     
-                    marker.icon = UIImage(named:Constant.assetImageNames.pinFocusImage)
-                    marker.isFlat = true
-                    self.mapView.selectedMarker = marker
-                    self.createBottomResortView(marker: marker)
+                    for selectedMarker in Constant.MyClassConstants.googleMarkerArray {
+                            
+                            if(selectedMarker.userData as! Int == marker.userData as! Int) {
+                                
+                                if( marker.isFlat == true ) {
+                                    
+                                    marker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
+                                    marker.isFlat = false
+                                    
+                                }
+                                else {
+                                    
+                                    marker.icon = UIImage(named:Constant.assetImageNames.pinFocusImage)
+                                    self.mapView.selectedMarker = marker
+                                    marker.isFlat = true
+                                    
+                                }
+                            }
+                            else {
+                                
+                                selectedMarker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
+                                selectedMarker.isFlat = false
+                            }
+                        }
+                        self.mapView.selectedMarker = marker
+                        self.index = marker.userData as! Int
+                        
+                        let indexPath = IndexPath(row: marker.userData as! Int, section: 0)
+                        
+                        if (UIDevice.current.userInterfaceIdiom == .pad) {
+                            
+                            
+                            if(self.index > marker.userData as! Int) {
+                                self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.bottom, animated: true)
+                            }
+                            else {
+                                self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.top, animated: true)
+                            }
+                            
+                            
+                        } else {
+                            
+                            if(self.index > marker.userData as! Int) {
+                                self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.left, animated: true)
+                            }
+                            else {
+                                self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.right, animated: true)
+                            }
+                            
+                        }
+                        
+                        
+                        
+                    
                 }
             }
         }
@@ -1506,7 +1554,7 @@ extension GoogleMapViewController:UICollectionViewDataSource {
         }else{
             var imageURL = ""
             if(resort.images.count > 0){
-                imageURL = resort.images[resort.images.count].url!
+                imageURL = resort.images[resort.images.count - 1].url!
             }
             
             resortImageView.setImageWith(URL(string: imageURL), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
@@ -1585,6 +1633,30 @@ extension GoogleMapViewController:UICollectionViewDataSource {
         }
         
         return cell
+        
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        
+        var visible: [AnyObject] = resortCollectionView.indexPathsForVisibleItems as [AnyObject]
+        let indexpath: NSIndexPath = (visible[0] as! NSIndexPath)
+        
+        let index = indexpath.row
+        self.index = index
+        for selectedMarker in Constant.MyClassConstants.googleMarkerArray {
+            
+            if(selectedMarker.userData as! Int == index) {
+                
+                selectedMarker.icon = UIImage(named:Constant.assetImageNames.pinFocusImage)
+                selectedMarker.isFlat = true
+                self.mapView.selectedMarker = selectedMarker
+            }
+            else {
+                
+                selectedMarker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
+                selectedMarker.isFlat = false
+            }
+        }
         
     }
 }
