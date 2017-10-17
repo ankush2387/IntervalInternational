@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="SLC-cM-ne5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="SLC-cM-ne5">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="HelveticaNeue.ttc">
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue-Bold</string>
+            <string>HelveticaNeue-Medium</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Magazines-->
         <scene sceneID="4lC-RS-u9N">
@@ -18,10 +25,10 @@
             </objects>
             <point key="canvasLocation" x="849.5" y="-141"/>
         </scene>
-        <!--Login View Controller-->
+        <!--Old Login View Controller-->
         <scene sceneID="xs6-fM-k7Z">
             <objects>
-                <viewController storyboardIdentifier="LoginViewController" id="SLC-cM-ne5" customClass="LoginViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginViewController" id="SLC-cM-ne5" customClass="OldLoginViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Qzj-53-PgD"/>
                         <viewControllerLayoutGuide type="bottom" id="NhW-jU-xVH"/>
@@ -388,16 +395,16 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="wLh-Rv-Z6u" secondAttribute="trailing" id="3ty-8v-Vrd"/>
-                            <constraint firstItem="wLh-Rv-Z6u" firstAttribute="top" secondItem="Qzj-53-PgD" secondAttribute="bottom" id="7a2-7W-nFL"/>
+                            <constraint firstItem="NhW-jU-xVH" firstAttribute="top" secondItem="wLh-Rv-Z6u" secondAttribute="bottom" id="8ue-1x-DFp"/>
                             <constraint firstItem="WM5-CL-Eys" firstAttribute="top" secondItem="r3e-eM-6qa" secondAttribute="bottom" constant="3" id="BIW-Wh-jdZ"/>
                             <constraint firstItem="r3e-eM-6qa" firstAttribute="leading" secondItem="HZh-EI-lwt" secondAttribute="leading" constant="10" id="Eo5-cn-qwN"/>
+                            <constraint firstItem="NhW-jU-xVH" firstAttribute="top" secondItem="WM5-CL-Eys" secondAttribute="bottom" id="IMY-T6-IO8"/>
                             <constraint firstItem="WM5-CL-Eys" firstAttribute="leading" secondItem="HZh-EI-lwt" secondAttribute="leading" id="R75-KF-Wpl"/>
-                            <constraint firstItem="NhW-jU-xVH" firstAttribute="top" secondItem="WM5-CL-Eys" secondAttribute="bottom" id="VEJ-Kk-O6d"/>
                             <constraint firstAttribute="trailing" secondItem="r3e-eM-6qa" secondAttribute="trailing" constant="10" id="ZAF-r1-twh"/>
                             <constraint firstItem="wLh-Rv-Z6u" firstAttribute="leading" secondItem="HZh-EI-lwt" secondAttribute="leading" id="fb7-cb-dYY"/>
-                            <constraint firstItem="r3e-eM-6qa" firstAttribute="top" secondItem="Qzj-53-PgD" secondAttribute="bottom" id="iBg-Yn-CSv"/>
+                            <constraint firstItem="wLh-Rv-Z6u" firstAttribute="top" secondItem="Qzj-53-PgD" secondAttribute="bottom" id="lE8-Ro-9sR"/>
                             <constraint firstAttribute="trailing" secondItem="WM5-CL-Eys" secondAttribute="trailing" id="qEQ-aK-Ohc"/>
-                            <constraint firstItem="NhW-jU-xVH" firstAttribute="top" secondItem="wLh-Rv-Z6u" secondAttribute="bottom" id="wdX-P4-d1B"/>
+                            <constraint firstItem="r3e-eM-6qa" firstAttribute="top" secondItem="Qzj-53-PgD" secondAttribute="bottom" id="yAL-Mg-yjs"/>
                         </constraints>
                     </view>
                     <connections>
@@ -574,7 +581,7 @@
         <!--Privacy Legal View Controller-->
         <scene sceneID="kFS-pX-zcI">
             <objects>
-                <viewController id="PA1-Ht-g6a" customClass="PrivacyLegalViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PrivacyLegalViewController" id="PA1-Ht-g6a" customClass="PrivacyLegalViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="3Ic-aJ-o0S"/>
                         <viewControllerLayoutGuide type="bottom" id="XwO-5M-sxQ"/>
@@ -583,15 +590,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="WcT-Mi-f0R">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="WcT-Mi-f0R">
+                                <rect key="frame" x="-4" y="0.0" width="328" height="568"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PolicyListTBLCell" rowHeight="40" id="9SE-6N-aIK" customClass="PolicyListTBLCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="600" height="40"/>
+                                        <rect key="frame" x="0.0" y="28" width="328" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9SE-6N-aIK" id="dP1-wg-x18">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="40"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="328" height="40"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E6d-M8-5Gr">
@@ -695,7 +702,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="vaB-Bz-9Kg" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="0xK-fI-ilV">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -713,7 +720,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="khZ-jz-hRb" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="DGp-sj-2Ex">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -736,6 +743,6 @@
         <image name="TouchID-Off" width="36" height="36"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="MXp-VE-3ma"/>
+        <segue reference="5oV-e1-cH5"/>
     </inferredMetricsTieBreakers>
 </document>

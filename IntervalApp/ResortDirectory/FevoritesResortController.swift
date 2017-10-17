@@ -80,9 +80,9 @@ class FevoritesResortController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         
-        if(UserContext.sharedInstance.accessToken != nil){
+        if(Session.sharedSession.userAccessToken != nil){
             Helper.showProgressBar(senderView: self)
-            UserClient.getFavoriteResorts(UserContext.sharedInstance.accessToken, onSuccess: { (response) in
+            UserClient.getFavoriteResorts(Session.sharedSession.userAccessToken, onSuccess: { (response) in
                 Constant.MyClassConstants.favoritesResortArray.removeAll()
                 for item in [response][0] {
                     if let resortFav = item as? ResortFavorite {
@@ -109,7 +109,7 @@ class FevoritesResortController: UIViewController {
     }
     
     fileprivate func setupView() {
-        if(UserContext.sharedInstance.accessToken == nil) {
+        if(Session.sharedSession.userAccessToken == nil) {
             Helper.hideProgressBar(senderView: self)
             self.signInView.isHidden = false
             self.resortTableBaseView.isHidden = true
@@ -162,7 +162,7 @@ class FevoritesResortController: UIViewController {
         self.navigationItem.title = Constant.ControllerTitles.favoritesViewController
         
         //***** Condition for maintaining the back button and hamberger menu according to logged in or pre login *****//
-        if((UserContext.sharedInstance.accessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
+        if((Session.sharedSession.userAccessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
             if let rvc = self.revealViewController() {
                 //set SWRevealViewController's Delegate
                 rvc.delegate = self
@@ -270,8 +270,7 @@ class FevoritesResortController: UIViewController {
     
     //***** this function called when navigation back button pressed *****//
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
-        
-        self.navigationController?.dismiss(animated: true, completion: nil)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PopToLoginView"), object: nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -325,7 +324,7 @@ class FevoritesResortController: UIViewController {
         
         //call API
         let resortCode = Constant.MyClassConstants.favoritesResortArray[indexPath.row].resortCode
-        UserClient.removeFavoriteResort(UserContext.sharedInstance.accessToken, resortCode: resortCode!, onSuccess: {(response) in
+        UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: resortCode!, onSuccess: {(response) in
             Constant.MyClassConstants.favoritesResortArray .remove(at: rowNumber)
             Constant.MyClassConstants.favoritesResortCodeArray.remove(resortCode)
             self.resortTableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)

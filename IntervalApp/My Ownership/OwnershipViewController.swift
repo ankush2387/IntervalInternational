@@ -46,7 +46,7 @@ class OwnershipViewController: UIViewController {
         self.title = Constant.ControllerTitles.ownershipViewController
         ownerShiptableView.register(UINib(nibName: Constant.customCellNibNames.searchResultContentTableCell, bundle: nil), forCellReuseIdentifier: Constant.customCellNibNames.searchResultContentTableCell)
         
-        ExchangeClient.getMyUnits(UserContext.sharedInstance.accessToken, onSuccess: { (Relinquishments) in
+        ExchangeClient.getMyUnits(Session.sharedSession.userAccessToken, onSuccess: { (Relinquishments) in
             
             Constant.MyClassConstants.relinquishmentDeposits = Relinquishments.deposits
             Constant.MyClassConstants.relinquishmentOpenWeeks = Relinquishments.openWeeks
@@ -300,7 +300,7 @@ class OwnershipViewController: UIViewController {
             Constant.MyClassConstants.relinquishmentIdArray.add(Constant.MyClassConstants.relinquishmentProgram.relinquishmentId!)
             //Realm local storage for selected relinquishment
             let storedata = OpenWeeksStorage()
-            let Membership = UserContext.sharedInstance.selectedMembership
+            let Membership = Session.sharedSession.selectedMembership
             let relinquishmentList = TradeLocalData()
             let rlmPProgram = rlmPointsProgram()
             
@@ -370,7 +370,7 @@ class OwnershipViewController: UIViewController {
                 
                 //Realm local storage for selected relinquishment
                 let storedata = OpenWeeksStorage()
-                let Membership = UserContext.sharedInstance.selectedMembership
+                let Membership = Session.sharedSession.selectedMembership
                 let relinquishmentList = TradeLocalData()
                 
                 let selectedOpenWeek = OpenWeeks()
@@ -448,7 +448,7 @@ class OwnershipViewController: UIViewController {
             
             //Realm local storage for selected relinquishment
             let storedata = OpenWeeksStorage()
-            let Membership = UserContext.sharedInstance.selectedMembership
+            let Membership = Session.sharedSession.selectedMembership
             let relinquishmentList = TradeLocalData()
             
             let selectedOpenWeek = OpenWeeks()
@@ -476,7 +476,7 @@ class OwnershipViewController: UIViewController {
         Helper.addServiceCallBackgroundView(view: self.view)
         SVProgressHUD.show()
         Constant.MyClassConstants.matrixDataArray.removeAllObjects()
-        DirectoryClient.getResortClubPointsChart(UserContext.sharedInstance.accessToken, resortCode:  (Constant.MyClassConstants.relinquishmentSelectedWeek.resort?.resortCode)!, onSuccess:{ (ClubPointsChart) in
+        DirectoryClient.getResortClubPointsChart(Session.sharedSession.userAccessToken, resortCode:  (Constant.MyClassConstants.relinquishmentSelectedWeek.resort?.resortCode)!, onSuccess:{ (ClubPointsChart) in
             
             Constant.MyClassConstants.selectionType = 1
             Helper.removeServiceCallBackgroundView(view: self.view)
@@ -609,7 +609,7 @@ class OwnershipViewController: UIViewController {
         
         //Realm local storage for selected relinquishment
         let storedata = OpenWeeksStorage()
-        let Membership = UserContext.sharedInstance.selectedMembership
+        let Membership = Session.sharedSession.selectedMembership
         let relinquishmentList = TradeLocalData()
         
         let selectedOpenWeek = Deposits()
@@ -1161,7 +1161,7 @@ extension OwnershipViewController:BedroomSizeViewControllerDelegate {
             if(!Constant.MyClassConstants.userSelectedStringArray.contains(unitSizeFullDetail1)){
                 
                 let storedata = OpenWeeksStorage()
-                let Membership = UserContext.sharedInstance.selectedMembership
+                let Membership = Session.sharedSession.selectedMembership
                 let relinquishmentList = TradeLocalData()
                 
                 let selectedOpenWeek = OpenWeeks()

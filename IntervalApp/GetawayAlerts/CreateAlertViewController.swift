@@ -214,7 +214,7 @@ class CreateAlertViewController: UIViewController {
                             rentalAlert.unitSizes = unitsizearray
                         }
                         
-                        RentalClient.createAlert(UserContext.sharedInstance.accessToken, alert: rentalAlert, onSuccess: { (response) in
+                        RentalClient.createAlert(Session.sharedSession.userAccessToken, alert: rentalAlert, onSuccess: { (response) in
                             var deststr:String = ""
                             for dest in Constant.MyClassConstants.alertSelectedDestination {
                                 

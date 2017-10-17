@@ -47,44 +47,51 @@ class DashboardTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        Helper.showProgressBar(senderView: self)
-        // omniture tracking with event40
-        let userInfo: [String: String] = [
-            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.homeDashboard
-        ]
-
-        ADBMobile.trackState( Constant.omnitureEvents.event40, data: userInfo)
         
-        self.getNumberOfSections()
-        Helper.getTopDeals(senderVC: self)
-
-        
-        Helper.getFlexExchangeDeals(senderVC: self) { (success) in
-            if success {
-                self.getNumberOfSections()
-                self.homeTableView.reloadData()
-                Helper.hideProgressBar(senderView: self)
-            } else {
-                Helper.hideProgressBar(senderView: self)
+        // TODO: Remove
+        // The singleton anti pattern has several race conditions. This is a temporary workaround until we get rid of it.
+        showHudAsync()
+        let delayInSeconds = 1.5
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
+            
+            // omniture tracking with event40
+            let userInfo: [String: String] = [
+                Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.homeDashboard
+            ]
+            
+            ADBMobile.trackState( Constant.omnitureEvents.event40, data: userInfo)
+            
+            self.getNumberOfSections()
+            Helper.getTopDeals(senderVC: self)
+            
+            
+            Helper.getFlexExchangeDeals(senderVC: self) { (success) in
+                if success {
+                    self.getNumberOfSections()
+                    self.homeTableView.reloadData()
+                    Helper.hideProgressBar(senderView: self)
+                } else {
+                    Helper.hideProgressBar(senderView: self)
+                }
             }
-        }
-
-        //***** Set general Nav attributes *****//
-        self.title = Constant.ControllerTitles.dashboardTableViewController
-        
-        //***** Setup the hamburger menu.  This will reveal the side menu. *****//
-        if let rvc = self.revealViewController() {
-            //set SWRevealViewController's Delegate
-            rvc.delegate = self
             
-            //***** Add the hamburger menu *****//
-            let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action:#selector(SWRevealViewController.revealToggle(_:)))
-            menuButton.tintColor = UIColor.white
+            //***** Set general Nav attributes *****//
+            self.title = Constant.ControllerTitles.dashboardTableViewController
             
-            self.navigationItem.leftBarButtonItem = menuButton
-            
-            //***** This line allows the user to swipe left-to-right to reveal the menu. We might want to comment this out if it becomes confusing. *****//
-            self.view.addGestureRecognizer( rvc.panGestureRecognizer() )
+            //***** Setup the hamburger menu.  This will reveal the side menu. *****//
+            if let rvc = self.revealViewController() {
+                //set SWRevealViewController's Delegate
+                rvc.delegate = self
+                
+                //***** Add the hamburger menu *****//
+                let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action:#selector(SWRevealViewController.revealToggle(_:)))
+                menuButton.tintColor = UIColor.white
+                
+                self.navigationItem.leftBarButtonItem = menuButton
+                
+                //***** This line allows the user to swipe left-to-right to reveal the menu. We might want to comment this out if it becomes confusing. *****//
+                self.view.addGestureRecognizer( rvc.panGestureRecognizer() )
+            }
         }
     }
     
@@ -578,7 +585,7 @@ extension UIViewController {
         
         rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
         rentalSearchCriteria.searchType = VacationSearchType.Rental
-        Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(UserContext.sharedInstance.appSettings, rentalSearchCriteria)
+        Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(Session.sharedSession.appSettings, rentalSearchCriteria)
         
         Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.areas = [areas]
         
@@ -586,7 +593,7 @@ extension UIViewController {
             
             ADBMobile.trackAction(Constant.omnitureEvents.event9, data: nil)
             Helper.showProgressBar(senderView: self)
-            RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess:{ (response) in
+            RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess:{ (response) in
                 
                 ADBMobile.trackAction(Constant.omnitureEvents.event18, data: nil)
                 // omniture tracking with event 9

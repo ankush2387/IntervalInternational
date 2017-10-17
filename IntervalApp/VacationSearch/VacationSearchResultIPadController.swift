@@ -271,7 +271,7 @@ class VacationSearchResultIPadController: UIViewController {
                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.checkInFromDate = Helper.convertStringToDate(dateString:calendarItem.intervalStartDate!,format:Constant.MyClassConstants.dateFormat)
                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.checkInToDate = Helper.convertStringToDate(dateString:calendarItem.intervalEndDate!,format:Constant.MyClassConstants.dateFormat)
             
-                RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
+                RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
                             onSuccess: { (response) in
                                             
                                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
@@ -297,7 +297,7 @@ class VacationSearchResultIPadController: UIViewController {
                 Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.checkInFromDate = Helper.convertStringToDate(dateString:calendarItem.intervalStartDate!,format:Constant.MyClassConstants.dateFormat)
                 Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.checkInToDate = Helper.convertStringToDate(dateString:calendarItem.intervalEndDate!,format:Constant.MyClassConstants.dateFormat)
             
-                ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request,
+                ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request,
                                 onSuccess: { (response) in
                                                 
                                                 Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
@@ -340,7 +340,7 @@ class VacationSearchResultIPadController: UIViewController {
                     Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.checkInToDate = Helper.convertStringToDate(dateString: calendarItem.intervalEndDate!, format: Constant.MyClassConstants.dateFormat)
                     
                     // Execute Rental Search Dates
-                    RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
+                    RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
                                              onSuccess: { (response) in
                                                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
                                                 
@@ -397,7 +397,7 @@ class VacationSearchResultIPadController: UIViewController {
             request.checkInDate = toDate
             request.resortCodes = activeInterval.resortCodes
             
-            RentalClient.searchResorts(UserContext.sharedInstance.accessToken, request: request,
+            RentalClient.searchResorts(Session.sharedSession.userAccessToken, request: request,
                                        onSuccess: { (response) in
                                         // Update Rental inventory
                                         Constant.MyClassConstants.initialVacationSearch.rentalSearch?.inventory = response.resorts
@@ -422,7 +422,7 @@ class VacationSearchResultIPadController: UIViewController {
         let searchResortRequest = RentalSearchResortsRequest()
         searchResortRequest.checkInDate = toDate
         searchResortRequest.resortCodes = Constant.MyClassConstants.resortCodesArray
-        RentalClient.searchResorts(UserContext.sharedInstance.accessToken, request: searchResortRequest, onSuccess: { (response) in
+        RentalClient.searchResorts(Session.sharedSession.userAccessToken, request: searchResortRequest, onSuccess: { (response) in
             Constant.MyClassConstants.resortsArray = response.resorts
             self.resortDetailTBLView.reloadData()
         }, onError: { (error) in
@@ -439,7 +439,7 @@ class VacationSearchResultIPadController: UIViewController {
         searchResortRequest.resortCodes = Constant.MyClassConstants.resortCodesArray
         Helper.showProgressBar(senderView: self)
         Constant.MyClassConstants.resortsArray.removeAll()
-        RentalClient.searchResorts(UserContext.sharedInstance.accessToken, request: searchResortRequest, onSuccess: { (response) in
+        RentalClient.searchResorts(Session.sharedSession.userAccessToken, request: searchResortRequest, onSuccess: { (response) in
             Helper.hideProgressBar(senderView: self)
             Constant.MyClassConstants.resortsArray = response.resorts
             if(self.alertView.isHidden == false){
@@ -745,7 +745,7 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
                 
                 let processRequest1 = RentalProcessStartRequest.init(resortCode: Constant.MyClassConstants.selectedResort.resortCode!, checkInDate: invent.checkInDate!, checkOutDate: invent.checkOutDate!, unitSize: UnitSize(rawValue: units[indexPath.item].unitSize!)!, kitchenType: KitchenType(rawValue: units[indexPath.item].kitchenType!)!)
                 
-                RentalProcessClient.start(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest1, onSuccess: {(response) in
+                RentalProcessClient.start(Session.sharedSession.userAccessToken, process: processResort, request: processRequest1, onSuccess: {(response) in
                     
                     let processResort = RentalProcess()
                     processResort.processId = response.processId
@@ -772,7 +772,7 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
                     }
                     
                     
-                    UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
+                    UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: {(Membership) in
                         
                         // Got an access token!  Save it for later use.
                         SVProgressHUD.dismiss()
@@ -923,7 +923,7 @@ func getFilterRelinquishments(selectedInventoryUnit:Inventory, selectedIndex:Int
     exchangeSearchDateRequest.destination = exchangeDestination
     Constant.MyClassConstants.exchangeDestination = exchangeDestination
     
-    ExchangeClient.filterRelinquishments(UserContext.sharedInstance.accessToken, request: exchangeSearchDateRequest, onSuccess: { (response) in
+    ExchangeClient.filterRelinquishments(Session.sharedSession.userAccessToken, request: exchangeSearchDateRequest, onSuccess: { (response) in
         Helper.hideProgressBar(senderView: self)
         Constant.MyClassConstants.filterRelinquishments.removeAll()
         for exchageDetail in response{
@@ -997,7 +997,7 @@ func startProcess(){
     }
     processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[0].openWeek?.relinquishmentId
     
-    ExchangeProcessClient.start(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: {(response) in
+    ExchangeProcessClient.start(Session.sharedSession.userAccessToken, process: processResort, request: processRequest, onSuccess: {(response) in
         let processResort = ExchangeProcess()
         processResort.processId = response.processId
         Constant.MyClassConstants.exchangeBookingLastStartedProcess = processResort
@@ -1021,7 +1021,7 @@ func startProcess(){
                 Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending("\n")
             }
         }
-        UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
+        UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: {(Membership) in
             
             // Got an access token!  Save it for later use.
             Helper.hideProgressBar(senderView: self)

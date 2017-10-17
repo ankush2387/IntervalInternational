@@ -88,7 +88,7 @@ extension ResortDetails:SearchResultContentTableCellDelegate {
         if (sender.isSelected == false){
             
             print(Constant.MyClassConstants.resortsArray[sender.tag].resortCode!)
-            UserClient.addFavoriteResort(UserContext.sharedInstance.accessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
+            UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
                 
                 print(response)
                 sender.isSelected = true

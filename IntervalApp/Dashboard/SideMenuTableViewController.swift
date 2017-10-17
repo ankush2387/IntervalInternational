@@ -97,14 +97,14 @@ class SideMenuTableViewController: UIViewController
         
         let cellNib1 = UINib(nibName:Constant.customCellNibNames.sideMenuBackgroundTableCell, bundle: nil)
         self.sideMenuTable!.register(cellNib1, forCellReuseIdentifier: Constant.customCellNibNames.sideMenuBackgroundTableCell)
-        let membership = UserContext.sharedInstance.selectedMembership
+        let membership = Session.sharedSession.selectedMembership
         self.memberId = membership?.memberNumber
     }
     
     //***** MARK: - Actions *****//
     
     func signOutSelected() {
-        UserContext.sharedInstance.signOut()
+        Session.sharedSession.signOut()
         //Remove all favorites for a user.
         Constant.MyClassConstants.favoritesResortArray.removeAll()
         Constant.MyClassConstants.favoritesResortCodeArray.removeAllObjects()
@@ -118,7 +118,7 @@ class SideMenuTableViewController: UIViewController
         Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
         TouchID().deactivateTouchID()
         let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.loginIPhone, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.loginViewController) as! LoginViewController
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.loginViewController) as! OldLoginViewController
         
         let transition = CATransition()
         transition.duration = 0.4
@@ -293,7 +293,7 @@ extension SideMenuTableViewController:UITableViewDataSource {
             
             let cell:MemberCell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.memberCell, for: indexPath) as! MemberCell
             
-            let membership =  UserContext.sharedInstance.selectedMembership
+            let membership =  Session.sharedSession.selectedMembership
             let Product = membership?.getProductWithHighestTier()
             if let productname = Product?.productName {
                 cell.customTextLabel!.text = "\(Constant.MyClassConstants.member)\(memberId!) \(productname)"

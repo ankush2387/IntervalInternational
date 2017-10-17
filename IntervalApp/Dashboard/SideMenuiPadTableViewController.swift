@@ -79,7 +79,7 @@ class SideMenuiPadTableViewController: UIViewController, UITableViewDataSource {
         
         let cellNib1 = UINib(nibName:Constant.customCellNibNames.sideMenuBackgroundTableCell, bundle: nil)
         self.sideMenuTable!.register(cellNib1, forCellReuseIdentifier: Constant.customCellNibNames.sideMenuBackgroundTableCell)
-        let membership = UserContext.sharedInstance.selectedMembership
+        let membership = Session.sharedSession.selectedMembership
         self.memberId = membership?.memberNumber
     }
     
@@ -91,7 +91,7 @@ class SideMenuiPadTableViewController: UIViewController, UITableViewDataSource {
     //***** MARK: - Actions *****//
     
     func signOutSelected() {
-        UserContext.sharedInstance.signOut()
+        Session.sharedSession.signOut()
         Constant.MyClassConstants.isLoginSuccessfull = false
         //Remove all favorites for a user.
         Constant.MyClassConstants.favoritesResortArray.removeAll()
@@ -218,7 +218,7 @@ class SideMenuiPadTableViewController: UIViewController, UITableViewDataSource {
             let smi = SideMenuTableViewController.SideMenuItems[ (indexPath as NSIndexPath).row ]
             
             let cell:MemberCell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.memberCell, for: indexPath) as! MemberCell
-            let membership =  UserContext.sharedInstance.selectedMembership
+            let membership =  Session.sharedSession.selectedMembership
             let Product = membership?.getProductWithHighestTier()
             
             if let productName = Product?.productName {

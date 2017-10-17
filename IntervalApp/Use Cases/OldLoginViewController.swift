@@ -21,7 +21,7 @@ enum LoginType : String {
 }
 
 
-class LoginViewController: UIViewController
+class OldLoginViewController: UIViewController
 {
     //***** Outlets *****//
     @IBOutlet weak var backgroundImageView : UIImageView!
@@ -76,9 +76,6 @@ class LoginViewController: UIViewController
         //*** Set localized title for buttons ***//
         self.joinTodayButton.setTitle(Constant.buttonTitles.joinTodayTitle, for: UIControlState())
         self.privacyButton.setTitle(Constant.buttonTitles.privacyTitle, for: UIControlState())
-        
-        //***** randomly changing login background image each time when app launches *****//
-        self.backgroundImageView.image = UIImage(named: Constant.MyClassConstants.backgroundImageArray[Constant.MyClassConstants.random!] as String)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -212,7 +209,7 @@ class LoginViewController: UIViewController
         if(Constant.MyClassConstants.systemAccessToken?.token != nil){
             Helper.getResortDirectoryRegionList(viewController: self)
         }else{
-            Helper.getSystemAccessToken()
+//            Helper.getSystemAccessToken()
         }
     }
     // *****function called when user magazines button pressed *****//
@@ -221,7 +218,7 @@ class LoginViewController: UIViewController
     if(Constant.MyClassConstants.systemAccessToken?.token != nil){
             self.performSegue(withIdentifier: Constant.segueIdentifiers.magazinesSegue, sender: nil)
         }else{
-            Helper.getSystemAccessToken()
+//            Helper.getSystemAccessToken()
         }
         
       
@@ -236,7 +233,7 @@ class LoginViewController: UIViewController
         if(Constant.MyClassConstants.systemAccessToken?.token != nil){
             self.performSegue(withIdentifier: Constant.segueIdentifiers.intervalHDSegue, sender: nil)
         }else{
-            Helper.getSystemAccessToken()
+//            Helper.getSystemAccessToken()
         }
         
     }
@@ -245,7 +242,7 @@ class LoginViewController: UIViewController
 //***** MARK: Extension classes starts from here *****//
 
 // Extension to handler login responsibilities
-extension LoginViewController {
+extension OldLoginViewController {
     fileprivate func performStandardLogin(_ username:String, password:String)
     {
         // login button pressed, confirm user sign-in
@@ -321,7 +318,7 @@ extension LoginViewController {
     }
 }
 
-extension LoginViewController:UITextFieldDelegate {
+extension OldLoginViewController:UITextFieldDelegate {
     
     func userNameDidChange(_ sender:UITextField) {
         self.activeField = sender
@@ -336,7 +333,7 @@ extension LoginViewController:UITextFieldDelegate {
 }
 
 
-extension LoginViewController:UITableViewDelegate {
+extension OldLoginViewController:UITableViewDelegate {
     
     //***** UITableview delegate methods definition here *****//
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -358,7 +355,7 @@ extension LoginViewController:UITableViewDelegate {
     
 }
 
-extension LoginViewController:UITableViewDataSource {
+extension OldLoginViewController:UITableViewDataSource {
     
     //***** UITableview dataSource methods definition here *****//
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -382,7 +379,7 @@ extension LoginViewController:UITableViewDataSource {
             
             //***** Setup the username *****//
             cell.delegate = self
-            cell.userNameTextField.addTarget(self, action: #selector(LoginViewController.userNameDidChange(_:)), for: .editingChanged)
+            cell.userNameTextField.addTarget(self, action: #selector(OldLoginViewController.userNameDidChange(_:)), for: .editingChanged)
             
             // set the current username if we have credentials and touch is available
             if TouchID.isTouchIDAvailable() && touchID.haveCredentials()
@@ -403,11 +400,11 @@ extension LoginViewController:UITableViewDataSource {
             }
             
             //***** Setup the password *****//
-            cell.passwordTextField.addTarget(self, action: #selector(LoginViewController.passwordDidChange(_:)), for: .editingChanged)
+            cell.passwordTextField.addTarget(self, action: #selector(OldLoginViewController.passwordDidChange(_:)), for: .editingChanged)
             cell.passwordTextField.text = self.password
             
             //***** Setup the sign-in button *****//
-            cell.loginButton.addTarget(self, action: #selector(LoginViewController.loginButtonPressed(_:)), for: .touchUpInside)
+            cell.loginButton.addTarget(self, action: #selector(OldLoginViewController.loginButtonPressed(_:)), for: .touchUpInside)
             
             //***** setup touch id action *****//
             
@@ -419,9 +416,9 @@ extension LoginViewController:UITableViewDataSource {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.cell, for: indexPath) as! LoginLowerButtonCell
             
-            cell.resortDirectory.addTarget(self, action: #selector(LoginViewController.resortDirectoryButtonPressed(_:)), for: .touchUpInside)
-            cell.magazines.addTarget(self, action: #selector(LoginViewController.magazinesButtonPressed(_:)), for: .touchUpInside)
-            cell.intervalHD.addTarget(self, action: #selector(LoginViewController.intervalHDButtonPressed(_:)), for: .touchUpInside)
+            cell.resortDirectory.addTarget(self, action: #selector(OldLoginViewController.resortDirectoryButtonPressed(_:)), for: .touchUpInside)
+            cell.magazines.addTarget(self, action: #selector(OldLoginViewController.magazinesButtonPressed(_:)), for: .touchUpInside)
+            cell.intervalHD.addTarget(self, action: #selector(OldLoginViewController.intervalHDButtonPressed(_:)), for: .touchUpInside)
             cell.buildVersion.text = Helper.getBuildVersion()
             cell.buildVersion.textColor = UIColor.white
             return cell
@@ -435,7 +432,7 @@ extension LoginViewController:UITableViewDataSource {
     }
 }
 
-extension LoginViewController:LoginFormTableViewCellDelegate {
+extension OldLoginViewController:LoginFormTableViewCellDelegate {
     
     //***** Custom cell delegate methods *****//
     

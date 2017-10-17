@@ -351,7 +351,7 @@ class ResortDetailsViewController: UIViewController {
     //***** Function call for search button pressed. *****//
     
     func searchVacationClicked(){
-        if((UserContext.sharedInstance.accessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
+        if((Session.sharedSession.userAccessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
             let realm = try! Realm()
             let allDest = Helper.getLocalStorageWherewanttoGo()
             if (allDest.count > 0) {
@@ -366,7 +366,7 @@ class ResortDetailsViewController: UIViewController {
             
             //realm local storage for selected resort
             let storedata = RealmLocalStorage()
-            let Membership = UserContext.sharedInstance.selectedMembership
+            let Membership = Session.sharedSession.selectedMembership
             let resortList = ResortList()
             if let cityName = (address?.cityName){
                 resortList.resortCityName = cityName
@@ -1068,13 +1068,13 @@ extension ResortDetailsViewController:UITableViewDataSource {
     
     func favoritesButtonClicked(_ sender:IUIKButton){
         
-        if(UserContext.sharedInstance.accessToken != nil) {
+        if(Session.sharedSession.userAccessToken != nil) {
             
             if (sender.isSelected == false){
                 
                 SVProgressHUD.show()
                 Helper.addServiceCallBackgroundView(view: self.view)
-                UserClient.addFavoriteResort(UserContext.sharedInstance.accessToken, resortCode: Constant.MyClassConstants.resortsDescriptionArray.resortCode!, onSuccess: {(response) in
+                UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsDescriptionArray.resortCode!, onSuccess: {(response) in
                     
                     Helper.removeServiceCallBackgroundView(view: self.view)
                     SVProgressHUD.dismiss()
@@ -1091,7 +1091,7 @@ extension ResortDetailsViewController:UITableViewDataSource {
             else {
                 SVProgressHUD.show()
                 Helper.addServiceCallBackgroundView(view: self.view)
-                UserClient.removeFavoriteResort(UserContext.sharedInstance.accessToken, resortCode: Constant.MyClassConstants.resortsDescriptionArray.resortCode!, onSuccess: {(response) in
+                UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsDescriptionArray.resortCode!, onSuccess: {(response) in
                     
                     
                     sender.isSelected = false

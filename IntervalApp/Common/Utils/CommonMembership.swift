@@ -30,13 +30,13 @@ class CommonMembership: NSObject,UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        let contact = UserContext.sharedInstance.contact
+        let contact = Session.sharedSession.contact
         return (contact?.memberships?.count)!
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        let contact = UserContext.sharedInstance.contact
+        let contact = Session.sharedSession.contact
         let membership = contact?.memberships![indexPath.row]
         let nib: [Any]? = Bundle.main.loadNibNamed(Constant.customCellNibNames.actionSheetTblCell, owner: nil, options: nil)
         let cell = nib![0] as! ActionSheetTblCell
@@ -54,9 +54,9 @@ class CommonMembership: NSObject,UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.allowsSelection = false
-        let contact = UserContext.sharedInstance.contact
+        let contact = Session.sharedSession.contact
         let membership = contact?.memberships![indexPath.row]
-        UserContext.sharedInstance.selectedMembership = membership
+        Session.sharedSession.selectedMembership = membership
         CreateActionSheet().membershipWasSelected()
     }
 }

@@ -83,7 +83,7 @@ class MyUpcommingTripIpadViewController: UIViewController {
         Constant.MyClassConstants.transactionNumber = "\(Constant.MyClassConstants.upcomingTripsArray[sender.tag - 1].exchangeNumber!)"
         Helper.addServiceCallBackgroundView(view: self.view)
         SVProgressHUD.show()
-        ExchangeClient.getExchangeTripDetails(UserContext.sharedInstance.accessToken, confirmationNumber: Constant.MyClassConstants.transactionNumber, onSuccess: { (exchangeResponse) in
+        ExchangeClient.getExchangeTripDetails(Session.sharedSession.userAccessToken, confirmationNumber: Constant.MyClassConstants.transactionNumber, onSuccess: { (exchangeResponse) in
             
             Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails = exchangeResponse
             Helper.removeServiceCallBackgroundView(view: self.view)

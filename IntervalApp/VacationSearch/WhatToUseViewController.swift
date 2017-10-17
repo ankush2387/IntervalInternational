@@ -96,7 +96,7 @@ class WhatToUseViewController: UIViewController {
             processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[self.selectedRow].pointsProgram?.relinquishmentId
         }
             
-        ExchangeProcessClient.start(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: {(response) in
+        ExchangeProcessClient.start(Session.sharedSession.userAccessToken, process: processResort, request: processRequest, onSuccess: {(response) in
             
             // store response
             Constant.MyClassConstants.exchangeProcessStartResponse = response
@@ -127,7 +127,7 @@ class WhatToUseViewController: UIViewController {
                 Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending("\n")
             }
         }
-                UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
+                UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: {(Membership) in
                     
                     // Got an access token!  Save it for later use.
                     Helper.hideProgressBar(senderView: self)
@@ -263,7 +263,7 @@ class WhatToUseViewController: UIViewController {
         processRequest.unit = units[indexPath.item]
         
         let processRequest1 = RentalProcessStartRequest.init(resortCode: Constant.MyClassConstants.selectedResort.resortCode!, checkInDate: invent.checkInDate!, checkOutDate: invent.checkOutDate!, unitSize: UnitSize(rawValue: units[indexPath.item].unitSize!)!, kitchenType: KitchenType(rawValue: units[indexPath.item].kitchenType!)!)
-        RentalProcessClient.start(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest1, onSuccess: {(response) in
+        RentalProcessClient.start(Session.sharedSession.userAccessToken, process: processResort, request: processRequest1, onSuccess: {(response) in
             
             self.selectedRow = -1
             self.selectedRowSection = -1
@@ -297,7 +297,7 @@ class WhatToUseViewController: UIViewController {
             }
             
             
-            UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: {(Membership) in
+            UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: {(Membership) in
                 
                 // Got an access token!  Save it for later use.
                 SVProgressHUD.dismiss()
