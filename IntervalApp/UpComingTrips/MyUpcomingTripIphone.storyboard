@@ -1227,7 +1227,7 @@
         <!--Weather View Controller-->
         <scene sceneID="lcb-b1-Sac">
             <objects>
-                <viewController id="xeZ-BK-WkV" customClass="WeatherViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="xeZ-BK-WkV" customClass="WeatherViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="d8h-pa-2Ws"/>
                         <viewControllerLayoutGuide type="bottom" id="k4y-9N-bpq"/>
@@ -1268,7 +1268,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView hidden="YES" userInteractionEnabled="NO" alpha="0.55000000000000004" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BackgroundImgLogin-C" translatesAutoresizingMaskIntoConstraints="NO" id="rhV-aW-j0B">
-                                        <rect key="frame" x="0.0" y="432" width="375" height="235"/>
+                                        <rect key="frame" x="0.0" y="432" width="375" height="251"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Average Temperature" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6yK-95-PaK">
                                         <rect key="frame" x="8" y="440" width="359" height="21"/>
@@ -2134,7 +2134,7 @@
                                     <constraint firstItem="LVo-Yx-U94" firstAttribute="leading" secondItem="R1o-zi-geq" secondAttribute="leading" constant="51" id="YkH-AM-rGr"/>
                                     <constraint firstItem="fGH-i3-QEC" firstAttribute="leading" secondItem="CWL-7E-jRF" secondAttribute="trailing" constant="4" id="e78-yK-ZIF"/>
                                     <constraint firstItem="EoQ-hA-j20" firstAttribute="leading" secondItem="R1o-zi-geq" secondAttribute="leading" constant="40" id="eHf-eX-fUX"/>
-                                    <constraint firstAttribute="bottom" secondItem="rhV-aW-j0B" secondAttribute="bottom" constant="-64" id="ePY-Gx-Iso"/>
+                                    <constraint firstAttribute="bottom" secondItem="rhV-aW-j0B" secondAttribute="bottom" constant="-80" id="ePY-Gx-Iso"/>
                                     <constraint firstAttribute="width" constant="368" id="ghh-OL-qpn"/>
                                     <constraint firstAttribute="height" constant="524" id="iNe-Kr-uwm"/>
                                     <constraint firstItem="6yK-95-PaK" firstAttribute="top" secondItem="SoV-Vs-XAd" secondAttribute="bottom" constant="8" id="j2S-7E-Vbk"/>
@@ -2219,6 +2219,8 @@
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="zrp-3g-jgJ"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="375" height="667"/>
                     <connections>
                         <outlet property="celsiusButton" destination="cdg-qX-MYz" id="Qx0-hP-tOw"/>
                         <outlet property="fahrenheitButton" destination="Z5h-he-FzS" id="7OW-Lf-ImV"/>
@@ -2255,7 +2257,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OJT-Ob-xHS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5180" y="1116.7916041979011"/>
+            <point key="canvasLocation" x="7058.3999999999996" y="1116.7916041979011"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="PJy-HT-nXY">
@@ -2277,22 +2279,22 @@
             <point key="canvasLocation" x="4245.6000000000004" y="375.56221889055473"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="exs-78-cmU">
+        <scene sceneID="CEM-YU-TWx">
             <objects>
-                <navigationController storyboardIdentifier="weatherNav" automaticallyAdjustsScrollViewInsets="NO" id="vdo-WX-Ega" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="weatherNav" automaticallyAdjustsScrollViewInsets="NO" id="fzq-7E-SEp" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Gd9-qi-lxn">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="6er-tI-0zv">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="xeZ-BK-WkV" kind="relationship" relationship="rootViewController" id="TKB-vT-8zV"/>
+                        <segue destination="xeZ-BK-WkV" kind="relationship" relationship="rootViewController" id="Q6i-bR-SI1"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="gLy-PR-bjh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gmm-Vv-hXZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4245.6000000000004" y="1119.4902548725638"/>
+            <point key="canvasLocation" x="6119.1999999999998" y="1116.7916041979011"/>
         </scene>
     </scenes>
     <resources>

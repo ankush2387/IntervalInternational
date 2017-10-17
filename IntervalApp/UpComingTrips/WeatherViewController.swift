@@ -69,12 +69,22 @@ class WeatherViewController: UIViewController {
        
         self.navigationController?.navigationBar.barTintColor = UIColor(red: 229.0/255.0, green: 231.0/255.0, blue: 228.0/255.0, alpha: 1.0)
         
-        let doneButton = UIBarButtonItem(image: UIImage(named:Constant.AlertPromtMessages.done), style: .plain, target: self, action:#selector(WeatherViewController.menuBackButtonPressed))
-        doneButton.tintColor = UIColor.blue
+        //Nav-bar button
         
-        self.navigationItem.leftBarButtonItem = doneButton
-        self.navigationController?.navigationItem.rightBarButtonItem = doneButton
-       
+        let doneButtonView = UIView(frame: CGRect(x: self.view.frame.size.width - 100, y: 0, width: 100, height: 45))
+        doneButtonView.backgroundColor = UIColor(red: 229.0/255.0, green: 231.0/255.0, blue: 228.0/255.0, alpha: 1.0)
+        let doneButton = UIButton(frame: CGRect(x: doneButtonView.frame.size.width - 75, y: 0, width: 50, height: 45))
+        doneButton.setTitleColor(UIColor(red: 0/255.0, green: 128.0/255.0, blue: 255.0/255.0, alpha: 1.0), for: .normal)
+        doneButton.setTitle("Done", for: .normal)
+        doneButton.addTarget(self, action: #selector(WeatherViewController.menuBackButtonPressed(_:)), for: .touchUpInside)
+        doneButtonView.addSubview(doneButton)
+        
+        
+        self.navigationController?.navigationBar.addSubview(doneButtonView)
+        
+//        let doneButton = UIBarButtonItem(barButtonSystemItem: ., target: self, action: #selector(WeatherViewController.menuBackButtonPressed(_:)))
+//        doneButton.tintColor = UIColor(red: 0/255.0, green: 128.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+//        self.navigationItem.rightBarButtonItem = doneButton
     }
     
     func setup() {
