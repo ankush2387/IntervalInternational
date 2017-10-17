@@ -9,6 +9,7 @@
 import UIKit
 import GoogleMaps
 import DarwinSDK
+import IntervalUIKit
 
 class UpComingTripMapViewController: UIViewController, GMSMapViewDelegate {
     
@@ -20,12 +21,28 @@ class UpComingTripMapViewController: UIViewController, GMSMapViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         if presentedModally {
             setupNavigationForModalPresentation()
+        }
+        else {
+            setupDoneButtonView()
         }
         self.setupMap()
     }
     
+    func setupDoneButtonView() {
+        
+        let doneButtonView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 64))
+            doneButtonView.backgroundColor = UIColor(red: 229.0/255.0, green: 231.0/255.0, blue: 228.0/255.0, alpha: 1.0)
+        let doneButton = UIButton(frame: CGRect(x: self.view.frame.size.width - 60, y: 7, width: 50, height: 50))
+            doneButton.tintColor = IUIKColorPalette.primary1.color
+            doneButton.setTitle("Done", for: .normal)
+            doneButton.addTarget(self, action: #selector(UpComingTripMapViewController.doneButtonPressed(_:)), for: .touchUpInside)
+        doneButtonView.addSubview(doneButton)
+        
+        self.view.addSubview(doneButtonView)
+    }
     func setupNavigationForModalPresentation() {
         // change Nav-bar tint color.
         self.navigationController?.navigationBar.barTintColor = UIColor(red: 229.0/255.0, green: 231.0/255.0, blue: 228.0/255.0, alpha: 1.0)
@@ -40,6 +57,10 @@ class UpComingTripMapViewController: UIViewController, GMSMapViewDelegate {
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
         self.dismiss(animated: false, completion: nil)
         
+    }
+    func doneButtonPressed(_ sender:UIButton) {
+        
+        self.navigationController?.popViewController(animated: true)
     }
     
     override func viewDidAppear(_ animated: Bool) {

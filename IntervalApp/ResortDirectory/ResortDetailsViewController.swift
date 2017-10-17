@@ -110,6 +110,7 @@ class ResortDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+     
         
         // omniture tracking with event 35
         if(Constant.MyClassConstants.resortsDescriptionArray.resortCode != nil){
@@ -338,13 +339,7 @@ class ResortDetailsViewController: UIViewController {
                 
             }else{
                 
-                let transition = CATransition()
-                transition.duration = 0.5
-                transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-                transition.type = kCATransitionReveal
-                transition.subtype = kCATransitionFromBottom
-                navigationController?.view.layer.add(transition, forKey: nil)
-                _ = navigationController?.popViewController(animated: false)
+                self.dismiss(animated: true, completion: nil)
             }
         }
     }
@@ -533,7 +528,9 @@ class ResortDetailsViewController: UIViewController {
     func showWeatherButtonPressed() {
         Constant.MyClassConstants.goingToMapOrWeatherView = true
         guard let resortCode = Constant.MyClassConstants.resortsDescriptionArray.resortCode else { return }
-        guard let resortName = Constant.MyClassConstants.resortsDescriptionArray.resortName else { return }
+
+        guard let resortName = Constant.MyClassConstants.resortsDescriptionArray.address?.cityName else { return }
+        
         guard let countryCode = Constant.MyClassConstants.resortsDescriptionArray.address?.countryCode else { return }
         SVProgressHUD.show()
         displayWeatherView(resortCode: resortCode, resortName: resortName, countryCode: countryCode, presentModal: presentViewModally, completionHandler: { (response) in
@@ -915,7 +912,7 @@ extension ResortDetailsViewController:UITableViewDataSource {
                     marker.appearAnimation = GMSMarkerAnimation.pop
                     marker.map = mapView
                 }
-                mapView.settings.myLocationButton = true
+                mapView.settings.myLocationButton = false
                 cell.contentView.addSubview(mapView)
                 return cell
             case 1 :
@@ -1138,7 +1135,7 @@ extension ResortDetailsViewController:CLLocationManagerDelegate {
         {
             
             self.mapView.isMyLocationEnabled = true
-            self.mapView.settings.myLocationButton = true
+            self.mapView.settings.myLocationButton = false
             locationManager.startUpdatingLocation()
         }
     }

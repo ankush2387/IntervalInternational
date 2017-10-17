@@ -26,7 +26,6 @@ class SearchResultMapviewController: UIViewController {
     var resortCollectionView:UICollectionView!
     var marker:GMSMarker! = nil
     var bounds = GMSCoordinateBounds()
-    //var selectedIndex = -1
     var selectedIndex = 0
 
     @IBOutlet weak var dragView: UIView!
@@ -492,24 +491,6 @@ extension SearchResultMapviewController:UICollectionViewDataSource {
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-      
-//        for marker in Constant.MyClassConstants.googleMarkerArray {
-//            
-//            if(marker.userData as! Int == indexPath.row) {
-//                
-//                marker.icon = UIImage(named:Constant.assetImageNames.pinFocusImage)
-//                marker.isFlat = true
-//                  self.selectedIndex = indexPath.row
-//                self.gmsMapView.selectedMarker = marker
-//            }
-//            else {
-//              
-//                marker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
-//                marker.isFlat = false
-//            }
-//           
-//            
-//        }
         
         let resort = Constant.MyClassConstants.resortsArray[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cell, for: indexPath as IndexPath)

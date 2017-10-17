@@ -219,6 +219,11 @@ class GoogleMapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        //hide map current location button
+        self.mapView.settings.myLocationButton = false
+        self.mapView.isMyLocationEnabled = false
+        
         // condition check to send resort directory
         if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.resortFunctionalityCheck) {
             
@@ -234,7 +239,7 @@ class GoogleMapViewController: UIViewController {
         
         
         mapView.delegate = self
-        mapView.animate(toZoom: 8)
+        mapView.animate(toZoom: 10)
         
         locationManager.requestWhenInUseAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -526,7 +531,7 @@ class GoogleMapViewController: UIViewController {
     //***** Creating map with resorts getting from current location when map screen landing first time *****//
     func createMapViewWithMarkers(location:CLLocation) {
         
-        let camera = GMSCameraPosition.camera(withLatitude: location.coordinate.latitude, longitude: location.coordinate.longitude, zoom: 8.0)
+        let camera = GMSCameraPosition.camera(withLatitude: location.coordinate.latitude, longitude: location.coordinate.longitude, zoom: 10.0)
         let mapframe = CGRect(x: 0, y: 108, width: self.view.frame.width, height: self.view.frame.height-108-49)
         mapView = GMSMapView.map(withFrame: mapframe, camera: camera)
         mapView.isMyLocationEnabled = true
@@ -559,7 +564,7 @@ class GoogleMapViewController: UIViewController {
         mapView.animate(with: GMSCameraUpdate.fit(bounds))
         mapView.delegate = self
         mapView.settings.allowScrollGesturesDuringRotateOrZoom = false
-        mapView.animate(toZoom: 8)
+        mapView.animate(toZoom: 10)
         for subView in self.view.subviews{
             if (subView.isKind(of: GMSMapView.self)){
                 subView.removeFromSuperview()

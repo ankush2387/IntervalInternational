@@ -38,7 +38,7 @@ class ResortCollectionViewCell: UICollectionViewCell {
         if(Constant.MyClassConstants.imagesArray.count>1){
            pageControl.isHidden = true
         }else{
-            pageControl.isHidden = false
+            pageControl.isHidden = true
         }
         pageControl.numberOfPages = Constant.MyClassConstants.imagesArray.count
         

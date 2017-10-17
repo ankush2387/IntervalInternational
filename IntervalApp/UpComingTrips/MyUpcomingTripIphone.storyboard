@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="GhM-vd-SHY">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="GhM-vd-SHY">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -9,6 +9,11 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="HelveticaNeue.ttc">
+            <string>HelveticaNeue</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Reveal View Controller-->
         <scene sceneID="w99-L9-Snn">
@@ -52,7 +57,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="435"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FN4-cf-ESx" id="KBx-xX-hSV">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="435"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="434.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I1K-04-MWX" userLabel="HeaderView">
@@ -259,7 +264,7 @@
                                         <rect key="frame" x="0.0" y="463" width="375" height="273"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NNC-JV-Jgo" id="2yv-U1-jKm">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="273"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="272.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bQN-Dc-geg">
@@ -345,7 +350,7 @@
             <objects>
                 <navigationController storyboardIdentifier="TripDetailsNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="pTt-D9-k2s" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="n7A-te-LHS">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="n7A-te-LHS">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -382,7 +387,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="w7f-fb-aYH" id="Czi-Ty-FfR">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="89.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -390,7 +395,7 @@
                                         <rect key="frame" x="0.0" y="118" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="d31-h5-zZj" id="yEh-Le-WK2">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1261,7 +1266,7 @@
         <!--Up Coming Trip Map View Controller-->
         <scene sceneID="hHq-hi-9Sl">
             <objects>
-                <viewController id="Uyn-GX-QoW" customClass="UpComingTripMapViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="upcomingMapViewController" automaticallyAdjustsScrollViewInsets="NO" id="Uyn-GX-QoW" customClass="UpComingTripMapViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Qh7-76-qis"/>
                         <viewControllerLayoutGuide type="bottom" id="iQd-eY-Ppn"/>
@@ -1272,6 +1277,8 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="ch5-eN-Abq"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="375" height="667"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wmM-3a-nCW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1280,7 +1287,7 @@
         <!--Weather View Controller-->
         <scene sceneID="lcb-b1-Sac">
             <objects>
-                <viewController id="xeZ-BK-WkV" customClass="WeatherViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="xeZ-BK-WkV" customClass="WeatherViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="d8h-pa-2Ws"/>
                         <viewControllerLayoutGuide type="bottom" id="k4y-9N-bpq"/>
@@ -1290,7 +1297,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R1o-zi-geq" userLabel="ContainerView">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Denarau Islands, Fiji" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LVo-Yx-U94">
                                         <rect key="frame" x="51" y="100" width="273" height="21"/>
@@ -1321,7 +1328,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView hidden="YES" userInteractionEnabled="NO" alpha="0.55000000000000004" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BackgroundImgLogin-C" translatesAutoresizingMaskIntoConstraints="NO" id="rhV-aW-j0B">
-                                        <rect key="frame" x="0.0" y="432" width="375" height="235"/>
+                                        <rect key="frame" x="0.0" y="432" width="375" height="251"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Average Temperature" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6yK-95-PaK">
                                         <rect key="frame" x="8" y="440" width="359" height="21"/>
@@ -2187,7 +2194,7 @@
                                     <constraint firstItem="LVo-Yx-U94" firstAttribute="leading" secondItem="R1o-zi-geq" secondAttribute="leading" constant="51" id="YkH-AM-rGr"/>
                                     <constraint firstItem="fGH-i3-QEC" firstAttribute="leading" secondItem="CWL-7E-jRF" secondAttribute="trailing" constant="4" id="e78-yK-ZIF"/>
                                     <constraint firstItem="EoQ-hA-j20" firstAttribute="leading" secondItem="R1o-zi-geq" secondAttribute="leading" constant="40" id="eHf-eX-fUX"/>
-                                    <constraint firstAttribute="bottom" secondItem="rhV-aW-j0B" secondAttribute="bottom" id="ePY-Gx-Iso"/>
+                                    <constraint firstAttribute="bottom" secondItem="rhV-aW-j0B" secondAttribute="bottom" constant="-80" id="ePY-Gx-Iso"/>
                                     <constraint firstAttribute="width" constant="368" id="ghh-OL-qpn"/>
                                     <constraint firstAttribute="height" constant="524" id="iNe-Kr-uwm"/>
                                     <constraint firstItem="6yK-95-PaK" firstAttribute="top" secondItem="SoV-Vs-XAd" secondAttribute="bottom" constant="8" id="j2S-7E-Vbk"/>
@@ -2241,7 +2248,7 @@
                             </constraint>
                             <constraint firstItem="R1o-zi-geq" firstAttribute="centerY" secondItem="K4W-sG-jSC" secondAttribute="centerY" id="Wom-UV-30m"/>
                             <constraint firstItem="R1o-zi-geq" firstAttribute="centerX" secondItem="K4W-sG-jSC" secondAttribute="centerX" id="gBf-pu-iX2"/>
-                            <constraint firstItem="R1o-zi-geq" firstAttribute="top" secondItem="K4W-sG-jSC" secondAttribute="top" id="trf-Sx-lGh"/>
+                            <constraint firstItem="R1o-zi-geq" firstAttribute="top" secondItem="K4W-sG-jSC" secondAttribute="top" constant="64" id="trf-Sx-lGh"/>
                             <constraint firstAttribute="trailing" secondItem="R1o-zi-geq" secondAttribute="trailing" constant="100" id="z2R-uz-YnQ">
                                 <variation key="heightClass=regular-widthClass=regular" constant="200"/>
                             </constraint>
@@ -2272,6 +2279,8 @@
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="zrp-3g-jgJ"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="375" height="667"/>
                     <connections>
                         <outlet property="celsiusButton" destination="cdg-qX-MYz" id="Qx0-hP-tOw"/>
                         <outlet property="fahrenheitButton" destination="Z5h-he-FzS" id="7OW-Lf-ImV"/>
@@ -2308,7 +2317,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OJT-Ob-xHS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5180" y="1116.7916041979011"/>
+            <point key="canvasLocation" x="7058.3999999999996" y="1116.7916041979011"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="PJy-HT-nXY">
@@ -2316,7 +2325,7 @@
                 <navigationController storyboardIdentifier="mapDetailNav" automaticallyAdjustsScrollViewInsets="NO" id="qfy-4T-k0q" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="Ur2-iw-wXE"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="I74-zs-TtO">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="I74-zs-TtO">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2330,22 +2339,22 @@
             <point key="canvasLocation" x="4245.6000000000004" y="375.56221889055473"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="exs-78-cmU">
+        <scene sceneID="CEM-YU-TWx">
             <objects>
-                <navigationController storyboardIdentifier="weatherNav" automaticallyAdjustsScrollViewInsets="NO" id="vdo-WX-Ega" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="weatherNav" automaticallyAdjustsScrollViewInsets="NO" id="fzq-7E-SEp" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Gd9-qi-lxn">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="6er-tI-0zv">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="xeZ-BK-WkV" kind="relationship" relationship="rootViewController" id="TKB-vT-8zV"/>
+                        <segue destination="xeZ-BK-WkV" kind="relationship" relationship="rootViewController" id="Q6i-bR-SI1"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="gLy-PR-bjh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gmm-Vv-hXZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4245.6000000000004" y="1119.4902548725638"/>
+            <point key="canvasLocation" x="6119.1999999999998" y="1116.7916041979011"/>
         </scene>
     </scenes>
     <resources>
@@ -2355,7 +2364,7 @@
         <image name="ForwardArrowIcon" width="33" height="33"/>
         <image name="MapIcon" width="33" height="33"/>
         <image name="NoImageIcon" width="64" height="64"/>
-        <image name="WeatherIcon" width="33" height="33"/>
+        <image name="WeatherIcon" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="E59-vW-Twj"/>
