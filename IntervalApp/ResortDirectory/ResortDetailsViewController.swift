@@ -112,6 +112,7 @@ class ResortDetailsViewController: UIViewController {
         super.viewDidLoad()
      
         
+        
         // omniture tracking with event 35
         if(Constant.MyClassConstants.resortsDescriptionArray.resortCode != nil){
             let userInfo: [String: String] = [
@@ -900,7 +901,7 @@ extension ResortDetailsViewController:UITableViewDataSource {
                 
                 mapView = GMSMapView.map(withFrame: mapframe, camera: camera)
                 mapView.isUserInteractionEnabled = false
-                mapView.isMyLocationEnabled = true
+               // mapView.isMyLocationEnabled = true
                 if (Constant.MyClassConstants.resortsDescriptionArray.coordinates?.latitude) != nil {
                     
                     let  position = CLLocationCoordinate2DMake((Constant.MyClassConstants.resortsDescriptionArray.coordinates?.latitude)!,(Constant.MyClassConstants.resortsDescriptionArray.coordinates?.longitude)!)
