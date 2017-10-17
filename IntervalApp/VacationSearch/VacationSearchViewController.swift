@@ -1408,8 +1408,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             let settings = Helper.createSettings()
             let checkInDate = fromDateTop
             
-            let bookingWindow = BookingWindow()
-            bookingWindow.calculateIntervals(checkInDate: checkInDate)
+            let bookingWindow = BookingWindow(checkInDate: checkInDate)
             
             let activeInterval = bookingWindow.getActiveInterval()
             let requestRental = RentalSearchRegionsRequest()

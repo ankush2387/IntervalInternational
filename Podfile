@@ -26,7 +26,7 @@ target 'IntervalApp' do
     pod 'GoogleMaps', '~>2.2.0'
     pod 'HockeySDK', :subspecs => ['AllFeaturesLib']
     pod 'Bond', :git=>'https://github.com/ReactiveKit/Bond.git', :tag => '6.3.0'
-    pod 'thenPromise', :git=>'https://github.com/freshOS/then.git', :tag => '2t.2.5'
+    pod 'thenPromise', :git=>'https://github.com/freshOS/then.git', :tag => '2.2.5'
     pod 'SDWebImage', :git=>'https://github.com/rs/SDWebImage.git', :tag => '3.8.2'
     pod 'Alamofire', :git=>'https://github.com/Alamofire/Alamofire.git', :tag => '4.0.0'
     pod 'CVCalendar', :git=>'https://github.com/Mozharovsky/CVCalendar', :tag => '1.4.0'
