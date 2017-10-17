@@ -46,11 +46,11 @@
                         <viewControllerLayoutGuide type="bottom" id="SEj-Th-xsN"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="XaJ-7M-LOA">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="800"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="445" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="BR4-jI-2G6">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="736"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="UpComingTripCell" rowHeight="435" id="FN4-cf-ESx" customClass="UpComingTripCell" customModule="IntervalApp" customModuleProvider="target">
@@ -260,6 +260,64 @@
                                             <outlet property="tripDateLabel" destination="vla-zD-WV8" id="PHR-b2-idc"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EmptyUpcomingTrip" rowHeight="273" id="NNC-JV-Jgo" customClass="UpComingTripCell" customModule="IntervalApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="463" width="375" height="273"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NNC-JV-Jgo" id="2yv-U1-jKm">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="272.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bQN-Dc-geg">
+                                                    <rect key="frame" x="8" y="5" width="359" height="259"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" image="NoImageIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Fek-mh-7pq">
+                                                            <rect key="frame" x="43" y="0.0" width="273" height="135"/>
+                                                        </imageView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hmm, no trip planned yet. That's weird lets fix it" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JBK-dE-irO">
+                                                            <rect key="frame" x="66" y="141" width="226" height="41"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VLT-yl-6Pr">
+                                                            <rect key="frame" x="43" y="190" width="273" height="59"/>
+                                                            <color key="backgroundColor" red="1" green="0.47843137254901957" blue="0.21568627450980393" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="59" id="TZs-cd-gOA"/>
+                                                                <constraint firstAttribute="width" constant="273" id="fWe-q1-BrL"/>
+                                                            </constraints>
+                                                            <state key="normal" title="Search for a Vacation">
+                                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </state>
+                                                        </button>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstItem="Fek-mh-7pq" firstAttribute="leading" secondItem="bQN-Dc-geg" secondAttribute="leading" constant="43" id="EgO-tD-RXU"/>
+                                                        <constraint firstAttribute="trailing" secondItem="JBK-dE-irO" secondAttribute="trailing" constant="67" id="L9a-sf-de2"/>
+                                                        <constraint firstAttribute="trailing" secondItem="Fek-mh-7pq" secondAttribute="trailing" constant="43" id="PMP-Ge-0yY"/>
+                                                        <constraint firstItem="VLT-yl-6Pr" firstAttribute="top" secondItem="JBK-dE-irO" secondAttribute="bottom" constant="8" id="bBu-bh-YZ5"/>
+                                                        <constraint firstItem="VLT-yl-6Pr" firstAttribute="leading" secondItem="bQN-Dc-geg" secondAttribute="leading" constant="43" id="d2G-3f-CbJ"/>
+                                                        <constraint firstItem="JBK-dE-irO" firstAttribute="leading" secondItem="bQN-Dc-geg" secondAttribute="leading" constant="66" id="eDk-Sx-Nkz"/>
+                                                        <constraint firstAttribute="bottom" secondItem="VLT-yl-6Pr" secondAttribute="bottom" constant="10" id="iKo-tI-HKH"/>
+                                                        <constraint firstItem="JBK-dE-irO" firstAttribute="top" secondItem="Fek-mh-7pq" secondAttribute="bottom" constant="6" id="p6b-Pg-bOY"/>
+                                                        <constraint firstItem="Fek-mh-7pq" firstAttribute="top" secondItem="bQN-Dc-geg" secondAttribute="top" id="xI5-ru-ybP"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <constraints>
+                                                <constraint firstItem="bQN-Dc-geg" firstAttribute="leading" secondItem="2yv-U1-jKm" secondAttribute="leadingMargin" id="5dV-6x-NqR"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="bQN-Dc-geg" secondAttribute="trailing" id="JlZ-wM-QBE"/>
+                                                <constraint firstItem="bQN-Dc-geg" firstAttribute="top" secondItem="2yv-U1-jKm" secondAttribute="topMargin" constant="-3" id="QWa-92-8E0"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="bQN-Dc-geg" secondAttribute="bottom" constant="0.5" id="mYl-vA-JO6"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <outlet property="searchVacationButton" destination="VLT-yl-6Pr" id="Wg4-Iw-2ER"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="Xa0-ou-z7I" id="JYJ-ra-HD4"/>
@@ -276,6 +334,8 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="fk8-f0-l8h"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="375" height="800"/>
                     <connections>
                         <outlet property="myUpcommingTBL" destination="BR4-jI-2G6" id="yMd-Vp-RKf"/>
                         <segue destination="TWZ-wF-bdP" kind="show" identifier="UpComingTripDetailSegue" id="szp-Ud-COf"/>
@@ -283,7 +343,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aow-37-iCs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1804" y="675.11244377811101"/>
+            <point key="canvasLocation" x="1804" y="674.66266866566718"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="0VA-Tu-cq9">
@@ -2283,7 +2343,7 @@
             <objects>
                 <navigationController storyboardIdentifier="weatherNav" automaticallyAdjustsScrollViewInsets="NO" id="fzq-7E-SEp" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="6er-tI-0zv">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="6er-tI-0zv">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2303,6 +2363,7 @@
         <image name="EPlus" width="90" height="50"/>
         <image name="ForwardArrowIcon" width="33" height="33"/>
         <image name="MapIcon" width="33" height="33"/>
+        <image name="NoImageIcon" width="64" height="64"/>
         <image name="WeatherIcon" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>

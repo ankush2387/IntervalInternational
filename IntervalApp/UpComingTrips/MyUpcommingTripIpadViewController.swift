@@ -210,7 +210,7 @@ extension MyUpcommingTripIpadViewController:UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if(orientationIsPortrait){
             if(indexPath.item == 0){
-                return CGSize(width: collectionView.frame.size.width, height: 100.0)
+                return CGSize(width: collectionView.frame.size.width, height: 700.0)
             }else{
                 return CGSize(width: collectionView.frame.size.width, height: 600.0)
             }
@@ -242,17 +242,30 @@ extension MyUpcommingTripIpadViewController:UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cell, for: indexPath) as! CustomCollectionCell
             
             let headerLabel = UILabel()
+            let noTripsImage = UIImageView()
+            let searchVacationButton = UIButton()
             if(orientationIsPortrait){
-                headerLabel.frame = CGRect(x: 0, y: 0, width: cell.frame.size.width, height: 100)
+                headerLabel.frame = CGRect(x: 5, y: 325, width: cell.frame.size.width, height: 100)
+                noTripsImage.frame = CGRect(x: 0, y: 10, width: cell.frame.size.width, height: 320)
+                searchVacationButton.frame = CGRect(x: 0, y: 500, width: cell.frame.size.width, height: 60)
             }else{
-                headerLabel.frame = CGRect(x: 20, y: 0, width: cell.frame.size.width - 20, height: 400)
+                headerLabel.frame = CGRect(x: 300, y: 0, width: cell.frame.size.width - 20, height: 400)
+                noTripsImage.frame = CGRect(x: 300, y: -140, width: cell.frame.size.width, height: 320)
+                searchVacationButton.frame = CGRect(x: 300, y: 400, width: cell.frame.size.width, height: 60)
 
             }
             headerLabel.numberOfLines = 0
             headerLabel.text = Constant.AlertPromtMessages.upcomingTripMessage
-            headerLabel.textColor = UIColor.gray
+            headerLabel.textColor = UIColor.lightGray
             headerLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 25.0)
+            noTripsImage.image = UIImage(named: Constant.MyClassConstants.noImage)
+            searchVacationButton.setTitle(Constant.AlertPromtMessages.upcomingTripSearchVacationButtonMessage, for: UIControlState.normal)
+            searchVacationButton.backgroundColor =  UIColor(red: 255.0/255.0, green: 122.0/255.0, blue: 55.0/255.0, alpha: 1.0)
+            searchVacationButton.setTitleColor(UIColor.white, for: UIControlState.normal)
+            searchVacationButton.layer.cornerRadius = 5
             cell.addSubview(headerLabel)
+            cell.addSubview(noTripsImage)
+            cell.addSubview(searchVacationButton)
             return cell
         }else{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.secCell, for: indexPath) as! UpcomingTripsCollectionViewCell
