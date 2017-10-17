@@ -563,7 +563,7 @@ extension UpComingTripDetailController:UITableViewDataSource {
                 
             }
         }else if(indexPath.section == 4){
-            let cell = tableView.dequeueReusableCell(withIdentifier: "PaymentDetailsCell", for: indexPath) as! PaymentCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.paymentDetailsCell, for: indexPath) as! PaymentCell
             cell.depositLabel.text = "$\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.payment!.depositAmount!.amount)"
             cell.balanceDueLabel.text = "$\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.payment!.balanceDueAmount!.amount)"
             cell.balanceDueDateLabel.text = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.payment!.balanceDueDate!
@@ -584,6 +584,64 @@ extension UpComingTripDetailController:UITableViewDataSource {
             
         }
     }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 40))
+        let headerTextLabel = UILabel(frame: CGRect(x: 10, y: 5, width: self.view.bounds.width - 200, height: 40))
+     
+        
+        if(section == 2) {
+            
+            headerView.backgroundColor = IUIKColorPalette.tertiary1.color
+            headerTextLabel.text = Constant.MyClassConstants.relinquishment
+            headerTextLabel.textColor = IUIKColorPalette.primaryText.color
+            headerView.addSubview(headerTextLabel)
+            return headerView
+        }
+        else {
+            headerView.backgroundColor = IUIKColorPalette.tertiary1.color
+            headerTextLabel.text = Constant.UpComingTripHeaderCellSting.additionalProducts
+            headerTextLabel.textColor = IUIKColorPalette.primaryText.color
+            headerView.addSubview(headerTextLabel)
+            return headerView
+        }
+        
+
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        
+        if(section == 5) {
+            
+            if( self.requiredRowsArray.count > 0) {
+                
+                return 40
+            }
+            else {
+                
+                return 0
+            }
+        }else if(section == 2){
+            
+            if(requiredRowsArrayRelinquishment.count > 0) {
+                
+                return 40
+            }
+            else {
+                
+                return 0
+            }
+        }else{
+            return 0
+        }
+        
+
+    }
+    
+    
+    
+    
     func getDetails() -> UIView {
         
         let unitDetils = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.unit
@@ -729,4 +787,6 @@ extension UpComingTripDetailController:UITableViewDataSource {
         
         return checkDate
     }
+    
+ 
 }

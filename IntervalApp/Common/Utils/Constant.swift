@@ -1106,6 +1106,7 @@ class Constant: NSObject {
         static var customTableViewCell = "CustomTableViewCell"
         static var paymentDetailCell = "PaymentCell"
         static var policyCell = "PolicyCell"
+        static var paymentDetailsCell = "PaymentDetailsCell"
         static var insuranceCell = "EplusTableViewCell"
         static var modifyInsuranceCell = "ModifyTripInsurance"
         static var purchasedInsuranceCell = "PurchasedTripInsurence"
