@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DarwinSDK
 import ReactiveKit
 
 final class LoginViewController: UIViewController {
@@ -134,6 +135,7 @@ final class LoginViewController: UIViewController {
         viewModel.buttonEnabledState.bind(to: signInButton.reactive.isEnabled).dispose(in: disposeBag)
         intervalHDButton.reactive.tap.observeNext(with: intervalHDButtonTapped).dispose(in: disposeBag)
         viewModel.clientTokenLoaded.observeNext(with: enabledWebActivityButton).dispose(in: disposeBag)
+        viewModel.appSettings.flatMap { $0 }.observeNext(with: checkAppVersion).dispose(in: disposeBag)
         viewModel.isLoggingIn.map { !$0 }.bind(to: loginIDTextField.reactive.isEnabled).dispose(in: disposeBag)
         viewModel.isLoggingIn.map { !$0 }.bind(to: passwordTextField.reactive.isEnabled).dispose(in: disposeBag)
         resortDirectoryButton.reactive.tap.observeNext(with: resortDirectoryButtonTapped).dispose(in: disposeBag)
@@ -199,6 +201,58 @@ final class LoginViewController: UIViewController {
             setPortraitStackView()
         } else {
             setLandscapeStackView()
+        }
+    }
+}
+
+extension LoginViewController: ComputationHelper {
+    
+    private func update() {
+        
+        struct UpdateError: ViewError {
+            var description: (title: String, body: String) {
+                return ("Error".localized(), "Unable to redirect to the App Store. Please open the App store updates tab to update.".localized())
+            }
+        }
+        
+        guard let url = URL(string: "https://itunes.apple.com/us/app/interval-international/id388957867"),
+            UIApplication.shared.canOpenURL(url) else {
+                
+                // If URL for app cannot be opened; open page for all IntervalInternational apps on App Store
+                if let intervalAppsURL = URL(string: "https://itunes.apple.com/us/developer/interval-international/id388957870"),
+                    UIApplication.shared.canOpenURL(intervalAppsURL) {
+                    NetworkHelper.open(intervalAppsURL)
+                } else {
+                    presentErrorAlert(UpdateError())
+                }
+                
+                return
+        }
+        
+        NetworkHelper.open(url)
+    }
+    
+    fileprivate func checkAppVersion(appSettings: AppSettings) {
+        
+        let updateRequired = checkIfPassedIn(appSettings.minimumSupportedVersion.unwrappedString, isNewerThan: appVersion)
+        let newerVersionAvailable = checkIfPassedIn(appSettings.currentVersion.unwrappedString, isNewerThan: appVersion)
+        
+        guard !updateRequired else {
+            presentAlert(with: "Update Required".localized(),
+                         message: appSettings.minimumSupportedVersionAlert.unwrappedString,
+                         hideCancelButton: true,
+                         acceptButtonTitle: "Update".localized(),
+                         acceptHandler: update)
+            return
+        }
+        
+        if newerVersionAvailable {
+            
+            presentAlert(with: "Newer Version Available".localized(),
+                         message: appSettings.currentVersionAlert.unwrappedString,
+                         cancelButtonTitle: "Update".localized(),
+                         acceptButtonTitle: "Not Now".localized(),
+                         cancelHandler: update)
         }
     }
 }
