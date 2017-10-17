@@ -215,7 +215,6 @@ class DashboardIPadTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         
-        
         let headerView = UIView()
         headerView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 50)
         headerView.backgroundColor = IUIKColorPalette.titleBackdrop.color
@@ -406,7 +405,13 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
         
         if(collectionView.tag == 1) {
             
-            return Constant.MyClassConstants.upcomingTripsArray.count
+           // return Constant.MyClassConstants.upcomingTripsArray.count
+            if( Constant.MyClassConstants.upcomingTripsArray.count <= 2) {
+                
+                return Constant.MyClassConstants.upcomingTripsArray.count
+            }else {
+                return 2
+            }
         }
         else if(collectionView.tag == 2) {
             return Constant.MyClassConstants.flexExchangeDeals.count
