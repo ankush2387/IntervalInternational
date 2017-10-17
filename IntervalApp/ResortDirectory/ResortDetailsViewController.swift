@@ -339,13 +339,7 @@ class ResortDetailsViewController: UIViewController {
                 
             }else{
                 
-                let transition = CATransition()
-                transition.duration = 0.5
-                transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-                transition.type = kCATransitionReveal
-                transition.subtype = kCATransitionFromBottom
-                navigationController?.view.layer.add(transition, forKey: nil)
-                _ = navigationController?.popViewController(animated: false)
+                self.dismiss(animated: true, completion: nil)
             }
         }
     }
@@ -534,9 +528,8 @@ class ResortDetailsViewController: UIViewController {
     func showWeatherButtonPressed() {
         Constant.MyClassConstants.goingToMapOrWeatherView = true
         guard let resortCode = Constant.MyClassConstants.resortsDescriptionArray.resortCode else { return }
-       // guard let resortName = Constant.MyClassConstants.resortsDescriptionArray.resortName else { return }
-        
-         guard let resortName = Constant.MyClassConstants.resortsDescriptionArray.address?.cityName else { return }
+
+        guard let resortName = Constant.MyClassConstants.resortsDescriptionArray.address?.cityName else { return }
         
         guard let countryCode = Constant.MyClassConstants.resortsDescriptionArray.address?.countryCode else { return }
         SVProgressHUD.show()

@@ -8,6 +8,7 @@
 
 import UIKit
 import DarwinSDK
+import IntervalUIKit
 
 class WeatherViewController: UIViewController {
     
@@ -33,28 +34,47 @@ class WeatherViewController: UIViewController {
         if presentedModally {
             setupNavBarForModalPresentation()
         }
+        else {
+            setupDoneButtonView()
+        }
+
         setup()
         
     }
     
+    func setupDoneButtonView() {
+        
+        let doneButtonView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 64))
+        doneButtonView.backgroundColor = UIColor(red: 229.0/255.0, green: 231.0/255.0, blue: 228.0/255.0, alpha: 1.0)
+        let doneButton = UIButton(frame: CGRect(x: self.view.frame.size.width - 60, y: 7, width: 50, height: 50))
+        doneButton.tintColor = IUIKColorPalette.primary1.color
+        doneButton.setTitle("Done", for: .normal)
+        doneButton.addTarget(self, action: #selector(WeatherViewController.doneButtonPressed(_:)), for: .touchUpInside)
+        doneButtonView.addSubview(doneButton)
+        
+        self.view.addSubview(doneButtonView)
+    }
+
+    func doneButtonPressed(_ sender:UIButton) {
+        
+        self.navigationController?.popViewController(animated: true)
+    }
     override func viewDidAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.isHidden = true
     }
     
     func setupNavBarForModalPresentation() {
         // change Nav-bar tint color.
-        self.navigationController?.navigationBar.barTintColor = UIColor(red: 229.0/255.0, green: 231.0/255.0, blue: 228.0/255.0, alpha: 1.0)
         
-        //Nav-bar button
-        //let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(WeatherViewController.menuBackButtonPressed(_:)))
+       
+        self.navigationController?.navigationBar.barTintColor = UIColor(red: 229.0/255.0, green: 231.0/255.0, blue: 228.0/255.0, alpha: 1.0)
         
         let doneButton = UIBarButtonItem(image: UIImage(named:Constant.AlertPromtMessages.done), style: .plain, target: self, action:#selector(WeatherViewController.menuBackButtonPressed))
         doneButton.tintColor = UIColor.blue
         
-        
-        doneButton.tintColor = UIColor(red: 0/255.0, green: 128.0/255.0, blue: 255.0/255.0, alpha: 1.0)
-        self.navigationItem.rightBarButtonItem = doneButton
-        
+        self.navigationItem.leftBarButtonItem = doneButton
+        self.navigationController?.navigationItem.rightBarButtonItem = doneButton
+       
     }
     
     func setup() {

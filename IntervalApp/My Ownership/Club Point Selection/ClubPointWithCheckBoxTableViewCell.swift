@@ -32,51 +32,9 @@ class ClubPointWithCheckBoxTableViewCell: UITableViewCell {
         //if !ischeckbox{
         var indexPrefix = "1"
         var finalIndex = "\(indexPrefix)\(index)"
-       // firstCheckBoxView.tag = Int(String(finalIndex))!
         indexPrefix = "2"
         finalIndex = "\(indexPrefix)\(index)"
-       // secondCheckBoxView.tag = Int(String(finalIndex))!
-        
-        // }
-        //else{
-        //setCellProperties(ischeckbox, checkBoxTagArray: checkBoxTagArray)
-        //}
-        
-        
     }
-//    fileprivate func setCellProperties(_ ischeckbox:Bool,checkBoxTagArray:Int){
-//        let firstcheckbox = firstCheckBoxView as! IUIKCheckbox
-//        let secondcheckBox = secondCheckBoxView as! IUIKCheckbox
-//        if checkBoxTagArray != 0{
-//            let checkBoxtag = checkBoxTagArray
-//            if firstcheckbox.tag == checkBoxtag{
-//                secondcheckBox.checked = false
-//                firstcheckbox.checked = true
-//                setBackgroundColorAndBorderColorOfSuperView(true, subview: firstcheckbox)
-//                setBackgroundColorAndBorderColorOfSuperView(false, subview: secondcheckBox)
-//            }
-//            else if secondcheckBox.tag == checkBoxtag{
-//                firstcheckbox.checked = false
-//                secondcheckBox.checked = true
-//                setBackgroundColorAndBorderColorOfSuperView(false, subview: firstcheckbox)
-//                setBackgroundColorAndBorderColorOfSuperView(true, subview: secondcheckBox)
-//            }
-//            else{
-//                secondcheckBox.checked = false
-//                firstcheckbox.checked = false
-//                setBackgroundColorAndBorderColorOfSuperView(false, subview: firstcheckbox)
-//                setBackgroundColorAndBorderColorOfSuperView(false, subview: secondcheckBox)
-//            }
-//            
-//        }
-//        else{
-//            secondcheckBox.checked = false
-//            firstcheckbox.checked = false
-//            setBackgroundColorAndBorderColorOfSuperView(false, subview: firstcheckbox)
-//            setBackgroundColorAndBorderColorOfSuperView(false, subview: secondcheckBox)
-//        }
-//        
-//    }
     
     fileprivate func setBackgroundColorAndBorderColorOfSuperView(_ isborder:Bool,subview:IUIKCheckbox){
         
