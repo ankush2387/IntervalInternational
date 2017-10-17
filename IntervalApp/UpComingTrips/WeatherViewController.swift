@@ -44,8 +44,14 @@ class WeatherViewController: UIViewController {
     func setupNavBarForModalPresentation() {
         // change Nav-bar tint color.
         self.navigationController?.navigationBar.barTintColor = UIColor(red: 229.0/255.0, green: 231.0/255.0, blue: 228.0/255.0, alpha: 1.0)
+        
         //Nav-bar button
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(WeatherViewController.menuBackButtonPressed(_:)))
+        //let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(WeatherViewController.menuBackButtonPressed(_:)))
+        
+        let doneButton = UIBarButtonItem(image: UIImage(named:Constant.AlertPromtMessages.done), style: .plain, target: self, action:#selector(WeatherViewController.menuBackButtonPressed))
+        doneButton.tintColor = UIColor.blue
+        
+        
         doneButton.tintColor = UIColor(red: 0/255.0, green: 128.0/255.0, blue: 255.0/255.0, alpha: 1.0)
         self.navigationItem.rightBarButtonItem = doneButton
         
@@ -60,7 +66,16 @@ class WeatherViewController: UIViewController {
             resortNameLabel.text?.append(", \(countryCode)")
         }
         
+        self.navigationController?.navigationBar.isHidden = false
         weatherConditionLabel.text = resortWeather?.condition
+        
+        let doneButton = UIBarButtonItem(image: UIImage(named:Constant.AlertPromtMessages.done), style: .plain, target: self, action:#selector(WeatherViewController.menuBackButtonPressed))
+        doneButton.tintColor = UIColor.blue
+        
+        
+        //doneButton.tintColor = UIColor(red: 0/255.0, green: 128.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+        self.navigationItem.rightBarButtonItem = doneButton
+
         
         self.displayFarenheit()
     

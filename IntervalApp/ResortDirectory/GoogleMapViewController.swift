@@ -221,6 +221,11 @@ class GoogleMapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        //hide map current location button
+        self.mapView.settings.myLocationButton = false
+        self.mapView.isMyLocationEnabled = false
+        
         // condition check to send resort directory
         if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.resortFunctionalityCheck) {
             
