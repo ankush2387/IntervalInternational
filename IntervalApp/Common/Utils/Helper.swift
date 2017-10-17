@@ -1017,7 +1017,7 @@ public class Helper{
             showProgressBar(senderView: viewController)
             
             DirectoryClient.getRegions(Constant.MyClassConstants.systemAccessToken, onSuccess: {(response) in
-                Constant.MyClassConstants.resortDirectoryRegionArray = response[0].regions
+                Constant.MyClassConstants.resortDirectoryRegionArray = response
                 if(!(viewController is ResortDirectoryTabController)){
                     viewController.performSegue(withIdentifier: Constant.segueIdentifiers.resortDirectorySegue, sender: self)
                 }
