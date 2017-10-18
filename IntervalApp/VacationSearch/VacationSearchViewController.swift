@@ -1408,8 +1408,8 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             let settings = Helper.createSettings()
             let checkInDate = fromDateTop
             
-            let bookingWindow = BookingWindow()
-            bookingWindow.calculateIntervals(checkInDate: checkInDate)
+            let bookingWindow = BookingWindow(checkInDate:checkInDate)
+            //bookingWindow.calculateIntervals(checkInDate: checkInDate)
             
             let activeInterval = bookingWindow.getActiveInterval()
             let requestRental = RentalSearchRegionsRequest()
@@ -1478,8 +1478,9 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 
                 
             }, onError: { (error) in
+                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
+                Helper.hideProgressBar(senderView: self)
                 sender.isEnabled = true
-                print(error)
             })
                 }
             }else{
@@ -1513,8 +1514,9 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                         
                         
                     }, onError: { (error) in
-                        
                         print(error)
+                        Helper.hideProgressBar(senderView: self)
+                        SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                     })
                 }
                 
