@@ -132,6 +132,9 @@ class FlexchangeSearchViewController: UIViewController {
             Helper.showProgressBar(senderView: self)
             if Reachability.isConnectedToNetwork() == true {
                 
+                //use later
+                let checkInDate = Constant.MyClassConstants.vacationSearchShowDate
+                
                 let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
                 
                 exchangeSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
