@@ -767,8 +767,9 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                     
                     
                 }, onError: { (error) in
+                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
+                    Helper.hideProgressBar(senderView: self)
                     sender.isEnabled = true
-                    print(error)
                 })
             }else{
                 
@@ -793,8 +794,9 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                         
                         
                     }, onError: { (error) in
-                        
-                        print(error)
+                        SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
+                        Helper.hideProgressBar(senderView: self)
+                        sender.isEnabled = true
                     })
                 
             }
@@ -815,10 +817,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                         
                         rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                         
-                        
                         Constant.MyClassConstants.initialVacationSearch = VacationSearch(UserContext.sharedInstance.appSettings, rentalSearchCriteria)
-                        
-                        
                         
                         RentalClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
                                                  onSuccess: { (response) in

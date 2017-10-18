@@ -132,30 +132,38 @@ class FlexchangeSearchViewController: UIViewController {
             Helper.showProgressBar(senderView: self)
             if Reachability.isConnectedToNetwork() == true {
                 
-                //use later
-                let checkInDate = Constant.MyClassConstants.vacationSearchShowDate
+                let deal = FlexExchangeDeal()
+                                
+                deal.name = selectedFlexchange?.name
+                deal.areaCode = (selectedFlexchange?.areaCode)!
                 
-                let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
+                let searchCriteria = Helper.createSearchCriteriaFor(deal: deal)
                 
-                exchangeSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
+                let settings = Helper.createSettings()
+                Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
+                
+                //let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
+                
+               /* exchangeSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
                 exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                 exchangeSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
-                exchangeSearchCriteria.searchType = VacationSearchType.Exchange
-                
+                exchangeSearchCriteria.searchType = VacationSearchType.Exchange*/
                 
                 
                 //let storedData = Helper.getLocalStorageWherewanttoGo()
                 
-                exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
-                Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(UserContext.sharedInstance.appSettings, exchangeSearchCriteria)
+                //exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
+               // Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(UserContext.sharedInstance.appSettings, exchangeSearchCriteria)
                 let area = Area()
+                
+               /* deal.name = selectedFlexchange?.name
+                deal.areaCode = (selectedFlexchange?.areaCode)!
+                
                 area.areaCode = (selectedFlexchange?.areaCode)!
-                area.areaName = selectedFlexchange?.name
-                Constant.MyClassConstants.vacationSearchResultHeaderLabel = area.areaName!
+                area.areaName = selectedFlexchange?.name */
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel = (selectedFlexchange?.name)!
                 
-                Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.areas = [area]
-                
-                
+                //Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.areas = [area]
                 
                 ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
                     

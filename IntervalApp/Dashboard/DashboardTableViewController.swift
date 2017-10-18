@@ -569,7 +569,7 @@ extension UIViewController {
         
         ADBMobile.trackAction(Constant.omnitureEvents.event1, data: nil)
         
-        let areas = Area()
+        /*let areas = Area()
         areas.areaCode = Constant.MyClassConstants.topDeals[selectedIndexPath.row].areaCodes.first!
         Constant.MyClassConstants.vacationSearchShowDate = Constant.MyClassConstants.topDeals[selectedIndexPath.row].fromDate
         Constant.MyClassConstants.vacationSearchResultHeaderLabel = Constant.MyClassConstants.topDeals[selectedIndexPath.row].header!
@@ -580,7 +580,19 @@ extension UIViewController {
         rentalSearchCriteria.searchType = VacationSearchType.Rental
         Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(UserContext.sharedInstance.appSettings, rentalSearchCriteria)
         
-        Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.areas = [areas]
+        Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.areas = [areas]*/
+        
+        
+        // latest changes
+        let deal = RentalDeal()
+        deal.header = Constant.MyClassConstants.topDeals[selectedIndexPath.row].header!
+        deal.fromDate = Constant.MyClassConstants.topDeals[selectedIndexPath.row].fromDate
+        deal.areaCodes = [Constant.MyClassConstants.topDeals[selectedIndexPath.row].areaCodes.first!]
+        
+        let searchCriteria = Helper.createSearchCriteriaForRentalDeal(deal: deal)
+        
+        let settings = Helper.createSettings()
+        Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
         
         if Reachability.isConnectedToNetwork() == true {
             

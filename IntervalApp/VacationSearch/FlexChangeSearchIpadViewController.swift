@@ -114,7 +114,19 @@ class FlexChangeSearchIpadViewController: UIViewController {
         Helper.showProgressBar(senderView: self)
         if Reachability.isConnectedToNetwork() == true {
             
-            let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
+            let deal = FlexExchangeDeal()
+            
+            deal.name = selectedFlexchange?.name
+            deal.areaCode = (selectedFlexchange?.areaCode)!
+            
+            let searchCriteria = Helper.createSearchCriteriaFor(deal: deal)
+            
+            let settings = Helper.createSettings()
+            
+            Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
+            
+            
+            /*let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
             
             exchangeSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
             exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
@@ -129,7 +141,7 @@ class FlexChangeSearchIpadViewController: UIViewController {
             let area = Area()
             area.areaCode = (selectedFlexchange?.areaCode)!
             area.areaName = selectedFlexchange?.name
-            Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.areas = [area]
+            Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.areas = [area]*/
             
             
             ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
