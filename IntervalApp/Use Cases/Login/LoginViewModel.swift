@@ -21,6 +21,7 @@ final class LoginViewModel {
     let isLoggingIn = Observable(false)
     let touchIDEnabled: Observable<Bool>
     let clientTokenLoaded = Observable(false)
+    let appSettings: Observable<AppSettings?>
     var didLogin: (() -> Void)?
 
     var buttonEnabledState: Signal<Bool, NoError> {
@@ -45,6 +46,7 @@ final class LoginViewModel {
          encryptedStore: EncryptedStore,
          persistentSettingsStore: PersistentSettingsStore) {
 
+        appSettings = Observable(nil)
         self.sessionStore = sessionStore
         self.clientAPIStore = clientAPIStore
         self.encryptedStore = encryptedStore
@@ -54,6 +56,7 @@ final class LoginViewModel {
         self.username = Observable(try? encryptedStore.getItem(for: touchIDUserNameKey) ?? "")
         self.password = Observable(try? encryptedStore.getItem(for: touchIDPasswordKey) ?? "")
         self.touchIDEnabled.observeNext(with: updatedTouchIDState).dispose(in: disposeBag)
+        self.clientTokenLoaded.observeNext(with: checkAppVersion).dispose(in: disposeBag)
     }
 
     // MARK: - Public functions
@@ -101,5 +104,11 @@ final class LoginViewModel {
 
     private func updatedTouchIDState(enabled: Bool) {
         persistentSettingsStore.touchIDEnabled = enabled
+    }
+    
+    private func checkAppVersion(clientTokenLoaded: Bool) {
+        if clientTokenLoaded {
+            appSettings.next(sessionStore.appSettings?.ios)
+        }
     }
 }
