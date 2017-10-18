@@ -232,27 +232,34 @@ extension LoginViewController: ComputationHelper {
         NetworkHelper.open(url)
     }
     
+    private func showForceUpdateAlert(for appSettings: AppSettings) {
+        presentAlert(with: "Update Required".localized(),
+                     message: appSettings.minimumSupportedVersionAlert.unwrappedString,
+                     hideCancelButton: true,
+                     acceptButtonTitle: "Update".localized(),
+                     acceptHandler: update)
+    }
+    
+    private func showUpdateAlert(for appSettings: AppSettings) {
+        presentAlert(with: "Newer Version Available".localized(),
+                     message: appSettings.currentVersionAlert.unwrappedString,
+                     cancelButtonTitle: "Update".localized(),
+                     acceptButtonTitle: "Not Now".localized(),
+                     cancelHandler: update)
+    }
+    
     fileprivate func checkAppVersion(appSettings: AppSettings) {
         
         let updateRequired = checkIfPassedIn(appSettings.minimumSupportedVersion.unwrappedString, isNewerThan: appVersion)
         let newerVersionAvailable = checkIfPassedIn(appSettings.currentVersion.unwrappedString, isNewerThan: appVersion)
         
         guard !updateRequired else {
-            presentAlert(with: "Update Required".localized(),
-                         message: appSettings.minimumSupportedVersionAlert.unwrappedString,
-                         hideCancelButton: true,
-                         acceptButtonTitle: "Update".localized(),
-                         acceptHandler: update)
+            showForceUpdateAlert(for: appSettings)
             return
         }
         
         if newerVersionAvailable {
-            
-            presentAlert(with: "Newer Version Available".localized(),
-                         message: appSettings.currentVersionAlert.unwrappedString,
-                         cancelButtonTitle: "Update".localized(),
-                         acceptButtonTitle: "Not Now".localized(),
-                         cancelHandler: update)
+            showUpdateAlert(for: appSettings)
         }
     }
 }
