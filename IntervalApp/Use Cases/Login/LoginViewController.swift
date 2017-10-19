@@ -35,9 +35,9 @@ final class LoginViewController: UIViewController {
     @IBOutlet private var webActivityButtons: [UIButton]!
 
     // MARK: - Private properties
-    private let viewModel: LoginViewModel
     private let disposeBag = DisposeBag()
     private let touchID = TouchIDAuth()
+    fileprivate let viewModel: LoginViewModel
     
     // MARK: - Lifecycle
     init(viewModel: LoginViewModel) {
@@ -99,24 +99,22 @@ final class LoginViewController: UIViewController {
 
     private func setUI() {
 
-        if touchID.canEvaluatePolicy {
-            updateTouchIDText(enabled: viewModel.touchIDEnabled.value)
-        } else {
+        if !touchID.canEvaluatePolicy {
             touchIDArea.forEach { $0.isHidden = true }
         }
-
+        
         backgroundImageView.image = viewModel.backgroundImage.value
         signInBackgroundView.backgroundColor = UIColor.white.withAlphaComponent(0.9)
         updateUIForOrientation()
-        setVersionLabelIfBuiltInDebug()
+        setVersionLabelForNonProductionBuild()
     }
 
     private func updateTouchIDText(enabled: Bool) {
         if enabled {
-            enableTouchIDLabel.text = "Enable Touch ID".localized()
+            enableTouchIDLabel.text = "Disable Touch ID".localized()
             self.touchIDImageView.image = #imageLiteral(resourceName: "TouchID-On")
         } else {
-            enableTouchIDLabel.text = "Disable Touch ID".localized()
+            enableTouchIDLabel.text = "Enable Touch ID".localized()
             self.touchIDImageView.image = #imageLiteral(resourceName: "TouchID-Off")
         }
     }
@@ -176,6 +174,11 @@ final class LoginViewController: UIViewController {
     private func setPortraitStackView() {
         portraitStackView.insertArrangedSubview(signInBackgroundView, at: 0)
         portraitStackView.insertArrangedSubview(webActivitiesButtonsView, at: 1)
+    }
+    
+    private func setVersionLabelForNonProductionBuild() {
+        versionLabel.text = viewModel.versionLabel.text
+        versionLabel.isHidden = viewModel.versionLabel.isHidden
     }
     
     private func updateLoginButtonsUI(enabled: Bool) {
@@ -250,8 +253,8 @@ extension LoginViewController: ComputationHelper {
     
     fileprivate func checkAppVersion(appSettings: AppSettings) {
         
-        let updateRequired = checkIfPassedIn(appSettings.minimumSupportedVersion.unwrappedString, isNewerThan: appVersion)
-        let newerVersionAvailable = checkIfPassedIn(appSettings.currentVersion.unwrappedString, isNewerThan: appVersion)
+        let updateRequired = checkIfPassedIn(appSettings.minimumSupportedVersion.unwrappedString, isNewerThan: viewModel.appBundle.appVersion)
+        let newerVersionAvailable = checkIfPassedIn(appSettings.currentVersion.unwrappedString, isNewerThan: viewModel.appBundle.appVersion)
         
         guard !updateRequired else {
             showForceUpdateAlert(for: appSettings)
@@ -261,14 +264,6 @@ extension LoginViewController: ComputationHelper {
         if newerVersionAvailable {
             showUpdateAlert(for: appSettings)
         }
-    }
-}
-
-extension LoginViewController: ViewControllerHelper {
-    fileprivate func setVersionLabelIfBuiltInDebug() {
-        #if DEBUG
-            versionLabel.text = buildVersion
-        #endif
     }
 }
 

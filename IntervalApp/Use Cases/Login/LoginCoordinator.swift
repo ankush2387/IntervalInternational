@@ -48,7 +48,9 @@ final class LoginCoordinator: ComputationHelper {
                                        sessionStore: Session.sharedSession,
                                        clientAPIStore: ClientAPI.sharedInstance,
                                        encryptedStore: LoginData(),
-                                       persistentSettingsStore: persistentSettings)
+                                       persistentSettingsStore: persistentSettings,
+                                       configuration: Config.sharedInstance,
+                                       appBundle: AppBundle())
 
         viewModel.didLogin = { [unowned self] in self.delegate?.didLogin() }
         self.viewModel = viewModel

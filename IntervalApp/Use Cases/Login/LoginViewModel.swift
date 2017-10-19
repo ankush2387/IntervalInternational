@@ -15,6 +15,7 @@ import ReactiveKit
 final class LoginViewModel {
     
     // MARK: - Public properties
+    let appBundle: AppBundle
     let backgroundImage: Observable<UIImage>
     let username: Observable<String?>
     let password: Observable<String?>
@@ -29,8 +30,23 @@ final class LoginViewModel {
             .map(shouldDisableButton)
             .observeOn(.main)
     }
+    
+    var versionLabel: (text: String?, isHidden: Bool) {
+        
+        switch configuration.getEnvironment() {
+            
+        case .production, .production_dns:
+            return (nil, true)
+            
+        default:
+            let environment = configuration.get(.Environment, defaultValue: "NONE").uppercased()
+            let text = "\("Version: ".localized()) \(appBundle.appVersion).\(appBundle.build) \(environment) (\(appBundle.gitCommit))"
+            return (text, false)
+        }
+    }
 
     // MARK: - Private properties
+    private let configuration: Config
     private let encryptedStore: EncryptedStore
     private let clientAPIStore: ClientAPIStore
     private let touchIDUserNameKey = "touchIDUser"
@@ -44,10 +60,14 @@ final class LoginViewModel {
          sessionStore: SessionStore,
          clientAPIStore: ClientAPIStore,
          encryptedStore: EncryptedStore,
-         persistentSettingsStore: PersistentSettingsStore) {
+         persistentSettingsStore: PersistentSettingsStore,
+         configuration: Config,
+         appBundle: AppBundle) {
 
         appSettings = Observable(nil)
+        self.appBundle = appBundle
         self.sessionStore = sessionStore
+        self.configuration = configuration
         self.clientAPIStore = clientAPIStore
         self.encryptedStore = encryptedStore
         self.backgroundImage = Observable(backgroundImage)
