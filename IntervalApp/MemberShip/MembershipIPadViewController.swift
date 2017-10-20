@@ -73,7 +73,7 @@ class MembershipIPadViewController: UIViewController {
     
     fileprivate func getContactMembershipInfo() {
         SVProgressHUD.show()
-        if let contact = UserContext.sharedInstance.contact {
+        if let contact = Session.sharedSession.contact {
             self.contactInfo = contact
         }
         
@@ -81,9 +81,9 @@ class MembershipIPadViewController: UIViewController {
              Constant.MyClassConstants.membershipdetails = memberships
         }
        
-        Constant.MyClassConstants.memberNumber = UserContext.sharedInstance.selectedMembership?.memberNumber
+        Constant.MyClassConstants.memberNumber = Session.sharedSession.selectedMembership?.memberNumber
         
-        UserClient.getCurrentMembership(UserContext.sharedInstance.accessToken, onSuccess: { (membership) in
+        UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: { (membership) in
             if let ownerships = membership.ownerships {
                 self.ownershipArray = ownerships
             }
@@ -133,9 +133,9 @@ class MembershipIPadViewController: UIViewController {
     func membershipWasSelected() {
         
         //***** Update the API session for the current access token *****//
-        let context = UserContext.sharedInstance
+        let context = Session.sharedSession
         
-        UserClient.putSessionsUser(context.accessToken, member: context.selectedMembership!,
+        UserClient.putSessionsUser(context.userAccessToken, member: context.selectedMembership!,
                                     onSuccess:{
                                         
                                         //***** Done!  Segue to the Home page *****//
@@ -144,7 +144,7 @@ class MembershipIPadViewController: UIViewController {
                                         self.getContactMembershipInfo()
                                         
                                         //***** Getaway Alerts API call after successfull login *****//
-                                        RentalClient.getAlerts(UserContext.sharedInstance.accessToken, onSuccess: { (response) in
+                                        RentalClient.getAlerts(Session.sharedSession.userAccessToken, onSuccess: { (response) in
                                             
                                             Constant.MyClassConstants.getawayAlertsArray = response
                                             
@@ -153,7 +153,7 @@ class MembershipIPadViewController: UIViewController {
                                         }
             },
                                     onError:{(error) in
-                                        logger.error("Could not set membership in Darwin API Session: \(error.description)")
+                                        Logger.sharedInstance.error("Could not set membership in Darwin API Session: \(error.description)")
                                         SimpleAlert.alert(self, title:Constant.AlertErrorMessages.loginFailed, message:"Please contact your servicing office.  Could not select membership \(String(describing: context.selectedMembership?.memberNumber))")
             }
         )
@@ -176,7 +176,7 @@ extension MembershipIPadViewController:UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if(tableView.tag == 3) {
-            let contact = UserContext.sharedInstance.contact
+            let contact = Session.sharedSession.contact
             return (contact?.memberships?.count)!
         } else if section == 1 {
             return ownershipArray.count
@@ -189,7 +189,7 @@ extension MembershipIPadViewController:UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if(tableView.tag == 3) {
 
-            let contact = UserContext.sharedInstance.contact
+            let contact = Session.sharedSession.contact
             let membership = contact?.memberships![indexPath.row]
             
             let cell: ActionSheetTblCell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.CustomCell, for: indexPath) as! ActionSheetTblCell
@@ -218,7 +218,7 @@ extension MembershipIPadViewController:UITableViewDataSource{
             return ownershipCell
         } else {
             guard let membershipCell = tableView.dequeueReusableCell(withIdentifier: Constant.memberShipViewController.membershipDetailCellIdentifier) as? MemberShipDetailTableViewCell else { return UITableViewCell() }
-            let contact = UserContext.sharedInstance.contact
+            let contact = Session.sharedSession.contact
             if contact!.memberships!.count == 1 {
                 membershipCell.switchMembershipButton.isHidden = true
                 membershipCell.activememberOutOfTotalMemberLabel.isHidden = true
@@ -290,14 +290,14 @@ extension MembershipIPadViewController:UITableViewDelegate
                 }
             }
 
-			let contact = UserContext.sharedInstance.contact
+			let contact = Session.sharedSession.contact
 			let membership = contact?.memberships![indexPath.row]
             if Constant.MyClassConstants.memberNumber != membership?.memberNumber{
                 self.dismiss(animated: true, completion: nil)
                 let alert = UIAlertController(title: Constant.memberShipViewController.switchMembershipAlertTitle, message: Constant.memberShipViewController.switchMembershipAlertMessage, preferredStyle: .actionSheet)
                 let actionYes = UIAlertAction(title: "Yes", style: .destructive, handler: { (response) in
                     SVProgressHUD.show()
-                    UserContext.sharedInstance.selectedMembership = membership
+                    Session.sharedSession.selectedMembership = membership
                     self.membershipWasSelected()
                 })
                 

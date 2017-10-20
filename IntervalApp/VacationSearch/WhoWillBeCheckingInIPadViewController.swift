@@ -153,7 +153,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         if(Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
             Constant.holdingTimer.invalidate()
             
-            ExchangeProcessClient.backToChooseExchange(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess:{(response) in
+            ExchangeProcessClient.backToChooseExchange(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess:{(response) in
                 
                 Constant.MyClassConstants.selectedCreditCard.removeAll()
                 Helper.hideProgressBar(senderView: self)
@@ -176,7 +176,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         }else{
         Constant.holdingTimer.invalidate()
         
-        RentalProcessClient.backToChooseRental(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, onSuccess:{(response) in
+        RentalProcessClient.backToChooseRental(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, onSuccess:{(response) in
             
             Constant.MyClassConstants.selectedCreditCard.removeAll()
             SVProgressHUD.dismiss()
@@ -413,7 +413,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         processResort.processId = Constant.MyClassConstants.exchangeProcessStartResponse.processId
         Helper.showProgressBar(senderView: self)
         
-        ExchangeProcessClient.continueToCheckout(UserContext.sharedInstance.accessToken, process: processResort, request: exchangeProcessRequest, onSuccess: {(response) in
+        ExchangeProcessClient.continueToCheckout(Session.sharedSession.userAccessToken, process: processResort, request: exchangeProcessRequest, onSuccess: {(response) in
             DarwinSDK.logger.debug(response)
             SVProgressHUD.dismiss()
             Helper.removeServiceCallBackgroundView(view: self.view)
@@ -432,7 +432,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             }else{
                 Constant.MyClassConstants.enableTaxes = false
             }
-            Constant.MyClassConstants.memberCreditCardList = (UserContext.sharedInstance.contact?.creditcards)!
+            Constant.MyClassConstants.memberCreditCardList = (Session.sharedSession.contact?.creditcards)!
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.checkOutViewController) as! CheckOutIPadViewController
             viewController.filterRelinquishments = self.filterRelinquishments
@@ -496,7 +496,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             processResort.holdUnitStartTimeInMillis = Constant.holdingTime
             processResort.processId = Constant.MyClassConstants.processStartResponse.processId
             
-            RentalProcessClient.continueToCheckout(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest1, onSuccess: {(response) in
+            RentalProcessClient.continueToCheckout(Session.sharedSession.userAccessToken, process: processResort, request: processRequest1, onSuccess: {(response) in
                 DarwinSDK.logger.debug(response)
                 SVProgressHUD.dismiss()
                 Helper.removeServiceCallBackgroundView(view: self.view)
@@ -512,7 +512,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                 }else{
                     Constant.MyClassConstants.enableTaxes = false
                 }
-                Constant.MyClassConstants.memberCreditCardList = (UserContext.sharedInstance.contact?.creditcards)!
+                Constant.MyClassConstants.memberCreditCardList = (Session.sharedSession.contact?.creditcards)!
                 let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
                 let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.checkOutViewController) as! CheckOutIPadViewController
                 

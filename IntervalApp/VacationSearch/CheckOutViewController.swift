@@ -143,7 +143,7 @@ class CheckOutViewController: UIViewController {
             Constant.omnitureEvars.eVar37 : Helper.selectedSegment(index: Constant.MyClassConstants.searchForSegmentIndex),
             Constant.omnitureEvars.eVar39 : "",
             Constant.omnitureEvars.eVar49 : "",
-            Constant.omnitureEvars.eVar52 : "\((UserContext.sharedInstance.contact?.creditcards?.count)! > 0 ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no)",
+            Constant.omnitureEvars.eVar52 : "\((Session.sharedSession.contact?.creditcards?.count)! > 0 ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no)",
             Constant.omnitureEvars.eVar72 : "\(self.showInsurance ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no)",
             ]
         ADBMobile.trackAction(Constant.omnitureEvents.event37, data: userInfo)
@@ -199,13 +199,13 @@ class CheckOutViewController: UIViewController {
                     continueToPayRequest.acceptTermsAndConditions = true
                     continueToPayRequest.acknowledgeAndAgreeResortFees = true
                     
-                    ExchangeProcessClient.continueToPay(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { (response) in
+                    ExchangeProcessClient.continueToPay(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { (response) in
                         
                         Constant.MyClassConstants.exchangeBookingLastStartedProcess = nil
                         Constant.MyClassConstants.exchangeContinueToPayResponse = response
                         let selectedCard = Constant.MyClassConstants.selectedCreditCard
                         if(selectedCard[0].saveCardIndicator == true){
-                            UserContext.sharedInstance.contact?.creditcards?.append(selectedCard[0])
+                            Session.sharedSession.contact?.creditcards?.append(selectedCard[0])
                         }
                         Constant.MyClassConstants.selectedCreditCard.removeAll()
                         Helper.removeStoredGuestFormDetials()
@@ -230,13 +230,13 @@ class CheckOutViewController: UIViewController {
                     continueToPayRequest.acceptTermsAndConditions = true
                     continueToPayRequest.acknowledgeAndAgreeResortFees = true
                     
-                RentalProcessClient.continueToPay(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { (response) in
+                RentalProcessClient.continueToPay(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { (response) in
                     
                     Constant.MyClassConstants.getawayBookingLastStartedProcess = nil
                     Constant.MyClassConstants.continueToPayResponse = response
                     let selectedCard = Constant.MyClassConstants.selectedCreditCard
                     if(selectedCard[0].saveCardIndicator == true){
-                        UserContext.sharedInstance.contact?.creditcards?.append(selectedCard[0])
+                        Session.sharedSession.contact?.creditcards?.append(selectedCard[0])
                     }
                     Constant.MyClassConstants.selectedCreditCard.removeAll()
                     Helper.removeStoredGuestFormDetials()
@@ -294,7 +294,7 @@ class CheckOutViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
 
-        self.emailTextToEnter = (UserContext.sharedInstance.contact?.emailAddress)!
+        self.emailTextToEnter = (Session.sharedSession.contact?.emailAddress)!
         self.checkoutOptionTBLview.reloadData()
         if(Constant.MyClassConstants.isFromExchange){
             if let selectedPromotion = Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName {
@@ -458,7 +458,7 @@ class CheckOutViewController: UIViewController {
                 
                 let processRequest = ExchangeProcessRecalculateRequest()
                 processRequest.fees = fees
-                ExchangeProcessClient.recalculateFees(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: { (response) in
+                ExchangeProcessClient.recalculateFees(Session.sharedSession.userAccessToken, process: processResort, request: processRequest, onSuccess: { (response) in
                     Constant.MyClassConstants.recapPromotionsArray.removeAll()
                     
                     if let promotions = response.view?.fees?.shopExchange?.promotions {
@@ -495,7 +495,7 @@ class CheckOutViewController: UIViewController {
             let processRequest = RentalProcessRecapRecalculateRequest()
             processRequest.fees = fees
             
-            RentalProcessClient.addCartPromotion(UserContext.sharedInstance.accessToken, process: processResort, request: processRequest, onSuccess: { (response) in
+            RentalProcessClient.addCartPromotion(Session.sharedSession.userAccessToken, process: processResort, request: processRequest, onSuccess: { (response) in
                 Constant.MyClassConstants.recapPromotionsArray.removeAll()
                 if let promotions = response.view?.fees?.rental?.promotions {
                     Constant.MyClassConstants.recapPromotionsArray = promotions
@@ -579,7 +579,7 @@ class CheckOutViewController: UIViewController {
         
         Helper.showProgressBar(senderView: self)
         if(Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
-            ExchangeProcessClient.backToChooseExchange(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess: {(response) in
+            ExchangeProcessClient.backToChooseExchange(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess: {(response) in
                 Helper.hideProgressBar(senderView: self)
             }, onError: {(error) in
                 Helper.hideProgressBar(senderView: self)
@@ -587,7 +587,7 @@ class CheckOutViewController: UIViewController {
             })
 
         }else{
-            RentalProcessClient.backToWhoIsChecking(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, onSuccess: {(response) in
+            RentalProcessClient.backToWhoIsChecking(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, onSuccess: {(response) in
             
             Helper.hideProgressBar(senderView: self)
             _ = self.navigationController?.popViewController(animated: true)
@@ -634,7 +634,7 @@ class CheckOutViewController: UIViewController {
             let exchangeRecalculateRequest = ExchangeProcessRecalculateRequest()
             exchangeRecalculateRequest.fees = Constant.MyClassConstants.exchangeFees.last!
             Helper.showProgressBar(senderView: self)
-            ExchangeProcessClient.recalculateFees(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: exchangeRecalculateRequest, onSuccess: {
+            ExchangeProcessClient.recalculateFees(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: exchangeRecalculateRequest, onSuccess: {
                 (response) in
                 
                 self.tripRequestInProcess = false
@@ -660,7 +660,7 @@ class CheckOutViewController: UIViewController {
             let rentalRecalculateRequest = RentalProcessRecapRecalculateRequest.init()
             rentalRecalculateRequest.fees = Constant.MyClassConstants.rentalFees.last!
             Helper.showProgressBar(senderView: self)
-            RentalProcessClient.addTripProtection(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, request: rentalRecalculateRequest, onSuccess: { (response) in
+            RentalProcessClient.addTripProtection(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, request: rentalRecalculateRequest, onSuccess: { (response) in
                 self.tripRequestInProcess = false
                 Constant.MyClassConstants.continueToCheckoutResponse = response
                 DarwinSDK.logger.debug(Constant.MyClassConstants.continueToCheckoutResponse.view?.promoCodes)
@@ -699,7 +699,7 @@ class CheckOutViewController: UIViewController {
             exchangeRecalculateRequest.fees = Constant.MyClassConstants.exchangeFees.last!
             exchangeRecalculateRequest.fees?.eplus?.selected = sender.checked
             Helper.showProgressBar(senderView: self)
-            ExchangeProcessClient.recalculateFees(UserContext.sharedInstance.accessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: exchangeRecalculateRequest, onSuccess: { (recapResponse) in
+            ExchangeProcessClient.recalculateFees(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: exchangeRecalculateRequest, onSuccess: { (recapResponse) in
                 self.eplusAdded = sender.checked
                 Constant.MyClassConstants.exchangeFees = [(recapResponse.view?.fees)!]
                 Helper.hideProgressBar(senderView: self)
@@ -727,7 +727,7 @@ extension CheckOutViewController:UITableViewDelegate {
             
             SVProgressHUD.show()
             Helper.addServiceCallBackgroundView(view: self.view)
-            UserClient.getCreditCards(UserContext.sharedInstance.accessToken!, onSuccess: { (response) in
+            UserClient.getCreditCards(Session.sharedSession.userAccessToken!, onSuccess: { (response) in
                 
                 Constant.MyClassConstants.memberCreditCardList = response
                 DispatchQueue.main.async(execute: {
@@ -1562,9 +1562,9 @@ extension CheckOutViewController:UITextFieldDelegate {
         
         self.emailTextToEnter = "\(textField.text!)\(string)"
         
-        if(self.emailTextToEnter.caseInsensitiveCompare((UserContext.sharedInstance.contact?.emailAddress)!) == ComparisonResult.orderedSame){
+        if(self.emailTextToEnter.caseInsensitiveCompare((Session.sharedSession.contact?.emailAddress)!) == ComparisonResult.orderedSame){
         }
-        if(emailTextToEnter == UserContext.sharedInstance.contact?.emailAddress) {
+        if(emailTextToEnter == Session.sharedSession.contact?.emailAddress) {
             self.showUpdateEmail = false
             let indexPath = NSIndexPath(row: 0, section: 10)
             self.checkoutOptionTBLview.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)

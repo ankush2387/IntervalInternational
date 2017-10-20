@@ -27,30 +27,7 @@ public class Helper{
     static var window: UIWindow?
     
     static var helperDelegate: HelperDelegate?
-    //***** common function to get system access token *****//
     
-    static func getSystemAccessToken(){
-        let config = Config.sharedInstance
-        
-        // setup the logger
-        logger.setup( level: config.getLogLevel(), showThreadName: true, showLevel: true, showFileNames: true, showLineNumbers: true)
-        // Setup Darwin API
-        DarwinSDK.sharedInstance.config( config.getEnvironment(),
-                                         client: config.get( .DarwinClientKey ),
-                                         secret: config.get( .DarwinSecretKey ),
-                                         logger:logger)
-        
-        //  getAccess token API call for obtain sys access token
-        AuthProviderClient.getClientAccessToken( { (accessToken) in
-            // Got an access token!  Save it for later use.
-            
-            Constant.MyClassConstants.systemAccessToken = accessToken
-        },
-                                                 onError:{ (error) in
-                                                    SimpleAlert.alert((window?.rootViewController)!, title: "Error", message: error.localizedDescription)
-        }
-        )
-    }
     /**
      Apply shadow on UIView or UIView subclass
      - parameter view,shadowcolor,shadowopacity,shadowoffset,shadowradius : view is UIView reference,shadowcolor is UIColor reference,shadowopacity is Float type,shadowoffset is CGSize type,shadowradious is CGFloat type.
@@ -239,7 +216,7 @@ public class Helper{
     //***** function to remove disable layer and make UI interaction enable *****//
     static func removeServiceCallBackgroundView(view:UIView){
         
-        self.progressBarBackgroundView.removeFromSuperview()
+//        self.progressBarBackgroundView.removeFromSuperview()
     }
     
     //***** common function that contains signIn API call with user name and password *****//
@@ -247,7 +224,7 @@ public class Helper{
     {
         Constant.MyClassConstants.signInRequestedController = sender
         if Reachability.isConnectedToNetwork() == true {
-            logger.debug("Attempting oauth with \(userName) and \(password)")
+            Logger.sharedInstance.debug("Attempting oauth with \(userName) and \(password)")
             showProgressBar(senderView:sender)
             // Try to do the OAuth Request to obtain an access token
             AuthProviderClient.getAccessToken( userName, password: password,onSuccess:{
@@ -256,7 +233,7 @@ public class Helper{
                 
                 if(accessToken.token != nil) {
                     // Next, get the contact information.  See how many memberships this user has.
-                    UserContext.sharedInstance.accessToken = accessToken
+                    Session.sharedSession.userAccessToken = accessToken
                     // let the caller UI know the status of the login
                     completionHandler(true)
                 }
@@ -271,7 +248,7 @@ public class Helper{
                                                onError:{ (error) in
                                                 SVProgressHUD.dismiss()
                                                 removeServiceCallBackgroundView(view: sender.view)
-                                                logger.warning(error.description)
+                                                Logger.sharedInstance.warning(error.description)
                                                 SimpleAlert.alert(sender, title:Constant.AlertErrorMessages.tryAgainError, message: "\(error.localizedDescription)")
                                                 completionHandler(false)
             }
@@ -289,15 +266,15 @@ public class Helper{
         
         if Reachability.isConnectedToNetwork() == true{
             
-            logger.debug("Attempting to get user info")
+            Logger.sharedInstance.debug("Attempting to get user info")
             
             //***** Try to do the OAuth Request to obtain an access token *****//
-            UserClient.getCurrentProfile(UserContext.sharedInstance.accessToken,
+            UserClient.getCurrentProfile(Session.sharedSession.userAccessToken,
                                          onSuccess:{(contact) in
                                             // Got an access token!  Save it for later use.
                                             SVProgressHUD.dismiss()
                                             removeServiceCallBackgroundView(view: sender.view)
-                                            UserContext.sharedInstance.contact = contact
+                                            Session.sharedSession.contact = contact
                                             
                                             //***** Next, get the contact information.  See how many memberships this user has. *****//
                                             
@@ -306,7 +283,7 @@ public class Helper{
                                          onError:{(error) in
                                             SVProgressHUD.dismiss()
                                             removeServiceCallBackgroundView(view: sender.view)
-                                            logger.warning(error.description)
+                                            Logger.sharedInstance.warning(error.description)
                                             SimpleAlert.alert(sender, title:Constant.AlertErrorMessages.loginFailed, message: error.localizedDescription)
             }
                 
@@ -326,7 +303,7 @@ public class Helper{
     static func contactDidChange(sender:UIViewController) {
         
         //***** If this contact has more than one membership, then show the Choose Member form.Otherwise, select the default (only) membership and continue.  There must always be at lease one membership. *****//
-        if let contact = UserContext.sharedInstance.contact {
+        if let contact = Session.sharedSession.contact {
             
             if contact.hasMembership() {
                 
@@ -334,13 +311,13 @@ public class Helper{
                     
                     if(Constant.MyClassConstants.signInRequestedController is SignInPreLoginViewController ) {
                         
-                        UserContext.sharedInstance.selectedMembership = contact.memberships![0]
+                        Session.sharedSession.selectedMembership = contact.memberships![0]
                         CreateActionSheet().membershipWasSelected()
                         
                     }
                     else {
                         
-                        UserContext.sharedInstance.selectedMembership = contact.memberships![0]
+                        Session.sharedSession.selectedMembership = contact.memberships![0]
                         CreateActionSheet().membershipWasSelected()
                     }
                 }
@@ -372,7 +349,7 @@ public class Helper{
             }
             else {
                 
-                logger.error("The contact \(contact.contactId) has no membership information!")
+                Logger.sharedInstance.error("The contact \(contact.contactId) has no membership information!")
                 SimpleAlert.alert(sender, title:Constant.AlertErrorMessages.loginFailed, message: Constant.AlertMessages.noMembershipMessage)
             }
         }
@@ -380,8 +357,8 @@ public class Helper{
     
     //***** Common function for user Favorites resort API call after successfull call *****//
     static func getUserFavorites(){
-        if(UserContext.sharedInstance.accessToken != nil){
-            UserClient.getFavoriteResorts(UserContext.sharedInstance.accessToken, onSuccess: { (response) in
+        if(Session.sharedSession.userAccessToken != nil){
+            UserClient.getFavoriteResorts(Session.sharedSession.userAccessToken, onSuccess: { (response) in
                 Constant.MyClassConstants.favoritesResortArray.removeAll()
                 for item in [response][0] {
                     if let resortFav = item as? ResortFavorite {
@@ -402,7 +379,7 @@ public class Helper{
     
     //**** Common function to get upcoming trips. ****//
    static func getUpcomingTripsForUser(){
-        UserClient.getUpcomingTrips(UserContext.sharedInstance.accessToken, onSuccess: {(upComingTrips) in
+        UserClient.getUpcomingTrips(Session.sharedSession.userAccessToken, onSuccess: {(upComingTrips) in
             print("Call 4",upComingTrips)
             Constant.MyClassConstants.upcomingTripsArray = upComingTrips
             
@@ -505,7 +482,7 @@ public class Helper{
             searchResortRequest.checkInDate = toDate as Date
             searchResortRequest.resortCodes = Constant.MyClassConstants.resortCodesArray
             showProgressBar(senderView:senderVC)
-            RentalClient.searchResorts(UserContext.sharedInstance.accessToken, request: searchResortRequest, onSuccess: { (response) in
+            RentalClient.searchResorts(Session.sharedSession.userAccessToken, request: searchResortRequest, onSuccess: { (response) in
                 Constant.MyClassConstants.showAlert = false
                 Constant.MyClassConstants.resortsArray.removeAll()
                 Constant.MyClassConstants.resortsArray = response.resorts
@@ -590,7 +567,7 @@ public class Helper{
     static func getLocalStorageWherewanttoGo() -> Results <RealmLocalStorage> {
         
         let realm = try! Realm()
-        let Membership = UserContext.sharedInstance.selectedMembership
+        let Membership = Session.sharedSession.selectedMembership
         let SelectedMembershipNumber = Membership?.memberNumber
         var requiredMemberNumber = ""
         if let membernumber = SelectedMembershipNumber {
@@ -616,7 +593,7 @@ public class Helper{
     static func getLocalStorageWherewanttoTrade() -> Results <OpenWeeksStorage> {
         
         let realm = try! Realm()
-        let Membership = UserContext.sharedInstance.selectedMembership
+        let Membership = Session.sharedSession.selectedMembership
         let SelectedMembershipNumber = Membership?.memberNumber
         var requiredMemberNumber = ""
         if let membernumber = SelectedMembershipNumber {
@@ -666,7 +643,7 @@ public class Helper{
         Constant.MyClassConstants.vacationSearchDestinationArray.removeAllObjects()
         
         let realm = try! Realm()
-        let Membership = UserContext.sharedInstance.selectedMembership
+        let Membership = Session.sharedSession.selectedMembership
         let SelectedMembershipNumber = Membership?.memberNumber
         var requiredMemberNumber = ""
         if let membernumber = SelectedMembershipNumber {
@@ -724,7 +701,7 @@ public class Helper{
         Constant.MyClassConstants.realmOpenWeeksID.removeAllObjects()
 
         let realm = try! Realm()
-        let Membership = UserContext.sharedInstance.selectedMembership
+        let Membership = Session.sharedSession.selectedMembership
         let SelectedMembershipNumber = Membership?.memberNumber
         var requiredMemberNumber = ""
         if let membernumber = SelectedMembershipNumber {
@@ -813,7 +790,7 @@ public class Helper{
         var influenceDestList = [AreaOfInfluenceDestination]()
         
         let realm = try! Realm()
-        let Membership = UserContext.sharedInstance.selectedMembership
+        let Membership = Session.sharedSession.selectedMembership
         let SelectedMembershipNumber = Membership?.memberNumber
         var requiredMemberNumber = ""
         if let membernumber = SelectedMembershipNumber {
@@ -843,7 +820,7 @@ public class Helper{
         var influenceResortList = [Resort]()
         
         let realm = try! Realm()
-        let Membership = UserContext.sharedInstance.selectedMembership
+        let Membership = Session.sharedSession.selectedMembership
         let SelectedMembershipNumber = Membership?.memberNumber
         var requiredMemberNumber = ""
         if let membernumber = SelectedMembershipNumber {
@@ -983,7 +960,7 @@ public class Helper{
     //***** common function that contains API call for top 10 deals *****//
     static func getTopDeals(senderVC : UIViewController){
 //        showProgressBar(senderView: senderVC)
-        RentalClient.getTop10Deals(UserContext.sharedInstance.accessToken,onSuccess: {(response) in
+        RentalClient.getTop10Deals(Session.sharedSession.userAccessToken,onSuccess: {(response) in
             Constant.MyClassConstants.topDeals = response
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.refreshTableNotification), object: nil)
             Helper.removeServiceCallBackgroundView(view: senderVC.view)
@@ -999,7 +976,7 @@ public class Helper{
     
     //***** common function that contains API call for flex exchange deals *****/
     static func getFlexExchangeDeals(senderVC: UIViewController, success: @escaping((Bool) -> ())) {
-        ExchangeClient.getFlexExchangeDeals(UserContext.sharedInstance.accessToken, onSuccess: { (response) in
+        ExchangeClient.getFlexExchangeDeals(Session.sharedSession.userAccessToken, onSuccess: { (response) in
             Constant.MyClassConstants.flexExchangeDeals = response
             success(true)
         }) { (error) in
@@ -1037,7 +1014,7 @@ public class Helper{
         var value:Bool = false
         // let getResortByareaRequest = getResortByAreaRequest(areaCode: areaCode)
         
-        DirectoryClient.getResortsByArea(UserContext.sharedInstance.accessToken, areaCode: areaCode, onSuccess: {(response) in
+        DirectoryClient.getResortsByArea(Session.sharedSession.userAccessToken, areaCode: areaCode, onSuccess: {(response) in
             Constant.MyClassConstants.resortDirectoryResortArray = response
             print(response[0].images)
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadRegionNotification), object: nil)
@@ -1066,7 +1043,7 @@ public class Helper{
     
     static func getResortsWithLatLongForShowingOnMap(request:GeoArea) -> Bool {
         var value:Bool = false
-        DirectoryClient.getResortsWithinGeoArea(UserContext.sharedInstance.accessToken, geoArea: request, onSuccess: { (response) in
+        DirectoryClient.getResortsWithinGeoArea(Session.sharedSession.clientAccessToken, geoArea: request, onSuccess: { (response) in
             Constant.MyClassConstants.resortsArray = response
             value = true
             
@@ -1080,7 +1057,7 @@ public class Helper{
     
     static func getResortsByClubFloatDetails(resortCode:String, senderViewController:UIViewController, floatResortDetails:Resort){
         showProgressBar(senderView: senderViewController)
-        DirectoryClient.getResortsByClub(UserContext.sharedInstance.accessToken, clubCode: resortCode, onSuccess: { (_ resorts: [Resort]) in
+        DirectoryClient.getResortsByClub(Session.sharedSession.userAccessToken, clubCode: resortCode, onSuccess: { (_ resorts: [Resort]) in
             hideProgressBar(senderView: senderViewController)
             Constant.MyClassConstants.clubFloatResorts = resorts
             senderViewController.performSegue(withIdentifier: Constant.floatDetailViewController.clubresortviewcontrollerIdentifier, sender: self)
@@ -1133,7 +1110,7 @@ public class Helper{
     /***** Get check-in dates API to show in calendar ******/
     static func getCheckInDatesForCalendar(senderViewController:UIViewController, resortCode:String, relinquishmentYear:Int){
         showProgressBar(senderView: senderViewController)
-        DirectoryClient.getResortCalendars(UserContext.sharedInstance.accessToken, resortCode: resortCode, year: relinquishmentYear, onSuccess: { (resortCalendar: [ResortCalendar]) in
+        DirectoryClient.getResortCalendars(Session.sharedSession.userAccessToken, resortCode: resortCode, year: relinquishmentYear, onSuccess: { (resortCalendar: [ResortCalendar]) in
             
             SVProgressHUD.dismiss()
             self.removeServiceCallBackgroundView(view: senderViewController.view)
@@ -1600,7 +1577,7 @@ public class Helper{
     // Function to get trip details
     static func getTripDetails(senderViewController: UIViewController){
         showProgressBar(senderView:senderViewController)
-        ExchangeClient.getExchangeTripDetails(UserContext.sharedInstance.accessToken, confirmationNumber: Constant.MyClassConstants.transactionNumber, onSuccess: { (exchangeResponse) in
+        ExchangeClient.getExchangeTripDetails(Session.sharedSession.userAccessToken, confirmationNumber: Constant.MyClassConstants.transactionNumber, onSuccess: { (exchangeResponse) in
             Helper.hideProgressBar(senderView: senderViewController)
             Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails = exchangeResponse
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadTripDetailsNotification), object: nil)
@@ -1796,7 +1773,7 @@ public class Helper{
         request.checkInDate = checkInDate
         request.resortCodes = activeInterval.resortCodes
         
-        RentalClient.searchResorts(UserContext.sharedInstance.accessToken, request: request,
+        RentalClient.searchResorts(Session.sharedSession.userAccessToken, request: request,
                                    onSuccess: { (response) in
                                     // Update Rental inventory
                                     Constant.MyClassConstants.resortsArray.removeAll()
@@ -1843,7 +1820,7 @@ public class Helper{
         request.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
         request.travelParty = Constant.MyClassConstants.travelPartyInfo
         
-        ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: request, onSuccess: { (searchAvailabilityResponse) in
+        ExchangeClient.searchAvailability(Session.sharedSession.userAccessToken, request: request, onSuccess: { (searchAvailabilityResponse) in
             
             // Update Exchange inventory
             vacationSearch.exchangeSearch?.inventory = searchAvailabilityResponse
@@ -1892,7 +1869,7 @@ public class Helper{
     static func executeExchangeSearchDates(senderVC:UIViewController, vacationSearch:VacationSearch) {
         
         
-        ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request: vacationSearch.exchangeSearch?.searchContext.request,
+        ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request: vacationSearch.exchangeSearch?.searchContext.request,
                                    onSuccess: { (response) in
                                     vacationSearch.exchangeSearch?.searchContext.response = response
                                     Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
@@ -1933,7 +1910,7 @@ public class Helper{
      * Execute Exchange Search Dates After Select Interval
      */
     static func executeExchangeSearchDatesAfterSelectInterval(senderVC:UIViewController, datesCV:UICollectionView) {
-        ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request: Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request,
+        ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request,
                                    onSuccess: { (response) in
                                     Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
                                     
@@ -1981,7 +1958,7 @@ public class Helper{
         request.travelParty = searchCriteria.travelParty
         request.relinquishmentsIds = searchCriteria.relinquishmentsIds!
         
-        ExchangeClient.searchAvailability(UserContext.sharedInstance.accessToken, request: request,
+        ExchangeClient.searchAvailability(Session.sharedSession.userAccessToken, request: request,
                                           onSuccess: { (response) in
                                             // Update Exchange inventory
                                             Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.inventory = response
@@ -2193,7 +2170,7 @@ public class Helper{
 
     //resend Confirmation Info to email
     static func resendConfirmationInfoForUpcomingTrip(viewcontroller: UIViewController) {
-        let email = UserContext.sharedInstance.contact?.emailAddress
+        let email = Session.sharedSession.contact?.emailAddress
         let resendAlert = UIAlertController(title: "Send Confirmation To", message: nil, preferredStyle: .alert)
         
         //add Text Field
@@ -2204,7 +2181,7 @@ public class Helper{
         let submitAction = UIAlertAction(title: "Send", style: .default) { [unowned resendAlert] _ in
             guard let emailAddress = resendAlert.textFields![0].text  else { return }
             guard let confirmationNumber = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.confirmationNumber else { return }
-            guard let accessToken = UserContext.sharedInstance.accessToken else { return }
+            guard let accessToken = Session.sharedSession.userAccessToken else { return }
             
             PaymentClient.resendConfirmation(accessToken, confirmationNumber: confirmationNumber, emailAddress: emailAddress, onSuccess: {
                 print("success")

@@ -1,5 +1,5 @@
 //
-//  UIViewControllerExtension.swift
+//  UIViewController+Swipe.swift
 //  IntervalApp
 //
 //  Created by Jhon Sanchez Garcia on 7/14/17.

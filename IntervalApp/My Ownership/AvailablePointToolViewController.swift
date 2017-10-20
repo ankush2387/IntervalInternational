@@ -68,7 +68,7 @@ class AvailablePointToolViewController: UIViewController {
         
         SVProgressHUD.show()
         Helper.addServiceCallBackgroundView(view: self.view)
-        UserClient.getProgramAvailablePoints(UserContext.sharedInstance.accessToken, date: dateStr, onSuccess:{ (availablePoints) in
+        UserClient.getProgramAvailablePoints(Session.sharedSession.userAccessToken, date: dateStr, onSuccess:{ (availablePoints) in
             
             SVProgressHUD.dismiss()
             Helper.removeServiceCallBackgroundView(view: self.view)

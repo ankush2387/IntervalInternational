@@ -278,7 +278,7 @@ class FloatDetailViewController: UIViewController {
     
     //Function to update fix week reservation
      func updateFixWeekReservation(relinqishmentID:String, fixedWeekReservation:FixWeekReservation, viewController:UIViewController){
-        ExchangeClient.updateFixWeekReservation(UserContext.sharedInstance.accessToken, relinquishmentId: relinqishmentID, reservation: fixedWeekReservation, onSuccess: {
+        ExchangeClient.updateFixWeekReservation(Session.sharedSession.userAccessToken, relinquishmentId: relinqishmentID, reservation: fixedWeekReservation, onSuccess: {
             
             
             
@@ -378,7 +378,7 @@ class FloatDetailViewController: UIViewController {
     func addFloatToDatabase(reservationNumber:String, unitNumber:String, unitSize:String, checkInDate:String){
         //Realm local storage for selected relinquishment
         let storedata = OpenWeeksStorage()
-        let Membership = UserContext.sharedInstance.selectedMembership
+        let Membership = Session.sharedSession.selectedMembership
         let relinquishmentList = TradeLocalData()
         
         let selectedOpenWeek = OpenWeeks()

@@ -153,11 +153,11 @@ extension ResortFavoritesTableViewCell:ResortDirectoryCollectionViewCellDelegate
     func favoriteCollectionButtonClicked(_ sender:UIButton) {
         
         sender.isSelected = false
-        if((UserContext.sharedInstance.accessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
+        if((Session.sharedSession.userAccessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
             
             if (sender.isSelected == false){
                 
-                UserClient.addFavoriteResort(UserContext.sharedInstance.accessToken, resortCode:  Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!, onSuccess: {(response) in
+                UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode:  Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!, onSuccess: {(response) in
                     
                     print(response)
                     sender.isSelected = true

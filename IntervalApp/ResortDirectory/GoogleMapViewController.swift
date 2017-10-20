@@ -325,7 +325,7 @@ class GoogleMapViewController: UIViewController {
             self.googleMapSearchBar.showsCancelButton = false
             Helper.addServiceCallBackgroundView(view: self.view)
             SVProgressHUD.show()
-            DirectoryClient.getResortsWithinGeoArea(UserContext.sharedInstance.accessToken, geoArea: Constant.MyClassConstants.destinations![sender.tag].geoArea, onSuccess: { (response) in
+            DirectoryClient.getResortsWithinGeoArea(Session.sharedSession.userAccessToken, geoArea: Constant.MyClassConstants.destinations![sender.tag].geoArea, onSuccess: { (response) in
                 print(response)
                 Constant.MyClassConstants.resortsArray.removeAll()
                 Constant.MyClassConstants.resortsArray = response
@@ -404,7 +404,7 @@ class GoogleMapViewController: UIViewController {
                     
                     //Realm local storage for selected destination
                     let storedata = RealmLocalStorage()
-                    let Membership = UserContext.sharedInstance.selectedMembership
+                    let Membership = Session.sharedSession.selectedMembership
                     let desList = DestinationList()
                     desList.aoid = dict.aoiId
                     desList.countryCode = (dict.address?.countryCode)!
@@ -445,7 +445,7 @@ class GoogleMapViewController: UIViewController {
                 
                 //Realm local storage for selected resort
                 let storedata = RealmLocalStorage()
-                let Membership = UserContext.sharedInstance.selectedMembership
+                let Membership = Session.sharedSession.selectedMembership
                 let resortList = ResortList()
                 resortList.resortCityName = (address?.cityName)!
                 resortList.resortCode = dict.resortCode!
@@ -615,7 +615,7 @@ class GoogleMapViewController: UIViewController {
     func bottomResortFavoritesButtonPressed(sender:UIButton) {
         
         selectedFavButton = sender
-        if(UserContext.sharedInstance.accessToken == nil) {
+        if(Session.sharedSession.userAccessToken == nil) {
             
             let storyboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
             let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginController)
@@ -714,24 +714,7 @@ class GoogleMapViewController: UIViewController {
     
     //***** This function called when navigation back button pressed *****//
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
-        
-        if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.resortDirectoryTitle){
-            self.navigationController?.dismiss(animated: true, completion: nil)
-        }else{
-            Constant.MyClassConstants.selectionType = -1
-            if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.resortFunctionalityCheck){
-                self.dismiss(animated: true, completion: nil)
-            }else{
-                if(Constant.RunningDevice.deviceIdiom == .pad){
-                    self.dismiss(animated: true, completion: nil)
-                }else{
-                    _ = self.navigationController?.popViewController(animated: true)
-                }
-            }
-            
-            
-        }
-        
+        NotificationCenter.default.post(name:NSNotification.Name(rawValue: "PopToLoginView"), object: nil)
     }
     //***** This function called when navigation back button pressed *****//
     func applyButtonPressed(_ sender:UIBarButtonItem) {
@@ -739,7 +722,7 @@ class GoogleMapViewController: UIViewController {
         if(self.sourceController == Constant.MyClassConstants.vacationSearch) {
             
             let storedata = RealmLocalStorage()
-            let Membership = UserContext.sharedInstance.selectedMembership
+            let Membership = Session.sharedSession.selectedMembership
             let resortList = ResortList()
             
             for index in  Constant.MyClassConstants.addResortSelectedIndex {
@@ -2027,7 +2010,7 @@ extension GoogleMapViewController:UISearchBarDelegate {
                 
             }) { (error) in
                 
-                logger.warning(error.description)
+                Logger.sharedInstance.warning(error.description)
                 SimpleAlert.alert(self, title:Constant.AlertErrorMessages.tryAgainError, message: "\(error.localizedDescription)")
                 
             }
@@ -2040,11 +2023,11 @@ extension GoogleMapViewController:UISearchBarDelegate {
 
 extension GoogleMapViewController:SearchResultContentTableCellDelegate{
     func favoriteButtonClicked(_ sender: UIButton){
-        if((UserContext.sharedInstance.accessToken) != nil) {
+        if((Session.sharedSession.userAccessToken) != nil) {
             if (sender.isSelected == false){
                 
                 print(Constant.MyClassConstants.resortsArray[sender.tag].resortCode!)
-                UserClient.addFavoriteResort(UserContext.sharedInstance.accessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
+                UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
                     
                     print(response)
                     sender.isSelected = true

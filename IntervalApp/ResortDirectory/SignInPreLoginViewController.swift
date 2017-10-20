@@ -293,9 +293,9 @@ extension SignInPreLoginViewController:UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let contact = UserContext.sharedInstance.contact
+        let contact = Session.sharedSession.contact
         let membership = contact?.memberships![indexPath.row]
-        UserContext.sharedInstance.selectedMembership = membership
+        Session.sharedSession.selectedMembership = membership
         CreateActionSheet().membershipWasSelected()
         
     }
@@ -325,7 +325,7 @@ extension SignInPreLoginViewController:UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        let contact = UserContext.sharedInstance.contact
+        let contact = Session.sharedSession.contact
         return (contact?.memberships?.count)!
         
     }
@@ -333,7 +333,7 @@ extension SignInPreLoginViewController:UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         
-        let contact = UserContext.sharedInstance.contact
+        let contact = Session.sharedSession.contact
         let membership = contact?.memberships![indexPath.row]
         let cell: ActionSheetTblCell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.CustomCell, for: indexPath) as! ActionSheetTblCell
         cell.membershipTextLabel.text = Constant.CommonLocalisedString.memberNumber

@@ -19,7 +19,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>17</string>
+	<string>19</string>
 	<key>IntervalConfig</key>
 	<dict>
 		<key>BrightcoveAccountId</key>
@@ -31,7 +31,7 @@
 		<key>DarwinSecret</key>
 		<string>ee9acaa2-f08a-11e1-bc20-96c6dd6a022c</string>
 		<key>Environment</key>
-		<string>DEV2</string>
+		<string>QA2_DNS</string>
 		<key>LogLevel</key>
 		<string>Debug</string>
 	</dict>
@@ -80,8 +80,6 @@
 	<string>To attach a photo to your feedback, we need access to your Photo Library.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
-	<key>UIMainStoryboardFile</key>
-	<string>PostLaunch</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

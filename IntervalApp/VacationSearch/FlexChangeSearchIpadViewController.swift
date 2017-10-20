@@ -137,14 +137,14 @@ class FlexChangeSearchIpadViewController: UIViewController {
             //let storedData = Helper.getLocalStorageWherewanttoGo()
             
             exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
-            Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(UserContext.sharedInstance.appSettings, exchangeSearchCriteria)
+            Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(Session.sharedSession.appSettings, exchangeSearchCriteria)
             let area = Area()
             area.areaCode = (selectedFlexchange?.areaCode)!
             area.areaName = selectedFlexchange?.name
             Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.areas = [area]*/
             
             
-            ExchangeClient.searchDates(UserContext.sharedInstance.accessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
+            ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
                 
                 Helper.hideProgressBar(senderView: self)
                 Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
@@ -187,7 +187,7 @@ class FlexChangeSearchIpadViewController: UIViewController {
     func addRelinquishmentSectionButtonPressed(_ sender:IUIKButton) {
         
         Helper.showProgressBar(senderView: self)
-        ExchangeClient.getMyUnits(UserContext.sharedInstance.accessToken, onSuccess: { (Relinquishments) in
+        ExchangeClient.getMyUnits(Session.sharedSession.userAccessToken, onSuccess: { (Relinquishments) in
             
             Constant.MyClassConstants.relinquishmentDeposits = Relinquishments.deposits
             Constant.MyClassConstants.relinquishmentOpenWeeks = Relinquishments.openWeeks

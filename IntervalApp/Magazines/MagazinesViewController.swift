@@ -24,7 +24,7 @@ class MagazinesViewController: UIViewController {
         self.title = Constant.ControllerTitles.magazinesControllerTitle
         
         //***** Handle hamburgur menu button for prelogin and post login case *****//
-        if((UserContext.sharedInstance.accessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
+        if((Session.sharedSession.userAccessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
             
             if let rvc = self.revealViewController() {
                 //set SWRevealViewController's Delegate
@@ -53,7 +53,7 @@ class MagazinesViewController: UIViewController {
         super.viewDidLoad()
         Helper.getMagazines()
         NotificationCenter.default.addObserver(self, selector: #selector(reloadMagazines), name: NSNotification.Name(rawValue: Constant.notificationNames.magazineAlertNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(getAllMagazines), name: NSNotification.Name(rawValue: Constant.notificationNames.accessTokenAlertNotification), object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(getAllMagazines), name: NSNotification.Name(rawValue: Constant.notificationNames.accessTokenAlertNotification), object: nil)
         
         
         // Do any additional setup after loading the view.
@@ -71,8 +71,7 @@ class MagazinesViewController: UIViewController {
     
     //***** Method for back button *****//
     func menuBackButtonPressed() {
-        
-        self.navigationController?.dismiss(animated: true, completion: nil)
+        NotificationCenter.default.post(name:NSNotification.Name(rawValue: "PopToLoginView"), object: nil)
     }
     
     func playTapped() {

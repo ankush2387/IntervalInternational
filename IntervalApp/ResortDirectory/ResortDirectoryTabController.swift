@@ -15,14 +15,13 @@ class ResortDirectoryTabController: UITabBarController {
         
         super.viewDidLoad()
         
-        
         let appearance = UITabBarItem.appearance()
         let attributes: [String: AnyObject] = [NSFontAttributeName:UIFont(name: Constant.fontName.helveticaNeue, size: 15)!, NSForegroundColorAttributeName: IUIKColorPalette.primary1.color]
         appearance.setTitleTextAttributes(attributes, for: UIControlState())
         
         
         //***** Handle hamberger menu button for prelogin and post login case *****//
-        if((UserContext.sharedInstance.accessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
+        if((Session.sharedSession.userAccessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
             
             if let rvc = self.revealViewController() {
                 
@@ -139,7 +138,7 @@ extension ResortDirectoryTabController:UITabBarControllerDelegate {
         else {
             Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.favoritesFunctionalityCheck
             self.title = Constant.ControllerTitles.favoritesViewController
-            if(UserContext.sharedInstance.accessToken != nil) {
+            if(Session.sharedSession.userAccessToken != nil) {
                 
             }
             else {

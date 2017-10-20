@@ -154,7 +154,7 @@ class ClubPointSelectionViewController: UIViewController {
         
         
         
-         ExchangeClient.updatePointsMatrixReservation(UserContext.sharedInstance.accessToken, relinquishmentId: relinquishmentID, reservation: pointMatrixType, onSuccess: {(response) in
+         ExchangeClient.updatePointsMatrixReservation(Session.sharedSession.userAccessToken, relinquishmentId: relinquishmentID, reservation: pointMatrixType, onSuccess: {(response) in
             print(response)
             
          },onError:{ (error) in

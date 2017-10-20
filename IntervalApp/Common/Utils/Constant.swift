@@ -171,7 +171,9 @@ class Constant: NSObject {
         static var exchangeBookingLastStartedProcess:ExchangeProcess!
         
         //***** global variable that hold system access token *****//
-        static var systemAccessToken:DarwinAccessToken?
+        static var systemAccessToken: DarwinAccessToken? {
+            return Session.sharedSession.clientAccessToken
+        }
         
         //***** global variable that identify the running functionality *****//
         static var runningFunctionality = ""
@@ -203,13 +205,8 @@ class Constant: NSObject {
         static var resortDirectoryCommonHearderText = "Choose Region"
         static var selectedBedRoomSize = "All Bedroom Sizes"
         //***** global array that contains background images *****//
-        static let backgroundImageArray = ["BackgroundImgLogin-A","BackgroundImgLogin-B","BackgroundImgLogin-C","BackgroundImgLogin-D","BackgroundImgLogin-E","BackgroundImgLogin-F","BackgroundImgLogin-G"]
         
         static var collectionImageArray = ["","","","","","","","","",""]
-        
-        //***** global variable to contain random number each time app delegate called *****//
-        static var random:Int?
-        
         
         //***** New creditcard screen constant string *****//
         static var newCardalertTitle = NSLocalizedString("New Creditcard Form", comment: "")
@@ -506,7 +503,6 @@ class Constant: NSObject {
         static var isOff = "off"
         static var relinquishment = "Relinquishment"
         static var resortDirectoryVCTitle = "ResortDetailsVC"
-        static var googleMapKey = "AIzaSyCFg7iWNVVm_0tjKsBb9NFREVjQrExDlhE"//AIzaSyCCJ7PzZaaefMvNc-CnGX-Ky-9E1Xx3x6k
         static var alertsResortCodeDictionary = NSMutableDictionary()
         static var alertsSearchDatesDictionary = NSMutableDictionary()
         static var headerArray = ["Getaway Alerts","My Upcoming Trips"]
@@ -808,7 +804,6 @@ class Constant: NSObject {
         
         static var getawayAlertsNotification = "reloadAlerts"
         static var magazineAlertNotification = "reloadMagazines"
-        static var accessTokenAlertNotification = "gotAccessToken"
         static var closeButtonClickedNotification = "closeButtonClicked"
         static var reloadFavoritesTabNotification = "reloadFavoritesTab"
         static var reloadMapNotification = "reloadMap"
@@ -1111,6 +1106,7 @@ class Constant: NSObject {
         static var customTableViewCell = "CustomTableViewCell"
         static var paymentDetailCell = "PaymentCell"
         static var policyCell = "PolicyCell"
+        static var paymentDetailsCell = "PaymentDetailsCell"
         static var insuranceCell = "EplusTableViewCell"
         static var modifyInsuranceCell = "ModifyTripInsurance"
         static var purchasedInsuranceCell = "PurchasedTripInsurence"

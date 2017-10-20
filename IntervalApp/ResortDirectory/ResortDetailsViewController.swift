@@ -112,6 +112,7 @@ class ResortDetailsViewController: UIViewController {
         super.viewDidLoad()
      
         
+        
         // omniture tracking with event 35
         if(Constant.MyClassConstants.resortsDescriptionArray.resortCode != nil){
             let userInfo: [String: String] = [
@@ -351,7 +352,7 @@ class ResortDetailsViewController: UIViewController {
     //***** Function call for search button pressed. *****//
     
     func searchVacationClicked(){
-        if((UserContext.sharedInstance.accessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
+        if((Session.sharedSession.userAccessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
             let realm = try! Realm()
             let allDest = Helper.getLocalStorageWherewanttoGo()
             if (allDest.count > 0) {
@@ -366,7 +367,7 @@ class ResortDetailsViewController: UIViewController {
             
             //realm local storage for selected resort
             let storedata = RealmLocalStorage()
-            let Membership = UserContext.sharedInstance.selectedMembership
+            let Membership = Session.sharedSession.selectedMembership
             let resortList = ResortList()
             if let cityName = (address?.cityName){
                 resortList.resortCityName = cityName
@@ -900,7 +901,7 @@ extension ResortDetailsViewController:UITableViewDataSource {
                 
                 mapView = GMSMapView.map(withFrame: mapframe, camera: camera)
                 mapView.isUserInteractionEnabled = false
-                mapView.isMyLocationEnabled = true
+               // mapView.isMyLocationEnabled = true
                 if (Constant.MyClassConstants.resortsDescriptionArray.coordinates?.latitude) != nil {
                     
                     let  position = CLLocationCoordinate2DMake((Constant.MyClassConstants.resortsDescriptionArray.coordinates?.latitude)!,(Constant.MyClassConstants.resortsDescriptionArray.coordinates?.longitude)!)
@@ -1068,13 +1069,13 @@ extension ResortDetailsViewController:UITableViewDataSource {
     
     func favoritesButtonClicked(_ sender:IUIKButton){
         
-        if(UserContext.sharedInstance.accessToken != nil) {
+        if(Session.sharedSession.userAccessToken != nil) {
             
             if (sender.isSelected == false){
                 
                 SVProgressHUD.show()
                 Helper.addServiceCallBackgroundView(view: self.view)
-                UserClient.addFavoriteResort(UserContext.sharedInstance.accessToken, resortCode: Constant.MyClassConstants.resortsDescriptionArray.resortCode!, onSuccess: {(response) in
+                UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsDescriptionArray.resortCode!, onSuccess: {(response) in
                     
                     Helper.removeServiceCallBackgroundView(view: self.view)
                     SVProgressHUD.dismiss()
@@ -1091,7 +1092,7 @@ extension ResortDetailsViewController:UITableViewDataSource {
             else {
                 SVProgressHUD.show()
                 Helper.addServiceCallBackgroundView(view: self.view)
-                UserClient.removeFavoriteResort(UserContext.sharedInstance.accessToken, resortCode: Constant.MyClassConstants.resortsDescriptionArray.resortCode!, onSuccess: {(response) in
+                UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsDescriptionArray.resortCode!, onSuccess: {(response) in
                     
                     
                     sender.isSelected = false

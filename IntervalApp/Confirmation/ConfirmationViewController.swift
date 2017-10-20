@@ -63,7 +63,7 @@ class ConfirmationViewController: UIViewController {
         
         //let name = UserContext.sharedInstance.contact?.firstName?.capitalized
         //memberName.text = "Booking Complete \n Congratulations \(name!)!"
-        memberNumber.text = UserContext.sharedInstance.selectedMembership?.memberNumber
+        memberNumber.text = Session.sharedSession.selectedMembership?.memberNumber
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .long
         let dateString = dateFormatter.string(from: Date())
@@ -82,7 +82,7 @@ class ConfirmationViewController: UIViewController {
             Constant.omnitureEvars.eVar40 : "" ,
             Constant.omnitureEvars.eVar42 : "" ,
             Constant.omnitureEvars.eVar62 : "\(Helper.getDifferenceOfDates())" ,
-            Constant.omnitureEvars.eVar63 : "\((UserContext.sharedInstance.contact?.creditcards?.count)! > 0 ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no)" ,
+            Constant.omnitureEvars.eVar63 : "\((Session.sharedSession.contact?.creditcards?.count)! > 0 ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no)" ,
             Constant.omnitureEvars.eVar73 : Constant.MyClassConstants.checkoutInsurencePurchased,
             Constant.omnitureEvars.eVar77 : Constant.MyClassConstants.checkoutPromotionPurchased
             

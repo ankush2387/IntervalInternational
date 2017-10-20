@@ -28,7 +28,7 @@ class IntervalHDTabController: UITabBarController {
         
         
         //***** handle hamberger menu button for prelogin and post login case *****//
-        if((UserContext.sharedInstance.accessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
+        if((Session.sharedSession.userAccessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
             
             if let rvc = self.revealViewController() {
                 //set SWRevealViewController's Delegate
@@ -66,8 +66,7 @@ class IntervalHDTabController: UITabBarController {
     }
    
     func menuBackButtonPressed(sender:UIBarButtonItem) {
-        
-        self.navigationController?.dismiss(animated: true, completion: nil)
+        NotificationCenter.default.post(name:NSNotification.Name(rawValue: "PopToLoginView"), object: nil)
     }
     
     override func didReceiveMemoryWarning() {
