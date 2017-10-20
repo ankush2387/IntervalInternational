@@ -13,20 +13,21 @@ import IntervalUIKit
 final class AppCoordinator {
     
     // MARK: - Public properties
-
     var initialViewController = UIViewController()
-    
+
     // MARK: - Private properties
     private let preLoginCoordinator: PreLoginCoordinator
     private let relinquishmentProgram = PointsProgram()
-    private var navigationController: UINavigationController?
+    private var appState: AppState = .foreground
 
     fileprivate let session = Session.sharedSession
     fileprivate let loginCoordinator: LoginCoordinator
     fileprivate let autoLogoutTimer = AutoLogoutTimer()
 
     fileprivate var userIsLoggedIn = false
+    fileprivate var apnsCoordinator: APNSCoordinator?
     fileprivate var autoLogoutViewController: UIAlertController?
+    fileprivate var navigationController: UINavigationController?
 
     var topViewController: UIViewController? {
         if var topViewController = UIApplication.shared.keyWindow?.rootViewController {
@@ -61,20 +62,27 @@ final class AppCoordinator {
         self.navigationController = navigationController
         self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
-
-    func applicationEnteredForeground() {
-        autoLogoutTimer.applicationEnteredForeground()
+    
+    func applicationEntered(state: AppState) {
+        appState = state
+        switch state {
+        case .foreground:
+            autoLogoutTimer.applicationEnteredForeground()
+        case .background:
+            autoLogoutTimer.applicationEnteredBackground()
+        }
     }
-
-    func applicationDidEnterBackground() {
-        autoLogoutTimer.applicationEnteredBackground()
+    
+    func didReceive(_ payload: [AnyHashable: Any], in state: AppState) {
+        appState = state
+        apnsCoordinator = APNSCoordinator(payload: APNSPayload(payload), appState: appState, userIsLoggedIn: userIsLoggedIn, dateAPNSRecieved: Date())
     }
     
     // MARK: - Private functions
-    
     private func setDelegates() {
         autoLogoutTimer.delegate = self
         loginCoordinator.delegate = self
+        apnsCoordinator?.delegate = self
         preLoginCoordinator.delegate = self
     }
 
@@ -82,6 +90,10 @@ final class AppCoordinator {
         topViewController?.presentAlert(with: "Logged Out".localized(),
                                         message: "You have been automatically logged out due to inactivity.".localized(),
                                         hideCancelButton: true)
+    }
+
+    fileprivate func resetIconBadgeNumberForPush() {
+        UIApplication.shared.applicationIconBadgeNumber = 0
     }
 
     fileprivate func startLogout() {
@@ -110,6 +122,14 @@ final class AppCoordinator {
         autoLogoutViewController = nil
         presentAutologoutNotification()
     }
+
+    fileprivate func showDashboard() {
+        let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+        let storyboardName = isRunningOnIphone ? Constant.storyboardNames.dashboardIPhone : Constant.storyboardNames.dashboardIPad
+        if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
+            navigationController?.pushViewController(initialViewController, animated: true)
+        }
+    }
 }
 
 extension AppCoordinator: IntervalApplicationDelegate {
@@ -119,6 +139,24 @@ extension AppCoordinator: IntervalApplicationDelegate {
         if userIsLoggedIn && autoLogoutViewController == nil {
             autoLogoutTimer.restart()
         }
+    }
+}
+
+extension AppCoordinator: APNSCoordinatorDelegate {
+
+    func redirectUser() {
+        let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+        let storyboardName = isRunningOnIphone ? Constant.storyboardNames.getawayAlertsIphone : Constant.storyboardNames.getawayAlertsIpad
+        if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
+            navigationController?.pushViewController(initialViewController, animated: true)
+            resetIconBadgeNumberForPush()
+            apnsCoordinator = nil
+        }
+    }
+
+    func showRedirectAlert(with title: String, message: String) {
+        let callBack: (() -> Void)? = userIsLoggedIn ? redirectUser : nil
+        topViewController?.showAPNSPushBanner(for: title, with: message, callBack: callBack)
     }
 }
 
@@ -134,15 +172,33 @@ extension AppCoordinator: PreLoginCoordinatorDelegate {
         topViewController?.showBannerNotification(with: "Connection Failure".localized(),
                                                   subtitle: "Some services may be temporarily unavailable".localized(),
                                                   for: .warning)
-
     }
 }
 
 extension AppCoordinator: LoginCoordinatorDelegate {
     
     func didLogin() {
+        
         userIsLoggedIn = true
+        
+        // TODO: - ... These singletons must be removed gradually a.k.a. "Code Choke" them out.
+        Constant.MyClassConstants.loginOriginationPoint = Constant.omnitureCommonString.signInPage
+        Constant.MyClassConstants.signInRequestedController = topViewController!
+        Session.sharedSession.selectedMembership = session.contact?.memberships![0]
+        CreateActionSheet().membershipWasSelected()
+        ///
+
+        if apnsCoordinator?.shouldRedirectOnlogin == true && apnsCoordinator?.pushViabilityHasNotExpired == true {
+            redirectUser()
+        } else {
+            showDashboard()
+        }
+
         autoLogoutTimer.restart()
+    }
+    
+    func didError(message: String) {
+        topViewController?.showBannerNotification(with: "Error".localized(), subtitle: message, for: .error)
     }
 }
 

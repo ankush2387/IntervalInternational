@@ -69,7 +69,6 @@ final class LoginViewController: UIViewController {
         viewModel.login()
             .onViewError(handler: presentErrorAlert)
             .finally(hideHudAsync)
-            .finally(showDashboard)
     }
 
     private func presentTouchIDOptions() {
@@ -309,12 +308,5 @@ extension LoginViewController {
         let storyboard = UIStoryboard(name:storyboardName, bundle: nil)
         let initialViewController = storyboard.instantiateViewController(withIdentifier: "PrivacyLegalViewController")
         navigationController?.pushViewController(initialViewController, animated: true)
-    }
-
-    func showDashboard() {
-        let storyboardName = isRunningOnIphone ? Constant.storyboardNames.dashboardIPhone : Constant.storyboardNames.dashboardIPad
-        if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
-            navigationController?.pushViewController(initialViewController, animated: true)
-        }
     }
 }

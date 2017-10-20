@@ -11,6 +11,7 @@ import Foundation
 struct PersistentSettings { }
 
 extension PersistentSettings: PersistentSettingsStore {
+    
     var backgroundImageIndex: Int? {
         get {
             let key = Persistent.backgroundImageIndex.key
@@ -29,6 +30,17 @@ extension PersistentSettings: PersistentSettingsStore {
         }
         set {
             let key = Persistent.touchIDEnabled.key
+            UserDefaults.standard.set(newValue, forKey: key)
+        }
+    }
+    
+    var notificationTopic: String? {
+        get {
+            let key = Persistent.notificationTopic.key
+            return UserDefaults.standard.string(forKey: key)
+        }
+        set {
+            let key = Persistent.notificationTopic.key
             UserDefaults.standard.set(newValue, forKey: key)
         }
     }
