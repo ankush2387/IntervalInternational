@@ -2219,6 +2219,41 @@ public class Helper{
             return ""
         }
     }
+    
+    // search criteria
+    static func createSearchCriteriaFor(deal:FlexExchangeDeal) -> VacationSearchCriteria {
+        /*let travelParty = TravelParty()
+        travelParty.adults = 2
+        travelParty.children = 0*/
+        
+       // let relinquishmentId = "Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"
+        
+        let area = Area()
+        area.areaCode = deal.areaCode
+        area.areaName = deal.name
+        
+        let searchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
+        searchCriteria.area = area
+        searchCriteria.checkInDate = deal.getCheckInDate()
+        searchCriteria.checkInFromDate = deal.getCheckInFromDate()
+        searchCriteria.checkInToDate = deal.getCheckInToDate()
+        searchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
+        searchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
+        
+        return searchCriteria
+    }
+    
+    static func createSearchCriteriaForRentalDeal(deal:RentalDeal) -> VacationSearchCriteria {
+        let area = Area()
+        area.areaCode = deal.areaCodes[0]
+        area.areaName = deal.header
+        
+        let searchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
+        searchCriteria.checkInDate = deal.getCheckInDate()
+        searchCriteria.area = area
+        
+        return searchCriteria
+    }
 
 
     static func returnStringWithPriceAndTerm(price:String, term:String) -> String {

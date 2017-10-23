@@ -15,12 +15,14 @@ import ReactiveKit
 final class LoginViewModel {
     
     // MARK: - Public properties
+    let appBundle: AppBundle
     let backgroundImage: Observable<UIImage>
     let username: Observable<String?>
     let password: Observable<String?>
     let isLoggingIn = Observable(false)
     let touchIDEnabled: Observable<Bool>
     let clientTokenLoaded = Observable(false)
+    let appSettings: Observable<AppSettings?>
     var didLogin: (() -> Void)?
 
     var buttonEnabledState: Signal<Bool, NoError> {
@@ -28,8 +30,23 @@ final class LoginViewModel {
             .map(shouldDisableButton)
             .observeOn(.main)
     }
+    
+    var versionLabel: (text: String?, isHidden: Bool) {
+        
+        switch configuration.getEnvironment() {
+            
+        case .production, .production_dns:
+            return (nil, true)
+            
+        default:
+            let environment = configuration.get(.Environment, defaultValue: "NONE").uppercased()
+            let text = "\("Version: ".localized()) \(appBundle.appVersion).\(appBundle.build) \(environment) (\(appBundle.gitCommit))"
+            return (text, false)
+        }
+    }
 
     // MARK: - Private properties
+    private let configuration: Config
     private let encryptedStore: EncryptedStore
     private let clientAPIStore: ClientAPIStore
     private let touchIDUserNameKey = "touchIDUser"
@@ -43,9 +60,14 @@ final class LoginViewModel {
          sessionStore: SessionStore,
          clientAPIStore: ClientAPIStore,
          encryptedStore: EncryptedStore,
-         persistentSettingsStore: PersistentSettingsStore) {
+         persistentSettingsStore: PersistentSettingsStore,
+         configuration: Config,
+         appBundle: AppBundle) {
 
+        appSettings = Observable(nil)
+        self.appBundle = appBundle
         self.sessionStore = sessionStore
+        self.configuration = configuration
         self.clientAPIStore = clientAPIStore
         self.encryptedStore = encryptedStore
         self.backgroundImage = Observable(backgroundImage)
@@ -54,6 +76,7 @@ final class LoginViewModel {
         self.username = Observable(try? encryptedStore.getItem(for: touchIDUserNameKey) ?? "")
         self.password = Observable(try? encryptedStore.getItem(for: touchIDPasswordKey) ?? "")
         self.touchIDEnabled.observeNext(with: updatedTouchIDState).dispose(in: disposeBag)
+        self.clientTokenLoaded.observeNext(with: checkAppVersion).dispose(in: disposeBag)
     }
 
     // MARK: - Public functions
@@ -101,5 +124,11 @@ final class LoginViewModel {
 
     private func updatedTouchIDState(enabled: Bool) {
         persistentSettingsStore.touchIDEnabled = enabled
+    }
+    
+    private func checkAppVersion(clientTokenLoaded: Bool) {
+        if clientTokenLoaded {
+            appSettings.next(sessionStore.appSettings?.ios)
+        }
     }
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DarwinSDK
 import ReactiveKit
 
 final class LoginViewController: UIViewController {
@@ -34,9 +35,9 @@ final class LoginViewController: UIViewController {
     @IBOutlet private var webActivityButtons: [UIButton]!
 
     // MARK: - Private properties
-    private let viewModel: LoginViewModel
     private let disposeBag = DisposeBag()
     private let touchID = TouchIDAuth()
+    fileprivate let viewModel: LoginViewModel
     
     // MARK: - Lifecycle
     init(viewModel: LoginViewModel) {
@@ -98,24 +99,22 @@ final class LoginViewController: UIViewController {
 
     private func setUI() {
 
-        if touchID.canEvaluatePolicy {
-            updateTouchIDText(enabled: viewModel.touchIDEnabled.value)
-        } else {
+        if !touchID.canEvaluatePolicy {
             touchIDArea.forEach { $0.isHidden = true }
         }
-
+        
         backgroundImageView.image = viewModel.backgroundImage.value
         signInBackgroundView.backgroundColor = UIColor.white.withAlphaComponent(0.9)
         updateUIForOrientation()
-        setVersionLabelIfBuiltInDebug()
+        setVersionLabelForNonProductionBuild()
     }
 
     private func updateTouchIDText(enabled: Bool) {
         if enabled {
-            enableTouchIDLabel.text = "Enable Touch ID".localized()
+            enableTouchIDLabel.text = "Disable Touch ID".localized()
             self.touchIDImageView.image = #imageLiteral(resourceName: "TouchID-On")
         } else {
-            enableTouchIDLabel.text = "Disable Touch ID".localized()
+            enableTouchIDLabel.text = "Enable Touch ID".localized()
             self.touchIDImageView.image = #imageLiteral(resourceName: "TouchID-Off")
         }
     }
@@ -134,6 +133,7 @@ final class LoginViewController: UIViewController {
         viewModel.buttonEnabledState.bind(to: signInButton.reactive.isEnabled).dispose(in: disposeBag)
         intervalHDButton.reactive.tap.observeNext(with: intervalHDButtonTapped).dispose(in: disposeBag)
         viewModel.clientTokenLoaded.observeNext(with: enabledWebActivityButton).dispose(in: disposeBag)
+        viewModel.appSettings.flatMap { $0 }.observeNext(with: checkAppVersion).dispose(in: disposeBag)
         viewModel.isLoggingIn.map { !$0 }.bind(to: loginIDTextField.reactive.isEnabled).dispose(in: disposeBag)
         viewModel.isLoggingIn.map { !$0 }.bind(to: passwordTextField.reactive.isEnabled).dispose(in: disposeBag)
         resortDirectoryButton.reactive.tap.observeNext(with: resortDirectoryButtonTapped).dispose(in: disposeBag)
@@ -176,6 +176,11 @@ final class LoginViewController: UIViewController {
         portraitStackView.insertArrangedSubview(webActivitiesButtonsView, at: 1)
     }
     
+    private func setVersionLabelForNonProductionBuild() {
+        versionLabel.text = viewModel.versionLabel.text
+        versionLabel.isHidden = viewModel.versionLabel.isHidden
+    }
+    
     private func updateLoginButtonsUI(enabled: Bool) {
 
         signInButton.isEnabled = enabled
@@ -203,11 +208,62 @@ final class LoginViewController: UIViewController {
     }
 }
 
-extension LoginViewController: ViewControllerHelper {
-    fileprivate func setVersionLabelIfBuiltInDebug() {
-        #if DEBUG
-            versionLabel.text = buildVersion
-        #endif
+extension LoginViewController: ComputationHelper {
+    
+    private func update() {
+        
+        struct UpdateError: ViewError {
+            var description: (title: String, body: String) {
+                return ("Error".localized(), "Unable to redirect to the App Store. Please open the App store updates tab to update.".localized())
+            }
+        }
+        
+        guard let url = URL(string: "https://itunes.apple.com/us/app/interval-international/id388957867"),
+            UIApplication.shared.canOpenURL(url) else {
+                
+                // If URL for app cannot be opened; open page for all IntervalInternational apps on App Store
+                if let intervalAppsURL = URL(string: "https://itunes.apple.com/us/developer/interval-international/id388957870"),
+                    UIApplication.shared.canOpenURL(intervalAppsURL) {
+                    NetworkHelper.open(intervalAppsURL)
+                } else {
+                    presentErrorAlert(UpdateError())
+                }
+                
+                return
+        }
+        
+        NetworkHelper.open(url)
+    }
+    
+    private func showForceUpdateAlert(for appSettings: AppSettings) {
+        presentAlert(with: "Update Required".localized(),
+                     message: appSettings.minimumSupportedVersionAlert.unwrappedString,
+                     hideCancelButton: true,
+                     acceptButtonTitle: "Update".localized(),
+                     acceptHandler: update)
+    }
+    
+    private func showUpdateAlert(for appSettings: AppSettings) {
+        presentAlert(with: "Newer Version Available".localized(),
+                     message: appSettings.currentVersionAlert.unwrappedString,
+                     cancelButtonTitle: "Update".localized(),
+                     acceptButtonTitle: "Not Now".localized(),
+                     cancelHandler: update)
+    }
+    
+    fileprivate func checkAppVersion(appSettings: AppSettings) {
+        
+        let updateRequired = checkIfPassedIn(appSettings.minimumSupportedVersion.unwrappedString, isNewerThan: viewModel.appBundle.appVersion)
+        let newerVersionAvailable = checkIfPassedIn(appSettings.currentVersion.unwrappedString, isNewerThan: viewModel.appBundle.appVersion)
+        
+        guard !updateRequired else {
+            showForceUpdateAlert(for: appSettings)
+            return
+        }
+        
+        if newerVersionAvailable {
+            showUpdateAlert(for: appSettings)
+        }
     }
 }
 
