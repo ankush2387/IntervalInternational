@@ -8,6 +8,7 @@ end
 
 def testing_build_dependencies
     pod 'Realm'
+    pod 'Firebase/Core'
     pod 'Brightcove-Player-SDK'
     pod 'GoogleMaps' , '~>2.2.0'
     pod 'Bond', :git=>'https://github.com/ReactiveKit/Bond.git', :tag => '6.3.0'
@@ -19,7 +20,9 @@ target 'IntervalApp' do
     pod 'RMessage'
     pod 'RealmSwift'
     pod 'SwiftyJSON'
+    pod 'Firebase/Core'
     pod 'SVProgressHUD'
+    pod 'Firebase/Messaging'
     pod 'TPKeyboardAvoiding'
     pod 'Brightcove-Player-SDK'
     pod 'FSCalendar', '~>2.1.1'
