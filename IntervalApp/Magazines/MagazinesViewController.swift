@@ -71,7 +71,7 @@ class MagazinesViewController: UIViewController {
     
     //***** Method for back button *****//
     func menuBackButtonPressed() {
-        NotificationCenter.default.post(name:NSNotification.Name(rawValue: "PopToLoginView"), object: nil)
+        NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.MyClassConstants.popToLoginView), object: nil)
     }
     
     func playTapped() {

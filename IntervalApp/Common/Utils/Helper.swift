@@ -215,8 +215,9 @@ public class Helper{
     
     //***** function to remove disable layer and make UI interaction enable *****//
     static func removeServiceCallBackgroundView(view:UIView){
-        
-//        self.progressBarBackgroundView.removeFromSuperview()
+        if(progressBarBackgroundView != nil){
+            progressBarBackgroundView.removeFromSuperview()
+        }
     }
     
     //***** common function that contains signIn API call with user name and password *****//
@@ -380,7 +381,6 @@ public class Helper{
     //**** Common function to get upcoming trips. ****//
    static func getUpcomingTripsForUser(){
         UserClient.getUpcomingTrips(Session.sharedSession.userAccessToken, onSuccess: {(upComingTrips) in
-            print("Call 4",upComingTrips)
             Constant.MyClassConstants.upcomingTripsArray = upComingTrips
             
             for trip in upComingTrips { if((trip.type) != nil) {
@@ -998,12 +998,11 @@ public class Helper{
                 if(!(viewController is ResortDirectoryTabController)){
                     viewController.performSegue(withIdentifier: Constant.segueIdentifiers.resortDirectorySegue, sender: self)
                 }
-                removeServiceCallBackgroundView(view: viewController.view)
+                //removeServiceCallBackgroundView(view: viewController.view)
+                hideProgressBar(senderView: viewController)
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadRegionNotification), object: nil)
-                SVProgressHUD.dismiss()
             },    onError: {(error) in
-                removeServiceCallBackgroundView(view: viewController.view)
-                SVProgressHUD.dismiss()
+                hideProgressBar(senderView: viewController)
             })
         }
     }

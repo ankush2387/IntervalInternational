@@ -819,7 +819,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                         rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                         
                         Constant.MyClassConstants.initialVacationSearch = VacationSearch(Session.sharedSession.appSettings, rentalSearchCriteria)
-                        RentalClient.searchDates(Session.sharedSession.userAccessToken, request:self.vacationSearch.rentalSearch?.searchContext.request,onSuccess: { (response) in
+                        RentalClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,onSuccess: { (response) in
                             
                             Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
                             

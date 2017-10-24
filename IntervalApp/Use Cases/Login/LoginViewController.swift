@@ -280,7 +280,7 @@ extension LoginViewController {
     }
     
     func addObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(popToLoginView), name: NSNotification.Name(rawValue: "PopToLoginView"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(popToLoginView), name: NSNotification.Name(rawValue: Constant.MyClassConstants.popToLoginView), object: nil)
     }
 
     func resortDirectoryButtonTapped() {

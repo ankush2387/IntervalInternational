@@ -628,7 +628,7 @@ class Constant: NSObject {
                 
         static var guestCertificateString = NSLocalizedString("Get a FREE Guest Certificate now and every time with Interval Platinum. Your Interval Platinum must be active through your travel dates to receive FREE Guest Certificates. To upgrade or renew, a", comment: "")
         
-        
+        static var popToLoginView =  "PopToLoginView"
         
     }
     

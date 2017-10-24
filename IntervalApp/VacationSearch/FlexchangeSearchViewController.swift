@@ -142,7 +142,7 @@ class FlexchangeSearchViewController: UIViewController {
                 let settings = Helper.createSettings()
                 Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
                 
-                //let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
+                let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
                 
                /* exchangeSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
                 exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
@@ -150,7 +150,7 @@ class FlexchangeSearchViewController: UIViewController {
                 exchangeSearchCriteria.searchType = VacationSearchType.Exchange*/
                 
                 
-                //let storedData = Helper.getLocalStorageWherewanttoGo()
+                let storedData = Helper.getLocalStorageWherewanttoGo()
                 
 
                 exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
