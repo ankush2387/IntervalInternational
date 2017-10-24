@@ -55,7 +55,11 @@ final class LoginViewController: UIViewController {
         setUI()
         bindUI()
         performTouchIDLoginIfEnabled()
-        addObserver()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.password.next(nil)
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -272,14 +276,6 @@ extension LoginViewController {
 
     var isRunningOnIphone: Bool {
         return UIDevice.current.userInterfaceIdiom == .phone
-    }
-    
-    func popToLoginView() {
-        navigationController?.popToRootViewController(animated: true)
-    }
-    
-    func addObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(popToLoginView), name: NSNotification.Name(rawValue: "PopToLoginView"), object: nil)
     }
 
     func resortDirectoryButtonTapped() {

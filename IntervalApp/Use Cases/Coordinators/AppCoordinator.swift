@@ -44,6 +44,7 @@ final class AppCoordinator {
         loginCoordinator = LoginCoordinator()
         initialViewController = loginCoordinator.loginView()
         preLoginCoordinator = PreLoginCoordinator(clientAPIStore: ClientAPI.sharedInstance)
+        addObserver()
     }
     
     // MARK: - Public functions
@@ -78,6 +79,20 @@ final class AppCoordinator {
         apnsCoordinator = APNSCoordinator(payload: APNSPayload(payload), appState: appState, userIsLoggedIn: userIsLoggedIn, dateAPNSRecieved: Date())
     }
     
+    // TODO: - Things to remove
+    // Notifications are intended for communications accross Modules/Targets/Projects
+    // Using them as a form of delegations breaks MVC, MVVM and other data flow models
+    
+    private func addObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(logout), name: NSNotification.Name(rawValue: "PopToLoginView"), object: nil)
+    }
+    
+    @objc private func logout() {
+        startLogout()
+    }
+    
+    //
+    
     // MARK: - Private functions
     private func setDelegates() {
         autoLogoutTimer.delegate = self
@@ -96,7 +111,7 @@ final class AppCoordinator {
         UIApplication.shared.applicationIconBadgeNumber = 0
     }
 
-    fileprivate func startLogout() {
+    fileprivate func startLogout(isAutologout: Bool = false) {
         
         session.signOut() // Hmm.. this might be more appropriately moved into the DarwinSDK
 
@@ -112,6 +127,9 @@ final class AppCoordinator {
         // TODO: - Need to refactor code/calls above
 
         logoutDidFinish()
+        if isAutologout {
+            presentAutologoutNotification()
+        }
     }
 
     fileprivate func logoutDidFinish() {
@@ -120,7 +138,6 @@ final class AppCoordinator {
         autoLogoutTimer.stop()
         autoLogoutViewController?.dismiss(animated: false)
         autoLogoutViewController = nil
-        presentAutologoutNotification()
     }
 
     fileprivate func showDashboard() {
@@ -236,6 +253,6 @@ extension AppCoordinator: AutoLogoutDelegate {
     }
     
     func startAutoLogout() {
-        startLogout()
+        startLogout(isAutologout: true)
     }
 }
