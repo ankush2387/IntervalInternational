@@ -1817,7 +1817,8 @@ public class Helper{
         request.checkInDate = checkInDate
         request.resortCodes = activeInterval.resortCodes!
         request.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
-        request.travelParty = Constant.MyClassConstants.travelPartyInfo
+       // request.travelParty = Constant.MyClassConstants.travelPartyInfo
+        request.travelParty = Helper.travelPartInfo()
         
         ExchangeClient.searchAvailability(Session.sharedSession.userAccessToken, request: request, onSuccess: { (searchAvailabilityResponse) in
             
@@ -2221,11 +2222,11 @@ public class Helper{
     
     // search criteria
     static func createSearchCriteriaFor(deal:FlexExchangeDeal) -> VacationSearchCriteria {
-        /*let travelParty = TravelParty()
+        let travelParty = TravelParty()
         travelParty.adults = 2
-        travelParty.children = 0*/
+        travelParty.children = 0
         
-       // let relinquishmentId = "Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"
+        let relinquishmentId = "Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"
         
         let area = Area()
         area.areaCode = deal.areaCode
@@ -2236,10 +2237,17 @@ public class Helper{
         searchCriteria.checkInDate = deal.getCheckInDate()
         searchCriteria.checkInFromDate = deal.getCheckInFromDate()
         searchCriteria.checkInToDate = deal.getCheckInToDate()
-        searchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
-        searchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
-        
+        searchCriteria.travelParty = travelParty
+        //searchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
+        searchCriteria.relinquishmentsIds = [relinquishmentId]
         return searchCriteria
+    }
+    
+    static func travelPartInfo() -> TravelParty {
+        let travelParty = TravelParty()
+        travelParty.adults = 2
+        travelParty.children = 0
+        return travelParty
     }
     
     static func createSearchCriteriaForRentalDeal(deal:RentalDeal) -> VacationSearchCriteria {

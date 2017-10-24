@@ -567,12 +567,15 @@ extension DashboardTableViewController:UICollectionViewDataSource {
             self.flexchangeSelected(selectedIndexPath: indexPath)
         }else{
             self.topTenGetawaySelected(selectedIndexPath: indexPath)
+            
         }
     }
 }
 
 extension UIViewController {
     func topTenGetawaySelected(selectedIndexPath: IndexPath) {
+        let topTenDeals = Constant.MyClassConstants.topDeals[selectedIndexPath.row]
+        Constant.MyClassConstants.vacationSearchResultHeaderLabel = topTenDeals.header!
         
         ADBMobile.trackAction(Constant.omnitureEvents.event1, data: nil)
         
@@ -692,12 +695,12 @@ extension UIViewController {
     
     func navigateToSearchResultsScreen(){
         if UIDevice.current.userInterfaceIdiom == .pad {
-            let storyboard = UIStoryboard(name: "VacationSearchIpad", bundle: nil)
-            let viewController = storyboard.instantiateViewController(withIdentifier: "SearchResultViewController")
+            let storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+            let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController)
             self.navigationController!.pushViewController(viewController, animated: true)
         } else if UIDevice.current.userInterfaceIdiom == .phone {
-            let storyboard = UIStoryboard(name: "VacationSearchIphone", bundle: nil)
-            let viewController = storyboard.instantiateViewController(withIdentifier: "SearchResultViewController")
+            let storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+            let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController)
             self.navigationController!.pushViewController(viewController, animated: true)
         }
     }
