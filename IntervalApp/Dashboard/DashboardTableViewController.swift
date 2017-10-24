@@ -609,7 +609,7 @@ extension UIViewController {
                 
                 ADBMobile.trackAction(Constant.omnitureEvents.event18, data: nil)
                 // omniture tracking with event 9
-                let userInfo: [String: Any] = [
+                /*let userInfo: [String: Any] = [
                     Constant.omnitureCommonString.listItem: Constant.MyClassConstants.selectedDestinationNames,
                     Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch,
                     Constant.omnitureEvars.eVar19 : Constant.MyClassConstants.vacationSearchShowDate,
@@ -626,7 +626,7 @@ extension UIViewController {
                     Constant.omnitureEvars.eVar61:Constant.MyClassConstants.searchOriginationPoint,
                     ]
                 
-                ADBMobile.trackAction(Constant.omnitureEvents.event9, data: userInfo)
+                ADBMobile.trackAction(Constant.omnitureEvents.event9, data: userInfo)*/
                 
                 
                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
