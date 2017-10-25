@@ -177,7 +177,7 @@ class AddDebitOrCreditCardViewController: UIViewController {
                 }
                 
                 //API call to tokenize new credit card.
-                Helper.addServiceCallBackgroundView(view: self.view)
+                
                 SVProgressHUD.show()
                 CreditCardTokenizeClient.tokenize(Session.sharedSession.userAccessToken, creditCardNumber: newCreditCard.cardNumber!, onSuccess: {(response) in
                     

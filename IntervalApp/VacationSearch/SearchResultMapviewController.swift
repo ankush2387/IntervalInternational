@@ -294,7 +294,7 @@ class SearchResultMapviewController: UIViewController {
           if (sender.isSelected == false){
             
             SVProgressHUD.show()
-            Helper.addServiceCallBackgroundView(view: self.view)
+            
             UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
             
                 Helper.removeServiceCallBackgroundView(view: self.view)
@@ -312,7 +312,7 @@ class SearchResultMapviewController: UIViewController {
           else {
             
             SVProgressHUD.show()
-            Helper.addServiceCallBackgroundView(view: self.view)
+            
             UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
                 
                 sender.isSelected = false

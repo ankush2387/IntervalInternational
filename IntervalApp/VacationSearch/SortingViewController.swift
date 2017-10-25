@@ -174,7 +174,7 @@ class SortingViewController: UIViewController {
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     Constant.MyClassConstants.initialVacationSearch = vacationSearchFilter
                     Helper.helperDelegate = self
-                    Helper.hideProgressBar(senderView: self)
+                    
                     
                     if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
                         
@@ -193,7 +193,7 @@ class SortingViewController: UIViewController {
                     
                 }){ (error) in
                     
-                    Helper.hideProgressBar(senderView: self)
+                    
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                 }
                 
@@ -227,7 +227,7 @@ class SortingViewController: UIViewController {
                     let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     Helper.helperDelegate = self
-                    Helper.hideProgressBar(senderView: self)
+                    
                     
                     if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
                         
@@ -245,7 +245,7 @@ class SortingViewController: UIViewController {
                     
                 }){ (error) in
                     
-                    Helper.hideProgressBar(senderView: self)
+                    
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                 }
                 
@@ -260,7 +260,7 @@ class SortingViewController: UIViewController {
                 
                 RentalClient.searchDates(Session.sharedSession.userAccessToken, request: vacationSearchFilter.rentalSearch?.searchContext.request, onSuccess:{ (response) in
                     
-                    Helper.hideProgressBar(senderView: self)
+                    
                     vacationSearchFilter.rentalSearch?.searchContext.response = response
                     
                     let activeInterval = vacationSearchFilter.bookingWindow.getActiveInterval()
@@ -274,13 +274,13 @@ class SortingViewController: UIViewController {
                     // Check not available checkIn dates for the active interval
                     if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
                         
-                        Helper.hideProgressBar(senderView: self)
+                        
                         //self.rentalHasNotAvailableCheckInDates = true
                         Helper.executeExchangeSearchDates(senderVC: self, vacationSearch: vacationSearchFilter)
                         
                     }else{
                         
-                        Helper.hideProgressBar(senderView: self)
+                        
                         let vacationSearchInitialDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
                         if(vacationSearchInitialDate != nil){
                             Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearchInitialDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: vacationSearchFilter)
@@ -298,7 +298,7 @@ class SortingViewController: UIViewController {
                     
                 }){ (error) in
                     
-                    Helper.hideProgressBar(senderView: self)
+                    
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                 }
             }

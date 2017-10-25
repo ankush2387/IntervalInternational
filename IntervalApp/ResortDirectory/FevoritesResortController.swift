@@ -81,7 +81,7 @@ class FevoritesResortController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         
         if(Session.sharedSession.userAccessToken != nil){
-            Helper.showProgressBar(senderView: self)
+            
             UserClient.getFavoriteResorts(Session.sharedSession.userAccessToken, onSuccess: { (response) in
                 Constant.MyClassConstants.favoritesResortArray.removeAll()
                 for item in [response][0] {
@@ -97,11 +97,11 @@ class FevoritesResortController: UIViewController {
                     
                 }
                 self.setupView()
-                Helper.hideProgressBar(senderView: self)
+                
             })
             { (error) in
                 self.setupView()
-                Helper.hideProgressBar(senderView: self)
+                
             }
         } else {
             setupView()
@@ -110,7 +110,7 @@ class FevoritesResortController: UIViewController {
     
     fileprivate func setupView() {
         if(Session.sharedSession.userAccessToken == nil) {
-            Helper.hideProgressBar(senderView: self)
+            
             self.signInView.isHidden = false
             self.resortTableBaseView.isHidden = true
         }
