@@ -294,7 +294,7 @@ class Constant: NSObject {
     
         static var selectedIndex:Int!
         static var vacationSearchContentPagerRunningIndex  = 0
-        static var vacationSearchShowDate:Date!
+        static var vacationSearchShowDate = Date()
         static var alertWindowStartDate:Date!
         static var alertWindowEndDate:Date!
         static var rightBarButtonTitle = "Today"
@@ -630,6 +630,8 @@ class Constant: NSObject {
         
         static var popToLoginView =  "PopToLoginView"
         
+        static var certifcateCount = 0
+        static var certificateArray = [AccommodationCertificate]()
     }
     
     // Enum to store resorts and destinations
