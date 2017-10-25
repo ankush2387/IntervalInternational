@@ -26,7 +26,9 @@ class DashboardTableViewController: UITableViewController {
     var showExchange = true
     var dashboardArray = NSMutableArray()
     var alertWithResultsArray = [RentalAlert]()
-    
+    var isRunningOnIphone: Bool {
+        return UIDevice.current.userInterfaceIdiom == .phone
+    }
     override func viewWillAppear(_ animated: Bool) {
         //***** Adding notification to reload alert badge *****//
         //Helper.removeServiceCallBackgroundView(view: self.view)
@@ -686,15 +688,15 @@ extension UIViewController {
         Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.areas = [areas]*/
         
         
-        let storyboard = UIStoryboard(name: "VacationSearchIphone", bundle: nil)
-        let viewController = storyboard.instantiateViewController(withIdentifier: "FlexchangeViewController") as! FlexchangeSearchViewController
+        let storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.flexchangeViewController) as! FlexchangeSearchViewController
         viewController.selectedFlexchange = Constant.MyClassConstants.flexExchangeDeals[selectedIndexPath.row]
         self.navigationController!.pushViewController(viewController, animated: true)
         
     }
     
     func navigateToSearchResultsScreen(){
-        if UIDevice.current.userInterfaceIdiom == .pad {
+        /*if UIDevice.current.userInterfaceIdiom == .pad {
             let storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
             let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController)
             self.navigationController!.pushViewController(viewController, animated: true)
@@ -702,7 +704,13 @@ extension UIViewController {
             let storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController)
             self.navigationController!.pushViewController(viewController, animated: true)
+        }*/
+        
+        let storyboardName = Constant.MyClassConstants.isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
+        if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
+            show(initialViewController, sender: self)
         }
+        
     }
     
     // Function to get to date and from date for search dates API calling

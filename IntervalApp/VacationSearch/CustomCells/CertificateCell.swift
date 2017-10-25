@@ -13,9 +13,18 @@ class CertificateCell: UITableViewCell {
     
     // Travel Window Outlets...
     
-    @IBOutlet weak var dateLable: UILabel!
-    @IBOutlet weak var dayNameLabel: UILabel!
-    @IBOutlet weak var monthYearLabel: UILabel!
+    @IBOutlet weak var travelWindowStartDateLbl: UILabel!
+    
+    @IBOutlet weak var travelWindowStartDayLbl: UILabel!
+    
+    @IBOutlet weak var travelWindowStartMonthYearLbl: UILabel!
+    
+    
+    @IBOutlet weak var travelWindowEndDateLbl: UILabel!
+    
+    @IBOutlet weak var travelWindowEndDayLbl: UILabel!
+    
+    @IBOutlet weak var travelWindowEndMonthYearLbl: UILabel!
     
     @IBOutlet weak var cellBaseView: UIView!
     @IBOutlet weak var certificateNumber: UILabel!

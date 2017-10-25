@@ -97,12 +97,12 @@ extension CertificateViewController:UITableViewDataSource {
         let startComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: calendarDate)
         let year = String(describing: startComponents.year!)
         let monthName = "\(Helper.getMonthnameFromInt(monthNumber: startComponents.month!))"
-        cell.dateLable.text = "\(startComponents.day!)".uppercased()
-        cell.dateLable.font = UIFont(name: Constant.fontName.helveticaNeue, size: 25)
-        cell.dayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber:startComponents.weekday!))"
+        cell.travelWindowStartDateLbl.text = "\(startComponents.day!)".uppercased()
+        cell.travelWindowStartDateLbl.font = UIFont(name: Constant.fontName.helveticaNeue, size: 25)
+        cell.travelWindowStartDayLbl.text = "\(Helper.getWeekdayFromInt(weekDayNumber:startComponents.weekday!))"
         
-        cell.monthYearLabel.text = "\(monthName) \(year)".uppercased()
-        cell.monthYearLabel.font = UIFont(name:  Constant.fontName.helveticaNeue, size: 7)
+        cell.travelWindowStartMonthYearLbl.text = "\(monthName) \(year)".uppercased()
+        cell.travelWindowStartMonthYearLbl.font = UIFont(name:  Constant.fontName.helveticaNeue, size: 7)
         
         Helper.applyShadowOnUIView(view: cell.cellBaseView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 1.0)
         cell.selectionStyle = UITableViewCellSelectionStyle.none

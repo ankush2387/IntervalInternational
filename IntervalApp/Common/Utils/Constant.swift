@@ -97,7 +97,9 @@ class Constant: NSObject {
     }
     
     struct MyClassConstants{
-        
+        static var isRunningOnIphone: Bool {
+            return UIDevice.current.userInterfaceIdiom == .phone
+        }
         static var alertOriginationPoint:String!
         static var depositPromotionNav = "DepositPromotionsNav"
         static var sorting = "Sorting"
