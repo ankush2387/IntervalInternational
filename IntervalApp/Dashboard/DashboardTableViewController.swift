@@ -644,11 +644,12 @@ extension UIViewController {
                 
                 Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                 
+                Helper.hideProgressBar(senderView: self)
+                
                 // Check not available checkIn dates for the active interval
                 if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                    
                     Helper.showNotAvailabilityResults()
-                    //self.navigateToSearchResults()
+                    self.navigateToSearchResultsScreen()
                     
                 } else {
                     
@@ -657,7 +658,6 @@ extension UIViewController {
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     //sender.isEnabled = true
                     Helper.helperDelegate = self as? HelperDelegate
-                    Helper.hideProgressBar(senderView: self)
                     Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                 }
             })

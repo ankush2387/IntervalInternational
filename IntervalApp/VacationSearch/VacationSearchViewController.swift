@@ -1388,7 +1388,8 @@ extension VacationSearchViewController:WhoIsTravelingCellDelegate {
 
 //MARK:- Search Button Click
 extension VacationSearchViewController:SearchTableViewCellDelegate {
-    func searchButtonClicked(_ sender : IUIKButton) {
+    fileprivate func extractedFunc(_ sender: IUIKButton) {
+    {
         
         //Set travel PartyInfo
         let travelPartyInfo = TravelParty()
@@ -1740,6 +1741,9 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         
     }
     }
+}
+
+func searchButtonClicked(_ sender : IUIKButton) extractedFunc(sender)
     
     func showNotAvailabilityResults() {
         DarwinSDK.logger.info("Show the Not Availability Screen.")
@@ -1784,7 +1788,9 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
 extension VacationSearchViewController:HelperDelegate {
     func resortSearchComplete(){
         Helper.hideProgressBar(senderView: self)
-        // Check if not has availability in the desired check-In date.
+        self.navigateToSearchResultsScreen()
+        
+        /*// Check if not has availability in the desired check-In date.
         if (Constant.MyClassConstants.initialVacationSearch.searchCheckInDate != Helper.convertDateToString(date: Constant.MyClassConstants.vacationSearchShowDate, format: Constant.MyClassConstants.dateFormat)) {
             Helper.showNearestCheckInDateSelectedMessage()
         }
@@ -1798,7 +1804,7 @@ extension VacationSearchViewController:HelperDelegate {
         self.navigationController?.pushViewController(viewController, animated: true)
         //let navController = UINavigationController(rootViewController: viewController)
         
-        //self.present(navController, animated:true, completion: nil)
+        //self.present(navController, animated:true, completion: nil)*/
     }
     func resetCalendar(){
         Constant.MyClassConstants.calendarDatesArray.removeAll()

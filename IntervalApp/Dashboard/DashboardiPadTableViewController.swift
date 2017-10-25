@@ -433,6 +433,7 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
         }
         
         if collectionView.tag == 3 {
+            Helper.helperDelegate = self 
             self.topTenGetawaySelected(selectedIndexPath: indexPath)
         }
         
@@ -627,6 +628,8 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
     }
 }
 
+
+
 //extension DashboardIPadTableViewController:UICollectionViewDelegateFlowLayout {
 //
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -661,3 +664,11 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
 //    }
 //}
 
+extension DashboardIPadTableViewController:HelperDelegate{
+    func resortSearchComplete() {
+        self.navigateToSearchResultsScreen()
+    }
+    func resetCalendar() {
+        
+    }
+}

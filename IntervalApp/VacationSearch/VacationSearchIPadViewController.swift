@@ -1237,7 +1237,8 @@ extension VacationSearchIPadViewController:WereWantToGoTableViewCellDelegate {
 // Mark: Extension for Helper
 extension VacationSearchIPadViewController:HelperDelegate {
     func resortSearchComplete(){
-        if (Constant.MyClassConstants.initialVacationSearch.searchCheckInDate != Helper.convertDateToString(date: Constant.MyClassConstants.vacationSearchShowDate, format: Constant.MyClassConstants.dateFormat) ) {
+        self.navigateToSearchResultsScreen()
+        /*if (Constant.MyClassConstants.initialVacationSearch.searchCheckInDate != Helper.convertDateToString(date: Constant.MyClassConstants.vacationSearchShowDate, format: Constant.MyClassConstants.dateFormat) ) {
             Helper.showNearestCheckInDateSelectedMessage()
         }
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
@@ -1248,7 +1249,7 @@ extension VacationSearchIPadViewController:HelperDelegate {
         self.navigationController?.transitioningDelegate = transitionManager
         let navController = UINavigationController(rootViewController: viewController)
         self.present(navController, animated:true, completion: nil)
-        //self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
+        //self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)*/
     }
     func resetCalendar(){
         Constant.MyClassConstants.calendarDatesArray.removeAll()
