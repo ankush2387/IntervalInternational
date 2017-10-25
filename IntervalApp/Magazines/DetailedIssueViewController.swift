@@ -57,19 +57,19 @@ extension DetailedIssueViewController:UIWebViewDelegate {
 	
 	func webViewDidStartLoad(_ webView: UIWebView)
     {
-        
-        SVProgressHUD.show()
+
+        showHudAsync()
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView)
     {
         SVProgressHUD.dismiss()
-        Helper.removeServiceCallBackgroundView(view: self.view)
+        self.hideHudAsync()
     }
     
      func webView(_ webView: UIWebView, didFailLoadWithError error: Error){
         SVProgressHUD.dismiss()
-        Helper.removeServiceCallBackgroundView(view: self.view)
+        self.hideHudAsync()
     }
 }
 

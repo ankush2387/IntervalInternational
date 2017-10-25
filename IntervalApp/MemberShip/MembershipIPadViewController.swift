@@ -72,7 +72,7 @@ class MembershipIPadViewController: UIViewController {
     }
     
     fileprivate func getContactMembershipInfo() {
-        SVProgressHUD.show()
+        showHudAsync()
         if let contact = Session.sharedSession.contact {
             self.contactInfo = contact
         }
@@ -296,7 +296,7 @@ extension MembershipIPadViewController:UITableViewDelegate
                 self.dismiss(animated: true, completion: nil)
                 let alert = UIAlertController(title: Constant.memberShipViewController.switchMembershipAlertTitle, message: Constant.memberShipViewController.switchMembershipAlertMessage, preferredStyle: .actionSheet)
                 let actionYes = UIAlertAction(title: "Yes", style: .destructive, handler: { (response) in
-                    SVProgressHUD.show()
+                    self.showHudAsync()
                     Session.sharedSession.selectedMembership = membership
                     self.membershipWasSelected()
                 })

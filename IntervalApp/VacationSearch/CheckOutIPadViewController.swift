@@ -56,7 +56,7 @@ class CheckOutIPadViewController: UIViewController {
     var renewalsArray = [Renewal]()
     
     override func viewWillAppear(_ animated: Bool) {
-        Helper.removeServiceCallBackgroundView(view: self.view)
+        self.hideHudAsync()
         
         self.emailTextToEnter = (Session.sharedSession.contact?.emailAddress)!
         self.checkoutTableView.reloadData()
@@ -203,13 +203,13 @@ class CheckOutIPadViewController: UIViewController {
     
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
         
-        SVProgressHUD.show()
+        showHudAsync()
         
         if(Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
             ExchangeProcessClient.backToChooseExchange(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess: {(response) in
-                
+                self.hideHudAsync()
             }, onError: {(error) in
-                
+                self.hideHudAsync()
                 SimpleAlert.alert(self, title: "Checkout", message: error.localizedDescription)
             })
             
@@ -218,13 +218,13 @@ class CheckOutIPadViewController: UIViewController {
             RentalProcessClient.backToWhoIsChecking(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, onSuccess: {(response) in
                 
                 SVProgressHUD.dismiss()
-                Helper.removeServiceCallBackgroundView(view: self.view)
+                self.hideHudAsync()
                 _ = self.navigationController?.popViewController(animated: true)
                 
             }, onError: {(error) in
                 
                 SVProgressHUD.dismiss()
-                Helper.removeServiceCallBackgroundView(view: self.view)
+                self.hideHudAsync()
                 SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.operationFailedMessage)
             })
         }
@@ -261,7 +261,7 @@ class CheckOutIPadViewController: UIViewController {
                 continueToPayRequest.confirmationDelivery = confirmationDelivery
                 
                 
-                SVProgressHUD.show()
+                showHudAsync()
                 imageSlider.isHidden = true
                 showLoader = true
                 self.checkoutTableView.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
@@ -284,12 +284,12 @@ class CheckOutIPadViewController: UIViewController {
                         Constant.MyClassConstants.selectedCreditCard.removeAll()
                         Helper.removeStoredGuestFormDetials()
                         self.isAgreed = true
-                        
+                        self.hideHudAsync()
                         self.checkoutTableView.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                         self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
                         
                     }, onError: { (error) in
-                        
+                        self.hideHudAsync()
                         imageSlider.isHidden = false
                         self.isAgreed = false
                         self.checkoutTableView.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
@@ -315,13 +315,13 @@ class CheckOutIPadViewController: UIViewController {
                         Constant.MyClassConstants.selectedCreditCard.removeAll()
                         self.isAgreed = true
                         SVProgressHUD.dismiss()
-                        Helper.removeServiceCallBackgroundView(view: self.view)
+                        self.hideHudAsync()
                         self.checkoutTableView.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                         self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
                         
                     }, onError: { (error) in
                         SVProgressHUD.dismiss()
-                        Helper.removeServiceCallBackgroundView(view: self.view)
+                        self.hideHudAsync()
                         imageSlider.isHidden = false
                         self.isAgreed = false
                         self.checkoutTableView.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
@@ -400,7 +400,7 @@ class CheckOutIPadViewController: UIViewController {
             Constant.MyClassConstants.exchangeFees.last!.insurance?.selected = shouldAddTripProtection
             let exchangeRecalculateRequest = ExchangeProcessRecalculateRequest.init()
             exchangeRecalculateRequest.fees = Constant.MyClassConstants.exchangeFees.last!
-            
+            showHudAsync()
             ExchangeProcessClient.recalculateFees(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: exchangeRecalculateRequest, onSuccess: {
                 (response) in
                 
@@ -411,7 +411,7 @@ class CheckOutIPadViewController: UIViewController {
                 Constant.MyClassConstants.exchangeFees[0].total = (response.view?.fees?.total)!
                 //self.bookingTableView.reloadSections(IndexSet(integer: 0), with:.automatic)
                 self.bookingTableView.reloadData()
-                
+                self.hideHudAsync()
                 
             }, onError: { (error) in
                 Constant.MyClassConstants.exchangeFees.last!.insurance?.selected = !shouldAddTripProtection
@@ -419,7 +419,7 @@ class CheckOutIPadViewController: UIViewController {
                 self.isTripProtectionEnabled = false
                 self.bookingTableView.reloadData()
                 DarwinSDK.logger.debug(error.description)
-                
+                self.hideHudAsync()
                 SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: error.description)
             })
         }
@@ -428,18 +428,18 @@ class CheckOutIPadViewController: UIViewController {
             let rentalRecalculateRequest = RentalProcessRecapRecalculateRequest.init()
             rentalRecalculateRequest.fees = Constant.MyClassConstants.rentalFees.last!
             
-            SVProgressHUD.show()
+            showHudAsync()
             RentalProcessClient.addTripProtection(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, request: rentalRecalculateRequest, onSuccess: { (response) in
                 self.tripRequestInProcess = false
                 Constant.MyClassConstants.continueToCheckoutResponse = response
                 Constant.MyClassConstants.rentalFees[0].total = (response.view?.fees?.total)!
                 self.bookingTableView.reloadSections(IndexSet(integer: 0), with:.automatic)
-                Helper.removeServiceCallBackgroundView(view: self.view)
+                self.hideHudAsync()
                 SVProgressHUD.dismiss()
             }, onError: { (error) in
                 self.tripRequestInProcess = false
                 DarwinSDK.logger.debug(error.description)
-                Helper.removeServiceCallBackgroundView(view: self.view)
+                self.hideHudAsync()
                 SVProgressHUD.dismiss()
             })
         }
@@ -463,7 +463,7 @@ class CheckOutIPadViewController: UIViewController {
         let exchangeRecalculateRequest = ExchangeProcessRecalculateRequest.init()
         exchangeRecalculateRequest.fees = Constant.MyClassConstants.exchangeFees.last!
         exchangeRecalculateRequest.fees?.eplus?.selected = sender.checked
-        
+        showHudAsync()
         ExchangeProcessClient.recalculateFees(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: exchangeRecalculateRequest, onSuccess: { (recapResponse) in
             
             self.eplusAdded = sender.checked
@@ -471,11 +471,11 @@ class CheckOutIPadViewController: UIViewController {
             self.checkSectionsForFees()
             self.bookingTableView.reloadData()
             
-            
+            self.hideHudAsync()
         }, onError: { (error) in
             self.eplusAdded = !sender.checked
             Constant.MyClassConstants.exchangeFees[0].eplus?.selected = sender.checked
-            
+            self.hideHudAsync()
             SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: error.description)
             self.checkSectionsForFees()
             self.bookingTableView.reloadData()
@@ -628,7 +628,7 @@ class CheckOutIPadViewController: UIViewController {
         let promotionsVC = promotionsNav.viewControllers.first as! PromotionsViewController
         promotionsVC.promotionsArray = Constant.MyClassConstants.recapViewPromotionCodeArray
         promotionsVC.completionHandler = { selected in
-            SVProgressHUD.show()
+            self.showHudAsync()
             //Creating Request to recap with Promotion
             let processResort = RentalProcess()
             processResort.currentStep = ProcessStep.Recap
@@ -666,11 +666,11 @@ class CheckOutIPadViewController: UIViewController {
                     self.destinationPromotionSelected = true
                     self.checkoutTableView.reloadData()
                     self.bookingTableView.reloadData()
-                    
+                    self.hideHudAsync()
                     
                     
                 }, onError: { (error) in
-                    
+                    self.hideHudAsync()
                 })
             }
             else{
@@ -725,7 +725,7 @@ extension CheckOutIPadViewController:UITableViewDelegate {
         
         if(indexPath.section == 5 && tableView.tag == 3) {
             
-            SVProgressHUD.show()
+            showHudAsync()
             
             UserClient.getCreditCards(Session.sharedSession.userAccessToken!, onSuccess: { (response) in
                 
@@ -734,7 +734,7 @@ extension CheckOutIPadViewController:UITableViewDelegate {
                 if(Constant.MyClassConstants.selectedCreditCard.count == 0) {
                     
                     SVProgressHUD.dismiss()
-                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    self.hideHudAsync()
                     self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
                 }
                 else {
@@ -743,11 +743,11 @@ extension CheckOutIPadViewController:UITableViewDelegate {
                     if(selectedCard.creditcardId == 0) {
                         Constant.MyClassConstants.memberCreditCardList.append(selectedCard)
                         SVProgressHUD.dismiss()
-                        Helper.removeServiceCallBackgroundView(view: self.view)
+                        self.hideHudAsync()
                         self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
                     }else{
                         SVProgressHUD.dismiss()
-                        Helper.removeServiceCallBackgroundView(view: self.view)
+                        self.hideHudAsync()
                         self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
                     }
                 }
@@ -755,7 +755,7 @@ extension CheckOutIPadViewController:UITableViewDelegate {
                 
             }, onError: { (error) in
                 SVProgressHUD.dismiss()
-                Helper.removeServiceCallBackgroundView(view: self.view)
+                self.hideHudAsync()
             })
         }
     }
@@ -1651,20 +1651,19 @@ extension CheckOutIPadViewController:UIWebViewDelegate {
     
     func webViewDidStartLoad(_ webView: UIWebView)
     {
-        
-        SVProgressHUD.show()
+        showHudAsync()
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView)
     {
         SVProgressHUD.dismiss()
-        Helper.removeServiceCallBackgroundView(view: self.view)
+        self.hideHudAsync()
         
     }
     
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error){
         SVProgressHUD.dismiss()
-        Helper.removeServiceCallBackgroundView(view: self.view)
+        self.hideHudAsync()
     }
 }
 

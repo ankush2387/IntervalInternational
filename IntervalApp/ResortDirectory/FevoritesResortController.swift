@@ -81,7 +81,7 @@ class FevoritesResortController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         
         if(Session.sharedSession.userAccessToken != nil){
-            
+            showHudAsync()
             UserClient.getFavoriteResorts(Session.sharedSession.userAccessToken, onSuccess: { (response) in
                 Constant.MyClassConstants.favoritesResortArray.removeAll()
                 for item in [response][0] {
@@ -97,11 +97,11 @@ class FevoritesResortController: UIViewController {
                     
                 }
                 self.setupView()
-                
+                self.hideHudAsync()
             })
             { (error) in
                 self.setupView()
-                
+                self.hideHudAsync()
             }
         } else {
             setupView()
@@ -110,7 +110,7 @@ class FevoritesResortController: UIViewController {
     
     fileprivate func setupView() {
         if(Session.sharedSession.userAccessToken == nil) {
-            
+            self.hideHudAsync()
             self.signInView.isHidden = false
             self.resortTableBaseView.isHidden = true
         }
