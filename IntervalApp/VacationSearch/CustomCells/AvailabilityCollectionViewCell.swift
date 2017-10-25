@@ -17,6 +17,8 @@ class AvailabilityCollectionViewCell: UICollectionViewCell {
    
     @IBOutlet weak var resortName: UILabel!
  
+    @IBOutlet weak var favourite: UIButton!
+   
     @IBOutlet weak var resortCode: UILabel!
     @IBOutlet weak var resortAddress: UILabel!
  
@@ -25,6 +27,8 @@ class AvailabilityCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var tierImage: UIImageView!
     //***** class variables *****//
     //var delegate:ResortDirectoryCollectionViewCellDelegate?
+    
+    
     
     
     func setResortDetails(inventoryItem:Resort){
