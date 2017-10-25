@@ -46,6 +46,11 @@ class SearchResultViewController: UIViewController {
     var combinedSurroundingSearchItems = [AvailabilitySectionItem]()
     var dateCellSelectionColor = Constant.CommonColor.blueColor
     var myActivityIndicator = UIActivityIndicatorView()
+    var value:String = ""
+    
+   
+    
+    
     
     // Only one section with surroundings found
     var onlySurroundingsFound = false
@@ -739,6 +744,32 @@ class SearchResultViewController: UIViewController {
     func getResortInfoCollectionCell(indexPath: IndexPath, collectionView:UICollectionView, resort:Resort) -> AvailabilityCollectionViewCell{
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.resortDetailCell, for: indexPath) as! AvailabilityCollectionViewCell
         cell.setResortDetails(inventoryItem: resort)
+        print(Constant.MyClassConstants.favoritesResortCodeArray)
+        let status =  Helper.isResrotFavorite(resortCode: resort.resortCode!)
+        if(status) {
+            cell.favourite.isSelected = true
+        }
+        else {
+            cell.favourite.isSelected = false
+        }
+        
+        
+        if(collectionView.superview?.superview?.tag == 0){
+            
+            if(exactMatchResortsArray.count > 0){
+                cell.favourite.tag = collectionView.tag
+                cell.favourite.accessibilityValue = collectionView.accessibilityValue
+            }else{
+                cell.favourite.tag = collectionView.tag
+                cell.favourite.accessibilityValue = collectionView.accessibilityValue
+            }
+            
+        }else{
+            cell.favourite.tag = collectionView.tag
+            cell.favourite.accessibilityValue = collectionView.accessibilityValue
+        }
+        
+        cell.favourite.addTarget(self, action: #selector(favoriteButtonclicked(_:)), for: .touchUpInside)
         return cell
     }
     
@@ -772,6 +803,90 @@ class SearchResultViewController: UIViewController {
             SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.description)
             
         })
+    }
+    
+    func favoriteButtonclicked(_ sender:UIButton) {
+        
+        let section =  sender.accessibilityValue!
+        
+        
+                if((Session.sharedSession.userAccessToken) != nil) {
+                    
+                    var resortCode = ""
+                    if  section == "0" {
+                        if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Rental){
+                            resortCode = exactMatchResortsArray[sender.tag].resortCode!
+                        }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Exchange){
+                            resortCode = (exactMatchResortsArrayExchange[sender.tag].resort?.resortCode!)!
+                        }else{
+                            resortCode = (combinedExactSearchItems[sender.tag].rentalAvailability?.resortCode)!
+                        }
+                        
+                    }
+                    else {
+                        
+                        if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Rental){
+                             resortCode = surroundingMatchResortsArray[sender.tag].resortCode!
+                        }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Exchange){
+                            resortCode = (surroundingMatchResortsArrayExchange[sender.tag].resort?.resortCode!)!
+                        }else{
+                            resortCode = (combinedSurroundingSearchItems[sender.tag].rentalAvailability?.resortCode)!
+                        }
+                       
+                    }
+        
+                    if (sender.isSelected == false){
+                        
+                        SVProgressHUD.show()
+                        Helper.addServiceCallBackgroundView(view: self.view)
+                        UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode:resortCode, onSuccess: {(response) in
+
+                            Helper.removeServiceCallBackgroundView(view: self.view)
+                            SVProgressHUD.dismiss()
+                            sender.isSelected = true
+                            Constant.MyClassConstants.favoritesResortCodeArray.add(resortCode)
+                            let indexpath = NSIndexPath(row: sender.tag, section:Int(section)!)
+                            print(Constant.MyClassConstants.favoritesResortCodeArray)
+                            self.searchResultTableView.reloadRows(at: [indexpath as IndexPath], with: .automatic)
+                            
+                        }, onError: {(error) in
+
+                            SVProgressHUD.dismiss()
+                            Helper.removeServiceCallBackgroundView(view: self.view)
+
+                        })
+                    }
+                    else {
+
+                        SVProgressHUD.show()
+                        Helper.addServiceCallBackgroundView(view: self.view)
+                        UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: resortCode, onSuccess: {(response) in
+
+                            sender.isSelected = false
+                            Helper.removeServiceCallBackgroundView(view: self.view)
+                            SVProgressHUD.dismiss()
+                            Constant.MyClassConstants.favoritesResortCodeArray.remove(resortCode)
+                            print(Constant.MyClassConstants.favoritesResortCodeArray)
+                            
+                            
+                            let indexpath = NSIndexPath(row: sender.tag, section:Int(section)!)
+                            self.searchResultTableView.reloadRows(at: [indexpath as IndexPath], with: .automatic)
+                            
+
+                        }, onError: {(error) in
+
+                            SVProgressHUD.dismiss()
+                            Helper.removeServiceCallBackgroundView(view: self.view)
+
+                        })
+
+                    }
+                }else{
+        
+                    Constant.MyClassConstants.btnTag = sender.tag
+                    self.performSegue(withIdentifier: Constant.segueIdentifiers.preLoginSegue, sender: self)
+                }
+        
     }
     
 }
@@ -1267,6 +1382,7 @@ extension SearchResultViewController:UICollectionViewDataSource {
                 if(collectionView.superview?.superview?.tag == 0){
                     if(exactMatchResortsArray.count > 0){
                         inventoryItem = exactMatchResortsArray[collectionView.tag]
+                        
                     }else{
                         inventoryItem = surroundingMatchResortsArray[collectionView.tag]
                     }
@@ -1589,10 +1705,10 @@ extension SearchResultViewController:UITableViewDataSource {
                 if (Constant.MyClassConstants.isShowAvailability == true && indexPath.section == 0){
                     
                     cell.resortInfoCollectionView.tag = indexPath.row - 1
-                   
+                    cell.resortInfoCollectionView.accessibilityValue = String(indexPath.section)
                 } else {
                     cell.resortInfoCollectionView.tag = indexPath.row
-                   
+                    cell.resortInfoCollectionView.accessibilityValue = String(indexPath.section)
                 }
                 
                 cell.resortInfoCollectionView.reloadData()
@@ -1670,63 +1786,63 @@ extension SearchResultViewController:UITableViewDataSource {
     }
 }
 
-extension SearchResultViewController:SearchResultContentTableCellDelegate{
-    func favoriteButtonClicked(_ sender: UIButton){
-        
-        if((Session.sharedSession.userAccessToken) != nil) {
-            
-            if (sender.isSelected == false){
-                
-                SVProgressHUD.show()
-                Helper.addServiceCallBackgroundView(view: self.view)
-                UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
-                    
-                   
-                    Helper.removeServiceCallBackgroundView(view: self.view)
-                    SVProgressHUD.dismiss()
-                    sender.isSelected = true
-                    Constant.MyClassConstants.favoritesResortCodeArray.add(Constant.MyClassConstants.resortsArray[sender.tag].resortCode!)
-                    self.searchResultTableView.reloadData()
-                    
-                }, onError: {(error) in
-                    
-                    SVProgressHUD.dismiss()
-                    Helper.removeServiceCallBackgroundView(view: self.view)
-                    
-                })
-            }
-            else {
-                
-                SVProgressHUD.show()
-                Helper.addServiceCallBackgroundView(view: self.view)
-                UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
-                    
-                    print(response)
-                    sender.isSelected = false
-                    Helper.removeServiceCallBackgroundView(view: self.view)
-                    SVProgressHUD.dismiss()
-                    Constant.MyClassConstants.favoritesResortCodeArray.remove(Constant.MyClassConstants.resortsArray[sender.tag].resortCode!)
-                    self.searchResultTableView.reloadData()
-                    
-                }, onError: {(error) in
-                    
-                    SVProgressHUD.dismiss()
-                    Helper.removeServiceCallBackgroundView(view: self.view)
-                   
-                })
-                
-            }
-        }else{
-            
-            Constant.MyClassConstants.btnTag = sender.tag
-            self.performSegue(withIdentifier: Constant.segueIdentifiers.preLoginSegue, sender: self)
-        }
-        
-    }
-    func unfavoriteButtonClicked(_ sender: UIButton){
-        sender.isSelected = false
-    }
-}
+//extension SearchResultViewController:SearchResultContentTableCellDelegate{
+//    func favoriteButtonClicked(_ sender: UIButton){
+//
+//        if((Session.sharedSession.userAccessToken) != nil) {
+//
+//            if (sender.isSelected == false){
+//
+//                SVProgressHUD.show()
+//                Helper.addServiceCallBackgroundView(view: self.view)
+//                UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
+//
+//
+//                    Helper.removeServiceCallBackgroundView(view: self.view)
+//                    SVProgressHUD.dismiss()
+//                    sender.isSelected = true
+//                    Constant.MyClassConstants.favoritesResortCodeArray.add(Constant.MyClassConstants.resortsArray[sender.tag].resortCode!)
+//                    self.searchResultTableView.reloadData()
+//
+//                }, onError: {(error) in
+//
+//                    SVProgressHUD.dismiss()
+//                    Helper.removeServiceCallBackgroundView(view: self.view)
+//
+//                })
+//            }
+//            else {
+//
+//                SVProgressHUD.show()
+//                Helper.addServiceCallBackgroundView(view: self.view)
+//                UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
+//
+//                    print(response)
+//                    sender.isSelected = false
+//                    Helper.removeServiceCallBackgroundView(view: self.view)
+//                    SVProgressHUD.dismiss()
+//                    Constant.MyClassConstants.favoritesResortCodeArray.remove(Constant.MyClassConstants.resortsArray[sender.tag].resortCode!)
+//                    self.searchResultTableView.reloadData()
+//
+//                }, onError: {(error) in
+//
+//                    SVProgressHUD.dismiss()
+//                    Helper.removeServiceCallBackgroundView(view: self.view)
+//
+//                })
+//
+//            }
+//        }else{
+//
+//            Constant.MyClassConstants.btnTag = sender.tag
+//            self.performSegue(withIdentifier: Constant.segueIdentifiers.preLoginSegue, sender: self)
+//        }
+//
+//    }
+//    func unfavoriteButtonClicked(_ sender: UIButton){
+//        sender.isSelected = false
+//    }
+//}
 
 extension String {
     var html2AttributedString: NSAttributedString? {

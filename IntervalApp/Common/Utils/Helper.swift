@@ -216,7 +216,7 @@ public class Helper{
     //***** function to remove disable layer and make UI interaction enable *****//
     static func removeServiceCallBackgroundView(view:UIView){
         
-//        self.progressBarBackgroundView.removeFromSuperview()
+        self.progressBarBackgroundView.removeFromSuperview()
     }
     
     //***** common function that contains signIn API call with user name and password *****//
@@ -959,16 +959,15 @@ public class Helper{
     
     //***** common function that contains API call for top 10 deals *****//
     static func getTopDeals(senderVC : UIViewController){
-//        showProgressBar(senderView: senderVC)
+        showProgressBar(senderView: senderVC)
         RentalClient.getTop10Deals(Session.sharedSession.userAccessToken,onSuccess: {(response) in
             Constant.MyClassConstants.topDeals = response
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.refreshTableNotification), object: nil)
             Helper.removeServiceCallBackgroundView(view: senderVC.view)
-//            SVProgressHUD.dismiss()
+
         },
                                    onError: {(error) in
                                     Helper.removeServiceCallBackgroundView(view: senderVC.view)
-//                                    SVProgressHUD.dismiss()
                                     SimpleAlert.alert(senderVC, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                                     
         })
@@ -998,7 +997,7 @@ public class Helper{
                 if(!(viewController is ResortDirectoryTabController)){
                     viewController.performSegue(withIdentifier: Constant.segueIdentifiers.resortDirectorySegue, sender: self)
                 }
-                removeServiceCallBackgroundView(view: viewController.view)
+                hideProgressBar(senderView: viewController)
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadRegionNotification), object: nil)
                 SVProgressHUD.dismiss()
             },    onError: {(error) in

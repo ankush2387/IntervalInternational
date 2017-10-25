@@ -303,7 +303,7 @@ class RelinquishmentSelectionViewController: UIViewController {
             selectedOpenWeek.resort.append(resort)
             relinquishmentList.openWeeks.append(selectedOpenWeek)
             storedata.openWeeks.append(relinquishmentList)
-            storedata.membeshipNumber = Membership!.memberNumber!
+            //storedata.membeshipNumber = Membership!.memberNumber!
             let realm = try! Realm()
             try! realm.write {
                 realm.add(storedata)

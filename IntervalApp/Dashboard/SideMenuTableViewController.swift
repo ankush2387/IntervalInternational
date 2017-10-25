@@ -165,7 +165,6 @@ extension SideMenuTableViewController:UITableViewDelegate {
             Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
         }
         
-        
         if(smi.storyboardId?.characters.count != 0 && (indexPath as NSIndexPath).row != SideMenuTableViewController.SideMenuItems.count - 1) {
             
             Constant.MyClassConstants.upcomingOriginationPoint = Constant.omnitureCommonString.sideMenu
