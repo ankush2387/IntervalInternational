@@ -88,7 +88,6 @@ class CreateActionSheet: UITableViewController {
     func membershipWasSelected() {
         
         SVProgressHUD.show()
-        Helper.addServiceCallBackgroundView(view: Constant.MyClassConstants.signInRequestedController .view)
         
         //***** Update the API session for the current access token *****//
         let context = Session.sharedSession
@@ -126,7 +125,7 @@ class CreateActionSheet: UITableViewController {
          NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
     }
     else {
-         Constant.MyClassConstants.signInRequestedController.performSegue(withIdentifier: Constant.segueIdentifiers.dashboradSegueIdentifier, sender: nil)
+            NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
     }
             
     //***** Get upcoming trips for user *****//

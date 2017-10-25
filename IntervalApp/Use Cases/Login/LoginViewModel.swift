@@ -81,11 +81,12 @@ final class LoginViewModel {
 
     // MARK: - Public functions
     func login() -> Promise<Void> {
-        isLoggingIn.value = true
+        isLoggingIn.next(true)
         return Promise { [unowned self] resolve, reject in
             self.saveCredentials()
                 .then(self.clientAPIStore.readAccessToken(for: self.username.value.unwrappedString, and: self.password.value.unwrappedString))
                 .then(self.saveUserAccessToken)
+                .then(self.readCurrentProfileForAccessToken)
                 .then(self.didLoginUser)
                 .then(resolve)
                 .onError { _ in reject(UserFacingCommonError.generic) }
@@ -95,6 +96,17 @@ final class LoginViewModel {
     
     func didLoginUser() {
         didLogin?()
+    }
+    
+    func readCurrentProfileForAccessToken(accessToken: DarwinAccessToken) -> Promise<Void> {
+        return Promise { [unowned self] resolve, reject in
+            self.clientAPIStore.readCurrentProfile(for: accessToken)
+                .then {
+                    self.sessionStore.contact = $0
+                    resolve()
+                }
+                .onError(reject)
+        }
     }
 
     // MARK: - Private functions
@@ -114,8 +126,9 @@ final class LoginViewModel {
         isLoggingIn.next(false)
     }
 
-    private func saveUserAccessToken(token: DarwinAccessToken) {
+    private func saveUserAccessToken(token: DarwinAccessToken) -> Promise<DarwinAccessToken> {
         sessionStore.userAccessToken = token
+        return Promise.resolve(token)
     }
 
     private func shouldDisableButton(_ username: String?, password: String?, loggingIn: Bool) -> Bool {

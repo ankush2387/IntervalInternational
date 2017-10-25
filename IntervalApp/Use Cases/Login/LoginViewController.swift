@@ -55,7 +55,11 @@ final class LoginViewController: UIViewController {
         setUI()
         bindUI()
         performTouchIDLoginIfEnabled()
-        addObserver()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.password.next(nil)
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -69,7 +73,6 @@ final class LoginViewController: UIViewController {
         viewModel.login()
             .onViewError(handler: presentErrorAlert)
             .finally(hideHudAsync)
-            .finally(showDashboard)
     }
 
     private func presentTouchIDOptions() {
@@ -274,14 +277,6 @@ extension LoginViewController {
     var isRunningOnIphone: Bool {
         return UIDevice.current.userInterfaceIdiom == .phone
     }
-    
-    func popToLoginView() {
-        navigationController?.popToRootViewController(animated: true)
-    }
-    
-    func addObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(popToLoginView), name: NSNotification.Name(rawValue: Constant.MyClassConstants.popToLoginView), object: nil)
-    }
 
     func resortDirectoryButtonTapped() {
         let storyboardName = isRunningOnIphone ? Constant.storyboardNames.iphone : Constant.storyboardNames.resortDirectoryIpad
@@ -309,12 +304,5 @@ extension LoginViewController {
         let storyboard = UIStoryboard(name:storyboardName, bundle: nil)
         let initialViewController = storyboard.instantiateViewController(withIdentifier: "PrivacyLegalViewController")
         navigationController?.pushViewController(initialViewController, animated: true)
-    }
-
-    func showDashboard() {
-        let storyboardName = isRunningOnIphone ? Constant.storyboardNames.dashboardIPhone : Constant.storyboardNames.dashboardIPad
-        if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
-            navigationController?.pushViewController(initialViewController, animated: true)
-        }
     }
 }
