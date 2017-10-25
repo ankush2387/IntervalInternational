@@ -7,12 +7,8 @@ def testing_pods
 end
 
 def testing_build_dependencies
-<<<<<<< HEAD
     pod 'Realm','~>2.8.3'
-=======
-    pod 'Realm'
     pod 'Firebase/Core'
->>>>>>> develop
     pod 'Brightcove-Player-SDK'
     pod 'GoogleMaps' , '~>2.2.0'
     pod 'Bond', :git=>'https://github.com/ReactiveKit/Bond.git', :tag => '6.3.0'
