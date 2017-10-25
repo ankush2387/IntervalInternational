@@ -13,5 +13,6 @@ import Foundation
 protocol ClientAPIStore {
     func readClientAccessToken() -> Promise<DarwinAccessToken>
     func readAppSettings(for accessToken: DarwinAccessToken) -> Promise<Settings>
+    func readCurrentProfile(for accessToken: DarwinAccessToken) -> Promise<Contact>
     func readAccessToken(for userName: String, and password: String) -> Promise<DarwinAccessToken>
 }

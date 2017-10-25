@@ -33,7 +33,8 @@ final class TouchIDAuth {
             switch self {
 
             case .cannotEvaluatePolicy:
-                return ("Error".localized(), "Touch ID may not be configured.".localized())
+                return ("Touch ID Isn't Set Up On This Device".localized(),
+                        "To set up Touch ID on this device, go to Settings > Touch ID & Passcode and add a valid fingerprint.".localized())
 
             case .authenticationFailed:
                 return ("Error".localized(), "There was a problem verifying your identity.".localized())

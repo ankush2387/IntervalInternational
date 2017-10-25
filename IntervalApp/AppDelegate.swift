@@ -8,10 +8,10 @@
 //  Copyright © 2016 Interval International. All rights reserved.
 //
 
-import UIKit
-import DarwinSDK
+import Firebase
 import GoogleMaps
 import HockeySDK
+import UserNotifications
 
 final class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -38,6 +38,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         setWindow()
+        setFirebasePushNotification(for: application)
         return true
     }
     
@@ -49,6 +50,23 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
         appCoordinator.startApplication(with: navigationController)
+    }
+    
+    private func setFirebasePushNotification(for application: UIApplication) {
+        if #available(iOS 10.0, *) {
+            // For iOS 10 display notification (sent via APNS)
+            UNUserNotificationCenter.current().delegate = self
+            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+            UNUserNotificationCenter.current().requestAuthorization(options: authOptions, completionHandler: {_, _ in })
+            // For iOS 10 data message (sent via FCM
+            Messaging.messaging().delegate = self
+        } else {
+            let settings: UIUserNotificationSettings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+            application.registerUserNotificationSettings(settings)
+        }
+        
+        application.registerForRemoteNotifications()
+        FirebaseApp.configure()
     }
     
     private func setGoogleMapsAPI() {
@@ -84,11 +102,25 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
-        appCoordinator.applicationEnteredForeground()
+        appCoordinator.applicationEntered(state: .foreground)
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        appCoordinator.applicationDidEnterBackground()
+        appCoordinator.applicationEntered(state: .background)
     }
 }
 
+extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
+    
+    func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) { /* Left blank intentionally */ }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        let payload = notification.request.content.userInfo
+        appCoordinator.didReceive(payload, in: .foreground)
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        let payload = response.notification.request.content.userInfo
+        appCoordinator.didReceive(payload, in: .background)
+    }
+}
