@@ -18,6 +18,7 @@
 		08A4D4321F69A51B00C63CDC /* FlexchangeSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A4D4311F69A51B00C63CDC /* FlexchangeSearchViewController.swift */; };
 		08E3BCF61F2A30F80021F2BC /* RelinquishmentDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E3BCF51F2A30F80021F2BC /* RelinquishmentDetailsViewController.swift */; };
 		08E3BCF81F2A31330021F2BC /* RelinquishmentDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E3BCF71F2A31330021F2BC /* RelinquishmentDetailsCell.swift */; };
+		22D360A73ADA09FE958007BA /* Pods_IntervalAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28A7A6F5065256FA4835CA34 /* Pods_IntervalAppTests.framework */; };
 		3A0326221C8EE684000758E3 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0326211C8EE684000758E3 /* CalendarViewController.swift */; };
 		3A05D4501C7B7CF400258C72 /* CertificateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A05D44F1C7B7CF400258C72 /* CertificateViewController.swift */; };
 		3A06663A1F912C56002AA92A /* RenewalOtherOptionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0666391F912C56002AA92A /* RenewalOtherOptionsVC.swift */; };
@@ -244,6 +245,7 @@
 		3CED4BC51F9689BB001261A2 /* NetworkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CED4BC41F9689BB001261A2 /* NetworkHelper.swift */; };
 		3CFED38C1F910EAA0026A922 /* EncryptedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CFED38B1F910EAA0026A922 /* EncryptedStore.swift */; };
 		3CFED38F1F911B810026A922 /* LoginData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CFED38E1F911B810026A922 /* LoginData.swift */; };
+		51330091B8418EEC769CA26F /* Pods_IntervalApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB666EA30495FA41CB5C0E3C /* Pods_IntervalApp.framework */; };
 		61066FD51F919803000D33EB /* ClientAPIStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61066FD41F919803000D33EB /* ClientAPIStore.swift */; };
 		61066FD71F919910000D33EB /* ClientAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61066FD61F919910000D33EB /* ClientAPI.swift */; };
 		61066FD91F91AB9F000D33EB /* SessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61066FD81F91AB9F000D33EB /* SessionStore.swift */; };
@@ -264,8 +266,6 @@
 		61C0250D1F92CFC1003BFF55 /* SimpleFileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 61C0250B1F92CFC1003BFF55 /* SimpleFileViewController.xib */; };
 		61C0250E1F92CFC1003BFF55 /* SimpleFileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C0250C1F92CFC1003BFF55 /* SimpleFileViewController.swift */; };
 		61C025111F92D02E003BFF55 /* MIMEType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C025101F92D02E003BFF55 /* MIMEType.swift */; };
-		6DA84D4CB313A73FADEF918F /* Pods_IntervalAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A1F9F039DD01C61F912475E /* Pods_IntervalAppTests.framework */; };
-		CE533D6620FB623EC9811046 /* Pods_IntervalApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2CBCD7E8490E488AB822061 /* Pods_IntervalApp.framework */; };
 		DC04BB3C1DB829F100227FF5 /* IntervalHDCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC04BB341DB829F100227FF5 /* IntervalHDCollectionViewCell.swift */; };
 		DC04BB3D1DB829F100227FF5 /* IntervalHDCommonControllerForTabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC04BB351DB829F100227FF5 /* IntervalHDCommonControllerForTabs.swift */; };
 		DC04BB3E1DB829F100227FF5 /* IntervalHDIpad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DC04BB361DB829F100227FF5 /* IntervalHDIpad.storyboard */; };
@@ -383,6 +383,7 @@
 		08E3BCF51F2A30F80021F2BC /* RelinquishmentDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentDetailsViewController.swift; sourceTree = "<group>"; };
 		08E3BCF71F2A31330021F2BC /* RelinquishmentDetailsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentDetailsCell.swift; sourceTree = "<group>"; };
 		26D24CAA1C4015290008EF39 /* IntervalApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IntervalApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		28A7A6F5065256FA4835CA34 /* Pods_IntervalAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IntervalAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A0326211C8EE684000758E3 /* CalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		3A05D44F1C7B7CF400258C72 /* CertificateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CertificateViewController.swift; sourceTree = "<group>"; };
 		3A0666391F912C56002AA92A /* RenewalOtherOptionsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenewalOtherOptionsVC.swift; sourceTree = "<group>"; };
@@ -637,10 +638,8 @@
 		61C0250B1F92CFC1003BFF55 /* SimpleFileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SimpleFileViewController.xib; sourceTree = "<group>"; };
 		61C0250C1F92CFC1003BFF55 /* SimpleFileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleFileViewController.swift; sourceTree = "<group>"; };
 		61C025101F92D02E003BFF55 /* MIMEType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIMEType.swift; sourceTree = "<group>"; };
-		794DEBA45E109CB6B2912F1A /* Pods-IntervalApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntervalApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-IntervalApp/Pods-IntervalApp.release.xcconfig"; sourceTree = "<group>"; };
-		9A1F9F039DD01C61F912475E /* Pods_IntervalAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IntervalAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B098726BF68C7F20B60FFCE5 /* Pods-IntervalAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntervalAppTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-IntervalAppTests/Pods-IntervalAppTests.release.xcconfig"; sourceTree = "<group>"; };
-		D80BE5094E2F6BA2C2659C90 /* Pods-IntervalApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntervalApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-IntervalApp/Pods-IntervalApp.debug.xcconfig"; sourceTree = "<group>"; };
+		C0A51381A5A76CB6EA8368E9 /* Pods-IntervalAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntervalAppTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-IntervalAppTests/Pods-IntervalAppTests.debug.xcconfig"; sourceTree = "<group>"; };
+		DB666EA30495FA41CB5C0E3C /* Pods_IntervalApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IntervalApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC04BB341DB829F100227FF5 /* IntervalHDCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntervalHDCollectionViewCell.swift; sourceTree = "<group>"; };
 		DC04BB351DB829F100227FF5 /* IntervalHDCommonControllerForTabs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntervalHDCommonControllerForTabs.swift; sourceTree = "<group>"; };
 		DC04BB361DB829F100227FF5 /* IntervalHDIpad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = IntervalHDIpad.storyboard; sourceTree = "<group>"; };
@@ -703,8 +702,9 @@
 		DC7EF5031D709F8800E9E360 /* ResortInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResortInfoTableViewCell.swift; sourceTree = "<group>"; };
 		DC7EF5041D709F8800E9E360 /* SignInPreLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInPreLoginViewController.swift; sourceTree = "<group>"; };
 		DC96F3B71D7F41E500C08F1E /* TouchID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchID.swift; sourceTree = "<group>"; };
-		E2CBCD7E8490E488AB822061 /* Pods_IntervalApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IntervalApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E2E6B03CA5A0D1EC27418E99 /* Pods-IntervalAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntervalAppTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-IntervalAppTests/Pods-IntervalAppTests.debug.xcconfig"; sourceTree = "<group>"; };
+		DF6A3B79034FBA688CCB9467 /* Pods-IntervalApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntervalApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-IntervalApp/Pods-IntervalApp.release.xcconfig"; sourceTree = "<group>"; };
+		DFDBB970FF7DFA5F12FD85CC /* Pods-IntervalAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntervalAppTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-IntervalAppTests/Pods-IntervalAppTests.release.xcconfig"; sourceTree = "<group>"; };
+		E2741AB40569108A65610D40 /* Pods-IntervalApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntervalApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-IntervalApp/Pods-IntervalApp.debug.xcconfig"; sourceTree = "<group>"; };
 		E9057F901F02DDA000E20047 /* ShareActivityImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareActivityImage.swift; sourceTree = "<group>"; };
 		E9057F921F02DDBA00E20047 /* ShareActivityMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareActivityMessage.swift; sourceTree = "<group>"; };
 		E9057F941F02DDCB00E20047 /* ShareActivityURL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareActivityURL.swift; sourceTree = "<group>"; };
@@ -734,7 +734,7 @@
 				3AF870251EA6429600056A14 /* libsqlite3.tbd in Frameworks */,
 				3AF870211EA6423700056A14 /* AdobeMobileLibrary.a in Frameworks */,
 				3AEC48171C7F21BA0044612B /* QuartzCore.framework in Frameworks */,
-				CE533D6620FB623EC9811046 /* Pods_IntervalApp.framework in Frameworks */,
+				51330091B8418EEC769CA26F /* Pods_IntervalApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -742,7 +742,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6DA84D4CB313A73FADEF918F /* Pods_IntervalAppTests.framework in Frameworks */,
+				22D360A73ADA09FE958007BA /* Pods_IntervalAppTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -767,7 +767,7 @@
 				26D24CAC1C4015290008EF39 /* IntervalApp */,
 				3C367B0F1F86B66C00056394 /* IntervalAppTests */,
 				26D24CAB1C4015290008EF39 /* Products */,
-				CD6B9E2FB6D6AC601F6F0A5A /* Pods */,
+				E506E2F5695C451DE4107D51 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1371,21 +1371,10 @@
 				3AF8701E1EA6423700056A14 /* AdobeMobileLibrary_Extension.a */,
 				3AF8701F1EA6423700056A14 /* AdobeMobileLibrary.a */,
 				3AEC48161C7F21BA0044612B /* QuartzCore.framework */,
-				E2CBCD7E8490E488AB822061 /* Pods_IntervalApp.framework */,
-				9A1F9F039DD01C61F912475E /* Pods_IntervalAppTests.framework */,
+				DB666EA30495FA41CB5C0E3C /* Pods_IntervalApp.framework */,
+				28A7A6F5065256FA4835CA34 /* Pods_IntervalAppTests.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		CD6B9E2FB6D6AC601F6F0A5A /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				D80BE5094E2F6BA2C2659C90 /* Pods-IntervalApp.debug.xcconfig */,
-				794DEBA45E109CB6B2912F1A /* Pods-IntervalApp.release.xcconfig */,
-				E2E6B03CA5A0D1EC27418E99 /* Pods-IntervalAppTests.debug.xcconfig */,
-				B098726BF68C7F20B60FFCE5 /* Pods-IntervalAppTests.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 		DC04BB331DB829F100227FF5 /* IntervalHD */ = {
@@ -1503,6 +1492,17 @@
 			path = ResortDirectory;
 			sourceTree = "<group>";
 		};
+		E506E2F5695C451DE4107D51 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E2741AB40569108A65610D40 /* Pods-IntervalApp.debug.xcconfig */,
+				DF6A3B79034FBA688CCB9467 /* Pods-IntervalApp.release.xcconfig */,
+				C0A51381A5A76CB6EA8368E9 /* Pods-IntervalAppTests.debug.xcconfig */,
+				DFDBB970FF7DFA5F12FD85CC /* Pods-IntervalAppTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		E90C365F1F06A8F900CCBE92 /* Inactivity Timer */ = {
 			isa = PBXGroup;
 			children = (
@@ -1532,14 +1532,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 26D24CBC1C4015290008EF39 /* Build configuration list for PBXNativeTarget "IntervalApp" */;
 			buildPhases = (
-				898F2FAB33CE1A7C1D3949A9 /* [CP] Check Pods Manifest.lock */,
+				B7C1D60FC5655DC0A5993D94 /* [CP] Check Pods Manifest.lock */,
 				26D24CA61C4015290008EF39 /* Sources */,
 				26D24CA71C4015290008EF39 /* Frameworks */,
 				26D24CA81C4015290008EF39 /* Resources */,
 				3A1780B51CDE1A26006D2E44 /* Embed Frameworks */,
-				4F77796E4021F5802C71C99D /* [CP] Embed Pods Frameworks */,
-				E487CA22C7876FB2B6E5A39D /* [CP] Copy Pods Resources */,
 				619F1F791F92EBA4003A797B /* Git Revision Update */,
+				320B8A8655C5DEFD482DDB3D /* [CP] Embed Pods Frameworks */,
+				8B54B41C1D58DD2ACDB61D48 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1554,12 +1554,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3C367B171F86B66C00056394 /* Build configuration list for PBXNativeTarget "IntervalAppTests" */;
 			buildPhases = (
-				7F7CA22A1CFB8F7E324F950A /* [CP] Check Pods Manifest.lock */,
+				8E6101C0EF2C85A1A63389AD /* [CP] Check Pods Manifest.lock */,
 				3C367B0A1F86B66C00056394 /* Sources */,
 				3C367B0B1F86B66C00056394 /* Frameworks */,
 				3C367B0C1F86B66C00056394 /* Resources */,
-				9D8DA19124728AE252BF8557 /* [CP] Embed Pods Frameworks */,
-				425319106C440EA7C3FCA03A /* [CP] Copy Pods Resources */,
+				6CC83C1ED1D15E337E26BCD0 /* [CP] Embed Pods Frameworks */,
+				06952F87DF765AEF979D27B9 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1684,7 +1684,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		425319106C440EA7C3FCA03A /* [CP] Copy Pods Resources */ = {
+		06952F87DF765AEF979D27B9 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1699,40 +1699,15 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-IntervalAppTests/Pods-IntervalAppTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		4F77796E4021F5802C71C99D /* [CP] Embed Pods Frameworks */ = {
+		320B8A8655C5DEFD482DDB3D /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-IntervalApp/Pods-IntervalApp-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
-				"${BUILT_PRODUCTS_DIR}/CVCalendar/CVCalendar.framework",
-				"${BUILT_PRODUCTS_DIR}/DarwinSDK/DarwinSDK.framework",
-				"${BUILT_PRODUCTS_DIR}/FSCalendar/FSCalendar.framework",
-				"${BUILT_PRODUCTS_DIR}/IntervalUIKit/IntervalUIKit.framework",
-				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
-				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
-				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
-				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
-				"${BUILT_PRODUCTS_DIR}/XCGLogger/XCGLogger.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CVCalendar.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DarwinSDK.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FSCalendar.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IntervalUIKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XCGLogger.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1753,40 +1728,7 @@
 			shellPath = /bin/sh;
 			shellScript = "echo \"Git Revision Script --- Start\"\n\ngitRev=`git rev-parse --short HEAD`\n\nif [[ \"${gitRev}\" == \"\" ]]; then\necho \"No version number from git\"\nexit 2\nfi\n\n/usr/libexec/PlistBuddy -c \"Delete :MMGitRevisionNumber\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n/usr/libexec/PlistBuddy -c \"Add :MMGitRevisionNumber string $gitRev\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\n\necho \"Updated git revison to $gitRev\"\necho \"Git Revision Script --- End\"";
 		};
-		7F7CA22A1CFB8F7E324F950A /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		898F2FAB33CE1A7C1D3949A9 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-IntervalApp-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		9D8DA19124728AE252BF8557 /* [CP] Embed Pods Frameworks */ = {
+		6CC83C1ED1D15E337E26BCD0 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1801,24 +1743,49 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-IntervalAppTests/Pods-IntervalAppTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E487CA22C7876FB2B6E5A39D /* [CP] Copy Pods Resources */ = {
+		8B54B41C1D58DD2ACDB61D48 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-IntervalApp/Pods-IntervalApp-resources.sh",
-				"$PODS_CONFIGURATION_BUILD_DIR/Brightcove-Player-SDK/BCOVPUIResources.bundle",
-				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle",
-				$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle,
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-IntervalApp/Pods-IntervalApp-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8E6101C0EF2C85A1A63389AD /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		B7C1D60FC5655DC0A5993D94 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -2236,7 +2203,7 @@
 		};
 		26D24CBD1C4015290008EF39 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D80BE5094E2F6BA2C2659C90 /* Pods-IntervalApp.debug.xcconfig */;
+			baseConfigurationReference = E2741AB40569108A65610D40 /* Pods-IntervalApp.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -2272,7 +2239,7 @@
 		};
 		26D24CBE1C4015290008EF39 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 794DEBA45E109CB6B2912F1A /* Pods-IntervalApp.release.xcconfig */;
+			baseConfigurationReference = DF6A3B79034FBA688CCB9467 /* Pods-IntervalApp.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -2308,7 +2275,7 @@
 		};
 		3C367B151F86B66C00056394 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E2E6B03CA5A0D1EC27418E99 /* Pods-IntervalAppTests.debug.xcconfig */;
+			baseConfigurationReference = C0A51381A5A76CB6EA8368E9 /* Pods-IntervalAppTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -2328,7 +2295,7 @@
 		};
 		3C367B161F86B66C00056394 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B098726BF68C7F20B60FFCE5 /* Pods-IntervalAppTests.release.xcconfig */;
+			baseConfigurationReference = DFDBB970FF7DFA5F12FD85CC /* Pods-IntervalAppTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
