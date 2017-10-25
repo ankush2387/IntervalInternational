@@ -1388,8 +1388,8 @@ extension VacationSearchViewController:WhoIsTravelingCellDelegate {
 
 //MARK:- Search Button Click
 extension VacationSearchViewController:SearchTableViewCellDelegate {
-    fileprivate func extractedFunc(_ sender: IUIKButton) {
-    {
+    
+    func searchButtonClicked(_ sender : IUIKButton) {
         
         //Set travel PartyInfo
         let travelPartyInfo = TravelParty()
@@ -1741,9 +1741,8 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         
     }
     }
-}
-
-func searchButtonClicked(_ sender : IUIKButton) extractedFunc(sender)
+    
+    
     
     func showNotAvailabilityResults() {
         DarwinSDK.logger.info("Show the Not Availability Screen.")
