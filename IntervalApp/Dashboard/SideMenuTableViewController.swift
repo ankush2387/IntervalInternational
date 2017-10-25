@@ -117,17 +117,7 @@ class SideMenuTableViewController: UIViewController
         Constant.MyClassConstants.isLoginSuccessfull = false
         Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
         TouchID().deactivateTouchID()
-        let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.loginIPhone, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.loginViewController) as! OldLoginViewController
-        
-        let transition = CATransition()
-        transition.duration = 0.4
-        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
-        transition.type = kCATransitionPush
-        transition.subtype = kCATransitionFromBottom
-        viewController.view.layer.add(transition, forKey:Constant.MyClassConstants.switchToView)
-        UIApplication.shared.keyWindow?.rootViewController = viewController
-        
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PopToLoginView"), object: nil)
     }
     
     //***** Function called for getaway alerts notification *****//
@@ -165,33 +155,14 @@ extension SideMenuTableViewController:UITableViewDelegate {
             Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
         }
         
+
         if(smi.storyboardId?.characters.count != 0 && (indexPath as NSIndexPath).row != SideMenuTableViewController.SideMenuItems.count - 1) {
+
             
             Constant.MyClassConstants.upcomingOriginationPoint = Constant.omnitureCommonString.sideMenu
-            /*if((indexPath as NSIndexPath).row == 4){
-                let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.myUpcomingTripIphone, bundle: nil)
-                let resultController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.upcomingTripsViewController) as? UpComingTripDetailController
-                let navController = UINavigationController(rootViewController: resultController!)
-                self.present(navController, animated:true, completion: nil)
-            }else{*/
                 let mainStoryboard: UIStoryboard = UIStoryboard(name: smi.storyboardId!, bundle: nil)
                 let viewController = mainStoryboard.instantiateViewController(withIdentifier: smi.initialControllerName!) as! SWRevealViewController
-                
-                //***** Creating animation transition to show custom transition animation *****//
-                let transition: CATransition = CATransition()
-                let timeFunc : CAMediaTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-                transition.duration = 0.25
-                transition.timingFunction = timeFunc
-                transition.type = kCATransitionPush
-                transition.subtype = kCATransitionFromRight
-                viewController.view.layer.add(transition, forKey: Constant.MyClassConstants.switchToView)
-                UIApplication.shared.keyWindow?.rootViewController = viewController
-            
-            
-            //}
-        }
-        else {
-            
+                navigationController?.pushViewController(viewController, animated: true)
         }
     }
     

@@ -111,7 +111,6 @@ class FlexChangeSearchIpadViewController: UIViewController {
         
         Helper.helperDelegate = self
         
-        Helper.showProgressBar(senderView: self)
         if Reachability.isConnectedToNetwork() == true {
             
             let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
@@ -134,7 +133,7 @@ class FlexChangeSearchIpadViewController: UIViewController {
             
             ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
                 
-                Helper.hideProgressBar(senderView: self)
+                
                 Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
                 Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                 // Get activeInterval (or initial search interval)
@@ -157,7 +156,7 @@ class FlexChangeSearchIpadViewController: UIViewController {
                 
             }, onError: { (error) in
                 
-                Helper.hideProgressBar(senderView: self)
+                
                 SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
             })
             
@@ -174,7 +173,6 @@ class FlexChangeSearchIpadViewController: UIViewController {
     
     func addRelinquishmentSectionButtonPressed(_ sender:IUIKButton) {
         
-        Helper.showProgressBar(senderView: self)
         ExchangeClient.getMyUnits(Session.sharedSession.userAccessToken, onSuccess: { (Relinquishments) in
             
             Constant.MyClassConstants.relinquishmentDeposits = Relinquishments.deposits
@@ -201,7 +199,7 @@ class FlexChangeSearchIpadViewController: UIViewController {
             self.navigationController!.pushViewController(viewController, animated: true)
             
         }, onError: {(error) in
-            Helper.hideProgressBar(senderView: self)
+            
         })
         
     }

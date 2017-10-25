@@ -41,4 +41,10 @@ final class ClientAPI: ClientAPIStore {
             AuthProviderClient.getClientAccessToken(resolve, onError: reject)
         }
     }
+    
+    func readCurrentProfile(for accessToken: DarwinAccessToken) -> Promise<Contact> {
+        return Promise { resolve, reject in
+            UserClient.getCurrentProfile(accessToken, onSuccess: resolve, onError: reject)
+        }
+    }
 }

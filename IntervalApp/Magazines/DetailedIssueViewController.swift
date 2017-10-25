@@ -57,7 +57,7 @@ extension DetailedIssueViewController:UIWebViewDelegate {
 	
 	func webViewDidStartLoad(_ webView: UIWebView)
     {
-        Helper.addServiceCallBackgroundView(view: self.view)
+        
         SVProgressHUD.show()
     }
     

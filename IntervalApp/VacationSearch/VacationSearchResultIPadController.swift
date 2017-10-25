@@ -251,7 +251,7 @@ class VacationSearchResultIPadController: UIViewController {
     // Mark: Function for bucket click
 
     func intervalBucketClicked(calendarItem:CalendarItem!, cell:UICollectionViewCell){
-        Helper.hideProgressBar(senderView: self)
+        
         Helper.helperDelegate = self
         
         myActivityIndicator.hidesWhenStopped = true
@@ -392,7 +392,7 @@ class VacationSearchResultIPadController: UIViewController {
             
             Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: toDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
         }else{
-            Helper.showProgressBar(senderView: self)
+            
             let request = RentalSearchResortsRequest()
             request.checkInDate = toDate
             request.resortCodes = activeInterval.resortCodes
@@ -408,7 +408,7 @@ class VacationSearchResultIPadController: UIViewController {
                                         
             },
                                        onError:{ (error) in
-                                        Helper.hideProgressBar(senderView: self)
+                                        
                                         SimpleAlert.alert(self, title: Constant.AlertMessages.noResultMessage, message: error.localizedDescription)
             }
             )
@@ -437,10 +437,10 @@ class VacationSearchResultIPadController: UIViewController {
         let searchResortRequest = RentalSearchResortsRequest()
         searchResortRequest.checkInDate = toDate
         searchResortRequest.resortCodes = Constant.MyClassConstants.resortCodesArray
-        Helper.showProgressBar(senderView: self)
+        
         Constant.MyClassConstants.resortsArray.removeAll()
         RentalClient.searchResorts(Session.sharedSession.userAccessToken, request: searchResortRequest, onSuccess: { (response) in
-            Helper.hideProgressBar(senderView: self)
+            
             Constant.MyClassConstants.resortsArray = response.resorts
             if(self.alertView.isHidden == false){
                 self.alertView.isHidden = true
@@ -453,7 +453,7 @@ class VacationSearchResultIPadController: UIViewController {
             self.alertView = Helper.noResortView(senderView: self.view)
             self.alertView.isHidden = false
             self.headerVw.isHidden = true
-            Helper.hideProgressBar(senderView: self)
+            
         })
     }
     
@@ -608,7 +608,7 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
         
         if(Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)!{
             
-            Helper.showProgressBar(senderView: self)
+            
             intervalBucketClicked(calendarItem:Constant.MyClassConstants.calendarDatesArray[indexPath.item], cell: cell!)
             
         }else{
@@ -632,7 +632,7 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
             // set isFrom Search true
             Constant.MyClassConstants.isFromSearchResult = true
             Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.vacationSearchFunctionalityCheck
-            Helper.addServiceCallBackgroundView(view: self.view)
+            
             SVProgressHUD.show()
             var resortCode = ""
             if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
@@ -715,7 +715,7 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
                 }
                 
             }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
-                Helper.addServiceCallBackgroundView(view: self.view)
+                
                 SVProgressHUD.show()
                 
                 if(collectionView.superview?.superview?.tag == 0 && exactMatchResortsArray.count > 0){
@@ -885,7 +885,7 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
 }
 
 func getFilterRelinquishments(selectedInventoryUnit:Inventory, selectedIndex:Int, selectedExchangeInventory: ExchangeInventory){
-    Helper.showProgressBar(senderView: self)
+    
     let exchangeSearchDateRequest = ExchangeFilterRelinquishmentsRequest()
     exchangeSearchDateRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
     
@@ -924,7 +924,7 @@ func getFilterRelinquishments(selectedInventoryUnit:Inventory, selectedIndex:Int
     Constant.MyClassConstants.exchangeDestination = exchangeDestination
     
     ExchangeClient.filterRelinquishments(Session.sharedSession.userAccessToken, request: exchangeSearchDateRequest, onSuccess: { (response) in
-        Helper.hideProgressBar(senderView: self)
+        
         Constant.MyClassConstants.filterRelinquishments.removeAll()
         for exchageDetail in response{
             Constant.MyClassConstants.filterRelinquishments.append(exchageDetail.relinquishment!)
@@ -946,7 +946,7 @@ func getFilterRelinquishments(selectedInventoryUnit:Inventory, selectedIndex:Int
         }
         
     }, onError: { (error) in
-        Helper.hideProgressBar(senderView: self)
+        
         SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.description)
     })
 }
@@ -974,7 +974,7 @@ func startProcess(){
     //Start process request
     
     //Exchange process request parameters
-    Helper.showProgressBar(senderView: self)
+    
     let processResort = ExchangeProcess()
     processResort.holdUnitStartTimeInMillis = Constant.holdingTime
     
@@ -1024,7 +1024,7 @@ func startProcess(){
         UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: {(Membership) in
             
             // Got an access token!  Save it for later use.
-            Helper.hideProgressBar(senderView: self)
+            
             Constant.MyClassConstants.membershipContactArray = Membership.contacts!
             
             // check force renewals here
@@ -1056,13 +1056,13 @@ func startProcess(){
             self.navigationController!.pushViewController(viewController, animated: true)
         }, onError: { (error) in
             
-            Helper.hideProgressBar(senderView: self)
+            
             SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
             
         })
         
     }, onError: {(error) in
-        Helper.hideProgressBar(senderView: self)
+        
         SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
     })
 }
@@ -1652,7 +1652,7 @@ extension VacationSearchResultIPadController:HelperDelegate {
     func resortSearchComplete(){
         Constant.MyClassConstants.calendarDatesArray.removeAll()
         Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
-        Helper.hideProgressBar(senderView: self)
+        
         exchangeExactMatchResortsArray.removeAll()
         exchangeSurroundingMatchResortsArray.removeAll()
         exactMatchResortsArray.removeAll()

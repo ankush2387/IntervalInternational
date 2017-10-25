@@ -294,7 +294,7 @@ class ResortDirectoryViewController: UIViewController {
             if (sender.isSelected == false){
                 
                 SVProgressHUD.show()
-                Helper.addServiceCallBackgroundView(view: self.view)
+                
                 UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!, onSuccess: {(response) in
                     print(response)
                     SVProgressHUD.dismiss()
@@ -310,7 +310,7 @@ class ResortDirectoryViewController: UIViewController {
                 })
             }
             else {
-                Helper.addServiceCallBackgroundView(view: self.view)
+                
                 SVProgressHUD.show()
                 UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!, onSuccess: {(response) in
                     
@@ -353,7 +353,7 @@ extension ResortDirectoryViewController:UITableViewDelegate {
                 self.performSegue(withIdentifier: Constant.segueIdentifiers.subRegionSegue, sender: nil)
             }
             else {
-                Helper.addServiceCallBackgroundView(view: self.view)
+                
                 SVProgressHUD.show()
                 DirectoryClient.getAreasByRegion(Constant.MyClassConstants.systemAccessToken, regionCode: region.regionCode, onSuccess: {(response) in
                     SVProgressHUD.dismiss()
@@ -370,7 +370,7 @@ extension ResortDirectoryViewController:UITableViewDelegate {
         }
         else if(tableView.tag == 1) {
             
-            Helper.addServiceCallBackgroundView(view: self.view)
+            
             SVProgressHUD.show()
             let subregion = Constant.MyClassConstants.resortDirectorySubRegionArray[indexPath.row]
             Constant.MyClassConstants.resortDirectoryCommonHearderText = subregion.regionName!
@@ -409,7 +409,7 @@ extension ResortDirectoryViewController:UITableViewDelegate {
             else {
                 
             }
-            Helper.addServiceCallBackgroundView(view: self.view)
+            
             SVProgressHUD.show()
             DirectoryClient.getResortsByArea(Constant.MyClassConstants.systemAccessToken, areaCode: area.areaCode, onSuccess: {(response) in
                 Constant.MyClassConstants.resortDirectoryResortArray = response

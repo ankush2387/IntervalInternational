@@ -10,5 +10,6 @@ import Foundation
 
 protocol PersistentSettingsStore {
     var backgroundImageIndex: Int? { get set }
+    var notificationTopic: String? { get set }
     var touchIDEnabled: Bool { get set }
 }

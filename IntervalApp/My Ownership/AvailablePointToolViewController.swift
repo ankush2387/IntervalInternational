@@ -67,7 +67,7 @@ class AvailablePointToolViewController: UIViewController {
         let dateStr = Helper.convertDateToString(date: Constant.MyClassConstants.relinquishmentAvalableToolSelectedDate, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
         
         SVProgressHUD.show()
-        Helper.addServiceCallBackgroundView(view: self.view)
+        
         UserClient.getProgramAvailablePoints(Session.sharedSession.userAccessToken, date: dateStr, onSuccess:{ (availablePoints) in
             
             SVProgressHUD.dismiss()

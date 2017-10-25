@@ -241,14 +241,14 @@ class WhoWillBeCheckingInViewController: UIViewController {
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
         
         SVProgressHUD.show()
-        Helper.addServiceCallBackgroundView(view: self.view)
+        
         if(Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
             Constant.holdingTimer.invalidate()
             
             ExchangeProcessClient.backToChooseExchange(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess:{(response) in
                 
                 Constant.MyClassConstants.selectedCreditCard.removeAll()
-                Helper.hideProgressBar(senderView: self)
+                
                 
                 // pop and dismiss view according to conditions
                 if (Constant.MyClassConstants.isDismissWhoWillBeCheckin) {
@@ -262,7 +262,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 
             }, onError: {(error) in
                 
-                Helper.hideProgressBar(senderView: self)
+                
                 SimpleAlert.alert(self, title: "Who will be checking in", message: error.localizedDescription)
             })
         }else{
@@ -494,7 +494,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
             let processResort = ExchangeProcess()
             processResort.holdUnitStartTimeInMillis = Constant.holdingTime
             processResort.processId = Constant.MyClassConstants.exchangeProcessStartResponse.processId
-            Helper.showProgressBar(senderView: self)
+            
             
             ExchangeProcessClient.continueToCheckout(Session.sharedSession.userAccessToken, process: processResort, request: exchangeProcessRequest, onSuccess: {(response) in
                 DarwinSDK.logger.debug(response)
@@ -573,7 +573,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
             if(renewalsArray.count > 0){
                 processRequest1.renewals = renewalsArray
             }
-            Helper.showProgressBar(senderView: self)
+            
             let processResort = RentalProcess()
             processResort.holdUnitStartTimeInMillis = Constant.holdingTime
             processResort.processId = Constant.MyClassConstants.processStartResponse.processId

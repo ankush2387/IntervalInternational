@@ -475,7 +475,7 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
         Constant.MyClassConstants.viewController = self
         
         SVProgressHUD.show()
-        Helper.addServiceCallBackgroundView(view: self.view)
+        
         ExchangeClient.getMyUnits(Session.sharedSession.userAccessToken, onSuccess: { (Relinquishments) in
             
             DarwinSDK.logger.debug(Relinquishments)
@@ -731,9 +731,6 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                 
             }
             
-            
-            
-            Helper.showProgressBar(senderView: self)
             sender.isEnabled = false
             
             Constant.MyClassConstants.regionArray.removeAll()
@@ -751,10 +748,10 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                         region.regionCode = rsregion.regionCode
                         region.areas = rsregion.areas
                         Constant.MyClassConstants.regionArray.append(rsregion)
-                        Helper.hideProgressBar(senderView: self)
+                        
                         
                     }
-                    Helper.hideProgressBar(senderView: self)
+                    
                     sender.isEnabled = true
                     self.performSegue(withIdentifier:Constant.segueIdentifiers.allAvailableDestinations, sender: self)
                     Constant.MyClassConstants.isFromExchangeAllAvailable = false
@@ -781,10 +778,10 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                             region.regionCode = rsregion.regionCode
                             region.areas = rsregion.areas
                             Constant.MyClassConstants.regionArray.append(rsregion)
-                            Helper.hideProgressBar(senderView: self)
+                            
                             
                         }
-                        Helper.hideProgressBar(senderView: self)
+                        
                         sender.isEnabled = true
                         Constant.MyClassConstants.isFromExchangeAllAvailable = true
                         Constant.MyClassConstants.isFromRentalAllAvailable = false
@@ -801,7 +798,6 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
             
             if (self.segmentTitle == Constant.segmentControlItems.getaways && (Helper.getAllResortsFromLocalStorage().count>0 || Constant.MyClassConstants.whereTogoContentArray.count>0)) {
                 
-                Helper.showProgressBar(senderView: self)
                 sender.isEnabled = false
                 
                 if Reachability.isConnectedToNetwork() == true{
@@ -843,12 +839,12 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                                                         Constant.MyClassConstants.checkInDates = response.checkInDates
                                                         sender.isEnabled = true
                                                         Helper.helperDelegate = self
-                                                        Helper.hideProgressBar(senderView: self)
+                                                        
                                                         Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                                     }
                         },
                                                  onError:{ (error) in
-                                                    Helper.hideProgressBar(senderView: self)
+                                                    
                                                     sender.isEnabled = true
                                                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                         }
@@ -856,7 +852,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                     }
                 } else{
                     sender.isEnabled = true
-                    Helper.hideProgressBar(senderView: self)
+                    
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
                 }
                 
@@ -871,8 +867,6 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
                 }else{
                     sender.isEnabled = false
-                    Helper.showProgressBar(senderView: self)
-                    
                     
                     let travelPartyInfo = TravelParty()
                     travelPartyInfo.adults = Int(self.adultCounter)
@@ -917,7 +911,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                                     Helper.showNotAvailabilityResults()
                                 }
                                 
-                                Helper.hideProgressBar(senderView: self)
+                                
                                 
                                 if (activeInterval?.hasCheckInDates())!{
                                     Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
@@ -926,17 +920,17 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                                     Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate:initialSearchCheckInDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                     
                                 }else{
-                                    Helper.hideProgressBar(senderView: self)
+                                    
                                     Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate:exchangeSearchCriteria.checkInDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                 }
                                 
                             }, onError: { (error) in
                                 sender.isEnabled = true
-                                Helper.hideProgressBar(senderView: self)
+                                
                                 SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.noResultError)
                             })
                         }}else{
-                        Helper.hideProgressBar(senderView: self)
+                        
                         SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
                     }
                     
@@ -965,7 +959,6 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                         SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
                     } else {
                         
-                        Helper.showProgressBar(senderView: self)
                         let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Combined)
                         let storedData = Helper.getLocalStorageWherewanttoGo()
                         
@@ -988,7 +981,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                             
                             RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess:{ (response) in
                                 
-                                Helper.hideProgressBar(senderView: self)
+                                
                                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
                                 let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
                                 // Update active interval
@@ -997,10 +990,10 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                                 Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                 // Check not available checkIn dates for the active interval
                                 if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                                    Helper.hideProgressBar(senderView: self)
+                                    
                                     self.rentalHasNotAvailableCheckInDates = true
                                 }else{
-                                    Helper.hideProgressBar(senderView: self)
+                                    
                                     Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
                                     let vacationSearchInitialDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
                                     Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearchInitialDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
@@ -1011,7 +1004,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                             })
                             { (error) in
                                 
-                                Helper.hideProgressBar(senderView: self)
+                                
                                 SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                             }
                             
@@ -1211,7 +1204,7 @@ extension VacationSearchIPadViewController:WereWantToGoTableViewCellDelegate {
     
     func searchAvailability(exchangeAvailabilityRequest:ExchangeSearchAvailabilityRequest, sender:IUIKButton){
         ExchangeClient.searchAvailability(Session.sharedSession.userAccessToken, request: exchangeAvailabilityRequest, onSuccess: { (exchangeAvailability) in
-            Helper.hideProgressBar(senderView: self)
+            
             Constant.MyClassConstants.showAlert = false
             Constant.MyClassConstants.resortsArray.removeAll()
             Constant.MyClassConstants.exchangeInventory.removeAll()
@@ -1224,7 +1217,7 @@ extension VacationSearchIPadViewController:WereWantToGoTableViewCellDelegate {
             }
             self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
         }, onError: { (error) in
-            Helper.hideProgressBar(senderView: self)
+            
             sender.isEnabled = true
             Constant.MyClassConstants.showAlert = true
             self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)

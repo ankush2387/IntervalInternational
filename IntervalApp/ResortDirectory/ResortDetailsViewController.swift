@@ -192,7 +192,7 @@ class ResortDetailsViewController: UIViewController {
                 Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = Constant.MyClassConstants.vacationSearchContentPagerRunningIndex - 1
                 //sender.isEnabled = true
                 self.startIndex = startIndex - 1
-                Helper.addServiceCallBackgroundView(view: self.view)
+                
                 SVProgressHUD.show()
                 //Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = Constant.MyClassConstants.vacationSearchContentPagerRunningIndex - 1
                 
@@ -237,7 +237,7 @@ class ResortDetailsViewController: UIViewController {
                 self.arrayRunningIndex = arrayRunningIndex + 1
                 let resortCode = Constant.MyClassConstants.resortsArray[Constant.MyClassConstants.vacationSearchContentPagerRunningIndex].resortCode
                 
-                Helper.addServiceCallBackgroundView(view: self.view)
+                
                 SVProgressHUD.show()
                 
                 
@@ -1074,7 +1074,7 @@ extension ResortDetailsViewController:UITableViewDataSource {
             if (sender.isSelected == false){
                 
                 SVProgressHUD.show()
-                Helper.addServiceCallBackgroundView(view: self.view)
+                
                 UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsDescriptionArray.resortCode!, onSuccess: {(response) in
                     
                     Helper.removeServiceCallBackgroundView(view: self.view)
@@ -1091,7 +1091,7 @@ extension ResortDetailsViewController:UITableViewDataSource {
             }
             else {
                 SVProgressHUD.show()
-                Helper.addServiceCallBackgroundView(view: self.view)
+                
                 UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsDescriptionArray.resortCode!, onSuccess: {(response) in
                     
                     

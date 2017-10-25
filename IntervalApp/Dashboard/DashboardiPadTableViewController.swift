@@ -55,9 +55,9 @@ class DashboardIPadTableViewController: UITableViewController {
             Helper.getFlexExchangeDeals(senderVC: self) { (success) in
                 if success {
                     self.homeTableView.reloadData()
-                    Helper.hideProgressBar(senderView: self)
+                    
                 } else {
-                    Helper.hideProgressBar(senderView: self)
+                    
                 }
             }
             
