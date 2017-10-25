@@ -149,14 +149,14 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     // Function to dismis current controller on back button pressed.
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
         
-        Helper.showProgressBar(senderView: self)
+        
         if(Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
             Constant.holdingTimer.invalidate()
             
             ExchangeProcessClient.backToChooseExchange(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess:{(response) in
                 
                 Constant.MyClassConstants.selectedCreditCard.removeAll()
-                Helper.hideProgressBar(senderView: self)
+                
                 
                 // pop and dismiss view according to conditions
                 if (Constant.MyClassConstants.isDismissWhoWillBeCheckin) {
@@ -170,7 +170,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                 
             }, onError: {(error) in
                 
-                Helper.hideProgressBar(senderView: self)
+                
                 SimpleAlert.alert(self, title: "Who will be checking in", message: Constant.AlertMessages.operationFailedMessage)
             })
         }else{
@@ -411,7 +411,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         let processResort = ExchangeProcess()
         processResort.holdUnitStartTimeInMillis = Constant.holdingTime
         processResort.processId = Constant.MyClassConstants.exchangeProcessStartResponse.processId
-        Helper.showProgressBar(senderView: self)
+        
         
         ExchangeProcessClient.continueToCheckout(Session.sharedSession.userAccessToken, process: processResort, request: exchangeProcessRequest, onSuccess: {(response) in
             DarwinSDK.logger.debug(response)
@@ -491,7 +491,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             if(renewalsArray.count > 0){
                 processRequest1.renewals = renewalsArray
             }
-            Helper.showProgressBar(senderView: self)
+            
             let processResort = RentalProcess()
             processResort.holdUnitStartTimeInMillis = Constant.holdingTime
             processResort.processId = Constant.MyClassConstants.processStartResponse.processId

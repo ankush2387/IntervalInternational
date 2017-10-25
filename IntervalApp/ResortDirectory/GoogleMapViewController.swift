@@ -323,7 +323,7 @@ class GoogleMapViewController: UIViewController {
             Constant.MyClassConstants.isgetResortFromGoogleSearch = true
             self.googleMapSearchBar.resignFirstResponder()
             self.googleMapSearchBar.showsCancelButton = false
-            Helper.addServiceCallBackgroundView(view: self.view)
+            
             SVProgressHUD.show()
             DirectoryClient.getResortsWithinGeoArea(Session.sharedSession.userAccessToken, geoArea: Constant.MyClassConstants.destinations![sender.tag].geoArea, onSuccess: { (response) in
                 print(response)
@@ -1691,7 +1691,7 @@ extension GoogleMapViewController:UITableViewDelegate {
                 else {
                     
                     Constant.MyClassConstants.isgetResortFromGoogleSearch = true
-                    Helper.addServiceCallBackgroundView(view: self.view)
+                    
                     SVProgressHUD.show()
                     DirectoryClient.getResortsWithinGeoArea(Constant.MyClassConstants.systemAccessToken, geoArea: Constant.MyClassConstants.destinations![indexPath.row].geoArea, onSuccess: { (response) in
                         if(response.count > 0){

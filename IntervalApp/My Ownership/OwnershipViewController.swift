@@ -42,7 +42,7 @@ class OwnershipViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        Helper.showProgressBar(senderView: self)
+        
         self.title = Constant.ControllerTitles.ownershipViewController
         ownerShiptableView.register(UINib(nibName: Constant.customCellNibNames.searchResultContentTableCell, bundle: nil), forCellReuseIdentifier: Constant.customCellNibNames.searchResultContentTableCell)
         
@@ -61,10 +61,10 @@ class OwnershipViewController: UIViewController {
             }
             self.getRelinquishmentsInfo()
             self.ownerShiptableView.reloadData()
-            Helper.hideProgressBar(senderView: self)
+            
             
         }, onError: {(error) in
-            Helper.hideProgressBar(senderView: self)
+            
         })
 
 
@@ -473,7 +473,7 @@ class OwnershipViewController: UIViewController {
     
     func addClubPointButtonPressed(senderTag: Int) {
         Constant.MyClassConstants.relinquishmentSelectedWeek = pointOpenWeeksArray[senderTag]
-        Helper.addServiceCallBackgroundView(view: self.view)
+        
         SVProgressHUD.show()
         Constant.MyClassConstants.matrixDataArray.removeAllObjects()
         DirectoryClient.getResortClubPointsChart(Session.sharedSession.userAccessToken, resortCode:  (Constant.MyClassConstants.relinquishmentSelectedWeek.resort?.resortCode)!, onSuccess:{ (ClubPointsChart) in

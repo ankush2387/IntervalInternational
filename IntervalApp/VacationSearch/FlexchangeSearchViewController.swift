@@ -86,7 +86,6 @@ class FlexchangeSearchViewController: UIViewController {
     
     func addRelinquishmentSectionButtonPressed(_ sender:IUIKButton) {
         Constant.MyClassConstants.viewController = self
-        Helper.showProgressBar(senderView: self)
         ExchangeClient.getMyUnits(Session.sharedSession.userAccessToken, onSuccess: { (Relinquishments) in
             
             Constant.MyClassConstants.relinquishmentDeposits = Relinquishments.deposits
@@ -112,7 +111,7 @@ class FlexchangeSearchViewController: UIViewController {
             self.navigationController!.pushViewController(viewController, animated: true)
             
         }, onError: {(error) in
-            Helper.hideProgressBar(senderView: self)
+            
         })
         
     }
@@ -125,11 +124,10 @@ class FlexchangeSearchViewController: UIViewController {
         if(Constant.MyClassConstants.relinquishmentIdArray.count == 0){
             
             SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
-            Helper.hideProgressBar(senderView: self)
+            
             
         }else{
             
-            Helper.showProgressBar(senderView: self)
             if Reachability.isConnectedToNetwork() == true {
                 
                 let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
@@ -156,7 +154,7 @@ class FlexchangeSearchViewController: UIViewController {
                 
                 ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
                     
-                    Helper.hideProgressBar(senderView: self)
+                    
                     Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
                     Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     // Get activeInterval (or initial search interval)
@@ -177,7 +175,7 @@ class FlexchangeSearchViewController: UIViewController {
                     
                 }, onError: { (error) in
                     
-                    Helper.hideProgressBar(senderView: self)
+                    
                     SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                 })
                 

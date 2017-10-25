@@ -368,7 +368,7 @@ class RelinquishmentSelectionViewController: UIViewController {
         }
         else{
             
-            Helper.addServiceCallBackgroundView(view: self.view)
+            
             SVProgressHUD.show()
             Constant.MyClassConstants.matrixDataArray.removeAllObjects()
             DirectoryClient.getResortClubPointsChart(Session.sharedSession.userAccessToken, resortCode:  (Constant.MyClassConstants.relinquishmentSelectedWeek.resort?.resortCode)!, onSuccess:{ (ClubPointsChart) in

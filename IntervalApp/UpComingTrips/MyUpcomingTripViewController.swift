@@ -187,7 +187,7 @@ extension MyUpcomingTripViewController:UITableViewDataSource {
       Constant.MyClassConstants.transactionNumber = "\(Constant.MyClassConstants.upcomingTripsArray[sender.tag].exchangeNumber!)"
         Constant.MyClassConstants.transactionType = Constant.MyClassConstants.upcomingTripsArray[sender.tag].type!
         
-        Helper.addServiceCallBackgroundView(view: self.view)
+        
         SVProgressHUD.show()
         ExchangeClient.getExchangeTripDetails(Session.sharedSession.userAccessToken, confirmationNumber: Constant.MyClassConstants.transactionNumber, onSuccess: { (exchangeResponse) in
             

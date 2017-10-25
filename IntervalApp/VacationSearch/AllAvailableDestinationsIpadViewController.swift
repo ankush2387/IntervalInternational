@@ -252,8 +252,6 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
         
         if(Constant.MyClassConstants.isFromExchangeAllAvailable == true){
             
-            
-            Helper.showProgressBar(senderView: self)
             if Reachability.isConnectedToNetwork() == true {
                 
                 let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
@@ -275,7 +273,6 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
                 
                 ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
                     
-                    Helper.hideProgressBar(senderView: self)
                     Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
                     Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     // Get activeInterval (or initial search interval)
@@ -296,7 +293,6 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
                     
                 }, onError: { (error) in
                     
-                    Helper.hideProgressBar(senderView: self)
                     SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                 })
                 
@@ -327,7 +323,7 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
                 
                 RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess:{ (response) in
                     
-                    Helper.hideProgressBar(senderView: self)
+                    
                     Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
                     let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
                     // Update active interval
@@ -337,10 +333,10 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
                     Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     // Check not available checkIn dates for the active interval
                     if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                        Helper.hideProgressBar(senderView: self)
+                        
                         Helper.executeExchangeSearchDates(senderVC: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     }else{
-                        Helper.hideProgressBar(senderView: self)
+                        
                         if(response.checkInDates.count>0){
                             Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
                         }
@@ -353,7 +349,7 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
                 })
                 { (error) in
                     
-                    Helper.hideProgressBar(senderView: self)
+                    
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                 }
                 
@@ -392,12 +388,12 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
                                                 let initialSearchCheckInDate = Helper.convertStringToDate(dateString:vacationSearch.searchCheckInDate!,format:Constant.MyClassConstants.dateFormat)
                                                 Constant.MyClassConstants.checkInDates = response.checkInDates
                                                 //sender.isEnabled = true
-                                                Helper.hideProgressBar(senderView: self)
+                                                
                                                 Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                             }
                 },
                                          onError:{ (error) in
-                                            Helper.hideProgressBar(senderView: self)
+                                            
                                             //sender.isEnabled = true
                                             SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                 }
