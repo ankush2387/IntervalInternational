@@ -233,6 +233,32 @@ class SearchResultViewController: UIViewController {
         }
         
         self.collectionviewSelectedIndex = Constant.MyClassConstants.searchResultCollectionViewScrollToIndex
+        
+        if(Session.sharedSession.userAccessToken != nil){
+            Helper.showProgressBar(senderView: self)
+            UserClient.getFavoriteResorts(Session.sharedSession.userAccessToken, onSuccess: { (response) in
+                Constant.MyClassConstants.favoritesResortArray.removeAll()
+                for item in [response][0] {
+                    if let resortFav = item as? ResortFavorite {
+                        if let resort = resortFav.resort{
+                            let code = resort.resortCode
+                            Constant.MyClassConstants.favoritesResortCodeArray.add(code)
+                            Constant.MyClassConstants.favoritesResortArray.append(resort)
+                            
+                        }
+                        
+                    }
+                    
+                }
+                Helper.hideProgressBar(senderView: self)
+            })
+            { (error) in
+               
+                Helper.hideProgressBar(senderView: self)
+            }
+        }
+        
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -815,9 +841,17 @@ class SearchResultViewController: UIViewController {
                     var resortCode = ""
                     if  section == "0" {
                         if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Rental){
-                            resortCode = exactMatchResortsArray[sender.tag].resortCode!
+                            if(exactMatchResortsArray.count == 0){
+                                 resortCode = surroundingMatchResortsArray[sender.tag].resortCode!
+                            }else{
+                                 resortCode = exactMatchResortsArray[sender.tag].resortCode!
+                            }
                         }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Exchange){
-                            resortCode = (exactMatchResortsArrayExchange[sender.tag].resort?.resortCode!)!
+                            if(exactMatchResortsArrayExchange.count == 0){
+                                 resortCode = (surroundingMatchResortsArrayExchange[sender.tag].resort?.resortCode!)!
+                            }else{
+                                resortCode = (exactMatchResortsArrayExchange[sender.tag].resort?.resortCode!)!
+                            }
                         }else{
                             resortCode = (combinedExactSearchItems[sender.tag].rentalAvailability?.resortCode)!
                         }
