@@ -240,14 +240,12 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     //Function for navigating to search results
     func navigateToSearchResults(){
         //Constant.MyClassConstants.vacationSearchResultHeaderLabel = (Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: Constant.MyClassConstants.selectedAreaCodeArray[0] as! String) as? String)!
+        Helper.hideProgressBar(senderView: self)
+
         Constant.MyClassConstants.filteredIndex = 0
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
-        
-        let transitionManager = TransitionManager()
-        self.navigationController?.transitioningDelegate = transitionManager
-        
         self.navigationController!.pushViewController(viewController, animated: true)
     }
     
@@ -271,7 +269,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     func getDestinationsResortsForAlert(alert:RentalAlert, searchCriteria:VacationSearchCriteria){
         if((alert.destinations.count) > 0){
             let destination = AreaOfInfluenceDestination()
-            destination.destinationName  = alert.destinations[0].destinationName
+            destination.destinationName  = "Cancun"
             destination.destinationId = alert.destinations[0].destinationId
             destination.aoiId = alert.destinations[0].aoiId
             searchCriteria.destination = destination
