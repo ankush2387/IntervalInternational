@@ -27,6 +27,11 @@ class CertificateViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    
+    @IBAction func onClickedStatusInfoButton(_ sender: Any) {
+        print("status info button clicked")
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         
         Helper.showProgressBar(senderView: self)
@@ -57,7 +62,8 @@ extension CertificateViewController:UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        return 385
+        return 450
+        
     }
 }
 
