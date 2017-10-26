@@ -118,7 +118,7 @@ extension CertificateViewController:UITableViewDataSource {
         
         cell.travelWindowEndMonthYearLbl.text = "\(Helper.getMonthnameFromInt(monthNumber: endComponents.month!))  \(String(describing: endComponents.year!))"
         
-        //cell.statusLabel.text = Constant.MyClassConstants.certificateArray[indexPath.row].certificateStatus
+        cell.statusLbl.text = Constant.MyClassConstants.certificateArray[indexPath.row].certificateStatus
         
         Helper.applyShadowOnUIView(view: cell.cellBaseView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 1.0)
         cell.selectionStyle = UITableViewCellSelectionStyle.none
