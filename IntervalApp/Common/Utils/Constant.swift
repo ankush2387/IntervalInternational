@@ -237,9 +237,9 @@ class Constant: NSObject {
         //***** Initializing plicy list table cell content array *****//
         static var policyListTblCellContentArray = ["Terms & Conditions","Privacy Policy","Legal Information","Contact Us","Email Us","Our Offices","Interval World","Version \(Helper.getBuildVersion())"]
         
-        static var fourSegmentHeaderTextArray = [NSLocalizedString("Where_do_you_want_to_go", comment: ""),NSLocalizedString("What_do_you_want_to_trade", comment: ""),NSLocalizedString("Check_in_closest_to", comment: ""),NSLocalizedString("Who_is_travelling", comment: "")]
+        static var fourSegmentHeaderTextArray = ["Where do you want to go".localized(), "What do you want to trade".localized(), "Check in closest to".localized() ,"Who_is_travelling".localized()]
         
-         static var headerTextFlexchangeDestination = NSLocalizedString("Your_selected_Flexchange_Destination", comment: "")
+         static var headerTextFlexchangeDestination = "Your selected Flexchange Destination".localized()
         
         static var sectionHeaderArray = [NSLocalizedString("Destinations", comment: ""),NSLocalizedString("Resorts", comment: "")]
         
@@ -966,7 +966,7 @@ class Constant: NSObject {
         static var selectedControllerTitle = ""
         static var sorting = NSLocalizedString("Sorting", comment: "")
         static var choosewhattouse = NSLocalizedString("Choose what to use", comment: "")
-        static var flexChangeSearch = NSLocalizedString("Flexchange Search", comment: "")
+        static var flexChangeSearch = "Flexchange Search".localized()
          static var availableDestinations = NSLocalizedString("Available Destinations", comment: "")
     }
     

@@ -609,12 +609,7 @@ extension SearchResultMapviewController:UICollectionViewDataSource {
                 selectedMarker.isFlat = false
             }
         }
-        
     }
-    
-
-
-
 }
 
 
