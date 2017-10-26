@@ -33,6 +33,10 @@ class CertificateCell: UITableViewCell {
     @IBOutlet weak var totalSleeps: UILabel!
     
     @IBOutlet weak var expireDate: UILabel!
+    
+    @IBOutlet weak var statusLbl: UILabel!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
