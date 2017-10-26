@@ -335,7 +335,7 @@ class LoginIPadViewController: UIViewController
                 onSuccess:{(contact) in
                 // Got an access token!  Save it for later use.
                 SVProgressHUD.dismiss()
-                Helper.removeServiceCallBackgroundView(view: self.view)
+                self.hideHudAsync()
                 Session.sharedSession.contact = contact
                                         
     //***** Next, get the contact information.  See how many memberships this user has. *****//
@@ -343,7 +343,7 @@ class LoginIPadViewController: UIViewController
             },
             onError:{(error) in
                 SVProgressHUD.dismiss()
-                Helper.removeServiceCallBackgroundView(view: self.view)
+                self.hideHudAsync()
                 Logger.sharedInstance.warning(error.description)
                 SimpleAlert.alert(self, title:Constant.AlertErrorMessages.loginFailed, message: error.localizedDescription)
             }
@@ -563,7 +563,7 @@ extension LoginIPadViewController {
 					else {
 						DispatchQueue.main.async(execute: {
 							SVProgressHUD.dismiss()
-							Helper.removeServiceCallBackgroundView(view: self.view)
+							self.hideHudAsync()
 							SimpleAlert.alert(self, title: Constant.enableTouchIdMessages.authenticationFailedTitle, message: Constant.enableTouchIdMessages.onTouchCancelMessage)
 						})
 					}

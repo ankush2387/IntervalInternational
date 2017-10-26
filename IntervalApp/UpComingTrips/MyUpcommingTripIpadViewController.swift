@@ -82,15 +82,15 @@ class MyUpcommingTripIpadViewController: UIViewController {
     func viewTripDetailsPressed(_ sender:IUIKButton){
         Constant.MyClassConstants.transactionNumber = "\(Constant.MyClassConstants.upcomingTripsArray[sender.tag - 1].exchangeNumber!)"
         
-        SVProgressHUD.show()
+        showHudAsync()
         ExchangeClient.getExchangeTripDetails(Session.sharedSession.userAccessToken, confirmationNumber: Constant.MyClassConstants.transactionNumber, onSuccess: { (exchangeResponse) in
             
             Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails = exchangeResponse
-            Helper.removeServiceCallBackgroundView(view: self.view)
+            self.hideHudAsync()
             SVProgressHUD.dismiss()
             self.performSegue(withIdentifier:Constant.segueIdentifiers.detailSegue, sender:nil)
         }) { (error) in
-            Helper.removeServiceCallBackgroundView(view: self.view)
+            self.hideHudAsync()
             SVProgressHUD.dismiss()
             SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
         }

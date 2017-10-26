@@ -178,11 +178,11 @@ class AddDebitOrCreditCardViewController: UIViewController {
                 
                 //API call to tokenize new credit card.
                 
-                SVProgressHUD.show()
+                showHudAsync()
                 CreditCardTokenizeClient.tokenize(Session.sharedSession.userAccessToken, creditCardNumber: newCreditCard.cardNumber!, onSuccess: {(response) in
                     
                     ADBMobile.trackAction(Constant.omnitureEvents.event59, data: nil)
-                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    self.hideHudAsync()
                     SVProgressHUD.dismiss()
                     Constant.MyClassConstants.selectedCreditCard.removeAll()
                     newCreditCard.creditcardId = 0
@@ -194,7 +194,7 @@ class AddDebitOrCreditCardViewController: UIViewController {
                     
                     }, onError: {(error) in
                         SimpleAlert.alert(self, title:Constant.MyClassConstants.newCardalertTitle, message: error.description)
-                        Helper.removeServiceCallBackgroundView(view: self.view)
+                        self.hideHudAsync()
                         SVProgressHUD.dismiss()
                        
                 })

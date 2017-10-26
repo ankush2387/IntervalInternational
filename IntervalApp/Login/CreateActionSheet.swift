@@ -87,14 +87,13 @@ class CreateActionSheet: UITableViewController {
     //***** Function called when we have found that user selected one of membership from list *****//
     func membershipWasSelected() {
         
-        SVProgressHUD.show()
+        showHudAsync()
         
         //***** Update the API session for the current access token *****//
         let context = Session.sharedSession
         UserClient.putSessionsUser(context.userAccessToken, member: context.selectedMembership!,
         onSuccess:{
-            SVProgressHUD.dismiss()
-            Helper.removeServiceCallBackgroundView(view: Constant.MyClassConstants.signInRequestedController .view)
+            self.hideHudAsync()
             Constant.MyClassConstants.isLoginSuccessfull = true
             
             let Product = Session.sharedSession.selectedMembership?.getProductWithHighestTier()

@@ -149,14 +149,14 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     // Function to dismis current controller on back button pressed.
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
         
-        
+        showHudAsync()
         if(Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
             Constant.holdingTimer.invalidate()
             
             ExchangeProcessClient.backToChooseExchange(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess:{(response) in
                 
                 Constant.MyClassConstants.selectedCreditCard.removeAll()
-                
+                self.hideHudAsync()
                 
                 // pop and dismiss view according to conditions
                 if (Constant.MyClassConstants.isDismissWhoWillBeCheckin) {
@@ -170,7 +170,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                 
             }, onError: {(error) in
                 
-                
+                self.hideHudAsync()
                 SimpleAlert.alert(self, title: "Who will be checking in", message: Constant.AlertMessages.operationFailedMessage)
             })
         }else{
@@ -180,7 +180,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             
             Constant.MyClassConstants.selectedCreditCard.removeAll()
             SVProgressHUD.dismiss()
-            Helper.removeServiceCallBackgroundView(view: self.view)
+            self.hideHudAsync()
             
             // pop and dismiss view according to conditions
             if (Constant.MyClassConstants.isDismissWhoWillBeCheckin) {
@@ -197,7 +197,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
          
             
             SVProgressHUD.dismiss()
-            Helper.removeServiceCallBackgroundView(view: self.view)
+            self.hideHudAsync()
             SimpleAlert.alert(self, title: "Who will be checking in", message: Constant.AlertMessages.operationFailedMessage)
         })
     }
@@ -411,12 +411,12 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         let processResort = ExchangeProcess()
         processResort.holdUnitStartTimeInMillis = Constant.holdingTime
         processResort.processId = Constant.MyClassConstants.exchangeProcessStartResponse.processId
-        
+        showHudAsync()
         
         ExchangeProcessClient.continueToCheckout(Session.sharedSession.userAccessToken, process: processResort, request: exchangeProcessRequest, onSuccess: {(response) in
             DarwinSDK.logger.debug(response)
             SVProgressHUD.dismiss()
-            Helper.removeServiceCallBackgroundView(view: self.view)
+            self.hideHudAsync()
             Constant.MyClassConstants.exchangeContinueToCheckoutResponse = response
             
             if let promotions = response.view?.fees?.shopExchange?.promotions {
@@ -443,7 +443,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         }, onError: {(error) in
             print(error.localizedDescription)
             SVProgressHUD.dismiss()
-            Helper.removeServiceCallBackgroundView(view: self.view)
+            self.hideHudAsync()
             SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
             
         })
@@ -491,7 +491,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             if(renewalsArray.count > 0){
                 processRequest1.renewals = renewalsArray
             }
-            
+            showHudAsync()
             let processResort = RentalProcess()
             processResort.holdUnitStartTimeInMillis = Constant.holdingTime
             processResort.processId = Constant.MyClassConstants.processStartResponse.processId
@@ -499,7 +499,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             RentalProcessClient.continueToCheckout(Session.sharedSession.userAccessToken, process: processResort, request: processRequest1, onSuccess: {(response) in
                 DarwinSDK.logger.debug(response)
                 SVProgressHUD.dismiss()
-                Helper.removeServiceCallBackgroundView(view: self.view)
+                self.hideHudAsync()
                 Constant.MyClassConstants.continueToCheckoutResponse = response
                 
                 if let promotions = response.view?.fees?.rental?.promotions {
@@ -521,7 +521,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                 self.navigationController!.pushViewController(viewController, animated: true)
             }, onError: {(error) in
                 SVProgressHUD.dismiss()
-                Helper.removeServiceCallBackgroundView(view: self.view)
+                self.hideHudAsync()
                 SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                 
             })

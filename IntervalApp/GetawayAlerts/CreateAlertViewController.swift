@@ -178,7 +178,7 @@ class CreateAlertViewController: UIViewController {
                     
                     if(Constant.MyClassConstants.selectedGetawayAlertDestinationArray.count > 0) {
                         
-                        SVProgressHUD.show()
+                        showHudAsync()
                         let rentalAlert = RentalAlert()
                         rentalAlert.earliestCheckInDate = Helper.convertDateToString(date: Constant.MyClassConstants.alertWindowStartDate, format: Constant.MyClassConstants.dateFormat)
                         rentalAlert.latestCheckInDate = Helper.convertDateToString(date: Constant.MyClassConstants.alertWindowEndDate, format: Constant.MyClassConstants.dateFormat)

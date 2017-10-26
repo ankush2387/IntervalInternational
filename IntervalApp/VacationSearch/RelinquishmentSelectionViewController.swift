@@ -303,7 +303,7 @@ class RelinquishmentSelectionViewController: UIViewController {
             selectedOpenWeek.resort.append(resort)
             relinquishmentList.openWeeks.append(selectedOpenWeek)
             storedata.openWeeks.append(relinquishmentList)
-            //storedata.membeshipNumber = Membership!.memberNumber!
+            storedata.membeshipNumber = Membership!.memberNumber!
             let realm = try! Realm()
             try! realm.write {
                 realm.add(storedata)
@@ -368,13 +368,13 @@ class RelinquishmentSelectionViewController: UIViewController {
         }
         else{
             
-            
-            SVProgressHUD.show()
+
+            showHudAsync()
             Constant.MyClassConstants.matrixDataArray.removeAllObjects()
             DirectoryClient.getResortClubPointsChart(Session.sharedSession.userAccessToken, resortCode:  (Constant.MyClassConstants.relinquishmentSelectedWeek.resort?.resortCode)!, onSuccess:{ (ClubPointsChart) in
                 
                 Constant.MyClassConstants.selectionType = 1
-                Helper.removeServiceCallBackgroundView(view: self.view)
+                self.hideHudAsync()
                 SVProgressHUD.dismiss()
                 Constant.MyClassConstants.matrixType = ClubPointsChart.type!
                 Constant.MyClassConstants.matrixDescription =
@@ -407,7 +407,7 @@ class RelinquishmentSelectionViewController: UIViewController {
                 
             }, onError:{ (error) in
                 
-                Helper.removeServiceCallBackgroundView(view: self.view)
+                self.hideHudAsync()
                 SVProgressHUD.dismiss()
                 print(error.description)
             })

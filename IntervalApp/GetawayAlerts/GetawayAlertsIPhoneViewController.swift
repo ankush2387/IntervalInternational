@@ -185,7 +185,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
         Constant.MyClassConstants.resortsArray.removeAll()
         Constant.MyClassConstants.searchResultCollectionViewScrollToIndex = 1
         
-        SVProgressHUD.show()
+        showHudAsync()
         let checkInDates:NSArray = self.alertsSearchDates.value(forKey: String(sender.tag)) as! NSArray
         if(checkInDates.count > 0){
         
