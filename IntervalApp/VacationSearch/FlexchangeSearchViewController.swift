@@ -86,6 +86,7 @@ class FlexchangeSearchViewController: UIViewController {
     
     func addRelinquishmentSectionButtonPressed(_ sender:IUIKButton) {
         Constant.MyClassConstants.viewController = self
+        showHudAsync()
         ExchangeClient.getMyUnits(Session.sharedSession.userAccessToken, onSuccess: { (Relinquishments) in
             
             Constant.MyClassConstants.relinquishmentDeposits = Relinquishments.deposits
@@ -102,7 +103,7 @@ class FlexchangeSearchViewController: UIViewController {
             
             
             SVProgressHUD.dismiss()
-            Helper.removeServiceCallBackgroundView(view: self.view)
+            self.hideHudAsync()
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.relinquishmentSelectionViewController) as! RelinquishmentSelectionViewController
             
@@ -111,7 +112,7 @@ class FlexchangeSearchViewController: UIViewController {
             self.navigationController!.pushViewController(viewController, animated: true)
             
         }, onError: {(error) in
-            
+            self.hideHudAsync()
         })
         
     }
@@ -124,10 +125,11 @@ class FlexchangeSearchViewController: UIViewController {
         if(Constant.MyClassConstants.relinquishmentIdArray.count == 0){
             
             SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
-            
+            self.hideHudAsync()
             
         }else{
             
+            showHudAsync()
             if Reachability.isConnectedToNetwork() == true {
                 
                 let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
@@ -154,7 +156,7 @@ class FlexchangeSearchViewController: UIViewController {
                 
                 ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
                     
-                    
+                    self.hideHudAsync()
                     Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
                     Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     // Get activeInterval (or initial search interval)
@@ -175,7 +177,7 @@ class FlexchangeSearchViewController: UIViewController {
                     
                 }, onError: { (error) in
                     
-                    
+                    self.hideHudAsync()
                     SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                 })
                 

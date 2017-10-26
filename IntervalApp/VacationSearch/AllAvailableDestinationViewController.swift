@@ -71,6 +71,8 @@ class AllAvailableDestinationViewController: UIViewController {
         
         if(Constant.MyClassConstants.isFromExchangeAllAvailable == true){
             
+            
+                showHudAsync()
             if Reachability.isConnectedToNetwork() == true {
                 
                 let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
@@ -95,7 +97,7 @@ class AllAvailableDestinationViewController: UIViewController {
                 
                 ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
                     
-                    
+                    self.hideHudAsync()
                     Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
                     Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     // Get activeInterval (or initial search interval)
@@ -116,7 +118,7 @@ class AllAvailableDestinationViewController: UIViewController {
                     
                 }, onError: { (error) in
                     
-                    
+                    self.hideHudAsync()
                     SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                 })
                 
@@ -147,7 +149,7 @@ class AllAvailableDestinationViewController: UIViewController {
                 
                 RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess:{ (response) in
                     
-                    
+                   self.hideHudAsync()
                     Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
                     let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
                     // Update active interval
@@ -157,10 +159,10 @@ class AllAvailableDestinationViewController: UIViewController {
                     Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     // Check not available checkIn dates for the active interval
                     if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                        
+                        self.hideHudAsync()
                         Helper.executeExchangeSearchDates(senderVC: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     }else{
-                        
+                        self.hideHudAsync()
                         if(response.checkInDates.count>0){
                             Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
                         }
@@ -173,7 +175,7 @@ class AllAvailableDestinationViewController: UIViewController {
                 })
                 { (error) in
                     
-                    
+                    self.hideHudAsync()
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                 }
                 
@@ -213,12 +215,12 @@ class AllAvailableDestinationViewController: UIViewController {
                                                 Constant.MyClassConstants.checkInDates = response.checkInDates
                                                 //sender.isEnabled = true
                                                 Helper.helperDelegate = self
-                                                
+                                                self.hideHudAsync()
                                                 Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                             }
                 },
                                          onError:{ (error) in
-                                            
+                                            self.hideHudAsync()
                                             //sender.isEnabled = true
                                             SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                 }

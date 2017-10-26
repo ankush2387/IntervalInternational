@@ -263,7 +263,7 @@ class EditMyAlertIpadViewController: UIViewController {
                     
                     if(Constant.MyClassConstants.selectedGetawayAlertDestinationArray.count > 0) {
                         
-                        SVProgressHUD.show()
+                        showHudAsync()
                         let rentalAlert = RentalAlert()
                         rentalAlert.alertId = self.alertId
                         rentalAlert.earliestCheckInDate = Helper.convertDateToString(date: Constant.MyClassConstants.alertWindowStartDate, format: Constant.MyClassConstants.dateFormat)

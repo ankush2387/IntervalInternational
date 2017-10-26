@@ -209,7 +209,7 @@ class SearchResultViewController: UIViewController {
         Helper.helperDelegate = self
         searchResultTableView.estimatedRowHeight = 400
         searchResultTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
-        Helper.removeServiceCallBackgroundView(view: self.view)
+        self.hideHudAsync()
         //***** Register collection cell xib with collection view *****//
         let nib = UINib(nibName: Constant.customCellNibNames.searchResultCollectionCell, bundle: nil)
         searchResultColelctionView?.register(nib, forCellWithReuseIdentifier: Constant.customCellNibNames.searchResultCollectionCell)
@@ -235,7 +235,7 @@ class SearchResultViewController: UIViewController {
         self.collectionviewSelectedIndex = Constant.MyClassConstants.searchResultCollectionViewScrollToIndex
         
         if(Session.sharedSession.userAccessToken != nil){
-           // Helper.showProgressBar(senderView: self)
+
             UserClient.getFavoriteResorts(Session.sharedSession.userAccessToken, onSuccess: { (response) in
                 Constant.MyClassConstants.favoritesResortArray.removeAll()
                 for item in [response][0] {
@@ -250,11 +250,13 @@ class SearchResultViewController: UIViewController {
                     }
                     
                 }
+
                 //Helper.hideProgressBar(senderView: self)
             })
             { (error) in
                
-               // Helper.hideProgressBar(senderView: self)
+
+                self.hideHudAsync()
             }
         }
         
@@ -434,7 +436,7 @@ class SearchResultViewController: UIViewController {
         }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
             Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: toDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
         }else{
-            
+            showHudAsync()
             let request = RentalSearchResortsRequest()
             request.checkInDate = toDate
             request.resortCodes = activeInterval?.resortCodes
@@ -478,7 +480,7 @@ class SearchResultViewController: UIViewController {
         }
         
         Constant.MyClassConstants.resortsArray.removeAll()
-        
+        showHudAsync()
         
         RentalClient.searchResorts(Session.sharedSession.userAccessToken, request: searchResortRequest, onSuccess: { (response) in
             Constant.MyClassConstants.resortsArray = response.resorts
@@ -487,14 +489,14 @@ class SearchResultViewController: UIViewController {
                 self.headerVw.isHidden = false
             }
             self.searchResultTableView.reloadData()
-            
+            self.hideHudAsync()
         }, onError: { (error) in
             Constant.MyClassConstants.resortsArray.removeAll()
             self.searchResultTableView.reloadData()
             self.alertView = Helper.noResortView(senderView: self.view)
             self.alertView.isHidden = false
             self.headerVw.isHidden = true
-            
+            self.hideHudAsync()
         })
         
     }
@@ -503,7 +505,7 @@ class SearchResultViewController: UIViewController {
     //Dynamic API hit
     
     func getFilterRelinquishments(selectedInventoryUnit:Inventory, selectedIndex:Int, selectedExchangeInventory: ExchangeInventory){
-        
+        showHudAsync()
         let exchangeSearchDateRequest = ExchangeFilterRelinquishmentsRequest()
         exchangeSearchDateRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
         exchangeSearchDateRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
@@ -541,7 +543,7 @@ class SearchResultViewController: UIViewController {
         Constant.MyClassConstants.exchangeDestination = exchangeDestination
         
         ExchangeClient.filterRelinquishments(Session.sharedSession.userAccessToken, request: exchangeSearchDateRequest, onSuccess: { (response) in
-            
+            self.hideHudAsync()
             Constant.MyClassConstants.filterRelinquishments.removeAll()
             
             for exchageDetail in response{
@@ -566,7 +568,7 @@ class SearchResultViewController: UIViewController {
             }
             
         }, onError: { (error) in
-            
+            self.hideHudAsync()
             SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.description)
         })
     }
@@ -605,7 +607,7 @@ class SearchResultViewController: UIViewController {
         //Start process request
         
         //Exchange process request parameters
-        
+        showHudAsync()
         let processResort = ExchangeProcess()
         processResort.holdUnitStartTimeInMillis = Constant.holdingTime
         
@@ -658,7 +660,7 @@ class SearchResultViewController: UIViewController {
             UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: {(Membership) in
                 
                 // Got an access token!  Save it for later use.
-                
+                self.hideHudAsync()
                 Constant.MyClassConstants.membershipContactArray = Membership.contacts!
                 
                 let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
@@ -689,14 +691,14 @@ class SearchResultViewController: UIViewController {
                 
                 self.navigationController!.pushViewController(viewController, animated: true)*/
             }, onError: { (error) in
-                
+                self.hideHudAsync()
                 
                 SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                 
             })
             
         }, onError: {(error) in
-            
+            self.hideHudAsync()
             SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
         })
     }
@@ -805,7 +807,7 @@ class SearchResultViewController: UIViewController {
             
             // Got an access token!  Save it for later use.
             SVProgressHUD.dismiss()
-            Helper.removeServiceCallBackgroundView(view: self.view)
+            self.hideHudAsync()
             Constant.MyClassConstants.membershipContactArray = Membership.contacts!
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             let transitionManager = TransitionManager()
@@ -825,7 +827,7 @@ class SearchResultViewController: UIViewController {
         }, onError: { (error) in
             
             SVProgressHUD.dismiss()
-            Helper.removeServiceCallBackgroundView(view: self.view)
+            self.hideHudAsync()
             SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.description)
             
         })
@@ -834,7 +836,6 @@ class SearchResultViewController: UIViewController {
     func favoriteButtonclicked(_ sender:UIButton) {
         
         let section =  sender.accessibilityValue!
-        
         
                 if((Session.sharedSession.userAccessToken) != nil) {
                     
@@ -870,12 +871,11 @@ class SearchResultViewController: UIViewController {
                     }
         
                     if (sender.isSelected == false){
-                        
                         SVProgressHUD.show()
                         //Helper.addServiceCallBackgroundView(view: self.view)
                         UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode:resortCode, onSuccess: {(response) in
 
-                            Helper.removeServiceCallBackgroundView(view: self.view)
+                            self.hideHudAsync()
                             SVProgressHUD.dismiss()
                             sender.isSelected = true
                             Constant.MyClassConstants.favoritesResortCodeArray.add(resortCode)
@@ -886,23 +886,20 @@ class SearchResultViewController: UIViewController {
                         }, onError: {(error) in
 
                             SVProgressHUD.dismiss()
-                            Helper.removeServiceCallBackgroundView(view: self.view)
+                            self.hideHudAsync()
 
                         })
                     }
                     else {
-
                         SVProgressHUD.show()
                        // Helper.addServiceCallBackgroundView(view: self.view)
+                        showHudAsync()
                         UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: resortCode, onSuccess: {(response) in
 
                             sender.isSelected = false
-                            Helper.removeServiceCallBackgroundView(view: self.view)
+                            self.hideHudAsync()
                             SVProgressHUD.dismiss()
                             Constant.MyClassConstants.favoritesResortCodeArray.remove(resortCode)
-                            print(Constant.MyClassConstants.favoritesResortCodeArray)
-                            
-                            
                             let indexpath = NSIndexPath(row: sender.tag, section:Int(section)!)
                             self.searchResultTableView.reloadRows(at: [indexpath as IndexPath], with: .automatic)
                             
@@ -910,7 +907,7 @@ class SearchResultViewController: UIViewController {
                         }, onError: {(error) in
 
                             SVProgressHUD.dismiss()
-                            Helper.removeServiceCallBackgroundView(view: self.view)
+                            self.hideHudAsync()
 
                         })
 
@@ -988,6 +985,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
             collectionviewSelectedIndex = indexPath.item
             dateCellSelectionColor = Constant.CommonColor.blueColor
             if(Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)!{
+                showHudAsync()
                 
                 
                 intervalBucketClicked(calendarItem:Constant.MyClassConstants.calendarDatesArray[indexPath.item], cell: cell!)
@@ -1003,8 +1001,8 @@ extension SearchResultViewController:UICollectionViewDelegate {
             if((indexPath as NSIndexPath).section == 0) {
                 Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.vacationSearchFunctionalityCheck
                 Constant.MyClassConstants.isFromSearchResult = true
-                
-                SVProgressHUD.show()
+
+                showHudAsync()
                 var resortCode = ""
                 if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Rental){
                     
@@ -1050,13 +1048,13 @@ extension SearchResultViewController:UICollectionViewDelegate {
                     }
                     Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = collectionView.tag + 1
                     SVProgressHUD.dismiss()
-                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    self.hideHudAsync()
                     self.performSegue(withIdentifier: Constant.segueIdentifiers.vacationSearchDetailSegue, sender: nil)
                 })
                 { (error) in
                     
                     SVProgressHUD.dismiss()
-                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    self.hideHudAsync()
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.description)
                 }
             }else{
@@ -1076,7 +1074,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
                     
                 }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
                     
-                    SVProgressHUD.show()
+                    showHudAsync()
                     
                     if(collectionView.superview?.superview?.tag == 0 && self.exactMatchResortsArray.count > 0){
                            Constant.MyClassConstants.selectedResort = self.exactMatchResortsArray[collectionView.tag]
@@ -1112,7 +1110,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
                         Constant.MyClassConstants.getawayBookingLastStartedProcess = processResort
                         Constant.MyClassConstants.processStartResponse = response
                         SVProgressHUD.dismiss()
-                        Helper.removeServiceCallBackgroundView(view: self.view)
+                        self.hideHudAsync()
                         Constant.MyClassConstants.viewResponse = response.view!
                         if let rentalFees = response.view?.fees{
                             Constant.MyClassConstants.rentalFees = [rentalFees]
@@ -1138,7 +1136,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
                         //MARK:- Check forced renewals before calling membership
                         self.checkUserMembership(response: response)
                     }, onError: {(error) in
-                        Helper.removeServiceCallBackgroundView(view: self.view)
+                        self.hideHudAsync()
                         SVProgressHUD.dismiss()
                         SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.description)
                     })
@@ -1820,6 +1818,60 @@ extension SearchResultViewController:UITableViewDataSource {
     }
 }
 
+extension SearchResultViewController:SearchResultContentTableCellDelegate{
+    func favoriteButtonClicked(_ sender: UIButton){
+        
+        if((Session.sharedSession.userAccessToken) != nil) {
+            
+            if (sender.isSelected == false){
+                
+                showHudAsync()
+                
+                UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
+                    
+                   
+                    self.hideHudAsync()
+                    sender.isSelected = true
+                    Constant.MyClassConstants.favoritesResortCodeArray.add(Constant.MyClassConstants.resortsArray[sender.tag].resortCode!)
+                    self.searchResultTableView.reloadData()
+                    
+                }, onError: {(error) in
+                    
+                    self.hideHudAsync()
+                    
+                })
+            }
+            else {
+                
+                showHudAsync()
+                
+                UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
+                    
+                    print(response)
+                    sender.isSelected = false
+                    self.hideHudAsync()
+                    SVProgressHUD.dismiss()
+                    Constant.MyClassConstants.favoritesResortCodeArray.remove(Constant.MyClassConstants.resortsArray[sender.tag].resortCode!)
+                    self.searchResultTableView.reloadData()
+                    
+                }, onError: {(error) in
+                    
+                    self.hideHudAsync()
+                   
+                })
+                
+            }
+        }else{
+            
+            Constant.MyClassConstants.btnTag = sender.tag
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.preLoginSegue, sender: self)
+        }
+        
+    }
+    func unfavoriteButtonClicked(_ sender: UIButton){
+        sender.isSelected = false
+    }
+}
 
 extension String {
     var html2AttributedString: NSAttributedString? {
@@ -1841,7 +1893,7 @@ extension SearchResultViewController:HelperDelegate {
     
     func resortSearchComplete(){
         
-        
+        self.hideHudAsync()
         Constant.MyClassConstants.calendarDatesArray.removeAll()
         Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
         

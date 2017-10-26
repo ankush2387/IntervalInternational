@@ -392,7 +392,7 @@ class VacationSearchResultIPadController: UIViewController {
             
             Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: toDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
         }else{
-            
+            showHudAsync()
             let request = RentalSearchResortsRequest()
             request.checkInDate = toDate
             request.resortCodes = activeInterval.resortCodes
@@ -408,7 +408,7 @@ class VacationSearchResultIPadController: UIViewController {
                                         
             },
                                        onError:{ (error) in
-                                        
+                                        self.hideHudAsync()
                                         SimpleAlert.alert(self, title: Constant.AlertMessages.noResultMessage, message: error.localizedDescription)
             }
             )
@@ -437,10 +437,10 @@ class VacationSearchResultIPadController: UIViewController {
         let searchResortRequest = RentalSearchResortsRequest()
         searchResortRequest.checkInDate = toDate
         searchResortRequest.resortCodes = Constant.MyClassConstants.resortCodesArray
-        
+        showHudAsync()
         Constant.MyClassConstants.resortsArray.removeAll()
         RentalClient.searchResorts(Session.sharedSession.userAccessToken, request: searchResortRequest, onSuccess: { (response) in
-            
+            self.hideHudAsync()
             Constant.MyClassConstants.resortsArray = response.resorts
             if(self.alertView.isHidden == false){
                 self.alertView.isHidden = true
@@ -453,7 +453,7 @@ class VacationSearchResultIPadController: UIViewController {
             self.alertView = Helper.noResortView(senderView: self.view)
             self.alertView.isHidden = false
             self.headerVw.isHidden = true
-            
+            self.hideHudAsync()
         })
     }
     
@@ -608,7 +608,7 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
         
         if(Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)!{
             
-            
+            showHudAsync()
             intervalBucketClicked(calendarItem:Constant.MyClassConstants.calendarDatesArray[indexPath.item], cell: cell!)
             
         }else{
@@ -632,8 +632,8 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
             // set isFrom Search true
             Constant.MyClassConstants.isFromSearchResult = true
             Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.vacationSearchFunctionalityCheck
-            
-            SVProgressHUD.show()
+
+            showHudAsync()
             var resortCode = ""
             if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
                 
@@ -684,13 +684,13 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
                 
                 Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = indexPath.section + 1
                 SVProgressHUD.dismiss()
-                Helper.removeServiceCallBackgroundView(view: self.view)
+                self.hideHudAsync()
                 self.performSegue(withIdentifier: Constant.segueIdentifiers.vacationSearchDetailSegue, sender: nil)
             })
             { (error) in
                 
                 SVProgressHUD.dismiss()
-                Helper.removeServiceCallBackgroundView(view: self.view)
+                self.hideHudAsync()
                 SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.description)
             }
             
@@ -715,8 +715,8 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
                 }
                 
             }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
-                
-                SVProgressHUD.show()
+
+                showHudAsync()
                 
                 if(collectionView.superview?.superview?.tag == 0 && exactMatchResortsArray.count > 0){
                     Constant.MyClassConstants.selectedResort = self.exactMatchResortsArray[collectionView.tag]
@@ -752,7 +752,7 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
                     Constant.MyClassConstants.getawayBookingLastStartedProcess = processResort
                     Constant.MyClassConstants.processStartResponse = response
                     SVProgressHUD.dismiss()
-                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    self.hideHudAsync()
                     Constant.MyClassConstants.viewResponse = response.view!
                     Constant.MyClassConstants.rentalFees = [(response.view?.fees)!]
                     Constant.MyClassConstants.guestCertificate = response.view?.fees?.guestCertificate
@@ -776,7 +776,7 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
                         
                         // Got an access token!  Save it for later use.
                         SVProgressHUD.dismiss()
-                        Helper.removeServiceCallBackgroundView(view: self.view)
+                        self.hideHudAsync()
                         Constant.MyClassConstants.membershipContactArray = Membership.contacts!
                         
                         
@@ -800,13 +800,13 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
                     }, onError: { (error) in
                         
                         SVProgressHUD.dismiss()
-                        Helper.removeServiceCallBackgroundView(view: self.view)
+                        self.hideHudAsync()
                         SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.description)
                         
                     })
                     
                 }, onError: {(error) in
-                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    self.hideHudAsync()
                     SVProgressHUD.dismiss()
                     SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.description)
                 })
@@ -885,7 +885,7 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
 }
 
 func getFilterRelinquishments(selectedInventoryUnit:Inventory, selectedIndex:Int, selectedExchangeInventory: ExchangeInventory){
-    
+    showHudAsync()
     let exchangeSearchDateRequest = ExchangeFilterRelinquishmentsRequest()
     exchangeSearchDateRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
     
@@ -924,7 +924,7 @@ func getFilterRelinquishments(selectedInventoryUnit:Inventory, selectedIndex:Int
     Constant.MyClassConstants.exchangeDestination = exchangeDestination
     
     ExchangeClient.filterRelinquishments(Session.sharedSession.userAccessToken, request: exchangeSearchDateRequest, onSuccess: { (response) in
-        
+        self.hideHudAsync()
         Constant.MyClassConstants.filterRelinquishments.removeAll()
         for exchageDetail in response{
             Constant.MyClassConstants.filterRelinquishments.append(exchageDetail.relinquishment!)
@@ -946,7 +946,7 @@ func getFilterRelinquishments(selectedInventoryUnit:Inventory, selectedIndex:Int
         }
         
     }, onError: { (error) in
-        
+        self.hideHudAsync()
         SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.description)
     })
 }
@@ -974,7 +974,7 @@ func startProcess(){
     //Start process request
     
     //Exchange process request parameters
-    
+    showHudAsync()
     let processResort = ExchangeProcess()
     processResort.holdUnitStartTimeInMillis = Constant.holdingTime
     
@@ -1024,7 +1024,7 @@ func startProcess(){
         UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: {(Membership) in
             
             // Got an access token!  Save it for later use.
-            
+            self.hideHudAsync()
             Constant.MyClassConstants.membershipContactArray = Membership.contacts!
             
             // check force renewals here
@@ -1056,13 +1056,13 @@ func startProcess(){
             self.navigationController!.pushViewController(viewController, animated: true)
         }, onError: { (error) in
             
-            
+            self.hideHudAsync()
             SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
             
         })
         
     }, onError: {(error) in
-        
+        self.hideHudAsync()
         SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
     })
 }
@@ -1652,7 +1652,7 @@ extension VacationSearchResultIPadController:HelperDelegate {
     func resortSearchComplete(){
         Constant.MyClassConstants.calendarDatesArray.removeAll()
         Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
-        
+        self.hideHudAsync()
         exchangeExactMatchResortsArray.removeAll()
         exchangeSurroundingMatchResortsArray.removeAll()
         exactMatchResortsArray.removeAll()

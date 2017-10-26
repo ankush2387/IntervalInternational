@@ -42,7 +42,7 @@ class OwnershipViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        showHudAsync()
         self.title = Constant.ControllerTitles.ownershipViewController
         ownerShiptableView.register(UINib(nibName: Constant.customCellNibNames.searchResultContentTableCell, bundle: nil), forCellReuseIdentifier: Constant.customCellNibNames.searchResultContentTableCell)
         
@@ -61,10 +61,10 @@ class OwnershipViewController: UIViewController {
             }
             self.getRelinquishmentsInfo()
             self.ownerShiptableView.reloadData()
-            
+            self.hideHudAsync()
             
         }, onError: {(error) in
-            
+            self.hideHudAsync()
         })
 
 
@@ -473,13 +473,13 @@ class OwnershipViewController: UIViewController {
     
     func addClubPointButtonPressed(senderTag: Int) {
         Constant.MyClassConstants.relinquishmentSelectedWeek = pointOpenWeeksArray[senderTag]
-        
-        SVProgressHUD.show()
+
+        showHudAsync()
         Constant.MyClassConstants.matrixDataArray.removeAllObjects()
         DirectoryClient.getResortClubPointsChart(Session.sharedSession.userAccessToken, resortCode:  (Constant.MyClassConstants.relinquishmentSelectedWeek.resort?.resortCode)!, onSuccess:{ (ClubPointsChart) in
             
             Constant.MyClassConstants.selectionType = 1
-            Helper.removeServiceCallBackgroundView(view: self.view)
+            self.hideHudAsync()
             SVProgressHUD.dismiss()
             Constant.MyClassConstants.matrixType = ClubPointsChart.type!
             Constant.MyClassConstants.matrixDescription =
@@ -512,7 +512,7 @@ class OwnershipViewController: UIViewController {
             
         }, onError:{ (error) in
             
-            Helper.removeServiceCallBackgroundView(view: self.view)
+            self.hideHudAsync()
             SVProgressHUD.dismiss()
             print(error.description)
         })

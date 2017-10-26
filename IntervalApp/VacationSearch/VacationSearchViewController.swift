@@ -254,7 +254,7 @@ class VacationSearchViewController: UIViewController {
     
     //***** Add location pressed action to show map screen with list of location to select *****//
     func addRelinquishmentSectionButtonPressed(_ sender:IUIKButton) {
-        
+        showHudAsync()
         ExchangeClient.getMyUnits(Session.sharedSession.userAccessToken, onSuccess: { (Relinquishments) in
             
             Constant.MyClassConstants.relinquishmentDeposits = Relinquishments.deposits
@@ -271,7 +271,7 @@ class VacationSearchViewController: UIViewController {
             
             
             SVProgressHUD.dismiss()
-            Helper.removeServiceCallBackgroundView(view: self.view)
+            self.hideHudAsync()
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.relinquishmentSelectionViewController) as! RelinquishmentSelectionViewController
             
@@ -280,13 +280,13 @@ class VacationSearchViewController: UIViewController {
             self.navigationController!.pushViewController(viewController, animated: true)
             
         }, onError: {(error) in
-            
+            self.hideHudAsync()
         })
         
     }
     
     func refreshTableView(){
-        Helper.removeServiceCallBackgroundView(view: self.view)
+        self.hideHudAsync()
         SVProgressHUD.dismiss()
         self.searchVacationTableView.reloadData()
     }
@@ -1435,6 +1435,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 
             }
             
+            showHudAsync()
             sender.isEnabled = false
             
             Constant.MyClassConstants.regionArray.removeAll()
@@ -1447,7 +1448,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 if(Constant.MyClassConstants.relinquishmentIdArray.count == 0 && searchType.isCombined()){
                     
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
-                    
+                    self.hideHudAsync()
                     sender.isEnabled = true
                     
                 }else{
@@ -1464,7 +1465,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     
                     
                 }
-                
+                self.hideHudAsync()
                 sender.isEnabled = true
                 self.performSegue(withIdentifier:Constant.segueIdentifiers.allAvailableDestinations, sender: self)
                 Constant.MyClassConstants.isFromExchangeAllAvailable = false
@@ -1485,7 +1486,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 if(Constant.MyClassConstants.relinquishmentIdArray.count == 0){
                     
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
-                    
+                    self.hideHudAsync()
                     sender.isEnabled = true
                     
                 }else{
@@ -1503,7 +1504,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                             
                             
                         }
-                        
+                        self.hideHudAsync()
                         sender.isEnabled = true
                         Constant.MyClassConstants.isFromExchangeAllAvailable = true
                         Constant.MyClassConstants.isFromRentalAllAvailable = false
@@ -1520,6 +1521,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         }else{
         if (self.segmentTitle == Constant.segmentControlItems.getaways && (Helper.getAllResortsFromLocalStorage().count>0 || Constant.MyClassConstants.whereTogoContentArray.count>0)) {
             
+                showHudAsync()
                 sender.isEnabled = false
                 
             if Reachability.isConnectedToNetwork() == true{
@@ -1562,12 +1564,12 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                                     Constant.MyClassConstants.checkInDates = response.checkInDates
                                                     sender.isEnabled = true
                                                     Helper.helperDelegate = self
-                                                    
+                                                    self.hideHudAsync()
                                                     Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                                 }
                     },
                                              onError:{ (error) in
-                                                
+                                                self.hideHudAsync()
                                                 sender.isEnabled = true
                                                 SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                     }
@@ -1575,7 +1577,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 }
             } else{
                     sender.isEnabled = true
-                    
+                    self.hideHudAsync()
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
                 }
                 
@@ -1592,6 +1594,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             }else{
                 
                 sender.isEnabled = false
+                showHudAsync()
                 
                 if Reachability.isConnectedToNetwork() == true {
                     
@@ -1614,7 +1617,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                         
                         ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
                             sender.isEnabled = true
-                            
+                            self.hideHudAsync()
                             Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
                             Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                             // Get activeInterval (or initial search interval)
@@ -1634,14 +1637,14 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                             
                         }, onError: { (error) in
                             sender.isEnabled = true
-                            
+                            self.hideHudAsync()
                             SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                         })
                     }
                     
                     
                 }else{
-                    
+                    self.hideHudAsync()
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
                 }
                 
@@ -1671,6 +1674,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
                 }else{
                     
+                    showHudAsync()
                     let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Combined)
                     let storedData = Helper.getLocalStorageWherewanttoGo()
                     
@@ -1688,7 +1692,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                         
                         RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess:{ (response) in
                             
-                            
+                            self.hideHudAsync()
                             Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
                             let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
                             // Update active interval
@@ -1698,11 +1702,11 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                             Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                             // Check not available checkIn dates for the active interval
                             if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                                
+                                self.hideHudAsync()
                                 self.rentalHasNotAvailableCheckInDates = true
                                 Helper.executeExchangeSearchDates(senderVC: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                             }else{
-                                
+                                self.hideHudAsync()
                                 if(response.checkInDates.count>0){
                                     Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
                                 }
@@ -1721,7 +1725,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                         })
                         { (error) in
                             
-                            
+                            self.hideHudAsync()
                             SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                         }
                         
@@ -1775,7 +1779,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
 
 extension VacationSearchViewController:HelperDelegate {
     func resortSearchComplete(){
-        
+        self.hideHudAsync()
         // Check if not has availability in the desired check-In date.
         if (Constant.MyClassConstants.initialVacationSearch.searchCheckInDate != Helper.convertDateToString(date: Constant.MyClassConstants.vacationSearchShowDate, format: Constant.MyClassConstants.dateFormat)) {
             Helper.showNearestCheckInDateSelectedMessage()

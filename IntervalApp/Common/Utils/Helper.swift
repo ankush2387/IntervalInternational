@@ -201,12 +201,15 @@ public class Helper{
 
     }
     
+
     //***** function to remove disable layer and make UI interaction enable *****//
     static func removeServiceCallBackgroundView(view:UIView){
         
         //self.progressBarBackgroundView.removeFromSuperview()
     }
     
+
+
     //***** common function that contains signIn API call with user name and password *****//
     static func loginButtonPressed(sender:UIViewController, userName:String, password:String, completionHandler:@escaping (_ success:Bool)->())
     {
@@ -226,7 +229,7 @@ public class Helper{
                     completionHandler(true)
                 }
                 else {
-                    
+                    sender.hideHudAsync()
                     SimpleAlert.alert(sender, title:Constant.AlertErrorMessages.tryAgainError, message: Constant.AlertErrorMessages.loginFailedError)
                     completionHandler(false)
                 }
@@ -234,8 +237,8 @@ public class Helper{
                 // Next, get the contact information.  See how many memberships this user has.
             },
                                                onError:{ (error) in
-                                                SVProgressHUD.dismiss()
-                                                removeServiceCallBackgroundView(view: sender.view)
+                                                sender.hideHudAsync()
+                                                
                                                 Logger.sharedInstance.warning(error.description)
                                                 SimpleAlert.alert(sender, title:Constant.AlertErrorMessages.tryAgainError, message: "\(error.localizedDescription)")
                                                 completionHandler(false)
@@ -260,8 +263,8 @@ public class Helper{
             UserClient.getCurrentProfile(Session.sharedSession.userAccessToken,
                                          onSuccess:{(contact) in
                                             // Got an access token!  Save it for later use.
-                                            SVProgressHUD.dismiss()
-                                            removeServiceCallBackgroundView(view: sender.view)
+                                            sender.hideHudAsync()
+                                            
                                             Session.sharedSession.contact = contact
                                             
                                             //***** Next, get the contact information.  See how many memberships this user has. *****//
@@ -269,8 +272,8 @@ public class Helper{
                                             contactDidChange(sender: sender)
             },
                                          onError:{(error) in
-                                            SVProgressHUD.dismiss()
-                                            removeServiceCallBackgroundView(view: sender.view)
+                                            sender.hideHudAsync()
+                                            
                                             Logger.sharedInstance.warning(error.description)
                                             SimpleAlert.alert(sender, title:Constant.AlertErrorMessages.loginFailed, message: error.localizedDescription)
             }
@@ -404,11 +407,11 @@ public class Helper{
                 Constant.GetawaySearchResultGuestFormDetailData.countryListArray.append(country)
                 Constant.GetawaySearchResultGuestFormDetailData.countryCodeArray.append(country.countryCode!)
             }
-            SVProgressHUD.dismiss()
-            removeServiceCallBackgroundView(view: viewController.view)
+            viewController.hideHudAsync()
+            
 
         }) { (error) in
-        
+            viewController.hideHudAsync()
             SimpleAlert.alert(viewController, title:Constant.AlertErrorMessages.errorString, message: error.description)
         }
         
@@ -418,14 +421,14 @@ public class Helper{
         
         Constant.GetawaySearchResultGuestFormDetailData.stateListArray.removeAll()
         LookupClient.getStates(Constant.MyClassConstants.systemAccessToken!, countryCode: country, onSuccess: { (response) in
-            SVProgressHUD.dismiss()
+            viewController.hideHudAsync()
             for state in response{
                 Constant.GetawaySearchResultGuestFormDetailData.stateListArray.append(state)
                 Constant.GetawaySearchResultGuestFormDetailData.stateCodeArray.append(state.code!)
             }
-            removeServiceCallBackgroundView(view: viewController.view)
-        }, onError: { (error) in
             
+        }, onError: { (error) in
+            viewController.hideHudAsync()
             SimpleAlert.alert(viewController, title:Constant.AlertErrorMessages.errorString, message: error.description)
         })
         
@@ -449,13 +452,13 @@ public class Helper{
                 }
             }
             
-            SVProgressHUD.dismiss()
-            removeServiceCallBackgroundView(view: viewController.view)
+            viewController.hideHudAsync()
+            
             viewController.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: self)
         })
         { (error) in
-            SVProgressHUD.dismiss()
-            removeServiceCallBackgroundView(view: viewController.view)
+            viewController.hideHudAsync()
+            
             SimpleAlert.alert(viewController, title:Constant.AlertErrorMessages.errorString, message: error.description)
         }
     
@@ -475,7 +478,7 @@ public class Helper{
                 Constant.MyClassConstants.resortsArray.removeAll()
                 Constant.MyClassConstants.resortsArray = response.resorts
                 //DarwinSDK.logger.debug(response.resorts[0].promotions)
-                
+                senderVC.hideHudAsync()
                 if(senderVC is VacationSearchViewController || senderVC is VacationSearchIPadViewController ) {
                     
                     // omniture tracking with event 33
@@ -514,7 +517,7 @@ public class Helper{
                     }
                     
                     
-                    
+                    senderVC.hideHudAsync()
                 } else {
                     if(Constant.RunningDevice.deviceIdiom == .pad){
                         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
@@ -532,20 +535,20 @@ public class Helper{
                         
                         senderVC.navigationController!.pushViewController(viewController, animated: true)
                     }
-                     
+                     senderVC.hideHudAsync()
                 }
                 
             }, onError: { (error) in
                 
-                SVProgressHUD.dismiss()
-                Helper.removeServiceCallBackgroundView(view: senderVC.view)
+                senderVC.hideHudAsync()
+                
                 Constant.MyClassConstants.showAlert = true
                 SimpleAlert.alert(senderVC, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
             })
         }
         else {
-            SVProgressHUD.dismiss()
-            Helper.removeServiceCallBackgroundView(view: senderVC.view)
+            senderVC.hideHudAsync()
+            
             SimpleAlert.alert(senderVC, title:Constant.AlertErrorMessages.networkError, message: Constant.AlertMessages.networkErrorMessage)
         }
         
@@ -680,7 +683,7 @@ public class Helper{
     //***** Function that get all objects of type Open Weeks from Realm storage *****//
     
     static func InitializeOpenWeeksFromLocalStorage () {
-        SVProgressHUD.show()
+        
         Constant.MyClassConstants.relinquishmentIdArray.removeAllObjects()
         Constant.MyClassConstants.whatToTradeArray.removeAllObjects()
         Constant.MyClassConstants.idUnitsRelinquishmentDictionary.removeAllObjects()
@@ -769,7 +772,6 @@ public class Helper{
             print("No Data")
         }
         
-        SVProgressHUD.dismiss()
     }
     
     //***** function that returns AreaOfInfluenceDestination list according to selected membership number that send to server for search dates API call *****//
@@ -948,15 +950,19 @@ public class Helper{
     //***** common function that contains API call for top 10 deals *****//
     static func getTopDeals(senderVC : UIViewController){
 
+
         //showProgressBar(senderView: senderVC)
+        senderVC.showHudAsync()
+
         RentalClient.getTop10Deals(Session.sharedSession.userAccessToken,onSuccess: {(response) in
             Constant.MyClassConstants.topDeals = response
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.refreshTableNotification), object: nil)
-            Helper.removeServiceCallBackgroundView(view: senderVC.view)
-
+            
+            senderVC.hideHudAsync()
         },
                                    onError: {(error) in
-                                    Helper.removeServiceCallBackgroundView(view: senderVC.view)
+                                    
+                                    senderVC.hideHudAsync()
                                     SimpleAlert.alert(senderVC, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                                     
         })
@@ -979,17 +985,20 @@ public class Helper{
         
         if(Constant.MyClassConstants.systemAccessToken?.token != nil){
             
+            viewController.showHudAsync()
             DirectoryClient.getRegions(Constant.MyClassConstants.systemAccessToken, onSuccess: {(response) in
                 Constant.MyClassConstants.resortDirectoryRegionArray = response
                 if(!(viewController is ResortDirectoryTabController)){
                     viewController.performSegue(withIdentifier: Constant.segueIdentifiers.resortDirectorySegue, sender: self)
                 }
+
                 //hideProgressBar(senderView: viewController)
+
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadRegionNotification), object: nil)
-                SVProgressHUD.dismiss()
+                viewController.hideHudAsync()
             },    onError: {(error) in
-                removeServiceCallBackgroundView(view: viewController.view)
-                SVProgressHUD.dismiss()
+                
+                viewController.hideHudAsync()
             })
         }
     }
@@ -1044,13 +1053,14 @@ public class Helper{
     static func getResortsByClubFloatDetails(resortCode:String, senderViewController:UIViewController, floatResortDetails:Resort){
         
         DirectoryClient.getResortsByClub(Session.sharedSession.userAccessToken, clubCode: resortCode, onSuccess: { (_ resorts: [Resort]) in
-            
+            senderViewController.hideHudAsync()
             Constant.MyClassConstants.clubFloatResorts = resorts
             senderViewController.performSegue(withIdentifier: Constant.floatDetailViewController.clubresortviewcontrollerIdentifier, sender: self)
 
             
         }) { (error) in
             
+             senderViewController.hideHudAsync()
              SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
         }
     }
@@ -1097,8 +1107,8 @@ public class Helper{
         
         DirectoryClient.getResortCalendars(Session.sharedSession.userAccessToken, resortCode: resortCode, year: relinquishmentYear, onSuccess: { (resortCalendar: [ResortCalendar]) in
             
-            SVProgressHUD.dismiss()
-            self.removeServiceCallBackgroundView(view: senderViewController.view)
+            senderViewController.hideHudAsync()
+            
             if(resortCalendar.count > 0){
             Constant.MyClassConstants.relinquishmentFloatDetialMinDate = self.convertStringToDate(dateString: resortCalendar[0].checkInDate!, format: Constant.MyClassConstants.dateFormat)
             Constant.MyClassConstants.relinquishmentFloatDetialMaxDate = self.convertStringToDate(dateString: (resortCalendar.last?.checkInDate!)!, format: Constant.MyClassConstants.dateFormat)
@@ -1125,8 +1135,8 @@ public class Helper{
         
         }) { (error) in
             
-            SVProgressHUD.dismiss()
-            self.removeServiceCallBackgroundView(view: senderViewController.view)
+            senderViewController.hideHudAsync()
+            
             SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
         }
     }
@@ -1347,12 +1357,12 @@ public class Helper{
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadMapNotification), object: nil)
             }
             
-            SVProgressHUD.dismiss()
-            removeServiceCallBackgroundView(view: viewcontroller.view)
+            viewcontroller.hideHudAsync()
+            
         })
         { (error) in
-            SVProgressHUD.dismiss()
-            removeServiceCallBackgroundView(view: viewcontroller.view)
+            viewcontroller.hideHudAsync()
+            
             SimpleAlert.alert(viewcontroller, title:Constant.AlertErrorMessages.errorString, message: error.description)
         }
         
@@ -1404,7 +1414,7 @@ public class Helper{
         }
         
         if(Constant.MyClassConstants.systemAccessToken?.token != nil){
-            SVProgressHUD.show()
+            
             LookupClient.getVideos(Constant.MyClassConstants.systemAccessToken!, category: categoryString, onSuccess: {(videos) in
                 
                 
@@ -1438,7 +1448,7 @@ public class Helper{
     //***** Function to get a list of magazines. *****//
     static func getMagazines(){
         if(Constant.MyClassConstants.systemAccessToken?.token != nil){
-            SVProgressHUD.show()
+            
             LookupClient.getMagazines(Constant.MyClassConstants.systemAccessToken!,
                                       onSuccess: {(magazines) in
                                         
@@ -1561,15 +1571,15 @@ public class Helper{
     }
     // Function to get trip details
     static func getTripDetails(senderViewController: UIViewController){
-        
+        senderViewController.showHudAsync()
         ExchangeClient.getExchangeTripDetails(Session.sharedSession.userAccessToken, confirmationNumber: Constant.MyClassConstants.transactionNumber, onSuccess: { (exchangeResponse) in
-            
+            senderViewController.hideHudAsync()
             Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails = exchangeResponse
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadTripDetailsNotification), object: nil)
             
         }) { (error) in
-            Helper.removeServiceCallBackgroundView(view: senderViewController.view)
-            SVProgressHUD.dismiss()
+            
+            senderViewController.hideHudAsync()
             SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
             
         }
@@ -1761,7 +1771,7 @@ public class Helper{
                                     showAvailabilityResults(vacationSearch:vacationSearch)
                                     
                                     //expectation.fulfill()
-                                    
+                                    senderViewController.hideHudAsync()
                                     if Constant.MyClassConstants.isFromSorting == false && Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType != VacationSearchType.Combined {
                                         helperDelegate?.resortSearchComplete()
                                     }else{
@@ -1774,7 +1784,7 @@ public class Helper{
                                    onError:{ (error) in
                                     Constant.MyClassConstants.noAvailabilityView = true
                                     Constant.MyClassConstants.isFromSorting = false
-                                    
+                                    senderViewController.hideHudAsync()
                                     SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
         }
         )
@@ -1788,7 +1798,7 @@ public class Helper{
      */
     
  static func executeExchangeSearchAvailability(activeInterval: BookingWindowInterval!, checkInDate:Date!, senderViewController:UIViewController, vacationSearch:VacationSearch) {
-        
+    
         let request = ExchangeSearchAvailabilityRequest()
         request.checkInDate = checkInDate
         request.resortCodes = activeInterval.resortCodes!
@@ -1807,7 +1817,7 @@ public class Helper{
             }
             
             showAvailabilityResults(vacationSearch:vacationSearch)
-            
+            senderViewController.hideHudAsync()
             // Get activeInterval
             let activeInterval = vacationSearch.bookingWindow.getActiveInterval()
             vacationSearch.updateActiveInterval(activeInterval: activeInterval)
@@ -1835,7 +1845,7 @@ public class Helper{
             
         })
         { (error) in
-            
+            senderViewController.hideHudAsync()
             SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.noResultError, message: error.localizedDescription)
         }
     }

@@ -14,6 +14,7 @@ extension UIViewController {
     func showHudAsync() {
         DispatchQueue.main.async {
             SVProgressHUD.show()
+            SVProgressHUD.setDefaultMaskType(.clear)
         }
     }
 
