@@ -234,12 +234,17 @@
 		3C466B621F86862D002D43F7 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C466B611F86862D002D43F7 /* AppCoordinator.swift */; };
 		3C466B641F86884A002D43F7 /* AutoLogoutTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C466B631F86884A002D43F7 /* AutoLogoutTimer.swift */; };
 		3C4957611F9145BB00B7727D /* RenewelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4957601F9145BB00B7727D /* RenewelViewController.swift */; };
+		3C4F17271FA391E7001EF71F /* String+NSRage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4F17261FA391E7001EF71F /* String+NSRage.swift */; };
+		3C4F17291FA39204001EF71F /* Float+CurrencyFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4F17281FA39204001EF71F /* Float+CurrencyFormatter.swift */; };
 		3C58DD571F8D167F003C5791 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C58DD551F8D167F003C5791 /* LoginViewController.swift */; };
 		3C58DD5A1F8D2A46003C5791 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C58DD591F8D2A46003C5791 /* LoginViewModel.swift */; };
 		3C58DD5C1F8D2B32003C5791 /* LoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C58DD5B1F8D2B32003C5791 /* LoginCoordinator.swift */; };
 		3C58DD5F1F8D3D04003C5791 /* PersistentSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C58DD5E1F8D3D04003C5791 /* PersistentSettings.swift */; };
 		3C6D10DE1F965520000B9583 /* String+UnwrappedSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C6D10DD1F965520000B9583 /* String+UnwrappedSpec.swift */; };
 		3C8BA6CD1F8E74880024243A /* PreLoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8BA6CC1F8E74880024243A /* PreLoginCoordinator.swift */; };
+		3C9186F51FA25E1000F484ED /* TypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C9186F41FA25E1000F484ED /* TypeAliases.swift */; };
+		3C9186FA1FA269A000F484ED /* ChargeSummaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C9186F81FA269A000F484ED /* ChargeSummaryViewController.xib */; };
+		3C9186FB1FA269A000F484ED /* ChargeSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C9186F91FA269A000F484ED /* ChargeSummaryViewController.swift */; };
 		3CA1FBE91F8562C1008148AB /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA1FBE81F8562C1008148AB /* Logger.swift */; };
 		3CBD32771F992F7C004BE182 /* AppBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CBD32761F992F7C004BE182 /* AppBundle.swift */; };
 		3CE4F4111F99519100B296B1 /* Date+ElapsedTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE4F4101F99519100B296B1 /* Date+ElapsedTime.swift */; };
@@ -269,6 +274,9 @@
 		617434731F8EFE89006292E0 /* String+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617434721F8EFE89006292E0 /* String+Localization.swift */; };
 		617434751F8F0DD2006292E0 /* SVProgressHUD+Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617434741F8F0DD2006292E0 /* SVProgressHUD+Async.swift */; };
 		617434771F8F0E5A006292E0 /* UIViewController+UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617434761F8F0E5A006292E0 /* UIViewController+UIAlertController.swift */; };
+		618AEFCB1FA29B990097B423 /* ChargeSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618AEFCA1FA29B990097B423 /* ChargeSummaryViewModel.swift */; };
+		618AEFCF1FA2C0D00097B423 /* ChargeSummaryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618AEFCD1FA2C0D00097B423 /* ChargeSummaryTableViewCell.swift */; };
+		618AEFD01FA2C0D00097B423 /* ChargeSummaryTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 618AEFCE1FA2C0D00097B423 /* ChargeSummaryTableViewCell.xib */; };
 		61C025091F929CFC003BFF55 /* PromiseErrorConversionSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C025081F929CFC003BFF55 /* PromiseErrorConversionSpec.swift */; };
 		61C0250D1F92CFC1003BFF55 /* SimpleFileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 61C0250B1F92CFC1003BFF55 /* SimpleFileViewController.xib */; };
 		61C0250E1F92CFC1003BFF55 /* SimpleFileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C0250C1F92CFC1003BFF55 /* SimpleFileViewController.swift */; };
@@ -617,12 +625,17 @@
 		3C466B611F86862D002D43F7 /* AppCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		3C466B631F86884A002D43F7 /* AutoLogoutTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoLogoutTimer.swift; sourceTree = "<group>"; };
 		3C4957601F9145BB00B7727D /* RenewelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenewelViewController.swift; sourceTree = "<group>"; };
+		3C4F17261FA391E7001EF71F /* String+NSRage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+NSRage.swift"; sourceTree = "<group>"; };
+		3C4F17281FA39204001EF71F /* Float+CurrencyFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Float+CurrencyFormatter.swift"; sourceTree = "<group>"; };
 		3C58DD551F8D167F003C5791 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		3C58DD591F8D2A46003C5791 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		3C58DD5B1F8D2B32003C5791 /* LoginCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCoordinator.swift; sourceTree = "<group>"; };
 		3C58DD5E1F8D3D04003C5791 /* PersistentSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentSettings.swift; sourceTree = "<group>"; };
 		3C6D10DD1F965520000B9583 /* String+UnwrappedSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+UnwrappedSpec.swift"; sourceTree = "<group>"; };
 		3C8BA6CC1F8E74880024243A /* PreLoginCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreLoginCoordinator.swift; sourceTree = "<group>"; };
+		3C9186F41FA25E1000F484ED /* TypeAliases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeAliases.swift; sourceTree = "<group>"; };
+		3C9186F81FA269A000F484ED /* ChargeSummaryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChargeSummaryViewController.xib; sourceTree = "<group>"; };
+		3C9186F91FA269A000F484ED /* ChargeSummaryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChargeSummaryViewController.swift; sourceTree = "<group>"; };
 		3CA1FBE81F8562C1008148AB /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		3CBD32761F992F7C004BE182 /* AppBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBundle.swift; sourceTree = "<group>"; };
 		3CE4F4101F99519100B296B1 /* Date+ElapsedTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+ElapsedTime.swift"; sourceTree = "<group>"; };
@@ -652,6 +665,9 @@
 		617434721F8EFE89006292E0 /* String+Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Localization.swift"; sourceTree = "<group>"; };
 		617434741F8F0DD2006292E0 /* SVProgressHUD+Async.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SVProgressHUD+Async.swift"; sourceTree = "<group>"; };
 		617434761F8F0E5A006292E0 /* UIViewController+UIAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+UIAlertController.swift"; sourceTree = "<group>"; };
+		618AEFCA1FA29B990097B423 /* ChargeSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChargeSummaryViewModel.swift; sourceTree = "<group>"; };
+		618AEFCD1FA2C0D00097B423 /* ChargeSummaryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChargeSummaryTableViewCell.swift; sourceTree = "<group>"; };
+		618AEFCE1FA2C0D00097B423 /* ChargeSummaryTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChargeSummaryTableViewCell.xib; sourceTree = "<group>"; };
 		61C025081F929CFC003BFF55 /* PromiseErrorConversionSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromiseErrorConversionSpec.swift; sourceTree = "<group>"; };
 		61C0250B1F92CFC1003BFF55 /* SimpleFileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SimpleFileViewController.xib; sourceTree = "<group>"; };
 		61C0250C1F92CFC1003BFF55 /* SimpleFileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleFileViewController.swift; sourceTree = "<group>"; };
@@ -1044,6 +1060,7 @@
 		3AAA59F61C720F4500A5EA6D /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				3C9186F31FA25DF200F484ED /* TypeAliases */,
 				61C0250A1F92CF8D003BFF55 /* View Controllers */,
 				6156D19F1F92659F00FAC4A0 /* Errors */,
 				E9C5EF361F19553100E658DA /* Extensions */,
@@ -1260,6 +1277,25 @@
 			path = Network;
 			sourceTree = "<group>";
 		};
+		3C9186F31FA25DF200F484ED /* TypeAliases */ = {
+			isa = PBXGroup;
+			children = (
+				3C9186F41FA25E1000F484ED /* TypeAliases.swift */,
+			);
+			path = TypeAliases;
+			sourceTree = "<group>";
+		};
+		3C9186F71FA2697A00F484ED /* Charge Summary ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				618AEFCC1FA2C0AD0097B423 /* Cell */,
+				618AEFCA1FA29B990097B423 /* ChargeSummaryViewModel.swift */,
+				3C9186F91FA269A000F484ED /* ChargeSummaryViewController.swift */,
+				3C9186F81FA269A000F484ED /* ChargeSummaryViewController.xib */,
+			);
+			path = "Charge Summary ViewController";
+			sourceTree = "<group>";
+		};
 		3C9FEF611F8BF026007F8FF0 /* Use Cases */ = {
 			isa = PBXGroup;
 			children = (
@@ -1395,6 +1431,15 @@
 			path = "App State";
 			sourceTree = "<group>";
 		};
+		618AEFCC1FA2C0AD0097B423 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				618AEFCD1FA2C0D00097B423 /* ChargeSummaryTableViewCell.swift */,
+				618AEFCE1FA2C0D00097B423 /* ChargeSummaryTableViewCell.xib */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		61C025051F929CC1003BFF55 /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -1423,6 +1468,7 @@
 		61C0250A1F92CF8D003BFF55 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				3C9186F71FA2697A00F484ED /* Charge Summary ViewController */,
 				61C0250F1F92D012003BFF55 /* Webview File Viewer */,
 			);
 			path = "View Controllers";
@@ -1597,6 +1643,8 @@
 				6156D1A31F927F6A00FAC4A0 /* RMessage+BannerNotification.swift */,
 				6133D61C1F982D2000E0387C /* Dictionary+AllValues.swift */,
 				3CE4F4101F99519100B296B1 /* Date+ElapsedTime.swift */,
+				3C4F17261FA391E7001EF71F /* String+NSRage.swift */,
+				3C4F17281FA39204001EF71F /* Float+CurrencyFormatter.swift */,
 			);
 			name = Extensions;
 			path = Utils;
@@ -1725,6 +1773,7 @@
 				3A2F32401C80740B00FCC111 /* MyUpcomingTripIpad.storyboard in Resources */,
 				3AAA5A311C720F4500A5EA6D /* DashboardIPhone.storyboard in Resources */,
 				3AAA5A361C720F4500A5EA6D /* SideMenuBackgroundTableCell.xib in Resources */,
+				3C9186FA1FA269A000F484ED /* ChargeSummaryViewController.xib in Resources */,
 				3A40A4621E0C14B600D86152 /* ConfirmationIpad.storyboard in Resources */,
 				3AA6BC271EA91CDB00B5DD7F /* HeaderCollectionCell.xib in Resources */,
 				DC7EF4F21D709F2900E9E360 /* MoreCell.xib in Resources */,
@@ -1737,6 +1786,7 @@
 				3AAA5A3B1C720F4500A5EA6D /* LaunchScreen.storyboard in Resources */,
 				3A39965B1E5B028600527A99 /* UpcomingTrip.xib in Resources */,
 				3AAA5A3C1C720F4500A5EA6D /* PostLaunch.storyboard in Resources */,
+				618AEFD01FA2C0D00097B423 /* ChargeSummaryTableViewCell.xib in Resources */,
 				3AAA5A411C720F4500A5EA6D /* LoginIPad.storyboard in Resources */,
 				DC04BB3E1DB829F100227FF5 /* IntervalHDIpad.storyboard in Resources */,
 				3A586CC91DDCA28200EF6756 /* PromotionsDiscountCell.xib in Resources */,
@@ -1937,6 +1987,7 @@
 				E9B3A7B41F59BBC7007A35DB /* OnboardingViewController.swift in Sources */,
 				3A623C671CF707A400389708 /* SideMenuLogoCell.swift in Sources */,
 				3A5AFDDF1F5ED1CD00A44138 /* AllAvailableDestinationsIpadViewController.swift in Sources */,
+				3C9186F51FA25E1000F484ED /* TypeAliases.swift in Sources */,
 				E90C365A1F058C9800CCBE92 /* main.swift in Sources */,
 				612EFAB51F8DA169005010DE /* PersistentKeys.swift in Sources */,
 				DC7EF5091D709F8800E9E360 /* GoogleMapViewController.swift in Sources */,
@@ -2003,6 +2054,7 @@
 				3A591E101E82B1FA007FB4E8 /* TransactionDetailsTableViewCell.swift in Sources */,
 				3A2F32421C80742300FCC111 /* UpComingTripCell.swift in Sources */,
 				3CA1FBE91F8562C1008148AB /* Logger.swift in Sources */,
+				618AEFCF1FA2C0D00097B423 /* ChargeSummaryTableViewCell.swift in Sources */,
 				3A3A01501C99BED600B7EC37 /* MemberShipViewController.swift in Sources */,
 				DC7EF4CA1D709E9600E9E360 /* ClubPointPageItemViewController.swift in Sources */,
 				DC04BB421DB829F100227FF5 /* IntervalHDTabController.swift in Sources */,
@@ -2071,6 +2123,7 @@
 				3A3BE3ED1CA0441200CDE3AA /* MyOwnershipAvailablePointTooolTableViewCell.swift in Sources */,
 				089416731F72D94300F03229 /* BedroomTableViewCell.swift in Sources */,
 				3A2C728F1DDB2DC900BBF40B /* AdvisementsCell.swift in Sources */,
+				3C4F17271FA391E7001EF71F /* String+NSRage.swift in Sources */,
 				3A3A012D1C99BD0B00B7EC37 /* AvailablePointToolViewController.swift in Sources */,
 				3A3A01411C99BD0B00B7EC37 /* OwnershipDetailWithDepositinformationTableViewCell.swift in Sources */,
 				3A3D56871DD33AFA00922FA9 /* WhoWillBeCheckingInViewController.swift in Sources */,
@@ -2081,6 +2134,7 @@
 				3A932D5E1C886918004BF665 /* PolicyCell.swift in Sources */,
 				3AAA5A4B1C720F4500A5EA6D /* VacationSearchViewController.swift in Sources */,
 				3A3A01381C99BD0B00B7EC37 /* ClubresortTableViewCell.swift in Sources */,
+				618AEFCB1FA29B990097B423 /* ChargeSummaryViewModel.swift in Sources */,
 				DC7EF50C1D709F8800E9E360 /* ResortDetailsViewController.swift in Sources */,
 				3AAA5A401C720F4500A5EA6D /* LoginFormTableViewCell.swift in Sources */,
 				3A3A013C1C99BD0B00B7EC37 /* DepositedPointHistoryTableViewCell.swift in Sources */,
@@ -2159,6 +2213,7 @@
 				3A3A01471C99BD0B00B7EC37 /* VacationDetailTableViewCell.swift in Sources */,
 				E918EF281F3373AE00C84D51 /* MembershipProductCell.swift in Sources */,
 				3A892F471CD3902F00AE6F45 /* ExchangeCell0.swift in Sources */,
+				3C9186FB1FA269A000F484ED /* ChargeSummaryViewController.swift in Sources */,
 				3A18D7BC1DE0949D00966472 /* AddYourCardButtonCell.swift in Sources */,
 				3A892F451CD3902F00AE6F45 /* DateAndPersonPickerTableViewCell.swift in Sources */,
 				3A3A013E1C99BD0B00B7EC37 /* FloatDetailViewController.swift in Sources */,
@@ -2175,6 +2230,7 @@
 				3AE1A6191F6AC5D50069A118 /* FlexChangeSearchIpadViewController.swift in Sources */,
 				3AA88B541F44DAD8001ADC4C /* ExchangeInventoryCVCell.swift in Sources */,
 				E9C5EF381F19555B00E658DA /* UIViewController+Swipe.swift in Sources */,
+				3C4F17291FA39204001EF71F /* Float+CurrencyFormatter.swift in Sources */,
 				3A59DE181F015E5F005280D3 /* SortingViewController.swift in Sources */,
 				3A0B25D81CD241790080BF3F /* PolicyListTBLCell.swift in Sources */,
 				DC7BA8321DB911D600BB0C3B /* MagazineTableViewCell.swift in Sources */,
