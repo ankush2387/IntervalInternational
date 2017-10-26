@@ -98,11 +98,9 @@ extension CertificateViewController:UITableViewDataSource {
         let year = String(describing: startComponents.year!)
         let monthName = "\(Helper.getMonthnameFromInt(monthNumber: startComponents.month!))"
         cell.travelWindowStartDateLbl.text = "\(startComponents.day!)".uppercased()
-        cell.travelWindowStartDateLbl.font = UIFont(name: Constant.fontName.helveticaNeue, size: 25)
         cell.travelWindowStartDayLbl.text = "\(Helper.getWeekdayFromInt(weekDayNumber:startComponents.weekday!))"
         
         cell.travelWindowStartMonthYearLbl.text = "\(monthName) \(year)".uppercased()
-        cell.travelWindowStartMonthYearLbl.font = UIFont(name:  Constant.fontName.helveticaNeue, size: 7)
         
         Helper.applyShadowOnUIView(view: cell.cellBaseView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 1.0)
         cell.selectionStyle = UITableViewCellSelectionStyle.none
