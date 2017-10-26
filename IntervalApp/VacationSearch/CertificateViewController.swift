@@ -80,27 +80,39 @@ extension CertificateViewController:UITableViewDataSource {
         cell.cellBaseView.layer.masksToBounds = true
         cell.cellBaseView.layer.cornerRadius = 5
         
-        cell.certificateNumber.text = "\(Constant.MyClassConstants.certificateArray[indexPath.row].certificateNumber!)"
-        cell.expireDate.text = "\(Constant.MyClassConstants.certificateArray[indexPath.row].expirationDate!)"
+        cell.certificateNumber.text = "#\(Constant.MyClassConstants.certificateArray[indexPath.row].certificateNumber!)"
+        cell.expireDate.text = "\(String(describing: Constant.MyClassConstants.certificateArray[indexPath.row].daysOut!)) Days, on  \(Constant.MyClassConstants.certificateArray[indexPath.row].expirationDate!)"
         
         
-        cell.bedroomSize.text = "\((Helper.getBedroomNumbers(bedroomType: (Constant.MyClassConstants.certificateArray[indexPath.row].unit?.unitSize)! )) ), \(( Constant.MyClassConstants.certificateArray[indexPath.row].unit?.kitchenType) ?? "")"
+        cell.bedroomSize.text = "\((Helper.getBedroomNumbers(bedroomType: (Constant.MyClassConstants.certificateArray[indexPath.row].unit?.unitSize)! )) ), \((Helper.getKitchenEnums(kitchenType: (Constant.MyClassConstants.certificateArray[indexPath.row].unit?.kitchenType)!)))"
         
-        let totalSleeps =  "Sleeps \(Constant.MyClassConstants.certificateArray[indexPath.row].unit?.tradeOutCapacity ?? 0) Total"
+        let totalSleeps =  "Sleeps \(Constant.MyClassConstants.certificateArray[indexPath.row].unit?.publicSleepCapacity ?? 0) Total"
         let privateSleeps = "\(Constant.MyClassConstants.certificateArray[indexPath.row].unit?.privateSleepCapacity ?? 0) Private"
+        
         cell.totalSleeps.text = "\(totalSleeps), \(privateSleeps)"
         
         
-        let calendarDate = Helper.convertStringToDate(dateString: (Constant.MyClassConstants.certificateArray[indexPath.row].travelWindow?.fromDate)!, format: Constant.MyClassConstants.dateFormat)
+        let calendarFromDate = Helper.convertStringToDate(dateString: (Constant.MyClassConstants.certificateArray[indexPath.row].travelWindow?.fromDate)!, format: Constant.MyClassConstants.dateFormat)
+        
+        let calendarToDate = Helper.convertStringToDate(dateString: (Constant.MyClassConstants.certificateArray[indexPath.row].travelWindow?.toDate)!, format: Constant.MyClassConstants.dateFormat)
         
         let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-        let startComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: calendarDate)
+        let startComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: calendarFromDate)
+        let endComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: calendarToDate)
         let year = String(describing: startComponents.year!)
         let monthName = "\(Helper.getMonthnameFromInt(monthNumber: startComponents.month!))"
         cell.travelWindowStartDateLbl.text = "\(startComponents.day!)".uppercased()
         cell.travelWindowStartDayLbl.text = "\(Helper.getWeekdayFromInt(weekDayNumber:startComponents.weekday!))"
         
-        cell.travelWindowStartMonthYearLbl.text = "\(monthName) \(year)".uppercased()
+        cell.travelWindowStartMonthYearLbl.text = "\(monthName) \(year)"
+        
+        
+        cell.travelWindowEndDateLbl.text = "\(endComponents.day!)"
+        cell.travelWindowEndDayLbl.text = "\(Helper.getWeekdayFromInt(weekDayNumber:endComponents.weekday!))"
+        
+        cell.travelWindowEndMonthYearLbl.text = "\(monthName)  \(year)"
+        
+        //cell.statusLabel.text = Constant.MyClassConstants.certificateArray[indexPath.row].certificateStatus
         
         Helper.applyShadowOnUIView(view: cell.cellBaseView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 1.0)
         cell.selectionStyle = UITableViewCellSelectionStyle.none

@@ -714,7 +714,11 @@ class GoogleMapViewController: UIViewController {
     
     //***** This function called when navigation back button pressed *****//
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
-        NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.MyClassConstants.popToLoginView), object: nil)
+        if(Constant.MyClassConstants.runningFunctionality == "VacationSearch"){
+            self.navigationController?.popViewController(animated: true)
+        }else{
+            NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.MyClassConstants.popToLoginView), object: nil)
+        }
     }
     //***** This function called when navigation back button pressed *****//
     func applyButtonPressed(_ sender:UIBarButtonItem) {

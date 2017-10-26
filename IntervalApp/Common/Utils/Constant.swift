@@ -940,7 +940,7 @@ class Constant: NSObject {
         static var loginHelpViewController = NSLocalizedString("Login Help", comment: "")
         static var JoinTodayViewController = NSLocalizedString("Join_Today", comment: "")
         static var calendarViewController = NSLocalizedString("Pick_Date", comment: "")
-        static var accomodationCertsDetailController = NSLocalizedString("My Certificates", comment: "")
+        static var accomodationCertsDetailController = NSLocalizedString("Accommodation Certificates", comment: "")
         static var bookYourSelectionController = NSLocalizedString("Choose What To Use", comment: "")
         static var vacationSearchTabBarController = NSLocalizedString("Vacation_Search", comment: "")
         static var dashboardTableViewController = NSLocalizedString("Home", comment: "")
