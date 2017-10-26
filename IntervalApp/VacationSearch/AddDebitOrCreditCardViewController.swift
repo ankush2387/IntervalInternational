@@ -317,7 +317,7 @@ class AddDebitOrCreditCardViewController: UIViewController {
     
     //function to show picker view.
     func showPickerView() {
-        
+        self.activeField?.resignFirstResponder()
         self.hideStatus = true
         self.createPickerView()
     }
@@ -402,7 +402,7 @@ extension AddDebitOrCreditCardViewController:UITableViewDataSource {
         }
         else {
             
-            return 0
+            return 20
         }
         
     }

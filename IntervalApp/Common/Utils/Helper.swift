@@ -201,6 +201,15 @@ public class Helper{
 
     }
     
+
+    //***** function to remove disable layer and make UI interaction enable *****//
+    static func removeServiceCallBackgroundView(view:UIView){
+        
+        //self.progressBarBackgroundView.removeFromSuperview()
+    }
+    
+
+
     //***** common function that contains signIn API call with user name and password *****//
     static func loginButtonPressed(sender:UIViewController, userName:String, password:String, completionHandler:@escaping (_ success:Bool)->())
     {
@@ -940,7 +949,11 @@ public class Helper{
     
     //***** common function that contains API call for top 10 deals *****//
     static func getTopDeals(senderVC : UIViewController){
+
+
+        //showProgressBar(senderView: senderVC)
         senderVC.showHudAsync()
+
         RentalClient.getTop10Deals(Session.sharedSession.userAccessToken,onSuccess: {(response) in
             Constant.MyClassConstants.topDeals = response
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.refreshTableNotification), object: nil)
@@ -978,7 +991,9 @@ public class Helper{
                 if(!(viewController is ResortDirectoryTabController)){
                     viewController.performSegue(withIdentifier: Constant.segueIdentifiers.resortDirectorySegue, sender: self)
                 }
-                
+
+                //hideProgressBar(senderView: viewController)
+
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadRegionNotification), object: nil)
                 viewController.hideHudAsync()
             },    onError: {(error) in

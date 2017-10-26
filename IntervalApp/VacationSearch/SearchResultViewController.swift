@@ -235,7 +235,7 @@ class SearchResultViewController: UIViewController {
         self.collectionviewSelectedIndex = Constant.MyClassConstants.searchResultCollectionViewScrollToIndex
         
         if(Session.sharedSession.userAccessToken != nil){
-            showHudAsync()
+
             UserClient.getFavoriteResorts(Session.sharedSession.userAccessToken, onSuccess: { (response) in
                 Constant.MyClassConstants.favoritesResortArray.removeAll()
                 for item in [response][0] {
@@ -250,10 +250,12 @@ class SearchResultViewController: UIViewController {
                     }
                     
                 }
-                self.hideHudAsync()
+
+                //Helper.hideProgressBar(senderView: self)
             })
             { (error) in
                
+
                 self.hideHudAsync()
             }
         }
@@ -835,7 +837,6 @@ class SearchResultViewController: UIViewController {
         
         let section =  sender.accessibilityValue!
         
-        
                 if((Session.sharedSession.userAccessToken) != nil) {
                     
                     var resortCode = ""
@@ -870,8 +871,8 @@ class SearchResultViewController: UIViewController {
                     }
         
                     if (sender.isSelected == false){
-                        
-                        showHudAsync()
+                        SVProgressHUD.show()
+                        //Helper.addServiceCallBackgroundView(view: self.view)
                         UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode:resortCode, onSuccess: {(response) in
 
                             self.hideHudAsync()
@@ -890,7 +891,8 @@ class SearchResultViewController: UIViewController {
                         })
                     }
                     else {
-
+                        SVProgressHUD.show()
+                       // Helper.addServiceCallBackgroundView(view: self.view)
                         showHudAsync()
                         UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: resortCode, onSuccess: {(response) in
 
@@ -898,9 +900,6 @@ class SearchResultViewController: UIViewController {
                             self.hideHudAsync()
                             SVProgressHUD.dismiss()
                             Constant.MyClassConstants.favoritesResortCodeArray.remove(resortCode)
-                            print(Constant.MyClassConstants.favoritesResortCodeArray)
-                            
-                            
                             let indexpath = NSIndexPath(row: sender.tag, section:Int(section)!)
                             self.searchResultTableView.reloadRows(at: [indexpath as IndexPath], with: .automatic)
                             
