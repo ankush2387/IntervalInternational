@@ -696,7 +696,7 @@ extension UIViewController {
     }
     
     func navigateToSearchResultsScreen(){
-        /*if UIDevice.current.userInterfaceIdiom == .pad {
+        if UIDevice.current.userInterfaceIdiom == .pad {
             let storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
             let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController)
             self.navigationController!.pushViewController(viewController, animated: true)
@@ -704,12 +704,12 @@ extension UIViewController {
             let storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController)
             self.navigationController!.pushViewController(viewController, animated: true)
-        }*/
+        }
         
-        let storyboardName = Constant.MyClassConstants.isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
+        /*let storyboardName = Constant.MyClassConstants.isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
         if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
             show(initialViewController, sender: self)
-        }
+        }*/
         
     }
     

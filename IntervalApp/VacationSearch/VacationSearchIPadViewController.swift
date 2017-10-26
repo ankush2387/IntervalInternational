@@ -1247,8 +1247,8 @@ extension VacationSearchIPadViewController:HelperDelegate {
         
         let transitionManager = TransitionManager()
         self.navigationController?.transitioningDelegate = transitionManager
-        let navController = UINavigationController(rootViewController: viewController)
-        self.present(navController, animated:true, completion: nil)
+        //let navController = UINavigationController(rootViewController: viewController)
+        //self.present(navController, animated:true, completion: nil)
         //self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)*/
     }
     func resetCalendar(){
