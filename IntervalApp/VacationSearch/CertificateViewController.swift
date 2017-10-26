@@ -116,7 +116,7 @@ extension CertificateViewController:UITableViewDataSource {
         cell.travelWindowEndDateLbl.text = "\(endComponents.day!)"
         cell.travelWindowEndDayLbl.text = "\(Helper.getWeekdayFromInt(weekDayNumber:endComponents.weekday!))"
         
-        cell.travelWindowEndMonthYearLbl.text = "\(monthName)  \(year)"
+        cell.travelWindowEndMonthYearLbl.text = "\(Helper.getMonthnameFromInt(monthNumber: endComponents.month!))  \(String(describing: endComponents.year!))"
         
         cell.statusLbl.text = Constant.MyClassConstants.certificateArray[indexPath.row].certificateStatus
         
