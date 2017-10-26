@@ -288,7 +288,6 @@
 		DC27F7C31DB81B6F00AA374F /* CreateAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC27F7BB1DB81B6F00AA374F /* CreateAlertViewController.swift */; };
 		DC27F7C41DB81B6F00AA374F /* EditMyAlertIpadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC27F7BC1DB81B6F00AA374F /* EditMyAlertIpadViewController.swift */; };
 		DC27F7C51DB81B6F00AA374F /* GetawayAlertsIpad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DC27F7BD1DB81B6F00AA374F /* GetawayAlertsIpad.storyboard */; };
-		DC27F7C61DB81B6F00AA374F /* GetawayAlertsIpadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC27F7BE1DB81B6F00AA374F /* GetawayAlertsIpadViewController.swift */; };
 		DC27F7C81DB81B6F00AA374F /* GetawayAlertsIPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC27F7C01DB81B6F00AA374F /* GetawayAlertsIPhoneViewController.swift */; };
 		DC27F7C91DB81B6F00AA374F /* InfoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC27F7C11DB81B6F00AA374F /* InfoDetailViewController.swift */; };
 		DC27F7CB1DB8278000AA374F /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC27F7CA1DB8278000AA374F /* CustomTableViewCell.swift */; };
@@ -673,7 +672,6 @@
 		DC27F7BB1DB81B6F00AA374F /* CreateAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAlertViewController.swift; sourceTree = "<group>"; };
 		DC27F7BC1DB81B6F00AA374F /* EditMyAlertIpadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditMyAlertIpadViewController.swift; sourceTree = "<group>"; };
 		DC27F7BD1DB81B6F00AA374F /* GetawayAlertsIpad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = GetawayAlertsIpad.storyboard; sourceTree = "<group>"; };
-		DC27F7BE1DB81B6F00AA374F /* GetawayAlertsIpadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetawayAlertsIpadViewController.swift; sourceTree = "<group>"; };
 		DC27F7BF1DB81B6F00AA374F /* GetawayAlertsIphone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = GetawayAlertsIphone.storyboard; sourceTree = "<group>"; };
 		DC27F7C01DB81B6F00AA374F /* GetawayAlertsIPhoneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetawayAlertsIPhoneViewController.swift; sourceTree = "<group>"; };
 		DC27F7C11DB81B6F00AA374F /* InfoDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoDetailViewController.swift; sourceTree = "<group>"; };
@@ -1485,7 +1483,6 @@
 				DC27F7BB1DB81B6F00AA374F /* CreateAlertViewController.swift */,
 				DC27F7BC1DB81B6F00AA374F /* EditMyAlertIpadViewController.swift */,
 				DC27F7BD1DB81B6F00AA374F /* GetawayAlertsIpad.storyboard */,
-				DC27F7BE1DB81B6F00AA374F /* GetawayAlertsIpadViewController.swift */,
 				DC27F7BF1DB81B6F00AA374F /* GetawayAlertsIphone.storyboard */,
 				DC27F7C01DB81B6F00AA374F /* GetawayAlertsIPhoneViewController.swift */,
 				DC27F7C11DB81B6F00AA374F /* InfoDetailViewController.swift */,
@@ -1911,7 +1908,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-IntervalApp/Pods-IntervalApp-resources.sh",
 				"$PODS_CONFIGURATION_BUILD_DIR/Brightcove-Player-SDK/BCOVPUIResources.bundle",
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle",
-				"$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle",
+				$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle,
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -2067,7 +2064,6 @@
 				3A3A012F1C99BD0B00B7EC37 /* BedroomSizeViewController.swift in Sources */,
 				E94FB5EA1EF0609C00314C5D /* VerticalProgressView.swift in Sources */,
 				E9ED1B591F44B89A00794C53 /* CertificateInfoViewController.swift in Sources */,
-				DC27F7C61DB81B6F00AA374F /* GetawayAlertsIpadViewController.swift in Sources */,
 				3A3BE3ED1CA0441200CDE3AA /* MyOwnershipAvailablePointTooolTableViewCell.swift in Sources */,
 				089416731F72D94300F03229 /* BedroomTableViewCell.swift in Sources */,
 				3A2C728F1DDB2DC900BBF40B /* AdvisementsCell.swift in Sources */,

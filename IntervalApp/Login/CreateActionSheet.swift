@@ -172,6 +172,7 @@ class CreateActionSheet: UITableViewController {
             //}
             
         }) { (error) in
+            print(alert.alertId)
             if(self.activeAlertCount < Constant.MyClassConstants.getawayAlertsArray.count - 1){
             self.activeAlertCount = self.activeAlertCount + 1
                 self.getStatusForAllAlerts()
