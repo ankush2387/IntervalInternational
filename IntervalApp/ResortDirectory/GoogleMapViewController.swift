@@ -35,7 +35,7 @@ class GoogleMapViewController: UIViewController {
     var location = CLLocationCoordinate2D()
     var resortView = UIView()
     var resortCollectionView:UICollectionView!
-    var index:Int = 0
+    var currentIndex:Int = 0
     var selectedFavButton:UIButton!
     var hideSideView:Bool! = false
     let bottomResortHeight:CGFloat = 206+49//added default tab bar height
@@ -231,16 +231,10 @@ class GoogleMapViewController: UIViewController {
             Helper.trackOmnitureCallForPageView(name: Constant.omnitureCommonString.resortDirectoryHome)
             
         }
-        
-        
         //Location Manager code to fetch current location
         self.locationManager.delegate = self
         self.locationManager.startUpdatingLocation()
-        
-        
         mapView.delegate = self
-        mapView.animate(toZoom: 10)
-        
         locationManager.requestWhenInUseAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         
@@ -249,8 +243,10 @@ class GoogleMapViewController: UIViewController {
         
         //***** Register custom cell with map tale view with some validation check *****//
         if(mapTableView != nil){
+            
             self.mapTableView.isHidden = true
             if(mapTableView.tag != 1){
+                
                 mapTableView.register(UINib(nibName: Constant.customCellNibNames.searchResultContentTableCell, bundle: nil), forCellReuseIdentifier:  Constant.customCellNibNames.searchResultContentTableCell)
             }
         }
@@ -531,7 +527,7 @@ class GoogleMapViewController: UIViewController {
     //***** Creating map with resorts getting from current location when map screen landing first time *****//
     func createMapViewWithMarkers(location:CLLocation) {
         
-        let camera = GMSCameraPosition.camera(withLatitude: location.coordinate.latitude, longitude: location.coordinate.longitude, zoom: 10.0)
+        let camera = GMSCameraPosition.camera(withLatitude: location.coordinate.latitude, longitude: location.coordinate.longitude, zoom: 8.0)
         let mapframe = CGRect(x: 0, y: 108, width: self.view.frame.width, height: self.view.frame.height-108-49)
         mapView = GMSMapView.map(withFrame: mapframe, camera: camera)
         mapView.isMyLocationEnabled = true
@@ -564,7 +560,7 @@ class GoogleMapViewController: UIViewController {
         mapView.animate(with: GMSCameraUpdate.fit(bounds))
         mapView.delegate = self
         mapView.settings.allowScrollGesturesDuringRotateOrZoom = false
-        mapView.animate(toZoom: 10)
+        mapView.animate(toZoom: 8.0)
         for subView in self.view.subviews{
             if (subView.isKind(of: GMSMapView.self)){
                 subView.removeFromSuperview()
@@ -608,7 +604,7 @@ class GoogleMapViewController: UIViewController {
         if(self.mapTableView != nil){
             self.mapTableView.reloadData()
         }
-        mapView.animate(toZoom: 10.0)
+        mapView.animate(toZoom: 8.0)
     }
     
     //***** This method executes when bottom resort view favorite button pressed *****//
@@ -780,7 +776,7 @@ class GoogleMapViewController: UIViewController {
             
             let pageWidth = resortCollectionView.bounds.size.width
             let page = scrollView.contentOffset.x / pageWidth
-            index = Int(page)
+            self.currentIndex = Int(page)
         }
     }
     
@@ -950,7 +946,7 @@ class GoogleMapViewController: UIViewController {
             resortView.addGestureRecognizer(topSwipe)
             resortView.addGestureRecognizer(bottomSwipe)
             self.view.addSubview(resortView)
-            let indexPath = IndexPath(row: self.index, section: 0)
+            let indexPath = IndexPath(row: self.currentIndex, section: 0)
             self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.right, animated: true)
         }
     }
@@ -958,7 +954,7 @@ class GoogleMapViewController: UIViewController {
     // ***** This method executes when we want to hide bottom resort view *****//
     func removeBottomView() {
         
-        self.index = 0
+        self.currentIndex = 0
         
         for selectedMarker in Constant.MyClassConstants.googleMarkerArray {
             
@@ -986,7 +982,7 @@ class GoogleMapViewController: UIViewController {
         if (sender.direction == .up) {
             
             if(Constant.MyClassConstants.systemAccessToken != nil) {
-                let selectedResort = Constant.MyClassConstants.resortsArray[index]
+                let selectedResort = Constant.MyClassConstants.resortsArray[self.currentIndex]
                 Constant.MyClassConstants.isgetResortFromGoogleSearch = false
                 Helper.getUserFavorites()
                 Helper.getResortWithResortCode(code: selectedResort.resortCode!,viewcontroller:self)
@@ -1261,7 +1257,7 @@ class GoogleMapViewController: UIViewController {
     func nameLabelPressed(_ sender: UITapGestureRecognizer) {
         
         if(Constant.MyClassConstants.systemAccessToken != nil) {
-            let selectedResort = Constant.MyClassConstants.resortsArray[index]
+            let selectedResort = Constant.MyClassConstants.resortsArray[self.currentIndex]
             Constant.MyClassConstants.isgetResortFromGoogleSearch = false
             Helper.getUserFavorites()
             Helper.getResortWithResortCode(code: selectedResort.resortCode!,viewcontroller:self)
@@ -1292,7 +1288,8 @@ extension GoogleMapViewController:CLLocationManagerDelegate{
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
-            mapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
+            
+            mapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 8.0, bearing: 0, viewingAngle: 0)
             locationManager.stopUpdatingLocation()
         
         }
@@ -1377,7 +1374,7 @@ extension GoogleMapViewController:GMSMapViewDelegate {
                 
                 marker.icon = UIImage(named:Constant.assetImageNames.pinFocusImage)
                 marker.isFlat = true
-                self.index = marker.userData as! Int
+                self.currentIndex = marker.userData as! Int
                 self.mapView.selectedMarker = marker
                 self.createBottomResortView(marker: marker)
                 
@@ -1413,14 +1410,14 @@ extension GoogleMapViewController:GMSMapViewDelegate {
                             }
                         }
                         self.mapView.selectedMarker = marker
-                        self.index = marker.userData as! Int
+                        self.currentIndex = marker.userData as! Int
                         
                         let indexPath = IndexPath(row: marker.userData as! Int, section: 0)
                         
                         if (UIDevice.current.userInterfaceIdiom == .pad) {
                             
                             
-                            if(self.index > marker.userData as! Int) {
+                            if(self.currentIndex > marker.userData as! Int) {
                                 self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.bottom, animated: true)
                             }
                             else {
@@ -1430,7 +1427,7 @@ extension GoogleMapViewController:GMSMapViewDelegate {
                             
                         } else {
                             
-                            if(self.index > marker.userData as! Int) {
+                            if(self.currentIndex > marker.userData as! Int) {
                                 self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.left, animated: true)
                             }
                             else {
@@ -1483,10 +1480,21 @@ extension GoogleMapViewController:GMSMapViewDelegate {
             if(Constant.MyClassConstants.isgetResortFromGoogleSearch == false) {
                 
                 let bounds = GMSCoordinateBounds(region: mapView.projection.visibleRegion())
-                let southWest = CLLocationCoordinate2D(latitude: bounds.southWest.latitude, longitude: bounds.southWest.longitude)
-                let northEast = CLLocationCoordinate2D(latitude: bounds.northEast.latitude, longitude: bounds.northEast.longitude)
-                let ractangleRequest = GeoArea.init(nwLat: northEast.latitude, nwLon: northEast.latitude, seLat: southWest.longitude, seLon: southWest.longitude)
-                self.apiCallWithRectangleRequest(request: ractangleRequest)
+                
+                let southEast = CLLocationCoordinate2D(latitude: bounds.southWest.latitude, longitude: bounds.northEast.longitude)
+                let northWest = CLLocationCoordinate2D(latitude: bounds.northEast.latitude, longitude: bounds.southWest.longitude)
+                
+                let seCordinates = Coordinates()
+                    seCordinates.latitude = southEast.latitude
+                    seCordinates.longitude = southEast.longitude
+                
+                let nwCordinates = Coordinates()
+                    nwCordinates.latitude = northWest.latitude
+                    nwCordinates.longitude = northWest.longitude
+                
+                
+                let geoAreaReq = GeoArea.init(nwCordinates, seCordinates)
+                self.apiCallWithRectangleRequest(request: geoAreaReq)
                 
             }
             else {
@@ -1502,7 +1510,7 @@ extension GoogleMapViewController:GMSMapViewDelegate {
 
 extension GoogleMapViewController:UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        index = indexPath.item
+        self.currentIndex = indexPath.item
     }
 }
 
@@ -1629,11 +1637,10 @@ extension GoogleMapViewController:UICollectionViewDataSource {
         var visible: [AnyObject] = resortCollectionView.indexPathsForVisibleItems as [AnyObject]
         let indexpath: NSIndexPath = (visible[0] as! NSIndexPath)
         
-        let index = indexpath.row
-        self.index = index
+        self.currentIndex = indexpath.row
         for selectedMarker in Constant.MyClassConstants.googleMarkerArray {
             
-            if(selectedMarker.userData as! Int == index) {
+            if(selectedMarker.userData as! Int ==  self.currentIndex) {
                 
                 selectedMarker.icon = UIImage(named:Constant.assetImageNames.pinFocusImage)
                 selectedMarker.isFlat = true
