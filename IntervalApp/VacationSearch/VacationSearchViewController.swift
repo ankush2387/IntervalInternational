@@ -1787,9 +1787,9 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
 extension VacationSearchViewController:HelperDelegate {
     func resortSearchComplete(){
         Helper.hideProgressBar(senderView: self)
-        self.navigateToSearchResultsScreen()
+        //self.navigateToSearchResultsScreen()
         
-        /*// Check if not has availability in the desired check-In date.
+        // Check if not has availability in the desired check-In date.
         if (Constant.MyClassConstants.initialVacationSearch.searchCheckInDate != Helper.convertDateToString(date: Constant.MyClassConstants.vacationSearchShowDate, format: Constant.MyClassConstants.dateFormat)) {
             Helper.showNearestCheckInDateSelectedMessage()
         }
@@ -1803,7 +1803,7 @@ extension VacationSearchViewController:HelperDelegate {
         self.navigationController?.pushViewController(viewController, animated: true)
         //let navController = UINavigationController(rootViewController: viewController)
         
-        //self.present(navController, animated:true, completion: nil)*/
+        //self.present(navController, animated:true, completion: nil)
     }
     func resetCalendar(){
         Constant.MyClassConstants.calendarDatesArray.removeAll()
