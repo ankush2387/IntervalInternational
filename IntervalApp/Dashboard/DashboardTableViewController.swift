@@ -31,7 +31,7 @@ class DashboardTableViewController: UITableViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         //***** Adding notification to reload alert badge *****//
-        //Helper.removeServiceCallBackgroundView(view: self.view)
+        //self.hideHudAsync()
         NotificationCenter.default.addObserver(self, selector: #selector(reloadBadgeView), name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(reloadTopDestinations), name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: nil)
@@ -71,9 +71,9 @@ class DashboardTableViewController: UITableViewController {
                 if success {
                     self.getNumberOfSections()
                     self.homeTableView.reloadData()
-                    Helper.hideProgressBar(senderView: self)
+                    
                 } else {
-                    Helper.hideProgressBar(senderView: self)
+                    
                 }
             }
             
@@ -609,7 +609,7 @@ extension UIViewController {
         if Reachability.isConnectedToNetwork() == true {
             
             ADBMobile.trackAction(Constant.omnitureEvents.event9, data: nil)
-            Helper.showProgressBar(senderView: self)
+            showHudAsync()
             RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess:{ (response) in
                 
                 ADBMobile.trackAction(Constant.omnitureEvents.event18, data: nil)
@@ -660,15 +660,16 @@ extension UIViewController {
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     //sender.isEnabled = true
                     Helper.helperDelegate = self as? HelperDelegate
+                    self.hideHudAsync()
                     Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                 }
             })
             { (error) in
-                Helper.hideProgressBar(senderView: self)
+                self.hideHudAsync()
                 SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
             }
         } else {
-            Helper.hideProgressBar(senderView: self)
+            self.hideHudAsync()
             SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
         }
     }

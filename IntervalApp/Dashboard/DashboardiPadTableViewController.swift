@@ -55,9 +55,9 @@ class DashboardIPadTableViewController: UITableViewController {
             Helper.getFlexExchangeDeals(senderVC: self) { (success) in
                 if success {
                     self.homeTableView.reloadData()
-                    Helper.hideProgressBar(senderView: self)
+                    
                 } else {
-                    Helper.hideProgressBar(senderView: self)
+                    
                 }
             }
             
@@ -83,7 +83,7 @@ class DashboardIPadTableViewController: UITableViewController {
     
     //***** Function called when notification for top 10 deals is fired. *****//
     func reloadTopDestinations(){
-        Helper.removeServiceCallBackgroundView(view: self.view)
+        self.hideHudAsync()
         self.showGetaways = true
         homeTableView.reloadData()
     }
@@ -91,7 +91,7 @@ class DashboardIPadTableViewController: UITableViewController {
     //***** Function to show upcoming trip to user *****//
     
     func reloadUpcomingTrip(){
-        Helper.removeServiceCallBackgroundView(view: self.view)
+        self.hideHudAsync()
         let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.myUpcomingTripIpad, bundle: nil)
         let resultController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.upcomingTripsViewController) as? UpComingTripDetailIPadViewController
         let navController = UINavigationController(rootViewController: resultController!)

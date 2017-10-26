@@ -181,7 +181,7 @@ class CheckOutViewController: UIViewController {
             if((isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && (strAccept == "true" || strReject == "true") && Constant.MyClassConstants.selectedCreditCard.count > 0){
                 
 
-                Helper.showProgressBar(senderView: self)
+                showHudAsync()
 
                 let continueToPayRequest = RentalProcessRecapContinueToPayRequest.init()
                 continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last!
@@ -210,13 +210,13 @@ class CheckOutViewController: UIViewController {
                         Constant.MyClassConstants.selectedCreditCard.removeAll()
                         Helper.removeStoredGuestFormDetials()
                         self.isAgreed = true
-                        Helper.hideProgressBar(senderView: self)
+                        self.hideHudAsync()
                         self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                         Constant.MyClassConstants.transactionNumber = (response.view?.fees?.shopExchange?.confirmationNumber)!
                         self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
                         
                     }, onError: { (error) in
-                        Helper.hideProgressBar(senderView: self)
+                        self.hideHudAsync()
                         imageSlider.isHidden = false
                         self.isAgreed = false
                         self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
@@ -242,13 +242,14 @@ class CheckOutViewController: UIViewController {
                     Helper.removeStoredGuestFormDetials()
                     self.isAgreed = true
                     SVProgressHUD.dismiss()
-                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    self.hideHudAsync()
                     Constant.MyClassConstants.transactionNumber = (response.view?.fees?.rental?.confirmationNumber)!
                     self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                     self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
                 }, onError: { (error) in
+                    self.hideHudAsync()
                     
-                    Helper.hideProgressBar(senderView: self)
+                    
                     imageSlider.isHidden = false
                     self.isAgreed = false
                     self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
@@ -441,7 +442,7 @@ class CheckOutViewController: UIViewController {
         let promotionsVC = promotionsNav.viewControllers.first as! PromotionsViewController
         promotionsVC.promotionsArray = Constant.MyClassConstants.recapViewPromotionCodeArray
         promotionsVC.completionHandler = { selected in
-            Helper.showProgressBar(senderView: self)
+            self.showHudAsync()
             //Creating Request to recap with Promotion
             
             
@@ -476,10 +477,10 @@ class CheckOutViewController: UIViewController {
                     
                     self.destinationPromotionSelected = true
                     self.checkoutOptionTBLview.reloadData()
-                    Helper.hideProgressBar(senderView: self)
+                    self.hideHudAsync()
                     
                 }, onError: { (error) in
-                    Helper.hideProgressBar(senderView: self)
+                    self.hideHudAsync()
                 })
             }else{
             let processResort = RentalProcess()
@@ -511,9 +512,9 @@ class CheckOutViewController: UIViewController {
 
                 self.destinationPromotionSelected = true
                 self.checkoutOptionTBLview.reloadData()
-                Helper.hideProgressBar(senderView: self)
+                self.hideHudAsync()
             }, onError: { (error) in
-                Helper.hideProgressBar(senderView: self)
+                self.hideHudAsync()
             })
             }
         }
@@ -577,24 +578,24 @@ class CheckOutViewController: UIViewController {
     }
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
         
-        Helper.showProgressBar(senderView: self)
+        showHudAsync()
         if(Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
             ExchangeProcessClient.backToChooseExchange(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess: {(response) in
-                Helper.hideProgressBar(senderView: self)
+                self.hideHudAsync()
             }, onError: {(error) in
-                Helper.hideProgressBar(senderView: self)
+                self.hideHudAsync()
                 SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
             })
 
         }else{
             RentalProcessClient.backToWhoIsChecking(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, onSuccess: {(response) in
             
-            Helper.hideProgressBar(senderView: self)
+            self.hideHudAsync()
             _ = self.navigationController?.popViewController(animated: true)
             
         }, onError: {(error) in
             
-            Helper.hideProgressBar(senderView: self)
+            self.hideHudAsync()
             SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.operationFailedMessage)
         })
         }
@@ -633,7 +634,7 @@ class CheckOutViewController: UIViewController {
           Constant.MyClassConstants.exchangeFees.last!.insurance?.selected = shouldAddTripProtection
             let exchangeRecalculateRequest = ExchangeProcessRecalculateRequest()
             exchangeRecalculateRequest.fees = Constant.MyClassConstants.exchangeFees.last!
-            Helper.showProgressBar(senderView: self)
+            showHudAsync()
             ExchangeProcessClient.recalculateFees(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: exchangeRecalculateRequest, onSuccess: {
                 (response) in
                 
@@ -643,7 +644,7 @@ class CheckOutViewController: UIViewController {
                 DarwinSDK.logger.debug(Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.insurance?.price)
                 Constant.MyClassConstants.exchangeFees[0].total = (response.view?.fees?.total)!
                 self.checkoutOptionTBLview.reloadData()
-                Helper.hideProgressBar(senderView: self)
+                self.hideHudAsync()
     
             }, onError: { (error) in
                 Constant.MyClassConstants.exchangeFees.last!.insurance?.selected = !shouldAddTripProtection
@@ -651,7 +652,7 @@ class CheckOutViewController: UIViewController {
                 self.isTripProtectionEnabled = false
                 self.checkoutOptionTBLview.reloadData()
                 DarwinSDK.logger.debug(error.description)
-                Helper.hideProgressBar(senderView: self)
+                self.hideHudAsync()
                 SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: error.description)
             })
         }else{
@@ -659,7 +660,7 @@ class CheckOutViewController: UIViewController {
             Constant.MyClassConstants.rentalFees.last!.insurance?.selected = shouldAddTripProtection
             let rentalRecalculateRequest = RentalProcessRecapRecalculateRequest.init()
             rentalRecalculateRequest.fees = Constant.MyClassConstants.rentalFees.last!
-            Helper.showProgressBar(senderView: self)
+            showHudAsync()
             RentalProcessClient.addTripProtection(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, request: rentalRecalculateRequest, onSuccess: { (response) in
                 self.tripRequestInProcess = false
                 Constant.MyClassConstants.continueToCheckoutResponse = response
@@ -667,7 +668,7 @@ class CheckOutViewController: UIViewController {
                 DarwinSDK.logger.debug(Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.insurance?.price)
                 Constant.MyClassConstants.rentalFees[0].total = (response.view?.fees?.total)!
                 self.checkoutOptionTBLview.reloadSections(IndexSet(integer: 8), with:.automatic)
-                Helper.hideProgressBar(senderView: self)
+                self.hideHudAsync()
             }, onError: { (error) in
                 "document.getElementById('WASCInsuranceOfferOption0').checked = false;"
                 "document.getElementById('WASCInsuranceOfferOption1').checked = false;"
@@ -675,7 +676,7 @@ class CheckOutViewController: UIViewController {
                 self.isTripProtectionEnabled = false
                 self.checkoutOptionTBLview.reloadData()
                 DarwinSDK.logger.debug(error.description)
-                Helper.hideProgressBar(senderView: self)
+                self.hideHudAsync()
             })
         }
     }
@@ -698,17 +699,17 @@ class CheckOutViewController: UIViewController {
             let exchangeRecalculateRequest = ExchangeProcessRecalculateRequest()
             exchangeRecalculateRequest.fees = Constant.MyClassConstants.exchangeFees.last!
             exchangeRecalculateRequest.fees?.eplus?.selected = sender.checked
-            Helper.showProgressBar(senderView: self)
+            showHudAsync()
             ExchangeProcessClient.recalculateFees(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: exchangeRecalculateRequest, onSuccess: { (recapResponse) in
                 self.eplusAdded = sender.checked
                 Constant.MyClassConstants.exchangeFees = [(recapResponse.view?.fees)!]
-                Helper.hideProgressBar(senderView: self)
+                self.hideHudAsync()
                 self.checkSectionsForFees()
                 self.checkoutOptionTBLview.reloadData()
             }, onError: { (error) in
                self.eplusAdded = !sender.checked
                Constant.MyClassConstants.exchangeFees[0].eplus?.selected = sender.checked
-                Helper.hideProgressBar(senderView: self)
+                self.hideHudAsync()
                 SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: error.description)
                 self.checkSectionsForFees()
                 self.checkoutOptionTBLview.reloadData()
@@ -725,8 +726,8 @@ extension CheckOutViewController:UITableViewDelegate {
         
         if(indexPath.section == 9) {
             
-            SVProgressHUD.show()
-            Helper.addServiceCallBackgroundView(view: self.view)
+            showHudAsync()
+            
             UserClient.getCreditCards(Session.sharedSession.userAccessToken!, onSuccess: { (response) in
                 
                 Constant.MyClassConstants.memberCreditCardList = response
@@ -735,7 +736,7 @@ extension CheckOutViewController:UITableViewDelegate {
                     if(Constant.MyClassConstants.selectedCreditCard.count == 0) {
                         
                         SVProgressHUD.dismiss()
-                        Helper.removeServiceCallBackgroundView(view: self.view)
+                        self.hideHudAsync()
                         self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
                     }
                     else {
@@ -744,12 +745,12 @@ extension CheckOutViewController:UITableViewDelegate {
                         if(selectedCard.creditcardId == 0) {
                             Constant.MyClassConstants.memberCreditCardList.append(selectedCard)
                             SVProgressHUD.dismiss()
-                            Helper.removeServiceCallBackgroundView(view: self.view)
+                            self.hideHudAsync()
                             self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
                         }else{
                             //Constant.MyClassConstants.memberCreditCardList.append(selectedCard)
                             SVProgressHUD.dismiss()
-                            Helper.removeServiceCallBackgroundView(view: self.view)
+                            self.hideHudAsync()
                             self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
                         }
                     }
@@ -758,7 +759,7 @@ extension CheckOutViewController:UITableViewDelegate {
             }, onError: { (error) in
                 
                 SVProgressHUD.dismiss()
-                Helper.removeServiceCallBackgroundView(view: self.view)
+                self.hideHudAsync()
                 print(error)
                 
             })
@@ -1538,20 +1539,20 @@ extension CheckOutViewController:UIWebViewDelegate {
     
     func webViewDidStartLoad(_ webView: UIWebView)
     {
-        Helper.addServiceCallBackgroundView(view: self.view)
-        SVProgressHUD.show()
+        
+        showHudAsync()
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView)
     {
         SVProgressHUD.dismiss()
-        Helper.removeServiceCallBackgroundView(view: self.view)
+        self.hideHudAsync()
         
     }
     
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error){
         SVProgressHUD.dismiss()
-        Helper.removeServiceCallBackgroundView(view: self.view)
+        self.hideHudAsync()
     }
 }
 

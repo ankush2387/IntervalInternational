@@ -293,11 +293,11 @@ class SearchResultMapviewController: UIViewController {
         
           if (sender.isSelected == false){
             
-            SVProgressHUD.show()
-            Helper.addServiceCallBackgroundView(view: self.view)
+            showHudAsync()
+
             UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
             
-                Helper.removeServiceCallBackgroundView(view: self.view)
+                self.hideHudAsync()
                 SVProgressHUD.dismiss()
                 sender.isSelected = true
                 Constant.MyClassConstants.favoritesResortCodeArray.add(Constant.MyClassConstants.resortsArray[sender.tag].resortCode!)
@@ -305,18 +305,18 @@ class SearchResultMapviewController: UIViewController {
             
             }, onError: {(error) in
                 SVProgressHUD.dismiss()
-                Helper.removeServiceCallBackgroundView(view: self.view)
+                self.hideHudAsync()
                 print(error)
             })
         }
           else {
             
-            SVProgressHUD.show()
-            Helper.addServiceCallBackgroundView(view: self.view)
+            showHudAsync()
+
             UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
                 
                 sender.isSelected = false
-                Helper.removeServiceCallBackgroundView(view: self.view)
+                self.hideHudAsync()
                 SVProgressHUD.dismiss()
                 Constant.MyClassConstants.favoritesResortCodeArray.remove(Constant.MyClassConstants.resortsDescriptionArray.resortCode!)
                  self.resortCollectionView.reloadData()
@@ -324,7 +324,7 @@ class SearchResultMapviewController: UIViewController {
             }, onError: {(error) in
                 
                 SVProgressHUD.dismiss()
-                Helper.removeServiceCallBackgroundView(view: self.view)
+                self.hideHudAsync()
                 print(error)
             })
             

@@ -56,7 +56,7 @@ class IntervalHDIpadController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        showHudAsync()
         Helper.getVideos(searchBy: Constant.MyClassConstants.areaString)
         Helper.getVideos(searchBy: Constant.MyClassConstants.resortsString)
         Helper.getVideos(searchBy: Constant.MyClassConstants.tutorialsString)

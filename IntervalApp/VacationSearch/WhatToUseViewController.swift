@@ -75,7 +75,7 @@ class WhatToUseViewController: UIViewController {
         //Start process request
         
         //Exchange process request parameters
-        Helper.showProgressBar(senderView: self)
+        showHudAsync()
         let processResort = ExchangeProcess()
         processResort.holdUnitStartTimeInMillis = Constant.holdingTime
         
@@ -130,7 +130,7 @@ class WhatToUseViewController: UIViewController {
                 UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: {(Membership) in
                     
                     // Got an access token!  Save it for later use.
-                    Helper.hideProgressBar(senderView: self)
+                    self.hideHudAsync()
                     Constant.MyClassConstants.membershipContactArray = Membership.contacts!
     
                     // check force renewals here
@@ -212,7 +212,7 @@ class WhatToUseViewController: UIViewController {
                     }
                 }, onError: { (error) in
                     
-                    Helper.hideProgressBar(senderView: self)
+                    self.hideHudAsync()
                     self.selectedRow = -1
                     self.selectedRowSection = -1
                     self.tableView.reloadData()
@@ -221,7 +221,7 @@ class WhatToUseViewController: UIViewController {
                 })
                 
             }, onError: {(error) in
-                Helper.hideProgressBar(senderView: self)
+                self.hideHudAsync()
                 self.selectedRow = -1
                 self.selectedRowSection = -1
                 self.tableView.reloadData()
@@ -242,7 +242,7 @@ class WhatToUseViewController: UIViewController {
         let indexPath = NSIndexPath(row: self.selectedRow, section: self.selectedRowSection)
         tableView.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.none)
         
-        Helper.showProgressBar(senderView: self)
+        showHudAsync()
         var inventoryDict = Inventory()
         inventoryDict = Constant.MyClassConstants.selectedResort.inventory!
         let invent = inventoryDict
@@ -267,7 +267,7 @@ class WhatToUseViewController: UIViewController {
             
             self.selectedRow = -1
             self.selectedRowSection = -1
-            Helper.hideProgressBar(senderView: self)
+            self.hideHudAsync()
             let processResort = RentalProcess()
             processResort.processId = response.processId
             Constant.MyClassConstants.getawayBookingLastStartedProcess = processResort
@@ -276,7 +276,7 @@ class WhatToUseViewController: UIViewController {
             Constant.MyClassConstants.processStartResponse = response
             
             SVProgressHUD.dismiss()
-            Helper.removeServiceCallBackgroundView(view: self.view)
+            self.hideHudAsync()
             Constant.MyClassConstants.viewResponse = response.view!
             Constant.MyClassConstants.rentalFees = [(response.view?.fees)!]
             Constant.MyClassConstants.guestCertificate = response.view?.fees?.guestCertificate
@@ -301,7 +301,7 @@ class WhatToUseViewController: UIViewController {
                 
                 // Got an access token!  Save it for later use.
                 SVProgressHUD.dismiss()
-                Helper.removeServiceCallBackgroundView(view: self.view)
+                self.hideHudAsync()
                 Constant.MyClassConstants.membershipContactArray = Membership.contacts!
 
                 // check force renewals here
@@ -362,9 +362,7 @@ class WhatToUseViewController: UIViewController {
                 
             }, onError: { (error) in
                 
-                Helper.hideProgressBar(senderView: self)
-                SVProgressHUD.dismiss()
-                Helper.removeServiceCallBackgroundView(view: self.view)
+                self.hideHudAsync()
                 self.selectedRow = -1
                 self.selectedRowSection = -1
                 self.tableView.reloadData()
@@ -377,9 +375,7 @@ class WhatToUseViewController: UIViewController {
             self.selectedRow = -1
             self.selectedRowSection = -1
             self.tableView.reloadData()
-            Helper.hideProgressBar(senderView: self)
-            Helper.removeServiceCallBackgroundView(view: self.view)
-            SVProgressHUD.dismiss()
+            self.hideHudAsync()
             SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.description)
         })
 
