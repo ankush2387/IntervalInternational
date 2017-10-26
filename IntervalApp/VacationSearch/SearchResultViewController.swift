@@ -235,7 +235,7 @@ class SearchResultViewController: UIViewController {
         self.collectionviewSelectedIndex = Constant.MyClassConstants.searchResultCollectionViewScrollToIndex
         
         if(Session.sharedSession.userAccessToken != nil){
-            Helper.showProgressBar(senderView: self)
+           // Helper.showProgressBar(senderView: self)
             UserClient.getFavoriteResorts(Session.sharedSession.userAccessToken, onSuccess: { (response) in
                 Constant.MyClassConstants.favoritesResortArray.removeAll()
                 for item in [response][0] {
@@ -250,11 +250,11 @@ class SearchResultViewController: UIViewController {
                     }
                     
                 }
-                Helper.hideProgressBar(senderView: self)
+                //Helper.hideProgressBar(senderView: self)
             })
             { (error) in
                
-                Helper.hideProgressBar(senderView: self)
+               // Helper.hideProgressBar(senderView: self)
             }
         }
         
@@ -872,7 +872,7 @@ class SearchResultViewController: UIViewController {
                     if (sender.isSelected == false){
                         
                         SVProgressHUD.show()
-                        Helper.addServiceCallBackgroundView(view: self.view)
+                        //Helper.addServiceCallBackgroundView(view: self.view)
                         UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode:resortCode, onSuccess: {(response) in
 
                             Helper.removeServiceCallBackgroundView(view: self.view)
@@ -893,7 +893,7 @@ class SearchResultViewController: UIViewController {
                     else {
 
                         SVProgressHUD.show()
-                        Helper.addServiceCallBackgroundView(view: self.view)
+                       // Helper.addServiceCallBackgroundView(view: self.view)
                         UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: resortCode, onSuccess: {(response) in
 
                             sender.isSelected = false
