@@ -419,6 +419,8 @@ class DashboardTableViewController: UITableViewController {
         let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.sideMenuTitles.sideMenuInitialController) as! SWRevealViewController
         self.present(viewController, animated: true, completion: nil)
+        //let navController = UINavigationController(rootViewController: viewController)
+        //self.navigationController?.pushViewController(viewController, animated: true)
 
     }
 }
