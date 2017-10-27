@@ -635,6 +635,9 @@ class Constant: NSObject {
         
         static var certifcateCount = 0
         static var certificateArray = [AccommodationCertificate]()
+        
+        static var certificateDetailsArray = AccommodationCertificateSummary()
+        
     }
     
     // Enum to store resorts and destinations
@@ -1065,6 +1068,8 @@ class Constant: NSObject {
         
         static var renewalOtherOptionsVC = "RenewalOtherOptionsVC"
         
+        static var certificateDetailsViewController = "CertificateDetailsViewController"
+        
     }
     
     //***** common  structure to provide all custom nib cell names *****//
@@ -1276,6 +1281,8 @@ class Constant: NSObject {
     struct certificateScreenReusableIdentifiers {
         
         static var certificateCell = "CertificateCell"
+        static var certificateDetailsCell = "CertificateDetailsCell"
+        
     }
     
     //***** common  structure to provide all vacationSearchScreenReusableIdentifiers *****//

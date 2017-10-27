@@ -19,7 +19,6 @@ class CertificateViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
     }
     
     override func didReceiveMemoryWarning() {
@@ -28,8 +27,33 @@ class CertificateViewController: UIViewController {
     }
     
     
-    @IBAction func onClickedStatusInfoButton(_ sender: Any) {
-        print("status info button clicked")
+    @IBAction func onClickedCertificateInfoButton(_ sender: Any) {
+        
+        self.getAccommodationCertificateSummary(sendertag: (sender as AnyObject).tag)
+    }
+    
+    func getAccommodationCertificateSummary(sendertag:Int) {
+       
+        
+        let number = Constant.MyClassConstants.certificateArray[sendertag].certificateNumber! as NSNumber
+        
+        let certificateNumber:String = number.stringValue
+       
+        UserClient.getAccommodationCertificateSummary(Session.sharedSession.userAccessToken, certificateNumber: certificateNumber, onSuccess: { (response) in
+            Constant.MyClassConstants.certificateDetailsArray = response
+            self.navigateToCertificateDetailsVC()
+             print(response)
+            
+        }, onError: { (error) in
+             print(error)
+            
+            })
+    }
+    
+    func navigateToCertificateDetailsVC()  {
+        let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.certificateDetailsViewController) as! CertificateDetailsViewController
+        self.present(viewController, animated: true, completion: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -87,7 +111,7 @@ extension CertificateViewController:UITableViewDataSource {
         
         cell.certificateNumber.text = "#\(Constant.MyClassConstants.certificateArray[indexPath.row].certificateNumber!)"
         
-        var expireDateString = Constant.MyClassConstants.certificateArray[indexPath.row].expirationDate!
+        let expireDateString = Constant.MyClassConstants.certificateArray[indexPath.row].expirationDate!
         let myStringArr = expireDateString.components(separatedBy: "-")
         
         let expireDateFinalString = myStringArr.flatMap({$0}).joined(separator: "/")
@@ -125,6 +149,10 @@ extension CertificateViewController:UITableViewDataSource {
         
         Helper.applyShadowOnUIView(view: cell.cellBaseView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 1.0)
         cell.selectionStyle = UITableViewCellSelectionStyle.none
+        
+        //set button tag
+        cell.certificateInfoButton.tag = indexPath.row
+        
         return cell
     }
     
