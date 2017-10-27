@@ -474,7 +474,7 @@ class GoogleMapViewController: UIViewController {
             Constant.MyClassConstants.resortsArray = response
             self.mapView.clear()
             self.displaySearchedResort()
-                
+            
         }
         if(Constant.RunningDevice.deviceIdiom == .pad && !self.hideSideView && self.containerView != nil && self.containerView.isHidden == true) {
             Constant.MyClassConstants.addResortSelectedIndex.removeAllObjects()
@@ -1226,7 +1226,7 @@ extension GoogleMapViewController:CLLocationManagerDelegate{
     }
     
 }
-    
+
 
 
 
@@ -1325,7 +1325,7 @@ extension GoogleMapViewController:GMSMapViewDelegate {
                         selectedMarker.icon = UIImage(named:Constant.assetImageNames.pinFocusImage)
                 }
                 else {
-                        
+                    
                     selectedMarker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
                         selectedMarker.isFlat = false
                     }
@@ -1335,11 +1335,11 @@ extension GoogleMapViewController:GMSMapViewDelegate {
                 
                 let indexPath = IndexPath(row: self.currentIndex, section: 0)
                 if(self.currentIndex > marker.userData as! Int) {
-                        
+                    
                     self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.left, animated: true)
                 }
                 else {
-                        
+                    
                     self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.right, animated: true)
                 }
             }
@@ -1353,21 +1353,21 @@ extension GoogleMapViewController:GMSMapViewDelegate {
         if(mapView.camera.zoom >= 10) {
             
                 let bounds = GMSCoordinateBounds(region: mapView.projection.visibleRegion())
-                
+            
                 let southEast = CLLocationCoordinate2D(latitude: bounds.southWest.latitude, longitude: bounds.northEast.longitude)
                 let northWest = CLLocationCoordinate2D(latitude: bounds.northEast.latitude, longitude: bounds.southWest.longitude)
-                
+            
                 let seCordinates = Coordinates()
                     seCordinates.latitude = southEast.latitude
                     seCordinates.longitude = southEast.longitude
-                
+            
                 let nwCordinates = Coordinates()
                     nwCordinates.latitude = northWest.latitude
                     nwCordinates.longitude = northWest.longitude
-                
+            
                 let geoAreaReq = GeoArea.init(nwCordinates, seCordinates)
                 self.apiCallWithRectangleRequest(request: geoAreaReq)
-                
+            
             }
         else {
             
