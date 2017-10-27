@@ -360,7 +360,8 @@ class GoogleMapViewController: UIViewController {
                 let dict = Constant.MyClassConstants.destinations![sender.tag]
                 Constant.MyClassConstants.selectedGetawayAlertDestinationArray.add(dict)
                 Constant.MyClassConstants.alertSelectedDestination.append(dict)
-                intervalPrint(Constant.MyClassConstants.alertSelectedDestination,dict)
+                
+                
                 Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(dict.destinationId!)
             }
             else {
@@ -1058,7 +1059,6 @@ class GoogleMapViewController: UIViewController {
         let allavailabledest = AllAvailableDestination()
         allavailabledest.destination = Constant.MyClassConstants.allDestinations
         try! realm.write {
-            intervalPrint(allavailabledest.destination)
             realm.add(allavailabledest)
         }
         Constant.MyClassConstants.destinationOrResortSelectedBy = Constant.omnitureCommonString.allDestination
@@ -1897,12 +1897,11 @@ extension GoogleMapViewController:SearchResultContentTableCellDelegate{
                 
                 UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
                     
-                    intervalPrint(response)
                     sender.isSelected = true
                     
                     
                 }, onError: {(error) in
-                    intervalPrint(error)
+                    
                 })
             }
             else {
