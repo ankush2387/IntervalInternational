@@ -646,7 +646,7 @@ extension UIViewController {
                 
                 Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                 
-                Helper.hideProgressBar(senderView: self)
+                //Helper.hideProgressBar(senderView: self)
                 
                 // Check not available checkIn dates for the active interval
                 if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {

@@ -240,7 +240,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     //Function for navigating to search results
     func navigateToSearchResults(){
         //Constant.MyClassConstants.vacationSearchResultHeaderLabel = (Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: Constant.MyClassConstants.selectedAreaCodeArray[0] as! String) as? String)!
-        Helper.hideProgressBar(senderView: self)
+        //Helper.hideProgressBar(senderView: self)
 
         Constant.MyClassConstants.filteredIndex = 0
         
@@ -437,7 +437,7 @@ extension GetawayAlertsIPhoneViewController:UITableViewDataSource {
 
 extension GetawayAlertsIPhoneViewController:HelperDelegate {
     func resortSearchComplete(){
-        Helper.hideProgressBar(senderView: self)
+        //Helper.hideProgressBar(senderView: self)
         // Check if not has availability in the desired check-In date.
         if (Constant.MyClassConstants.initialVacationSearch.searchCheckInDate != Helper.convertDateToString(date: Constant.MyClassConstants.vacationSearchShowDate, format: Constant.MyClassConstants.dateFormat)) {
             Helper.showNearestCheckInDateSelectedMessage()

@@ -34,9 +34,9 @@ class CertificateViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         
-        Helper.showProgressBar(senderView: self)
+       // Helper.showProgressBar(senderView: self)
         UserClient.getAccommodationCertificates(Session.sharedSession.userAccessToken, onSuccess: { (certificates) in
-            Helper.hideProgressBar(senderView: self)
+            //Helper.hideProgressBar(senderView: self)
             print(certificates.count)
             Constant.MyClassConstants.certifcateCount = certificates.count
             Constant.MyClassConstants.certificateArray =  certificates
@@ -46,7 +46,7 @@ class CertificateViewController: UIViewController {
             
             
         }, onError: { (error) in
-            Helper.hideProgressBar(senderView: self)
+            //Helper.hideProgressBar(senderView: self)
             print(error)
         })
         

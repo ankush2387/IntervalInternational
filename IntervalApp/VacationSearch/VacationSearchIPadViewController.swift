@@ -767,7 +767,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                     
                 }, onError: { (error) in
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
-                    Helper.hideProgressBar(senderView: self)
+                    //Helper.hideProgressBar(senderView: self)
                     sender.isEnabled = true
                 })
             }else{
@@ -794,7 +794,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                         
                     }, onError: { (error) in
                         SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
-                        Helper.hideProgressBar(senderView: self)
+                        //Helper.hideProgressBar(senderView: self)
                         sender.isEnabled = true
                     })
                 
