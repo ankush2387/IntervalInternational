@@ -27,12 +27,33 @@ class CertificateViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
-
     @IBAction func onClickedCertificateInfoButton(_ sender: Any) {
         
         self.getAccommodationCertificateSummary(sendertag: (sender as AnyObject).tag)
-
+    }
+    
+    func getAccommodationCertificateSummary(sendertag:Int) {
+       
+        
+        let number = Constant.MyClassConstants.certificateArray[sendertag].certificateNumber! as NSNumber
+        
+        let certificateNumber:String = number.stringValue
+       
+        UserClient.getAccommodationCertificateSummary(Session.sharedSession.userAccessToken, certificateNumber: certificateNumber, onSuccess: { (response) in
+            Constant.MyClassConstants.certificateDetailsArray = response
+            self.navigateToCertificateDetailsVC()
+             print(response)
+            
+        }, onError: { (error) in
+             print(error)
+            
+            })
+    }
+    
+    func navigateToCertificateDetailsVC()  {
+        let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.certificateDetailsViewController) as! CertificateDetailsViewController
+        self.present(viewController, animated: true, completion: nil)
     }
     
     func getAccommodationCertificateSummary(sendertag:Int) {

@@ -7,38 +7,33 @@
 //
 
 import UIKit
+import IntervalUIKit
+import DarwinSDK
+import SVProgressHUD
 
 class CertificateDetailsViewController: UIViewController {
-
+    
+    // clas  variables
+    var certificateDetailsResponse = AccommodationCertificateSummary()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
     // MARK: - Button Clicked
-
     @IBAction func onClickedDone(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
-//MARK:- table view delegate
+//MARK:- tableview delegate
 extension CertificateDetailsViewController:UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -52,14 +47,15 @@ extension CertificateDetailsViewController:UITableViewDelegate {
 }
 
 
-//MARK:- table view delegate
+//MARK:- tableview datasource
 extension CertificateDetailsViewController:UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constant.certificateScreenReusableIdentifiers.certificateDetailsCell, for: indexPath) as! CertificateDetailsCell
         
+        var cell = UITableViewCell()
+        cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: Constant.certificateScreenReusableIdentifiers.certificateDetailsCell)
         
-        let response = Constant.MyClassConstants.certificateDetailsArray
+        let response = certificateDetailsResponse
         let newLine = "\n"
         let newLine2 = "\n\n"
         
@@ -67,39 +63,35 @@ extension CertificateDetailsViewController:UITableViewDataSource {
         
         let footer = response.footer.joined(separator: newLine)
         
-        let areaLbl = response.restrictedArea?.label
+        //restricted area
+        var areaLbl = ""
+        if let label = response.restrictedArea?.label {
+            areaLbl = label
+        }
+        
         let areasCombined = response.restrictedArea?.areas.map{$0.areaName} as! [String]
         let areaString = areasCombined.joined(separator: newLine)
         
         //resort
-        let resortLbl = response.restrictedResort?.label
+        var resortLbl = ""
+        if let label = response.restrictedResort?.label {
+            resortLbl = label
+        }
+        
         let resortCombined = response.restrictedResort?.resorts.map{$0.resortName} as! [String]
         let resortString = resortCombined.joined(separator: newLine)
         
-        let finaStr  = headerString + newLine2 + areaLbl! + areaString + newLine2 + resortLbl! + resortString + newLine2 + footer
+        let finaStr  = headerString + newLine2 + areaLbl + areaString + newLine2 + resortLbl + resortString + newLine2 + footer
         
-       
-        //parse certificate details datacertificate
-       /* let certificateSummary = Constant.MyClassConstants.certificateDetailsArray
+        // cell title
+        cell.textLabel?.text = Constant.MyClassConstants.certificateDetailsCellTitle + newLine
+        cell.textLabel?.numberOfLines = 0
+        cell.textLabel?.font = UIFont(name: Constant.fontName.helveticaNeue, size: 20)
         
-        let certificateSummary1 = [certificateSummary.header.map{$0},
-                                   certificateSummary.restrictedArea!.label!,
-                                   certificateSummary.restrictedArea!.areas.map{$0.areaName!},
-                                   certificateSummary.restrictedResort!.label!,
-                                   certificateSummary.restrictedResort!.resorts.map{$0.resortName!},
-                                   certificateSummary.footer.map{$0}] as [Any]
-        print(certificateSummary1)
-        
-        let strCertificateDetails = certificateSummary1.map {$0}
-        let newFmap = strCertificateDetails.map {$0}
-        
-        print(newFmap)
-         var newStr = ""
-        for str in newFmap{
-           // newStr = "\(str), (\n)"
-            newStr.append("\(str), \n")
-        }*/
-        cell.lblCertificateDetails.text = finaStr
+        //detail text
+        cell.detailTextLabel?.numberOfLines = 0
+        cell.detailTextLabel?.text = finaStr
+        cell.detailTextLabel?.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15)
         
         return cell
     }
