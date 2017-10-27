@@ -33,20 +33,23 @@ class CertificateDetailsViewController: UIViewController {
     
 }
 
-
 //MARK:- tableview delegate
 extension CertificateDetailsViewController:UITableViewDelegate {
     
-    //***** UITableview delegate methods definition here *****//
-    
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 600
+        return UITableViewAutomaticDimension
         
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 250
     }
 }
 
+
+//MARK:- tableview datasource
 extension CertificateDetailsViewController:UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         var cell = UITableViewCell()
