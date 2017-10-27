@@ -476,14 +476,13 @@ class GoogleMapViewController: UIViewController {
             Constant.MyClassConstants.resortsArray = response
             self.mapView.clear()
             self.displaySearchedResort()
-                
+        
         }
         if(Constant.RunningDevice.deviceIdiom == .pad && !self.hideSideView && self.containerView != nil && self.containerView.isHidden == true) {
             Constant.MyClassConstants.addResortSelectedIndex.removeAllObjects()
                 self.alertView.isHidden = true
             self.mapTableView.isHidden = false
                 self.mapTableView.reloadData()
-            
             }
             self.hideHudAsync()
         }) {
@@ -1317,36 +1316,50 @@ extension GoogleMapViewController:GMSMapViewDelegate {
                 marker.isFlat = false
                 self.removeBottomView()
                 
-            }
-            else {
+            }else {
                 
-             DispatchQueue.main.async {
                 for selectedMarker in Constant.MyClassConstants.googleMarkerArray {
-                
-                if(selectedMarker.userData as! Int == marker.userData as! Int) {
+                    
+                    if(selectedMarker.userData as! Int == marker.userData as! Int) {
+                        
                         selectedMarker.isFlat = true
                         selectedMarker.icon = UIImage(named:Constant.assetImageNames.pinFocusImage)
-                }
-                else {
                         
-                    selectedMarker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
+                    }
+                    else {
+                        
+                        selectedMarker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
                         selectedMarker.isFlat = false
                     }
                 }
                 self.mapView.selectedMarker = marker
                 self.currentIndex = marker.userData as! Int
                 
-                let indexPath = IndexPath(row: self.currentIndex, section: 0)
-                if(self.currentIndex > marker.userData as! Int) {
-                        
-                    self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.left, animated: true)
+                let indexPath = IndexPath(row: currentIndex, section: 0)
+                
+                if (UIDevice.current.userInterfaceIdiom == .pad) {
+                    
+                    
+                    if(self.currentIndex > marker.userData as! Int) {
+                        self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.bottom, animated: true)
+                    }
+                    else {
+                        self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.top, animated: true)
+                    }
+                    
+                    
                 }
                 else {
+                    
+                    if(self.currentIndex > marker.userData as! Int) {
                         
-                    self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.right, animated: true)
+                        self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.left, animated: true)
+                    }
+                    else {
+                        
+                        self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.right, animated: true)
+                    }
                 }
-            }
-                
             }
         }
         return true
