@@ -44,7 +44,7 @@ extension CertificateDetailsViewController:UITableViewDelegate {
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 600
+        return 650
         
     }
 }
@@ -56,18 +56,19 @@ extension CertificateDetailsViewController:UITableViewDataSource {
         
         //parse certificate details datacertificate
         let certificateSummary = Constant.MyClassConstants.certificateDetailsArray
-        let certificateSummary1 = [certificateSummary.header, certificateSummary.restrictedArea!.areas.map{$0.areaName!}, certificateSummary.restrictedResort!.resorts.map{$0.resortName!}, certificateSummary.footer]
+        let certificateSummary1 = [certificateSummary.header.map{$0}, certificateSummary.restrictedArea!.areas.map{$0.areaName!}, certificateSummary.restrictedResort!.resorts.map{$0.resortName!}, certificateSummary.footer.map{$0}]
         print(certificateSummary1)
         
         let strCertificateDetails = certificateSummary1.flatMap {$0}
+        let newFmap = strCertificateDetails.flatMap {$0}
         
-        print(strCertificateDetails)
+        print(newFmap)
         var newStr:String = ""
-       /* for str in strCertificateDetails{
+        for str in newFmap{
             newStr.append(str)
-            cell.lblCertificateDetails.text = cell.lblCertificateDetails.text! + "\(str)"
+            //cell.lblCertificateDetails.text = cell.lblCertificateDetails.text! + "\(str)"
         }
-        cell.lblCertificateDetails.text = newStr*/
+        cell.lblCertificateDetails.text = newStr
         
         return cell
     }
