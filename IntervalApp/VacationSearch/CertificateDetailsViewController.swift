@@ -108,7 +108,3 @@ extension CertificateDetailsViewController:UITableViewDataSource {
     
 }
 
-
-
-
-
