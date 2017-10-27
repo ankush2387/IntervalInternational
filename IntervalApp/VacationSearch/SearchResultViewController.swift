@@ -235,7 +235,7 @@ class SearchResultViewController: UIViewController {
         self.collectionviewSelectedIndex = Constant.MyClassConstants.searchResultCollectionViewScrollToIndex
         
         if(Session.sharedSession.userAccessToken != nil){
-
+            showHudAsync()
             UserClient.getFavoriteResorts(Session.sharedSession.userAccessToken, onSuccess: { (response) in
                 Constant.MyClassConstants.favoritesResortArray.removeAll()
                 for item in [response][0] {
@@ -251,7 +251,7 @@ class SearchResultViewController: UIViewController {
                     
                 }
 
-                //Helper.hideProgressBar(senderView: self)
+                self.hideHudAsync()
             })
             { (error) in
                
@@ -871,8 +871,8 @@ class SearchResultViewController: UIViewController {
                     }
         
                     if (sender.isSelected == false){
-                        SVProgressHUD.show()
-                        //Helper.addServiceCallBackgroundView(view: self.view)
+                        
+                        showHudAsync()
                         UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode:resortCode, onSuccess: {(response) in
 
                             self.hideHudAsync()
@@ -891,8 +891,8 @@ class SearchResultViewController: UIViewController {
                         })
                     }
                     else {
-                        SVProgressHUD.show()
-                       // Helper.addServiceCallBackgroundView(view: self.view)
+                        
+                       
                         showHudAsync()
                         UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: resortCode, onSuccess: {(response) in
 
