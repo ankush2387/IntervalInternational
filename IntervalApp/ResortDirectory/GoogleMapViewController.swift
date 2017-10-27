@@ -474,7 +474,6 @@ class GoogleMapViewController: UIViewController {
             Constant.MyClassConstants.resortsArray = response
             self.mapView.clear()
             self.displaySearchedResort()
-            
         }
         if(Constant.RunningDevice.deviceIdiom == .pad && !self.hideSideView && self.containerView != nil && self.containerView.isHidden == true) {
             Constant.MyClassConstants.addResortSelectedIndex.removeAllObjects()
@@ -895,7 +894,6 @@ class GoogleMapViewController: UIViewController {
                 }
                 self.mapView.selectedMarker = nil
             }
-            
         }, completion: { _ in
             
         })
