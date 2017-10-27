@@ -490,7 +490,7 @@ class GoogleMapViewController: UIViewController {
         }
     }
     //***** Updating map with resorts getting from map search bar from resorsts or destination *****//
-    func displaySearchedResort() {
+    func displaySearchedResort(location:CLLocation) {
         
         let camera = GMSCameraPosition.camera(withLatitude: (Constant.MyClassConstants.resortsArray[0].coordinates?.latitude)!,longitude: (Constant.MyClassConstants.resortsArray[0].coordinates?.longitude)!, zoom: self.mapView.camera.zoom)
         
