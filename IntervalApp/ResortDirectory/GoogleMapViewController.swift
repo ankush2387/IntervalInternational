@@ -1177,8 +1177,9 @@ class GoogleMapViewController: UIViewController {
         }
         Constant.MyClassConstants.googleMarkerArray.removeAll()
         Constant.MyClassConstants.googleMarkerArray.removeAll()
-        self.mapView.clear()
-        self.displaySearchedResort()
+        let resort = Constant.MyClassConstants.resortsArray[0]
+        let location = CLLocation.init(latitude: (resort.coordinates?.latitude)!, longitude: (resort.coordinates?.longitude)!)
+        self.displaySearchedResort(location: location)
         
         if(Constant.RunningDevice.deviceIdiom == .pad){
             mapTableView.reloadData()
