@@ -8944,11 +8944,11 @@ Units Upgrade with this selection.</string>
                                                                 <constraint firstAttribute="bottom" secondItem="YZO-WO-nnG" secondAttribute="bottom" constant="5" id="yPo-fc-plA"/>
                                                             </constraints>
                                                         </view>
-                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UCE-s3-WyP">
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UCE-s3-WyP" userLabel="View Travel window">
                                                             <rect key="frame" x="0.0" y="50" width="752" height="100"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Eligible Travel Dates " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5hY-Fj-Jt9">
-                                                                    <rect key="frame" x="15" y="5" width="144" height="20"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Travel Window Starts" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5hY-Fj-Jt9">
+                                                                    <rect key="frame" x="30" y="5" width="146.5" height="20"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="20" id="70L-WX-ezV"/>
                                                                     </constraints>
@@ -8965,7 +8965,6 @@ Units Upgrade with this selection.</string>
                                                                                 <constraint firstAttribute="height" constant="40" id="h0j-c6-tSF"/>
                                                                             </constraints>
                                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="33"/>
-                                                                            <color key="textColor" red="0.047058823529411764" green="0.50196078431372548" blue="0.7803921568627451" alpha="1" colorSpace="calibratedRGB"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="xLX-GL-Sco">
@@ -8974,13 +8973,11 @@ Units Upgrade with this selection.</string>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Wednesday" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AgO-ST-vDj">
                                                                                     <rect key="frame" x="0.0" y="0.0" width="89" height="20"/>
                                                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                                                                    <color key="textColor" red="0.047058823530000002" green="0.50196078430000002" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                                                     <nil key="highlightedColor"/>
                                                                                 </label>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="June, 2017" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JS8-Bc-TsF">
                                                                                     <rect key="frame" x="0.0" y="25" width="89" height="15"/>
                                                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                                                                    <color key="textColor" red="0.047058823530000002" green="0.50196078430000002" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                                                     <nil key="highlightedColor"/>
                                                                                 </label>
                                                                             </subviews>
@@ -8995,14 +8992,14 @@ Units Upgrade with this selection.</string>
                                                                     </constraints>
                                                                 </view>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wen-VD-izP" userLabel="VerticalBottomSeprator">
-                                                                    <rect key="frame" x="0.0" y="98" width="752" height="1"/>
+                                                                    <rect key="frame" x="0.0" y="99" width="752" height="1"/>
                                                                     <color key="backgroundColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="1" id="wjt-im-2Yh"/>
                                                                     </constraints>
                                                                 </view>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="1VP-NX-9hD" userLabel="TWSEndStack View">
-                                                                    <rect key="frame" x="579.5" y="29" width="142.5" height="40"/>
+                                                                    <rect key="frame" x="407" y="29" width="142.5" height="40"/>
                                                                     <subviews>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="23" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WAp-S0-2VI">
                                                                             <rect key="frame" x="0.0" y="0.0" width="37" height="40"/>
@@ -9010,7 +9007,6 @@ Units Upgrade with this selection.</string>
                                                                                 <constraint firstAttribute="height" constant="40" id="0Wk-G6-G4h"/>
                                                                             </constraints>
                                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="33"/>
-                                                                            <color key="textColor" red="0.047058823530000002" green="0.50196078430000002" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="LQ1-1O-DGf">
@@ -9019,26 +9015,31 @@ Units Upgrade with this selection.</string>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Saturday" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZuR-bS-LBj">
                                                                                     <rect key="frame" x="0.0" y="0.0" width="95.5" height="20"/>
                                                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                                                                    <color key="textColor" red="0.047058823530000002" green="0.50196078430000002" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                                                     <nil key="highlightedColor"/>
                                                                                 </label>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="March, 2017" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nM4-gu-p1T">
                                                                                     <rect key="frame" x="0.0" y="25" width="95.5" height="15"/>
                                                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                                                                    <color key="textColor" red="0.047058823530000002" green="0.50196078430000002" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                                                     <nil key="highlightedColor"/>
                                                                                 </label>
                                                                             </subviews>
                                                                         </stackView>
                                                                     </subviews>
                                                                 </stackView>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nxg-f4-wTp">
-                                                                    <rect key="frame" x="355" y="40" width="42" height="21"/>
+                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="no8-NC-E0n" userLabel="View Separator">
+                                                                    <rect key="frame" x="376" y="1" width="1" height="97"/>
+                                                                    <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <constraints>
-                                                                        <constraint firstAttribute="width" constant="42" id="TsG-Q4-LIZ"/>
-                                                                        <constraint firstAttribute="height" constant="21" id="tSz-IQ-ETA"/>
+                                                                        <constraint firstAttribute="width" constant="1" id="fbG-Pf-lqY"/>
                                                                     </constraints>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                </view>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Travel Window Ends" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xRQ-eR-AaV">
+                                                                    <rect key="frame" x="407" y="6" width="143" height="20"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="20" id="GFu-nG-1d8"/>
+                                                                        <constraint firstAttribute="width" constant="142.5" id="neL-ei-3T4"/>
+                                                                    </constraints>
+                                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                                     <color key="textColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
@@ -9046,19 +9047,22 @@ Units Upgrade with this selection.</string>
                                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstItem="bVW-tG-hlA" firstAttribute="top" secondItem="5hY-Fj-Jt9" secondAttribute="bottom" constant="3" id="2gH-UV-tle"/>
-                                                                <constraint firstItem="nxg-f4-wTp" firstAttribute="centerX" secondItem="UCE-s3-WyP" secondAttribute="centerX" id="8Oh-Se-d7Z"/>
                                                                 <constraint firstAttribute="trailing" secondItem="lnC-rC-kIH" secondAttribute="trailing" id="8fv-9m-agY"/>
+                                                                <constraint firstItem="xRQ-eR-AaV" firstAttribute="leading" secondItem="no8-NC-E0n" secondAttribute="trailing" constant="30" id="9D3-ce-KgK"/>
                                                                 <constraint firstItem="Wen-VD-izP" firstAttribute="leading" secondItem="UCE-s3-WyP" secondAttribute="leading" id="9TP-9T-aJ5"/>
-                                                                <constraint firstItem="nxg-f4-wTp" firstAttribute="centerY" secondItem="UCE-s3-WyP" secondAttribute="centerY" id="PaG-yo-1ad"/>
-                                                                <constraint firstItem="1VP-NX-9hD" firstAttribute="top" secondItem="lnC-rC-kIH" secondAttribute="bottom" constant="28" id="T9r-mo-slJ"/>
+                                                                <constraint firstAttribute="bottom" secondItem="Wen-VD-izP" secondAttribute="bottom" id="WjP-gc-GfK"/>
                                                                 <constraint firstAttribute="trailing" secondItem="Wen-VD-izP" secondAttribute="trailing" id="Xcx-kf-X9n"/>
-                                                                <constraint firstAttribute="bottom" secondItem="Wen-VD-izP" secondAttribute="bottom" constant="1" id="bFX-K8-rqd"/>
                                                                 <constraint firstItem="lnC-rC-kIH" firstAttribute="leading" secondItem="UCE-s3-WyP" secondAttribute="leading" id="beC-ak-K92"/>
+                                                                <constraint firstItem="xRQ-eR-AaV" firstAttribute="top" secondItem="lnC-rC-kIH" secondAttribute="bottom" constant="5" id="fTU-Zp-Hij"/>
+                                                                <constraint firstItem="1VP-NX-9hD" firstAttribute="top" secondItem="xRQ-eR-AaV" secondAttribute="bottom" constant="3" id="g6h-gY-bu0"/>
                                                                 <constraint firstItem="bVW-tG-hlA" firstAttribute="leading" secondItem="UCE-s3-WyP" secondAttribute="leading" constant="30" id="gqI-Cy-LE1"/>
-                                                                <constraint firstAttribute="trailing" secondItem="1VP-NX-9hD" secondAttribute="trailing" constant="30" id="jbk-yg-TKJ"/>
                                                                 <constraint firstAttribute="height" constant="100" id="nmZ-Ek-RSc"/>
-                                                                <constraint firstItem="5hY-Fj-Jt9" firstAttribute="leading" secondItem="UCE-s3-WyP" secondAttribute="leading" constant="15" id="utH-Xx-icm"/>
+                                                                <constraint firstAttribute="bottom" secondItem="no8-NC-E0n" secondAttribute="bottom" constant="2" id="rL8-VV-XK3"/>
+                                                                <constraint firstItem="no8-NC-E0n" firstAttribute="top" secondItem="lnC-rC-kIH" secondAttribute="bottom" id="sV7-7p-bJx"/>
+                                                                <constraint firstItem="5hY-Fj-Jt9" firstAttribute="leading" secondItem="UCE-s3-WyP" secondAttribute="leading" constant="30" id="utH-Xx-icm"/>
                                                                 <constraint firstItem="lnC-rC-kIH" firstAttribute="top" secondItem="UCE-s3-WyP" secondAttribute="top" id="v4u-rI-UgD"/>
+                                                                <constraint firstItem="1VP-NX-9hD" firstAttribute="leading" secondItem="no8-NC-E0n" secondAttribute="trailing" constant="30" id="x1K-MA-Jve"/>
+                                                                <constraint firstItem="no8-NC-E0n" firstAttribute="centerX" secondItem="UCE-s3-WyP" secondAttribute="centerX" id="yOs-cy-Wki"/>
                                                                 <constraint firstItem="5hY-Fj-Jt9" firstAttribute="top" secondItem="UCE-s3-WyP" secondAttribute="top" constant="5" id="zRq-PI-Uxw"/>
                                                             </constraints>
                                                         </view>
@@ -9113,7 +9117,7 @@ Units Upgrade with this selection.</string>
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T7I-4A-ycn">
-                                                            <rect key="frame" x="0.0" y="246" width="752" height="230"/>
+                                                            <rect key="frame" x="0.0" y="246" width="752" height="220"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Expires in" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cil-cp-Mcd">
                                                                     <rect key="frame" x="20" y="8" width="80" height="21"/>
@@ -9172,21 +9176,9 @@ Units Upgrade with this selection.</string>
                                                                             <nil key="textColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
-                                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RLJ-Xy-VND">
-                                                                            <rect key="frame" x="702" y="10" width="40" height="40"/>
-                                                                            <constraints>
-                                                                                <constraint firstAttribute="width" constant="40" id="k6J-nH-bs4"/>
-                                                                                <constraint firstAttribute="height" constant="40" id="l52-Te-RcC"/>
-                                                                            </constraints>
-                                                                            <state key="normal" image="InfoIcon"/>
-                                                                            <connections>
-                                                                                <action selector="onClickedStatusInfoButton:" destination="n5L-7w-TWm" eventType="touchUpInside" id="8OA-4K-EZV"/>
-                                                                            </connections>
-                                                                        </button>
                                                                     </subviews>
                                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                     <constraints>
-                                                                        <constraint firstAttribute="trailing" secondItem="RLJ-Xy-VND" secondAttribute="trailing" constant="10" id="4gc-fV-YKu"/>
                                                                         <constraint firstItem="5KQ-fO-8nO" firstAttribute="leading" secondItem="u4G-wi-pF2" secondAttribute="leading" constant="20" id="8IY-2Z-9sb"/>
                                                                         <constraint firstAttribute="trailing" secondItem="dX6-tO-s4E" secondAttribute="trailing" constant="100" id="DFB-0m-eWX"/>
                                                                         <constraint firstItem="5KQ-fO-8nO" firstAttribute="top" secondItem="dX6-tO-s4E" secondAttribute="bottom" constant="5" id="L7f-PU-sot"/>
@@ -9194,14 +9186,13 @@ Units Upgrade with this selection.</string>
                                                                         <constraint firstAttribute="height" constant="80" id="W5b-om-llZ"/>
                                                                         <constraint firstItem="dX6-tO-s4E" firstAttribute="top" secondItem="u4G-wi-pF2" secondAttribute="top" constant="5" id="fEJ-bm-Pom"/>
                                                                         <constraint firstItem="dX6-tO-s4E" firstAttribute="leading" secondItem="u4G-wi-pF2" secondAttribute="leading" constant="20" id="iYJ-TX-YKE"/>
-                                                                        <constraint firstItem="RLJ-Xy-VND" firstAttribute="top" secondItem="u4G-wi-pF2" secondAttribute="top" constant="10" id="xDL-lg-hQw"/>
                                                                     </constraints>
                                                                 </view>
                                                             </subviews>
                                                             <constraints>
                                                                 <constraint firstItem="7G6-ED-1pK" firstAttribute="top" secondItem="u4G-wi-pF2" secondAttribute="bottom" id="432-fa-LYy"/>
                                                                 <constraint firstAttribute="trailing" secondItem="7G6-ED-1pK" secondAttribute="trailing" constant="20" id="95X-AK-ovo"/>
-                                                                <constraint firstAttribute="height" constant="230" id="AFu-IG-VEm"/>
+                                                                <constraint firstAttribute="height" constant="220" id="AFu-IG-VEm"/>
                                                                 <constraint firstItem="4Ov-bi-nBn" firstAttribute="top" secondItem="ZsS-7B-fsZ" secondAttribute="bottom" constant="5" id="Bz2-WE-E2q"/>
                                                                 <constraint firstItem="u4G-wi-pF2" firstAttribute="leading" secondItem="T7I-4A-ycn" secondAttribute="leading" id="FCm-32-ht1"/>
                                                                 <constraint firstAttribute="trailing" secondItem="4Ov-bi-nBn" secondAttribute="trailing" id="GAC-Wn-1kh"/>
@@ -9282,7 +9273,7 @@ Units Upgrade with this selection.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SFU-iC-Go7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1682.8125" y="111.91406249999999"/>
+            <point key="canvasLocation" x="1672.65625" y="143.5546875"/>
         </scene>
         <!--Relinquishment Search View Controller-->
         <scene sceneID="D92-a4-EUD">

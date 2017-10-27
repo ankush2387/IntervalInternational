@@ -397,7 +397,8 @@ class DashboardIPadTableViewController: UITableViewController {
         //self.present(viewController, animated: true, completion: nil)
         
         let navController = UINavigationController(rootViewController: viewController)
-        self.navigationController!.present(navController, animated: true)
+       //self.navigationController!.present(navController, animated: true)
+        self.navigationController?.pushViewController(navController, animated: true)
     }
 }
 
