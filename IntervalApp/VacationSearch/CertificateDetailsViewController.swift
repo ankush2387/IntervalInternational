@@ -33,12 +33,10 @@ class CertificateDetailsViewController: UIViewController {
     
 }
 
-
-//MARK:- table view delegate
+//MARK:- tableview delegate
 extension CertificateDetailsViewController:UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-
         return UITableViewAutomaticDimension
         
     }
@@ -48,12 +46,12 @@ extension CertificateDetailsViewController:UITableViewDelegate {
     }
 }
 
+
+//MARK:- tableview datasource
 extension CertificateDetailsViewController:UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-
-
         var cell = UITableViewCell()
         cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: Constant.certificateScreenReusableIdentifiers.certificateDetailsCell)
         
@@ -61,7 +59,6 @@ extension CertificateDetailsViewController:UITableViewDataSource {
         let newLine = "\n"
         let newLine2 = "\n\n"
         
-
         let headerString = response.header.joined(separator: newLine)
         
         let footer = response.footer.joined(separator: newLine)
@@ -70,7 +67,6 @@ extension CertificateDetailsViewController:UITableViewDataSource {
         var areaLbl = ""
         if let label = response.restrictedArea?.label {
             areaLbl = label
-
         }
         
         let areasCombined = response.restrictedArea?.areas.map{$0.areaName} as! [String]
@@ -96,8 +92,6 @@ extension CertificateDetailsViewController:UITableViewDataSource {
         cell.detailTextLabel?.numberOfLines = 0
         cell.detailTextLabel?.text = finaStr
         cell.detailTextLabel?.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15)
-
-        cell.lblCertificateDetails.text = finaStr
         
         return cell
     }
