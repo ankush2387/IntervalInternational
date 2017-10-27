@@ -2705,11 +2705,14 @@ transaction.</string>
                                 <rect key="frame" x="20" y="84" width="335" height="563"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CertificateDetailsCell" textLabel="JW2-EC-nuz" detailTextLabel="sWs-C4-RfV" rowHeight="80" style="IBUITableViewCellStyleSubtitle" id="kS0-d9-VLm">
+
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CertificateDetailsCell" rowHeight="80" id="kS0-d9-VLm" customClass="CertificateDetailsCell" customModule="IntervalApp" customModuleProvider="target">
+
                                         <rect key="frame" x="0.0" y="28" width="335" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="kS0-d9-VLm" id="Bds-5B-6qh">
                                             <rect key="frame" x="0.0" y="0.0" width="335" height="80"/>
+
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="JW2-EC-nuz">
@@ -2719,6 +2722,7 @@ transaction.</string>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="sWs-C4-RfV">
                                                     <rect key="frame" x="15" y="44" width="44" height="14"/>
                                                     <autoresizingMask key="autoresizingMask"/>
@@ -2727,6 +2731,7 @@ transaction.</string>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
