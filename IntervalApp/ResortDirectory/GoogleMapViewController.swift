@@ -474,7 +474,7 @@ class GoogleMapViewController: UIViewController {
             Constant.MyClassConstants.resortsArray = response
             self.mapView.clear()
             self.displaySearchedResort()
-
+            
         }
         if(Constant.RunningDevice.deviceIdiom == .pad && !self.hideSideView && self.containerView != nil && self.containerView.isHidden == true) {
             Constant.MyClassConstants.addResortSelectedIndex.removeAllObjects()
@@ -1325,6 +1325,7 @@ extension GoogleMapViewController:GMSMapViewDelegate {
                         selectedMarker.icon = UIImage(named:Constant.assetImageNames.pinFocusImage)
                 }
                 else {
+                    
                     selectedMarker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
                         selectedMarker.isFlat = false
                     }
@@ -1531,6 +1532,7 @@ extension GoogleMapViewController:UICollectionViewDataSource {
         }
         
     }
+}
 
 //***** Table view delegate methods to handle table view *****//
 extension GoogleMapViewController:UITableViewDelegate {
