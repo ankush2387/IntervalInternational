@@ -479,11 +479,10 @@ class GoogleMapViewController: UIViewController {
         }
         if(Constant.RunningDevice.deviceIdiom == .pad && !self.hideSideView && self.containerView != nil && self.containerView.isHidden == true) {
             Constant.MyClassConstants.addResortSelectedIndex.removeAllObjects()
-                self.alertView.isHidden = true
+            self.alertView.isHidden = true
             self.mapTableView.isHidden = false
-                self.mapTableView.reloadData()
-            
-            }
+            self.mapTableView.reloadData()
+        }
             self.hideHudAsync()
         }) {
             (error) in
@@ -887,6 +886,7 @@ class GoogleMapViewController: UIViewController {
         }
         UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn ,animations: {
             self.resortView.frame = CGRect(x: 0, y: self.view.frame.height, width: self.view.frame.width, height: self.bottomResortHeight)
+            
              DispatchQueue.main.async {
                 for selectedMarker in Constant.MyClassConstants.googleMarkerArray {
                     
@@ -1315,7 +1315,6 @@ extension GoogleMapViewController:GMSMapViewDelegate {
                 marker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
                 marker.isFlat = false
                 self.removeBottomView()
-                
             }
             else {
                 
@@ -1533,8 +1532,7 @@ extension GoogleMapViewController:UICollectionViewDataSource {
                 }
             }
         }
-        
-    }
+     }
 }
 
 //***** Table view delegate methods to handle table view *****//
