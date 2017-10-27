@@ -279,6 +279,7 @@ extension LoginViewController {
     }
 
     func resortDirectoryButtonTapped() {
+        Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.resortFunctionalityCheck
         let storyboardName = isRunningOnIphone ? Constant.storyboardNames.iphone : Constant.storyboardNames.resortDirectoryIpad
         if let initialViewController = UIStoryboard(name:storyboardName, bundle: nil).instantiateInitialViewController() {
             show(initialViewController, sender: self)
