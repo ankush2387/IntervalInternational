@@ -1321,7 +1321,26 @@ extension CheckOutViewController:UITableViewDataSource {
                             cell.fractionalPriceLabel.text = "00"
                         }
                         
+                        let cellTapped: CallBack = { [unowned self] in
+                            if let taxBreakdown = Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.rental?.rentalPrice?.taxBreakdown {
+
+                                let dataSet = taxBreakdown
+                                    .filter { !$0.description.unwrappedString.isEmpty  }
+                                    .map { ($0.description.unwrappedString, $0.amount) }
+
+                                let viewModel = ChargeSummaryViewModel(charge: dataSet,
+                                                                       headerTitle: "Detailed Tax Information".localized(),
+                                                                       descriptionTitle: "Tax Description".localized(),
+                                                                       currency: "US Dollars".localized(),
+                                                                       totalTitle: "Total Tax Amount".localized())
+                                
+                                let chargeSummaryViewController = ChargeSummaryViewController(viewModel: viewModel)
+                                chargeSummaryViewController.doneButtonPressed = { chargeSummaryViewController.dismiss(animated: true) }
+                                self.navigationController?.present(chargeSummaryViewController, animated: true)
+                            }
+                        }
                         
+                        cell.setCell(callBack: cellTapped)
                         
                     default:
                         
