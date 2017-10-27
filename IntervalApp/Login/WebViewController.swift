@@ -45,19 +45,18 @@ extension WebViewController:UIWebViewDelegate {
     
     func webViewDidStartLoad(_ webView: UIWebView)
     {
-        //Helper.addServiceCallBackgroundView(view: self.view)
-        SVProgressHUD.show()
+        showHudAsync()
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView)
     {
         SVProgressHUD.dismiss()
-        //Helper.removeServiceCallBackgroundView(view: self.view)
+        //self.hideHudAsync()
         
     }
     
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error){
         SVProgressHUD.dismiss()
-        //Helper.removeServiceCallBackgroundView(view: self.view)
+        //self.hideHudAsync()
     }
 }

@@ -277,7 +277,7 @@ extension OldLoginViewController {
                     else {
                         DispatchQueue.main.async(execute: {
                             SVProgressHUD.dismiss()
-                            Helper.removeServiceCallBackgroundView(view: self.view)
+                            self.hideHudAsync()
                             SimpleAlert.alert(self, title: Constant.enableTouchIdMessages.authenticationFailedTitle, message: Constant.enableTouchIdMessages.onTouchCancelMessage)
                         })
                     }

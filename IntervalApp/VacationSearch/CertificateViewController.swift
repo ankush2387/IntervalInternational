@@ -86,8 +86,13 @@ extension CertificateViewController:UITableViewDataSource {
         cell.cellBaseView.layer.cornerRadius = 5
         
         cell.certificateNumber.text = "#\(Constant.MyClassConstants.certificateArray[indexPath.row].certificateNumber!)"
-        cell.expireDate.text = "\(String(describing: Constant.MyClassConstants.certificateArray[indexPath.row].daysOut!)) Days, on  \(Constant.MyClassConstants.certificateArray[indexPath.row].expirationDate!)"
         
+        var expireDateString = Constant.MyClassConstants.certificateArray[indexPath.row].expirationDate!
+        let myStringArr = expireDateString.components(separatedBy: "-")
+        
+        let expireDateFinalString = myStringArr.flatMap({$0}).joined(separator: "/")
+        
+        cell.expireDate.text = "\(String(describing: Constant.MyClassConstants.certificateArray[indexPath.row].daysOut!)) Days, on \(String(describing: expireDateFinalString))"
         
         cell.bedroomSize.text = "\((Helper.getBedroomNumbers(bedroomType: (Constant.MyClassConstants.certificateArray[indexPath.row].unit?.unitSize)! )) ), \((Helper.getKitchenEnums(kitchenType: (Constant.MyClassConstants.certificateArray[indexPath.row].unit?.kitchenType)!)))"
         
@@ -95,7 +100,6 @@ extension CertificateViewController:UITableViewDataSource {
         let privateSleeps = "\(Constant.MyClassConstants.certificateArray[indexPath.row].unit?.privateSleepCapacity ?? 0) Private"
         
         cell.totalSleeps.text = "\(totalSleeps), \(privateSleeps)"
-        
         
         let calendarFromDate = Helper.convertStringToDate(dateString: (Constant.MyClassConstants.certificateArray[indexPath.row].travelWindow?.fromDate)!, format: Constant.MyClassConstants.dateFormat)
         

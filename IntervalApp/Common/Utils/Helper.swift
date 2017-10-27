@@ -200,33 +200,23 @@ public class Helper{
         view.layer.insertSublayer(gradient, at: 0)
 
     }
-
-    //***** function to disable interactio with UI when API call is running until we got a response or error by adding new layer *****//
-    static func addServiceCallBackgroundView(view:UIView){
-        
-        
-        let window = UIApplication.shared.keyWindow!
-        progressBarBackgroundView = UIView(frame: CGRect(x: window.frame.origin.x, y: window.frame.origin.y, width: window.frame.width, height: window.frame.height))
-        
-        progressBarBackgroundView.backgroundColor = UIColor.clear
-        window.addSubview(progressBarBackgroundView)
-        
-    }
     
+
     //***** function to remove disable layer and make UI interaction enable *****//
     static func removeServiceCallBackgroundView(view:UIView){
-        if(progressBarBackgroundView != nil){
-            progressBarBackgroundView.removeFromSuperview()
-        }
+        
+        //self.progressBarBackgroundView.removeFromSuperview()
     }
     
+
+
     //***** common function that contains signIn API call with user name and password *****//
     static func loginButtonPressed(sender:UIViewController, userName:String, password:String, completionHandler:@escaping (_ success:Bool)->())
     {
         Constant.MyClassConstants.signInRequestedController = sender
         if Reachability.isConnectedToNetwork() == true {
             Logger.sharedInstance.debug("Attempting oauth with \(userName) and \(password)")
-            showProgressBar(senderView:sender)
+            
             // Try to do the OAuth Request to obtain an access token
             AuthProviderClient.getAccessToken( userName, password: password,onSuccess:{
                 (accessToken) in
@@ -239,7 +229,7 @@ public class Helper{
                     completionHandler(true)
                 }
                 else {
-                    hideProgressBar(senderView:sender)
+                    sender.hideHudAsync()
                     SimpleAlert.alert(sender, title:Constant.AlertErrorMessages.tryAgainError, message: Constant.AlertErrorMessages.loginFailedError)
                     completionHandler(false)
                 }
@@ -247,8 +237,8 @@ public class Helper{
                 // Next, get the contact information.  See how many memberships this user has.
             },
                                                onError:{ (error) in
-                                                SVProgressHUD.dismiss()
-                                                removeServiceCallBackgroundView(view: sender.view)
+                                                sender.hideHudAsync()
+                                                
                                                 Logger.sharedInstance.warning(error.description)
                                                 SimpleAlert.alert(sender, title:Constant.AlertErrorMessages.tryAgainError, message: "\(error.localizedDescription)")
                                                 completionHandler(false)
@@ -273,8 +263,8 @@ public class Helper{
             UserClient.getCurrentProfile(Session.sharedSession.userAccessToken,
                                          onSuccess:{(contact) in
                                             // Got an access token!  Save it for later use.
-                                            SVProgressHUD.dismiss()
-                                            removeServiceCallBackgroundView(view: sender.view)
+                                            sender.hideHudAsync()
+                                            
                                             Session.sharedSession.contact = contact
                                             
                                             //***** Next, get the contact information.  See how many memberships this user has. *****//
@@ -282,8 +272,8 @@ public class Helper{
                                             contactDidChange(sender: sender)
             },
                                          onError:{(error) in
-                                            SVProgressHUD.dismiss()
-                                            removeServiceCallBackgroundView(view: sender.view)
+                                            sender.hideHudAsync()
+                                            
                                             Logger.sharedInstance.warning(error.description)
                                             SimpleAlert.alert(sender, title:Constant.AlertErrorMessages.loginFailed, message: error.localizedDescription)
             }
@@ -407,7 +397,7 @@ public class Helper{
     
     // get Countries
     static func getCountry(viewController:UIViewController) {
-        showProgressBar(senderView: viewController)
+        
         Constant.GetawaySearchResultGuestFormDetailData.countryListArray.removeAll()
         Constant.GetawaySearchResultGuestFormDetailData.countryCodeArray.removeAll()
         LookupClient.getCountries(Constant.MyClassConstants.systemAccessToken!, onSuccess: { (response) in
@@ -416,28 +406,28 @@ public class Helper{
                 Constant.GetawaySearchResultGuestFormDetailData.countryListArray.append(country)
                 Constant.GetawaySearchResultGuestFormDetailData.countryCodeArray.append(country.countryCode!)
             }
-            SVProgressHUD.dismiss()
-            removeServiceCallBackgroundView(view: viewController.view)
+            viewController.hideHudAsync()
+            
 
         }) { (error) in
-            hideProgressBar(senderView: viewController)
+            viewController.hideHudAsync()
             SimpleAlert.alert(viewController, title:Constant.AlertErrorMessages.errorString, message: error.description)
         }
         
     }
     
     static func getStates(country:String, viewController:UIViewController) {
-        showProgressBar(senderView: viewController)
+        
         Constant.GetawaySearchResultGuestFormDetailData.stateListArray.removeAll()
         LookupClient.getStates(Constant.MyClassConstants.systemAccessToken!, countryCode: country, onSuccess: { (response) in
-            SVProgressHUD.dismiss()
+            viewController.hideHudAsync()
             for state in response{
                 Constant.GetawaySearchResultGuestFormDetailData.stateListArray.append(state)
                 Constant.GetawaySearchResultGuestFormDetailData.stateCodeArray.append(state.code!)
             }
-            removeServiceCallBackgroundView(view: viewController.view)
+            
         }, onError: { (error) in
-            hideProgressBar(senderView: viewController)
+            viewController.hideHudAsync()
             SimpleAlert.alert(viewController, title:Constant.AlertErrorMessages.errorString, message: error.description)
         })
         
@@ -446,7 +436,7 @@ public class Helper{
     
     //Relinquishment details
     static func getRelinquishmentDetails(resortCode:String?, viewController:UIViewController) {
-        showProgressBar(senderView: viewController)
+        
         
         DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode!, onSuccess: { (response) in
             
@@ -461,13 +451,13 @@ public class Helper{
                 }
             }
             
-            SVProgressHUD.dismiss()
-            removeServiceCallBackgroundView(view: viewController.view)
+            viewController.hideHudAsync()
+            
             viewController.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: self)
         })
         { (error) in
-            SVProgressHUD.dismiss()
-            removeServiceCallBackgroundView(view: viewController.view)
+            viewController.hideHudAsync()
+            
             SimpleAlert.alert(viewController, title:Constant.AlertErrorMessages.errorString, message: error.description)
         }
     
@@ -481,13 +471,13 @@ public class Helper{
             let searchResortRequest = RentalSearchResortsRequest()
             searchResortRequest.checkInDate = toDate as Date
             searchResortRequest.resortCodes = Constant.MyClassConstants.resortCodesArray
-            showProgressBar(senderView:senderVC)
+            
             RentalClient.searchResorts(Session.sharedSession.userAccessToken, request: searchResortRequest, onSuccess: { (response) in
                 Constant.MyClassConstants.showAlert = false
                 Constant.MyClassConstants.resortsArray.removeAll()
                 Constant.MyClassConstants.resortsArray = response.resorts
                 //DarwinSDK.logger.debug(response.resorts[0].promotions)
-                hideProgressBar(senderView: senderVC)
+                senderVC.hideHudAsync()
                 if(senderVC is VacationSearchViewController || senderVC is VacationSearchIPadViewController ) {
                     
                     // omniture tracking with event 33
@@ -526,7 +516,7 @@ public class Helper{
                     }
                     
                     
-                    hideProgressBar(senderView: senderVC)
+                    senderVC.hideHudAsync()
                 } else {
                     if(Constant.RunningDevice.deviceIdiom == .pad){
                         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
@@ -544,20 +534,20 @@ public class Helper{
                         
                         senderVC.navigationController!.pushViewController(viewController, animated: true)
                     }
-                     hideProgressBar(senderView: senderVC)
+                     senderVC.hideHudAsync()
                 }
                 
             }, onError: { (error) in
                 
-                SVProgressHUD.dismiss()
-                Helper.removeServiceCallBackgroundView(view: senderVC.view)
+                senderVC.hideHudAsync()
+                
                 Constant.MyClassConstants.showAlert = true
                 SimpleAlert.alert(senderVC, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
             })
         }
         else {
-            SVProgressHUD.dismiss()
-            Helper.removeServiceCallBackgroundView(view: senderVC.view)
+            senderVC.hideHudAsync()
+            
             SimpleAlert.alert(senderVC, title:Constant.AlertErrorMessages.networkError, message: Constant.AlertMessages.networkErrorMessage)
         }
         
@@ -692,7 +682,7 @@ public class Helper{
     //***** Function that get all objects of type Open Weeks from Realm storage *****//
     
     static func InitializeOpenWeeksFromLocalStorage () {
-        SVProgressHUD.show()
+        
         Constant.MyClassConstants.relinquishmentIdArray.removeAllObjects()
         Constant.MyClassConstants.whatToTradeArray.removeAllObjects()
         Constant.MyClassConstants.idUnitsRelinquishmentDictionary.removeAllObjects()
@@ -781,7 +771,6 @@ public class Helper{
             print("No Data")
         }
         
-        SVProgressHUD.dismiss()
     }
     
     //***** function that returns AreaOfInfluenceDestination list according to selected membership number that send to server for search dates API call *****//
@@ -959,16 +948,20 @@ public class Helper{
     
     //***** common function that contains API call for top 10 deals *****//
     static func getTopDeals(senderVC : UIViewController){
-//        showProgressBar(senderView: senderVC)
+
+
+        //showProgressBar(senderView: senderVC)
+        senderVC.showHudAsync()
+
         RentalClient.getTop10Deals(Session.sharedSession.userAccessToken,onSuccess: {(response) in
             Constant.MyClassConstants.topDeals = response
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.refreshTableNotification), object: nil)
-            Helper.removeServiceCallBackgroundView(view: senderVC.view)
-//            SVProgressHUD.dismiss()
+            
+            senderVC.hideHudAsync()
         },
                                    onError: {(error) in
-                                    Helper.removeServiceCallBackgroundView(view: senderVC.view)
-//                                    SVProgressHUD.dismiss()
+                                    
+                                    senderVC.hideHudAsync()
                                     SimpleAlert.alert(senderVC, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                                     
         })
@@ -991,18 +984,20 @@ public class Helper{
         
         if(Constant.MyClassConstants.systemAccessToken?.token != nil){
             
-            showProgressBar(senderView: viewController)
-            
+            viewController.showHudAsync()
             DirectoryClient.getRegions(Constant.MyClassConstants.systemAccessToken, onSuccess: {(response) in
                 Constant.MyClassConstants.resortDirectoryRegionArray = response
                 if(!(viewController is ResortDirectoryTabController)){
                     viewController.performSegue(withIdentifier: Constant.segueIdentifiers.resortDirectorySegue, sender: self)
                 }
-                //removeServiceCallBackgroundView(view: viewController.view)
-                hideProgressBar(senderView: viewController)
+
+                //hideProgressBar(senderView: viewController)
+
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadRegionNotification), object: nil)
+                viewController.hideHudAsync()
             },    onError: {(error) in
-                hideProgressBar(senderView: viewController)
+                
+                viewController.hideHudAsync()
             })
         }
     }
@@ -1055,16 +1050,16 @@ public class Helper{
     /***** Get club resort API call for float details ******/
     
     static func getResortsByClubFloatDetails(resortCode:String, senderViewController:UIViewController, floatResortDetails:Resort){
-        showProgressBar(senderView: senderViewController)
+        
         DirectoryClient.getResortsByClub(Session.sharedSession.userAccessToken, clubCode: resortCode, onSuccess: { (_ resorts: [Resort]) in
-            hideProgressBar(senderView: senderViewController)
+            senderViewController.hideHudAsync()
             Constant.MyClassConstants.clubFloatResorts = resorts
             senderViewController.performSegue(withIdentifier: Constant.floatDetailViewController.clubresortviewcontrollerIdentifier, sender: self)
 
             
         }) { (error) in
             
-             hideProgressBar(senderView: senderViewController)
+             senderViewController.hideHudAsync()
              SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
         }
     }
@@ -1108,11 +1103,11 @@ public class Helper{
     
     /***** Get check-in dates API to show in calendar ******/
     static func getCheckInDatesForCalendar(senderViewController:UIViewController, resortCode:String, relinquishmentYear:Int){
-        showProgressBar(senderView: senderViewController)
+        
         DirectoryClient.getResortCalendars(Session.sharedSession.userAccessToken, resortCode: resortCode, year: relinquishmentYear, onSuccess: { (resortCalendar: [ResortCalendar]) in
             
-            SVProgressHUD.dismiss()
-            self.removeServiceCallBackgroundView(view: senderViewController.view)
+            senderViewController.hideHudAsync()
+            
             if(resortCalendar.count > 0){
             Constant.MyClassConstants.relinquishmentFloatDetialMinDate = self.convertStringToDate(dateString: resortCalendar[0].checkInDate!, format: Constant.MyClassConstants.dateFormat)
             Constant.MyClassConstants.relinquishmentFloatDetialMaxDate = self.convertStringToDate(dateString: (resortCalendar.last?.checkInDate!)!, format: Constant.MyClassConstants.dateFormat)
@@ -1139,8 +1134,8 @@ public class Helper{
         
         }) { (error) in
             
-            SVProgressHUD.dismiss()
-            self.removeServiceCallBackgroundView(view: senderViewController.view)
+            senderViewController.hideHudAsync()
+            
             SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
         }
     }
@@ -1281,7 +1276,7 @@ public class Helper{
     
     /***** common function for API call to get resort with resort code *****/
     static func getResortWithResortCode(code:String , viewcontroller:UIViewController) {
-        showProgressBar(senderView: viewcontroller)
+        
         DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: code, onSuccess: { (response) in
     
             Constant.MyClassConstants.resortsDescriptionArray = response
@@ -1361,12 +1356,12 @@ public class Helper{
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadMapNotification), object: nil)
             }
             
-            SVProgressHUD.dismiss()
-            removeServiceCallBackgroundView(view: viewcontroller.view)
+            viewcontroller.hideHudAsync()
+            
         })
         { (error) in
-            SVProgressHUD.dismiss()
-            removeServiceCallBackgroundView(view: viewcontroller.view)
+            viewcontroller.hideHudAsync()
+            
             SimpleAlert.alert(viewcontroller, title:Constant.AlertErrorMessages.errorString, message: error.description)
         }
         
@@ -1418,7 +1413,7 @@ public class Helper{
         }
         
         if(Constant.MyClassConstants.systemAccessToken?.token != nil){
-            SVProgressHUD.show()
+            
             LookupClient.getVideos(Constant.MyClassConstants.systemAccessToken!, category: categoryString, onSuccess: {(videos) in
                 
                 
@@ -1452,7 +1447,7 @@ public class Helper{
     //***** Function to get a list of magazines. *****//
     static func getMagazines(){
         if(Constant.MyClassConstants.systemAccessToken?.token != nil){
-            SVProgressHUD.show()
+            
             LookupClient.getMagazines(Constant.MyClassConstants.systemAccessToken!,
                                       onSuccess: {(magazines) in
                                         
@@ -1575,15 +1570,15 @@ public class Helper{
     }
     // Function to get trip details
     static func getTripDetails(senderViewController: UIViewController){
-        showProgressBar(senderView:senderViewController)
+        senderViewController.showHudAsync()
         ExchangeClient.getExchangeTripDetails(Session.sharedSession.userAccessToken, confirmationNumber: Constant.MyClassConstants.transactionNumber, onSuccess: { (exchangeResponse) in
-            Helper.hideProgressBar(senderView: senderViewController)
+            senderViewController.hideHudAsync()
             Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails = exchangeResponse
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadTripDetailsNotification), object: nil)
             
         }) { (error) in
-            Helper.removeServiceCallBackgroundView(view: senderViewController.view)
-            SVProgressHUD.dismiss()
+            
+            senderViewController.hideHudAsync()
             SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
             
         }
@@ -1741,16 +1736,6 @@ public class Helper{
         senderViewController.navigationController!.present(viewController, animated: true, completion: nil)
     }
     
-    static func showProgressBar(senderView:UIViewController){
-        Helper.addServiceCallBackgroundView(view: senderView.view)
-        SVProgressHUD.show()
-    }
-    
-    static func hideProgressBar(senderView:UIViewController){
-        SVProgressHUD.dismiss()
-        removeServiceCallBackgroundView(view: senderView.view)
-    }
-    
     static func currencyCodetoSymbol(code:String)->String{
         
         let currencyCode : String? = code
@@ -1767,7 +1752,7 @@ public class Helper{
      */
     static func executeRentalSearchAvailability(activeInterval:BookingWindowInterval!, checkInDate:Date!, senderViewController:UIViewController, vacationSearch:VacationSearch) {
         DarwinSDK.logger.error("----- Waiting for search availability ... -----")
-        showProgressBar(senderView: senderViewController)
+        
         let request = RentalSearchResortsRequest()
         request.checkInDate = checkInDate
         request.resortCodes = activeInterval.resortCodes
@@ -1785,7 +1770,7 @@ public class Helper{
                                     showAvailabilityResults(vacationSearch:vacationSearch)
                                     
                                     //expectation.fulfill()
-                                    hideProgressBar(senderView: senderViewController)
+                                    senderViewController.hideHudAsync()
                                     if Constant.MyClassConstants.isFromSorting == false && Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType != VacationSearchType.Combined {
                                         helperDelegate?.resortSearchComplete()
                                     }else{
@@ -1798,7 +1783,7 @@ public class Helper{
                                    onError:{ (error) in
                                     Constant.MyClassConstants.noAvailabilityView = true
                                     Constant.MyClassConstants.isFromSorting = false
-                                    hideProgressBar(senderView: senderViewController)
+                                    senderViewController.hideHudAsync()
                                     SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
         }
         )
@@ -1812,7 +1797,7 @@ public class Helper{
      */
     
  static func executeExchangeSearchAvailability(activeInterval: BookingWindowInterval!, checkInDate:Date!, senderViewController:UIViewController, vacationSearch:VacationSearch) {
-        showProgressBar(senderView: senderViewController)
+    
         let request = ExchangeSearchAvailabilityRequest()
         request.checkInDate = checkInDate
         request.resortCodes = activeInterval.resortCodes!
@@ -1832,7 +1817,7 @@ public class Helper{
             }
             
             showAvailabilityResults(vacationSearch:vacationSearch)
-            hideProgressBar(senderView:senderViewController)
+            senderViewController.hideHudAsync()
             // Get activeInterval
             let activeInterval = vacationSearch.bookingWindow.getActiveInterval()
             vacationSearch.updateActiveInterval(activeInterval: activeInterval)
@@ -1860,7 +1845,7 @@ public class Helper{
             
         })
         { (error) in
-            hideProgressBar(senderView: senderViewController)
+            senderViewController.hideHudAsync()
             SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.noResultError, message: error.localizedDescription)
         }
     }

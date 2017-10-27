@@ -111,7 +111,7 @@ class FlexChangeSearchIpadViewController: UIViewController {
         
         Helper.helperDelegate = self
         
-        Helper.showProgressBar(senderView: self)
+        showHudAsync()
         if Reachability.isConnectedToNetwork() == true {
             
             let deal = FlexExchangeDeal()
@@ -146,7 +146,7 @@ class FlexChangeSearchIpadViewController: UIViewController {
             
             ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
                 
-                Helper.hideProgressBar(senderView: self)
+                self.hideHudAsync()
                 Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
                 Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                 // Get activeInterval (or initial search interval)
@@ -169,7 +169,7 @@ class FlexChangeSearchIpadViewController: UIViewController {
                 
             }, onError: { (error) in
                 
-                Helper.hideProgressBar(senderView: self)
+                self.hideHudAsync()
                 SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
             })
             
@@ -186,7 +186,7 @@ class FlexChangeSearchIpadViewController: UIViewController {
     
     func addRelinquishmentSectionButtonPressed(_ sender:IUIKButton) {
         
-        Helper.showProgressBar(senderView: self)
+        showHudAsync()
         ExchangeClient.getMyUnits(Session.sharedSession.userAccessToken, onSuccess: { (Relinquishments) in
             
             Constant.MyClassConstants.relinquishmentDeposits = Relinquishments.deposits
@@ -203,7 +203,7 @@ class FlexChangeSearchIpadViewController: UIViewController {
             
             
             SVProgressHUD.dismiss()
-            Helper.removeServiceCallBackgroundView(view: self.view)
+            self.hideHudAsync()
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.relinquishmentSelectionViewController) as! RelinquishmentSelectionViewController
             
@@ -213,7 +213,7 @@ class FlexChangeSearchIpadViewController: UIViewController {
             self.navigationController!.pushViewController(viewController, animated: true)
             
         }, onError: {(error) in
-            Helper.hideProgressBar(senderView: self)
+            self.hideHudAsync()
         })
         
     }

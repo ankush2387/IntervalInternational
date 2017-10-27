@@ -187,16 +187,16 @@ extension MyUpcomingTripViewController:UITableViewDataSource {
       Constant.MyClassConstants.transactionNumber = "\(Constant.MyClassConstants.upcomingTripsArray[sender.tag].exchangeNumber!)"
         Constant.MyClassConstants.transactionType = Constant.MyClassConstants.upcomingTripsArray[sender.tag].type!
         
-        Helper.addServiceCallBackgroundView(view: self.view)
-        SVProgressHUD.show()
+        
+        showHudAsync()
         ExchangeClient.getExchangeTripDetails(Session.sharedSession.userAccessToken, confirmationNumber: Constant.MyClassConstants.transactionNumber, onSuccess: { (exchangeResponse) in
             
             Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails = exchangeResponse
-            Helper.removeServiceCallBackgroundView(view: self.view)
+            self.hideHudAsync()
             SVProgressHUD.dismiss()
         self.performSegue(withIdentifier:Constant.segueIdentifiers.upcomingDetailSegue, sender:nil)
         }) { (error) in
-            Helper.removeServiceCallBackgroundView(view: self.view)
+            self.hideHudAsync()
             SVProgressHUD.dismiss()
             SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
             

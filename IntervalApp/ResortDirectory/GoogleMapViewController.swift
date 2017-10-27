@@ -319,8 +319,8 @@ class GoogleMapViewController: UIViewController {
             Constant.MyClassConstants.isgetResortFromGoogleSearch = true
             self.googleMapSearchBar.resignFirstResponder()
             self.googleMapSearchBar.showsCancelButton = false
-            Helper.addServiceCallBackgroundView(view: self.view)
-            SVProgressHUD.show()
+            
+            showHudAsync()
             DirectoryClient.getResortsWithinGeoArea(Session.sharedSession.userAccessToken, geoArea: Constant.MyClassConstants.destinations![sender.tag].geoArea, onSuccess: { (response) in
                 print(response)
                 Constant.MyClassConstants.resortsArray.removeAll()
@@ -345,11 +345,11 @@ class GoogleMapViewController: UIViewController {
                 }
                 
                 SVProgressHUD.dismiss()
-                Helper.removeServiceCallBackgroundView(view: self.view)
+                self.hideHudAsync()
             })
             { (error) in
                 SVProgressHUD.dismiss()
-                Helper.removeServiceCallBackgroundView(view: self.view)
+                self.hideHudAsync()
             }
         }
     }
@@ -1702,8 +1702,8 @@ extension GoogleMapViewController:UITableViewDelegate {
                 else {
                     
                     Constant.MyClassConstants.isgetResortFromGoogleSearch = true
-                    Helper.addServiceCallBackgroundView(view: self.view)
-                    SVProgressHUD.show()
+                    
+                    showHudAsync()
                     DirectoryClient.getResortsWithinGeoArea(Constant.MyClassConstants.systemAccessToken, geoArea: Constant.MyClassConstants.destinations![indexPath.row].geoArea, onSuccess: { (response) in
                         if(response.count > 0){
                             Constant.MyClassConstants.resortsArray.removeAll()
@@ -1715,11 +1715,11 @@ extension GoogleMapViewController:UITableViewDelegate {
                             self.displaySearchedResort(location: location)
                         }
                         SVProgressHUD.dismiss()
-                        Helper.removeServiceCallBackgroundView(view: self.view)
+                        self.hideHudAsync()
                     })
                     { (error) in
                         SVProgressHUD.dismiss()
-                        Helper.removeServiceCallBackgroundView(view: self.view)
+                        self.hideHudAsync()
                     }
                     self.hidePopUpView()
                 }

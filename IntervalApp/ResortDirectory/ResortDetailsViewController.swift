@@ -192,8 +192,8 @@ class ResortDetailsViewController: UIViewController {
                 Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = Constant.MyClassConstants.vacationSearchContentPagerRunningIndex - 1
                 //sender.isEnabled = true
                 self.startIndex = startIndex - 1
-                Helper.addServiceCallBackgroundView(view: self.view)
-                SVProgressHUD.show()
+                
+                showHudAsync()
                 //Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = Constant.MyClassConstants.vacationSearchContentPagerRunningIndex - 1
                 
                 let resortCode = Constant.MyClassConstants.resortsArray[Constant.MyClassConstants.vacationSearchContentPagerRunningIndex - 1].resortCode
@@ -214,12 +214,12 @@ class ResortDetailsViewController: UIViewController {
                     }
                     self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
                     SVProgressHUD.dismiss()
-                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    self.hideHudAsync()
                     self.tableViewResorts.reloadData()
                 })
                 { (error) in
                     SVProgressHUD.dismiss()
-                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    self.hideHudAsync()
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.description)
                 }
             }else{
@@ -237,8 +237,8 @@ class ResortDetailsViewController: UIViewController {
                 self.arrayRunningIndex = arrayRunningIndex + 1
                 let resortCode = Constant.MyClassConstants.resortsArray[Constant.MyClassConstants.vacationSearchContentPagerRunningIndex].resortCode
                 
-                Helper.addServiceCallBackgroundView(view: self.view)
-                SVProgressHUD.show()
+                
+                showHudAsync()
                 
                 
                 DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode:resortCode!, onSuccess: { (response) in
@@ -262,7 +262,7 @@ class ResortDetailsViewController: UIViewController {
                     }
                     self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
                     SVProgressHUD.dismiss()
-                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    self.hideHudAsync()
                     self.tableViewResorts.reloadData()
                     // omniture tracking with event 35
                     let userInfo: [String: String] = [
@@ -274,7 +274,7 @@ class ResortDetailsViewController: UIViewController {
                 })
                 { (error) in
                     SVProgressHUD.dismiss()
-                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    self.hideHudAsync()
                     SimpleAlert.alert(self, title:"Error", message: error.description)
                 }
                 
@@ -533,7 +533,7 @@ class ResortDetailsViewController: UIViewController {
         guard let resortName = Constant.MyClassConstants.resortsDescriptionArray.address?.cityName else { return }
         
         guard let countryCode = Constant.MyClassConstants.resortsDescriptionArray.address?.countryCode else { return }
-        SVProgressHUD.show()
+        showHudAsync()
         displayWeatherView(resortCode: resortCode, resortName: resortName, countryCode: countryCode, presentModal: presentViewModally, completionHandler: { (response) in
             SVProgressHUD.dismiss()
         })
@@ -544,7 +544,7 @@ class ResortDetailsViewController: UIViewController {
         guard let coordinates = Constant.MyClassConstants.resortsDescriptionArray.coordinates else { return }
         guard let resortName = Constant.MyClassConstants.resortsDescriptionArray.resortName else { return }
         guard let cityName = Constant.MyClassConstants.resortsDescriptionArray.address?.cityName else { return }
-        SVProgressHUD.show()
+        showHudAsync()
         displayMapView(coordinates: coordinates, resortName: resortName, cityName: cityName, presentModal: presentViewModally) { (response) in
             SVProgressHUD.dismiss()
         }
@@ -901,7 +901,7 @@ extension ResortDetailsViewController:UITableViewDataSource {
                 
                 mapView = GMSMapView.map(withFrame: mapframe, camera: camera)
                 mapView.isUserInteractionEnabled = false
-               // mapView.isMyLocationEnabled = true
+                mapView.isMyLocationEnabled = true
                 if (Constant.MyClassConstants.resortsDescriptionArray.coordinates?.latitude) != nil {
                     
                     let  position = CLLocationCoordinate2DMake((Constant.MyClassConstants.resortsDescriptionArray.coordinates?.latitude)!,(Constant.MyClassConstants.resortsDescriptionArray.coordinates?.longitude)!)
@@ -1073,11 +1073,11 @@ extension ResortDetailsViewController:UITableViewDataSource {
             
             if (sender.isSelected == false){
                 
-                SVProgressHUD.show()
-                Helper.addServiceCallBackgroundView(view: self.view)
+                showHudAsync()
+                
                 UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsDescriptionArray.resortCode!, onSuccess: {(response) in
                     
-                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    self.hideHudAsync()
                     SVProgressHUD.dismiss()
                     sender.isSelected = true
                     Constant.MyClassConstants.favoritesResortCodeArray.add(Constant.MyClassConstants.resortsDescriptionArray.resortCode!)
@@ -1085,18 +1085,18 @@ extension ResortDetailsViewController:UITableViewDataSource {
                     ADBMobile.trackAction(Constant.omnitureEvents.event48, data: nil)
                 }, onError: {(error) in
                     SVProgressHUD.dismiss()
-                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    self.hideHudAsync()
                     print(error)
                 })
             }
             else {
-                SVProgressHUD.show()
-                Helper.addServiceCallBackgroundView(view: self.view)
+                showHudAsync()
+                
                 UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsDescriptionArray.resortCode!, onSuccess: {(response) in
                     
                     
                     sender.isSelected = false
-                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    self.hideHudAsync()
                     SVProgressHUD.dismiss()
                     Constant.MyClassConstants.favoritesResortCodeArray.remove(Constant.MyClassConstants.resortsDescriptionArray.resortCode!)
                     self.tableViewResorts.reloadData()
@@ -1104,7 +1104,7 @@ extension ResortDetailsViewController:UITableViewDataSource {
                 }, onError: {(error) in
                     
                     SVProgressHUD.dismiss()
-                    Helper.removeServiceCallBackgroundView(view: self.view)
+                    self.hideHudAsync()
                     print(error)
                 })
                 
