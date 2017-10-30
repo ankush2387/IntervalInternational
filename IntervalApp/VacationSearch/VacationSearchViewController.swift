@@ -1388,6 +1388,7 @@ extension VacationSearchViewController:WhoIsTravelingCellDelegate {
 
 //MARK:- Search Button Click
 extension VacationSearchViewController:SearchTableViewCellDelegate {
+    
     func searchButtonClicked(_ sender : IUIKButton) {
         
         //Set travel PartyInfo
@@ -1408,7 +1409,9 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             let settings = Helper.createSettings()
             let checkInDate = fromDateTop
             
+
             let bookingWindow = BookingWindow(checkInDate: checkInDate)
+
             
             let activeInterval = bookingWindow.getActiveInterval()
             let requestRental = RentalSearchRegionsRequest()
@@ -1477,8 +1480,9 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 
                 
             }, onError: { (error) in
+                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
+                //Helper.hideProgressBar(senderView: self)
                 sender.isEnabled = true
-                print(error)
             })
                 }
             }else{
@@ -1512,8 +1516,9 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                         
                         
                     }, onError: { (error) in
-                        
                         print(error)
+                        //Helper.hideProgressBar(senderView: self)
+                        SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                     })
                 }
                 
@@ -1736,6 +1741,8 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         
     }
     }
+    
+    
     
     func showNotAvailabilityResults() {
         DarwinSDK.logger.info("Show the Not Availability Screen.")

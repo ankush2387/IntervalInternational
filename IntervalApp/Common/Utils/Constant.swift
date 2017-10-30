@@ -90,14 +90,16 @@ class Constant: NSObject {
         static var state = ""
         static var pinCode = ""
         static var cardType = ""
-        static var expDate:Date? = nil
+        static var expDate:String? = nil
         static var cvv = ""
         static var countryCode = ""
         static var stateCode = ""
     }
     
     struct MyClassConstants{
-        
+        static var isRunningOnIphone: Bool {
+            return UIDevice.current.userInterfaceIdiom == .phone
+        }
         static var alertOriginationPoint:String!
         static var depositPromotionNav = "DepositPromotionsNav"
         static var sorting = "Sorting"
@@ -235,9 +237,9 @@ class Constant: NSObject {
         //***** Initializing plicy list table cell content array *****//
         static var policyListTblCellContentArray = ["Terms & Conditions","Privacy Policy","Legal Information","Contact Us","Email Us","Our Offices","Interval World","Version \(Helper.getBuildVersion())"]
         
-        static var fourSegmentHeaderTextArray = [NSLocalizedString("Where_do_you_want_to_go", comment: ""),NSLocalizedString("What_do_you_want_to_trade", comment: ""),NSLocalizedString("Check_in_closest_to", comment: ""),NSLocalizedString("Who_is_travelling", comment: "")]
+        static var fourSegmentHeaderTextArray = ["Where do you want to go".localized(), "What do you want to trade".localized(), "Check in closest to".localized() ,"Who_is_travelling".localized()]
         
-         static var headerTextFlexchangeDestination = NSLocalizedString("Your_selected_Flexchange_Destination", comment: "")
+         static var headerTextFlexchangeDestination = "Your selected Flexchange Destination".localized()
         
         static var sectionHeaderArray = [NSLocalizedString("Destinations", comment: ""),NSLocalizedString("Resorts", comment: "")]
         
@@ -294,7 +296,7 @@ class Constant: NSObject {
     
         static var selectedIndex:Int!
         static var vacationSearchContentPagerRunningIndex  = 0
-        static var vacationSearchShowDate:Date!
+        static var vacationSearchShowDate = Date()
         static var alertWindowStartDate:Date!
         static var alertWindowEndDate:Date!
         static var rightBarButtonTitle = "Today"
@@ -493,6 +495,7 @@ class Constant: NSObject {
         static var additionalAdv = "ADDITIONAL INFORMATION"
         static var dateFormat = "yyyy-MM-dd"
         static var dateFormat1 = "yyyy-MM-dd"
+        static var monthDateFormat = "yyyy-MM"
         
         //use for no Availability Cell
         static var isShowAvailability = false
@@ -628,8 +631,10 @@ class Constant: NSObject {
                 
         static var guestCertificateString = NSLocalizedString("Get a FREE Guest Certificate now and every time with Interval Platinum. Your Interval Platinum must be active through your travel dates to receive FREE Guest Certificates. To upgrade or renew, a", comment: "")
         
+        static var popToLoginView =  "PopToLoginView"
         
-        
+        static var certifcateCount = 0
+        static var certificateArray = [AccommodationCertificate]()
     }
     
     // Enum to store resorts and destinations
@@ -936,7 +941,7 @@ class Constant: NSObject {
         static var loginHelpViewController = NSLocalizedString("Login Help", comment: "")
         static var JoinTodayViewController = NSLocalizedString("Join_Today", comment: "")
         static var calendarViewController = NSLocalizedString("Pick_Date", comment: "")
-        static var accomodationCertsDetailController = NSLocalizedString("My Certificates", comment: "")
+        static var accomodationCertsDetailController = NSLocalizedString("Accommodation Certificates", comment: "")
         static var bookYourSelectionController = NSLocalizedString("Choose What To Use", comment: "")
         static var vacationSearchTabBarController = NSLocalizedString("Vacation_Search", comment: "")
         static var dashboardTableViewController = NSLocalizedString("Home", comment: "")
@@ -962,7 +967,7 @@ class Constant: NSObject {
         static var selectedControllerTitle = ""
         static var sorting = NSLocalizedString("Sorting", comment: "")
         static var choosewhattouse = NSLocalizedString("Choose what to use", comment: "")
-        static var flexChangeSearch = NSLocalizedString("Flexchange Search", comment: "")
+        static var flexChangeSearch = "Flexchange Search".localized()
          static var availableDestinations = NSLocalizedString("Available Destinations", comment: "")
     }
     

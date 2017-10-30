@@ -33,7 +33,6 @@ class FlexchangeSearchViewController: UIViewController {
         menuButtonright.tintColor = UIColor.white
         self.navigationItem.rightBarButtonItem = menuButtonright
         
-        
         // Adding navigation back button
         let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(FlexchangeSearchViewController.menuBackButtonPressed(_:)))
         menuButton.tintColor = UIColor.white
@@ -53,13 +52,11 @@ class FlexchangeSearchViewController: UIViewController {
      
         _ = self.navigationController?.popViewController(animated: true)
       
-        
     }
     
      //**** Option to open menu from bottom ***//
     
     func menuButtonClicked()  {
-        
         
         let actionSheetController: UIAlertController = UIAlertController(title:Constant.buttonTitles.searchOption, message: "", preferredStyle: .actionSheet)
         
@@ -79,10 +76,7 @@ class FlexchangeSearchViewController: UIViewController {
         //Present the AlertController
         self.present(actionSheetController, animated: true, completion: nil)
         
-        
     }
-    
-   
     
     func addRelinquishmentSectionButtonPressed(_ sender:IUIKButton) {
         Constant.MyClassConstants.viewController = self
@@ -98,9 +92,7 @@ class FlexchangeSearchViewController: UIViewController {
                 if (Relinquishments.pointsProgram!.availablePoints != nil) {
                     Constant.MyClassConstants.relinquishmentAvailablePointsProgram = Relinquishments.pointsProgram!.availablePoints!
                 }
-                
             }
-            
             
             SVProgressHUD.dismiss()
             self.hideHudAsync()
@@ -117,8 +109,6 @@ class FlexchangeSearchViewController: UIViewController {
         
     }
     
-    
-    
     @IBAction func searchButtonPressed(_ sender: Any) {
         
         Helper.helperDelegate = self
@@ -132,27 +122,21 @@ class FlexchangeSearchViewController: UIViewController {
             showHudAsync()
             if Reachability.isConnectedToNetwork() == true {
                 
-                let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
+                let deal = FlexExchangeDeal()
+                                
+                deal.name = selectedFlexchange?.name
+                deal.areaCode = (selectedFlexchange?.areaCode)!
                 
-                exchangeSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
-                exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
-                exchangeSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
-                exchangeSearchCriteria.searchType = VacationSearchType.Exchange
+                let searchCriteria = Helper.createSearchCriteriaFor(deal: deal)
                 
+                let settings = Helper.createSettings()
+                Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
                 
+                let storedData = Helper.getLocalStorageWherewanttoGo()
+        
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel = (selectedFlexchange?.name)!
                 
-                //let storedData = Helper.getLocalStorageWherewanttoGo()
-                
-                exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
-                Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(Session.sharedSession.appSettings, exchangeSearchCriteria)
-                let area = Area()
-                area.areaCode = (selectedFlexchange?.areaCode)!
-                area.areaName = selectedFlexchange?.name
-                Constant.MyClassConstants.vacationSearchResultHeaderLabel = area.areaName!
-                
-                Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.areas = [area]
-                
-                
+                //Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.areas = [area]
                 
                 ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
                     
@@ -185,15 +169,15 @@ class FlexchangeSearchViewController: UIViewController {
             }
             
         }
-        
-        
     }
-    
-
     
     func navigateToSearchResults(){
         
-        //Constant.MyClassConstants.vacationSearchResultHeaderLabel = (Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: Constant.MyClassConstants.selectedAreaCodeArray[0] as! String) as? String)!
+        if (Constant.MyClassConstants.selectedAreaCodeArray.count > 0) {
+            
+            Constant.MyClassConstants.vacationSearchResultHeaderLabel = (Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: Constant.MyClassConstants.selectedAreaCodeArray[0] as! String) as? String)!
+        }
+        
         Constant.MyClassConstants.filteredIndex = 0
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
@@ -206,9 +190,6 @@ class FlexchangeSearchViewController: UIViewController {
     }
     
 }
-
-
-
 
 extension FlexchangeSearchViewController:UITableViewDelegate{
     
@@ -228,7 +209,6 @@ extension FlexchangeSearchViewController:UITableViewDelegate{
             
             return 60
         }
-        
         
     }
     
@@ -258,7 +238,6 @@ extension FlexchangeSearchViewController:UITableViewDelegate{
             
             return nil
         }
-        
         
     }
     
@@ -354,9 +333,6 @@ extension FlexchangeSearchViewController:UITableViewDelegate{
     }
     
     
-    
-
-
 }
 
 
@@ -376,7 +352,6 @@ extension FlexchangeSearchViewController:UITableViewDataSource{
             
             return 1
         }
-        
         
     }
     

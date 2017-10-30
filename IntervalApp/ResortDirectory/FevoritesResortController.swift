@@ -270,7 +270,7 @@ class FevoritesResortController: UIViewController {
     
     //***** this function called when navigation back button pressed *****//
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PopToLoginView"), object: nil)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.MyClassConstants.popToLoginView), object: nil)
     }
     
     override func didReceiveMemoryWarning() {

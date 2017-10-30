@@ -37,10 +37,38 @@ class AddDebitOrCreditCardViewController: UIViewController {
     var moved: Bool = false
     var activeField:UITextField?
     var countryIndex: Int = 0
+    var months: [String]!
+    var years: [Int]!
+    var selectedrow: Int = 0
+    
+  
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // population months with localized names
+        var months: [String] = []
+        var month = 0
+        for _ in 1...12 {
+            months.append(DateFormatter().monthSymbols[month].capitalized)
+            month += 1
+        }
+        self.months = months
+        
+        // population years with localized names
+        var years: [Int] = []
+        if years.count == 0 {
+            var year = NSCalendar(identifier: NSCalendar.Identifier.gregorian)!.component(.year, from: NSDate() as Date)
+            for _ in 1...15 {
+                years.append(year)
+                year += 1
+            }
+        }
+        self.years = years
+        print(years)
+        
+
         NotificationCenter.default.addObserver(self, selector:#selector(keyboardWasShown), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateResortHoldingTime), name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
@@ -146,10 +174,10 @@ class AddDebitOrCreditCardViewController: UIViewController {
                 let newCreditCard = Creditcard()
                 newCreditCard.cardHolderName = Constant.GetawaySearchResultCardFormDetailData.nameOnCard
                 newCreditCard.cardNumber = Constant.GetawaySearchResultCardFormDetailData.cardNumber
-                let myDateFormatter = DateFormatter()
-                myDateFormatter.dateFormat = Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.dateTimeFormat
-                let dateString = myDateFormatter.string(from: Constant.GetawaySearchResultCardFormDetailData.expDate!)
-                newCreditCard.expirationDate = dateString
+                //let myDateFormatter = DateFormatter()
+                //myDateFormatter.dateFormat = Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.dateTimeFormat
+               // let dateString = myDateFormatter.string(from: Constant.GetawaySearchResultCardFormDetailData.expDate!)
+                newCreditCard.expirationDate = Constant.GetawaySearchResultCardFormDetailData.expDate //dateString
                 newCreditCard.cvv = Constant.GetawaySearchResultCardFormDetailData.cvv
                 
                 let billingAdrs = Address()
@@ -237,12 +265,17 @@ class AddDebitOrCreditCardViewController: UIViewController {
             if(self.hideStatus == false) {
                 
                 self.hideStatus = true
-                showDatePickerView()
+               // showDatePickerView()
+                showPickerView()
+                
+
             }
             else {
                 
                 self.hideStatus = false
-                hideDatePickerView()
+                //hideDatePickerView()
+                hidePickerView()
+                
             }
 
         }
@@ -335,7 +368,7 @@ class AddDebitOrCreditCardViewController: UIViewController {
         self.pickerBaseView.isHidden = true
         if(datePickerView != nil) {
             
-            Constant.GetawaySearchResultCardFormDetailData.expDate = datePickerView.date
+            //Constant.GetawaySearchResultCardFormDetailData.expDate = datePickerView.date
         }
        
         let indexPath = NSIndexPath(row: self.dropDownSelectionRow, section: self.dropDownSelectionSection)
@@ -577,8 +610,8 @@ extension AddDebitOrCreditCardViewController:UITableViewDataSource {
                         let dateFormatter = DateFormatter()
                         dateFormatter.dateStyle = DateFormatter.Style.short
                         
-                        let strDate = dateFormatter.string(from: Constant.GetawaySearchResultCardFormDetailData.expDate!)
-                        cell.selectedTextLabel.text = strDate
+                       // let strDate = dateFormatter.string(from: Constant.GetawaySearchResultCardFormDetailData.expDate!)
+                        cell.selectedTextLabel.text = Constant.GetawaySearchResultCardFormDetailData.expDate //strDate
                     }
                     cell.selectedTextLabel.textColor = UIColor.lightGray
 
@@ -730,8 +763,22 @@ extension AddDebitOrCreditCardViewController:UIPickerViewDelegate {
         
         if(self.dropDownSelectionSection == 0) {
            
-            let creditCardType = Constant.MyClassConstants.allowedCreditCardType[row]
-            return creditCardType.name
+            if(self.dropDownSelectionRow == 3){
+                
+                switch component {
+                case 0:
+                    return months[row]
+                case 1:
+                    return "\(years[row])"
+                default:
+                    return nil
+                }
+                
+            }else{
+                let creditCardType = Constant.MyClassConstants.allowedCreditCardType[row]
+                return creditCardType.name
+            }
+            
         }
         else {
             
@@ -750,12 +797,21 @@ extension AddDebitOrCreditCardViewController:UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
         
-        
         if(self.dropDownSelectionSection == 0) {
             
-            if(self.dropDownSelectionRow == 2) {
+            if(self.dropDownSelectionRow == 3){
                 
-               let cardType = Constant.MyClassConstants.allowedCreditCardType[row]
+                let month = months[pickerView.selectedRow(inComponent: 0)]
+                let year = years[pickerView.selectedRow(inComponent: 1)]
+                let expiryDate = "\(year), \(month)"
+                print(expiryDate)
+                Constant.GetawaySearchResultCardFormDetailData.expDate = expiryDate
+                
+            }
+            
+           else if(self.dropDownSelectionRow == 2) {
+                
+                let cardType = Constant.MyClassConstants.allowedCreditCardType[row]
                 Constant.GetawaySearchResultCardFormDetailData.cardType = cardType.name!
                 
             }
@@ -798,14 +854,35 @@ extension AddDebitOrCreditCardViewController:UIPickerViewDataSource {
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         
-        return 1
+        if(self.dropDownSelectionRow == 3){
+            
+            return 2
+            
+        }else{
+           return 1
+        }
+        
     }
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         
         
         if(self.dropDownSelectionSection == 0) {
             
-            return Constant.MyClassConstants.allowedCreditCardType.count
+            if(self.dropDownSelectionRow == 3){
+                switch component{
+                    
+                case 0 :
+                    return months.count
+                case 1 :
+                    return years.count
+                default:
+                    return 0
+                }
+                
+            }else{
+                return Constant.MyClassConstants.allowedCreditCardType.count
+            }
+            
         }
         else {
             

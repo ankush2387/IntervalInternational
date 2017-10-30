@@ -160,7 +160,7 @@ class OldLoginViewController: UIViewController
     
     
     //***** MARK: - Busisness Actions *****//
-    //***** function to call serviece on login button pressed *****//
+    //***** function to call service on login button pressed *****//
     func loginButtonPressed(_ sender:AnyObject)
     {
         if(self.activeField != nil) {

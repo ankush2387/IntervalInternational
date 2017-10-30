@@ -66,7 +66,8 @@ class SearchResultViewController: UIViewController {
         
         Constant.MyClassConstants.isShowAvailability = false
         let sectionIndex = IndexSet(integer: 0)
-        self.searchResultTableView.reloadSections(sectionIndex, with: .none)
+        //self.searchResultTableView.reloadSections(sectionIndex, with: .none)
+        self.searchResultTableView.reloadData()
         
         timer.invalidate()
     }

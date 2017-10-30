@@ -26,7 +26,9 @@ class DashboardTableViewController: UITableViewController {
     var showExchange = true
     var dashboardArray = NSMutableArray()
     var alertWithResultsArray = [RentalAlert]()
-    
+    var isRunningOnIphone: Bool {
+        return UIDevice.current.userInterfaceIdiom == .phone
+    }
     override func viewWillAppear(_ animated: Bool) {
         //***** Adding notification to reload alert badge *****//
         //self.hideHudAsync()
@@ -417,6 +419,8 @@ class DashboardTableViewController: UITableViewController {
         let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.sideMenuTitles.sideMenuInitialController) as! SWRevealViewController
         self.present(viewController, animated: true, completion: nil)
+        //let navController = UINavigationController(rootViewController: viewController)
+        //self.navigationController?.pushViewController(viewController, animated: true)
 
     }
 }
@@ -567,16 +571,19 @@ extension DashboardTableViewController:UICollectionViewDataSource {
             self.flexchangeSelected(selectedIndexPath: indexPath)
         }else{
             self.topTenGetawaySelected(selectedIndexPath: indexPath)
+            
         }
     }
 }
 
 extension UIViewController {
     func topTenGetawaySelected(selectedIndexPath: IndexPath) {
+        let topTenDeals = Constant.MyClassConstants.topDeals[selectedIndexPath.row]
+        Constant.MyClassConstants.vacationSearchResultHeaderLabel = topTenDeals.header!
         
         ADBMobile.trackAction(Constant.omnitureEvents.event1, data: nil)
         
-        let areas = Area()
+        /*let areas = Area()
         areas.areaCode = Constant.MyClassConstants.topDeals[selectedIndexPath.row].areaCodes.first!
         Constant.MyClassConstants.vacationSearchShowDate = Constant.MyClassConstants.topDeals[selectedIndexPath.row].fromDate
         Constant.MyClassConstants.vacationSearchResultHeaderLabel = Constant.MyClassConstants.topDeals[selectedIndexPath.row].header!
@@ -587,7 +594,19 @@ extension UIViewController {
         rentalSearchCriteria.searchType = VacationSearchType.Rental
         Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(Session.sharedSession.appSettings, rentalSearchCriteria)
         
-        Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.areas = [areas]
+        Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.areas = [areas]*/
+        
+        
+        // latest changes
+        let deal = RentalDeal()
+        deal.header = Constant.MyClassConstants.topDeals[selectedIndexPath.row].header!
+        deal.fromDate = Constant.MyClassConstants.topDeals[selectedIndexPath.row].fromDate
+        deal.areaCodes = [Constant.MyClassConstants.topDeals[selectedIndexPath.row].areaCodes.first!]
+        
+        let searchCriteria = Helper.createSearchCriteriaForRentalDeal(deal: deal)
+        
+        let settings = Helper.createSettings()
+        Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
         
         if Reachability.isConnectedToNetwork() == true {
             
@@ -597,7 +616,7 @@ extension UIViewController {
                 
                 ADBMobile.trackAction(Constant.omnitureEvents.event18, data: nil)
                 // omniture tracking with event 9
-                let userInfo: [String: Any] = [
+                /*let userInfo: [String: Any] = [
                     Constant.omnitureCommonString.listItem: Constant.MyClassConstants.selectedDestinationNames,
                     Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch,
                     Constant.omnitureEvars.eVar19 : Constant.MyClassConstants.vacationSearchShowDate,
@@ -614,7 +633,7 @@ extension UIViewController {
                     Constant.omnitureEvars.eVar61:Constant.MyClassConstants.searchOriginationPoint,
                     ]
                 
-                ADBMobile.trackAction(Constant.omnitureEvents.event9, data: userInfo)
+                ADBMobile.trackAction(Constant.omnitureEvents.event9, data: userInfo)*/
                 
                 
                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
@@ -629,11 +648,12 @@ extension UIViewController {
                 
                 Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                 
+                //Helper.hideProgressBar(senderView: self)
+                
                 // Check not available checkIn dates for the active interval
                 if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                    
                     Helper.showNotAvailabilityResults()
-                    //self.navigateToSearchResults()
+                    self.navigateToSearchResultsScreen()
                     
                 } else {
                     
@@ -671,8 +691,8 @@ extension UIViewController {
         Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.areas = [areas]*/
         
         
-        let storyboard = UIStoryboard(name: "VacationSearchIphone", bundle: nil)
-        let viewController = storyboard.instantiateViewController(withIdentifier: "FlexchangeViewController") as! FlexchangeSearchViewController
+        let storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.flexchangeViewController) as! FlexchangeSearchViewController
         viewController.selectedFlexchange = Constant.MyClassConstants.flexExchangeDeals[selectedIndexPath.row]
         self.navigationController!.pushViewController(viewController, animated: true)
         
@@ -680,14 +700,20 @@ extension UIViewController {
     
     func navigateToSearchResultsScreen(){
         if UIDevice.current.userInterfaceIdiom == .pad {
-            let storyboard = UIStoryboard(name: "VacationSearchIpad", bundle: nil)
-            let viewController = storyboard.instantiateViewController(withIdentifier: "SearchResultViewController")
+            let storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+            let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController)
             self.navigationController!.pushViewController(viewController, animated: true)
         } else if UIDevice.current.userInterfaceIdiom == .phone {
-            let storyboard = UIStoryboard(name: "VacationSearchIphone", bundle: nil)
-            let viewController = storyboard.instantiateViewController(withIdentifier: "SearchResultViewController")
+            let storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+            let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController)
             self.navigationController!.pushViewController(viewController, animated: true)
         }
+        
+        /*let storyboardName = Constant.MyClassConstants.isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
+        if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
+            show(initialViewController, sender: self)
+        }*/
+        
     }
     
     // Function to get to date and from date for search dates API calling

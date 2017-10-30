@@ -362,7 +362,6 @@ public class Helper{
     //**** Common function to get upcoming trips. ****//
    static func getUpcomingTripsForUser(){
         UserClient.getUpcomingTrips(Session.sharedSession.userAccessToken, onSuccess: {(upComingTrips) in
-            print("Call 4",upComingTrips)
             Constant.MyClassConstants.upcomingTripsArray = upComingTrips
             
             for trip in upComingTrips { if((trip.type) != nil) {
@@ -1790,7 +1789,8 @@ public class Helper{
         request.checkInDate = checkInDate
         request.resortCodes = activeInterval.resortCodes!
         request.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
-        request.travelParty = Constant.MyClassConstants.travelPartyInfo
+       // request.travelParty = Constant.MyClassConstants.travelPartyInfo
+        request.travelParty = Helper.travelPartInfo()
         
         ExchangeClient.searchAvailability(Session.sharedSession.userAccessToken, request: request, onSuccess: { (searchAvailabilityResponse) in
             
@@ -2190,6 +2190,48 @@ public class Helper{
         default:
             return ""
         }
+    }
+    
+    // search criteria
+    static func createSearchCriteriaFor(deal:FlexExchangeDeal) -> VacationSearchCriteria {
+        let travelParty = TravelParty()
+        travelParty.adults = 2
+        travelParty.children = 0
+        
+        let relinquishmentId = "Ek83chJmdS6ESNRpVfhH8XUt24BdWzaYpSIODLB0Scq6rxirAlGksihR1PCb1xSC"
+        
+        let area = Area()
+        area.areaCode = deal.areaCode
+        area.areaName = deal.name
+        
+        let searchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
+        searchCriteria.area = area
+        searchCriteria.checkInDate = deal.getCheckInDate()
+        searchCriteria.checkInFromDate = deal.getCheckInFromDate()
+        searchCriteria.checkInToDate = deal.getCheckInToDate()
+        searchCriteria.travelParty = travelParty
+        //searchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
+        searchCriteria.relinquishmentsIds = [relinquishmentId]
+        return searchCriteria
+    }
+    
+    static func travelPartInfo() -> TravelParty {
+        let travelParty = TravelParty()
+        travelParty.adults = 2
+        travelParty.children = 0
+        return travelParty
+    }
+    
+    static func createSearchCriteriaForRentalDeal(deal:RentalDeal) -> VacationSearchCriteria {
+        let area = Area()
+        area.areaCode = deal.areaCodes[0]
+        area.areaName = deal.header
+        
+        let searchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
+        searchCriteria.checkInDate = deal.getCheckInDate()
+        searchCriteria.area = area
+        
+        return searchCriteria
     }
 
 

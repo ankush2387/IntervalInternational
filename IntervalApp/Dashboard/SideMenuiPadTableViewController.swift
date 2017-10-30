@@ -91,7 +91,23 @@ class SideMenuiPadTableViewController: UIViewController, UITableViewDataSource {
     //***** MARK: - Actions *****//
     
     func signOutSelected() {
+        
         Session.sharedSession.signOut()
+        //Remove all favorites for a user.
+        Constant.MyClassConstants.favoritesResortArray.removeAll()
+        Constant.MyClassConstants.favoritesResortCodeArray.removeAllObjects()
+        
+        //Remove available points for relinquishment program
+        Constant.MyClassConstants.relinquishmentProgram = PointsProgram()
+        
+        //Remove all saved alerts for a user.
+        Constant.MyClassConstants.getawayAlertsArray.removeAll()
+        Constant.MyClassConstants.isLoginSuccessfull = false
+        Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
+        TouchID().deactivateTouchID()
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PopToLoginView"), object: nil)
+        
+       /* Session.sharedSession.signOut()
         Constant.MyClassConstants.isLoginSuccessfull = false
         //Remove all favorites for a user.
         Constant.MyClassConstants.favoritesResortArray.removeAll()
@@ -115,7 +131,7 @@ class SideMenuiPadTableViewController: UIViewController, UITableViewDataSource {
         transition.subtype = kCATransitionFromBottom
         viewController.view.layer.add(transition, forKey: Constant.MyClassConstants.switchToView)
         
-        UIApplication.shared.keyWindow?.rootViewController = nav1
+        UIApplication.shared.keyWindow?.rootViewController = nav1*/
         
     }
     

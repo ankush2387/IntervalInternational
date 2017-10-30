@@ -394,10 +394,11 @@ class DashboardIPadTableViewController: UITableViewController {
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.vacationSearchIPad, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.sideMenuTitles.sideMenuInitialController) as! SWRevealViewController
-        self.present(viewController, animated: true, completion: nil)
+        //self.present(viewController, animated: true, completion: nil)
         
-        /*let navController = UINavigationController(rootViewController: viewController)
-        self.navigationController!.present(navController, animated: true)*/
+        let navController = UINavigationController(rootViewController: viewController)
+       //self.navigationController!.present(navController, animated: true)
+        self.navigationController?.pushViewController(navController, animated: true)
     }
 }
 
@@ -433,6 +434,7 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
         }
         
         if collectionView.tag == 3 {
+            Helper.helperDelegate = self 
             self.topTenGetawaySelected(selectedIndexPath: indexPath)
         }
         
@@ -627,6 +629,8 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
     }
 }
 
+
+
 //extension DashboardIPadTableViewController:UICollectionViewDelegateFlowLayout {
 //
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -661,3 +665,11 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
 //    }
 //}
 
+extension DashboardIPadTableViewController:HelperDelegate{
+    func resortSearchComplete() {
+        self.navigateToSearchResultsScreen()
+    }
+    func resetCalendar() {
+        
+    }
+}

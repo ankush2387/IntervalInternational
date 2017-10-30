@@ -256,11 +256,18 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
             showHudAsync()
             if Reachability.isConnectedToNetwork() == true {
                 
+                //use later
+                let checkInDate = Constant.MyClassConstants.vacationSearchShowDate
+                
                 let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
                 
                 exchangeSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
+                
+                //set check in date
                 exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
+                
                 exchangeSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
+                
                 exchangeSearchCriteria.searchType = VacationSearchType.Exchange
                 
                 //let storedData = Helper.getLocalStorageWherewanttoGo()

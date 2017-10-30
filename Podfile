@@ -7,7 +7,7 @@ def testing_pods
 end
 
 def testing_build_dependencies
-    pod 'Realm'
+    pod 'Realm','~>2.8.3'
     pod 'Firebase/Core'
     pod 'Brightcove-Player-SDK'
     pod 'GoogleMaps' , '~>2.2.0'
@@ -16,9 +16,9 @@ def testing_build_dependencies
 end
 
 target 'IntervalApp' do
-    pod 'Realm'
+    pod 'Realm','~>2.8.3'
     pod 'RMessage'
-    pod 'RealmSwift'
+    pod 'RealmSwift','~>2.8.3'
     pod 'SwiftyJSON'
     pod 'Firebase/Core'
     pod 'SVProgressHUD'

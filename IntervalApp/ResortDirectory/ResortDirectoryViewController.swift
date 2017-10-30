@@ -129,7 +129,7 @@ class ResortDirectoryViewController: UIViewController {
     func setNavigationBar(){
         //***** handle hamberger menu button for prelogin and post login case *****//
         self.navigationController?.navigationBar.barTintColor = UIColor(red: 0/255, green: 119.0/255, blue: 190.0/255, alpha: 1.0)
-        print("------> self.navigationController?.viewControllers.count", self.navigationController?.viewControllers.count as Any)
+      
         if((Session.sharedSession.userAccessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
             if(self.navigationController?.viewControllers.count > 1) {
                 
@@ -171,19 +171,16 @@ class ResortDirectoryViewController: UIViewController {
         }
     }
     
-    //**** Remove added observers ****//
-    override func viewDidDisappear(_ animated: Bool) {
-        /*NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.showHelp), object: nil)
-         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
-         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadTableNotification), object: nil)
-         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
-         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.reloadRegionNotification), object: nil)*/
-    }
-    
     //*****Function for back button press.*****//
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PopToLoginView"), object: nil)
-        setNavigationBar()
+
+        if(self.navigationController?.viewControllers.count > 1) {
+            
+            self.navigationController?.popViewController(animated: true)
+        }
+        else {
+           NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.MyClassConstants.popToLoginView), object: nil)
+        }
     }
     func reloadView() {
         if(self.resortTableView != nil){

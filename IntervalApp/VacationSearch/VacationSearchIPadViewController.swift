@@ -694,7 +694,9 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
             let settings = Helper.createSettings()
             let checkInDate = fromDateTop
             
+
             let bookingWindow = BookingWindow(checkInDate: checkInDate)
+
             
             let activeInterval = bookingWindow.getActiveInterval()
             let requestRental = RentalSearchRegionsRequest()
@@ -764,8 +766,9 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                     
                     
                 }, onError: { (error) in
+                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
+                    //Helper.hideProgressBar(senderView: self)
                     sender.isEnabled = true
-                    print(error)
                 })
             }else{
                 
@@ -790,8 +793,9 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                         
                         
                     }, onError: { (error) in
-                        
-                        print(error)
+                        SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
+                        //Helper.hideProgressBar(senderView: self)
+                        sender.isEnabled = true
                     })
                 
             }
@@ -811,7 +815,6 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                         self.getSavedDestinationsResorts(storedData:storedData, searchCriteria:rentalSearchCriteria)
                         
                         rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
-                        
                         
                         Constant.MyClassConstants.initialVacationSearch = VacationSearch(Session.sharedSession.appSettings, rentalSearchCriteria)
                         
@@ -1235,7 +1238,8 @@ extension VacationSearchIPadViewController:WereWantToGoTableViewCellDelegate {
 // Mark: Extension for Helper
 extension VacationSearchIPadViewController:HelperDelegate {
     func resortSearchComplete(){
-        if (Constant.MyClassConstants.initialVacationSearch.searchCheckInDate != Helper.convertDateToString(date: Constant.MyClassConstants.vacationSearchShowDate, format: Constant.MyClassConstants.dateFormat) ) {
+        self.navigateToSearchResultsScreen()
+        /*if (Constant.MyClassConstants.initialVacationSearch.searchCheckInDate != Helper.convertDateToString(date: Constant.MyClassConstants.vacationSearchShowDate, format: Constant.MyClassConstants.dateFormat) ) {
             Helper.showNearestCheckInDateSelectedMessage()
         }
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
@@ -1244,9 +1248,9 @@ extension VacationSearchIPadViewController:HelperDelegate {
         
         let transitionManager = TransitionManager()
         self.navigationController?.transitioningDelegate = transitionManager
-        let navController = UINavigationController(rootViewController: viewController)
-        self.present(navController, animated:true, completion: nil)
-        //self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
+        //let navController = UINavigationController(rootViewController: viewController)
+        //self.present(navController, animated:true, completion: nil)
+        //self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)*/
     }
     func resetCalendar(){
         Constant.MyClassConstants.calendarDatesArray.removeAll()
