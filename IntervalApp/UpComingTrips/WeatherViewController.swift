@@ -41,6 +41,12 @@ class WeatherViewController: UIViewController {
         setup()
         
     }
+    override func viewDidDisappear(_ animated: Bool) {
+        if(Constant.RunningDevice.deviceIdiom == .phone){
+            self.navigationController?.isNavigationBarHidden = false
+            self.tabBarController?.tabBar.isHidden = false
+        }
+    }
     
     func setupDoneButtonView() {
         

@@ -142,8 +142,8 @@ class ResortDetailsViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         if(Constant.RunningDevice.deviceIdiom == .phone){
-            //self.navigationController?.isNavigationBarHidden = false
-           // self.tabBarController?.tabBar.isHidden = false
+            self.navigationController?.isNavigationBarHidden = false
+            self.tabBarController?.tabBar.isHidden = false
         }
     }
     
@@ -317,13 +317,7 @@ class ResortDetailsViewController: UIViewController {
                     
                     
                 }else{
-                    
-                    let transition = CATransition()
-                    transition.duration = 0.5
-                    transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-                    transition.type = kCATransitionReveal
-                    transition.subtype = kCATransitionFromBottom
-                    navigationController?.view.layer.add(transition, forKey: nil)
+                navigationController?.view.layer.add(Helper.topToBottomTransition(), forKey: nil)
                     _ = navigationController?.popViewController(animated: false)
                 }
                 
@@ -336,11 +330,10 @@ class ResortDetailsViewController: UIViewController {
             if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.vacationSearchFunctionalityCheck){
                 
                 self.dismiss(animated: true, completion: nil)
-                
-                
-            }else{
-                
-                self.dismiss(animated: true, completion: nil)
+            }
+            else{
+                navigationController?.view.layer.add(Helper.topToBottomTransition(), forKey: nil)
+                _ = navigationController?.popViewController(animated: false)
             }
         }
     }
@@ -533,9 +526,9 @@ class ResortDetailsViewController: UIViewController {
         guard let resortName = Constant.MyClassConstants.resortsDescriptionArray.address?.cityName else { return }
         
         guard let countryCode = Constant.MyClassConstants.resortsDescriptionArray.address?.countryCode else { return }
-        showHudAsync()
+        self.showHudAsync()
         displayWeatherView(resortCode: resortCode, resortName: resortName, countryCode: countryCode, presentModal: presentViewModally, completionHandler: { (response) in
-            SVProgressHUD.dismiss()
+            self.hideHudAsync()
         })
     }
     
@@ -544,9 +537,9 @@ class ResortDetailsViewController: UIViewController {
         guard let coordinates = Constant.MyClassConstants.resortsDescriptionArray.coordinates else { return }
         guard let resortName = Constant.MyClassConstants.resortsDescriptionArray.resortName else { return }
         guard let cityName = Constant.MyClassConstants.resortsDescriptionArray.address?.cityName else { return }
-        showHudAsync()
+        self.showHudAsync()
         displayMapView(coordinates: coordinates, resortName: resortName, cityName: cityName, presentModal: presentViewModally) { (response) in
-            SVProgressHUD.dismiss()
+            self.hideHudAsync()
         }
     }
     

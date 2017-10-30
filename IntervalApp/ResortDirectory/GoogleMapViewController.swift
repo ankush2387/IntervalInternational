@@ -335,10 +335,8 @@ class GoogleMapViewController: UIViewController {
                 self.navigationItem.rightBarButtonItem!.isEnabled = true
                 Constant.MyClassConstants.googleMarkerArray.removeAll()
                 if(Constant.MyClassConstants.resortsArray.count > 0){
-                    let resort = Constant.MyClassConstants.resortsArray[0]
-                    let location = CLLocation.init(latitude: (resort.coordinates?.latitude)!, longitude: (resort.coordinates?.longitude)!)
                     
-                    self.displaySearchedResort(location: location)
+                    self.displaySearchedResort()
                     if(self.mapTableView != nil){
                         self.mapTableView.reloadData()
                     }
@@ -478,9 +476,7 @@ class GoogleMapViewController: UIViewController {
             Constant.MyClassConstants.googleMarkerArray.removeAll()
             Constant.MyClassConstants.resortsArray.removeAll()
             Constant.MyClassConstants.resortsArray = response
-            let resort = Constant.MyClassConstants.resortsArray[0]
-            let location = CLLocation.init(latitude: (resort.coordinates?.latitude)!, longitude: (resort.coordinates?.longitude)!)
-            self.displaySearchedResort(location: location)
+            self.displaySearchedResort()
                 
         }
         if(Constant.RunningDevice.deviceIdiom == .pad && !self.hideSideView && self.containerView != nil && self.containerView.isHidden == true) {
@@ -494,7 +490,7 @@ class GoogleMapViewController: UIViewController {
         }
     }
     //***** Updating map with resorts getting from map search bar from resorsts or destination *****//
-    func displaySearchedResort(location:CLLocation) {
+    func displaySearchedResort() {
         
         let camera = GMSCameraPosition.camera(withLatitude: (Constant.MyClassConstants.resortsArray[0].coordinates?.latitude)!,longitude: (Constant.MyClassConstants.resortsArray[0].coordinates?.longitude)!, zoom: self.mapView.camera.zoom)
         
@@ -815,7 +811,10 @@ class GoogleMapViewController: UIViewController {
     func createBottomResortView(marker :GMSMarker) {
         
         if(resortCollectionView != nil && Constant.MyClassConstants.resortsArray.count > 0){
-            resortCollectionView.reloadData()
+            DispatchQueue.main.async {
+                let indexPath = IndexPath(row: self.currentIndex, section: 0)
+                self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.right, animated: true)
+            }
             self.resortView.isHidden = false
             
             UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn ,animations: {
@@ -865,8 +864,10 @@ class GoogleMapViewController: UIViewController {
             resortView.addGestureRecognizer(topSwipe)
             resortView.addGestureRecognizer(bottomSwipe)
             self.view.addSubview(resortView)
-            let indexPath = IndexPath(row: self.currentIndex, section: 0)
-            self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.right, animated: true)
+            DispatchQueue.main.async {
+                let indexPath = IndexPath(row: self.currentIndex, section: 0)
+                self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.right, animated: true)
+            }
         }
     }
     
@@ -879,13 +880,15 @@ class GoogleMapViewController: UIViewController {
         }
         UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn ,animations: {
             self.resortView.frame = CGRect(x: 0, y: self.view.frame.height, width: self.view.frame.width, height: self.bottomResortHeight)
-            for selectedMarker in Constant.MyClassConstants.googleMarkerArray {
-                
-                selectedMarker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
-                selectedMarker.isFlat = false
-                
+             DispatchQueue.main.async {
+                for selectedMarker in Constant.MyClassConstants.googleMarkerArray {
+                    
+                    selectedMarker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
+                    selectedMarker.isFlat = false
+                    
+                }
+                self.mapView.selectedMarker = nil
             }
-            self.mapView.selectedMarker = nil
             
         }, completion: { _ in
             
@@ -1012,11 +1015,11 @@ class GoogleMapViewController: UIViewController {
             SimpleAlert.searchAlert(self, title: Constant.AlertMessages.searchAlertTitle, message: Constant.AlertMessages.searchAlertMessage)
         }
         else {
+            
             Helper.deleteObjectFromAllDest()
             let allavailabledest = AllAvailableDestination()
             allavailabledest.destination = Constant.MyClassConstants.allDestinations
-            //Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
-            //Constant.MyClassConstants.whereTogoContentArray.add(Constant.MyClassConstants.allDestinations)
+
             let realm = try! Realm()
             try! realm.write {
                 realm.add(allavailabledest)
@@ -1161,9 +1164,7 @@ class GoogleMapViewController: UIViewController {
         }
         Constant.MyClassConstants.googleMarkerArray.removeAll()
         Constant.MyClassConstants.googleMarkerArray.removeAll()
-        let resort = Constant.MyClassConstants.resortsArray[0]
-        let location = CLLocation.init(latitude: (resort.coordinates?.latitude)!, longitude: (resort.coordinates?.longitude)!)
-        self.displaySearchedResort(location: location)
+        self.displaySearchedResort()
         
         if(Constant.RunningDevice.deviceIdiom == .pad){
             mapTableView.reloadData()
@@ -1191,14 +1192,12 @@ extension GoogleMapViewController:CLLocationManagerDelegate{
         // According to MOBI-879 changes made for centre map on cuurent location of user.
         if status == .authorizedWhenInUse {
             locationManager.startUpdatingLocation()
-            
             mapView.isMyLocationEnabled = true
-           
         }else{
            
             let latitude: Double = 40.68
             let longitude: Double = -97.83
-            mapView.camera = GMSCameraPosition.camera(withLatitude: latitude,longitude: longitude, zoom: self.mapView.camera.zoom)
+            mapView.camera = GMSCameraPosition.camera(withLatitude: latitude,longitude: longitude, zoom: 5.0)
             
         }
     }
@@ -1248,11 +1247,14 @@ extension GoogleMapViewController:GMSMapViewDelegate {
                 let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes(sender:)))
                 self.handleSwipes(sender: rightSwipe)
                 
-            }else{
+            }
+            else{
+                
                 Constant.MyClassConstants.resortsDescriptionArray = Constant.MyClassConstants.resortsArray[marker.userData as! Int]
                 
                 Helper.getResortWithResortCode(code: Constant.MyClassConstants.resortsDescriptionArray.resortCode!,viewcontroller:self)
                 
+             DispatchQueue.main.async {
                 for selectedMarker in Constant.MyClassConstants.googleMarkerArray {
                     
                     if(selectedMarker.userData as! Int == marker.userData as! Int) {
@@ -1277,8 +1279,8 @@ extension GoogleMapViewController:GMSMapViewDelegate {
                         selectedMarker.isFlat = false
                     }
                 }
-                
-                let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes(sender:)))
+            }
+            let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes(sender:)))
                 self.handleSwipes(sender: rightSwipe)
             }
         }
@@ -1298,50 +1300,36 @@ extension GoogleMapViewController:GMSMapViewDelegate {
                 marker.isFlat = false
                 self.removeBottomView()
                 
-            }else {
+            }
+            else {
                 
+             DispatchQueue.main.async {
                 for selectedMarker in Constant.MyClassConstants.googleMarkerArray {
-                    
-                    if(selectedMarker.userData as! Int == marker.userData as! Int) {
-                        
+                
+                if(selectedMarker.userData as! Int == marker.userData as! Int) {
                         selectedMarker.isFlat = true
                         selectedMarker.icon = UIImage(named:Constant.assetImageNames.pinFocusImage)
+                }
+                else {
                         
-                    }
-                    else {
-                        
-                        selectedMarker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
+                    selectedMarker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
                         selectedMarker.isFlat = false
                     }
                 }
                 self.mapView.selectedMarker = marker
                 self.currentIndex = marker.userData as! Int
                 
-                let indexPath = IndexPath(row: currentIndex, section: 0)
-                
-                if (UIDevice.current.userInterfaceIdiom == .pad) {
-                    
-                    
-                    if(self.currentIndex > marker.userData as! Int) {
-                        self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.bottom, animated: true)
-                    }
-                    else {
-                        self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.top, animated: true)
-                    }
-                    
-                    
+                let indexPath = IndexPath(row: self.currentIndex, section: 0)
+                if(self.currentIndex > marker.userData as! Int) {
+                        
+                    self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.left, animated: true)
                 }
                 else {
-                    
-                    if(self.currentIndex > marker.userData as! Int) {
                         
-                        self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.left, animated: true)
-                    }
-                    else {
-                        
-                        self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.right, animated: true)
-                    }
+                    self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.right, animated: true)
                 }
+            }
+                
             }
         }
         return true
@@ -1350,8 +1338,6 @@ extension GoogleMapViewController:GMSMapViewDelegate {
         
         if(mapView.camera.zoom >= 10) {
             
-            if(Constant.MyClassConstants.isgetResortFromGoogleSearch == false) {
-                
                 let bounds = GMSCoordinateBounds(region: mapView.projection.visibleRegion())
                 
                 let southEast = CLLocationCoordinate2D(latitude: bounds.southWest.latitude, longitude: bounds.northEast.longitude)
@@ -1369,13 +1355,7 @@ extension GoogleMapViewController:GMSMapViewDelegate {
                 self.apiCallWithRectangleRequest(request: geoAreaReq)
                 
             }
-            else {
-                
-                Constant.MyClassConstants.isgetResortFromGoogleSearch = false
-            }
         }
-    }
-    
 }
 
 //***** Collection view delegate methods to handle collection view *****//
@@ -1510,21 +1490,21 @@ extension GoogleMapViewController:UICollectionViewDataSource {
         let indexpath: NSIndexPath = (visible[0] as! NSIndexPath)
         
         self.currentIndex = indexpath.row
+        DispatchQueue.main.async {
+            
         for marker in Constant.MyClassConstants.googleMarkerArray {
             
             if(marker.userData as! Int ==  self.currentIndex) {
-                
                 marker.icon = UIImage(named:Constant.assetImageNames.pinFocusImage)
                 marker.isFlat = true
                 self.mapView.selectedMarker = marker
             }
             else {
-                
                 marker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
                 marker.isFlat = false
             }
         }
-        
+      }
     }
 }
 

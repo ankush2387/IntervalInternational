@@ -1281,21 +1281,14 @@ public class Helper{
                 
                 if(Constant.RunningDevice.deviceIdiom == .pad) {
                     
-                    
                     if(Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.isFromSearchBoth){
                         
                         var storyBoard = UIStoryboard()
                         if(viewcontroller.isKind(of:WhatToUseViewController.self)) {
                             storyBoard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
                             let viewController = storyBoard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortVC)
-                            let transition = CATransition()
-                            transition.duration = 0.4
-                            transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-                            transition.type = kCATransitionMoveIn
-                            transition.subtype = kCATransitionFromTop
-                            
-                            viewcontroller.navigationController!.view.layer.add(transition, forKey: kCATransition)
-                            //viewcontroller.navigationController?.pushViewController(viewController, animated: false)
+                            viewcontroller.navigationController!.view.layer.add(self.bottomToTopTransition(), forKey: kCATransition)
+                        
                             viewcontroller.present(viewController, animated: true, completion: nil)
                             
                             }
@@ -1324,15 +1317,8 @@ public class Helper{
          
                     let storyBoard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
                     let viewController = storyBoard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortVC) as! ResortDetailsViewController
-                    let navController = UINavigationController(rootViewController: viewController)
-                    viewcontroller.present(navController, animated:true, completion: nil)
-//                    let transition = CATransition()
-//                    transition.duration = 0.4
-//                    transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-//                    transition.type = kCATransitionMoveIn
-//                    transition.subtype = kCATransitionFromTop
-//                    viewcontroller.navigationController!.view.layer.add(transition, forKey: kCATransition)
-//                    viewcontroller.navigationController?.pushViewController(viewController, animated: false)
+                    viewcontroller.navigationController!.view.layer.add(self.bottomToTopTransition(), forKey: kCATransition)
+                    viewcontroller.navigationController?.pushViewController(viewController, animated: false)
 
                 }
             }
@@ -2316,6 +2302,28 @@ public class Helper{
             return ""
         }
     }
-
+    // function to create custom bottom to top transition and return to caller
+    static func bottomToTopTransition()-> CATransition {
+        
+        let transition = CATransition()
+        transition.duration = 0.4
+        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        transition.type = kCATransitionMoveIn
+        transition.subtype = kCATransitionFromTop
+        
+        return transition
+    }
+    // function to create custom top to bottom transition and return to caller
+    static func topToBottomTransition()-> CATransition {
+        
+        let transition = CATransition()
+        transition.duration = 0.5
+        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        transition.type = kCATransitionReveal
+        transition.subtype = kCATransitionFromBottom
+        
+        return transition
+    }
+    
 }
 
