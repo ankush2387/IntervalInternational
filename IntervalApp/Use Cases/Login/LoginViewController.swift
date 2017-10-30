@@ -72,7 +72,7 @@ final class LoginViewController: UIViewController {
     private func login() {
         showHudAsync()
         viewModel.login()
-            .onViewError(handler: presentErrorAlert)
+            .onViewError(presentErrorAlert)
             .finally(hideHudAsync)
     }
 

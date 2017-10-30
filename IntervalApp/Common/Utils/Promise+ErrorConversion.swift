@@ -23,7 +23,7 @@ extension Promise {
     /// - Parameter handler: Function that takes a ViewError object
     /// - Returns: A Promise with the original object
     @discardableResult
-    func onViewError(handler: @escaping (ViewError) -> Void) -> Promise<T> {
+    func onViewError(_ handler: @escaping (ViewError) -> Void) -> Promise<T> {
         registerOnError { error in
             if let viewError = error as? ViewError {
                 handler(viewError)

@@ -9,19 +9,27 @@
 import Foundation
 
 enum UserFacingCommonError: ViewError {
-    
+
+    case noData
+    case generic
     case noNetConnection
     case noServerResponse
-    case generic
-    
+
     var description: (title: String, body: String) {
         switch self {
+
         case .noNetConnection:
             return ("Check Your Connection".localized(),
                     "You don't seem to have an active internet connection. Please check your connection.".localized())
+
+        case .noData:
+            return ("Data Error".localized(),
+                    "Couldn't load data. If the problem persists, please contact Interval International.".localized())
+
         case .noServerResponse:
             return ("Server Error".localized(),
                     "Couldn't load data. If the problem persists, please contact Interval International.".localized())
+
         case .generic:
             return ("Error".localized(), "An error occurred. Please try again.".localized())
         }

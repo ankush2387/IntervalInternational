@@ -27,20 +27,25 @@ final class LoginCoordinator: ComputationHelper {
     private var viewModel: LoginViewModel?
     private var backgroundImageIndex: Int {
         
-        guard let index = persistentSettings.backgroundImageIndex else {
-            persistentSettings.backgroundImageIndex = 0
-            return 0
+        guard let index = try? decryptedStore.getItem(for: Persistent.backgroundImageIndex.key, ofType: Int()),
+            let imageIndex = index else {
+                let startIndex = 0
+                try? decryptedStore.save(item: startIndex, for: Persistent.backgroundImageIndex.key)
+                return startIndex
         }
         
-        persistentSettings.backgroundImageIndex = rotate(index, within: 0..<6)
-        return persistentSettings.backgroundImageIndex ?? 0
+        let nextIndex = rotate(imageIndex, within: 0..<6)
+        try? decryptedStore.save(item: nextIndex, for: Persistent.backgroundImageIndex.key)
+        return nextIndex
     }
     
-    private var persistentSettings: PersistentSettingsStore
+    private var encryptedStore: EncryptedStore
+    private var decryptedStore: DecryptedStore
 
     // MARK: - Lifecycle
     init(backgroundImages: [UIImage],
-         persistentStorage: PersistentSettingsStore,
+         encryptedStore: EncryptedStore,
+         decryptedStore: DecryptedStore,
          messaging: Messaging,
          configuration: Config,
          sessionStore: Session) {
@@ -48,13 +53,15 @@ final class LoginCoordinator: ComputationHelper {
         self.messaging = messaging
         self.sessionStore = sessionStore
         self.configuration = configuration
+        self.encryptedStore = encryptedStore
+        self.decryptedStore = decryptedStore
         self.backgroundImages = backgroundImages
-        self.persistentSettings = persistentStorage
     }
 
     convenience init() {
         self.init(backgroundImages: [#imageLiteral(resourceName: "BackgroundImgLogin-A"), #imageLiteral(resourceName: "BackgroundImgLogin-B"), #imageLiteral(resourceName: "BackgroundImgLogin-C"), #imageLiteral(resourceName: "BackgroundImgLogin-D"), #imageLiteral(resourceName: "BackgroundImgLogin-E"), #imageLiteral(resourceName: "BackgroundImgLogin-F"), #imageLiteral(resourceName: "BackgroundImgLogin-G")],
-                  persistentStorage: PersistentSettings(),
+                  encryptedStore: KeychainWrapper(),
+                  decryptedStore: UserDafaultsWrapper(),
                   messaging: Messaging.messaging(),
                   configuration: Config.sharedInstance,
                   sessionStore: Session.sharedSession)
@@ -65,8 +72,7 @@ final class LoginCoordinator: ComputationHelper {
         let viewModel = LoginViewModel(backgroundImage: backgroundImages[backgroundImageIndex],
                                        sessionStore: Session.sharedSession,
                                        clientAPIStore: ClientAPI.sharedInstance,
-                                       encryptedStore: LoginData(),
-                                       persistentSettingsStore: persistentSettings,
+                                       encryptedStore: encryptedStore,
                                        configuration: Config.sharedInstance,
                                        appBundle: AppBundle())
 
@@ -87,9 +93,11 @@ final class LoginCoordinator: ComputationHelper {
             return
         }
 
+        let contactID = String(contact.contactId)
         let newNotificationTopic = "/topics/\(configuration.get(.Environment, defaultValue: "NONE").uppercased())\(contact.contactId)"
-        guard let oldNotificationTopic = persistentSettings.notificationTopic else {
-            persistentSettings.notificationTopic = newNotificationTopic
+        guard let notificationTopic = try? encryptedStore.getItem(for: Persistent.notificationTopic.key, and: contactID, ofType: String()),
+        let oldNotificationTopic = notificationTopic else {
+            try? encryptedStore.save(item: newNotificationTopic, for: Persistent.notificationTopic.key, and: contactID)
             messaging.subscribe(toTopic: newNotificationTopic)
             return
         }

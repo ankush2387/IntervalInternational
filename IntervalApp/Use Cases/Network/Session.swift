@@ -33,6 +33,9 @@ final class Session: SessionStore {
         get { return userToken }
         set { userToken = newValue }
     }
+
+    // MARK: - Lifecycle
+    private init() { /* Private constructor for correct singleton pattern */ }
     
     // TODO: - Move this to the login coordinator
     func signOut() {
