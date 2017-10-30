@@ -2075,7 +2075,6 @@
 				618AEFCF1FA2C0D00097B423 /* ChargeSummaryTableViewCell.swift in Sources */,
 				3A3A01501C99BED600B7EC37 /* MemberShipViewController.swift in Sources */,
 				DC7EF4CA1D709E9600E9E360 /* ClubPointPageItemViewController.swift in Sources */,
-				3CC68CEC1FAA34FD0024D15F /* Print+IntervalDebug.swift in Sources */,
 				DC04BB421DB829F100227FF5 /* IntervalHDTabController.swift in Sources */,
 				DC7EF50B1D709F8800E9E360 /* ResortCollectionViewCell.swift in Sources */,
 				3ACC27951DDDC2BA0057B809 /* SelectPaymentMethodCell.swift in Sources */,
