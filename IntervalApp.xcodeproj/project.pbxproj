@@ -99,6 +99,7 @@
 		3A4801E31F60050600AB6D68 /* SelectedResortsIpadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4801E21F60050600AB6D68 /* SelectedResortsIpadViewController.swift */; };
 		3A4801E51F60055F00AB6D68 /* SelectedResortsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4801E41F60055F00AB6D68 /* SelectedResortsCell.swift */; };
 		3A513EB61FA35C5A00D516C3 /* CertificateDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A513EB51FA35C5A00D516C3 /* CertificateDetailsViewController.swift */; };
+		3A513EB81FA35FD500D516C3 /* CertificateDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A513EB71FA35FD500D516C3 /* CertificateDetailsCell.swift */; };
 		3A586CC01DDCA22900EF6756 /* ExchangeOrProtectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A586CBE1DDCA22900EF6756 /* ExchangeOrProtectionCell.swift */; };
 		3A586CC11DDCA22900EF6756 /* ExchangeOrProtectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A586CBF1DDCA22900EF6756 /* ExchangeOrProtectionCell.xib */; };
 		3A586CC41DDCA24F00EF6756 /* TotalCostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A586CC21DDCA24F00EF6756 /* TotalCostCell.swift */; };
@@ -480,6 +481,9 @@
 		3A4801E21F60050600AB6D68 /* SelectedResortsIpadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedResortsIpadViewController.swift; sourceTree = "<group>"; };
 		3A4801E41F60055F00AB6D68 /* SelectedResortsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedResortsCell.swift; sourceTree = "<group>"; };
 		3A513EB51FA35C5A00D516C3 /* CertificateDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateDetailsViewController.swift; sourceTree = "<group>"; };
+
+		3A513EB71FA35FD500D516C3 /* CertificateDetailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateDetailsCell.swift; sourceTree = "<group>"; };
+
 		3A586CBE1DDCA22900EF6756 /* ExchangeOrProtectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExchangeOrProtectionCell.swift; sourceTree = "<group>"; };
 		3A586CBF1DDCA22900EF6756 /* ExchangeOrProtectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExchangeOrProtectionCell.xib; sourceTree = "<group>"; };
 		3A586CC21DDCA24F00EF6756 /* TotalCostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TotalCostCell.swift; sourceTree = "<group>"; };
@@ -1049,6 +1053,7 @@
 				3A202C721F3B0ABA00678C50 /* RentalInventoryCVCell.swift */,
 				0887C97A1F6A99F5007F57C3 /* SearchFlexchangeButtonCell.swift */,
 				3A06663D1F912EE3002AA92A /* RenewalAdditionalCell.swift */,
+				3A513EB71FA35FD500D516C3 /* CertificateDetailsCell.swift */,
 			);
 			path = CustomCells;
 			sourceTree = "<group>";
@@ -2141,6 +2146,7 @@
 				E9ED1B591F44B89A00794C53 /* CertificateInfoViewController.swift in Sources */,
 				3A3BE3ED1CA0441200CDE3AA /* MyOwnershipAvailablePointTooolTableViewCell.swift in Sources */,
 				089416731F72D94300F03229 /* BedroomTableViewCell.swift in Sources */,
+				3A513EB81FA35FD500D516C3 /* CertificateDetailsCell.swift in Sources */,
 				3A2C728F1DDB2DC900BBF40B /* AdvisementsCell.swift in Sources */,
 				3C4F17271FA391E7001EF71F /* String+NSRage.swift in Sources */,
 				3A3A012D1C99BD0B00B7EC37 /* AvailablePointToolViewController.swift in Sources */,
