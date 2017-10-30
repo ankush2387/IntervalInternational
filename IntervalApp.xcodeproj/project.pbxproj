@@ -98,6 +98,8 @@
 		3A476F111CECE07F00607185 /* MoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A476F101CECE07F00607185 /* MoreCell.swift */; };
 		3A4801E31F60050600AB6D68 /* SelectedResortsIpadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4801E21F60050600AB6D68 /* SelectedResortsIpadViewController.swift */; };
 		3A4801E51F60055F00AB6D68 /* SelectedResortsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4801E41F60055F00AB6D68 /* SelectedResortsCell.swift */; };
+		3A513EB61FA35C5A00D516C3 /* CertificateDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A513EB51FA35C5A00D516C3 /* CertificateDetailsViewController.swift */; };
+		3A513EB81FA35FD500D516C3 /* CertificateDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A513EB71FA35FD500D516C3 /* CertificateDetailsCell.swift */; };
 		3A586CC01DDCA22900EF6756 /* ExchangeOrProtectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A586CBE1DDCA22900EF6756 /* ExchangeOrProtectionCell.swift */; };
 		3A586CC11DDCA22900EF6756 /* ExchangeOrProtectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A586CBF1DDCA22900EF6756 /* ExchangeOrProtectionCell.xib */; };
 		3A586CC41DDCA24F00EF6756 /* TotalCostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A586CC21DDCA24F00EF6756 /* TotalCostCell.swift */; };
@@ -477,6 +479,8 @@
 		3A476F101CECE07F00607185 /* MoreCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreCell.swift; sourceTree = "<group>"; };
 		3A4801E21F60050600AB6D68 /* SelectedResortsIpadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedResortsIpadViewController.swift; sourceTree = "<group>"; };
 		3A4801E41F60055F00AB6D68 /* SelectedResortsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedResortsCell.swift; sourceTree = "<group>"; };
+		3A513EB51FA35C5A00D516C3 /* CertificateDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateDetailsViewController.swift; sourceTree = "<group>"; };
+		3A513EB71FA35FD500D516C3 /* CertificateDetailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateDetailsCell.swift; sourceTree = "<group>"; };
 		3A586CBE1DDCA22900EF6756 /* ExchangeOrProtectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExchangeOrProtectionCell.swift; sourceTree = "<group>"; };
 		3A586CBF1DDCA22900EF6756 /* ExchangeOrProtectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExchangeOrProtectionCell.xib; sourceTree = "<group>"; };
 		3A586CC21DDCA24F00EF6756 /* TotalCostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TotalCostCell.swift; sourceTree = "<group>"; };
@@ -1045,6 +1049,7 @@
 				3A202C721F3B0ABA00678C50 /* RentalInventoryCVCell.swift */,
 				0887C97A1F6A99F5007F57C3 /* SearchFlexchangeButtonCell.swift */,
 				3A06663D1F912EE3002AA92A /* RenewalAdditionalCell.swift */,
+				3A513EB71FA35FD500D516C3 /* CertificateDetailsCell.swift */,
 			);
 			path = CustomCells;
 			sourceTree = "<group>";
@@ -1180,6 +1185,7 @@
 				E9ED1B581F44B89A00794C53 /* CertificateInfoViewController.swift */,
 				3C4957601F9145BB00B7727D /* RenewelViewController.swift */,
 				3A0666391F912C56002AA92A /* RenewalOtherOptionsVC.swift */,
+				3A513EB51FA35C5A00D516C3 /* CertificateDetailsViewController.swift */,
 			);
 			path = VacationSearch;
 			sourceTree = "<group>";
@@ -1724,9 +1730,8 @@
 				TargetAttributes = {
 					26D24CA91C4015290008EF39 = {
 						CreatedOnToolsVersion = 7.1.1;
-						DevelopmentTeam = 4CR2ZD7GRK;
 						LastSwiftMigration = 0800;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -2135,6 +2140,7 @@
 				E9ED1B591F44B89A00794C53 /* CertificateInfoViewController.swift in Sources */,
 				3A3BE3ED1CA0441200CDE3AA /* MyOwnershipAvailablePointTooolTableViewCell.swift in Sources */,
 				089416731F72D94300F03229 /* BedroomTableViewCell.swift in Sources */,
+				3A513EB81FA35FD500D516C3 /* CertificateDetailsCell.swift in Sources */,
 				3A2C728F1DDB2DC900BBF40B /* AdvisementsCell.swift in Sources */,
 				3C4F17271FA391E7001EF71F /* String+NSRage.swift in Sources */,
 				3A3A012D1C99BD0B00B7EC37 /* AvailablePointToolViewController.swift in Sources */,
@@ -2216,6 +2222,7 @@
 				3AC572111E2A2A6500969CF7 /* HeaderCell.swift in Sources */,
 				3AAA5A291C720F4500A5EA6D /* Session.swift in Sources */,
 				E951BC4D1EE71D800070A04B /* AlertHelpViewController.swift in Sources */,
+				3A513EB61FA35C5A00D516C3 /* CertificateDetailsViewController.swift in Sources */,
 				DC27F7B71DB81B5D00AA374F /* HomeAlertTableViewCell.swift in Sources */,
 				3A3A01431C99BD0B00B7EC37 /* OwnershipFloatTableViewCell.swift in Sources */,
 				DC7BA83E1DB911D600BB0C3B /* MagazinesIPadViewController.swift in Sources */,
@@ -2420,9 +2427,9 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = IntervalApp/IntervalApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Aylwing Olivas (BK2HSFRB8Y)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Aylwing Olivas (BK2HSFRB8Y)";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 4CR2ZD7GRK;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					RealmSwift.framework,
@@ -2439,8 +2446,8 @@
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.intervalintl.Interval;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "cddecb91-2f5d-4afe-913a-174b806d3b98";
-				PROVISIONING_PROFILE_SPECIFIER = "IntervalApp-DEV";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "IntervalApp/IntervalApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -2457,9 +2464,9 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = IntervalApp/IntervalApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Aylwing Olivas (BK2HSFRB8Y)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Aylwing Olivas (BK2HSFRB8Y)";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 4CR2ZD7GRK;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					RealmSwift.framework,
@@ -2476,8 +2483,8 @@
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-DRELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.intervalintl.Interval;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "cddecb91-2f5d-4afe-913a-174b806d3b98";
-				PROVISIONING_PROFILE_SPECIFIER = "IntervalApp-DEV";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "IntervalApp/IntervalApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
