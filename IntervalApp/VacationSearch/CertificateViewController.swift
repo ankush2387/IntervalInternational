@@ -51,9 +51,18 @@ class CertificateViewController: UIViewController {
     }
     
     func navigateToCertificateDetailsVC()  {
-        let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.certificateDetailsViewController) as! CertificateDetailsViewController
-        self.present(viewController, animated: true, completion: nil)
+        
+        if (Constant.MyClassConstants.isRunningOnIphone) {
+            let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.certificateDetailsViewController) as! CertificateDetailsViewController
+            self.present(viewController, animated: true, completion: nil)
+        } else {
+            let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.certificateDetailsViewController) as! CertificateDetailsViewController
+            self.present(viewController, animated: true, completion: nil)
+            
+        }
+    
     }
     
     override func viewWillAppear(_ animated: Bool) {

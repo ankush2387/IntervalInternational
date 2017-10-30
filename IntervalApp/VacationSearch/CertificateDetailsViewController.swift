@@ -38,19 +38,23 @@ class CertificateDetailsViewController: UIViewController {
 
 }
 
+//MARK:- table view delegate
 extension CertificateDetailsViewController:UITableViewDelegate {
     
-    //***** UITableview delegate methods definition here *****//
-    
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 650
+        return UITableViewAutomaticDimension
         
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 250
     }
 }
 
 
+//MARK:- table view delegate
 extension CertificateDetailsViewController:UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.certificateScreenReusableIdentifiers.certificateDetailsCell, for: indexPath) as! CertificateDetailsCell
         
@@ -65,8 +69,7 @@ extension CertificateDetailsViewController:UITableViewDataSource {
         print(newFmap)
         var newStr:String = ""
         for str in newFmap{
-            newStr.append(str)
-            //cell.lblCertificateDetails.text = cell.lblCertificateDetails.text! + "\(str)"
+            newStr.append(str + "\n")
         }
         cell.lblCertificateDetails.text = newStr
         
