@@ -33,7 +33,8 @@ class CertificateDetailsViewController: UIViewController {
     
 }
 
-//MARK:- tableview delegate
+
+//MARK:- table view delegate
 extension CertificateDetailsViewController:UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -47,8 +48,6 @@ extension CertificateDetailsViewController:UITableViewDelegate {
     }
 }
 
-
-//MARK:- tableview datasource
 extension CertificateDetailsViewController:UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -61,6 +60,7 @@ extension CertificateDetailsViewController:UITableViewDataSource {
         let newLine = "\n"
         let newLine2 = "\n\n"
         
+
         let headerString = response.header.joined(separator: newLine)
         
         let footer = response.footer.joined(separator: newLine)
@@ -69,6 +69,7 @@ extension CertificateDetailsViewController:UITableViewDataSource {
         var areaLbl = ""
         if let label = response.restrictedArea?.label {
             areaLbl = label
+
         }
         
         let areasCombined = response.restrictedArea?.areas.map{$0.areaName} as! [String]
