@@ -2705,13 +2705,11 @@ transaction.</string>
                                 <rect key="frame" x="20" y="84" width="335" height="563"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CertificateDetailsCell" rowHeight="104" id="kS0-d9-VLm" customClass="CertificateDetailsCell" customModule="IntervalApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="335" height="104"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CertificateDetailsCell" rowHeight="80" id="kS0-d9-VLm" customClass="CertificateDetailsCell" customModule="IntervalApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="335" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="kS0-d9-VLm" id="Bds-5B-6qh">
-                                            <rect key="frame" x="0.0" y="0.0" width="335" height="104"/>
-
+                                            <rect key="frame" x="0.0" y="0.0" width="335" height="80"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="JW2-EC-nuz">
@@ -2723,7 +2721,7 @@ transaction.</string>
                                                 </label>
 
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tel-Of-rng">
-                                                    <rect key="frame" x="10" y="43.5" width="315" height="17.5"/>
+                                                    <rect key="frame" x="10" y="48.5" width="315" height="17.5"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -2734,10 +2732,9 @@ transaction.</string>
                                                 <constraint firstAttribute="trailing" secondItem="bLt-Ng-fze" secondAttribute="trailing" constant="10" id="57l-1e-YyG"/>
                                                 <constraint firstItem="Tel-Of-rng" firstAttribute="leading" secondItem="Bds-5B-6qh" secondAttribute="leading" constant="10" id="5i7-9F-X64"/>
                                                 <constraint firstItem="bLt-Ng-fze" firstAttribute="leading" secondItem="Bds-5B-6qh" secondAttribute="leading" constant="10" id="7o9-N7-ZQ6"/>
-
-                                                <constraint firstItem="Tel-Of-rng" firstAttribute="top" secondItem="bLt-Ng-fze" secondAttribute="bottom" constant="15" id="FJp-2M-S8T"/>
+                                                <constraint firstItem="Tel-Of-rng" firstAttribute="top" secondItem="bLt-Ng-fze" secondAttribute="bottom" constant="20" id="EHd-xN-IGq"/>
                                                 <constraint firstItem="bLt-Ng-fze" firstAttribute="top" secondItem="Bds-5B-6qh" secondAttribute="top" constant="5" id="SSf-U8-nbg"/>
-
+                                                <constraint firstAttribute="bottom" secondItem="Tel-Of-rng" secondAttribute="bottom" constant="14" id="XQk-WR-fii"/>
                                                 <constraint firstAttribute="trailing" secondItem="Tel-Of-rng" secondAttribute="trailing" constant="10" id="bQr-9u-GU7"/>
                                             </constraints>
 
