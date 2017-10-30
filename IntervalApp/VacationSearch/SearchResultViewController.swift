@@ -715,6 +715,7 @@ class SearchResultViewController: UIViewController {
                 let viewController = self.storyboard?.instantiateViewController(withIdentifier: Constant.storyboardControllerID.sortingViewController) as! SortingViewController
                 viewController.isFilterClicked = true
                 viewController.alertFilterOptionsArray = alertFilterOptionsArray
+
                 viewController.resortNameArray = Constant.MyClassConstants.resortsArray
                 viewController.selectedIndex = Constant.MyClassConstants.filteredIndex
                 self.present(viewController, animated: true, completion: nil)
@@ -730,8 +731,54 @@ class SearchResultViewController: UIViewController {
             self.present(viewController, animated: true, completion: nil)
         }
 
+
   }
     
+    
+    // Mark:- Set options for filter
+    func createFilterOptions(){
+        
+        Constant.MyClassConstants.filterOptionsArray.removeAll()
+        let storedData = Helper.getLocalStorageWherewanttoGo()
+        let allDest = Helper.getLocalStorageAllDest()
+        
+        if(storedData.count > 0) {
+            
+            let realm = try! Realm()
+            try! realm.write {
+                Constant.MyClassConstants.filterOptionsArray.removeAll()
+                for object in storedData {
+                    
+                    if(object.destinations.count > 0){
+                        Constant.MyClassConstants.filterOptionsArray.append(
+                            .Destination(object.destinations[0])
+                        )
+                        
+                    }else if(object.resorts.count > 0){
+                        
+                        if(object.resorts[0].resortArray.count > 0){
+                            
+                            var araayOfResorts = List<ResortByMap>()
+                            var reswortByMap = [ResortByMap]()
+                            araayOfResorts = object.resorts[0].resortArray
+                            for resort in araayOfResorts{
+                                reswortByMap.append(resort)
+                            }
+                            
+                            Constant.MyClassConstants.filterOptionsArray.append(.ResortList(reswortByMap))
+                        }else{
+     Constant.MyClassConstants.filterOptionsArray.append(.Resort(object.resorts[0]))
+                        }
+                    }
+                }
+            }
+        }else if(allDest.count > 0){
+            for areaCode in Constant.MyClassConstants.selectedAreaCodeArray{
+                let dictionaryArea = ["\(areaCode)": Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: areaCode as! String)]
+                Constant.MyClassConstants.filterOptionsArray.append(.Area(dictionaryArea as! NSMutableDictionary))
+            }
+        }
+    }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let firstVisibleIndexPath = searchResultTableView.indexPathsForVisibleRows?.first
