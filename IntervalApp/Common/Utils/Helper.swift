@@ -1276,6 +1276,7 @@ public class Helper{
             }
 
             if(Constant.RunningDevice.deviceIdiom == .pad) {
+
                     if(Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.isFromSearchBoth){
                         
                         var storyBoard = UIStoryboard()
