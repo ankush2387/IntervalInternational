@@ -10,7 +10,6 @@ import UIKit
 import IntervalUIKit
 import DarwinSDK
 import SDWebImage
-import SVProgressHUD
 import RealmSwift
 
 class SearchResultViewController: UIViewController {
@@ -328,10 +327,11 @@ class SearchResultViewController: UIViewController {
                 Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
                 
                 self.searchResultColelctionView.reloadData()
+                   self.hideHudAsync()
                 
             },
             onError:{ (error) in
-                
+                self.hideHudAsync()
                 SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                 
                 }
@@ -726,13 +726,66 @@ class SearchResultViewController: UIViewController {
     
     //funciton called when search result page sort by name button pressed
     @IBAction func filterByNameButtonPressed(_ sender: Any) {
+        if(!Constant.MyClassConstants.noFilterOptions){
+            ((sender as AnyObject) as! UIButton).isEnabled = true
+            self.createFilterOptions()
+            if(Constant.MyClassConstants.filterOptionsArray.count > 1){
+                let viewController = self.storyboard?.instantiateViewController(withIdentifier: Constant.storyboardControllerID.sortingViewController) as! SortingViewController
+                viewController.isFilterClicked = true
+                viewController.resortNameArray = Constant.MyClassConstants.resortsArray
+                viewController.selectedIndex = Constant.MyClassConstants.filteredIndex
+                self.present(viewController, animated: true, completion: nil)
+            }else{
+                ((sender as AnyObject) as! UIButton).isEnabled = false
+            }
+        }
         
-        let viewController = self.storyboard?.instantiateViewController(withIdentifier: Constant.storyboardControllerID.sortingViewController) as! SortingViewController
-        viewController.isFilterClicked = true
-        viewController.resortNameArray = Constant.MyClassConstants.resortsArray
-        viewController.selectedIndex = Constant.MyClassConstants.filteredIndex
-        self.present(viewController, animated: true, completion: nil)
 
+    }
+    
+    // Mark:- Set options for filter
+    func createFilterOptions(){
+        
+        Constant.MyClassConstants.filterOptionsArray.removeAll()
+        let storedData = Helper.getLocalStorageWherewanttoGo()
+        let allDest = Helper.getLocalStorageAllDest()
+        
+        if(storedData.count > 0) {
+            
+            let realm = try! Realm()
+            try! realm.write {
+                Constant.MyClassConstants.filterOptionsArray.removeAll()
+                for object in storedData {
+                    
+                    if(object.destinations.count > 0){
+                        Constant.MyClassConstants.filterOptionsArray.append(
+                            .Destination(object.destinations[0])
+                        )
+                        
+                    }else if(object.resorts.count > 0){
+                        
+                        if(object.resorts[0].resortArray.count > 0){
+                            
+                            var araayOfResorts = List<ResortByMap>()
+                            var reswortByMap = [ResortByMap]()
+                            araayOfResorts = object.resorts[0].resortArray
+                            for resort in araayOfResorts{
+                                reswortByMap.append(resort)
+                            }
+                            
+                            Constant.MyClassConstants.filterOptionsArray.append(.ResortList(reswortByMap))
+                        }else{
+     Constant.MyClassConstants.filterOptionsArray.append(.Resort(object.resorts[0]))
+                        }
+                    }
+                }
+            }
+        }else if(allDest.count > 0){
+            for areaCode in Constant.MyClassConstants.selectedAreaCodeArray{
+                let dictionaryArea = ["\(areaCode)": Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: areaCode as! String)]
+                Constant.MyClassConstants.filterOptionsArray.append(.Area(dictionaryArea as! NSMutableDictionary))
+            }
+        }
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -807,7 +860,6 @@ class SearchResultViewController: UIViewController {
         UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: {(Membership) in
             
             // Got an access token!  Save it for later use.
-            SVProgressHUD.dismiss()
             self.hideHudAsync()
             Constant.MyClassConstants.membershipContactArray = Membership.contacts!
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
@@ -826,8 +878,6 @@ class SearchResultViewController: UIViewController {
             }
             
         }, onError: { (error) in
-            
-            SVProgressHUD.dismiss()
             self.hideHudAsync()
             SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.description)
             
@@ -872,12 +922,10 @@ class SearchResultViewController: UIViewController {
                     }
         
                     if (sender.isSelected == false){
-                        
                         showHudAsync()
                         UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode:resortCode, onSuccess: {(response) in
 
                             self.hideHudAsync()
-                            SVProgressHUD.dismiss()
                             sender.isSelected = true
                             Constant.MyClassConstants.favoritesResortCodeArray.add(resortCode)
                             let indexpath = NSIndexPath(row: sender.tag, section:Int(section)!)
@@ -885,31 +933,22 @@ class SearchResultViewController: UIViewController {
                             self.searchResultTableView.reloadRows(at: [indexpath as IndexPath], with: .automatic)
                             
                         }, onError: {(error) in
-
-                            SVProgressHUD.dismiss()
                             self.hideHudAsync()
-
                         })
                     }
                     else {
-                        
-                       
                         showHudAsync()
                         UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: resortCode, onSuccess: {(response) in
 
                             sender.isSelected = false
                             self.hideHudAsync()
-                            SVProgressHUD.dismiss()
                             Constant.MyClassConstants.favoritesResortCodeArray.remove(resortCode)
                             let indexpath = NSIndexPath(row: sender.tag, section:Int(section)!)
                             self.searchResultTableView.reloadRows(at: [indexpath as IndexPath], with: .automatic)
                             
 
                         }, onError: {(error) in
-
-                            SVProgressHUD.dismiss()
                             self.hideHudAsync()
-
                         })
 
                     }
@@ -1048,13 +1087,10 @@ extension SearchResultViewController:UICollectionViewDelegate {
                         }
                     }
                     Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = collectionView.tag + 1
-                    SVProgressHUD.dismiss()
                     self.hideHudAsync()
                     self.performSegue(withIdentifier: Constant.segueIdentifiers.vacationSearchDetailSegue, sender: nil)
                 })
                 { (error) in
-                    
-                    SVProgressHUD.dismiss()
                     self.hideHudAsync()
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.description)
                 }
@@ -1110,7 +1146,6 @@ extension SearchResultViewController:UICollectionViewDelegate {
                         processResort.processId = response.processId
                         Constant.MyClassConstants.getawayBookingLastStartedProcess = processResort
                         Constant.MyClassConstants.processStartResponse = response
-                        SVProgressHUD.dismiss()
                         self.hideHudAsync()
                         Constant.MyClassConstants.viewResponse = response.view!
                         if let rentalFees = response.view?.fees{
@@ -1138,7 +1173,6 @@ extension SearchResultViewController:UICollectionViewDelegate {
                         self.checkUserMembership(response: response)
                     }, onError: {(error) in
                         self.hideHudAsync()
-                        SVProgressHUD.dismiss()
                         SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.description)
                     })
                 }else{ // search both
@@ -1851,7 +1885,6 @@ extension SearchResultViewController:SearchResultContentTableCellDelegate{
                     print(response)
                     sender.isSelected = false
                     self.hideHudAsync()
-                    SVProgressHUD.dismiss()
                     Constant.MyClassConstants.favoritesResortCodeArray.remove(Constant.MyClassConstants.resortsArray[sender.tag].resortCode!)
                     self.searchResultTableView.reloadData()
                     

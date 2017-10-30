@@ -87,7 +87,7 @@
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="310" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ONH-ON-53y">
-                                <rect key="frame" x="16" y="64" width="343" height="568"/>
+                                <rect key="frame" x="16" y="64" width="343" height="519"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="renewelCell" rowHeight="310" id="SGu-DM-qo4" customClass="RenewelCell" customModule="IntervalApp" customModuleProvider="target">
@@ -8382,9 +8382,9 @@ transaction.</string>
         <segue reference="xan-e8-tse"/>
         <segue reference="Gma-QI-cCT"/>
         <segue reference="Lp2-ch-oU8"/>
-        <segue reference="u0k-hc-uRI"/>
+        <segue reference="Rpo-cQ-qF4"/>
         <segue reference="4gU-cx-AAf"/>
-        <segue reference="Uce-OZ-bfJ"/>
+        <segue reference="MqC-fZ-7vm"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
 </document>

@@ -16,7 +16,7 @@ class Constant: NSObject {
     static var holdingTimer:Timer!
     static var holdingTime = 17
     static var decreaseValue = 1
-    static var holdingResortForRemainingMinutes = NSLocalizedString("We are holding this unit for \(holdingTime) minutes", comment: "")
+    static var holdingResortForRemainingMinutes = "We are holding this unit for \(holdingTime) minutes".localized()
     
     struct RunningDevice {
         static var deviceOrientation:UIDeviceOrientation?
@@ -267,6 +267,7 @@ class Constant: NSObject {
         static var favoritesResortCodeArray:NSMutableArray = []
         static var getawayAlertsArray = [RentalAlert]()
         static var dashBoardAlertsArray = [RentalAlert]()
+        static var alertsDictionary = NSMutableDictionary()
         static var upcomingTripsArray = [UpcomingTrip]()
         static var transactionType = ""
         static var activeAlertsArray:NSMutableArray = []
@@ -343,7 +344,7 @@ class Constant: NSObject {
         static var collectionViewScrolledIndex:Int = 0
         static var imagesArray:NSMutableArray = []
         static var bedRoomSizeSelectedIndexArray:NSMutableArray = []
-        static var alertSelectedBedroom: NSMutableArray = []
+        static var alertSelectedBedroom = [String]()
         static var unitNumberSelectedArray:NSMutableArray = []
         static var amenitiesDictionary = NSMutableDictionary()
         static var advisementsDictionary = NSMutableDictionary()
@@ -635,9 +636,8 @@ class Constant: NSObject {
         
         static var certifcateCount = 0
         static var certificateArray = [AccommodationCertificate]()
-        
-        static var certificateDetailsArray = AccommodationCertificateSummary()
-        
+        static var noFilterOptions = false
+
     }
     
     // Enum to store resorts and destinations

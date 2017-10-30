@@ -16,7 +16,6 @@ class CreateActionSheet: UITableViewController {
     var actionSheetTable : UITableView!
     var tableViewController = UIViewController()
     let dataSource = CommonMembership()
-    var alertsDictionary = NSMutableDictionary()
     var activeAlertCount = 0
     
     override func viewWillAppear(_ animated: Bool) {
@@ -161,7 +160,7 @@ class CreateActionSheet: UITableViewController {
             
             var alertVacationInfo = RentalAlert()
             alertVacationInfo = response
-            self.alertsDictionary .setValue(alertVacationInfo, forKey: String(describing: alert.alertId!))
+            Constant.MyClassConstants.alertsDictionary .setValue(alertVacationInfo, forKey: String(describing: alert.alertId!))
             //if(alert.enabled)!{
                 self.searchVacationPressed(alert)
             //}else{
@@ -180,7 +179,7 @@ class CreateActionSheet: UITableViewController {
     
     func searchVacationPressed(_ alert : RentalAlert){
         var getawayAlert = RentalAlert()
-        getawayAlert = self.alertsDictionary.value(forKey: String(describing: alert.alertId!)) as! RentalAlert
+        getawayAlert = Constant.MyClassConstants.alertsDictionary.value(forKey: String(describing: alert.alertId!)) as! RentalAlert
         
         let searchResortRequest = RentalSearchDatesRequest()
         searchResortRequest.checkInToDate = Helper.convertStringToDate(dateString:getawayAlert.latestCheckInDate!,format:Constant.MyClassConstants.dateFormat)
@@ -246,27 +245,27 @@ func sendOmnitureTrackCallForEvent2() {
     
     // omniture tracking with event 2
     let userInfo = NSMutableDictionary()
-    userInfo.addEntries(from: [Constant.omnitureEvars.eVar1 : (Session.sharedSession.selectedMembership?.memberNumber!) as Any])
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar1 : (Session.sharedSession.selectedMembership?.memberNumber) as Any])
     
-    userInfo.addEntries(from: [Constant.omnitureEvars.eVar3 : "\(Product!.productCode!)-\(Session.sharedSession.selectedMembership!.membershipTypeCode!)"])
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar3 : "\(Product?.productCode)-\(Session.sharedSession.selectedMembership?.membershipTypeCode)"])
     userInfo.addEntries(from: [Constant.omnitureEvars.eVar4 : ""])
     
     userInfo.addEntries(from: [Constant.omnitureEvars.eVar5 : Constant.MyClassConstants.loginOriginationPoint])
     userInfo.addEntries(from: [Constant.omnitureEvars.eVar6 :""])
     
-    switch Product!.productCode! {
+    switch Product?.productCode {
         
-    case Constant.productCodeImageNames.basic:
+    case Constant.productCodeImageNames.basic?:
         userInfo.addEntries(from: [Constant.omnitureEvars.eVar7 :Helper.getUpcommingcheckinDatesDiffrence(date: (Product?.expirationDate!)!)])
         
         
-    case Constant.productCodeImageNames.cig:
+    case Constant.productCodeImageNames.cig?:
         userInfo.addEntries(from: [Constant.omnitureEvars.eVar8 :Helper.getUpcommingcheckinDatesDiffrence(date: (Product?.expirationDate!)!)])
         
-    case Constant.productCodeImageNames.gold:
+    case Constant.productCodeImageNames.gold?:
         userInfo.addEntries(from: [Constant.omnitureEvars.eVar9 :Helper.getUpcommingcheckinDatesDiffrence(date: (Product?.expirationDate!)!)])
         
-    case Constant.productCodeImageNames.platinum:
+    case Constant.productCodeImageNames.platinum?:
         userInfo.addEntries(from: [Constant.omnitureEvars.eVar10 :Helper.getUpcommingcheckinDatesDiffrence(date: (Product?.expirationDate!)!)])
         
     default:

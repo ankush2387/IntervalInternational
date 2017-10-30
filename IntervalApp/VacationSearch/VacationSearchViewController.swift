@@ -83,12 +83,12 @@ class VacationSearchViewController: UIViewController {
             //***** Add the hamburger menu *****//
             let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action:#selector(SWRevealViewController.revealToggle(_:)))
             menuButton.tintColor = UIColor.white
-            self.parent!.navigationItem.leftBarButtonItem = menuButton
+            self.parent?.navigationItem.leftBarButtonItem = menuButton
             
             //***** Creating and adding right bar button for more option button *****//
             moreButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.MoreNav), style: .plain, target: self, action:#selector(MoreNavButtonPressed(_:)))
             moreButton!.tintColor = UIColor.white
-            self.parent!.navigationItem.rightBarButtonItem = moreButton
+            self.parent?.navigationItem.rightBarButtonItem = moreButton
             
             //***** This line allows the user to swipe left-to-right to reveal the menu. We might want to comment this out if it becomes confusing. *****//
             self.view.addGestureRecognizer( rvc.panGestureRecognizer() )
@@ -315,6 +315,8 @@ extension VacationSearchViewController:UICollectionViewDelegate {
         if(collectionView.tag == 1){
             
             //Set travel PartyInfo
+            //Set filter options
+            Constant.MyClassConstants.noFilterOptions = false
             let travelPartyInfo = TravelParty()
             travelPartyInfo.adults = Int(self.adultCounter)
             travelPartyInfo.children = Int(self.childCounter)
@@ -344,8 +346,6 @@ extension VacationSearchViewController:UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView.tag == 1 {
-            
-           
              return Constant.MyClassConstants.flexExchangeDeals.count
         } else {
             return Constant.MyClassConstants.topDeals.count
@@ -1391,6 +1391,10 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
     
     func searchButtonClicked(_ sender : IUIKButton) {
         
+        //Set filter options availability
+        Constant.MyClassConstants.noFilterOptions = false
+        
+        
         //Set travel PartyInfo
         let travelPartyInfo = TravelParty()
         travelPartyInfo.adults = Int(self.adultCounter)
@@ -1481,7 +1485,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 
             }, onError: { (error) in
                 SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
-                //Helper.hideProgressBar(senderView: self)
+                self.hideHudAsync()
                 sender.isEnabled = true
             })
                 }
@@ -1517,7 +1521,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                         
                     }, onError: { (error) in
                         print(error)
-                        //Helper.hideProgressBar(senderView: self)
+                        self.hideHudAsync()
                         SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                     })
                 }

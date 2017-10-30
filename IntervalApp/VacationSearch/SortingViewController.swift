@@ -33,8 +33,10 @@ class SortingViewController: UIViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        self.createFilterOptions()
         
+//        if(!Constant.MyClassConstants.noFilterOptions){
+//            self.createFilterOptions()
+//        }
         
         //remove extra separator of tableview
         self.sortingTBLview.tableFooterView = UIView()

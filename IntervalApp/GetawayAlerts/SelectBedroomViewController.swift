@@ -53,7 +53,7 @@ class SelectBedroomViewController: UIViewController {
         } else {
             Constant.MyClassConstants.selectedBedRoomSize = ""
             for (index, selected) in selectedBedroomArray.enumerated() {
-                Constant.MyClassConstants.alertSelectedBedroom = selectedBedroomArray as! NSMutableArray
+                Constant.MyClassConstants.alertSelectedBedroom = selectedBedroomArray
                 if index == selectedBedroomArray.count - 1 {
                     Constant.MyClassConstants.selectedBedRoomSize.append("\(selected)")
                 } else {
