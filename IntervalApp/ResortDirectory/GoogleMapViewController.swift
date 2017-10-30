@@ -1177,6 +1177,7 @@ class GoogleMapViewController: UIViewController {
         }
         Constant.MyClassConstants.googleMarkerArray.removeAll()
         Constant.MyClassConstants.googleMarkerArray.removeAll()
+        self.mapView.clear()
         self.displaySearchedResort()
         
         if(Constant.RunningDevice.deviceIdiom == .pad){
