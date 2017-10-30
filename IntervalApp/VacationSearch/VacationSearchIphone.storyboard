@@ -2732,6 +2732,16 @@ transaction.</string>
                                                 </label>
                                             </subviews>
 
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="bLt-Ng-fze" secondAttribute="trailing" constant="10" id="57l-1e-YyG"/>
+                                                <constraint firstItem="Tel-Of-rng" firstAttribute="leading" secondItem="Bds-5B-6qh" secondAttribute="leading" constant="10" id="5i7-9F-X64"/>
+                                                <constraint firstItem="bLt-Ng-fze" firstAttribute="leading" secondItem="Bds-5B-6qh" secondAttribute="leading" constant="10" id="7o9-N7-ZQ6"/>
+                                                <constraint firstItem="Tel-Of-rng" firstAttribute="top" secondItem="bLt-Ng-fze" secondAttribute="bottom" constant="20" id="EHd-xN-IGq"/>
+                                                <constraint firstItem="bLt-Ng-fze" firstAttribute="top" secondItem="Bds-5B-6qh" secondAttribute="top" constant="5" id="SSf-U8-nbg"/>
+                                                <constraint firstAttribute="bottom" secondItem="Tel-Of-rng" secondAttribute="bottom" constant="14" id="XQk-WR-fii"/>
+                                                <constraint firstAttribute="trailing" secondItem="Tel-Of-rng" secondAttribute="trailing" constant="10" id="bQr-9u-GU7"/>
+                                            </constraints>
+
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
