@@ -334,7 +334,6 @@ class GoogleMapViewController: UIViewController {
                 self.navigationItem.rightBarButtonItem!.isEnabled = true
                 Constant.MyClassConstants.googleMarkerArray.removeAll()
                 if(Constant.MyClassConstants.resortsArray.count > 0){
-                    
                     self.mapView.clear()
                     self.displaySearchedResort()
                     if(self.mapTableView != nil){
@@ -816,7 +815,7 @@ class GoogleMapViewController: UIViewController {
     func createBottomResortView(marker :GMSMarker) {
         
         if(resortCollectionView != nil && Constant.MyClassConstants.resortsArray.count > 0){
-             self.resortCollectionView.reloadData()
+            self.resortCollectionView.reloadData()
             DispatchQueue.main.async {
                 let indexPath = IndexPath(row: self.currentIndex, section: 0)
                 self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.right, animated: true)
@@ -886,7 +885,7 @@ class GoogleMapViewController: UIViewController {
         }
         UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn ,animations: {
             self.resortView.frame = CGRect(x: 0, y: self.view.frame.height, width: self.view.frame.width, height: self.bottomResortHeight)
-            
+
              DispatchQueue.main.async {
                 for selectedMarker in Constant.MyClassConstants.googleMarkerArray {
                     
@@ -1509,30 +1508,31 @@ extension GoogleMapViewController:UICollectionViewDataSource {
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    
+        var visible: [AnyObject] = resortCollectionView.indexPathsForVisibleItems as [AnyObject]
+        let indexpath: NSIndexPath = (visible[0] as! NSIndexPath)
         
         if Constant.MyClassConstants.isRunningOnIphone && resortCollectionView != nil{
 
             var visible: [AnyObject] = resortCollectionView.indexPathsForVisibleItems as [AnyObject]
             let indexpath: NSIndexPath = (visible[0] as! NSIndexPath)
+        self.currentIndex = indexpath.row
+        DispatchQueue.main.async {
             
-            self.currentIndex = indexpath.row
-            DispatchQueue.main.async {
-                
-                for marker in Constant.MyClassConstants.googleMarkerArray {
-                    
-                    if(marker.userData as! Int ==  self.currentIndex) {
-                        marker.icon = UIImage(named:Constant.assetImageNames.pinFocusImage)
-                        marker.isFlat = true
-                        self.mapView.selectedMarker = marker
-                    }
-                    else {
-                        marker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
-                        marker.isFlat = false
-                    }
-                }
+        for marker in Constant.MyClassConstants.googleMarkerArray {
+            
+            if(marker.userData as! Int ==  self.currentIndex) {
+                marker.icon = UIImage(named:Constant.assetImageNames.pinFocusImage)
+                marker.isFlat = true
+                self.mapView.selectedMarker = marker
+            }
+            else {
+                marker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
+                marker.isFlat = false
             }
         }
-     }
+      }
+    }
 }
 
 //***** Table view delegate methods to handle table view *****//

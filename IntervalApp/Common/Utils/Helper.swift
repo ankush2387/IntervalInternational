@@ -1275,7 +1275,6 @@ public class Helper{
                     Constant.MyClassConstants.imagesArray.add(imgStr.url!)
                 }
             }
-
             if(Constant.RunningDevice.deviceIdiom == .pad) {
 
                     if(Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.isFromSearchBoth){
