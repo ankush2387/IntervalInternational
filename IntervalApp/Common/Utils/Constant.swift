@@ -90,7 +90,7 @@ class Constant: NSObject {
         static var state = ""
         static var pinCode = ""
         static var cardType = ""
-        static var expDate:Date? = nil
+        static var expDate:String? = nil
         static var cvv = ""
         static var countryCode = ""
         static var stateCode = ""
@@ -495,6 +495,7 @@ class Constant: NSObject {
         static var additionalAdv = "ADDITIONAL INFORMATION"
         static var dateFormat = "yyyy-MM-dd"
         static var dateFormat1 = "yyyy-MM-dd"
+        static var monthDateFormat = "yyyy-MM"
         
         //use for no Availability Cell
         static var isShowAvailability = false
