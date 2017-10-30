@@ -1274,8 +1274,8 @@ public class Helper{
                     Constant.MyClassConstants.imagesArray.add(imgStr.url!)
                 }
             }
-            if(Constant.RunningDevice.deviceIdiom == .pad) {
-                    
+
+                if(Constant.RunningDevice.deviceIdiom == .pad) {
                     if(Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.isFromSearchBoth){
                         
                         var storyBoard = UIStoryboard()
@@ -2226,7 +2226,11 @@ public class Helper{
     static func topToBottomTransition()-> CATransition {
         
         let transition = CATransition()
+<<<<<<< HEAD
         transition.duration = 0.4
+=======
+        transition.duration = 0.5
+>>>>>>> changes related to navigation bar issue and map marker issue
         transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         transition.type = kCATransitionReveal
         transition.subtype = kCATransitionFromBottom

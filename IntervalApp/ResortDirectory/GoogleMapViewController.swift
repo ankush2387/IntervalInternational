@@ -334,7 +334,6 @@ class GoogleMapViewController: UIViewController {
                 self.navigationItem.rightBarButtonItem!.isEnabled = true
                 Constant.MyClassConstants.googleMarkerArray.removeAll()
                 if(Constant.MyClassConstants.resortsArray.count > 0){
-                    
                     self.mapView.clear()
                     self.displaySearchedResort()
                     if(self.mapTableView != nil){
@@ -476,7 +475,6 @@ class GoogleMapViewController: UIViewController {
             Constant.MyClassConstants.resortsArray = response
             self.mapView.clear()
             self.displaySearchedResort()
-        
         }
         if(Constant.RunningDevice.deviceIdiom == .pad && !self.hideSideView && self.containerView != nil && self.containerView.isHidden == true) {
             Constant.MyClassConstants.addResortSelectedIndex.removeAllObjects()
@@ -1316,50 +1314,36 @@ extension GoogleMapViewController:GMSMapViewDelegate {
                 marker.isFlat = false
                 self.removeBottomView()
                 
-            }else {
+            }
+            else {
                 
+             DispatchQueue.main.async {
                 for selectedMarker in Constant.MyClassConstants.googleMarkerArray {
-                    
-                    if(selectedMarker.userData as! Int == marker.userData as! Int) {
-                        
+                
+                if(selectedMarker.userData as! Int == marker.userData as! Int) {
                         selectedMarker.isFlat = true
                         selectedMarker.icon = UIImage(named:Constant.assetImageNames.pinFocusImage)
+                }
+                else {
                         
-                    }
-                    else {
-                        
-                        selectedMarker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
+                    selectedMarker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
                         selectedMarker.isFlat = false
                     }
                 }
                 self.mapView.selectedMarker = marker
                 self.currentIndex = marker.userData as! Int
                 
-                let indexPath = IndexPath(row: currentIndex, section: 0)
-                
-                if (UIDevice.current.userInterfaceIdiom == .pad) {
-                    
-                    
-                    if(self.currentIndex > marker.userData as! Int) {
-                        self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.bottom, animated: true)
-                    }
-                    else {
-                        self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.top, animated: true)
-                    }
-                    
-                    
+                let indexPath = IndexPath(row: self.currentIndex, section: 0)
+                if(self.currentIndex > marker.userData as! Int) {
+                        
+                    self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.left, animated: true)
                 }
                 else {
-                    
-                    if(self.currentIndex > marker.userData as! Int) {
                         
-                        self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.left, animated: true)
-                    }
-                    else {
-                        
-                        self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.right, animated: true)
-                    }
+                    self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.right, animated: true)
                 }
+            }
+                
             }
         }
         return true
@@ -1546,7 +1530,6 @@ extension GoogleMapViewController:UICollectionViewDataSource {
                 }
             }
         }
-        
     }
 }
 
