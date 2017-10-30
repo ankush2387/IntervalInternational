@@ -984,7 +984,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                 if let month = myComponents.month{
                     cell.dateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month))"
                     if let year = myComponents.year{
-                       cell.dateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month)) \(year)"
+                        cell.dateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month)) \(year)"
                     }
                 }
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
@@ -1505,7 +1505,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     }, onError: { (error) in
                         self.hideHudAsync()
                         self.presentErrorAlert(UserFacingCommonError.generic)
-                        intervalPrint(error)
+                        
                     })
                 }
                 
@@ -1819,4 +1819,3 @@ extension VacationSearchViewController:HelperDelegate {
         Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
     }
 }
-

@@ -232,7 +232,6 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     
     //Function for navigating to search results
     func navigateToSearchResults(){
-
         if Constant.MyClassConstants.isRunningOnIphone {
             
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
@@ -250,6 +249,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
             self.navigationController?.pushViewController(viewController, animated: true)
             
         }
+        
     }
     
     func createSearchCriteriaFor(alert:RentalAlert) -> VacationSearchCriteria {
@@ -322,6 +322,7 @@ extension GetawayAlertsIPhoneViewController:UITableViewDelegate {
         
         let delete = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: Constant.buttonTitles.remove) { (action,index) -> Void in
             
+            
             //Remove Alert API call
             RentalClient.removeAlert(Session.sharedSession.userAccessToken, alertId: Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId!, onSuccess: { () in
                 
@@ -335,7 +336,6 @@ extension GetawayAlertsIPhoneViewController:UITableViewDelegate {
             }) { (error) in
                 SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
             }
-
         }
         delete.backgroundColor = UIColor(red: 224/255.0, green: 96.0/255.0, blue: 84.0/255.0, alpha: 1.0)
         
@@ -458,7 +458,7 @@ extension GetawayAlertsIPhoneViewController:UITableViewDataSource {
                 }
             }
         }
-
+        
         return cell
     }
     

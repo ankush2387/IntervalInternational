@@ -330,6 +330,7 @@ class SearchResultViewController: UIViewController {
             onError:{ (error) in
                 self.hideHudAsync()
                 self.presentErrorAlert(UserFacingCommonError.generic)
+
                 }
             )
         }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isCombined()){
@@ -725,6 +726,51 @@ class SearchResultViewController: UIViewController {
         }
     }
     
+    // Mark:- Set options for filter
+    func createFilterOptions(){
+        
+        Constant.MyClassConstants.filterOptionsArray.removeAll()
+        let storedData = Helper.getLocalStorageWherewanttoGo()
+        let allDest = Helper.getLocalStorageAllDest()
+        
+        if(storedData.count > 0) {
+            
+            let realm = try! Realm()
+            try! realm.write {
+                Constant.MyClassConstants.filterOptionsArray.removeAll()
+                for object in storedData {
+                    
+                    if(object.destinations.count > 0){
+                        Constant.MyClassConstants.filterOptionsArray.append(
+                            .Destination(object.destinations[0])
+                        )
+                        
+                    }else if(object.resorts.count > 0){
+                        
+                        if(object.resorts[0].resortArray.count > 0){
+                            
+                            var araayOfResorts = List<ResortByMap>()
+                            var reswortByMap = [ResortByMap]()
+                            araayOfResorts = object.resorts[0].resortArray
+                            for resort in araayOfResorts{
+                                reswortByMap.append(resort)
+                            }
+                            
+                            Constant.MyClassConstants.filterOptionsArray.append(.ResortList(reswortByMap))
+                        }else{
+     Constant.MyClassConstants.filterOptionsArray.append(.Resort(object.resorts[0]))
+                        }
+                    }
+                }
+            }
+        }else if(allDest.count > 0){
+            for areaCode in Constant.MyClassConstants.selectedAreaCodeArray{
+                let dictionaryArea = ["\(areaCode)": Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: areaCode as! String)]
+                Constant.MyClassConstants.filterOptionsArray.append(.Area(dictionaryArea as! NSMutableDictionary))
+            }
+        }
+    }
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let firstVisibleIndexPath = searchResultTableView.indexPathsForVisibleRows?.first
         let indexPath = IndexPath(item: collectionviewSelectedIndex, section: 0)
@@ -1107,6 +1153,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
                     }, onError: {(error) in
                         self.hideHudAsync()
                         self.presentErrorAlert(UserFacingCommonError.generic)
+
                     })
                 }else{ // search both
                     selectedSection = (collectionView.superview?.superview?.tag)!
