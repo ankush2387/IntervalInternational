@@ -428,7 +428,7 @@ extension ResortDirectoryViewController:UITableViewDelegate {
                 
                 resort = Constant.MyClassConstants.resortDirectoryResortArray[indexPath.row]
                 let selectedResort = Constant.MyClassConstants.resortDirectoryResortArray[indexPath.row]
-                Constant.MyClassConstants.isgetResortFromGoogleSearch = false
+               
                 Helper.getUserFavorites()
                 if(selectedResort.resortCode != nil) {
                     
@@ -681,7 +681,7 @@ extension ResortDirectoryViewController:ResortFavoritesTableViewCellDelegate {
             self.containerView.isHidden = false
             self.containerView.bringSubview(toFront: self.containerView)
             let selectedResort = Constant.MyClassConstants.resortDirectoryResortArray[index]
-            Constant.MyClassConstants.isgetResortFromGoogleSearch = false
+          
             
             UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseOut ,animations: {
                 

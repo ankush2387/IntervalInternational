@@ -1269,17 +1269,14 @@ public class Helper{
             Constant.MyClassConstants.resortsDescriptionArray = response
             Constant.MyClassConstants.imagesArray.removeAllObjects()
             let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
-            for imgStr in imagesArray {
+                for imgStr in imagesArray {
                 print(imgStr.url!)
                 if(imgStr.size == Constant.MyClassConstants.imageSize) {
                     
                     Constant.MyClassConstants.imagesArray.add(imgStr.url!)
                 }
             }
-            
-            if(Constant.MyClassConstants.isgetResortFromGoogleSearch == false) {
-                
-                if(Constant.RunningDevice.deviceIdiom == .pad) {
+            if(Constant.RunningDevice.deviceIdiom == .pad) {
                     
                     if(Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.isFromSearchBoth){
                         
@@ -1321,14 +1318,7 @@ public class Helper{
                     viewcontroller.navigationController?.pushViewController(viewController, animated: false)
 
                 }
-            }
-            else {
-                Constant.MyClassConstants.resortsArray.removeAll()
-                Constant.MyClassConstants.resortsArray.append(response)
-                Constant.MyClassConstants.resortsDescriptionArray = Constant.MyClassConstants.resortsArray[0]
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadMapNotification), object: nil)
-            }
-            
+
             viewcontroller.hideHudAsync()
             
         })

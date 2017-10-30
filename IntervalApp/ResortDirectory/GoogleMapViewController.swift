@@ -105,7 +105,7 @@ class GoogleMapViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         if Constant.MyClassConstants.goingToMapOrWeatherView == false {
             Constant.MyClassConstants.btnTag = -1
-            Constant.MyClassConstants.isgetResortFromGoogleSearch = false
+          
             
             //**** Remove added observers ****//
             NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
@@ -237,8 +237,7 @@ class GoogleMapViewController: UIViewController {
         mapView.delegate = self
         locationManager.requestWhenInUseAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        
-        
+    
         self.searchDisplayTableView.isHidden = true
         
         //***** Register custom cell with map tale view with some validation check *****//
@@ -271,6 +270,7 @@ class GoogleMapViewController: UIViewController {
     //***** Method called when searched resort or destination selected and generate resort marker pin on map *****//
     func addMarkerWithRactangleRequest() {
         
+        self.mapView.clear()
         Constant.MyClassConstants.googleMarkerArray.removeAll()
         let camera = GMSCameraPosition.camera(withLatitude: (Constant.MyClassConstants.resortsArray[0].coordinates?.latitude)!,longitude: (Constant.MyClassConstants.resortsArray[0].coordinates?.longitude)!, zoom: self.mapView.camera.zoom)
         
@@ -307,7 +307,7 @@ class GoogleMapViewController: UIViewController {
         if (senderButton.superview!.superview!.tag == 1) {
             
             let selectedResort = Constant.MyClassConstants.resorts![sender.tag]
-            Constant.MyClassConstants.isgetResortFromGoogleSearch = true
+           
             self.googleMapSearchBar.resignFirstResponder()
             self.googleMapSearchBar.showsCancelButton = false
             Helper.getResortWithResortCode(code: selectedResort.resortCode!, viewcontroller: self)
@@ -316,7 +316,6 @@ class GoogleMapViewController: UIViewController {
         }
         else {
             
-            Constant.MyClassConstants.isgetResortFromGoogleSearch = true
             self.googleMapSearchBar.resignFirstResponder()
             self.googleMapSearchBar.showsCancelButton = false
             
@@ -336,6 +335,7 @@ class GoogleMapViewController: UIViewController {
                 Constant.MyClassConstants.googleMarkerArray.removeAll()
                 if(Constant.MyClassConstants.resortsArray.count > 0){
                     
+                    self.mapView.clear()
                     self.displaySearchedResort()
                     if(self.mapTableView != nil){
                         self.mapTableView.reloadData()
@@ -476,6 +476,7 @@ class GoogleMapViewController: UIViewController {
             Constant.MyClassConstants.googleMarkerArray.removeAll()
             Constant.MyClassConstants.resortsArray.removeAll()
             Constant.MyClassConstants.resortsArray = response
+            self.mapView.clear()
             self.displaySearchedResort()
                 
         }
@@ -811,6 +812,7 @@ class GoogleMapViewController: UIViewController {
     func createBottomResortView(marker :GMSMarker) {
         
         if(resortCollectionView != nil && Constant.MyClassConstants.resortsArray.count > 0){
+             self.resortCollectionView.reloadData()
             DispatchQueue.main.async {
                 let indexPath = IndexPath(row: self.currentIndex, section: 0)
                 self.resortCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.right, animated: true)
@@ -903,7 +905,7 @@ class GoogleMapViewController: UIViewController {
             
             if(Constant.MyClassConstants.systemAccessToken != nil) {
                 let selectedResort = Constant.MyClassConstants.resortsArray[self.currentIndex]
-                Constant.MyClassConstants.isgetResortFromGoogleSearch = false
+               
                 Helper.getUserFavorites()
                 Helper.getResortWithResortCode(code: selectedResort.resortCode!,viewcontroller:self)
             }
@@ -1164,6 +1166,7 @@ class GoogleMapViewController: UIViewController {
         }
         Constant.MyClassConstants.googleMarkerArray.removeAll()
         Constant.MyClassConstants.googleMarkerArray.removeAll()
+        self.mapView.clear()
         self.displaySearchedResort()
         
         if(Constant.RunningDevice.deviceIdiom == .pad){
@@ -1176,7 +1179,7 @@ class GoogleMapViewController: UIViewController {
         
         if(Constant.MyClassConstants.systemAccessToken != nil) {
             let selectedResort = Constant.MyClassConstants.resortsArray[self.currentIndex]
-            Constant.MyClassConstants.isgetResortFromGoogleSearch = false
+           
             Helper.getUserFavorites()
             Helper.getResortWithResortCode(code: selectedResort.resortCode!,viewcontroller:self)
         }
@@ -1235,7 +1238,6 @@ extension GoogleMapViewController:GMSMapViewDelegate {
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
         
         if(UIDevice.current.userInterfaceIdiom == .pad) {
-            Constant.MyClassConstants.isgetResortFromGoogleSearch = false
             
             if(mapView.selectedMarker == nil){
                 marker.icon = UIImage(named:Constant.assetImageNames.pinFocusImage)
@@ -1543,15 +1545,13 @@ extension GoogleMapViewController:UITableViewDelegate {
                 if(indexPath.section == 1) {
                     
                     let selectedResort = Constant.MyClassConstants.resorts![indexPath.row]
-                    Constant.MyClassConstants.isgetResortFromGoogleSearch = true
+                   
                     Helper.getResortWithResortCode(code: selectedResort.resortCode!, viewcontroller: self)
                     self.googleMapSearchBar.text = ""
                     self.hidePopUpView()
                 }
                 else {
-                    
-                    Constant.MyClassConstants.isgetResortFromGoogleSearch = true
-                    
+    
                     showHudAsync()
                      self.apiCallWithRectangleRequest(request: Constant.MyClassConstants.destinations![indexPath.row].geoArea!)
                     
@@ -1561,7 +1561,7 @@ extension GoogleMapViewController:UITableViewDelegate {
             else {
                 
                 Constant.MyClassConstants.resortsDescriptionArray = Constant.MyClassConstants.resortsArray[indexPath.row]
-                Constant.MyClassConstants.isgetResortFromGoogleSearch = false
+              
                 Helper.getResortWithResortCode(code: Constant.MyClassConstants.resortsDescriptionArray.resortCode!,viewcontroller:self)
                 
                 let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes(sender:)))

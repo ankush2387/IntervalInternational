@@ -180,8 +180,6 @@ class Constant: NSObject {
         //***** global variable that identify the running functionality *****//
         static var runningFunctionality = ""
         
-        //***** global variable that identify the API call source *****//
-        static var isgetResortFromGoogleSearch = false
         
         //***** global variable that identify which controller requested for login *****//
         static var signInRequestedController:UIViewController!
