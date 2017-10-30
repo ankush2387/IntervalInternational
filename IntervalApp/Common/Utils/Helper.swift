@@ -1269,8 +1269,8 @@ public class Helper{
             Constant.MyClassConstants.resortsDescriptionArray = response
             Constant.MyClassConstants.imagesArray.removeAllObjects()
             let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
-            for imgStr in imagesArray {
-                intervalPrint(imgStr.url!)
+                for imgStr in imagesArray {
+                print(imgStr.url!)
                 if(imgStr.size == Constant.MyClassConstants.imageSize) {
                     Constant.MyClassConstants.imagesArray.add(imgStr.url!)
                 }
