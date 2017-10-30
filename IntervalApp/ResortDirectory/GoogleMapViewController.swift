@@ -1177,9 +1177,7 @@ class GoogleMapViewController: UIViewController {
         }
         Constant.MyClassConstants.googleMarkerArray.removeAll()
         Constant.MyClassConstants.googleMarkerArray.removeAll()
-        let resort = Constant.MyClassConstants.resortsArray[0]
-        let location = CLLocation.init(latitude: (resort.coordinates?.latitude)!, longitude: (resort.coordinates?.longitude)!)
-        self.displaySearchedResort(location: location)
+        self.displaySearchedResort()
         
         if(Constant.RunningDevice.deviceIdiom == .pad){
             mapTableView.reloadData()
@@ -1531,7 +1529,7 @@ extension GoogleMapViewController:UICollectionViewDataSource {
                 }
             }
         }
-        
+      }
     }
 }
 
