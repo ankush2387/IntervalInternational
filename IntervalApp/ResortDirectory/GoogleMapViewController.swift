@@ -1530,7 +1530,7 @@ extension GoogleMapViewController:UICollectionViewDataSource {
                 }
             }
         }
-        
+      }
     }
 }
 
