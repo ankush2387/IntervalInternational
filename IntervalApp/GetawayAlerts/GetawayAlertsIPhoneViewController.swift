@@ -9,7 +9,6 @@
 import UIKit
 import DarwinSDK
 import IntervalUIKit
-import SVProgressHUD
 
 class GetawayAlertsIPhoneViewController: UIViewController {
     
@@ -463,9 +462,6 @@ extension GetawayAlertsIPhoneViewController:HelperDelegate {
         let transitionManager = TransitionManager()
         self.navigationController?.transitioningDelegate = transitionManager
         self.navigationController?.pushViewController(viewController, animated: true)
-        //let navController = UINavigationController(rootViewController: viewController)
-        
-        //self.present(navController, animated:true, completion: nil)
     }
     func resetCalendar(){
         Constant.MyClassConstants.calendarDatesArray.removeAll()

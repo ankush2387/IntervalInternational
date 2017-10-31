@@ -11,7 +11,6 @@ import IntervalUIKit
 import SDWebImage
 import GoogleMaps
 import DarwinSDK
-import SVProgressHUD
 
 class FevoritesResortController: UIViewController {
     

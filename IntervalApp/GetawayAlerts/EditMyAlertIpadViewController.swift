@@ -9,7 +9,6 @@
 import UIKit
 import IntervalUIKit
 import DarwinSDK
-import SVProgressHUD
 
 class EditMyAlertIpadViewController: UIViewController {
     
@@ -310,7 +309,7 @@ class EditMyAlertIpadViewController: UIViewController {
                         
                         RentalClient.updateAlert(Session.sharedSession.userAccessToken, alert: rentalAlert, onSuccess:{ (response) in
                             
-                            SVProgressHUD.dismiss()
+                            self.hideHudAsync()
                             
                             var deststr:String = ""
                             for dest in Constant.MyClassConstants.alertSelectedDestination {
@@ -350,7 +349,7 @@ class EditMyAlertIpadViewController: UIViewController {
                             ]
                             
                             ADBMobile.trackAction(Constant.omnitureEvents.event53, data: userInfo)
-                            SVProgressHUD.dismiss()
+                            self.hideHudAsync()
                             SimpleAlert.alert(self, title:Constant.AlertPromtMessages.editAlertTitle , message: error.description)
                             
                         }

@@ -215,7 +215,7 @@ class UpComingTripDetailIPadViewController: UIViewController {
         guard let cityName = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address?.cityName else { return }
         showHudAsync()
         displayMapView(coordinates: coordinates, resortName: resortName, cityName: cityName, presentModal: true) { (response) in
-            SVProgressHUD.dismiss()
+            self.hideHudAsync()
         }
     }
     
@@ -225,7 +225,7 @@ class UpComingTripDetailIPadViewController: UIViewController {
         guard let countryCode = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address?.countryCode else { return }
         showHudAsync()
         displayWeatherView(resortCode: resortCode, resortName: resortName, countryCode: countryCode, presentModal: true, completionHandler: { (response) in
-            SVProgressHUD.dismiss()
+            self.hideHudAsync()
         })
         
     }

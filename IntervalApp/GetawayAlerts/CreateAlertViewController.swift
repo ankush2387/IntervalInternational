@@ -9,7 +9,6 @@
 import UIKit
 import IntervalUIKit
 import DarwinSDK
-import SVProgressHUD
 
 class CreateAlertViewController: UIViewController {
     
@@ -232,7 +231,7 @@ class CreateAlertViewController: UIViewController {
                             
                             ADBMobile.trackAction(Constant.omnitureEvents.event52, data: userInfo)
                             
-                            SVProgressHUD.dismiss()
+                            self.hideHudAsync()
                             
                             Constant.MyClassConstants.getawayAlertsArray.insert(rentalAlert, at: Constant.MyClassConstants.getawayAlertsArray.count)
                             SimpleAlert.alertTodismissController(self, title:Constant.AlertPromtMessages.createAlertTitle , message: Constant.AlertMessages.createAlertMessage)
@@ -241,7 +240,7 @@ class CreateAlertViewController: UIViewController {
                         })
                         { (error) in
                             
-                            SVProgressHUD.dismiss()
+                            self.hideHudAsync()
                             SimpleAlert.alert(self, title: Constant.AlertPromtMessages.createAlertTitle, message: error.description)
                             
                         }

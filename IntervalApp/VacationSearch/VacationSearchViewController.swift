@@ -1747,6 +1747,52 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
     }
     
     
+     // Mark:- Set options for filter
+    func createFilterOptions(){
+        
+        Constant.MyClassConstants.filterOptionsArray.removeAll()
+        let storedData = Helper.getLocalStorageWherewanttoGo()
+        let allDest = Helper.getLocalStorageAllDest()
+        
+        if(storedData.count > 0) {
+            
+            let realm = try! Realm()
+            try! realm.write {
+                Constant.MyClassConstants.filterOptionsArray.removeAll()
+                for object in storedData {
+                    
+                    if(object.destinations.count > 0){
+                        Constant.MyClassConstants.filterOptionsArray.append(
+                            .Destination(object.destinations[0])
+                        )
+                        
+                    }else if(object.resorts.count > 0){
+                        
+                        if(object.resorts[0].resortArray.count > 0){
+                            
+                            var araayOfResorts = List<ResortByMap>()
+                            var reswortByMap = [ResortByMap]()
+                            araayOfResorts = object.resorts[0].resortArray
+                            for resort in araayOfResorts{
+                                reswortByMap.append(resort)
+                            }
+                            
+                            Constant.MyClassConstants.filterOptionsArray.append(.ResortList(reswortByMap))
+                        }else{
+     Constant.MyClassConstants.filterOptionsArray.append(.Resort(object.resorts[0]))
+                        }
+                    }
+                }
+            }
+        }else if(allDest.count > 0){
+            for areaCode in Constant.MyClassConstants.selectedAreaCodeArray{
+                let dictionaryArea = ["\(areaCode)": Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: areaCode as! String)]
+                Constant.MyClassConstants.filterOptionsArray.append(.Area(dictionaryArea as! NSMutableDictionary))
+            }
+        }
+    }
+    
+    
     
     func showNotAvailabilityResults() {
         DarwinSDK.logger.info("Show the Not Availability Screen.")
@@ -1795,7 +1841,7 @@ extension VacationSearchViewController:HelperDelegate {
         if (Constant.MyClassConstants.initialVacationSearch.searchCheckInDate != Helper.convertDateToString(date: Constant.MyClassConstants.vacationSearchShowDate, format: Constant.MyClassConstants.dateFormat)) {
             Helper.showNearestCheckInDateSelectedMessage()
         }
-        
+        self.createFilterOptions()
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController

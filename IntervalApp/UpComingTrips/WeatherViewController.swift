@@ -67,6 +67,7 @@ class WeatherViewController: UIViewController {
     }
     override func viewDidAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.isHidden = true
+        self.navigationController?.isNavigationBarHidden = true
     }
     
     func setupNavBarForModalPresentation() {

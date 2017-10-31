@@ -45,8 +45,10 @@ class DashboardTableViewController: UITableViewController {
     override func viewWillDisappear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = true
         //***** Removing notification to reload alert badge *****//
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: nil)
+        NotificationCenter.default
+            .removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
+        NotificationCenter.default
+            .removeObserver(self, name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: nil)
     }
     
     override func viewDidLoad() {
@@ -407,10 +409,10 @@ class DashboardTableViewController: UITableViewController {
     func viewAllTripButtonPressed(_ sender:IUIKButton) {
         
         Constant.MyClassConstants.upcomingOriginationPoint = Constant.omnitureCommonString.homeDashboard
-        let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.myUpcomingTripIphone, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.sideMenuTitles.sideMenuInitialController) as! SWRevealViewController
-        
-        self.present(viewController, animated: true, completion: nil)
+        let storyboardName = Constant.storyboardNames.myUpcomingTripIphone
+        if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
+            navigationController?.pushViewController(initialViewController, animated: true)
+        }
         
     }
     //***** Search vacation button action *****//

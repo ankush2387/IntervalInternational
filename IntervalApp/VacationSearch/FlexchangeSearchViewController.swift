@@ -22,16 +22,12 @@ class FlexchangeSearchViewController: UIViewController {
     @IBOutlet weak var flexChangeTableView: UITableView!
     
     override func viewWillAppear(_ animated: Bool) {
-        Helper.getLocalStorageWherewanttoTrade()
+        _ = Helper.getLocalStorageWherewanttoTrade()
         flexChangeTableView.reloadData()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let menuButtonright = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.MoreNav), style: .plain, target: self, action:#selector(FlexchangeSearchViewController.menuButtonClicked))
-        menuButtonright.tintColor = UIColor.white
-        self.navigationItem.rightBarButtonItem = menuButtonright
         
         // Adding navigation back button
         let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(FlexchangeSearchViewController.menuBackButtonPressed(_:)))
@@ -52,30 +48,6 @@ class FlexchangeSearchViewController: UIViewController {
      
         _ = self.navigationController?.popViewController(animated: true)
       
-    }
-    
-     //**** Option to open menu from bottom ***//
-    
-    func menuButtonClicked()  {
-        
-        let actionSheetController: UIAlertController = UIAlertController(title:Constant.buttonTitles.searchOption, message: "", preferredStyle: .actionSheet)
-        
-        
-        let helpAction: UIAlertAction = UIAlertAction(title:Constant.buttonTitles.help, style: .default) { action -> Void in
-            //Just dismiss the action sheet
-        }
-            
-         actionSheetController.addAction(helpAction)
-        
-        //***** Create and add the cancel button *****//
-        let cancelAction: UIAlertAction = UIAlertAction(title: Constant.buttonTitles.cancel, style: .cancel) { action -> Void in
-            //Just dismiss the action sheet
-        }
-        actionSheetController.addAction(cancelAction)
-        
-        //Present the AlertController
-        self.present(actionSheetController, animated: true, completion: nil)
-        
     }
     
     func addRelinquishmentSectionButtonPressed(_ sender:IUIKButton) {

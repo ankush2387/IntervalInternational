@@ -9,7 +9,6 @@
 import UIKit
 import DarwinSDK
 import LocalAuthentication
-import SVProgressHUD
 import IntervalUIKit
 import LocalAuthentication
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {

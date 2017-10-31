@@ -8,7 +8,6 @@
 
 import UIKit
 import DarwinSDK
-import SVProgressHUD
 
 class MembershipIPadViewController: UIViewController {
     /** Outlets */
@@ -94,9 +93,7 @@ class MembershipIPadViewController: UIViewController {
             
             self.membershipProductsArray.sort{$0.coreProduct && !$1.coreProduct}
             self.tableView.reloadData()
-            SVProgressHUD.dismiss()
         }) { (error) in
-            SVProgressHUD.dismiss()
             print(error)
         }
     }

@@ -10,7 +10,6 @@ import UIKit
 import GoogleMaps
 import IntervalUIKit
 import DarwinSDK
-import SVProgressHUD
 import RealmSwift
 import MessageUI
 import Foundation
@@ -36,7 +35,7 @@ class ResortDetailsViewController: UIViewController {
     var onsiteArray : NSMutableArray = []
     var amenityOnsiteString : String! = "Nearby" + "\n"
     var amenityNearbyString : String!  = "On-Site" + "\n"
-    var presentViewModally = true
+    var presentViewModally = false
     
     //***** Class private Variables *****//
     fileprivate var startIndex = 0
@@ -213,12 +212,10 @@ class ResortDetailsViewController: UIViewController {
                         }
                     }
                     self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
-                    SVProgressHUD.dismiss()
                     self.hideHudAsync()
                     self.tableViewResorts.reloadData()
                 })
                 { (error) in
-                    SVProgressHUD.dismiss()
                     self.hideHudAsync()
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.description)
                 }
@@ -261,7 +258,6 @@ class ResortDetailsViewController: UIViewController {
                         //sender.isEnabled = true
                     }
                     self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
-                    SVProgressHUD.dismiss()
                     self.hideHudAsync()
                     self.tableViewResorts.reloadData()
                     // omniture tracking with event 35
@@ -273,7 +269,6 @@ class ResortDetailsViewController: UIViewController {
                     ADBMobile.trackAction(Constant.omnitureEvents.event35, data: userInfo)
                 })
                 { (error) in
-                    SVProgressHUD.dismiss()
                     self.hideHudAsync()
                     SimpleAlert.alert(self, title:"Error", message: error.description)
                 }
@@ -514,7 +509,9 @@ class ResortDetailsViewController: UIViewController {
     
     func showVacationSearch(){
         //Added a delay to present vacation search view controller.
-        if(self.senderViewController == Constant.MyClassConstants.searchResult){
+        
+        //Changed line self.senderViewController == Constant.MyClassConstants.searchResult
+        if(Constant.MyClassConstants.loginOriginationPoint == "Resort Directory - Sign In Modal"){
             Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(searchVacationClicked), userInfo: nil, repeats: false)
         }
     }
@@ -614,26 +611,10 @@ extension ResortDetailsViewController:UITableViewDelegate {
                             if((indexPath as NSIndexPath).section == 3){
                                 return 50
                             }else if((indexPath as NSIndexPath).section == 4){
-                                
-                                let count = nearbyArray.count + onsiteArray.count
-                                if(count>0){
-                                    if((indexPath as NSIndexPath).section == 3){
-                                        return 50
-                                    }else if((indexPath as NSIndexPath).section == 4){
-                                        if(count == 1){
-                                            return CGFloat (count * 20 + 60)
-                                        }else{
-                                            return CGFloat (count * 20 + 120)
-                                        }
-                                        
-                                    }else if((indexPath as NSIndexPath).section == 5){
-                                        return 80
-                                    }else{
-                                        return 600
-                                    }
-                                    
+                                if(count == 1){
+                                    return CGFloat (count * 20 + 60)
                                 }else{
-                                    return 60
+                                    return CGFloat (count * 20 + 120)
                                 }
                             }else if((indexPath as NSIndexPath).section == 5){
                                 return 80
@@ -1071,13 +1052,11 @@ extension ResortDetailsViewController:UITableViewDataSource {
                 UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsDescriptionArray.resortCode!, onSuccess: {(response) in
                     
                     self.hideHudAsync()
-                    SVProgressHUD.dismiss()
                     sender.isSelected = true
                     Constant.MyClassConstants.favoritesResortCodeArray.add(Constant.MyClassConstants.resortsDescriptionArray.resortCode!)
                     self.tableViewResorts.reloadData()
                     ADBMobile.trackAction(Constant.omnitureEvents.event48, data: nil)
                 }, onError: {(error) in
-                    SVProgressHUD.dismiss()
                     self.hideHudAsync()
                     print(error)
                 })
@@ -1090,13 +1069,10 @@ extension ResortDetailsViewController:UITableViewDataSource {
                     
                     sender.isSelected = false
                     self.hideHudAsync()
-                    SVProgressHUD.dismiss()
                     Constant.MyClassConstants.favoritesResortCodeArray.remove(Constant.MyClassConstants.resortsDescriptionArray.resortCode!)
                     self.tableViewResorts.reloadData()
                     ADBMobile.trackAction(Constant.omnitureEvents.event51, data: nil)
                 }, onError: {(error) in
-                    
-                    SVProgressHUD.dismiss()
                     self.hideHudAsync()
                     print(error)
                 })
