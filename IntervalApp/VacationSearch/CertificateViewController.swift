@@ -35,8 +35,7 @@ class CertificateViewController: UIViewController {
     }
     
     func getAccommodationCertificateSummary(sendertag:Int) {
-        
-        // show hud
+
         showHudAsync()
         let number = Constant.MyClassConstants.certificateArray[sendertag].certificateNumber! as NSNumber
         
@@ -49,6 +48,7 @@ class CertificateViewController: UIViewController {
         }, onError: { (error) in
             self.hideHudAsync()
         })
+
     }
     
     func navigateToCertificateDetailsVC(response: AccommodationCertificateSummary)  {
@@ -71,6 +71,7 @@ class CertificateViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         //show hud
         showHudAsync()
+
         UserClient.getAccommodationCertificates(Session.sharedSession.userAccessToken, onSuccess: { (certificates) in
             self.hideHudAsync()
             Constant.MyClassConstants.certifcateCount = certificates.count
