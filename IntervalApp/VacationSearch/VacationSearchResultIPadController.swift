@@ -1599,7 +1599,6 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 headerView.addSubview(headerButton)
             }
         }
-
         return headerView
     }
 
