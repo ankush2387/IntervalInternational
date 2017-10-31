@@ -1594,6 +1594,7 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
 
         if !Constant.MyClassConstants.noFilterOptions || alertFilterOptionsArray.count > 0 {
             if Constant.MyClassConstants.filterOptionsArray.count > 1 || alertFilterOptionsArray.count > 1 {
+                
                 headerView.addSubview(dropDownImgVw)
                 headerView.addSubview(headerButton)
             }
