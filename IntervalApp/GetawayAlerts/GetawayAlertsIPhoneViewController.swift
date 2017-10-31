@@ -249,6 +249,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
             self.navigationController?.pushViewController(viewController, animated: true)
             
         }
+        
     }
     
     func createSearchCriteriaFor(alert:RentalAlert) -> VacationSearchCriteria {
