@@ -46,10 +46,7 @@ class SearchResultViewController: UIViewController {
     var dateCellSelectionColor = Constant.CommonColor.blueColor
     var myActivityIndicator = UIActivityIndicatorView()
     var value:String = ""
-    
-   
-    
-    
+    var alertFilterOptionsArray = [Constant.AlertResortDestination]()
     
     // Only one section with surroundings found
     var onlySurroundingsFound = false
@@ -729,64 +726,26 @@ class SearchResultViewController: UIViewController {
     @IBAction func filterByNameButtonPressed(_ sender: Any) {
         if(!Constant.MyClassConstants.noFilterOptions){
             ((sender as AnyObject) as! UIButton).isEnabled = true
-            self.createFilterOptions()
-            if(Constant.MyClassConstants.filterOptionsArray.count > 1){
+            if(Constant.MyClassConstants.filterOptionsArray.count > 1 || alertFilterOptionsArray.count > 1){
                 let viewController = self.storyboard?.instantiateViewController(withIdentifier: Constant.storyboardControllerID.sortingViewController) as! SortingViewController
                 viewController.isFilterClicked = true
+                viewController.alertFilterOptionsArray = alertFilterOptionsArray
                 viewController.resortNameArray = Constant.MyClassConstants.resortsArray
                 viewController.selectedIndex = Constant.MyClassConstants.filteredIndex
                 self.present(viewController, animated: true, completion: nil)
             }else{
                 ((sender as AnyObject) as! UIButton).isEnabled = false
             }
+        }else if(alertFilterOptionsArray.count > 1){
+            let viewController = self.storyboard?.instantiateViewController(withIdentifier: Constant.storyboardControllerID.sortingViewController) as! SortingViewController
+            viewController.isFilterClicked = true
+            viewController.alertFilterOptionsArray = alertFilterOptionsArray
+            viewController.resortNameArray = Constant.MyClassConstants.resortsArray
+            viewController.selectedIndex = Constant.MyClassConstants.filteredIndex
+            self.present(viewController, animated: true, completion: nil)
         }
         
 
-    }
-    
-    // Mark:- Set options for filter
-    func createFilterOptions(){
-        
-        Constant.MyClassConstants.filterOptionsArray.removeAll()
-        let storedData = Helper.getLocalStorageWherewanttoGo()
-        let allDest = Helper.getLocalStorageAllDest()
-        
-        if(storedData.count > 0) {
-            
-            let realm = try! Realm()
-            try! realm.write {
-                Constant.MyClassConstants.filterOptionsArray.removeAll()
-                for object in storedData {
-                    
-                    if(object.destinations.count > 0){
-                        Constant.MyClassConstants.filterOptionsArray.append(
-                            .Destination(object.destinations[0])
-                        )
-                        
-                    }else if(object.resorts.count > 0){
-                        
-                        if(object.resorts[0].resortArray.count > 0){
-                            
-                            var araayOfResorts = List<ResortByMap>()
-                            var reswortByMap = [ResortByMap]()
-                            araayOfResorts = object.resorts[0].resortArray
-                            for resort in araayOfResorts{
-                                reswortByMap.append(resort)
-                            }
-                            
-                            Constant.MyClassConstants.filterOptionsArray.append(.ResortList(reswortByMap))
-                        }else{
-     Constant.MyClassConstants.filterOptionsArray.append(.Resort(object.resorts[0]))
-                        }
-                    }
-                }
-            }
-        }else if(allDest.count > 0){
-            for areaCode in Constant.MyClassConstants.selectedAreaCodeArray{
-                let dictionaryArea = ["\(areaCode)": Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: areaCode as! String)]
-                Constant.MyClassConstants.filterOptionsArray.append(.Area(dictionaryArea as! NSMutableDictionary))
-            }
-        }
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -1620,8 +1579,8 @@ extension SearchResultViewController:UICollectionViewDataSource {
         
         let dropDownImgVw = UIImageView(frame: CGRect(x: self.searchResultTableView.frame.width - 40, y: 5, width: 30, height: 30))
         dropDownImgVw.image = UIImage(named: Constant.assetImageNames.dropArrow)
-        if(!Constant.MyClassConstants.noFilterOptions){
-            if(Constant.MyClassConstants.filterOptionsArray.count > 1){
+        if(!Constant.MyClassConstants.noFilterOptions || alertFilterOptionsArray.count > 0){
+            if(Constant.MyClassConstants.filterOptionsArray.count > 1 || alertFilterOptionsArray.count > 1){
             headerView.addSubview(dropDownImgVw)
             headerView.addSubview(headerButton)
             }

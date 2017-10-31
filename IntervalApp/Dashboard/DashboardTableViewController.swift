@@ -398,12 +398,13 @@ class DashboardTableViewController: UITableViewController {
     //***** View all alerts button pressed *****//
     func viewAllAlertButtonPressed(_ sender:IUIKButton){
         Constant.MyClassConstants.alertOriginationPoint = Constant.CommonStringIdentifiers.alertOriginationPoint
-        let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.getawayAlertsIphone, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.sideMenuTitles.sideMenuInitialController) as! SWRevealViewController
+        let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+        let storyboardName = isRunningOnIphone ? Constant.storyboardNames.getawayAlertsIphone : Constant.storyboardNames.getawayAlertsIpad
+        if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
+            navigationController?.pushViewController(initialViewController, animated: true)
+        }
         Constant.MyClassConstants.activeAlertsArray.removeAllObjects()
         reloadBadgeView()
-        
-        self.present(viewController, animated: true, completion: nil)
     }
     //***** View all trip button action *****//
     func viewAllTripButtonPressed(_ sender:IUIKButton) {

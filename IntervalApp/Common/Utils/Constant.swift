@@ -646,6 +646,12 @@ class Constant: NSObject {
         case Area(NSMutableDictionary)
     }
     
+    //Enum for not saved resort destinations
+    enum AlertResortDestination{
+       case Resort(Resort)
+       case Destination(AreaOfInfluenceDestination)
+    }
+    
     // Enum to store area and area code
     enum AreaInfo {
         static var area = [Area]()

@@ -21,7 +21,8 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     var alertName : String!
     var alertId : Int64!
     var alertStatusId = 0
-    
+    var alertFilterOptionsArray = [Constant.AlertResortDestination]()
+
     override func viewWillAppear(_ animated: Bool) {
         
         //***** Adding notification to reload table when all alerts have been fetched *****//
@@ -190,7 +191,8 @@ class GetawayAlertsIPhoneViewController: UIViewController {
                 Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
                 
                 RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
-                     onSuccess: { (response) in
+                     onSuccess
+                    : { (response) in
                                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
                     
                                 // Get activeInterval
@@ -214,12 +216,12 @@ class GetawayAlertsIPhoneViewController: UIViewController {
                                 }
                         
         },
-                                         onError:{ (error) in
+               onError
+                    :{ (error) in
                                             
                                             
                 }
                 )
-                
             }
         }
         
@@ -232,7 +234,6 @@ class GetawayAlertsIPhoneViewController: UIViewController {
         showHudAsync()
         let checkInDates:NSArray = self.alertsSearchDates.value(forKey: String(sender.tag)) as! NSArray
         if(checkInDates.count > 0){
-            
             Constant.MyClassConstants.currentFromDate = checkInDates[0] as! Date
         }else{
             Constant.MyClassConstants.currentFromDate =  Date()
@@ -241,9 +242,6 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     
     //Function for navigating to search results
     func navigateToSearchResults(){
-        //Constant.MyClassConstants.vacationSearchResultHeaderLabel = (Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: Constant.MyClassConstants.selectedAreaCodeArray[0] as! String) as? String)!
-        //Helper.hideProgressBar(senderView: self)
-
         Constant.MyClassConstants.filteredIndex = 0
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
@@ -253,9 +251,6 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     
     func createSearchCriteriaFor(alert:RentalAlert) -> VacationSearchCriteria {
         // Split destinations and resorts to create multiples VacationSearchCriteria
-        
-        //let destination = alert.destinations[0]
-        
         let checkInDate = alert.getCheckInDate()
         
         let searchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
@@ -263,7 +258,19 @@ class GetawayAlertsIPhoneViewController: UIViewController {
         searchCriteria.checkInFromDate = Helper.convertStringToDate(dateString: alert.earliestCheckInDate!, format: Constant.MyClassConstants.dateFormat)
         searchCriteria.checkInToDate = Helper.convertStringToDate(dateString: alert.latestCheckInDate!, format: Constant.MyClassConstants.dateFormat)
         getDestinationsResortsForAlert(alert:alert, searchCriteria: searchCriteria)
-        
+        alertFilterOptionsArray.removeAll()
+        for destination in alert.destinations{
+            let dest = AreaOfInfluenceDestination()
+            if let destinationName = destination.destinationName{
+                dest.destinationName = destinationName
+            }else{
+                dest.destinationName = "Cancun"
+            }
+            dest.aoiId = destination.aoiId
+            dest.destinationId = destination.destinationId
+            alertFilterOptionsArray
+                .append(Constant.AlertResortDestination.Destination(dest))
+        }
         return searchCriteria
     }
     
@@ -271,11 +278,15 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     func getDestinationsResortsForAlert(alert:RentalAlert, searchCriteria:VacationSearchCriteria){
         if((alert.destinations.count) > 0){
             let destination = AreaOfInfluenceDestination()
-            destination.destinationName  = "Cancun"
+            if let destinationName = alert.destinations[0].destinationName{
+                destination.destinationName  = destinationName
+            }else{
+                destination.destinationName  = "Cancun"
+            }
             destination.destinationId = alert.destinations[0].destinationId
             destination.aoiId = alert.destinations[0].aoiId
             searchCriteria.destination = destination
-            Constant.MyClassConstants.vacationSearchResultHeaderLabel = "Cancun"//destination.destinationName
+            Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
             
         }else if((alert.resorts.count) > 0){
             Constant.MyClassConstants.initialVacationSearch.searchCriteria.resorts = alert.resorts
@@ -458,9 +469,7 @@ extension GetawayAlertsIPhoneViewController:HelperDelegate {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
-        
-        let transitionManager = TransitionManager()
-        self.navigationController?.transitioningDelegate = transitionManager
+        viewController.alertFilterOptionsArray = alertFilterOptionsArray
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     func resetCalendar(){
