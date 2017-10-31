@@ -182,7 +182,8 @@ class GetawayAlertsIPhoneViewController: UIViewController {
                 Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
                 
                 RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
-                     onSuccess: { (response) in
+                     onSuccess
+                    : { (response) in
                                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
 >>>>>>> MOBI-1219:Remove unwanted code and unused variables
                     
@@ -217,6 +218,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
                                 if let searchDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate{
                                     Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate:  Helper.convertStringToDate(dateString: searchDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                 }
+<<<<<<< HEAD
                             }
                             
                     },
@@ -227,6 +229,16 @@ class GetawayAlertsIPhoneViewController: UIViewController {
                     }
                     )
                 }
+=======
+                        
+        },
+               onError
+                    :{ (error) in
+                                            
+                                            
+                }
+                )
+>>>>>>> MOBI-1204: Modifications for rental alert search
             }
             
         }
@@ -248,6 +260,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     
     //Function for navigating to search results
     func navigateToSearchResults(){
+<<<<<<< HEAD
         if Constant.MyClassConstants.isRunningOnIphone {
             
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
@@ -266,6 +279,13 @@ class GetawayAlertsIPhoneViewController: UIViewController {
             
         }
    
+=======
+        Constant.MyClassConstants.filteredIndex = 0
+        
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
+        self.navigationController!.pushViewController(viewController, animated: true)
+>>>>>>> MOBI-1204: Modifications for rental alert search
     }
     
     func createSearchCriteriaFor(alert:RentalAlert) -> VacationSearchCriteria {
@@ -282,7 +302,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
         }
         getDestinationsResortsForAlert(alert:alert, searchCriteria: searchCriteria)
         alertFilterOptionsArray.removeAll()
-        
+
         for destination in alert.destinations{
             let dest = AreaOfInfluenceDestination()
             if let destinationName = destination.destinationName{
@@ -303,6 +323,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
             alertFilterOptionsArray
                 .append(Constant.AlertResortDestination.Resort(resort))
         }
+
         return searchCriteria
     }
     
