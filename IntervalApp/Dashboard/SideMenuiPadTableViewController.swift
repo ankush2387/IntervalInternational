@@ -106,32 +106,7 @@ class SideMenuiPadTableViewController: UIViewController, UITableViewDataSource {
         Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PopToLoginView"), object: nil)
         
-       /* Session.sharedSession.signOut()
-        Constant.MyClassConstants.isLoginSuccessfull = false
-        //Remove all favorites for a user.
-        Constant.MyClassConstants.favoritesResortArray.removeAll()
-        
-        //Remove available points for relinquishment program
-        Constant.MyClassConstants.relinquishmentProgram = PointsProgram()
-        
-        //Remove all saved alerts for a user.
-        Constant.MyClassConstants.getawayAlertsArray.removeAll()
-        Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
-        let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.loginIPad, bundle: nil)
-        let nav1 = UINavigationController()
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.loginViewControllerIPad) as! LoginIPadViewController
-        nav1.viewControllers = [viewController]
-        
-        
-        let transition = CATransition()
-        transition.duration = 0.4
-        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
-        transition.type = kCATransitionPush
-        transition.subtype = kCATransitionFromBottom
-        viewController.view.layer.add(transition, forKey: Constant.MyClassConstants.switchToView)
-        
-        UIApplication.shared.keyWindow?.rootViewController = nav1*/
-        
+      
     }
     
     //***** Function called when notification for getaway alerts is fired. *****//

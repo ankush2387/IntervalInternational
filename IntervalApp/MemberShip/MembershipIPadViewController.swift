@@ -9,6 +9,7 @@
 import UIKit
 import DarwinSDK
 
+
 class MembershipIPadViewController: UIViewController {
     /** Outlets */
     @IBOutlet weak var tableView: UITableView!
@@ -67,6 +68,7 @@ class MembershipIPadViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.displayMenuButton()
+        self.title = Constant.ControllerTitles.memberShipViewController
         getContactMembershipInfo()
     }
     
@@ -90,10 +92,11 @@ class MembershipIPadViewController: UIViewController {
             if let products = membership.products {
                 self.membershipProductsArray = products
             }
-            
+            self.hideHudAsync()
             self.membershipProductsArray.sort{$0.coreProduct && !$1.coreProduct}
             self.tableView.reloadData()
         }) { (error) in
+            self.hideHudAsync()
             print(error)
         }
     }
@@ -133,25 +136,26 @@ class MembershipIPadViewController: UIViewController {
         let context = Session.sharedSession
         
         UserClient.putSessionsUser(context.userAccessToken, member: context.selectedMembership!,
-                                    onSuccess:{
+            onSuccess:{
                                         
-                                        //***** Done!  Segue to the Home page *****//
-                                        
-                                        self.dismiss(animated: true, completion: nil)
-                                        self.getContactMembershipInfo()
-                                        
-                                        //***** Getaway Alerts API call after successfull login *****//
-                                        RentalClient.getAlerts(Session.sharedSession.userAccessToken, onSuccess: { (response) in
-                                            
-                                            Constant.MyClassConstants.getawayAlertsArray = response
-                                            
-                                        }) { (error) in
-                                            
-                                        }
-            },
-                                    onError:{(error) in
-                                        Logger.sharedInstance.error("Could not set membership in Darwin API Session: \(error.description)")
-                                        SimpleAlert.alert(self, title:Constant.AlertErrorMessages.loginFailed, message:"Please contact your servicing office.  Could not select membership \(String(describing: context.selectedMembership?.memberNumber))")
+            //***** Done!  Segue to the Home page *****//
+            
+            self.dismiss(animated: true, completion: nil)
+            self.getContactMembershipInfo()
+            
+            //***** Getaway Alerts API call after successfull login *****//
+            RentalClient.getAlerts(Session.sharedSession.userAccessToken, onSuccess: { (response) in
+                
+                Constant.MyClassConstants.getawayAlertsArray = response
+                self.hideHudAsync()
+            }) { (error) in
+                self.hideHudAsync()
+            }
+        },
+            onError:{(error) in
+                self.hideHudAsync()
+                Logger.sharedInstance.error("Could not set membership in Darwin API Session: \(error.description)")
+                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.loginFailed, message:"Please contact your servicing office.  Could not select membership \(String(describing: context.selectedMembership?.memberNumber))")
             }
         )
     }
