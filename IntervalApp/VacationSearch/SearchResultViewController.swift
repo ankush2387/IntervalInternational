@@ -616,8 +616,9 @@ class SearchResultViewController: UIViewController {
         let processRequest = ExchangeProcessStartRequest()
         
         processRequest.destination = Constant.MyClassConstants.exchangeDestination
+        // Note: constant has value obtained from vacation search screen
         processRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
-        
+    
         if (Constant.MyClassConstants.filterRelinquishments.count > 0) {
             
             if let openWeek = Constant.MyClassConstants.filterRelinquishments[0].openWeek{

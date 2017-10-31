@@ -1766,7 +1766,7 @@ public class Helper{
         request.resortCodes = activeInterval.resortCodes!
         request.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
        // request.travelParty = Constant.MyClassConstants.travelPartyInfo
-        request.travelParty = Helper.travelPartInfo()
+    request.travelParty = Helper.travelPartyInfo(adults: 2, children: 0)
         
         ExchangeClient.searchAvailability(Session.sharedSession.userAccessToken, request: request, onSuccess: { (searchAvailabilityResponse) in
             
@@ -2191,10 +2191,10 @@ public class Helper{
         return searchCriteria
     }
     
-    static func travelPartInfo() -> TravelParty {
+    static func travelPartyInfo(adults:Int, children:Int) -> TravelParty {
         let travelParty = TravelParty()
-        travelParty.adults = 2
-        travelParty.children = 0
+        travelParty.adults = adults
+        travelParty.children = children
         return travelParty
     }
     

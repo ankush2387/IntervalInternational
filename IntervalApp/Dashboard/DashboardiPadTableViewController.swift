@@ -441,13 +441,8 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.flexChangeSearchIpadViewController) as! FlexChangeSearchIpadViewController
             
-            Constant.MyClassConstants.viewController = self
-            // set travel party info
-            let travelPartyInfo = TravelParty()
-            travelPartyInfo.adults = Int(self.adultCounter)
-            travelPartyInfo.children = Int(self.childCounter)
-            
-            Constant.MyClassConstants.travelPartyInfo = travelPartyInfo
+            Constant.MyClassConstants.viewController = self 
+            Constant.MyClassConstants.travelPartyInfo = Helper.travelPartyInfo(adults: 2, children: 0)
             
             viewController.selectedFlexchange = Constant.MyClassConstants.flexExchangeDeals[indexPath.row]
             let transitionManager = TransitionManager()
