@@ -1370,9 +1370,7 @@ extension GoogleMapViewController:GMSMapViewDelegate {
                 
             }
         else {
-            
-            if(!Constant.MyClassConstants.isRunningOnIphone){
-                
+            if(Constant.MyClassConstants.isRunningOnIphone){
                 self.alertView.isHidden = false
                 self.mapTableView.isHidden = true
             }
