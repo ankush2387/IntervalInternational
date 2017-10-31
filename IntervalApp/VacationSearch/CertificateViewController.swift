@@ -43,6 +43,21 @@ class CertificateViewController: UIViewController {
             Constant.MyClassConstants.certificateDetailsArray = response
             self.navigateToCertificateDetailsVC()
              print(response)
+            let joiner = ""
+            let headerString = response.header.joined(separator: joiner)
+            
+            let footer = response.header.joined(separator: joiner)
+            
+            let areaLbl = response.restrictedArea?.label
+            let areasCombined = response.restrictedArea?.areas.map{$0.areaName} as! [String]
+            let areaString = areasCombined.joined(separator: joiner)
+            
+            //resort
+            let resortLbl = response.restrictedResort?.label
+            let resortCombined = response.restrictedResort?.resorts.map{$0.resortName} as! [String]
+            let resortString = areasCombined.joined(separator: joiner)
+            
+            //let combinedString = response.header.re
             
         }, onError: { (error) in
              print(error)

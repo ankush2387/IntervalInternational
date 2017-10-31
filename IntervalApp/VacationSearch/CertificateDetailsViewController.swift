@@ -33,7 +33,6 @@ class CertificateDetailsViewController: UIViewController {
     
 }
 
-
 //MARK:- tableview delegate
 extension CertificateDetailsViewController:UITableViewDelegate {
     
@@ -47,7 +46,8 @@ extension CertificateDetailsViewController:UITableViewDelegate {
     }
 }
 
-//MARK:- table view delegate
+
+//MARK:- tableview datasource
 extension CertificateDetailsViewController:UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -71,7 +71,7 @@ extension CertificateDetailsViewController:UITableViewDataSource {
         
         let areasCombined = response.restrictedArea?.areas.map{$0.areaName} as! [String]
         let areaString = areasCombined.joined(separator: newLine)
-    
+        
         //resort
         var resortLbl = ""
         if let label = response.restrictedResort?.label {
