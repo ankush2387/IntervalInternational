@@ -58,20 +58,48 @@ extension CertificateDetailsViewController:UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.certificateScreenReusableIdentifiers.certificateDetailsCell, for: indexPath) as! CertificateDetailsCell
         
+        
+        let response = Constant.MyClassConstants.certificateDetailsArray
+        let newLine = "\n"
+        let newLine2 = "\n\n"
+        
+        let headerString = response.header.joined(separator: newLine)
+        
+        let footer = response.footer.joined(separator: newLine)
+        
+        let areaLbl = response.restrictedArea?.label
+        let areasCombined = response.restrictedArea?.areas.map{$0.areaName} as! [String]
+        let areaString = areasCombined.joined(separator: newLine)
+        
+        //resort
+        let resortLbl = response.restrictedResort?.label
+        let resortCombined = response.restrictedResort?.resorts.map{$0.resortName} as! [String]
+        let resortString = resortCombined.joined(separator: newLine)
+        
+        let finaStr  = headerString + newLine2 + areaLbl! + areaString + newLine2 + resortLbl! + resortString + newLine2 + footer
+        
+       
         //parse certificate details datacertificate
-        let certificateSummary = Constant.MyClassConstants.certificateDetailsArray
-        let certificateSummary1 = [certificateSummary.header.map{$0}, certificateSummary.restrictedArea!.areas.map{$0.areaName!}, certificateSummary.restrictedResort!.resorts.map{$0.resortName!}, certificateSummary.footer.map{$0}]
+       /* let certificateSummary = Constant.MyClassConstants.certificateDetailsArray
+        
+        let certificateSummary1 = [certificateSummary.header.map{$0},
+                                   certificateSummary.restrictedArea!.label!,
+                                   certificateSummary.restrictedArea!.areas.map{$0.areaName!},
+                                   certificateSummary.restrictedResort!.label!,
+                                   certificateSummary.restrictedResort!.resorts.map{$0.resortName!},
+                                   certificateSummary.footer.map{$0}] as [Any]
         print(certificateSummary1)
         
-        let strCertificateDetails = certificateSummary1.flatMap {$0}
-        let newFmap = strCertificateDetails.flatMap {$0}
+        let strCertificateDetails = certificateSummary1.map {$0}
+        let newFmap = strCertificateDetails.map {$0}
         
         print(newFmap)
-        var newStr:String = ""
+         var newStr = ""
         for str in newFmap{
-            newStr.append(str + "\n")
-        }
-        cell.lblCertificateDetails.text = newStr
+           // newStr = "\(str), (\n)"
+            newStr.append("\(str), \n")
+        }*/
+        cell.lblCertificateDetails.text = finaStr
         
         return cell
     }

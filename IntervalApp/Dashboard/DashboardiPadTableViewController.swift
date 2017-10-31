@@ -26,6 +26,7 @@ class DashboardIPadTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         //***** Adding notification to reload table when all alerts have been fetched *****//
+        self.navigationController?.navigationBar.isHidden = false
         NotificationCenter.default.addObserver(self, selector: #selector(reloadBadgeView), name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadTopDestinations), name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadUpcomingTrip), name: NSNotification.Name(rawValue:Constant.notificationNames.reloadTripDetailsNotification), object: nil)
@@ -36,6 +37,7 @@ class DashboardIPadTableViewController: UITableViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         //***** Remove added notifications. *****//
+        self.navigationController?.navigationBar.isHidden = true
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue:Constant.notificationNames.reloadTripDetailsNotification), object: nil)
@@ -118,20 +120,14 @@ class DashboardIPadTableViewController: UITableViewController {
     
     func searchVacationButtonPressed(_ sender:IUIKButton) {
         
-        
         Constant.MyClassConstants.searchOriginationPoint = Constant.omnitureCommonString.homeDashboard
         
-        let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.sideMenuTitles.sideMenuInitialController) as! SWRevealViewController
-        self.present(viewController, animated: true, completion: nil)
+        let isRunningOnIpad = UIDevice.current.userInterfaceIdiom == .pad
+        let storyboardName = isRunningOnIpad ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
+        if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
+            navigationController?.pushViewController(initialViewController, animated: true)
+        }
         
-
-        
-        //self.performSegue(withIdentifier: Constant.segueIdentifiers.searchVacation, sender: nil)
-        
-        //        let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.myUpcomingTripIpad, bundle: nil)
-        //        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.upcomingTripsViewController) as! UpComingTripDetailIPadViewController
-        //        self.present(viewController, animated: true, completion: nil)
     }
     
     
@@ -389,17 +385,19 @@ class DashboardIPadTableViewController: UITableViewController {
         }
         
     }
-    //***** Search vacation button action *****//
-    func  searchVactionPressed(_ sender:AnyObject) {
+    // Mark:- Button events
+    @IBAction func searchVactionPressed(_ sender: UIButton) {
+        /*Constant.MyClassConstants.searchOriginationPoint = Constant.omnitureCommonString.homeDashboard
         
-        let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.sideMenuTitles.sideMenuInitialController) as! SWRevealViewController
-        //self.present(viewController, animated: true, completion: nil)
-        
-        let navController = UINavigationController(rootViewController: viewController)
-       //self.navigationController!.present(navController, animated: true)
-        self.navigationController?.pushViewController(navController, animated: true)
+        let isRunningOnIpad = UIDevice.current.userInterfaceIdiom == .pad
+        let storyboardName = isRunningOnIpad ? Constant.storyboardNames.vacationSearchIPad : Constant.storyboardNames.vacationSearchIPad
+        if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
+            navigationController?.pushViewController(initialViewController, animated: true)
+        }*/
     }
+    
+    
+
 }
 
 extension DashboardIPadTableViewController:UICollectionViewDelegate {
@@ -485,8 +483,6 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
             let myComponents1 = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkOutDate)
             
             let formatedCheckOutDate = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents1.weekday!)) \(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!)). \(myComponents1.day!), \(myComponents1.year!)"
-            
-            
             
             cell.resortAvailabilityLabel.text = "\(formatedCheckInDate) - \(formatedCheckOutDate)"
             
