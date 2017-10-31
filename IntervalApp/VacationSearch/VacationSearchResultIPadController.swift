@@ -1637,8 +1637,6 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
                 headerView.addSubview(headerButton)
             }
         }
-        headerView.addSubview(dropDownImgVw)
-        headerView.addSubview(headerButton)
         return headerView
     }
 
