@@ -481,7 +481,7 @@ class GoogleMapViewController: UIViewController {
                 self.alertView.isHidden = true
                 self.mapTableView.isHidden = false
                 self.mapTableView.reloadData()
-                
+
             }
             self.hideHudAsync()
         }) {
