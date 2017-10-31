@@ -1737,7 +1737,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
     }
     
     
-    // Mark:- Set options for filter
+     // Mark:- Set options for filter
     func createFilterOptions(){
         
         Constant.MyClassConstants.filterOptionsArray.removeAll()
@@ -1745,28 +1745,32 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         let allDest = Helper.getLocalStorageAllDest()
         
         if(storedData.count > 0) {
-            Constant.MyClassConstants.filterOptionsArray.removeAll()
-            for object in storedData {
-                
-                if(object.destinations.count > 0){
-                    Constant.MyClassConstants.filterOptionsArray.append(
-                        .Destination(object.destinations[0])
-                    )
+            
+            let realm = try! Realm()
+            try! realm.write {
+                Constant.MyClassConstants.filterOptionsArray.removeAll()
+                for object in storedData {
                     
-                }else if(object.resorts.count > 0){
-                    
-                    if(object.resorts[0].resortArray.count > 0){
+                    if(object.destinations.count > 0){
+                        Constant.MyClassConstants.filterOptionsArray.append(
+                            .Destination(object.destinations[0])
+                        )
                         
-                        var arrayOfResorts = List<ResortByMap>()
-                        var reswortByMap = [ResortByMap]()
-                        arrayOfResorts = object.resorts[0].resortArray
-                        for resort in arrayOfResorts{
-                            reswortByMap.append(resort)
+                    }else if(object.resorts.count > 0){
+                        
+                        if(object.resorts[0].resortArray.count > 0){
+                            
+                            var araayOfResorts = List<ResortByMap>()
+                            var reswortByMap = [ResortByMap]()
+                            araayOfResorts = object.resorts[0].resortArray
+                            for resort in araayOfResorts{
+                                reswortByMap.append(resort)
+                            }
+                            
+                            Constant.MyClassConstants.filterOptionsArray.append(.ResortList(reswortByMap))
+                        }else{
+     Constant.MyClassConstants.filterOptionsArray.append(.Resort(object.resorts[0]))
                         }
-                        
-                        Constant.MyClassConstants.filterOptionsArray.append(.ResortList(reswortByMap))
-                    }else{
-                        Constant.MyClassConstants.filterOptionsArray.append(.Resort(object.resorts[0]))
                     }
                 }
             }
@@ -1776,6 +1780,12 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 Constant.MyClassConstants.filterOptionsArray.append(.Area(dictionaryArea as! NSMutableDictionary))
             }
         }
+    }
+    
+    
+    
+    func showNotAvailabilityResults() {
+        DarwinSDK.logger.info("Show the Not Availability Screen.")
     }
     
     // Get data from local storage
