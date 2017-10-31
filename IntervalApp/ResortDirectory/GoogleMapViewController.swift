@@ -482,7 +482,10 @@ class GoogleMapViewController: UIViewController {
         }
         if(Constant.RunningDevice.deviceIdiom == .pad && !self.hideSideView && self.containerView != nil && self.containerView.isHidden == true) {
             Constant.MyClassConstants.addResortSelectedIndex.removeAllObjects()
+                self.alertView.isHidden = true
+            self.mapTableView.isHidden = false
                 self.mapTableView.reloadData()
+            
             }
             self.hideHudAsync()
         }) {
@@ -515,7 +518,12 @@ class GoogleMapViewController: UIViewController {
             
         }
         if(self.mapTableView != nil){
+            self.mapTableView.isHidden = false
+            self.alertView.isHidden = true
             self.mapTableView.reloadData()
+        } else {
+            self.alertView.isHidden = false
+            self.mapTableView.isHidden = true
         }
     }
     
@@ -945,7 +953,15 @@ class GoogleMapViewController: UIViewController {
                 
             }, completion: { _ in
                 self.containerView.isHidden = true
-                self.mapView.selectedMarker = nil
+                DispatchQueue.main.async {
+                    for selectedMarker in Constant.MyClassConstants.googleMarkerArray {
+                        
+                        selectedMarker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
+                        selectedMarker.isFlat = false
+                        
+                    }
+                    self.mapView.selectedMarker = nil
+                }
             })
         }else{
             updateMapMarkers()
@@ -1246,6 +1262,7 @@ extension GoogleMapViewController:GMSMapViewDelegate {
                 Constant.MyClassConstants.resortsDescriptionArray = Constant.MyClassConstants.resortsArray[marker.userData as! Int]
                 
                 Helper.getResortWithResortCode(code: Constant.MyClassConstants.resortsDescriptionArray.resortCode!,viewcontroller:self)
+                
                 let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes(sender:)))
                 self.handleSwipes(sender: rightSwipe)
                 
@@ -1357,6 +1374,15 @@ extension GoogleMapViewController:GMSMapViewDelegate {
                 self.apiCallWithRectangleRequest(request: geoAreaReq)
                 
             }
+        else {
+            
+            if(Constant.MyClassConstants.isRunningOnIphone){
+                
+                self.alertView.isHidden = false
+                self.mapTableView.isHidden = true
+            }
+            
+        }
         }
 }
 

@@ -309,16 +309,7 @@ extension SideMenuiPadTableViewController:UITableViewDelegate {
                 
                 let mainStoryboard: UIStoryboard = UIStoryboard(name: smi.storyboardId!, bundle: nil)
                 let viewController = mainStoryboard.instantiateViewController(withIdentifier: smi.initialControllerName!) as! SWRevealViewController
-                
-                //***** Creating animation transition to show custom transition animation *****//
-                let transition: CATransition = CATransition()
-                let timeFunc : CAMediaTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-                transition.duration = 0.25
-                transition.timingFunction = timeFunc
-                transition.type = kCATransitionPush
-                transition.subtype = kCATransitionFromRight
-                viewController.view.layer.add(transition, forKey: Constant.MyClassConstants.switchToView)
-                UIApplication.shared.keyWindow?.rootViewController = viewController
+                navigationController?.pushViewController(viewController, animated: true)
             }
         }
     }

@@ -274,7 +274,13 @@ func sendOmnitureTrackCallForEvent2() {
     
     userInfo.addEntries(from: [Constant.omnitureEvars.eVar11 :Constant.MyClassConstants.activeAlertsArray.count])
     userInfo.addEntries(from: [Constant.omnitureEvars.eVar14 :""])
-    userInfo.addEntries(from: [Constant.omnitureEvars.eVar16 :(Session.sharedSession.contact?.memberships?.count)! > 0 ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no])
+    if let meberships = Session.sharedSession.contact?.memberships{
+         userInfo.addEntries(from: [Constant.omnitureEvars.eVar16 :(Session.sharedSession.contact?.memberships?.count)! > 0 ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no])
+    }else{
+        userInfo.addEntries(from:
+            [Constant.omnitureEvars.eVar16 : Constant.AlertPromtMessages.no])
+    }
+   
     var tripTypeString = ""
     if(Constant.MyClassConstants.exchangeCounter > 0) {
         tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.exchage)-\(Constant.MyClassConstants.exchangeCounter)")
