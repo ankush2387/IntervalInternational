@@ -497,12 +497,9 @@ class VacationSearchResultIPadController: UIViewController {
         
         let firstVisibleIndexPath = resortDetailTBLView.indexPathsForVisibleRows?.first
         let indexPath = IndexPath(item: collectionviewSelectedIndex, section: 0)
-<<<<<<< HEAD
+
         intervalPrint("---------->>>>\(collectionviewSelectedIndex)")
         if(firstVisibleIndexPath?.section == 1){
-=======
-        if firstVisibleIndexPath?.section == 1 {
->>>>>>> MOBI-1219:Remove unwanted code and unused variables
             dateCellSelectionColor = Constant.CommonColor.greenColor
         }else{
             dateCellSelectionColor = Constant.CommonColor.blueColor
@@ -1595,12 +1592,14 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
         
         let dropDownImgVw = UIImageView(frame: CGRect(x: self.resortDetailTBLView.frame.width - 40, y: 5, width: 30, height: 30))
         dropDownImgVw.image = UIImage(named: Constant.assetImageNames.dropArrow)
+
         if !Constant.MyClassConstants.noFilterOptions || alertFilterOptionsArray.count > 0 {
             if Constant.MyClassConstants.filterOptionsArray.count > 1 || alertFilterOptionsArray.count > 1 {
                 headerView.addSubview(dropDownImgVw)
                 headerView.addSubview(headerButton)
             }
         }
+
         return headerView
     }
 
