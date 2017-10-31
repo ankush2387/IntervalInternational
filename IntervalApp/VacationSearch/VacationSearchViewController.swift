@@ -1819,3 +1819,4 @@ extension VacationSearchViewController:HelperDelegate {
         Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
     }
 }
+
