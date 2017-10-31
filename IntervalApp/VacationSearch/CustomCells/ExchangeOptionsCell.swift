@@ -47,6 +47,7 @@ class ExchangeOptionsCell: UITableViewCell {
             } else {
                 fractionalPriceLabel.text = "00"
             }
+            currencyLabel.text =  Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.exchangeFees[0].currencyCode)!)
         }
         
     }

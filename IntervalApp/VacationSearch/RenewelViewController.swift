@@ -336,6 +336,7 @@ extension RenewelViewController: UITableViewDataSource {
                         
                         priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                         
+                        
                         // make attributed string
                        let formattedString = Helper.returnStringWithPriceAndTerm(price: priceAndCurrency, term: term)
                         
