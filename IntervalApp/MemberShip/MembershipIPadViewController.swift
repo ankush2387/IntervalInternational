@@ -9,7 +9,6 @@
 import UIKit
 import DarwinSDK
 
-
 class MembershipIPadViewController: UIViewController {
     /** Outlets */
     @IBOutlet weak var tableView: UITableView!
@@ -97,7 +96,6 @@ class MembershipIPadViewController: UIViewController {
             self.tableView.reloadData()
         }) { (error) in
             self.hideHudAsync()
-            intervalPrint(error)
         }
     }
     

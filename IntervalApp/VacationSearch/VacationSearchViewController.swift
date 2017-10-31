@@ -314,11 +314,7 @@ extension VacationSearchViewController:UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView.tag == 1 {
-<<<<<<< HEAD
             return Constant.MyClassConstants.flexExchangeDeals.count
-=======
-             return Constant.MyClassConstants.flexExchangeDeals.count
->>>>>>> MOBI-1219:Remove unwanted code and unused variables
         } else {
             return Constant.MyClassConstants.topDeals.count
         }
@@ -1402,11 +1398,6 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         
         //Set filter options availability
         Constant.MyClassConstants.noFilterOptions = false
-        
-<<<<<<< HEAD
-=======
-        
->>>>>>> MOBI-1219:Remove unwanted code and unused variables
         //Set travel PartyInfo
         let travelPartyInfo = TravelParty()
         travelPartyInfo.adults = Int(adultCounter)
@@ -1733,6 +1724,52 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             }
         }
     }
+    
+     // Mark:- Set options for filter
+    func createFilterOptions(){
+        
+        Constant.MyClassConstants.filterOptionsArray.removeAll()
+        let storedData = Helper.getLocalStorageWherewanttoGo()
+        let allDest = Helper.getLocalStorageAllDest()
+        
+        if(storedData.count > 0) {
+            
+            let realm = try! Realm()
+            try! realm.write {
+                Constant.MyClassConstants.filterOptionsArray.removeAll()
+                for object in storedData {
+                    
+                    if(object.destinations.count > 0){
+                        Constant.MyClassConstants.filterOptionsArray.append(
+                            .Destination(object.destinations[0])
+                        )
+                        
+                    }else if(object.resorts.count > 0){
+                        
+                        if(object.resorts[0].resortArray.count > 0){
+                            
+                            var araayOfResorts = List<ResortByMap>()
+                            var reswortByMap = [ResortByMap]()
+                            araayOfResorts = object.resorts[0].resortArray
+                            for resort in araayOfResorts{
+                                reswortByMap.append(resort)
+                            }
+                            
+                            Constant.MyClassConstants.filterOptionsArray.append(.ResortList(reswortByMap))
+                        }else{
+     Constant.MyClassConstants.filterOptionsArray.append(.Resort(object.resorts[0]))
+                        }
+                    }
+                }
+            }
+        }else if(allDest.count > 0){
+            for areaCode in Constant.MyClassConstants.selectedAreaCodeArray{
+                let dictionaryArea = ["\(areaCode)": Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: areaCode as! String)]
+                Constant.MyClassConstants.filterOptionsArray.append(.Area(dictionaryArea as! NSMutableDictionary))
+            }
+        }
+    }
+    
     
     
     // Mark:- Set options for filter
