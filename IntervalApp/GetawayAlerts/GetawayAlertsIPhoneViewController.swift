@@ -231,11 +231,24 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     
     //Function for navigating to search results
     func navigateToSearchResults(){
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-        
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
-        viewController.alertFilterOptionsArray = alertFilterOptionsArray
-        self.navigationController?.pushViewController(viewController, animated: true)
+        if Constant.MyClassConstants.isRunningOnIphone {
+            
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+            
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
+            viewController.alertFilterOptionsArray = alertFilterOptionsArray
+            self.navigationController?.pushViewController(viewController, animated: true)
+            
+        } else {
+            
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+            
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! VacationSearchResultIPadController
+            viewController.alertFilterOptionsArray = alertFilterOptionsArray
+            self.navigationController?.pushViewController(viewController, animated: true)
+            
+        }
+   
     }
     
     func createSearchCriteriaFor(alert:RentalAlert) -> VacationSearchCriteria {

@@ -61,7 +61,6 @@ class AvailabilityCollectionViewCell: UICollectionViewCell {
             self.tierImage.image = UIImage(named: tier)
         }
         
-        DarwinSDK.logger.info("\(String(describing: Helper.resolveResortInfo(resort: inventoryItem)))")
     }
     
 }

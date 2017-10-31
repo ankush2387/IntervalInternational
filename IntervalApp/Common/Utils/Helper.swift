@@ -1981,62 +1981,7 @@ public class Helper{
         
         // Show up the Availability Sections in UI
         DarwinSDK.logger.info("Sorting criteria is: \(String(describing: vacationSearch.sortType))")
-        for section in sections {
-            if (vacationSearch.sortType.isDefault()) {
-                showAvailabilitySectionWithDefault(section: section)
-            } else {
-                showAvailabilitySection(section: section);
-            }
-        }
-    }
-    
-    static func showAvailabilitySectionWithDefault(section:AvailabilitySection!) {
-       /* if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
-            for inventoryItem in (section.item?.rentalInventory)! {
-                // Show up only Resorts as header
-                DarwinSDK.logger.info("Header[R] - \(String(describing: inventoryItem.resortName))")
-                Constant.MyClassConstants.searchAvailabilityHeader = "\(String(describing: inventoryItem.resortName))"
-                self.showAvailabilityBucket(inventoryItem: inventoryItem)
-            }
-        }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
-            for inventoryItem in (section.item?.exchangeInventory)! {
-                // Show up only Resorts as header
-                DarwinSDK.logger.info("Header[R] - \(String(describing: inventoryItem.resort?.resortName))")
-                Constant.MyClassConstants.searchAvailabilityHeader = "\(String(describing: inventoryItem.resort?.resortName))"
-                self.showAvailabilityBucketExchange(inventoryItem: inventoryItem.inventory)
-            }
-        }*/
-        
-            
-        
-        
-     }
-    
-
-    
-    static func showAvailabilitySection(section:AvailabilitySection!) {
-       /* if (section.exactMatch)! {
-            // Show up exact match as header
-            DarwinSDK.logger.info("Header - Exact Match")
-        } else {
-            // Show up surrounding match as header
-            DarwinSDK.logger.info("Header - Surrounding Match")
-        }
-        
-        if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
-            for inventoryItem in (section.item?.rentalInventory)! {
-                self.showAvailabilityBucket(inventoryItem: inventoryItem)
-            }
-        }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
-            for inventoryItem in (section.item?.exchangeInventory)!{
-                self.showAvailabilityBucketExchange(inventoryItem: inventoryItem.inventory)
-            }
-        }*/
-        
-        
-        
-        
-        DarwinSDK.logger.info("===============================================================")
+  
     }
     
     static func showAvailabilityBucketExchange(inventoryItem:ExchangeInventory!) {
@@ -2053,31 +1998,6 @@ public class Helper{
         for unit in (inventoryItem.inventory?.units)! {
             DarwinSDK.logger.info("\(String(describing: self.resolveUnitInfo(unit: unit)))")
         }
-    }
-    
-    static func resolveResortInfo(resort:Resort!) -> String {
-        var info = String()
-        /*info.append(resort.resortCode!)
-        info.append(" ")
-        info.append(resort.resortName!)
-        info.append(" ")
-        
-        if (resort.address?.cityName != nil) {
-            info.append(" ")
-            info.append((resort.address?.cityName)!)
-        }
-        
-        if (resort.address?.territoryCode != nil) {
-            info.append(" ")
-            info.append((resort.address?.territoryCode)!)
-        }
-        
-        if (resort.address?.countryCode != nil) {
-            info.append(" ")
-            info.append((resort.address?.countryCode)!)
-        }*/
-        
-        return info
     }
     
     static func resolveDestinationInfo(destination:AreaOfInfluenceDestination) -> String {
