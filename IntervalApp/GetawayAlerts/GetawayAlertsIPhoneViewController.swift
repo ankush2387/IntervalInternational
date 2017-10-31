@@ -22,7 +22,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     var alertId : Int64!
     var alertStatusId = 0
     var alertFilterOptionsArray = [Constant.AlertResortDestination]()
-
+    
     override func viewWillAppear(_ animated: Bool) {
         
         //***** Adding notification to reload table when all alerts have been fetched *****//
@@ -167,25 +167,8 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     func viewResultsClicked(_ sender:UIButton) {
         
         for alertWithDates in Constant.MyClassConstants.getawayAlertsArray{
-<<<<<<< HEAD
             if let clickedAlertId = alertWithDates.alertId{
                 if(Int(clickedAlertId) == sender.tag){
-=======
-            if(Int(alertWithDates.alertId!) == sender.tag){
-                
-                var getawayAlert = RentalAlert()
-                getawayAlert = Constant.MyClassConstants.alertsDictionary.value(forKey: String(describing: alertWithDates.alertId!)) as! RentalAlert
-                
-                let searchCriteria = createSearchCriteriaFor(alert: getawayAlert)
-                let settings = Helper.createSettings()
-                
-                Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
-                
-                RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
-                     onSuccess
-                    : { (response) in
-                                Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
->>>>>>> MOBI-1219:Remove unwanted code and unused variables
                     
                     var getawayAlert = RentalAlert()
                     getawayAlert = Constant.MyClassConstants.alertsDictionary.value(forKey: String(describing: clickedAlertId)) as! RentalAlert
@@ -218,7 +201,6 @@ class GetawayAlertsIPhoneViewController: UIViewController {
                                 if let searchDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate{
                                     Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate:  Helper.convertStringToDate(dateString: searchDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                 }
-<<<<<<< HEAD
                             }
                             
                     },
@@ -229,16 +211,6 @@ class GetawayAlertsIPhoneViewController: UIViewController {
                     }
                     )
                 }
-=======
-                        
-        },
-               onError
-                    :{ (error) in
-                                            
-                                            
-                }
-                )
->>>>>>> MOBI-1204: Modifications for rental alert search
             }
             
         }
@@ -260,7 +232,6 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     
     //Function for navigating to search results
     func navigateToSearchResults(){
-<<<<<<< HEAD
         if Constant.MyClassConstants.isRunningOnIphone {
             
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
@@ -278,14 +249,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
             self.navigationController?.pushViewController(viewController, animated: true)
             
         }
-   
-=======
-        Constant.MyClassConstants.filteredIndex = 0
         
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
-        self.navigationController!.pushViewController(viewController, animated: true)
->>>>>>> MOBI-1204: Modifications for rental alert search
     }
     
     func createSearchCriteriaFor(alert:RentalAlert) -> VacationSearchCriteria {
@@ -302,7 +266,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
         }
         getDestinationsResortsForAlert(alert:alert, searchCriteria: searchCriteria)
         alertFilterOptionsArray.removeAll()
-
+        
         for destination in alert.destinations{
             let dest = AreaOfInfluenceDestination()
             if let destinationName = destination.destinationName{
@@ -315,7 +279,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
             alertFilterOptionsArray
                 .append(Constant.AlertResortDestination.Destination(dest))
         }
-     
+        
         for resort in alert.resorts{
             let alertResort = Resort()
             alertResort.resortName = resort.resortName
@@ -323,7 +287,6 @@ class GetawayAlertsIPhoneViewController: UIViewController {
             alertFilterOptionsArray
                 .append(Constant.AlertResortDestination.Resort(resort))
         }
-
         return searchCriteria
     }
     
@@ -343,10 +306,6 @@ class GetawayAlertsIPhoneViewController: UIViewController {
             
         }else if((alert.resorts.count) > 0){
             Constant.MyClassConstants.initialVacationSearch.searchCriteria.resorts = alert.resorts
-<<<<<<< HEAD
-=======
-            //Constant.MyClassConstants.vacationSearchResultHeaderLabel = resort.resortName!
->>>>>>> MOBI-1219:Remove unwanted code and unused variables
         }
     }
 }
@@ -364,25 +323,10 @@ extension GetawayAlertsIPhoneViewController:UITableViewDelegate {
         let delete = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: Constant.buttonTitles.remove) { (action,index) -> Void in
             
             
-<<<<<<< HEAD
-        //Remove Alert API call
-        RentalClient.removeAlert(Session.sharedSession.userAccessToken, alertId: Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId!, onSuccess: { () in
-            
-        Constant.MyClassConstants.getawayAlertsArray.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
-            
-            let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC)))
-            DispatchQueue.main.asyncAfter(deadline: delayTime, execute: {
-                tableView.reloadSections(NSIndexSet(index:indexPath.section) as IndexSet, with: .automatic)
-            })
-        }) { (error) in
-            SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
-        }   
-=======
             //Remove Alert API call
             RentalClient.removeAlert(Session.sharedSession.userAccessToken, alertId: Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId!, onSuccess: { () in
                 
-            Constant.MyClassConstants.getawayAlertsArray.remove(at: indexPath.row)
+                Constant.MyClassConstants.getawayAlertsArray.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
                 
                 let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC)))
@@ -392,12 +336,6 @@ extension GetawayAlertsIPhoneViewController:UITableViewDelegate {
             }) { (error) in
                 SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
             }
-            
-            
-            
-        
-            
->>>>>>> MOBI-1219:Remove unwanted code and unused variables
         }
         delete.backgroundColor = UIColor(red: 224/255.0, green: 96.0/255.0, blue: 84.0/255.0, alpha: 1.0)
         
@@ -520,7 +458,7 @@ extension GetawayAlertsIPhoneViewController:UITableViewDataSource {
                 }
             }
         }
-
+        
         return cell
     }
     
