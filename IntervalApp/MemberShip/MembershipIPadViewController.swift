@@ -9,6 +9,7 @@
 import UIKit
 import DarwinSDK
 
+
 class MembershipIPadViewController: UIViewController {
     /** Outlets */
     @IBOutlet weak var tableView: UITableView!
@@ -155,6 +156,7 @@ class MembershipIPadViewController: UIViewController {
                 Logger.sharedInstance.error("Could not set membership in Darwin API Session: \(error.description)")
                 
                 self.presentAlert(with: Constant.AlertErrorMessages.loginFailed, message: "Please contact your servicing office.  Could not select membership \(String(describing: context.selectedMembership?.memberNumber))")
+
             }
         )
     }
