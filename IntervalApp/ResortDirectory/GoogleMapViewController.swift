@@ -1507,12 +1507,8 @@ extension GoogleMapViewController:UICollectionViewDataSource {
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-    
-        var visible: [AnyObject] = resortCollectionView.indexPathsForVisibleItems as [AnyObject]
-        let indexpath: NSIndexPath = (visible[0] as! NSIndexPath)
-        
-        if Constant.MyClassConstants.isRunningOnIphone && resortCollectionView != nil{
 
+        if Constant.MyClassConstants.isRunningOnIphone && resortCollectionView != nil{
             var visible: [AnyObject] = resortCollectionView.indexPathsForVisibleItems as [AnyObject]
             let indexpath: NSIndexPath = (visible[0] as! NSIndexPath)
         self.currentIndex = indexpath.row
