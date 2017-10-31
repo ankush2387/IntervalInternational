@@ -51,35 +51,21 @@ class CertificateViewController: UIViewController {
         })
     }
     
-<<<<<<< HEAD
     func navigateToCertificateDetailsVC(response: AccommodationCertificateSummary)  {
-=======
-    func navigateToCertificateDetailsVC()  {
->>>>>>> MOBI-1214 certificate details cell created in ipad
         
         if (Constant.MyClassConstants.isRunningOnIphone) {
             let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.certificateDetailsViewController) as! CertificateDetailsViewController
-<<<<<<< HEAD
             viewController.certificateDetailsResponse = response
-=======
->>>>>>> MOBI-1214 certificate details cell created in ipad
             self.present(viewController, animated: true, completion: nil)
         } else {
             let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.vacationSearchIPad, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.certificateDetailsViewController) as! CertificateDetailsViewController
-<<<<<<< HEAD
             viewController.certificateDetailsResponse = response
             self.present(viewController, animated: true, completion: nil)
             
         }
         
-=======
-            self.present(viewController, animated: true, completion: nil)
-            
-        }
-    
->>>>>>> MOBI-1214 certificate details cell created in ipad
     }
     
     override func viewWillAppear(_ animated: Bool) {
