@@ -232,6 +232,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     
     //Function for navigating to search results
     func navigateToSearchResults(){
+
         if Constant.MyClassConstants.isRunningOnIphone {
             
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
