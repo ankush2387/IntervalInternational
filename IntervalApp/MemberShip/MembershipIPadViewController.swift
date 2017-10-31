@@ -97,6 +97,7 @@ class MembershipIPadViewController: UIViewController {
             self.tableView.reloadData()
         }) { (error) in
             self.hideHudAsync()
+
         }
     }
     
