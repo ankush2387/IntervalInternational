@@ -134,7 +134,7 @@ final class AppCoordinator {
     }
 
     fileprivate func logoutDidFinish() {
-        
+        self.navigationController?.view.layer.add(Helper.topToBottomTransition(), forKey: kCATransition)
         navigationController?.popToRootViewController(animated: true)
         userIsLoggedIn = false
         autoLogoutTimer.stop()
