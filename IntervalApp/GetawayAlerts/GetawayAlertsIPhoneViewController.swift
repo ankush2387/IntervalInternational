@@ -180,7 +180,8 @@ class GetawayAlertsIPhoneViewController: UIViewController {
                 Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
                 
                 RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
-                     onSuccess: { (response) in
+                     onSuccess
+                    : { (response) in
                                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
                     
                     var getawayAlert = RentalAlert()
@@ -214,16 +215,13 @@ class GetawayAlertsIPhoneViewController: UIViewController {
                                 if let searchDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate{
                                     Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate:  Helper.convertStringToDate(dateString: searchDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                 }
-                            }
-                            
-                    },
-                                             onError
-                        :{ (error) in
-                            
-                            
-                    }
-                    )
+                        
+        },
+               onError:{ (error) in
+                                            
+                                            
                 }
+                )
             }
             
         }
@@ -291,7 +289,6 @@ class GetawayAlertsIPhoneViewController: UIViewController {
             alertFilterOptionsArray
                 .append(Constant.AlertResortDestination.Destination(dest))
         }
-
         for resort in alert.resorts{
             let alertResort = Resort()
             alertResort.resortName = resort.resortName
