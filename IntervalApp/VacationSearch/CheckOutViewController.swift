@@ -45,6 +45,7 @@ class CheckOutViewController: UIViewController {
     var renewalsArray = [Renewal]()
     var totalRowsInCost = 0
     var totalFeesArray = NSMutableArray()
+    var currencyCode: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,9 +101,12 @@ class CheckOutViewController: UIViewController {
                         eplusAdded = false
                     }
                 }
+            guard let curCode = Constant.MyClassConstants.exchangeFees[0].currencyCode else { return }
+            currencyCode = Helper.currencyCodetoSymbol(code: curCode)
             
         } else {
         for advisement in (Constant.MyClassConstants.viewResponse.resort?.advisements)! {
+            
             
             if(advisement.title == Constant.MyClassConstants.additionalAdv) {
                 Constant.MyClassConstants.additionalAdvisementsArray.append(advisement)
@@ -116,9 +120,13 @@ class CheckOutViewController: UIViewController {
             } else {
                 showInsurance = false
             }
+            guard let curCode = Constant.MyClassConstants.rentalFees[0].currencyCode else { return }
+            currencyCode = Helper.currencyCodetoSymbol(code: curCode)
       }
     
+        
         //Register custom cell xib with tableview
+        
         
         checkoutOptionTBLview.register(UINib(nibName: Constant.customCellNibNames.totalCostCell, bundle: nil), forCellReuseIdentifier: Constant.customCellNibNames.totalCostCell)
         
@@ -1230,8 +1238,8 @@ extension CheckOutViewController: UITableViewDataSource {
                         subviews.isHidden = false
                     }
                     
+
                     switch totalFeesArray[indexPath.row] as! String {
-                    
                     case Constant.MyClassConstants.exchangeFeeTitle:
                         
                         cell.priceLabel.text = Constant.MyClassConstants.exchangeFeeTitle
@@ -1244,6 +1252,8 @@ extension CheckOutViewController: UITableViewDataSource {
                         } else {
                             cell.fractionalPriceLabel.text = "00"
                         }
+                        cell.currencyLabel.text = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.exchangeFees[0].currencyCode)!)
+                        
                         
                     case Constant.MyClassConstants.getawayFee:
                         
@@ -1257,6 +1267,7 @@ extension CheckOutViewController: UITableViewDataSource {
                         } else {
                             cell.fractionalPriceLabel.text = "00"
                         }
+                        cell.currencyLabel.text = currencyCode
                     
                     case Constant.MyClassConstants.eplus:
                         cell.priceLabel.text = Constant.MyClassConstants.eplus
@@ -1268,6 +1279,7 @@ extension CheckOutViewController: UITableViewDataSource {
                         } else {
                             cell.fractionalPriceLabel.text = "00"
                         }
+                        cell.currencyLabel.text = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.exchangeFees[0].currencyCode)!)
                         
                     case Constant.MyClassConstants.taxesTitle:
                         
@@ -1279,6 +1291,7 @@ extension CheckOutViewController: UITableViewDataSource {
                             rentalTax = Double(Int((Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.rental?.rentalPrice?.tax)!))
                         }
                         
+                        cell.currencyLabel.text = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.rentalFees[0].currencyCode)!)
                         cell.primaryPriceLabel.text = "\(rentalTax)"
                         let priceString = "\(Constant.MyClassConstants.continueToCheckoutResponse.view!.fees!.rental!.rentalPrice!.tax)"
                         let priceArray = priceString.components(separatedBy: ".")
@@ -1313,7 +1326,7 @@ extension CheckOutViewController: UITableViewDataSource {
                     default:
                         
                         let renewalIndex = indexPath.row - (totalRowsInCost - renewalsArray.count)
-                        
+                        cell.currencyLabel.text = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.rentalFees[0].currencyCode)!)
                         cell.priceLabel.numberOfLines = 0
                         cell.priceLabel.text = "\(String(describing: renewalsArray[renewalIndex].displayName!)) Renewal Fee"
                         
@@ -1443,44 +1456,53 @@ extension CheckOutViewController: UITableViewDataSource {
                 if(Constant.MyClassConstants.isFromExchange) {
                     cell.priceLabel.text = String(Int(Float(Constant.MyClassConstants.exchangeFees[0].total)))
                 } else {
-                    cell.priceLabel.text = String(Int(Float(Constant.MyClassConstants.rentalFees[0].total)))
-                    var priceString = "\(Constant.MyClassConstants.rentalFees[0].total)"
-                    
-                    let formatter = NumberFormatter()
-                    formatter.numberStyle = .decimal
-                    let formattedprice = formatter.string(for: Int(cell.priceLabel.text!))
-                    
-                   // var targetString = String(Int(Float(Constant.MyClassConstants.rentalFees[0].total)))
-                    
-                    var targetString = formattedprice!
-                    
+                    cell.setTotalPrice(with: currencyCode, and: (Constant.MyClassConstants.rentalFees[0].total))
+               
+//                    cell.priceLabel.text = String(Int(Float(Constant.MyClassConstants.rentalFees[0].total)))
+                     var priceString = "\(Constant.MyClassConstants.rentalFees[0].total)"
+//
+//                    cell.currencyCodeLabel.text = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.rentalFees[0].currencyCode)!)
+//                    let formatter = NumberFormatter()
+//                    formatter.numberStyle = .decimal
+//                    let formattedprice = formatter.string(for: Int(cell.priceLabel.text!))
+//
+                      var targetString = String(Int(Float(Constant.MyClassConstants.rentalFees[0].total)))
                     if let total = recapFeesTotal {
                         cell.priceLabel.text = String(Int(Float(total)))
                         priceString = "\(total)"
                         targetString = String(Int(Float(total)))
+                        cell.setTotalPrice(with: currencyCode, and: total)
                     }
-                    
-                    let priceArray = priceString.components(separatedBy: ".")
-                    
-                    if((priceArray.last?.characters.count)! > 1) {
-                        
-                        cell.fractionalPriceLabel.text = "\(priceArray.last!)"
-                    } else {
-                        
-                        cell.fractionalPriceLabel.text = "\(priceArray.last!)0"
-                    }
-                    
-                    let font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 25.0)
-                    
-                    let width = widthForView(cell.priceLabel.text!, font: font!, height: cell.priceLabel.frame.size.height)
-                    cell.priceLabel.frame.size.width = width + 5
-                    
-                    let range = NSMakeRange(0, targetString.characters.count)
-                    
-                    cell.priceLabel.attributedText = Helper.attributedString(from: targetString, nonBoldRange: range, font: font!)
-                    
-                    cell.periodLabel.frame.origin.x = cell.priceLabel.frame.origin.x + width
-                    cell.fractionalPriceLabel.frame.origin.x = cell.periodLabel.frame.origin.x + cell.periodLabel.frame.size.width + 5
+//
+//                    var targetString = formattedprice!
+//
+//                    if let total = recapFeesTotal {
+//                        cell.priceLabel.text = String(Int(Float(total)))
+//                        priceString = "\(total)"
+//                        targetString = String(Int(Float(total)))
+//                    }
+//
+//                    let priceArray = priceString.components(separatedBy: ".")
+//
+//                    if((priceArray.last?.characters.count)! > 1) {
+//
+//                        cell.fractionalPriceLabel.text = "\(priceArray.last!)"
+//                    } else {
+//
+//                        cell.fractionalPriceLabel.text = "\(priceArray.last!)0"
+//                    }
+//
+//                    let font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 25.0)
+//
+//                    let width = widthForView(cell.priceLabel.text!, font: font!, height: cell.priceLabel.frame.size.height)
+//                    cell.priceLabel.frame.size.width = width + 5
+//
+//                    let range = NSMakeRange(0, targetString.characters.count)
+//
+//                    cell.priceLabel.attributedText = Helper.attributedString(from: targetString, nonBoldRange: range, font: font!)
+//
+//                    cell.periodLabel.frame.origin.x = cell.priceLabel.frame.origin.x + width
+//                    cell.fractionalPriceLabel.frame.origin.x = cell.periodLabel.frame.origin.x + cell.periodLabel.frame.size.width + 5
                 }
                 
                 return cell

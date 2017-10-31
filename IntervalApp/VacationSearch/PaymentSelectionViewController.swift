@@ -50,6 +50,11 @@ class PaymentSelectionViewController: UIViewController {
         let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.dateTimeFormat
+        if let date = dateFormatter.date(from: creditcard.expirationDate!) {
+            print(date)
+        } else {
+            dateFormatter.dateFormat = Constant.MyClassConstants.monthDateFormat
+        }
         let date = dateFormatter.date(from: creditcard.expirationDate!)
         let myComponents = (myCalendar as NSCalendar).components([.month, .year], from: date!)
         
@@ -305,6 +310,11 @@ extension PaymentSelectionViewController: UITableViewDataSource {
             let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.dateTimeFormat
+            if let date = dateFormatter.date(from: creditcard.expirationDate!) {
+                print(date)
+            } else {
+                dateFormatter.dateFormat = Constant.MyClassConstants.monthDateFormat
+            }
             let date = dateFormatter.date(from: creditcard.expirationDate!)
             let myComponents = (myCalendar as NSCalendar).components([.month, .year], from: date!)
             
