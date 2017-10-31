@@ -289,10 +289,6 @@ class GetawayAlertsIPhoneViewController: UIViewController {
             alertFilterOptionsArray
                 .append(Constant.AlertResortDestination.Destination(dest))
         }
-<<<<<<< HEAD
-=======
-     
->>>>>>> MOBI-1204: Modifications for getaway alerts search result
         for resort in alert.resorts{
             let alertResort = Resort()
             alertResort.resortName = resort.resortName
@@ -338,10 +334,6 @@ extension GetawayAlertsIPhoneViewController:UITableViewDelegate {
         //Remove Alert API call
         RentalClient.removeAlert(Session.sharedSession.userAccessToken, alertId: Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId!, onSuccess: { () in
             
-<<<<<<< HEAD
-        Constant.MyClassConstants.getawayAlertsArray.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
-=======
         //Remove Alert API call
         RentalClient.removeAlert(Session.sharedSession.userAccessToken, alertId: Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId!, onSuccess: { () in
             
@@ -355,11 +347,6 @@ extension GetawayAlertsIPhoneViewController:UITableViewDelegate {
         }) { (error) in
             SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
         }
-            
-            
-            
-        
->>>>>>> MOBI-1204: Modifications for getaway alerts search result
             
             let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC)))
             DispatchQueue.main.asyncAfter(deadline: delayTime, execute: {
