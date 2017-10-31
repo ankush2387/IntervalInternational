@@ -9,6 +9,7 @@
 import UIKit
 import IntervalUIKit
 import DarwinSDK
+import SVProgressHUD
 
 class CertificateViewController: UIViewController {
     
@@ -34,32 +35,17 @@ class CertificateViewController: UIViewController {
     
     func getAccommodationCertificateSummary(sendertag:Int) {
        
-        
+        showHudAsync()
         let number = Constant.MyClassConstants.certificateArray[sendertag].certificateNumber! as NSNumber
         
         let certificateNumber:String = number.stringValue
        
         UserClient.getAccommodationCertificateSummary(Session.sharedSession.userAccessToken, certificateNumber: certificateNumber, onSuccess: { (response) in
+            self.hideHudAsync()
             Constant.MyClassConstants.certificateDetailsArray = response
             self.navigateToCertificateDetailsVC()
-             print(response)
-            let joiner = ""
-            let headerString = response.header.joined(separator: joiner)
-            
-            let footer = response.header.joined(separator: joiner)
-            
-            let areaLbl = response.restrictedArea?.label
-            let areasCombined = response.restrictedArea?.areas.map{$0.areaName} as! [String]
-            let areaString = areasCombined.joined(separator: joiner)
-            
-            //resort
-            let resortLbl = response.restrictedResort?.label
-            let resortCombined = response.restrictedResort?.resorts.map{$0.resortName} as! [String]
-            let resortString = areasCombined.joined(separator: joiner)
-            
-            //let combinedString = response.header.re
-            
         }, onError: { (error) in
+            self.hideHudAsync()
              print(error)
             
             })
@@ -81,21 +67,18 @@ class CertificateViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
+        showHudAsync()
        // Helper.showProgressBar(senderView: self)
         UserClient.getAccommodationCertificates(Session.sharedSession.userAccessToken, onSuccess: { (certificates) in
-            //Helper.hideProgressBar(senderView: self)
-            print(certificates.count)
+            self.hideHudAsync()
             Constant.MyClassConstants.certifcateCount = certificates.count
             Constant.MyClassConstants.certificateArray =  certificates
             self.certificateTable.delegate = self
             self.certificateTable.dataSource = self
             self.certificateTable.reloadData()
             
-            
         }, onError: { (error) in
-            //Helper.hideProgressBar(senderView: self)
-            print(error)
+            self.hideHudAsync()
         })
         
     }

@@ -798,7 +798,7 @@ class GoogleMapViewController: UIViewController {
             if(self.containerView != nil){
             self.containerView.frame = CGRect(x: -self.containerView.frame.size.width, y: self.containerView.frame.origin.y, width: self.containerView.frame.size.width, height: self.containerView.frame.size.height)
             }
-            self.dragButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI))
+            self.dragButton.transform = CGAffineTransform(rotationAngle: .pi)
         })
         
     }
@@ -920,7 +920,7 @@ class GoogleMapViewController: UIViewController {
                 self.draggingView.frame = CGRect(x: 0, y: self.draggingView.frame.origin.y, width: self.draggingView.frame.size.width, height: self.draggingView.frame.size.height)
                 
             }, completion: { _ in
-                self.dragButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI))
+                self.dragButton.transform = CGAffineTransform(rotationAngle: .pi)
             })
             
         }else if (sender.direction == .right){
@@ -1083,7 +1083,7 @@ class GoogleMapViewController: UIViewController {
             let selectButton = UIButton(type : UIButtonType.system) as UIButton
             let bounds = CGRect(x: self.view.bounds.width-68, y: 0, width: 60, height: 40)
             selectButton.frame = bounds
-            selectButton.imageView?.contentMode = .scaleAspectFit
+            //selectButton.imageView?.contentMode = .scaleAspectFit
             selectButton.setImage(UIImage(named:Constant.assetImageNames.plusIcon), for: .normal)
             selectButton.setTitleColor(UIColor.white, for: UIControlState.normal)
             selectButton.layer.cornerRadius = 5
@@ -1488,25 +1488,28 @@ extension GoogleMapViewController:UICollectionViewDataSource {
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
-        var visible: [AnyObject] = resortCollectionView.indexPathsForVisibleItems as [AnyObject]
-        let indexpath: NSIndexPath = (visible[0] as! NSIndexPath)
-        
-        self.currentIndex = indexpath.row
-        DispatchQueue.main.async {
+        if Constant.MyClassConstants.isRunningOnIphone {
+            var visible: [AnyObject] = resortCollectionView.indexPathsForVisibleItems as [AnyObject]
+            let indexpath: NSIndexPath = (visible[0] as! NSIndexPath)
             
-        for marker in Constant.MyClassConstants.googleMarkerArray {
-            
-            if(marker.userData as! Int ==  self.currentIndex) {
-                marker.icon = UIImage(named:Constant.assetImageNames.pinFocusImage)
-                marker.isFlat = true
-                self.mapView.selectedMarker = marker
-            }
-            else {
-                marker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
-                marker.isFlat = false
+            self.currentIndex = indexpath.row
+            DispatchQueue.main.async {
+                
+                for marker in Constant.MyClassConstants.googleMarkerArray {
+                    
+                    if(marker.userData as! Int ==  self.currentIndex) {
+                        marker.icon = UIImage(named:Constant.assetImageNames.pinFocusImage)
+                        marker.isFlat = true
+                        self.mapView.selectedMarker = marker
+                    }
+                    else {
+                        marker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
+                        marker.isFlat = false
+                    }
+                }
             }
         }
-      }
+        
     }
 }
 
