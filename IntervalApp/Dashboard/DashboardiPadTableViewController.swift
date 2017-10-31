@@ -109,13 +109,14 @@ class DashboardIPadTableViewController: UITableViewController {
     //***** function to call alert list screen when view all alert button pressed *****//
     func viewAllAlertButtonPressed(_ sender:IUIKButton) {
         
-        let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.getawayAlertsIpad, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.sideMenuTitles.sideMenuInitialController) as! SWRevealViewController
+        Constant.MyClassConstants.alertOriginationPoint = Constant.CommonStringIdentifiers.alertOriginationPoint
+        let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+        let storyboardName = isRunningOnIphone ? Constant.storyboardNames.getawayAlertsIphone : Constant.storyboardNames.getawayAlertsIpad
+        if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
+            navigationController?.pushViewController(initialViewController, animated: true)
+        }
         Constant.MyClassConstants.activeAlertsArray.removeAllObjects()
         reloadBadgeView()
-
-
-        self.present(viewController, animated: true, completion: nil)
     }
     
     //Mark:- Button Clicked
@@ -136,11 +137,11 @@ class DashboardIPadTableViewController: UITableViewController {
     //***** function to call trip list screen when view all trip button pressed *****//
     func viewAllTripButtonPressed(_ sender:IUIKButton) {
         
-        let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.myUpcomingTripIpad, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.sideMenuTitles.sideMenuInitialController) as! SWRevealViewController
-        
-        self.present(viewController, animated: true, completion: nil)
-        
+        Constant.MyClassConstants.upcomingOriginationPoint = Constant.omnitureCommonString.homeDashboard
+        let storyboardName = Constant.storyboardNames.myUpcomingTripIphone
+        if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
+            navigationController?.pushViewController(initialViewController, animated: true)
+        }
     }
     
     override func viewDidLayoutSubviews() {
