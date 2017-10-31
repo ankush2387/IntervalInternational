@@ -201,14 +201,16 @@ class GetawayAlertsIPhoneViewController: UIViewController {
                                 if let searchDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate{
                                     Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate:  Helper.convertStringToDate(dateString: searchDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                 }
-                        
-        },
-               onError
-                    :{ (error) in
-                                            
-                                            
+                            }
+                            
+                    },
+                                             onError
+                        :{ (error) in
+                            
+                            
+                    }
+                    )
                 }
-                )
             }
             
         }
@@ -304,7 +306,6 @@ class GetawayAlertsIPhoneViewController: UIViewController {
             
         }else if((alert.resorts.count) > 0){
             Constant.MyClassConstants.initialVacationSearch.searchCriteria.resorts = alert.resorts
-            //Constant.MyClassConstants.vacationSearchResultHeaderLabel = resort.resortName!
         }
     }
 }
@@ -325,7 +326,7 @@ extension GetawayAlertsIPhoneViewController:UITableViewDelegate {
             //Remove Alert API call
             RentalClient.removeAlert(Session.sharedSession.userAccessToken, alertId: Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId!, onSuccess: { () in
                 
-            Constant.MyClassConstants.getawayAlertsArray.remove(at: indexPath.row)
+                Constant.MyClassConstants.getawayAlertsArray.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
                 
                 let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC)))
@@ -335,11 +336,6 @@ extension GetawayAlertsIPhoneViewController:UITableViewDelegate {
             }) { (error) in
                 SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
             }
-            
-            
-            
-        
-            
         }
         delete.backgroundColor = UIColor(red: 224/255.0, green: 96.0/255.0, blue: 84.0/255.0, alpha: 1.0)
         
@@ -462,6 +458,7 @@ extension GetawayAlertsIPhoneViewController:UITableViewDataSource {
                 }
             }
         }
+        
         return cell
     }
     
