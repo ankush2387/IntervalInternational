@@ -2226,7 +2226,7 @@ public class Helper{
     static func topToBottomTransition()-> CATransition {
         
         let transition = CATransition()
-        transition.duration = 0.5
+        transition.duration = 0.4
         transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         transition.type = kCATransitionReveal
         transition.subtype = kCATransitionFromBottom
