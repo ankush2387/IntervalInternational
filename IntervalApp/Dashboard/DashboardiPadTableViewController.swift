@@ -117,7 +117,6 @@ class DashboardIPadTableViewController: UITableViewController {
         }
         Constant.MyClassConstants.activeAlertsArray.removeAllObjects()
         reloadBadgeView()
-        self.present(viewController, animated: true, completion: nil)
     }
     
     //Mark:- Button Clicked
