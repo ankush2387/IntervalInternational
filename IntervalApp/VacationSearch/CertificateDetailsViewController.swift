@@ -53,6 +53,7 @@ extension CertificateDetailsViewController:UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
 
+
         var cell = UITableViewCell()
         cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: Constant.certificateScreenReusableIdentifiers.certificateDetailsCell)
         
@@ -95,6 +96,8 @@ extension CertificateDetailsViewController:UITableViewDataSource {
         cell.detailTextLabel?.numberOfLines = 0
         cell.detailTextLabel?.text = finaStr
         cell.detailTextLabel?.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15)
+
+        cell.lblCertificateDetails.text = finaStr
         
         return cell
     }
