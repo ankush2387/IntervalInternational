@@ -36,7 +36,7 @@ class UpComingTripMapViewController: UIViewController, GMSMapViewDelegate {
         let doneButtonView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 64))
             doneButtonView.backgroundColor = UIColor(red: 229.0/255.0, green: 231.0/255.0, blue: 228.0/255.0, alpha: 1.0)
         let doneButton = UIButton(frame: CGRect(x: self.view.frame.size.width - 60, y: 7, width: 50, height: 50))
-            doneButton.tintColor = IUIKColorPalette.primary1.color
+            doneButton.setTitleColor(IUIKColorPalette.primary1.color, for: .normal)
             doneButton.setTitle("Done", for: .normal)
             doneButton.addTarget(self, action: #selector(UpComingTripMapViewController.doneButtonPressed(_:)), for: .touchUpInside)
         doneButtonView.addSubview(doneButton)
@@ -49,7 +49,7 @@ class UpComingTripMapViewController: UIViewController, GMSMapViewDelegate {
         
         //Nav-bar button
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(UpComingTripMapViewController.menuBackButtonPressed(_:)))
-        doneButton.tintColor = UIColor(red: 0/255.0, green: 128.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+        doneButton.tintColor = IUIKColorPalette.primary1.color
         self.navigationItem.rightBarButtonItem = doneButton
 
     }
@@ -59,7 +59,7 @@ class UpComingTripMapViewController: UIViewController, GMSMapViewDelegate {
         
     }
     func doneButtonPressed(_ sender:UIButton) {
-        
+    navigationController?.view.layer.add(Helper.topToBottomTransition(), forKey: nil)
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -117,6 +117,7 @@ extension UIViewController {
         if presentModal {
             self.present(mapDetailsNav, animated: true, completion: nil)
         } else {
+        self.navigationController?.view.layer.add(Helper.bottomToTopTransition(), forKey: nil)
             self.navigationController?.pushViewController(mapVC, animated: false)
             mapVC.presentedModally = false
         }

@@ -53,7 +53,7 @@ class WeatherViewController: UIViewController {
         let doneButtonView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 64))
         doneButtonView.backgroundColor = UIColor(red: 229.0/255.0, green: 231.0/255.0, blue: 228.0/255.0, alpha: 1.0)
         let doneButton = UIButton(frame: CGRect(x: self.view.frame.size.width - 60, y: 7, width: 50, height: 50))
-        doneButton.tintColor = IUIKColorPalette.primary1.color
+        doneButton.setTitleColor(IUIKColorPalette.primary1.color, for: .normal)
         doneButton.setTitle("Done", for: .normal)
         doneButton.addTarget(self, action: #selector(WeatherViewController.doneButtonPressed(_:)), for: .touchUpInside)
         doneButtonView.addSubview(doneButton)
@@ -62,7 +62,7 @@ class WeatherViewController: UIViewController {
     }
 
     func doneButtonPressed(_ sender:UIButton) {
-        
+    self.navigationController?.view.layer.add(Helper.topToBottomTransition(), forKey: nil)
         self.navigationController?.popViewController(animated: true)
     }
     override func viewDidAppear(_ animated: Bool) {
@@ -80,8 +80,8 @@ class WeatherViewController: UIViewController {
         
         let doneButtonView = UIView(frame: CGRect(x: self.view.frame.size.width - 100, y: 0, width: 100, height: 45))
         doneButtonView.backgroundColor = UIColor(red: 229.0/255.0, green: 231.0/255.0, blue: 228.0/255.0, alpha: 1.0)
-        let doneButton = UIButton(frame: CGRect(x: doneButtonView.frame.size.width - 75, y: 0, width: 50, height: 45))
-        doneButton.setTitleColor(UIColor(red: 0/255.0, green: 128.0/255.0, blue: 255.0/255.0, alpha: 1.0), for: .normal)
+        let doneButton = UIButton(frame: CGRect(x: doneButtonView.frame.size.width - 75, y: 5, width: 50, height: 45))
+        doneButton.setTitleColor(IUIKColorPalette.primary1.color, for: .normal)
         doneButton.setTitle("Done", for: .normal)
         doneButton.addTarget(self, action: #selector(WeatherViewController.menuBackButtonPressed(_:)), for: .touchUpInside)
         doneButtonView.addSubview(doneButton)
@@ -179,15 +179,13 @@ class WeatherViewController: UIViewController {
     }
     
     @IBAction func didPressCelsiusButton(_ sender: Any) {
-        self.fahrenheitButton.setTitleColor(UIColor.init(colorLiteralRed: 0, green: 122/255, blue: 255/255, alpha: 1.0), for: .normal)
+        self.fahrenheitButton.setTitleColor(UIColor(red: 0/255, green: 122/255, blue: 255/255, alpha: 1.0), for: .normal)
         self.celsiusButton.setTitleColor(selectedButtonTextColor, for: .normal)
-        
         displayCelsius()
     }
     @IBAction func didPressFahrenheitButton(_ sender: Any) {
         self.fahrenheitButton.setTitleColor(selectedButtonTextColor, for: .normal)
-        self.celsiusButton.setTitleColor(UIColor.init(colorLiteralRed: 0, green: 122/255, blue: 255/255, alpha: 1.0), for: .normal)
-        
+        self.celsiusButton.setTitleColor(UIColor(red: 0/255, green: 122/255, blue: 255/255, alpha: 1.0), for: .normal)
         displayFarenheit()
     }
     
@@ -219,7 +217,7 @@ extension UIViewController {
                 if presentModal {
                     self.present(weatherDetailsNav, animated: true, completion: nil)
                 } else {
-                    self.navigationController?.pushViewController(weatherVC, animated: false)
+                self.navigationController?.view.layer.add(Helper.bottomToTopTransition(), forKey: nil); self.navigationController?.pushViewController(weatherVC, animated: false)
                     weatherVC.presentedModally = false
                 }
 
