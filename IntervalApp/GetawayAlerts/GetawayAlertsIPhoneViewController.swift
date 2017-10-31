@@ -146,22 +146,11 @@ class GetawayAlertsIPhoneViewController: UIViewController {
         var mainStoryboard = UIStoryboard()
         let startSearch = UIAlertAction(title: Constant.AlertPromtMessages.newSearch, style: .default) { (action:UIAlertAction!) in
             
-            if(Constant.RunningDevice.deviceIdiom == .pad){
-                mainStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-            }else{
-                mainStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+            let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+            let storyboardName = isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
+            if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
+                self.navigationController?.pushViewController(initialViewController, animated: true)
             }
-            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as! SWRevealViewController
-            
-            //***** Creating animation transition to show custom transition animation *****//
-            let transition: CATransition = CATransition()
-            let timeFunc : CAMediaTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-            transition.duration = 0.25
-            transition.timingFunction = timeFunc
-            transition.type = kCATransitionPush
-            transition.subtype = kCATransitionFromRight
-            viewController.view.layer.add(transition, forKey: Constant.MyClassConstants.switchToView)
-            UIApplication.shared.keyWindow?.rootViewController = viewController
         }
         
         let close = UIAlertAction(title: Constant.AlertPromtMessages.close, style: .default) { (action:UIAlertAction!) in
@@ -244,9 +233,11 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     func navigateToSearchResults(){
         Constant.MyClassConstants.filteredIndex = 0
         
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
-        self.navigationController!.pushViewController(viewController, animated: true)
+        let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+        let storyboardName = isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
+        if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
+            navigationController?.pushViewController(initialViewController, animated: true)
+        }
     }
     
     func createSearchCriteriaFor(alert:RentalAlert) -> VacationSearchCriteria {
@@ -270,6 +261,14 @@ class GetawayAlertsIPhoneViewController: UIViewController {
             dest.destinationId = destination.destinationId
             alertFilterOptionsArray
                 .append(Constant.AlertResortDestination.Destination(dest))
+        }
+     
+        for resort in alert.resorts{
+            let alertResort = Resort()
+            alertResort.resortName = resort.resortName
+            alertResort.resortCode = resort.resortCode
+            alertFilterOptionsArray
+                .append(Constant.AlertResortDestination.Resort(resort))
         }
         return searchCriteria
     }
@@ -308,19 +307,19 @@ extension GetawayAlertsIPhoneViewController:UITableViewDelegate {
         let delete = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: Constant.buttonTitles.remove) { (action,index) -> Void in
             
             
-            //Remove Alert API call
-            RentalClient.removeAlert(Session.sharedSession.userAccessToken, alertId: Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId!, onSuccess: { () in
-                
-            Constant.MyClassConstants.getawayAlertsArray.remove(at: indexPath.row)
-                tableView.deleteRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
-                
-                let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC)))
-                DispatchQueue.main.asyncAfter(deadline: delayTime, execute: {
-                    tableView.reloadSections(NSIndexSet(index:indexPath.section) as IndexSet, with: .automatic)
-                })
-            }) { (error) in
-                SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
-            }
+        //Remove Alert API call
+        RentalClient.removeAlert(Session.sharedSession.userAccessToken, alertId: Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId!, onSuccess: { () in
+            
+        Constant.MyClassConstants.getawayAlertsArray.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
+            
+            let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC)))
+            DispatchQueue.main.asyncAfter(deadline: delayTime, execute: {
+                tableView.reloadSections(NSIndexSet(index:indexPath.section) as IndexSet, with: .automatic)
+            })
+        }) { (error) in
+            SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+        }
             
             
             
