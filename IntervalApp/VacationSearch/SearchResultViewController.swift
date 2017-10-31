@@ -1596,6 +1596,7 @@ extension SearchResultViewController:UICollectionViewDataSource {
         let dropDownImgVw = UIImageView(frame: CGRect(x: self.searchResultTableView.frame.width - 40, y: 5, width: 30, height: 30))
         dropDownImgVw.image = UIImage(named: Constant.assetImageNames.dropArrow)
         if(!Constant.MyClassConstants.noFilterOptions || alertFilterOptionsArray.count > 0){
+            
             if(Constant.MyClassConstants.filterOptionsArray.count > 1 || alertFilterOptionsArray.count > 1){
             headerView.addSubview(dropDownImgVw)
             headerView.addSubview(headerButton)

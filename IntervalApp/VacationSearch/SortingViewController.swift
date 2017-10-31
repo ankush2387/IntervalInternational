@@ -34,7 +34,6 @@ class SortingViewController: UIViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-
         //remove extra separator of tableview
         self.sortingTBLview.tableFooterView = UIView()
         //selectedIndex = 0
