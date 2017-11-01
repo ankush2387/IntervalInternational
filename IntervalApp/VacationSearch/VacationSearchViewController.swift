@@ -558,7 +558,7 @@ extension VacationSearchViewController:UITableViewDelegate {
                                 try realm.write {
                                     realm.delete(self.destinationOrResort[(indexPath as NSIndexPath).row])
                                 }
-                            }catch let error{
+                            }catch{
                                 self.presentErrorAlert(UserFacingCommonError.generic)
                             }
                         }else {
@@ -574,7 +574,7 @@ extension VacationSearchViewController:UITableViewDelegate {
                             tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
                             Helper.InitializeArrayFromLocalStorage()
                         }
-                    }catch let error{
+                    }catch{
                         self.presentErrorAlert(UserFacingCommonError.generic)
                     }
                     Constant.MyClassConstants.checkInClosestContentArray.removeObject(at: (indexPath as NSIndexPath).row)
@@ -686,10 +686,10 @@ extension VacationSearchViewController:UITableViewDelegate {
                                 tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
                                 Helper.InitializeOpenWeeksFromLocalStorage()
                             }
-                        }catch let error{
+                        }catch{
                             self.presentErrorAlert(UserFacingCommonError.generic)
                         }
-                    }catch let error{
+                    }catch{
                         self.presentErrorAlert(UserFacingCommonError.generic)
                     }
                 }
@@ -1702,6 +1702,9 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                         Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate:response.checkInDates[0], senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                     }
                                 }
+                                Constant.MyClassConstants.checkInDates = response.checkInDates
+                                sender.isEnabled = true
+                                Constant.MyClassConstants.isFromSearchBoth = true
                                 
                             })
                             { (error) in
@@ -1816,4 +1819,3 @@ extension VacationSearchViewController:HelperDelegate {
         Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
     }
 }
-
