@@ -510,10 +510,8 @@ class OwnershipViewController: UIViewController {
             self.navigationController?.pushViewController(clubPointselectionViewController!, animated: true)
             
         }, onError:{ (error) in
-            
             self.hideHudAsync()
             intervalPrint(error.description)
-
         })
     }
     

@@ -843,6 +843,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                         }
                             
                         else {
+                     intervalPrint(Constant.MyClassConstants.whereTogoContentArray[indexPath.row] as! String)
                             cell.whereTogoTextLabel.text = Constant.MyClassConstants.whereTogoContentArray[(indexPath as NSIndexPath).row] as? String
                         }
                         cell.selectionStyle = UITableViewCellSelectionStyle.none
@@ -899,6 +900,8 @@ extension VacationSearchViewController:UITableViewDataSource {
                             cell.bedroomLabel.isHidden = true
                         }else if((object as AnyObject).isKind(of: OpenWeeks.self)){
                             let weekNumber = Constant.getWeekNumber(weekType: ((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).weekNumber))
+                            intervalPrint((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff)
+
                             if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff || (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isFloat){
                                 cell.bedroomLabel.isHidden = false
                                 
@@ -929,6 +932,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                                 cell.bedroomLabel.isHidden = false
                                 
                                 let resortList = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).unitDetails
+                                intervalPrint((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).resort[0].resortName, resortList.count)
                                 if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isFloat){
                                     let floatDetails = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).floatDetails
                                     cell.bedroomLabel.text = "\(resortList[0].unitSize), \(floatDetails[0].unitNumber), \(resortList[0].kitchenType)"
@@ -1506,7 +1510,8 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     }, onError: { (error) in
                         self.hideHudAsync()
                         self.presentErrorAlert(UserFacingCommonError.generic)
-                        
+                        SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+
                     })
                 }
                 
