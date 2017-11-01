@@ -1290,15 +1290,11 @@ extension VacationSearchViewController:UITableViewDataSource {
                             tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
                         }
                     }catch{
-                        self.presentErrorAlert(UserFacingCommonError.generic)
+                        
                     }
                     
                 }catch{
                     self.presentErrorAlert(UserFacingCommonError.generic)
-                }
-                
-            }catch{
-                    
                 }
                 
             }
@@ -1354,7 +1350,7 @@ extension VacationSearchViewController:WhoIsTravelingCellDelegate {
         //***** updating adult counter increment and decrement
         adultCounter = value
         if defaults.object(forKey: Constant.MyClassConstants.adultCounterString) != nil {
-
+            
             defaults.removeObject(forKey: Constant.MyClassConstants.adultCounterString)
             defaults.set(value, forKey: Constant.MyClassConstants.adultCounterString)
             defaults.synchronize()
