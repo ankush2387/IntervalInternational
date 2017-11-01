@@ -228,7 +228,7 @@ class Constant: NSObject {
         static var sectionHeaderArray = ["Destinations".localized(),"Resorts".localized()]
         
         static var relinquishmentHeaderArray = ["Club Interval Gold Weeks".localized(),"","Club Points".localized(),"Interval Weeks".localized(),"Deposited".localized()]
-        
+
         static var lockOffCapable = "Lock Off Capable".localized()
         
         static var membershipContactArray = [Contact]()
@@ -1043,9 +1043,6 @@ class Constant: NSObject {
         static var renewalOtherOptionsVC = "RenewalOtherOptionsVC"
         static var certificateDetailsViewController = "CertificateDetailsViewController"
         
-        static var certificateDetailsViewController = "CertificateDetailsViewController"
-        
-        static var certificateDetailsViewController = "CertificateDetailsViewController"
         
     }
     
