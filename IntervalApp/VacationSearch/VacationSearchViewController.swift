@@ -80,12 +80,12 @@ class VacationSearchViewController: UIViewController {
             //***** Add the hamburger menu *****//
             let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action:#selector(SWRevealViewController.revealToggle(_:)))
             menuButton.tintColor = UIColor.white
-            self.parent?.navigationItem.leftBarButtonItem = menuButton
+            parent?.navigationItem.leftBarButtonItem = menuButton
             
             //***** Creating and adding right bar button for more option button *****//
             moreButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.MoreNav), style: .plain, target: self, action:#selector(MoreNavButtonPressed(_:)))
-            moreButton!.tintColor = UIColor.white
-            self.parent?.navigationItem.rightBarButtonItem = moreButton
+            moreButton?.tintColor = UIColor.white
+            parent?.navigationItem.rightBarButtonItem = moreButton
             
             //***** This line allows the user to swipe left-to-right to reveal the menu. We might want to comment this out if it becomes confusing. *****//
             self.view.addGestureRecognizer( rvc.panGestureRecognizer() )
@@ -314,7 +314,7 @@ extension VacationSearchViewController:UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView.tag == 1 {
-             return Constant.MyClassConstants.flexExchangeDeals.count
+            return Constant.MyClassConstants.flexExchangeDeals.count
         } else {
             return Constant.MyClassConstants.topDeals.count
         }
@@ -1297,6 +1297,10 @@ extension VacationSearchViewController:UITableViewDataSource {
                     self.presentErrorAlert(UserFacingCommonError.generic)
                 }
                 
+            }catch{
+                    
+                }
+                
             }
             else {
                 Constant.MyClassConstants.checkInClosestContentArray.removeObject(at: (indexPath as NSIndexPath).row)
@@ -1350,7 +1354,7 @@ extension VacationSearchViewController:WhoIsTravelingCellDelegate {
         //***** updating adult counter increment and decrement
         adultCounter = value
         if defaults.object(forKey: Constant.MyClassConstants.adultCounterString) != nil {
-            
+
             defaults.removeObject(forKey: Constant.MyClassConstants.adultCounterString)
             defaults.set(value, forKey: Constant.MyClassConstants.adultCounterString)
             defaults.synchronize()
@@ -1488,7 +1492,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 
                 
             }, onError: { (error) in
-                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
+                self.presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
                 self.hideHudAsync()
                 sender.isEnabled = true
             })
@@ -1593,7 +1597,8 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 }
                 Constant.MyClassConstants.isFromExchange = false
                 
-            }else if(segmentTitle == Constant.segmentControlItems.exchange && (Helper.getAllDestinationFromLocalStorage().count>0 || Helper.getAllResortsFromLocalStorage().count>0)) {
+                    showHudAsync()
+                    sender.isEnabled = false
                 
                 // MARK: Exchange Vacation Search
                 if(Constant.MyClassConstants.relinquishmentIdArray.count == 0){
@@ -1737,40 +1742,36 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
     }
     
     
-     // Mark:- Set options for filter
+  // Mark:- Set options for filter
     func createFilterOptions(){
-        
-        Constant.MyClassConstants.filterOptionsArray.removeAll()
-        let storedData = Helper.getLocalStorageWherewanttoGo()
-        let allDest = Helper.getLocalStorageAllDest()
-        
-        if(storedData.count > 0) {
             
-            let realm = try! Realm()
-            try! realm.write {
-                Constant.MyClassConstants.filterOptionsArray.removeAll()
-                for object in storedData {
+            Constant.MyClassConstants.filterOptionsArray.removeAll()
+            let storedData = Helper.getLocalStorageWherewanttoGo()
+            let allDest = Helper.getLocalStorageAllDest()
+            
+            if(storedData.count > 0) {
+            Constant.MyClassConstants.filterOptionsArray.removeAll()
+            for object in storedData {
+                
+                if(object.destinations.count > 0){
+                    Constant.MyClassConstants.filterOptionsArray.append(
+                        .Destination(object.destinations[0])
+                    )
                     
-                    if(object.destinations.count > 0){
-                        Constant.MyClassConstants.filterOptionsArray.append(
-                            .Destination(object.destinations[0])
-                        )
+                }else if(object.resorts.count > 0){
+                    
+                    if(object.resorts[0].resortArray.count > 0){
                         
-                    }else if(object.resorts.count > 0){
-                        
-                        if(object.resorts[0].resortArray.count > 0){
-                            
-                            var araayOfResorts = List<ResortByMap>()
-                            var reswortByMap = [ResortByMap]()
-                            araayOfResorts = object.resorts[0].resortArray
-                            for resort in araayOfResorts{
-                                reswortByMap.append(resort)
-                            }
-                            
-                            Constant.MyClassConstants.filterOptionsArray.append(.ResortList(reswortByMap))
-                        }else{
-     Constant.MyClassConstants.filterOptionsArray.append(.Resort(object.resorts[0]))
+                        var arrayOfResorts = List<ResortByMap>()
+                        var reswortByMap = [ResortByMap]()
+                        arrayOfResorts = object.resorts[0].resortArray
+                        for resort in arrayOfResorts{
+                            reswortByMap.append(resort)
                         }
+                        
+                        Constant.MyClassConstants.filterOptionsArray.append(.ResortList(reswortByMap))
+                    }else{
+                        Constant.MyClassConstants.filterOptionsArray.append(.Resort(object.resorts[0]))
                     }
                 }
             }
