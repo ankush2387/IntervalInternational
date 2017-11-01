@@ -246,6 +246,7 @@
 		3CA1FBE91F8562C1008148AB /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA1FBE81F8562C1008148AB /* Logger.swift */; };
 		3CBD32771F992F7C004BE182 /* AppBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CBD32761F992F7C004BE182 /* AppBundle.swift */; };
 		3CC68CEE1FAA640F0024D15F /* EntityDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CC68CED1FAA640F0024D15F /* EntityDataStore.swift */; };
+		3CC68CEC1FAA34FD0024D15F /* Print+IntervalDebug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CC68CEB1FAA34FD0024D15F /* Print+IntervalDebug.swift */; };
 		3CE4F4111F99519100B296B1 /* Date+ElapsedTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE4F4101F99519100B296B1 /* Date+ElapsedTime.swift */; };
 		3CE90BDA1FA8C3C100C4354F /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE90BD91FA8C3C100C4354F /* Keychain.swift */; };
 		3CED4BC51F9689BB001261A2 /* NetworkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CED4BC41F9689BB001261A2 /* NetworkHelper.swift */; };
@@ -636,6 +637,7 @@
 		3CA1FBE81F8562C1008148AB /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		3CBD32761F992F7C004BE182 /* AppBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBundle.swift; sourceTree = "<group>"; };
 		3CC68CED1FAA640F0024D15F /* EntityDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityDataStore.swift; sourceTree = "<group>"; };
+		3CC68CEB1FAA34FD0024D15F /* Print+IntervalDebug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Print+IntervalDebug.swift"; sourceTree = "<group>"; };
 		3CE4F4101F99519100B296B1 /* Date+ElapsedTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+ElapsedTime.swift"; sourceTree = "<group>"; };
 		3CE90BD91FA8C3C100C4354F /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		3CED4BC41F9689BB001261A2 /* NetworkHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHelper.swift; sourceTree = "<group>"; };
@@ -1666,6 +1668,7 @@
 				3C4F17261FA391E7001EF71F /* String+NSRage.swift */,
 				3C4F17281FA39204001EF71F /* Float+CurrencyFormatter.swift */,
 				61A420C01FA9819F00B06708 /* Data+EncryptionKey.swift */,
+				3CC68CEB1FAA34FD0024D15F /* Print+IntervalDebug.swift */,
 			);
 			name = Extensions;
 			path = Utils;
@@ -2075,6 +2078,7 @@
 				618AEFCF1FA2C0D00097B423 /* ChargeSummaryTableViewCell.swift in Sources */,
 				3A3A01501C99BED600B7EC37 /* MemberShipViewController.swift in Sources */,
 				DC7EF4CA1D709E9600E9E360 /* ClubPointPageItemViewController.swift in Sources */,
+				3CC68CEC1FAA34FD0024D15F /* Print+IntervalDebug.swift in Sources */,
 				DC04BB421DB829F100227FF5 /* IntervalHDTabController.swift in Sources */,
 				DC7EF50B1D709F8800E9E360 /* ResortCollectionViewCell.swift in Sources */,
 				3ACC27951DDDC2BA0057B809 /* SelectPaymentMethodCell.swift in Sources */,

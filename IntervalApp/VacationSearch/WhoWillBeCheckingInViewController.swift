@@ -311,7 +311,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 Constant.GetawaySearchResultGuestFormDetailData.countryListArray = response
 
             }, onError: { (error) in
-                print(error)
+                intervalPrint(error)
             })
 
         }
@@ -396,7 +396,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
                     LookupClient.getStates(Constant.MyClassConstants.systemAccessToken!, countryCode: countryCode, onSuccess: { (response) in
                         Constant.GetawaySearchResultGuestFormDetailData.stateListArray = response
                     }, onError: { (error) in
-                        print(error)
+                        intervalPrint(error)
                     })
                 }
             }
@@ -1095,9 +1095,9 @@ extension WhoWillBeCheckingInViewController:UITextFieldDelegate {
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
-        print(string)
+        intervalPrint(string)
         if (range.length == 1 && string.characters.count == 0) {
-            print("backspace tapped")
+            intervalPrint("backspace tapped")
         }
         
         if(self.cellUsedFor == Constant.MyClassConstants.guestString) {
@@ -1390,7 +1390,7 @@ extension WhoWillBeCheckingInViewController:RenewelViewControllerDelegate{
     
     func otherOptions(forceRenewals: ForceRenewals) {
 
-        print("remove later")
+        intervalPrint("remove later")
         let button = UIButton()
         self.proceedToCheckoutPressed(button)
     }

@@ -87,21 +87,21 @@ extension ResortDetails:SearchResultContentTableCellDelegate {
         
         if (sender.isSelected == false){
             
-            print(Constant.MyClassConstants.resortsArray[sender.tag].resortCode!)
+            intervalPrint(Constant.MyClassConstants.resortsArray[sender.tag].resortCode!)
             UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
                 
-                print(response)
+                intervalPrint(response)
                 sender.isSelected = true
                 
                 
             }, onError: {(error) in
                 
-                print(error)
+                intervalPrint(error)
             })
         }
         else {
             sender.isSelected = false
-            print()
+            intervalPrint()
             unfavHandler(sender.tag)
         }
 

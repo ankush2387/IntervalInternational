@@ -66,7 +66,7 @@ class AddDebitOrCreditCardViewController: UIViewController {
             }
         }
         self.years = years
-        print(years)
+        intervalPrint(years)
         
 
         NotificationCenter.default.addObserver(self, selector:#selector(keyboardWasShown), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
@@ -804,7 +804,7 @@ extension AddDebitOrCreditCardViewController:UIPickerViewDelegate {
                 let month = months[pickerView.selectedRow(inComponent: 0)]
                 let year = years[pickerView.selectedRow(inComponent: 1)]
                 let expiryDate = "\(year), \(month)"
-                print(expiryDate)
+                intervalPrint(expiryDate)
                 Constant.GetawaySearchResultCardFormDetailData.expDate = expiryDate
                 
             }
@@ -910,9 +910,9 @@ extension AddDebitOrCreditCardViewController:UITextFieldDelegate {
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
-        print(string)
+        intervalPrint(string)
         if (range.length == 1 && string.characters.count == 0) {
-            print("backspace tapped")
+            intervalPrint("backspace tapped")
         }
     
         if(Int(textField.accessibilityValue!) == 0) {

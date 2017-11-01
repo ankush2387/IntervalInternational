@@ -293,7 +293,7 @@ class ResortDirectoryViewController: UIViewController {
                 showHudAsync()
                 
                 UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!, onSuccess: {(response) in
-                    print(response)
+                    intervalPrint(response)
                     SVProgressHUD.dismiss()
                     self.hideHudAsync()
                     sender.isSelected = true
@@ -303,7 +303,7 @@ class ResortDirectoryViewController: UIViewController {
                 }, onError: {(error) in
                     SVProgressHUD.dismiss()
                     self.hideHudAsync()
-                    print(error)
+                    intervalPrint(error)
                 })
             }
             else {
@@ -311,7 +311,7 @@ class ResortDirectoryViewController: UIViewController {
                 showHudAsync()
                 UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!, onSuccess: {(response) in
                     
-                    print(response)
+                    intervalPrint(response)
                     SVProgressHUD.dismiss()
                     sender.isSelected = false
                     self.hideHudAsync()
@@ -321,7 +321,7 @@ class ResortDirectoryViewController: UIViewController {
                 }, onError: {(error) in
                     SVProgressHUD.dismiss()
                     self.hideHudAsync()
-                    print(error)
+                    intervalPrint(error)
                 })
                 
             }        }

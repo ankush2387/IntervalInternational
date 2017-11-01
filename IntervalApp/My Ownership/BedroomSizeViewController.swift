@@ -285,7 +285,7 @@ extension BedroomSizeViewController : UITableViewDataSource{
             cell?.backgroundCellView.layer.borderColor = UIColor.white.cgColor
             cell?.bedroomSizelabel.text = Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as? String
             cell?.checkBoxButton.tag = indexPath.row + 1000
-            print(Constant.MyClassConstants.userSelectedStringArray)
+            intervalPrint(Constant.MyClassConstants.userSelectedStringArray)
             if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController){
                 cell?.checkBoxButton.isHidden = true
             }else{
@@ -326,7 +326,7 @@ extension BedroomSizeViewController : UITableViewDataSource{
             }else{
                 cell?.checkBoxButton.checked = false
             }
-            print(Constant.MyClassConstants.unitNumberSelectedArray)
+            intervalPrint(Constant.MyClassConstants.unitNumberSelectedArray)
                 let setUnitSize = cell?.bedroomSizelabel.text?.components(separatedBy: ",")[0]
                 let setUnitNumber = cell?.unitSizeLabel.text?.components(separatedBy: ",")[0]
                 for selectedUnitDetails in Constant.MyClassConstants.saveLockOffDetailsArray{

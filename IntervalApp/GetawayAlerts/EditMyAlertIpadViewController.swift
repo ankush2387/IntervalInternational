@@ -70,7 +70,7 @@ class EditMyAlertIpadViewController: UIViewController {
             }
             self.setupView()
         }) { (error) in
-            print(error)
+            intervalPrint(error)
         }
         // omniture tracking with event 40
         let pageView: [String: String] = [

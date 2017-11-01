@@ -804,7 +804,7 @@ extension UpComingTripDetailIPadViewController: MFMessageComposeViewControllerDe
             SimpleAlert.alert(self, title: "Error", message: "The text message could not be sent. Please try again.")
             break
         default:
-            print("Text Result: \(result.rawValue)")
+            intervalPrint("Text Result: \(result.rawValue)")
             break
         }
         
@@ -822,7 +822,7 @@ extension UpComingTripDetailIPadViewController: MFMailComposeViewControllerDeleg
             SimpleAlert.alert(self, title: "Error", message: "The Email could not be sent. Please try again.")
             break
         default:
-            print("Email Result: \(result.rawValue)")
+            intervalPrint("Email Result: \(result.rawValue)")
             break
         }
         

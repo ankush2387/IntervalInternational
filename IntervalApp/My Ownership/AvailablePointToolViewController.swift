@@ -78,7 +78,7 @@ class AvailablePointToolViewController: UIViewController {
             
             SVProgressHUD.dismiss()
             self.hideHudAsync()
-            print(error)
+            intervalPrint(error)
         })
         
         self.availablePointTableView.reloadData()

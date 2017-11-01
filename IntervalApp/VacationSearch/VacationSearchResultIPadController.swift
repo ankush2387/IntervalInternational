@@ -71,7 +71,7 @@ class VacationSearchResultIPadController: UIViewController {
         self.navigationController?.navigationBar.barTintColor = UIColor.init(colorLiteralRed: 70.0/255.0, green: 136.0/255.0, blue: 193.0/255.0, alpha: 1.0)
         
         Constant.MyClassConstants.calendarDatesArray.removeAll()
-        print(Constant.MyClassConstants.calendarDatesArray.count)
+        intervalPrint(Constant.MyClassConstants.calendarDatesArray.count)
         Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
         
         let nib = UINib(nibName: Constant.customCellNibNames.searchResultCollectionCell, bundle: nil)
@@ -500,7 +500,7 @@ class VacationSearchResultIPadController: UIViewController {
         
         let firstVisibleIndexPath = resortDetailTBLView.indexPathsForVisibleRows?.first
         let indexPath = IndexPath(item: collectionviewSelectedIndex, section: 0)
-        print("---------->>>>\(collectionviewSelectedIndex)")
+        intervalPrint("---------->>>>\(collectionviewSelectedIndex)")
         if(firstVisibleIndexPath?.section == 1){
             dateCellSelectionColor = Constant.CommonColor.greenColor
         }else{

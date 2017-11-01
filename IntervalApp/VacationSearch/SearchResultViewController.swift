@@ -421,7 +421,7 @@ class SearchResultViewController: UIViewController {
     func intervalDateItemClicked(_ toDate: Date){
          searchResultColelctionView.reloadData()
          if(combinedExactSearchItems.isEmpty && combinedSurroundingSearchItems.isEmpty && exactMatchResortsArray.isEmpty && exactMatchResortsArrayExchange.isEmpty && surroundingMatchResortsArray.isEmpty && surroundingMatchResortsArrayExchange.isEmpty){
-            print("All empty")
+            intervalPrint("All empty")
          }else{
             let indexPath = IndexPath(row: 0, section: 0)
             searchResultTableView.scrollToRow(at: indexPath, at: .top, animated: true)
@@ -786,7 +786,7 @@ class SearchResultViewController: UIViewController {
     func getResortInfoCollectionCell(indexPath: IndexPath, collectionView:UICollectionView, resort:Resort) -> AvailabilityCollectionViewCell{
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.resortDetailCell, for: indexPath) as! AvailabilityCollectionViewCell
         cell.setResortDetails(inventoryItem: resort)
-        print(Constant.MyClassConstants.favoritesResortCodeArray)
+        intervalPrint(Constant.MyClassConstants.favoritesResortCodeArray)
         let status =  Helper.isResrotFavorite(resortCode: resort.resortCode!)
         if(status) {
             cell.favourite.isSelected = true
@@ -889,7 +889,7 @@ class SearchResultViewController: UIViewController {
                             sender.isSelected = true
                             Constant.MyClassConstants.favoritesResortCodeArray.add(resortCode)
                             let indexpath = NSIndexPath(row: sender.tag, section:Int(section)!)
-                            print(Constant.MyClassConstants.favoritesResortCodeArray)
+                            intervalPrint(Constant.MyClassConstants.favoritesResortCodeArray)
                             self.searchResultTableView.reloadRows(at: [indexpath as IndexPath], with: .automatic)
                             
                         }, onError: {(error) in
@@ -1847,7 +1847,7 @@ extension SearchResultViewController:SearchResultContentTableCellDelegate{
                 
                 UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
                     
-                    print(response)
+                    intervalPrint(response)
                     sender.isSelected = false
                     self.hideHudAsync()
                     Constant.MyClassConstants.favoritesResortCodeArray.remove(Constant.MyClassConstants.resortsArray[sender.tag].resortCode!)
@@ -1900,7 +1900,7 @@ extension SearchResultViewController:HelperDelegate {
         self.searchResultColelctionView.reloadData()
         self.searchResultTableView.reloadData()
         if(combinedExactSearchItems.isEmpty && combinedSurroundingSearchItems.isEmpty && exactMatchResortsArray.isEmpty && exactMatchResortsArrayExchange.isEmpty && surroundingMatchResortsArray.isEmpty && surroundingMatchResortsArrayExchange.isEmpty){
-            print("All empty")
+            intervalPrint("All empty")
         }else{
             let indexPath = IndexPath(row: 0, section: 0)
             searchResultTableView.scrollToRow(at: indexPath, at: .top, animated: true)

@@ -84,7 +84,7 @@ class ResortDetailsViewController: UIViewController {
             
             nearbyArray.removeAllObjects()
             onsiteArray.removeAllObjects()
-            print(Constant.MyClassConstants.resortsDescriptionArray.amenities.count)
+            intervalPrint(Constant.MyClassConstants.resortsDescriptionArray.amenities.count)
             for amenity in Constant.MyClassConstants.resortsDescriptionArray.amenities{
                 
                 
@@ -1058,7 +1058,7 @@ extension ResortDetailsViewController:UITableViewDataSource {
                     ADBMobile.trackAction(Constant.omnitureEvents.event48, data: nil)
                 }, onError: {(error) in
                     self.hideHudAsync()
-                    print(error)
+                    intervalPrint(error)
                 })
             }
             else {
@@ -1074,7 +1074,7 @@ extension ResortDetailsViewController:UITableViewDataSource {
                     ADBMobile.trackAction(Constant.omnitureEvents.event51, data: nil)
                 }, onError: {(error) in
                     self.hideHudAsync()
-                    print(error)
+                    intervalPrint(error)
                 })
                 
             }
@@ -1137,9 +1137,9 @@ extension ResortDetailsViewController:MFMailComposeViewControllerDelegate {
             self.dismiss(animated: true, completion:nil)
             break
         case MFMailComposeResult.saved.rawValue:
-            print("Email saved")
+            intervalPrint("Email saved")
         case MFMailComposeResult.sent.rawValue:
-            print("Email sent")
+            intervalPrint("Email sent")
             
             let alertController = UIAlertController(title: "test", message: "test", preferredStyle: .alert)
             let okButton = UIAlertAction(title: "Okay", style: .default, handler: nil)
@@ -1147,7 +1147,7 @@ extension ResortDetailsViewController:MFMailComposeViewControllerDelegate {
             present(alertController, animated: true, completion: nil)
             
         case MFMailComposeResult.failed.rawValue:
-            print("Email failed: %@", [error!.localizedDescription])
+            intervalPrint("Email failed: %@", [error!.localizedDescription])
         default:
             break
         }

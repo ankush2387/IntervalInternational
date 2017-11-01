@@ -16,7 +16,7 @@ class ShareActivityImage: NSObject, UIActivityItemSource {
         let manager = SDWebImageManager.shared()
         let imgURL = URL(string: strURL)
         manager?.downloadImage(with: imgURL, options: [], progress: { (recivedSize, expectedSize) in
-            print(recivedSize)
+            intervalPrint(recivedSize)
         }, completed: { (image, error, cached, finished, url) in
             self.resortImg = image
         })

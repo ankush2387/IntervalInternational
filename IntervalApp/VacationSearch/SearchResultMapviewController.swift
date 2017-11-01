@@ -306,7 +306,7 @@ class SearchResultMapviewController: UIViewController {
             }, onError: {(error) in
                 SVProgressHUD.dismiss()
                 self.hideHudAsync()
-                print(error)
+                intervalPrint(error)
             })
         }
           else {
@@ -325,7 +325,7 @@ class SearchResultMapviewController: UIViewController {
                 
                 SVProgressHUD.dismiss()
                 self.hideHudAsync()
-                print(error)
+                intervalPrint(error)
             })
             
 

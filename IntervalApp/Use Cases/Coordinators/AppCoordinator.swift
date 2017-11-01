@@ -238,7 +238,7 @@ extension AppCoordinator: LoginCoordinatorDelegate {
         Session.sharedSession.selectedMembership = session.contact?.memberships![0]
         CreateActionSheet().membershipWasSelected()
         ///
-
+        
         guard let contactID = session.contact?.contactId else {
             presentViewError()
             return
@@ -252,6 +252,11 @@ extension AppCoordinator: LoginCoordinatorDelegate {
             .then(createDatabase)
             .onViewError(presentViewError)
 
+=======
+        intervalPrint(session.contact?.contactId)
+        intervalDebugPrint(session.contact?.contactId)
+        
+>>>>>>> Incorporated intervalDebugPrint functionality
         if apnsCoordinator?.shouldRedirectOnlogin == true && apnsCoordinator?.pushViabilityHasNotExpired == true {
             redirectUser()
         } else {

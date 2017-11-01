@@ -366,7 +366,7 @@ public class Helper{
             
             for trip in upComingTrips { if((trip.type) != nil) {
                 
-                print(trip.type as Any)
+                intervalPrint(trip.type as Any)
                 
                 }
             }
@@ -435,7 +435,7 @@ public class Helper{
             Constant.MyClassConstants.imagesArray.removeAllObjects()
             let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
             for imgStr in imagesArray {
-                print(imgStr.url!)
+                intervalPrint(imgStr.url!)
                 if(imgStr.size == Constant.MyClassConstants.imageSize) {
                     
                     Constant.MyClassConstants.imagesArray.add(imgStr.url!)
@@ -564,7 +564,7 @@ public class Helper{
             let allDest = realm.objects(AllAvailableDestination.self)
             Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
             for obj in allDest {
-                print(obj.destination)
+                intervalPrint(obj.destination)
                 Constant.MyClassConstants.whereTogoContentArray.add(obj.destination)
             }
             return realmLocalStorage
@@ -759,7 +759,7 @@ public class Helper{
                 }
             }
         }else{
-            print("No Data")
+            intervalPrint("No Data")
         }
         
     }
@@ -997,7 +997,7 @@ public class Helper{
         
         DirectoryClient.getResortsByArea(Session.sharedSession.userAccessToken, areaCode: areaCode, onSuccess: {(response) in
             Constant.MyClassConstants.resortDirectoryResortArray = response
-            print(response[0].images)
+            intervalPrint(response[0].images)
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadRegionNotification), object: nil)
             value = true
             
@@ -1270,9 +1270,7 @@ public class Helper{
             Constant.MyClassConstants.imagesArray.removeAllObjects()
             let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
                 for imgStr in imagesArray {
-                print(imgStr.url!)
                 if(imgStr.size == Constant.MyClassConstants.imageSize) {
-                    
                     Constant.MyClassConstants.imagesArray.add(imgStr.url!)
                 }
             }
@@ -1953,7 +1951,7 @@ public class Helper{
                 DarwinSDK.logger.info("\(String(describing: calendarItem.checkInDate!))")
             }
         }
-        print(Constant.MyClassConstants.totalBucketArray)
+        intervalPrint(Constant.MyClassConstants.totalBucketArray)
         helperDelegate?.resetCalendar()
     }
     
@@ -2052,10 +2050,10 @@ public class Helper{
             guard let accessToken = Session.sharedSession.userAccessToken else { return }
             
             PaymentClient.resendConfirmation(accessToken, confirmationNumber: confirmationNumber, emailAddress: emailAddress, onSuccess: {
-                print("success")
+                intervalPrint("success")
                 SimpleAlert.alert(viewcontroller, title: "Success", message: "The confirmation email has been sent.")
             }, onError: { (error) in
-                print(error)
+                intervalPrint(error)
                 SimpleAlert.alert(viewcontroller, title: "Error", message: "The Confirmation could not be sent at the moment.")
             })
         }

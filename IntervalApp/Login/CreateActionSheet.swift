@@ -164,11 +164,11 @@ class CreateActionSheet: UITableViewController {
             //if(alert.enabled)!{
                 self.searchVacationPressed(alert)
             //}else{
-             //   print("Alert is inactive",alert.latestCheckInDate!,alert.earliestCheckInDate!)
+             //   intervalDebugPrint("Alert is inactive",alert.latestCheckInDate!,alert.earliestCheckInDate!)
             //}
             
         }) { (error) in
-            print(alert.alertId)
+            intervalPrint(alert.alertId)
             if(self.activeAlertCount < Constant.MyClassConstants.getawayAlertsArray.count - 1){
             self.activeAlertCount = self.activeAlertCount + 1
                 self.getStatusForAllAlerts()
@@ -214,7 +214,7 @@ class CreateActionSheet: UITableViewController {
                     self.activeAlertCount = self.activeAlertCount + 1
                     self.getStatusForAllAlerts()
                 }else{
-                    print(Constant.MyClassConstants.activeAlertsArray, Constant.MyClassConstants.alertsSearchDatesDictionary, Constant.MyClassConstants.alertsResortCodeDictionary)
+                    intervalPrint(Constant.MyClassConstants.activeAlertsArray, Constant.MyClassConstants.alertsSearchDatesDictionary, Constant.MyClassConstants.alertsResortCodeDictionary)
                     NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
                     
                     Constant.MyClassConstants.isEvent2Ready = Constant.MyClassConstants.isEvent2Ready + 1
@@ -328,7 +328,7 @@ func sendOmnitureTrackCallForEvent2() {
     userInfo.addEntries(from: [Constant.omnitureEvars.eVar17 :tripTypeString])
     userInfo.addEntries(from: [Constant.omnitureEvars.eVar27 :Session.sharedSession.contact?.contactId as Any])
     
-    print(userInfo)
+    intervalPrint(userInfo)
     
     
     ADBMobile.trackAction(Constant.omnitureEvents.event2, data: userInfo as! [AnyHashable : Any])

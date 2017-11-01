@@ -239,7 +239,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                 Constant.GetawaySearchResultGuestFormDetailData.countryListArray = response
                 
             }, onError: { (error) in
-                print(error)
+                intervalPrint(error)
             })
 
         }
@@ -322,7 +322,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                     LookupClient.getStates(Constant.MyClassConstants.systemAccessToken!, countryCode: countryCode, onSuccess: { (response) in
                         Constant.GetawaySearchResultGuestFormDetailData.stateListArray = response
                     }, onError: { (error) in
-                        print(error)
+                        intervalPrint(error)
                     })
                 }
             }
@@ -438,7 +438,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             self.navigationController?.transitioningDelegate = transitionManager
             self.navigationController!.pushViewController(viewController, animated: true)
         }, onError: {(error) in
-            print(error.localizedDescription)
+            intervalPrint(error.localizedDescription)
             SVProgressHUD.dismiss()
             self.hideHudAsync()
             SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
@@ -921,9 +921,9 @@ extension WhoWillBeCheckingInIPadViewController:UITextFieldDelegate{
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
-        print(string)
+        intervalPrint(string)
         if (range.length == 1 && string.characters.count == 0) {
-            print("backspace tapped")
+            intervalPrint("backspace tapped")
         }
         
         if(self.cellUsedFor == Constant.MyClassConstants.guestString) {

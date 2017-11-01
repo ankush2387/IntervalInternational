@@ -79,7 +79,7 @@ class MemberShipViewController: UIViewController {
             SVProgressHUD.dismiss()
         }) { (error) in
             SVProgressHUD.dismiss()
-            print(error)
+            intervalPrint(error)
         }
     }
     

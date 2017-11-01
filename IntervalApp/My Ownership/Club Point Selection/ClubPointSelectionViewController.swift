@@ -132,7 +132,7 @@ class ClubPointSelectionViewController: UIViewController {
         pointMatrixType.clubPointsMatrixType = Constant.MyClassConstants.matrixType
         pointMatrixType.clubPointsMatrixDescription = Constant.MyClassConstants.matrixDescription
         pointMatrixType.clubPointsMatrixGridRowLabel = Constant.MyClassConstants.labelarray[0] as? String
-        print(Constant.MyClassConstants.fromdatearray[0])
+        intervalPrint(Constant.MyClassConstants.fromdatearray[0])
         pointMatrixType.fromDate = Constant.MyClassConstants.fromdatearray[0] as? String
         pointMatrixType.toDate = Constant.MyClassConstants.todatearray[0] as? String
         
@@ -155,11 +155,11 @@ class ClubPointSelectionViewController: UIViewController {
         
         
          ExchangeClient.updatePointsMatrixReservation(Session.sharedSession.userAccessToken, relinquishmentId: relinquishmentID, reservation: pointMatrixType, onSuccess: {(response) in
-            print(response)
+            intervalPrint(response)
             
          },onError:{ (error) in
             
-          print(error)
+          intervalPrint(error)
          })
 
         
@@ -264,7 +264,7 @@ class ClubPointSelectionViewController: UIViewController {
         dictionaryForSegmentCheckBox.setValue(dictionaryForCheckBox, forKey: Constant.MyClassConstants.segmentFirstString)
         dictionaryForSegmentCheckBox.setValue(dictionaryForCheckBox, forKey: Constant.MyClassConstants.segmentSecondString)
         dictionaryForSegmentCheckBox.setValue(dictionaryForCheckBox, forKey: Constant.MyClassConstants.segmentThirdString)
-        print(dictionaryForSegmentCheckBox)
+        intervalPrint(dictionaryForSegmentCheckBox)
     }
     
     func viewWillAppear() {
@@ -331,7 +331,7 @@ class ClubPointSelectionViewController: UIViewController {
     //Function to map club interval points
     
     func mapClubIntervalPoints(index:Int){
-        print(Constant.MyClassConstants.fromdatearray[0], Constant.MyClassConstants.fromdatearray[1])
+        intervalPrint(Constant.MyClassConstants.fromdatearray[0], Constant.MyClassConstants.fromdatearray[1])
         let dictKey = "\(Constant.MyClassConstants.fromdatearray[index]) - \(Constant.MyClassConstants.todatearray[index])"
         let rowsForClubInterval = Constant.MyClassConstants.pointMatrixDictionary.object(forKey: dictKey) as! [ClubPointsMatrixGridRow]
         
@@ -510,7 +510,7 @@ class ClubPointSelectionViewController: UIViewController {
             
         }
         dictionaryForSegmentCheckBox.setValue(dictionaryForCheckBox, forKey: segmentSelectedString)
-        print(dictionaryForSegmentCheckBox)
+        intervalPrint(dictionaryForSegmentCheckBox)
     }
     
     
@@ -737,7 +737,7 @@ extension ClubPointSelectionViewController:UICollectionViewDataSource{
                 contentCell.contentLabel.textColor = UIColor.black
                 contentCell.lineImage.isHidden = true
                 let labelUnitArray:NSMutableArray = Constant.MyClassConstants.clubIntervalDictionary.value(forKey: Constant.MyClassConstants.labelarray[indexPath.row - 1] as! String)! as! NSMutableArray
-                print(labelUnitArray)
+                intervalPrint(labelUnitArray)
                 if(indexPath.section == Constant.MyClassConstants.clubPointMatrixHeaderArray.count){
                     contentCell.checkBoxView.isHidden = true
                     contentCell.checkButton.isHidden = true
@@ -762,7 +762,7 @@ extension ClubPointSelectionViewController:UICollectionViewDataSource{
                     let checkBoxDictionary:NSDictionary = dictionaryForSegmentCheckBox.value(forKey: segmentSelectedString) as! NSDictionary
                     
                     
-                    print(checkBoxDictionary)
+                    intervalPrint(checkBoxDictionary)
                     if(contentCell.checkButton.tag == checkBoxDictionary.value(forKey: "First") as! Int && buttonSelectedString == "First"){
                         contentCell.checkBoxView.checked = true
                     }else if(contentCell.checkButton.tag == checkBoxDictionary.value(forKey: "Second") as! Int && buttonSelectedString == "Second"){
@@ -787,7 +787,7 @@ extension ClubPointSelectionViewController:UICollectionViewDelegate {
     
     //***** Collection delegate methods definition here *****//
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(indexPath.row, indexPath.section)
+        intervalPrint(indexPath.row, indexPath.section)
     }
 }
 

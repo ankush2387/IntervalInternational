@@ -90,7 +90,7 @@ class RenewelViewController: UIViewController {
         // "1,605,436" where Locale == en_US
         let formattedInt = String(format: "%d", locale: Locale.current, value)
         
-        print("formated price is \(formattedInt)")*/
+        intervalDebugPrint("formated price is \(formattedInt)")*/
 
         // Do any additional setup after loading the view.
     }

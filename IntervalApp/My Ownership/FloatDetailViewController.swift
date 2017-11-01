@@ -399,7 +399,7 @@ class FloatDetailViewController: UIViewController {
         floatDetails.unitNumber = unitNumber
         floatDetails.unitSize = unitSize
         floatDetails.checkInDate = checkInDate
-        print(Constant.MyClassConstants.savedClubFloatResort)
+        intervalPrint(Constant.MyClassConstants.savedClubFloatResort)
         floatDetails.clubResortDetails = Constant.MyClassConstants.savedClubFloatResort
         if(!atrributesRowArray.contains(Constant.MyClassConstants.unitNumberAttribute)){
             floatDetails.showUnitNumber = false
@@ -703,7 +703,7 @@ extension FloatDetailViewController : UITextFieldDelegate{
        
         
         if (range.length == 1 && string.characters.count == 0) {
-            print("backspace tapped")
+            intervalPrint("backspace tapped")
         }
         
             if(textField.tag == 0) {
@@ -719,7 +719,7 @@ extension FloatDetailViewController : UITextFieldDelegate{
                 }
                 else {
                     Constant.FloatDetails.reservationNumber = "\(textField.text!)\(string)"
-                    print(Constant.FloatDetails.reservationNumber)
+                    intervalPrint(Constant.FloatDetails.reservationNumber)
                 }
                let status = checkForFloatDetails()
                 

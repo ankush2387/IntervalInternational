@@ -125,9 +125,9 @@ extension SelectedResortsIpadViewController:UITableViewDelegate {
                 for value in Constant.MyClassConstants.selectedAreaCodeDictionary.allValues{
                     if(value as! String == localArray[indexPath.row] as! String){
                         let key = Constant.MyClassConstants.selectedAreaCodeDictionary.allKeys(for: value)
-                        print(key)
+                        intervalPrint(key)
                         Constant.MyClassConstants.selectedAreaCodeDictionary.removeObject(forKey: "\(key[0])")
-                        print(Constant.MyClassConstants.selectedAreaCodeDictionary)
+                        intervalPrint(Constant.MyClassConstants.selectedAreaCodeDictionary)
                         Constant.MyClassConstants.selectedAreaCodeArray.remove("\(key[0])")
                         
                     }

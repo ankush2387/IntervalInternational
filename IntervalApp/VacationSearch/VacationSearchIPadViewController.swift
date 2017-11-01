@@ -503,7 +503,7 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
             
         }, onError: {(error) in
             
-            print(error.description)
+            intervalPrint(error.description)
             SVProgressHUD.dismiss()
             self.hideHudAsync()
             SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
@@ -743,7 +743,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
             
             if ((settings.vacationSearch?.vacationSearchTypes.contains(searchType.rawValue))! && (searchType.isRental() || searchType.isCombined()) ) {
                 RentalClient.searchRegions(Session.sharedSession.userAccessToken, request: requestRental, onSuccess: {(response)in
-                    print(response)
+                    intervalPrint(response)
                     
                     for rsregion in response {
                         let region = Region()
@@ -774,7 +774,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                 
                     ExchangeClient.searchRegions(Session.sharedSession.userAccessToken, request: requestExchange, onSuccess: { (response) in
                         
-                        print(response)
+                        intervalPrint(response)
                         
                         for rsregion in response {
                             let region = Region()

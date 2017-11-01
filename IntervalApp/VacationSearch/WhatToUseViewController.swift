@@ -976,7 +976,7 @@ extension WhatToUseViewController:RenewelViewControllerDelegate {
     
     func otherOptions(forceRenewals: ForceRenewals) {
         
-        print("other options")
+        intervalPrint("other options")
         
         if(Constant.RunningDevice.deviceIdiom == .phone) {
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)

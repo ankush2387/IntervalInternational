@@ -153,9 +153,9 @@ extension WereWantToGoTableViewCell:WhereToGoCollectionViewCellDelegate {
             
         }
         if(Constant.MyClassConstants.whereTogoContentArray.count > 0) {
-            print( Constant.MyClassConstants.whereTogoContentArray)
+            intervalPrint( Constant.MyClassConstants.whereTogoContentArray)
             Constant.MyClassConstants.whereTogoContentArray.removeObject(at: Index)
-            print( Constant.MyClassConstants.whereTogoContentArray)
+            intervalPrint( Constant.MyClassConstants.whereTogoContentArray)
             selectedIndex = -1
         }
         if(Constant.MyClassConstants.realmStoredDestIdOrCodeArray.count > 0){

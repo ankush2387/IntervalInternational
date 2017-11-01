@@ -531,7 +531,7 @@ class CheckOutIPadViewController: UIViewController {
                 }
             }
         }
-        print(totalFeesArray)
+        intervalPrint(totalFeesArray)
     }
     
     
@@ -685,8 +685,8 @@ class CheckOutIPadViewController: UIViewController {
                 processRequest.fees = fees
                 
                 RentalProcessClient.addCartPromotion(Session.sharedSession.userAccessToken, process: processResort, request: processRequest, onSuccess: { (response) in
-                    print("succes")
-                    print(response)
+                    intervalPrint("succes")
+                    intervalPrint(response)
                     
                     if let promotions = response.view?.fees?.rental?.promotions {
                         self.recapPromotionsArray = promotions
@@ -705,8 +705,8 @@ class CheckOutIPadViewController: UIViewController {
                     SVProgressHUD.dismiss()
                     
                 }, onError: { (error) in
-                    print("Error")
-                    print(error)
+                    intervalPrint("Error")
+                    intervalPrint(error)
                     SVProgressHUD.dismiss()
                 })
             }
@@ -1017,7 +1017,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                         cell.primaryPriceLabel.text = String(Int(Float((Constant.MyClassConstants.exchangeFees[0].shopExchange?.rentalPrice?.price)!)))
                         let priceString = "\(Constant.MyClassConstants.exchangeFees[0].shopExchange!.rentalPrice!.price)"
                         let priceArray = priceString.components(separatedBy: ".")
-                        print(priceArray.last!)
+                        intervalPrint(priceArray.last!)
                         if((priceArray.last!.characters.count) > 1) {
                             cell.fractionalPriceLabel.text = "\(priceArray.last!)"
                         }else{
@@ -1030,7 +1030,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                         cell.primaryPriceLabel.text = String(Int(Float((Constant.MyClassConstants.rentalFees[0].rental?.rentalPrice?.price)!)))
                         let priceString = "\(Constant.MyClassConstants.rentalFees[0].rental!.rentalPrice!.price)"
                         let priceArray = priceString.components(separatedBy: ".")
-                        print(priceArray.last!)
+                        intervalPrint(priceArray.last!)
                         if((priceArray.last!.characters.count) > 1) {
                             cell.fractionalPriceLabel.text = "\(priceArray.last!)"
                         }else{
@@ -1133,7 +1133,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                  cell.primaryPriceLabel.text = String(Int(Float((Constant.MyClassConstants.exchangeFees[0].shopExchange?.rentalPrice?.price)!)))
                  let priceString = "\(Constant.MyClassConstants.exchangeFees[0].shopExchange!.rentalPrice!.price)"
                  let priceArray = priceString.components(separatedBy: ".")
-                 print(priceArray.last!)
+                 intervalDebugPrint(priceArray.last!)
                  if((priceArray.last!.characters.count) > 1) {
                  cell.fractionalPriceLabel.text = "\(priceArray.last!)"
                  }else{

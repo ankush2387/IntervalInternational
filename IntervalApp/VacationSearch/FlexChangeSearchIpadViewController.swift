@@ -99,7 +99,7 @@ class FlexChangeSearchIpadViewController: UIViewController {
     //MARK:- button events
     
     func menuButtonClicked() {
-        print("menu button clicked")
+        intervalPrint("menu button clicked")
     }
     
     @IBAction func searchButtonClicked(_ sender: UIButton) {
@@ -298,7 +298,7 @@ extension FlexChangeSearchIpadViewController:UITableViewDataSource {
                 }else if((object as AnyObject).isKind(of: OpenWeeks.self)){
                     
                     let weekNumber = Constant.getWeekNumber(weekType: ((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).weekNumber))
-                    print((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff)
+                    intervalPrint((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff)
                     if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff || (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isFloat){
                         cell.bedroomLabel.isHidden = false
                         
@@ -339,7 +339,7 @@ extension FlexChangeSearchIpadViewController:UITableViewDataSource {
                         cell.bedroomLabel.isHidden = false
                         
                         let resortList = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).unitDetails
-                        print((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).resort[0].resortName, resortList.count)
+                        intervalPrint((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).resort[0].resortName, resortList.count)
                         
                         if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isFloat){
                             

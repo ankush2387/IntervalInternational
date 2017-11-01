@@ -184,7 +184,7 @@ class CreateAlertViewController: UIViewController {
                         
                         rentalAlert.name = nameTextField.text!
                         rentalAlert.enabled = true
-                        print(Constant.MyClassConstants.alertSelectedResorts)
+                        intervalPrint(Constant.MyClassConstants.alertSelectedResorts)
                         rentalAlert.resorts = Constant.MyClassConstants.alertSelectedResorts
                         rentalAlert.destinations = Constant.MyClassConstants.alertSelectedDestination
                         rentalAlert.selections = []

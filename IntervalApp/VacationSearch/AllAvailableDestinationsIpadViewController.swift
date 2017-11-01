@@ -92,9 +92,9 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
         
         for values in selectedAreaDictionary {
             
-            print(values)
+            intervalPrint(values)
             let counter:[String]  = values.value as! [String]
-            print(counter.count)
+            intervalPrint(counter.count)
             self.sectionCounter = self.sectionCounter + counter.count
             
         }
@@ -162,7 +162,7 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
             
             let selectedResort = segue.destination as! SelectedResortsIpadViewController
             selectedResort.areaDictionary = self.selectedAreaDictionary
-            print(selectedResort.areaDictionary)
+            intervalPrint(selectedResort.areaDictionary)
         }
         
     }
@@ -189,7 +189,7 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
        // let strNew = String(sectionSelected)
         
         let rsregion = Constant.MyClassConstants.regionArray [sender.tag]
-        print(Constant.MyClassConstants.regionAreaDictionary)
+        intervalPrint(Constant.MyClassConstants.regionAreaDictionary)
         if Constant.MyClassConstants.regionAreaDictionary.count == 0 {
             Constant.MyClassConstants.regionAreaDictionary.setValue(rsregion.areas, forKey: String(rsregion.regionCode))
             self.upDownArray.add("\(sender.tag)")
@@ -449,7 +449,7 @@ extension AllAvailableDestinationsIpadViewController:UITableViewDataSource {
         if(selectedAreaDictionary.count > 0){
             if let selectedAreas = selectedAreaDictionary.value(forKey: Constant.MyClassConstants.regionArray[indexPath.section].regionName!){
                 let area = selectedAreas as! [String]
-                print(area.count,area,area.count)
+                intervalPrint(area.count,area,area.count)
                 
                 let areaName = areasInRegionArray[indexPath.row].areaName
                 if(area.contains(areaName!)){

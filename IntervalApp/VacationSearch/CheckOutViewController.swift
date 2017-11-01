@@ -399,7 +399,7 @@ class CheckOutViewController: UIViewController {
             }
         }
        }
-        print(totalFeesArray)
+        intervalPrint(totalFeesArray)
     }
     
     //***** Function called switch state is 'On' so as to update user's email. *****//
@@ -760,7 +760,7 @@ extension CheckOutViewController:UITableViewDelegate {
                 
                 SVProgressHUD.dismiss()
                 self.hideHudAsync()
-                print(error)
+                intervalPrint(error)
                 
             })
         }
@@ -1269,7 +1269,7 @@ extension CheckOutViewController:UITableViewDataSource {
                         cell.primaryPriceLabel.text = String(Int(Float((Constant.MyClassConstants.exchangeFees[0].shopExchange?.rentalPrice?.price)!)))
                         let priceString = "\(Constant.MyClassConstants.exchangeFees[0].shopExchange!.rentalPrice!.price)"
                         let priceArray = priceString.components(separatedBy: ".")
-                        print(priceArray.last!)
+                        intervalPrint(priceArray.last!)
                         if((priceArray.last!.characters.count) > 1) {
                             cell.fractionalPriceLabel.text = "\(priceArray.last!)"
                         }else{
@@ -1282,7 +1282,7 @@ extension CheckOutViewController:UITableViewDataSource {
                         cell.primaryPriceLabel.text = String(Int(Float((Constant.MyClassConstants.rentalFees[0].rental?.rentalPrice?.price)!)))
                         let priceString = "\(Constant.MyClassConstants.rentalFees[0].rental!.rentalPrice!.price)"
                         let priceArray = priceString.components(separatedBy: ".")
-                        print(priceArray.last!)
+                        intervalPrint(priceArray.last!)
                         if((priceArray.last!.characters.count) > 1) {
                             cell.fractionalPriceLabel.text = "\(priceArray.last!)"
                         }else{

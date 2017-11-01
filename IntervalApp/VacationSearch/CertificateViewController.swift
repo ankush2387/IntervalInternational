@@ -28,9 +28,11 @@ class CertificateViewController: UIViewController {
     }
     
     
+
     @IBAction func onClickedCertificateInfoButton(_ sender: Any) {
         
         self.getAccommodationCertificateSummary(sendertag: (sender as AnyObject).tag)
+
     }
     
     func getAccommodationCertificateSummary(sendertag:Int) {
@@ -71,6 +73,7 @@ class CertificateViewController: UIViewController {
        // Helper.showProgressBar(senderView: self)
         UserClient.getAccommodationCertificates(Session.sharedSession.userAccessToken, onSuccess: { (certificates) in
             self.hideHudAsync()
+            intervalPrint(certificates.count)
             Constant.MyClassConstants.certifcateCount = certificates.count
             Constant.MyClassConstants.certificateArray =  certificates
             self.certificateTable.delegate = self
@@ -79,6 +82,8 @@ class CertificateViewController: UIViewController {
             
         }, onError: { (error) in
             self.hideHudAsync()
+            intervalPrint(error)
+
         })
         
     }

@@ -261,7 +261,7 @@ class DashboardTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print(dashboardArray[indexPath.section])
+        intervalPrint(dashboardArray[indexPath.section])
         let cell = getTableViewContents(indexPath, type: dashboardArray[indexPath.section] as! String)
         return cell
         
@@ -291,7 +291,7 @@ class DashboardTableViewController: UITableViewController {
             
             let upcomingTrip  =  Constant.MyClassConstants.upcomingTripsArray[indexPath.row]
             let statename = upcomingTrip.resort?.address?.territoryCode
-            print(statename as Any)
+            intervalPrint(statename as Any)
             cell.resortNameLabel.text = upcomingTrip.resort!.resortName
             cell.resortLocationLabel.text = "\(upcomingTrip.resort!.address!.cityName!), \(String(describing: upcomingTrip.resort?.address?.territoryCode)), \(upcomingTrip.resort!.address!.countryCode!)"
             let upcomingTripDate = Helper.convertStringToDate(dateString: upcomingTrip.unit!.checkInDate!, format: Constant.MyClassConstants.dateFormat)

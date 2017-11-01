@@ -76,8 +76,8 @@ class RelinquishmentSelectionViewController: UIViewController {
                         let count = results.filter({ $0 == true }).count
                         
                         if(count != ((fixed_week_type.unit?.lockOffUnits.count)! + 1)){
-                            print(fixed_week_type.unit!.lockOffUnits.count)
-                            print(Constant.MyClassConstants.whatToTradeArray,Constant.MyClassConstants.floatRemovedArray)
+                            intervalPrint(fixed_week_type.unit!.lockOffUnits.count)
+                            intervalPrint(Constant.MyClassConstants.whatToTradeArray,Constant.MyClassConstants.floatRemovedArray)
                             if(fixed_week_type.weekNumber == Constant.CommonStringIdentifiers.floatWeek){
                                 if(Constant.MyClassConstants.whatToTradeArray.count > 0){
                                     for traversedOpenWeek in Constant.MyClassConstants.whatToTradeArray{
@@ -108,7 +108,7 @@ class RelinquishmentSelectionViewController: UIViewController {
                     }
                     else {
                         if((fixed_week_type.unit?.lockOffUnits.count)! > 0){
-                            print(fixed_week_type.relinquishmentId!, Constant.MyClassConstants.idUnitsRelinquishmentDictionary.value(forKey: fixed_week_type.relinquishmentId!)!)
+                            intervalPrint(fixed_week_type.relinquishmentId!, Constant.MyClassConstants.idUnitsRelinquishmentDictionary.value(forKey: fixed_week_type.relinquishmentId!)!)
                             
                             let results = Constant.MyClassConstants.relinquishmentIdArray.map({ ($0 as AnyObject).contains(fixed_week_type.relinquishmentId!)})
                             let count = results.filter({ $0 == true }).count
@@ -118,12 +118,12 @@ class RelinquishmentSelectionViewController: UIViewController {
                             }
                             
                             let selectedLockOffArray = Constant.MyClassConstants.idUnitsRelinquishmentDictionary.value(forKey: fixed_week_type.relinquishmentId!)!
-                            print(selectedLockOffArray)
+                            intervalPrint(selectedLockOffArray)
                         }
                     }
                 }
             /*}else{
-                print(fixed_week_type.weekNumber, fixed_week_type.relinquishmentId, fixed_week_type.unit?.lockOffUnits.count)
+                intervalDebugPrint(fixed_week_type.weekNumber, fixed_week_type.relinquishmentId, fixed_week_type.unit?.lockOffUnits.count)
             }*/
         }
         if(Constant.MyClassConstants.relinquishmentIdArray.count > 0 && self.relinquishmentPointsProgramArray[0].relinquishmentId != nil){
@@ -257,7 +257,7 @@ class RelinquishmentSelectionViewController: UIViewController {
                     if(intervalOpenWeeksArray[sender.tag].relinquishmentId! == selectedDict.allKeys.first as! String){
                         Constant.MyClassConstants.userSelectedUnitsArray.add(selectedDict.object(forKey: intervalOpenWeeksArray[sender.tag].relinquishmentId!)!)
                     }
-                    print(Constant.MyClassConstants.userSelectedUnitsArray)
+                    intervalPrint(Constant.MyClassConstants.userSelectedUnitsArray)
                 }
             }else{
                 Constant.MyClassConstants.userSelectedUnitsArray.removeAllObjects()
@@ -328,7 +328,7 @@ class RelinquishmentSelectionViewController: UIViewController {
         let pointsMatrix = OpenWeek()
         if(pointsMatrix.pointsMatrix == false){
             
-            print("false")
+            intervalPrint("false")
             let storedata = OpenWeeksStorage()
             let Membership = Session.sharedSession.selectedMembership
             let relinquishmentList = TradeLocalData()
@@ -409,7 +409,7 @@ class RelinquishmentSelectionViewController: UIViewController {
                 
                 self.hideHudAsync()
                 SVProgressHUD.dismiss()
-                print(error.description)
+                intervalPrint(error.description)
             })
         }
 
@@ -556,10 +556,10 @@ class RelinquishmentSelectionViewController: UIViewController {
                 for selectedUnits in Constant.MyClassConstants.relinquishmentUnitsArray{
                     
                     let selectedDict = selectedUnits as! NSMutableDictionary
-                    print(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!,selectedDict.allKeys.first!,selectedDict)
+                    intervalPrint(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!,selectedDict.allKeys.first!,selectedDict)
                     if(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId! == selectedDict.allKeys.first as! String){
                         Constant.MyClassConstants.userSelectedUnitsArray.add(selectedDict.object(forKey: Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!)!)
-                        print(Constant.MyClassConstants.userSelectedUnitsArray)
+                        intervalPrint(Constant.MyClassConstants.userSelectedUnitsArray)
                     }
                 }
             }else{
@@ -610,7 +610,7 @@ class RelinquishmentSelectionViewController: UIViewController {
                     Constant.MyClassConstants.savedClubFloatResort = floatWeekTraversed.floatDetails[0].clubResortDetails
                 }
             }
-            print(Constant.MyClassConstants.selectedFloatWeek)
+            intervalPrint(Constant.MyClassConstants.selectedFloatWeek)
         }
     }
     
@@ -836,7 +836,7 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                 openWeek = relinquishmentOpenWeeksArray[indexPath.row]
                 
                 if(openWeek.weekNumber == Constant.CommonStringIdentifiers.floatWeek){
-                    print(openWeek.relinquishmentId!, Constant.MyClassConstants.realmOpenWeeksID)
+                    intervalPrint(openWeek.relinquishmentId!, Constant.MyClassConstants.realmOpenWeeksID)
                     if(Constant.MyClassConstants.realmOpenWeeksID.contains(openWeek.relinquishmentId!) && openWeek.unit?.lockOffUnits.count == 0) {
                         
                         let  cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.floatWeekSavedCell, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
@@ -891,7 +891,7 @@ extension RelinquishmentSelectionViewController:UITableViewDataSource {
                                 let floatWeek = openWk1
                                 if(openWeek.relinquishmentId == openWk1.relinquishmentID ) {
                                     
-                                    print(floatWeek)
+                                    intervalPrint(floatWeek)
                                     
                                     cell.resortName.text = "\(openWeek.resort!.resortName!)/\(openWeek.resort!.resortCode!)"
                                     cell.totalWeekLabel.text = "\(openWeek.relinquishmentYear!)"
