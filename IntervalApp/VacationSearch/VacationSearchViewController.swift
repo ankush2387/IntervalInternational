@@ -79,7 +79,6 @@ class VacationSearchViewController: UIViewController {
             
             //***** Add the hamburger menu *****//
             let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action:#selector(SWRevealViewController.revealToggle(_:)))
-            
             menuButton.tintColor = UIColor.white
             parent?.navigationItem.leftBarButtonItem = menuButton
             
@@ -87,7 +86,7 @@ class VacationSearchViewController: UIViewController {
             moreButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.MoreNav), style: .plain, target: self, action:#selector(MoreNavButtonPressed(_:)))
             moreButton?.tintColor = UIColor.white
             parent?.navigationItem.rightBarButtonItem = moreButton
-   
+            
             //***** This line allows the user to swipe left-to-right to reveal the menu. We might want to comment this out if it becomes confusing. *****//
             self.view.addGestureRecognizer( rvc.panGestureRecognizer() )
             searchVacationTableView.reloadData()
@@ -844,7 +843,6 @@ extension VacationSearchViewController:UITableViewDataSource {
                         }
                             
                         else {
-                     intervalPrint(Constant.MyClassConstants.whereTogoContentArray[indexPath.row] as! String)
                             cell.whereTogoTextLabel.text = Constant.MyClassConstants.whereTogoContentArray[(indexPath as NSIndexPath).row] as? String
                         }
                         cell.selectionStyle = UITableViewCellSelectionStyle.none
@@ -901,8 +899,6 @@ extension VacationSearchViewController:UITableViewDataSource {
                             cell.bedroomLabel.isHidden = true
                         }else if((object as AnyObject).isKind(of: OpenWeeks.self)){
                             let weekNumber = Constant.getWeekNumber(weekType: ((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).weekNumber))
-                            intervalPrint((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff)
-
                             if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff || (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isFloat){
                                 cell.bedroomLabel.isHidden = false
                                 
@@ -933,7 +929,6 @@ extension VacationSearchViewController:UITableViewDataSource {
                                 cell.bedroomLabel.isHidden = false
                                 
                                 let resortList = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).unitDetails
-                                intervalPrint((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).resort[0].resortName, resortList.count)
                                 if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isFloat){
                                     let floatDetails = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).floatDetails
                                     cell.bedroomLabel.text = "\(resortList[0].unitSize), \(floatDetails[0].unitNumber), \(resortList[0].kitchenType)"
@@ -1398,7 +1393,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         
         //Set filter options availability
         Constant.MyClassConstants.noFilterOptions = false
-
+        
         //Set travel PartyInfo
         let travelPartyInfo = TravelParty()
         travelPartyInfo.adults = Int(adultCounter)
@@ -1452,36 +1447,34 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     sender.isEnabled = true
                     
                 }else{
-                    
-            RentalClient.searchRegions(Session.sharedSession.userAccessToken, request: requestRental, onSuccess: {(response)in
-                intervalPrint(response)
-                
-                for rsregion in response {
-                    let region = Region()
-                    region.regionName = rsregion.regionName
-                    region.regionCode = rsregion.regionCode
-                    region.areas = rsregion.areas
-                    Constant.MyClassConstants.regionArray.append(rsregion)
-                    
-                    
-                }
-                self.hideHudAsync()
-                sender.isEnabled = true
-                self.performSegue(withIdentifier:Constant.segueIdentifiers.allAvailableDestinations, sender: self)
-                Constant.MyClassConstants.isFromExchangeAllAvailable = false
-                if(searchType.isCombined()){
-                    Constant.MyClassConstants.isFromRentalAllAvailable = false
-                }else{
-                    Constant.MyClassConstants.isFromRentalAllAvailable = true
-                }
-                
-                
-            }, onError: { (error) in
-                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
-                self.hideHudAsync()
-                sender.isEnabled = true
-            })
->>>>>>> MOBI-1219:Remove unwanted code and unused variables
+                    RentalClient.searchRegions(Session.sharedSession.userAccessToken, request: requestRental, onSuccess: {(response)in
+                        DarwinSDK.logger.debug(response)
+                        
+                        for rsregion in response {
+                            let region = Region()
+                            region.regionName = rsregion.regionName
+                            region.regionCode = rsregion.regionCode
+                            region.areas = rsregion.areas
+                            Constant.MyClassConstants.regionArray.append(rsregion)
+                            
+                            
+                        }
+                        self.hideHudAsync()
+                        sender.isEnabled = true
+                        self.performSegue(withIdentifier:Constant.segueIdentifiers.allAvailableDestinations, sender: self)
+                        Constant.MyClassConstants.isFromExchangeAllAvailable = false
+                        if(searchType.isCombined()){
+                            Constant.MyClassConstants.isFromRentalAllAvailable = false
+                        }else{
+                            Constant.MyClassConstants.isFromRentalAllAvailable = true
+                        }
+                        
+                        
+                    }, onError: { (error) in
+                        self.presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
+                        self.hideHudAsync()
+                        sender.isEnabled = true
+                    })
                 }
             }else{
                 
@@ -1513,7 +1506,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     }, onError: { (error) in
                         self.hideHudAsync()
                         self.presentErrorAlert(UserFacingCommonError.generic)
-                        intervalPrint(error)
+                        
                     })
                 }
                 
@@ -1726,52 +1719,6 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         }
     }
     
-     // Mark:- Set options for filter
-    func createFilterOptions(){
-        
-        Constant.MyClassConstants.filterOptionsArray.removeAll()
-        let storedData = Helper.getLocalStorageWherewanttoGo()
-        let allDest = Helper.getLocalStorageAllDest()
-        
-        if(storedData.count > 0) {
-            
-            let realm = try! Realm()
-            try! realm.write {
-                Constant.MyClassConstants.filterOptionsArray.removeAll()
-                for object in storedData {
-                    
-                    if(object.destinations.count > 0){
-                        Constant.MyClassConstants.filterOptionsArray.append(
-                            .Destination(object.destinations[0])
-                        )
-                        
-                    }else if(object.resorts.count > 0){
-                        
-                        if(object.resorts[0].resortArray.count > 0){
-                            
-                            var araayOfResorts = List<ResortByMap>()
-                            var reswortByMap = [ResortByMap]()
-                            araayOfResorts = object.resorts[0].resortArray
-                            for resort in araayOfResorts{
-                                reswortByMap.append(resort)
-                            }
-                            
-                            Constant.MyClassConstants.filterOptionsArray.append(.ResortList(reswortByMap))
-                        }else{
-     Constant.MyClassConstants.filterOptionsArray.append(.Resort(object.resorts[0]))
-                        }
-                    }
-                }
-            }
-        }else if(allDest.count > 0){
-            for areaCode in Constant.MyClassConstants.selectedAreaCodeArray{
-                let dictionaryArea = ["\(areaCode)": Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: areaCode as! String)]
-                Constant.MyClassConstants.filterOptionsArray.append(.Area(dictionaryArea as! NSMutableDictionary))
-            }
-        }
-    }
-    
-    
     
     // Mark:- Set options for filter
     func createFilterOptions(){
@@ -1873,3 +1820,4 @@ extension VacationSearchViewController:HelperDelegate {
         Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
     }
 }
+
