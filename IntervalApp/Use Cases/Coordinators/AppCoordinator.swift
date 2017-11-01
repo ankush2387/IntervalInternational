@@ -255,6 +255,8 @@ extension AppCoordinator: LoginCoordinatorDelegate {
 =======
         intervalPrint(session.contact?.contactId)
         intervalDebugPrint(session.contact?.contactId)
+=======
+>>>>>>> Removed printing of contact ID
         
 >>>>>>> Incorporated intervalDebugPrint functionality
         if apnsCoordinator?.shouldRedirectOnlogin == true && apnsCoordinator?.pushViabilityHasNotExpired == true {
