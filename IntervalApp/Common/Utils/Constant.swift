@@ -1042,8 +1042,6 @@ class Constant: NSObject {
         static var renewalOtherOptionsVC = "RenewalOtherOptionsVC"
         static var certificateDetailsViewController = "CertificateDetailsViewController"
         
-        static var certificateDetailsViewController = "CertificateDetailsViewController"
-        
     }
     
     //***** common  structure to provide all custom nib cell names *****//
