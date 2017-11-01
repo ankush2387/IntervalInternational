@@ -249,22 +249,8 @@ extension AppCoordinator: LoginCoordinatorDelegate {
         readEncryptionKey(for: String(contactID))
             .then(createDatabase)
             .onViewError(presentViewError)
-
-=======
         intervalPrint(session.contact?.contactId)
         intervalDebugPrint(session.contact?.contactId)
-=======
->>>>>>> Removed printing of contact ID
-        
->>>>>>> Incorporated intervalDebugPrint functionality
-=======
-=======
-
->>>>>>> Removed printing of contact ID
-        intervalPrint(session.contact?.contactId)
-        intervalDebugPrint(session.contact?.contactId)
-
->>>>>>> MOBI-1219:Remove unwanted code and unused variables
         if apnsCoordinator?.shouldRedirectOnlogin == true && apnsCoordinator?.pushViabilityHasNotExpired == true {
             redirectUser()
         } else {
