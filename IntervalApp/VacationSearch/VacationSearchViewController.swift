@@ -560,7 +560,7 @@ extension VacationSearchViewController:UITableViewDelegate {
                                 try realm.write {
                                     realm.delete(self.destinationOrResort[(indexPath as NSIndexPath).row])
                                 }
-                            }catch{
+                            }catch let error{
                                 self.presentErrorAlert(UserFacingCommonError.generic)
                             }
                         }else {
@@ -576,10 +576,9 @@ extension VacationSearchViewController:UITableViewDelegate {
                             tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
                             Helper.InitializeArrayFromLocalStorage()
                         }
-                    }catch{
+                    }catch let error{
                         self.presentErrorAlert(UserFacingCommonError.generic)
                     }
-                }else {
                     Constant.MyClassConstants.checkInClosestContentArray.removeObject(at: (indexPath as NSIndexPath).row)
                     tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
                     let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
@@ -689,10 +688,10 @@ extension VacationSearchViewController:UITableViewDelegate {
                                 tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
                                 Helper.InitializeOpenWeeksFromLocalStorage()
                             }
-                        }catch{
+                        }catch let error{
                             self.presentErrorAlert(UserFacingCommonError.generic)
                         }
-                    }catch{
+                    }catch let error{
                         self.presentErrorAlert(UserFacingCommonError.generic)
                     }
                 }
@@ -1292,11 +1291,12 @@ extension VacationSearchViewController:UITableViewDataSource {
                         DispatchQueue.main.asyncAfter(deadline: delayTime) {
                             tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
                         }
-                    }catch{
-                        
+                    }catch let error{
+                        self.presentErrorAlert(UserFacingCommonError.generic)
                     }
                     
-                }catch{
+                }catch let error{
+                    self.presentErrorAlert(UserFacingCommonError.generic)
                     
                 }
                 
