@@ -843,7 +843,6 @@ extension VacationSearchViewController:UITableViewDataSource {
                         }
                             
                         else {
-                            intervalPrint(Constant.MyClassConstants.whereTogoContentArray[indexPath.row] as! String)
                             cell.whereTogoTextLabel.text = Constant.MyClassConstants.whereTogoContentArray[(indexPath as NSIndexPath).row] as? String
                         }
                         cell.selectionStyle = UITableViewCellSelectionStyle.none
@@ -900,9 +899,6 @@ extension VacationSearchViewController:UITableViewDataSource {
                             cell.bedroomLabel.isHidden = true
                         }else if((object as AnyObject).isKind(of: OpenWeeks.self)){
                             let weekNumber = Constant.getWeekNumber(weekType: ((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).weekNumber))
-
-                            intervalPrint((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff)
-
                             if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff || (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isFloat){
                                 cell.bedroomLabel.isHidden = false
                                 
@@ -933,8 +929,6 @@ extension VacationSearchViewController:UITableViewDataSource {
                                 cell.bedroomLabel.isHidden = false
                                 
                                 let resortList = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).unitDetails
-                                intervalPrint((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).resort[0].resortName, resortList.count)
-
                                 if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isFloat){
                                     let floatDetails = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).floatDetails
                                     cell.bedroomLabel.text = "\(resortList[0].unitSize), \(floatDetails[0].unitNumber), \(resortList[0].kitchenType)"
@@ -1398,6 +1392,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         
         //Set filter options availability
         Constant.MyClassConstants.noFilterOptions = false
+        
         //Set travel PartyInfo
         let travelPartyInfo = TravelParty()
         travelPartyInfo.adults = Int(adultCounter)
@@ -1451,7 +1446,6 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     sender.isEnabled = true
                     
                 }else{
-    
                     RentalClient.searchRegions(Session.sharedSession.userAccessToken, request: requestRental, onSuccess: {(response)in
                         DarwinSDK.logger.debug(response)
                         
@@ -1480,7 +1474,6 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                         self.hideHudAsync()
                         sender.isEnabled = true
                     })
-
                 }
             }else{
                 
@@ -1492,7 +1485,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 }else{
                     
                     ExchangeClient.searchRegions(Session.sharedSession.userAccessToken, request: requestExchange, onSuccess: { (response) in
-                        intervalPrint(response)
+                        
                         for rsregion in response {
                             
                             let region = Region()
@@ -1512,7 +1505,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     }, onError: { (error) in
                         self.hideHudAsync()
                         self.presentErrorAlert(UserFacingCommonError.generic)
-                        intervalPrint(error)
+                        
                     })
                 }
                 
@@ -1725,52 +1718,6 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         }
     }
     
-     // Mark:- Set options for filter
-    func createFilterOptions(){
-        
-        Constant.MyClassConstants.filterOptionsArray.removeAll()
-        let storedData = Helper.getLocalStorageWherewanttoGo()
-        let allDest = Helper.getLocalStorageAllDest()
-        
-        if(storedData.count > 0) {
-            
-            let realm = try! Realm()
-            try! realm.write {
-                Constant.MyClassConstants.filterOptionsArray.removeAll()
-                for object in storedData {
-                    
-                    if(object.destinations.count > 0){
-                        Constant.MyClassConstants.filterOptionsArray.append(
-                            .Destination(object.destinations[0])
-                        )
-                        
-                    }else if(object.resorts.count > 0){
-                        
-                        if(object.resorts[0].resortArray.count > 0){
-                            
-                            var araayOfResorts = List<ResortByMap>()
-                            var reswortByMap = [ResortByMap]()
-                            araayOfResorts = object.resorts[0].resortArray
-                            for resort in araayOfResorts{
-                                reswortByMap.append(resort)
-                            }
-                            
-                            Constant.MyClassConstants.filterOptionsArray.append(.ResortList(reswortByMap))
-                        }else{
-     Constant.MyClassConstants.filterOptionsArray.append(.Resort(object.resorts[0]))
-                        }
-                    }
-                }
-            }
-        }else if(allDest.count > 0){
-            for areaCode in Constant.MyClassConstants.selectedAreaCodeArray{
-                let dictionaryArea = ["\(areaCode)": Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: areaCode as! String)]
-                Constant.MyClassConstants.filterOptionsArray.append(.Area(dictionaryArea as! NSMutableDictionary))
-            }
-        }
-    }
-    
-    
     
     // Mark:- Set options for filter
     func createFilterOptions(){
@@ -1872,3 +1819,4 @@ extension VacationSearchViewController:HelperDelegate {
         Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
     }
 }
+
