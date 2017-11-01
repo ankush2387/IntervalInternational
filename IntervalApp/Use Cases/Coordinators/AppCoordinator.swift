@@ -238,7 +238,6 @@ extension AppCoordinator: LoginCoordinatorDelegate {
         Session.sharedSession.selectedMembership = session.contact?.memberships![0]
         CreateActionSheet().membershipWasSelected()
         ///
-        
         guard let contactID = session.contact?.contactId else {
             presentViewError()
             return
@@ -260,6 +259,9 @@ extension AppCoordinator: LoginCoordinatorDelegate {
         
 >>>>>>> Incorporated intervalDebugPrint functionality
 =======
+=======
+
+>>>>>>> Removed printing of contact ID
         intervalPrint(session.contact?.contactId)
         intervalDebugPrint(session.contact?.contactId)
 
