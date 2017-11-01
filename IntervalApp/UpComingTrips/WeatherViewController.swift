@@ -200,8 +200,6 @@ class WeatherViewController: UIViewController {
 
 }
 
-
-
 extension UIViewController {
     func displayWeatherView(resortCode: String, resortName: String, countryCode: String, presentModal: Bool, completionHandler: @escaping (_ response: Bool) -> Void) {
         

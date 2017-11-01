@@ -151,7 +151,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         
         showHudAsync()
         if(Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
-            Constant.holdingTimer.invalidate()
+            Constant.holdingTimer?.invalidate()
             
             ExchangeProcessClient.backToChooseExchange(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess:{(response) in
                 
@@ -173,13 +173,13 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                 self.hideHudAsync()
                 SimpleAlert.alert(self, title: "Who will be checking in", message: Constant.AlertMessages.operationFailedMessage)
             })
-        }else{
-        Constant.holdingTimer.invalidate()
-        
-        RentalProcessClient.backToChooseRental(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, onSuccess:{(response) in
+        }
+        else{
+            
+            Constant.holdingTimer?.invalidate()
+            RentalProcessClient.backToChooseRental(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, onSuccess:{(response) in
             
             Constant.MyClassConstants.selectedCreditCard.removeAll()
-            SVProgressHUD.dismiss()
             self.hideHudAsync()
             
             // pop and dismiss view according to conditions
@@ -194,9 +194,6 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             
         }, onError: {(error) in
             
-         
-            
-            SVProgressHUD.dismiss()
             self.hideHudAsync()
             SimpleAlert.alert(self, title: "Who will be checking in", message: Constant.AlertMessages.operationFailedMessage)
         })

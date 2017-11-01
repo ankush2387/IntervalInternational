@@ -96,7 +96,7 @@ class MemberShipDetailTableViewCell: UITableViewCell {
         
         // Update label text
         contactnameInfoLabel.text = Constant.memberShipViewController.membershipDetailTableViewCell.contactnameInfoLabelText
-        loginInfoLabel.text = Constant.memberShipViewController.membershipDetailTableViewCell.loginInfoLabelText
+        loginInfoLabel.text = Constant.textFieldTitles.usernamePlaceholder
          emailInfoLabel.text = Constant.memberShipViewController.membershipDetailTableViewCell.emailInfoLabelText
         memberNumberInfoLabel.text = Constant.memberShipViewController.membershipDetailTableViewCell.memberNumberInfoLabelText
         switchMembershipButton.setTitle(Constant.memberShipViewController.membershipDetailTableViewCell.switchMembershipButtonTitle, for: .normal)
@@ -114,7 +114,7 @@ class MemberShipDetailTableViewCell: UITableViewCell {
         //setup Products View depending on number of Products
         let size = products.count //amount of products to display
         var yPosition  = 5 // yPosition of view
-        var height = 80 // height of each view
+        let height = 80 // height of each view
         ExternalViewHeightConstraint.constant = CGFloat((80 * size) + 10)
 
         var count = 0
