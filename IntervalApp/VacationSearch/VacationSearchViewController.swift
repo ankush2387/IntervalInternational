@@ -1297,6 +1297,10 @@ extension VacationSearchViewController:UITableViewDataSource {
                     self.presentErrorAlert(UserFacingCommonError.generic)
                 }
                 
+            }catch{
+                    
+                }
+                
             }
             else {
                 Constant.MyClassConstants.checkInClosestContentArray.removeObject(at: (indexPath as NSIndexPath).row)
@@ -1350,7 +1354,7 @@ extension VacationSearchViewController:WhoIsTravelingCellDelegate {
         //***** updating adult counter increment and decrement
         adultCounter = value
         if defaults.object(forKey: Constant.MyClassConstants.adultCounterString) != nil {
-            
+
             defaults.removeObject(forKey: Constant.MyClassConstants.adultCounterString)
             defaults.set(value, forKey: Constant.MyClassConstants.adultCounterString)
             defaults.synchronize()
@@ -1702,9 +1706,6 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                         Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate:response.checkInDates[0], senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                     }
                                 }
-                                Constant.MyClassConstants.checkInDates = response.checkInDates
-                                sender.isEnabled = true
-                                Constant.MyClassConstants.isFromSearchBoth = true
                                 
                             })
                             { (error) in
