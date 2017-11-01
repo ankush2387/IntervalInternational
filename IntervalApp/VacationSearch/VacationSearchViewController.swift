@@ -242,22 +242,17 @@ class VacationSearchViewController: UIViewController {
             Constant.MyClassConstants.relinquishmentDeposits = Relinquishments.deposits
             Constant.MyClassConstants.relinquishmentOpenWeeks = Relinquishments.openWeeks
             
-            if(Relinquishments.pointsProgram != nil){
-                Constant.MyClassConstants.relinquishmentProgram = Relinquishments.pointsProgram!
-                
-                if (Relinquishments.pointsProgram!.availablePoints != nil) {
-                    Constant.MyClassConstants.relinquishmentAvailablePointsProgram = Relinquishments.pointsProgram!.availablePoints!
+            if let pointsProgram = Relinquishments.pointsProgram{
+                Constant.MyClassConstants.relinquishmentProgram = pointsProgram
+                if let availablePoints = pointsProgram.availablePoints{
+                    Constant.MyClassConstants.relinquishmentAvailablePointsProgram = availablePoints
                 }
-                
             }
             
             SVProgressHUD.dismiss()
             self.hideHudAsync()
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.relinquishmentSelectionViewController) as! RelinquishmentSelectionViewController
-            
-            let transitionManager = TransitionManager()
-            self.navigationController?.transitioningDelegate = transitionManager
             self.navigationController?.pushViewController(viewController, animated: true)
             
         }, onError: {(error) in
@@ -415,14 +410,15 @@ extension VacationSearchViewController:UICollectionViewDataSource {
                 centerView.addSubview(unitLabel)
                 
                 let priceLabel = UILabel(frame: CGRect(x: 10, y: 35, width: centerView.frame.size.width - 20, height: 20))
-                priceLabel.text = "\(Constant.getDynamicString.fromString) $" + String(describing: deal.price!.fromPrice) + "\(Constant.getDynamicString.weekString)"
-                priceLabel.numberOfLines = 2
-                priceLabel.textAlignment = NSTextAlignment.center
-                priceLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
-                priceLabel.textColor = UIColor.white
-                priceLabel.backgroundColor = UIColor.clear
-                centerView.addSubview(priceLabel)
-                
+                if let dealPrice = deal.price{
+                    priceLabel.text = "\(Constant.getDynamicString.fromString) $" + String(describing: dealPrice.fromPrice) + "\(Constant.getDynamicString.weekString)"
+                    priceLabel.numberOfLines = 2
+                    priceLabel.textAlignment = NSTextAlignment.center
+                    priceLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
+                    priceLabel.textColor = UIColor.white
+                    priceLabel.backgroundColor = UIColor.clear
+                    centerView.addSubview(priceLabel)
+                }
                 cell.addSubview(centerView)
                 cell.layer.borderColor = UIColor.lightGray.cgColor
                 cell.layer.borderWidth = 1.0
@@ -556,7 +552,7 @@ extension VacationSearchViewController:UITableViewDelegate {
         showHudAsync()
         if(indexPath.section == 0){
             let delete = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.delete) { (action,index) -> Void in
-                if((indexPath as NSIndexPath).section == 0) {
+                if (indexPath as NSIndexPath).section == 0 {
                     do{
                         let realm = try Realm()
                         if(self.destinationOrResort.count > 0){
@@ -583,8 +579,7 @@ extension VacationSearchViewController:UITableViewDelegate {
                     }catch{
                         self.presentErrorAlert(UserFacingCommonError.generic)
                     }
-                }
-                else {
+                }else {
                     Constant.MyClassConstants.checkInClosestContentArray.removeObject(at: (indexPath as NSIndexPath).row)
                     tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
                     let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
@@ -620,14 +615,14 @@ extension VacationSearchViewController:UITableViewDelegate {
                     let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.getawayAlertsIpad, bundle: nil)
                     let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.infoDetailViewController) as! InfoDetailViewController
                     viewController.selectedIndex = 0
-                    self.navigationController!.present(viewController, animated: true, completion: nil)
+                    self.navigationController?.present(viewController, animated: true, completion: nil)
                     
                 }else{
                     
                     let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.getawayAlertsIphone, bundle: nil)
                     let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.infoDetailViewController) as! InfoDetailViewController
                     viewController.selectedIndex = 0
-                    self.navigationController!.present(viewController, animated: true, completion: nil)
+                    self.navigationController?.present(viewController, animated: true, completion: nil)
                     
                 }
             }
@@ -812,11 +807,9 @@ extension VacationSearchViewController:UITableViewDataSource {
                         
                         
                         
-                        if((indexPath as NSIndexPath).row == destinationOrResort.count - 1 || destinationOrResort.count == 0) {
-                            
+                        if (indexPath as NSIndexPath).row == destinationOrResort.count - 1 || destinationOrResort.count == 0 {
                             cell.sepratorOr.isHidden = true
-                        }
-                        else {
+                        }else {
                             
                             cell.sepratorOr.isHidden = false
                         }
@@ -838,7 +831,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                                 resortNameString = resortNameString + " \(Constant.getDynamicString.andString) \((object as AnyObject).count - 1) \(Constant.getDynamicString.moreString)"
                             }
                             cell.whereTogoTextLabel.text = resortNameString
-                        }else if (object.isKind(of: List<ResortByMap>.self)){
+                        }else if object.isKind(of: List<ResortByMap>.self){
                             
                             let object = Constant.MyClassConstants.whereTogoContentArray[(indexPath as NSIndexPath).row] as! List<ResortByMap>
                             
@@ -853,11 +846,8 @@ extension VacationSearchViewController:UITableViewDataSource {
                         }
                             
                         else {
-                            print(Constant.MyClassConstants.whereTogoContentArray[indexPath.row] as! String)
                             cell.whereTogoTextLabel.text = Constant.MyClassConstants.whereTogoContentArray[(indexPath as NSIndexPath).row] as? String
                         }
-                        
-                        //cell.bedroomLabel.isHidden = true
                         cell.selectionStyle = UITableViewCellSelectionStyle.none
                         cell.backgroundColor = UIColor.clear
                         return cell
@@ -891,25 +881,27 @@ extension VacationSearchViewController:UITableViewDataSource {
                     }
                     else {
                         
-                        
                         let cell: WhereToGoContentCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.whereToGoContentCell, for: indexPath) as! WhereToGoContentCell
                         
-                        if((indexPath as NSIndexPath).row == Constant.MyClassConstants.whatToTradeArray.count - 1) {
-                            
+                        if (indexPath as NSIndexPath).row == Constant.MyClassConstants.whatToTradeArray.count - 1{
                             cell.sepratorOr.isHidden = true
-                        }
-                        else {
-                            
+                        }else{
                             cell.sepratorOr.isHidden = false
                         }
                         let object = Constant.MyClassConstants.whatToTradeArray[indexPath.row]
-                        if((object as AnyObject) .isKind(of: OpenWeek.self)){
-                            let weekNumber = Constant.getWeekNumber(weekType: ((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeek).weekNumber)!)
-                            cell.whereTogoTextLabel.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeek).resort!.resortName!), \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeek).relinquishmentYear!) Week \(weekNumber)"
+                        if (object as AnyObject).isKind(of: OpenWeek.self){
+                            if let resortName = (object as! OpenWeek).resort?.resortName{
+                                cell.whereTogoTextLabel.text = "\(resortName)"
+                            }
+                            if let relinquishmentYear = (object as! OpenWeek).relinquishmentYear{
+                                cell.whereTogoTextLabel.text = "\(String(describing: cell.whereTogoTextLabel.text)), \(relinquishmentYear)"
+                            }
+                            if let weekNumber = (object as! OpenWeek).weekNumber{
+                                cell.whereTogoTextLabel.text = "\(String(describing: cell.whereTogoTextLabel.text)), Week \(weekNumber)"
+                            }
                             cell.bedroomLabel.isHidden = true
                         }else if((object as AnyObject).isKind(of: OpenWeeks.self)){
                             let weekNumber = Constant.getWeekNumber(weekType: ((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).weekNumber))
-                            print((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff)
                             if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff || (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isFloat){
                                 cell.bedroomLabel.isHidden = false
                                 
@@ -927,12 +919,12 @@ extension VacationSearchViewController:UITableViewDataSource {
                             }else{
                                 cell.bedroomLabel.isHidden = true
                             }
-                            if(weekNumber != ""){
+                            if weekNumber != ""{
                                 cell.whereTogoTextLabel.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).resort[0].resortName)/ \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).relinquishmentYear), Wk\(weekNumber)"
                             }else{
                                 cell.whereTogoTextLabel.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).resort[0].resortName)/ \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).relinquishmentYear)"
                             }
-                        } else if((object as AnyObject) .isKind(of: Deposits.self)){
+                        } else if (object as AnyObject) .isKind(of: Deposits.self){
                             //Deposits
                             let weekNumber = Constant.getWeekNumber(weekType: ((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).weekNumber))
                             
@@ -940,7 +932,6 @@ extension VacationSearchViewController:UITableViewDataSource {
                                 cell.bedroomLabel.isHidden = false
                                 
                                 let resortList = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).unitDetails
-                                print((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).resort[0].resortName, resortList.count)
                                 if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isFloat){
                                     let floatDetails = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).floatDetails
                                     cell.bedroomLabel.text = "\(resortList[0].unitSize), \(floatDetails[0].unitNumber), \(resortList[0].kitchenType)"
@@ -959,13 +950,14 @@ extension VacationSearchViewController:UITableViewDataSource {
                         } else{
                             
                             let availablePointsNumber = Constant.MyClassConstants.relinquishmentAvailablePointsProgram as NSNumber
-                            
                             let numberFormatter = NumberFormatter()
                             numberFormatter.numberStyle = .decimal
                             
-                            let availablePoints = numberFormatter.string(from: availablePointsNumber)
+                            if let availablePoints = numberFormatter.string(from: availablePointsNumber){
+                                cell.whereTogoTextLabel.text = "\(Constant.getDynamicString.clubInterValPointsUpTo) \(availablePoints)"
+                            }
                             
-                            cell.whereTogoTextLabel.text = "\(Constant.getDynamicString.clubInterValPointsUpTo) \(availablePoints!)"
+                            
                             cell.bedroomLabel.isHidden = true
                         }
                         
@@ -982,12 +974,22 @@ extension VacationSearchViewController:UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.caledarDateCell, for: indexPath) as! CaledarDateCell
                 let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
                 let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: Constant.MyClassConstants.vacationSearchShowDate as Date)
-                cell.dayDateLabel.text = String(describing: myComponents.day!)
-                if(cell.dayDateLabel.text!.characters.count == 1){
-                    cell.dayDateLabel.text = "0\(cell.dayDateLabel.text!)"
+                if let day = myComponents.day{
+                    if String(describing:day).count == 1{
+                        cell.dayDateLabel.text = "0\(String(describing:day))"
+                    }else{
+                        cell.dayDateLabel.text = "\(String(describing:day))"
+                    }
                 }
-                cell.dateWithDateFormatLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday!))"
-                cell.dateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \(myComponents.year!)"
+                if let weekDay = myComponents.weekday{
+                    cell.dateWithDateFormatLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber:weekDay))"
+                }
+                if let month = myComponents.month{
+                    cell.dateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month))"
+                    if let year = myComponents.year{
+                       cell.dateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month)) \(year)"
+                    }
+                }
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 cell.calendarIconButton!.addTarget(self, action: #selector(VacationSearchIPadViewController.calendarIconClicked(_:)), for: .touchUpInside)
                 cell.backgroundColor = UIColor.clear
@@ -1003,8 +1005,6 @@ extension VacationSearchViewController:UITableViewDataSource {
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 cell.backgroundColor = UIColor.clear
                 return cell
-                
-                
             }
                 
             else if((indexPath as NSIndexPath).section == 5 || indexPath.section == 6) {
@@ -1155,7 +1155,6 @@ extension VacationSearchViewController:UITableViewDataSource {
                     else {
                         cell.whereTogoTextLabel.text = Constant.MyClassConstants.whereTogoContentArray[(indexPath as NSIndexPath).row] as? String
                     }
-                    //cell.bedroomLabel.isHidden = true
                     cell.selectionStyle = UITableViewCellSelectionStyle.none
                     cell.backgroundColor = UIColor.clear
                     return cell
@@ -1169,14 +1168,25 @@ extension VacationSearchViewController:UITableViewDataSource {
                 let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
                 let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: Constant.MyClassConstants.vacationSearchShowDate as Date)
                 
-                cell.dayDateLabel.text = String(describing: myComponents.day!)
-                if(cell.dayDateLabel.text!.characters.count == 1){
-                    cell.dayDateLabel.text = "0\(cell.dayDateLabel.text!)"
+                if let day = myComponents.day{
+                    if(String(describing: day).count == 1){
+                        cell.dayDateLabel.text = "0\(String(describing: day))"
+                    }else{
+                        cell.dayDateLabel.text = "\(String(describing: day))"
+                    }
                 }
-                cell.dateWithDateFormatLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday!))"
-                cell.dateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \(myComponents.year!)"
-                cell.calendarIconButton.addTarget(self, action: #selector(VacationSearchViewController.calendarIconClicked(_:)), for: .touchUpInside)
                 
+                if let weekDay = myComponents.weekday{
+                    cell.dateWithDateFormatLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber:weekDay))"
+                }
+                if let month = myComponents.month{
+                    cell.dateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month))"
+                    if let year = myComponents.year{
+                        cell.dateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month)) \(year)"
+                    }
+                }
+                
+                cell.calendarIconButton.addTarget(self, action: #selector(VacationSearchViewController.calendarIconClicked(_:)), for: .touchUpInside)
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 cell.backgroundColor = UIColor.clear
                 return cell
@@ -1214,7 +1224,6 @@ extension VacationSearchViewController:UITableViewDataSource {
                         resortImageNameLabel.textColor = UIColor.black
                         resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
                         cell.addSubview(resortImageNameLabel)
-                        
                     }
                 }
                 else {
@@ -1264,30 +1273,30 @@ extension VacationSearchViewController:UITableViewDataSource {
             
             if((indexPath as NSIndexPath).section == 0) {
                 do{
-                let realm = try Realm()
-                do{
-                try realm.write {
-                    realm.delete(destinationOrResort[(indexPath as NSIndexPath).row])
-                }
-                if(Constant.MyClassConstants.whereTogoContentArray.count > 0) {
-                    Constant.MyClassConstants.whereTogoContentArray.removeObject(at: (indexPath as NSIndexPath).row)
-                    if(Constant.MyClassConstants.realmStoredDestIdOrCodeArray.count > 0){
-                        Constant.MyClassConstants.realmStoredDestIdOrCodeArray.removeObject(at: (indexPath as NSIndexPath).row)
+                    let realm = try Realm()
+                    do{
+                        try realm.write {
+                            realm.delete(destinationOrResort[(indexPath as NSIndexPath).row])
+                        }
+                        if(Constant.MyClassConstants.whereTogoContentArray.count > 0) {
+                            Constant.MyClassConstants.whereTogoContentArray.removeObject(at: (indexPath as NSIndexPath).row)
+                            if(Constant.MyClassConstants.realmStoredDestIdOrCodeArray.count > 0){
+                                Constant.MyClassConstants.realmStoredDestIdOrCodeArray.removeObject(at: (indexPath as NSIndexPath).row)
+                            }
+                        }
+                        if(Constant.MyClassConstants.realmStoredDestIdOrCodeArray.count > 0){
+                            Constant.MyClassConstants.realmStoredDestIdOrCodeArray.removeObject(at: (indexPath as NSIndexPath).row)
+                        }
+                        tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+                        let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+                        DispatchQueue.main.asyncAfter(deadline: delayTime) {
+                            tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
+                        }
+                    }catch{
+                        
                     }
-                }
-                if(Constant.MyClassConstants.realmStoredDestIdOrCodeArray.count > 0){
-                    Constant.MyClassConstants.realmStoredDestIdOrCodeArray.removeObject(at: (indexPath as NSIndexPath).row)
-                }
-                tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
-                let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-                DispatchQueue.main.asyncAfter(deadline: delayTime) {
-                    tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
-                }
-                }catch{
                     
-                }
-                
-            }catch{
+                }catch{
                     
                 }
                 
@@ -1344,7 +1353,7 @@ extension VacationSearchViewController:WhoIsTravelingCellDelegate {
         //***** updating adult counter increment and decrement
         adultCounter = value
         if defaults.object(forKey: Constant.MyClassConstants.adultCounterString) != nil {
-
+            
             defaults.removeObject(forKey: Constant.MyClassConstants.adultCounterString)
             defaults.set(value, forKey: Constant.MyClassConstants.adultCounterString)
             defaults.synchronize()
@@ -1387,52 +1396,41 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         //Set filter options availability
         Constant.MyClassConstants.noFilterOptions = false
         
-        
         //Set travel PartyInfo
         let travelPartyInfo = TravelParty()
         travelPartyInfo.adults = Int(adultCounter)
         travelPartyInfo.children = Int(childCounter)
         
+        //Saving it locally for further screens
         Constant.MyClassConstants.travelPartyInfo = travelPartyInfo
         
         Helper.helperDelegate = self
         ADBMobile.trackAction(Constant.omnitureEvents.event1, data: nil)
-    
+        
         // MARK: All Available Destinations Vacation Search
         if(Constant.MyClassConstants.whereTogoContentArray.contains(Constant.MyClassConstants.allDestinations)){
             
             let (_,fromDateTop) = getSearchDatesTop()
             var searchType: VacationSearchType
-            let settings = Helper.createSettings()
             let checkInDate = fromDateTop
-            
-
             let bookingWindow = BookingWindow(checkInDate: checkInDate)
-
-            
             let activeInterval = bookingWindow.getActiveInterval()
             let requestRental = RentalSearchRegionsRequest()
             let requestExchange = ExchangeSearchRegionsRequest()
             
             //Seprate exchange, rental and search both region search
             if (segmentTitle  == Constant.segmentControlItems.exchange) {
-                
                 requestExchange.checkInFromDate = activeInterval?.startDate
                 requestExchange.checkInToDate = activeInterval?.endDate
                 searchType = VacationSearchType.Exchange
-                
             }else if (segmentTitle  == Constant.segmentControlItems.getaways){
-                
                 requestRental.checkInFromDate = activeInterval?.startDate
                 requestRental.checkInToDate = activeInterval?.endDate
                 searchType = VacationSearchType.Rental
-                
             }else{
-                
                 requestRental.checkInFromDate = activeInterval?.startDate
                 requestRental.checkInToDate = activeInterval?.endDate
                 searchType = VacationSearchType.Combined
-                
             }
             
             showHudAsync()
@@ -1443,7 +1441,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
             Constant.MyClassConstants.selectedAreaCodeDictionary.removeAllObjects()
             Constant.MyClassConstants.selectedAreaCodeArray.removeAllObjects()
             
-            if ((settings.vacationSearch?.vacationSearchTypes.contains(searchType.rawValue))! && (searchType.isRental() || searchType.isCombined()) ) {
+            if ((searchType.isRental() || searchType.isCombined()) ) {
                 
                 if(Constant.MyClassConstants.relinquishmentIdArray.count == 0 && searchType.isCombined()){
                     presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
@@ -1451,35 +1449,35 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     sender.isEnabled = true
                     
                 }else{
-                
-            RentalClient.searchRegions(Session.sharedSession.userAccessToken, request: requestRental, onSuccess: {(response)in
-                print(response)
-                
-                for rsregion in response {
-                    let region = Region()
-                    region.regionName = rsregion.regionName
-                    region.regionCode = rsregion.regionCode
-                    region.areas = rsregion.areas
-                    Constant.MyClassConstants.regionArray.append(rsregion)
                     
-                    
-                }
-                self.hideHudAsync()
-                sender.isEnabled = true
-                self.performSegue(withIdentifier:Constant.segueIdentifiers.allAvailableDestinations, sender: self)
-                Constant.MyClassConstants.isFromExchangeAllAvailable = false
-                if(searchType.isCombined()){
-                    Constant.MyClassConstants.isFromRentalAllAvailable = false
-                }else{
-                    Constant.MyClassConstants.isFromRentalAllAvailable = true
-                }
-                
-                
-            }, onError: { (error) in
-                self.presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
-                self.hideHudAsync()
-                sender.isEnabled = true
-            })
+                    RentalClient.searchRegions(Session.sharedSession.userAccessToken, request: requestRental, onSuccess: {(response)in
+                        DarwinSDK.logger.debug(response)
+                        
+                        for rsregion in response {
+                            let region = Region()
+                            region.regionName = rsregion.regionName
+                            region.regionCode = rsregion.regionCode
+                            region.areas = rsregion.areas
+                            Constant.MyClassConstants.regionArray.append(rsregion)
+                            
+                            
+                        }
+                        self.hideHudAsync()
+                        sender.isEnabled = true
+                        self.performSegue(withIdentifier:Constant.segueIdentifiers.allAvailableDestinations, sender: self)
+                        Constant.MyClassConstants.isFromExchangeAllAvailable = false
+                        if(searchType.isCombined()){
+                            Constant.MyClassConstants.isFromRentalAllAvailable = false
+                        }else{
+                            Constant.MyClassConstants.isFromRentalAllAvailable = true
+                        }
+                        
+                        
+                    }, onError: { (error) in
+                        self.presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
+                        self.hideHudAsync()
+                        sender.isEnabled = true
+                    })
                 }
             }else{
                 
@@ -1509,7 +1507,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                         
                         
                     }, onError: { (error) in
-        
+                        
                         self.hideHudAsync()
                         self.presentErrorAlert(UserFacingCommonError.generic)
                         
@@ -1517,11 +1515,11 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 }
                 
             }
-            }else{
+        }else{
             if (segmentTitle == Constant.segmentControlItems.getaways && (Helper.getAllResortsFromLocalStorage().count>0 || Constant.MyClassConstants.whereTogoContentArray.count>0)) {
                 
-                    showHudAsync()
-                    sender.isEnabled = false
+                showHudAsync()
+                sender.isEnabled = false
                 
                 if Reachability.isConnectedToNetwork() == true{
                     let storedData = Helper.getLocalStorageWherewanttoGo()
@@ -1554,17 +1552,18 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                                     Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                                     
                                                     // Check not available checkIn dates for the active interval
-                                                    if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                                                        Helper.showNotAvailabilityResults()
-                                                    } else {
-                                                        
+                                                    if (activeInterval?.fetchedBefore) != nil && activeInterval?.hasCheckInDates() != nil{
+                                                        (activeInterval?.hasCheckInDates())! ? () : Helper.showNotAvailabilityResults()
+                                                    }else {
                                                         Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                                                        let initialSearchCheckInDate = Helper.convertStringToDate(dateString:self.vacationSearch.searchCheckInDate!,format:Constant.MyClassConstants.dateFormat)
-                                                        Constant.MyClassConstants.checkInDates = response.checkInDates
-                                                        sender.isEnabled = true
-                                                        Helper.helperDelegate = self
                                                         self.hideHudAsync()
-                                                        Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                                        if let initialSearchCheckInDate = self.vacationSearch.searchCheckInDate{
+                                                            let searchDate = Helper.convertStringToDate(dateString:initialSearchCheckInDate,format:Constant.MyClassConstants.dateFormat)
+                                                            Constant.MyClassConstants.checkInDates = response.checkInDates
+                                                            sender.isEnabled = true
+                                                            Helper.helperDelegate = self
+                                                            Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: searchDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                                        }
                                                     }
                         },
                                                  onError:{ (error) in
@@ -1579,7 +1578,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     self.hideHudAsync()
                     presentErrorAlert(UserFacingCommonError.noNetConnection)
                 }
-             Constant.MyClassConstants.isFromExchange = false
+                Constant.MyClassConstants.isFromExchange = false
                 
             }else if(segmentTitle == Constant.segmentControlItems.exchange && (Helper.getAllDestinationFromLocalStorage().count>0 || Helper.getAllResortsFromLocalStorage().count>0)) {
                 
@@ -1606,7 +1605,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                             
                             //Get data for saved destinations and resorts
                             getSavedDestinationsResorts(storedData:storedData, searchCriteria:exchangeSearchCriteria)
-                        
+                            
                             Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(Session.sharedSession.appSettings, exchangeSearchCriteria)
                             
                             ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
@@ -1621,12 +1620,16 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                 Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                                 
                                 // Check not available checkIn dates for the active interval
-                                if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                                    Helper.showNotAvailabilityResults()
-                                    self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
+                                if activeInterval?.fetchedBefore != nil {
+                                    if activeInterval?.hasCheckInDates() != nil{
+                                        (activeInterval?.hasCheckInDates())! ? () : Helper.showNotAvailabilityResults()
+                                        self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
+                                    }
                                 }else{
                                     Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                                    Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate:  Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                    if let searchDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate{
+                                        Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate:  Helper.convertStringToDate(dateString: searchDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                    }
                                 }
                                 
                             }, onError: { (error) in
@@ -1686,10 +1689,13 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                                 Helper.helperDelegate = self
                                 Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                 // Check not available checkIn dates for the active interval
-                                if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                                    self.hideHudAsync()
-                                    self.rentalHasNotAvailableCheckInDates = true
-                                    Helper.executeExchangeSearchDates(senderVC: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                if activeInterval?.fetchedBefore != nil && activeInterval?.hasCheckInDates() != nil{
+                                    if !((activeInterval?.hasCheckInDates()))!{
+                                        self.hideHudAsync()
+                                        self.rentalHasNotAvailableCheckInDates = true
+                                        Helper.executeExchangeSearchDates(senderVC: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                    }
+                                    
                                 }else{
                                     self.hideHudAsync()
                                     if(response.checkInDates.count>0){
@@ -1714,18 +1720,18 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     }
                 }
             }
-          }
+        }
     }
     
     
-  // Mark:- Set options for filter
+    // Mark:- Set options for filter
     func createFilterOptions(){
-            
-            Constant.MyClassConstants.filterOptionsArray.removeAll()
-            let storedData = Helper.getLocalStorageWherewanttoGo()
-            let allDest = Helper.getLocalStorageAllDest()
-            
-            if(storedData.count > 0) {
+        
+        Constant.MyClassConstants.filterOptionsArray.removeAll()
+        let storedData = Helper.getLocalStorageWherewanttoGo()
+        let allDest = Helper.getLocalStorageAllDest()
+        
+        if(storedData.count > 0) {
             Constant.MyClassConstants.filterOptionsArray.removeAll()
             for object in storedData {
                 
@@ -1759,43 +1765,38 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         }
     }
     
-    
-    
-    func showNotAvailabilityResults() {
-        DarwinSDK.logger.info("Show the Not Availability Screen.")
-    }
-    
     // Get data from local storage
     func getSavedDestinationsResorts(storedData:Results <RealmLocalStorage>, searchCriteria:VacationSearchCriteria){
         Constant.MyClassConstants.filteredIndex = 0
-
-        if((storedData.first?.destinations.count)! > 0){
-            let destination = AreaOfInfluenceDestination()
-            destination.destinationName  = storedData[0].destinations[0].destinationName
-            destination.destinationId = storedData[0].destinations[0].destinationId
-            destination.aoiId = storedData[0].destinations[0].aoid
-            searchCriteria.destination = destination
-            Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
+        if let savedDestinations = storedData.first?.destinations{
+            if savedDestinations.count > 0{
+                let destination = AreaOfInfluenceDestination()
+                destination.destinationName  = savedDestinations.first?.destinationName
+                destination.destinationId = savedDestinations.first?.destinationId
+                destination.aoiId = savedDestinations.first?.aoid
+                searchCriteria.destination = destination
+                Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
+            }
+        }else if let savedResorts = storedData.first?.resorts{
             
-        }else if((storedData.first?.resorts.count)! > 0){
-            
-            if((storedData.first?.resorts[0].resortArray.count)! > 0){
-                var resorts = [Resort]()
-                for selectedResort in (storedData.first?.resorts[0].resortArray)!{
+            if let resortArrayList = savedResorts.first?.resortArray{
+                if resortArrayList.count > 0{
+                    var resorts = [Resort]()
+                    for selectedResort in resortArrayList{
+                        let resort = Resort()
+                        resort.resortName = selectedResort.resortName
+                        resort.resortCode = selectedResort.resortCode
+                        resorts.append(resort)
+                    }
+                    searchCriteria.resorts = resorts
+                    Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(String(describing: savedResorts.first?.resortArray.first?.resortName)) + more"
+                }else{
                     let resort = Resort()
-                    resort.resortName = selectedResort.resortName
-                    resort.resortCode = selectedResort.resortCode
-                    resorts.append(resort)
+                    resort.resortName = savedResorts.first?.resortName
+                    resort.resortCode = savedResorts.first?.resortCode
+                    searchCriteria.resorts = [resort]
+                    Constant.MyClassConstants.vacationSearchResultHeaderLabel = resort.resortName ?? ""
                 }
-                searchCriteria.resorts = resorts
-                Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(String(describing: storedData.first?.resorts[0].resortArray[0].resortName)) + more"
-                
-            }else{
-                let resort = Resort()
-                resort.resortName = storedData[0].resorts[0].resortName
-                resort.resortCode = storedData[0].resorts[0].resortCode
-                searchCriteria.resorts = [resort]
-                Constant.MyClassConstants.vacationSearchResultHeaderLabel = resort.resortName!
             }
         }
     }
