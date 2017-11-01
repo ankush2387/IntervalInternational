@@ -617,6 +617,8 @@ class Constant: NSObject {
         static var certifcateCount = 0
         static var certificateArray = [AccommodationCertificate]()
         static var noFilterOptions = false
+        static var certificateDetailsArray = AccommodationCertificateSummary()
+        
     }
     
     // Enum to store resorts and destinations
@@ -1040,8 +1042,6 @@ class Constant: NSObject {
         static var flexchangeViewController = "FlexchangeViewController"
         static var RenewelViewController = "RenewelViewController"
         static var renewalOtherOptionsVC = "RenewalOtherOptionsVC"
-        static var certificateDetailsViewController = "CertificateDetailsViewController"
-        
         static var certificateDetailsViewController = "CertificateDetailsViewController"
         
     }
