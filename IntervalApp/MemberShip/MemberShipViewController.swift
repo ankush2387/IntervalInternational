@@ -79,6 +79,7 @@ class MemberShipViewController: UIViewController {
             self.hideHudAsync()
         }) { (error) in
             self.hideHudAsync()
+            intervalPrint(error)
         }
     }
     

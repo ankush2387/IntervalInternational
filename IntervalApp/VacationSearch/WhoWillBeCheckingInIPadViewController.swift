@@ -437,6 +437,8 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             self.navigationController?.transitioningDelegate = transitionManager
             self.navigationController!.pushViewController(viewController, animated: true)
         }, onError: {(error) in
+            intervalPrint(error.localizedDescription)
+            SVProgressHUD.dismiss()
             self.hideHudAsync()
         })
         }else{
