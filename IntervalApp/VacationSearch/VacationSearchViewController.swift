@@ -558,7 +558,7 @@ extension VacationSearchViewController:UITableViewDelegate {
                                 try realm.write {
                                     realm.delete(self.destinationOrResort[(indexPath as NSIndexPath).row])
                                 }
-                            }catch{
+                            }catch let error{
                                 self.presentErrorAlert(UserFacingCommonError.generic)
                             }
                         }else {
@@ -574,7 +574,7 @@ extension VacationSearchViewController:UITableViewDelegate {
                             tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
                             Helper.InitializeArrayFromLocalStorage()
                         }
-                    }catch{
+                    }catch let error{
                         self.presentErrorAlert(UserFacingCommonError.generic)
                     }
                     Constant.MyClassConstants.checkInClosestContentArray.removeObject(at: (indexPath as NSIndexPath).row)
@@ -686,10 +686,10 @@ extension VacationSearchViewController:UITableViewDelegate {
                                 tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
                                 Helper.InitializeOpenWeeksFromLocalStorage()
                             }
-                        }catch{
+                        }catch let error{
                             self.presentErrorAlert(UserFacingCommonError.generic)
                         }
-                    }catch{
+                    }catch let error{
                         self.presentErrorAlert(UserFacingCommonError.generic)
                     }
                 }
@@ -1295,6 +1295,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                     
                 }catch{
                     self.presentErrorAlert(UserFacingCommonError.generic)
+
                 }
                 
             }
