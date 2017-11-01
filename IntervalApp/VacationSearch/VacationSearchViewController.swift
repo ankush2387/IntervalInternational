@@ -1297,6 +1297,10 @@ extension VacationSearchViewController:UITableViewDataSource {
                     self.presentErrorAlert(UserFacingCommonError.generic)
                 }
                 
+            }catch{
+                    
+                }
+                
             }
             else {
                 Constant.MyClassConstants.checkInClosestContentArray.removeObject(at: (indexPath as NSIndexPath).row)
@@ -1350,7 +1354,7 @@ extension VacationSearchViewController:WhoIsTravelingCellDelegate {
         //***** updating adult counter increment and decrement
         adultCounter = value
         if defaults.object(forKey: Constant.MyClassConstants.adultCounterString) != nil {
-            
+
             defaults.removeObject(forKey: Constant.MyClassConstants.adultCounterString)
             defaults.set(value, forKey: Constant.MyClassConstants.adultCounterString)
             defaults.synchronize()
@@ -1808,7 +1812,7 @@ extension VacationSearchViewController:HelperDelegate {
         if (Constant.MyClassConstants.initialVacationSearch.searchCheckInDate != Helper.convertDateToString(date: Constant.MyClassConstants.vacationSearchShowDate, format: Constant.MyClassConstants.dateFormat)) {
             Helper.showNearestCheckInDateSelectedMessage()
         }
-        self.createFilterOptions()
+        createFilterOptions()
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
         navigationController?.pushViewController(viewController, animated: true)
