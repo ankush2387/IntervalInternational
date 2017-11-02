@@ -321,7 +321,6 @@ class GoogleMapViewController: UIViewController {
             
             showHudAsync()
             DirectoryClient.getResortsWithinGeoArea(Session.sharedSession.userAccessToken, geoArea: Constant.MyClassConstants.destinations![sender.tag].geoArea, onSuccess: { (response) in
-                intervalPrint(response)
                 Constant.MyClassConstants.resortsArray.removeAll()
                 Constant.MyClassConstants.resortsArray = response
                 Constant.MyClassConstants.googleMarkerArray.removeAll()
@@ -334,6 +333,7 @@ class GoogleMapViewController: UIViewController {
                 self.navigationItem.rightBarButtonItem!.isEnabled = true
                 Constant.MyClassConstants.googleMarkerArray.removeAll()
                 if(Constant.MyClassConstants.resortsArray.count > 0){
+                    
                     self.mapView.clear()
                     self.displaySearchedResort()
                     if(self.mapTableView != nil){
@@ -361,7 +361,6 @@ class GoogleMapViewController: UIViewController {
                 Constant.MyClassConstants.selectedGetawayAlertDestinationArray.add(dict)
                 Constant.MyClassConstants.alertSelectedDestination.append(dict)
                 
-                intervalPrint(Constant.MyClassConstants.alertSelectedDestination,dict)
                 
                 Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(dict.destinationId!)
             }
@@ -475,12 +474,14 @@ class GoogleMapViewController: UIViewController {
             Constant.MyClassConstants.resortsArray = response
             self.mapView.clear()
             self.displaySearchedResort()
+                
         }
         if(Constant.RunningDevice.deviceIdiom == .pad && !self.hideSideView && self.containerView != nil && self.containerView.isHidden == true) {
             Constant.MyClassConstants.addResortSelectedIndex.removeAllObjects()
                 self.alertView.isHidden = true
             self.mapTableView.isHidden = false
                 self.mapTableView.reloadData()
+            
             }
             self.hideHudAsync()
         }) {
@@ -1058,7 +1059,6 @@ class GoogleMapViewController: UIViewController {
         let allavailabledest = AllAvailableDestination()
         allavailabledest.destination = Constant.MyClassConstants.allDestinations
         try! realm.write {
-            intervalPrint(allavailabledest.destination)
             realm.add(allavailabledest)
         }
         Constant.MyClassConstants.destinationOrResortSelectedBy = Constant.omnitureCommonString.allDestination
@@ -1530,6 +1530,7 @@ extension GoogleMapViewController:UICollectionViewDataSource {
                 }
             }
         }
+        
     }
 }
 
@@ -1894,16 +1895,13 @@ extension GoogleMapViewController:SearchResultContentTableCellDelegate{
         if((Session.sharedSession.userAccessToken) != nil) {
             if (sender.isSelected == false){
                 
-                intervalPrint(Constant.MyClassConstants.resortsArray[sender.tag].resortCode!)
                 UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
                     
-                    intervalPrint(response)
                     sender.isSelected = true
                     
                     
                 }, onError: {(error) in
                     
-                    intervalPrint(error)
                 })
             }
             else {

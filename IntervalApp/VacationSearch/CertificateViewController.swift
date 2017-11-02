@@ -13,6 +13,8 @@ import SVProgressHUD
 
 class CertificateViewController: UIViewController {
     
+    //class variables
+    var certificateArray = [AccommodationCertificate]()
     
     @IBOutlet weak var certificateTable: UITableView!
     var certificateCount: Int = 0
@@ -33,92 +35,44 @@ class CertificateViewController: UIViewController {
     }
     
     func getAccommodationCertificateSummary(sendertag:Int) {
-       
         
-        let number = Constant.MyClassConstants.certificateArray[sendertag].certificateNumber! as NSNumber
-        
-        let certificateNumber:String = number.stringValue
-       
-        UserClient.getAccommodationCertificateSummary(Session.sharedSession.userAccessToken, certificateNumber: certificateNumber, onSuccess: { (response) in
-            Constant.MyClassConstants.certificateDetailsArray = response
-            self.navigateToCertificateDetailsVC()
-             print(response)
-            let joiner = ""
-            let headerString = response.header.joined(separator: joiner)
-            
-            let footer = response.header.joined(separator: joiner)
-            
-            let areaLbl = response.restrictedArea?.label
-            let areasCombined = response.restrictedArea?.areas.map{$0.areaName} as! [String]
-            let areaString = areasCombined.joined(separator: joiner)
-            
-            //resort
-            let resortLbl = response.restrictedResort?.label
-            let resortCombined = response.restrictedResort?.resorts.map{$0.resortName} as! [String]
-            let resortString = areasCombined.joined(separator: joiner)
-            
-            //let combinedString = response.header.re
-            
-        }, onError: { (error) in
-             print(error)
-            
-            })
-    }
-    
-    func navigateToCertificateDetailsVC()  {
-        
-        if (Constant.MyClassConstants.isRunningOnIphone) {
-            let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.certificateDetailsViewController) as! CertificateDetailsViewController
-            self.present(viewController, animated: true, completion: nil)
-        } else {
-            let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.certificateDetailsViewController) as! CertificateDetailsViewController
-            self.present(viewController, animated: true, completion: nil)
-            
-        }
-    
-    }
-    
-    func getAccommodationCertificateSummary(sendertag:Int) {
-       
+        // show hud
         showHudAsync()
         let number = Constant.MyClassConstants.certificateArray[sendertag].certificateNumber! as NSNumber
         
         let certificateNumber:String = number.stringValue
-       
         UserClient.getAccommodationCertificateSummary(Session.sharedSession.userAccessToken, certificateNumber: certificateNumber, onSuccess: { (response) in
+            
             self.hideHudAsync()
-            Constant.MyClassConstants.certificateDetailsArray = response
-            self.navigateToCertificateDetailsVC()
+            self.navigateToCertificateDetailsVC(response: response)
+            
         }, onError: { (error) in
             self.hideHudAsync()
-             print(error)
-            
-            })
+        })
     }
     
-    func navigateToCertificateDetailsVC()  {
+    func navigateToCertificateDetailsVC(response: AccommodationCertificateSummary)  {
         
         if (Constant.MyClassConstants.isRunningOnIphone) {
             let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.certificateDetailsViewController) as! CertificateDetailsViewController
+            viewController.certificateDetailsResponse = response
             self.present(viewController, animated: true, completion: nil)
         } else {
             let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.vacationSearchIPad, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.certificateDetailsViewController) as! CertificateDetailsViewController
+            viewController.certificateDetailsResponse = response
             self.present(viewController, animated: true, completion: nil)
             
         }
-    
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        //show hud
         showHudAsync()
-       // Helper.showProgressBar(senderView: self)
         UserClient.getAccommodationCertificates(Session.sharedSession.userAccessToken, onSuccess: { (certificates) in
             self.hideHudAsync()
-            intervalPrint(certificates.count)
             Constant.MyClassConstants.certifcateCount = certificates.count
             Constant.MyClassConstants.certificateArray =  certificates
             self.certificateTable.delegate = self
@@ -127,19 +81,16 @@ class CertificateViewController: UIViewController {
             
         }, onError: { (error) in
             self.hideHudAsync()
-            intervalPrint(error)
-
         })
         
     }
     
 }
 
-
+//MARK:- Tableview delegage
 extension CertificateViewController:UITableViewDelegate {
     
     //***** UITableview delegate methods definition here *****//
-    
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 480
@@ -147,6 +98,7 @@ extension CertificateViewController:UITableViewDelegate {
     }
 }
 
+//MARK:- Tableview datasource
 extension CertificateViewController:UITableViewDataSource {
     
     //***** UITableview dataSource methods definition here *****//
