@@ -681,7 +681,6 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
                 self.performSegue(withIdentifier: Constant.segueIdentifiers.vacationSearchDetailSegue, sender: nil)
             })
             { (error) in
-                
                 self.hideHudAsync()
                 self.presentErrorAlert(UserFacingCommonError.generic)
             }
@@ -1591,8 +1590,8 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
         
         let dropDownImgVw = UIImageView(frame: CGRect(x: self.resortDetailTBLView.frame.width - 40, y: 5, width: 30, height: 30))
         dropDownImgVw.image = UIImage(named: Constant.assetImageNames.dropArrow)
-        if(!Constant.MyClassConstants.noFilterOptions || alertFilterOptionsArray.count > 0){
-            if(Constant.MyClassConstants.filterOptionsArray.count > 1 || alertFilterOptionsArray.count > 1){
+        if !Constant.MyClassConstants.noFilterOptions || alertFilterOptionsArray.count > 0 {
+            if Constant.MyClassConstants.filterOptionsArray.count > 1 || alertFilterOptionsArray.count > 1 {
                 headerView.addSubview(dropDownImgVw)
                 headerView.addSubview(headerButton)
             }
