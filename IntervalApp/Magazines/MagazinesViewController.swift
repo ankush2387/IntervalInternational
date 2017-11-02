@@ -52,7 +52,7 @@ class MagazinesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         showHudAsync()
-        Helper.getMagazines()
+        Helper.getMagazines(senderViewController: self)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadMagazines), name: NSNotification.Name(rawValue: Constant.notificationNames.magazineAlertNotification), object: nil)
 //        NotificationCenter.default.addObserver(self, selector: #selector(getAllMagazines), name: NSNotification.Name(rawValue: Constant.notificationNames.accessTokenAlertNotification), object: nil)
         
@@ -67,7 +67,7 @@ class MagazinesViewController: UIViewController {
     
     //reload Magazines
     func getAllMagazines(){
-        Helper.getMagazines()
+        Helper.getMagazines(senderViewController: self)
     }
     
     //***** Method for back button *****//

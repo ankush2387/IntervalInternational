@@ -68,9 +68,9 @@ class IntervalHDCommonControllerForTabs: UIViewController {
         self.searchBar.placeholder = Constant.MyClassConstants.searchPlaceHolder
         if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.magazinesFunctionalityCheck){
         }else{
-            Helper.getVideos(searchBy: Constant.MyClassConstants.areaString)
-            Helper.getVideos(searchBy: Constant.MyClassConstants.resortsString)
-            Helper.getVideos(searchBy: Constant.MyClassConstants.tutorialsString)
+            Helper.getVideos(searchBy: Constant.MyClassConstants.areaString, senderViewcontroller: self)
+            Helper.getVideos(searchBy: Constant.MyClassConstants.resortsString, senderViewcontroller: self)
+            Helper.getVideos(searchBy: Constant.MyClassConstants.tutorialsString, senderViewcontroller: self)
         }
         NotificationCenter.default.addObserver(self, selector: #selector(reloadVideos), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadVideosNotification), object: nil)
 //        NotificationCenter.default.addObserver(self, selector: #selector(getAllVideos), name: NSNotification.Name(rawValue: Constant.notificationNames.accessTokenAlertNotification), object: nil)
@@ -108,9 +108,9 @@ class IntervalHDCommonControllerForTabs: UIViewController {
         if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.magazinesFunctionalityCheck){
             
         }else{
-            Helper.getVideos(searchBy: Constant.MyClassConstants.areaString)
-            Helper.getVideos(searchBy: Constant.MyClassConstants.resortsString)
-            Helper.getVideos(searchBy: Constant.MyClassConstants.tutorialsString)
+            Helper.getVideos(searchBy: Constant.MyClassConstants.areaString, senderViewcontroller: self)
+            Helper.getVideos(searchBy: Constant.MyClassConstants.resortsString, senderViewcontroller: self)
+            Helper.getVideos(searchBy: Constant.MyClassConstants.tutorialsString, senderViewcontroller: self)
         }
     }
     

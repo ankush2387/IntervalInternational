@@ -57,9 +57,9 @@ class IntervalHDIpadController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         showHudAsync()
-        Helper.getVideos(searchBy: Constant.MyClassConstants.areaString)
-        Helper.getVideos(searchBy: Constant.MyClassConstants.resortsString)
-        Helper.getVideos(searchBy: Constant.MyClassConstants.tutorialsString)
+        Helper.getVideos(searchBy: Constant.MyClassConstants.areaString, senderViewcontroller: self)
+        Helper.getVideos(searchBy: Constant.MyClassConstants.resortsString, senderViewcontroller: self)
+        Helper.getVideos(searchBy: Constant.MyClassConstants.tutorialsString, senderViewcontroller: self)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadVideos), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadVideosNotification), object: nil)
 //        NotificationCenter.default.addObserver(self, selector: #selector(getAllVideos), name: NSNotification.Name(rawValue: Constant.notificationNames.accessTokenAlertNotification), object: nil)
         
@@ -80,9 +80,9 @@ class IntervalHDIpadController: UIViewController {
     
     //***** Notification to hit API when system access token gets available. *****//
     func getAllVideos(){
-        Helper.getVideos(searchBy: Constant.MyClassConstants.areaString)
-        Helper.getVideos(searchBy: Constant.MyClassConstants.resortsString)
-        Helper.getVideos(searchBy: Constant.MyClassConstants.tutorialsString)
+        Helper.getVideos(searchBy: Constant.MyClassConstants.areaString, senderViewcontroller: self)
+        Helper.getVideos(searchBy: Constant.MyClassConstants.resortsString, senderViewcontroller: self)
+        Helper.getVideos(searchBy: Constant.MyClassConstants.tutorialsString, senderViewcontroller: self)
     }
     
     //***** function called when back button pressed on navigation bar *****//

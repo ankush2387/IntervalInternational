@@ -617,7 +617,6 @@ class Constant: NSObject {
         static var certifcateCount = 0
         static var certificateArray = [AccommodationCertificate]()
         static var noFilterOptions = false
-
     }
     
     // Enum to store resorts and destinations

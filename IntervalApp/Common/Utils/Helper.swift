@@ -346,7 +346,7 @@ public class Helper{
                     if let resortFav = item as? ResortFavorite {
                         if let resort = resortFav.resort{
                             let code = resort.resortCode
-                            Constant.MyClassConstants.favoritesResortCodeArray.add(code)
+                            Constant.MyClassConstants.favoritesResortCodeArray.add(code ?? "")
                             Constant.MyClassConstants.favoritesResortArray.append(resort)
                         }
                     }
@@ -1360,7 +1360,7 @@ public class Helper{
     }
     
     //***** Function to get interval HD Videos *****//
-    static func getVideos(searchBy:String){
+    static func getVideos(searchBy:String, senderViewcontroller:UIViewController){
         
         
         var categoryString:VideoCategory
@@ -1394,11 +1394,10 @@ public class Helper{
                 }
                 
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadVideosNotification), object: nil)
-                SVProgressHUD.dismiss()
+                senderViewcontroller.hideHudAsync()
             },
-                                   onError: {(error) in
-                                    
-                                    SVProgressHUD.dismiss()
+               onError: {(error) in
+                senderViewcontroller.hideHudAsync()
             })
         }else{
             
@@ -1406,7 +1405,7 @@ public class Helper{
     }
     
     //***** Function to get a list of magazines. *****//
-    static func getMagazines(){
+    static func getMagazines(senderViewController:UIViewController){
         if(Constant.MyClassConstants.systemAccessToken?.token != nil){
             
             LookupClient.getMagazines(Constant.MyClassConstants.systemAccessToken!,
@@ -1414,10 +1413,12 @@ public class Helper{
                                         
                                         Constant.MyClassConstants.magazinesArray = magazines
                                         NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.magazineAlertNotification), object: nil)
-                                        SVProgressHUD.dismiss()
+                                        
+                                        senderViewController.hideHudAsync()
             },
                                       onError: {(error) in
-                                        SVProgressHUD.dismiss()
+                                        
+                                        senderViewController.hideHudAsync()
             })
         }
     }
