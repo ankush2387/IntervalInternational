@@ -314,7 +314,11 @@ extension VacationSearchViewController:UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView.tag == 1 {
+<<<<<<< HEAD
             return Constant.MyClassConstants.flexExchangeDeals.count
+=======
+             return Constant.MyClassConstants.flexExchangeDeals.count
+>>>>>>> MOBI-1219:Remove unwanted code and unused variables
         } else {
             return Constant.MyClassConstants.topDeals.count
         }
@@ -1399,6 +1403,10 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         //Set filter options availability
         Constant.MyClassConstants.noFilterOptions = false
         
+<<<<<<< HEAD
+=======
+        
+>>>>>>> MOBI-1219:Remove unwanted code and unused variables
         //Set travel PartyInfo
         let travelPartyInfo = TravelParty()
         travelPartyInfo.adults = Int(adultCounter)
@@ -1452,7 +1460,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     sender.isEnabled = true
                     
                 }else{
-                    
+    
                     RentalClient.searchRegions(Session.sharedSession.userAccessToken, request: requestRental, onSuccess: {(response)in
                         DarwinSDK.logger.debug(response)
                         
@@ -1481,6 +1489,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                         self.hideHudAsync()
                         sender.isEnabled = true
                     })
+
                 }
             }else{
                 
@@ -1510,11 +1519,9 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                         
                         
                     }, onError: { (error) in
-                        
                         self.hideHudAsync()
                         self.presentErrorAlert(UserFacingCommonError.generic)
                         intervalPrint(error)
-
                     })
                 }
                 

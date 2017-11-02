@@ -167,8 +167,24 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     func viewResultsClicked(_ sender:UIButton) {
         
         for alertWithDates in Constant.MyClassConstants.getawayAlertsArray{
+<<<<<<< HEAD
             if let clickedAlertId = alertWithDates.alertId{
                 if(Int(clickedAlertId) == sender.tag){
+=======
+            if(Int(alertWithDates.alertId!) == sender.tag){
+                
+                var getawayAlert = RentalAlert()
+                getawayAlert = Constant.MyClassConstants.alertsDictionary.value(forKey: String(describing: alertWithDates.alertId!)) as! RentalAlert
+                
+                let searchCriteria = createSearchCriteriaFor(alert: getawayAlert)
+                let settings = Helper.createSettings()
+                
+                Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
+                
+                RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,
+                     onSuccess: { (response) in
+                                Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
+>>>>>>> MOBI-1219:Remove unwanted code and unused variables
                     
                     var getawayAlert = RentalAlert()
                     getawayAlert = Constant.MyClassConstants.alertsDictionary.value(forKey: String(describing: clickedAlertId)) as! RentalAlert
@@ -306,6 +322,10 @@ class GetawayAlertsIPhoneViewController: UIViewController {
             
         }else if((alert.resorts.count) > 0){
             Constant.MyClassConstants.initialVacationSearch.searchCriteria.resorts = alert.resorts
+<<<<<<< HEAD
+=======
+            //Constant.MyClassConstants.vacationSearchResultHeaderLabel = resort.resortName!
+>>>>>>> MOBI-1219:Remove unwanted code and unused variables
         }
     }
 }
@@ -323,6 +343,7 @@ extension GetawayAlertsIPhoneViewController:UITableViewDelegate {
         let delete = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: Constant.buttonTitles.remove) { (action,index) -> Void in
             
             
+<<<<<<< HEAD
         //Remove Alert API call
         RentalClient.removeAlert(Session.sharedSession.userAccessToken, alertId: Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId!, onSuccess: { () in
             
@@ -336,6 +357,26 @@ extension GetawayAlertsIPhoneViewController:UITableViewDelegate {
         }) { (error) in
             SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
         }   
+=======
+            //Remove Alert API call
+            RentalClient.removeAlert(Session.sharedSession.userAccessToken, alertId: Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId!, onSuccess: { () in
+                
+            Constant.MyClassConstants.getawayAlertsArray.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
+                
+                let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC)))
+                DispatchQueue.main.asyncAfter(deadline: delayTime, execute: {
+                    tableView.reloadSections(NSIndexSet(index:indexPath.section) as IndexSet, with: .automatic)
+                })
+            }) { (error) in
+                SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+            }
+            
+            
+            
+        
+            
+>>>>>>> MOBI-1219:Remove unwanted code and unused variables
         }
         delete.backgroundColor = UIColor(red: 224/255.0, green: 96.0/255.0, blue: 84.0/255.0, alpha: 1.0)
         
