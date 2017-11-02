@@ -58,8 +58,8 @@ class AvailablePointToolViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         
         if(Constant.MyClassConstants.relinquishmentAvalableToolSelectedDate == nil) {
-            
-            SimpleAlert.alert(self, title: Constant.ControllerTitles.availablePointToolViewController, message: Constant.AlertMessages.availablePointToolDefaultSelectedDateAlert)
+                        
+            presentAlert(with: Constant.ControllerTitles.availablePointToolViewController, message: Constant.AlertMessages.availablePointToolDefaultSelectedDateAlert)
             
             Constant.MyClassConstants.relinquishmentAvalableToolSelectedDate = Date()
         }

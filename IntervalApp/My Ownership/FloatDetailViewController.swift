@@ -337,7 +337,7 @@ class FloatDetailViewController: UIViewController {
         }) { (error) in
             //Pop to vacation search screen
             self.popToVacationSearch()
-            SimpleAlert.alert(viewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+            self.presentErrorAlert(error as! ViewError)
         }
     }
 

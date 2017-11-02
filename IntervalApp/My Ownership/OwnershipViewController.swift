@@ -177,7 +177,7 @@ class OwnershipViewController: UIViewController {
         }
         if(self.requiredNumberOfSection() == 0) {
             
-            SimpleAlert.alert(self, title:Constant.ControllerTitles.relinquishmentSelectiongControllerTitle , message: Constant.MyClassConstants.noRelinquishmentavailable)
+            presentAlert(with: Constant.ControllerTitles.relinquishmentSelectiongControllerTitle, message: Constant.MyClassConstants.noRelinquishmentavailable)
         }
         
         

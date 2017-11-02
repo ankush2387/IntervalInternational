@@ -24,24 +24,4 @@ class TdiTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    
-//extension ClubPointPageItemViewController:UICollectionViewDataSource{
-//        
-//        func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//            return 1
-//        }
-//        
-//        
-//        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//            
-//            
-//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TdiCollectionViewCell", for: indexPath)as! TdiCollectionViewCell
-//            
-//            return cell
-//        }
-//
-//        
-//    }
-    
-    
 }

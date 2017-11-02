@@ -250,8 +250,8 @@ class BedroomSizeViewController: UIViewController {
                 self.dismiss(animated: true, completion: nil)
             }
         }
-        else {
-            SimpleAlert.alert(self, title: Constant.AlertPromtMessages.bedRoomSizeTitle, message: Constant.AlertMessages.bedroomSizeAlertMessage)
+        else {            
+            presentAlert(with: Constant.AlertPromtMessages.bedRoomSizeTitle, message: Constant.AlertMessages.bedroomSizeAlertMessage)
         }
         
     }
