@@ -78,7 +78,6 @@ class MemberShipViewController: UIViewController {
             self.tableView.reloadData()
             self.hideHudAsync()
         }) { (error) in
-            intervalPrint(error)
             self.hideHudAsync()
         }
     }
