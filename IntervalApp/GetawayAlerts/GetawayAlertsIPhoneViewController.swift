@@ -201,14 +201,16 @@ class GetawayAlertsIPhoneViewController: UIViewController {
                                 if let searchDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate{
                                     Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate:  Helper.convertStringToDate(dateString: searchDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                 }
-                        
-        },
-               onError
-                    :{ (error) in
-                                            
-                                            
+                            }
+                            
+                    },
+                                             onError
+                        :{ (error) in
+                            
+                            
+                    }
+                    )
                 }
-                )
             }
             
         }
@@ -304,7 +306,6 @@ class GetawayAlertsIPhoneViewController: UIViewController {
             
         }else if((alert.resorts.count) > 0){
             Constant.MyClassConstants.initialVacationSearch.searchCriteria.resorts = alert.resorts
-            //Constant.MyClassConstants.vacationSearchResultHeaderLabel = resort.resortName!
         }
     }
 }
