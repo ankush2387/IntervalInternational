@@ -558,7 +558,7 @@ extension VacationSearchViewController:UITableViewDelegate {
                                 try realm.write {
                                     realm.delete(self.destinationOrResort[(indexPath as NSIndexPath).row])
                                 }
-                            }catch let error{
+                            }catch{
                                 self.presentErrorAlert(UserFacingCommonError.generic)
                             }
                         }else {
@@ -574,7 +574,7 @@ extension VacationSearchViewController:UITableViewDelegate {
                             tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
                             Helper.InitializeArrayFromLocalStorage()
                         }
-                    }catch let error{
+                    }catch{
                         self.presentErrorAlert(UserFacingCommonError.generic)
                     }
                     Constant.MyClassConstants.checkInClosestContentArray.removeObject(at: (indexPath as NSIndexPath).row)
@@ -686,10 +686,10 @@ extension VacationSearchViewController:UITableViewDelegate {
                                 tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
                                 Helper.InitializeOpenWeeksFromLocalStorage()
                             }
-                        }catch let error{
+                        }catch{
                             self.presentErrorAlert(UserFacingCommonError.generic)
                         }
-                    }catch let error{
+                    }catch{
                         self.presentErrorAlert(UserFacingCommonError.generic)
                     }
                 }
