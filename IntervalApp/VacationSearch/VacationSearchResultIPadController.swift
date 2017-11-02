@@ -681,6 +681,7 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
                 self.performSegue(withIdentifier: Constant.segueIdentifiers.vacationSearchDetailSegue, sender: nil)
             })
             { (error) in
+                
                 self.hideHudAsync()
                 self.presentErrorAlert(UserFacingCommonError.generic)
             }
