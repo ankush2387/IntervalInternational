@@ -222,6 +222,7 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
         
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 50))
         let headerTextLabel = UILabel(frame: CGRect(x: 15, y: 5, width: self.view.bounds.width - 30, height: 50))
+        
         if segmentIndex != 1 {
             
             headerView.backgroundColor = IUIKColorPalette.tertiary1.color
@@ -932,7 +933,6 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
             }
             else{
                 Constant.MyClassConstants.isFromSearchBoth = true
-                
                 if segmentTitle == Constant.segmentControlItems.getaways {
                     presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
                 }else if segmentTitle == Constant.segmentControlItems.exchange {
