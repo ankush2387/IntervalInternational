@@ -796,7 +796,6 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
                 }, onError: {(error) in
                     self.hideHudAsync()
                     self.presentErrorAlert(UserFacingCommonError.generic)
-
                 })
             }else{ // search both case
                 selectedSection = (collectionView.superview?.superview?.tag)!

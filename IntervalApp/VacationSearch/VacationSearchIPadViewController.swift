@@ -222,6 +222,10 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
         
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 50))
         let headerTextLabel = UILabel(frame: CGRect(x: 15, y: 5, width: self.view.bounds.width - 30, height: 50))
+<<<<<<< HEAD
+=======
+        
+>>>>>>> MOBI-1219:Remove unwanted code and unused variables
         if segmentIndex != 1 {
             
             headerView.backgroundColor = IUIKColorPalette.tertiary1.color
@@ -855,6 +859,13 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
 
             } else if segmentTitle == Constant.segmentControlItems.exchange && (Helper.getAllDestinationFromLocalStorage().count>0 || Helper.getAllResortsFromLocalStorage().count>0) {
                 
+<<<<<<< HEAD
+=======
+                
+                
+            } else if segmentTitle == Constant.segmentControlItems.exchange && (Helper.getAllDestinationFromLocalStorage().count>0 || Helper.getAllResortsFromLocalStorage().count>0) {
+                
+>>>>>>> MOBI-1219:Remove unwanted code and unused variables
                 if Constant.MyClassConstants.relinquishmentIdArray.count == 0 {
                     sender.isEnabled = true
                     presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
@@ -940,7 +951,6 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                         presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
                     }else if Constant.MyClassConstants.relinquishmentIdArray.count == 0 {
                         presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
-
                     }else{
                         presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
                     }
@@ -1058,6 +1068,10 @@ extension VacationSearchIPadViewController:UICollectionViewDataSource {
         for subview in cell.subviews {
             subview.removeFromSuperview()
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> MOBI-1219:Remove unwanted code and unused variables
         if collectionView.tag == 1 && showExchange == true {
             let flexDeal = Constant.MyClassConstants.flexExchangeDeals[indexPath.row]
             let resortFlaxImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: 175) )

@@ -330,7 +330,6 @@ class SearchResultViewController: UIViewController {
             onError:{ (error) in
                 self.hideHudAsync()
                 self.presentErrorAlert(UserFacingCommonError.generic)
-
                 }
             )
         }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isCombined()){
@@ -1108,7 +1107,6 @@ extension SearchResultViewController:UICollectionViewDelegate {
                     }, onError: {(error) in
                         self.hideHudAsync()
                         self.presentErrorAlert(UserFacingCommonError.generic)
-
                     })
                 }else{ // search both
                     selectedSection = (collectionView.superview?.superview?.tag)!
