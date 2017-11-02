@@ -710,7 +710,7 @@ class SearchResultViewController: UIViewController {
     @IBAction func filterByNameButtonPressed(_ sender: UIButton) {
         
         if(!Constant.MyClassConstants.noFilterOptions){
-            ((sender as AnyObject) as! UIButton).isEnabled = true
+            sender.isEnabled = true
             if(Constant.MyClassConstants.filterOptionsArray.count > 1 || alertFilterOptionsArray.count > 1){
                 let viewController = self.storyboard?.instantiateViewController(withIdentifier: Constant.storyboardControllerID.sortingViewController) as! SortingViewController
                 viewController.isFilterClicked = true

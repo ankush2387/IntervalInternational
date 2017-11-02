@@ -488,3 +488,4 @@ extension GetawayAlertsIPhoneViewController:HelperDelegate {
     }
 }
 
+
