@@ -1531,7 +1531,7 @@ extension GoogleMapViewController:UICollectionViewDataSource {
                 marker.isFlat = false
             }
         }
-      }
+        
     }
 }
 
