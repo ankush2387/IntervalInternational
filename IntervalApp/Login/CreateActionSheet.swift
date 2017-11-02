@@ -160,12 +160,8 @@ class CreateActionSheet: UITableViewController {
             
             var alertVacationInfo = RentalAlert()
             alertVacationInfo = response
-            Constant.MyClassConstants.alertsDictionary .setValue(alertVacationInfo, forKey: String(describing: alert.alertId!))
-            //if(alert.enabled)!{
+            Constant.MyClassConstants.alertsDictionary.setValue(alertVacationInfo, forKey: String(describing: alert.alertId!))
                 self.searchVacationPressed(alert)
-            //}else{
-             //   intervalDebugPrint("Alert is inactive",alert.latestCheckInDate!,alert.earliestCheckInDate!)
-            //}
             
         }) { (error) in
             intervalPrint(alert.alertId)

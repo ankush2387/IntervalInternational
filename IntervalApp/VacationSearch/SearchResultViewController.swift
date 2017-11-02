@@ -580,8 +580,6 @@ class SearchResultViewController: UIViewController {
             viewController.delegate = self
             
             self.navigationController?.pushViewController(viewController, animated: true)
-           // self.present(viewController, animated:true, completion: nil)
-            
             return
             
         } else {
@@ -723,9 +721,9 @@ class SearchResultViewController: UIViewController {
     }
     
     //funciton called when search result page sort by name button pressed
-    @IBAction func filterByNameButtonPressed(_ sender: Any) {
+    @IBAction func filterByNameButtonPressed(_ sender: UIButton) {
         if(!Constant.MyClassConstants.noFilterOptions){
-            ((sender as AnyObject) as! UIButton).isEnabled = true
+            sender.isEnabled = true
             if(Constant.MyClassConstants.filterOptionsArray.count > 1 || alertFilterOptionsArray.count > 1){
                 let viewController = self.storyboard?.instantiateViewController(withIdentifier: Constant.storyboardControllerID.sortingViewController) as! SortingViewController
                 viewController.isFilterClicked = true
@@ -734,7 +732,7 @@ class SearchResultViewController: UIViewController {
                 viewController.selectedIndex = Constant.MyClassConstants.filteredIndex
                 self.present(viewController, animated: true, completion: nil)
             }else{
-                ((sender as AnyObject) as! UIButton).isEnabled = false
+                sender.isEnabled = false
             }
         }else if(alertFilterOptionsArray.count > 1){
             let viewController = self.storyboard?.instantiateViewController(withIdentifier: Constant.storyboardControllerID.sortingViewController) as! SortingViewController
@@ -1170,7 +1168,6 @@ extension SearchResultViewController:UICollectionViewDelegate {
                                 
                                 Constant.MyClassConstants.filterRelinquishments.removeAll()
                                 self.navigateToWhatToUseViewController()
-                                //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
                             }
                             else {
                               
@@ -1189,7 +1186,6 @@ extension SearchResultViewController:UICollectionViewDelegate {
                                     
                                     Constant.MyClassConstants.filterRelinquishments.removeAll()
                                     self.navigateToWhatToUseViewController()
-                                    //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
                                 }
                                 else {
                                     self.getFilterRelinquishments(selectedInventoryUnit: (combinedSurroundingSearchItems[collectionView.tag].rentalAvailability?.inventory!)!, selectedIndex: indexPath.item, selectedExchangeInventory: ExchangeInventory())
@@ -1220,7 +1216,6 @@ extension SearchResultViewController:UICollectionViewDelegate {
                                 
                                 Constant.MyClassConstants.filterRelinquishments.removeAll()
                                 self.navigateToWhatToUseViewController()
-                                //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
                             }
                             else {
                                 
@@ -1231,7 +1226,6 @@ extension SearchResultViewController:UICollectionViewDelegate {
                        
                         }else{
                             self.navigateToWhatToUseViewController()
-                            //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
                         }
                         
                     }

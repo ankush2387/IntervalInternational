@@ -792,8 +792,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                         
                         
                     }, onError: { (error) in
-                        SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
-                        //Helper.hideProgressBar(senderView: self)
+                        self.presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
                         sender.isEnabled = true
                     })
                 
@@ -850,14 +849,14 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                                                  onError:{ (error) in
                                                     self.hideHudAsync()
                                                     sender.isEnabled = true
-                                                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                                                    self.presentErrorAlert(UserFacingCommonError.generic)
                         }
                         )
                     }
                 } else{
                     sender.isEnabled = true
                     self.hideHudAsync()
-                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
+                    presentErrorAlert(UserFacingCommonError.noNetConnection)
                 }
                 
                 Constant.MyClassConstants.isFromExchange = false
@@ -868,7 +867,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                 
                 if(Constant.MyClassConstants.relinquishmentIdArray.count == 0){
                     sender.isEnabled = true
-                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
+                    presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
                 }else{
                     sender.isEnabled = false
                     showHudAsync()
@@ -918,7 +917,6 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                                 }
                                 self.hideHudAsync()
                                 
-                                
                                 if (activeInterval?.hasCheckInDates())!{
                                     Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
                                     let initialSearchCheckInDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat)
@@ -933,11 +931,11 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                             }, onError: { (error) in
                                 sender.isEnabled = true
                                 self.hideHudAsync()
-                                SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.noResultError)
+                                self.presentErrorAlert(UserFacingCommonError.generic)
                             })
                         }}else{
                         self.hideHudAsync()
-                        SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
+                        presentErrorAlert(UserFacingCommonError.noNetConnection)
                     }
                     
                 }
@@ -946,7 +944,8 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                 Constant.MyClassConstants.isFromSearchBoth = true
                 if(self.segmentTitle == Constant.segmentControlItems.getaways){
                     SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
-                }else if(self.segmentTitle == Constant.segmentControlItems.exchange){
+                    presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
+                }else if(segmentTitle == Constant.segmentControlItems.exchange){
                     if((Helper.getAllDestinationFromLocalStorage().count == 0 && Helper.getAllResortsFromLocalStorage().count == 0)){
                         SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
                     }else if(Constant.MyClassConstants.relinquishmentIdArray.count == 0){

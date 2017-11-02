@@ -64,7 +64,7 @@ public class Helper{
     }
     
     //***** Common function to format the date *****//
-    static func getWeekDay(dateString:NSDate, getValue: String) -> String {
+    static func getWeekDay(dateString: Date, getValue: String) -> String {
         let dateFormatter = DateFormatter()
         switch getValue {
         case "Date":
