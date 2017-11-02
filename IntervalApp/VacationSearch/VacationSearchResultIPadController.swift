@@ -497,7 +497,6 @@ class VacationSearchResultIPadController: UIViewController {
         
         let firstVisibleIndexPath = resortDetailTBLView.indexPathsForVisibleRows?.first
         let indexPath = IndexPath(item: collectionviewSelectedIndex, section: 0)
-        intervalPrint("---------->>>>\(collectionviewSelectedIndex)")
         if(firstVisibleIndexPath?.section == 1){
 
             dateCellSelectionColor = Constant.CommonColor.greenColor
@@ -1595,7 +1594,6 @@ extension VacationSearchResultIPadController:UITableViewDataSource {
 
         if !Constant.MyClassConstants.noFilterOptions || alertFilterOptionsArray.count > 0 {
             if Constant.MyClassConstants.filterOptionsArray.count > 1 || alertFilterOptionsArray.count > 1 {
-
                 headerView.addSubview(dropDownImgVw)
                 headerView.addSubview(headerButton)
             }
