@@ -497,7 +497,7 @@ class VacationSearchResultIPadController: UIViewController {
         
         let firstVisibleIndexPath = resortDetailTBLView.indexPathsForVisibleRows?.first
         let indexPath = IndexPath(item: collectionviewSelectedIndex, section: 0)
-        if(firstVisibleIndexPath?.section == 1){
+        if firstVisibleIndexPath?.section == 1 {
             dateCellSelectionColor = Constant.CommonColor.greenColor
         }else{
             dateCellSelectionColor = Constant.CommonColor.blueColor

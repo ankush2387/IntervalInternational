@@ -853,7 +853,6 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                 }
                 
                 Constant.MyClassConstants.isFromExchange = false
-                
             } else if segmentTitle == Constant.segmentControlItems.exchange && (Helper.getAllDestinationFromLocalStorage().count>0 || Helper.getAllResortsFromLocalStorage().count>0) {
                 if Constant.MyClassConstants.relinquishmentIdArray.count == 0 {
                     sender.isEnabled = true
@@ -933,7 +932,6 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
             }
             else{
                 Constant.MyClassConstants.isFromSearchBoth = true
-<<<<<<< HEAD
                 if segmentTitle == Constant.segmentControlItems.getaways {
                     presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
                 }else if segmentTitle == Constant.segmentControlItems.exchange {
@@ -941,15 +939,6 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                         presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
                     }else if Constant.MyClassConstants.relinquishmentIdArray.count == 0 {
                         presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
-=======
-                if(self.segmentTitle == Constant.segmentControlItems.getaways){
-                    presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
-                }else if(segmentTitle == Constant.segmentControlItems.exchange){
-                    if((Helper.getAllDestinationFromLocalStorage().count == 0 && Helper.getAllResortsFromLocalStorage().count == 0)){
-                        SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
-                    }else if(Constant.MyClassConstants.relinquishmentIdArray.count == 0){
-                        SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
->>>>>>> MOBI-1219:Remove unwanted code and unused variables
                     }else{
                         presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
                     }
