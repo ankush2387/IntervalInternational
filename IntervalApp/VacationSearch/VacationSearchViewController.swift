@@ -558,7 +558,7 @@ extension VacationSearchViewController:UITableViewDelegate {
                                 try realm.write {
                                     realm.delete(self.destinationOrResort[(indexPath as NSIndexPath).row])
                                 }
-                            }catch let error{
+                            }catch{
                                 self.presentErrorAlert(UserFacingCommonError.generic)
                             }
                         }else {
@@ -574,7 +574,7 @@ extension VacationSearchViewController:UITableViewDelegate {
                             tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
                             Helper.InitializeArrayFromLocalStorage()
                         }
-                    }catch let error{
+                    }catch{
                         self.presentErrorAlert(UserFacingCommonError.generic)
                     }
                     Constant.MyClassConstants.checkInClosestContentArray.removeObject(at: (indexPath as NSIndexPath).row)
@@ -686,10 +686,10 @@ extension VacationSearchViewController:UITableViewDelegate {
                                 tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
                                 Helper.InitializeOpenWeeksFromLocalStorage()
                             }
-                        }catch let error{
+                        }catch{
                             self.presentErrorAlert(UserFacingCommonError.generic)
                         }
-                    }catch let error{
+                    }catch{
                         self.presentErrorAlert(UserFacingCommonError.generic)
                     }
                 }
@@ -984,7 +984,7 @@ extension VacationSearchViewController:UITableViewDataSource {
                 if let month = myComponents.month{
                     cell.dateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month))"
                     if let year = myComponents.year{
-                        cell.dateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month)) \(year)"
+                       cell.dateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: month)) \(year)"
                     }
                 }
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
@@ -1446,7 +1446,6 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     sender.isEnabled = true
                     
                 }else{
-
                     RentalClient.searchRegions(Session.sharedSession.userAccessToken, request: requestRental, onSuccess: {(response)in
                         DarwinSDK.logger.debug(response)
                         
@@ -1576,8 +1575,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 }
                 Constant.MyClassConstants.isFromExchange = false
                 
-                    showHudAsync()
-                    sender.isEnabled = false
+            }else if(segmentTitle == Constant.segmentControlItems.exchange && (Helper.getAllDestinationFromLocalStorage().count>0 || Helper.getAllResortsFromLocalStorage().count>0)) {
                 
                 // MARK: Exchange Vacation Search
                 if(Constant.MyClassConstants.relinquishmentIdArray.count == 0){
