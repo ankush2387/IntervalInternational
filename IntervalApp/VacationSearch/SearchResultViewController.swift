@@ -329,8 +329,7 @@ class SearchResultViewController: UIViewController {
             },
             onError:{ (error) in
                 self.hideHudAsync()
-                SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
-                
+                self.presentErrorAlert(UserFacingCommonError.generic)
                 }
             )
         }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isCombined()){
@@ -397,8 +396,7 @@ class SearchResultViewController: UIViewController {
                     
                 },
                onError:{ (error) in
-                
-                SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                     self.presentErrorAlert(UserFacingCommonError.generic)
                 }
                 )
             }
@@ -450,7 +448,7 @@ class SearchResultViewController: UIViewController {
                                         
             },
                                        onError:{ (error) in
-                                        SimpleAlert.alert(self, title: Constant.AlertMessages.noResultMessage, message: error.localizedDescription)
+                                       self.presentErrorAlert(UserFacingCommonError.generic)
             }
             )
             
@@ -567,7 +565,7 @@ class SearchResultViewController: UIViewController {
             
         }, onError: { (error) in
             self.hideHudAsync()
-            SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.description)
+            self.presentErrorAlert(UserFacingCommonError.generic)
         })
     }
     
@@ -673,30 +671,18 @@ class SearchResultViewController: UIViewController {
                 } else {
                     let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
                     viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[0]
-                    self.navigationController!.pushViewController(viewController, animated: true)
+                    self.navigationController?.pushViewController(viewController, animated: true)
                     
                 }
-                
-                
-                /*var viewController = UIViewController()
-                    viewController = WhoWillBeCheckingInViewController()
-                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-                    viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
-                    (viewController as! WhoWillBeCheckingInViewController).filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[0]
-                let transitionManager = TransitionManager()
-                self.navigationController?.transitioningDelegate = transitionManager
-                
-                self.navigationController!.pushViewController(viewController, animated: true)*/
             }, onError: { (error) in
                 self.hideHudAsync()
-                
-                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                self.presentErrorAlert(UserFacingCommonError.generic)
                 
             })
             
         }, onError: {(error) in
             self.hideHudAsync()
-            SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+            self.presentErrorAlert(UserFacingCommonError.generic)
         })
     }
   
@@ -832,13 +818,12 @@ class SearchResultViewController: UIViewController {
             }else{
                 // Navigate to Who Will Be Checking in Screen
                 let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
-                self.navigationController!.pushViewController(viewController, animated: true)
+                self.navigationController?.pushViewController(viewController, animated: true)
             }
             
         }, onError: { (error) in
             self.hideHudAsync()
-            SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.description)
-            
+            self.presentErrorAlert(UserFacingCommonError.generic)
         })
     }
     
@@ -979,13 +964,10 @@ extension SearchResultViewController:UICollectionViewDelegate {
                 cell?.contentView.addSubview(viewForActivity)
             }
             
-            let lastSelectedIndex = collectionviewSelectedIndex
             collectionviewSelectedIndex = indexPath.item
             dateCellSelectionColor = Constant.CommonColor.blueColor
-            if(Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)!{
+            if Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval!{
                 showHudAsync()
-                
-                
                 intervalBucketClicked(calendarItem:Constant.MyClassConstants.calendarDatesArray[indexPath.item], cell: cell!)
             }else{
                 
@@ -996,7 +978,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
             // Check for renewals no thanks
             Constant.MyClassConstants.noThanksForNonCore = false
             
-            if((indexPath as NSIndexPath).section == 0) {
+            if (indexPath as NSIndexPath).section == 0 {
                 Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.vacationSearchFunctionalityCheck
                 Constant.MyClassConstants.isFromSearchResult = true
 
@@ -1050,7 +1032,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
                 })
                 { (error) in
                     self.hideHudAsync()
-                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.description)
+                    self.presentErrorAlert(UserFacingCommonError.generic)
                 }
             }else{
                 
@@ -1131,7 +1113,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
                         self.checkUserMembership(response: response)
                     }, onError: {(error) in
                         self.hideHudAsync()
-                        SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.description)
+                        self.presentErrorAlert(UserFacingCommonError.generic)
                     })
                 }else{ // search both
                     selectedSection = (collectionView.superview?.superview?.tag)!
