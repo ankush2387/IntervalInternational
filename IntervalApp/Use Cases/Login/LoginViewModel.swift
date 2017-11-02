@@ -47,7 +47,7 @@ final class LoginViewModel {
 
     // MARK: - Private properties
     private let configuration: Config
-    private let encryptedStore: EncryptedStore
+    private let encryptedStore: EncryptedItemDataStore
     private let clientAPIStore: ClientAPIStore
     private let touchIDUserNameKey = "touchIDUser"
     private let touchIDPasswordKey = "touchIDPass"
@@ -58,7 +58,7 @@ final class LoginViewModel {
     init(backgroundImage: UIImage,
          sessionStore: SessionStore,
          clientAPIStore: ClientAPIStore,
-         encryptedStore: EncryptedStore,
+         encryptedStore: EncryptedItemDataStore,
          configuration: Config,
          appBundle: AppBundle) {
 

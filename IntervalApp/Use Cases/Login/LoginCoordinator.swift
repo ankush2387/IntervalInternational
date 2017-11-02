@@ -39,13 +39,13 @@ final class LoginCoordinator: ComputationHelper {
         return nextIndex
     }
     
-    private var encryptedStore: EncryptedStore
-    private var decryptedStore: DecryptedStore
+    private var encryptedStore: EncryptedItemDataStore
+    private var decryptedStore: DecryptedItemDataStore
 
     // MARK: - Lifecycle
     init(backgroundImages: [UIImage],
-         encryptedStore: EncryptedStore,
-         decryptedStore: DecryptedStore,
+         encryptedStore: EncryptedItemDataStore,
+         decryptedStore: DecryptedItemDataStore,
          messaging: Messaging,
          configuration: Config,
          sessionStore: Session) {

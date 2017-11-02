@@ -27,7 +27,7 @@ final class AppCoordinator {
 
     fileprivate var userIsLoggedIn = false
     fileprivate var apnsCoordinator: APNSCoordinator?
-    fileprivate var entityStore = EntitySource.sharedInstance
+    fileprivate var entityStore = EntityDataSource.sharedInstance
     fileprivate var autoLogoutViewController: UIAlertController?
     fileprivate var navigationController: UINavigationController?
 
@@ -245,7 +245,7 @@ extension AppCoordinator: LoginCoordinatorDelegate {
         }
         
         let createDatabase = { [unowned self] (encryptionKey: Data) in
-            self.entityStore.setDatabases(for: String(contactID), with: encryptionKey)
+            self.entityStore.setDatabaseConfigurations(for: String(contactID), with: encryptionKey)
         }
 
         readEncryptionKey(for: String(contactID))

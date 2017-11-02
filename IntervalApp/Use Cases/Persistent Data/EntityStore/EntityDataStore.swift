@@ -1,5 +1,5 @@
 //
-//  EntityStore.swift
+//  EntityDataStore.swift
 //  IntervalApp
 //
 //  Created by Aylwing Olivas on 11/1/17.
@@ -10,7 +10,7 @@ import then
 import RealmSwift
 import Foundation
 
-protocol EntityStore {
+protocol EntityDataStore {
     func writeToDisk(_ object: Object) -> Promise<Void>
     func writeToMemory(_ object: Object) -> Promise<Void>
     func writeToDisk(_ objects: [Object]) -> Promise<Void>
