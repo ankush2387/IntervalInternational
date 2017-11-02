@@ -45,8 +45,8 @@ class ShareActivityMessage: NSObject, UIActivityItemSource {
         let linkAttribute = [NSLinkAttributeName: appURL]
         let urlFont = [NSFontAttributeName: UIFont(name: "Helvetica", size: 12.0)]
         let urlAttributed = NSMutableAttributedString(string: urlStr)
-        urlAttributed.addAttributes(urlFont, range: NSRange(location: 0, length: urlStr.characters.count))
-        urlAttributed.addAttributes(linkAttribute, range: NSRange(location: 0, length: urlStr.characters.count))
+        urlAttributed.addAttributes(urlFont ?? "", range: NSRange(location: 0, length: urlStr.characters.count))
+        urlAttributed.addAttributes(linkAttribute ?? "", range: NSRange(location: 0, length: urlStr.characters.count))
         self.message = attributedName
         self.message?.append(addressAttributed)
         self.message?.append(desc)
