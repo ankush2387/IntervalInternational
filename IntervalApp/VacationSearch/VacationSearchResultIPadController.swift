@@ -789,6 +789,7 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
                         }
                         
                     }, onError: { (error) in
+
                         self.hideHudAsync()
                         self.presentErrorAlert(UserFacingCommonError.generic)
                     })
