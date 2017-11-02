@@ -466,7 +466,7 @@ class GoogleMapViewController: UIViewController {
     
     func apiCallWithRectangleRequest(request:GeoArea) {
         DirectoryClient.getResortsWithinGeoArea(Constant.MyClassConstants.systemAccessToken, geoArea: request, onSuccess: { (response) in
-            
+
             if(response.count > 0){
                 
                 Constant.MyClassConstants.googleMarkerArray.removeAll()
