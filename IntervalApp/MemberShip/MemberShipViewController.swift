@@ -125,7 +125,7 @@ class MemberShipViewController: UIViewController {
             },
         onError:{(error) in
             Logger.sharedInstance.error("Could not set membership in Darwin API Session: \(error.description)")
-            SimpleAlert.alert(self, title:Constant.AlertErrorMessages.loginFailed, message:"Please contact your servicing office.  Could not select membership \(context.selectedMembership?.memberNumber)")
+            self.presentAlert(with: Constant.AlertErrorMessages.loginFailed, message: "Please contact your servicing office.  Could not select membership \(String(describing: context.selectedMembership?.memberNumber))")
             }
         )
     }
