@@ -217,7 +217,7 @@ class ResortDetailsViewController: UIViewController {
                 })
                 { (error) in
                     self.hideHudAsync()
-                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.description)
+                    self.presentErrorAlert(error as! ViewError)
                 }
             }else{
                 //sender.isEnabled = false
@@ -270,7 +270,7 @@ class ResortDetailsViewController: UIViewController {
                 })
                 { (error) in
                     self.hideHudAsync()
-                    SimpleAlert.alert(self, title:"Error", message: error.description)
+                    self.presentErrorAlert(error as! ViewError)
                 }
                 
             }
@@ -662,7 +662,7 @@ extension ResortDetailsViewController:UITableViewDelegate {
                         self.present(txtComposeViewController, animated: true, completion: nil)
                     })
                 } else {
-                    SimpleAlert.alert(self, title: "Could Not Send Text Message" , message: "This device is not able/configured to send Text Messages.")
+                    presentAlert(with: "Could Not Send Text Message", message: "This device is not able/configured to send Text Messages.")
                 }
                 break
             default:
@@ -738,7 +738,7 @@ extension ResortDetailsViewController:UITableViewDelegate {
     }
     
     func showSendMailErrorAlert() {
-        SimpleAlert.alert(self, title: "Could Not Send Email" , message: "Your device could not send e-mail.  Please check e-mail configuration and try again.")
+        presentAlert(with: "Could Not Send Email", message: "Your device could not send e-mail.  Please check e-mail configuration and try again.")
     }
     
 }

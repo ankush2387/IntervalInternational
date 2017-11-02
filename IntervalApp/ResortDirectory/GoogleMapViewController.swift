@@ -1028,7 +1028,7 @@ class GoogleMapViewController: UIViewController {
     func selectAllDestinations(){
         if(Constant.MyClassConstants.whereTogoContentArray.count > 0) {
             
-            SimpleAlert.searchAlert(self, title: Constant.AlertMessages.searchAlertTitle, message: Constant.AlertMessages.searchAlertMessage)
+            presentAlert(with: Constant.AlertMessages.searchAlertTitle, message: Constant.AlertMessages.searchAlertMessage)
         }
         else {
             
@@ -1883,7 +1883,7 @@ extension GoogleMapViewController:UISearchBarDelegate {
             }) { (error) in
                 
                 Logger.sharedInstance.warning(error.description)
-                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.tryAgainError, message: "\(error.localizedDescription)")
+                self.presentErrorAlert(error as! ViewError)
                 
             }
         }

@@ -187,12 +187,12 @@ class SignInPreLoginViewController: UIViewController {
         }
         else {
             guard userIdTF.text?.characters.count > 0 else {
-            SimpleAlert.alert(self, title:Constant.AlertPromtMessages.loginTitle , message: Constant.AlertMessages.emptyLoginIdMessage)
+                presentAlert(with: Constant.AlertPromtMessages.loginTitle, message: Constant.AlertMessages.emptyLoginIdMessage)
                 return
             }
             
             guard passwordTF.text?.characters.count > 0 else {
-                SimpleAlert.alert(self, title:Constant.AlertPromtMessages.loginTitle , message: Constant.AlertMessages.emptyPasswordLoginMessage)
+                presentAlert(with: Constant.AlertPromtMessages.loginTitle, message: Constant.AlertMessages.emptyPasswordLoginMessage)
                 return
             }
         }
@@ -251,7 +251,7 @@ class SignInPreLoginViewController: UIViewController {
             
             ADBMobile.trackAction(Constant.omnitureEvents.event81, data: userInfo)
             self.touchIdEnabled = true
-            SimpleAlert.alert(self, title: Constant.enableTouchIdMessages.authenticationFailedTitle, message: Constant.enableTouchIdMessages.onSuccessMessage)
+            presentAlert(with: Constant.enableTouchIdMessages.authenticationFailedTitle, message: Constant.enableTouchIdMessages.onSuccessMessage)
         }
         else {
             self.touchIdEnabled = false
