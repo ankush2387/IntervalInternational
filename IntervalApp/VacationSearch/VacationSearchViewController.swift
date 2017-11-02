@@ -1512,7 +1512,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                         
 =======
                         intervalPrint(error)
-                        //Helper.hideProgressBar(senderView: self)
+                        self.hideHudAsync()
                         SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
 >>>>>>> Incorporated intervalDebugPrint functionality
                     })
