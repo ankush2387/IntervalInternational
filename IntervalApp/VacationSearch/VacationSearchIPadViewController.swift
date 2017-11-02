@@ -932,6 +932,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
             }
             else{
                 Constant.MyClassConstants.isFromSearchBoth = true
+                
                 if segmentTitle == Constant.segmentControlItems.getaways {
                     presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
                 }else if segmentTitle == Constant.segmentControlItems.exchange {

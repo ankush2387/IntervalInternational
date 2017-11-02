@@ -160,9 +160,8 @@ class CreateActionSheet: UITableViewController {
             
             var alertVacationInfo = RentalAlert()
             alertVacationInfo = response
-            Constant.MyClassConstants.alertsDictionary .setValue(alertVacationInfo, forKey: String(describing: alert.alertId!))
-                self.searchVacationPressed(alert)
-            
+            Constant.MyClassConstants.alertsDictionary.setValue(alertVacationInfo, forKey: String(describing: alert.alertId!))
+            self.searchVacationPressed(alert)
         }) { (error) in
             intervalPrint(alert.alertId)
             if(self.activeAlertCount < Constant.MyClassConstants.getawayAlertsArray.count - 1){
