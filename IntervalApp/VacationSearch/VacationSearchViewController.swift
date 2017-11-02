@@ -79,6 +79,7 @@ class VacationSearchViewController: UIViewController {
             
             //***** Add the hamburger menu *****//
             let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action:#selector(SWRevealViewController.revealToggle(_:)))
+            
             menuButton.tintColor = UIColor.white
             parent?.navigationItem.leftBarButtonItem = menuButton
             
@@ -86,7 +87,7 @@ class VacationSearchViewController: UIViewController {
             moreButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.MoreNav), style: .plain, target: self, action:#selector(MoreNavButtonPressed(_:)))
             moreButton?.tintColor = UIColor.white
             parent?.navigationItem.rightBarButtonItem = moreButton
-            
+   
             //***** This line allows the user to swipe left-to-right to reveal the menu. We might want to comment this out if it becomes confusing. *****//
             self.view.addGestureRecognizer( rvc.panGestureRecognizer() )
             searchVacationTableView.reloadData()
@@ -1397,7 +1398,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         
         //Set filter options availability
         Constant.MyClassConstants.noFilterOptions = false
-        
+
         //Set travel PartyInfo
         let travelPartyInfo = TravelParty()
         travelPartyInfo.adults = Int(adultCounter)
@@ -1451,34 +1452,36 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     sender.isEnabled = true
                     
                 }else{
-                    RentalClient.searchRegions(Session.sharedSession.userAccessToken, request: requestRental, onSuccess: {(response)in
-                        DarwinSDK.logger.debug(response)
-                        
-                        for rsregion in response {
-                            let region = Region()
-                            region.regionName = rsregion.regionName
-                            region.regionCode = rsregion.regionCode
-                            region.areas = rsregion.areas
-                            Constant.MyClassConstants.regionArray.append(rsregion)
-                            
-                            
-                        }
-                        self.hideHudAsync()
-                        sender.isEnabled = true
-                        self.performSegue(withIdentifier:Constant.segueIdentifiers.allAvailableDestinations, sender: self)
-                        Constant.MyClassConstants.isFromExchangeAllAvailable = false
-                        if(searchType.isCombined()){
-                            Constant.MyClassConstants.isFromRentalAllAvailable = false
-                        }else{
-                            Constant.MyClassConstants.isFromRentalAllAvailable = true
-                        }
-                        
-                        
-                    }, onError: { (error) in
-                        self.presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
-                        self.hideHudAsync()
-                        sender.isEnabled = true
-                    })
+                    
+            RentalClient.searchRegions(Session.sharedSession.userAccessToken, request: requestRental, onSuccess: {(response)in
+                intervalPrint(response)
+                
+                for rsregion in response {
+                    let region = Region()
+                    region.regionName = rsregion.regionName
+                    region.regionCode = rsregion.regionCode
+                    region.areas = rsregion.areas
+                    Constant.MyClassConstants.regionArray.append(rsregion)
+                    
+                    
+                }
+                self.hideHudAsync()
+                sender.isEnabled = true
+                self.performSegue(withIdentifier:Constant.segueIdentifiers.allAvailableDestinations, sender: self)
+                Constant.MyClassConstants.isFromExchangeAllAvailable = false
+                if(searchType.isCombined()){
+                    Constant.MyClassConstants.isFromRentalAllAvailable = false
+                }else{
+                    Constant.MyClassConstants.isFromRentalAllAvailable = true
+                }
+                
+                
+            }, onError: { (error) in
+                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
+                self.hideHudAsync()
+                sender.isEnabled = true
+            })
+>>>>>>> MOBI-1219:Remove unwanted code and unused variables
                 }
             }else{
                 
@@ -1510,8 +1513,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     }, onError: { (error) in
                         self.hideHudAsync()
                         self.presentErrorAlert(UserFacingCommonError.generic)
-                        SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
-
+                        intervalPrint(error)
                     })
                 }
                 
