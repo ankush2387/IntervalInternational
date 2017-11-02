@@ -458,7 +458,7 @@ extension GetawayAlertsIPhoneViewController:UITableViewDataSource {
                 }
             }
         }
-        
+
         return cell
     }
     
