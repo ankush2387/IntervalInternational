@@ -66,7 +66,6 @@ class FlexchangeSearchViewController: UIViewController {
                 }
             }
             
-            SVProgressHUD.dismiss()
             self.hideHudAsync()
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.relinquishmentSelectionViewController) as! RelinquishmentSelectionViewController

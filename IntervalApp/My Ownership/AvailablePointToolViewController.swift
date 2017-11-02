@@ -70,13 +70,11 @@ class AvailablePointToolViewController: UIViewController {
 
         UserClient.getProgramAvailablePoints(Session.sharedSession.userAccessToken, date: dateStr, onSuccess:{ (availablePoints) in
             
-            SVProgressHUD.dismiss()
             self.hideHudAsync()
             self.availablePoints = availablePoints
             self.availablePointTableView.reloadData()
         }, onError:{ (error) in
             
-            SVProgressHUD.dismiss()
             self.hideHudAsync()
             intervalPrint(error)
         })

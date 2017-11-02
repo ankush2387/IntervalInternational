@@ -76,10 +76,10 @@ class MemberShipViewController: UIViewController {
             }
             
             self.tableView.reloadData()
-            SVProgressHUD.dismiss()
+            self.hideHudAsync()
         }) { (error) in
-            SVProgressHUD.dismiss()
             intervalPrint(error)
+            self.hideHudAsync()
         }
     }
     

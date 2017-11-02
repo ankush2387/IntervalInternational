@@ -243,7 +243,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
         showHudAsync()
 
         if(Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
-            Constant.holdingTimer.invalidate()
+            Constant.holdingTimer?.invalidate()
             
             ExchangeProcessClient.backToChooseExchange(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess:{(response) in
                 
@@ -266,13 +266,12 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 SimpleAlert.alert(self, title: "Who will be checking in", message: error.localizedDescription)
             })
         }else{
-        Constant.holdingTimer.invalidate()
+            Constant.holdingTimer?.invalidate()
         
         RentalProcessClient.backToChooseRental(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, onSuccess:{(response) in
             
                 Constant.MyClassConstants.selectedCreditCard.removeAll()
                 Helper.removeStoredGuestFormDetials()
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
             
             // pop and dismiss view according to conditions
@@ -285,7 +284,6 @@ class WhoWillBeCheckingInViewController: UIViewController {
             }
             
             }, onError: {(error) in
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
                 SimpleAlert.alert(self, title: Constant.ControllerTitles.whoWillBeCheckingInControllerTitle, message: Constant.AlertMessages.operationFailedMessage)
                 
@@ -498,7 +496,6 @@ class WhoWillBeCheckingInViewController: UIViewController {
             
             ExchangeProcessClient.continueToCheckout(Session.sharedSession.userAccessToken, process: processResort, request: exchangeProcessRequest, onSuccess: {(response) in
                 DarwinSDK.logger.debug(response)
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
                 Constant.MyClassConstants.exchangeContinueToCheckoutResponse = response
                 
@@ -524,7 +521,6 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 self.navigationController?.transitioningDelegate = transitionManager
                 self.navigationController!.pushViewController(viewController, animated: true)
             }, onError: {(error) in
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
                 SimpleAlert.alert(self, title: Constant.AlertErrorMessages.noResultError, message: error.localizedDescription)
             })
@@ -580,7 +576,6 @@ class WhoWillBeCheckingInViewController: UIViewController {
             
             RentalProcessClient.continueToCheckout(Session.sharedSession.userAccessToken, process: processResort, request: processRequest1, onSuccess: {(response) in
                 DarwinSDK.logger.debug(response)
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
                 Constant.MyClassConstants.continueToCheckoutResponse = response
                 
@@ -605,7 +600,6 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 self.navigationController?.transitioningDelegate = transitionManager
                 self.navigationController!.pushViewController(viewController, animated: true)
             }, onError: {(error) in
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
                 SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                 

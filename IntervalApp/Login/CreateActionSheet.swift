@@ -142,7 +142,7 @@ class CreateActionSheet: UITableViewController {
       
   },
     onError:{(error) in
-        SVProgressHUD.dismiss()
+        self.hideHudAsync()
         Constant.MyClassConstants.signInRequestedController.dismiss(animated: true, completion: nil)
         SimpleAlert.alert(Constant.MyClassConstants.signInRequestedController, title:Constant.AlertErrorMessages.loginFailed, message: "\(Constant.AlertPromtMessages.membershipFailureMessage) \(String(describing: context.selectedMembership?.memberNumber))")
             }

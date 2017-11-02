@@ -342,11 +342,9 @@ class GoogleMapViewController: UIViewController {
                     }
                 }
                 
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
             })
             { (error) in
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
             }
         }

@@ -87,11 +87,9 @@ class MyUpcommingTripIpadViewController: UIViewController {
             
             Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails = exchangeResponse
             self.hideHudAsync()
-            SVProgressHUD.dismiss()
             self.performSegue(withIdentifier:Constant.segueIdentifiers.detailSegue, sender:nil)
         }) { (error) in
             self.hideHudAsync()
-            SVProgressHUD.dismiss()
             SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
         }
     }

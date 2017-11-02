@@ -684,13 +684,11 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
                 }
                 
                 Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = indexPath.section + 1
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
                 self.performSegue(withIdentifier: Constant.segueIdentifiers.vacationSearchDetailSegue, sender: nil)
             })
             { (error) in
                 
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
                 SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.description)
             }
@@ -752,7 +750,6 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
                     processResort.processId = response.processId
                     Constant.MyClassConstants.getawayBookingLastStartedProcess = processResort
                     Constant.MyClassConstants.processStartResponse = response
-                    SVProgressHUD.dismiss()
                     self.hideHudAsync()
                     Constant.MyClassConstants.viewResponse = response.view!
                     Constant.MyClassConstants.rentalFees = [(response.view?.fees)!]
@@ -776,7 +773,6 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
                     UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: {(Membership) in
                         
                         // Got an access token!  Save it for later use.
-                        SVProgressHUD.dismiss()
                         self.hideHudAsync()
                         Constant.MyClassConstants.membershipContactArray = Membership.contacts!
                         
@@ -800,7 +796,6 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
                         
                     }, onError: { (error) in
                         
-                        SVProgressHUD.dismiss()
                         self.hideHudAsync()
                         SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.description)
                         
@@ -808,7 +803,6 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
                     
                 }, onError: {(error) in
                     self.hideHudAsync()
-                    SVProgressHUD.dismiss()
                     SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.description)
                 })
             }else{ // search both case

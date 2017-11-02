@@ -294,14 +294,12 @@ class ResortDirectoryViewController: UIViewController {
                 
                 UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!, onSuccess: {(response) in
                     intervalPrint(response)
-                    SVProgressHUD.dismiss()
                     self.hideHudAsync()
                     sender.isSelected = true
                     Constant.MyClassConstants.favoritesResortCodeArray.add(Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!)
                     self.resortTableView.reloadData()
                     
                 }, onError: {(error) in
-                    SVProgressHUD.dismiss()
                     self.hideHudAsync()
                     intervalPrint(error)
                 })
@@ -310,16 +308,13 @@ class ResortDirectoryViewController: UIViewController {
                 
                 showHudAsync()
                 UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!, onSuccess: {(response) in
-                    
                     intervalPrint(response)
-                    SVProgressHUD.dismiss()
                     sender.isSelected = false
                     self.hideHudAsync()
                     Constant.MyClassConstants.favoritesResortCodeArray.remove(Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!)
                     self.resortTableView.reloadData()
                     
                 }, onError: {(error) in
-                    SVProgressHUD.dismiss()
                     self.hideHudAsync()
                     intervalPrint(error)
                 })
@@ -353,14 +348,12 @@ extension ResortDirectoryViewController:UITableViewDelegate {
                 
                 showHudAsync()
                 DirectoryClient.getAreasByRegion(Constant.MyClassConstants.systemAccessToken, regionCode: region.regionCode, onSuccess: {(response) in
-                    SVProgressHUD.dismiss()
                     self.hideHudAsync()
                     Constant.MyClassConstants.resortDirectoryAreaListArray = response
                     self.showAreaDetails()
                     Helper.trackOmnitureCallForPageView(name: "\(Constant.MyClassConstants.resortDirectoryTitle) \(region.regionName!)")
                     
                 }, onError: {(error) in
-                    SVProgressHUD.dismiss()
                     self.hideHudAsync()
                 })
             }
@@ -374,14 +367,12 @@ extension ResortDirectoryViewController:UITableViewDelegate {
             
             DirectoryClient.getAreasByRegion(Constant.MyClassConstants.systemAccessToken, regionCode: subregion.regionCode, onSuccess: {(response) in
                 
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
                 Constant.MyClassConstants.resortDirectoryAreaListArray = response
                 self.showAreaDetails()
                 Helper.trackOmnitureCallForPageView(name: "\(Constant.MyClassConstants.resortDirectoryTitle) \(subregion.regionName!)")
                 
             }, onError: {(error) in
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
             })
             
@@ -411,13 +402,11 @@ extension ResortDirectoryViewController:UITableViewDelegate {
             DirectoryClient.getResortsByArea(Constant.MyClassConstants.systemAccessToken, areaCode: area.areaCode, onSuccess: {(response) in
                 Constant.MyClassConstants.resortDirectoryResortArray = response
                 
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
                 Helper.trackOmnitureCallForPageView(name: "\(Constant.MyClassConstants.resortDirectoryTitle) \(area.areaName!)")
                 self.performSegue(withIdentifier: Constant.segueIdentifiers.resortByAreaSegue, sender: nil)
                 
             }, onError: {(error) in
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
             })
         }

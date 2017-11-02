@@ -36,7 +36,7 @@ class WebViewController: UIViewController {
     }
     
     func donePressed(_ sender:UIBarButtonItem) {
-        SVProgressHUD.dismiss()
+        self.hideHudAsync()
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -50,13 +50,11 @@ extension WebViewController:UIWebViewDelegate {
     
     func webViewDidFinishLoad(_ webView: UIWebView)
     {
-        SVProgressHUD.dismiss()
-        //self.hideHudAsync()
+        self.hideHudAsync()
         
     }
     
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error){
-        SVProgressHUD.dismiss()
-        //self.hideHudAsync()
+        self.hideHudAsync()
     }
 }

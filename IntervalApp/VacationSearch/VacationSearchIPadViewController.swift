@@ -491,7 +491,6 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
                 
             }
             
-            SVProgressHUD.dismiss()
             self.hideHudAsync()
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.relinquishmentSelectionViewController) as! RelinquishmentSelectionViewController

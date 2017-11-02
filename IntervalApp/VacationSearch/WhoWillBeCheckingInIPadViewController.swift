@@ -412,7 +412,6 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         
         ExchangeProcessClient.continueToCheckout(Session.sharedSession.userAccessToken, process: processResort, request: exchangeProcessRequest, onSuccess: {(response) in
             DarwinSDK.logger.debug(response)
-            SVProgressHUD.dismiss()
             self.hideHudAsync()
             Constant.MyClassConstants.exchangeContinueToCheckoutResponse = response
             
@@ -439,10 +438,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             self.navigationController!.pushViewController(viewController, animated: true)
         }, onError: {(error) in
             intervalPrint(error.localizedDescription)
-            SVProgressHUD.dismiss()
             self.hideHudAsync()
-            SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
-            
         })
         }else{
             let processRequest1 = RentalProcessPrepareContinueToCheckoutRequest()
@@ -495,7 +491,6 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             
             RentalProcessClient.continueToCheckout(Session.sharedSession.userAccessToken, process: processResort, request: processRequest1, onSuccess: {(response) in
                 DarwinSDK.logger.debug(response)
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
                 Constant.MyClassConstants.continueToCheckoutResponse = response
                 
@@ -517,7 +512,6 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                 self.navigationController?.transitioningDelegate = transitionManager
                 self.navigationController!.pushViewController(viewController, animated: true)
             }, onError: {(error) in
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
                 SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
                 

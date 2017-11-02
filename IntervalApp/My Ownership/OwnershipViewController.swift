@@ -480,7 +480,6 @@ class OwnershipViewController: UIViewController {
             
             Constant.MyClassConstants.selectionType = 1
             self.hideHudAsync()
-            SVProgressHUD.dismiss()
             Constant.MyClassConstants.matrixType = ClubPointsChart.type!
             Constant.MyClassConstants.matrixDescription =
                 ClubPointsChart.matrices[0].description!
