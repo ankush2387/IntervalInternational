@@ -707,7 +707,6 @@ class SearchResultViewController: UIViewController {
     }
     
     //funciton called when search result page sort by name button pressed
-
     @IBAction func filterByNameButtonPressed(_ sender: UIButton) {
         
         if(!Constant.MyClassConstants.noFilterOptions){
