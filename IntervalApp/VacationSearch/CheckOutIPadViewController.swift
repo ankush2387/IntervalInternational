@@ -217,13 +217,11 @@ class CheckOutIPadViewController: UIViewController {
             
             RentalProcessClient.backToWhoIsChecking(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, onSuccess: {(response) in
                 
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
                 _ = self.navigationController?.popViewController(animated: true)
                 
             }, onError: {(error) in
                 
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
                 SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.operationFailedMessage)
             })
@@ -314,13 +312,11 @@ class CheckOutIPadViewController: UIViewController {
                         }
                         Constant.MyClassConstants.selectedCreditCard.removeAll()
                         self.isAgreed = true
-                        SVProgressHUD.dismiss()
                         self.hideHudAsync()
                         self.checkoutTableView.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                         self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
                         
                     }, onError: { (error) in
-                        SVProgressHUD.dismiss()
                         self.hideHudAsync()
                         imageSlider.isHidden = false
                         self.isAgreed = false
@@ -435,12 +431,10 @@ class CheckOutIPadViewController: UIViewController {
                 Constant.MyClassConstants.rentalFees[0].total = (response.view?.fees?.total)!
                 self.bookingTableView.reloadSections(IndexSet(integer: 0), with:.automatic)
                 self.hideHudAsync()
-                SVProgressHUD.dismiss()
             }, onError: { (error) in
                 self.tripRequestInProcess = false
                 DarwinSDK.logger.debug(error.description)
                 self.hideHudAsync()
-                SVProgressHUD.dismiss()
             })
         }
         
@@ -733,7 +727,6 @@ extension CheckOutIPadViewController:UITableViewDelegate {
                 
                 if(Constant.MyClassConstants.selectedCreditCard.count == 0) {
                     
-                    SVProgressHUD.dismiss()
                     self.hideHudAsync()
                     self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
                 }
@@ -742,11 +735,9 @@ extension CheckOutIPadViewController:UITableViewDelegate {
                     let selectedCard = Constant.MyClassConstants.selectedCreditCard[0]
                     if(selectedCard.creditcardId == 0) {
                         Constant.MyClassConstants.memberCreditCardList.append(selectedCard)
-                        SVProgressHUD.dismiss()
                         self.hideHudAsync()
                         self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
                     }else{
-                        SVProgressHUD.dismiss()
                         self.hideHudAsync()
                         self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
                     }
@@ -754,7 +745,6 @@ extension CheckOutIPadViewController:UITableViewDelegate {
                 
                 
             }, onError: { (error) in
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
             })
         }
@@ -1656,13 +1646,11 @@ extension CheckOutIPadViewController:UIWebViewDelegate {
     
     func webViewDidFinishLoad(_ webView: UIWebView)
     {
-        SVProgressHUD.dismiss()
         self.hideHudAsync()
         
     }
     
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error){
-        SVProgressHUD.dismiss()
         self.hideHudAsync()
     }
 }

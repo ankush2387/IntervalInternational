@@ -275,7 +275,6 @@ class WhatToUseViewController: UIViewController {
             // store response
             Constant.MyClassConstants.processStartResponse = response
             
-            SVProgressHUD.dismiss()
             self.hideHudAsync()
             Constant.MyClassConstants.viewResponse = response.view!
             Constant.MyClassConstants.rentalFees = [(response.view?.fees)!]
@@ -300,7 +299,6 @@ class WhatToUseViewController: UIViewController {
             UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: {(Membership) in
                 
                 // Got an access token!  Save it for later use.
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
                 Constant.MyClassConstants.membershipContactArray = Membership.contacts!
 

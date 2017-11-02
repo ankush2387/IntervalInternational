@@ -211,7 +211,6 @@ class AddDebitOrCreditCardViewController: UIViewController {
                     
                     ADBMobile.trackAction(Constant.omnitureEvents.event59, data: nil)
                     self.hideHudAsync()
-                    SVProgressHUD.dismiss()
                     Constant.MyClassConstants.selectedCreditCard.removeAll()
                     newCreditCard.creditcardId = 0
                     newCreditCard.cardNumber = response.cardToken!
@@ -223,7 +222,6 @@ class AddDebitOrCreditCardViewController: UIViewController {
                     }, onError: {(error) in
                         SimpleAlert.alert(self, title:Constant.MyClassConstants.newCardalertTitle, message: error.description)
                         self.hideHudAsync()
-                        SVProgressHUD.dismiss()
                        
                 })
             }

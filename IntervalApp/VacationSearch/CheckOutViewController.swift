@@ -241,7 +241,6 @@ class CheckOutViewController: UIViewController {
                     Constant.MyClassConstants.selectedCreditCard.removeAll()
                     Helper.removeStoredGuestFormDetials()
                     self.isAgreed = true
-                    SVProgressHUD.dismiss()
                     self.hideHudAsync()
                     Constant.MyClassConstants.transactionNumber = (response.view?.fees?.rental?.confirmationNumber)!
                     self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
@@ -735,7 +734,6 @@ extension CheckOutViewController:UITableViewDelegate {
                     
                     if(Constant.MyClassConstants.selectedCreditCard.count == 0) {
                         
-                        SVProgressHUD.dismiss()
                         self.hideHudAsync()
                         self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
                     }
@@ -744,12 +742,9 @@ extension CheckOutViewController:UITableViewDelegate {
                         let selectedCard = Constant.MyClassConstants.selectedCreditCard[0]
                         if(selectedCard.creditcardId == 0) {
                             Constant.MyClassConstants.memberCreditCardList.append(selectedCard)
-                            SVProgressHUD.dismiss()
                             self.hideHudAsync()
                             self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
                         }else{
-                            //Constant.MyClassConstants.memberCreditCardList.append(selectedCard)
-                            SVProgressHUD.dismiss()
                             self.hideHudAsync()
                             self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
                         }
@@ -757,8 +752,6 @@ extension CheckOutViewController:UITableViewDelegate {
                     
                 })
             }, onError: { (error) in
-                
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
                 intervalPrint(error)
                 
@@ -1564,13 +1557,11 @@ extension CheckOutViewController:UIWebViewDelegate {
     
     func webViewDidFinishLoad(_ webView: UIWebView)
     {
-        SVProgressHUD.dismiss()
         self.hideHudAsync()
         
     }
     
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error){
-        SVProgressHUD.dismiss()
         self.hideHudAsync()
     }
 }
