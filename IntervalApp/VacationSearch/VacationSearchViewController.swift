@@ -80,12 +80,12 @@ class VacationSearchViewController: UIViewController {
             //***** Add the hamburger menu *****//
             let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action:#selector(SWRevealViewController.revealToggle(_:)))
             menuButton.tintColor = UIColor.white
-            parent?.navigationItem.leftBarButtonItem = menuButton
+            self.parent?.navigationItem.leftBarButtonItem = menuButton
             
             //***** Creating and adding right bar button for more option button *****//
             moreButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.MoreNav), style: .plain, target: self, action:#selector(MoreNavButtonPressed(_:)))
-            moreButton?.tintColor = UIColor.white
-            parent?.navigationItem.rightBarButtonItem = moreButton
+            moreButton!.tintColor = UIColor.white
+            self.parent?.navigationItem.rightBarButtonItem = moreButton
             
             //***** This line allows the user to swipe left-to-right to reveal the menu. We might want to comment this out if it becomes confusing. *****//
             self.view.addGestureRecognizer( rvc.panGestureRecognizer() )
@@ -314,7 +314,7 @@ extension VacationSearchViewController:UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView.tag == 1 {
-            return Constant.MyClassConstants.flexExchangeDeals.count
+             return Constant.MyClassConstants.flexExchangeDeals.count
         } else {
             return Constant.MyClassConstants.topDeals.count
         }
@@ -1393,6 +1393,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         //Set filter options availability
         Constant.MyClassConstants.noFilterOptions = false
         
+        
         //Set travel PartyInfo
         let travelPartyInfo = TravelParty()
         travelPartyInfo.adults = Int(adultCounter)
@@ -1474,6 +1475,23 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                         self.hideHudAsync()
                         sender.isEnabled = true
                     })
+                }
+                self.hideHudAsync()
+                sender.isEnabled = true
+                self.performSegue(withIdentifier:Constant.segueIdentifiers.allAvailableDestinations, sender: self)
+                Constant.MyClassConstants.isFromExchangeAllAvailable = false
+                if(searchType.isCombined()){
+                    Constant.MyClassConstants.isFromRentalAllAvailable = false
+                }else{
+                    Constant.MyClassConstants.isFromRentalAllAvailable = true
+                }
+                
+                
+            }, onError: { (error) in
+                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
+                self.hideHudAsync()
+                sender.isEnabled = true
+            })
                 }
             }else{
                 
