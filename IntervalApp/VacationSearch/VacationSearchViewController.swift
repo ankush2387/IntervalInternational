@@ -1505,7 +1505,8 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     }, onError: { (error) in
                         self.hideHudAsync()
                         self.presentErrorAlert(UserFacingCommonError.generic)
-                        
+                        intervalPrint(error)
+ 
                     })
                 }
                 

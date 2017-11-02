@@ -306,6 +306,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
             
         }else if((alert.resorts.count) > 0){
             Constant.MyClassConstants.initialVacationSearch.searchCriteria.resorts = alert.resorts
+            //Constant.MyClassConstants.vacationSearchResultHeaderLabel = resort.resortName!
         }
     }
 }
@@ -335,7 +336,6 @@ extension GetawayAlertsIPhoneViewController:UITableViewDelegate {
             }) { (error) in
                 SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
             }
-
         }
         delete.backgroundColor = UIColor(red: 224/255.0, green: 96.0/255.0, blue: 84.0/255.0, alpha: 1.0)
         
