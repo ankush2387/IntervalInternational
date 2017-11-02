@@ -216,7 +216,7 @@ class WhatToUseViewController: UIViewController {
                     self.selectedRow = -1
                     self.selectedRowSection = -1
                     self.tableView.reloadData()
-                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                    self.presentErrorAlert(UserFacingCommonError.generic)
                     
                 })
                 
@@ -225,7 +225,7 @@ class WhatToUseViewController: UIViewController {
                 self.selectedRow = -1
                 self.selectedRowSection = -1
                 self.tableView.reloadData()
-                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                self.presentErrorAlert(UserFacingCommonError.generic)
             })
         
         
@@ -364,7 +364,7 @@ class WhatToUseViewController: UIViewController {
                 self.selectedRow = -1
                 self.selectedRowSection = -1
                 self.tableView.reloadData()
-                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.description)
+                self.presentErrorAlert(UserFacingCommonError.generic)
                 
             })
             
@@ -374,7 +374,7 @@ class WhatToUseViewController: UIViewController {
             self.selectedRowSection = -1
             self.tableView.reloadData()
             self.hideHudAsync()
-            SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.description)
+            self.presentErrorAlert(UserFacingCommonError.generic)
         })
 
         

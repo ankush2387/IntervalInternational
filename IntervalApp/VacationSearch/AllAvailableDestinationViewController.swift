@@ -119,7 +119,7 @@ class AllAvailableDestinationViewController: UIViewController {
                 }, onError: { (error) in
                     
                     self.hideHudAsync()
-                    SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                    self.presentErrorAlert(UserFacingCommonError.generic)
                 })
                 
             
@@ -176,7 +176,7 @@ class AllAvailableDestinationViewController: UIViewController {
                 { (error) in
                     
                     self.hideHudAsync()
-                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                    self.presentErrorAlert(UserFacingCommonError.generic)
                 }
                 
                 
@@ -221,11 +221,9 @@ class AllAvailableDestinationViewController: UIViewController {
                 },
                                          onError:{ (error) in
                                             self.hideHudAsync()
-                                            //sender.isEnabled = true
-                                            SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                                            self.presentErrorAlert(UserFacingCommonError.generic)
                 }
                 )
-
             }
             
         }
@@ -337,8 +335,7 @@ class AllAvailableDestinationViewController: UIViewController {
         
         
         if(selectedAreaDictionary.allKeys.count == 0){
-            
-            SimpleAlert.alert(self, title: Constant.dashboardTableScreenReusableIdentifiers.alert, message: Constant.AlertMessages.editAlertdetinationMessage)
+            presentAlert(with: Constant.dashboardTableScreenReusableIdentifiers.alert, message: Constant.AlertMessages.editAlertdetinationMessage)
             
         }else{
             
@@ -497,7 +494,7 @@ extension AllAvailableDestinationViewController:UITableViewDelegate{
             if(sectionCounter == 6){
                 
                 DispatchQueue.main.async(execute: {
-                    SimpleAlert.alert(self, title: Constant.dashboardTableScreenReusableIdentifiers.alert, message: Constant.AlertMessages.maximumLimitReachedMessage)
+                    self.presentAlert(with: Constant.dashboardTableScreenReusableIdentifiers.alert, message: Constant.AlertMessages.maximumLimitReachedMessage)
                 })
                 
             }else{

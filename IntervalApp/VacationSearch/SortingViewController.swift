@@ -234,9 +234,7 @@ class SortingViewController: UIViewController {
                     
                     
                 }){ (error) in
-                    
-                    
-                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                   self.presentErrorAlert(UserFacingCommonError.generic)
                 }
                 
             } else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
@@ -286,9 +284,7 @@ class SortingViewController: UIViewController {
                     }
                     
                 }){ (error) in
-                    
-                    
-                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                    self.presentErrorAlert(UserFacingCommonError.generic)
                 }
                 
             } else{
@@ -339,9 +335,7 @@ class SortingViewController: UIViewController {
                     //sender.isEnabled = true
                     
                 }){ (error) in
-                    
-                    
-                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                    self.presentErrorAlert(UserFacingCommonError.generic)
                 }
             }
             
