@@ -710,8 +710,8 @@ class SearchResultViewController: UIViewController {
     //funciton called when search result page sort by name button pressed
 
     @IBAction func filterByNameButtonPressed(_ sender: UIButton) {
+        
         if(!Constant.MyClassConstants.noFilterOptions){
-            
             sender.isEnabled = true
             if(Constant.MyClassConstants.filterOptionsArray.count > 1 || alertFilterOptionsArray.count > 1){
                 let viewController = self.storyboard?.instantiateViewController(withIdentifier: Constant.storyboardControllerID.sortingViewController) as! SortingViewController

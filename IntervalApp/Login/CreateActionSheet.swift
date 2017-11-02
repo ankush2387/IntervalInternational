@@ -164,7 +164,6 @@ class CreateActionSheet: UITableViewController {
             self.searchVacationPressed(alert)
             intervalDebugPrint("Alert is inactive",alert.latestCheckInDate!,alert.earliestCheckInDate!)
             
-            
         }) { (error) in
             intervalPrint(alert.alertId)
             if(self.activeAlertCount < Constant.MyClassConstants.getawayAlertsArray.count - 1){

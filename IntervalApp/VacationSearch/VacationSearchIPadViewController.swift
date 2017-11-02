@@ -930,7 +930,8 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                     
                 }
                 Constant.MyClassConstants.isFromExchange = true
-            } else{
+            }
+            else{
                 Constant.MyClassConstants.isFromSearchBoth = true
                 if segmentTitle == Constant.segmentControlItems.getaways {
                     presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
@@ -939,6 +940,7 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                         presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
                     }else if Constant.MyClassConstants.relinquishmentIdArray.count == 0 {
                         presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
+
                     }else{
                         presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
                     }
