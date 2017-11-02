@@ -163,7 +163,7 @@ class CreateActionSheet: UITableViewController {
             Constant.MyClassConstants.alertsDictionary.setValue(alertVacationInfo, forKey: String(describing: alert.alertId!))
             self.searchVacationPressed(alert)
             intervalDebugPrint("Alert is inactive",alert.latestCheckInDate!,alert.earliestCheckInDate!)
-
+            
             
         }) { (error) in
             intervalPrint(alert.alertId)

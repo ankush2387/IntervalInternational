@@ -259,6 +259,11 @@ extension AppCoordinator: LoginCoordinatorDelegate {
 >>>>>>> Removed printing of contact ID
         
 >>>>>>> Incorporated intervalDebugPrint functionality
+=======
+        intervalPrint(session.contact?.contactId)
+        intervalDebugPrint(session.contact?.contactId)
+
+>>>>>>> MOBI-1219:Remove unwanted code and unused variables
         if apnsCoordinator?.shouldRedirectOnlogin == true && apnsCoordinator?.pushViabilityHasNotExpired == true {
             redirectUser()
         } else {
