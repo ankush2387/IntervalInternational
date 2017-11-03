@@ -201,16 +201,14 @@ class GetawayAlertsIPhoneViewController: UIViewController {
                                 if let searchDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate{
                                     Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate:  Helper.convertStringToDate(dateString: searchDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                 }
-                            }
-                            
-                    },
-                                             onError
-                        :{ (error) in
-                            
-                            
-                    }
-                    )
+                        
+        },
+               onError
+                    :{ (error) in
+                                            
+                                            
                 }
+                )
             }
             
         }
