@@ -130,7 +130,7 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
                         cell.renewelnonCoreImageView?.isHidden = false
                         
                         // currency code
-                        let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (forceRenewals.currencyCode)!)
+                        let currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: (forceRenewals.currencyCode)!)
                         
                         if (renewalComboProduct.isCoreProduct) {
                             cell.renewelCoreImageView?.image = UIImage(named: renewalComboProduct.productCode!)
@@ -199,7 +199,7 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
                     // show only non core image
                     cell.renewelImageView?.image = UIImage(named: coreProduct.productCode!)
                     
-                    let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (forceRenewals.currencyCode)!)
+                    let currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: (forceRenewals.currencyCode)!)
                     
                     let price = String(format: "%.0f", coreProduct.price)
                     

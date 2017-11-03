@@ -102,7 +102,7 @@ class CheckOutViewController: UIViewController {
                     }
                 }
             guard let curCode = Constant.MyClassConstants.exchangeFees[0].currencyCode else { return }
-            currencyCode = Helper.currencyCodetoSymbol(code: curCode)
+            currencyCode = Helper.currencyCodeToSymbol(code: curCode)
             
         } else {
         for advisement in (Constant.MyClassConstants.viewResponse.resort?.advisements)! {
@@ -121,12 +121,10 @@ class CheckOutViewController: UIViewController {
                 showInsurance = false
             }
             guard let curCode = Constant.MyClassConstants.rentalFees[0].currencyCode else { return }
-            currencyCode = Helper.currencyCodetoSymbol(code: curCode)
+            currencyCode = Helper.currencyCodeToSymbol(code: curCode)
       }
     
-        
         //Register custom cell xib with tableview
-        
         
         checkoutOptionTBLview.register(UINib(nibName: Constant.customCellNibNames.totalCostCell, bundle: nil), forCellReuseIdentifier: Constant.customCellNibNames.totalCostCell)
         
@@ -1252,7 +1250,7 @@ extension CheckOutViewController: UITableViewDataSource {
                         } else {
                             cell.fractionalPriceLabel.text = "00"
                         }
-                        cell.currencyLabel.text = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.exchangeFees[0].currencyCode)!)
+                        cell.currencyLabel.text = currencyCode
                         
                         
                     case Constant.MyClassConstants.getawayFee:
@@ -1279,7 +1277,7 @@ extension CheckOutViewController: UITableViewDataSource {
                         } else {
                             cell.fractionalPriceLabel.text = "00"
                         }
-                        cell.currencyLabel.text = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.exchangeFees[0].currencyCode)!)
+                        cell.currencyLabel.text = currencyCode
                         
                     case Constant.MyClassConstants.taxesTitle:
                         
@@ -1291,7 +1289,7 @@ extension CheckOutViewController: UITableViewDataSource {
                             rentalTax = Double(Int((Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.rental?.rentalPrice?.tax)!))
                         }
                         
-                        cell.currencyLabel.text = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.rentalFees[0].currencyCode)!)
+                        cell.currencyLabel.text = currencyCode
                         cell.primaryPriceLabel.text = "\(rentalTax)"
                         let priceString = "\(Constant.MyClassConstants.continueToCheckoutResponse.view!.fees!.rental!.rentalPrice!.tax)"
                         let priceArray = priceString.components(separatedBy: ".")
@@ -1326,7 +1324,7 @@ extension CheckOutViewController: UITableViewDataSource {
                     default:
                         
                         let renewalIndex = indexPath.row - (totalRowsInCost - renewalsArray.count)
-                        cell.currencyLabel.text = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.rentalFees[0].currencyCode)!)
+                        cell.currencyLabel.text = currencyCode
                         cell.priceLabel.numberOfLines = 0
                         cell.priceLabel.text = "\(String(describing: renewalsArray[renewalIndex].displayName!)) Renewal Fee"
                         
@@ -1460,12 +1458,8 @@ extension CheckOutViewController: UITableViewDataSource {
                
 //                    cell.priceLabel.text = String(Int(Float(Constant.MyClassConstants.rentalFees[0].total)))
                      var priceString = "\(Constant.MyClassConstants.rentalFees[0].total)"
-//
-//                    cell.currencyCodeLabel.text = Helper.currencyCodetoSymbol(code: (Constant.MyClassConstants.rentalFees[0].currencyCode)!)
-//                    let formatter = NumberFormatter()
-//                    formatter.numberStyle = .decimal
-//                    let formattedprice = formatter.string(for: Int(cell.priceLabel.text!))
-//
+
+
                       var targetString = String(Int(Float(Constant.MyClassConstants.rentalFees[0].total)))
                     if let total = recapFeesTotal {
                         cell.priceLabel.text = String(Int(Float(total)))
@@ -1581,3 +1575,4 @@ extension CheckOutViewController: UITextFieldDelegate {
         
     }
 }
+

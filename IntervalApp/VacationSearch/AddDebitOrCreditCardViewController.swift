@@ -166,10 +166,7 @@ class AddDebitOrCreditCardViewController: UIViewController {
                 let newCreditCard = Creditcard()
                 newCreditCard.cardHolderName = Constant.GetawaySearchResultCardFormDetailData.nameOnCard
                 newCreditCard.cardNumber = Constant.GetawaySearchResultCardFormDetailData.cardNumber
-                //let myDateFormatter = DateFormatter()
-                //myDateFormatter.dateFormat = Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.dateTimeFormat
-               // let dateString = myDateFormatter.string(from: Constant.GetawaySearchResultCardFormDetailData.expDate!)
-                newCreditCard.expirationDate = Constant.GetawaySearchResultCardFormDetailData.expDate //dateString
+                newCreditCard.expirationDate = Constant.GetawaySearchResultCardFormDetailData.expDate
                 newCreditCard.cvv = Constant.GetawaySearchResultCardFormDetailData.cvv
                 
                 let billingAdrs = Address()
@@ -559,6 +556,7 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
                         cell.selectedTextLabel.text = Constant.textFieldTitles.expirationDate
                     } else {
                         
+                    
                         let dateFormatter = DateFormatter()
                         dateFormatter.dateStyle = DateFormatter.Style.short
                         
