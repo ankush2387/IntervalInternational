@@ -512,8 +512,8 @@ class OwnershipViewController: UIViewController {
         }, onError:{ (error) in
             
             self.hideHudAsync()
-            SVProgressHUD.dismiss()
             intervalPrint(error.description)
+
         })
     }
     
