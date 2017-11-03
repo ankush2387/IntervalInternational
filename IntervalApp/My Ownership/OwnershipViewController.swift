@@ -512,6 +512,7 @@ class OwnershipViewController: UIViewController {
         }, onError:{ (error) in
             self.hideHudAsync()
             intervalPrint(error.description)
+
         })
     }
     
