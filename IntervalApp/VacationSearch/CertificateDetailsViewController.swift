@@ -37,6 +37,7 @@ class CertificateDetailsViewController: UIViewController {
 extension CertificateDetailsViewController:UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+
         return UITableViewAutomaticDimension
         
     }
@@ -52,6 +53,7 @@ extension CertificateDetailsViewController:UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
+
         var cell = UITableViewCell()
         cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: Constant.certificateScreenReusableIdentifiers.certificateDetailsCell)
         
