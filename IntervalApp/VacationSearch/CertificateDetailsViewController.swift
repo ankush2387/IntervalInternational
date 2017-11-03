@@ -34,7 +34,6 @@ class CertificateDetailsViewController: UIViewController {
 }
 
 //MARK:- tableview delegate
-
 extension CertificateDetailsViewController:UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -49,8 +48,6 @@ extension CertificateDetailsViewController:UITableViewDelegate {
 
 
 //MARK:- tableview datasource
-
->>>>>>> MOBI-1214 certificate details cell created in ipad
 extension CertificateDetailsViewController:UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -79,7 +76,6 @@ extension CertificateDetailsViewController:UITableViewDataSource {
         var resortLbl = ""
         if let label = response.restrictedResort?.label {
             resortLbl = label
-
         }
         
         let resortCombined = response.restrictedResort?.resorts.map{$0.resortName} as! [String]
@@ -100,7 +96,6 @@ extension CertificateDetailsViewController:UITableViewDataSource {
         return cell
     }
     
-    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -111,7 +106,3 @@ extension CertificateDetailsViewController:UITableViewDataSource {
     }
     
 }
-
-
-
-
