@@ -24,6 +24,7 @@ class PaymentSelectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    
 
     // function to dismis current controller on cancel button button pressed
     @IBAction func cancelButtonPressed(_ sender: AnyObject) {
@@ -31,120 +32,128 @@ class PaymentSelectionViewController: UIViewController {
      self.dismiss(animated: true, completion: nil)
     }
     
-    func doneButton_Clicked( _ sender: UIBarButtonItem) {
+    func doneButton_Clicked( _ sender:UIBarButtonItem){
         for textField in self.view.subviews where textField is UITextField {
             textField.resignFirstResponder()
         }
     }
     
     // function called when credit card selected from card list
-    func checkBoxCheckedAtIndex(_ sender: IUIKCheckbox) {
+    func checkBoxCheckedAtIndex(_ sender:IUIKCheckbox) {
         
         self.selectedCardIndex = sender.tag
         paymentSelectionTBLview.reloadData()
         
-        var isCardExpired: Bool = false
+        
+        var isCardExpired : Bool = false
       
         let creditcard = Constant.MyClassConstants.memberCreditCardList[self.selectedCardIndex]
       
         let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.dateTimeFormat
-        if let date = dateFormatter.date(from: creditcard.expirationDate!) {
-            print(date)
-        } else {
-            dateFormatter.dateFormat = Constant.MyClassConstants.monthDateFormat
-        }
-        let date = dateFormatter.date(from: creditcard.expirationDate!)
-        let myComponents = (myCalendar as NSCalendar).components([.month, .year], from: date!)
-        
-        let month = myComponents.month!
-        
-        let year = myComponents.year!
-        
-        let CurrDate = Date()
-        let calendar = Calendar.current
-        
-        let CurrYear = calendar.component(.year, from: CurrDate)
-        let CurrMonth = calendar.component(.month, from: CurrDate)
-        
-        if(year < CurrYear) {
-            //card Expired
-                isCardExpired = true
-        } else if(year == CurrYear) {
-            if(month < CurrMonth) {
+        var expiryDate: Date?
+        if let date = creditcard.expirationDate {
+            
+            let dateStringArray = date.components(separatedBy: "-")
+            if(dateStringArray.count > 2){
+                expiryDate = dateFormatter.date(from: creditcard.expirationDate!)!
+            }else{
+                dateFormatter.dateFormat = Constant.MyClassConstants.monthDateFormat
+                expiryDate = dateFormatter.date(from: creditcard.expirationDate!)!
+            }
+            
+            let myComponents = (myCalendar as NSCalendar).components([.month,.year], from: expiryDate!)
+            let month = myComponents.month!
+            let year = myComponents.year!
+            let CurrDate = Date()
+            let calendar = Calendar.current
+            let CurrYear = calendar.component(.year, from: CurrDate)
+            let CurrMonth = calendar.component(.month, from: CurrDate)
+            
+            if(year<CurrYear){
                 //card Expired
                 isCardExpired = true
-                
-            } else {
-                isCardExpired = false
+            }else if(year == CurrYear){
+                if(month < CurrMonth){
+                    //card Expired
+                    isCardExpired = true
+                    
+                }else{
+                    isCardExpired = false
+                }
             }
         }
-        
-        if(isCardExpired == true) {
+
+        if(isCardExpired == true){
             
             var cvv: UITextField?
             var expiryDate: UITextField?
             
-            let title = Constant.PaymentSelectionViewControllerCellIdentifiersAndHardCodedStrings.cvvandExpiryDateAlertTitle
+            let title = Constant.PaymentSelectionViewControllerCellIdentifiersAndHardCodedStrings.cvvandExpiryDateAlertTitle;
             
-            let message = "\(cardType!) Ending in \(lastFourDigitCardNumber) \n\n\n"
-            let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
-            alert.isModalInPopover = true
+            let message = "\(cardType!) Ending in \(lastFourDigitCardNumber) \n\n\n";
+            let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert);
+            alert.isModalInPopover = true;
+            
             
             let inputFrame = CGRect(x: 0, y: 140, width: 270, height: 40)
-            let inputView: UIView = UIView(frame: inputFrame)
+            let inputView: UIView = UIView(frame: inputFrame);
+            
             
             let codeFrame = CGRect(x: 7, y: 0, width: 120, height: 35)
-            let cvvTextField: UITextField = UITextField(frame: codeFrame)
-            cvvTextField.placeholder = Constant.textFieldTitles.cvv
+            let cvvTextField: UITextField = UITextField(frame: codeFrame);
+            cvvTextField.placeholder = Constant.textFieldTitles.cvv;
             cvvTextField.layer.borderWidth = 1.0
-            cvvTextField.borderStyle = UITextBorderStyle.line
+            cvvTextField.borderStyle = UITextBorderStyle.line;
             cvvTextField.layer.borderColor = UIColor.lightGray.cgColor
-            cvvTextField.keyboardType = UIKeyboardType.numberPad
+            cvvTextField.keyboardType = UIKeyboardType.numberPad;
             
             let numberFrame = CGRect(x: 142, y: 0, width: 120, height: 35)
-            let expirydateTextField: UITextField = UITextField(frame: numberFrame)
-            expirydateTextField.placeholder = Constant.textFieldTitles.expirationDatePlaceHolder
+            let expirydateTextField: UITextField = UITextField(frame: numberFrame);
+            expirydateTextField.placeholder = Constant.textFieldTitles.expirationDatePlaceHolder;
             expirydateTextField.layer.borderWidth = 1.0
-            expirydateTextField.borderStyle = UITextBorderStyle.line
+            expirydateTextField.borderStyle = UITextBorderStyle.line;
             expirydateTextField.layer.borderColor = UIColor.lightGray.cgColor
-            expirydateTextField.keyboardType = UIKeyboardType.numbersAndPunctuation
+            expirydateTextField.keyboardType = UIKeyboardType.numbersAndPunctuation;
             
-            cvv = cvvTextField
-            expiryDate = expirydateTextField
+            cvv = cvvTextField;
+            expiryDate = expirydateTextField;
             
-            inputView.addSubview(cvv!)
-            inputView.addSubview(expiryDate!)
+            inputView.addSubview(cvv!);
+            inputView.addSubview(expiryDate!);
             
-            alert.view.addSubview(inputView)
+            alert.view.addSubview(inputView);
             
             alert.addAction(UIAlertAction(title: Constant.AlertPromtMessages.cancel, style: .default, handler: nil))
             
+            
             alert.addAction(UIAlertAction(title: Constant.AlertPromtMessages.done, style: .default, handler: { [weak alert] (_) in
                 
-                if((cvv?.text?.characters.count)! == 0) {
+                
+                if((cvv?.text?.characters.count)! == 0){
                     cvv?.layer.borderColor = UIColor.red.cgColor
                     return
                 }
-                if((expiryDate?.text?.characters.count)! == 0) {
+                if((expiryDate?.text?.characters.count)! == 0){
                     expiryDate?.layer.borderColor = UIColor.red.cgColor
                     return
                 }
                 
                 (Constant.MyClassConstants.memberCreditCardList[self.selectedCardIndex]).cvv = (cvv?.text)
                 let expirydate = expiryDate?.text
-                let dateArr: [String] = expirydate!.components(separatedBy: "/")
+                let dateArr : [String] = expirydate!.components(separatedBy: "/")
                 
                 // And then to access the individual words:
-                let month: String = dateArr[0]
-                let year: String = "20" + dateArr[1]
+                let month : String = dateArr[0]
+                let year : String = "20" + dateArr[1]
                 
-                //creating date component with new exp date 
+                //creating date component with new exp date
                 var dateComponents = DateComponents()
                 dateComponents.year = Int(year)
                 dateComponents.month = Int(month)
                 dateComponents.day = 01
+        
                 
                 let dt = Calendar(identifier: Calendar.Identifier.gregorian).date(from: dateComponents)
                 let df = DateFormatter()
@@ -160,7 +169,8 @@ class PaymentSelectionViewController: UIViewController {
                     Constant.MyClassConstants.selectedCreditCard.append(existingCard)
                     self.dismiss(animated: true, completion: nil)
                     
-                } else {
+                }
+                else {
                     
                     Constant.MyClassConstants.selectedCreditCard.removeAll()
                     let newCard = Constant.MyClassConstants.memberCreditCardList[self.selectedCardIndex]
@@ -172,9 +182,11 @@ class PaymentSelectionViewController: UIViewController {
                 
             }))
             
-            self.present(alert, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil);
             
-        } else {
+            
+        }else{
+        
         
         //1. Create the alert controller.
         let alert = UIAlertController(title: Constant.PaymentSelectionViewControllerCellIdentifiersAndHardCodedStrings.cvvAlertTitle, message: "\(cardType!) Ending in \(lastFourDigitCardNumber)", preferredStyle: .alert)
@@ -194,8 +206,10 @@ class PaymentSelectionViewController: UIViewController {
             textField.inputAccessoryView = toolbarDone*/
             
         }
+        
     
         alert.addAction(UIAlertAction(title: Constant.AlertPromtMessages.cancel, style: .default, handler: nil))
+
         
         // 3. Grab the value from the text field, and print it when the user clicks OK.
         alert.addAction(UIAlertAction(title: Constant.AlertPromtMessages.done, style: .default, handler: { [weak alert] (_) in
@@ -210,7 +224,8 @@ class PaymentSelectionViewController: UIViewController {
                 Constant.MyClassConstants.selectedCreditCard.append(existingCard)
                 self.dismiss(animated: true, completion: nil)
                 
-            } else {
+            }
+            else {
                 
                 Constant.MyClassConstants.selectedCreditCard.removeAll()
                  let newCard = Constant.MyClassConstants.memberCreditCardList[self.selectedCardIndex]
@@ -221,11 +236,12 @@ class PaymentSelectionViewController: UIViewController {
             }
             
             }))
-        self.present(alert, animated: true) {
+        self.present(alert, animated: true){
             
         }
         }
     }
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -296,11 +312,12 @@ extension PaymentSelectionViewController: UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if(indexPath.row == Constant.MyClassConstants.memberCreditCardList.count) {
+        if(indexPath.row ==  Constant.MyClassConstants.memberCreditCardList.count) {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.addNewCreditCardCell, for: indexPath) as! AddNewCreditCardCell
             return cell
-        } else {
+        }
+        else {
             
             let creditcard = Constant.MyClassConstants.memberCreditCardList[indexPath.row]
             
@@ -310,60 +327,64 @@ extension PaymentSelectionViewController: UITableViewDataSource {
             let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.dateTimeFormat
-            if let date = dateFormatter.date(from: creditcard.expirationDate!) {
-                print(date)
-            } else {
-                dateFormatter.dateFormat = Constant.MyClassConstants.monthDateFormat
-            }
-            let date = dateFormatter.date(from: creditcard.expirationDate!)
-            let myComponents = (myCalendar as NSCalendar).components([.month, .year], from: date!)
-            
-            let month = myComponents.month!
-            
-            let year = myComponents.year!
-            
-            let CurrDate = Date()
-            let calendar = Calendar.current
-            
-            let CurrYear = calendar.component(.year, from: CurrDate)
-            let CurrMonth = calendar.component(.month, from: CurrDate)
-            
-            if(year < CurrYear) {
-                cell.expireDate.textColor = UIColor.red
-                cell.expireDateLabel.textColor = UIColor.red
-                cell.expireDateLabel.text = "Expired :"
-            } else if(year == CurrYear) {
-                if(month < CurrMonth) {
+            var expiryDate: Date?
+            if let date = creditcard.expirationDate {
+                
+                let dateStringArray = date.components(separatedBy: "-")
+                if(dateStringArray.count > 2){
+                    expiryDate = dateFormatter.date(from: creditcard.expirationDate!)!
+                }else{
+                    dateFormatter.dateFormat = Constant.MyClassConstants.monthDateFormat
+                    expiryDate = dateFormatter.date(from: creditcard.expirationDate!)!
+                }
+                
+                let myComponents = (myCalendar as NSCalendar).components([.month,.year], from: expiryDate!)
+                let month = myComponents.month!
+                let year = myComponents.year!
+                let CurrDate = Date()
+                let calendar = Calendar.current
+                let CurrYear = calendar.component(.year, from: CurrDate)
+                let CurrMonth = calendar.component(.month, from: CurrDate)
+                
+                if(year<CurrYear){
                     cell.expireDate.textColor = UIColor.red
                     cell.expireDateLabel.textColor = UIColor.red
                     cell.expireDateLabel.text = "Expired :"
-                } else {
-                     cell.expireDate.textColor = UIColor.black
-                     cell.expireDateLabel.textColor = UIColor.black
-                     cell.expireDateLabel.text = "Expires :"
+                }else if(year == CurrYear){
+                    if(month < CurrMonth){
+                        cell.expireDate.textColor = UIColor.red
+                        cell.expireDateLabel.textColor = UIColor.red
+                        cell.expireDateLabel.text = "Expired :"
+                    }else{
+                        cell.expireDate.textColor = UIColor.black
+                        cell.expireDateLabel.textColor = UIColor.black
+                        cell.expireDateLabel.text = "Expires :"
+                    }
                 }
+                
+                if(month < 10) {
+                    cell.expireDate.text = "0\(myComponents.month!)/\(myComponents.year!)"
+                }
+                else {
+                    cell.expireDate.text = "\(myComponents.month!)/\(myComponents.year!)"
+                }
+            }else{
+                cell.expireDate.text = ""
             }
             
-            if(month < 10) {
-                
-                cell.expireDate.text = "0\(myComponents.month!)/\(myComponents.year!)"
-            } else {
-                
-                cell.expireDate.text = "\(myComponents.month!)/\(myComponents.year!)"
-            }
+            
             
             let cardNumber = creditcard.cardNumber!
-            let last4 = cardNumber.substring(from: (cardNumber.index((cardNumber.endIndex), offsetBy: -4)))
+            let last4 = cardNumber.substring(from:(cardNumber.index((cardNumber.endIndex), offsetBy: -4)))
             cell.cardLastFourDigitNumber.text = last4
             self.lastFourDigitCardNumber = last4
             let cardType = Helper.cardTypeCodeMapping(cardType: (creditcard.typeCode!))
             self.cardType = cardType
             cell.cardType.text = "\(cardType) ending in"
-            
             if(self.selectedCardIndex == indexPath.row) {
-                
                 cell.cardSelectionCheckBox.checked = true
-            } else {
+            }
+            else {
                 cell.cardSelectionCheckBox.checked = false
             }
             

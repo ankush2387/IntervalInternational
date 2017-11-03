@@ -11,18 +11,18 @@ import UIKit
 class TotalCostCell: UITableViewCell {
     
 
-    @IBOutlet weak var priceLabel: UILabel!
-    @IBOutlet weak var periodLabel: UILabel!
-    @IBOutlet weak var fractionalPriceLabel: UILabel!
+
+//    @IBOutlet weak var priceLabel: UILabel!
+//    @IBOutlet weak var periodLabel: UILabel!
+//    @IBOutlet weak var fractionalPriceLabel: UILabel!
+//    @IBOutlet weak var amountLabel: UILabel!
+
+    @IBOutlet weak var priceLabel:UILabel!
+    @IBOutlet weak var periodLabel:UILabel!
+    @IBOutlet weak var fractionalPriceLabel:UILabel!
+    @IBOutlet weak var currencyCodeLabel: UILabel!
     @IBOutlet weak var amountLabel: UILabel!
-
-
-//    @IBOutlet weak var priceLabel:UILabel!
-//    @IBOutlet weak var periodLabel:UILabel!
-//    @IBOutlet weak var fractionalPriceLabel:UILabel!
-//    @IBOutlet weak var currencyCodeLabel: UILabel!
-//
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         
@@ -35,5 +35,6 @@ class TotalCostCell: UITableViewCell {
         }
         
     }
+
     
 }
