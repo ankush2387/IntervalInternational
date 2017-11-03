@@ -1290,15 +1290,11 @@ extension VacationSearchViewController:UITableViewDataSource {
                             tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
                         }
                     }catch{
-                        self.presentErrorAlert(UserFacingCommonError.generic)
+                        
                     }
                     
                 }catch{
                     self.presentErrorAlert(UserFacingCommonError.generic)
-                }
-                
-            }catch{
-                    
                 }
                 
             }
@@ -1354,7 +1350,7 @@ extension VacationSearchViewController:WhoIsTravelingCellDelegate {
         //***** updating adult counter increment and decrement
         adultCounter = value
         if defaults.object(forKey: Constant.MyClassConstants.adultCounterString) != nil {
-
+            
             defaults.removeObject(forKey: Constant.MyClassConstants.adultCounterString)
             defaults.set(value, forKey: Constant.MyClassConstants.adultCounterString)
             defaults.synchronize()
@@ -1396,7 +1392,6 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
         
         //Set filter options availability
         Constant.MyClassConstants.noFilterOptions = false
-        
         
         //Set travel PartyInfo
         let travelPartyInfo = TravelParty()
@@ -1451,6 +1446,7 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                     sender.isEnabled = true
                     
                 }else{
+
                     RentalClient.searchRegions(Session.sharedSession.userAccessToken, request: requestRental, onSuccess: {(response)in
                         DarwinSDK.logger.debug(response)
                         
@@ -1479,23 +1475,6 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                         self.hideHudAsync()
                         sender.isEnabled = true
                     })
-                }
-                self.hideHudAsync()
-                sender.isEnabled = true
-                self.performSegue(withIdentifier:Constant.segueIdentifiers.allAvailableDestinations, sender: self)
-                Constant.MyClassConstants.isFromExchangeAllAvailable = false
-                if(searchType.isCombined()){
-                    Constant.MyClassConstants.isFromRentalAllAvailable = false
-                }else{
-                    Constant.MyClassConstants.isFromRentalAllAvailable = true
-                }
-                
-                
-            }, onError: { (error) in
-                self.presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
-                self.hideHudAsync()
-                sender.isEnabled = true
-            })
                 }
             }else{
                 
@@ -1742,14 +1721,14 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
     }
     
     
-  // Mark:- Set options for filter
+    // Mark:- Set options for filter
     func createFilterOptions(){
-            
-            Constant.MyClassConstants.filterOptionsArray.removeAll()
-            let storedData = Helper.getLocalStorageWherewanttoGo()
-            let allDest = Helper.getLocalStorageAllDest()
-            
-            if(storedData.count > 0) {
+        
+        Constant.MyClassConstants.filterOptionsArray.removeAll()
+        let storedData = Helper.getLocalStorageWherewanttoGo()
+        let allDest = Helper.getLocalStorageAllDest()
+        
+        if(storedData.count > 0) {
             Constant.MyClassConstants.filterOptionsArray.removeAll()
             for object in storedData {
                 
@@ -1781,12 +1760,6 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                 Constant.MyClassConstants.filterOptionsArray.append(.Area(dictionaryArea as! NSMutableDictionary))
             }
         }
-    }
-    
-    
-    
-    func showNotAvailabilityResults() {
-        DarwinSDK.logger.info("Show the Not Availability Screen.")
     }
     
     // Get data from local storage
