@@ -701,11 +701,6 @@ extension FloatDetailViewController : UITextFieldDelegate{
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
        
-        
-        if (range.length == 1 && string.characters.count == 0) {
-            intervalPrint("backspace tapped")
-        }
-        
             if(textField.tag == 0) {
                     
                 if (range.length == 1 && string.characters.count == 0) {

@@ -22,7 +22,6 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     var alertId : Int64!
     var alertStatusId = 0
     var alertFilterOptionsArray = [Constant.AlertResortDestination]()
-    
     override func viewWillAppear(_ animated: Bool) {
         
         //***** Adding notification to reload table when all alerts have been fetched *****//
@@ -232,7 +231,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     
     //Function for navigating to search results
     func navigateToSearchResults(){
-
+        
         if Constant.MyClassConstants.isRunningOnIphone {
             
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
@@ -250,7 +249,6 @@ class GetawayAlertsIPhoneViewController: UIViewController {
             self.navigationController?.pushViewController(viewController, animated: true)
             
         }
-
     }
     
     func createSearchCriteriaFor(alert:RentalAlert) -> VacationSearchCriteria {
@@ -280,7 +278,6 @@ class GetawayAlertsIPhoneViewController: UIViewController {
             alertFilterOptionsArray
                 .append(Constant.AlertResortDestination.Destination(dest))
         }
-        
         for resort in alert.resorts{
             let alertResort = Resort()
             alertResort.resortName = resort.resortName
@@ -323,19 +320,19 @@ extension GetawayAlertsIPhoneViewController:UITableViewDelegate {
         
         let delete = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: Constant.buttonTitles.remove) { (action,index) -> Void in
             
-            //Remove Alert API call
-            RentalClient.removeAlert(Session.sharedSession.userAccessToken, alertId: Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId!, onSuccess: { () in
-                
-                Constant.MyClassConstants.getawayAlertsArray.remove(at: indexPath.row)
-                tableView.deleteRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
-                
-                let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC)))
-                DispatchQueue.main.asyncAfter(deadline: delayTime, execute: {
-                    tableView.reloadSections(NSIndexSet(index:indexPath.section) as IndexSet, with: .automatic)
-                })
-            }) { (error) in
-                SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
-            }
+        //Remove Alert API call
+        RentalClient.removeAlert(Session.sharedSession.userAccessToken, alertId: Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId!, onSuccess: { () in
+            
+        Constant.MyClassConstants.getawayAlertsArray.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
+            
+            let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC)))
+            DispatchQueue.main.asyncAfter(deadline: delayTime, execute: {
+                tableView.reloadSections(NSIndexSet(index:indexPath.section) as IndexSet, with: .automatic)
+            })
+        }) { (error) in
+            SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+        }   
 
         }
         delete.backgroundColor = UIColor(red: 224/255.0, green: 96.0/255.0, blue: 84.0/255.0, alpha: 1.0)
@@ -459,7 +456,6 @@ extension GetawayAlertsIPhoneViewController:UITableViewDataSource {
                 }
             }
         }
-        
         return cell
     }
     

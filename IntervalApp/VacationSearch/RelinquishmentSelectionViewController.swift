@@ -78,8 +78,10 @@ class RelinquishmentSelectionViewController: UIViewController {
                         if(count != ((fixed_week_type.unit?.lockOffUnits.count)! + 1)){
                             intervalPrint(fixed_week_type.unit!.lockOffUnits.count)
                             intervalPrint(Constant.MyClassConstants.whatToTradeArray,Constant.MyClassConstants.floatRemovedArray)
+
                             if(fixed_week_type.weekNumber == Constant.CommonStringIdentifiers.floatWeek){
                                 if(Constant.MyClassConstants.whatToTradeArray.count > 0){
+                                    
                                     for traversedOpenWeek in Constant.MyClassConstants.whatToTradeArray{
                                         let floatLockOffWeek = traversedOpenWeek as! OpenWeeks
                                         if(floatLockOffWeek.relinquishmentID == fixed_week_type.relinquishmentId){
@@ -108,6 +110,7 @@ class RelinquishmentSelectionViewController: UIViewController {
                     }
                     else {
                         if((fixed_week_type.unit?.lockOffUnits.count)! > 0){
+
                             intervalPrint(fixed_week_type.relinquishmentId!, Constant.MyClassConstants.idUnitsRelinquishmentDictionary.value(forKey: fixed_week_type.relinquishmentId!)!)
                             
                             let results = Constant.MyClassConstants.relinquishmentIdArray.map({ ($0 as AnyObject).contains(fixed_week_type.relinquishmentId!)})
@@ -118,13 +121,11 @@ class RelinquishmentSelectionViewController: UIViewController {
                             }
                             
                             let selectedLockOffArray = Constant.MyClassConstants.idUnitsRelinquishmentDictionary.value(forKey: fixed_week_type.relinquishmentId!)!
-                            intervalPrint(selectedLockOffArray)
+                                intervalPrint(selectedLockOffArray)
                         }
                     }
                 }
-            /*}else{
-                intervalDebugPrint(fixed_week_type.weekNumber, fixed_week_type.relinquishmentId, fixed_week_type.unit?.lockOffUnits.count)
-            }*/
+
         }
         if(Constant.MyClassConstants.relinquishmentIdArray.count > 0 && self.relinquishmentPointsProgramArray[0].relinquishmentId != nil){
             if(Constant.MyClassConstants.relinquishmentIdArray.contains(self.relinquishmentPointsProgramArray[0].relinquishmentId!))
@@ -326,7 +327,6 @@ class RelinquishmentSelectionViewController: UIViewController {
         Constant.MyClassConstants.relinquishmentSelectedWeek = pointOpenWeeksArray[sender.tag]
         let pointsMatrix = OpenWeek()
         if(pointsMatrix.pointsMatrix == false){
-            
             intervalPrint("false")
             let storedata = OpenWeeksStorage()
             let Membership = Session.sharedSession.selectedMembership
@@ -404,9 +404,7 @@ class RelinquishmentSelectionViewController: UIViewController {
                 self.navigationController?.pushViewController(clubPointselectionViewController!, animated: true)
                 
             }, onError:{ (error) in
-                
                 self.hideHudAsync()
-                SVProgressHUD.dismiss()
                 intervalPrint(error.description)
             })
         }
@@ -558,6 +556,7 @@ class RelinquishmentSelectionViewController: UIViewController {
                     if(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId! == selectedDict.allKeys.first as! String){
                         Constant.MyClassConstants.userSelectedUnitsArray.add(selectedDict.object(forKey: Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!)!)
                         intervalPrint(Constant.MyClassConstants.userSelectedUnitsArray)
+
                     }
                 }
             }else{

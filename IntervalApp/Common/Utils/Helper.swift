@@ -434,8 +434,9 @@ public class Helper{
             Constant.MyClassConstants.resortsDescriptionArray = response
             Constant.MyClassConstants.imagesArray.removeAllObjects()
             let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
+
                 for imgStr in imagesArray {
-                print(imgStr.url!)
+
                 if(imgStr.size == Constant.MyClassConstants.imageSize) {
                     
                     Constant.MyClassConstants.imagesArray.add(imgStr.url!)
@@ -1269,6 +1270,7 @@ public class Helper{
             Constant.MyClassConstants.resortsDescriptionArray = response
             Constant.MyClassConstants.imagesArray.removeAllObjects()
             let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
+
             for imgStr in imagesArray {
                 intervalPrint(imgStr.url!)
                 if(imgStr.size == Constant.MyClassConstants.imageSize) {
@@ -1276,6 +1278,7 @@ public class Helper{
                 }
             }
             if(Constant.RunningDevice.deviceIdiom == .pad) {
+
                     if(Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.isFromSearchBoth){
                         
                         var storyBoard = UIStoryboard()
@@ -1952,6 +1955,7 @@ public class Helper{
                 DarwinSDK.logger.info("\(String(describing: calendarItem.checkInDate!))")
             }
         }
+
         intervalPrint(Constant.MyClassConstants.totalBucketArray)
         helperDelegate?.resetCalendar()
     }
@@ -2051,7 +2055,9 @@ public class Helper{
             guard let accessToken = Session.sharedSession.userAccessToken else { return }
             
             PaymentClient.resendConfirmation(accessToken, confirmationNumber: confirmationNumber, emailAddress: emailAddress, onSuccess: {
+
                 intervalPrint("success")
+
                 SimpleAlert.alert(viewcontroller, title: "Success", message: "The confirmation email has been sent.")
             }, onError: { (error) in
                 intervalPrint(error)

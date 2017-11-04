@@ -61,10 +61,7 @@ class SearchResultViewController: UIViewController {
     func runTimer()  {
         
         Constant.MyClassConstants.isShowAvailability = false
-        let sectionIndex = IndexSet(integer: 0)
-        //self.searchResultTableView.reloadSections(sectionIndex, with: .none)
         self.searchResultTableView.reloadData()
-        
         timer.invalidate()
     }
     
@@ -729,7 +726,6 @@ class SearchResultViewController: UIViewController {
             viewController.selectedIndex = Constant.MyClassConstants.filteredIndex
             self.present(viewController, animated: true, completion: nil)
         }
-
 
   }
     
@@ -1557,7 +1553,6 @@ extension SearchResultViewController:UICollectionViewDataSource {
         
         let dropDownImgVw = UIImageView(frame: CGRect(x: self.searchResultTableView.frame.width - 40, y: 5, width: 30, height: 30))
         dropDownImgVw.image = UIImage(named: Constant.assetImageNames.dropArrow)
-
         if(!Constant.MyClassConstants.noFilterOptions || alertFilterOptionsArray.count > 0){
             if(Constant.MyClassConstants.filterOptionsArray.count > 1 || alertFilterOptionsArray.count > 1){
             headerView.addSubview(dropDownImgVw)
@@ -1825,7 +1820,6 @@ extension SearchResultViewController:SearchResultContentTableCellDelegate{
                 showHudAsync()
                 
                 UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
-                    
                     intervalPrint(response)
                     sender.isSelected = false
                     self.hideHudAsync()

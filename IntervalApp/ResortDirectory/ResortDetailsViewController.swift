@@ -234,9 +234,7 @@ class ResortDetailsViewController: UIViewController {
                 self.arrayRunningIndex = arrayRunningIndex + 1
                 let resortCode = Constant.MyClassConstants.resortsArray[Constant.MyClassConstants.vacationSearchContentPagerRunningIndex].resortCode
                 
-                
                 showHudAsync()
-                
                 
                 DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode:resortCode!, onSuccess: { (response) in
                     
@@ -1138,9 +1136,9 @@ extension ResortDetailsViewController:MFMailComposeViewControllerDelegate {
             break
         case MFMailComposeResult.saved.rawValue:
             intervalPrint("Email saved")
+            break
         case MFMailComposeResult.sent.rawValue:
             intervalPrint("Email sent")
-            
             let alertController = UIAlertController(title: "test", message: "test", preferredStyle: .alert)
             let okButton = UIAlertAction(title: "Okay", style: .default, handler: nil)
             alertController.addAction(okButton)
@@ -1148,6 +1146,7 @@ extension ResortDetailsViewController:MFMailComposeViewControllerDelegate {
             
         case MFMailComposeResult.failed.rawValue:
             intervalPrint("Email failed: %@", [error!.localizedDescription])
+            break
         default:
             break
         }

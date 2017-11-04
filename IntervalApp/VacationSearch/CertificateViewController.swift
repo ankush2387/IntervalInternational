@@ -35,20 +35,20 @@ class CertificateViewController: UIViewController {
     }
     
     func getAccommodationCertificateSummary(sendertag:Int) {
-        
+       
         // show hud
         showHudAsync()
         let number = Constant.MyClassConstants.certificateArray[sendertag].certificateNumber! as NSNumber
         
         let certificateNumber:String = number.stringValue
-        UserClient.getAccommodationCertificateSummary(Session.sharedSession.userAccessToken, certificateNumber: certificateNumber, onSuccess: { (response) in
-            
+       UserClient.getAccommodationCertificateSummary(Session.sharedSession.userAccessToken, certificateNumber: certificateNumber, onSuccess: { (response) in
+        
             self.hideHudAsync()
             self.navigateToCertificateDetailsVC(response: response)
-            
+        
         }, onError: { (error) in
             self.hideHudAsync()
-        })
+            })
     }
     
     func navigateToCertificateDetailsVC(response: AccommodationCertificateSummary)  {
@@ -65,20 +65,20 @@ class CertificateViewController: UIViewController {
             self.present(viewController, animated: true, completion: nil)
             
         }
-        
+    
     }
     
     override func viewWillAppear(_ animated: Bool) {
         //show hud
         showHudAsync()
-        UserClient.getAccommodationCertificates(Session.sharedSession.userAccessToken, onSuccess: { (certificates) in
-            self.hideHudAsync()
-            Constant.MyClassConstants.certifcateCount = certificates.count
-            Constant.MyClassConstants.certificateArray =  certificates
-            self.certificateTable.delegate = self
-            self.certificateTable.dataSource = self
-            self.certificateTable.reloadData()
-            
+    UserClient.getAccommodationCertificates(Session.sharedSession.userAccessToken, onSuccess: { (certificates) in
+        self.hideHudAsync()
+        Constant.MyClassConstants.certifcateCount = certificates.count
+        Constant.MyClassConstants.certificateArray =  certificates
+        self.certificateTable.delegate = self
+        self.certificateTable.dataSource = self
+        self.certificateTable.reloadData()
+        
         }, onError: { (error) in
             self.hideHudAsync()
         })

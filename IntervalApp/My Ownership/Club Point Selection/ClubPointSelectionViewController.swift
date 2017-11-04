@@ -141,25 +141,17 @@ class ClubPointSelectionViewController: UIViewController {
         
         for unit in units
         {
-            
-            
             let invenUnit:InventoryUnit = InventoryUnit()
                 invenUnit.unitSize = unit.unit?.unitSize
                 invenUnit.clubPoints = (unit.unit?.clubPoints)!
-            
                 pointMatrixType.unit = invenUnit
-            
-        
         }
-        
-        
         
          ExchangeClient.updatePointsMatrixReservation(Session.sharedSession.userAccessToken, relinquishmentId: relinquishmentID, reservation: pointMatrixType, onSuccess: {(response) in
             intervalPrint(response)
             
          },onError:{ (error) in
-            
-          intervalPrint(error)
+           intervalPrint(error)
          })
 
         
@@ -265,6 +257,7 @@ class ClubPointSelectionViewController: UIViewController {
         dictionaryForSegmentCheckBox.setValue(dictionaryForCheckBox, forKey: Constant.MyClassConstants.segmentSecondString)
         dictionaryForSegmentCheckBox.setValue(dictionaryForCheckBox, forKey: Constant.MyClassConstants.segmentThirdString)
         intervalPrint(dictionaryForSegmentCheckBox)
+
     }
     
     func viewWillAppear() {
@@ -331,6 +324,7 @@ class ClubPointSelectionViewController: UIViewController {
     //Function to map club interval points
     
     func mapClubIntervalPoints(index:Int){
+
         intervalPrint(Constant.MyClassConstants.fromdatearray[0], Constant.MyClassConstants.fromdatearray[1])
         let dictKey = "\(Constant.MyClassConstants.fromdatearray[index]) - \(Constant.MyClassConstants.todatearray[index])"
         let rowsForClubInterval = Constant.MyClassConstants.pointMatrixDictionary.object(forKey: dictKey) as! [ClubPointsMatrixGridRow]
@@ -737,6 +731,7 @@ extension ClubPointSelectionViewController:UICollectionViewDataSource{
                 contentCell.contentLabel.textColor = UIColor.black
                 contentCell.lineImage.isHidden = true
                 let labelUnitArray:NSMutableArray = Constant.MyClassConstants.clubIntervalDictionary.value(forKey: Constant.MyClassConstants.labelarray[indexPath.row - 1] as! String)! as! NSMutableArray
+
                 intervalPrint(labelUnitArray)
                 if(indexPath.section == Constant.MyClassConstants.clubPointMatrixHeaderArray.count){
                     contentCell.checkBoxView.isHidden = true

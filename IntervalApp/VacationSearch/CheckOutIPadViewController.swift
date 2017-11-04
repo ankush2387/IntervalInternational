@@ -679,6 +679,7 @@ class CheckOutIPadViewController: UIViewController {
                 processRequest.fees = fees
                 
                 RentalProcessClient.addCartPromotion(Session.sharedSession.userAccessToken, process: processResort, request: processRequest, onSuccess: { (response) in
+
                     intervalPrint("succes")
                     intervalPrint(response)
                     
@@ -696,12 +697,12 @@ class CheckOutIPadViewController: UIViewController {
                     self.destinationPromotionSelected = true
                     self.checkoutTableView.reloadData()
                     self.bookingTableView.reloadData()
-                    SVProgressHUD.dismiss()
+                    self.hideHudAsync()
                     
                 }, onError: { (error) in
+
                     intervalPrint("Error")
-                    intervalPrint(error)
-                    SVProgressHUD.dismiss()
+                    self.hideHudAsync()
                 })
             }
             
@@ -1007,7 +1008,9 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                         cell.primaryPriceLabel.text = String(Int(Float((Constant.MyClassConstants.exchangeFees[0].shopExchange?.rentalPrice?.price)!)))
                         let priceString = "\(Constant.MyClassConstants.exchangeFees[0].shopExchange!.rentalPrice!.price)"
                         let priceArray = priceString.components(separatedBy: ".")
+
                         intervalPrint(priceArray.last!)
+
                         if((priceArray.last!.characters.count) > 1) {
                             cell.fractionalPriceLabel.text = "\(priceArray.last!)"
                         }else{
@@ -1103,99 +1106,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                 cell.primaryPriceLabel.sizeToFit()
                 
                 return cell
-                
-                
-                
-                
-                
-                
-                
-                /*let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.exchangeOrProtectionCell, for: indexPath) as! ExchangeOrProtectionCell
-                 
-                 if(!isHeightZero){
-                 for subviews in cell.subviews {
-                 
-                 subviews.isHidden = false
-                 }
-                 if(indexPath.row == 0 && Constant.MyClassConstants.isFromExchange){
-                 cell.priceLabel.text = Constant.MyClassConstants.exchangeFeeTitle
-                 cell.priceLabel.numberOfLines = 0
-                 cell.primaryPriceLabel.text = String(Int(Float((Constant.MyClassConstants.exchangeFees[0].shopExchange?.rentalPrice?.price)!)))
-                 let priceString = "\(Constant.MyClassConstants.exchangeFees[0].shopExchange!.rentalPrice!.price)"
-                 let priceArray = priceString.components(separatedBy: ".")
-                 intervalDebugPrint(priceArray.last!)
-                 if((priceArray.last!.characters.count) > 1) {
-                 cell.fractionalPriceLabel.text = "\(priceArray.last!)"
-                 }else{
-                 cell.fractionalPriceLabel.text = "00"
-                 }
-                 }else if(Constant.MyClassConstants.isFromExchange && eplusAdded){
-                 cell.priceLabel.text = totalFeesArray[indexPath.row] as? String
-                 //cell.priceLabel.text = "EPlus"
-                 
-                 let priceString = "\(Constant.MyClassConstants.exchangeFees[0].eplus!.price)"
-                 let priceArray = priceString.components(separatedBy: ".")
-                 cell.primaryPriceLabel.text = priceArray.first
-                 if((priceArray.last?.characters.count)! > 1) {
-                 cell.fractionalPriceLabel.text = "\(String(describing: priceArray.last!))"
-                 }else{
-                 cell.fractionalPriceLabel.text = "00"
-                 }
-                 
-                 
-                 
-                 }else if(indexPath.row == 0 && !Constant.MyClassConstants.isFromExchange){
-                 cell.priceLabel.text = Constant.MyClassConstants.getawayFee
-                 cell.primaryPriceLabel.text = String(Int(Float(Constant.MyClassConstants.inventoryPrice[0].price)))
-                 }else if(indexPath.row == 1 && Constant.MyClassConstants.enableTaxes){
-                 cell.priceLabel.text = Constant.MyClassConstants.taxesTitle
-                 var rentalTax = 0
-                 if(Constant.MyClassConstants.isFromExchange){
-                 rentalTax = Int((Constant.MyClassConstants.exchangeContinueToCheckoutResponse.view?.fees?.shopExchange?.rentalPrice?.tax)!)
-                 }else{
-                 rentalTax = Int((Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.rental?.rentalPrice?.tax)!)
-                 }
-                 cell.primaryPriceLabel.text = "\(rentalTax)"
-                 }else{
-                 if(renewalsArray.count > 0){
-                 let renewalIndex = indexPath.row - (totalRowsInCost - renewalsArray.count)
-                 
-                 cell.priceLabel.numberOfLines = 0
-                 cell.priceLabel.text = "\(String(describing: renewalsArray[renewalIndex].displayName!)) Renewal Fee"
-                 
-                 let priceString = "\(renewalsArray[renewalIndex].price)"
-                 let priceArray = priceString.components(separatedBy: ".")
-                 cell.primaryPriceLabel.text = priceArray.first
-                 if((priceArray.last?.characters.count)! > 1) {
-                 cell.fractionalPriceLabel.text = "\(String(describing: priceArray.last!))"
-                 }else{
-                 cell.fractionalPriceLabel.text = "00"
-                 }
-                 
-                 }
-                 }
-                 
-                 let font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 16.0)
-                 
-                 let width = widthForView(cell.primaryPriceLabel.text!, font: font!, height: cell.priceLabel.frame.size.height)
-                 cell.primaryPriceLabel.frame.size.width = width + 5
-                 
-                 let targetString = cell.primaryPriceLabel.text
-                 let range = NSMakeRange(0, (targetString?.characters.count)!)
-                 
-                 cell.primaryPriceLabel.attributedText = Helper.attributedString(from: targetString!, nonBoldRange: range, font: font!)
-                 cell.periodLabel.frame.origin.x = cell.primaryPriceLabel.frame.origin.x + width
-                 cell.fractionalPriceLabel.frame.origin.x = cell.periodLabel.frame.origin.x + cell.periodLabel.frame.size.width
-                 
-                 }else{
-                 isHeightZero = false
-                 for subviews in cell.subviews {
-                 
-                 subviews.isHidden = true
-                 }
-                 }
-                 cell.primaryPriceLabel.sizeToFit()
-                 return cell*/
+
             case 2:
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.exchangeOrProtectionCell, for: indexPath) as! ExchangeOrProtectionCell

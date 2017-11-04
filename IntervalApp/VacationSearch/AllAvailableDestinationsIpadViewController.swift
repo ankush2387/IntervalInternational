@@ -92,11 +92,11 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
         
         for values in selectedAreaDictionary {
             
+
             intervalPrint(values)
             let counter:[String]  = values.value as! [String]
             intervalPrint(counter.count)
             self.sectionCounter = self.sectionCounter + counter.count
-            
         }
     }
 
@@ -163,6 +163,7 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
             let selectedResort = segue.destination as! SelectedResortsIpadViewController
             selectedResort.areaDictionary = self.selectedAreaDictionary
             intervalPrint(selectedResort.areaDictionary)
+
         }
         
     }
@@ -189,7 +190,9 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
        // let strNew = String(sectionSelected)
         
         let rsregion = Constant.MyClassConstants.regionArray [sender.tag]
+
         intervalPrint(Constant.MyClassConstants.regionAreaDictionary)
+
         if Constant.MyClassConstants.regionAreaDictionary.count == 0 {
             Constant.MyClassConstants.regionAreaDictionary.setValue(rsregion.areas, forKey: String(rsregion.regionCode))
             self.upDownArray.add("\(sender.tag)")
@@ -448,9 +451,10 @@ extension AllAvailableDestinationsIpadViewController:UITableViewDataSource {
         self.areaArray.removeAll()
         if(selectedAreaDictionary.count > 0){
             if let selectedAreas = selectedAreaDictionary.value(forKey: Constant.MyClassConstants.regionArray[indexPath.section].regionName!){
+
                 let area = selectedAreas as! [String]
                 intervalPrint(area.count,area,area.count)
-                
+
                 let areaName = areasInRegionArray[indexPath.row].areaName
                 if(area.contains(areaName!)){
                     cell.placeSelectionCheckBox.checked = true

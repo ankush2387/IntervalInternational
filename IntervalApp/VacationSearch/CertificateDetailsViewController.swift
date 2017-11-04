@@ -12,15 +12,15 @@ import DarwinSDK
 import SVProgressHUD
 
 class CertificateDetailsViewController: UIViewController {
-    
+
     // clas  variables
     var certificateDetailsResponse = AccommodationCertificateSummary()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -51,7 +51,7 @@ extension CertificateDetailsViewController:UITableViewDelegate {
 extension CertificateDetailsViewController:UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+
         var cell = UITableViewCell()
         cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: Constant.certificateScreenReusableIdentifiers.certificateDetailsCell)
         
@@ -87,7 +87,7 @@ extension CertificateDetailsViewController:UITableViewDataSource {
         cell.textLabel?.text = Constant.MyClassConstants.certificateDetailsCellTitle + newLine
         cell.textLabel?.numberOfLines = 0
         cell.textLabel?.font = UIFont(name: Constant.fontName.helveticaNeue, size: 20)
-        
+
         //detail text
         cell.detailTextLabel?.numberOfLines = 0
         cell.detailTextLabel?.text = finaStr

@@ -318,6 +318,7 @@ class AllAvailableDestinationViewController: UIViewController {
         
         let rsregion = Constant.MyClassConstants.regionArray [sender.tag]
         intervalPrint(Constant.MyClassConstants.regionAreaDictionary)
+
         if Constant.MyClassConstants.regionAreaDictionary.count == 0 {
             Constant.MyClassConstants.regionAreaDictionary.setValue(rsregion.areas, forKey: String(rsregion.regionCode))
             upDownArray.add("\(sender.tag)")

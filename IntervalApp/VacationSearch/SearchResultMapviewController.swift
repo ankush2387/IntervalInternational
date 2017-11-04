@@ -319,7 +319,6 @@ class SearchResultMapviewController: UIViewController {
                  self.resortCollectionView.reloadData()
                 ADBMobile.trackAction(Constant.omnitureEvents.event51, data: nil)
             }, onError: {(error) in
-                
                 self.hideHudAsync()
                 intervalPrint(error)
             })

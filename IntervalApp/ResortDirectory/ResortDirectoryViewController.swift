@@ -291,7 +291,6 @@ class ResortDirectoryViewController: UIViewController {
             if (sender.isSelected == false){
                 
                 showHudAsync()
-                
                 UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!, onSuccess: {(response) in
                     intervalPrint(response)
                     self.hideHudAsync()

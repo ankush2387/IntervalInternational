@@ -95,7 +95,6 @@ extension ResortDetails:SearchResultContentTableCellDelegate {
                 
                 
             }, onError: {(error) in
-                
                 intervalPrint(error)
             })
         }

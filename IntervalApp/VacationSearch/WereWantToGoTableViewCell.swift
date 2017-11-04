@@ -146,13 +146,22 @@ extension WereWantToGoTableViewCell:WhereToGoCollectionViewCellDelegate {
     func deleteButtonClickedAtIndex(_ Index: Int) {
         let storedData = Helper.getLocalStorageWherewanttoGo()
         if(storedData.count > 0) {
-            let realm = try! Realm()
-            try! realm.write {
-                realm.delete(storedData[Index])
+            do {
+                let realm = try Realm()
+                do{
+                    try realm.write {
+                        realm.delete(storedData[Index])
+                    }
+                }catch{
+                    intervalPrint("Database error")
+                }
+            } catch {
+                intervalPrint("Database error")
             }
-            
+           
         }
         if(Constant.MyClassConstants.whereTogoContentArray.count > 0) {
+
             intervalPrint( Constant.MyClassConstants.whereTogoContentArray)
             Constant.MyClassConstants.whereTogoContentArray.removeObject(at: Index)
             intervalPrint( Constant.MyClassConstants.whereTogoContentArray)

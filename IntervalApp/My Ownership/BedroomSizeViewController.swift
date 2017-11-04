@@ -296,13 +296,12 @@ extension BedroomSizeViewController : UITableViewDataSource{
             cell?.unitSizeLabel.tag = indexPath.row + 10
             var unitDetails = ""
             if(indexPath.row < Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count - 1 ){
+                
                 if selectedUnit.lockOffUnits.count > 0 {
-                    //unitDetails = "\(String(describing: selectedUnit.lockOffUnits[indexPath.row].unitNumber!)), \(String(describing: Helper.getKitchenEnums(kitchenType:selectedUnit.lockOffUnits[indexPath.row].kitchenType!)))"
                     
                         let units = "\((selectedUnit.lockOffUnits[indexPath.row].unitNumber) ?? "")"
                         let unitnumber =  units.replacingOccurrences(of: "/", with: "")
                         unitDetails = "\(Optional(unitnumber) ?? ""), \(String(describing: Helper.getKitchenEnums(kitchenType:selectedUnit.lockOffUnits[indexPath.row].kitchenType!)))"
-                    
                 }
             }else{
                 if let unitNumber = selectedUnit.unitNumber {

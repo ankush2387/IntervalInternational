@@ -205,6 +205,8 @@ class Constant: NSObject {
         static var tryAgainError = "Try Again".localized()
         static var tdi = "TDI".localized()
         static var season = "Season".localized()
+        static var certificateDetailsCellTitle = "Certificate Details".localized()
+
         
         //***** Vacation search screen constant string header array *****//
         static var threeSegmentHeaderTextArray = ["Where do you want to go".localized(),"Check in closest to".localized(),"Who is travelling".localized()]
@@ -226,9 +228,7 @@ class Constant: NSObject {
          static var headerTextFlexchangeDestination = "Your selected Flexchange Destination".localized()
         
         static var sectionHeaderArray = ["Destinations".localized(),"Resorts".localized()]
-        
         static var relinquishmentHeaderArray = ["Club Interval Gold Weeks".localized(),"","Club Points".localized(),"Interval Weeks".localized(),"Deposited".localized()]
-
         static var lockOffCapable = "Lock Off Capable".localized()
         
         static var membershipContactArray = [Contact]()

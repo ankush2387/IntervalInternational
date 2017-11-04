@@ -399,6 +399,7 @@ class CheckOutViewController: UIViewController {
         }
        }
         intervalPrint(totalFeesArray)
+
     }
     
     //***** Function called switch state is 'On' so as to update user's email. *****//

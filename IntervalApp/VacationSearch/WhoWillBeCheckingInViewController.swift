@@ -395,6 +395,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
                         Constant.GetawaySearchResultGuestFormDetailData.stateListArray = response
                     }, onError: { (error) in
                         intervalPrint(error)
+
                     })
                 }
             }
@@ -1383,7 +1384,6 @@ extension WhoWillBeCheckingInViewController:RenewelViewControllerDelegate{
     }
     
     func otherOptions(forceRenewals: ForceRenewals) {
-
         intervalPrint("remove later")
         let button = UIButton()
         self.proceedToCheckoutPressed(button)

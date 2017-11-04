@@ -116,7 +116,6 @@ extension SelectedResortsIpadViewController:UITableViewDelegate {
             if let areas = areaDictionary.value(forKey: dicKey as! String){
                 
                 let localArray:NSMutableArray = NSMutableArray()
-                
                 for object in areas as! [String]{
                     
                     localArray.add(object)
@@ -133,9 +132,7 @@ extension SelectedResortsIpadViewController:UITableViewDelegate {
                     }
                 }
                 localArray.removeObject(at: indexPath.row)
-
                 selectedCounter = -1
-                
                 if(localArray.count > 0){
                     areaDictionary.setValue(localArray, forKey: dicKey as! String)
                 }else{

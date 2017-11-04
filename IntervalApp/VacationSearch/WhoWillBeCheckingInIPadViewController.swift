@@ -239,7 +239,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                 Constant.GetawaySearchResultGuestFormDetailData.countryListArray = response
                 
             }, onError: { (error) in
-                intervalPrint(error)
+
             })
 
         }

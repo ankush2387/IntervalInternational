@@ -68,7 +68,6 @@ class AddDebitOrCreditCardViewController: UIViewController {
         self.years = years
         intervalPrint(years)
         
-
         NotificationCenter.default.addObserver(self, selector:#selector(keyboardWasShown), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateResortHoldingTime), name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
@@ -912,7 +911,6 @@ extension AddDebitOrCreditCardViewController:UITextFieldDelegate {
         if (range.length == 1 && string.characters.count == 0) {
             intervalPrint("backspace tapped")
         }
-    
         if(Int(textField.accessibilityValue!) == 0) {
                 
                 if(textField.tag == 0) {

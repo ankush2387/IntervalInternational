@@ -134,6 +134,7 @@ final class AppCoordinator {
     }
 
     fileprivate func logoutDidFinish() {
+        
         navigationController?.popToRootViewController(animated: true)
         userIsLoggedIn = false
         autoLogoutTimer.stop()
