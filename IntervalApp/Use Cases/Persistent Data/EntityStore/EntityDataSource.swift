@@ -115,13 +115,15 @@ extension EntityDataSource: EntityDataStore {
     }
     
     /// Writes object to disk (encrypted), data will persist between App launches
-    func writeToDisk(_ object: Object) -> Promise<Void> {
-        return write(object, to: encryptedRealmOnDisk)
+    func writeToDisk(_ object: Object, encoding: Encoding) -> Promise<Void> {
+        let database = encoding == .encrypted ? encryptedRealmOnDisk : decryptedRealmOnDiskGlobal
+        return write(object, to: database)
     }
     
     /// Writes objects to disk (encrypted), data will persist between App launches
-    func writeToDisk(_ objects: [Object]) -> Promise<Void> {
-        return write(objects, to: encryptedRealmOnDisk)
+    func writeToDisk(_ objects: [Object], encoding: Encoding) -> Promise<Void> {
+        let database = encoding == .encrypted ? encryptedRealmOnDisk : decryptedRealmOnDiskGlobal
+        return write(objects, to: database)
     }
     
     /// Read object from RAM, data does not persist between App launches
@@ -135,12 +137,14 @@ extension EntityDataSource: EntityDataStore {
     }
     
     /// Read object from disk (encrypted), data persists between App launches
-    func readObjectFromDisk<T: Object, K>(type: T.Type, forKey: K) -> Promise<T> {
-        return readObject(type, in: encryptedRealmOnDisk, for: forKey)
+    func readObjectFromDisk<T: Object, K>(type: T.Type, forKey: K, encoding: Encoding) -> Promise<T> {
+        let database = encoding == .encrypted ? encryptedRealmOnDisk : decryptedRealmOnDiskGlobal
+        return readObject(type, in: database, for: forKey)
     }
     
     /// Read objects from disk (encrypted), data persists between App launches
-    func readObjectsFromDisk<T: Object>(type: T.Type, predicate: String?) -> Promise<Results<T>> {
-        return readObjects(type, in: encryptedRealmOnDisk, with: predicate)
+    func readObjectsFromDisk<T: Object>(type: T.Type, predicate: String?, encoding: Encoding) -> Promise<Results<T>> {
+        let database = encoding == .encrypted ? encryptedRealmOnDisk : decryptedRealmOnDiskGlobal
+        return readObjects(type, in: database, with: predicate)
     }
 }
