@@ -124,7 +124,6 @@ final class AppCoordinator {
         Constant.MyClassConstants.getawayAlertsArray.removeAll()
         Constant.MyClassConstants.isLoginSuccessfull = false
         Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
-        TouchID().deactivateTouchID()
 
         // TODO: - Need to refactor code/calls above
 
@@ -146,7 +145,7 @@ final class AppCoordinator {
         
         return Promise { resolve, reject in
             
-            let keychain = KeychainWrapper()
+            let keychain = Keychain()
             guard let data = try? keychain.getItem(for: Persistent.encryption.key, and: contactID, ofType: Data()),
                 let key = data else {
                     

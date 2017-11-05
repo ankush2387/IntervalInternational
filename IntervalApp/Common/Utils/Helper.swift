@@ -311,7 +311,7 @@ public class Helper{
                         if(sender is SignInPreLoginViewController){
                             sender.perform(#selector(SignInPreLoginViewController.createActionSheet(_:)), with: nil, afterDelay: 0.0)
                         }else{
-                            sender.perform(#selector(LoginIPadViewController.createActionSheet(_:)), with: nil, afterDelay: 0.0)
+                            
                         }
                         
                     }

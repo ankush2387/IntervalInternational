@@ -43,8 +43,6 @@ class CreateActionSheet: UITableViewController {
         
         tableViewController = viewController
         Constant.MyClassConstants.signInRequestedController = viewController
-        if(Constant.MyClassConstants.signInRequestedController .isKind(of: OldLoginViewController.self)){
-        }
         
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.none
         self.tableView.isUserInteractionEnabled = true

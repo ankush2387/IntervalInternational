@@ -104,7 +104,6 @@ class SideMenuiPadTableViewController: UIViewController, UITableViewDataSource {
         Constant.MyClassConstants.getawayAlertsArray.removeAll()
         Constant.MyClassConstants.isLoginSuccessfull = false
         Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
-        TouchID().deactivateTouchID()
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PopToLoginView"), object: nil)
         
        /* Session.sharedSession.signOut()

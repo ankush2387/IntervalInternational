@@ -10,7 +10,6 @@ import UIKit
 import DarwinSDK
 import ReactiveKit
 
-
 final class LoginViewController: UIViewController {
     
     // MARK: - IBOutlets
@@ -37,7 +36,7 @@ final class LoginViewController: UIViewController {
 
     // MARK: - Private properties
     private let disposeBag = DisposeBag()
-    private let touchID = TouchIDAuth()
+    private let touchID = TouchID()
     fileprivate let viewModel: LoginViewModel
     
     // MARK: - Lifecycle

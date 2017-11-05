@@ -57,7 +57,6 @@ class LoginFormTableViewCell: UITableViewCell
         
         //***** checking touch id sensor feature on running device *****//
         var hasTouchID:Bool = false
-		hasTouchID = TouchID.isTouchIDAvailable()
         if(!(hasTouchID)){
             self.touchIdImageView.isHidden = true
             self.enableTouchIdTextLabel.isHidden = true
@@ -86,7 +85,6 @@ class LoginFormTableViewCell: UITableViewCell
 		{
 			enableTouchIdTextLabel.textColor = IUIKColorPalette.primary1.color
 			self.touchIdImageView.image = UIImage(named: Constant.assetImageNames.TouchIdOn)
-			OldLoginViewController().touchIdButtonEnabled = true
 		}
 		else
 		{

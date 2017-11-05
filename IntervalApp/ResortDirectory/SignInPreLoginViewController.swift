@@ -75,7 +75,6 @@ class SignInPreLoginViewController: UIViewController {
         
         let userInfo: [String: String] = [
             Constant.omnitureEvars.eVar81 : Constant.omnitureCommonString.signInModal,
-            Constant.omnitureEvars.eVar12 : "\(TouchID.isTouchIDAvailable() ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no)"
         ]
         
         ADBMobile.trackAction(Constant.omnitureEvents.event68, data: userInfo)

@@ -16,7 +16,7 @@ final class KeychainSpec: QuickSpec {
 
         describe("The Keychain wrapper struct with generic read and write methods") {
 
-            let keychain = KeychainWrapper(service: "Mock Keychain Service")
+            let keychain = Keychain(service: "Mock Keychain Service")
 
             describe("The behavior when saving generic values to keychain") {
                 it("should save and retrieve the Strings successfully") {

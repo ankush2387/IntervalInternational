@@ -60,7 +60,7 @@ final class LoginCoordinator: ComputationHelper {
 
     convenience init() {
         self.init(backgroundImages: [#imageLiteral(resourceName: "BackgroundImgLogin-A"), #imageLiteral(resourceName: "BackgroundImgLogin-B"), #imageLiteral(resourceName: "BackgroundImgLogin-C"), #imageLiteral(resourceName: "BackgroundImgLogin-D"), #imageLiteral(resourceName: "BackgroundImgLogin-E"), #imageLiteral(resourceName: "BackgroundImgLogin-F"), #imageLiteral(resourceName: "BackgroundImgLogin-G")],
-                  encryptedStore: KeychainWrapper(),
+                  encryptedStore: Keychain(),
                   decryptedStore: UserDafaultsWrapper(),
                   messaging: Messaging.messaging(),
                   configuration: Config.sharedInstance,

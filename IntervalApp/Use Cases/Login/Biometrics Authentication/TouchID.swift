@@ -1,5 +1,5 @@
 //
-//  TouchIDAuth.swift
+//  TouchID.swift
 //  IntervalApp
 //
 //  Created by Aylwing Olivas on 10/14/17.
@@ -10,7 +10,7 @@ import then
 import Foundation
 import LocalAuthentication
 
-final class TouchIDAuth {
+final class TouchID {
 
     // MARK: - Public properties
     var canEvaluatePolicy: Bool {

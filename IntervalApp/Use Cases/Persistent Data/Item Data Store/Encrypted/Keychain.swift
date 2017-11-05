@@ -1,14 +1,14 @@
 //
-//  KeychainWrapper.swift
+//  Keychain.swift
 //  IntervalApp
 //
 //  Created by Aylwing Olivas on 10/31/17.
 //  Copyright © 2017 Interval International. All rights reserved.
 //
 
-import KeychainAccess
+import Foundation
 
-struct KeychainWrapper {
+struct Keychain {
 
     // MARK: - Private properties
     private let service: String
@@ -217,7 +217,7 @@ struct KeychainWrapper {
     }
 }
 
-extension KeychainWrapper: EncryptedItemDataStore {
+extension Keychain: EncryptedItemDataStore {
 
     func save<T>(item: T, for key: String) throws {
         return try saveToKeychain(item, for: key)
