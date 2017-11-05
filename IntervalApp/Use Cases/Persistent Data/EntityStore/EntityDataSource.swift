@@ -48,6 +48,15 @@ final class EntityDataSource {
         encryptedRealmConfiguration?.fileURL?.deleteLastPathComponent()
         let fileURL = encryptedRealmConfiguration?.fileURL?.appendingPathComponent(path)
         encryptedRealmConfiguration?.fileURL = fileURL
+
+        encryptedRealmConfiguration?.shouldCompactOnLaunch = { totalBytes, usedBytes in
+            // totalBytes refers to the size of the file on disk in bytes (data + free space)
+            // usedBytes refers to the number of bytes used by data in the file
+            // Happens when realm database is opened for the first time
+            // Compact if the file is over 100MB in size and less than 50% 'used'
+            let oneHundredMB = 100 * 1024 * 1024
+            return (totalBytes > oneHundredMB) && (Double(usedBytes) / Double(totalBytes)) < 0.5
+        }
     }
 
     // MARK: - Private functions
