@@ -90,7 +90,7 @@ class MyUpcommingTripIpadViewController: UIViewController {
             self.performSegue(withIdentifier:Constant.segueIdentifiers.detailSegue, sender:nil)
         }) { (error) in
             self.hideHudAsync()
-            SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+            self.presentErrorAlert(UserFacingCommonError.generic)
         }
     }
 }

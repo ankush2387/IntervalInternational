@@ -662,11 +662,11 @@ extension UIViewController {
             })
             { (error) in
                 self.hideHudAsync()
-                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                self.presentErrorAlert(UserFacingCommonError.generic)
             }
         } else {
             self.hideHudAsync()
-            SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
+            self.presentErrorAlert(UserFacingCommonError.noNetConnection)
         }
     }
     

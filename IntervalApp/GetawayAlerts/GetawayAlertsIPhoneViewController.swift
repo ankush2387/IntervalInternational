@@ -331,7 +331,7 @@ extension GetawayAlertsIPhoneViewController:UITableViewDelegate {
                 tableView.reloadSections(NSIndexSet(index:indexPath.section) as IndexSet, with: .automatic)
             })
         }) { (error) in
-            SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+            self.presentErrorAlert(UserFacingCommonError.generic)
         }   
 
         }

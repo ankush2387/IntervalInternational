@@ -86,7 +86,7 @@ class AddDebitOrCreditCardViewController: UIViewController {
         
         if(Constant.holdingTime != 0){
         }else{
-            SimpleAlert.alertTodismissController(self, title: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage)
+            presentAlert(with: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage)
         }
     }
 
@@ -219,19 +219,18 @@ class AddDebitOrCreditCardViewController: UIViewController {
                     self.delegate?.newCreditCardAdded()
                     
                     }, onError: {(error) in
-                        SimpleAlert.alert(self, title:Constant.MyClassConstants.newCardalertTitle, message: error.description)
+                        self.presentErrorAlert(UserFacingCommonError.generic)
                         self.hideHudAsync()
                        
                 })
             }
             else {
-                
-                SimpleAlert.alert(self, title:Constant.MyClassConstants.newCardalertTitle, message: Constant.MyClassConstants.newCardalertMess)
+                self.presentAlert(with: Constant.MyClassConstants.newCardalertTitle, message: Constant.MyClassConstants.newCardalertMess)
             }
             
         }
         else {
-            SimpleAlert.alert(self, title: Constant.MyClassConstants.newCardalertTitle, message: Constant.MyClassConstants.alertReqFieldMsg)
+            self.presentAlert(with: Constant.MyClassConstants.newCardalertTitle, message: Constant.MyClassConstants.alertReqFieldMsg)
         }
     }
     

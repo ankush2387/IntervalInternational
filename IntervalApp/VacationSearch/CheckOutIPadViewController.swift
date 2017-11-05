@@ -210,7 +210,7 @@ class CheckOutIPadViewController: UIViewController {
                 self.hideHudAsync()
             }, onError: {(error) in
                 self.hideHudAsync()
-                SimpleAlert.alert(self, title: "Checkout", message: error.localizedDescription)
+                self.presentErrorAlert(UserFacingCommonError.generic)
             })
             
         }else{
@@ -223,7 +223,7 @@ class CheckOutIPadViewController: UIViewController {
             }, onError: {(error) in
                 
                 self.hideHudAsync()
-                SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.operationFailedMessage)
+                self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.operationFailedMessage)
             })
         }
     }
@@ -291,7 +291,7 @@ class CheckOutIPadViewController: UIViewController {
                         imageSlider.isHidden = false
                         self.isAgreed = false
                         self.checkoutTableView.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
-                        SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: error.description)
+                        self.presentErrorAlert(UserFacingCommonError.generic)
                     })
                     
                     
@@ -321,7 +321,7 @@ class CheckOutIPadViewController: UIViewController {
                         imageSlider.isHidden = false
                         self.isAgreed = false
                         self.checkoutTableView.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
-                        SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: error.description)
+                        self.presentErrorAlert(UserFacingCommonError.generic)
                     })
                 }
                 
@@ -330,17 +330,17 @@ class CheckOutIPadViewController: UIViewController {
                 let indexPath = NSIndexPath(row: 0, section: 7)
                 checkoutTableView.scrollToRow(at: indexPath as IndexPath, at: .top, animated: true)
                 imageSlider.isHidden = false
-                SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.feesAlertMessage)
+                presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.feesAlertMessage)
             }else if(strReject == Constant.MyClassConstants.isFalse && strAccept == Constant.MyClassConstants.isFalse){
                 let indexPath = NSIndexPath(row: 0, section: 4)
                 checkoutTableView.scrollToRow(at: indexPath as IndexPath, at: .top, animated: true)
                 imageSlider.isHidden = false
-                SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.insuranceSelectionMessage)
+                presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.insuranceSelectionMessage)
             }else{
                 let indexPath = NSIndexPath(row: 0, section: 6)
                 checkoutTableView.scrollToRow(at: indexPath as IndexPath, at: .top, animated: true)
                 imageSlider.isHidden = true
-                SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.paymentSelectionMessage)
+                presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.paymentSelectionMessage)
             }
         }else{
             isAgreedToFees = true
@@ -356,7 +356,7 @@ class CheckOutIPadViewController: UIViewController {
         if(Constant.holdingTime != 0){
             self.remainingResortHoldingTimeLabel.text = Constant.holdingResortForRemainingMinutes
         }else{
-            SimpleAlert.alertTodismissController(self, title: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage)
+            presentAlert(with: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage)
         }
     }
     
@@ -416,7 +416,7 @@ class CheckOutIPadViewController: UIViewController {
                 self.bookingTableView.reloadData()
                 DarwinSDK.logger.debug(error.description)
                 self.hideHudAsync()
-                SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: error.description)
+                self.presentErrorAlert(UserFacingCommonError.generic)
             })
         }
         else{
@@ -470,7 +470,7 @@ class CheckOutIPadViewController: UIViewController {
             self.eplusAdded = !sender.checked
             Constant.MyClassConstants.exchangeFees[0].eplus?.selected = sender.checked
             self.hideHudAsync()
-            SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: error.description)
+            self.presentErrorAlert(UserFacingCommonError.generic)
             self.checkSectionsForFees()
             self.bookingTableView.reloadData()
             self.checkoutTableView.reloadData()
@@ -593,7 +593,7 @@ class CheckOutIPadViewController: UIViewController {
         }
         else {
             sender.setOn(false, animated: true)
-            SimpleAlert.alert(self, title: Constant.buttonTitles.updateSwitchTitle, message: Constant.AlertErrorMessages.emailAlertMessage)
+            self.presentAlert(with: Constant.buttonTitles.updateSwitchTitle, message: Constant.AlertErrorMessages.emailAlertMessage)
         }
     }
     

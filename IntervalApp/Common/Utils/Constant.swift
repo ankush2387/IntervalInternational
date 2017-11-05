@@ -267,7 +267,6 @@ class Constant: NSObject {
         static var selectedGetawayAlertDestinationArray:NSMutableArray = []
         static var alertSelectedResorts = [Resort]()
         static var alertSelectedDestination = [AreaOfInfluenceDestination]()
-        static var checkInClosestContentArray:NSMutableArray = []
         static var fromdatearray:NSMutableArray = []
         static var todatearray:NSMutableArray = []
         static var labelarray:NSMutableArray = []

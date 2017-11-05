@@ -1880,8 +1880,8 @@ extension GoogleMapViewController:UISearchBarDelegate {
             }) { (error) in
                 
                 Logger.sharedInstance.warning(error.description)
-                self.presentErrorAlert(error as! ViewError)
-                
+                self.presentErrorAlert(UserFacingCommonError.generic)
+        
             }
         }
     }

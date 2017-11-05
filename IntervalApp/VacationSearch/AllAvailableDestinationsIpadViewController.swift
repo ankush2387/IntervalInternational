@@ -210,7 +210,7 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
         
         if(selectedAreaDictionary.allKeys.count == 0){
             
-            SimpleAlert.alert(self, title: Constant.dashboardTableScreenReusableIdentifiers.alert, message: Constant.AlertMessages.editAlertdetinationMessage)
+            presentAlert(with: Constant.dashboardTableScreenReusableIdentifiers.alert, message: Constant.AlertMessages.editAlertdetinationMessage)
             
         }else{
             
@@ -305,9 +305,8 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
                     }
                     
                 }, onError: { (error) in
-                    
                     self.hideHudAsync()
-                    SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                    self.presentErrorAlert(UserFacingCommonError.generic)
                 })
                 
                 
@@ -364,9 +363,7 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
                 })
                 { (error) in
                     self.hideHudAsync()
-                    
-                    
-                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                    self.presentErrorAlert(UserFacingCommonError.generic)
                 }
                 
                 
@@ -410,8 +407,7 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
                 },
                                          onError:{ (error) in
                                             self.hideHudAsync()
-                                            //sender.isEnabled = true
-                                            SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                                            self.presentErrorAlert(UserFacingCommonError.generic)
                 }
                 )
                 
@@ -515,7 +511,7 @@ extension AllAvailableDestinationsIpadViewController:UITableViewDelegate {
                 
                 // show alert when maximum limit is reached
                 DispatchQueue.main.async(execute: {
-                    SimpleAlert.alert(self, title: Constant.dashboardTableScreenReusableIdentifiers.alert, message: Constant.AlertMessages.maximumLimitReachedMessage)
+                    self.presentAlert(with: Constant.dashboardTableScreenReusableIdentifiers.alert, message: Constant.AlertMessages.maximumLimitReachedMessage)
                 })
                 
             }else{

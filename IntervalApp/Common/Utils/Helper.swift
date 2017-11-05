@@ -221,7 +221,7 @@ public class Helper{
                 }
                 else {
                     sender.hideHudAsync()
-                    SimpleAlert.alert(sender, title:Constant.AlertErrorMessages.tryAgainError, message: Constant.AlertErrorMessages.loginFailedError)
+                    sender.presentAlert(with: Constant.AlertErrorMessages.tryAgainError, message: Constant.AlertErrorMessages.loginFailedError)
                     completionHandler(false)
                 }
                 // Got an access token!  Save it for later use.
@@ -231,14 +231,13 @@ public class Helper{
                                                 sender.hideHudAsync()
                                                 
                                                 Logger.sharedInstance.warning(error.description)
-                                                SimpleAlert.alert(sender, title:Constant.AlertErrorMessages.tryAgainError, message: "\(error.localizedDescription)")
+                                                sender.presentErrorAlert(UserFacingCommonError.generic)
                                                 completionHandler(false)
             }
             )
         }
         else{
-            
-            SimpleAlert.alert(sender, title:Constant.AlertErrorMessages.networkError, message: Constant.AlertMessages.networkErrorMessage)
+            sender.presentErrorAlert(UserFacingCommonError.noNetConnection)
             completionHandler(false)
         }
     }
@@ -266,7 +265,7 @@ public class Helper{
                                             sender.hideHudAsync()
                                             
                                             Logger.sharedInstance.warning(error.description)
-                                            SimpleAlert.alert(sender, title:Constant.AlertErrorMessages.loginFailed, message: error.localizedDescription)
+                                            sender.presentErrorAlert(UserFacingCommonError.generic)
             }
                 
                 
@@ -275,7 +274,8 @@ public class Helper{
                 
             )
         }else{
-            SimpleAlert.alert(sender, title:Constant.AlertErrorMessages.networkError, message: Constant.AlertMessages.networkErrorMessage)
+            sender.presentAlert(with: Constant.AlertErrorMessages.networkError, message: Constant.AlertMessages.networkErrorMessage)
+            
         }
     }
     
@@ -332,7 +332,7 @@ public class Helper{
             else {
                 
                 Logger.sharedInstance.error("The contact \(contact.contactId) has no membership information!")
-                SimpleAlert.alert(sender, title:Constant.AlertErrorMessages.loginFailed, message: Constant.AlertMessages.noMembershipMessage)
+                sender.presentAlert(with: Constant.AlertErrorMessages.loginFailed, message: Constant.AlertMessages.noMembershipMessage)
             }
         }
     }
@@ -402,7 +402,8 @@ public class Helper{
 
         }) { (error) in
             viewController.hideHudAsync()
-            SimpleAlert.alert(viewController, title:Constant.AlertErrorMessages.errorString, message: error.description)
+            viewController.presentErrorAlert(UserFacingCommonError.generic)
+            viewController.presentErrorAlert(UserFacingCommonError.generic)
         }
         
     }
@@ -419,7 +420,7 @@ public class Helper{
             
         }, onError: { (error) in
             viewController.hideHudAsync()
-            SimpleAlert.alert(viewController, title:Constant.AlertErrorMessages.errorString, message: error.description)
+            viewController.presentErrorAlert(UserFacingCommonError.generic)
         })
         
     }
@@ -449,8 +450,7 @@ public class Helper{
         })
         { (error) in
             viewController.hideHudAsync()
-            
-            SimpleAlert.alert(viewController, title:Constant.AlertErrorMessages.errorString, message: error.description)
+            viewController.presentErrorAlert(UserFacingCommonError.generic)
         }
     
     }
@@ -534,13 +534,12 @@ public class Helper{
                 senderVC.hideHudAsync()
                 
                 Constant.MyClassConstants.showAlert = true
-                SimpleAlert.alert(senderVC, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                senderVC.presentErrorAlert(UserFacingCommonError.generic)
             })
         }
         else {
             senderVC.hideHudAsync()
-            
-            SimpleAlert.alert(senderVC, title:Constant.AlertErrorMessages.networkError, message: Constant.AlertMessages.networkErrorMessage)
+            senderVC.presentErrorAlert(UserFacingCommonError.noNetConnection)
         }
         
     }
@@ -952,7 +951,7 @@ public class Helper{
                                    onError: {(error) in
                                     
                                     senderVC.hideHudAsync()
-                                    SimpleAlert.alert(senderVC, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                                    senderVC.presentErrorAlert(UserFacingCommonError.generic)
                                     
         })
     }
@@ -964,7 +963,7 @@ public class Helper{
             success(true)
         }) { (error) in
             success(false)
-            SimpleAlert.alert(senderVC, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+            senderVC.presentErrorAlert(UserFacingCommonError.generic)
 
         }
     }
@@ -1048,7 +1047,7 @@ public class Helper{
         }) { (error) in
             
              senderViewController.hideHudAsync()
-             SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+             senderViewController.presentErrorAlert(UserFacingCommonError.generic)
         }
     }
     
@@ -1117,14 +1116,14 @@ public class Helper{
             senderViewController.navigationController?.transitioningDelegate = transitionManager
             senderViewController.navigationController?.pushViewController(viewController, animated: true)
             }else{
-                SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.noDatesMessage)
+                senderViewController.presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.noDatesMessage)
             }
         
         }) { (error) in
             
             senderViewController.hideHudAsync()
             
-            SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+            senderViewController.presentErrorAlert(UserFacingCommonError.generic)
         }
     }
     
@@ -1326,7 +1325,7 @@ public class Helper{
         { (error) in
             viewcontroller.hideHudAsync()
             
-            SimpleAlert.alert(viewcontroller, title:Constant.AlertErrorMessages.errorString, message: error.description)
+            viewcontroller.presentErrorAlert(UserFacingCommonError.generic)
         }
         
         
@@ -1542,10 +1541,8 @@ public class Helper{
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadTripDetailsNotification), object: nil)
             
         }) { (error) in
-            
             senderViewController.hideHudAsync()
-            SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
-            
+            senderViewController.presentErrorAlert(UserFacingCommonError.generic)
         }
     }
     //Common function to add notifications.
@@ -1749,7 +1746,7 @@ public class Helper{
                                     Constant.MyClassConstants.noAvailabilityView = true
                                     Constant.MyClassConstants.isFromSorting = false
                                     senderViewController.hideHudAsync()
-                                    SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                                    senderViewController.presentErrorAlert(UserFacingCommonError.generic)
         }
         )
     }
@@ -1811,7 +1808,7 @@ public class Helper{
         })
         { (error) in
             senderViewController.hideHudAsync()
-            SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.noResultError, message: error.localizedDescription)
+            senderViewController.presentErrorAlert(UserFacingCommonError.generic)
         }
     }
     
@@ -1848,8 +1845,8 @@ public class Helper{
                                     
                                     //expectation.fulfill()
         },
-                                   onError:{ (error) in
-                                    SimpleAlert.alert(senderVC, title: Constant.AlertErrorMessages.noResultError, message: error.localizedDescription)
+           onError:{ (error) in
+           senderVC.presentErrorAlert(UserFacingCommonError.generic)
                                     
         }
         )
@@ -1890,9 +1887,9 @@ public class Helper{
                                     }
                                     
         },
-                                   onError:{ (error) in
-                                    SimpleAlert.alert(senderVC, title: Constant.AlertErrorMessages.noResultError, message: error.localizedDescription)
-                                  }
+           onError:{ (error) in
+            senderVC.presentErrorAlert(UserFacingCommonError.generic)
+          }
         )
     }
     
@@ -1920,8 +1917,8 @@ public class Helper{
                                             helperDelegate?.resortSearchComplete()
                     
         },
-                                          onError:{ (error) in
-                                            SimpleAlert.alert(senderVC, title: Constant.AlertErrorMessages.noResultError, message: error.localizedDescription)
+          onError:{ (error) in
+            senderVC.presentErrorAlert(UserFacingCommonError.generic)
         }
         )
     }
@@ -2057,11 +2054,10 @@ public class Helper{
             PaymentClient.resendConfirmation(accessToken, confirmationNumber: confirmationNumber, emailAddress: emailAddress, onSuccess: {
 
                 intervalPrint("success")
-
-                SimpleAlert.alert(viewcontroller, title: "Success", message: "The confirmation email has been sent.")
+                viewcontroller.presentAlert(with: "Success", message: "The confirmation email has been sent.")
             }, onError: { (error) in
                 intervalPrint(error)
-                SimpleAlert.alert(viewcontroller, title: "Error", message: "The Confirmation could not be sent at the moment.")
+                viewcontroller.presentAlert(with: "Error", message: "The Confirmation could not be sent at the moment.")
             })
         }
         

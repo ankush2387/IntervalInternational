@@ -336,7 +336,7 @@ class EditMyAlertIpadViewController: UIViewController {
                             
                             ADBMobile.trackAction(Constant.omnitureEvents.event53, data: userInfo)
                             
-                            SimpleAlert.alertTodismissController(self, title:Constant.AlertPromtMessages.editAlertTitle , message: Constant.AlertMessages.editAlertMessage)
+                            self.presentAlert(with: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertMessage)
                             
                             
                         })
@@ -350,29 +350,26 @@ class EditMyAlertIpadViewController: UIViewController {
                             
                             ADBMobile.trackAction(Constant.omnitureEvents.event53, data: userInfo)
                             self.hideHudAsync()
-                            SimpleAlert.alert(self, title:Constant.AlertPromtMessages.editAlertTitle , message: error.description)
+                            self.presentErrorAlert(UserFacingCommonError.generic)
                             
                         }
                     }
                     else {
-                        
-                        SimpleAlert.alert(self, title: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertdetinationrequiredMessage)
+                        self.presentAlert(with: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertdetinationrequiredMessage)
                     }
                     
                 }
                 else {
-                    
-                    SimpleAlert.alert(self, title: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertEmptyWidowEndDateMessage)
+                    self.presentAlert(with: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertEmptyWidowEndDateMessage)
                 }
             }
             else {
-                
-                SimpleAlert.alert(self, title: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertEmptyWidowStartDateMessage)
+                self.presentAlert(with: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertEmptyWidowStartDateMessage)
             }
             
         }
         else {
-            SimpleAlert.alert(self, title: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertEmptyNameMessage)
+            self.presentAlert(with: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertEmptyNameMessage)
         }
         
     }

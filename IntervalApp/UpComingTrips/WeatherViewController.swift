@@ -226,7 +226,7 @@ extension UIViewController {
         }) { (error) in
             completionHandler(false)
             intervalPrint(error)
-            SimpleAlert.alert(self, title: "Error", message: "Something went wrong. Please try again.")
+            self.presentErrorAlert(UserFacingCommonError.generic)
             
         }
 

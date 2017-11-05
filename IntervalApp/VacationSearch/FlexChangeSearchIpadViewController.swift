@@ -105,8 +105,7 @@ class FlexChangeSearchIpadViewController: UIViewController {
     @IBAction func searchButtonClicked(_ sender: UIButton) {
         
         if(Constant.MyClassConstants.relinquishmentIdArray.count == 0) {
-            return SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
-            
+            return self.presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
         }
         
         Helper.helperDelegate = self
@@ -124,25 +123,6 @@ class FlexChangeSearchIpadViewController: UIViewController {
             let settings = Helper.createSettings()
             
             Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
-            
-            
-            /*let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
-            
-            exchangeSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
-            exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
-            exchangeSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
-            exchangeSearchCriteria.searchType = VacationSearchType.Exchange
-            
-            
-            //let storedData = Helper.getLocalStorageWherewanttoGo()
-            
-            exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
-            Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(Session.sharedSession.appSettings, exchangeSearchCriteria)
-            let area = Area()
-            area.areaCode = (selectedFlexchange?.areaCode)!
-            area.areaName = selectedFlexchange?.name
-            Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.areas = [area]*/
-            
             
             ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
                 
@@ -168,9 +148,8 @@ class FlexChangeSearchIpadViewController: UIViewController {
                 }
                 
             }, onError: { (error) in
-                
                 self.hideHudAsync()
-                SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                self.presentErrorAlert(UserFacingCommonError.generic)
             })
             
             

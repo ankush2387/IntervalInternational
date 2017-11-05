@@ -228,7 +228,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
         if(Constant.holdingTime != 0){
             self.resortHoldingTimeLabel.text = Constant.holdingResortForRemainingMinutes
         }else{
-            SimpleAlert.alertTodismissController(self, title: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage)
+            self.presentAlert(with: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage)
         }
         
     }
@@ -263,7 +263,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
             }, onError: {(error) in
                 
                 self.hideHudAsync()
-                SimpleAlert.alert(self, title: "Who will be checking in", message: error.localizedDescription)
+                self.presentErrorAlert(UserFacingCommonError.generic)
             })
         }else{
             Constant.holdingTimer?.invalidate()
@@ -285,7 +285,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
             
             }, onError: {(error) in
                 self.hideHudAsync()
-                SimpleAlert.alert(self, title: Constant.ControllerTitles.whoWillBeCheckingInControllerTitle, message: Constant.AlertMessages.operationFailedMessage)
+                self.presentAlert(with: Constant.ControllerTitles.whoWillBeCheckingInControllerTitle, message: Constant.AlertMessages.operationFailedMessage)
                 
         })
         
@@ -523,7 +523,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 self.navigationController!.pushViewController(viewController, animated: true)
             }, onError: {(error) in
                 self.hideHudAsync()
-                SimpleAlert.alert(self, title: Constant.AlertErrorMessages.noResultError, message: error.localizedDescription)
+                self.presentErrorAlert(UserFacingCommonError.generic)
             })
         }else{
             
@@ -602,7 +602,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 self.navigationController!.pushViewController(viewController, animated: true)
             }, onError: {(error) in
                 self.hideHudAsync()
-                SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                self.presentErrorAlert(UserFacingCommonError.generic)
                 
             })
         }
@@ -1380,7 +1380,7 @@ extension WhoWillBeCheckingInViewController:RenewelViewControllerDelegate{
     }
     
     func noThanks(){
-        SimpleAlert.searchAlert(self, title: "Alert", message: "Guest Certificate Fee will be charged. To proceed further please click on OK button else click on cancel to select the renewal of membership.")
+        self.presentAlert(with: "Alert", message: "Guest Certificate Fee will be charged. To proceed further please click on OK button else click on cancel to select the renewal of membership.")
     }
     
     func otherOptions(forceRenewals: ForceRenewals) {

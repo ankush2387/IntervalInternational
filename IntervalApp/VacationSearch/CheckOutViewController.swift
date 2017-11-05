@@ -220,7 +220,7 @@ class CheckOutViewController: UIViewController {
                         imageSlider.isHidden = false
                         self.isAgreed = false
                         self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
-                        SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: error.description)
+                        self.presentErrorAlert(UserFacingCommonError.generic)
                     })
                 }else{
                     
@@ -252,7 +252,7 @@ class CheckOutViewController: UIViewController {
                     imageSlider.isHidden = false
                     self.isAgreed = false
                     self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
-                    SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: error.description)
+                    self.presentErrorAlert(UserFacingCommonError.generic)
                 })
             }
             
@@ -260,24 +260,24 @@ class CheckOutViewController: UIViewController {
                 let indexPath = NSIndexPath(row: 0, section: 8)
                 checkoutOptionTBLview.scrollToRow(at: indexPath as IndexPath, at: .top, animated: true)
                 imageSlider.isHidden = false
-                SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.feesAlertMessage)
+                self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.feesAlertMessage)
             }else if(strReject == "false" && strAccept == "false"){
                 let indexPath = NSIndexPath(row: 0, section: 4)
                 checkoutOptionTBLview.scrollToRow(at: indexPath as IndexPath, at: .top, animated: true)
                 imageSlider.isHidden = false
-                SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.insuranceSelectionMessage)
+                self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.insuranceSelectionMessage)
             }else if((Constant.MyClassConstants.isFromExchange && Constant.MyClassConstants.recapPromotionsArray.count > 0 && Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName == "")){
                 imageSlider.isHidden = false
-                SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.promotionsMessage)
+                self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.promotionsMessage)
             }else if(!Constant.MyClassConstants.isFromExchange && (Constant.MyClassConstants.rentalFees[0].rental!.selectedOfferName == nil || Constant.MyClassConstants.rentalFees[0].rental!.selectedOfferName == "")){
                 imageSlider.isHidden = true
-                SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.promotionsMessage)
+                self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.promotionsMessage)
             }else{
                 let indexPath = NSIndexPath(row: 0, section: 6)
                 imageSlider.isHidden = true
                 checkoutOptionTBLview.scrollToRow(at: indexPath as IndexPath, at: .top, animated: true)
                 self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
-                SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.paymentSelectionMessage)
+                self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.paymentSelectionMessage)
             }
         }else{
             isAgreedToFees = true
@@ -340,7 +340,7 @@ class CheckOutViewController: UIViewController {
         if(Constant.holdingTime != 0){
             self.remainingResortHoldingTimeLable.text = Constant.holdingResortForRemainingMinutes
         }else{
-            SimpleAlert.alertTodismissController(self, title: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage)
+            self.presentAlert(with: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage)
         }
     }
 
@@ -404,8 +404,7 @@ class CheckOutViewController: UIViewController {
     
     //***** Function called switch state is 'On' so as to update user's email. *****//
     func udpateEmailSwitchPressed(_ sender:UISwitch) {
-        
-        
+       
         let validEmail =  isValidEmail(testStr: self.emailTextToEnter)
         if(validEmail) {
             
@@ -418,7 +417,7 @@ class CheckOutViewController: UIViewController {
         }
         else {
             sender.setOn(false, animated: true)
-            SimpleAlert.alert(self, title: Constant.buttonTitles.updateSwitchTitle, message: Constant.AlertErrorMessages.emailAlertMessage)
+            self.presentAlert(with: Constant.buttonTitles.updateSwitchTitle, message: Constant.AlertErrorMessages.emailAlertMessage)
         }
     }
     
@@ -584,7 +583,7 @@ class CheckOutViewController: UIViewController {
                 self.hideHudAsync()
             }, onError: {(error) in
                 self.hideHudAsync()
-                SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                self.presentErrorAlert(UserFacingCommonError.generic)
             })
 
         }else{
@@ -596,7 +595,7 @@ class CheckOutViewController: UIViewController {
         }, onError: {(error) in
             
             self.hideHudAsync()
-            SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.operationFailedMessage)
+            self.presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.operationFailedMessage)
         })
         }
     }
@@ -653,7 +652,7 @@ class CheckOutViewController: UIViewController {
                 self.checkoutOptionTBLview.reloadData()
                 DarwinSDK.logger.debug(error.description)
                 self.hideHudAsync()
-                SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: error.description)
+                self.presentErrorAlert(UserFacingCommonError.generic)
             })
         }else{
             
@@ -710,7 +709,7 @@ class CheckOutViewController: UIViewController {
                self.eplusAdded = !sender.checked
                Constant.MyClassConstants.exchangeFees[0].eplus?.selected = sender.checked
                 self.hideHudAsync()
-                SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: error.description)
+                self.presentErrorAlert(UserFacingCommonError.generic)
                 self.checkSectionsForFees()
                 self.checkoutOptionTBLview.reloadData()
             })

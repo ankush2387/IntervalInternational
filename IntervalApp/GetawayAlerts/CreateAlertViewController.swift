@@ -234,41 +234,37 @@ class CreateAlertViewController: UIViewController {
                             self.hideHudAsync()
                             
                             Constant.MyClassConstants.getawayAlertsArray.insert(rentalAlert, at: Constant.MyClassConstants.getawayAlertsArray.count)
-                            SimpleAlert.alertTodismissController(self, title:Constant.AlertPromtMessages.createAlertTitle , message: Constant.AlertMessages.createAlertMessage)
+                            self.presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages.createAlertMessage)
                             rentalAlert.alertId = response.alertId
                             
                         })
                         { (error) in
                             
                             self.hideHudAsync()
-                            SimpleAlert.alert(self, title: Constant.AlertPromtMessages.createAlertTitle, message: error.description)
+                            self.presentErrorAlert(UserFacingCommonError.generic)
                             
                         }
                     }
                     else {
-                        
-                        SimpleAlert.alert(self, title: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages.editAlertdetinationrequiredMessage)
+                        self.presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages.editAlertdetinationrequiredMessage)
                     }
                     
                 }
                 else {
-                    
-                    SimpleAlert.alert(self, title: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages
+                    presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages
                         .editAlertEmptyWidowEndDateMessage)
-                    
                 }
             }
             else {
                 
-                SimpleAlert.alert(self, title: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages
+                presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages
                     .editAlertEmptyWidowStartDateMessage)
                 
             }
             
         }
         else {
-            
-            SimpleAlert.alert(self, title: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages
+            presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages
                 .editAlertEmptyNameMessage)
         }
         

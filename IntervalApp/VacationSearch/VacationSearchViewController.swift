@@ -546,8 +546,6 @@ extension VacationSearchViewController:UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        
-        showHudAsync()
         if(indexPath.section == 0){
             let delete = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.delete) { (action,index) -> Void in
                 if (indexPath as NSIndexPath).section == 0 {
@@ -576,12 +574,6 @@ extension VacationSearchViewController:UITableViewDelegate {
                         }
                     }catch{
                         self.presentErrorAlert(UserFacingCommonError.generic)
-                    }
-                    Constant.MyClassConstants.checkInClosestContentArray.removeObject(at: (indexPath as NSIndexPath).row)
-                    tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
-                    let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-                    DispatchQueue.main.asyncAfter(deadline: delayTime) {
-                        tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
                     }
                 }
             }
@@ -1299,7 +1291,6 @@ extension VacationSearchViewController:UITableViewDataSource {
                 
             }
             else {
-                Constant.MyClassConstants.checkInClosestContentArray.removeObject(at: (indexPath as NSIndexPath).row)
                 tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
                 let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
                 DispatchQueue.main.asyncAfter(deadline: delayTime) {
@@ -1320,7 +1311,6 @@ extension VacationSearchViewController:UITableViewDataSource {
         actionSheetController.addAction(viewMyRecentSearchAction)
         //***** Create and add the Reset my search *****//
         let resetMySearchAction: UIAlertAction = UIAlertAction(title: Constant.buttonTitles.resetMySearch, style: .default) { action -> Void in
-            Constant.MyClassConstants.checkInClosestContentArray.removeAllObjects()
             Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
             Constant.MyClassConstants.realmStoredDestIdOrCodeArray.removeAllObjects()
             Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
@@ -1548,7 +1538,11 @@ extension VacationSearchViewController:SearchTableViewCellDelegate {
                             
                             // Check not available checkIn dates for the active interval
                             if (activeInterval?.fetchedBefore) != nil && activeInterval?.hasCheckInDates() != nil{
+                                self.hideHudAsync()
                                 (activeInterval?.hasCheckInDates())! ? () : Helper.showNotAvailabilityResults()
+                                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
+                                self.navigationController?.pushViewController(viewController, animated: true)
                             }else {
                                 Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
                                 self.hideHudAsync()

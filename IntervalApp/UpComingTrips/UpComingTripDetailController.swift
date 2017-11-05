@@ -169,7 +169,6 @@ class UpComingTripDetailController: UIViewController {
         actionSheetController.addAction(resendConfirmationAction)
         //***** Present ActivityViewController for share options *****//
         let shareAction: UIAlertAction = UIAlertAction(title: "Share", style: .default) { action -> Void in
-            Constant.MyClassConstants.checkInClosestContentArray.removeAllObjects()
             Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
             Constant.MyClassConstants.realmStoredDestIdOrCodeArray.removeAllObjects()
             
@@ -181,14 +180,14 @@ class UpComingTripDetailController: UIViewController {
                 if completed {
                     if activityType == UIActivityType.mail || activityType == UIActivityType.message {
                         //Display message to confirm Message and Mail have been sent
-                         SimpleAlert.alert(self, title: "Success", message: "Your Confirmation has been sent!")
+                         self.presentAlert(with: "Success", message: "Your Confirmation has been sent!")
                     }
                 }
                 
                 if error != nil {
                     if activityType == UIActivityType.mail || activityType == UIActivityType.message {
                         //Display message to let user know there was error
-                        SimpleAlert.alert(self, title: "Error", message: "The Confirmation could not be sent. Please try again.")
+                        self.presentAlert(with: "Error", message: "The Confirmation could not be sent. Please try again.")
                     }
                 }
                 

@@ -85,7 +85,7 @@ class FlexchangeSearchViewController: UIViewController {
         Helper.helperDelegate = self
         if(Constant.MyClassConstants.relinquishmentIdArray.count == 0){
             
-            SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
+            presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
             self.hideHudAsync()
             
         }else{
@@ -133,7 +133,7 @@ class FlexchangeSearchViewController: UIViewController {
                 }, onError: { (error) in
                     
                     self.hideHudAsync()
-                    SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                    self.presentErrorAlert(UserFacingCommonError.generic)
                 })
                 
                 

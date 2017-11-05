@@ -43,7 +43,7 @@ class SelectBedroomViewController: UIViewController {
     
     @IBAction func doneButtonPressed(_ sender: Any) {
         guard selectedBedroomArray.count > 0 else {
-            SimpleAlert.alert(self, title:"Bedroom Sizes", message: "Please select at least one bedroom size.")
+            self.presentAlert(with: "Bedroom Sizes", message: "Please select at least one bedroom size.")
             return
         }
         Constant.MyClassConstants.alertSelectedUnitSizeArray.removeAllObjects()

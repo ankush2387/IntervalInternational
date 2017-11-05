@@ -196,7 +196,7 @@ extension MyUpcomingTripViewController:UITableViewDataSource {
         self.performSegue(withIdentifier:Constant.segueIdentifiers.upcomingDetailSegue, sender:nil)
         }) { (error) in
             self.hideHudAsync()
-            SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+            self.presentErrorAlert(UserFacingCommonError.generic)
             
         }
     }

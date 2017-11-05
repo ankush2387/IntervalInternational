@@ -84,7 +84,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     //Function to display alert on timer time over
     
     func showAlertForTimer(){
-        SimpleAlert.alertTodismissController(self, title: "Holding time lost", message: "Oops You have lost your holding time for this resort!. Please try again")
+        self.presentAlert(with: "Holding time lost", message: "Oops You have lost your holding time for this resort!. Please try again")
     }
     
     
@@ -171,7 +171,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             }, onError: {(error) in
                 
                 self.hideHudAsync()
-                SimpleAlert.alert(self, title: "Who will be checking in", message: Constant.AlertMessages.operationFailedMessage)
+                self.presentAlert(with: "Who will be checking in", message: Constant.AlertMessages.operationFailedMessage)
             })
         }
         else{
@@ -195,7 +195,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         }, onError: {(error) in
             
             self.hideHudAsync()
-            SimpleAlert.alert(self, title: "Who will be checking in", message: Constant.AlertMessages.operationFailedMessage)
+            self.presentAlert(with: "Who will be checking in", message: Constant.AlertMessages.operationFailedMessage)
         })
     }
 
@@ -214,7 +214,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         if(Constant.holdingTime != 0){
             self.resortHoldingTimeLabel.text = Constant.holdingResortForRemainingMinutes
         }else{
-            SimpleAlert.alertTodismissController(self, title: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage)
+            self.presentAlert(with: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage)
         }
 
     }
@@ -512,7 +512,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                 self.navigationController!.pushViewController(viewController, animated: true)
             }, onError: {(error) in
                 self.hideHudAsync()
-                SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                self.presentErrorAlert(UserFacingCommonError.generic)
                 
             })
         }

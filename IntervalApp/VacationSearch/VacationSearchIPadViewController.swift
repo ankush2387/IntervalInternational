@@ -384,7 +384,6 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
         actionSheetController.addAction(viewMyRecentSearchAction)
         //***** Create and add the Reset my search *****//
         let resetMySearchAction: UIAlertAction = UIAlertAction(title: Constant.buttonTitles.resetMySearch, style: .default) { action -> Void in
-            Constant.MyClassConstants.checkInClosestContentArray.removeAllObjects()
             Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
             let realm = try! Realm()
             let allDest = Helper.getLocalStorageWherewanttoGo()
