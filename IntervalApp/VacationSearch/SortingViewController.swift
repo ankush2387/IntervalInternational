@@ -187,6 +187,7 @@ class SortingViewController: UIViewController {
             }
             
             ADBMobile.trackAction(Constant.omnitureEvents.event9, data: nil)
+            showHudAsync()
             
             if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
                 
@@ -218,11 +219,11 @@ class SortingViewController: UIViewController {
                     Helper.helperDelegate = self
                     
                     
-                    if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                        
+                    
+                    if (activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())! {
+                        self.hideHudAsync()
                         Helper.showNotAvailabilityResults()
                         self.dismiss(animated: true, completion: nil)
-                        
                     } else {
                     
                     if(response.checkInDates.count > 0){
@@ -231,9 +232,8 @@ class SortingViewController: UIViewController {
                         Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch:vacationSearchFilter)
                     }
                 }
-                    
-                    
                 }){ (error) in
+                   self.hideHudAsync()
                    self.presentErrorAlert(UserFacingCommonError.generic)
                 }
                 
@@ -259,31 +259,26 @@ class SortingViewController: UIViewController {
                     
                     Helper.showScrollingCalendar(vacationSearch: vacationSearchFilter)
                     Constant.MyClassConstants.initialVacationSearch = vacationSearchFilter
-                    
-                    // Check not available checkIn dates for the active interval
-                    if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                        Helper.showNotAvailabilityResults()
-                    }
-                    let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     Helper.helperDelegate = self
                     
-                    
+                    // Check not available checkIn dates for the active interval
                     if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                        
+                        self.hideHudAsync()
                         Helper.showNotAvailabilityResults()
                         self.dismiss(animated: true, completion: nil)
                         
                     } else {
-
-                    if response.checkInDates.count > 0 {
-                        Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: response.checkInDates[0], senderViewController: self, vacationSearch: vacationSearchFilter)
-                    }else{
-                        Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: vacationSearchFilter)
-                    }
+                        self.hideHudAsync()
+                        if let initialSearchCheckInDate =  Constant.MyClassConstants.initialVacationSearch.searchCheckInDate{
+                            Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: vacationSearchFilter)
+                        }else{
+                            Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: response.checkInDates[0], senderViewController: self, vacationSearch: vacationSearchFilter)
+                        }
                     }
                     
                 }){ (error) in
+                    self.hideHudAsync()
                     self.presentErrorAlert(UserFacingCommonError.generic)
                 }
                 
@@ -311,14 +306,8 @@ class SortingViewController: UIViewController {
                     Helper.showScrollingCalendar(vacationSearch: vacationSearchFilter)
                     // Check not available checkIn dates for the active interval
                     if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                        
-                        
-                        //self.rentalHasNotAvailableCheckInDates = true
                         Helper.executeExchangeSearchDates(senderVC: self, vacationSearch: vacationSearchFilter)
-                        
                     }else{
-                        
-                        
                         let vacationSearchInitialDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
                         if(vacationSearchInitialDate != nil){
                             Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearchInitialDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: vacationSearchFilter)
@@ -327,8 +316,6 @@ class SortingViewController: UIViewController {
                            Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: response.checkInDates[0], senderViewController: self, vacationSearch: vacationSearchFilter)
                             }
                         }
-                        
-
                     }
                     
                     Constant.MyClassConstants.checkInDates = response.checkInDates
@@ -552,6 +539,7 @@ extension SortingViewController:UITableViewDataSource {
 extension SortingViewController:HelperDelegate {
     
     func resortSearchComplete(){
+        self.hideHudAsync()
         self.dismiss(animated: true, completion: nil)
         
     }

@@ -22,6 +22,7 @@ class FlexchangeSearchViewController: UIViewController {
     @IBOutlet weak var flexChangeTableView: UITableView!
     
     override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.navigationBar.isHidden = false
         _ = Helper.getLocalStorageWherewanttoTrade()
         flexChangeTableView.reloadData()
     }
@@ -110,8 +111,7 @@ class FlexchangeSearchViewController: UIViewController {
                 //Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.areas = [area]
                 
                 ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
-                    
-                    self.hideHudAsync()
+    
                     Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
                     Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     // Get activeInterval (or initial search interval)
@@ -123,7 +123,7 @@ class FlexchangeSearchViewController: UIViewController {
                     // Check not available checkIn dates for the active interval
                     if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
                         Helper.showNotAvailabilityResults()
-                        //self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
+                        self.hideHudAsync()
                         self.navigateToSearchResults()
                     }else{
                         Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
@@ -469,7 +469,7 @@ extension FlexchangeSearchViewController:HelperDelegate {
 
  
     func resortSearchComplete(){
-       
+        self.hideHudAsync()
         self.navigateToSearchResults()
     }
     

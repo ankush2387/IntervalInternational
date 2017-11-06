@@ -125,7 +125,7 @@ class DashboardIPadTableViewController: UITableViewController {
         Constant.MyClassConstants.searchOriginationPoint = Constant.omnitureCommonString.homeDashboard
         
         let isRunningOnIpad = UIDevice.current.userInterfaceIdiom == .pad
-        let storyboardName = isRunningOnIpad ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
+        let storyboardName = isRunningOnIpad ? Constant.storyboardNames.vacationSearchIPad : Constant.storyboardNames.vacationSearchIphone
         if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
             navigationController?.pushViewController(initialViewController, animated: true)
         }
@@ -387,19 +387,6 @@ class DashboardIPadTableViewController: UITableViewController {
         }
         
     }
-    // Mark:- Button events
-    @IBAction func searchVactionPressed(_ sender: UIButton) {
-        /*Constant.MyClassConstants.searchOriginationPoint = Constant.omnitureCommonString.homeDashboard
-        
-        let isRunningOnIpad = UIDevice.current.userInterfaceIdiom == .pad
-        let storyboardName = isRunningOnIpad ? Constant.storyboardNames.vacationSearchIPad : Constant.storyboardNames.vacationSearchIPad
-        if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
-            navigationController?.pushViewController(initialViewController, animated: true)
-        }*/
-    }
-    
-    
-
 }
 
 extension DashboardIPadTableViewController:UICollectionViewDelegate {

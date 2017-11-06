@@ -84,7 +84,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     //Function to display alert on timer time over
     
     func showAlertForTimer(){
-        self.presentAlert(with: "Holding time lost", message: "Oops You have lost your holding time for this resort!. Please try again")
+        self.presentAlert(with: "Holding time lost".localized(), message: "Oops You have lost your holding time for this resort!. Please try again".localized())
     }
     
     

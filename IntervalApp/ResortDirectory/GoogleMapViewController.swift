@@ -513,14 +513,18 @@ class GoogleMapViewController: UIViewController {
             Constant.MyClassConstants.googleMarkerArray.append(marker)
             
         }
-        if(self.mapTableView != nil){
-            self.mapTableView.isHidden = false
-            self.alertView.isHidden = true
-            self.mapTableView.reloadData()
-        } else {
-            self.alertView.isHidden = false
-            self.mapTableView.isHidden = true
+        
+        if !Constant.MyClassConstants.isRunningOnIphone {
+            if(self.mapTableView != nil){
+                self.mapTableView.isHidden = false
+                self.alertView.isHidden = true
+                self.mapTableView.reloadData()
+            } else {
+                self.alertView.isHidden = false
+                self.mapTableView.isHidden = true
+            }
         }
+        
     }
     
     //***** This method executes when bottom resort view favorite button pressed *****//

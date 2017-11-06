@@ -66,6 +66,7 @@ class SearchResultViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.navigationBar.isHidden = false
         self.navigationController?.navigationBar.barTintColor = UIColor.init(colorLiteralRed: 70.0/255.0, green: 136.0/255.0, blue: 193.0/255.0, alpha: 1.0)
 
         Constant.MyClassConstants.calendarDatesArray.removeAll()
@@ -398,7 +399,7 @@ class SearchResultViewController: UIViewController {
                 )
             }
         }else {
-            
+            hideHudAsync()
             Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
             
             Constant.MyClassConstants.calendarDatesArray.removeAll()
@@ -460,42 +461,6 @@ class SearchResultViewController: UIViewController {
         _ = self.navigationController?.popViewController(animated: true)
     }
     
-    func resortDetailsClicked(_ toDate: Date){
-        
-        let searchResortRequest = RentalSearchResortsRequest()
-        searchResortRequest.checkInDate = toDate
-        
-        if(Constant.MyClassConstants.surroundingCheckInDates.contains(Constant.MyClassConstants.checkInDates[collectionviewSelectedIndex - 1])){
-            
-            searchResortRequest.resortCodes = Constant.MyClassConstants.surroundingResortCodesArray
-        }else{
-            
-            searchResortRequest.resortCodes = Constant.MyClassConstants.resortCodesArray
-        }
-        
-        Constant.MyClassConstants.resortsArray.removeAll()
-        showHudAsync()
-        
-        RentalClient.searchResorts(Session.sharedSession.userAccessToken, request: searchResortRequest, onSuccess: { (response) in
-            Constant.MyClassConstants.resortsArray = response.resorts
-            if(self.alertView.isHidden == false){
-                self.alertView.isHidden = true
-                self.headerVw.isHidden = false
-            }
-            self.searchResultTableView.reloadData()
-            self.hideHudAsync()
-        }, onError: { (error) in
-            Constant.MyClassConstants.resortsArray.removeAll()
-            self.searchResultTableView.reloadData()
-            self.alertView = Helper.noResortView(senderView: self.view)
-            self.alertView.isHidden = false
-            self.headerVw.isHidden = true
-            self.hideHudAsync()
-        })
-        
-    }
-
-
     //Dynamic API hit
     
     func getFilterRelinquishments(selectedInventoryUnit:Inventory, selectedIndex:Int, selectedExchangeInventory: ExchangeInventory){
