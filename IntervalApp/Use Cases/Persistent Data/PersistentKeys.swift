@@ -14,6 +14,7 @@ enum Persistent: String {
     case bundleIdentifier
     case userName
     case password
+    case encryption
     case touchIDEnabled
     case notificationTopic
 

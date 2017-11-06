@@ -53,14 +53,12 @@ final class LoginViewModel {
     private let touchIDPasswordKey = "touchIDPass"
     private let disposeBag = DisposeBag()
     private var sessionStore: SessionStore
-    private var persistentSettingsStore: PersistentSettingsStore
     
     // MARK: - Lifecycle
     init(backgroundImage: UIImage,
          sessionStore: SessionStore,
          clientAPIStore: ClientAPIStore,
          encryptedStore: EncryptedStore,
-         persistentSettingsStore: PersistentSettingsStore,
          configuration: Config,
          appBundle: AppBundle) {
 
@@ -71,10 +69,9 @@ final class LoginViewModel {
         self.clientAPIStore = clientAPIStore
         self.encryptedStore = encryptedStore
         self.backgroundImage = Observable(backgroundImage)
-        self.persistentSettingsStore = persistentSettingsStore
-        self.touchIDEnabled = Observable(persistentSettingsStore.touchIDEnabled)
-        self.username = Observable(try? encryptedStore.getItem(for: touchIDUserNameKey) ?? "")
-        self.password = Observable(try? encryptedStore.getItem(for: touchIDPasswordKey) ?? "")
+        self.touchIDEnabled = Observable(((try? encryptedStore.getItem(for: Persistent.touchIDEnabled.key, ofType: Bool()) ?? false) ?? false))
+        self.username = Observable(try? encryptedStore.getItem(for: Persistent.userName.key, ofType: String()).unwrappedString)
+        self.password = Observable(try? encryptedStore.getItem(for: Persistent.password.key, ofType: String()).unwrappedString)
         self.touchIDEnabled.observeNext(with: updatedTouchIDState).dispose(in: disposeBag)
         self.clientTokenLoaded.observeNext(with: checkAppVersion).dispose(in: disposeBag)
     }
@@ -136,7 +133,7 @@ final class LoginViewModel {
     }
 
     private func updatedTouchIDState(enabled: Bool) {
-        persistentSettingsStore.touchIDEnabled = enabled
+        try? encryptedStore.save(item: enabled, for: Persistent.touchIDEnabled.key)
     }
     
     private func checkAppVersion(clientTokenLoaded: Bool) {

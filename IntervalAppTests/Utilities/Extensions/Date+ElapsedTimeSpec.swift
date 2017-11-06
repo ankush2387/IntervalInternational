@@ -25,7 +25,7 @@ class Date_ElapsedTimeSpec: QuickSpec {
                 let dateToCheck = Date()
                 let sixtySeconds = 60.0
                 
-                waitUntil(timeout: sixtySeconds) { done in
+                waitUntil(timeout: sixtySeconds + 1) { done in
                     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + sixtySeconds) {
                         expect(dateToCheck.numberOfMinutesElapsedFromDate).to(equal(1))
                         done()

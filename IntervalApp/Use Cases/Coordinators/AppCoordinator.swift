@@ -6,6 +6,7 @@
 //  Copyright © 2017 Interval International. All rights reserved.
 //
 
+import then
 import Foundation
 import DarwinSDK
 import IntervalUIKit
@@ -26,6 +27,7 @@ final class AppCoordinator {
 
     fileprivate var userIsLoggedIn = false
     fileprivate var apnsCoordinator: APNSCoordinator?
+    fileprivate var entityStore = EntitySource.sharedInstance
     fileprivate var autoLogoutViewController: UIAlertController?
     fileprivate var navigationController: UINavigationController?
 
@@ -140,12 +142,44 @@ final class AppCoordinator {
         autoLogoutViewController = nil
     }
 
+    fileprivate func readEncryptionKey(for contactID: String) -> Promise<Data> {
+        
+        return Promise { resolve, reject in
+            
+            let keychain = KeychainWrapper()
+            guard let data = try? keychain.getItem(for: Persistent.encryption.key, and: contactID, ofType: Data()),
+                let key = data else {
+                    
+                    // If no key previously created for this contactID
+                    // Generate a new key, save it, and return it
+                    let key = Data.encryptionKey
+                    
+                    do {
+                        try keychain.save(item: key,
+                                          for: Persistent.encryption.key,
+                                          and: contactID)
+                        resolve(key)
+                    } catch {
+                        reject(UserFacingCommonError.noData)
+                    }
+                    
+                    return
+            }
+            
+            resolve(key)
+        }
+    }
+
     fileprivate func showDashboard() {
         let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
         let storyboardName = isRunningOnIphone ? Constant.storyboardNames.dashboardIPhone : Constant.storyboardNames.dashboardIPad
         if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
             navigationController?.pushViewController(initialViewController, animated: true)
         }
+    }
+    
+    fileprivate func presentViewError(viewError: ViewError = UserFacingCommonError.generic) {
+        topViewController?.presentErrorAlert(viewError)
     }
 }
 
@@ -204,6 +238,19 @@ extension AppCoordinator: LoginCoordinatorDelegate {
         Session.sharedSession.selectedMembership = session.contact?.memberships![0]
         CreateActionSheet().membershipWasSelected()
         ///
+
+        guard let contactID = session.contact?.contactId else {
+            presentViewError()
+            return
+        }
+        
+        let createDatabase = { [unowned self] (encryptionKey: Data) in
+            self.entityStore.setDatabases(for: String(contactID), with: encryptionKey)
+        }
+
+        readEncryptionKey(for: String(contactID))
+            .then(createDatabase)
+            .onViewError(presentViewError)
 
         if apnsCoordinator?.shouldRedirectOnlogin == true && apnsCoordinator?.pushViabilityHasNotExpired == true {
             redirectUser()
