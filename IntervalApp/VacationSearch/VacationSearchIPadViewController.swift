@@ -458,7 +458,7 @@ class VacationSearchIPadViewController: UIViewController,UITableViewDelegate,UIT
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.resortDirectoryIpad, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortDirectoryVC) as! GoogleMapViewController
         viewController.sourceController = Constant.MyClassConstants.vacationSearch
-        Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.vacationSearchFunctionalityCheck
+       Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.vacationSearch
         let transitionManager = TransitionManager()
         navigationController?.transitioningDelegate = transitionManager
         
@@ -815,6 +815,8 @@ extension VacationSearchIPadViewController:SearchTableViewCellDelegate {
                                                     
                                                     // Check not available checkIn dates for the active interval
                                                     if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                                                        sender.isEnabled = true
+                                                         self.hideHudAsync()
                                                         Helper.showNotAvailabilityResults()
                                                     } else {
                                                         

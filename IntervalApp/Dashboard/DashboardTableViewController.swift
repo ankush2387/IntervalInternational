@@ -417,6 +417,7 @@ class DashboardTableViewController: UITableViewController {
         
     }
     //***** Search vacation button action *****//
+    //MARK:- Button Events
     func  searchVactionPressed(_ sender:AnyObject) {
         
         Constant.MyClassConstants.searchOriginationPoint = Constant.omnitureCommonString.homeDashboard

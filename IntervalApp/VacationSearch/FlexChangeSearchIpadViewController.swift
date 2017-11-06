@@ -28,7 +28,6 @@ class FlexChangeSearchIpadViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
         self.title = Constant.ControllerTitles.flexChangeSearch
         
         //set corner radius
@@ -50,6 +49,7 @@ class FlexChangeSearchIpadViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.navigationBar.isHidden = false
         self.flexchangeSearchTableView.reloadData()
         Helper.getLocalStorageWherewanttoTrade()
     }

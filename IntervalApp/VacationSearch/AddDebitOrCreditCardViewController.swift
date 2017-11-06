@@ -638,26 +638,36 @@ extension AddDebitOrCreditCardViewController:UITableViewDataSource {
           
         }
         else {
-                
+            
             if(indexPath.row == 0 || indexPath.row == 4) {
+                
+                
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.dropDownListCell, for: indexPath) as! DropDownListCell
                 
                 
                 if(indexPath.row == 0) {
+                    //country name
                     
-                     if(Constant.GetawaySearchResultCardFormDetailData.country == "") {
+                    if(Constant.GetawaySearchResultCardFormDetailData.country == "") {
                         cell.selectedTextLabel.text = Constant.textFieldTitles.guestFormSelectCountryPlaceholder
                     }
-                     else {
+                    else {
                         
-                        cell.selectedTextLabel.text = Constant.GetawaySearchResultCardFormDetailData.country
+                        if let address = Session.sharedSession.contact?.addresses![0] {
+                            cell.selectedTextLabel.text = address.countryCode
+                            
+                        } else {
+                            cell.selectedTextLabel.text = Constant.GetawaySearchResultCardFormDetailData.country
+                            
+                        }
+                        
                     }
                 }
                 else {
-                    
+                    //state name
                     if(Constant.GetawaySearchResultCardFormDetailData.state == "") {
-                     
+                        
                         cell.selectedTextLabel.text = Constant.textFieldTitles.guestFormSelectState
                     }
                     else {
@@ -673,15 +683,15 @@ extension AddDebitOrCreditCardViewController:UITableViewDataSource {
                 cell.borderView.layer.borderWidth = 2
                 cell.borderView.layer.cornerRadius = 5
                 cell.selectionStyle = .none
-
-
+                
+                
                 
                 return cell
                 
             }
             else if(indexPath.row == 6) {
                 
-                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.addYourCardButtonCell, for: indexPath) as! AddYourCardButtonCell
+                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.addYourCardButtonCell, for: indexPath) as! AddYourCardButtonCell
                 
                 cell.addYourCardButton.addTarget(self, action: #selector(AddDebitOrCreditCardViewController.addCardButtonPressed(_:)), for: .touchUpInside)
                 return cell
@@ -692,46 +702,77 @@ extension AddDebitOrCreditCardViewController:UITableViewDataSource {
                 cell.nameTF.delegate = self
                 cell.nameTF.text = ""
                 if(indexPath.row == 1) {
-                   
+                    
+                    //address line 1 info
                     if(Constant.GetawaySearchResultCardFormDetailData.address1 == "") {
                         
-                       cell.nameTF.placeholder = Constant.textFieldTitles.guestFormAddress1
+                        cell.nameTF.placeholder = Constant.textFieldTitles.guestFormAddress1
                     }
                     else {
-                        cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.address1
+                        
+                        if let addressLine = Session.sharedSession.contact?.addresses![0].addressLines {
+                            cell.nameTF.text = addressLine[0]
+                            
+                        } else {
+                            
+                            cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.address1
+                            
+                        }
+                        
                     }
-                  
+                    
                 }
                 else if(indexPath.row == 2) {
-                    
+                    //address line2 info
                     
                     if(Constant.GetawaySearchResultCardFormDetailData.address2 == "") {
                         
-                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormAddress2
+                        cell.nameTF.placeholder = Constant.textFieldTitles.guestFormAddress2
                     }
                     else {
-                        cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.address2
+                        if let addressLine2 = Session.sharedSession.contact?.addresses![0].addressLines[1] {
+                            cell.nameTF.text = addressLine2
+                            
+                        } else {
+                            cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.address2
+                            
+                        }
+                        
                     }
-
+                    
                 }
                 else if(indexPath.row == 3) {
                     
+                    // city name info
                     if(Constant.GetawaySearchResultCardFormDetailData.city == "") {
                         
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormCity
                     }
                     else {
-                        cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.city
+                        if let address = Session.sharedSession.contact?.addresses![0] {
+                            cell.nameTF.text = address.cityName
+                            
+                        } else {
+                            cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.city
+                        }
+                        
                     }
                 }
                 else {
                     
+                    //postal code info
                     if(Constant.GetawaySearchResultCardFormDetailData.pinCode == "") {
                         
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormPostalCode
                     }
                     else {
-                        cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.pinCode
+                        if let address = Session.sharedSession.contact?.addresses![0] {
+                            cell.nameTF.text = address.postalCode
+                            
+                        } else {
+                            cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.pinCode
+                            
+                        }
                     }
                 }
                 cell.nameTF.tag = indexPath.row
@@ -740,10 +781,10 @@ extension AddDebitOrCreditCardViewController:UITableViewDataSource {
                 cell.borderView.layer.borderWidth = 2
                 cell.borderView.layer.cornerRadius = 5
                 cell.selectionStyle = .none
-
+                
                 
                 return cell
-
+                
             }
             
             

@@ -67,7 +67,7 @@ class VacationSearchResultIPadController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
+        self.navigationController?.navigationBar.isHidden = false
         self.navigationController?.navigationBar.barTintColor = UIColor.init(colorLiteralRed: 70.0/255.0, green: 136.0/255.0, blue: 193.0/255.0, alpha: 1.0)
         
         Constant.MyClassConstants.calendarDatesArray.removeAll()
