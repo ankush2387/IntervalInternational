@@ -14,14 +14,13 @@ struct AppBundle {
     let build: String
     let appVersion: String
     let gitCommit: String
-}
-
-extension AppBundle {
     
-    // Lifecycle: - convenience init
-    init() {
-        self.init(build: Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion")  as? String ?? "",
-                  appVersion: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0",
-                  gitCommit: Bundle.main.object(forInfoDictionaryKey: "MMGitRevisionNumber") as? String ?? "")
+    // MARK: - Lifecycle
+    init(build: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion")  as? String ?? "",
+         appVersion: String = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0",
+         gitCommit: String = Bundle.main.object(forInfoDictionaryKey: "MMGitRevisionNumber") as? String ?? "") {
+        self.build = build
+        self.appVersion = appVersion
+        self.gitCommit = gitCommit
     }
 }

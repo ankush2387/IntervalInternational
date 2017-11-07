@@ -73,6 +73,7 @@ final class LoginCoordinator: ComputationHelper {
                                        sessionStore: Session.sharedSession,
                                        clientAPIStore: ClientAPI.sharedInstance,
                                        encryptedStore: encryptedStore,
+                                       decryptedStore: UserDafaultsWrapper(),
                                        configuration: Config.sharedInstance,
                                        appBundle: AppBundle())
 

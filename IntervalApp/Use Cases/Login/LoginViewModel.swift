@@ -20,10 +20,14 @@ final class LoginViewModel {
     let username: Observable<String?>
     let password: Observable<String?>
     let isLoggingIn = Observable(false)
-    let touchIDEnabled: Observable<Bool>
     let clientTokenLoaded = Observable(false)
     let appSettings: Observable<AppSettings?>
     var didLogin: (() -> Void)?
+    var touchIDEnabled: Bool {
+        let touchIDEnabled = (try? encryptedStore.getItem(for: Persistent.touchIDEnabled.key, ofType: Bool()) ?? false) ?? false
+        let appHasPreviousLogin = (try? decryptedStore.getItem(for: Persistent.appHasPreviousLogin.key, ofType: Bool()) ?? false) ?? false
+        return touchIDEnabled && appHasPreviousLogin
+    }
 
     var buttonEnabledState: Signal<Bool, NoError> {
         return combineLatest(username, password, isLoggingIn)
@@ -48,9 +52,8 @@ final class LoginViewModel {
     // MARK: - Private properties
     private let configuration: Config
     private let encryptedStore: EncryptedItemDataStore
+    private let decryptedStore: DecryptedItemDataStore
     private let clientAPIStore: ClientAPIStore
-    private let touchIDUserNameKey = "touchIDUser"
-    private let touchIDPasswordKey = "touchIDPass"
     private let disposeBag = DisposeBag()
     private var sessionStore: SessionStore
     
@@ -59,6 +62,7 @@ final class LoginViewModel {
          sessionStore: SessionStore,
          clientAPIStore: ClientAPIStore,
          encryptedStore: EncryptedItemDataStore,
+         decryptedStore: DecryptedItemDataStore,
          configuration: Config,
          appBundle: AppBundle) {
 
@@ -68,31 +72,44 @@ final class LoginViewModel {
         self.configuration = configuration
         self.clientAPIStore = clientAPIStore
         self.encryptedStore = encryptedStore
+        self.decryptedStore = decryptedStore
         self.backgroundImage = Observable(backgroundImage)
-        self.touchIDEnabled = Observable(((try? encryptedStore.getItem(for: Persistent.touchIDEnabled.key, ofType: Bool()) ?? false) ?? false))
         self.username = Observable(try? encryptedStore.getItem(for: Persistent.userName.key, ofType: String()).unwrappedString)
         self.password = Observable(try? encryptedStore.getItem(for: Persistent.password.key, ofType: String()).unwrappedString)
-        self.touchIDEnabled.observeNext(with: updatedTouchIDState).dispose(in: disposeBag)
         self.clientTokenLoaded.observeNext(with: checkAppVersion).dispose(in: disposeBag)
     }
 
     // MARK: - Public functions
-    func login() -> Promise<Void> {
+    func normalLogin() -> Promise<Void> {
         isLoggingIn.next(true)
         return Promise { [unowned self] resolve, reject in
             self.saveCredentials()
-                .then(self.clientAPIStore.readAccessToken(for: self.username.value.unwrappedString, and: self.password.value.unwrappedString))
-                .then(self.saveUserAccessToken)
-                .then(self.readCurrentProfileForAccessToken)
-                .then(self.didLoginUser)
-                .then(resolve)
+                .then(self.login(userName: self.username.value.unwrappedString, password: self.password.value.unwrappedString))
                 .onError { _ in reject(UserFacingCommonError.generic) }
-                .finally(self.userIsNotLogginIn)
         }
     }
     
-    func didLoginUser() {
-        didLogin?()
+    func touchIDLogin() -> Promise<Void> {
+        isLoggingIn.next(true)
+        return Promise { [unowned self] resolve, reject in
+            if let userName = try? self.encryptedStore.getItem(for: Persistent.userName.key, ofType: String()),
+                let password = try? self.encryptedStore.getItem(for: Persistent.password.key, ofType: String()) {
+                self.login(userName: userName.unwrappedString, password: password.unwrappedString).onError { _ in reject(UserFacingCommonError.generic) }
+            } else {
+                reject(UserFacingCommonError.custom(title: "Error".localized(), body: "It appears we could not find your credentials, please login normally once more.".localized()))
+            }
+        }
+    }
+    
+    func didLoginUser() -> Promise<Void> {
+        return Promise { [unowned self] resolve, reject in
+            do {
+                try self.decryptedStore.save(item: true, for: Persistent.appHasPreviousLogin.key)
+                self.didLogin?()
+            } catch {
+                reject(error)
+            }
+        }
     }
     
     func readCurrentProfileForAccessToken(accessToken: DarwinAccessToken) -> Promise<Void> {
@@ -118,6 +135,18 @@ final class LoginViewModel {
             }
         }
     }
+    
+    private func login(userName: String, password: String) -> Promise<Void> {
+        return Promise { [unowned self] resolve, reject in
+            defer { self.userIsNotLogginIn() }
+            self.clientAPIStore.readAccessToken(for: userName, and: password)
+                .then(self.saveUserAccessToken)
+                .then(self.readCurrentProfileForAccessToken)
+                .then(self.didLoginUser)
+                .then(resolve)
+                .onError(reject)
+        }
+    }
 
     private func userIsNotLogginIn() {
         isLoggingIn.next(false)
@@ -130,10 +159,6 @@ final class LoginViewModel {
 
     private func shouldDisableButton(_ username: String?, password: String?, loggingIn: Bool) -> Bool {
         return username?.isEmpty == false && password?.isEmpty == false && !loggingIn
-    }
-
-    private func updatedTouchIDState(enabled: Bool) {
-        try? encryptedStore.save(item: enabled, for: Persistent.touchIDEnabled.key)
     }
     
     private func checkAppVersion(clientTokenLoaded: Bool) {

@@ -1,5 +1,5 @@
 //
-//  TouchID.swift
+//  BiometricAuthentication.swift
 //  IntervalApp
 //
 //  Created by Aylwing Olivas on 10/14/17.
@@ -10,7 +10,7 @@ import then
 import Foundation
 import LocalAuthentication
 
-final class TouchID {
+final class BiometricAuthentication {
 
     // MARK: - Public properties
     var canEvaluatePolicy: Bool {
@@ -20,7 +20,7 @@ final class TouchID {
     // MARK: - Private properties
     private let context = LAContext()
 
-    private enum TouchIDError: ViewError {
+    private enum BiometricError: ViewError {
 
         case cannotEvaluatePolicy
         case authenticationFailed
@@ -56,33 +56,47 @@ final class TouchID {
         return Promise { [unowned self] resolve, reject in
 
             guard self.canEvaluatePolicy else {
-                reject(TouchIDError.cannotEvaluatePolicy)
+                reject(BiometricError.cannotEvaluatePolicy)
                 return
             }
 
+            if #available(iOS 11.0, *), self.context.biometryType == .typeFaceID {
+                self.authenticateWith(localizedReason: "Logging in with Face ID".localized())
+                    .then(resolve)
+                    .onError(reject)
+            } else {
+                self.authenticateWith(localizedReason: "Logging in with Touch ID".localized())
+                    .then(resolve)
+                    .onError(reject)
+            }
+        }
+    }
+    
+    private func authenticateWith(localizedReason: String) -> Promise<Void> {
+        return Promise { [unowned self] resolve, reject in
             self.context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics,
-                                        localizedReason: "Logging in with Touch ID".localized()) { authenticated, error in
-
+                                        localizedReason: localizedReason) { authenticated, error in
+                                            
                                             guard error == nil else {
-
+                                                
                                                 switch error {
                                                 case LAError.authenticationFailed?:
-                                                    reject(TouchIDError.authenticationFailed)
+                                                    reject(BiometricError.authenticationFailed)
                                                 case LAError.userCancel?:
-                                                    reject(TouchIDError.userCancel)
+                                                    reject(BiometricError.userCancel)
                                                 case LAError.userFallback?:
-                                                    reject(TouchIDError.userFallback)
+                                                    reject(BiometricError.userFallback)
                                                 default:
-                                                    reject(TouchIDError.unknown)
+                                                    reject(BiometricError.unknown)
                                                 }
-
+                                                
                                                 return
                                             }
-
+                                            
                                             if authenticated {
                                                 resolve()
                                             } else {
-                                                reject(TouchIDError.authenticationFailed)
+                                                reject(BiometricError.authenticationFailed)
                                             }
             }
         }

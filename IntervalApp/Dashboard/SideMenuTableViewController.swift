@@ -67,6 +67,16 @@ class SideMenuTableViewController: UIViewController
         SideMenuItem(title:Constant.sideMenuTitles.resortDirectory,image:Constant.assetImageNames.resortDirectory, storyboardid:Constant.storyboardNames.iphone,initialcontrollername: Constant.sideMenuTitles.sideMenuInitialController),
         SideMenuItem(title:Constant.sideMenuTitles.intervalHD,image:Constant.assetImageNames.intervalHD,storyboardid: Constant.storyboardNames.intervalHDIphone,initialcontrollername: Constant.sideMenuTitles.sideMenuInitialController),
         SideMenuItem(title:Constant.sideMenuTitles.magazines,image:Constant.assetImageNames.magazines,storyboardid: Constant.storyboardNames.magazinesIphone,initialcontrollername: Constant.sideMenuTitles.sideMenuInitialController),
+        
+        // This is not a good design...
+        // And the cell row calculations are hard coded
+        // Forces storyboard
+        SideMenuItem(title: "Settings".localized(),
+                     image: "Settings Icon",
+                     storyboardid: "Settings",
+                     initialcontrollername: Constant.sideMenuTitles.sideMenuInitialController),
+        ///
+        
         SideMenuItem(title:Constant.sideMenuTitles.signOut, image: "", selector: Constant.MyClassConstants.signOutSelected )
     ]
     
@@ -233,7 +243,6 @@ extension SideMenuTableViewController:UITableViewDataSource {
             SignOutButton.setTitleColor(UIColor(red: 0/255.0, green: 119/255.0, blue: 190/255.0, alpha: 1.0), for: UIControlState.normal)
             SignOutButton.titleLabel?.font = UIFont(name: Constant.fontName.helveticaNeueBold, size: 15)
             SignOutButton.addTarget(self, action: #selector(SideMenuTableViewController.signOutSelected), for: .touchUpInside)
-            cell.addSubview(SignOutButton)
             
             let privacyLegalLabel = UILabel()
             privacyLegalLabel.frame = CGRect(x: 15, y: 120, width: self.view.bounds.width - 65, height: 20)
