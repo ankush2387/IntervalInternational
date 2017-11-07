@@ -514,15 +514,10 @@ class GoogleMapViewController: UIViewController {
             
         }
         
-        if !Constant.MyClassConstants.isRunningOnIphone {
-            if(self.mapTableView != nil){
+        if !Constant.MyClassConstants.isRunningOnIphone && self.mapTableView != nil{
                 self.mapTableView.isHidden = false
                 self.alertView.isHidden = true
                 self.mapTableView.reloadData()
-            } else {
-                self.alertView.isHidden = false
-                self.mapTableView.isHidden = true
-            }
         }
         
     }
