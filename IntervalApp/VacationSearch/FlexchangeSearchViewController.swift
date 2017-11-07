@@ -22,16 +22,13 @@ class FlexchangeSearchViewController: UIViewController {
     @IBOutlet weak var flexChangeTableView: UITableView!
     
     override func viewWillAppear(_ animated: Bool) {
-        Helper.getLocalStorageWherewanttoTrade()
+        self.navigationController?.navigationBar.isHidden = false
+        _ = Helper.getLocalStorageWherewanttoTrade()
         flexChangeTableView.reloadData()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let menuButtonright = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.MoreNav), style: .plain, target: self, action:#selector(FlexchangeSearchViewController.menuButtonClicked))
-        menuButtonright.tintColor = UIColor.white
-        self.navigationItem.rightBarButtonItem = menuButtonright
         
         // Adding navigation back button
         let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(FlexchangeSearchViewController.menuBackButtonPressed(_:)))
@@ -54,30 +51,6 @@ class FlexchangeSearchViewController: UIViewController {
       
     }
     
-     //**** Option to open menu from bottom ***//
-    
-    func menuButtonClicked()  {
-        
-        let actionSheetController: UIAlertController = UIAlertController(title:Constant.buttonTitles.searchOption, message: "", preferredStyle: .actionSheet)
-        
-        
-        let helpAction: UIAlertAction = UIAlertAction(title:Constant.buttonTitles.help, style: .default) { action -> Void in
-            //Just dismiss the action sheet
-        }
-            
-         actionSheetController.addAction(helpAction)
-        
-        //***** Create and add the cancel button *****//
-        let cancelAction: UIAlertAction = UIAlertAction(title: Constant.buttonTitles.cancel, style: .cancel) { action -> Void in
-            //Just dismiss the action sheet
-        }
-        actionSheetController.addAction(cancelAction)
-        
-        //Present the AlertController
-        self.present(actionSheetController, animated: true, completion: nil)
-        
-    }
-    
     func addRelinquishmentSectionButtonPressed(_ sender:IUIKButton) {
         Constant.MyClassConstants.viewController = self
         showHudAsync()
@@ -94,7 +67,6 @@ class FlexchangeSearchViewController: UIViewController {
                 }
             }
             
-            SVProgressHUD.dismiss()
             self.hideHudAsync()
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.relinquishmentSelectionViewController) as! RelinquishmentSelectionViewController
@@ -114,7 +86,7 @@ class FlexchangeSearchViewController: UIViewController {
         Helper.helperDelegate = self
         if(Constant.MyClassConstants.relinquishmentIdArray.count == 0){
             
-            SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
+            presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
             self.hideHudAsync()
             
         }else{
@@ -139,8 +111,7 @@ class FlexchangeSearchViewController: UIViewController {
                 //Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.areas = [area]
                 
                 ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
-                    
-                    self.hideHudAsync()
+    
                     Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
                     Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     // Get activeInterval (or initial search interval)
@@ -152,7 +123,7 @@ class FlexchangeSearchViewController: UIViewController {
                     // Check not available checkIn dates for the active interval
                     if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
                         Helper.showNotAvailabilityResults()
-                        //self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
+                        self.hideHudAsync()
                         self.navigateToSearchResults()
                     }else{
                         Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
@@ -162,7 +133,7 @@ class FlexchangeSearchViewController: UIViewController {
                 }, onError: { (error) in
                     
                     self.hideHudAsync()
-                    SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                    self.presentErrorAlert(UserFacingCommonError.generic)
                 })
                 
                 
@@ -406,7 +377,7 @@ extension FlexchangeSearchViewController:UITableViewDataSource{
                     cell.bedroomLabel.isHidden = true
                 }else if((object as AnyObject).isKind(of: OpenWeeks.self)){
                     let weekNumber = Constant.getWeekNumber(weekType: ((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).weekNumber))
-                    print((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff)
+                    intervalPrint((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff)
                     if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff || (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isFloat){
                         cell.bedroomLabel.isHidden = false
                         
@@ -437,7 +408,9 @@ extension FlexchangeSearchViewController:UITableViewDataSource{
                         cell.bedroomLabel.isHidden = false
                         
                         let resortList = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).unitDetails
-                        print((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).resort[0].resortName, resortList.count)
+
+                        intervalPrint((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).resort[0].resortName, resortList.count)
+
                         if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isFloat){
                             let floatDetails = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).floatDetails
                             cell.bedroomLabel.text = "\(resortList[0].unitSize), \(floatDetails[0].unitNumber), \(resortList[0].kitchenType)"
@@ -496,7 +469,7 @@ extension FlexchangeSearchViewController:HelperDelegate {
 
  
     func resortSearchComplete(){
-       
+        self.hideHudAsync()
         self.navigateToSearchResults()
     }
     

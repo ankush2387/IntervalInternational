@@ -117,6 +117,8 @@
 		3A623C6A1CF728BC00389708 /* UIImageView+UIActivityIndicatorForSDWebImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A623C691CF728BC00389708 /* UIImageView+UIActivityIndicatorForSDWebImage.m */; };
 		3A645C0E1CF853180033EEB7 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A645C0D1CF853180033EEB7 /* Reachability.swift */; };
 		3A733AC61CEF2A2E0068CF15 /* ImageWithNameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A733AC51CEF2A2E0068CF15 /* ImageWithNameCell.swift */; };
+		3A7858E61FB1B7170027E7EC /* Print+IntervalDebug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7858E51FB1B7160027E7EC /* Print+IntervalDebug.swift */; };
+		3A7858E81FB1B8120027E7EC /* CertificateDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7858E71FB1B8110027E7EC /* CertificateDetailsViewController.swift */; };
 		3A795A8D1CF5D22E0098C26D /* HeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A795A8C1CF5D22E0098C26D /* HeaderTableViewCell.swift */; };
 		3A7F44A71F17768800F4DD18 /* WhatToUseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7F44A61F17768800F4DD18 /* WhatToUseViewController.swift */; };
 		3A8618C81EA679660092A804 /* ClubPoints.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A8618C71EA679660092A804 /* ClubPoints.xib */; };
@@ -497,6 +499,8 @@
 		3A623C691CF728BC00389708 /* UIImageView+UIActivityIndicatorForSDWebImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+UIActivityIndicatorForSDWebImage.m"; sourceTree = "<group>"; };
 		3A645C0D1CF853180033EEB7 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		3A733AC51CEF2A2E0068CF15 /* ImageWithNameCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageWithNameCell.swift; sourceTree = "<group>"; };
+		3A7858E51FB1B7160027E7EC /* Print+IntervalDebug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Print+IntervalDebug.swift"; sourceTree = "<group>"; };
+		3A7858E71FB1B8110027E7EC /* CertificateDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateDetailsViewController.swift; sourceTree = "<group>"; };
 		3A795A8C1CF5D22E0098C26D /* HeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderTableViewCell.swift; sourceTree = "<group>"; };
 		3A7F44A61F17768800F4DD18 /* WhatToUseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhatToUseViewController.swift; sourceTree = "<group>"; };
 		3A8618C71EA679660092A804 /* ClubPoints.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClubPoints.xib; sourceTree = "<group>"; };
@@ -1178,6 +1182,7 @@
 				3A59DE171F015E5F005280D3 /* SortingViewController.swift */,
 				3A7F44A61F17768800F4DD18 /* WhatToUseViewController.swift */,
 				E9ED1B581F44B89A00794C53 /* CertificateInfoViewController.swift */,
+				3A7858E71FB1B8110027E7EC /* CertificateDetailsViewController.swift */,
 				3C4957601F9145BB00B7727D /* RenewelViewController.swift */,
 				3A0666391F912C56002AA92A /* RenewalOtherOptionsVC.swift */,
 			);
@@ -1660,6 +1665,7 @@
 				3C4F17261FA391E7001EF71F /* String+NSRage.swift */,
 				3C4F17281FA39204001EF71F /* Float+CurrencyFormatter.swift */,
 				61A420C01FA9819F00B06708 /* Data+EncryptionKey.swift */,
+				3A7858E51FB1B7160027E7EC /* Print+IntervalDebug.swift */,
 			);
 			name = Extensions;
 			path = Utils;
@@ -1928,7 +1934,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		898F2FAB33CE1A7C1D3949A9 /* [CP] Check Pods Manifest.lock */ = {
@@ -1946,7 +1952,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		9D8DA19124728AE252BF8557 /* [CP] Embed Pods Frameworks */ = {
@@ -2069,6 +2075,7 @@
 				3CA1FBE91F8562C1008148AB /* Logger.swift in Sources */,
 				618AEFCF1FA2C0D00097B423 /* ChargeSummaryTableViewCell.swift in Sources */,
 				3A3A01501C99BED600B7EC37 /* MemberShipViewController.swift in Sources */,
+				3A7858E61FB1B7170027E7EC /* Print+IntervalDebug.swift in Sources */,
 				DC7EF4CA1D709E9600E9E360 /* ClubPointPageItemViewController.swift in Sources */,
 				DC04BB421DB829F100227FF5 /* IntervalHDTabController.swift in Sources */,
 				DC7EF50B1D709F8800E9E360 /* ResortCollectionViewCell.swift in Sources */,
@@ -2223,6 +2230,7 @@
 				3A3A01471C99BD0B00B7EC37 /* VacationDetailTableViewCell.swift in Sources */,
 				E918EF281F3373AE00C84D51 /* MembershipProductCell.swift in Sources */,
 				3A892F471CD3902F00AE6F45 /* ExchangeCell0.swift in Sources */,
+				3A7858E81FB1B8120027E7EC /* CertificateDetailsViewController.swift in Sources */,
 				3C9186FB1FA269A000F484ED /* ChargeSummaryViewController.swift in Sources */,
 				3A18D7BC1DE0949D00966472 /* AddYourCardButtonCell.swift in Sources */,
 				3A892F451CD3902F00AE6F45 /* DateAndPersonPickerTableViewCell.swift in Sources */,

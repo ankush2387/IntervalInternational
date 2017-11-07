@@ -216,7 +216,7 @@ class WhatToUseViewController: UIViewController {
                     self.selectedRow = -1
                     self.selectedRowSection = -1
                     self.tableView.reloadData()
-                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                    self.presentErrorAlert(UserFacingCommonError.generic)
                     
                 })
                 
@@ -225,7 +225,7 @@ class WhatToUseViewController: UIViewController {
                 self.selectedRow = -1
                 self.selectedRowSection = -1
                 self.tableView.reloadData()
-                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                self.presentErrorAlert(UserFacingCommonError.generic)
             })
         
         
@@ -275,7 +275,6 @@ class WhatToUseViewController: UIViewController {
             // store response
             Constant.MyClassConstants.processStartResponse = response
             
-            SVProgressHUD.dismiss()
             self.hideHudAsync()
             Constant.MyClassConstants.viewResponse = response.view!
             Constant.MyClassConstants.rentalFees = [(response.view?.fees)!]
@@ -300,7 +299,6 @@ class WhatToUseViewController: UIViewController {
             UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: {(Membership) in
                 
                 // Got an access token!  Save it for later use.
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
                 Constant.MyClassConstants.membershipContactArray = Membership.contacts!
 
@@ -366,7 +364,7 @@ class WhatToUseViewController: UIViewController {
                 self.selectedRow = -1
                 self.selectedRowSection = -1
                 self.tableView.reloadData()
-                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.description)
+                self.presentErrorAlert(UserFacingCommonError.generic)
                 
             })
             
@@ -376,7 +374,7 @@ class WhatToUseViewController: UIViewController {
             self.selectedRowSection = -1
             self.tableView.reloadData()
             self.hideHudAsync()
-            SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.description)
+            self.presentErrorAlert(UserFacingCommonError.generic)
         })
 
         
@@ -976,8 +974,7 @@ extension WhatToUseViewController:RenewelViewControllerDelegate {
     
     func otherOptions(forceRenewals: ForceRenewals) {
         
-        print("other options")
-        
+        intervalPrint("other options")
         if(Constant.RunningDevice.deviceIdiom == .phone) {
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             

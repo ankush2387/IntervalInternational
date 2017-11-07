@@ -46,7 +46,7 @@ class FloatSaveAndCancelButtonTableViewCell: UITableViewCell {
     */
     fileprivate func updateCellComponetsText(){
         saveFloatDetailButton.setTitle(Constant.floatDetailViewController.floatSaveAndCancelButtonTableViewCell.saveFloatDetailButtonTitle, for: UIControlState())
-        cancelButton.setTitle(Constant.floatDetailViewController.floatSaveAndCancelButtonTableViewCell.cancelButtonTitle, for: UIControlState())
+        cancelButton.setTitle(Constant.buttonTitles.cancel, for: UIControlState())
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

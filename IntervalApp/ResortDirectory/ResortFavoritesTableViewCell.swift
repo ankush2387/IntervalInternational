@@ -159,13 +159,13 @@ extension ResortFavoritesTableViewCell:ResortDirectoryCollectionViewCellDelegate
                 
                 UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode:  Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!, onSuccess: {(response) in
                     
-                    print(response)
+                    intervalPrint(response)
                     sender.isSelected = true
                     
                     
                 }, onError: {(error) in
                     
-                    print(error)
+                    intervalPrint(error)
                 })
             }
             else {

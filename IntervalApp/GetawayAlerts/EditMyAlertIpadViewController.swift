@@ -9,7 +9,6 @@
 import UIKit
 import IntervalUIKit
 import DarwinSDK
-import SVProgressHUD
 
 class EditMyAlertIpadViewController: UIViewController {
     
@@ -71,7 +70,7 @@ class EditMyAlertIpadViewController: UIViewController {
             }
             self.setupView()
         }) { (error) in
-            print(error)
+            intervalPrint(error)
         }
         // omniture tracking with event 40
         let pageView: [String: String] = [
@@ -310,7 +309,7 @@ class EditMyAlertIpadViewController: UIViewController {
                         
                         RentalClient.updateAlert(Session.sharedSession.userAccessToken, alert: rentalAlert, onSuccess:{ (response) in
                             
-                            SVProgressHUD.dismiss()
+                            self.hideHudAsync()
                             
                             var deststr:String = ""
                             for dest in Constant.MyClassConstants.alertSelectedDestination {
@@ -337,7 +336,7 @@ class EditMyAlertIpadViewController: UIViewController {
                             
                             ADBMobile.trackAction(Constant.omnitureEvents.event53, data: userInfo)
                             
-                            SimpleAlert.alertTodismissController(self, title:Constant.AlertPromtMessages.editAlertTitle , message: Constant.AlertMessages.editAlertMessage)
+                            self.presentAlert(with: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertMessage)
                             
                             
                         })
@@ -350,30 +349,27 @@ class EditMyAlertIpadViewController: UIViewController {
                             ]
                             
                             ADBMobile.trackAction(Constant.omnitureEvents.event53, data: userInfo)
-                            SVProgressHUD.dismiss()
-                            SimpleAlert.alert(self, title:Constant.AlertPromtMessages.editAlertTitle , message: error.description)
+                            self.hideHudAsync()
+                            self.presentErrorAlert(UserFacingCommonError.generic)
                             
                         }
                     }
                     else {
-                        
-                        SimpleAlert.alert(self, title: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertdetinationrequiredMessage)
+                        self.presentAlert(with: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertdetinationrequiredMessage)
                     }
                     
                 }
                 else {
-                    
-                    SimpleAlert.alert(self, title: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertEmptyWidowEndDateMessage)
+                    self.presentAlert(with: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertEmptyWidowEndDateMessage)
                 }
             }
             else {
-                
-                SimpleAlert.alert(self, title: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertEmptyWidowStartDateMessage)
+                self.presentAlert(with: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertEmptyWidowStartDateMessage)
             }
             
         }
         else {
-            SimpleAlert.alert(self, title: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertEmptyNameMessage)
+            self.presentAlert(with: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertEmptyNameMessage)
         }
         
     }

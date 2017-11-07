@@ -36,6 +36,7 @@ class CertificateCell: UITableViewCell {
     
     @IBOutlet weak var statusLbl: UILabel!
     
+    @IBOutlet weak var certificateInfoButton: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()

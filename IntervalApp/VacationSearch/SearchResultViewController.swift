@@ -10,7 +10,6 @@ import UIKit
 import IntervalUIKit
 import DarwinSDK
 import SDWebImage
-import SVProgressHUD
 import RealmSwift
 
 class SearchResultViewController: UIViewController {
@@ -47,10 +46,7 @@ class SearchResultViewController: UIViewController {
     var dateCellSelectionColor = Constant.CommonColor.blueColor
     var myActivityIndicator = UIActivityIndicatorView()
     var value:String = ""
-    
-   
-    
-    
+    var alertFilterOptionsArray = [Constant.AlertResortDestination]()
     
     // Only one section with surroundings found
     var onlySurroundingsFound = false
@@ -65,14 +61,12 @@ class SearchResultViewController: UIViewController {
     func runTimer()  {
         
         Constant.MyClassConstants.isShowAvailability = false
-        let sectionIndex = IndexSet(integer: 0)
-        //self.searchResultTableView.reloadSections(sectionIndex, with: .none)
         self.searchResultTableView.reloadData()
-        
         timer.invalidate()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.navigationBar.isHidden = false
         self.navigationController?.navigationBar.barTintColor = UIColor.init(colorLiteralRed: 70.0/255.0, green: 136.0/255.0, blue: 193.0/255.0, alpha: 1.0)
 
         Constant.MyClassConstants.calendarDatesArray.removeAll()
@@ -328,12 +322,12 @@ class SearchResultViewController: UIViewController {
                 Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
                 
                 self.searchResultColelctionView.reloadData()
+                   self.hideHudAsync()
                 
             },
             onError:{ (error) in
-                
-                SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
-                
+                self.hideHudAsync()
+                self.presentErrorAlert(UserFacingCommonError.generic)
                 }
             )
         }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isCombined()){
@@ -400,13 +394,12 @@ class SearchResultViewController: UIViewController {
                     
                 },
                onError:{ (error) in
-                
-                SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                     self.presentErrorAlert(UserFacingCommonError.generic)
                 }
                 )
             }
         }else {
-            
+            hideHudAsync()
             Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
             
             Constant.MyClassConstants.calendarDatesArray.removeAll()
@@ -422,9 +415,10 @@ class SearchResultViewController: UIViewController {
     
     //*****Function for more button press *****//
     func intervalDateItemClicked(_ toDate: Date){
+         showHudAsync()
          searchResultColelctionView.reloadData()
          if(combinedExactSearchItems.isEmpty && combinedSurroundingSearchItems.isEmpty && exactMatchResortsArray.isEmpty && exactMatchResortsArrayExchange.isEmpty && surroundingMatchResortsArray.isEmpty && surroundingMatchResortsArrayExchange.isEmpty){
-            print("All empty")
+            intervalPrint("All empty")
          }else{
             let indexPath = IndexPath(row: 0, section: 0)
             searchResultTableView.scrollToRow(at: indexPath, at: .top, animated: true)
@@ -453,7 +447,7 @@ class SearchResultViewController: UIViewController {
                                         
             },
                                        onError:{ (error) in
-                                        SimpleAlert.alert(self, title: Constant.AlertMessages.noResultMessage, message: error.localizedDescription)
+                                       self.presentErrorAlert(UserFacingCommonError.generic)
             }
             )
             
@@ -467,42 +461,6 @@ class SearchResultViewController: UIViewController {
         _ = self.navigationController?.popViewController(animated: true)
     }
     
-    func resortDetailsClicked(_ toDate: Date){
-        
-        let searchResortRequest = RentalSearchResortsRequest()
-        searchResortRequest.checkInDate = toDate
-        
-        if(Constant.MyClassConstants.surroundingCheckInDates.contains(Constant.MyClassConstants.checkInDates[collectionviewSelectedIndex - 1])){
-            
-            searchResortRequest.resortCodes = Constant.MyClassConstants.surroundingResortCodesArray
-        }else{
-            
-            searchResortRequest.resortCodes = Constant.MyClassConstants.resortCodesArray
-        }
-        
-        Constant.MyClassConstants.resortsArray.removeAll()
-        showHudAsync()
-        
-        RentalClient.searchResorts(Session.sharedSession.userAccessToken, request: searchResortRequest, onSuccess: { (response) in
-            Constant.MyClassConstants.resortsArray = response.resorts
-            if(self.alertView.isHidden == false){
-                self.alertView.isHidden = true
-                self.headerVw.isHidden = false
-            }
-            self.searchResultTableView.reloadData()
-            self.hideHudAsync()
-        }, onError: { (error) in
-            Constant.MyClassConstants.resortsArray.removeAll()
-            self.searchResultTableView.reloadData()
-            self.alertView = Helper.noResortView(senderView: self.view)
-            self.alertView.isHidden = false
-            self.headerVw.isHidden = true
-            self.hideHudAsync()
-        })
-        
-    }
-
-
     //Dynamic API hit
     
     func getFilterRelinquishments(selectedInventoryUnit:Inventory, selectedIndex:Int, selectedExchangeInventory: ExchangeInventory){
@@ -570,7 +528,7 @@ class SearchResultViewController: UIViewController {
             
         }, onError: { (error) in
             self.hideHudAsync()
-            SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.description)
+            self.presentErrorAlert(UserFacingCommonError.generic)
         })
     }
     
@@ -583,8 +541,6 @@ class SearchResultViewController: UIViewController {
             viewController.delegate = self
             
             self.navigationController?.pushViewController(viewController, animated: true)
-           // self.present(viewController, animated:true, completion: nil)
-            
             return
             
         } else {
@@ -616,8 +572,9 @@ class SearchResultViewController: UIViewController {
         let processRequest = ExchangeProcessStartRequest()
         
         processRequest.destination = Constant.MyClassConstants.exchangeDestination
+        // Note: constant has value obtained from vacation search screen
         processRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
-        
+    
         if (Constant.MyClassConstants.filterRelinquishments.count > 0) {
             
             if let openWeek = Constant.MyClassConstants.filterRelinquishments[0].openWeek{
@@ -677,30 +634,18 @@ class SearchResultViewController: UIViewController {
                 } else {
                     let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
                     viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[0]
-                    self.navigationController!.pushViewController(viewController, animated: true)
+                    self.navigationController?.pushViewController(viewController, animated: true)
                     
                 }
-                
-                
-                /*var viewController = UIViewController()
-                    viewController = WhoWillBeCheckingInViewController()
-                    let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-                    viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
-                    (viewController as! WhoWillBeCheckingInViewController).filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[0]
-                let transitionManager = TransitionManager()
-                self.navigationController?.transitioningDelegate = transitionManager
-                
-                self.navigationController!.pushViewController(viewController, animated: true)*/
             }, onError: { (error) in
                 self.hideHudAsync()
-                
-                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                self.presentErrorAlert(UserFacingCommonError.generic)
                 
             })
             
         }, onError: {(error) in
             self.hideHudAsync()
-            SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+            self.presentErrorAlert(UserFacingCommonError.generic)
         })
     }
   
@@ -725,15 +670,31 @@ class SearchResultViewController: UIViewController {
     }
     
     //funciton called when search result page sort by name button pressed
-    @IBAction func filterByNameButtonPressed(_ sender: Any) {
+    @IBAction func filterByNameButtonPressed(_ sender: UIButton) {
         
-        let viewController = self.storyboard?.instantiateViewController(withIdentifier: Constant.storyboardControllerID.sortingViewController) as! SortingViewController
-        viewController.isFilterClicked = true
-        viewController.resortNameArray = Constant.MyClassConstants.resortsArray
-        viewController.selectedIndex = Constant.MyClassConstants.filteredIndex
-        self.present(viewController, animated: true, completion: nil)
+        if(!Constant.MyClassConstants.noFilterOptions){
+            sender.isEnabled = true
+            if(Constant.MyClassConstants.filterOptionsArray.count > 1 || alertFilterOptionsArray.count > 1){
+                let viewController = self.storyboard?.instantiateViewController(withIdentifier: Constant.storyboardControllerID.sortingViewController) as! SortingViewController
+                viewController.isFilterClicked = true
+                viewController.alertFilterOptionsArray = alertFilterOptionsArray
+                viewController.resortNameArray = Constant.MyClassConstants.resortsArray
+                viewController.selectedIndex = Constant.MyClassConstants.filteredIndex
+                self.present(viewController, animated: true, completion: nil)
+            }else{
+                sender.isEnabled = false
+            }
+        }else if(alertFilterOptionsArray.count > 1){
+            let viewController = self.storyboard?.instantiateViewController(withIdentifier: Constant.storyboardControllerID.sortingViewController) as! SortingViewController
+            viewController.isFilterClicked = true
+            viewController.alertFilterOptionsArray = alertFilterOptionsArray
+            viewController.resortNameArray = Constant.MyClassConstants.resortsArray
+            viewController.selectedIndex = Constant.MyClassConstants.filteredIndex
+            self.present(viewController, animated: true, completion: nil)
+        }
 
-    }
+  }
+    
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let firstVisibleIndexPath = searchResultTableView.indexPathsForVisibleRows?.first
@@ -773,7 +734,7 @@ class SearchResultViewController: UIViewController {
     func getResortInfoCollectionCell(indexPath: IndexPath, collectionView:UICollectionView, resort:Resort) -> AvailabilityCollectionViewCell{
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.reUsableIdentifiers.resortDetailCell, for: indexPath) as! AvailabilityCollectionViewCell
         cell.setResortDetails(inventoryItem: resort)
-        print(Constant.MyClassConstants.favoritesResortCodeArray)
+        intervalPrint(Constant.MyClassConstants.favoritesResortCodeArray)
         let status =  Helper.isResrotFavorite(resortCode: resort.resortCode!)
         if(status) {
             cell.favourite.isSelected = true
@@ -807,7 +768,6 @@ class SearchResultViewController: UIViewController {
         UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: {(Membership) in
             
             // Got an access token!  Save it for later use.
-            SVProgressHUD.dismiss()
             self.hideHudAsync()
             Constant.MyClassConstants.membershipContactArray = Membership.contacts!
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
@@ -822,15 +782,12 @@ class SearchResultViewController: UIViewController {
             }else{
                 // Navigate to Who Will Be Checking in Screen
                 let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
-                self.navigationController!.pushViewController(viewController, animated: true)
+                self.navigationController?.pushViewController(viewController, animated: true)
             }
             
         }, onError: { (error) in
-            
-            SVProgressHUD.dismiss()
             self.hideHudAsync()
-            SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.description)
-            
+            self.presentErrorAlert(UserFacingCommonError.generic)
         })
     }
     
@@ -872,44 +829,33 @@ class SearchResultViewController: UIViewController {
                     }
         
                     if (sender.isSelected == false){
-                        
                         showHudAsync()
                         UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode:resortCode, onSuccess: {(response) in
 
                             self.hideHudAsync()
-                            SVProgressHUD.dismiss()
                             sender.isSelected = true
                             Constant.MyClassConstants.favoritesResortCodeArray.add(resortCode)
                             let indexpath = NSIndexPath(row: sender.tag, section:Int(section)!)
-                            print(Constant.MyClassConstants.favoritesResortCodeArray)
+                            intervalPrint(Constant.MyClassConstants.favoritesResortCodeArray)
                             self.searchResultTableView.reloadRows(at: [indexpath as IndexPath], with: .automatic)
                             
                         }, onError: {(error) in
-
-                            SVProgressHUD.dismiss()
                             self.hideHudAsync()
-
                         })
                     }
                     else {
-                        
-                       
                         showHudAsync()
                         UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: resortCode, onSuccess: {(response) in
 
                             sender.isSelected = false
                             self.hideHudAsync()
-                            SVProgressHUD.dismiss()
                             Constant.MyClassConstants.favoritesResortCodeArray.remove(resortCode)
                             let indexpath = NSIndexPath(row: sender.tag, section:Int(section)!)
                             self.searchResultTableView.reloadRows(at: [indexpath as IndexPath], with: .automatic)
                             
 
                         }, onError: {(error) in
-
-                            SVProgressHUD.dismiss()
                             self.hideHudAsync()
-
                         })
 
                     }
@@ -982,13 +928,10 @@ extension SearchResultViewController:UICollectionViewDelegate {
                 cell?.contentView.addSubview(viewForActivity)
             }
             
-            let lastSelectedIndex = collectionviewSelectedIndex
             collectionviewSelectedIndex = indexPath.item
             dateCellSelectionColor = Constant.CommonColor.blueColor
-            if(Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)!{
+            if Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval!{
                 showHudAsync()
-                
-                
                 intervalBucketClicked(calendarItem:Constant.MyClassConstants.calendarDatesArray[indexPath.item], cell: cell!)
             }else{
                 
@@ -999,7 +942,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
             // Check for renewals no thanks
             Constant.MyClassConstants.noThanksForNonCore = false
             
-            if((indexPath as NSIndexPath).section == 0) {
+            if (indexPath as NSIndexPath).section == 0 {
                 Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.vacationSearchFunctionalityCheck
                 Constant.MyClassConstants.isFromSearchResult = true
 
@@ -1048,15 +991,12 @@ extension SearchResultViewController:UICollectionViewDelegate {
                         }
                     }
                     Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = collectionView.tag + 1
-                    SVProgressHUD.dismiss()
                     self.hideHudAsync()
                     self.performSegue(withIdentifier: Constant.segueIdentifiers.vacationSearchDetailSegue, sender: nil)
                 })
                 { (error) in
-                    
-                    SVProgressHUD.dismiss()
                     self.hideHudAsync()
-                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.description)
+                    self.presentErrorAlert(UserFacingCommonError.generic)
                 }
             }else{
                 
@@ -1110,7 +1050,6 @@ extension SearchResultViewController:UICollectionViewDelegate {
                         processResort.processId = response.processId
                         Constant.MyClassConstants.getawayBookingLastStartedProcess = processResort
                         Constant.MyClassConstants.processStartResponse = response
-                        SVProgressHUD.dismiss()
                         self.hideHudAsync()
                         Constant.MyClassConstants.viewResponse = response.view!
                         if let rentalFees = response.view?.fees{
@@ -1138,8 +1077,7 @@ extension SearchResultViewController:UICollectionViewDelegate {
                         self.checkUserMembership(response: response)
                     }, onError: {(error) in
                         self.hideHudAsync()
-                        SVProgressHUD.dismiss()
-                        SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.description)
+                        self.presentErrorAlert(UserFacingCommonError.generic)
                     })
                 }else{ // search both
                     selectedSection = (collectionView.superview?.superview?.tag)!
@@ -1176,7 +1114,6 @@ extension SearchResultViewController:UICollectionViewDelegate {
                                 
                                 Constant.MyClassConstants.filterRelinquishments.removeAll()
                                 self.navigateToWhatToUseViewController()
-                                //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
                             }
                             else {
                               
@@ -1195,7 +1132,6 @@ extension SearchResultViewController:UICollectionViewDelegate {
                                     
                                     Constant.MyClassConstants.filterRelinquishments.removeAll()
                                     self.navigateToWhatToUseViewController()
-                                    //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
                                 }
                                 else {
                                     self.getFilterRelinquishments(selectedInventoryUnit: (combinedSurroundingSearchItems[collectionView.tag].rentalAvailability?.inventory!)!, selectedIndex: indexPath.item, selectedExchangeInventory: ExchangeInventory())
@@ -1226,7 +1162,6 @@ extension SearchResultViewController:UICollectionViewDelegate {
                                 
                                 Constant.MyClassConstants.filterRelinquishments.removeAll()
                                 self.navigateToWhatToUseViewController()
-                                //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
                             }
                             else {
                                 
@@ -1237,7 +1172,6 @@ extension SearchResultViewController:UICollectionViewDelegate {
                        
                         }else{
                             self.navigateToWhatToUseViewController()
-                            //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
                         }
                         
                     }
@@ -1585,8 +1519,12 @@ extension SearchResultViewController:UICollectionViewDataSource {
         
         let dropDownImgVw = UIImageView(frame: CGRect(x: self.searchResultTableView.frame.width - 40, y: 5, width: 30, height: 30))
         dropDownImgVw.image = UIImage(named: Constant.assetImageNames.dropArrow)
-        headerView.addSubview(dropDownImgVw)
-        headerView.addSubview(headerButton)
+        if(!Constant.MyClassConstants.noFilterOptions || alertFilterOptionsArray.count > 0){
+            if(Constant.MyClassConstants.filterOptionsArray.count > 1 || alertFilterOptionsArray.count > 1){
+            headerView.addSubview(dropDownImgVw)
+            headerView.addSubview(headerButton)
+            }
+        }
         return headerView
     }
 }
@@ -1745,7 +1683,8 @@ extension SearchResultViewController:UITableViewDataSource {
                 }
                 
                 cell.resortInfoCollectionView.reloadData()
-                cell.resortInfoCollectionView.isScrollEnabled = false
+                cell.resortInfoCollectionView
+                    .isScrollEnabled = false
                 cell.layer.borderWidth = 0.5
                 cell.layer.borderColor = UIColor.lightGray.cgColor
                 return cell
@@ -1847,11 +1786,9 @@ extension SearchResultViewController:SearchResultContentTableCellDelegate{
                 showHudAsync()
                 
                 UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
-                    
-                    print(response)
+                    intervalPrint(response)
                     sender.isSelected = false
                     self.hideHudAsync()
-                    SVProgressHUD.dismiss()
                     Constant.MyClassConstants.favoritesResortCodeArray.remove(Constant.MyClassConstants.resortsArray[sender.tag].resortCode!)
                     self.searchResultTableView.reloadData()
                     
@@ -1902,7 +1839,7 @@ extension SearchResultViewController:HelperDelegate {
         self.searchResultColelctionView.reloadData()
         self.searchResultTableView.reloadData()
         if(combinedExactSearchItems.isEmpty && combinedSurroundingSearchItems.isEmpty && exactMatchResortsArray.isEmpty && exactMatchResortsArrayExchange.isEmpty && surroundingMatchResortsArray.isEmpty && surroundingMatchResortsArrayExchange.isEmpty){
-            print("All empty")
+            intervalPrint("All empty")
         }else{
             let indexPath = IndexPath(row: 0, section: 0)
             searchResultTableView.scrollToRow(at: indexPath, at: .top, animated: true)

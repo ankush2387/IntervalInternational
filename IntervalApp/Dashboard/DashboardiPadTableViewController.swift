@@ -26,6 +26,7 @@ class DashboardIPadTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         //***** Adding notification to reload table when all alerts have been fetched *****//
+        self.navigationController?.navigationBar.isHidden = false
         NotificationCenter.default.addObserver(self, selector: #selector(reloadBadgeView), name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadTopDestinations), name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadUpcomingTrip), name: NSNotification.Name(rawValue:Constant.notificationNames.reloadTripDetailsNotification), object: nil)
@@ -36,6 +37,7 @@ class DashboardIPadTableViewController: UITableViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         //***** Remove added notifications. *****//
+        self.navigationController?.navigationBar.isHidden = true
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue:Constant.notificationNames.reloadTripDetailsNotification), object: nil)
@@ -107,31 +109,27 @@ class DashboardIPadTableViewController: UITableViewController {
     //***** function to call alert list screen when view all alert button pressed *****//
     func viewAllAlertButtonPressed(_ sender:IUIKButton) {
         
-        let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.getawayAlertsIpad, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.sideMenuTitles.sideMenuInitialController) as! SWRevealViewController
+        Constant.MyClassConstants.alertOriginationPoint = Constant.CommonStringIdentifiers.alertOriginationPoint
+        let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+        let storyboardName = isRunningOnIphone ? Constant.storyboardNames.getawayAlertsIphone : Constant.storyboardNames.getawayAlertsIpad
+        if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
+            navigationController?.pushViewController(initialViewController, animated: true)
+        }
         Constant.MyClassConstants.activeAlertsArray.removeAllObjects()
         reloadBadgeView()
-
-        
-        self.present(viewController, animated: true, completion: nil)
     }
     
+    //Mark:- Button Clicked
     func searchVacationButtonPressed(_ sender:IUIKButton) {
-        
         
         Constant.MyClassConstants.searchOriginationPoint = Constant.omnitureCommonString.homeDashboard
         
-        let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.sideMenuTitles.sideMenuInitialController) as! SWRevealViewController
-        self.present(viewController, animated: true, completion: nil)
+        let isRunningOnIpad = UIDevice.current.userInterfaceIdiom == .pad
+        let storyboardName = isRunningOnIpad ? Constant.storyboardNames.vacationSearchIPad : Constant.storyboardNames.vacationSearchIphone
+        if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
+            navigationController?.pushViewController(initialViewController, animated: true)
+        }
         
-
-        
-        //self.performSegue(withIdentifier: Constant.segueIdentifiers.searchVacation, sender: nil)
-        
-        //        let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.myUpcomingTripIpad, bundle: nil)
-        //        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.upcomingTripsViewController) as! UpComingTripDetailIPadViewController
-        //        self.present(viewController, animated: true, completion: nil)
     }
     
     
@@ -139,11 +137,11 @@ class DashboardIPadTableViewController: UITableViewController {
     //***** function to call trip list screen when view all trip button pressed *****//
     func viewAllTripButtonPressed(_ sender:IUIKButton) {
         
-        let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.myUpcomingTripIpad, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.sideMenuTitles.sideMenuInitialController) as! SWRevealViewController
-        
-        self.present(viewController, animated: true, completion: nil)
-        
+        Constant.MyClassConstants.upcomingOriginationPoint = Constant.omnitureCommonString.homeDashboard
+        let storyboardName = Constant.storyboardNames.myUpcomingTripIphone
+        if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
+            navigationController?.pushViewController(initialViewController, animated: true)
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -290,11 +288,11 @@ class DashboardIPadTableViewController: UITableViewController {
                 
                 let alertFromDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.getawayAlertsArray[indexPath.row].earliestCheckInDate!, format: Constant.MyClassConstants.dateFormat)
                 
-                let fromDate = (Helper.getWeekDay(dateString: alertFromDate as NSDate, getValue: Constant.MyClassConstants.month)).appendingFormat(". ").appending(Helper.getWeekDay(dateString: alertFromDate as NSDate, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: alertFromDate as NSDate, getValue: Constant.MyClassConstants.year))
+                let fromDate = (Helper.getWeekDay(dateString: alertFromDate, getValue: Constant.MyClassConstants.month)).appendingFormat(". ").appending(Helper.getWeekDay(dateString: alertFromDate, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: alertFromDate, getValue: Constant.MyClassConstants.year))
                 
                 let alertToDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.getawayAlertsArray[indexPath.row].latestCheckInDate!, format: Constant.MyClassConstants.dateFormat)
                 
-                let toDate = Helper.getWeekDay(dateString: alertToDate as NSDate, getValue: Constant.MyClassConstants.month).appending(". ").appending(Helper.getWeekDay(dateString: alertToDate as NSDate, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: alertToDate as NSDate, getValue: Constant.MyClassConstants.year))
+                let toDate = Helper.getWeekDay(dateString: alertToDate, getValue: Constant.MyClassConstants.month).appending(". ").appending(Helper.getWeekDay(dateString: alertToDate, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: alertToDate, getValue: Constant.MyClassConstants.year))
                 
                 let dateRange = fromDate.appending(" - " + toDate)
                 
@@ -389,17 +387,6 @@ class DashboardIPadTableViewController: UITableViewController {
         }
         
     }
-    //***** Search vacation button action *****//
-    func  searchVactionPressed(_ sender:AnyObject) {
-        
-        let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.sideMenuTitles.sideMenuInitialController) as! SWRevealViewController
-        //self.present(viewController, animated: true, completion: nil)
-        
-        let navController = UINavigationController(rootViewController: viewController)
-       //self.navigationController!.present(navController, animated: true)
-        self.navigationController?.pushViewController(navController, animated: true)
-    }
 }
 
 extension DashboardIPadTableViewController:UICollectionViewDelegate {
@@ -443,13 +430,8 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.flexChangeSearchIpadViewController) as! FlexChangeSearchIpadViewController
             
-            Constant.MyClassConstants.viewController = self
-            // set travel party info
-            let travelPartyInfo = TravelParty()
-            travelPartyInfo.adults = Int(self.adultCounter)
-            travelPartyInfo.children = Int(self.childCounter)
-            
-            Constant.MyClassConstants.travelPartyInfo = travelPartyInfo
+            Constant.MyClassConstants.viewController = self 
+            Constant.MyClassConstants.travelPartyInfo = Helper.travelPartyInfo(adults: 2, children: 0)
             
             viewController.selectedFlexchange = Constant.MyClassConstants.flexExchangeDeals[indexPath.row]
             let transitionManager = TransitionManager()
@@ -485,8 +467,6 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
             let myComponents1 = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkOutDate)
             
             let formatedCheckOutDate = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents1.weekday!)) \(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!)). \(myComponents1.day!), \(myComponents1.year!)"
-            
-            
             
             cell.resortAvailabilityLabel.text = "\(formatedCheckInDate) - \(formatedCheckOutDate)"
             

@@ -66,9 +66,8 @@ class AddDebitOrCreditCardViewController: UIViewController {
             }
         }
         self.years = years
-        print(years)
+        intervalPrint(years)
         
-
         NotificationCenter.default.addObserver(self, selector:#selector(keyboardWasShown), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateResortHoldingTime), name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
@@ -87,7 +86,7 @@ class AddDebitOrCreditCardViewController: UIViewController {
         
         if(Constant.holdingTime != 0){
         }else{
-            SimpleAlert.alertTodismissController(self, title: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage)
+            presentAlert(with: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage)
         }
     }
 
@@ -211,7 +210,6 @@ class AddDebitOrCreditCardViewController: UIViewController {
                     
                     ADBMobile.trackAction(Constant.omnitureEvents.event59, data: nil)
                     self.hideHudAsync()
-                    SVProgressHUD.dismiss()
                     Constant.MyClassConstants.selectedCreditCard.removeAll()
                     newCreditCard.creditcardId = 0
                     newCreditCard.cardNumber = response.cardToken!
@@ -221,20 +219,18 @@ class AddDebitOrCreditCardViewController: UIViewController {
                     self.delegate?.newCreditCardAdded()
                     
                     }, onError: {(error) in
-                        SimpleAlert.alert(self, title:Constant.MyClassConstants.newCardalertTitle, message: error.description)
+                        self.presentErrorAlert(UserFacingCommonError.generic)
                         self.hideHudAsync()
-                        SVProgressHUD.dismiss()
                        
                 })
             }
             else {
-                
-                SimpleAlert.alert(self, title:Constant.MyClassConstants.newCardalertTitle, message: Constant.MyClassConstants.newCardalertMess)
+                self.presentAlert(with: Constant.MyClassConstants.newCardalertTitle, message: Constant.MyClassConstants.newCardalertMess)
             }
             
         }
         else {
-            SimpleAlert.alert(self, title: Constant.MyClassConstants.newCardalertTitle, message: Constant.MyClassConstants.alertReqFieldMsg)
+            self.presentAlert(with: Constant.MyClassConstants.newCardalertTitle, message: Constant.MyClassConstants.alertReqFieldMsg)
         }
     }
     
@@ -642,26 +638,36 @@ extension AddDebitOrCreditCardViewController:UITableViewDataSource {
           
         }
         else {
-                
+            
             if(indexPath.row == 0 || indexPath.row == 4) {
+                
+                
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.dropDownListCell, for: indexPath) as! DropDownListCell
                 
                 
                 if(indexPath.row == 0) {
+                    //country name
                     
-                     if(Constant.GetawaySearchResultCardFormDetailData.country == "") {
+                    if(Constant.GetawaySearchResultCardFormDetailData.country == "") {
                         cell.selectedTextLabel.text = Constant.textFieldTitles.guestFormSelectCountryPlaceholder
                     }
-                     else {
+                    else {
                         
-                        cell.selectedTextLabel.text = Constant.GetawaySearchResultCardFormDetailData.country
+                        if let address = Session.sharedSession.contact?.addresses![0] {
+                            cell.selectedTextLabel.text = address.countryCode
+                            
+                        } else {
+                            cell.selectedTextLabel.text = Constant.GetawaySearchResultCardFormDetailData.country
+                            
+                        }
+                        
                     }
                 }
                 else {
-                    
+                    //state name
                     if(Constant.GetawaySearchResultCardFormDetailData.state == "") {
-                     
+                        
                         cell.selectedTextLabel.text = Constant.textFieldTitles.guestFormSelectState
                     }
                     else {
@@ -677,15 +683,15 @@ extension AddDebitOrCreditCardViewController:UITableViewDataSource {
                 cell.borderView.layer.borderWidth = 2
                 cell.borderView.layer.cornerRadius = 5
                 cell.selectionStyle = .none
-
-
+                
+                
                 
                 return cell
                 
             }
             else if(indexPath.row == 6) {
                 
-                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.addYourCardButtonCell, for: indexPath) as! AddYourCardButtonCell
+                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.addYourCardButtonCell, for: indexPath) as! AddYourCardButtonCell
                 
                 cell.addYourCardButton.addTarget(self, action: #selector(AddDebitOrCreditCardViewController.addCardButtonPressed(_:)), for: .touchUpInside)
                 return cell
@@ -696,46 +702,77 @@ extension AddDebitOrCreditCardViewController:UITableViewDataSource {
                 cell.nameTF.delegate = self
                 cell.nameTF.text = ""
                 if(indexPath.row == 1) {
-                   
+                    
+                    //address line 1 info
                     if(Constant.GetawaySearchResultCardFormDetailData.address1 == "") {
                         
-                       cell.nameTF.placeholder = Constant.textFieldTitles.guestFormAddress1
+                        cell.nameTF.placeholder = Constant.textFieldTitles.guestFormAddress1
                     }
                     else {
-                        cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.address1
+                        
+                        if let addressLine = Session.sharedSession.contact?.addresses![0].addressLines {
+                            cell.nameTF.text = addressLine[0]
+                            
+                        } else {
+                            
+                            cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.address1
+                            
+                        }
+                        
                     }
-                  
+                    
                 }
                 else if(indexPath.row == 2) {
-                    
+                    //address line2 info
                     
                     if(Constant.GetawaySearchResultCardFormDetailData.address2 == "") {
                         
-                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormAddress2
+                        cell.nameTF.placeholder = Constant.textFieldTitles.guestFormAddress2
                     }
                     else {
-                        cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.address2
+                        if let addressLine2 = Session.sharedSession.contact?.addresses![0].addressLines[1] {
+                            cell.nameTF.text = addressLine2
+                            
+                        } else {
+                            cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.address2
+                            
+                        }
+                        
                     }
-
+                    
                 }
                 else if(indexPath.row == 3) {
                     
+                    // city name info
                     if(Constant.GetawaySearchResultCardFormDetailData.city == "") {
                         
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormCity
                     }
                     else {
-                        cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.city
+                        if let address = Session.sharedSession.contact?.addresses![0] {
+                            cell.nameTF.text = address.cityName
+                            
+                        } else {
+                            cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.city
+                        }
+                        
                     }
                 }
                 else {
                     
+                    //postal code info
                     if(Constant.GetawaySearchResultCardFormDetailData.pinCode == "") {
                         
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormPostalCode
                     }
                     else {
-                        cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.pinCode
+                        if let address = Session.sharedSession.contact?.addresses![0] {
+                            cell.nameTF.text = address.postalCode
+                            
+                        } else {
+                            cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.pinCode
+                            
+                        }
                     }
                 }
                 cell.nameTF.tag = indexPath.row
@@ -744,10 +781,10 @@ extension AddDebitOrCreditCardViewController:UITableViewDataSource {
                 cell.borderView.layer.borderWidth = 2
                 cell.borderView.layer.cornerRadius = 5
                 cell.selectionStyle = .none
-
+                
                 
                 return cell
-
+                
             }
             
             
@@ -804,7 +841,7 @@ extension AddDebitOrCreditCardViewController:UIPickerViewDelegate {
                 let month = months[pickerView.selectedRow(inComponent: 0)]
                 let year = years[pickerView.selectedRow(inComponent: 1)]
                 let expiryDate = "\(year), \(month)"
-                print(expiryDate)
+                intervalPrint(expiryDate)
                 Constant.GetawaySearchResultCardFormDetailData.expDate = expiryDate
                 
             }
@@ -910,11 +947,10 @@ extension AddDebitOrCreditCardViewController:UITextFieldDelegate {
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
-        print(string)
+        intervalPrint(string)
         if (range.length == 1 && string.characters.count == 0) {
-            print("backspace tapped")
+            intervalPrint("backspace tapped")
         }
-    
         if(Int(textField.accessibilityValue!) == 0) {
                 
                 if(textField.tag == 0) {

@@ -64,7 +64,7 @@ public class Helper{
     }
     
     //***** Common function to format the date *****//
-    static func getWeekDay(dateString:NSDate, getValue: String) -> String {
+    static func getWeekDay(dateString: Date, getValue: String) -> String {
         let dateFormatter = DateFormatter()
         switch getValue {
         case "Date":
@@ -221,7 +221,7 @@ public class Helper{
                 }
                 else {
                     sender.hideHudAsync()
-                    SimpleAlert.alert(sender, title:Constant.AlertErrorMessages.tryAgainError, message: Constant.AlertErrorMessages.loginFailedError)
+                    sender.presentAlert(with: Constant.AlertErrorMessages.tryAgainError, message: Constant.AlertErrorMessages.loginFailedError)
                     completionHandler(false)
                 }
                 // Got an access token!  Save it for later use.
@@ -231,14 +231,13 @@ public class Helper{
                                                 sender.hideHudAsync()
                                                 
                                                 Logger.sharedInstance.warning(error.description)
-                                                SimpleAlert.alert(sender, title:Constant.AlertErrorMessages.tryAgainError, message: "\(error.localizedDescription)")
+                                                sender.presentErrorAlert(UserFacingCommonError.generic)
                                                 completionHandler(false)
             }
             )
         }
         else{
-            
-            SimpleAlert.alert(sender, title:Constant.AlertErrorMessages.networkError, message: Constant.AlertMessages.networkErrorMessage)
+            sender.presentErrorAlert(UserFacingCommonError.noNetConnection)
             completionHandler(false)
         }
     }
@@ -266,7 +265,7 @@ public class Helper{
                                             sender.hideHudAsync()
                                             
                                             Logger.sharedInstance.warning(error.description)
-                                            SimpleAlert.alert(sender, title:Constant.AlertErrorMessages.loginFailed, message: error.localizedDescription)
+                                            sender.presentErrorAlert(UserFacingCommonError.generic)
             }
                 
                 
@@ -275,7 +274,8 @@ public class Helper{
                 
             )
         }else{
-            SimpleAlert.alert(sender, title:Constant.AlertErrorMessages.networkError, message: Constant.AlertMessages.networkErrorMessage)
+            sender.presentAlert(with: Constant.AlertErrorMessages.networkError, message: Constant.AlertMessages.networkErrorMessage)
+            
         }
     }
     
@@ -332,7 +332,7 @@ public class Helper{
             else {
                 
                 Logger.sharedInstance.error("The contact \(contact.contactId) has no membership information!")
-                SimpleAlert.alert(sender, title:Constant.AlertErrorMessages.loginFailed, message: Constant.AlertMessages.noMembershipMessage)
+                sender.presentAlert(with: Constant.AlertErrorMessages.loginFailed, message: Constant.AlertMessages.noMembershipMessage)
             }
         }
     }
@@ -346,7 +346,7 @@ public class Helper{
                     if let resortFav = item as? ResortFavorite {
                         if let resort = resortFav.resort{
                             let code = resort.resortCode
-                            Constant.MyClassConstants.favoritesResortCodeArray.add(code)
+                            Constant.MyClassConstants.favoritesResortCodeArray.add(code ?? "")
                             Constant.MyClassConstants.favoritesResortArray.append(resort)
                         }
                     }
@@ -366,7 +366,7 @@ public class Helper{
             
             for trip in upComingTrips { if((trip.type) != nil) {
                 
-                print(trip.type as Any)
+                intervalPrint(trip.type as Any)
                 
                 }
             }
@@ -402,7 +402,8 @@ public class Helper{
 
         }) { (error) in
             viewController.hideHudAsync()
-            SimpleAlert.alert(viewController, title:Constant.AlertErrorMessages.errorString, message: error.description)
+            viewController.presentErrorAlert(UserFacingCommonError.generic)
+            viewController.presentErrorAlert(UserFacingCommonError.generic)
         }
         
     }
@@ -419,7 +420,7 @@ public class Helper{
             
         }, onError: { (error) in
             viewController.hideHudAsync()
-            SimpleAlert.alert(viewController, title:Constant.AlertErrorMessages.errorString, message: error.description)
+            viewController.presentErrorAlert(UserFacingCommonError.generic)
         })
         
     }
@@ -434,8 +435,9 @@ public class Helper{
             Constant.MyClassConstants.resortsDescriptionArray = response
             Constant.MyClassConstants.imagesArray.removeAllObjects()
             let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
-            for imgStr in imagesArray {
-                print(imgStr.url!)
+
+                for imgStr in imagesArray {
+
                 if(imgStr.size == Constant.MyClassConstants.imageSize) {
                     
                     Constant.MyClassConstants.imagesArray.add(imgStr.url!)
@@ -448,8 +450,7 @@ public class Helper{
         })
         { (error) in
             viewController.hideHudAsync()
-            
-            SimpleAlert.alert(viewController, title:Constant.AlertErrorMessages.errorString, message: error.description)
+            viewController.presentErrorAlert(UserFacingCommonError.generic)
         }
     
     }
@@ -533,13 +534,12 @@ public class Helper{
                 senderVC.hideHudAsync()
                 
                 Constant.MyClassConstants.showAlert = true
-                SimpleAlert.alert(senderVC, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                senderVC.presentErrorAlert(UserFacingCommonError.generic)
             })
         }
         else {
             senderVC.hideHudAsync()
-            
-            SimpleAlert.alert(senderVC, title:Constant.AlertErrorMessages.networkError, message: Constant.AlertMessages.networkErrorMessage)
+            senderVC.presentErrorAlert(UserFacingCommonError.noNetConnection)
         }
         
     }
@@ -564,7 +564,7 @@ public class Helper{
             let allDest = realm.objects(AllAvailableDestination.self)
             Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
             for obj in allDest {
-                print(obj.destination)
+                intervalPrint(obj.destination)
                 Constant.MyClassConstants.whereTogoContentArray.add(obj.destination)
             }
             return realmLocalStorage
@@ -759,7 +759,7 @@ public class Helper{
                 }
             }
         }else{
-            print("No Data")
+            intervalPrint("No Data")
         }
         
     }
@@ -951,7 +951,7 @@ public class Helper{
                                    onError: {(error) in
                                     
                                     senderVC.hideHudAsync()
-                                    SimpleAlert.alert(senderVC, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                                    senderVC.presentErrorAlert(UserFacingCommonError.generic)
                                     
         })
     }
@@ -963,7 +963,7 @@ public class Helper{
             success(true)
         }) { (error) in
             success(false)
-            SimpleAlert.alert(senderVC, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+            senderVC.presentErrorAlert(UserFacingCommonError.generic)
 
         }
     }
@@ -997,7 +997,7 @@ public class Helper{
         
         DirectoryClient.getResortsByArea(Session.sharedSession.userAccessToken, areaCode: areaCode, onSuccess: {(response) in
             Constant.MyClassConstants.resortDirectoryResortArray = response
-            print(response[0].images)
+            intervalPrint(response[0].images)
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadRegionNotification), object: nil)
             value = true
             
@@ -1047,7 +1047,7 @@ public class Helper{
         }) { (error) in
             
              senderViewController.hideHudAsync()
-             SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+             senderViewController.presentErrorAlert(UserFacingCommonError.generic)
         }
     }
     
@@ -1116,14 +1116,14 @@ public class Helper{
             senderViewController.navigationController?.transitioningDelegate = transitionManager
             senderViewController.navigationController?.pushViewController(viewController, animated: true)
             }else{
-                SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.noDatesMessage)
+                senderViewController.presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.noDatesMessage)
             }
         
         }) { (error) in
             
             senderViewController.hideHudAsync()
             
-            SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+            senderViewController.presentErrorAlert(UserFacingCommonError.generic)
         }
     }
     
@@ -1269,33 +1269,23 @@ public class Helper{
             Constant.MyClassConstants.resortsDescriptionArray = response
             Constant.MyClassConstants.imagesArray.removeAllObjects()
             let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
+
             for imgStr in imagesArray {
-                print(imgStr.url!)
+                intervalPrint(imgStr.url!)
                 if(imgStr.size == Constant.MyClassConstants.imageSize) {
-                    
                     Constant.MyClassConstants.imagesArray.add(imgStr.url!)
                 }
             }
-            
-            if(Constant.MyClassConstants.isgetResortFromGoogleSearch == false) {
-                
-                if(Constant.RunningDevice.deviceIdiom == .pad) {
-                    
-                    
+            if(Constant.RunningDevice.deviceIdiom == .pad) {
+
                     if(Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.isFromSearchBoth){
                         
                         var storyBoard = UIStoryboard()
                         if(viewcontroller.isKind(of:WhatToUseViewController.self)) {
                             storyBoard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
                             let viewController = storyBoard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortVC)
-                            let transition = CATransition()
-                            transition.duration = 0.4
-                            transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-                            transition.type = kCATransitionMoveIn
-                            transition.subtype = kCATransitionFromTop
-                            
-                            viewcontroller.navigationController!.view.layer.add(transition, forKey: kCATransition)
-                            //viewcontroller.navigationController?.pushViewController(viewController, animated: false)
+                            viewcontroller.navigationController!.view.layer.add(self.bottomToTopTransition(), forKey: kCATransition)
+                        
                             viewcontroller.present(viewController, animated: true, completion: nil)
                             
                             }
@@ -1324,32 +1314,18 @@ public class Helper{
          
                     let storyBoard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
                     let viewController = storyBoard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortVC) as! ResortDetailsViewController
-                    let navController = UINavigationController(rootViewController: viewController)
-                    viewcontroller.present(navController, animated:true, completion: nil)
-//                    let transition = CATransition()
-//                    transition.duration = 0.4
-//                    transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-//                    transition.type = kCATransitionMoveIn
-//                    transition.subtype = kCATransitionFromTop
-//                    viewcontroller.navigationController!.view.layer.add(transition, forKey: kCATransition)
-//                    viewcontroller.navigationController?.pushViewController(viewController, animated: false)
+                    viewcontroller.navigationController!.view.layer.add(self.bottomToTopTransition(), forKey: kCATransition)
+                    viewcontroller.navigationController?.pushViewController(viewController, animated: false)
 
                 }
-            }
-            else {
-                Constant.MyClassConstants.resortsArray.removeAll()
-                Constant.MyClassConstants.resortsArray.append(response)
-                Constant.MyClassConstants.resortsDescriptionArray = Constant.MyClassConstants.resortsArray[0]
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadMapNotification), object: nil)
-            }
-            
+
             viewcontroller.hideHudAsync()
             
         })
         { (error) in
             viewcontroller.hideHudAsync()
             
-            SimpleAlert.alert(viewcontroller, title:Constant.AlertErrorMessages.errorString, message: error.description)
+            viewcontroller.presentErrorAlert(UserFacingCommonError.generic)
         }
         
         
@@ -1386,7 +1362,7 @@ public class Helper{
     }
     
     //***** Function to get interval HD Videos *****//
-    static func getVideos(searchBy:String){
+    static func getVideos(searchBy:String, senderViewcontroller:UIViewController){
         
         
         var categoryString:VideoCategory
@@ -1420,11 +1396,10 @@ public class Helper{
                 }
                 
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadVideosNotification), object: nil)
-                SVProgressHUD.dismiss()
+                senderViewcontroller.hideHudAsync()
             },
-                                   onError: {(error) in
-                                    
-                                    SVProgressHUD.dismiss()
+               onError: {(error) in
+                senderViewcontroller.hideHudAsync()
             })
         }else{
             
@@ -1432,7 +1407,7 @@ public class Helper{
     }
     
     //***** Function to get a list of magazines. *****//
-    static func getMagazines(){
+    static func getMagazines(senderViewController:UIViewController){
         if(Constant.MyClassConstants.systemAccessToken?.token != nil){
             
             LookupClient.getMagazines(Constant.MyClassConstants.systemAccessToken!,
@@ -1440,10 +1415,12 @@ public class Helper{
                                         
                                         Constant.MyClassConstants.magazinesArray = magazines
                                         NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.magazineAlertNotification), object: nil)
-                                        SVProgressHUD.dismiss()
+                                        
+                                        senderViewController.hideHudAsync()
             },
                                       onError: {(error) in
-                                        SVProgressHUD.dismiss()
+                                        
+                                        senderViewController.hideHudAsync()
             })
         }
     }
@@ -1564,10 +1541,8 @@ public class Helper{
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadTripDetailsNotification), object: nil)
             
         }) { (error) in
-            
             senderViewController.hideHudAsync()
-            SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
-            
+            senderViewController.presentErrorAlert(UserFacingCommonError.generic)
         }
     }
     //Common function to add notifications.
@@ -1771,7 +1746,7 @@ public class Helper{
                                     Constant.MyClassConstants.noAvailabilityView = true
                                     Constant.MyClassConstants.isFromSorting = false
                                     senderViewController.hideHudAsync()
-                                    SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                                    senderViewController.presentErrorAlert(UserFacingCommonError.generic)
         }
         )
     }
@@ -1790,7 +1765,7 @@ public class Helper{
         request.resortCodes = activeInterval.resortCodes!
         request.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
        // request.travelParty = Constant.MyClassConstants.travelPartyInfo
-        request.travelParty = Helper.travelPartInfo()
+    request.travelParty = Helper.travelPartyInfo(adults: 2, children: 0)
         
         ExchangeClient.searchAvailability(Session.sharedSession.userAccessToken, request: request, onSuccess: { (searchAvailabilityResponse) in
             
@@ -1833,7 +1808,7 @@ public class Helper{
         })
         { (error) in
             senderViewController.hideHudAsync()
-            SimpleAlert.alert(senderViewController, title: Constant.AlertErrorMessages.noResultError, message: error.localizedDescription)
+            senderViewController.presentErrorAlert(UserFacingCommonError.generic)
         }
     }
     
@@ -1870,8 +1845,8 @@ public class Helper{
                                     
                                     //expectation.fulfill()
         },
-                                   onError:{ (error) in
-                                    SimpleAlert.alert(senderVC, title: Constant.AlertErrorMessages.noResultError, message: error.localizedDescription)
+           onError:{ (error) in
+           senderVC.presentErrorAlert(UserFacingCommonError.generic)
                                     
         }
         )
@@ -1912,9 +1887,9 @@ public class Helper{
                                     }
                                     
         },
-                                   onError:{ (error) in
-                                    SimpleAlert.alert(senderVC, title: Constant.AlertErrorMessages.noResultError, message: error.localizedDescription)
-                                  }
+           onError:{ (error) in
+            senderVC.presentErrorAlert(UserFacingCommonError.generic)
+          }
         )
     }
     
@@ -1942,8 +1917,8 @@ public class Helper{
                                             helperDelegate?.resortSearchComplete()
                     
         },
-                                          onError:{ (error) in
-                                            SimpleAlert.alert(senderVC, title: Constant.AlertErrorMessages.noResultError, message: error.localizedDescription)
+          onError:{ (error) in
+            senderVC.presentErrorAlert(UserFacingCommonError.generic)
         }
         )
     }
@@ -1977,7 +1952,8 @@ public class Helper{
                 DarwinSDK.logger.info("\(String(describing: calendarItem.checkInDate!))")
             }
         }
-        print(Constant.MyClassConstants.totalBucketArray)
+
+        intervalPrint(Constant.MyClassConstants.totalBucketArray)
         helperDelegate?.resetCalendar()
     }
     
@@ -2005,62 +1981,7 @@ public class Helper{
         
         // Show up the Availability Sections in UI
         DarwinSDK.logger.info("Sorting criteria is: \(String(describing: vacationSearch.sortType))")
-        for section in sections {
-            if (vacationSearch.sortType.isDefault()) {
-                showAvailabilitySectionWithDefault(section: section)
-            } else {
-                showAvailabilitySection(section: section);
-            }
-        }
-    }
-    
-    static func showAvailabilitySectionWithDefault(section:AvailabilitySection!) {
-       /* if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
-            for inventoryItem in (section.item?.rentalInventory)! {
-                // Show up only Resorts as header
-                DarwinSDK.logger.info("Header[R] - \(String(describing: inventoryItem.resortName))")
-                Constant.MyClassConstants.searchAvailabilityHeader = "\(String(describing: inventoryItem.resortName))"
-                self.showAvailabilityBucket(inventoryItem: inventoryItem)
-            }
-        }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
-            for inventoryItem in (section.item?.exchangeInventory)! {
-                // Show up only Resorts as header
-                DarwinSDK.logger.info("Header[R] - \(String(describing: inventoryItem.resort?.resortName))")
-                Constant.MyClassConstants.searchAvailabilityHeader = "\(String(describing: inventoryItem.resort?.resortName))"
-                self.showAvailabilityBucketExchange(inventoryItem: inventoryItem.inventory)
-            }
-        }*/
-        
-            
-        
-        
-     }
-    
-
-    
-    static func showAvailabilitySection(section:AvailabilitySection!) {
-       /* if (section.exactMatch)! {
-            // Show up exact match as header
-            DarwinSDK.logger.info("Header - Exact Match")
-        } else {
-            // Show up surrounding match as header
-            DarwinSDK.logger.info("Header - Surrounding Match")
-        }
-        
-        if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
-            for inventoryItem in (section.item?.rentalInventory)! {
-                self.showAvailabilityBucket(inventoryItem: inventoryItem)
-            }
-        }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
-            for inventoryItem in (section.item?.exchangeInventory)!{
-                self.showAvailabilityBucketExchange(inventoryItem: inventoryItem.inventory)
-            }
-        }*/
-        
-        
-        
-        
-        DarwinSDK.logger.info("===============================================================")
+  
     }
     
     static func showAvailabilityBucketExchange(inventoryItem:ExchangeInventory!) {
@@ -2077,31 +1998,6 @@ public class Helper{
         for unit in (inventoryItem.inventory?.units)! {
             DarwinSDK.logger.info("\(String(describing: self.resolveUnitInfo(unit: unit)))")
         }
-    }
-    
-    static func resolveResortInfo(resort:Resort!) -> String {
-        var info = String()
-        /*info.append(resort.resortCode!)
-        info.append(" ")
-        info.append(resort.resortName!)
-        info.append(" ")
-        
-        if (resort.address?.cityName != nil) {
-            info.append(" ")
-            info.append((resort.address?.cityName)!)
-        }
-        
-        if (resort.address?.territoryCode != nil) {
-            info.append(" ")
-            info.append((resort.address?.territoryCode)!)
-        }
-        
-        if (resort.address?.countryCode != nil) {
-            info.append(" ")
-            info.append((resort.address?.countryCode)!)
-        }*/
-        
-        return info
     }
     
     static func resolveDestinationInfo(destination:AreaOfInfluenceDestination) -> String {
@@ -2156,11 +2052,12 @@ public class Helper{
             guard let accessToken = Session.sharedSession.userAccessToken else { return }
             
             PaymentClient.resendConfirmation(accessToken, confirmationNumber: confirmationNumber, emailAddress: emailAddress, onSuccess: {
-                print("success")
-                SimpleAlert.alert(viewcontroller, title: "Success", message: "The confirmation email has been sent.")
+
+                intervalPrint("success")
+                viewcontroller.presentAlert(with: "Success", message: "The confirmation email has been sent.")
             }, onError: { (error) in
-                print(error)
-                SimpleAlert.alert(viewcontroller, title: "Error", message: "The Confirmation could not be sent at the moment.")
+                intervalPrint(error)
+                viewcontroller.presentAlert(with: "Error", message: "The Confirmation could not be sent at the moment.")
             })
         }
         
@@ -2215,10 +2112,10 @@ public class Helper{
         return searchCriteria
     }
     
-    static func travelPartInfo() -> TravelParty {
+    static func travelPartyInfo(adults:Int, children:Int) -> TravelParty {
         let travelParty = TravelParty()
-        travelParty.adults = 2
-        travelParty.children = 0
+        travelParty.adults = adults
+        travelParty.children = children
         return travelParty
     }
     
@@ -2316,6 +2213,28 @@ public class Helper{
             return ""
         }
     }
-
+    // function to create custom bottom to top transition and return to caller
+    static func bottomToTopTransition()-> CATransition {
+        
+        let transition = CATransition()
+        transition.duration = 0.4
+        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        transition.type = kCATransitionMoveIn
+        transition.subtype = kCATransitionFromTop
+        
+        return transition
+    }
+    // function to create custom top to bottom transition and return to caller
+    static func topToBottomTransition()-> CATransition {
+        
+        let transition = CATransition()
+        transition.duration = 0.4
+        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        transition.type = kCATransitionReveal
+        transition.subtype = kCATransitionFromBottom
+        
+        return transition
+    }
+    
 }
 

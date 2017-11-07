@@ -334,10 +334,10 @@ class FloatDetailViewController: UIViewController {
                 self.addFloatToDatabase(reservationNumber:Constant.FloatDetails.reservationNumber, unitNumber:Constant.FloatDetails.unitNumber, unitSize:Constant.MyClassConstants.savedBedroom, checkInDate:self.checkInDate)
             }
             
-        }) { (error) in
+        }) { error in
             //Pop to vacation search screen
             self.popToVacationSearch()
-            SimpleAlert.alert(viewController, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+            self.presentErrorAlert(UserFacingCommonError.serverError(error))
         }
     }
 
@@ -399,7 +399,7 @@ class FloatDetailViewController: UIViewController {
         floatDetails.unitNumber = unitNumber
         floatDetails.unitSize = unitSize
         floatDetails.checkInDate = checkInDate
-        print(Constant.MyClassConstants.savedClubFloatResort)
+        intervalPrint(Constant.MyClassConstants.savedClubFloatResort)
         floatDetails.clubResortDetails = Constant.MyClassConstants.savedClubFloatResort
         if(!atrributesRowArray.contains(Constant.MyClassConstants.unitNumberAttribute)){
             floatDetails.showUnitNumber = false
@@ -701,11 +701,6 @@ extension FloatDetailViewController : UITextFieldDelegate{
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
        
-        
-        if (range.length == 1 && string.characters.count == 0) {
-            print("backspace tapped")
-        }
-        
             if(textField.tag == 0) {
                     
                 if (range.length == 1 && string.characters.count == 0) {
@@ -719,7 +714,7 @@ extension FloatDetailViewController : UITextFieldDelegate{
                 }
                 else {
                     Constant.FloatDetails.reservationNumber = "\(textField.text!)\(string)"
-                    print(Constant.FloatDetails.reservationNumber)
+                    intervalPrint(Constant.FloatDetails.reservationNumber)
                 }
                let status = checkForFloatDetails()
                 

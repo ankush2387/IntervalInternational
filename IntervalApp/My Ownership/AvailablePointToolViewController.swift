@@ -58,8 +58,8 @@ class AvailablePointToolViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         
         if(Constant.MyClassConstants.relinquishmentAvalableToolSelectedDate == nil) {
-            
-            SimpleAlert.alert(self, title: Constant.ControllerTitles.availablePointToolViewController, message: Constant.AlertMessages.availablePointToolDefaultSelectedDateAlert)
+                        
+            presentAlert(with: Constant.ControllerTitles.availablePointToolViewController, message: Constant.AlertMessages.availablePointToolDefaultSelectedDateAlert)
             
             Constant.MyClassConstants.relinquishmentAvalableToolSelectedDate = Date()
         }
@@ -70,15 +70,13 @@ class AvailablePointToolViewController: UIViewController {
 
         UserClient.getProgramAvailablePoints(Session.sharedSession.userAccessToken, date: dateStr, onSuccess:{ (availablePoints) in
             
-            SVProgressHUD.dismiss()
             self.hideHudAsync()
             self.availablePoints = availablePoints
             self.availablePointTableView.reloadData()
         }, onError:{ (error) in
             
-            SVProgressHUD.dismiss()
             self.hideHudAsync()
-            print(error)
+            intervalPrint(error)
         })
         
         self.availablePointTableView.reloadData()

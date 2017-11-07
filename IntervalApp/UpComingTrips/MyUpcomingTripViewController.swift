@@ -138,7 +138,7 @@ extension MyUpcomingTripViewController:UITableViewDataSource {
             if let url = imgURL {
                 cell.resortImageView.setImageWith(URL(string: url), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
                     if (error != nil) {
-                        print("Width: \(String(describing: image?.size.width)) - Height: \(image?.size.height)")
+                        intervalPrint("Width: \(String(describing: image?.size.width)) - Height: \(image?.size.height)")
                         cell.resortImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                         cell.resortImageView.contentMode = .center
                     }
@@ -193,12 +193,10 @@ extension MyUpcomingTripViewController:UITableViewDataSource {
             
             Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails = exchangeResponse
             self.hideHudAsync()
-            SVProgressHUD.dismiss()
         self.performSegue(withIdentifier:Constant.segueIdentifiers.upcomingDetailSegue, sender:nil)
         }) { (error) in
             self.hideHudAsync()
-            SVProgressHUD.dismiss()
-            SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+            self.presentErrorAlert(UserFacingCommonError.generic)
             
         }
     }

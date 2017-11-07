@@ -39,7 +39,7 @@
             </objects>
             <point key="canvasLocation" x="536" y="4"/>
         </scene>
-        <!--Home-->
+        <!--Dashboard Table View Controller-->
         <scene sceneID="Yb4-gW-460">
             <objects>
                 <tableViewController storyboardIdentifier="DashboardTableViewController" id="kk6-Hc-bhu" customClass="DashboardTableViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -245,7 +245,7 @@
                             <outlet property="delegate" destination="kk6-Hc-bhu" id="MMJ-lO-ixQ"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Home" id="zZ1-oh-iCW"/>
+                    <navigationItem key="navigationItem" id="zZ1-oh-iCW"/>
                     <connections>
                         <outlet property="homeTableView" destination="ENY-5z-MLP" id="MKN-nG-dnG"/>
                     </connections>

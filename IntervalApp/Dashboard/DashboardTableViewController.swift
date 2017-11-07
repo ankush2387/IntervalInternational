@@ -32,6 +32,7 @@ class DashboardTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         //***** Adding notification to reload alert badge *****//
         //self.hideHudAsync()
+        self.navigationController?.navigationBar.isHidden = false
         NotificationCenter.default.addObserver(self, selector: #selector(reloadBadgeView), name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(reloadTopDestinations), name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: nil)
@@ -42,9 +43,12 @@ class DashboardTableViewController: UITableViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.navigationBar.isHidden = true
         //***** Removing notification to reload alert badge *****//
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: nil)
+        NotificationCenter.default
+            .removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
+        NotificationCenter.default
+            .removeObserver(self, name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: nil)
     }
     
     override func viewDidLoad() {
@@ -257,7 +261,7 @@ class DashboardTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print(dashboardArray[indexPath.section])
+        intervalPrint(dashboardArray[indexPath.section])
         let cell = getTableViewContents(indexPath, type: dashboardArray[indexPath.section] as! String)
         return cell
         
@@ -272,11 +276,11 @@ class DashboardTableViewController: UITableViewController {
             
             let alertFromDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.getawayAlertsArray[indexPath.row].earliestCheckInDate!, format: Constant.MyClassConstants.dateFormat)
             
-            let fromDate = (Helper.getWeekDay(dateString: alertFromDate as NSDate, getValue: Constant.MyClassConstants.month)).appendingFormat(". ").appending(Helper.getWeekDay(dateString: alertFromDate as NSDate, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: alertFromDate as NSDate, getValue: Constant.MyClassConstants.year))
+            let fromDate = (Helper.getWeekDay(dateString: alertFromDate, getValue: Constant.MyClassConstants.month)).appendingFormat(". ").appending(Helper.getWeekDay(dateString: alertFromDate, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: alertFromDate, getValue: Constant.MyClassConstants.year))
             
             let alertToDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.getawayAlertsArray[indexPath.row].latestCheckInDate!, format: Constant.MyClassConstants.dateFormat)
             
-            let toDate = Helper.getWeekDay(dateString: alertToDate as NSDate, getValue: Constant.MyClassConstants.month).appending(". ").appending(Helper.getWeekDay(dateString: alertToDate as NSDate, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: alertToDate as NSDate, getValue: Constant.MyClassConstants.year))
+            let toDate = Helper.getWeekDay(dateString: alertToDate, getValue: Constant.MyClassConstants.month).appending(". ").appending(Helper.getWeekDay(dateString: alertToDate, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: alertToDate, getValue: Constant.MyClassConstants.year))
             
             let dateRange = fromDate.appending(" - " + toDate)
             
@@ -287,14 +291,14 @@ class DashboardTableViewController: UITableViewController {
             
             let upcomingTrip  =  Constant.MyClassConstants.upcomingTripsArray[indexPath.row]
             let statename = upcomingTrip.resort?.address?.territoryCode
-            print(statename as Any)
+            intervalPrint(statename as Any)
             cell.resortNameLabel.text = upcomingTrip.resort!.resortName
             cell.resortLocationLabel.text = "\(upcomingTrip.resort!.address!.cityName!), \(String(describing: upcomingTrip.resort?.address?.territoryCode)), \(upcomingTrip.resort!.address!.countryCode!)"
             let upcomingTripDate = Helper.convertStringToDate(dateString: upcomingTrip.unit!.checkInDate!, format: Constant.MyClassConstants.dateFormat)
-            cell.dayDateLabel.text = Helper.getWeekDay(dateString: upcomingTripDate as NSDate, getValue: Constant.MyClassConstants.date)
+            cell.dayDateLabel.text = Helper.getWeekDay(dateString: upcomingTripDate, getValue: Constant.MyClassConstants.date)
             
-            var dayNameYearText = "\(Helper.getWeekDay(dateString: upcomingTripDate as NSDate, getValue: Constant.MyClassConstants.weekDay))\n\(Helper.getWeekDay(dateString: upcomingTripDate as NSDate, getValue: Constant.MyClassConstants.month))"
-            dayNameYearText = "\(dayNameYearText) \(Helper.getWeekDay(dateString: upcomingTripDate as NSDate, getValue: Constant.MyClassConstants.year))"
+            var dayNameYearText = "\(Helper.getWeekDay(dateString: upcomingTripDate, getValue: Constant.MyClassConstants.weekDay))\n\(Helper.getWeekDay(dateString: upcomingTripDate, getValue: Constant.MyClassConstants.month))"
+            dayNameYearText = "\(dayNameYearText) \(Helper.getWeekDay(dateString: upcomingTripDate, getValue: Constant.MyClassConstants.year))"
             cell.dayNameYearLabel.text = dayNameYearText
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             
@@ -394,34 +398,35 @@ class DashboardTableViewController: UITableViewController {
     //***** View all alerts button pressed *****//
     func viewAllAlertButtonPressed(_ sender:IUIKButton){
         Constant.MyClassConstants.alertOriginationPoint = Constant.CommonStringIdentifiers.alertOriginationPoint
-        let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.getawayAlertsIphone, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.sideMenuTitles.sideMenuInitialController) as! SWRevealViewController
+        let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+        let storyboardName = isRunningOnIphone ? Constant.storyboardNames.getawayAlertsIphone : Constant.storyboardNames.getawayAlertsIpad
+        if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
+            navigationController?.pushViewController(initialViewController, animated: true)
+        }
         Constant.MyClassConstants.activeAlertsArray.removeAllObjects()
         reloadBadgeView()
-        
-        self.present(viewController, animated: true, completion: nil)
     }
     //***** View all trip button action *****//
     func viewAllTripButtonPressed(_ sender:IUIKButton) {
         
         Constant.MyClassConstants.upcomingOriginationPoint = Constant.omnitureCommonString.homeDashboard
-        let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.myUpcomingTripIphone, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.sideMenuTitles.sideMenuInitialController) as! SWRevealViewController
-        
-        self.present(viewController, animated: true, completion: nil)
+        let storyboardName = Constant.storyboardNames.myUpcomingTripIphone
+        if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
+            navigationController?.pushViewController(initialViewController, animated: true)
+        }
         
     }
     //***** Search vacation button action *****//
+    //MARK: - Button Events
     func  searchVactionPressed(_ sender:AnyObject) {
         
         Constant.MyClassConstants.searchOriginationPoint = Constant.omnitureCommonString.homeDashboard
-        
-        let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.sideMenuTitles.sideMenuInitialController) as! SWRevealViewController
-        self.present(viewController, animated: true, completion: nil)
-        //let navController = UINavigationController(rootViewController: viewController)
-        //self.navigationController?.pushViewController(viewController, animated: true)
-
+    
+        let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+        let storyboardName = isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
+        if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
+            navigationController?.pushViewController(initialViewController, animated: true)
+        }
     }
 }
 
@@ -578,24 +583,14 @@ extension DashboardTableViewController:UICollectionViewDataSource {
 
 extension UIViewController {
     func topTenGetawaySelected(selectedIndexPath: IndexPath) {
+        
+        //Present No filter options
+        Constant.MyClassConstants.noFilterOptions = true
+        
         let topTenDeals = Constant.MyClassConstants.topDeals[selectedIndexPath.row]
         Constant.MyClassConstants.vacationSearchResultHeaderLabel = topTenDeals.header!
         
         ADBMobile.trackAction(Constant.omnitureEvents.event1, data: nil)
-        
-        /*let areas = Area()
-        areas.areaCode = Constant.MyClassConstants.topDeals[selectedIndexPath.row].areaCodes.first!
-        Constant.MyClassConstants.vacationSearchShowDate = Constant.MyClassConstants.topDeals[selectedIndexPath.row].fromDate
-        Constant.MyClassConstants.vacationSearchResultHeaderLabel = Constant.MyClassConstants.topDeals[selectedIndexPath.row].header!
-        //Constant.MyClassConstants.whereTogoContentArray = [Constant.MyClassConstants.topDeals[selectedIndexPath.row].header!]
-        let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
-        
-        rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
-        rentalSearchCriteria.searchType = VacationSearchType.Rental
-        Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(Session.sharedSession.appSettings, rentalSearchCriteria)
-        
-        Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.areas = [areas]*/
-        
         
         // latest changes
         let deal = RentalDeal()
@@ -648,7 +643,7 @@ extension UIViewController {
                 
                 Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                 
-                //Helper.hideProgressBar(senderView: self)
+                self.hideHudAsync()
                 
                 // Check not available checkIn dates for the active interval
                 if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
@@ -668,28 +663,18 @@ extension UIViewController {
             })
             { (error) in
                 self.hideHudAsync()
-                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                self.presentErrorAlert(UserFacingCommonError.generic)
             }
         } else {
             self.hideHudAsync()
-            SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: Constant.AlertErrorMessages.networkError)
+            self.presentErrorAlert(UserFacingCommonError.noNetConnection)
         }
     }
     
     func flexchangeSelected(selectedIndexPath: IndexPath) {
         
-       /* let areas = Area()
-        areas.areaCode = Constant.MyClassConstants.topDeals[selectedIndexPath.row].areaCodes.first!
-        //Constant.MyClassConstants.vacationSearchShowDate = Constant.MyClassConstants.flexExchangeDeals[selectedIndexPath.row].fromDate
-        Constant.MyClassConstants.whereTogoContentArray = [Constant.MyClassConstants.flexExchangeDeals[selectedIndexPath.row].name!]
-        let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
-        
-        exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
-        exchangeSearchCriteria.searchType = VacationSearchType.Exchange
-        Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(UserContext.sharedInstance.appSettings, exchangeSearchCriteria)
-        
-        Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request.areas = [areas]*/
-        
+        //Present no filter options
+        Constant.MyClassConstants.noFilterOptions = true
         
         let storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.flexchangeViewController) as! FlexchangeSearchViewController

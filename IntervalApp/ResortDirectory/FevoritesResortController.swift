@@ -11,7 +11,6 @@ import IntervalUIKit
 import SDWebImage
 import GoogleMaps
 import DarwinSDK
-import SVProgressHUD
 
 class FevoritesResortController: UIViewController {
     
@@ -331,7 +330,7 @@ class FevoritesResortController: UIViewController {
             ADBMobile.trackAction(Constant.omnitureEvents.event51, data: nil)
             self.resortTableView.reloadData()
         }, onError: {(error) in
-            print(error)
+            intervalPrint(error)
             
         })
         

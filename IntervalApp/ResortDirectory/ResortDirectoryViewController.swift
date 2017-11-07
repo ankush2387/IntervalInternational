@@ -291,37 +291,31 @@ class ResortDirectoryViewController: UIViewController {
             if (sender.isSelected == false){
                 
                 showHudAsync()
-                
                 UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!, onSuccess: {(response) in
-                    print(response)
-                    SVProgressHUD.dismiss()
+                    intervalPrint(response)
                     self.hideHudAsync()
                     sender.isSelected = true
                     Constant.MyClassConstants.favoritesResortCodeArray.add(Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!)
                     self.resortTableView.reloadData()
                     
                 }, onError: {(error) in
-                    SVProgressHUD.dismiss()
                     self.hideHudAsync()
-                    print(error)
+                    intervalPrint(error)
                 })
             }
             else {
                 
                 showHudAsync()
                 UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!, onSuccess: {(response) in
-                    
-                    print(response)
-                    SVProgressHUD.dismiss()
+                    intervalPrint(response)
                     sender.isSelected = false
                     self.hideHudAsync()
                     Constant.MyClassConstants.favoritesResortCodeArray.remove(Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!)
                     self.resortTableView.reloadData()
                     
                 }, onError: {(error) in
-                    SVProgressHUD.dismiss()
                     self.hideHudAsync()
-                    print(error)
+                    intervalPrint(error)
                 })
                 
             }        }
@@ -353,14 +347,12 @@ extension ResortDirectoryViewController:UITableViewDelegate {
                 
                 showHudAsync()
                 DirectoryClient.getAreasByRegion(Constant.MyClassConstants.systemAccessToken, regionCode: region.regionCode, onSuccess: {(response) in
-                    SVProgressHUD.dismiss()
                     self.hideHudAsync()
                     Constant.MyClassConstants.resortDirectoryAreaListArray = response
                     self.showAreaDetails()
                     Helper.trackOmnitureCallForPageView(name: "\(Constant.MyClassConstants.resortDirectoryTitle) \(region.regionName!)")
                     
                 }, onError: {(error) in
-                    SVProgressHUD.dismiss()
                     self.hideHudAsync()
                 })
             }
@@ -374,14 +366,12 @@ extension ResortDirectoryViewController:UITableViewDelegate {
             
             DirectoryClient.getAreasByRegion(Constant.MyClassConstants.systemAccessToken, regionCode: subregion.regionCode, onSuccess: {(response) in
                 
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
                 Constant.MyClassConstants.resortDirectoryAreaListArray = response
                 self.showAreaDetails()
                 Helper.trackOmnitureCallForPageView(name: "\(Constant.MyClassConstants.resortDirectoryTitle) \(subregion.regionName!)")
                 
             }, onError: {(error) in
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
             })
             
@@ -411,13 +401,11 @@ extension ResortDirectoryViewController:UITableViewDelegate {
             DirectoryClient.getResortsByArea(Constant.MyClassConstants.systemAccessToken, areaCode: area.areaCode, onSuccess: {(response) in
                 Constant.MyClassConstants.resortDirectoryResortArray = response
                 
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
                 Helper.trackOmnitureCallForPageView(name: "\(Constant.MyClassConstants.resortDirectoryTitle) \(area.areaName!)")
                 self.performSegue(withIdentifier: Constant.segueIdentifiers.resortByAreaSegue, sender: nil)
                 
             }, onError: {(error) in
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
             })
         }
@@ -428,7 +416,7 @@ extension ResortDirectoryViewController:UITableViewDelegate {
                 
                 resort = Constant.MyClassConstants.resortDirectoryResortArray[indexPath.row]
                 let selectedResort = Constant.MyClassConstants.resortDirectoryResortArray[indexPath.row]
-                Constant.MyClassConstants.isgetResortFromGoogleSearch = false
+               
                 Helper.getUserFavorites()
                 if(selectedResort.resortCode != nil) {
                     
@@ -681,7 +669,7 @@ extension ResortDirectoryViewController:ResortFavoritesTableViewCellDelegate {
             self.containerView.isHidden = false
             self.containerView.bringSubview(toFront: self.containerView)
             let selectedResort = Constant.MyClassConstants.resortDirectoryResortArray[index]
-            Constant.MyClassConstants.isgetResortFromGoogleSearch = false
+          
             
             UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseOut ,animations: {
                 

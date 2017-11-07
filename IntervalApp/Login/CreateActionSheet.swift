@@ -16,7 +16,6 @@ class CreateActionSheet: UITableViewController {
     var actionSheetTable : UITableView!
     var tableViewController = UIViewController()
     let dataSource = CommonMembership()
-    var alertsDictionary = NSMutableDictionary()
     var activeAlertCount = 0
     
     override func viewWillAppear(_ animated: Bool) {
@@ -143,9 +142,9 @@ class CreateActionSheet: UITableViewController {
       
   },
     onError:{(error) in
-        SVProgressHUD.dismiss()
+        self.hideHudAsync()
         Constant.MyClassConstants.signInRequestedController.dismiss(animated: true, completion: nil)
-        SimpleAlert.alert(Constant.MyClassConstants.signInRequestedController, title:Constant.AlertErrorMessages.loginFailed, message: "\(Constant.AlertPromtMessages.membershipFailureMessage) \(String(describing: context.selectedMembership?.memberNumber))")
+        self.presentAlert(with: Constant.AlertErrorMessages.loginFailed, message: "\(Constant.AlertPromtMessages.membershipFailureMessage) \(String(describing: context.selectedMembership?.memberNumber))")
             }
         )
     }
@@ -161,15 +160,12 @@ class CreateActionSheet: UITableViewController {
             
             var alertVacationInfo = RentalAlert()
             alertVacationInfo = response
-            self.alertsDictionary .setValue(alertVacationInfo, forKey: String(describing: alert.alertId!))
-            //if(alert.enabled)!{
-                self.searchVacationPressed(alert)
-            //}else{
-             //   print("Alert is inactive",alert.latestCheckInDate!,alert.earliestCheckInDate!)
-            //}
+            Constant.MyClassConstants.alertsDictionary.setValue(alertVacationInfo, forKey: String(describing: alert.alertId!))
+            intervalPrint(alert.alertId)
+            self.searchVacationPressed(alert)
             
         }) { (error) in
-            print(alert.alertId)
+
             if(self.activeAlertCount < Constant.MyClassConstants.getawayAlertsArray.count - 1){
             self.activeAlertCount = self.activeAlertCount + 1
                 self.getStatusForAllAlerts()
@@ -180,7 +176,7 @@ class CreateActionSheet: UITableViewController {
     
     func searchVacationPressed(_ alert : RentalAlert){
         var getawayAlert = RentalAlert()
-        getawayAlert = self.alertsDictionary.value(forKey: String(describing: alert.alertId!)) as! RentalAlert
+        getawayAlert = Constant.MyClassConstants.alertsDictionary.value(forKey: String(describing: alert.alertId!)) as! RentalAlert
         
         let searchResortRequest = RentalSearchDatesRequest()
         searchResortRequest.checkInToDate = Helper.convertStringToDate(dateString:getawayAlert.latestCheckInDate!,format:Constant.MyClassConstants.dateFormat)
@@ -215,7 +211,7 @@ class CreateActionSheet: UITableViewController {
                     self.activeAlertCount = self.activeAlertCount + 1
                     self.getStatusForAllAlerts()
                 }else{
-                    print(Constant.MyClassConstants.activeAlertsArray, Constant.MyClassConstants.alertsSearchDatesDictionary, Constant.MyClassConstants.alertsResortCodeDictionary)
+                    intervalPrint(Constant.MyClassConstants.activeAlertsArray, Constant.MyClassConstants.alertsSearchDatesDictionary, Constant.MyClassConstants.alertsResortCodeDictionary)
                     NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
                     
                     Constant.MyClassConstants.isEvent2Ready = Constant.MyClassConstants.isEvent2Ready + 1
@@ -246,27 +242,27 @@ func sendOmnitureTrackCallForEvent2() {
     
     // omniture tracking with event 2
     let userInfo = NSMutableDictionary()
-    userInfo.addEntries(from: [Constant.omnitureEvars.eVar1 : (Session.sharedSession.selectedMembership?.memberNumber!) as Any])
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar1 : (Session.sharedSession.selectedMembership?.memberNumber) as Any])
     
-    userInfo.addEntries(from: [Constant.omnitureEvars.eVar3 : "\(Product!.productCode!)-\(Session.sharedSession.selectedMembership!.membershipTypeCode!)"])
+    userInfo.addEntries(from: [Constant.omnitureEvars.eVar3 : "\(Product?.productCode)-\(Session.sharedSession.selectedMembership?.membershipTypeCode)"])
     userInfo.addEntries(from: [Constant.omnitureEvars.eVar4 : ""])
     
     userInfo.addEntries(from: [Constant.omnitureEvars.eVar5 : Constant.MyClassConstants.loginOriginationPoint])
     userInfo.addEntries(from: [Constant.omnitureEvars.eVar6 :""])
     
-    switch Product!.productCode! {
+    switch Product?.productCode {
         
-    case Constant.productCodeImageNames.basic:
+    case Constant.productCodeImageNames.basic?:
         userInfo.addEntries(from: [Constant.omnitureEvars.eVar7 :Helper.getUpcommingcheckinDatesDiffrence(date: (Product?.expirationDate!)!)])
         
         
-    case Constant.productCodeImageNames.cig:
+    case Constant.productCodeImageNames.cig?:
         userInfo.addEntries(from: [Constant.omnitureEvars.eVar8 :Helper.getUpcommingcheckinDatesDiffrence(date: (Product?.expirationDate!)!)])
         
-    case Constant.productCodeImageNames.gold:
+    case Constant.productCodeImageNames.gold?:
         userInfo.addEntries(from: [Constant.omnitureEvars.eVar9 :Helper.getUpcommingcheckinDatesDiffrence(date: (Product?.expirationDate!)!)])
         
-    case Constant.productCodeImageNames.platinum:
+    case Constant.productCodeImageNames.platinum?:
         userInfo.addEntries(from: [Constant.omnitureEvars.eVar10 :Helper.getUpcommingcheckinDatesDiffrence(date: (Product?.expirationDate!)!)])
         
     default:
@@ -275,7 +271,13 @@ func sendOmnitureTrackCallForEvent2() {
     
     userInfo.addEntries(from: [Constant.omnitureEvars.eVar11 :Constant.MyClassConstants.activeAlertsArray.count])
     userInfo.addEntries(from: [Constant.omnitureEvars.eVar14 :""])
-    userInfo.addEntries(from: [Constant.omnitureEvars.eVar16 :(Session.sharedSession.contact?.memberships?.count)! > 0 ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no])
+    if let meberships = Session.sharedSession.contact?.memberships{
+         userInfo.addEntries(from: [Constant.omnitureEvars.eVar16 :(Session.sharedSession.contact?.memberships?.count)! > 0 ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no])
+    }else{
+        userInfo.addEntries(from:
+            [Constant.omnitureEvars.eVar16 : Constant.AlertPromtMessages.no])
+    }
+   
     var tripTypeString = ""
     if(Constant.MyClassConstants.exchangeCounter > 0) {
         tripTypeString = tripTypeString.appending("\(Constant.omnitureCommonString.exchage)-\(Constant.MyClassConstants.exchangeCounter)")
@@ -323,7 +325,7 @@ func sendOmnitureTrackCallForEvent2() {
     userInfo.addEntries(from: [Constant.omnitureEvars.eVar17 :tripTypeString])
     userInfo.addEntries(from: [Constant.omnitureEvars.eVar27 :Session.sharedSession.contact?.contactId as Any])
     
-    print(userInfo)
+    intervalPrint(userInfo)
     
     
     ADBMobile.trackAction(Constant.omnitureEvents.event2, data: userInfo as! [AnyHashable : Any])

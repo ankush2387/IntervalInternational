@@ -9,16 +9,18 @@
 import UIKit
 import IntervalUIKit
 import DarwinSDK
+import SVProgressHUD
 
 class CertificateViewController: UIViewController {
     
+    //class variables
+    var certificateArray = [AccommodationCertificate]()
     
     @IBOutlet weak var certificateTable: UITableView!
     var certificateCount: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
     }
     
@@ -27,38 +29,68 @@ class CertificateViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func onClickedCertificateInfoButton(_ sender: Any) {
+        
+        self.getAccommodationCertificateSummary(sendertag: (sender as AnyObject).tag)
+    }
     
-    @IBAction func onClickedStatusInfoButton(_ sender: Any) {
-        print("status info button clicked")
+    func getAccommodationCertificateSummary(sendertag:Int) {
+       
+        // show hud
+        showHudAsync()
+        let number = Constant.MyClassConstants.certificateArray[sendertag].certificateNumber! as NSNumber
+        
+        let certificateNumber:String = number.stringValue
+       UserClient.getAccommodationCertificateSummary(Session.sharedSession.userAccessToken, certificateNumber: certificateNumber, onSuccess: { (response) in
+        
+            self.hideHudAsync()
+            self.navigateToCertificateDetailsVC(response: response)
+        
+        }, onError: { (error) in
+            self.hideHudAsync()
+            })
+    }
+    
+    func navigateToCertificateDetailsVC(response: AccommodationCertificateSummary)  {
+        
+        if (Constant.MyClassConstants.isRunningOnIphone) {
+            let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.certificateDetailsViewController) as! CertificateDetailsViewController
+            viewController.certificateDetailsResponse = response
+            self.present(viewController, animated: true, completion: nil)
+        } else {
+            let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.certificateDetailsViewController) as! CertificateDetailsViewController
+            viewController.certificateDetailsResponse = response
+            self.present(viewController, animated: true, completion: nil)
+            
+        }
+    
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        //show hud
+        showHudAsync()
+    UserClient.getAccommodationCertificates(Session.sharedSession.userAccessToken, onSuccess: { (certificates) in
+        self.hideHudAsync()
+        Constant.MyClassConstants.certifcateCount = certificates.count
+        Constant.MyClassConstants.certificateArray =  certificates
+        self.certificateTable.delegate = self
+        self.certificateTable.dataSource = self
+        self.certificateTable.reloadData()
         
-       // Helper.showProgressBar(senderView: self)
-        UserClient.getAccommodationCertificates(Session.sharedSession.userAccessToken, onSuccess: { (certificates) in
-            //Helper.hideProgressBar(senderView: self)
-            print(certificates.count)
-            Constant.MyClassConstants.certifcateCount = certificates.count
-            Constant.MyClassConstants.certificateArray =  certificates
-            self.certificateTable.delegate = self
-            self.certificateTable.dataSource = self
-            self.certificateTable.reloadData()
-            
-            
         }, onError: { (error) in
-            //Helper.hideProgressBar(senderView: self)
-            print(error)
+            self.hideHudAsync()
         })
         
     }
     
 }
 
-
+//MARK:- Tableview delegage
 extension CertificateViewController:UITableViewDelegate {
     
     //***** UITableview delegate methods definition here *****//
-    
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 480
@@ -66,6 +98,7 @@ extension CertificateViewController:UITableViewDelegate {
     }
 }
 
+//MARK:- Tableview datasource
 extension CertificateViewController:UITableViewDataSource {
     
     //***** UITableview dataSource methods definition here *****//
@@ -87,7 +120,7 @@ extension CertificateViewController:UITableViewDataSource {
         
         cell.certificateNumber.text = "#\(Constant.MyClassConstants.certificateArray[indexPath.row].certificateNumber!)"
         
-        var expireDateString = Constant.MyClassConstants.certificateArray[indexPath.row].expirationDate!
+        let expireDateString = Constant.MyClassConstants.certificateArray[indexPath.row].expirationDate!
         let myStringArr = expireDateString.components(separatedBy: "-")
         
         let expireDateFinalString = myStringArr.flatMap({$0}).joined(separator: "/")
@@ -125,6 +158,10 @@ extension CertificateViewController:UITableViewDataSource {
         
         Helper.applyShadowOnUIView(view: cell.cellBaseView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 1.0)
         cell.selectionStyle = UITableViewCellSelectionStyle.none
+        
+        //set button tag
+        cell.certificateInfoButton.tag = indexPath.row
+        
         return cell
     }
     

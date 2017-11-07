@@ -84,19 +84,10 @@ class RenewelViewController: UIViewController {
             renewalsTableView.tableHeaderView = headerLabel
         }
         checkForComboNonCombo()
-        
-        /*let value: Int = 1605436
-        
-        // "1,605,436" where Locale == en_US
-        let formattedInt = String(format: "%d", locale: Locale.current, value)
-        
-        print("formated price is \(formattedInt)")*/
-
-        // Do any additional setup after loading the view.
+ 
     }
     
     //MARK:- Check for combo and non combo
-    
     func checkForComboNonCombo(){
         if(Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
            forceRenewals = (Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals)!

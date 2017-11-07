@@ -29,13 +29,11 @@ class SortingViewController: UIViewController {
     //class variables
     var selectedIndex = -1
     var selectedSortingIndex = -1
+    var alertFilterOptionsArray = [Constant.AlertResortDestination]()
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        self.createFilterOptions()
-        
-        
         //remove extra separator of tableview
         self.sortingTBLview.tableFooterView = UIView()
         //selectedIndex = 0
@@ -57,94 +55,139 @@ class SortingViewController: UIViewController {
             let exchangeSearchCriteria = VacationSearchCriteria(searchType:VacationSearchType.Exchange)
             let bothSearchCriteria = VacationSearchCriteria(searchType:VacationSearchType.Combined)
             
-            switch Constant.MyClassConstants.filterOptionsArray[indexPath.row] {
-                
-            case .Destination(let destination):
-                
-                let areaOfInfluenceDestination = AreaOfInfluenceDestination()
-                areaOfInfluenceDestination.destinationName = destination.destinationName
-                areaOfInfluenceDestination.destinationId = destination.destinationId
-                areaOfInfluenceDestination.aoiId = destination.aoid
-                
-                if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
-                    
-                    rentalSearchCriteria.destination = areaOfInfluenceDestination
-                    
-                }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
-                    
-                    exchangeSearchCriteria.destination = areaOfInfluenceDestination
-                    
-                }else{
-                    
-                    bothSearchCriteria.destination = areaOfInfluenceDestination
-                }
-                
-                Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
-                
-            case .Resort(let resort):
-                
-                let resorts = Resort()
-                resorts.resortName = resort.resortName
-                resorts.resortCode = resort.resortCode
-                
-                if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
-                    rentalSearchCriteria.resorts = [resorts]
-                    
-                }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
-                    exchangeSearchCriteria.resorts =  [resorts]
-                }else{
-                    bothSearchCriteria.resorts =  [resorts]
-                }
-                
-                Constant.MyClassConstants.vacationSearchResultHeaderLabel = resort.resortName
-                
-            case .ResortList(let resortList):
-                
-                var resortsArray = [Resort]()
-                for resorts in resortList{
-                    
-                    let resort = Resort()
-                    resort.resortName = resorts.resortName
-                    resort.resortCode = resorts.resortCode
-                    resortsArray.append(resort)
-                }
-                
-                if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
-                    
-                    rentalSearchCriteria.resorts = resortsArray
-                    
-                }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
-                    
-                    exchangeSearchCriteria.resorts = resortsArray
-                    
-                }else{
-                    
-                    bothSearchCriteria.resorts = resortsArray
-                }
-                
-                Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(resortList[0].resortName) + \(resortList.count - 1) more"
-                
-            case .Area(let areaList):
-        
-                let area = Area()
-                area.areaName = (areaList.allValues[0] as! String)
-                area.areaCode = Int(areaList.allKeys[0] as! String)!
-                
-                if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
-                    rentalSearchCriteria.area = area
-                    
-                }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
-                    exchangeSearchCriteria.area = area
+            if(alertFilterOptionsArray.count > 0){
+                switch alertFilterOptionsArray[indexPath.row]{
 
-                }else{
-                    bothSearchCriteria.area = area
+                case .Destination(let destination):
+                    
+                    let areaOfInfluenceDestination = AreaOfInfluenceDestination()
+                    areaOfInfluenceDestination.destinationName = destination.destinationName
+                    areaOfInfluenceDestination.destinationId = destination.destinationId
+                    areaOfInfluenceDestination.aoiId = destination.aoiId
+                    
+                    if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
+                        
+                        rentalSearchCriteria.destination = areaOfInfluenceDestination
+                        
+                    }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
+                        
+                        exchangeSearchCriteria.destination = areaOfInfluenceDestination
+                        
+                    }else{
+                        
+                        bothSearchCriteria.destination = areaOfInfluenceDestination
+                    }
+                    
+                    Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
+                    
+                case .Resort(let resort):
+                    
+                    let resorts = Resort()
+                    resorts.resortName = resort.resortName
+                    resorts.resortCode = resort.resortCode
+                    
+                    if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
+                        rentalSearchCriteria.resorts = [resorts]
+                        
+                    }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
+                        exchangeSearchCriteria.resorts =  [resorts]
+                    }else{
+                        bothSearchCriteria.resorts =  [resorts]
+                    }
+                    
+                    Constant.MyClassConstants.vacationSearchResultHeaderLabel = resorts.resortName!
                 }
-                
-                Constant.MyClassConstants.vacationSearchResultHeaderLabel = area.areaName!
-                
+            }else {
+                switch Constant.MyClassConstants.filterOptionsArray[indexPath.row] {
+                    
+                case .Destination(let destination):
+                    
+                    let areaOfInfluenceDestination = AreaOfInfluenceDestination()
+                    areaOfInfluenceDestination.destinationName = destination.destinationName
+                    areaOfInfluenceDestination.destinationId = destination.destinationId
+                    areaOfInfluenceDestination.aoiId = destination.aoid
+                    
+                    if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
+                        
+                        rentalSearchCriteria.destination = areaOfInfluenceDestination
+                        
+                    }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
+                        
+                        exchangeSearchCriteria.destination = areaOfInfluenceDestination
+                        
+                    }else{
+                        
+                        bothSearchCriteria.destination = areaOfInfluenceDestination
+                    }
+                    
+                    Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
+                    
+                case .Resort(let resort):
+                    
+                    let resorts = Resort()
+                    resorts.resortName = resort.resortName
+                    resorts.resortCode = resort.resortCode
+                    
+                    if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
+                        rentalSearchCriteria.resorts = [resorts]
+                        
+                    }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
+                        exchangeSearchCriteria.resorts =  [resorts]
+                    }else{
+                        bothSearchCriteria.resorts =  [resorts]
+                    }
+                    
+                    Constant.MyClassConstants.vacationSearchResultHeaderLabel = resort.resortName
+                    
+                case .ResortList(let resortList):
+                    
+                    var resortsArray = [Resort]()
+                    for resorts in resortList{
+                        
+                        let resort = Resort()
+                        resort.resortName = resorts.resortName
+                        resort.resortCode = resorts.resortCode
+                        resortsArray.append(resort)
+                    }
+                    
+                    if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
+                        
+                        rentalSearchCriteria.resorts = resortsArray
+                        
+                    }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
+                        
+                        exchangeSearchCriteria.resorts = resortsArray
+                        
+                    }else{
+                        
+                        bothSearchCriteria.resorts = resortsArray
+                    }
+                    
+                    Constant.MyClassConstants.vacationSearchResultHeaderLabel = "\(resortList[0].resortName) + \(resortList.count - 1) more"
+                    
+                case .Area(let areaList):
+                    
+                    let area = Area()
+                    area.areaName = (areaList.allValues[0] as! String)
+                    area.areaCode = Int(areaList.allKeys[0] as! String)!
+                    
+                    if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
+                        rentalSearchCriteria.area = area
+                        
+                    }else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
+                        exchangeSearchCriteria.area = area
+                        
+                    }else{
+                        bothSearchCriteria.area = area
+                    }
+                    
+                    Constant.MyClassConstants.vacationSearchResultHeaderLabel = area.areaName!
+                    
+                }
             }
             
             ADBMobile.trackAction(Constant.omnitureEvents.event9, data: nil)
+            showHudAsync()
             
             if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()){
                 
@@ -176,11 +219,11 @@ class SortingViewController: UIViewController {
                     Helper.helperDelegate = self
                     
                     
-                    if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                        
+                    
+                    if (activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())! {
+                        self.hideHudAsync()
                         Helper.showNotAvailabilityResults()
                         self.dismiss(animated: true, completion: nil)
-                        
                     } else {
                     
                     if(response.checkInDates.count > 0){
@@ -189,12 +232,9 @@ class SortingViewController: UIViewController {
                         Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch:vacationSearchFilter)
                     }
                 }
-                    
-                    
                 }){ (error) in
-                    
-                    
-                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                   self.hideHudAsync()
+                   self.presentErrorAlert(UserFacingCommonError.generic)
                 }
                 
             } else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
@@ -219,34 +259,27 @@ class SortingViewController: UIViewController {
                     
                     Helper.showScrollingCalendar(vacationSearch: vacationSearchFilter)
                     Constant.MyClassConstants.initialVacationSearch = vacationSearchFilter
-                    
-                    // Check not available checkIn dates for the active interval
-                    if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                        Helper.showNotAvailabilityResults()
-                    }
-                    let initialSearchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     Helper.helperDelegate = self
                     
-                    
+                    // Check not available checkIn dates for the active interval
                     if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                        
+                        self.hideHudAsync()
                         Helper.showNotAvailabilityResults()
                         self.dismiss(animated: true, completion: nil)
                         
                     } else {
-
-                    if response.checkInDates.count > 0 {
-                        Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: response.checkInDates[0], senderViewController: self, vacationSearch: vacationSearchFilter)
-                    }else{
-                        Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: vacationSearchFilter)
-                    }
+                        self.hideHudAsync()
+                        if let initialSearchCheckInDate =  Constant.MyClassConstants.initialVacationSearch.searchCheckInDate{
+                            Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: vacationSearchFilter)
+                        }else{
+                            Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: response.checkInDates[0], senderViewController: self, vacationSearch: vacationSearchFilter)
+                        }
                     }
                     
                 }){ (error) in
-                    
-                    
-                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                    self.hideHudAsync()
+                    self.presentErrorAlert(UserFacingCommonError.generic)
                 }
                 
             } else{
@@ -273,14 +306,8 @@ class SortingViewController: UIViewController {
                     Helper.showScrollingCalendar(vacationSearch: vacationSearchFilter)
                     // Check not available checkIn dates for the active interval
                     if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
-                        
-                        
-                        //self.rentalHasNotAvailableCheckInDates = true
                         Helper.executeExchangeSearchDates(senderVC: self, vacationSearch: vacationSearchFilter)
-                        
                     }else{
-                        
-                        
                         let vacationSearchInitialDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
                         if(vacationSearchInitialDate != nil){
                             Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearchInitialDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: vacationSearchFilter)
@@ -289,17 +316,13 @@ class SortingViewController: UIViewController {
                            Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: response.checkInDates[0], senderViewController: self, vacationSearch: vacationSearchFilter)
                             }
                         }
-                        
-
                     }
                     
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     //sender.isEnabled = true
                     
                 }){ (error) in
-                    
-                    
-                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                    self.presentErrorAlert(UserFacingCommonError.generic)
                 }
             }
             
@@ -317,52 +340,6 @@ class SortingViewController: UIViewController {
             
         }
         
-    }
-    
-    // Set options for filter
-    func createFilterOptions(){
-        
-        Constant.MyClassConstants.filterOptionsArray.removeAll()
-        let storedData = Helper.getLocalStorageWherewanttoGo()
-        let allDest = Helper.getLocalStorageAllDest()
-        
-        if(storedData.count > 0) {
-            
-            let realm = try! Realm()
-            try! realm.write {
-                Constant.MyClassConstants.filterOptionsArray.removeAll()
-                for object in storedData {
-                    
-                    if(object.destinations.count > 0){
-                        Constant.MyClassConstants.filterOptionsArray.append(
-                            .Destination(object.destinations[0])
-                            )
-                       
-                    }else if(object.resorts.count > 0){
-                        
-                        if(object.resorts[0].resortArray.count > 0){
-                            
-                            var araayOfResorts = List<ResortByMap>()
-                            var reswortByMap = [ResortByMap]()
-                            araayOfResorts = object.resorts[0].resortArray
-                            for resort in araayOfResorts{
-                                reswortByMap.append(resort)
-                            }
-                            
-                            Constant.MyClassConstants.filterOptionsArray.append(.ResortList(reswortByMap))
-                        }else{
-                            
-                            Constant.MyClassConstants.filterOptionsArray.append(.Resort(object.resorts[0]))
-                        }
-                    }
-                }
-            }
-        }else if(allDest.count > 0){
-            for areaCode in Constant.MyClassConstants.selectedAreaCodeArray{
-                let dictionaryArea = ["\(areaCode)": Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: areaCode as! String)]
-                Constant.MyClassConstants.filterOptionsArray.append(.Area(dictionaryArea as! NSMutableDictionary))
-            }
-        }
     }
     
     @IBAction func checkBoxClicked(_ sender: IUIKCheckbox) {
@@ -427,23 +404,36 @@ extension SortingViewController:UITableViewDelegate {
         
         // set selected value here from array.
         if self.isFilterClicked {
-            switch Constant.MyClassConstants.filterOptionsArray[indexPath.row] {
-            case .Destination( _):
-                
-                self.sortingAndFilterSelectedValue(indexPath: indexPath as NSIndexPath, isFromFiltered: true)
-                
-            case .Resort( _):
-                
-                self.sortingAndFilterSelectedValue(indexPath: indexPath as NSIndexPath, isFromFiltered: true)
-                
-            case .ResortList( _):
-                
-                self.sortingAndFilterSelectedValue(indexPath: indexPath as NSIndexPath, isFromFiltered: true)
-                
-            case .Area( _):
-                
-                self.sortingAndFilterSelectedValue(indexPath: indexPath as NSIndexPath, isFromFiltered: true)
+            if(alertFilterOptionsArray.count > 0){
+                switch alertFilterOptionsArray[indexPath.row] {
+                case .Destination( _):
+                    
+                    self.sortingAndFilterSelectedValue(indexPath: indexPath as NSIndexPath, isFromFiltered: true)
+                    
+                case .Resort( _):
+                    
+                    self.sortingAndFilterSelectedValue(indexPath: indexPath as NSIndexPath, isFromFiltered: true)
+                }
+            }else{
+                switch Constant.MyClassConstants.filterOptionsArray[indexPath.row] {
+                case .Destination( _):
+                    
+                    self.sortingAndFilterSelectedValue(indexPath: indexPath as NSIndexPath, isFromFiltered: true)
+                    
+                case .Resort( _):
+                    
+                    self.sortingAndFilterSelectedValue(indexPath: indexPath as NSIndexPath, isFromFiltered: true)
+                    
+                case .ResortList( _):
+                    
+                    self.sortingAndFilterSelectedValue(indexPath: indexPath as NSIndexPath, isFromFiltered: true)
+                    
+                case .Area( _):
+                    
+                    self.sortingAndFilterSelectedValue(indexPath: indexPath as NSIndexPath, isFromFiltered: true)
+                }
             }
+            
         } else {
             
             
@@ -460,7 +450,9 @@ extension SortingViewController:UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.isFilterClicked {
-            
+            if(alertFilterOptionsArray.count > 0){
+                return alertFilterOptionsArray.count
+            }
             return Constant.MyClassConstants.filterOptionsArray.count
             
         } else {
@@ -478,17 +470,27 @@ extension SortingViewController:UITableViewDataSource {
         
         if self.isFilterClicked  { // filter option selected
             
-             self.lblHeading.text = Constant.MyClassConstants.filterSearchResult
-             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.filterOptionCell, for: indexPath) as! FilterCell
-            switch Constant.MyClassConstants.filterOptionsArray[indexPath.row] {
-            case .Destination(let val):
-                cell.lblFilterOption.text = val.destinationName
-            case .Resort(let val):
-                cell.lblFilterOption.text = val.resortName
-            case .ResortList(let val):
-                cell.lblFilterOption.text = "\(val[0].resortName) + \(val.count - 1)  more"
-            case .Area(let area):
-                cell.lblFilterOption.text = area.allValues[0] as? String
+            self.lblHeading.text = Constant.MyClassConstants.filterSearchResult
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.filterOptionCell, for: indexPath) as! FilterCell
+            
+            if(Constant.MyClassConstants.filterOptionsArray.count > 0){
+                switch Constant.MyClassConstants.filterOptionsArray[indexPath.row] {
+                    case .Destination(let val):
+                        cell.lblFilterOption.text = val.destinationName
+                    case .Resort(let val):
+                        cell.lblFilterOption.text = val.resortName
+                    case .ResortList(let val):
+                        cell.lblFilterOption.text = "\(val[0].resortName) + \(val.count - 1)  more"
+                    case .Area(let area):
+                        cell.lblFilterOption.text = area.allValues[0] as? String
+               }
+            }else if(alertFilterOptionsArray.count > 0){
+                switch alertFilterOptionsArray[indexPath.row]{
+                case .Destination(let val):
+                    cell.lblFilterOption.text = val.destinationName
+                case .Resort(let val):
+                    cell.lblFilterOption.text = val.resortName
+            }
             }
             
             if(self.selectedIndex == indexPath.row) {
@@ -537,6 +539,7 @@ extension SortingViewController:UITableViewDataSource {
 extension SortingViewController:HelperDelegate {
     
     func resortSearchComplete(){
+        self.hideHudAsync()
         self.dismiss(animated: true, completion: nil)
         
     }

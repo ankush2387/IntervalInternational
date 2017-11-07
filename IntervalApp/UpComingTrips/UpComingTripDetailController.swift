@@ -169,7 +169,6 @@ class UpComingTripDetailController: UIViewController {
         actionSheetController.addAction(resendConfirmationAction)
         //***** Present ActivityViewController for share options *****//
         let shareAction: UIAlertAction = UIAlertAction(title: "Share", style: .default) { action -> Void in
-            Constant.MyClassConstants.checkInClosestContentArray.removeAllObjects()
             Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
             Constant.MyClassConstants.realmStoredDestIdOrCodeArray.removeAllObjects()
             
@@ -181,14 +180,14 @@ class UpComingTripDetailController: UIViewController {
                 if completed {
                     if activityType == UIActivityType.mail || activityType == UIActivityType.message {
                         //Display message to confirm Message and Mail have been sent
-                         SimpleAlert.alert(self, title: "Success", message: "Your Confirmation has been sent!")
+                         self.presentAlert(with: "Success".localized(), message: "Your Confirmation has been sent!".localized())
                     }
                 }
                 
                 if error != nil {
                     if activityType == UIActivityType.mail || activityType == UIActivityType.message {
                         //Display message to let user know there was error
-                        SimpleAlert.alert(self, title: "Error", message: "The Confirmation could not be sent. Please try again.")
+                        self.presentAlert(with: "Error".localized(), message: "The Confirmation could not be sent. Please try again.".localized())
                     }
                 }
                 
@@ -230,7 +229,7 @@ class UpComingTripDetailController: UIViewController {
         guard let cityName = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address?.cityName else { return }
         showHudAsync()
         displayMapView(coordinates: coordinates, resortName: resortName, cityName: cityName, presentModal: true) { (response) in
-            SVProgressHUD.dismiss()
+            self.hideHudAsync()
         }
         
     }
@@ -241,7 +240,7 @@ class UpComingTripDetailController: UIViewController {
         guard let countryCode = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination!.resort!.address?.countryCode else { return }
         showHudAsync()
         displayWeatherView(resortCode: resortCode, resortName: resortName, countryCode: countryCode, presentModal: true, completionHandler: { (response) in
-            SVProgressHUD.dismiss()
+            self.hideHudAsync()
         })
     }
 }

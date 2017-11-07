@@ -96,7 +96,7 @@ class MemberShipDetailTableViewCell: UITableViewCell {
         
         // Update label text
         contactnameInfoLabel.text = Constant.memberShipViewController.membershipDetailTableViewCell.contactnameInfoLabelText
-        loginInfoLabel.text = Constant.memberShipViewController.membershipDetailTableViewCell.loginInfoLabelText
+        loginInfoLabel.text = Constant.textFieldTitles.usernamePlaceholder
          emailInfoLabel.text = Constant.memberShipViewController.membershipDetailTableViewCell.emailInfoLabelText
         memberNumberInfoLabel.text = Constant.memberShipViewController.membershipDetailTableViewCell.memberNumberInfoLabelText
         switchMembershipButton.setTitle(Constant.memberShipViewController.membershipDetailTableViewCell.switchMembershipButtonTitle, for: .normal)
@@ -107,14 +107,14 @@ class MemberShipDetailTableViewCell: UITableViewCell {
          emailLabel.text = email
          memberNumberLabel.text = Constant.MyClassConstants.memberNumber
        let date  =  Helper.convertStringToDate(dateString: date, format: Constant.MyClassConstants.dateFormat)
-        memberSinceDateLabel.text = Helper.getWeekDay(dateString: date as NSDate, getValue: Constant.MyClassConstants.month).appending(". ").appending(Helper.getWeekDay(dateString: date as NSDate, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: date as NSDate, getValue: Constant.MyClassConstants.year))
+        memberSinceDateLabel.text = Helper.getWeekDay(dateString: date, getValue: Constant.MyClassConstants.month).appending(". ").appending(Helper.getWeekDay(dateString: date, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: date, getValue: Constant.MyClassConstants.year))
         
         activeLabel.text = status
         
         //setup Products View depending on number of Products
         let size = products.count //amount of products to display
         var yPosition  = 5 // yPosition of view
-        var height = 80 // height of each view
+        let height = 80 // height of each view
         ExternalViewHeightConstraint.constant = CGFloat((80 * size) + 10)
 
         var count = 0

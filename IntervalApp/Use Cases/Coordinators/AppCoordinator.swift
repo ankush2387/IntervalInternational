@@ -15,22 +15,22 @@ final class AppCoordinator {
     
     // MARK: - Public properties
     var initialViewController = UIViewController()
-
+    
     // MARK: - Private properties
     private let preLoginCoordinator: PreLoginCoordinator
     private let relinquishmentProgram = PointsProgram()
     private var appState: AppState = .foreground
-
+    
     fileprivate let session = Session.sharedSession
     fileprivate let loginCoordinator: LoginCoordinator
     fileprivate let autoLogoutTimer = AutoLogoutTimer()
-
+    
     fileprivate var userIsLoggedIn = false
     fileprivate var apnsCoordinator: APNSCoordinator?
     fileprivate var entityStore = EntityDataSource.sharedInstance
     fileprivate var autoLogoutViewController: UIAlertController?
     fileprivate var navigationController: UINavigationController?
-
+    
     var topViewController: UIViewController? {
         if var topViewController = UIApplication.shared.keyWindow?.rootViewController {
             while let presentedViewController = topViewController.presentedViewController {
@@ -57,7 +57,7 @@ final class AppCoordinator {
         
         // TODO: This needs to be removed; When you see this think code smell.
         Constant.MyClassConstants.runningDeviceWidth = UIScreen.main.bounds.width
-
+        
         // TODO: This needs to be replaced with a UI Widget Framework to not perform inconsistent global UI changes
         IUIKitManager.updateAppearance()
         
@@ -102,21 +102,21 @@ final class AppCoordinator {
         apnsCoordinator?.delegate = self
         preLoginCoordinator.delegate = self
     }
-
+    
     private func presentAutologoutNotification() {
         topViewController?.presentAlert(with: "Logged Out".localized(),
                                         message: "You have been automatically logged out due to inactivity.".localized(),
                                         hideCancelButton: true)
     }
-
+    
     fileprivate func resetIconBadgeNumberForPush() {
         UIApplication.shared.applicationIconBadgeNumber = 0
     }
-
+    
     fileprivate func startLogout(isAutologout: Bool = false) {
         
         session.signOut() // Hmm.. this might be more appropriately moved into the DarwinSDK
-
+        
         //Remove all favorites for a user.
         Constant.MyClassConstants.favoritesResortArray.removeAll()
         Constant.MyClassConstants.favoritesResortCodeArray.removeAllObjects()
@@ -124,15 +124,15 @@ final class AppCoordinator {
         Constant.MyClassConstants.getawayAlertsArray.removeAll()
         Constant.MyClassConstants.isLoginSuccessfull = false
         Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
-
+        
         // TODO: - Need to refactor code/calls above
-
+        
         logoutDidFinish()
         if isAutologout {
             presentAutologoutNotification()
         }
     }
-
+    
     fileprivate func logoutDidFinish() {
         navigationController?.popToRootViewController(animated: true)
         userIsLoggedIn = false
@@ -140,7 +140,7 @@ final class AppCoordinator {
         autoLogoutViewController?.dismiss(animated: false)
         autoLogoutViewController = nil
     }
-
+    
     fileprivate func readEncryptionKey(for contactID: String) -> Promise<Data> {
         
         return Promise { resolve, reject in
@@ -168,7 +168,7 @@ final class AppCoordinator {
             resolve(key)
         }
     }
-
+    
     fileprivate func showDashboard() {
         let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
         let storyboardName = isRunningOnIphone ? Constant.storyboardNames.dashboardIPhone : Constant.storyboardNames.dashboardIPad
@@ -193,7 +193,7 @@ extension AppCoordinator: IntervalApplicationDelegate {
 }
 
 extension AppCoordinator: APNSCoordinatorDelegate {
-
+    
     func redirectUser() {
         let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
         let storyboardName = isRunningOnIphone ? Constant.storyboardNames.getawayAlertsIphone : Constant.storyboardNames.getawayAlertsIpad
@@ -203,7 +203,7 @@ extension AppCoordinator: APNSCoordinatorDelegate {
             apnsCoordinator = nil
         }
     }
-
+    
     func showRedirectAlert(with title: String, message: String) {
         let callBack: (() -> Void)? = userIsLoggedIn ? redirectUser : nil
         topViewController?.showAPNSPushBanner(for: title, with: message, callBack: callBack)
@@ -237,7 +237,7 @@ extension AppCoordinator: LoginCoordinatorDelegate {
         Session.sharedSession.selectedMembership = session.contact?.memberships![0]
         CreateActionSheet().membershipWasSelected()
         ///
-
+        
         guard let contactID = session.contact?.contactId else {
             presentViewError()
             return
@@ -246,17 +246,17 @@ extension AppCoordinator: LoginCoordinatorDelegate {
         let createDatabase = { [unowned self] (encryptionKey: Data) in
             self.entityStore.setDatabaseConfigurations(for: String(contactID), with: encryptionKey)
         }
-
+        
         readEncryptionKey(for: String(contactID))
             .then(createDatabase)
             .onViewError(presentViewError)
-
+        
         if apnsCoordinator?.shouldRedirectOnlogin == true && apnsCoordinator?.pushViabilityHasNotExpired == true {
             redirectUser()
         } else {
             showDashboard()
         }
-
+        
         autoLogoutTimer.restart()
     }
     
@@ -269,16 +269,16 @@ extension AppCoordinator: AutoLogoutDelegate {
     
     func startWarning() {
         guard userIsLoggedIn else { return }
-
+        
         let action = { [unowned self] (_: UIAlertAction) in
             self.autoLogoutTimer.restart()
             self.autoLogoutViewController = nil
         }
-
+        
         autoLogoutViewController = UIAlertController(title: "Autologout".localized(),
                                                      message: "Press Cancel to stop autologout".localized(),
                                                      preferredStyle: .alert)
-
+        
         if let autoLogoutViewController = autoLogoutViewController, let topViewController = topViewController {
             autoLogoutViewController.addAction(UIAlertAction(title: "Cancel".localized(), style: .cancel, handler: action))
             if UIApplication.shared.applicationState == .active {

@@ -92,11 +92,11 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
         
         for values in selectedAreaDictionary {
             
-            print(values)
+
+            intervalPrint(values)
             let counter:[String]  = values.value as! [String]
-            print(counter.count)
+            intervalPrint(counter.count)
             self.sectionCounter = self.sectionCounter + counter.count
-            
         }
     }
 
@@ -162,7 +162,8 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
             
             let selectedResort = segue.destination as! SelectedResortsIpadViewController
             selectedResort.areaDictionary = self.selectedAreaDictionary
-            print(selectedResort.areaDictionary)
+            intervalPrint(selectedResort.areaDictionary)
+
         }
         
     }
@@ -189,7 +190,9 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
        // let strNew = String(sectionSelected)
         
         let rsregion = Constant.MyClassConstants.regionArray [sender.tag]
-        print(Constant.MyClassConstants.regionAreaDictionary)
+
+        intervalPrint(Constant.MyClassConstants.regionAreaDictionary)
+
         if Constant.MyClassConstants.regionAreaDictionary.count == 0 {
             Constant.MyClassConstants.regionAreaDictionary.setValue(rsregion.areas, forKey: String(rsregion.regionCode))
             self.upDownArray.add("\(sender.tag)")
@@ -207,7 +210,7 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
         
         if(selectedAreaDictionary.allKeys.count == 0){
             
-            SimpleAlert.alert(self, title: Constant.dashboardTableScreenReusableIdentifiers.alert, message: Constant.AlertMessages.editAlertdetinationMessage)
+            presentAlert(with: Constant.dashboardTableScreenReusableIdentifiers.alert, message: Constant.AlertMessages.editAlertdetinationMessage)
             
         }else{
             
@@ -302,9 +305,8 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
                     }
                     
                 }, onError: { (error) in
-                    
                     self.hideHudAsync()
-                    SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                    self.presentErrorAlert(UserFacingCommonError.generic)
                 })
                 
                 
@@ -361,9 +363,7 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
                 })
                 { (error) in
                     self.hideHudAsync()
-                    
-                    
-                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                    self.presentErrorAlert(UserFacingCommonError.generic)
                 }
                 
                 
@@ -407,8 +407,7 @@ class AllAvailableDestinationsIpadViewController: UIViewController {
                 },
                                          onError:{ (error) in
                                             self.hideHudAsync()
-                                            //sender.isEnabled = true
-                                            SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                                            self.presentErrorAlert(UserFacingCommonError.generic)
                 }
                 )
                 
@@ -448,9 +447,10 @@ extension AllAvailableDestinationsIpadViewController:UITableViewDataSource {
         self.areaArray.removeAll()
         if(selectedAreaDictionary.count > 0){
             if let selectedAreas = selectedAreaDictionary.value(forKey: Constant.MyClassConstants.regionArray[indexPath.section].regionName!){
+
                 let area = selectedAreas as! [String]
-                print(area.count,area,area.count)
-                
+                intervalPrint(area.count,area,area.count)
+
                 let areaName = areasInRegionArray[indexPath.row].areaName
                 if(area.contains(areaName!)){
                     cell.placeSelectionCheckBox.checked = true
@@ -511,7 +511,7 @@ extension AllAvailableDestinationsIpadViewController:UITableViewDelegate {
                 
                 // show alert when maximum limit is reached
                 DispatchQueue.main.async(execute: {
-                    SimpleAlert.alert(self, title: Constant.dashboardTableScreenReusableIdentifiers.alert, message: Constant.AlertMessages.maximumLimitReachedMessage)
+                    self.presentAlert(with: Constant.dashboardTableScreenReusableIdentifiers.alert, message: Constant.AlertMessages.maximumLimitReachedMessage)
                 })
                 
             }else{

@@ -220,7 +220,9 @@ extension CalendarViewController:FSCalendarDelegateAppearance {
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
         
          if(self.requestedController == Constant.MyClassConstants.relinquishmentFlaotWeek) {
-            print(date)
+
+            intervalPrint(date)
+
             if(Constant.MyClassConstants.floatDetailsCalendarDateArray.contains(date)) {
                 
                 return UIColor.darkText

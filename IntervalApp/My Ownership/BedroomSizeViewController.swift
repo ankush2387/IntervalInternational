@@ -250,8 +250,8 @@ class BedroomSizeViewController: UIViewController {
                 self.dismiss(animated: true, completion: nil)
             }
         }
-        else {
-            SimpleAlert.alert(self, title: Constant.AlertPromtMessages.bedRoomSizeTitle, message: Constant.AlertMessages.bedroomSizeAlertMessage)
+        else {            
+            presentAlert(with: Constant.AlertPromtMessages.bedRoomSizeTitle, message: Constant.AlertMessages.bedroomSizeAlertMessage)
         }
         
     }
@@ -285,7 +285,7 @@ extension BedroomSizeViewController : UITableViewDataSource{
             cell?.backgroundCellView.layer.borderColor = UIColor.white.cgColor
             cell?.bedroomSizelabel.text = Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as? String
             cell?.checkBoxButton.tag = indexPath.row + 1000
-            print(Constant.MyClassConstants.userSelectedStringArray)
+            intervalPrint(Constant.MyClassConstants.userSelectedStringArray)
             if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController){
                 cell?.checkBoxButton.isHidden = true
             }else{
@@ -296,13 +296,12 @@ extension BedroomSizeViewController : UITableViewDataSource{
             cell?.unitSizeLabel.tag = indexPath.row + 10
             var unitDetails = ""
             if(indexPath.row < Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count - 1 ){
+                
                 if selectedUnit.lockOffUnits.count > 0 {
-                    //unitDetails = "\(String(describing: selectedUnit.lockOffUnits[indexPath.row].unitNumber!)), \(String(describing: Helper.getKitchenEnums(kitchenType:selectedUnit.lockOffUnits[indexPath.row].kitchenType!)))"
                     
                         let units = "\((selectedUnit.lockOffUnits[indexPath.row].unitNumber) ?? "")"
                         let unitnumber =  units.replacingOccurrences(of: "/", with: "")
                         unitDetails = "\(Optional(unitnumber) ?? ""), \(String(describing: Helper.getKitchenEnums(kitchenType:selectedUnit.lockOffUnits[indexPath.row].kitchenType!)))"
-                    
                 }
             }else{
                 if let unitNumber = selectedUnit.unitNumber {
@@ -326,7 +325,7 @@ extension BedroomSizeViewController : UITableViewDataSource{
             }else{
                 cell?.checkBoxButton.checked = false
             }
-            print(Constant.MyClassConstants.unitNumberSelectedArray)
+            intervalPrint(Constant.MyClassConstants.unitNumberSelectedArray)
                 let setUnitSize = cell?.bedroomSizelabel.text?.components(separatedBy: ",")[0]
                 let setUnitNumber = cell?.unitSizeLabel.text?.components(separatedBy: ",")[0]
                 for selectedUnitDetails in Constant.MyClassConstants.saveLockOffDetailsArray{

@@ -228,7 +228,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
         if(Constant.holdingTime != 0){
             self.resortHoldingTimeLabel.text = Constant.holdingResortForRemainingMinutes
         }else{
-            SimpleAlert.alertTodismissController(self, title: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage)
+            self.presentAlert(with: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage)
         }
         
     }
@@ -243,7 +243,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
         showHudAsync()
 
         if(Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
-            Constant.holdingTimer.invalidate()
+            Constant.holdingTimer?.invalidate()
             
             ExchangeProcessClient.backToChooseExchange(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess:{(response) in
                 
@@ -263,16 +263,15 @@ class WhoWillBeCheckingInViewController: UIViewController {
             }, onError: {(error) in
                 
                 self.hideHudAsync()
-                SimpleAlert.alert(self, title: "Who will be checking in", message: error.localizedDescription)
+                self.presentErrorAlert(UserFacingCommonError.generic)
             })
         }else{
-        Constant.holdingTimer.invalidate()
+            Constant.holdingTimer?.invalidate()
         
         RentalProcessClient.backToChooseRental(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, onSuccess:{(response) in
             
                 Constant.MyClassConstants.selectedCreditCard.removeAll()
                 Helper.removeStoredGuestFormDetials()
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
             
             // pop and dismiss view according to conditions
@@ -285,9 +284,8 @@ class WhoWillBeCheckingInViewController: UIViewController {
             }
             
             }, onError: {(error) in
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
-                SimpleAlert.alert(self, title: Constant.ControllerTitles.whoWillBeCheckingInControllerTitle, message: Constant.AlertMessages.operationFailedMessage)
+                self.presentAlert(with: Constant.ControllerTitles.whoWillBeCheckingInControllerTitle, message: Constant.AlertMessages.operationFailedMessage)
                 
         })
         
@@ -311,7 +309,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 Constant.GetawaySearchResultGuestFormDetailData.countryListArray = response
 
             }, onError: { (error) in
-                print(error)
+                intervalPrint(error)
             })
 
         }
@@ -396,7 +394,8 @@ class WhoWillBeCheckingInViewController: UIViewController {
                     LookupClient.getStates(Constant.MyClassConstants.systemAccessToken!, countryCode: countryCode, onSuccess: { (response) in
                         Constant.GetawaySearchResultGuestFormDetailData.stateListArray = response
                     }, onError: { (error) in
-                        print(error)
+                        intervalPrint(error)
+
                     })
                 }
             }
@@ -498,7 +497,6 @@ class WhoWillBeCheckingInViewController: UIViewController {
             
             ExchangeProcessClient.continueToCheckout(Session.sharedSession.userAccessToken, process: processResort, request: exchangeProcessRequest, onSuccess: {(response) in
                 DarwinSDK.logger.debug(response)
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
                 Constant.MyClassConstants.exchangeContinueToCheckoutResponse = response
                 
@@ -515,7 +513,11 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 }else{
                     Constant.MyClassConstants.enableTaxes = false
                 }
-                Constant.MyClassConstants.memberCreditCardList = (Session.sharedSession.contact?.creditcards)!
+                
+                if let creditCardInfo = Session.sharedSession.contact?.creditcards {
+                    Constant.MyClassConstants.memberCreditCardList = creditCardInfo
+                }
+                
                 let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
                 let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.checkOutViewController) as! CheckOutViewController
                 viewController.filterRelinquishments = self.filterRelinquishments
@@ -524,9 +526,8 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 self.navigationController?.transitioningDelegate = transitionManager
                 self.navigationController!.pushViewController(viewController, animated: true)
             }, onError: {(error) in
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
-                SimpleAlert.alert(self, title: Constant.AlertErrorMessages.noResultError, message: error.localizedDescription)
+                self.presentErrorAlert(UserFacingCommonError.generic)
             })
         }else{
             
@@ -580,7 +581,6 @@ class WhoWillBeCheckingInViewController: UIViewController {
             
             RentalProcessClient.continueToCheckout(Session.sharedSession.userAccessToken, process: processResort, request: processRequest1, onSuccess: {(response) in
                 DarwinSDK.logger.debug(response)
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
                 Constant.MyClassConstants.continueToCheckoutResponse = response
                 
@@ -597,7 +597,11 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 }else{
                     Constant.MyClassConstants.enableTaxes = false
                 }
-                Constant.MyClassConstants.memberCreditCardList = (Session.sharedSession.contact?.creditcards)!
+                
+                if let creditCardInfo = Session.sharedSession.contact?.creditcards {
+                    Constant.MyClassConstants.memberCreditCardList = creditCardInfo
+                }
+                
                 let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
                 let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.checkOutViewController) as! CheckOutViewController
                 
@@ -605,9 +609,8 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 self.navigationController?.transitioningDelegate = transitionManager
                 self.navigationController!.pushViewController(viewController, animated: true)
             }, onError: {(error) in
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
-                SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                self.presentErrorAlert(UserFacingCommonError.generic)
                 
             })
         }
@@ -1095,9 +1098,9 @@ extension WhoWillBeCheckingInViewController:UITextFieldDelegate {
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
-        print(string)
+        intervalPrint(string)
         if (range.length == 1 && string.characters.count == 0) {
-            print("backspace tapped")
+            intervalPrint("backspace tapped")
         }
         
         if(self.cellUsedFor == Constant.MyClassConstants.guestString) {
@@ -1385,12 +1388,11 @@ extension WhoWillBeCheckingInViewController:RenewelViewControllerDelegate{
     }
     
     func noThanks(){
-        SimpleAlert.searchAlert(self, title: "Alert", message: "Guest Certificate Fee will be charged. To proceed further please click on OK button else click on cancel to select the renewal of membership.")
+        self.presentAlert(with: "Alert", message: "Guest Certificate Fee will be charged. To proceed further please click on OK button else click on cancel to select the renewal of membership.")
     }
     
     func otherOptions(forceRenewals: ForceRenewals) {
-
-        print("remove later")
+        intervalPrint("remove later")
         let button = UIButton()
         self.proceedToCheckoutPressed(button)
     }

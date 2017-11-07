@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SVProgressHUD
 
 class DetailedIssueViewController: UIViewController {
     
@@ -37,7 +36,7 @@ class DetailedIssueViewController: UIViewController {
     
     //***** Dismiss progress bar if back button is pressed. *****//
     override func viewWillDisappear(_ animated: Bool) {
-        SVProgressHUD.dismiss()
+        self.hideHudAsync()
     }
     
     func menuBackButtonPressed(sender:UIBarButtonItem) {
@@ -57,18 +56,15 @@ extension DetailedIssueViewController:UIWebViewDelegate {
 	
 	func webViewDidStartLoad(_ webView: UIWebView)
     {
-
         showHudAsync()
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView)
     {
-        SVProgressHUD.dismiss()
         self.hideHudAsync()
     }
     
      func webView(_ webView: UIWebView, didFailLoadWithError error: Error){
-        SVProgressHUD.dismiss()
         self.hideHudAsync()
     }
 }

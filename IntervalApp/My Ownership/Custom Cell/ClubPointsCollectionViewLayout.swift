@@ -29,7 +29,6 @@ class ClubPointsCollectionViewLayout: UICollectionViewLayout {
                         continue
                     }
                     
-                    //let attributes : UICollectionViewLayoutAttributes = self.layoutAttributesForItem(at: IndexPath(item: index, section: section))!
                     let indexPath = IndexPath(item: index, section: section)
                     let attributes : UICollectionViewLayoutAttributes = self.layoutAttributesForItem(at: indexPath)!
                     

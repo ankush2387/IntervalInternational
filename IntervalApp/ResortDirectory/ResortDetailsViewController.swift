@@ -10,7 +10,6 @@ import UIKit
 import GoogleMaps
 import IntervalUIKit
 import DarwinSDK
-import SVProgressHUD
 import RealmSwift
 import MessageUI
 import Foundation
@@ -36,7 +35,7 @@ class ResortDetailsViewController: UIViewController {
     var onsiteArray : NSMutableArray = []
     var amenityOnsiteString : String! = "Nearby" + "\n"
     var amenityNearbyString : String!  = "On-Site" + "\n"
-    var presentViewModally = true
+    var presentViewModally = false
     
     //***** Class private Variables *****//
     fileprivate var startIndex = 0
@@ -85,7 +84,7 @@ class ResortDetailsViewController: UIViewController {
             
             nearbyArray.removeAllObjects()
             onsiteArray.removeAllObjects()
-            print(Constant.MyClassConstants.resortsDescriptionArray.amenities.count)
+            intervalPrint(Constant.MyClassConstants.resortsDescriptionArray.amenities.count)
             for amenity in Constant.MyClassConstants.resortsDescriptionArray.amenities{
                 
                 
@@ -142,8 +141,8 @@ class ResortDetailsViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         if(Constant.RunningDevice.deviceIdiom == .phone){
-            //self.navigationController?.isNavigationBarHidden = false
-           // self.tabBarController?.tabBar.isHidden = false
+            self.navigationController?.isNavigationBarHidden = false
+            self.tabBarController?.tabBar.isHidden = false
         }
     }
     
@@ -199,7 +198,7 @@ class ResortDetailsViewController: UIViewController {
                 let resortCode = Constant.MyClassConstants.resortsArray[Constant.MyClassConstants.vacationSearchContentPagerRunningIndex - 1].resortCode
                 
                 
-                DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode:resortCode!, onSuccess: { (response) in
+                DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode:resortCode!, onSuccess: { response in
                     
                     
                     self.resortDescriptionArrayContainer.insert(response, at: 0)
@@ -213,14 +212,12 @@ class ResortDetailsViewController: UIViewController {
                         }
                     }
                     self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
-                    SVProgressHUD.dismiss()
                     self.hideHudAsync()
                     self.tableViewResorts.reloadData()
                 })
-                { (error) in
-                    SVProgressHUD.dismiss()
+                { error in
                     self.hideHudAsync()
-                    SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.description)
+                    self.presentErrorAlert(UserFacingCommonError.serverError(error))
                 }
             }else{
                 //sender.isEnabled = false
@@ -237,9 +234,7 @@ class ResortDetailsViewController: UIViewController {
                 self.arrayRunningIndex = arrayRunningIndex + 1
                 let resortCode = Constant.MyClassConstants.resortsArray[Constant.MyClassConstants.vacationSearchContentPagerRunningIndex].resortCode
                 
-                
                 showHudAsync()
-                
                 
                 DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode:resortCode!, onSuccess: { (response) in
                     
@@ -261,7 +256,6 @@ class ResortDetailsViewController: UIViewController {
                         //sender.isEnabled = true
                     }
                     self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
-                    SVProgressHUD.dismiss()
                     self.hideHudAsync()
                     self.tableViewResorts.reloadData()
                     // omniture tracking with event 35
@@ -272,10 +266,9 @@ class ResortDetailsViewController: UIViewController {
                     
                     ADBMobile.trackAction(Constant.omnitureEvents.event35, data: userInfo)
                 })
-                { (error) in
-                    SVProgressHUD.dismiss()
+                { error in
                     self.hideHudAsync()
-                    SimpleAlert.alert(self, title:"Error", message: error.description)
+                    self.presentErrorAlert(UserFacingCommonError.serverError(error))
                 }
                 
             }
@@ -317,13 +310,7 @@ class ResortDetailsViewController: UIViewController {
                     
                     
                 }else{
-                    
-                    let transition = CATransition()
-                    transition.duration = 0.5
-                    transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-                    transition.type = kCATransitionReveal
-                    transition.subtype = kCATransitionFromBottom
-                    navigationController?.view.layer.add(transition, forKey: nil)
+                navigationController?.view.layer.add(Helper.topToBottomTransition(), forKey: nil)
                     _ = navigationController?.popViewController(animated: false)
                 }
                 
@@ -336,11 +323,10 @@ class ResortDetailsViewController: UIViewController {
             if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.vacationSearchFunctionalityCheck){
                 
                 self.dismiss(animated: true, completion: nil)
-                
-                
-            }else{
-                
-                self.dismiss(animated: true, completion: nil)
+            }
+            else{
+                navigationController?.view.layer.add(Helper.topToBottomTransition(), forKey: nil)
+                _ = navigationController?.popViewController(animated: false)
             }
         }
     }
@@ -521,7 +507,9 @@ class ResortDetailsViewController: UIViewController {
     
     func showVacationSearch(){
         //Added a delay to present vacation search view controller.
-        if(self.senderViewController == Constant.MyClassConstants.searchResult){
+        
+        //Changed line self.senderViewController == Constant.MyClassConstants.searchResult
+        if(Constant.MyClassConstants.loginOriginationPoint == "Resort Directory - Sign In Modal"){
             Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(searchVacationClicked), userInfo: nil, repeats: false)
         }
     }
@@ -533,9 +521,9 @@ class ResortDetailsViewController: UIViewController {
         guard let resortName = Constant.MyClassConstants.resortsDescriptionArray.address?.cityName else { return }
         
         guard let countryCode = Constant.MyClassConstants.resortsDescriptionArray.address?.countryCode else { return }
-        showHudAsync()
+        self.showHudAsync()
         displayWeatherView(resortCode: resortCode, resortName: resortName, countryCode: countryCode, presentModal: presentViewModally, completionHandler: { (response) in
-            SVProgressHUD.dismiss()
+            self.hideHudAsync()
         })
     }
     
@@ -544,9 +532,9 @@ class ResortDetailsViewController: UIViewController {
         guard let coordinates = Constant.MyClassConstants.resortsDescriptionArray.coordinates else { return }
         guard let resortName = Constant.MyClassConstants.resortsDescriptionArray.resortName else { return }
         guard let cityName = Constant.MyClassConstants.resortsDescriptionArray.address?.cityName else { return }
-        showHudAsync()
+        self.showHudAsync()
         displayMapView(coordinates: coordinates, resortName: resortName, cityName: cityName, presentModal: presentViewModally) { (response) in
-            SVProgressHUD.dismiss()
+            self.hideHudAsync()
         }
     }
     
@@ -621,26 +609,10 @@ extension ResortDetailsViewController:UITableViewDelegate {
                             if((indexPath as NSIndexPath).section == 3){
                                 return 50
                             }else if((indexPath as NSIndexPath).section == 4){
-                                
-                                let count = nearbyArray.count + onsiteArray.count
-                                if(count>0){
-                                    if((indexPath as NSIndexPath).section == 3){
-                                        return 50
-                                    }else if((indexPath as NSIndexPath).section == 4){
-                                        if(count == 1){
-                                            return CGFloat (count * 20 + 60)
-                                        }else{
-                                            return CGFloat (count * 20 + 120)
-                                        }
-                                        
-                                    }else if((indexPath as NSIndexPath).section == 5){
-                                        return 80
-                                    }else{
-                                        return 600
-                                    }
-                                    
+                                if(count == 1){
+                                    return CGFloat (count * 20 + 60)
                                 }else{
-                                    return 60
+                                    return CGFloat (count * 20 + 120)
                                 }
                             }else if((indexPath as NSIndexPath).section == 5){
                                 return 80
@@ -688,7 +660,7 @@ extension ResortDetailsViewController:UITableViewDelegate {
                         self.present(txtComposeViewController, animated: true, completion: nil)
                     })
                 } else {
-                    SimpleAlert.alert(self, title: "Could Not Send Text Message" , message: "This device is not able/configured to send Text Messages.")
+                    presentAlert(with: "Could Not Send Text Message", message: "This device is not able/configured to send Text Messages.")
                 }
                 break
             default:
@@ -764,7 +736,7 @@ extension ResortDetailsViewController:UITableViewDelegate {
     }
     
     func showSendMailErrorAlert() {
-        SimpleAlert.alert(self, title: "Could Not Send Email" , message: "Your device could not send e-mail.  Please check e-mail configuration and try again.")
+        presentAlert(with: "Could Not Send Email", message: "Your device could not send e-mail.  Please check e-mail configuration and try again.")
     }
     
 }
@@ -1078,15 +1050,13 @@ extension ResortDetailsViewController:UITableViewDataSource {
                 UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsDescriptionArray.resortCode!, onSuccess: {(response) in
                     
                     self.hideHudAsync()
-                    SVProgressHUD.dismiss()
                     sender.isSelected = true
                     Constant.MyClassConstants.favoritesResortCodeArray.add(Constant.MyClassConstants.resortsDescriptionArray.resortCode!)
                     self.tableViewResorts.reloadData()
                     ADBMobile.trackAction(Constant.omnitureEvents.event48, data: nil)
                 }, onError: {(error) in
-                    SVProgressHUD.dismiss()
                     self.hideHudAsync()
-                    print(error)
+                    intervalPrint(error)
                 })
             }
             else {
@@ -1097,15 +1067,12 @@ extension ResortDetailsViewController:UITableViewDataSource {
                     
                     sender.isSelected = false
                     self.hideHudAsync()
-                    SVProgressHUD.dismiss()
                     Constant.MyClassConstants.favoritesResortCodeArray.remove(Constant.MyClassConstants.resortsDescriptionArray.resortCode!)
                     self.tableViewResorts.reloadData()
                     ADBMobile.trackAction(Constant.omnitureEvents.event51, data: nil)
                 }, onError: {(error) in
-                    
-                    SVProgressHUD.dismiss()
                     self.hideHudAsync()
-                    print(error)
+                    intervalPrint(error)
                 })
                 
             }
@@ -1168,17 +1135,18 @@ extension ResortDetailsViewController:MFMailComposeViewControllerDelegate {
             self.dismiss(animated: true, completion:nil)
             break
         case MFMailComposeResult.saved.rawValue:
-            print("Email saved")
+            intervalPrint("Email saved")
+            break
         case MFMailComposeResult.sent.rawValue:
-            print("Email sent")
-            
+            intervalPrint("Email sent")
             let alertController = UIAlertController(title: "test", message: "test", preferredStyle: .alert)
             let okButton = UIAlertAction(title: "Okay", style: .default, handler: nil)
             alertController.addAction(okButton)
             present(alertController, animated: true, completion: nil)
             
         case MFMailComposeResult.failed.rawValue:
-            print("Email failed: %@", [error!.localizedDescription])
+            intervalPrint("Email failed: %@", [error!.localizedDescription])
+            break
         default:
             break
         }

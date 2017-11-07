@@ -298,15 +298,13 @@ class SearchResultMapviewController: UIViewController {
             UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
             
                 self.hideHudAsync()
-                SVProgressHUD.dismiss()
                 sender.isSelected = true
                 Constant.MyClassConstants.favoritesResortCodeArray.add(Constant.MyClassConstants.resortsArray[sender.tag].resortCode!)
                 self.resortCollectionView.reloadData()
             
             }, onError: {(error) in
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
-                print(error)
+                intervalPrint(error)
             })
         }
           else {
@@ -317,15 +315,12 @@ class SearchResultMapviewController: UIViewController {
                 
                 sender.isSelected = false
                 self.hideHudAsync()
-                SVProgressHUD.dismiss()
-                Constant.MyClassConstants.favoritesResortCodeArray.remove(Constant.MyClassConstants.resortsDescriptionArray.resortCode!)
+            Constant.MyClassConstants.favoritesResortCodeArray.remove(Constant.MyClassConstants.resortsDescriptionArray.resortCode!)
                  self.resortCollectionView.reloadData()
                 ADBMobile.trackAction(Constant.omnitureEvents.event51, data: nil)
             }, onError: {(error) in
-                
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
-                print(error)
+                intervalPrint(error)
             })
             
 

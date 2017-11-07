@@ -9,7 +9,6 @@
 import UIKit
 import IntervalUIKit
 import DarwinSDK
-import SVProgressHUD
 
 class CreateAlertViewController: UIViewController {
     
@@ -185,7 +184,7 @@ class CreateAlertViewController: UIViewController {
                         
                         rentalAlert.name = nameTextField.text!
                         rentalAlert.enabled = true
-                        print(Constant.MyClassConstants.alertSelectedResorts)
+                        intervalPrint(Constant.MyClassConstants.alertSelectedResorts)
                         rentalAlert.resorts = Constant.MyClassConstants.alertSelectedResorts
                         rentalAlert.destinations = Constant.MyClassConstants.alertSelectedDestination
                         rentalAlert.selections = []
@@ -232,44 +231,40 @@ class CreateAlertViewController: UIViewController {
                             
                             ADBMobile.trackAction(Constant.omnitureEvents.event52, data: userInfo)
                             
-                            SVProgressHUD.dismiss()
+                            self.hideHudAsync()
                             
                             Constant.MyClassConstants.getawayAlertsArray.insert(rentalAlert, at: Constant.MyClassConstants.getawayAlertsArray.count)
-                            SimpleAlert.alertTodismissController(self, title:Constant.AlertPromtMessages.createAlertTitle , message: Constant.AlertMessages.createAlertMessage)
+                            self.presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages.createAlertMessage)
                             rentalAlert.alertId = response.alertId
                             
                         })
                         { (error) in
                             
-                            SVProgressHUD.dismiss()
-                            SimpleAlert.alert(self, title: Constant.AlertPromtMessages.createAlertTitle, message: error.description)
+                            self.hideHudAsync()
+                            self.presentErrorAlert(UserFacingCommonError.generic)
                             
                         }
                     }
                     else {
-                        
-                        SimpleAlert.alert(self, title: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages.editAlertdetinationrequiredMessage)
+                        self.presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages.editAlertdetinationrequiredMessage)
                     }
                     
                 }
                 else {
-                    
-                    SimpleAlert.alert(self, title: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages
+                    presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages
                         .editAlertEmptyWidowEndDateMessage)
-                    
                 }
             }
             else {
                 
-                SimpleAlert.alert(self, title: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages
+                presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages
                     .editAlertEmptyWidowStartDateMessage)
                 
             }
             
         }
         else {
-            
-            SimpleAlert.alert(self, title: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages
+            presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages
                 .editAlertEmptyNameMessage)
         }
         

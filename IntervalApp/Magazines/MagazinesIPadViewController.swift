@@ -50,7 +50,7 @@ class MagazinesIPadViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        Helper.getMagazines()
+        Helper.getMagazines(senderViewController:self)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadMagazines), name: NSNotification.Name(rawValue: Constant.notificationNames.magazineAlertNotification), object: nil)
 //        NotificationCenter.default.addObserver(self, selector: #selector(getAllMagazines), name: NSNotification.Name(rawValue: Constant.notificationNames.accessTokenAlertNotification), object: nil)
     }
@@ -71,7 +71,7 @@ class MagazinesIPadViewController: UIViewController {
     
     //***** Notification fired when system access token is received. *****//
     func getAllMagazines() {
-        Helper.getMagazines()
+        Helper.getMagazines(senderViewController:self)
     }
     
     override func didReceiveMemoryWarning() {

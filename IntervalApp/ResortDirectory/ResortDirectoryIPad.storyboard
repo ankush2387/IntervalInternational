@@ -2351,7 +2351,7 @@
         <image name="PinInactive" width="33" height="33"/>
         <image name="PlusIcon" width="33" height="33"/>
         <image name="TouchID-Off" width="36" height="36"/>
-        <image name="WeatherIcon" width="33" height="33"/>
+        <image name="WeatherIcon" width="30" height="30"/>
         <image name="close" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>

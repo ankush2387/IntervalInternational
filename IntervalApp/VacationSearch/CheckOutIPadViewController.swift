@@ -176,15 +176,24 @@ class CheckOutIPadViewController: UIViewController {
         menuButton.tintColor = UIColor.white
         self.navigationItem.leftBarButtonItem = menuButton
         
+        var resortCode = ""
+        var creditCardsCount = 0
+        
+        if let count = Session.sharedSession.contact?.creditcards?.count {
+            creditCardsCount = count
+        }
+        if let code = Constant.MyClassConstants.selectedResort.resortCode {
+            resortCode = code
+        }
         
         // omniture tracking with event 38
         let userInfo: [String: String] = [
             Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch,
-            Constant.omnitureCommonString.products : Constant.MyClassConstants.selectedResort.resortCode!,
+            Constant.omnitureCommonString.products : resortCode,
             Constant.omnitureEvars.eVar37 : Helper.selectedSegment(index: Constant.MyClassConstants.searchForSegmentIndex),
             Constant.omnitureEvars.eVar39 : "",
             Constant.omnitureEvars.eVar49 : "",
-            Constant.omnitureEvars.eVar52 : "\((Session.sharedSession.contact?.creditcards?.count)! > 0 ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no)",
+            Constant.omnitureEvars.eVar52 : "\(creditCardsCount > 0 ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no)",
             Constant.omnitureEvars.eVar72 : "\(self.showInsurance ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no)",
             
         ]
@@ -210,22 +219,20 @@ class CheckOutIPadViewController: UIViewController {
                 self.hideHudAsync()
             }, onError: {(error) in
                 self.hideHudAsync()
-                SimpleAlert.alert(self, title: "Checkout", message: error.localizedDescription)
+                self.presentErrorAlert(UserFacingCommonError.generic)
             })
             
         }else{
             
             RentalProcessClient.backToWhoIsChecking(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, onSuccess: {(response) in
                 
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
                 _ = self.navigationController?.popViewController(animated: true)
                 
             }, onError: {(error) in
                 
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
-                SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.operationFailedMessage)
+                self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.operationFailedMessage)
             })
         }
     }
@@ -293,7 +300,7 @@ class CheckOutIPadViewController: UIViewController {
                         imageSlider.isHidden = false
                         self.isAgreed = false
                         self.checkoutTableView.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
-                        SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: error.description)
+                        self.presentErrorAlert(UserFacingCommonError.generic)
                     })
                     
                     
@@ -314,18 +321,16 @@ class CheckOutIPadViewController: UIViewController {
                         }
                         Constant.MyClassConstants.selectedCreditCard.removeAll()
                         self.isAgreed = true
-                        SVProgressHUD.dismiss()
                         self.hideHudAsync()
                         self.checkoutTableView.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                         self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
                         
                     }, onError: { (error) in
-                        SVProgressHUD.dismiss()
                         self.hideHudAsync()
                         imageSlider.isHidden = false
                         self.isAgreed = false
                         self.checkoutTableView.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
-                        SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: error.description)
+                        self.presentErrorAlert(UserFacingCommonError.generic)
                     })
                 }
                 
@@ -334,17 +339,17 @@ class CheckOutIPadViewController: UIViewController {
                 let indexPath = NSIndexPath(row: 0, section: 7)
                 checkoutTableView.scrollToRow(at: indexPath as IndexPath, at: .top, animated: true)
                 imageSlider.isHidden = false
-                SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.feesAlertMessage)
+                presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.feesAlertMessage)
             }else if(strReject == Constant.MyClassConstants.isFalse && strAccept == Constant.MyClassConstants.isFalse){
                 let indexPath = NSIndexPath(row: 0, section: 4)
                 checkoutTableView.scrollToRow(at: indexPath as IndexPath, at: .top, animated: true)
                 imageSlider.isHidden = false
-                SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.insuranceSelectionMessage)
+                presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.insuranceSelectionMessage)
             }else{
                 let indexPath = NSIndexPath(row: 0, section: 6)
                 checkoutTableView.scrollToRow(at: indexPath as IndexPath, at: .top, animated: true)
                 imageSlider.isHidden = true
-                SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.paymentSelectionMessage)
+                presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.paymentSelectionMessage)
             }
         }else{
             isAgreedToFees = true
@@ -360,7 +365,7 @@ class CheckOutIPadViewController: UIViewController {
         if(Constant.holdingTime != 0){
             self.remainingResortHoldingTimeLabel.text = Constant.holdingResortForRemainingMinutes
         }else{
-            SimpleAlert.alertTodismissController(self, title: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage)
+            presentAlert(with: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage)
         }
     }
     
@@ -420,7 +425,7 @@ class CheckOutIPadViewController: UIViewController {
                 self.bookingTableView.reloadData()
                 DarwinSDK.logger.debug(error.description)
                 self.hideHudAsync()
-                SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: error.description)
+                self.presentErrorAlert(UserFacingCommonError.generic)
             })
         }
         else{
@@ -435,12 +440,10 @@ class CheckOutIPadViewController: UIViewController {
                 Constant.MyClassConstants.rentalFees[0].total = (response.view?.fees?.total)!
                 self.bookingTableView.reloadSections(IndexSet(integer: 0), with:.automatic)
                 self.hideHudAsync()
-                SVProgressHUD.dismiss()
             }, onError: { (error) in
                 self.tripRequestInProcess = false
                 DarwinSDK.logger.debug(error.description)
                 self.hideHudAsync()
-                SVProgressHUD.dismiss()
             })
         }
         
@@ -476,7 +479,7 @@ class CheckOutIPadViewController: UIViewController {
             self.eplusAdded = !sender.checked
             Constant.MyClassConstants.exchangeFees[0].eplus?.selected = sender.checked
             self.hideHudAsync()
-            SimpleAlert.alert(self, title: Constant.AlertPromtMessages.failureTitle, message: error.description)
+            self.presentErrorAlert(UserFacingCommonError.generic)
             self.checkSectionsForFees()
             self.bookingTableView.reloadData()
             self.checkoutTableView.reloadData()
@@ -531,7 +534,7 @@ class CheckOutIPadViewController: UIViewController {
                 }
             }
         }
-        print(totalFeesArray)
+        intervalPrint(totalFeesArray)
     }
     
     
@@ -599,7 +602,7 @@ class CheckOutIPadViewController: UIViewController {
         }
         else {
             sender.setOn(false, animated: true)
-            SimpleAlert.alert(self, title: Constant.buttonTitles.updateSwitchTitle, message: Constant.AlertErrorMessages.emailAlertMessage)
+            self.presentAlert(with: Constant.buttonTitles.updateSwitchTitle, message: Constant.AlertErrorMessages.emailAlertMessage)
         }
     }
     
@@ -685,8 +688,9 @@ class CheckOutIPadViewController: UIViewController {
                 processRequest.fees = fees
                 
                 RentalProcessClient.addCartPromotion(Session.sharedSession.userAccessToken, process: processResort, request: processRequest, onSuccess: { (response) in
-                    print("succes")
-                    print(response)
+
+                    intervalPrint("succes")
+                    intervalPrint(response)
                     
                     if let promotions = response.view?.fees?.rental?.promotions {
                         self.recapPromotionsArray = promotions
@@ -702,12 +706,12 @@ class CheckOutIPadViewController: UIViewController {
                     self.destinationPromotionSelected = true
                     self.checkoutTableView.reloadData()
                     self.bookingTableView.reloadData()
-                    SVProgressHUD.dismiss()
+                    self.hideHudAsync()
                     
                 }, onError: { (error) in
-                    print("Error")
-                    print(error)
-                    SVProgressHUD.dismiss()
+
+                    intervalPrint("Error")
+                    self.hideHudAsync()
                 })
             }
             
@@ -733,7 +737,6 @@ extension CheckOutIPadViewController:UITableViewDelegate {
                 
                 if(Constant.MyClassConstants.selectedCreditCard.count == 0) {
                     
-                    SVProgressHUD.dismiss()
                     self.hideHudAsync()
                     self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
                 }
@@ -742,11 +745,9 @@ extension CheckOutIPadViewController:UITableViewDelegate {
                     let selectedCard = Constant.MyClassConstants.selectedCreditCard[0]
                     if(selectedCard.creditcardId == 0) {
                         Constant.MyClassConstants.memberCreditCardList.append(selectedCard)
-                        SVProgressHUD.dismiss()
                         self.hideHudAsync()
                         self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
                     }else{
-                        SVProgressHUD.dismiss()
                         self.hideHudAsync()
                         self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
                     }
@@ -754,7 +755,6 @@ extension CheckOutIPadViewController:UITableViewDelegate {
                 
                 
             }, onError: { (error) in
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
             })
         }
@@ -1017,7 +1017,9 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                         cell.primaryPriceLabel.text = String(Int(Float((Constant.MyClassConstants.exchangeFees[0].shopExchange?.rentalPrice?.price)!)))
                         let priceString = "\(Constant.MyClassConstants.exchangeFees[0].shopExchange!.rentalPrice!.price)"
                         let priceArray = priceString.components(separatedBy: ".")
-                        print(priceArray.last!)
+
+                        intervalPrint(priceArray.last!)
+
                         if((priceArray.last!.characters.count) > 1) {
                             cell.fractionalPriceLabel.text = "\(priceArray.last!)"
                         }else{
@@ -1030,7 +1032,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                         cell.primaryPriceLabel.text = String(Int(Float((Constant.MyClassConstants.rentalFees[0].rental?.rentalPrice?.price)!)))
                         let priceString = "\(Constant.MyClassConstants.rentalFees[0].rental!.rentalPrice!.price)"
                         let priceArray = priceString.components(separatedBy: ".")
-                        print(priceArray.last!)
+                        intervalPrint(priceArray.last!)
                         if((priceArray.last!.characters.count) > 1) {
                             cell.fractionalPriceLabel.text = "\(priceArray.last!)"
                         }else{
@@ -1113,99 +1115,7 @@ extension CheckOutIPadViewController:UITableViewDataSource {
                 cell.primaryPriceLabel.sizeToFit()
                 
                 return cell
-                
-                
-                
-                
-                
-                
-                
-                /*let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.exchangeOrProtectionCell, for: indexPath) as! ExchangeOrProtectionCell
-                 
-                 if(!isHeightZero){
-                 for subviews in cell.subviews {
-                 
-                 subviews.isHidden = false
-                 }
-                 if(indexPath.row == 0 && Constant.MyClassConstants.isFromExchange){
-                 cell.priceLabel.text = Constant.MyClassConstants.exchangeFeeTitle
-                 cell.priceLabel.numberOfLines = 0
-                 cell.primaryPriceLabel.text = String(Int(Float((Constant.MyClassConstants.exchangeFees[0].shopExchange?.rentalPrice?.price)!)))
-                 let priceString = "\(Constant.MyClassConstants.exchangeFees[0].shopExchange!.rentalPrice!.price)"
-                 let priceArray = priceString.components(separatedBy: ".")
-                 print(priceArray.last!)
-                 if((priceArray.last!.characters.count) > 1) {
-                 cell.fractionalPriceLabel.text = "\(priceArray.last!)"
-                 }else{
-                 cell.fractionalPriceLabel.text = "00"
-                 }
-                 }else if(Constant.MyClassConstants.isFromExchange && eplusAdded){
-                 cell.priceLabel.text = totalFeesArray[indexPath.row] as? String
-                 //cell.priceLabel.text = "EPlus"
-                 
-                 let priceString = "\(Constant.MyClassConstants.exchangeFees[0].eplus!.price)"
-                 let priceArray = priceString.components(separatedBy: ".")
-                 cell.primaryPriceLabel.text = priceArray.first
-                 if((priceArray.last?.characters.count)! > 1) {
-                 cell.fractionalPriceLabel.text = "\(String(describing: priceArray.last!))"
-                 }else{
-                 cell.fractionalPriceLabel.text = "00"
-                 }
-                 
-                 
-                 
-                 }else if(indexPath.row == 0 && !Constant.MyClassConstants.isFromExchange){
-                 cell.priceLabel.text = Constant.MyClassConstants.getawayFee
-                 cell.primaryPriceLabel.text = String(Int(Float(Constant.MyClassConstants.inventoryPrice[0].price)))
-                 }else if(indexPath.row == 1 && Constant.MyClassConstants.enableTaxes){
-                 cell.priceLabel.text = Constant.MyClassConstants.taxesTitle
-                 var rentalTax = 0
-                 if(Constant.MyClassConstants.isFromExchange){
-                 rentalTax = Int((Constant.MyClassConstants.exchangeContinueToCheckoutResponse.view?.fees?.shopExchange?.rentalPrice?.tax)!)
-                 }else{
-                 rentalTax = Int((Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.rental?.rentalPrice?.tax)!)
-                 }
-                 cell.primaryPriceLabel.text = "\(rentalTax)"
-                 }else{
-                 if(renewalsArray.count > 0){
-                 let renewalIndex = indexPath.row - (totalRowsInCost - renewalsArray.count)
-                 
-                 cell.priceLabel.numberOfLines = 0
-                 cell.priceLabel.text = "\(String(describing: renewalsArray[renewalIndex].displayName!)) Renewal Fee"
-                 
-                 let priceString = "\(renewalsArray[renewalIndex].price)"
-                 let priceArray = priceString.components(separatedBy: ".")
-                 cell.primaryPriceLabel.text = priceArray.first
-                 if((priceArray.last?.characters.count)! > 1) {
-                 cell.fractionalPriceLabel.text = "\(String(describing: priceArray.last!))"
-                 }else{
-                 cell.fractionalPriceLabel.text = "00"
-                 }
-                 
-                 }
-                 }
-                 
-                 let font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 16.0)
-                 
-                 let width = widthForView(cell.primaryPriceLabel.text!, font: font!, height: cell.priceLabel.frame.size.height)
-                 cell.primaryPriceLabel.frame.size.width = width + 5
-                 
-                 let targetString = cell.primaryPriceLabel.text
-                 let range = NSMakeRange(0, (targetString?.characters.count)!)
-                 
-                 cell.primaryPriceLabel.attributedText = Helper.attributedString(from: targetString!, nonBoldRange: range, font: font!)
-                 cell.periodLabel.frame.origin.x = cell.primaryPriceLabel.frame.origin.x + width
-                 cell.fractionalPriceLabel.frame.origin.x = cell.periodLabel.frame.origin.x + cell.periodLabel.frame.size.width
-                 
-                 }else{
-                 isHeightZero = false
-                 for subviews in cell.subviews {
-                 
-                 subviews.isHidden = true
-                 }
-                 }
-                 cell.primaryPriceLabel.sizeToFit()
-                 return cell*/
+
             case 2:
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.exchangeOrProtectionCell, for: indexPath) as! ExchangeOrProtectionCell
@@ -1656,13 +1566,11 @@ extension CheckOutIPadViewController:UIWebViewDelegate {
     
     func webViewDidFinishLoad(_ webView: UIWebView)
     {
-        SVProgressHUD.dismiss()
         self.hideHudAsync()
         
     }
     
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error){
-        SVProgressHUD.dismiss()
         self.hideHudAsync()
     }
 }

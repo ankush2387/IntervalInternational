@@ -1,18 +1,18 @@
 //
-//  TdiTableViewCell.swift
+//  CertificateDetailsCell.swift
 //  IntervalApp
 //
-//  Created by ChetuMac-007 on 05/04/17.
+//  Created by CHETUMAC043 on 10/27/17.
 //  Copyright © 2017 Interval International. All rights reserved.
 //
 
 import UIKit
 
-class TdiTableViewCell: UITableViewCell {
-
-    @IBOutlet weak var tdicollectionview: UICollectionView!
+class CertificateDetailsCell: UITableViewCell {
     
-    @IBOutlet weak var unitsizecollectionview: UICollectionView!
+    
+    @IBOutlet weak var lblCertificateDetails: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -23,5 +23,5 @@ class TdiTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-    
+
 }

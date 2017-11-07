@@ -64,7 +64,7 @@ final class PreLoginCoordinator {
         }
         
         let onError = { [unowned self] (error: Error) in
-            debugPrint(error)
+            intervalPrint(error)
             let settings = Settings()
             settings.vacationSearch = newVacationSearchSettings
             settings.vacationSearch?.vacationSearchTypes = self.vacationSearchTypes
@@ -77,7 +77,7 @@ final class PreLoginCoordinator {
     }
     
     private func onError(error: Error) {
-        debugPrint(error)
+        intervalPrint(error)
         delegate?.didError()
     }
 }

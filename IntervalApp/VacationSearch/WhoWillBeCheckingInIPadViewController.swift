@@ -84,7 +84,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     //Function to display alert on timer time over
     
     func showAlertForTimer(){
-        SimpleAlert.alertTodismissController(self, title: "Holding time lost", message: "Oops You have lost your holding time for this resort!. Please try again")
+        self.presentAlert(with: "Holding time lost".localized(), message: "Oops You have lost your holding time for this resort!. Please try again".localized())
     }
     
     
@@ -151,7 +151,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         
         showHudAsync()
         if(Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
-            Constant.holdingTimer.invalidate()
+            Constant.holdingTimer?.invalidate()
             
             ExchangeProcessClient.backToChooseExchange(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess:{(response) in
                 
@@ -171,15 +171,15 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             }, onError: {(error) in
                 
                 self.hideHudAsync()
-                SimpleAlert.alert(self, title: "Who will be checking in", message: Constant.AlertMessages.operationFailedMessage)
+                self.presentAlert(with: "Who will be checking in".localized(), message: Constant.AlertMessages.operationFailedMessage)
             })
-        }else{
-        Constant.holdingTimer.invalidate()
-        
-        RentalProcessClient.backToChooseRental(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, onSuccess:{(response) in
+        }
+        else{
+            
+            Constant.holdingTimer?.invalidate()
+            RentalProcessClient.backToChooseRental(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, onSuccess:{(response) in
             
             Constant.MyClassConstants.selectedCreditCard.removeAll()
-            SVProgressHUD.dismiss()
             self.hideHudAsync()
             
             // pop and dismiss view according to conditions
@@ -194,11 +194,8 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             
         }, onError: {(error) in
             
-         
-            
-            SVProgressHUD.dismiss()
             self.hideHudAsync()
-            SimpleAlert.alert(self, title: "Who will be checking in", message: Constant.AlertMessages.operationFailedMessage)
+            self.presentAlert(with: "Who will be checking in".localized(), message: Constant.AlertMessages.operationFailedMessage)
         })
     }
 
@@ -217,7 +214,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         if(Constant.holdingTime != 0){
             self.resortHoldingTimeLabel.text = Constant.holdingResortForRemainingMinutes
         }else{
-            SimpleAlert.alertTodismissController(self, title: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage)
+            self.presentAlert(with: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage)
         }
 
     }
@@ -242,7 +239,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                 Constant.GetawaySearchResultGuestFormDetailData.countryListArray = response
                 
             }, onError: { (error) in
-                print(error)
+
             })
 
         }
@@ -325,7 +322,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                     LookupClient.getStates(Constant.MyClassConstants.systemAccessToken!, countryCode: countryCode, onSuccess: { (response) in
                         Constant.GetawaySearchResultGuestFormDetailData.stateListArray = response
                     }, onError: { (error) in
-                        print(error)
+                        intervalPrint(error)
                     })
                 }
             }
@@ -415,7 +412,6 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         
         ExchangeProcessClient.continueToCheckout(Session.sharedSession.userAccessToken, process: processResort, request: exchangeProcessRequest, onSuccess: {(response) in
             DarwinSDK.logger.debug(response)
-            SVProgressHUD.dismiss()
             self.hideHudAsync()
             Constant.MyClassConstants.exchangeContinueToCheckoutResponse = response
             
@@ -441,11 +437,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             self.navigationController?.transitioningDelegate = transitionManager
             self.navigationController!.pushViewController(viewController, animated: true)
         }, onError: {(error) in
-            print(error.localizedDescription)
-            SVProgressHUD.dismiss()
             self.hideHudAsync()
-            SimpleAlert.alert(self, title:Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
-            
         })
         }else{
             let processRequest1 = RentalProcessPrepareContinueToCheckoutRequest()
@@ -498,7 +490,6 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             
             RentalProcessClient.continueToCheckout(Session.sharedSession.userAccessToken, process: processResort, request: processRequest1, onSuccess: {(response) in
                 DarwinSDK.logger.debug(response)
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
                 Constant.MyClassConstants.continueToCheckoutResponse = response
                 
@@ -520,9 +511,8 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                 self.navigationController?.transitioningDelegate = transitionManager
                 self.navigationController!.pushViewController(viewController, animated: true)
             }, onError: {(error) in
-                SVProgressHUD.dismiss()
                 self.hideHudAsync()
-                SimpleAlert.alert(self, title: Constant.AlertErrorMessages.errorString, message: error.localizedDescription)
+                self.presentErrorAlert(UserFacingCommonError.generic)
                 
             })
         }
@@ -924,9 +914,9 @@ extension WhoWillBeCheckingInIPadViewController:UITextFieldDelegate{
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
-        print(string)
+        intervalPrint(string)
         if (range.length == 1 && string.characters.count == 0) {
-            print("backspace tapped")
+            intervalPrint("backspace tapped")
         }
         
         if(self.cellUsedFor == Constant.MyClassConstants.guestString) {
