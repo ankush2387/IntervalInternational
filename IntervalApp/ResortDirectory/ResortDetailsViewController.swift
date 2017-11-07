@@ -217,7 +217,7 @@ class ResortDetailsViewController: UIViewController {
                 })
                 { error in
                     self.hideHudAsync()
-                    self.presentErrorAlert(error)
+                    self.presentErrorAlert(UserFacingCommonError.serverError(error))
                 }
             }else{
                 //sender.isEnabled = false
@@ -268,7 +268,7 @@ class ResortDetailsViewController: UIViewController {
                 })
                 { error in
                     self.hideHudAsync()
-                    self.presentErrorAlert(error)
+                    self.presentErrorAlert(UserFacingCommonError.serverError(error))
                 }
                 
             }
