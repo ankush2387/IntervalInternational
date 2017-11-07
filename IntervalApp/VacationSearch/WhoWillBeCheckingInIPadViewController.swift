@@ -171,7 +171,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             }, onError: {(error) in
                 
                 self.hideHudAsync()
-                self.presentAlert(with: "Who will be checking in", message: Constant.AlertMessages.operationFailedMessage)
+                self.presentAlert(with: "Who will be checking in".localized(), message: Constant.AlertMessages.operationFailedMessage)
             })
         }
         else{
@@ -195,7 +195,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         }, onError: {(error) in
             
             self.hideHudAsync()
-            self.presentAlert(with: "Who will be checking in", message: Constant.AlertMessages.operationFailedMessage)
+            self.presentAlert(with: "Who will be checking in".localized(), message: Constant.AlertMessages.operationFailedMessage)
         })
     }
 

@@ -136,14 +136,24 @@ class CheckOutViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = menuButton
         self.updateResortHoldingTime()
         
+        var resortCode = ""
+        var creditCardsCount = 0
+        
+        if let count = Session.sharedSession.contact?.creditcards?.count {
+            creditCardsCount = count
+        }
+        if let code = Constant.MyClassConstants.selectedResort.resortCode {
+            resortCode = code
+        }
+        
         // omniture tracking with event 38
         let userInfo: [String: String] = [
             Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch,
-            Constant.omnitureCommonString.products : Constant.MyClassConstants.selectedResort.resortCode!,
+            Constant.omnitureCommonString.products : resortCode,
             Constant.omnitureEvars.eVar37 : Helper.selectedSegment(index: Constant.MyClassConstants.searchForSegmentIndex),
             Constant.omnitureEvars.eVar39 : "",
             Constant.omnitureEvars.eVar49 : "",
-            Constant.omnitureEvars.eVar52 : "\((Session.sharedSession.contact?.creditcards?.count)! > 0 ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no)",
+            Constant.omnitureEvars.eVar52 : "\(creditCardsCount > 0 ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no)",
             Constant.omnitureEvars.eVar72 : "\(self.showInsurance ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no)",
             ]
         ADBMobile.trackAction(Constant.omnitureEvents.event37, data: userInfo)

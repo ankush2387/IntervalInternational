@@ -198,7 +198,7 @@ class ResortDetailsViewController: UIViewController {
                 let resortCode = Constant.MyClassConstants.resortsArray[Constant.MyClassConstants.vacationSearchContentPagerRunningIndex - 1].resortCode
                 
                 
-                DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode:resortCode!, onSuccess: { (response) in
+                DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode:resortCode!, onSuccess: { response in
                     
                     
                     self.resortDescriptionArrayContainer.insert(response, at: 0)
@@ -215,9 +215,9 @@ class ResortDetailsViewController: UIViewController {
                     self.hideHudAsync()
                     self.tableViewResorts.reloadData()
                 })
-                { (error) in
+                { error in
                     self.hideHudAsync()
-                    self.presentErrorAlert(error as! ViewError)
+                    self.presentErrorAlert(error)
                 }
             }else{
                 //sender.isEnabled = false
@@ -266,9 +266,9 @@ class ResortDetailsViewController: UIViewController {
                     
                     ADBMobile.trackAction(Constant.omnitureEvents.event35, data: userInfo)
                 })
-                { (error) in
+                { error in
                     self.hideHudAsync()
-                    self.presentErrorAlert(error as! ViewError)
+                    self.presentErrorAlert(error)
                 }
                 
             }

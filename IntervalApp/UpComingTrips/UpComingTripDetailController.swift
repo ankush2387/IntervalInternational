@@ -180,14 +180,14 @@ class UpComingTripDetailController: UIViewController {
                 if completed {
                     if activityType == UIActivityType.mail || activityType == UIActivityType.message {
                         //Display message to confirm Message and Mail have been sent
-                         self.presentAlert(with: "Success", message: "Your Confirmation has been sent!")
+                         self.presentAlert(with: "Success".localized(), message: "Your Confirmation has been sent!".localized())
                     }
                 }
                 
                 if error != nil {
                     if activityType == UIActivityType.mail || activityType == UIActivityType.message {
                         //Display message to let user know there was error
-                        self.presentAlert(with: "Error", message: "The Confirmation could not be sent. Please try again.")
+                        self.presentAlert(with: "Error".localized(), message: "The Confirmation could not be sent. Please try again.".localized())
                     }
                 }
                 

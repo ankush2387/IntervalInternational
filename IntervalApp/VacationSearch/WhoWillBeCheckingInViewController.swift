@@ -513,7 +513,11 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 }else{
                     Constant.MyClassConstants.enableTaxes = false
                 }
-                Constant.MyClassConstants.memberCreditCardList = (Session.sharedSession.contact?.creditcards)!
+                
+                if let creditCardInfo = Session.sharedSession.contact?.creditcards {
+                    Constant.MyClassConstants.memberCreditCardList = creditCardInfo
+                }
+                
                 let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
                 let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.checkOutViewController) as! CheckOutViewController
                 viewController.filterRelinquishments = self.filterRelinquishments
@@ -593,7 +597,11 @@ class WhoWillBeCheckingInViewController: UIViewController {
                 }else{
                     Constant.MyClassConstants.enableTaxes = false
                 }
-                Constant.MyClassConstants.memberCreditCardList = (Session.sharedSession.contact?.creditcards)!
+                
+                if let creditCardInfo = Session.sharedSession.contact?.creditcards {
+                    Constant.MyClassConstants.memberCreditCardList = creditCardInfo
+                }
+                
                 let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
                 let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.checkOutViewController) as! CheckOutViewController
                 

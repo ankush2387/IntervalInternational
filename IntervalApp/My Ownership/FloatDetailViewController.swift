@@ -334,10 +334,10 @@ class FloatDetailViewController: UIViewController {
                 self.addFloatToDatabase(reservationNumber:Constant.FloatDetails.reservationNumber, unitNumber:Constant.FloatDetails.unitNumber, unitSize:Constant.MyClassConstants.savedBedroom, checkInDate:self.checkInDate)
             }
             
-        }) { (error) in
+        }) { error in
             //Pop to vacation search screen
             self.popToVacationSearch()
-            self.presentErrorAlert(error as! ViewError)
+            self.presentErrorAlert(error)
         }
     }
 
