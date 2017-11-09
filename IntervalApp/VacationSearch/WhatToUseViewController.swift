@@ -601,7 +601,10 @@ extension WhatToUseViewController: UITableViewDataSource {
                 cell.tag = indexPath.row
                 cell.checkBOx.tag = indexPath.row
                 cell.checkBOx.isUserInteractionEnabled = false
-                let points: Int = (exchange.clubPoints?.pointsSpent)!
+                
+                guard let points:Int = exchange.clubPoints?.pointsSpent else {
+                    return cell
+                }
                 
                 cell.availablePointValueLabel.text = String(points)
                 

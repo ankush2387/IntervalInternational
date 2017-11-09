@@ -299,8 +299,7 @@ class RelinquishmentSelectionViewController: UIViewController {
     }
     func addClubPointButtonPressed(_ sender: IUIKButton) {
         Constant.MyClassConstants.relinquishmentSelectedWeek = pointOpenWeeksArray[sender.tag]
-        let pointsMatrix = OpenWeek()
-        if pointsMatrix.pointsMatrix == false {
+        if Constant.MyClassConstants.relinquishmentSelectedWeek.pointsMatrix == false {
             intervalPrint("false")
             let storedata = OpenWeeksStorage()
             let membership = Session.sharedSession.selectedMembership
@@ -369,19 +368,20 @@ class RelinquishmentSelectionViewController: UIViewController {
                 for matrices in clubPointsChart.matrices {
                     let pointsDictionary = NSMutableDictionary()
                     for grids in matrices.grids {
+                        guard let gridFromDate = grids.fromDate else { return }
                         
-                        if let gridFromDate = grids.fromDate {
-                            Constant.MyClassConstants.fromdatearray.add(gridFromDate)
-                        }
-                        if let gridToDate = grids.toDate {
-                            Constant.MyClassConstants.todatearray.add(gridToDate)
-                        }
+                        Constant.MyClassConstants.fromdatearray.add(gridFromDate)
+                        
+                        guard let gridToDate = grids.toDate else { return }
+                        
+                        Constant.MyClassConstants.todatearray.add(gridToDate)
+    
                         for rows in grids.rows {
                             if let rowsLabel = rows.label {
                                 Constant.MyClassConstants.labelarray.add(rowsLabel)
                             }
                         }
-                        let dictKey = "\(String(describing: grids.fromDate)) - \(String(describing: grids.toDate))"
+                        let dictKey = "\(String(describing: gridFromDate)) - \(String(describing: gridToDate))"
                         pointsDictionary.setObject(grids.rows, forKey: String(describing: dictKey) as NSCopying)
                     }
                     Constant.MyClassConstants.matrixDataArray.add(pointsDictionary)

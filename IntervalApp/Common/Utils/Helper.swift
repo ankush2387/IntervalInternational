@@ -1704,8 +1704,10 @@ public class Helper {
             
             //Added resorts for resort detail screen
             Constant.MyClassConstants.resortsArray.removeAll()
-            for resorts in searchAvailabilityResponse {
-                Constant.MyClassConstants.resortsArray.append(resorts.resort!)
+            for resorts in searchAvailabilityResponse{
+                if let resort = resorts.resort{
+                    Constant.MyClassConstants.resortsArray.append(resort)
+                }
             }
             
             showAvailabilityResults(vacationSearch:vacationSearch)

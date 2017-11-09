@@ -119,9 +119,8 @@ class ClubPointSelectionViewController: UIViewController {
     //Function for done button click
     @IBAction func doneButtonClicked(_ sender: IUIKButton) {
         
-        let relinquishmentID: String
-        relinquishmentID = "eD8O5PvNvjgEANyRGyCWlSp1mzAcJlqpEj2GLtKHvcQ"
-            //Constant.MyClassConstants.realmOpenWeeksID as? [String]
+        guard let relinquishmentID = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId else {
+         return }
         
         let pointMatrixType = PointsMatrixReservation()
         pointMatrixType.clubPointsMatrixType = Constant.MyClassConstants.matrixType
@@ -131,15 +130,14 @@ class ClubPointSelectionViewController: UIViewController {
         pointMatrixType.fromDate = Constant.MyClassConstants.fromdatearray[0] as? String
         pointMatrixType.toDate = Constant.MyClassConstants.todatearray[0] as? String
         
-        let units = Constant.MyClassConstants.relinquishmentOpenWeeks
+        let units = Constant.MyClassConstants.relinquishmentSelectedWeek.unit
+        intervalPrint(Constant.MyClassConstants.matrixDataArray)
+        intervalPrint(segmentSelectedString)
         
-        for unit in units {
-            let invenUnit: InventoryUnit = InventoryUnit()
-                invenUnit.unitSize = unit.unit?.unitSize
-                invenUnit.clubPoints = (unit.unit?.clubPoints)!
+            let invenUnit:InventoryUnit = InventoryUnit()
+                invenUnit.unitSize = "STUDIO"
+                invenUnit.clubPoints = 30000
                 pointMatrixType.unit = invenUnit
-        }
-        
          ExchangeClient.updatePointsMatrixReservation(Session.sharedSession.userAccessToken, relinquishmentId: relinquishmentID, reservation: pointMatrixType, onSuccess: {(response) in
             intervalPrint(response)
             
@@ -213,7 +211,8 @@ class ClubPointSelectionViewController: UIViewController {
 
         doneButton.isHidden = true
         buttonSelectedString = Constant.MyClassConstants.segmentFirstString
-        if(Constant.RunningDevice.deviceIdiom == .pad) {
+
+        if Constant.RunningDevice.deviceIdiom == .pad {
             frameChangeOnPortraitandLandscape()
         }
         Constant.MyClassConstants.pointMatrixDictionary.removeAllObjects()
@@ -258,8 +257,8 @@ class ClubPointSelectionViewController: UIViewController {
     }
     
     //***** Function to create collection view to show club points. *****//
-    func createClubsCollectionView() {
-        self.clubPoinScrollVw.contentSize = CGSize(width: 0, height: ((Constant.MyClassConstants.clubIntervalDictionary.allKeys.count * 70) + 50))
+    func createClubsCollectionView(){
+        self.clubPoinScrollVw.contentSize = CGSize(width: 0, height: ((Constant.MyClassConstants.clubIntervalDictionary.allKeys.count * 70) + 150))
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.minimumLineSpacing = 0.0
@@ -271,9 +270,10 @@ class ClubPointSelectionViewController: UIViewController {
         layout1.minimumLineSpacing = 0.0
         layout1.minimumInteritemSpacing = 0.0
         layout1.scrollDirection = .horizontal
-        if(clubIntervalValuesCollectionView == nil) {
-            clubIntervalValuesCollectionView = UICollectionView(frame: CGRect(x: 80, y: 0, width: Int(UIScreen.main.bounds.width - 80), height: (Constant.MyClassConstants.clubIntervalDictionary.allKeys.count * 70) + 50), collectionViewLayout: layout1)
-            clubIntervalValuesCollectionView.register(UINib(nibName: Constant.customCellNibNames.clubPointsCell, bundle: nil), forCellWithReuseIdentifier: Constant.loginScreenReusableIdentifiers.cell)
+        
+        if clubIntervalValuesCollectionView == nil {
+            clubIntervalValuesCollectionView = UICollectionView(frame: CGRect(x: 80, y: 0, width: Int(UIScreen.main.bounds.width - 80) , height: (Constant.MyClassConstants.clubIntervalDictionary.allKeys.count * 70) + 150), collectionViewLayout: layout1)
+            clubIntervalValuesCollectionView.register(UINib(nibName:Constant.customCellNibNames.clubPointsCell, bundle: nil), forCellWithReuseIdentifier:Constant.loginScreenReusableIdentifiers.cell)
             
             clubIntervalValuesCollectionView.showsHorizontalScrollIndicator = false
             clubIntervalValuesCollectionView.register(UINib(nibName: Constant.customCellNibNames.checkCell, bundle: nil), forCellWithReuseIdentifier: Constant.reUsableIdentifiers.checkBoxCell)
@@ -285,12 +285,12 @@ class ClubPointSelectionViewController: UIViewController {
             clubIntervalValuesCollectionView.isScrollEnabled = true
             clubPoinScrollVw.addSubview(clubIntervalValuesCollectionView)
         } else {
-            clubIntervalValuesCollectionView.frame = CGRect(x: 80, y: 0, width: Int(UIScreen.main.bounds.width - 80), height: (Constant.MyClassConstants.clubIntervalDictionary.allKeys.count * 70) + 50)
+            clubIntervalValuesCollectionView.frame = CGRect(x: 80, y: 0, width: Int(UIScreen.main.bounds.width - 80) , height: (Constant.MyClassConstants.clubIntervalDictionary.allKeys.count * 70) + 150)
             clubIntervalValuesCollectionView.reloadData()
         }
         
-        if(labelsCollectionView == nil) {
-            labelsCollectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 80, height: (Constant.MyClassConstants.clubIntervalDictionary.allKeys.count * 70) + 50), collectionViewLayout: layout)
+        if labelsCollectionView == nil {
+            labelsCollectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 80 , height: (Constant.MyClassConstants.clubIntervalDictionary.allKeys.count * 70) + 50), collectionViewLayout: layout)
             
             labelsCollectionView.register(UINib(nibName: Constant.customCellNibNames.clubPointsCell, bundle: nil), forCellWithReuseIdentifier: Constant.loginScreenReusableIdentifiers.cell)
             labelsCollectionView.register(UINib(nibName: Constant.customCellNibNames.headerCell, bundle: nil), forCellWithReuseIdentifier: Constant.reUsableIdentifiers.clubHeaderCell)
@@ -301,7 +301,7 @@ class ClubPointSelectionViewController: UIViewController {
             labelsCollectionView.backgroundColor = UIColor.white
             clubPoinScrollVw.addSubview(labelsCollectionView)
         } else {
-            labelsCollectionView.frame = CGRect(x: 0, y: 0, width: 80, height: (Constant.MyClassConstants.clubIntervalDictionary.allKeys.count * 70) + 50)
+            labelsCollectionView.frame = CGRect(x: 0, y: 0, width: 80 , height: (Constant.MyClassConstants.clubIntervalDictionary.allKeys.count * 70) + 50)
             labelsCollectionView.reloadData()
         }
         

@@ -65,8 +65,6 @@ class SearchResultViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = false
-        self.navigationController?.navigationBar.barTintColor = UIColor(colorLiteralRed: 70.0 / 255.0, green: 136.0 / 255.0, blue: 193.0 / 255.0, alpha: 1.0)
-
         Constant.MyClassConstants.calendarDatesArray.removeAll()
         Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
         createSections()
@@ -77,8 +75,9 @@ class SearchResultViewController: UIViewController {
     
     func createSections() {
         let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
+
         
-        if(sections.count == 0) {
+        if sections.count == 0 {
             searchResultTableView.tableHeaderView = Helper.noResortView(senderView: self.view)
         } else {
             let headerVw = UIView()
@@ -1559,8 +1558,7 @@ extension SearchResultViewController: UITableViewDelegate {
                 }
             }
         } else {
-            
-            if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()) {
+            if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental() {
                 let totalUnits = self.surroundingMatchResortsArray[indexPath.row].inventory?.units.count
                 return CGFloat(totalUnits!*80 + 270 + 10)
             } else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()) {
@@ -1575,7 +1573,6 @@ extension SearchResultViewController: UITableViewDelegate {
                     return CGFloat(totalUnits!*80 + 270 + 10)
                 }
             }
-            
         }
     }
 }

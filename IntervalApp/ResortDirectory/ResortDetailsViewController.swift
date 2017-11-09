@@ -305,12 +305,13 @@ class ResortDetailsViewController: UIViewController {
             
         } else {
             
+
             if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.vacationSearchFunctionalityCheck) {
                 
                 self.dismiss(animated: true, completion: nil)
             } else {
                 navigationController?.view.layer.add(Helper.topToBottomTransition(), forKey: nil)
-                _ = navigationController?.popViewController(animated: false)
+             _ = navigationController?.popViewController(animated: false)
             }
         }
     }

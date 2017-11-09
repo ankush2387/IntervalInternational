@@ -15,6 +15,10 @@ class ExchangeInventoryCVCell: UICollectionViewCell {
     @IBOutlet weak var kitchenType: UILabel!
     
     @IBOutlet weak var promotionsView: UIView!
+    @IBOutlet weak var exchangeStackView: UIStackView!
+    @IBOutlet weak var clubPointsStackView: UIStackView!
+    @IBOutlet weak var clubPointsLabel: UILabel!
+    
     
     func setUpExchangeCell(invetoryItem: ExchangeInventory, indexPath: IndexPath) {
       
@@ -22,7 +26,6 @@ class ExchangeInventoryCVCell: UICollectionViewCell {
         let unit = (invetoryItem.buckets[indexPath.item].unit)!
         
         // bedroom details
-        
         var bedRoomDetails = ""
         if let bedType = unit.unitSize {
             bedRoomDetails.append(" \(String(describing: Helper.getBrEnums(brType: bedType)))")
@@ -50,7 +53,14 @@ class ExchangeInventoryCVCell: UICollectionViewCell {
             self.sleeps.text = totalSleepCapacity + String(unit.privateSleepCapacity) + Constant.CommonLocalisedString.privateString
             
         }
-        
+
+        if invetoryItem.buckets[indexPath.row].pointsCost != 0 {
+            exchangeStackView.isHidden = true
+            clubPointsLabel.text = "\(invetoryItem.buckets[indexPath.row].pointsCost)"
+            
+        }else{
+            clubPointsStackView.isHidden = true
+        }
         let promotions = invetoryItem.buckets[indexPath.item].promotions
         if (promotions.count) > 0 {
             for view in self.promotionsView.subviews {
