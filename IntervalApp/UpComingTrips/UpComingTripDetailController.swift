@@ -55,8 +55,11 @@ class UpComingTripDetailController: UIViewController {
         
         navigationItem.leftBarButtonItem = menuButton
         
+        
+        
         // Omniture tracking with event 74
-                let userInfo: [String: String] = [
+        
+        let userInfo: [String: String] = [
             Constant.omnitureEvars.eVar55 : "\(getdatediffrence())",
             Constant.omnitureEvars.eVar56 : ""
         ]
