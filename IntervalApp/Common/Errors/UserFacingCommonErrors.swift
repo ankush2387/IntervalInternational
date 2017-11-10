@@ -15,6 +15,7 @@ enum UserFacingCommonError: ViewError {
     case noNetConnection
     case noServerResponse
     case serverError(NSError)
+    case custom(title: String, body: String)
 
     var description: (title: String, body: String) {
         switch self {
@@ -37,6 +38,8 @@ enum UserFacingCommonError: ViewError {
         case let .serverError(error):
             return ("Error".localized(), error.localizedDescription)
             
+        case let .custom(title, body):
+            return (title, body)
         }
     }
 }

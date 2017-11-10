@@ -69,7 +69,7 @@ public final class SimpleFileViewController: UIViewController {
         super.init(nibName: "SimpleFileViewController", bundle: Bundle(for: SimpleFileViewController.self))
     }
 
-    public init(url: String, mimeType: MIMEType) {
+    public init(url: String, mimeType: MIMEType? = nil) {
         self.url = url
         self.mimeType = mimeType
         data = nil
@@ -102,16 +102,6 @@ public final class SimpleFileViewController: UIViewController {
         webView.scalesPageToFit = true
         webView.scrollView.delegate = self
         webView.delegate = self
-    }
-
-    public override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.isNavigationBarHidden = false
-    }
-
-    public override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.isNavigationBarHidden = true
     }
 
     fileprivate func checkIfAtDocumentEnd() {

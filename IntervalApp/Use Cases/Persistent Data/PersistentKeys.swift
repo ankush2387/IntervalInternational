@@ -17,6 +17,7 @@ enum Persistent: String {
     case encryption
     case touchIDEnabled
     case notificationTopic
+    case appHasPreviousLogin
 
     var key: String {
         

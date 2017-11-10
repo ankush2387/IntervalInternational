@@ -8,8 +8,8 @@ end
 
 def testing_build_dependencies
     pod 'Realm','~>2.8.3'
-    pod 'Firebase/Core'
-    pod 'Brightcove-Player-SDK'
+    pod 'Firebase/Core','~>4.3.0'
+    pod 'Brightcove-Player-SDK','~>5.3.4'
     pod 'GoogleMaps' , '~>2.2.0'
     pod 'Bond', :git=>'https://github.com/ReactiveKit/Bond.git', :tag => '6.3.0'
     pod 'thenPromise', :git=>'https://github.com/freshOS/then.git', :tag => '2.2.5'
@@ -17,14 +17,14 @@ end
 
 target 'IntervalApp' do
     pod 'Realm','~>2.8.3'
-    pod 'RMessage'
+    pod 'RMessage','~>2.1.5'
     pod 'RealmSwift','~>2.8.3'
-    pod 'SwiftyJSON'
-    pod 'Firebase/Core'
-    pod 'SVProgressHUD'
-    pod 'Firebase/Messaging'
-    pod 'TPKeyboardAvoiding'
-    pod 'Brightcove-Player-SDK'
+    pod 'SwiftyJSON','~>3.1.4'
+    pod 'Firebase/Core','~>4.3.0'
+    pod 'SVProgressHUD','~>2.2.1'
+    pod 'Firebase/Messaging','~>4.3.0'
+    pod 'TPKeyboardAvoiding','~>1.3.1'
+    pod 'Brightcove-Player-SDK','~>5.3.4'
     pod 'FSCalendar', '~>2.1.1'
     pod 'GoogleMaps', '~>2.2.0'
     pod 'HockeySDK', :subspecs => ['AllFeaturesLib']
@@ -36,7 +36,7 @@ target 'IntervalApp' do
     pod 'XCGLogger', :git=>'https://github.com/DaveWoodCom/XCGLogger.git', branch: 'swift_3.0'
     pod 'ReactiveKit', :git=>'https://github.com/ReactiveKit/ReactiveKit.git', :tag => 'v3.6.2'
     pod 'DarwinSDK', :git => 'https://bitbucket.iilg.com/scm/iimob/darwin-sdk-ios.git', branch: 'develop'
-    pod 'IntervalUIKit', :git => 'https://bitbucket.iilg.com/scm/iimob/interval-uikit-ios.git', branch: 'develop'
+    pod 'IntervalUIKit', :git => 'https://bitbucket.iilg.com/scm/iimob/interval-uikit-ios.git', :tag => '3.1.0'
 end
 
 target 'IntervalAppTests' do

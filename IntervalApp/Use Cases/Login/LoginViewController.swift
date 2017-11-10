@@ -21,8 +21,6 @@ final class LoginViewController: UIViewController {
     @IBOutlet private weak var signInButton: UIButton!
     @IBOutlet private weak var loginIDTextField: UITextField!
     @IBOutlet private weak var passwordTextField: UITextField!
-    @IBOutlet private weak var enableTouchIDLabel: UILabel!
-    @IBOutlet private weak var touchIDButton: UIButton!
     @IBOutlet private weak var touchIDImageView: UIImageView!
     @IBOutlet private weak var loginHelpButton: UIButton!
     @IBOutlet private weak var joinTodayButton: UIButton!
@@ -31,12 +29,10 @@ final class LoginViewController: UIViewController {
     @IBOutlet private weak var privacyButton: UIButton!
     @IBOutlet private weak var magazinesButton: UIButton!
     @IBOutlet fileprivate weak var versionLabel: UILabel!
-    @IBOutlet private var touchIDArea: [UIView]!
     @IBOutlet private var webActivityButtons: [UIButton]!
 
     // MARK: - Private properties
     private let disposeBag = DisposeBag()
-    private let touchID = TouchID()
     fileprivate let viewModel: LoginViewModel
     
     // MARK: - Lifecycle
@@ -59,7 +55,9 @@ final class LoginViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = true
         viewModel.password.next(nil)
+        touchIDImageView.isHidden = !viewModel.touchIDEnabled
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -70,65 +68,25 @@ final class LoginViewController: UIViewController {
     // MARK: - Private functions
     private func login() {
         showHudAsync()
-        viewModel.login()
+        viewModel.normalLogin()
             .onViewError(presentErrorAlert)
             .finally(hideHudAsync)
     }
 
-    private func presentTouchIDOptions() {
-
-        if viewModel.touchIDEnabled.value {
-
-            presentAlert(with: "Action".localized(),
-                         message: "Would you like to disable sign in with touch ID?".localized(),
-                         hideCancelButton: false, cancelButtonTitle: "No".localized(),
-                         acceptButtonTitle: "Yes".localized(),
-                         acceptHandler: { [unowned self] in
-                            self.viewModel.touchIDEnabled.next(false)
-            })
-
-        } else {
-
-            presentAlert(with: "Action".localized(),
-                         message: "Would you like to enable sign in with touch ID?".localized(),
-                         hideCancelButton: false, cancelButtonTitle: "No".localized(),
-                         acceptButtonTitle: "Yes".localized(),
-                         acceptHandler: { [unowned self] in
-                            self.viewModel.touchIDEnabled.next(true)
-                            self.login()
-            })
-        }
-    }
-
     private func setUI() {
-
-        if !touchID.canEvaluatePolicy {
-            touchIDArea.forEach { $0.isHidden = true }
-        }
-        
         backgroundImageView.image = viewModel.backgroundImage.value
         signInBackgroundView.backgroundColor = UIColor.white.withAlphaComponent(0.9)
         updateUIForOrientation()
         setVersionLabelForNonProductionBuild()
-    }
-
-    private func updateTouchIDText(enabled: Bool) {
-        if enabled {
-            enableTouchIDLabel.text = "Disable Touch ID".localized()
-            self.touchIDImageView.image = #imageLiteral(resourceName: "TouchID-On")
-        } else {
-            enableTouchIDLabel.text = "Enable Touch ID".localized()
-            self.touchIDImageView.image = #imageLiteral(resourceName: "TouchID-Off")
-        }
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        touchIDImageView.addGestureRecognizer(tap)
     }
     
     private func bindUI() {
         viewModel.username.bidirectionalBind(to: loginIDTextField.reactive.text)
         viewModel.password.bidirectionalBind(to: passwordTextField.reactive.text)
         signInButton.reactive.tap.observeNext(with: login).dispose(in: disposeBag)
-        viewModel.touchIDEnabled.observeNext(with: updateTouchIDText).dispose(in: disposeBag)
         privacyButton.reactive.tap.observeNext(with: privacyButtonTapped).dispose(in: disposeBag)
-        touchIDButton.reactive.tap.observeNext(with: presentTouchIDOptions).dispose(in: disposeBag)
         viewModel.buttonEnabledState.observeNext(with: updateLoginButtonsUI).dispose(in: disposeBag)
         loginHelpButton.reactive.tap.observeNext(with: showLoginHelpWebView).dispose(in: disposeBag)
         joinTodayButton.reactive.tap.observeNext(with: showJoinTodayWebView).dispose(in: disposeBag)
@@ -141,16 +99,22 @@ final class LoginViewController: UIViewController {
         viewModel.isLoggingIn.map { !$0 }.bind(to: passwordTextField.reactive.isEnabled).dispose(in: disposeBag)
         resortDirectoryButton.reactive.tap.observeNext(with: resortDirectoryButtonTapped).dispose(in: disposeBag)
     }
+    
+    @objc private func handleTap(_ sender: UITapGestureRecognizer) {
+        performTouchIDLoginIfEnabled()
+    }
 
     private func performTouchIDLoginIfEnabled() {
-        guard viewModel.touchIDEnabled.value else { return }
+        guard viewModel.touchIDEnabled else { return }
+        let touchID = BiometricAuthentication()
         touchID.authenticateUser()
-            .then(login)
+            .then(showHudAsync)
+            .then(viewModel.touchIDLogin)
             .onViewError { [unowned self] error in
                 if error.description.title != "Login cancelled".localized() {
                     self.presentErrorAlert(error)
                 }
-        }
+            }.finally(hideHudAsync)
     }
 
     private func enabledWebActivityButton(enable: Bool) {
@@ -160,6 +124,7 @@ final class LoginViewController: UIViewController {
     }
 
     private func showLoginHelpWebView() {
+        navigationController?.isNavigationBarHidden = false
         let webView = SimpleFileViewController(load: "https://www.intervalworld.com/web/my/account/forgotSignInInfo")
         show(webView, sender: self)
     }
@@ -187,13 +152,10 @@ final class LoginViewController: UIViewController {
     private func updateLoginButtonsUI(enabled: Bool) {
 
         signInButton.isEnabled = enabled
-        touchIDButton.isEnabled = enabled
 
         if enabled {
-            enableTouchIDLabel.textColor = #colorLiteral(red: 0.1358070672, green: 0.5175437927, blue: 1, alpha: 1)
             signInButton.backgroundColor = #colorLiteral(red: 0.9414057136, green: 0.4359997809, blue: 0.210131973, alpha: 1)
         } else {
-            enableTouchIDLabel.textColor = .gray
             signInButton.backgroundColor = .gray
         }
     }
