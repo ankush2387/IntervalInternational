@@ -708,15 +708,15 @@ extension UpComingTripDetailController:UITableViewDataSource {
             self.unitDetialsCellHeight = 50
             
             //sort array to show in this order: Sleeping, Bathroom, Kitchen and Other
-            for am in unitDetils.amenities {
-                if am.category == "OTHER_FACILITIES" {
-                    sortedArrayAmenities.insert(am, at: 0)
-                } else if am.category == "BATHROOM_FACILITIES" {
-                    sortedArrayAmenities.insert(am, at: 0)
-                } else if am.category == "SLEEPING_ACCOMMODATIONS" {
-                    sortedArrayAmenities.insert(am, at: 0)
+            for amenities in unitDetils.amenities {
+                if amenities.category == "OTHER_FACILITIES" {
+                    sortedArrayAmenities.insert(amenities, at: 0)
+                } else if amenities.category == "BATHROOM_FACILITIES" {
+                    sortedArrayAmenities.insert(amenities, at: 0)
+                } else if amenities.category == "SLEEPING_ACCOMMODATIONS" {
+                    sortedArrayAmenities.insert(amenities, at: 0)
                 } else {
-                    sortedArrayAmenities.insert(am, at: 2)
+                    sortedArrayAmenities.insert(amenities, at: 2)
                 }
             }
         }
