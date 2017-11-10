@@ -12,12 +12,17 @@ import GoogleMaps
 
 class Constant: NSObject {
     
+<<<<<<< HEAD
     //***** common function to get device orientation *****//
     static var holdingTimer: Timer?
+=======
+    static var holdingTimer:Timer?
+>>>>>>> MOBI-21: Alert UI modification and implementation for home screen
     static var holdingTime = 17
     static var decreaseValue = 1
     static var holdingResortForRemainingMinutes = "We are holding this unit for \(holdingTime) minutes".localized()
-    
+  
+      //***** common function to get device orientation *****//
     struct RunningDevice {
         static var deviceOrientation: UIDeviceOrientation?
         static var deviceIdiom = UIDevice().userInterfaceIdiom
@@ -820,7 +825,7 @@ class Constant: NSObject {
         static var getwayAlertOptions = "Getaway Alerts Options".localized()
         static var aboutGetawayAlerts = "About Getaway Alerts".localized()
         static var select = "Select".localized()
-        static var viewAllAlerts = "View All Alerts".localized()
+        static var viewAllAlerts = "Edit Alerts".localized()
         static var viewAllTrips = "View All Trips".localized()
         static var searchVacation = "Search".localized()
         static var favoritesTitle = "Favorites".localized()

@@ -10,9 +10,13 @@ import UIKit
 
 class HomeAlertTableViewCell: UITableViewCell {
     
-    @IBOutlet var alertTitleLabel: UILabel!
-    @IBOutlet var alertDateLabel: UILabel!
-
+    //IBOutlets
+    @IBOutlet weak var alertCollectinView: UICollectionView!
+    @IBOutlet weak var activityIndicatorBseView: UIView!
+    @IBOutlet weak var activityIndicatorBackgroundView: UIView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -25,3 +29,4 @@ class HomeAlertTableViewCell: UITableViewCell {
     }
 
 }
+
