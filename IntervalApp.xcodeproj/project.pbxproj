@@ -286,9 +286,6 @@
 		61906E541FABEB390094C035 /* MemoryItemWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61906E531FABEB390094C035 /* MemoryItemWrapper.swift */; };
 		61A420C11FA9819F00B06708 /* Data+EncryptionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A420C01FA9819F00B06708 /* Data+EncryptionKey.swift */; };
 		61C025091F929CFC003BFF55 /* PromiseErrorConversionSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C025081F929CFC003BFF55 /* PromiseErrorConversionSpec.swift */; };
-		61C0250D1F92CFC1003BFF55 /* SimpleFileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 61C0250B1F92CFC1003BFF55 /* SimpleFileViewController.xib */; };
-		61C0250E1F92CFC1003BFF55 /* SimpleFileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C0250C1F92CFC1003BFF55 /* SimpleFileViewController.swift */; };
-		61C025111F92D02E003BFF55 /* MIMEType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C025101F92D02E003BFF55 /* MIMEType.swift */; };
 		6DA84D4CB313A73FADEF918F /* Pods_IntervalAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A1F9F039DD01C61F912475E /* Pods_IntervalAppTests.framework */; };
 		CE533D6620FB623EC9811046 /* Pods_IntervalApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2CBCD7E8490E488AB822061 /* Pods_IntervalApp.framework */; };
 		DC04BB3C1DB829F100227FF5 /* IntervalHDCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC04BB341DB829F100227FF5 /* IntervalHDCollectionViewCell.swift */; };
@@ -683,9 +680,6 @@
 		61906E531FABEB390094C035 /* MemoryItemWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryItemWrapper.swift; sourceTree = "<group>"; };
 		61A420C01FA9819F00B06708 /* Data+EncryptionKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+EncryptionKey.swift"; sourceTree = "<group>"; };
 		61C025081F929CFC003BFF55 /* PromiseErrorConversionSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromiseErrorConversionSpec.swift; sourceTree = "<group>"; };
-		61C0250B1F92CFC1003BFF55 /* SimpleFileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SimpleFileViewController.xib; sourceTree = "<group>"; };
-		61C0250C1F92CFC1003BFF55 /* SimpleFileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleFileViewController.swift; sourceTree = "<group>"; };
-		61C025101F92D02E003BFF55 /* MIMEType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIMEType.swift; sourceTree = "<group>"; };
 		794DEBA45E109CB6B2912F1A /* Pods-IntervalApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntervalApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-IntervalApp/Pods-IntervalApp.release.xcconfig"; sourceTree = "<group>"; };
 		9A1F9F039DD01C61F912475E /* Pods_IntervalAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IntervalAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B098726BF68C7F20B60FFCE5 /* Pods-IntervalAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntervalAppTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-IntervalAppTests/Pods-IntervalAppTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -1526,19 +1520,8 @@
 			isa = PBXGroup;
 			children = (
 				3C9186F71FA2697A00F484ED /* Charge Summary ViewController */,
-				61C0250F1F92D012003BFF55 /* Webview File Viewer */,
 			);
 			path = "View Controllers";
-			sourceTree = "<group>";
-		};
-		61C0250F1F92D012003BFF55 /* Webview File Viewer */ = {
-			isa = PBXGroup;
-			children = (
-				61C025101F92D02E003BFF55 /* MIMEType.swift */,
-				61C0250C1F92CFC1003BFF55 /* SimpleFileViewController.swift */,
-				61C0250B1F92CFC1003BFF55 /* SimpleFileViewController.xib */,
-			);
-			path = "Webview File Viewer";
 			sourceTree = "<group>";
 		};
 		6A82DD5366BF4F0E8FBF4A4F /* Frameworks */ = {
@@ -1823,7 +1806,6 @@
 				3A932D571C8868DC004BF665 /* GuestCertificateCell.xib in Resources */,
 				3A932D5F1C886918004BF665 /* PolicyCell.xib in Resources */,
 				617517AF1FB2888A002A7609 /* LoginIPhone.storyboard in Resources */,
-				61C0250D1F92CFC1003BFF55 /* SimpleFileViewController.xib in Resources */,
 				3AAA5A271C720F4500A5EA6D /* Assets.xcassets in Resources */,
 				3C07573E1F979D78005D2DEB /* GoogleService-Info.plist in Resources */,
 				3A59DE1C1F0182D3005280D3 /* OwnershipIpad.storyboard in Resources */,
@@ -2059,7 +2041,6 @@
 				3AC5720F1E2A2A5000969CF7 /* AvailablePointCell.swift in Sources */,
 				3A892F461CD3902F00AE6F45 /* EligibleDestinationCell.swift in Sources */,
 				6156D1A11F9265B500FAC4A0 /* UserFacingCommonErrors.swift in Sources */,
-				61C025111F92D02E003BFF55 /* MIMEType.swift in Sources */,
 				3AEF71091DDF1B0A00FA076D /* DestinationResortViewController.swift in Sources */,
 				3A4006A21CA1618A0014DBF3 /* ResortBedroomDetailExchangeCell.swift in Sources */,
 				3C58DD5F1F8D3D04003C5791 /* UserDafaultsWrapper.swift in Sources */,
@@ -2201,7 +2182,6 @@
 				DC7EF50C1D709F8800E9E360 /* ResortDetailsViewController.swift in Sources */,
 				3AAA5A401C720F4500A5EA6D /* LoginFormTableViewCell.swift in Sources */,
 				3A3A013C1C99BD0B00B7EC37 /* DepositedPointHistoryTableViewCell.swift in Sources */,
-				61C0250E1F92CFC1003BFF55 /* SimpleFileViewController.swift in Sources */,
 				6156D1A41F927F6A00FAC4A0 /* RMessage+BannerNotification.swift in Sources */,
 				089416711F72D93A00F03229 /* SelectBedroomViewController.swift in Sources */,
 				3A3A01521C99BED600B7EC37 /* TriangeView.swift in Sources */,
