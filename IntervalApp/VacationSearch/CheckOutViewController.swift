@@ -202,8 +202,8 @@ class CheckOutViewController: UIViewController {
                 continueToPayRequest.acknowledgeAndAgreeResortFees = true
                 imageSlider.isHidden = true
                 showLoader = true
-                self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with: .automatic)
-                if(Constant.MyClassConstants.isFromExchange) {
+                self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
+                if(Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange){
                     
                     let continueToPayRequest = ExchangeProcessContinueToPayRequest()
                     continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last!
@@ -306,7 +306,7 @@ class CheckOutViewController: UIViewController {
 
         self.emailTextToEnter = (Session.sharedSession.contact?.emailAddress)!
         self.checkoutOptionTBLview.reloadData()
-        if(Constant.MyClassConstants.isFromExchange) {
+        if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
             if let selectedPromotion = Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName {
                 self.recapSelectedPromotion = selectedPromotion
                 if(selectedPromotion == "") {
@@ -687,6 +687,13 @@ class CheckOutViewController: UIViewController {
             self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
             
         } else {
+            if let clubPointResort = filterRelinquishments.clubPoints?.resort{
+                Helper.getRelinquishmentDetails(resortCode: (clubPointResort.resortCode), viewController: self)
+            } else if let openWeekResort = filterRelinquishments.openWeek?.resort{
+                Helper.getRelinquishmentDetails(resortCode: (openWeekResort.resortCode), viewController: self)
+            } else if let depositResort = filterRelinquishments.deposit?.resort{
+                Helper.getRelinquishmentDetails(resortCode: (depositResort.resortCode), viewController: self)
+            }
             Helper.getRelinquishmentDetails(resortCode: ((filterRelinquishments.openWeek?.resort?.resortCode)!!), viewController: self)
             /*self.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: nil)*/
             
@@ -1452,8 +1459,9 @@ extension CheckOutViewController: UITableViewDataSource {
                     return UITableViewCell()
                 }
                 cell.selectionStyle = .none
-                if Constant.MyClassConstants.isFromExchange {
-                    cell.setTotalPrice(with: currencyCode, and: (Constant.MyClassConstants.exchangeFees[0].total))
+
+                if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
+                    cell.priceLabel.text = String(Int(Float(Constant.MyClassConstants.exchangeFees[0].total)))
                 } else {
                     cell.setTotalPrice(with: currencyCode, and: (Constant.MyClassConstants.rentalFees[0].total))
                     if let total = recapFeesTotal {

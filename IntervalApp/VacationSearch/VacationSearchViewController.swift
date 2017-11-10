@@ -1576,10 +1576,8 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                             Constant.MyClassConstants.initialVacationSearch = VacationSearch(Session.sharedSession.appSettings, rentalSearchCriteria)
                             
                             ADBMobile.trackAction(Constant.omnitureEvents.event9, data: nil)
-                            
-                            RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess: { (response) in
-                                
-                                self.hideHudAsync()
+                             RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess: { response in
+
                                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
                                 let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
                                 // Update active interval
@@ -1594,13 +1592,12 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                                         Helper.executeExchangeSearchDates(senderVC: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                         
                                     }else{
-                                        self.hideHudAsync()
                                         if response.checkInDates.count>0 {
                                             Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
                                         }
                                         if let vacationSearchInitialDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate{
                                             Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearchInitialDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-                                        } else if Constant.MyClassConstants.initialVacationSearch.rentalSearch != nil{
+                                        } else if Constant.MyClassConstants.initialVacationSearch.rentalSearch != nil && response.checkInDates.count > 0 {
                                             Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate:response.checkInDates[0], senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                         }
                                     }

@@ -88,7 +88,11 @@ class WhatToUseViewController: UIViewController {
         } else if(Constant.MyClassConstants.filterRelinquishments[self.selectedRow].deposit != nil) {
             
             processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[self.selectedRow].deposit?.relinquishmentId
-        } else if(Constant.MyClassConstants.filterRelinquishments[self.selectedRow].pointsProgram != nil) {
+        }else if(Constant.MyClassConstants.filterRelinquishments[self.selectedRow].clubPoints != nil){
+            
+            processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[self.selectedRow].clubPoints?.relinquishmentId
+            
+        }else if(Constant.MyClassConstants.filterRelinquishments[self.selectedRow].pointsProgram != nil){
             
             processRequest.relinquishmentId = Constant.MyClassConstants.filterRelinquishments[self.selectedRow].pointsProgram?.relinquishmentId
         }

@@ -939,7 +939,7 @@ extension VacationSearchIPadViewController: SearchTableViewCellDelegate {
                                 Helper.helperDelegate = self
                                 Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                 // Check not available checkIn dates for the active interval
-                                if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                                if (activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())! {
                                     self.hideHudAsync()
                                     self.rentalHasNotAvailableCheckInDates = true
                                 } else {
