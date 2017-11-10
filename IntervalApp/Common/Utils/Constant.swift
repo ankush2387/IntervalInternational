@@ -303,6 +303,7 @@ class Constant: NSObject {
         static var destinations : [AreaOfInfluenceDestination]? = []
         static var allDestinations = "All Available Destinations".localized()
         
+        static var redirect: (alertID: Int?, rentalAlert: RentalAlert?) = (nil, nil)
         static var currentFromDate:Date!
         static var currentToDate:Date!
         static var checkInDates = [Date]()

@@ -16,55 +16,68 @@ protocol APNSCoordinatorDelegate: class {
 final class APNSCoordinator {
 
     // MARK: - Public properties
+    private (set) var payload: APNSPayload?
     weak var delegate: APNSCoordinatorDelegate?
     private (set) var shouldRedirectOnlogin = false
-    var pushViabilityHasNotExpired: Bool { return dateAPNSRecieved.numberOfMinutesElapsedFromDate < 15 }
+    var pushViabilityHasNotExpired: Bool {
+        guard let dateAPNSRecieved = dateAPNSRecieved else { return false }
+        return dateAPNSRecieved.numberOfMinutesElapsedFromDate < 15
+    }
 
     // MARK: - Private property
-    private let appState: AppState
-    private let userIsLoggedIn: Bool
-    private let payload: APNSPayload
-    private let dateAPNSRecieved: Date
+    private var appState: AppState?
+    private var userIsLoggedIn: Bool?
+    private var dateAPNSRecieved: Date?
 
-    // MARK: - Lifecycle
-    init(payload: APNSPayload, appState: AppState, userIsLoggedIn: Bool, dateAPNSRecieved: Date) {
+    // MARK: - Public function
+    func start(payload: APNSPayload, appState: AppState, userIsLoggedIn: Bool) {
         self.payload = payload
         self.appState = appState
         self.userIsLoggedIn = userIsLoggedIn
-        self.dateAPNSRecieved = dateAPNSRecieved
+        self.dateAPNSRecieved = Date()
+        checkIfShouldRedirect()
     }
 
-    // MARK: - Public function
-    func start() {
+    func reset() {
+        payload = nil
+        appState = nil
+        userIsLoggedIn = nil
+        dateAPNSRecieved = nil
+    }
 
-        switch (appState, userIsLoggedIn, pushViabilityHasNotExpired) {
+     // MARK: - Private function
+    private func checkIfShouldRedirect() {
 
-        case (.foreground, true, true):
-            delegate?.showRedirectAlert(with: payload.body.title, message: payload.body.message + "\nTap for more information".localized())
+        if let appState = appState, let userIsLoggedIn = userIsLoggedIn, let payload = payload {
+            switch (appState, userIsLoggedIn, pushViabilityHasNotExpired) {
 
-        case (.foreground, false, true):
-            delegate?.showRedirectAlert(with: payload.body.title, message: payload.body.message + "\nYou will be redirected on your next login!".localized())
-            shouldRedirectOnlogin = true
+            case (.foreground, true, true):
+                delegate?.showRedirectAlert(with: payload.body.title, message: payload.body.message + "\nTap for more information".localized())
 
-        case (.background, true, true):
-            delegate?.showRedirectAlert(with: payload.body.title, message: payload.body.message + "\nTap for more information".localized())
+            case (.foreground, false, true):
+                delegate?.showRedirectAlert(with: payload.body.title, message: payload.body.message + "\nYou will be redirected on your next login!".localized())
+                shouldRedirectOnlogin = true
 
-        case (.background, false, true):
-            shouldRedirectOnlogin = true
+            case (.background, true, true):
+                delegate?.showRedirectAlert(with: payload.body.title, message: payload.body.message + "\nTap for more information".localized())
 
-            // All other scenarios - do nothing
+            case (.background, false, true):
+                shouldRedirectOnlogin = true
 
-        case (.foreground, true, false):
-            break
+                // All other scenarios - do nothing
 
-        case (.foreground, false, false):
-            break
+            case (.foreground, true, false):
+                break
 
-        case (.background, true, false):
-            break
+            case (.foreground, false, false):
+                break
 
-        case (.background, false, false):
-            break
+            case (.background, true, false):
+                break
+
+            case (.background, false, false):
+                break
+            }
         }
     }
 }

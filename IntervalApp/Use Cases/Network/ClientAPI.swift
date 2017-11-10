@@ -16,7 +16,7 @@ final class ClientAPI: ClientAPIStore {
     static let sharedInstance = ClientAPI()
 
     // MARK: - Lifecycle
-    init() {
+    private init() {
         DarwinSDK.sharedInstance.config(Config.sharedInstance.getEnvironment(),
                                         client: Config.sharedInstance.get(.DarwinClientKey),
                                         secret: Config.sharedInstance.get(.DarwinSecretKey),
@@ -45,6 +45,12 @@ final class ClientAPI: ClientAPIStore {
     func readCurrentProfile(for accessToken: DarwinAccessToken) -> Promise<Contact> {
         return Promise { resolve, reject in
             UserClient.getCurrentProfile(accessToken, onSuccess: resolve, onError: reject)
+        }
+    }
+    
+    func readRentalAlert(for accessToken: DarwinAccessToken, and alertId: Int64) -> Promise<RentalAlert> {
+        return Promise { resolve, reject in
+            RentalClient.getAlert(accessToken, alertId: alertId, onSuccess: resolve, onError: reject)
         }
     }
 }
