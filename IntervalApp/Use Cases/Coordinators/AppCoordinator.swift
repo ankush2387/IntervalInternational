@@ -17,16 +17,16 @@ final class AppCoordinator {
     var initialViewController = UIViewController()
     
     // MARK: - Private properties
-    private let preLoginCoordinator: PreLoginCoordinator
     private let relinquishmentProgram = PointsProgram()
     private var appState: AppState = .foreground
     
     fileprivate let session = Session.sharedSession
     fileprivate let loginCoordinator: LoginCoordinator
     fileprivate let autoLogoutTimer = AutoLogoutTimer()
+    private let preLoginCoordinator = PreLoginCoordinator(clientAPIStore: ClientAPI.sharedInstance)
     
     fileprivate var userIsLoggedIn = false
-    fileprivate var apnsCoordinator: APNSCoordinator?
+    fileprivate var apnsCoordinator = APNSCoordinator()
     fileprivate var entityStore = EntityDataSource.sharedInstance
     fileprivate var autoLogoutViewController: UIAlertController?
     fileprivate var navigationController: UINavigationController?
@@ -45,7 +45,6 @@ final class AppCoordinator {
     init() {
         loginCoordinator = LoginCoordinator()
         initialViewController = loginCoordinator.loginView()
-        preLoginCoordinator = PreLoginCoordinator(clientAPIStore: ClientAPI.sharedInstance)
         addObserver()
     }
     
@@ -78,7 +77,7 @@ final class AppCoordinator {
     
     func didReceive(_ payload: [AnyHashable: Any], in state: AppState) {
         appState = state
-        apnsCoordinator = APNSCoordinator(payload: APNSPayload(payload), appState: appState, userIsLoggedIn: userIsLoggedIn, dateAPNSRecieved: Date())
+        apnsCoordinator.start(payload: APNSPayload(payload), appState: appState, userIsLoggedIn: userIsLoggedIn)
     }
     
     // TODO: - Things to remove
@@ -97,9 +96,9 @@ final class AppCoordinator {
     
     // MARK: - Private functions
     private func setDelegates() {
+        apnsCoordinator.delegate = self
         autoLogoutTimer.delegate = self
         loginCoordinator.delegate = self
-        apnsCoordinator?.delegate = self
         preLoginCoordinator.delegate = self
     }
     
@@ -107,10 +106,6 @@ final class AppCoordinator {
         topViewController?.presentAlert(with: "Logged Out".localized(),
                                         message: "You have been automatically logged out due to inactivity.".localized(),
                                         hideCancelButton: true)
-    }
-    
-    fileprivate func resetIconBadgeNumberForPush() {
-        UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
     fileprivate func startLogout(isAutologout: Bool = false) {
@@ -194,18 +189,44 @@ extension AppCoordinator: IntervalApplicationDelegate {
 
 extension AppCoordinator: APNSCoordinatorDelegate {
     
+    private func showRedirectFailureAlert() {
+        presentViewError(viewError: UserFacingCommonError.custom(title: "Redirect Error".localized(),
+                                                                 body: "We apologize, we could not redirect you to get away alerts at this time".localized()))
+        showDashboard()
+    }
+    
     func redirectUser() {
+        
         let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
         let storyboardName = isRunningOnIphone ? Constant.storyboardNames.getawayAlertsIphone : Constant.storyboardNames.getawayAlertsIpad
-        if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
-            navigationController?.pushViewController(initialViewController, animated: true)
-            resetIconBadgeNumberForPush()
-            apnsCoordinator = nil
+        
+        guard let clientAccessToken = session.userAccessToken,
+            let payload = apnsCoordinator.payload,
+            let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() else {
+            showRedirectFailureAlert()
+            return
         }
+        
+        // This belongs in a coordinator for the getaway alert...
+        ClientAPI.sharedInstance.readRentalAlert(for: clientAccessToken, and: Int64(payload.alertID) ?? -1)
+            
+            .then { [unowned self] rentalAlert in
+                // No way around this until we refactor out the SWReveal Screen, add coordinator, and can inject dependencies...
+                Constant.MyClassConstants.redirect = (Int(rentalAlert.alertId ?? -1), rentalAlert)
+                self.navigationController?.pushViewController(initialViewController, animated: true)
+            }
+            
+            .onError { [unowned self] _ in
+                self.showRedirectFailureAlert()
+            }
+            
+            .finally { [unowned self] in
+                self.apnsCoordinator.reset()
+            }
     }
     
     func showRedirectAlert(with title: String, message: String) {
-        let callBack: (() -> Void)? = userIsLoggedIn ? redirectUser : nil
+        let callBack: CallBack? = userIsLoggedIn ? redirectUser : nil
         topViewController?.showAPNSPushBanner(for: title, with: message, callBack: callBack)
     }
 }
@@ -251,7 +272,7 @@ extension AppCoordinator: LoginCoordinatorDelegate {
             .then(createDatabase)
             .onViewError(presentViewError)
         
-        if apnsCoordinator?.shouldRedirectOnlogin == true && apnsCoordinator?.pushViabilityHasNotExpired == true {
+        if apnsCoordinator.shouldRedirectOnlogin && apnsCoordinator.pushViabilityHasNotExpired {
             redirectUser()
         } else {
             showDashboard()

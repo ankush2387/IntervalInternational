@@ -9,6 +9,7 @@
 import UIKit
 import DarwinSDK
 import ReactiveKit
+import IntervalUIKit
 
 final class LoginViewController: UIViewController {
     
