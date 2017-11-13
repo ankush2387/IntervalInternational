@@ -25,8 +25,8 @@ class UpComingTripDetailController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         NotificationCenter.default.addObserver(self, selector: #selector(reloadDetailsTable), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadTripDetailsNotification), object: nil)
-        self.requiredRowsForAdditionalProducts()
-        self.requiredRowsForRelinquishment()
+        requiredRowsForAdditionalProducts()
+        requiredRowsForRelinquishment()
     }
     
     override func viewDidLoad() {
@@ -46,7 +46,7 @@ class UpComingTripDetailController: UIViewController {
         
         //***** register PolicyCell xib  with table *****//
         let cellNib3 = UINib(nibName:Constant.customCellNibNames.policyCell, bundle: nil)
-        self.upcomingTripDetailTbleview!.register(cellNib3, forCellReuseIdentifier:Constant.upComingTripDetailControllerReusableIdentifiers.policyCell)
+        upcomingTripDetailTbleview!.register(cellNib3, forCellReuseIdentifier:Constant.upComingTripDetailControllerReusableIdentifiers.policyCell)
         
         
         title = Constant.ControllerTitles.upComingTripDetailController
@@ -72,50 +72,50 @@ class UpComingTripDetailController: UIViewController {
     //***** Function to get dynamic rows for additional products section. ******//
     func requiredRowsForAdditionalProducts() {
         
-        self.requiredRowsArray.removeAll()
+        requiredRowsArray.removeAll()
         
         if Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.guestCertificate != nil && Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.guestCertificate?.guest != nil {
             
-            self.requiredRowsArray.append(Constant.upComingTripDetailControllerReusableIdentifiers.guestCertificateCell)
+            requiredRowsArray.append(Constant.upComingTripDetailControllerReusableIdentifiers.guestCertificateCell)
         }
         if Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.eplus != nil && Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.eplus?.purchased == true {
             
-            self.requiredRowsArray.append(Constant.upComingTripDetailControllerReusableIdentifiers.insuranceCell)
+            requiredRowsArray.append(Constant.upComingTripDetailControllerReusableIdentifiers.insuranceCell)
         }
         
         if Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.insurance != nil && Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.insurance?.policyNumber != nil {
             
-            self.requiredRowsArray.append(Constant.upComingTripDetailControllerReusableIdentifiers.modifyInsuranceCell)
+            requiredRowsArray.append(Constant.upComingTripDetailControllerReusableIdentifiers.modifyInsuranceCell)
         }
         else if Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.insurance != nil && Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.ancillaryProducts?.insurance?.policyNumber == nil {
             
-            self.requiredRowsArray.append(Constant.upComingTripDetailControllerReusableIdentifiers.purchasedInsuranceCell)
+            requiredRowsArray.append(Constant.upComingTripDetailControllerReusableIdentifiers.purchasedInsuranceCell)
         } else if Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.cruise != nil {
-            self.requiredRowsArray.append(Constant.upComingTripDetailControllerReusableIdentifiers.transactionDetailsCell)
+            requiredRowsArray.append(Constant.upComingTripDetailControllerReusableIdentifiers.transactionDetailsCell)
         }
     }
     
     //***** Function to get dynamic rows for relinquishment. *****//
     
     func requiredRowsForRelinquishment(){
-        self.requiredRowsArrayRelinquishment.removeAll()
+        requiredRowsArrayRelinquishment.removeAll()
         if Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit != nil {
             if Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.resort != nil {
-                self.requiredRowsArrayRelinquishment.append(Constant.upComingTripDetailControllerReusableIdentifiers.resortCell)
+                requiredRowsArrayRelinquishment.append(Constant.upComingTripDetailControllerReusableIdentifiers.resortCell)
             }
             if Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.deposit?.unit != nil {
-                self.requiredRowsArrayRelinquishment.append(Constant.upComingTripDetailControllerReusableIdentifiers.unitCell)
+                requiredRowsArrayRelinquishment.append(Constant.upComingTripDetailControllerReusableIdentifiers.unitCell)
             }
         }
         if Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.clubPoints != nil {
-            self.requiredRowsArrayRelinquishment.append(Constant.upComingTripDetailControllerReusableIdentifiers.clubCell)
+            requiredRowsArrayRelinquishment.append(Constant.upComingTripDetailControllerReusableIdentifiers.clubCell)
         }
         if Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.pointsProgram != nil {
-            self.requiredRowsArrayRelinquishment.append(Constant.upComingTripDetailControllerReusableIdentifiers.pointsProgramCell)
+            requiredRowsArrayRelinquishment.append(Constant.upComingTripDetailControllerReusableIdentifiers.pointsProgramCell)
         }
         if Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.accommodationCertificate != nil {
-            self.requiredRowsArrayRelinquishment.append(Constant.upComingTripDetailControllerReusableIdentifiers.accomodationCell)
-            self.requiredRowsArrayRelinquishment.append(Constant.upComingTripDetailControllerReusableIdentifiers.unitCell)
+            requiredRowsArrayRelinquishment.append(Constant.upComingTripDetailControllerReusableIdentifiers.accomodationCell)
+            requiredRowsArrayRelinquishment.append(Constant.upComingTripDetailControllerReusableIdentifiers.unitCell)
         }
     }
     
@@ -128,7 +128,7 @@ class UpComingTripDetailController: UIViewController {
     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
         
         
-        if let navigationCount = self.navigationController?.viewControllers.count, navigationCount > 1 {
+        if let navigationCount = navigationController?.viewControllers.count, navigationCount > 1 {
             navigationController?.popViewController(animated: true)
         } else {
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.myUpcomingTripIphone, bundle: nil)
@@ -209,7 +209,7 @@ class UpComingTripDetailController: UIViewController {
             isOpen = true
         }
         
-        self.upcomingTripDetailTbleview.reloadSections(IndexSet(integer: 1), with:.automatic)
+        upcomingTripDetailTbleview.reloadSections(IndexSet(integer: 1), with:.automatic)
     }
     
     func showMapDetail() {
@@ -251,7 +251,7 @@ extension UpComingTripDetailController:UITableViewDelegate {
             }
             
         case 1:
-            if self.isOpen == false {
+            if isOpen == false {
                 return 50
             } else {
                 return CGFloat(unitDetialsCellHeight + 20)
@@ -259,9 +259,9 @@ extension UpComingTripDetailController:UITableViewDelegate {
         case 2:
             return 72
         case 3:
-            if self.requiredRowsArray[indexPath.row]  == Constant.upComingTripDetailControllerReusableIdentifiers.insuranceCell {
+            if requiredRowsArray[indexPath.row]  == Constant.upComingTripDetailControllerReusableIdentifiers.insuranceCell {
                 return 50
-            } else if self.requiredRowsArray[indexPath.row]  == Constant.upComingTripDetailControllerReusableIdentifiers.modifyInsuranceCell {
+            } else if requiredRowsArray[indexPath.row]  == Constant.upComingTripDetailControllerReusableIdentifiers.modifyInsuranceCell {
                 return 80
             } else {
                 return 280
@@ -466,10 +466,10 @@ extension UpComingTripDetailController:UITableViewDataSource {
                 
                 return UITableViewCell()
             }
-            if self.isOpen == true {
-                if self.detailsView == nil {
-                    cell.addSubview(self.getDetails())
-                    self.upcomingTripDetailTbleview.reloadData()
+            if isOpen == true {
+                if detailsView == nil {
+                    cell.addSubview(getDetails())
+                    upcomingTripDetailTbleview.reloadData()
                 }
             }
             cell.backgroundColor = IUIKColorPalette.contentBackground.color
@@ -482,7 +482,7 @@ extension UpComingTripDetailController:UITableViewDataSource {
             
         } else if indexPath.section == 2 {
             
-            if self.requiredRowsArrayRelinquishment[indexPath.row]  == Constant.upComingTripDetailControllerReusableIdentifiers.resortCell
+            if requiredRowsArrayRelinquishment[indexPath.row]  == Constant.upComingTripDetailControllerReusableIdentifiers.resortCell
                 
             {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.resortCell, for: indexPath) as? UpComingTripCell else {
@@ -497,7 +497,7 @@ extension UpComingTripDetailController:UITableViewDataSource {
                 cell.backgroundColor = IUIKColorPalette.contentBackground.color
                 
                 return cell
-            } else if self.requiredRowsArrayRelinquishment[indexPath.row]  == Constant.upComingTripDetailControllerReusableIdentifiers.unitCell {
+            } else if requiredRowsArrayRelinquishment[indexPath.row]  == Constant.upComingTripDetailControllerReusableIdentifiers.unitCell {
                 
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.unitCell, for: indexPath) as? UpComingTripCell else {
                     
@@ -551,7 +551,7 @@ extension UpComingTripDetailController:UITableViewDataSource {
                     
                 }
                 return cell
-            } else if self.requiredRowsArrayRelinquishment[indexPath.row]  == Constant.upComingTripDetailControllerReusableIdentifiers.pointsProgramCell {
+            } else if requiredRowsArrayRelinquishment[indexPath.row]  == Constant.upComingTripDetailControllerReusableIdentifiers.pointsProgramCell {
                 
                 guard let cell = tableView.dequeueReusableCell(withIdentifier:  Constant.availablePointToolViewController.availablePointCell, for: indexPath) as? AvailablePointCell else {
                     
@@ -560,7 +560,7 @@ extension UpComingTripDetailController:UITableViewDataSource {
                 cell.availablePointValueLabel.text = "\(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.relinquishment?.pointsProgram?.pointsSpent ?? 0)".localized()
                 
                 return cell
-            } else if self.requiredRowsArrayRelinquishment[indexPath.row]  == Constant.upComingTripDetailControllerReusableIdentifiers.accomodationCell {
+            } else if requiredRowsArrayRelinquishment[indexPath.row]  == Constant.upComingTripDetailControllerReusableIdentifiers.accomodationCell {
                 
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.accomodationCell, for: indexPath) as? CustomTableViewCell else {
                     
@@ -580,7 +580,7 @@ extension UpComingTripDetailController:UITableViewDataSource {
             }
         } else if indexPath.section == 3 {
             
-            if self.requiredRowsArray[indexPath.row] == Constant.upComingTripDetailControllerReusableIdentifiers.guestCertificateCell {
+            if requiredRowsArray[indexPath.row] == Constant.upComingTripDetailControllerReusableIdentifiers.guestCertificateCell {
                 
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.guestCertificateCell, for: indexPath) as? GuestCertificateCell else {
                     
@@ -589,7 +589,7 @@ extension UpComingTripDetailController:UITableViewDataSource {
                 cell.backgroundColor = IUIKColorPalette.contentBackground.color
                 return cell
             }
-            else if self.requiredRowsArray[indexPath.row] == Constant.upComingTripDetailControllerReusableIdentifiers.insuranceCell {
+            else if requiredRowsArray[indexPath.row] == Constant.upComingTripDetailControllerReusableIdentifiers.insuranceCell {
                 
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.insuranceCell, for: indexPath) as? EPlusTableViewCell else {
                     
@@ -598,7 +598,7 @@ extension UpComingTripDetailController:UITableViewDataSource {
                 
                 return cell
             }
-            else if self.requiredRowsArray[indexPath.row]  == Constant.upComingTripDetailControllerReusableIdentifiers.modifyInsuranceCell {
+            else if requiredRowsArray[indexPath.row]  == Constant.upComingTripDetailControllerReusableIdentifiers.modifyInsuranceCell {
                 
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.modifyInsuranceCell, for: indexPath) as? CustomTableViewCell else {
                     
@@ -606,7 +606,7 @@ extension UpComingTripDetailController:UITableViewDataSource {
                 }
                 
                 return cell
-            } else if self.requiredRowsArray[indexPath.row] == Constant.upComingTripDetailControllerReusableIdentifiers.transactionDetailsCell {
+            } else if requiredRowsArray[indexPath.row] == Constant.upComingTripDetailControllerReusableIdentifiers.transactionDetailsCell {
                 
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.transactionDetailsCell, for: indexPath) as? TransactionDetailsTableViewCell else {
                     return UITableViewCell()
@@ -727,7 +727,7 @@ extension UpComingTripDetailController:UITableViewDataSource {
                 }
             }
         }
-        self.detailsView = UIView()
+        detailsView = UIView()
         for amunities in sortedArrayAmenities {
             
             let sectionLabel = UILabel(frame: CGRect(x: 20,y:Int(unitDetialsCellHeight), width: Int(self.view.frame.width - 20), height: 20))
@@ -737,9 +737,9 @@ extension UpComingTripDetailController:UITableViewDataSource {
             sectionLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 14.0)
             sectionLabel.textColor = UIColor.lightGray
             
-            self.detailsView?.addSubview(sectionLabel)
+            detailsView?.addSubview(sectionLabel)
             
-            self.unitDetialsCellHeight = unitDetialsCellHeight + 25
+            unitDetialsCellHeight = unitDetialsCellHeight + 25
             
             for details in amunities.details {
                 
@@ -750,10 +750,10 @@ extension UpComingTripDetailController:UITableViewDataSource {
                 detailSectionLabel.font = UIFont(name: Constant.fontName.helveticaNeueBold, size: 16.0)
                 detailSectionLabel.sizeToFit()
                 
-                self.detailsView?.addSubview(detailSectionLabel)
+                detailsView?.addSubview(detailSectionLabel)
                 if let detailString = detailSectionLabel.text {
                     if detailString.count > 0 {
-                        self.unitDetialsCellHeight = self.unitDetialsCellHeight + 20
+                        unitDetialsCellHeight = unitDetialsCellHeight + 20
                     }
                 }
                 
@@ -767,15 +767,15 @@ extension UpComingTripDetailController:UITableViewDataSource {
                     }
                     detaildescLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 14.0)
                     detaildescLabel.sizeToFit()
-                    self.detailsView?.addSubview(detaildescLabel)
-                    self.unitDetialsCellHeight = self.unitDetialsCellHeight + 20
+                    detailsView?.addSubview(detaildescLabel)
+                    unitDetialsCellHeight = unitDetialsCellHeight + 20
                 }
-                self.unitDetialsCellHeight = self.unitDetialsCellHeight + 20
+                unitDetialsCellHeight = unitDetialsCellHeight + 20
             }
         }
         detailsView?.frame = CGRect(x: 0, y: 20, width: Int(self.view.frame.size.width), height: self.unitDetialsCellHeight)
         
-        return self.detailsView!
+        return detailsView!
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -817,9 +817,9 @@ extension UpComingTripDetailController:UITableViewDataSource {
                 }
             }
         }else if section == 2 {
-            return self.requiredRowsArrayRelinquishment.count
+            return requiredRowsArrayRelinquishment.count
         } else if section == 3 {
-            return self.requiredRowsArray.count
+            return requiredRowsArray.count
         } else if section == 4 {
             if Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.payment != nil {
                 return 1
