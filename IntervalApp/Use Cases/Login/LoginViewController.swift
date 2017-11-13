@@ -34,11 +34,13 @@ final class LoginViewController: UIViewController {
 
     // MARK: - Private properties
     private let disposeBag = DisposeBag()
+    private let simpleOnboardingViewModel: SimpleOnboardingViewModel?
     fileprivate let viewModel: LoginViewModel
     
     // MARK: - Lifecycle
-    init(viewModel: LoginViewModel) {
+    init(viewModel: LoginViewModel, simpleOnboardingViewModel: SimpleOnboardingViewModel? = nil) {
         self.viewModel = viewModel
+        self.simpleOnboardingViewModel = simpleOnboardingViewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -52,6 +54,8 @@ final class LoginViewController: UIViewController {
         setUI()
         bindUI()
         performTouchIDLoginIfEnabled()
+        showOnboardingIfNewAppInstance()
+        setSplashScreenAnimation()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -67,6 +71,23 @@ final class LoginViewController: UIViewController {
     }
     
     // MARK: - Private functions
+    private func showOnboardingIfNewAppInstance() {
+        if let simpleOnboardingViewModel = simpleOnboardingViewModel {
+            present(SimpleOnboardingViewController(viewModel: simpleOnboardingViewModel), animated: false, completion: nil)
+        }
+    }
+
+    private func setSplashScreenAnimation() {
+        let initialIconSize = CGSize(width: 168, height: 44)
+        let splashScreenBackgroundColor = UIColor(red:0.24, green:0.51, blue:0.76, alpha:1.0)
+        let simpleRevealingAppLaunchView = SimpleRevealingAppLaunchView(iconImage:  #imageLiteral(resourceName: "Interval_Splash_Logo "),
+                                                               iconInitialSize: initialIconSize,
+                                                               backgroundColor: splashScreenBackgroundColor)
+
+        self.view.addSubview(simpleRevealingAppLaunchView)
+        simpleRevealingAppLaunchView.startAnimation()
+    }
+    
     private func login() {
         showHudAsync()
         viewModel.normalLogin()
