@@ -54,9 +54,7 @@ class UpComingTripDetailController: UIViewController {
         menuButton.tintColor = UIColor.white
         
         navigationItem.leftBarButtonItem = menuButton
-        
-        
-        
+
         // Omniture tracking with event 74
         
         let userInfo: [String: String] = [
