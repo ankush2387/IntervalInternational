@@ -17,6 +17,7 @@ end
 
 target 'IntervalApp' do
     pod 'Realm','~>2.8.3'
+    pod 'Appsee','~>2.3.5'
     pod 'RMessage','~>2.1.5'
     pod 'RealmSwift','~>2.8.3'
     pod 'SwiftyJSON','~>3.1.4'
