@@ -105,7 +105,7 @@ class SideMenuiPadTableViewController: UIViewController, UITableViewDataSource {
         Constant.MyClassConstants.isLoginSuccessfull = false
         Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PopToLoginView"), object: nil)
-      
+        
     }
     
     //***** Function called when notification for getaway alerts is fired. *****//
@@ -248,20 +248,20 @@ extension SideMenuiPadTableViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         /*if((indexPath as NSIndexPath).row == 4){
-            let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.myUpcomingTripIpad, bundle: nil)
-            let resultController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.upcomingTripsViewController) as? UpComingTripDetailIPadViewController
-            let navController = UINavigationController(rootViewController: resultController!)
-            self.present(navController, animated:true, completion: nil)
-        }else*/ if((indexPath as NSIndexPath).row == 6) {
+         let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.myUpcomingTripIpad, bundle: nil)
+         let resultController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.upcomingTripsViewController) as? UpComingTripDetailIPadViewController
+         let navController = UINavigationController(rootViewController: resultController!)
+         self.present(navController, animated:true, completion: nil)
+         }else*/ if((indexPath as NSIndexPath).row == 6) {
             
             Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.favoritesFunctionalityCheck
             Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.favoritesFunctionalityCheck
             
-        } else if((indexPath as NSIndexPath).row == 8) {
+         } else if((indexPath as NSIndexPath).row == 8) {
             Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.resortFunctionalityCheck
-        } else if((indexPath as NSIndexPath).row == 3) {
+         } else if((indexPath as NSIndexPath).row == 3) {
             Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.vacationSearchFunctionalityCheck
-        } else {
+         } else {
             Constant.MyClassConstants.runningFunctionality = ""
             Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
         }

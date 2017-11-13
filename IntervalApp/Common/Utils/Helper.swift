@@ -2237,6 +2237,7 @@ public class Helper{
         
         return transition
     }
+
     static func getAllAlerts(CompletionBlock: @escaping ((Error?) -> Void)) {
         
         //***** Getaway Alerts API call after successfull login *****//
@@ -2248,6 +2249,7 @@ public class Helper{
             
         }) {[] (error) in
             CompletionBlock(error)
+
         }
     }
     

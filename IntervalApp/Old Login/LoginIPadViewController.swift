@@ -417,22 +417,11 @@ class LoginIPadViewController: UIViewController {
         //***** Get upcoming trips for user API call after successfull call *****//
         Helper.getUpcomingTripsForUser()
         //***** Getaway Alerts API call after successfull login *****//
-        RentalClient.getAlerts(Session.sharedSession.userAccessToken, onSuccess: { (response) in
-                                        
-            Constant.MyClassConstants.getawayAlertsArray = response
-                                        
-            //NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
-            
-            Constant.MyClassConstants.getawayAlertsArray = response
-            for alert in Constant.MyClassConstants.getawayAlertsArray {
-                self.callForIndividualAlert(alert)
+            Helper.getAllAlerts {[unowned self] error in
+                if case .some = error {
+                    self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
+                }
             }
-            self.getStatusForAllAlerts()
-                                        
-        }) { (_) in
-                                        
-    }
-                                    
         Constant.MyClassConstants.isLoginSuccessfull = true
         self.performSegue(withIdentifier: Constant.segueIdentifiers.dashboradSegueIdentifier, sender: nil)
                                     

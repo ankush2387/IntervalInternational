@@ -12,12 +12,7 @@ import GoogleMaps
 
 class Constant: NSObject {
     
-<<<<<<< HEAD
-    //***** common function to get device orientation *****//
     static var holdingTimer: Timer?
-=======
-    static var holdingTimer:Timer?
->>>>>>> MOBI-21: Alert UI modification and implementation for home screen
     static var holdingTime = 17
     static var decreaseValue = 1
     static var holdingResortForRemainingMinutes = "We are holding this unit for \(holdingTime) minutes".localized()
@@ -1449,6 +1444,7 @@ class Constant: NSObject {
         static var infoImage = "InfoIcon"
         static var relinquishmentImage = "EXG_CO"
         static var promoImage = "PromoImage"
+        static var refreshAlert = "ic_refresh"
     }
     
     //***** Bedroom ViewController *****//

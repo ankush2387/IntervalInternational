@@ -89,7 +89,7 @@ class SideMenuTableViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
         // omniture tracking with event 40
         let userInfo: [String: String] = [
             Constant.omnitureEvars.eVar44: Constant.omnitureCommonString.sideMenuAppeared
@@ -152,13 +152,13 @@ extension SideMenuTableViewController: UITableViewDelegate {
             
             Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
         }
-
+        
         if(smi.storyboardId?.characters.count != 0 && (indexPath as NSIndexPath).row != SideMenuTableViewController.SideMenuItems.count - 1) {
             
             Constant.MyClassConstants.upcomingOriginationPoint = Constant.omnitureCommonString.sideMenu
-                let mainStoryboard: UIStoryboard = UIStoryboard(name: smi.storyboardId!, bundle: nil)
-                let viewController = mainStoryboard.instantiateViewController(withIdentifier: smi.initialControllerName!) as! SWRevealViewController
-                navigationController?.pushViewController(viewController, animated: true)
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: smi.storyboardId!, bundle: nil)
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: smi.initialControllerName!) as! SWRevealViewController
+            navigationController?.pushViewController(viewController, animated: true)
         }
     }
     
@@ -272,47 +272,22 @@ extension SideMenuTableViewController: UITableViewDataSource {
             if((indexPath as NSIndexPath).row == 5) {
                 
                 let alertCounterLabel = UILabel()
-<<<<<<< HEAD
                 var activeAlertsCount = 0
                 if(Constant.MyClassConstants.getawayAlertsArray.count > 0) {
                     for activeAlert in Constant.MyClassConstants.activeAlertsArray {
                         let getAwayAlert: RentalAlert = activeAlert as! RentalAlert
                         if (getAwayAlert.enabled)! {
                             activeAlertsCount = activeAlertsCount + 1
-=======
-                var alertBudgeCounter = 0
-                for alert in Constant.MyClassConstants.getawayAlertsArray {
-                    
-                    if let alertID = alert.alertId {
-                        let value = Constant.MyClassConstants.alertsSearchDatesDictionary.value(forKey: String(describing: alertID))
-                        if value != nil {
-                            var checkInDates = NSArray()
-                            checkInDates = value as! NSArray
-                            if checkInDates.count > 0 {
-                                alertBudgeCounter = alertBudgeCounter + 1
-                            }
-                            
->>>>>>> MOBI-21: Alert UI modification and implementation for home screen
                         }
-                        
                     }
-<<<<<<< HEAD
                     if(activeAlertsCount > 0) {
                         alertCounterLabel.text = String(activeAlertsCount)
                     } else {
                         alertCounterLabel.isHidden = true
                     }
                 } else {
-=======
-                    
-                }
-                if alertBudgeCounter > 0 {
-                    alertCounterLabel.isHidden = false
-                }else{
->>>>>>> MOBI-21: Alert UI modification and implementation for home screen
                     alertCounterLabel.isHidden = true
                 }
-                alertCounterLabel.text = "\(alertBudgeCounter)"
                 alertCounterLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 10)
                 alertCounterLabel.sizeToFit()
                 alertCounterLabel.textColor = UIColor.white

@@ -32,7 +32,11 @@ class CreateActionSheet: UITableViewController {
             let rect = CGRect(x: 0, y: 0, width: self.view.bounds.width - 20, height: CGFloat(membership * 100))
             self.tableView.frame = rect
             let height:NSLayoutConstraint = NSLayoutConstraint(item: self.tableView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: CGFloat(membership * 70))
+<<<<<<< HEAD
             tableView.addConstraint(height)
+=======
+                tableView.addConstraint(height)
+>>>>>>> MOBI-21: Alert UI modification and implementation
         }
         tableView.dataSource = dataSource
         tableView.delegate = dataSource
@@ -175,7 +179,11 @@ class CreateActionSheet: UITableViewController {
         if let alertID = alert.alertId {
             getawayAlert = Constant.MyClassConstants.alertsDictionary.value(forKey: String(describing: alertID)) as! RentalAlert
         }
+<<<<<<< HEAD
         
+=======
+       
+>>>>>>> MOBI-21: Alert UI modification and implementation
         
         let searchResortRequest = RentalSearchDatesRequest()
         if let chkInTodate = getawayAlert.latestCheckInDate {
@@ -183,15 +191,26 @@ class CreateActionSheet: UITableViewController {
             searchResortRequest.checkInToDate = Helper.convertStringToDate(dateString:chkInTodate,format:Constant.MyClassConstants.dateFormat)
         }
         if let chkInFromdate = getawayAlert.earliestCheckInDate {
+<<<<<<< HEAD
             searchResortRequest.checkInFromDate = Helper.convertStringToDate(dateString:chkInFromdate,format:Constant.MyClassConstants.dateFormat)
         }
         
+=======
+             searchResortRequest.checkInFromDate = Helper.convertStringToDate(dateString:chkInFromdate,format:Constant.MyClassConstants.dateFormat)
+        }
+       
+>>>>>>> MOBI-21: Alert UI modification and implementation
         searchResortRequest.resorts = getawayAlert.resorts
         searchResortRequest.destinations = getawayAlert.destinations
         Constant.MyClassConstants.dashBoardAlertsArray = Constant.MyClassConstants.getawayAlertsArray
         
         if Reachability.isConnectedToNetwork() == true {
             if Session.sharedSession.userAccessToken != nil {
+<<<<<<< HEAD
+=======
+
+            RentalClient.searchDates(Session.sharedSession.userAccessToken, request: searchResortRequest, onSuccess:{ (searchDates) in
+>>>>>>> MOBI-21: Alert UI modification and implementation
                 
                 RentalClient.searchDates(Session.sharedSession.userAccessToken, request: searchResortRequest, onSuccess:{ (searchDates) in
                     
@@ -201,6 +220,7 @@ class CreateActionSheet: UITableViewController {
                         Constant.MyClassConstants.alertsResortCodeDictionary.setValue(searchDates.resortCodes, forKey: String(describing: alertID))
                         Constant.MyClassConstants.alertsSearchDatesDictionary.setValue(searchDates.checkInDates, forKey: String(describing: alertID))
                     }
+<<<<<<< HEAD
                     
                     if searchDates.checkInDates.count == 0 || alert.alertId == 123456  {
                         for (index,selectedAlert) in Constant.MyClassConstants.getawayAlertsArray.enumerated(){
@@ -228,14 +248,41 @@ class CreateActionSheet: UITableViewController {
                         if Constant.MyClassConstants.isEvent2Ready > 1  {
                             sendOmnitureTrackCallForEvent2()
                         }
+=======
+                }
+                else {
+                    if Constant.MyClassConstants.activeAlertsArray.count < 1 { //TODO - JHON: forcing alerts count to be one. fix when push notifications is working. 
+                        Constant.MyClassConstants.activeAlertsArray.add(alert)
+                    }
+                }
+                if self.activeAlertCount < Constant.MyClassConstants.getawayAlertsArray.count - 1 {
+                    self.activeAlertCount = self.activeAlertCount + 1
+                    self.getStatusForAllAlerts()
+                }else{
+//                    DispatchQueue.main.async {[weak self] in
+//                        guard let strongSelf = self else {return }
+//                        strongSelf.performSortingForMemberNumberWithViewResultAndNothingYet()
+//                    }
+                    self.performSortingForMemberNumberWithViewResultAndNothingYet()
+                    NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
+                    Constant.MyClassConstants.isEvent2Ready = Constant.MyClassConstants.isEvent2Ready + 1
+                    if Constant.MyClassConstants.isEvent2Ready > 1  {
+                        sendOmnitureTrackCallForEvent2()
+>>>>>>> MOBI-21: Alert UI modification and implementation
                     }
                 })
                 { (error) in
                     
+<<<<<<< HEAD
                     Constant.MyClassConstants.isEvent2Ready = Constant.MyClassConstants.isEvent2Ready + 1
                     if Constant.MyClassConstants.isEvent2Ready > 1  {
                         sendOmnitureTrackCallForEvent2()
                     }
+=======
+                Constant.MyClassConstants.isEvent2Ready = Constant.MyClassConstants.isEvent2Ready + 1
+                if Constant.MyClassConstants.isEvent2Ready > 1  {
+                   sendOmnitureTrackCallForEvent2()
+>>>>>>> MOBI-21: Alert UI modification and implementation
                 }
             }
         }
@@ -268,7 +315,11 @@ class CreateActionSheet: UITableViewController {
         }
         Constant.MyClassConstants.getawayAlertsArray.removeAll()
         for alert in viewResultAletArray {
+<<<<<<< HEAD
             Constant.MyClassConstants.getawayAlertsArray.append(alert)
+=======
+           Constant.MyClassConstants.getawayAlertsArray.append(alert)
+>>>>>>> MOBI-21: Alert UI modification and implementation
         }
         for alert in nothingYetArray {
             Constant.MyClassConstants.getawayAlertsArray.append(alert)
@@ -370,6 +421,11 @@ func sendOmnitureTrackCallForEvent2() {
     
     
     ADBMobile.trackAction(Constant.omnitureEvents.event2, data: userInfo as! [AnyHashable : Any])
+<<<<<<< HEAD
 }
+=======
+  }
+
+>>>>>>> MOBI-21: Alert UI modification and implementation
 
 
