@@ -2,8 +2,18 @@
  # swiftlint rules
 
 disabled_rules:
-- trailing_whitespace
+- type_name
+- force_try
+- force_cast
+- empty_count
+- file_length
+- identifier_name
 - force_unwrapping
+- type_body_length
+- shorthand_operator
+- trailing_whitespace
+- function_body_length
+- cyclomatic_complexity
 
 line_length: 200
 
