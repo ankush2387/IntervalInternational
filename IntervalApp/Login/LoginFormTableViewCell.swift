@@ -11,33 +11,31 @@ import LocalAuthentication
 import IntervalUIKit
 
 //***** custum delegate method declaration *****//
-protocol LoginFormTableViewCellDelegate{
-	func enableTouchIdButtonAction(_ enable:Bool)
+protocol LoginFormTableViewCellDelegate {
+	func enableTouchIdButtonAction(_ enable: Bool)
 }
 
-
 //***** Login form tableview cell class *****//
-class LoginFormTableViewCell: UITableViewCell
-{
+class LoginFormTableViewCell: UITableViewCell {
   
   //***** Outlets *****//
-    @IBOutlet weak var userNameTextField : UITextField!
-    @IBOutlet weak var passwordTextField : UITextField!
-    @IBOutlet weak var loginButton : UIButton!
-    @IBOutlet weak var helpButton : UIButton!
-    @IBOutlet weak var activityIndicator : UIActivityIndicatorView!
+    @IBOutlet weak var userNameTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var helpButton: UIButton!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet var enableTouchIdTextLabel: UILabel!
     @IBOutlet var touchIdImageView: UIImageView!
     @IBOutlet var enableTouchIdButton: UIButton!
   
     @IBOutlet weak var signInButtonBackgroundView: UIView!
     //***** variable declaration *****//
-    var delegate:LoginFormTableViewCellDelegate?
+    var delegate: LoginFormTableViewCellDelegate?
 	
 	// computed property for touchIDEnabled, will turn on/off the checkbox
-	var touchIDEnabled : Bool = false {
+	var touchIDEnabled: Bool = false {
 		didSet {
-            enableTouchIdButton.isSelected = touchIDEnabled;
+            enableTouchIdButton.isSelected = touchIDEnabled
 			enableTouchIdButton(touchIDEnabled)
 		}
 	}
@@ -56,8 +54,8 @@ class LoginFormTableViewCell: UITableViewCell
         enableTouchIdTextLabel.textColor = IUIKColorPalette.primary1.color
         
         //***** checking touch id sensor feature on running device *****//
-        var hasTouchID:Bool = false
-        if(!(hasTouchID)){
+        var hasTouchID: Bool = false
+        if(!(hasTouchID)) {
             self.touchIdImageView.isHidden = true
             self.enableTouchIdTextLabel.isHidden = true
             self.enableTouchIdButton.isHidden = true
@@ -73,21 +71,17 @@ class LoginFormTableViewCell: UITableViewCell
 	@IBAction func enableTouchIdButtonAction(_ sender: UIButton) {
     
     	//***** selecting and deselecting enable touchID option *****//
-		sender.isSelected = !sender.isSelected;
+		sender.isSelected = !sender.isSelected
 
 		// call the computed property to trigger the setting of touchid
-		self.touchIDEnabled = sender.isSelected;
+		self.touchIDEnabled = sender.isSelected
   	}
 	
-	fileprivate func enableTouchIdButton(_ enable:Bool)
-	{
-		if (enable)
-		{
+	fileprivate func enableTouchIdButton(_ enable: Bool) {
+		if (enable) {
 			enableTouchIdTextLabel.textColor = IUIKColorPalette.primary1.color
 			self.touchIdImageView.image = UIImage(named: Constant.assetImageNames.TouchIdOn)
-		}
-		else
-		{
+		} else {
 			self.touchIdImageView.image = UIImage(named: Constant.assetImageNames.TouchIdOff)
 			enableTouchIdTextLabel.textColor = UIColor.lightGray
 		}
@@ -96,7 +90,7 @@ class LoginFormTableViewCell: UITableViewCell
 	}
 }
 
-extension LoginFormTableViewCell:UITextFieldDelegate {
+extension LoginFormTableViewCell: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()

@@ -11,14 +11,11 @@ import IntervalUIKit
 
 class VideoTBLCell: UITableViewCell {
     
-    
     //***** Outlets *****//
     @IBOutlet weak var thumbnailimageView: UIImageView!
     @IBOutlet weak var playButton: IUIKButton!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var shadowView: UIView!
-    
-    
     
     override func awakeFromNib() {
         super.awakeFromNib()

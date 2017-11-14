@@ -19,34 +19,33 @@ class MyownershipClubIntervalGoldPointsTableViewCell: UITableViewCell {
     
     @IBOutlet weak var clubintervalGoldPointsMainView: UIView!
     
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
     
-    //MARK:get cell
+    // MARK: get cell
     /**
     Configure Cell components
     - parameter No parameter :
     - returns : No return value
     */
-    func getCell(){
+    func getCell() {
         self.setPropertiesToCellElements()
         updateCellComponentsText()
     }
-    //MARK:set properties to elements of cell
+    // MARK: set properties to elements of cell
     /**
     Apply properties to cell components
     - parameter No parameter :
     - returns : No return value
     */
-    fileprivate func setPropertiesToCellElements(){
+    fileprivate func setPropertiesToCellElements() {
         
         Helper.applyCornerRadious(view: clubintervalGoldPointsMainView, cornerradious: Constant.viewProperties.cornerRadious)
         Helper.applyShadowOnUIView(view: clubintervalGoldPointsMainView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
         pointsinfoLabel.textColor = UIColor(rgb: IUIKColorPalette.primaryText.rawValue)
-        asOfPointsinfoLabel.textColor = UIColor(rgb:IUIKColorPalette.secondaryText.rawValue)
+        asOfPointsinfoLabel.textColor = UIColor(rgb: IUIKColorPalette.secondaryText.rawValue)
         totalPointLabel.textColor = UIColor(rgb: IUIKColorPalette.secondaryB.rawValue)
     }
     /**
@@ -54,7 +53,7 @@ class MyownershipClubIntervalGoldPointsTableViewCell: UITableViewCell {
      - parameter No parameter:
      - returns : No value is return
      */
-    fileprivate func updateCellComponentsText(){
+    fileprivate func updateCellComponentsText() {
         
         pointsinfoLabel.text = Constant.ownershipViewController.clubIntervalAvailableGoldPointTableViewCell.pointsinfoLabelText
         asOfPointsinfoLabel.text = Constant.ownershipViewController.clubIntervalAvailableGoldPointTableViewCell.asOfPointsinfoLabelText

@@ -11,7 +11,7 @@ import IntervalUIKit
 
 class RelinquishmentSearchViewController: UIViewController {
     
-    @IBOutlet weak var tableViewRelinquishment:UITableView!
+    @IBOutlet weak var tableViewRelinquishment: UITableView!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -41,7 +41,7 @@ class RelinquishmentSearchViewController: UIViewController {
 
 }
 
-extension RelinquishmentSearchViewController:UITableViewDataSource{
+extension RelinquishmentSearchViewController: UITableViewDataSource {
    
     //***** UITableview dataSource methods definition here *****//
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -61,15 +61,14 @@ extension RelinquishmentSearchViewController:UITableViewDataSource{
         }
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
-    {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch (indexPath as NSIndexPath).section {
         case 0:
-            if ((indexPath as NSIndexPath).row == 0){
+            if ((indexPath as NSIndexPath).row == 0) {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.relinquishmentCell, for: indexPath) as UITableViewCell
                 
                 return cell
-            }else{
+            } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.goldPointsCell, for: indexPath) as UITableViewCell
                 
                 return cell
@@ -83,14 +82,13 @@ extension RelinquishmentSearchViewController:UITableViewDataSource{
 
 }
 
-extension RelinquishmentSearchViewController:UITableViewDelegate{
+extension RelinquishmentSearchViewController: UITableViewDelegate {
     //***** Implementing header cell for all sections  *****//
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if(section == 1){
+        if(section == 1) {
             return 0
-        }
-        else{
+        } else {
             return 44
         }
     }

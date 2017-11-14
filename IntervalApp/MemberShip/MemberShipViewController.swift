@@ -22,8 +22,6 @@ class MemberShipViewController: UIViewController {
         CreateActionSheet()
     }
     
-    
-    
     /** Class variables */
     fileprivate let numberOfSection = 2
     fileprivate let numberOfRowInSection = 1
@@ -33,7 +31,6 @@ class MemberShipViewController: UIViewController {
     var contactInfo = Contact()
     
     override func viewDidLoad() {
-       
         
         super.viewDidLoad()
         
@@ -64,7 +61,7 @@ class MemberShipViewController: UIViewController {
                 self.membershipProductsArray = products
             }
             
-            self.membershipProductsArray.sort{$0.coreProduct && !$1.coreProduct} //sort Array coreProduct First Element
+            self.membershipProductsArray.sort { $0.coreProduct && !$1.coreProduct } //sort Array coreProduct First Element
             //arrange array elements highestTier in second position
             if self.membershipProductsArray.count > 2 {
                 for (index, prod) in self.membershipProductsArray.enumerated() {
@@ -83,19 +80,19 @@ class MemberShipViewController: UIViewController {
         }
     }
     
-    //MARK:Display menu button
+    // MARK: Display menu button
     /** 
     Display Hamburger menu
     - parameter  No parameter :
     - returns : No return Value
     */
-    fileprivate func displayMenuButton(){
+    fileprivate func displayMenuButton() {
         if let rvc = self.revealViewController() {
             //set SWRevealViewController's Delegate
             rvc.delegate = self
             
             //***** Add the hamburger menu *****//
-            let menuButton = UIBarButtonItem(image: UIImage(named:"ic_menu"), style: .plain, target: rvc, action:#selector(rvc.revealToggle(_:)))
+            let menuButton = UIBarButtonItem(image: UIImage(named: "ic_menu"), style: .plain, target: rvc, action: #selector(rvc.revealToggle(_:)))
             menuButton.tintColor = UIColor.white
             
             self.navigationItem.leftBarButtonItem = menuButton
@@ -103,7 +100,6 @@ class MemberShipViewController: UIViewController {
             //***** This line allows the user to swipe left-to-right to reveal the menu. We might want to comment this out if it becomes confusing. *****//
             self.view.addGestureRecognizer( rvc.panGestureRecognizer() )
         }
-        
         
     }
     override func didReceiveMemoryWarning() {
@@ -116,44 +112,37 @@ class MemberShipViewController: UIViewController {
         let context = Session.sharedSession
         
         UserClient.putSessionsUser(context.userAccessToken, member: context.selectedMembership!,
-                                    onSuccess:{
+                                    onSuccess: {
                                         
             //***** Done!  Segue to the Home page *****//
                                         
             self.dismiss(animated: true, completion: nil)
             self.getContactMembershipInfo()
             },
-        onError:{(error) in
+        onError: {(error) in
             Logger.sharedInstance.error("Could not set membership in Darwin API Session: \(error.description)")
             self.presentAlert(with: Constant.AlertErrorMessages.loginFailed, message: "Please contact your servicing office.  Could not select membership \(String(describing: context.selectedMembership?.memberNumber))")
             }
         )
     }
-
     
-   //MARK:create list of membership using action sheet
+   // MARK: create list of membership using action sheet
     
     /** 
     Create membership list using action sheet 
     - parameter No parameter :
     - returns : No return value
     */
-    fileprivate func CreateActionSheet(){
+    fileprivate func CreateActionSheet() {
         
-        
-        let actionSheet:UIAlertController = UIAlertController(title: "", message: "", preferredStyle: UIAlertControllerStyle.actionSheet)
-        
-        
+        let actionSheet: UIAlertController = UIAlertController(title: "", message: "", preferredStyle: UIAlertControllerStyle.actionSheet)
         
         let actionsheetViewController = UIViewController()
         var rect = CGRect(x: 0, y: 0, width: self.view.bounds.width - 20, height: CGFloat((Session.sharedSession.contact?.memberships?.count)! * 70))
         
 //        let rect1 = CGRectMake(0, 0, self.view.bounds.width - 20, CGFloat(self.view.bounds.height/2))
         
-        
-        
         actionsheetViewController.preferredContentSize = rect.size
-        
         
         let actionSheetTable = UITableView(frame: rect)
         
@@ -169,14 +158,12 @@ class MemberShipViewController: UIViewController {
         actionsheetViewController.view.bringSubview(toFront: actionSheetTable)
         actionsheetViewController.view.isUserInteractionEnabled = true
         
-        
-        
         let attributedString = NSAttributedString(string: "Select Membership", attributes: [
-            NSFontAttributeName : UIFont.systemFont(ofSize: 20),
-            NSForegroundColorAttributeName : UIColor.black
+            NSFontAttributeName: UIFont.systemFont(ofSize: 20),
+            NSForegroundColorAttributeName: UIColor.black
             ])
         
-        let action:UIAlertAction = UIAlertAction(title: Constant.AlertPromtMessages.cancel, style: UIAlertActionStyle.cancel, handler: nil)
+        let action: UIAlertAction = UIAlertAction(title: Constant.AlertPromtMessages.cancel, style: UIAlertActionStyle.cancel, handler: nil)
         
         actionSheet.setValue(attributedString, forKey: "attributedTitle")
         actionSheet.setValue(actionsheetViewController, forKey: "contentViewController")
@@ -188,10 +175,10 @@ class MemberShipViewController: UIViewController {
     
 }
 /** extension to implement table view datasource methods */
-extension MemberShipViewController:UITableViewDataSource{
+extension MemberShipViewController: UITableViewDataSource {
     /** Implement UITableView DataSource Methods */
      
-    //MARK:Number of section in Table View
+    // MARK: Number of section in Table View
     func numberOfSections(in tableView: UITableView) -> Int {
         if tableView.tag == 3 {
             return 1
@@ -199,7 +186,7 @@ extension MemberShipViewController:UITableViewDataSource{
 
         return numberOfSection
     }
-    //MARK:Number of Row in a section
+    // MARK: Number of Row in a section
     /** This function is used to return number of row in a section */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if(tableView.tag == 3) {
@@ -213,7 +200,7 @@ extension MemberShipViewController:UITableViewDataSource{
             return numberOfRowInSection
         }
     }
-    //MARK:Cell for a row
+    // MARK: Cell for a row
     /** This function is used to return cell for a row */
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if(tableView.tag == 3) {
@@ -235,19 +222,17 @@ extension MemberShipViewController:UITableViewDataSource{
                 cell.selectedImageView.image = UIImage(named: "Select-Off")
             }
             
-            
             cell.delegate = self
 
             return cell
             
-        }
-        else if (indexPath as NSIndexPath).section == 1 {
+        } else if (indexPath as NSIndexPath).section == 1 {
             guard let ownershipCell = tableView.dequeueReusableCell(withIdentifier: Constant.memberShipViewController.ownershipDetailCellIdentifier) as? OwnerShipDetailTableViewCell else { return UITableViewCell() }
             let ownership = ownershipArray[indexPath.row]
             ownershipCell.getCell(ownership: ownership)
             
             return ownershipCell
-        } else{
+        } else {
             guard let membershipCell = tableView.dequeueReusableCell(withIdentifier: Constant.memberShipViewController.membershipDetailCellIdentifier) as? MemberShipDetailTableViewCell else { return UITableViewCell() }
             let contact = Session.sharedSession.contact
                 if contact!.memberships!.count == 1 {
@@ -263,7 +248,7 @@ extension MemberShipViewController:UITableViewDataSource{
     /** This function is used to return title for header In section */
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         var title = ""
-        if section == 1 && tableView.tag != 3{
+        if section == 1 && tableView.tag != 3 {
             title = Constant.memberShipViewController.ownershipHeaderTitletext
             return title
         }
@@ -275,7 +260,7 @@ extension MemberShipViewController:UITableViewDataSource{
 
 extension for tableview delegate
 */
-extension MemberShipViewController:UITableViewDelegate{
+extension MemberShipViewController: UITableViewDelegate {
 	/** This function is used to return Height for footer In section */
 	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
 
@@ -288,8 +273,7 @@ extension MemberShipViewController:UITableViewDelegate{
 			return 0
         } else if section == 1 {
             return 30
-        }
-		else {
+        } else {
            return 0.0001
         }
 	}
@@ -298,8 +282,7 @@ extension MemberShipViewController:UITableViewDelegate{
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 		if(tableView.tag == 3) {
 			return 70
-		}
-		else if (indexPath as NSIndexPath).section == 0 {
+		} else if (indexPath as NSIndexPath).section == 0 {
             let extraViews = membershipProductsArray.count - 1
             return CGFloat((80 * extraViews) + 460)
         } else {
@@ -316,7 +299,7 @@ extension MemberShipViewController:UITableViewDelegate{
             
             //change previously selected image
             if let previousIndex = previousSelectedMembershipCellIndex {
-                if previousIndex != indexPath{
+                if previousIndex != indexPath {
                     let previousCell = tableView.cellForRow(at: previousIndex) as? ActionSheetTblCell
                     previousCell?.selectedImageView.image = UIImage(named: "Select-Off")
                 }
@@ -325,16 +308,16 @@ extension MemberShipViewController:UITableViewDelegate{
             let contact = Session.sharedSession.contact
             let membership = contact?.memberships![indexPath.row]
             
-            if Constant.MyClassConstants.memberNumber != membership?.memberNumber{
+            if Constant.MyClassConstants.memberNumber != membership?.memberNumber {
                 self.dismiss(animated: true, completion: nil)
                 let alert = UIAlertController(title: Constant.memberShipViewController.switchMembershipAlertTitle, message: Constant.memberShipViewController.switchMembershipAlertMessage, preferredStyle: .actionSheet)
-                let actionYes = UIAlertAction(title: "Yes", style: .destructive, handler: { (response) in
+                let actionYes = UIAlertAction(title: "Yes", style: .destructive, handler: { (_) in
                     self.showHudAsync()
                     Session.sharedSession.selectedMembership = membership
                     self.membershipWasSelected()
                 })
                 
-                let actionCancel = UIAlertAction(title: "No", style: .cancel, handler: { (response) in
+                let actionCancel = UIAlertAction(title: "No", style: .cancel, handler: { (_) in
                     //cancel
                 })
                 
@@ -352,12 +335,10 @@ extension MemberShipViewController:UITableViewDelegate{
 /*
 extension for actionsheet table delegate
 */
-extension MemberShipViewController:ActionSheetTblDelegate {
+extension MemberShipViewController: ActionSheetTblDelegate {
     
     func membershipSelectedAtIndex(_ index: Int) {
         self.dismiss(animated: true, completion: nil)
     }
     
 }
-
-

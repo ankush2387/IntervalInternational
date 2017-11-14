@@ -20,28 +20,27 @@ class ClubpointTableViewCell: UITableViewCell {
     
     @IBOutlet weak var mainView: UIView!
     
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
-    //MARK:get cell
+    // MARK: get cell
     /**
     Configure Cell components
     - parameter No parameter :
     - returns : No return value
     */
-    func getCell(){
+    func getCell() {
         setPropertiesToCellElements()
         updateCellComponentsText()
     }
-    //MARK:set properties to elements of cell
+    // MARK: set properties to elements of cell
     /**
     Apply properties to cell components
     - parameter No parameter :
     - returns : No return value
     */
-    fileprivate func setPropertiesToCellElements(){
+    fileprivate func setPropertiesToCellElements() {
         clubInfoLabel.textColor = UIColor(rgb: IUIKColorPalette.secondaryText.rawValue)
         pointInfoLabel.textColor = UIColor(rgb: IUIKColorPalette.secondaryText.rawValue)
         yearLabel.textColor = UIColor(rgb: IUIKColorPalette.secondaryA.rawValue)
@@ -53,7 +52,7 @@ class ClubpointTableViewCell: UITableViewCell {
     - parameter No parameter:
     - returns : No value is return
     */
-    fileprivate func updateCellComponentsText(){
+    fileprivate func updateCellComponentsText() {
         clubInfoLabel.text = Constant.ownershipViewController.clubpointTableViewCell.clubInfoLabeltext
         pointInfoLabel.text = Constant.ownershipViewController.clubpointTableViewCell.pointInfoLabelText
     }

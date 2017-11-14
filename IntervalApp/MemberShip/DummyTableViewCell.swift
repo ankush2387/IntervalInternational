@@ -14,7 +14,6 @@ class DummyTableViewCell: UITableViewCell {
     
     @IBOutlet weak var memberNumberLabel: UILabel!
     
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

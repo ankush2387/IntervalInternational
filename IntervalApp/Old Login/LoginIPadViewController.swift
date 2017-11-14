@@ -11,7 +11,7 @@ import DarwinSDK
 import LocalAuthentication
 import SVProgressHUD
 import IntervalUIKit
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+private func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
     return l < r
@@ -22,7 +22,7 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   }
 }
 
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+private func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
     return l > r
@@ -31,29 +31,27 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   }
 }
 
-
-class LoginIPadViewController: UIViewController
-{
+class LoginIPadViewController: UIViewController {
     //*****IBOutlets for controls*****//
-    @IBOutlet weak var backgroundImageView : UIImageView!
+    @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var buildLabel: UILabel!
-    @IBOutlet weak var viewSignIn : UIView!
+    @IBOutlet weak var viewSignIn: UIView!
     @IBOutlet weak var viewLower: UIView!
     @IBOutlet weak var viewActionSheet: UIView!
     @IBOutlet weak var tableActionSheet: UITableView!
-    @IBOutlet weak var userNameTextField : UITextField!
-    @IBOutlet weak var passwordTextField : UITextField!
-    @IBOutlet weak var enableTouchIdTextLabel : UILabel!
-    @IBOutlet weak var touchIdImageView : UIImageView!
-    @IBOutlet weak var enableTouchIdButton : UIButton!
-    @IBOutlet var helpButton : UIButton!
-    @IBOutlet var signInButton : UIButton!
-    @IBOutlet var joinTodayButton : UIButton!
-    @IBOutlet var privacyButton : UIButton!
-    @IBOutlet var resortDirectory : UIButton!
-    @IBOutlet var favorites : UIButton!
-    @IBOutlet var intervalHD : UIButton!
-    @IBOutlet var magazines : UIButton!
+    @IBOutlet weak var userNameTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var enableTouchIdTextLabel: UILabel!
+    @IBOutlet weak var touchIdImageView: UIImageView!
+    @IBOutlet weak var enableTouchIdButton: UIButton!
+    @IBOutlet var helpButton: UIButton!
+    @IBOutlet var signInButton: UIButton!
+    @IBOutlet var joinTodayButton: UIButton!
+    @IBOutlet var privacyButton: UIButton!
+    @IBOutlet var resortDirectory: UIButton!
+    @IBOutlet var favorites: UIButton!
+    @IBOutlet var intervalHD: UIButton!
+    @IBOutlet var magazines: UIButton!
     
     //*****IBOutlets for constraints*****//
     @IBOutlet weak var viewSignInTrailing: NSLayoutConstraint!
@@ -66,37 +64,34 @@ class LoginIPadViewController: UIViewController
     @IBOutlet weak var legalTrailing: NSLayoutConstraint!
     
     //***** Variables *****//
-    var userName : String?
-    var password : String?
+    var userName: String?
+    var password: String?
     var activeAlertCount = 0
     var alertsDictionary = NSMutableDictionary()
 	
-	
 	// computed property for touchIDEnabled, will turn on/off the checkbox
-	var touchIDEnabled : Bool = false {
+	var touchIDEnabled: Bool = false {
 		didSet {
-			enableTouchIdButton.isSelected = touchIDEnabled;
+			enableTouchIdButton.isSelected = touchIDEnabled
 			enableTouchIdButton(touchIDEnabled)
 		}
 	}
 	
     //*****Called to check the screen orientation*****//
     
-    
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.isNavigationBarHidden = true
     }
     
     override func viewWillLayoutSubviews() {
-        if(Constant.RunningDevice.deviceIdiom == .pad){
-            if(self.view.bounds.size.width > self.view.bounds.size.height){
+        if(Constant.RunningDevice.deviceIdiom == .pad) {
+            if(self.view.bounds.size.width > self.view.bounds.size.height) {
                 getScreenInLandscape()
-            }else{
+            } else {
                 getScreenInPotrait()
             }
         }
     }
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -125,11 +120,9 @@ class LoginIPadViewController: UIViewController
 		
 		enableTouchIdTextLabel.textColor = IUIKColorPalette.primary1.color
         
-        
-        
         //***** checking touch id sensor feature on running device *****//
         
-        var hasTouchID:Bool = false
+        var hasTouchID: Bool = false
 //        hasTouchID =  TouchID.isTouchIDAvailable()
 //        if(!(hasTouchID)){
 //            self.touchIdImageView.isHidden = true
@@ -138,7 +131,7 @@ class LoginIPadViewController: UIViewController
 //        }
 
         tableActionSheet.register(UINib(nibName: Constant.customCellNibNames.actionSheetTblCell, bundle: nil), forCellReuseIdentifier: Constant.loginScreenReusableIdentifiers.CustomCell)
-        tableActionSheet.tag = 3;
+        tableActionSheet.tag = 3
     }
 	
 	override func viewDidAppear(_ animated: Bool) {
@@ -189,13 +182,11 @@ class LoginIPadViewController: UIViewController
     }
 	
     override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
-      if(UIDeviceOrientationIsLandscape(UIDevice.current.orientation))
-        {
+      if(UIDeviceOrientationIsLandscape(UIDevice.current.orientation)) {
             getScreenInLandscape()
         }
         
-        if(UIDeviceOrientationIsPortrait(UIDevice.current.orientation))
-        {
+        if(UIDeviceOrientationIsPortrait(UIDevice.current.orientation)) {
             getScreenInPotrait()
         }
     }
@@ -207,7 +198,7 @@ class LoginIPadViewController: UIViewController
         UserDefaults.standard.synchronize()
     }
     
-    func getScreenInLandscape(){
+    func getScreenInLandscape() {
         legalTrailing.constant = 350
         viewSignInTrailing.constant = 500
         viewLowerLeading.constant = 500
@@ -221,7 +212,7 @@ class LoginIPadViewController: UIViewController
         //}
     }
     
-    func getScreenInPotrait(){
+    func getScreenInPotrait() {
         legalTrailing.constant = 30
         viewSignInTrailing.constant = 184
         viewLowerLeading.constant = 184
@@ -236,17 +227,16 @@ class LoginIPadViewController: UIViewController
     
     //***** MARK: - Business Actions *****//
     //***** function to call service on login button pressed *****//
-    @IBAction func loginButtonPressed(_ sender:AnyObject)
-    {
+    @IBAction func loginButtonPressed(_ sender: AnyObject) {
         self.view.endEditing(true)
         
         guard (self.userNameTextField.text?.characters.count > 0) else {
-            SimpleAlert.alert(self, title:Constant.AlertPromtMessages.loginTitle , message: Constant.AlertMessages.emptyLoginIdMessage)
+            SimpleAlert.alert(self, title: Constant.AlertPromtMessages.loginTitle, message: Constant.AlertMessages.emptyLoginIdMessage)
             return
 
         }
         guard (self.passwordTextField.text?.characters.count > 0) else {
-			SimpleAlert.alert(self, title:Constant.AlertPromtMessages.loginTitle , message: Constant.AlertMessages.emptyPasswordLoginMessage)
+			SimpleAlert.alert(self, title: Constant.AlertPromtMessages.loginTitle, message: Constant.AlertMessages.emptyPasswordLoginMessage)
 			return
 		}
 		
@@ -254,8 +244,7 @@ class LoginIPadViewController: UIViewController
 		let trimmedPassword = self.passwordTextField.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
 		
 		// make sure we have valid text to send along
-		guard trimmedUsername != nil && trimmedPassword != nil else
-		{
+		guard trimmedUsername != nil && trimmedPassword != nil else {
 			return
 		}
 		
@@ -266,7 +255,7 @@ class LoginIPadViewController: UIViewController
 		// touch disabled, perform standard login
 		else {
             saveUsername(user: trimmedUsername!)
-			performStandardLogin(trimmedUsername!, password:trimmedPassword!)
+			performStandardLogin(trimmedUsername!, password: trimmedPassword!)
 		}
     }
     
@@ -283,7 +272,7 @@ class LoginIPadViewController: UIViewController
     }
     
     //***** function called when user resort directory button pressed *****//
-    @IBAction func resortDirectoryButtonPressed(_ sender:AnyObject) {
+    @IBAction func resortDirectoryButtonPressed(_ sender: AnyObject) {
         Constant.MyClassConstants.googleMarkerArray.removeAll()
         Constant.MyClassConstants.runningFunctionality = Constant.sideMenuTitles.resortDirectory
          Helper.getResortDirectoryRegionList(viewController: self)
@@ -298,7 +287,7 @@ class LoginIPadViewController: UIViewController
     
     //**** Function called when magazines button is pressed *****//
     
-    @IBAction func magazinesButtonPressed(_ sender: AnyObject){
+    @IBAction func magazinesButtonPressed(_ sender: AnyObject) {
         self.performSegue(withIdentifier: Constant.segueIdentifiers.magazinesSegue, sender: nil)
     }
     
@@ -314,14 +303,13 @@ class LoginIPadViewController: UIViewController
         
     }
     
-    
     //**** function for privacy button ****//
-    @IBAction func openPrivacyPolicy(){
+    @IBAction func openPrivacyPolicy() {
         self.performSegue(withIdentifier: Constant.segueIdentifiers.privacyPolicyWebviewSegue, sender: nil)
     }
     
     //***** function to create an action sheet for iPad*****//
-    func createActionSheet(_ viewController:UIViewController){
+    func createActionSheet(_ viewController: UIViewController) {
         self.view.addSubview(self.viewActionSheet)
         self.viewActionSheet.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
         self.viewActionSheet.isHidden = false
@@ -331,7 +319,7 @@ class LoginIPadViewController: UIViewController
         
         //***** Try to do the OAuth Request to obtain an access token *****//
         UserClient.getCurrentProfile(Session.sharedSession.userAccessToken,
-                onSuccess:{(contact) in
+                onSuccess: {(contact) in
                 // Got an access token!  Save it for later use.
                 SVProgressHUD.dismiss()
                 self.hideHudAsync()
@@ -340,11 +328,11 @@ class LoginIPadViewController: UIViewController
     //***** Next, get the contact information.  See how many memberships this user has. *****//
             self.perform(#selector(LoginIPadViewController.contactDidChange), with: nil, afterDelay: 0.5)
             },
-            onError:{(error) in
+            onError: {(error) in
                 SVProgressHUD.dismiss()
                 self.hideHudAsync()
                 Logger.sharedInstance.warning(error.description)
-                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.loginFailed, message: error.localizedDescription)
+                SimpleAlert.alert(self, title: Constant.AlertErrorMessages.loginFailed, message: error.localizedDescription)
             }
         )
         
@@ -365,55 +353,48 @@ class LoginIPadViewController: UIViewController
                     
                     CreateActionSheet().membershipWasSelected()
                     
-                }
-                else {
+                } else {
                     
                     //self.createActionSheet(self)
                     //***** TODO: Display Modal to allow the user to select a membership! *****//
                     //self.CreateActionSheet(self)
                     membershipWasSelected()
                 }
-            }
-            else {
+            } else {
                 
                 Logger.sharedInstance.error("The contact \(contact.contactId) has no membership information!")
-                SimpleAlert.alert(self, title:Constant.AlertErrorMessages.loginFailed, message: Constant.AlertMessages.noMembershipMessage)
+                SimpleAlert.alert(self, title: Constant.AlertErrorMessages.loginFailed, message: Constant.AlertMessages.noMembershipMessage)
             }
         }
         
     }
 	
-	fileprivate func enableTouchIdButton(_ enable:Bool)
-	{
-		if (enable)
-		{
+	fileprivate func enableTouchIdButton(_ enable: Bool) {
+		if (enable) {
 			enableTouchIdTextLabel.textColor = IUIKColorPalette.primary1.color
 			self.touchIdImageView.image = UIImage(named: Constant.assetImageNames.TouchIdOn)
 			OldLoginViewController().touchIdButtonEnabled = true
-		}
-		else
-		{
+		} else {
 			self.touchIdImageView.image = UIImage(named: Constant.assetImageNames.TouchIdOff)
 			enableTouchIdTextLabel.textColor = IUIKColorPalette.primary1.color
 		}
 	}
 	
-	@IBAction func enableTouchIdButtonAction(_ sender:UIButton) {
+	@IBAction func enableTouchIdButtonAction(_ sender: UIButton) {
 		
 		//***** selecting and deselecting enable touchID option *****//
-		sender.isSelected = !sender.isSelected;
+		sender.isSelected = !sender.isSelected
 		
 		// only display the alert when the button is pressed by the user
 		if (sender.isSelected) {
 			SimpleAlert.alert(self, title: Constant.enableTouchIdMessages.authenticationFailedTitle, message: Constant.enableTouchIdMessages.onSuccessMessage)
-		}
-		else {
+		} else {
 			// clear the user's credentials when they turn off the toggle
 //            touchID.deactivateTouchID()
 		}
 		
 		// call the computed property to trigger the setting of touchid
-		self.touchIDEnabled = sender.isSelected;
+		self.touchIDEnabled = sender.isSelected
 	}
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -430,7 +411,7 @@ class LoginIPadViewController: UIViewController
         let context = Session.sharedSession
         
         UserClient.putSessionsUser(context.userAccessToken, member: context.selectedMembership!,
-        onSuccess:{
+        onSuccess: {
         //***** Favorites resort API call after successfull call *****//
         Helper.getUserFavorites()
         //***** Get upcoming trips for user API call after successfull call *****//
@@ -443,29 +424,26 @@ class LoginIPadViewController: UIViewController
             //NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
             
             Constant.MyClassConstants.getawayAlertsArray = response
-            for alert in Constant.MyClassConstants.getawayAlertsArray{
+            for alert in Constant.MyClassConstants.getawayAlertsArray {
                 self.callForIndividualAlert(alert)
             }
             self.getStatusForAllAlerts()
                                         
-
-                                        
-        }) { (error) in
+        }) { (_) in
                                         
     }
-
                                     
         Constant.MyClassConstants.isLoginSuccessfull = true
         self.performSegue(withIdentifier: Constant.segueIdentifiers.dashboradSegueIdentifier, sender: nil)
                                     
     },
-            onError:{(error) in
-            SimpleAlert.alert(self, title:Constant.AlertErrorMessages.loginFailed, message: "\(Constant.AlertPromtMessages.membershipFailureMessage) \(String(describing: context.selectedMembership?.memberNumber))")
+            onError: {(_) in
+            SimpleAlert.alert(self, title: Constant.AlertErrorMessages.loginFailed, message: "\(Constant.AlertPromtMessages.membershipFailureMessage) \(String(describing: context.selectedMembership?.memberNumber))")
             }
         )
     }
     
-    func callForIndividualAlert(_ alert:RentalAlert){
+    func callForIndividualAlert(_ alert: RentalAlert) {
         Constant.MyClassConstants.activeAlertsArray.removeAllObjects()
         RentalClient.getAlert(Session.sharedSession.userAccessToken, alertId: alert.alertId!, onSuccess: { (response) in
             
@@ -473,80 +451,74 @@ class LoginIPadViewController: UIViewController
             alertVacationInfo = response
             self.alertsDictionary .setValue(alertVacationInfo, forKey: String(describing: alert.alertId!))
             self.searchVacationPressed(alert)
-        }) { (error) in
+        }) { (_) in
             
         }
         
     }
     
-    func searchVacationPressed(_ alert : RentalAlert){
+    func searchVacationPressed(_ alert: RentalAlert) {
         var getawayAlert = RentalAlert()
         getawayAlert = self.alertsDictionary.value(forKey: String(describing: alert.alertId!)) as! RentalAlert
         
         let searchResortRequest = RentalSearchDatesRequest()
-        searchResortRequest.checkInToDate = Helper.convertStringToDate(dateString:getawayAlert.latestCheckInDate!,format:Constant.MyClassConstants.dateFormat)
-        searchResortRequest.checkInFromDate = Helper.convertStringToDate(dateString:getawayAlert.earliestCheckInDate!,format:Constant.MyClassConstants.dateFormat)
+        searchResortRequest.checkInToDate = Helper.convertStringToDate(dateString: getawayAlert.latestCheckInDate!, format: Constant.MyClassConstants.dateFormat)
+        searchResortRequest.checkInFromDate = Helper.convertStringToDate(dateString: getawayAlert.earliestCheckInDate!, format: Constant.MyClassConstants.dateFormat)
         searchResortRequest.resorts = getawayAlert.resorts
         searchResortRequest.destinations = getawayAlert.destinations
         
         if Reachability.isConnectedToNetwork() == true {
             
-            RentalClient.searchDates(Session.sharedSession.userAccessToken, request: searchResortRequest, onSuccess:{ (searchDates) in
+            RentalClient.searchDates(Session.sharedSession.userAccessToken, request: searchResortRequest, onSuccess: { (searchDates) in
                 Constant.MyClassConstants.resortCodesArray = searchDates.resortCodes
                 Constant.MyClassConstants.alertsResortCodeDictionary.setValue(searchDates.resortCodes, forKey: String(describing: alert.alertId!))
                 Constant.MyClassConstants.alertsSearchDatesDictionary.setValue(searchDates.checkInDates, forKey: String(describing: alert.alertId!))
                 
                 if(searchDates.checkInDates.count == 0 || alert.alertId == 123456) {
                     
-                }
-                else {
+                } else {
                     if Constant.MyClassConstants.activeAlertsArray.count < 1 { //TODO - JHON: forcing alerts count to be one. fix when push notifications is working.
                         Constant.MyClassConstants.activeAlertsArray.add(alert)
                     }
                 }
-                if(self.activeAlertCount < Constant.MyClassConstants.getawayAlertsArray.count - 1){
+                if(self.activeAlertCount < Constant.MyClassConstants.getawayAlertsArray.count - 1) {
                     self.activeAlertCount = self.activeAlertCount + 1
                     self.getStatusForAllAlerts()
-                }else{
-                    NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
+                } else {
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
                 }
-            })
-            { (error) in
+            }) { (_) in
                 
             }
-        }else {
+        } else {
             
         }
     }
 
-    func getStatusForAllAlerts(){
-        if(Constant.MyClassConstants.getawayAlertsArray.count > 0){
+    func getStatusForAllAlerts() {
+        if(Constant.MyClassConstants.getawayAlertsArray.count > 0) {
         self.callForIndividualAlert(Constant.MyClassConstants.getawayAlertsArray[activeAlertCount])
         }
     }
 }
 //***** MARK: Extension classes starts from here *****//
 
-
 // extension to handle login responsibilities
 extension LoginIPadViewController {
-	fileprivate func performStandardLogin(_ username:String, password:String)
-	{
+	fileprivate func performStandardLogin(_ username: String, password: String) {
 		// login button pressed, confirm user sign-in
         Constant.MyClassConstants.loginOriginationPoint = Constant.omnitureCommonString.signInPage
 		Helper.loginButtonPressed(sender: self, userName: username, password: password, completionHandler: { (success) in
 			if (success) {
 				// let the login process continue
 				Helper.accessTokenDidChange(sender: self)
-			}
-			else {
+			} else {
 				
 			}
 		})
 	}
 	
-	fileprivate func performTouchLogin(_ username:String, password:String)
-	{
+	fileprivate func performTouchLogin(_ username: String, password: String) {
 		// login button pressed, confirm user sign-in
 //        Helper.loginButtonPressed(sender: self, userName: username, password: password, completionHandler: { (success) in
 ////            if (success)
@@ -575,8 +547,7 @@ extension LoginIPadViewController {
 ////        })
 	}
 	
-	fileprivate func performAutoTouchLogin()
-	{
+	fileprivate func performAutoTouchLogin() {
 		// grab the saved credentials
 //        self.touchID.getAuthenticationInfo({ (authInfo) in
 //            if (authInfo != nil) {
@@ -603,18 +574,15 @@ extension LoginIPadViewController {
 	}
 }
 
-extension LoginIPadViewController:UITextFieldDelegate {
+extension LoginIPadViewController: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         textField.becomeFirstResponder()
     }
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if (textField.tag == 1)
-        {
+        if (textField.tag == 1) {
             self.userName = textField.text
-        }
-        else
-        {
+        } else {
             self.password = textField.text
         }
         textField.resignFirstResponder()
@@ -625,7 +593,7 @@ extension LoginIPadViewController:UITextFieldDelegate {
     }
 }
 
-extension LoginIPadViewController:UITableViewDelegate {
+extension LoginIPadViewController: UITableViewDelegate {
     
     //***** UITableview delegate methods definition here *****//
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -660,7 +628,7 @@ extension LoginIPadViewController:UITableViewDelegate {
 	}
 }
 
-extension LoginIPadViewController:UITableViewDataSource {
+extension LoginIPadViewController: UITableViewDataSource {
 	
     //***** UITableview dataSource methods definition here *****//
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -673,20 +641,18 @@ extension LoginIPadViewController:UITableViewDataSource {
         return (contact?.memberships?.count)!
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
-    {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let contact = Session.sharedSession.contact
         let membership = contact?.memberships![indexPath.row]
         let cell: ActionSheetTblCell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.CustomCell, for: indexPath) as! ActionSheetTblCell
-       
        
         cell.membershipTextLabel.text = Constant.CommonLocalisedString.memberNumber
         cell.membershipNumber.text = membership?.memberNumber
         let Product = membership?.getProductWithHighestTier()
         let productcode = Product?.productCode
         cell.membershipName.text = Product?.productName
-        if(Product != nil){
+        if(Product != nil) {
           cell.memberImageView.image = UIImage(named: productcode!)
         }
         return cell

@@ -27,11 +27,11 @@ class AvailableDestinationPlaceTableViewCell: UITableViewCell {
      - returns : No value is return
      */
     
-    func getCell(_ indexpath:IndexPath,selectedPlaceDictionary:[Int:Bool] = [Int:Bool]()){
+    func getCell(_ indexpath: IndexPath, selectedPlaceDictionary: [Int: Bool] = [Int: Bool]()) {
         
     }
     
-    func setAllAvailableAreaCell(index:Int, area:Area){
+    func setAllAvailableAreaCell(index: Int, area: Area) {
         if(Constant.RunningDevice.deviceIdiom == .pad) {
             self.lblAreaName.text = area.areaName
             
@@ -41,7 +41,6 @@ class AvailableDestinationPlaceTableViewCell: UITableViewCell {
         }
         
     }
-    
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

@@ -9,7 +9,6 @@
 import UIKit
 import IntervalUIKit
 class DropDownListCell: UITableViewCell {
-
     
     //Outlets
     
@@ -29,4 +28,3 @@ class DropDownListCell: UITableViewCell {
     }
 
 }
-

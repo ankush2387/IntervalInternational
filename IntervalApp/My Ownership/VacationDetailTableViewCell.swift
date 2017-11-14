@@ -24,23 +24,23 @@ class VacationDetailTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
     }
-    //MARK:get cell
+    // MARK: get cell
     /**
     Configure Cell components
     - parameter No parameter:
     - returns : No return value
     */
-    func getCell(){
+    func getCell() {
         setPropertiesTocellComponenet()
         updateCellComponentstext()
     }
-    //MARK:set properties to cell component
+    // MARK: set properties to cell component
     /** 
     Apply Properties to cell components
     - parameter No parameter:
     - returns : No return value
     */
-    fileprivate func setPropertiesTocellComponenet(){
+    fileprivate func setPropertiesTocellComponenet() {
         vacationNameLabel.textColor = UIColor(rgb: IUIKColorPalette.primary1.rawValue)
         vacationAddressLabel.textColor = UIColor(rgb: IUIKColorPalette.secondaryText.rawValue)
         vacationCodeLabel.textColor = UIColor(rgb: IUIKColorPalette.secondaryB.rawValue)
@@ -50,7 +50,7 @@ class VacationDetailTableViewCell: UITableViewCell {
     - parameter No parameter:
     - returns : No value is return
     */
-    fileprivate func updateCellComponentstext(){
+    fileprivate func updateCellComponentstext() {
         
     }
 

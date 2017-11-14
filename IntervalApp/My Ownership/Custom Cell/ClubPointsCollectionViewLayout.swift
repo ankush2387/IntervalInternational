@@ -12,8 +12,8 @@ class ClubPointsCollectionViewLayout: UICollectionViewLayout {
     
     let numberOfColumns = 6
     var itemAttributes: [[UICollectionViewLayoutAttributes]]?
-    var itemsSize : NSMutableArray! = []
-    var contentSize : CGSize!
+    var itemsSize: NSMutableArray! = []
+    var contentSize: CGSize!
     
     override func prepare() {
         //itemAttributes = []
@@ -23,14 +23,14 @@ class ClubPointsCollectionViewLayout: UICollectionViewLayout {
         
         if (self.itemAttributes != nil && (self.itemAttributes?.count)! > 0) {
             for section in 0..<self.collectionView!.numberOfSections {
-                let numberOfItems : Int = self.collectionView!.numberOfItems(inSection: section)
+                let numberOfItems: Int = self.collectionView!.numberOfItems(inSection: section)
                 for index in 0..<numberOfItems {
                     if section != 0 && index != 0 {
                         continue
                     }
                     
                     let indexPath = IndexPath(item: index, section: section)
-                    let attributes : UICollectionViewLayoutAttributes = self.layoutAttributesForItem(at: indexPath)!
+                    let attributes: UICollectionViewLayoutAttributes = self.layoutAttributesForItem(at: indexPath)!
                     
                     if section == 0 {
                         var frame = attributes.frame
@@ -53,10 +53,10 @@ class ClubPointsCollectionViewLayout: UICollectionViewLayout {
         }
         
         var column = 0
-        var xOffset : CGFloat = 0
-        var yOffset : CGFloat = 0
-        var contentWidth : CGFloat = 0
-        var contentHeight : CGFloat = 0
+        var xOffset: CGFloat = 0
+        var yOffset: CGFloat = 0
+        var contentWidth: CGFloat = 0
+        var contentHeight: CGFloat = 0
         
         for section in 0..<self.collectionView!.numberOfSections {
             let sectionAttributes = NSMutableArray()
@@ -68,7 +68,7 @@ class ClubPointsCollectionViewLayout: UICollectionViewLayout {
                 attributes.frame = CGRect(x: xOffset, y: yOffset, width: (itemSize?.width)!, height: 80).integral
                 
                 if section == 0 && index == 0 {
-                    attributes.zIndex = 1024;
+                    attributes.zIndex = 1024
                 } else  if section == 0 || index == 0 {
                     attributes.zIndex = 1023
                 }
@@ -105,20 +105,20 @@ class ClubPointsCollectionViewLayout: UICollectionViewLayout {
             self.itemAttributes?.append(sectionAttributes as! [UICollectionViewLayoutAttributes])
         }
         
-        let attributes : UICollectionViewLayoutAttributes = UICollectionViewLayoutAttributes.init(forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, with: NSIndexPath.init(row: (self.itemAttributes?.count)!, section: (self.itemAttributes?.count)!) as IndexPath)
+        let attributes: UICollectionViewLayoutAttributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, with: NSIndexPath(row: (self.itemAttributes?.count)!, section: (self.itemAttributes?.count)!) as IndexPath)
         contentHeight = attributes.frame.origin.y + attributes.frame.size.height
-        self.contentSize = CGSize(width: contentWidth, height: CGFloat(Constant.MyClassConstants.clubIntervalDictionary.count + 1)*80)
+        self.contentSize = CGSize(width: contentWidth, height: CGFloat(Constant.MyClassConstants.clubIntervalDictionary.count + 1) * 80)
     }
 
-    override var collectionViewContentSize : CGSize {
+    override var collectionViewContentSize: CGSize {
         return self.contentSize
     }
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         if (indexPath.section >= (itemAttributes?.count)!) {
-            return nil;
+            return nil
         } else if (indexPath.item >= (itemAttributes?[indexPath.section].count)!) {
-            return nil;
+            return nil
         }
         return itemAttributes?[indexPath.section][indexPath.item]
     }
@@ -129,10 +129,9 @@ class ClubPointsCollectionViewLayout: UICollectionViewLayout {
             if let itemAttributes1 = self.itemAttributes! as NSArray as? [[UICollectionViewLayoutAttributes]] {
                 for section in itemAttributes1 {
                     
-                    let filteredArray  =  section.filter{evaluatedObject in
+                    let filteredArray = section.filter {evaluatedObject in
                         return rect.intersects(evaluatedObject.frame)
                     }
-                    
                     
                     attributes.append(contentsOf: filteredArray)
                 }
@@ -147,7 +146,7 @@ class ClubPointsCollectionViewLayout: UICollectionViewLayout {
     }
     
     func sizeForItemWithColumnIndex(_ columnIndex: Int) -> CGSize {
-        var text : String = ""
+        var text: String = ""
         switch (columnIndex) {
         case 0:
             text = "Studio"
@@ -163,8 +162,8 @@ class ClubPointsCollectionViewLayout: UICollectionViewLayout {
             text = "Col 7"
         }
         
-        let size : CGSize = (text as NSString).size(attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 15.0)])
-        let width : CGFloat = size.width + 40
+        let size: CGSize = (text as NSString).size(attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 15.0)])
+        let width: CGFloat = size.width + 40
         return CGSize(width: width, height: 80)
     }
     

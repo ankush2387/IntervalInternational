@@ -10,7 +10,6 @@ import UIKit
 
 class TravelWindowSelectionCell: UICollectionViewCell {
     
-    
     @IBOutlet weak var yearMonthBaseView: UIView!
     @IBOutlet weak var yearLabel: UILabel!
     @IBOutlet weak var monthLabel: UILabel!

@@ -11,7 +11,6 @@ import DarwinSDK
 
 class MembershipProductCell: UITableViewCell {
     
-    
     @IBOutlet weak var productImageView: UIImageView!
     @IBOutlet weak var productNameLabel: UILabel!
     @IBOutlet weak var expirationDateLabel: UILabel!
@@ -39,7 +38,7 @@ class MembershipProductCell: UITableViewCell {
         productNameLabel.text = product.productName
         expirationDateLabel.text = dateString
         
-        if product.highestTier == false{
+        if product.highestTier == false {
             if let imageName = product.productCode {
                 productImageView.image = UIImage(named: imageName)
             }
@@ -48,7 +47,7 @@ class MembershipProductCell: UITableViewCell {
 }
 
 extension UIView {
-    func roundCorners(corners:UIRectCorner, radius: CGFloat) {
+    func roundCorners(corners: UIRectCorner, radius: CGFloat) {
         let path = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
         let mask = CAShapeLayer()
         mask.path = path.cgPath

@@ -22,12 +22,9 @@ class SelectBedroomViewController: UIViewController {
         bedroomSelectionTableView.dataSource = self
         
         if(Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count == 0) {
-            Constant.MyClassConstants.bedRoomSizeSelectedIndexArray = [0,1,2,3,4]
-            self.localArrayToHoldSelection = [0,1,2,3,4]
+            Constant.MyClassConstants.bedRoomSizeSelectedIndexArray = [0, 1, 2, 3, 4]
+            self.localArrayToHoldSelection = [0, 1, 2, 3, 4]
         }
-
-        
-        
     
         // Do any additional setup after loading the view.
     }
@@ -67,12 +64,11 @@ class SelectBedroomViewController: UIViewController {
                 Constant.MyClassConstants.selectedBedRoomSize = Constant.MyClassConstants.allBedrommSizes
                 Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.removeAllObjects()
                 
-                for index in self.localArrayToHoldSelection{
+                for index in self.localArrayToHoldSelection {
                     Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.add(index as! Int)
                 }
                 
-            }
-            else {
+            } else {
                 var i = 0
                 var selectedBedroomsizes = ""
                 for index in localArrayToHoldSelection {
@@ -82,8 +78,7 @@ class SelectBedroomViewController: UIViewController {
                         selectedBedroomsizes = selectedBedroomsizes.appending("\(friendlyName), ")
                         
                         i = i + 1
-                    }
-                    else {
+                    } else {
                         let friendlyName = UnitSize.forDisplay[index as! Int].friendlyName()
                         selectedBedroomsizes = selectedBedroomsizes.appending("\(friendlyName)")
                     }
@@ -146,9 +141,9 @@ extension SelectBedroomViewController: UITableViewDelegate {
         if(self.localArrayToHoldSelection.count == 0) {
             self.localArrayToHoldSelection.add(cell.tag)
 
-        }else {
+        } else {
             var flag = true
-            let tempArray:NSMutableArray = NSMutableArray()
+            let tempArray: NSMutableArray = NSMutableArray()
             for index in self.localArrayToHoldSelection {
                 
                 if(index as! Int == cell.tag) {
@@ -177,6 +172,3 @@ extension SelectBedroomViewController: UITableViewDelegate {
         }
     }
 }
-
-
-

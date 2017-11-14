@@ -27,7 +27,7 @@ class MagazinesIPadViewController: UIViewController {
                 rvc.delegate = self
                 
                 //***** Add the hamburger menu *****//
-                let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action:#selector(SWRevealViewController.revealToggle(_:)))
+                let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action: #selector(SWRevealViewController.revealToggle(_:)))
                 menuButton.tintColor = UIColor.white
                 self.navigationItem.leftBarButtonItem = menuButton
                 
@@ -35,10 +35,9 @@ class MagazinesIPadViewController: UIViewController {
                 self.view.addGestureRecognizer( rvc.panGestureRecognizer())
             }
             
-        }
-        else {
+        } else {
             
-            let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(menuBackButtonPressed))
+            let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(menuBackButtonPressed))
             menuButton.tintColor = UIColor.white
             //self.tabBarController?.delegate = self
             self.navigationItem.leftBarButtonItem = menuButton
@@ -50,7 +49,7 @@ class MagazinesIPadViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        Helper.getMagazines(senderViewController:self)
+        Helper.getMagazines(senderViewController: self)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadMagazines), name: NSNotification.Name(rawValue: Constant.notificationNames.magazineAlertNotification), object: nil)
 //        NotificationCenter.default.addObserver(self, selector: #selector(getAllMagazines), name: NSNotification.Name(rawValue: Constant.notificationNames.accessTokenAlertNotification), object: nil)
     }
@@ -62,16 +61,15 @@ class MagazinesIPadViewController: UIViewController {
 //        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.accessTokenAlertNotification), object: nil)
         
     }
-
     
     //***** Notification fired when response is obtained from service call *****//
-    func reloadMagazines(){
+    func reloadMagazines() {
         magazinesCollectionView.reloadData()
     }
     
     //***** Notification fired when system access token is received. *****//
     func getAllMagazines() {
-        Helper.getMagazines(senderViewController:self)
+        Helper.getMagazines(senderViewController: self)
     }
     
     override func didReceiveMemoryWarning() {
@@ -87,14 +85,14 @@ class MagazinesIPadViewController: UIViewController {
         
     }
     //***** Method for back button *****//
-    func menuBackButtonPressed(sender:UIBarButtonItem) {
-        NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.MyClassConstants.popToLoginView), object: nil)
+    func menuBackButtonPressed(sender: UIBarButtonItem) {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.MyClassConstants.popToLoginView), object: nil)
     }
 }
 
 //***** MARK: Extension classes starts from here *****//
 
-extension MagazinesIPadViewController:UICollectionViewDelegate {
+extension MagazinesIPadViewController: UICollectionViewDelegate {
     
     //***** Collection delegate methods definition here *****//
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -104,7 +102,7 @@ extension MagazinesIPadViewController:UICollectionViewDelegate {
         
     }
 }
-extension MagazinesIPadViewController:UICollectionViewDelegateFlowLayout {
+extension MagazinesIPadViewController: UICollectionViewDelegateFlowLayout {
     
     //***** Collection delegate methods definition here *****//
     
@@ -122,11 +120,11 @@ extension MagazinesIPadViewController:UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         //return CGSizeMake(UIScreen.main.bounds.width/3-20,UIScreen.main.bounds.width/3+100)
-        return CGSize(width:UIScreen.main.bounds.width/3-20, height:UIScreen.main.bounds.width/3+100)
+        return CGSize(width: UIScreen.main.bounds.width / 3 - 20, height: UIScreen.main.bounds.width / 3 + 100)
     }
 }
 
-extension MagazinesIPadViewController:UICollectionViewDataSource {
+extension MagazinesIPadViewController: UICollectionViewDataSource {
     
     //***** Collection dataSource methods definition here *****//
     
@@ -146,8 +144,7 @@ extension MagazinesIPadViewController:UICollectionViewDataSource {
         cell.currentIssueView.layer.cornerRadius = 35
         if(indexPath.row != 0) {
             cell.currentIssueView.isHidden = true
-        }
-        else {
+        } else {
             cell.currentIssueView.isHidden = false
         }
         cell.magazineImageView.backgroundColor = UIColor.lightGray

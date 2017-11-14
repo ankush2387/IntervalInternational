@@ -10,7 +10,6 @@ import UIKit
 
 class CertificateCell: UITableViewCell {
     
-    
     // Travel Window Outlets...
     
     @IBOutlet weak var travelWindowStartDateLbl: UILabel!
@@ -18,7 +17,6 @@ class CertificateCell: UITableViewCell {
     @IBOutlet weak var travelWindowStartDayLbl: UILabel!
     
     @IBOutlet weak var travelWindowStartMonthYearLbl: UILabel!
-    
     
     @IBOutlet weak var travelWindowEndDateLbl: UILabel!
     
@@ -50,4 +48,3 @@ class CertificateCell: UITableViewCell {
     }
     
 }
-

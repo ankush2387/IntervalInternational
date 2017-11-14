@@ -17,7 +17,7 @@ class MyUpcomingTripViewController: UIViewController{
     //***** Outlets *****//
     @IBOutlet var myUpcommingTBL: UITableView!
     @IBOutlet var conformationNumber:String?
-
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,11 +41,11 @@ class MyUpcomingTripViewController: UIViewController{
         
         // Omniture tracking with event 73
         let noTrips:Int? = Int(Constant.omnitureCommonString.noTrips)
-       
+        
         let userInfo: [String: String] = [
             Constant.omnitureEvars.eVar18 : "",
             //TODO (Jhon): error found in iPad with user bwilling
-//            Constant.omnitureEvars.eVar18 : Constant.MyClassConstants.upcomingOriginationPoint,
+            //            Constant.omnitureEvars.eVar18 : Constant.MyClassConstants.upcomingOriginationPoint,
             Constant.omnitureEvars.eVar31 : "\(String(describing: Constant.MyClassConstants.upcomingTripsArray.count > 0 ? Constant.MyClassConstants.upcomingTripsArray.count : noTrips))\(Constant.omnitureEvars.eVar18)"
         ]
         ADBMobile.trackAction(Constant.omnitureEvents.event73, data: userInfo)
@@ -94,8 +94,8 @@ extension MyUpcomingTripViewController:UITableViewDataSource {
                 
                 return UITableViewCell()
             }
-             cell.searchVacationButton.layer.cornerRadius = 5
-             cell.selectionStyle = .none
+            cell.searchVacationButton.layer.cornerRadius = 5
+            cell.selectionStyle = .none
             return cell
             
             
@@ -154,20 +154,20 @@ extension MyUpcomingTripViewController:UITableViewDataSource {
             cell.footerViewDetailedButton.contentEdgeInsets = UIEdgeInsetsMake(0, 20, 0, 0)
             if let checkInDate = upComingTrip.unit?.checkInDate, let checkOutDate =  upComingTrip.unit?.checkOutDate {
                 
-                 let checkInDate = Helper.convertStringToDate(dateString:checkInDate, format: Constant.MyClassConstants.dateFormat)
+                let checkInDate = Helper.convertStringToDate(dateString:checkInDate, format: Constant.MyClassConstants.dateFormat)
                 let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
                 let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkInDate)
                 if let weekday =  myComponents.weekday, let month = myComponents.month, let day = myComponents.day, let year = myComponents.year {
-                      let formatedCheckInDate = "\(Helper.getWeekdayFromInt(weekDayNumber: weekday)) \(Helper.getMonthnameFromInt(monthNumber: month)). \(day), \(year)"
-                      let checkOutDate = Helper.convertStringToDate(dateString: checkOutDate, format: Constant.MyClassConstants.dateFormat)
-                      let myComponents1 = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkOutDate)
-                if let weekday =  myComponents1.weekday, let month = myComponents1.month, let day = myComponents1.day, let year = myComponents1.year {
+                    let formatedCheckInDate = "\(Helper.getWeekdayFromInt(weekDayNumber: weekday)) \(Helper.getMonthnameFromInt(monthNumber: month)). \(day), \(year)"
+                    let checkOutDate = Helper.convertStringToDate(dateString: checkOutDate, format: Constant.MyClassConstants.dateFormat)
+                    let myComponents1 = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkOutDate)
+                    if let weekday =  myComponents1.weekday, let month = myComponents1.month, let day = myComponents1.day, let year = myComponents1.year {
                         let formatedCheckOutDate = "\(Helper.getWeekdayFromInt(weekDayNumber: weekday)) \(Helper.getMonthnameFromInt(monthNumber: month)). \(day), \(year)"
                         cell.tripDateLabel.text = "\(formatedCheckInDate) - \(formatedCheckOutDate)".localized()
                     }
                 }
             }
-
+            
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             for layer in cell.resortNameBaseView.layer.sublayers!{
                 if layer.isKind(of: CAGradientLayer.self) {
@@ -193,12 +193,12 @@ extension MyUpcomingTripViewController:UITableViewDataSource {
             cell.resortLocationLabel.text = resortAddress.joined(separator: ", ").localized()
             
             return cell
-         }
+        }
     }
     
     @IBAction func viewTripDetailsClicked(_ sender:UIButton) {
         if let transactionNumber = Constant.MyClassConstants.upcomingTripsArray[sender.tag].exchangeNumber {
-               Constant.MyClassConstants.transactionNumber = "\(transactionNumber)"
+            Constant.MyClassConstants.transactionNumber = "\(transactionNumber)"
         }
         if let transactionType = Constant.MyClassConstants.upcomingTripsArray[sender.tag].type
         {
@@ -209,7 +209,7 @@ extension MyUpcomingTripViewController:UITableViewDataSource {
             
             Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails = exchangeResponse
             self.hideHudAsync()
-        self.performSegue(withIdentifier:Constant.segueIdentifiers.upcomingDetailSegue, sender:nil)
+            self.performSegue(withIdentifier:Constant.segueIdentifiers.upcomingDetailSegue, sender:nil)
         }) { error in
             self.hideHudAsync()
             self.presentErrorAlert(UserFacingCommonError.generic)
@@ -219,7 +219,7 @@ extension MyUpcomingTripViewController:UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         
         //***** Return number of sections required in tableview *****//
-        if Constant.MyClassConstants.upcomingTripsArray.count == 0 {
+        if Constant.MyClassConstants.upcomingTripsArray.isEmpty {
             return 1
         } else {
             return Constant.MyClassConstants.upcomingTripsArray.count
@@ -232,4 +232,5 @@ extension MyUpcomingTripViewController:UITableViewDataSource {
         return 1
     }
 }
+
 

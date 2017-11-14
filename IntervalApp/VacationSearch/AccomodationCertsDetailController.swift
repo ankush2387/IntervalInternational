@@ -14,13 +14,13 @@ class AccomodationCertsDetailController: UIViewController {
     //***** Outlets *****//
     @IBOutlet weak var pageControl: UIPageControl!
     
-    var collectionviewSelectedIndex:Int = 0
+    var collectionviewSelectedIndex: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.title = Constant.ControllerTitles.accomodationCertsDetailController
-        let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(AccomodationCertsDetailController.menuBackButtonPressed(_:)))
+        let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(AccomodationCertsDetailController.menuBackButtonPressed(_:)))
         menuButton.tintColor = UIColor.white
         
         self.navigationItem.leftBarButtonItem = menuButton
@@ -31,14 +31,14 @@ class AccomodationCertsDetailController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func menuBackButtonPressed(_ sender:UIBarButtonItem) {
+    func menuBackButtonPressed(_ sender: UIBarButtonItem) {
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as! SWRevealViewController
         
         //***** creating animation transition to show custom transition animation *****//
         let transition: CATransition = CATransition()
-        let timeFunc : CAMediaTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        let timeFunc: CAMediaTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         transition.duration = 0.25
         transition.timingFunction = timeFunc
         transition.type = kCATransitionPush
@@ -46,13 +46,12 @@ class AccomodationCertsDetailController: UIViewController {
         viewController.view.layer.add(transition, forKey: Constant.MyClassConstants.switchToView)
         UIApplication.shared.keyWindow?.rootViewController = viewController
     }
-
     
 }
 
 //***** MARK: Extension classes starts from here *****//
 
-extension AccomodationCertsDetailController:UICollectionViewDelegate {
+extension AccomodationCertsDetailController: UICollectionViewDelegate {
     
     //***** Collection delegate methods definition here *****//
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -65,7 +64,7 @@ extension AccomodationCertsDetailController:UICollectionViewDelegate {
     
 }
 
-extension AccomodationCertsDetailController:UICollectionViewDelegateFlowLayout {
+extension AccomodationCertsDetailController: UICollectionViewDelegateFlowLayout {
     
     //***** Collection delegate methods definition here *****//
     
@@ -78,7 +77,7 @@ extension AccomodationCertsDetailController:UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension AccomodationCertsDetailController:UICollectionViewDataSource {
+extension AccomodationCertsDetailController: UICollectionViewDataSource {
     
     //***** Collection dataSource methods definition here *****//
     
@@ -89,20 +88,16 @@ extension AccomodationCertsDetailController:UICollectionViewDataSource {
         return 5
     }
     
-    
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.vacationSearchScreenReusableIdentifiers.travelWindowSelectionCell, for: indexPath) as! TravelWindowSelectionCell
         if((indexPath as NSIndexPath).row == collectionviewSelectedIndex) {
-            
           
             cell.counterLabel.backgroundColor = IUIKColorPalette.alert.color
             cell.yearMonthBaseView.backgroundColor = IUIKColorPalette.titleBackdrop.color
             cell.monthLabel.textColor = UIColor.white
             cell.yearLabel.textColor = UIColor.white
             cell.counterLabel.isHidden = false
-        }
-        else {
+        } else {
             cell.yearMonthBaseView.backgroundColor = UIColor.white
             cell.monthLabel.textColor = IUIKColorPalette.primary1.color
             cell.yearLabel.textColor = IUIKColorPalette.primary1.color
@@ -118,8 +113,7 @@ extension AccomodationCertsDetailController:UICollectionViewDataSource {
     }
 }
 
-extension AccomodationCertsDetailController:UITableViewDelegate {
-    
+extension AccomodationCertsDetailController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
@@ -135,9 +129,7 @@ extension AccomodationCertsDetailController:UITableViewDelegate {
         return headerView
     }
     
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
-    {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     
     }
  
@@ -153,8 +145,7 @@ extension AccomodationCertsDetailController:UITableViewDelegate {
 	}
 }
 
-extension AccomodationCertsDetailController:UITableViewDataSource {
-    
+extension AccomodationCertsDetailController: UITableViewDataSource {
     
     //***** MARK: - Table view data source *****//
     
@@ -169,10 +160,8 @@ extension AccomodationCertsDetailController:UITableViewDataSource {
         //***** return number of rows for each section in tableview *****//
         return 5
     }
-
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
-    {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         //***** configuring  and returned cell for each row *****//
          let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.eligibleDestinationCell, for: indexPath) as! EligibleDestinationCell
@@ -181,7 +170,3 @@ extension AccomodationCertsDetailController:UITableViewDataSource {
         return cell
     }
 }
-
-
-
-

@@ -10,17 +10,16 @@ import UIKit
 import IntervalUIKit
 
 //***** custum delegate method declaration *****//
-protocol WhereToGoCollectionViewCellDelegate{
+protocol WhereToGoCollectionViewCellDelegate {
     
-    func deleteButtonClickedAtIndex(_ Index:Int)
-    func infoButtonClickedAtIndex(_ Index:Int)
+    func deleteButtonClickedAtIndex(_ Index: Int)
+    func infoButtonClickedAtIndex(_ Index: Int)
 
 }
 
-
 class WhereToGoCollectionViewCell: UICollectionViewCell {
     
-    var delegate:WhereToGoCollectionViewCellDelegate?
+    var delegate: WhereToGoCollectionViewCellDelegate?
     
     @IBOutlet weak var viewBaseView: UIView!
     

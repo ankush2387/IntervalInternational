@@ -24,5 +24,4 @@ class UpcomingTripsCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var resortType: UILabel!
     @IBOutlet weak var resortNameBaseView: UIView!
     
-    
 }

@@ -20,24 +20,23 @@ class AllAvailableDestinationViewController: UIViewController {
     
     @IBOutlet weak var viewButtonHeightConstraint: NSLayoutConstraint!
     
-    
     //Class Varaiables
     var areaArray = [Area]()
     var regionAreaDictionary = NSMutableDictionary()
     var selectedAreaDictionary = NSMutableDictionary()
     var upDownArray = NSMutableArray()
     //var selectedAreaCodeDictionary = NSMutableDictionary()
-    var moreButton:UIBarButtonItem?
+    var moreButton: UIBarButtonItem?
     var selectedCheckBox = IUIKCheckbox()
     var senderButton = UIButton()
     var sectionCounter = 0
     var selectedSectionArray = NSMutableArray()
-    var regionCounterDict = [Int:String]()
+    var regionCounterDict = [Int: String]()
     let areaCode = [String]()
     
     override func viewWillAppear(_ animated: Bool) {
         //***** Creating and adding right bar button for more option button *****//
-        moreButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.MoreNav), style: .plain, target: self, action:#selector(moreNavButtonPressed(_:)))
+        moreButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.MoreNav), style: .plain, target: self, action: #selector(moreNavButtonPressed(_:)))
         moreButton!.tintColor = UIColor.white
         self.navigationController?.navigationItem.rightBarButtonItem = moreButton
         //allAvailableDestinatontableview.tableHeaderView?.frame = CGRectZero
@@ -46,13 +45,13 @@ class AllAvailableDestinationViewController: UIViewController {
         self.resetCounter()
     }
     
-    func resetCounter(){
+    func resetCounter() {
         sectionCounter = 0
         
         for values in selectedAreaDictionary {
             
             intervalPrint(values)
-            let counter:[String]  = values.value as! [String]
+            let counter: [String]  = values.value as! [String]
             intervalPrint(counter.count)
             self.sectionCounter = self.sectionCounter + counter.count
             
@@ -60,8 +59,7 @@ class AllAvailableDestinationViewController: UIViewController {
         
     }
     
-    
-    func moreNavButtonPressed(_ sender:UIBarButtonItem) {
+    func moreNavButtonPressed(_ sender: UIBarButtonItem) {
         
     }
     
@@ -69,8 +67,7 @@ class AllAvailableDestinationViewController: UIViewController {
         
         Helper.helperDelegate = self
         
-        if(Constant.MyClassConstants.isFromExchangeAllAvailable == true){
-            
+        if(Constant.MyClassConstants.isFromExchangeAllAvailable == true) {
             
                 showHudAsync()
             if Reachability.isConnectedToNetwork() == true {
@@ -82,18 +79,14 @@ class AllAvailableDestinationViewController: UIViewController {
                 exchangeSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
                 exchangeSearchCriteria.searchType = VacationSearchType.Exchange
                 
-                
-                
                 //let storedData = Helper.getLocalStorageWherewanttoGo()
                 
                 exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
-                Constant.MyClassConstants.initialVacationSearch = VacationSearch.init(Session.sharedSession.appSettings, exchangeSearchCriteria)
+                Constant.MyClassConstants.initialVacationSearch = VacationSearch(Session.sharedSession.appSettings, exchangeSearchCriteria)
                 let area = Area()
                 area.areaCode = Int(Constant.MyClassConstants.selectedAreaCodeArray[0] as! String)!
                 area.areaName = Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: Constant.MyClassConstants.selectedAreaCodeArray[0] as! String) as? String
                 Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.areas = [area]
-                
-                
                 
                 ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
                     
@@ -111,23 +104,20 @@ class AllAvailableDestinationViewController: UIViewController {
                         Helper.showNotAvailabilityResults()
                         //self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
                         self.navigateToSearchResults()
-                    }else{
+                    } else {
                         Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                        Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate:  Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                        Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     }
                     
-                }, onError: { (error) in
+                }, onError: { (_) in
                     
                     self.hideHudAsync()
                     self.presentErrorAlert(UserFacingCommonError.generic)
                 })
-                
             
         }
- 
             
-            
-        }else{
+        } else {
             
             let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
             let combinedSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Combined)
@@ -137,7 +127,7 @@ class AllAvailableDestinationViewController: UIViewController {
             area.areaCode = Int(Constant.MyClassConstants.selectedAreaCodeArray[0] as! String)!
             area.areaName = Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: Constant.MyClassConstants.selectedAreaCodeArray[0] as! String) as? String
             
-            if(!Constant.MyClassConstants.isFromRentalAllAvailable && !Constant.MyClassConstants.isFromExchangeAllAvailable){
+            if(!Constant.MyClassConstants.isFromRentalAllAvailable && !Constant.MyClassConstants.isFromExchangeAllAvailable) {
                 combinedSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
                 combinedSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                 combinedSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
@@ -146,8 +136,7 @@ class AllAvailableDestinationViewController: UIViewController {
                 vacationSearch.rentalSearch?.searchContext.request.areas = [area]
                 Constant.MyClassConstants.initialVacationSearch = vacationSearch
                 
-                
-                RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess:{ (response) in
+                RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess: { (response) in
                     
                    self.hideHudAsync()
                     Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
@@ -161,9 +150,9 @@ class AllAvailableDestinationViewController: UIViewController {
                     if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
                         self.hideHudAsync()
                         Helper.executeExchangeSearchDates(senderVC: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
-                    }else{
+                    } else {
                         self.hideHudAsync()
-                        if(response.checkInDates.count>0){
+                        if(response.checkInDates.count > 0) {
                             Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
                         }
                         let vacationSearchInitialDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate
@@ -172,16 +161,13 @@ class AllAvailableDestinationViewController: UIViewController {
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     Constant.MyClassConstants.isFromSearchBoth = true
                     
-                })
-                { (error) in
+                }) { (_) in
                     
                     self.hideHudAsync()
                     self.presentErrorAlert(UserFacingCommonError.generic)
                 }
                 
-                
-                
-            }else{
+            } else {
                 rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                 vacationSearch = VacationSearch(Session.sharedSession.appSettings, rentalSearchCriteria)
                 vacationSearch.rentalSearch?.searchContext.request.areas = [area]
@@ -211,7 +197,7 @@ class AllAvailableDestinationViewController: UIViewController {
                                             } else {
                                                 
                                                 Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                                                let initialSearchCheckInDate = Helper.convertStringToDate(dateString:vacationSearch.searchCheckInDate!,format:Constant.MyClassConstants.dateFormat)
+                                                let initialSearchCheckInDate = Helper.convertStringToDate(dateString: vacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat)
                                                 Constant.MyClassConstants.checkInDates = response.checkInDates
                                                 //sender.isEnabled = true
                                                 Helper.helperDelegate = self
@@ -219,7 +205,7 @@ class AllAvailableDestinationViewController: UIViewController {
                                                 Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                             }
                 },
-                                         onError:{ (error) in
+                                         onError: { (_) in
                                             self.hideHudAsync()
                                             self.presentErrorAlert(UserFacingCommonError.generic)
                 }
@@ -239,11 +225,11 @@ class AllAvailableDestinationViewController: UIViewController {
         searchButton.layer.cornerRadius = 4
         self.title = Constant.ControllerTitles.availableDestinations
         
-        let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.MoreNav), style: .plain, target: self, action:#selector(AllAvailableDestinationsIpadViewController.menuButtonClicked))
+        let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.MoreNav), style: .plain, target: self, action: #selector(AllAvailableDestinationsIpadViewController.menuButtonClicked))
         menuButton.tintColor = UIColor.white
         self.navigationItem.rightBarButtonItem = menuButton
         
-        let menuButtonleft = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(SearchResultViewController.menuBackButtonPressed(_:)))
+        let menuButtonleft = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(SearchResultViewController.menuBackButtonPressed(_:)))
         menuButton.tintColor = UIColor.white
         self.navigationItem.leftBarButtonItem = menuButtonleft
         
@@ -254,9 +240,8 @@ class AllAvailableDestinationViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
     // Back Button Pressed.
-    func menuBackButtonPressed(_ sender:UIBarButtonItem) {
+    func menuBackButtonPressed(_ sender: UIBarButtonItem) {
         
         _ = self.navigationController?.popViewController(animated: true)
     }
@@ -275,35 +260,35 @@ class AllAvailableDestinationViewController: UIViewController {
     
     //Function to add and remove areas and destinations
     
-    func addRemoveAreasInRegion(indexPathForSelectedRegion:IndexPath){
+    func addRemoveAreasInRegion(indexPathForSelectedRegion: IndexPath) {
         
         let region = Constant.MyClassConstants.regionArray[indexPathForSelectedRegion.section]
-        if(selectedAreaDictionary.value(forKey: region.regionName!) != nil){
+        if(selectedAreaDictionary.value(forKey: region.regionName!) != nil) {
             let selectedAreasArray = selectedAreaDictionary.value(forKey: region.regionName!) as! [String]
             let areaAtIndex = region.areas[indexPathForSelectedRegion.row]
-            var newSelectedArray:[String] = selectedAreasArray
-            if(selectedAreasArray.contains(areaAtIndex.areaName!)){
+            var newSelectedArray: [String] = selectedAreasArray
+            if(selectedAreasArray.contains(areaAtIndex.areaName!)) {
                 let index1 = selectedAreasArray.index(of: areaAtIndex.areaName!)
                 newSelectedArray.remove(at: index1!)
-            }else{
+            } else {
                 newSelectedArray.append(areaAtIndex.areaName!)
             }
-            if(newSelectedArray.count != 0){
+            if(newSelectedArray.count != 0) {
                 selectedAreaDictionary.setValue(newSelectedArray, forKey: region.regionName!)
-            }else{
+            } else {
                 selectedAreaDictionary.removeObject(forKey: region.regionName!)
             }
             
             //Manage dictionary for performing search with area codes
-            if(Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: "\(areaAtIndex.areaCode)") != nil){
+            if(Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: "\(areaAtIndex.areaCode)") != nil) {
                 Constant.MyClassConstants.selectedAreaCodeDictionary.removeObject(forKey: "\(areaAtIndex.areaCode)")
                 Constant.MyClassConstants.selectedAreaCodeArray.remove("\(areaAtIndex.areaCode)")
-            }else{
+            } else {
                 Constant.MyClassConstants.selectedAreaCodeDictionary.setValue(areaAtIndex.areaName!, forKey: "\(areaAtIndex.areaCode)")
                 Constant.MyClassConstants.selectedAreaCodeArray.add("\(areaAtIndex.areaCode)")
             }
             
-        }else{
+        } else {
             var areasArray = [String]()
             areasArray.append(region.areas[indexPathForSelectedRegion.row].areaName!)
             selectedAreaDictionary.setValue(areasArray, forKey: region.regionName!)
@@ -314,7 +299,7 @@ class AllAvailableDestinationViewController: UIViewController {
        
     }
     
-    func expandClicked(_ sender:UIButton){
+    func expandClicked(_ sender: UIButton) {
         
         let rsregion = Constant.MyClassConstants.regionArray [sender.tag]
         intervalPrint(Constant.MyClassConstants.regionAreaDictionary)
@@ -322,52 +307,47 @@ class AllAvailableDestinationViewController: UIViewController {
         if Constant.MyClassConstants.regionAreaDictionary.count == 0 {
             Constant.MyClassConstants.regionAreaDictionary.setValue(rsregion.areas, forKey: String(rsregion.regionCode))
             upDownArray.add("\(sender.tag)")
-        }else if (Constant.MyClassConstants.regionAreaDictionary.value(forKey:"\(rsregion.regionCode)") == nil){
+        } else if (Constant.MyClassConstants.regionAreaDictionary.value(forKey: "\(rsregion.regionCode)") == nil) {
             Constant.MyClassConstants.regionAreaDictionary.setValue(rsregion.areas, forKey: String(rsregion.regionCode))
             upDownArray.add("\(sender.tag)")
-        }else{
+        } else {
             Constant.MyClassConstants.regionAreaDictionary.removeObject(forKey: String(rsregion.regionCode))
             upDownArray.remove("\(sender.tag)")
         }
         self.allAvailableDestinatontableview.reloadData()
     }
     
-    func menuButtonClicked()  {
+    func menuButtonClicked() {
         
-        
-        if(selectedAreaDictionary.allKeys.count == 0){
+        if(selectedAreaDictionary.allKeys.count == 0) {
             presentAlert(with: Constant.dashboardTableScreenReusableIdentifiers.alert, message: Constant.AlertMessages.editAlertdetinationMessage)
             
-        }else{
+        } else {
             
             let optionMenu = UIAlertController(title: nil, message: Constant.MyClassConstants.allDestinationsOption, preferredStyle: .actionSheet)
             
-            let viewSelectedResorts = UIAlertAction(title: Constant.MyClassConstants.viewSelectedDestination, style: .default, handler:
-            {
-                (alert: UIAlertAction!) -> Void in
+            let viewSelectedResorts = UIAlertAction(title: Constant.MyClassConstants.viewSelectedDestination, style: .default, handler: {
+                (_: UIAlertAction!) -> Void in
                 
                 self.performSegue(withIdentifier: Constant.segueIdentifiers.showSelectedResortsIpad, sender: self)
             })
             
-            
-            let cancelAction = UIAlertAction(title: Constant.buttonTitles.cancel, style: .default, handler:
-            {
-                (alert: UIAlertAction!) -> Void in
+            let cancelAction = UIAlertAction(title: Constant.buttonTitles.cancel, style: .default, handler: {
+                (_: UIAlertAction!) -> Void in
             })
             
             optionMenu.addAction(viewSelectedResorts)
             optionMenu.addAction(cancelAction)
             
-            if(Constant.RunningDevice.deviceIdiom == .pad){
+            if(Constant.RunningDevice.deviceIdiom == .pad) {
                 optionMenu.popoverPresentationController?.sourceView = self.view
-                optionMenu.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.size.width,y: 0, width: 100, height: 60)
-                optionMenu.popoverPresentationController!.permittedArrowDirections = .up;
+                optionMenu.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.size.width, y: 0, width: 100, height: 60)
+                optionMenu.popoverPresentationController!.permittedArrowDirections = .up
             }
             
             //Present the AlertController
             self.present(optionMenu, animated: true, completion: nil)
         }
-        
         
     }
     
@@ -384,7 +364,7 @@ class AllAvailableDestinationViewController: UIViewController {
     }
     
     //Function for navigating to search results
-    func navigateToSearchResults(){
+    func navigateToSearchResults() {
         Constant.MyClassConstants.vacationSearchResultHeaderLabel = (Constant.MyClassConstants.selectedAreaCodeDictionary.value(forKey: Constant.MyClassConstants.selectedAreaCodeArray[0] as! String) as? String)!
         Constant.MyClassConstants.filteredIndex = 0
         
@@ -399,9 +379,7 @@ class AllAvailableDestinationViewController: UIViewController {
 
 }
 
-
-extension AllAvailableDestinationViewController:UITableViewDataSource{
-    
+extension AllAvailableDestinationViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
@@ -410,16 +388,16 @@ extension AllAvailableDestinationViewController:UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if let areas = Constant.MyClassConstants.regionAreaDictionary.value(forKey: String(Constant.MyClassConstants.regionArray[section].regionCode)){
+        if let areas = Constant.MyClassConstants.regionAreaDictionary.value(forKey: String(Constant.MyClassConstants.regionArray[section].regionCode)) {
             let areasInRegionArray = areas as! [Region]
             return areasInRegionArray.count
-        }else{
+        } else {
             return 0
         }
         
     }
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat{
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 60
     }
     
@@ -433,36 +411,36 @@ extension AllAvailableDestinationViewController:UITableViewDataSource{
         cell.selectionStyle = UITableViewCellSelectionStyle.none
         let areasInRegionArray = Constant.MyClassConstants.regionAreaDictionary.value(forKey: String(Constant.MyClassConstants.regionArray[indexPath.section].regionCode)) as! [Area]
         self.areaArray.removeAll()
-        if(selectedAreaDictionary.count > 0){
-            if let selectedAreas = selectedAreaDictionary.value(forKey: Constant.MyClassConstants.regionArray[indexPath.section].regionName!){
+        if(selectedAreaDictionary.count > 0) {
+            if let selectedAreas = selectedAreaDictionary.value(forKey: Constant.MyClassConstants.regionArray[indexPath.section].regionName!) {
                 let area = selectedAreas as! [String]
-                intervalPrint(area.count,area,area.count)
+                intervalPrint(area.count, area, area.count)
                 
                 let areaName = areasInRegionArray[indexPath.row].areaName
-                if(area.contains(areaName!)){
+                if(area.contains(areaName!)) {
                     cell.placeSelectionCheckBox.checked = true
-                }else{
+                } else {
                     cell.placeSelectionCheckBox.checked = false
                 }
-            }else{
+            } else {
                 cell.placeSelectionCheckBox.checked = false
             }
-        }else{
+        } else {
             cell.placeSelectionCheckBox.checked = false
         }
         
-        for areas in areasInRegionArray{
+        for areas in areasInRegionArray {
             self.areaArray.append(areas)
         }
         
-        cell.setAllAvailableAreaCell(index:indexPath.row, area:self.areaArray[indexPath.row])
+        cell.setAllAvailableAreaCell(index: indexPath.row, area: self.areaArray[indexPath.row])
         
         return cell
     }
     
 }
 
-extension AllAvailableDestinationViewController:UITableViewDelegate{
+extension AllAvailableDestinationViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
@@ -476,12 +454,11 @@ extension AllAvailableDestinationViewController:UITableViewDelegate{
             self.view.layoutIfNeeded()
         }
         
-        
-        if(selectedCell.placeSelectionCheckBox.checked){
+        if(selectedCell.placeSelectionCheckBox.checked) {
             sectionCounter = sectionCounter - 1
             selectedSectionArray.remove(indexPath.section)
-            self.addRemoveAreasInRegion(indexPathForSelectedRegion:indexPath)
-            if(sectionCounter == 0){
+            self.addRemoveAreasInRegion(indexPathForSelectedRegion: indexPath)
+            if(sectionCounter == 0) {
                 
                 self.viewButtonHeightConstraint.constant = 0
                 self.searchButtonHeightConstraint.constant = 0
@@ -491,17 +468,17 @@ extension AllAvailableDestinationViewController:UITableViewDelegate{
                 }
                 
             }
-        }else{
-            if(sectionCounter == 6){
+        } else {
+            if(sectionCounter == 6) {
                 
                 DispatchQueue.main.async(execute: {
                     self.presentAlert(with: Constant.dashboardTableScreenReusableIdentifiers.alert, message: Constant.AlertMessages.maximumLimitReachedMessage)
                 })
                 
-            }else{
+            } else {
                 selectedSectionArray.add(indexPath.section)
                 sectionCounter = sectionCounter + 1
-                self.addRemoveAreasInRegion(indexPathForSelectedRegion:indexPath)
+                self.addRemoveAreasInRegion(indexPathForSelectedRegion: indexPath)
             }
         }
     }
@@ -511,7 +488,7 @@ extension AllAvailableDestinationViewController:UITableViewDelegate{
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.regionCell) as! AvailableDestinationCountryOrContinentsTableViewCell
         cell.setDataForAllAvailableDestinations(index: section)
         cell.expandRegionButton.tag = section
-        if(sectionCounter == 0){
+        if(sectionCounter == 0) {
             cell.selectdDestinationCountLabel?.isHidden = true
             
             self.viewButtonHeightConstraint.constant = 0
@@ -520,16 +497,16 @@ extension AllAvailableDestinationViewController:UITableViewDelegate{
             UIView.animate(withDuration: 0.5) {
                 self.view.layoutIfNeeded()
             }
-        }else{
+        } else {
             let region = Constant.MyClassConstants.regionArray[section]
-            for selectedRegion in selectedAreaDictionary.allKeys{
-                if String(describing: selectedRegion) == region.regionName{
+            for selectedRegion in selectedAreaDictionary.allKeys {
+                if String(describing: selectedRegion) == region.regionName {
                     let totalAreas = selectedAreaDictionary.value(forKey: selectedRegion as! String) as! [String]
                     cell.selectdDestinationCountLabel?.text = String(totalAreas.count)
-                    if(totalAreas.count > 0){
+                    if(totalAreas.count > 0) {
                         
                         cell.selectdDestinationCountLabel?.isHidden = false
-                    }else{
+                    } else {
                         
                         cell.selectdDestinationCountLabel?.isHidden = true
                     }
@@ -540,8 +517,8 @@ extension AllAvailableDestinationViewController:UITableViewDelegate{
         }
         cell.expandRegionButton.addTarget(self, action: #selector(AllAvailableDestinationViewController.expandClicked(_:)), for: .touchUpInside)
         
-        if(upDownArray.contains("\(section)")){
-            UIView.animate(withDuration:0.1, animations: {
+        if(upDownArray.contains("\(section)")) {
+            UIView.animate(withDuration: 0.1, animations: {
                 cell.imgIconPlus?.transform = CGAffineTransform.identity
                 cell.imgIconPlus?.transform = CGAffineTransform(rotationAngle: (180.0 * CGFloat(Double.pi)) / 180.0)
             })
@@ -551,13 +528,13 @@ extension AllAvailableDestinationViewController:UITableViewDelegate{
     }
 }
 
-extension AllAvailableDestinationViewController:HelperDelegate{
+extension AllAvailableDestinationViewController: HelperDelegate {
     
-    func resortSearchComplete(){
+    func resortSearchComplete() {
        self.navigateToSearchResults()
     }
     
-    func resetCalendar(){
+    func resetCalendar() {
         
     }
 }

@@ -20,7 +20,6 @@ class GetawayCell: UITableViewCell {
     @IBOutlet weak var currencySymbol: UILabel!
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var checkbox: IUIKCheckbox!
-   
     
     //@IBOutlet weak var contentView: UIView!
     @IBOutlet weak var viewContent: UIView!

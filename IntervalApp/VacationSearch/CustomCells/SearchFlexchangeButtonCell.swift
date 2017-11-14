@@ -9,7 +9,6 @@
 import UIKit
 
 class SearchFlexchangeButtonCell: UITableViewCell {
-
     
     @IBOutlet weak var searchButton: UIButton!
     

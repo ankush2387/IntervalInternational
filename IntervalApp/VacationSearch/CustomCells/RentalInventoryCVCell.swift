@@ -20,25 +20,24 @@ class RentalInventoryCVCell: UICollectionViewCell {
     @IBOutlet weak var currencySymbol: UILabel!
     
     @IBOutlet weak var imgViewGetaway: UIImageView!
-    func setDataForRentalInventory(invetoryItem: Resort, indexPath:IndexPath){
+    func setDataForRentalInventory(invetoryItem: Resort, indexPath: IndexPath) {
 
         // for unit in (invetoryItem.inventory?.units)! {
         let unit = (invetoryItem.inventory?.units[indexPath.item])!
         // price
         let price = Int(unit.prices[0].price)
         self.getawayPrice.text = String(price)
-        if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Combined){
+        if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Combined) {
             self.getawayPrice.isHidden = true
             self.currencySymbol.isHidden = true
             getawayNameLabel.text = "Getaway"
             imgViewGetaway.isHidden = false
-        }else{
+        } else {
             self.getawayPrice.isHidden = false
             self.currencySymbol.isHidden = false
             getawayNameLabel.text = "Per Week"
             imgViewGetaway.isHidden = true
         }
-       
         
         // bedroom details
         
@@ -60,16 +59,15 @@ class RentalInventoryCVCell: UICollectionViewCell {
         
         if unit.publicSleepCapacity > 0 {
             
-            totalSleepCapacity =  String(unit.publicSleepCapacity) + Constant.CommonLocalisedString.totalString
+            totalSleepCapacity = String(unit.publicSleepCapacity) + Constant.CommonLocalisedString.totalString
             
         }
         
         if unit.privateSleepCapacity > 0 {
             
-            self.sleeps.text =  totalSleepCapacity + String(unit.privateSleepCapacity) + Constant.CommonLocalisedString.privateString
+            self.sleeps.text = totalSleepCapacity + String(unit.privateSleepCapacity) + Constant.CommonLocalisedString.privateString
             
         }
-        
         
         let promotions = invetoryItem.inventory?.units[indexPath.item].promotions
         if (promotions?.count)! > 0 {
@@ -80,14 +78,14 @@ class RentalInventoryCVCell: UICollectionViewCell {
             //cellHeight = 55 + (14*(promotions?.count)!)
             var yPosition: CGFloat = 0
             for promotion in promotions! {
-                let imgV = UIImageView(frame: CGRect(x:10, y: yPosition, width: 15, height: 15))
+                let imgV = UIImageView(frame: CGRect(x: 10, y: yPosition, width: 15, height: 15))
                 imgV.image = UIImage(named: Constant.assetImageNames.promoImage)
-                let promLabel = UILabel(frame: CGRect(x:30, y: yPosition, width: self.promotionsView.bounds.width, height: 15))
+                let promLabel = UILabel(frame: CGRect(x: 30, y: yPosition, width: self.promotionsView.bounds.width, height: 15))
                 promLabel.text = promotion.offerName
                 promLabel.adjustsFontSizeToFitWidth = true
                 promLabel.minimumScaleFactor = 0.7
                 promLabel.numberOfLines = 0
-                promLabel.textColor = UIColor(red: 0, green: 119/255, blue: 190/255, alpha: 1)
+                promLabel.textColor = UIColor(red: 0, green: 119 / 255, blue: 190 / 255, alpha: 1)
                 promLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 18)
                 self.promotionsView.addSubview(imgV)
                 self.promotionsView.addSubview(promLabel)

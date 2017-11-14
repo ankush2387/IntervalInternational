@@ -13,7 +13,7 @@ import DarwinSDK
 class AvailabilityCollectionViewCell: UICollectionViewCell {
     //***** Outlets *****//
 
-    @IBOutlet weak var resortImageView:UIImageView!
+    @IBOutlet weak var resortImageView: UIImageView!
    
     @IBOutlet weak var resortName: UILabel!
  
@@ -28,11 +28,8 @@ class AvailabilityCollectionViewCell: UICollectionViewCell {
     //***** class variables *****//
     //var delegate:ResortDirectoryCollectionViewCellDelegate?
     
-    
-    
-    
-    func setResortDetails(inventoryItem:Resort){
-        for layer in self.viewGradient.layer.sublayers!{
+    func setResortDetails(inventoryItem: Resort) {
+        for layer in self.viewGradient.layer.sublayers! {
             if(layer.isKind(of: CAGradientLayer.self)) {
                 layer.removeFromSuperlayer()
             }
@@ -46,17 +43,17 @@ class AvailabilityCollectionViewCell: UICollectionViewCell {
             }
         }
         Helper.addLinearGradientToView(view: self.viewGradient, colour: UIColor.white, transparntToOpaque: true, vertical: false)
-        if(url == nil){
+        if(url == nil) {
             self.resortImageView?.image = UIImage(named: Constant.MyClassConstants.noImage)
             self.resortImageView.contentMode = .scaleAspectFit
-        }else{
+        } else {
             self.resortImageView.contentMode = .scaleToFill
             self.resortImageView?.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
         }
         self.resortName.text = inventoryItem.resortName
         self.resortAddress.text = inventoryItem.address?.cityName
         self.resortCode.text = inventoryItem.resortCode
-        if let tierImageName = inventoryItem.tier{
+        if let tierImageName = inventoryItem.tier {
              let tier = Helper.getTierImageName(tier: tierImageName.uppercased())
             self.tierImage.image = UIImage(named: tier)
         }

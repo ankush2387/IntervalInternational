@@ -12,7 +12,6 @@ import DarwinSDK
 
 class EditMyAlertIpadViewController: UIViewController {
     
-    
     //***** commom  outlets *****//
     @IBOutlet weak var createAlertCollectionView: UICollectionView!
     @IBOutlet weak var createAlertTBLView: UITableView!
@@ -37,16 +36,14 @@ class EditMyAlertIpadViewController: UIViewController {
     //***** class variable outlets *****//
     var editAlertName = ""
     var alertId = Int64()
-    var selectedIndex:Int = -1
-    var anlyticsBedroomSize:String = ""
+    var selectedIndex: Int = -1
+    var anlyticsBedroomSize: String = ""
     
     //***** Constraints outlets *****//
-    @IBOutlet weak var leadingStartLabelConstraint:NSLayoutConstraint!
-    @IBOutlet weak var leadingStartDateConstraint:NSLayoutConstraint!
-    @IBOutlet weak var leadingEndLabelConstraint:NSLayoutConstraint!
-    @IBOutlet weak var leadingEndDateConstraint:NSLayoutConstraint!
-    
-    
+    @IBOutlet weak var leadingStartLabelConstraint: NSLayoutConstraint!
+    @IBOutlet weak var leadingStartDateConstraint: NSLayoutConstraint!
+    @IBOutlet weak var leadingEndLabelConstraint: NSLayoutConstraint!
+    @IBOutlet weak var leadingEndDateConstraint: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,20 +71,20 @@ class EditMyAlertIpadViewController: UIViewController {
         }
         // omniture tracking with event 40
         let pageView: [String: String] = [
-            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.editAnAlert
+            Constant.omnitureEvars.eVar44: Constant.omnitureCommonString.editAnAlert
         ]
         ADBMobile.trackAction(Constant.omnitureEvents.event40, data: pageView)
         
         // omniture tracking with event 76
         let userInfo: [String: String] = [
            
-            Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.alert
+            Constant.omnitureEvars.eVar41: Constant.omnitureCommonString.alert
         ]
         
         ADBMobile.trackAction(Constant.omnitureEvents.event76, data: userInfo)
         
         //**** Check for iPhone 4s and iPhone 5s to align travel window start and end date *****//
-        if(UIScreen.main.bounds.width == 320){
+        if(UIScreen.main.bounds.width == 320) {
             leadingStartDateConstraint.constant = 0
             leadingStartLabelConstraint.constant = 0
             leadingEndDateConstraint.constant = 0
@@ -97,7 +94,7 @@ class EditMyAlertIpadViewController: UIViewController {
         self.title = Constant.ControllerTitles.editgetawayAlertsViewController
         Constant.MyClassConstants.vacationSearchShowDate = Date()
         //***** adding menu bar back button *****//
-        let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(menuBackButtonPressed(sender:)))
+        let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(menuBackButtonPressed(sender:)))
         menuButton.tintColor = UIColor.white
         
         self.navigationItem.leftBarButtonItem = menuButton
@@ -106,7 +103,7 @@ class EditMyAlertIpadViewController: UIViewController {
         self.textfieldBorderView.layer.borderWidth = 2
         self.textfieldBorderView.layer.borderColor = Constant.RGBColorCode.textFieldBorderRGB
         self.nameTextField.delegate = self
-        self.nameTextField.textColor = UIColor(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 1.0)
+        self.nameTextField.textColor = UIColor(red: 0.0 / 255.0, green: 0.0 / 255.0, blue: 0.0 / 255.0, alpha: 1.0)
         self.nameTextField.text = self.editAlertName
         
     }
@@ -121,59 +118,56 @@ class EditMyAlertIpadViewController: UIViewController {
             
             self.travelWindowEndDateSelectionButton.isEnabled = true
             let myCalendar = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
-            let myComponents = myCalendar.components([.day,.weekday,.month,.year], from: Constant.MyClassConstants.alertWindowStartDate as Date)
+            let myComponents = myCalendar.components([.day, .weekday, .month, .year], from: Constant.MyClassConstants.alertWindowStartDate as Date)
             self.startDateDayLabel.text = String(describing: myComponents.day!)
             self.startDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday!))"
             self.startDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \(myComponents.year!)"
             
-        }
-        else {
+        } else {
             
             self.travelWindowEndDateSelectionButton.isEnabled = false
         }
-        if(Constant.MyClassConstants.alertWindowEndDate != nil){
+        if(Constant.MyClassConstants.alertWindowEndDate != nil) {
             
-            if(Constant.MyClassConstants.alertWindowEndDate .isGreaterThanDate(Constant.MyClassConstants.alertWindowStartDate)){
+            if(Constant.MyClassConstants.alertWindowEndDate .isGreaterThanDate(Constant.MyClassConstants.alertWindowStartDate)) {
                 
                 let myCalendar1 = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
-                let myComponents1 = myCalendar1.components([.day,.weekday,.month,.year], from: Constant.MyClassConstants.alertWindowEndDate as Date)
+                let myComponents1 = myCalendar1.components([.day, .weekday, .month, .year], from: Constant.MyClassConstants.alertWindowEndDate as Date)
                 self.endDateDayLabel.text = String(describing: myComponents1.day!)
                 self.endDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents1.weekday!))"
                 self.endDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!)) \(myComponents1.year!)"
-            }
-            else {
+            } else {
                 
                 let myCalendar1 = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
-                let myComponents1 = myCalendar1.components([.day,.weekday,.month,.year], from: Constant.MyClassConstants.alertWindowStartDate as Date)
+                let myComponents1 = myCalendar1.components([.day, .weekday, .month, .year], from: Constant.MyClassConstants.alertWindowStartDate as Date)
                 self.endDateDayLabel.text = String(describing: myComponents1.day!)
                 self.endDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents1.weekday!))"
                 self.endDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!)) \(myComponents1.year!)"
             }
         }
-        if(Constant.RunningDevice.deviceIdiom == .pad){
+        if(Constant.RunningDevice.deviceIdiom == .pad) {
             self.createAlertCollectionView.reloadData()
-        }else{
+        } else {
             self.createAlertTBLView.reloadData()
         }
     }
     
     //***** function to dismiss present view controller on back button pressed *****//
-    func menuBackButtonPressed(sender:UIBarButtonItem) {
-        
+    func menuBackButtonPressed(sender: UIBarButtonItem) {
         
         _ = self.navigationController?.popViewController(animated: true)
         
     }
     //***** function to call calendar screen to select travel start date *****//
-    @IBAction func travelStartDateCalendarIconPressed(_ sender:AnyObject) {
-        if(Constant.RunningDevice.deviceIdiom == .pad){
+    @IBAction func travelStartDateCalendarIconPressed(_ sender: AnyObject) {
+        if(Constant.RunningDevice.deviceIdiom == .pad) {
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as! CalendarViewController
             viewController.requestedDateWindow = Constant.MyClassConstants.start
             let transitionManager = TransitionManager()
             self.navigationController?.transitioningDelegate = transitionManager
             self.navigationController!.pushViewController(viewController, animated: true)
-        }else{
+        } else {
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as! CalendarViewController
             viewController.requestedDateWindow = Constant.MyClassConstants.start
@@ -185,9 +179,9 @@ class EditMyAlertIpadViewController: UIViewController {
     }
     
     //***** function to call calendar screen to select travel end date *****//
-    @IBAction func travelEndDateCalendarIconPressed(_ sender:AnyObject) {
+    @IBAction func travelEndDateCalendarIconPressed(_ sender: AnyObject) {
         
-        if(Constant.RunningDevice.deviceIdiom == .phone){
+        if(Constant.RunningDevice.deviceIdiom == .phone) {
             
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as! CalendarViewController
@@ -196,7 +190,7 @@ class EditMyAlertIpadViewController: UIViewController {
             self.navigationController?.transitioningDelegate = transitionManager
             self.navigationController!.pushViewController(viewController, animated: true)
             
-        }else{
+        } else {
             
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as! CalendarViewController
@@ -209,7 +203,7 @@ class EditMyAlertIpadViewController: UIViewController {
     }
     
     //***** function to call bedroom size screen to select bedroom size *****//
-    @IBAction func selectRoomSizePressed(_ sender:AnyObject) {
+    @IBAction func selectRoomSizePressed(_ sender: AnyObject) {
         
         var mainStoryboard = UIStoryboard()
         
@@ -223,7 +217,7 @@ class EditMyAlertIpadViewController: UIViewController {
     }
     
     //***** function to call search destination  screen to search destination by name *****//
-    @IBAction func addLocationPressed(_ sender:AnyObject) {
+    @IBAction func addLocationPressed(_ sender: AnyObject) {
         
         if(Constant.RunningDevice.deviceIdiom == .pad) {
             
@@ -235,8 +229,7 @@ class EditMyAlertIpadViewController: UIViewController {
             self.navigationController?.transitioningDelegate = transitionManager
             self.navigationController!.pushViewController(viewController, animated: true)
             
-        }
-        else {
+        } else {
             
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortDirectoryVC) as! GoogleMapViewController
@@ -247,11 +240,9 @@ class EditMyAlertIpadViewController: UIViewController {
             self.navigationController!.pushViewController(viewController, animated: true)
         }
         
-        
     }
     
-    
-    @IBAction func SaveMyAlertButtonPressed(_ sender:AnyObject) {
+    @IBAction func SaveMyAlertButtonPressed(_ sender: AnyObject) {
         
         let trimmedUsername = self.nameTextField.text!.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
         if(trimmedUsername.characters.count != 0) {
@@ -271,8 +262,7 @@ class EditMyAlertIpadViewController: UIViewController {
                         if(self.alertStatusButton.isOn) {
                             
                             rentalAlert.enabled = true
-                        }
-                        else {
+                        } else {
                             
                             rentalAlert.enabled = false
                         }
@@ -287,19 +277,18 @@ class EditMyAlertIpadViewController: UIViewController {
                             for selectedSize in Constant.MyClassConstants.alertSelectedUnitSizeArray {
                                 
                                 let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: selectedSize as! String )
-                                self.anlyticsBedroomSize =  self.anlyticsBedroomSize.appending(bedroomSize)
+                                self.anlyticsBedroomSize = self.anlyticsBedroomSize.appending(bedroomSize)
                                 
                                 let selectedUnitSize = UnitSize(rawValue: selectedSize as! String)
                                 unitsizearray.append(selectedUnitSize!)
                             }
                             rentalAlert.unitSizes = unitsizearray
-                        }
-                        else {
+                        } else {
                             
                             for unitsize in Constant.MyClassConstants.bedRoomSize {
                                 
                                 let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: unitsize )
-                                self.anlyticsBedroomSize =  self.anlyticsBedroomSize.appending("\(bedroomSize), ")
+                                self.anlyticsBedroomSize = self.anlyticsBedroomSize.appending("\(bedroomSize), ")
                                 
                                 let selectedUnitSize = UnitSize(rawValue: unitsize )
                                 unitsizearray.append(selectedUnitSize!)
@@ -307,11 +296,11 @@ class EditMyAlertIpadViewController: UIViewController {
                             rentalAlert.unitSizes = unitsizearray
                         }
                         
-                        RentalClient.updateAlert(Session.sharedSession.userAccessToken, alert: rentalAlert, onSuccess:{ (response) in
+                        RentalClient.updateAlert(Session.sharedSession.userAccessToken, alert: rentalAlert, onSuccess: { (_) in
                             
                             self.hideHudAsync()
                             
-                            var deststr:String = ""
+                            var deststr: String = ""
                             for dest in Constant.MyClassConstants.alertSelectedDestination {
                                 
                                 deststr = deststr.appending("\(dest.destinationName), ")
@@ -324,28 +313,26 @@ class EditMyAlertIpadViewController: UIViewController {
                             
                             // omniture tracking with event 53
                             let userInfo: [String: Any] = [
-                                Constant.omnitureEvars.eVar43 : " - \(Date())",
+                                Constant.omnitureEvars.eVar43: " - \(Date())",
                                 Constant.omnitureCommonString.listItem: deststr,
-                                Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.alert,
-                                Constant.omnitureEvars.eVar57 : Constant.MyClassConstants.alertWindowStartDate,
-                                Constant.omnitureEvars.eVar58 : Constant.MyClassConstants.alertWindowEndDate,
-                                Constant.omnitureEvars.eVar59 : self.anlyticsBedroomSize,
-                                Constant.omnitureEvars.eVar60 : Constant.MyClassConstants.alertOriginationPoint,
-                                Constant.omnitureEvars.eVar69 : Constant.AlertPromtMessages.yes
+                                Constant.omnitureEvars.eVar41: Constant.omnitureCommonString.alert,
+                                Constant.omnitureEvars.eVar57: Constant.MyClassConstants.alertWindowStartDate,
+                                Constant.omnitureEvars.eVar58: Constant.MyClassConstants.alertWindowEndDate,
+                                Constant.omnitureEvars.eVar59: self.anlyticsBedroomSize,
+                                Constant.omnitureEvars.eVar60: Constant.MyClassConstants.alertOriginationPoint,
+                                Constant.omnitureEvars.eVar69: Constant.AlertPromtMessages.yes
                             ]
                             
                             ADBMobile.trackAction(Constant.omnitureEvents.event53, data: userInfo)
                             
                             self.presentAlert(with: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertMessage)
                             
-                            
-                        })
-                        { (error) in
+                        }) { (_) in
                             
                             // omniture tracking with event 53
                             let userInfo: [String: Any] = [
-                                Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.alert,
-                                Constant.omnitureEvars.eVar69 : Constant.AlertPromtMessages.no
+                                Constant.omnitureEvars.eVar41: Constant.omnitureCommonString.alert,
+                                Constant.omnitureEvars.eVar69: Constant.AlertPromtMessages.no
                             ]
                             
                             ADBMobile.trackAction(Constant.omnitureEvents.event53, data: userInfo)
@@ -353,22 +340,18 @@ class EditMyAlertIpadViewController: UIViewController {
                             self.presentErrorAlert(UserFacingCommonError.generic)
                             
                         }
-                    }
-                    else {
+                    } else {
                         self.presentAlert(with: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertdetinationrequiredMessage)
                     }
                     
-                }
-                else {
+                } else {
                     self.presentAlert(with: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertEmptyWidowEndDateMessage)
                 }
-            }
-            else {
+            } else {
                 self.presentAlert(with: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertEmptyWidowStartDateMessage)
             }
             
-        }
-        else {
+        } else {
             self.presentAlert(with: Constant.AlertPromtMessages.editAlertTitle, message: Constant.AlertMessages.editAlertEmptyNameMessage)
         }
         
@@ -392,7 +375,7 @@ class EditMyAlertIpadViewController: UIViewController {
 }
 
 //***** extensiion class to define tableview delegate methods *****//
-extension EditMyAlertIpadViewController:UITextFieldDelegate {
+extension EditMyAlertIpadViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         return true
@@ -401,7 +384,7 @@ extension EditMyAlertIpadViewController:UITextFieldDelegate {
 }
 
 //***** extensiion class to define collectionview delegate methods *****//
-extension EditMyAlertIpadViewController:UICollectionViewDelegate {
+extension EditMyAlertIpadViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
@@ -409,19 +392,16 @@ extension EditMyAlertIpadViewController:UICollectionViewDelegate {
             
             selectedIndex = -1
             collectionView.reloadData()
-        }
-        else {
+        } else {
             
             self.selectedIndex = indexPath.row
             collectionView.reloadData()
         }
     }
     
-    
-    
 }
 
-extension EditMyAlertIpadViewController:UICollectionViewDataSource {
+extension EditMyAlertIpadViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
@@ -432,24 +412,22 @@ extension EditMyAlertIpadViewController:UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.customCellNibNames.wereToGoTableViewCell, for: indexPath as IndexPath) as! WhereToGoCollectionViewCell
         if(indexPath.row == selectedIndex ) {
             let object = Constant.MyClassConstants.selectedGetawayAlertDestinationArray[indexPath.row] as AnyObject
-            if(object.isKind(of:NSArray.self)) {
+            if(object.isKind(of: NSArray.self)) {
                 
                 cell.deletebutton.isHidden = false
                 cell.infobutton.isHidden = false
-            }
-            else {
+            } else {
                 
                 cell.deletebutton.isHidden = false
                 cell.infobutton.isHidden = true
             }
-        }
-        else {
+        } else {
             
             cell.deletebutton.isHidden = true
             cell.infobutton.isHidden = true
         }
         let object = Constant.MyClassConstants.selectedGetawayAlertDestinationArray[indexPath.row] as AnyObject
-        if(object .isKind(of:Resort.self)) {
+        if(object .isKind(of: Resort.self)) {
             
             var resortNm = ""
             var resortCode = ""
@@ -463,7 +441,7 @@ extension EditMyAlertIpadViewController:UICollectionViewDataSource {
             }
             cell.lblTitle.text = "\(resortNm) (\(resortCode))"
             
-        }else if(object.isKind(of:NSArray.self)){
+        } else if(object.isKind(of: NSArray.self)) {
             
             var resortNm = ""
             var resortCode = ""
@@ -476,19 +454,19 @@ extension EditMyAlertIpadViewController:UICollectionViewDataSource {
                 resortCode = restcode
             }
             var resortNameString = "\(resortNm) (\(resortCode))"
-            if(object.count > 1){
+            if(object.count > 1) {
                 resortNameString = resortNameString.appending(" and \(object.count - 1) more")
             }
             
             cell.lblTitle.text = resortNameString
-        }else{
+        } else {
             
             let destName = (object as! AreaOfInfluenceDestination).destinationName
             
             let terocode = (object as! AreaOfInfluenceDestination).address?.territoryCode
-            if destName != nil && terocode != nil{
+            if destName != nil && terocode != nil {
                 cell.lblTitle.text = "\(destName!), \(terocode!)"
-            }else{
+            } else {
                 cell.lblTitle.text = ""
             }
         }
@@ -504,8 +482,7 @@ extension EditMyAlertIpadViewController:UICollectionViewDataSource {
 }
 
 //***** extensiion class to define tableview datasource methods *****//
-extension EditMyAlertIpadViewController:UITableViewDelegate {
-    
+extension EditMyAlertIpadViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
@@ -513,7 +490,7 @@ extension EditMyAlertIpadViewController:UITableViewDelegate {
     
 }
 
-extension EditMyAlertIpadViewController:UITableViewDataSource {
+extension EditMyAlertIpadViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
@@ -535,7 +512,7 @@ extension EditMyAlertIpadViewController:UITableViewDataSource {
                 subview.removeFromSuperview()
             }
             
-            let addLocationButton = IUIKButton(frame: CGRect(x: cell.contentView.bounds.width/2 - (UIScreen.main.bounds.width/5)/2, y: 10, width: UIScreen.main.bounds.width/5, height: 30))
+            let addLocationButton = IUIKButton(frame: CGRect(x: cell.contentView.bounds.width / 2 - (UIScreen.main.bounds.width / 5) / 2, y: 10, width: UIScreen.main.bounds.width / 5, height: 30))
             addLocationButton.setTitle(Constant.buttonTitles.add, for: UIControlState.normal)
             addLocationButton.setTitleColor(IUIKColorPalette.primary3.color, for: UIControlState.normal)
             addLocationButton.layer.borderColor = IUIKColorPalette.primary3.color.cgColor
@@ -546,26 +523,23 @@ extension EditMyAlertIpadViewController:UITableViewDataSource {
             cell.addSubview(addLocationButton)
             
             return cell
-        }
-        else {
+        } else {
             
             let cell: WhereToGoContentCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.whereToGoContentCell, for: indexPath as IndexPath) as! WhereToGoContentCell
-            
             
             //***** condition to check for show hide or and seprator on cell *****//
             if(indexPath.row == Constant.MyClassConstants.selectedGetawayAlertDestinationArray.count - 1 || Constant.MyClassConstants.selectedGetawayAlertDestinationArray.count == 0) {
                 
                 cell.sepratorOr.isHidden = true
                 cell.sepratorView.isHidden = true
-            }
-            else {
+            } else {
                 
                 cell.sepratorOr.isHidden = false
                 cell.sepratorView.isHidden = false
             }
             
             let object = Constant.MyClassConstants.selectedGetawayAlertDestinationArray[indexPath.row] as AnyObject
-            if(object.isKind(of:Resort.self)) {
+            if(object.isKind(of: Resort.self)) {
                 
                 var resortNm = ""
                 var resortCode = ""
@@ -580,7 +554,7 @@ extension EditMyAlertIpadViewController:UITableViewDataSource {
                 
                 cell.whereTogoTextLabel.text = "\(resortNm) (\(resortCode))"
                 
-            }else if(object.isKind(of:NSArray.self)){
+            } else if(object.isKind(of: NSArray.self)) {
                 
                 var resortNm = ""
                 var resortCode = ""
@@ -593,19 +567,19 @@ extension EditMyAlertIpadViewController:UITableViewDataSource {
                     resortCode = restcode
                 }
                 var resortNameString = "\(resortNm) (\(resortCode))"
-                if(object.count > 1){
+                if(object.count > 1) {
                     resortNameString = resortNameString.appending(" and \(object.count - 1) more")
                 }
                 cell.whereTogoTextLabel.text = resortNameString
                 
-            }else {
+            } else {
                 
                 let destName = (object as! AreaOfInfluenceDestination).destinationName
                 
                 let terocode = (object as! AreaOfInfluenceDestination).address?.territoryCode
-                if destName != nil && terocode != nil{
+                if destName != nil && terocode != nil {
                     cell.whereTogoTextLabel.text = "\(destName!), \(terocode!)"
-                }else{
+                } else {
                     cell.whereTogoTextLabel.text = ""
                 }
             }
@@ -620,7 +594,7 @@ extension EditMyAlertIpadViewController:UITableViewDataSource {
     }
     @objc(tableView:editActionsForRowAtIndexPath:) func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-        let delete = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: Constant.buttonTitles.remove) { (action,index) -> Void in
+        let delete = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: Constant.buttonTitles.remove) { (_, index) -> Void in
             if(Constant.MyClassConstants.selectedGetawayAlertDestinationArray.count > 0) {
                 
                 Constant.MyClassConstants.selectedGetawayAlertDestinationArray.removeObject(at: indexPath.row)
@@ -628,40 +602,38 @@ extension EditMyAlertIpadViewController:UITableViewDataSource {
             tableView.deleteRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
             let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC)))
             DispatchQueue.main.asyncAfter(deadline: delayTime, execute: {
-                tableView.reloadSections(NSIndexSet(index:indexPath.section) as IndexSet, with: .automatic)
+                tableView.reloadSections(NSIndexSet(index: indexPath.section) as IndexSet, with: .automatic)
                 tableView.setEditing(false, animated: true)
             })
         }
-        delete.backgroundColor = UIColor(red: 224/255.0, green: 96.0/255.0, blue: 84.0/255.0, alpha: 1.0)
+        delete.backgroundColor = UIColor(red: 224 / 255.0, green: 96.0 / 255.0, blue: 84.0 / 255.0, alpha: 1.0)
         
-        
-        let details = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.details) { (action,index) -> Void in
+        let details = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.details) { (_, _) -> Void in
             
-            if(Constant.RunningDevice.deviceIdiom == .pad){
+            if(Constant.RunningDevice.deviceIdiom == .pad) {
                 let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.getawayAlertsIpad, bundle: nil)
                 let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.infoDetailViewController) as! InfoDetailViewController
                 viewController.selectedIndex = indexPath.row
                 self.navigationController!.present(viewController, animated: true, completion: nil)
-            }else{
+            } else {
                 let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.getawayAlertsIphone, bundle: nil)
                 let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.infoDetailViewController) as! InfoDetailViewController
                 viewController.selectedIndex = indexPath.row
                 self.navigationController!.present(viewController, animated: true, completion: nil)
             }
         }
-        details.backgroundColor = UIColor(red: 0/255.0, green: 119.0/255.0, blue: 190.0/255.0, alpha: 1.0)
+        details.backgroundColor = UIColor(red: 0 / 255.0, green: 119.0 / 255.0, blue: 190.0 / 255.0, alpha: 1.0)
         
-        if((Constant.MyClassConstants.selectedGetawayAlertDestinationArray[indexPath.row] as AnyObject) .isKind(of:NSMutableArray.self)){
-            return [delete,details]
-        }else{
+        if((Constant.MyClassConstants.selectedGetawayAlertDestinationArray[indexPath.row] as AnyObject) .isKind(of: NSMutableArray.self)) {
+            return [delete, details]
+        } else {
             return [delete]
         }
         
     }
 }
 
-
-extension EditMyAlertIpadViewController:WhereToGoCollectionViewCellDelegate {
+extension EditMyAlertIpadViewController: WhereToGoCollectionViewCellDelegate {
     
     func deleteButtonClickedAtIndex(_ Index: Int) {
         
@@ -679,4 +651,3 @@ extension EditMyAlertIpadViewController:WhereToGoCollectionViewCellDelegate {
         self.detailButtonPressed()
     }
 }
-

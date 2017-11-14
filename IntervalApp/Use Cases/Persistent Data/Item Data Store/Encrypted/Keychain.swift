@@ -201,15 +201,15 @@ struct Keychain {
 
     private func update(_ data: Data?, for key: String, and contactID: String = "") throws {
         guard let data = data else { throw CommonErrors.nilDataError }
-        var attributesToSave = [String : AnyObject]()
+        var attributesToSave = [String: AnyObject]()
         attributesToSave[kSecValueData as String] = data as AnyObject
         let query = keychainQuery(with: key, and: contactID)
         let status = SecItemUpdate(query as CFDictionary, attributesToSave as CFDictionary)
         guard status == noErr else { throw KeychainError.unhandledError(status: status) }
     }
 
-    private func keychainQuery(with key: String, and contactID: String) -> [String : AnyObject] {
-        var query = [String : AnyObject]()
+    private func keychainQuery(with key: String, and contactID: String) -> [String: AnyObject] {
+        var query = [String: AnyObject]()
         query[kSecClass as String] = kSecClassGenericPassword
         query[kSecAttrService as String] = service as AnyObject
         query[kSecAttrAccount as String] = key + contactID as AnyObject

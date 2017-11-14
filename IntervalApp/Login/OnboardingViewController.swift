@@ -9,7 +9,6 @@
 import UIKit
 
 class OnboardingViewController: UIViewController {
-
     
     @IBOutlet weak var mainTitleLabel: UILabel!
     @IBOutlet weak var mainImageView: UIImageView!
@@ -25,7 +24,6 @@ class OnboardingViewController: UIViewController {
     var imageName: String?
     var currentPageIndex: Int?
     var buttonTitle: String?
-        
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,7 +60,6 @@ class OnboardingViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
     @IBAction func onboardingActionButtonPressed(_ sender: UIButton) {
         completionHandler(true)

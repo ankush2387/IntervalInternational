@@ -11,18 +11,16 @@ import RealmSwift
 import IntervalUIKit
 import DarwinSDK
 
-
-protocol WereWantToGoTableViewCellDelegate{
+protocol WereWantToGoTableViewCellDelegate {
     
-    func multipleResortInfoButtonPressedAtIndex(_ Index:Int)
+    func multipleResortInfoButtonPressedAtIndex(_ Index: Int)
     
 }
 
-
 class WereWantToGoTableViewCell: UITableViewCell {
     
-    var delegate:WereWantToGoTableViewCellDelegate?
-    var selectedIndex:Int = -1
+    var delegate: WereWantToGoTableViewCellDelegate?
+    var selectedIndex: Int = -1
     
     @IBOutlet weak var btnAddDestination: UIButton!
     @IBOutlet weak var lblCellTitle: UILabel!
@@ -47,8 +45,7 @@ class WereWantToGoTableViewCell: UITableViewCell {
     
 }
 
-
-extension WereWantToGoTableViewCell:UICollectionViewDelegate {
+extension WereWantToGoTableViewCell: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
@@ -56,8 +53,7 @@ extension WereWantToGoTableViewCell:UICollectionViewDelegate {
             
             selectedIndex = -1
             collectionView.reloadData()
-        }
-        else {
+        } else {
             
             self.selectedIndex = (indexPath as NSIndexPath).row
             collectionView.reloadData()
@@ -65,7 +61,7 @@ extension WereWantToGoTableViewCell:UICollectionViewDelegate {
     }
     
 }
-extension WereWantToGoTableViewCell:UICollectionViewDataSource {
+extension WereWantToGoTableViewCell: UICollectionViewDataSource {
     
     // collection view delegate and data sorce
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -77,57 +73,52 @@ extension WereWantToGoTableViewCell:UICollectionViewDataSource {
         
         if((indexPath as NSIndexPath).row == selectedIndex ) {
             let object = Constant.MyClassConstants.whereTogoContentArray[indexPath.row] as AnyObject
-            if (object.isKind(of: List<ResortByMap>.self)){
+            if (object.isKind(of: List<ResortByMap>.self)) {
                 
                 cell.deletebutton.isHidden = false
                 cell.infobutton.isHidden = false
-            }
-            else {
+            } else {
                 
                 cell.deletebutton.isHidden = false
                 cell.infobutton.isHidden = true
             }
             
-        }
-        else {
+        } else {
             
-            if(cell.subviews.count > 1){
+            if(cell.subviews.count > 1) {
             cell.deletebutton.isHidden = true
             cell.infobutton.isHidden = true
             }
         }
         
         let obj = Constant.MyClassConstants.whereTogoContentArray[(indexPath as NSIndexPath).row] as AnyObject
-        if (obj.isKind(of: List<ResortByMap>.self)){
+        if (obj.isKind(of: List<ResortByMap>.self)) {
             
             let object = Constant.MyClassConstants.whereTogoContentArray[(indexPath as NSIndexPath).row] as! List<ResortByMap>
             
             let resort = object[0]
             
-            
             var resortNameString = "\(resort.resortName) (\(resort.resortCode))"
-            if(object.count > 1){
+            if(object.count > 1) {
                 resortNameString = resortNameString + " and \(object.count - 1) more"
             }
-                if(cell.lblTitle != nil){
+                if(cell.lblTitle != nil) {
                 cell.lblTitle.text = resortNameString
-                if((indexPath as NSIndexPath).row != selectedIndex){
+                if((indexPath as NSIndexPath).row != selectedIndex) {
                 cell.deletebutton.isHidden = true
                 cell.infobutton.isHidden = true
                 }
             }
-        }
-            
-        else {
+        } else {
             
             let resortNameWithCode = Constant.MyClassConstants.whereTogoContentArray[(indexPath as NSIndexPath).row] as! String
             
-            if(cell.lblTitle != nil){
+            if(cell.lblTitle != nil) {
             cell.lblTitle.text = resortNameWithCode
             }
         }
         
-        if(cell.subviews.count > 1){
+        if(cell.subviews.count > 1) {
         cell.deletebutton.tag = (indexPath as NSIndexPath).row
         cell.infobutton.tag = (indexPath as NSIndexPath).row
         }
@@ -141,18 +132,18 @@ extension WereWantToGoTableViewCell:UICollectionViewDataSource {
     
 }
 
-extension WereWantToGoTableViewCell:WhereToGoCollectionViewCellDelegate {
+extension WereWantToGoTableViewCell: WhereToGoCollectionViewCellDelegate {
     
     func deleteButtonClickedAtIndex(_ Index: Int) {
         let storedData = Helper.getLocalStorageWherewanttoGo()
         if(storedData.count > 0) {
             do {
                 let realm = try Realm()
-                do{
+                do {
                     try realm.write {
                         realm.delete(storedData[Index])
                     }
-                }catch{
+                } catch {
                     intervalPrint("Database error")
                 }
             } catch {
@@ -167,11 +158,11 @@ extension WereWantToGoTableViewCell:WhereToGoCollectionViewCellDelegate {
             intervalPrint( Constant.MyClassConstants.whereTogoContentArray)
             selectedIndex = -1
         }
-        if(Constant.MyClassConstants.realmStoredDestIdOrCodeArray.count > 0){
+        if(Constant.MyClassConstants.realmStoredDestIdOrCodeArray.count > 0) {
             Constant.MyClassConstants.realmStoredDestIdOrCodeArray.removeObject(at: Index)
         }
         let allDest = Helper.getLocalStorageAllDest()
-        if (allDest.count > 0){
+        if (allDest.count > 0) {
         Helper.deleteObjectFromAllDest()
         }
         let deletionIndexPath = IndexPath(item: Index, section: 0)
@@ -184,4 +175,3 @@ extension WereWantToGoTableViewCell:WhereToGoCollectionViewCellDelegate {
         self.delegate?.multipleResortInfoButtonPressedAtIndex(Index)
     }
 }
-

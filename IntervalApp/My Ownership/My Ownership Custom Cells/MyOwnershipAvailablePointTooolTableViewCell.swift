@@ -17,31 +17,28 @@ class MyOwnershipAvailablePointTooolTableViewCell: UITableViewCell {
     
     @IBOutlet weak var availablePointToolMainView: UIView!
     
-    
-    
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
     
-    //MARK:get cell
+    // MARK: get cell
     /**
      Configure Cell components
      - parameter No parameter :
      - returns : No return value
      */
-    func getCell(){
+    func getCell() {
         self.setPropertiesToCellElements()
         self.updateCellComponentstext()
     }
-    //MARK:set properties to elements of cell
+    // MARK: set properties to elements of cell
     /**
      Apply properties to cell components
      - parameter No parameter :
      - returns : No return value
      */
-    fileprivate func setPropertiesToCellElements(){
+    fileprivate func setPropertiesToCellElements() {
         availablePointsToolbutton.setTitleColor(UIColor(rgb: IUIKColorPalette.primary1.rawValue), for: .normal)
         Helper.applyCornerRadious(view: availablePointToolMainView, cornerradious: Constant.viewProperties.cornerRadious)
         Helper.applyBorderarroundView(view: availablePointsToolbutton, bordercolor: UIColor(rgb: IUIKColorPalette.border.rawValue), borderwidth: 1, cornerradious: 8)
@@ -53,7 +50,7 @@ class MyOwnershipAvailablePointTooolTableViewCell: UITableViewCell {
      - parameter No parameter:
      - returns : No value is return
      */
-    fileprivate func updateCellComponentstext(){
+    fileprivate func updateCellComponentstext() {
         availablePointsToolbutton.setTitle(Constant.ownershipViewController.clubIntervalGoldPointTableViewCell.availablePointsToolbuttonTitle, for: UIControlState())
         clubIntervalImageView.image = UIImage(named: "")
         
@@ -64,6 +61,5 @@ class MyOwnershipAvailablePointTooolTableViewCell: UITableViewCell {
         
         // Configure the view for the selected state
     }
-    
     
 }

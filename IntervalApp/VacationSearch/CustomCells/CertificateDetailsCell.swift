@@ -10,7 +10,6 @@ import UIKit
 
 class CertificateDetailsCell: UITableViewCell {
     
-    
     @IBOutlet weak var lblCertificateDetails: UILabel!
     
     override func awakeFromNib() {

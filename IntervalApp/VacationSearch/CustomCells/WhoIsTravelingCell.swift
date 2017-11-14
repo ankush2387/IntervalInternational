@@ -11,10 +11,9 @@ import UIKit
 //***** custom delegate method declaration *****//
 
 protocol WhoIsTravelingCellDelegate {
-    func adultChanged(_ value:Int)
-    func childrenChanged(_ value:Int)
+    func adultChanged(_ value: Int)
+    func childrenChanged(_ value: Int)
 }
-
 
 class WhoIsTravelingCell: UITableViewCell {
     
@@ -24,7 +23,7 @@ class WhoIsTravelingCell: UITableViewCell {
     @IBOutlet weak var childCounterLabel: UILabel!
     @IBOutlet weak var adultCounterLabel: UILabel!
     
-    var delegate:WhoIsTravelingCellDelegate?
+    var delegate: WhoIsTravelingCellDelegate?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -32,7 +31,6 @@ class WhoIsTravelingCell: UITableViewCell {
         self.adultStepper.maximumValue = 9
         self.adultStepper.minimumValue = 1
         self.adultStepper.value = Double(Constant.MyClassConstants.stepperAdultCurrentValue)
-        
         
         self.childrenStepper.maximumValue = 9
         self.childrenStepper.minimumValue = 0

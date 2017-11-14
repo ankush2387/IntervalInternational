@@ -11,17 +11,16 @@ import IntervalUIKit
 
 //**** Custom delegate method declaration ****//
 
-protocol SearchTableViewCellDelegate{
+protocol SearchTableViewCellDelegate {
     
     func searchButtonClicked(_ sender: IUIKButton)
 }
 
 class SearchTableViewCell: UITableViewCell {
     
-    
     @IBOutlet weak var searchVacation: IUIKButton!
     @IBOutlet weak var resortInfoCollectionView: UICollectionView!
-    var delegate:SearchTableViewCellDelegate?
+    var delegate: SearchTableViewCellDelegate?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -34,7 +33,7 @@ class SearchTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    @IBAction func searchButtonClicked(_ sender: IUIKButton){
+    @IBAction func searchButtonClicked(_ sender: IUIKButton) {
         self.delegate?.searchButtonClicked(sender)
     }
 

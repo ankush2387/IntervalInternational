@@ -18,10 +18,8 @@ class IntervalHDIpadController: UIViewController {
     @IBOutlet weak var videoSeaarchBar: UISearchBar!
     @IBOutlet weak var videoCollectionView: UICollectionView!
     
-    
     var searchResutlArray = [Video]()
     var videoSegmentIndex = 0
-
     
     override func viewWillAppear(_ animated: Bool) {
        
@@ -36,7 +34,7 @@ class IntervalHDIpadController: UIViewController {
                 rvc.delegate = self
                 
                 //***** Add the hamburger menu *****//
-                let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action:#selector(SWRevealViewController.revealToggle(_:)))
+                let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action: #selector(SWRevealViewController.revealToggle(_:)))
                 menuButton.tintColor = UIColor.white
                 self.navigationItem.leftBarButtonItem = menuButton
                 
@@ -44,9 +42,9 @@ class IntervalHDIpadController: UIViewController {
                 self.view.addGestureRecognizer( rvc.panGestureRecognizer())
             }
             
-        }else {
+        } else {
             
-            let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(self.menuBackButtonPressed(_:)))
+            let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(self.menuBackButtonPressed(_:)))
             menuButton.tintColor = UIColor.white
             self.navigationItem.leftBarButtonItem = menuButton
             
@@ -74,25 +72,25 @@ class IntervalHDIpadController: UIViewController {
     }
     
     //***** Notification after service is hit. *****//
-    func reloadVideos(){
+    func reloadVideos() {
         videoCollectionView.reloadData()
     }
     
     //***** Notification to hit API when system access token gets available. *****//
-    func getAllVideos(){
+    func getAllVideos() {
         Helper.getVideos(searchBy: Constant.MyClassConstants.areaString, senderViewcontroller: self)
         Helper.getVideos(searchBy: Constant.MyClassConstants.resortsString, senderViewcontroller: self)
         Helper.getVideos(searchBy: Constant.MyClassConstants.tutorialsString, senderViewcontroller: self)
     }
     
     //***** function called when back button pressed on navigation bar *****//
-    func menuBackButtonPressed(_ sender:UIBarButtonItem) {
+    func menuBackButtonPressed(_ sender: UIBarButtonItem) {
         
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
     //***** function called when play button pressed on video *****//
-    func playButtonPressedAtIndex(_ sender:IUIKButton) {
+    func playButtonPressedAtIndex(_ sender: IUIKButton) {
 
         let video = Constant.MyClassConstants.intervalHDDestinations![sender.tag]
         
@@ -109,7 +107,7 @@ class IntervalHDIpadController: UIViewController {
     }
 	
 	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-		if(self.videoCollectionView != nil){
+		if(self.videoCollectionView != nil) {
          self.videoCollectionView.collectionViewLayout.invalidateLayout()
          self.videoCollectionView.reloadData()
         }
@@ -121,22 +119,19 @@ class IntervalHDIpadController: UIViewController {
 
 }
 
-
 //***** MARK: Extension classes starts from here *****//
 
-extension IntervalHDIpadController:UICollectionViewDelegate {
-	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
-	{
+extension IntervalHDIpadController: UICollectionViewDelegate {
+	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 		
 	}
 }
 
-extension IntervalHDIpadController:UICollectionViewDataSource {
+extension IntervalHDIpadController: UICollectionViewDataSource {
  
 	//***** Collection dataSource methods definition here *****//
 	
-	func numberOfSections(in collectionView: UICollectionView) -> Int
-	{
+	func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
 	
@@ -144,25 +139,23 @@ extension IntervalHDIpadController:UICollectionViewDataSource {
         
         if(self.searchResutlArray.count > 0) {
             return self.searchResutlArray.count
-        }
-        else {
+        } else {
             
             if((self.videoSeaarchBar.text?.characters.count)! > 0) {
                 
                 return 0
-            }
-            else {
+            } else {
                 
-                if(collectionView.tag == 0 && Constant.MyClassConstants.intervalHDDestinations?.count != 0){
+                if(collectionView.tag == 0 && Constant.MyClassConstants.intervalHDDestinations?.count != 0) {
                     return (Constant.MyClassConstants.intervalHDDestinations?.count)!
                     
-                }else if(collectionView.tag == 1 && Constant.MyClassConstants.internalHDResorts?.count != 0){
+                } else if(collectionView.tag == 1 && Constant.MyClassConstants.internalHDResorts?.count != 0) {
                     return (Constant.MyClassConstants.internalHDResorts?.count)!
                     
-                }else if(collectionView.tag == 2 && Constant.MyClassConstants.internalHDTutorials?.count != 0){
+                } else if(collectionView.tag == 2 && Constant.MyClassConstants.internalHDTutorials?.count != 0) {
                     
                     return (Constant.MyClassConstants.internalHDTutorials?.count)!
-                }else{
+                } else {
                     return 0
                 }
 
@@ -178,19 +171,18 @@ extension IntervalHDIpadController:UICollectionViewDataSource {
         if(self.searchResutlArray.count > 0) {
             
              video = self.searchResutlArray[indexPath.item]
-        }
-        else {
-            if(collectionView.tag == 0){
+        } else {
+            if(collectionView.tag == 0) {
                 video = Constant.MyClassConstants.intervalHDDestinations![indexPath.item]
-            }else if(collectionView.tag == 1){
+            } else if(collectionView.tag == 1) {
                 video = Constant.MyClassConstants.internalHDResorts![indexPath.item]
-            }else{
+            } else {
                 video = Constant.MyClassConstants.internalHDTutorials![indexPath.item]
             }
         }
         cell.thumbnailImageView.backgroundColor = UIColor.lightGray
 		
-		cell.thumbnailImageView.setImageWith(URL(string: video.images[0].url!), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
+		cell.thumbnailImageView.setImageWith(URL(string: video.images[0].url!), completed: { (image:UIImage?, error:Swift.Error?, _:SDImageCacheType, _:URL?) in
 			if (error != nil) {
 				cell.thumbnailImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                 cell.thumbnailImageView.contentMode = .center
@@ -206,7 +198,7 @@ extension IntervalHDIpadController:UICollectionViewDataSource {
 }
 
 //***** Search bar delegate methods to handle the search bar actions *****//
-extension IntervalHDIpadController:UISearchBarDelegate {
+extension IntervalHDIpadController: UISearchBarDelegate {
     
     //**** Search bar controller delegate ****//
     
@@ -233,11 +225,9 @@ extension IntervalHDIpadController:UISearchBarDelegate {
         var videos = [Any]()
         if(self.videoCollectionView.tag == 0) {
             videos = Constant.MyClassConstants.intervalHDDestinations!
-        }
-        else if(self.videoCollectionView.tag == 1) {
+        } else if(self.videoCollectionView.tag == 1) {
             videos = Constant.MyClassConstants.internalHDResorts!
-        }
-        else {
+        } else {
             videos = Constant.MyClassConstants.internalHDTutorials!
         }
        
@@ -247,5 +237,3 @@ extension IntervalHDIpadController:UISearchBarDelegate {
         
     }
 }
-
-

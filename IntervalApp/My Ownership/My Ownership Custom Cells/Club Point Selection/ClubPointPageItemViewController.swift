@@ -20,14 +20,13 @@ class ClubPointPageItemViewController: UIViewController {
     @IBAction func firstCheckBoxValueIsChanged(sender: AnyObject) {
        
         let firstCheckBox = sender as! IUIKCheckbox
-        if firstCheckBox.checked{
+        if firstCheckBox.checked {
         currentCheckBoxTags = sender.tag
         ischeckbox = true
         
         ClubPointPageItemViewController.checkBoxDictionaryWithpageNumber.updateValue(currentCheckBoxTags, forKey: pageItemIndex)
             reloadTableViewData()
-        }
-        else{
+        } else {
             ischeckbox = false
             currentCheckBoxTags = 0
              ClubPointPageItemViewController.checkBoxDictionaryWithpageNumber.updateValue(currentCheckBoxTags, forKey: pageItemIndex)
@@ -44,13 +43,12 @@ class ClubPointPageItemViewController: UIViewController {
     @IBAction func secondCheckBoxValueIsChanged(sender: AnyObject) {
         
         let secondCheckBox = sender as! IUIKCheckbox
-        if secondCheckBox.checked{
+        if secondCheckBox.checked {
             ischeckbox = true
             currentCheckBoxTags = sender.tag
             ClubPointPageItemViewController.checkBoxDictionaryWithpageNumber.updateValue(currentCheckBoxTags, forKey: pageItemIndex)
             reloadTableViewData()
-        }
-        else{
+        } else {
             ischeckbox = false
             currentCheckBoxTags = 0
             ClubPointPageItemViewController.checkBoxDictionaryWithpageNumber.updateValue(currentCheckBoxTags, forKey: pageItemIndex)
@@ -61,12 +59,12 @@ class ClubPointPageItemViewController: UIViewController {
     }
     
     /** Class Variables  */
-    var currentCheckBoxTags  = 0
-    static var checkBoxDictionaryWithpageNumber = [Int : Int]()
-    var ischeckbox:Bool = false
-    var pageItemIndex: Int = 0{
-        didSet{
-            guard let _ = ClubPointPageItemViewController.checkBoxDictionaryWithpageNumber[pageItemIndex] else{
+    var currentCheckBoxTags = 0
+    static var checkBoxDictionaryWithpageNumber = [Int: Int]()
+    var ischeckbox: Bool = false
+    var pageItemIndex: Int = 0 {
+        didSet {
+            guard let _ = ClubPointPageItemViewController.checkBoxDictionaryWithpageNumber[pageItemIndex] else {
                 ClubPointPageItemViewController.checkBoxDictionaryWithpageNumber.updateValue(currentCheckBoxTags, forKey: pageItemIndex)
                 return
             }
@@ -77,10 +75,9 @@ class ClubPointPageItemViewController: UIViewController {
         super.viewDidLoad()
         self.view.bringSubviewToFront(verticalLine)
         //print("itemindex=\(pageItemIndex)")
-        if ClubPointPageItemViewController.checkBoxDictionaryWithpageNumber.count  == 0{
+        if ClubPointPageItemViewController.checkBoxDictionaryWithpageNumber.count == 0 {
             ClubPointPageItemViewController.checkBoxDictionaryWithpageNumber.updateValue(currentCheckBoxTags, forKey: pageItemIndex)
         }
-        
 
         // Do any additional setup after loading the view.
     }
@@ -89,7 +86,6 @@ class ClubPointPageItemViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
     /*
     // MARK: - Navigation
@@ -105,36 +101,30 @@ class ClubPointPageItemViewController: UIViewController {
     - parameter No Parameter:
     - returns : No return value
     */
-    private func reloadTableViewData(){
+    private func reloadTableViewData() {
         clubPointTableView.reloadData()
     }
-    
 
 }
 /** Extension for UITableViewDataSource */
-extension ClubPointPageItemViewController:UITableViewDataSource{
+extension ClubPointPageItemViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell1:ClubPointWithCheckBoxTableViewCell?
-        let cell2 :ClubPointTableViewCell?
-        if indexPath.row%2 == 0{
+        let cell1: ClubPointWithCheckBoxTableViewCell?
+        let cell2: ClubPointTableViewCell?
+        if indexPath.row % 2 == 0 {
            
-             cell1 =  tableView.dequeueReusableCellWithIdentifier("cell2") as? ClubPointWithCheckBoxTableViewCell
+             cell1 = tableView.dequeueReusableCellWithIdentifier("cell2") as? ClubPointWithCheckBoxTableViewCell
             
             let checkboxTagsArray = ClubPointPageItemViewController.checkBoxDictionaryWithpageNumber[pageItemIndex]
             
                 cell1?.getCell(ischeckbox: ischeckbox, index: indexPath.row, checkBoxTagArray: checkboxTagsArray!)
-               
-            
             
             return cell1!
-        }
-        else{
-           cell2 =  tableView.dequeueReusableCellWithIdentifier("cell1") as? ClubPointTableViewCell
+        } else {
+           cell2 = tableView.dequeueReusableCellWithIdentifier("cell1") as? ClubPointTableViewCell
             return cell2!
         }
-        
-        
         
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -146,6 +136,6 @@ extension ClubPointPageItemViewController:UITableViewDataSource{
     
 }
 /** Extension for UITableViewDelegate */
-extension ClubPointPageItemViewController:UITableViewDelegate{
+extension ClubPointPageItemViewController: UITableViewDelegate {
     
 }

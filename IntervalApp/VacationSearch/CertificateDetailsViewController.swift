@@ -33,8 +33,8 @@ class CertificateDetailsViewController: UIViewController {
     
 }
 
-//MARK:- tableview delegate
-extension CertificateDetailsViewController:UITableViewDelegate {
+// MARK: - tableview delegate
+extension CertificateDetailsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
@@ -46,9 +46,8 @@ extension CertificateDetailsViewController:UITableViewDelegate {
     }
 }
 
-
-//MARK:- tableview datasource
-extension CertificateDetailsViewController:UITableViewDataSource {
+// MARK: - tableview datasource
+extension CertificateDetailsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
@@ -69,7 +68,7 @@ extension CertificateDetailsViewController:UITableViewDataSource {
             areaLbl = label
         }
         
-        let areasCombined = response.restrictedArea?.areas.map{$0.areaName} as! [String]
+        let areasCombined = response.restrictedArea?.areas.map { $0.areaName } as! [String]
         let areaString = areasCombined.joined(separator: newLine)
         
         //resort
@@ -78,10 +77,10 @@ extension CertificateDetailsViewController:UITableViewDataSource {
             resortLbl = label
         }
         
-        let resortCombined = response.restrictedResort?.resorts.map{$0.resortName} as! [String]
+        let resortCombined = response.restrictedResort?.resorts.map { $0.resortName } as! [String]
         let resortString = resortCombined.joined(separator: newLine)
         
-        let finaStr  = headerString + newLine2 + areaLbl + areaString + newLine2 + resortLbl + resortString + newLine2 + footer
+        let finaStr = headerString + newLine2 + areaLbl + areaString + newLine2 + resortLbl + resortString + newLine2 + footer
         
         // cell title
         cell.textLabel?.text = Constant.MyClassConstants.certificateDetailsCellTitle + newLine
@@ -96,7 +95,6 @@ extension CertificateDetailsViewController:UITableViewDataSource {
         return cell
     }
     
-    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -107,7 +105,3 @@ extension CertificateDetailsViewController:UITableViewDataSource {
     }
     
 }
-
-
-
-

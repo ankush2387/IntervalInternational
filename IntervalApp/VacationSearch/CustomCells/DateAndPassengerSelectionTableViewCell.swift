@@ -13,15 +13,15 @@ import IntervalUIKit
 
 protocol DateAndPassengerSelectionTableViewCellDelegate {
     
-    func adultStepperChanged(_ value:Int)
-    func childrenStepperChanged(_ value:Int)
-    func calendarIconClicked(_ sender:UIButton)
+    func adultStepperChanged(_ value: Int)
+    func childrenStepperChanged(_ value: Int)
+    func calendarIconClicked(_ sender: UIButton)
     
 }
 
 class DateAndPassengerSelectionTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var calenderButton:UIButton?
+    @IBOutlet weak var calenderButton: UIButton?
     @IBOutlet weak var childCountLabel: UILabel!
     @IBOutlet weak var adultCountLabel: UILabel!
     @IBOutlet weak var stepperAdult: UIStepper!
@@ -35,7 +35,7 @@ class DateAndPassengerSelectionTableViewCell: UITableViewCell {
     @IBOutlet weak var year: UILabel!
     @IBOutlet weak var monthName: UILabel!
     @IBOutlet weak var dayDate: UILabel!
-    var delegate:DateAndPassengerSelectionTableViewCellDelegate?
+    var delegate: DateAndPassengerSelectionTableViewCellDelegate?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -48,7 +48,6 @@ class DateAndPassengerSelectionTableViewCell: UITableViewCell {
         self.stepperAdult.maximumValue = 9
         self.stepperAdult.minimumValue = 1
         self.stepperAdult.value = Double(Constant.MyClassConstants.stepperAdultCurrentValue)
-        
       
         self.stepperChildren.maximumValue = 9
         self.stepperChildren.minimumValue = 0
@@ -68,7 +67,7 @@ class DateAndPassengerSelectionTableViewCell: UITableViewCell {
         self.delegate?.childrenStepperChanged(Int(sender.value))
     }
     
-    @IBAction func calenderButtonClicked(_ sender: UIButton){
+    @IBAction func calenderButtonClicked(_ sender: UIButton) {
         self.delegate?.calendarIconClicked(sender)
     }
 

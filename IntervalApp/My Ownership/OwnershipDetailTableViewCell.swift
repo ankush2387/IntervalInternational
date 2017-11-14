@@ -27,36 +27,34 @@ class OwnershipDetailTableViewCell: UITableViewCell {
     
     @IBOutlet weak var lowerHorizontalSeperator: UIView!
     
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
 
-    //MARK:get cell
+    // MARK: get cell
     /**
     Configure Cell components
     - parameter No parameter :
     - returns : No return value
     */
-    func getCell(_ isConstraintUpdate:Bool = false){
+    func getCell(_ isConstraintUpdate: Bool = false) {
         setPropertiesToCellElements()
         updateCellComponentsText()
-        if isConstraintUpdate{
+        if isConstraintUpdate {
             mainViewBottomConstraint.constant = 10
             lowerHorizontalSeperator.isHidden = true
-        }
-        else{
+        } else {
             lowerHorizontalSeperator.isHidden = true
         }
     }
-    //MARK:set properties to elements of cell
+    // MARK: set properties to elements of cell
     /**
     Apply properties to cell components
     - parameter No parameter :
     - returns : No return value
     */
-    fileprivate func setPropertiesToCellElements(){
+    fileprivate func setPropertiesToCellElements() {
         dateLabel.textColor = UIColor(rgb: IUIKColorPalette.secondaryText.rawValue)
         weekLabel.textColor = UIColor(rgb: IUIKColorPalette.secondaryText.rawValue)
         yearLabel.textColor = UIColor(rgb: IUIKColorPalette.secondaryA.rawValue)
@@ -68,7 +66,7 @@ class OwnershipDetailTableViewCell: UITableViewCell {
     - parameter No parameter:
     - returns : No value is return
     */
-    fileprivate func updateCellComponentsText(){
+    fileprivate func updateCellComponentsText() {
         //Dummy Data 
         dateLabel.text = "Dec 20"
         yearLabel.text = "2016"

@@ -15,19 +15,17 @@ class AvailableDestinationsTableViewController: UIViewController {
     
     //Used to expand and contract sections
     @IBAction func toggleButtonIsTapped(_ sender: UIButton) {
-        if let tag = tappedButtonDictionary[sender.tag]{
-            if tag{
+        if let tag = tappedButtonDictionary[sender.tag] {
+            if tag {
                 tappedButtonDictionary.updateValue(!tag, forKey: sender.tag)
-            }
-            else{
+            } else {
                 tappedButtonDictionary.updateValue(!tag, forKey: sender.tag)
             }
             
-        }
-        else{
+        } else {
             tappedButtonDictionary.updateValue(true, forKey: sender.tag)
         }
-        availableCountryListTableView.reloadSections(IndexSet(integer: sender.tag), with:.automatic)
+        availableCountryListTableView.reloadSections(IndexSet(integer: sender.tag), with: .automatic)
         
     }
     
@@ -36,42 +34,36 @@ class AvailableDestinationsTableViewController: UIViewController {
         let tagString = String(sender.tag)
        let placeSelectionMainDictionarykey = Int(String(tagString.characters.last!))
        
-        if let key = placeSelectionDictionary[sender.tag]{
-            if key{
+        if let key = placeSelectionDictionary[sender.tag] {
+            if key {
                 placeSelectionDictionary.removeValue(forKey: sender.tag)
             }
-        }
-        else{
+        } else {
             
             placeSelectionDictionary.updateValue(true, forKey: sender.tag)
         }
         
-        var tempSelectionDictionary = [Int:Bool]()
-        for (key,value) in placeSelectionDictionary{
+        var tempSelectionDictionary = [Int: Bool]()
+        for (key, value) in placeSelectionDictionary {
             let keyString = String(key)
             let dictionaryKey = Int(String(keyString.characters.last!))
-            if placeSelectionMainDictionarykey == dictionaryKey{
+            if placeSelectionMainDictionarykey == dictionaryKey {
                 tempSelectionDictionary.updateValue(value, forKey: key)
             }
 
         }
         placeSelectionMainDictionary.updateValue(tempSelectionDictionary, forKey: placeSelectionMainDictionarykey!)
         //placeSelectionMainDictionary.updateValue(placeSelectionDictionary, forKey: placeSelectionMainDictionarykey!)
-        availableCountryListTableView.reloadSections(IndexSet(integer: placeSelectionMainDictionarykey!), with:.automatic)
+        availableCountryListTableView.reloadSections(IndexSet(integer: placeSelectionMainDictionarykey!), with: .automatic)
         
     }
     
-    
-    
-    
     // Class Variables
-    fileprivate let countryArray = ["India","US","UK","Africa"]
-    fileprivate var placeSelectionMainDictionary = [Int:[Int:Bool]]()
-    fileprivate var placeSelectionDictionary = [Int:Bool]()
+    fileprivate let countryArray = ["India", "US", "UK", "Africa"]
+    fileprivate var placeSelectionMainDictionary = [Int: [Int: Bool]]()
+    fileprivate var placeSelectionDictionary = [Int: Bool]()
     
-    
-    fileprivate var tappedButtonDictionary = [Int:Bool]()
-    
+    fileprivate var tappedButtonDictionary = [Int: Bool]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,8 +81,6 @@ class AvailableDestinationsTableViewController: UIViewController {
     }
 
     // MARK: - Table view data source
-
-    
        
     func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
@@ -99,56 +89,48 @@ class AvailableDestinationsTableViewController: UIViewController {
 
      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        if let isOpen = tappedButtonDictionary[section]{
-            if isOpen{
+        if let isOpen = tappedButtonDictionary[section] {
+            if isOpen {
                 return countryArray.count + 1
-            }
-            else{
+            } else {
                 return 1
             }
             
         }
         return 1
     }
-
     
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var availabledestionCountryOrContinentsCell :AvailableDestinationCountryOrContinentsTableViewCell?
-        var availableCountryCell:AvailableDestinationPlaceTableViewCell?
+        var availabledestionCountryOrContinentsCell: AvailableDestinationCountryOrContinentsTableViewCell?
+        var availableCountryCell: AvailableDestinationPlaceTableViewCell?
        
-        if let isOpen = tappedButtonDictionary[(indexPath as NSIndexPath).section]{
-            if isOpen && (indexPath as NSIndexPath).row > 0{
+        if let isOpen = tappedButtonDictionary[(indexPath as NSIndexPath).section] {
+            if isOpen && (indexPath as NSIndexPath).row > 0 {
                 availableCountryCell = tableView.dequeueReusableCell(withIdentifier: Constant.availableDestinationsTableViewController.availableDestinationPlaceTableViewCell) as? AvailableDestinationPlaceTableViewCell
-                if let _ = placeSelectionMainDictionary[(indexPath as NSIndexPath).section]{
-                    availableCountryCell?.getCell(indexPath,selectedPlaceDictionary:placeSelectionMainDictionary[(indexPath as NSIndexPath).section]!)
-                }
-                else{
+                if let _ = placeSelectionMainDictionary[(indexPath as NSIndexPath).section] {
+                    availableCountryCell?.getCell(indexPath, selectedPlaceDictionary: placeSelectionMainDictionary[(indexPath as NSIndexPath).section]!)
+                } else {
                     availableCountryCell?.getCell(indexPath)
                 }
                 
-                
                 return availableCountryCell!
-            }
-            else{
-                availabledestionCountryOrContinentsCell  = tableView.dequeueReusableCell(withIdentifier: Constant.availableDestinationsTableViewController.availableDestinationCountryOrContinentsTableViewCell) as? AvailableDestinationCountryOrContinentsTableViewCell
-                if let selectedPlacedictionary = placeSelectionMainDictionary[(indexPath as NSIndexPath).section]{
-                    availabledestionCountryOrContinentsCell?.getCell((indexPath as NSIndexPath).section,islistOfCountry:isOpen,selectedPlaceDictionary:selectedPlacedictionary)
-                }
-                else{
-                    availabledestionCountryOrContinentsCell?.getCell((indexPath as NSIndexPath).section,islistOfCountry:isOpen)
+            } else {
+                availabledestionCountryOrContinentsCell = tableView.dequeueReusableCell(withIdentifier: Constant.availableDestinationsTableViewController.availableDestinationCountryOrContinentsTableViewCell) as? AvailableDestinationCountryOrContinentsTableViewCell
+                if let selectedPlacedictionary = placeSelectionMainDictionary[(indexPath as NSIndexPath).section] {
+                    availabledestionCountryOrContinentsCell?.getCell((indexPath as NSIndexPath).section, islistOfCountry: isOpen, selectedPlaceDictionary: selectedPlacedictionary)
+                } else {
+                    availabledestionCountryOrContinentsCell?.getCell((indexPath as NSIndexPath).section, islistOfCountry: isOpen)
                 }
                 
                 return availabledestionCountryOrContinentsCell!
             }
-        }
-        else{
-            availabledestionCountryOrContinentsCell  = tableView.dequeueReusableCell(withIdentifier: Constant.availableDestinationsTableViewController.availableDestinationCountryOrContinentsTableViewCell) as? AvailableDestinationCountryOrContinentsTableViewCell
+        } else {
+            availabledestionCountryOrContinentsCell = tableView.dequeueReusableCell(withIdentifier: Constant.availableDestinationsTableViewController.availableDestinationCountryOrContinentsTableViewCell) as? AvailableDestinationCountryOrContinentsTableViewCell
            
                 availabledestionCountryOrContinentsCell?.getCell((indexPath as NSIndexPath).section)
             
             return availabledestionCountryOrContinentsCell!
         }
-        
         
     }
     
@@ -165,18 +147,18 @@ class AvailableDestinationsTableViewController: UIViewController {
     }
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        var leading:NSLayoutConstraint?
-        var trailing:NSLayoutConstraint?
-        var top:NSLayoutConstraint?
-        var bottom:NSLayoutConstraint?
-        var height:NSLayoutConstraint?
+        var leading: NSLayoutConstraint?
+        var trailing: NSLayoutConstraint?
+        var top: NSLayoutConstraint?
+        var bottom: NSLayoutConstraint?
+        var height: NSLayoutConstraint?
         
-        let headerView = UIView(frame: CGRect(x: 0,y: 0,width: tableView.bounds.size.width,height: 30))
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: 30))
             
         headerView.backgroundColor = UIColor.clear
         //Sub views for header view
         let topHorizontalSeperatorView = UIView()
-        if section != 0{
+        if section != 0 {
             headerView.addSubview(topHorizontalSeperatorView)
         }
         
@@ -188,18 +170,16 @@ class AvailableDestinationsTableViewController: UIViewController {
         
         leading = NSLayoutConstraint(item: titleLabel, attribute: .leadingMargin, relatedBy: .equal, toItem: headerView, attribute: .leadingMargin, multiplier: 1.0, constant: 10)
         trailing = NSLayoutConstraint(item: titleLabel, attribute: .trailingMargin, relatedBy: .equal, toItem: headerView, attribute: .trailingMargin, multiplier: 1.0, constant: 0)
-        if section == 0{
+        if section == 0 {
             top = NSLayoutConstraint(item: titleLabel, attribute: .top, relatedBy: .equal, toItem: headerView, attribute: .top, multiplier: 1.0, constant: 0)
-        }
-        else{
+        } else {
             top = NSLayoutConstraint(item: titleLabel, attribute: .top, relatedBy: .equal, toItem: topHorizontalSeperatorView, attribute: .top, multiplier: 1.0, constant: 0)
 
         }
                 bottom = NSLayoutConstraint(item: titleLabel, attribute: .bottom, relatedBy: .equal, toItem: headerView, attribute: .bottom, multiplier: 1.0, constant: 0)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([leading!,trailing!,top!,bottom!])
-        headerView.addConstraints([leading!,trailing!,top!,bottom!])
-
+        NSLayoutConstraint.activate([leading!, trailing!, top!, bottom!])
+        headerView.addConstraints([leading!, trailing!, top!, bottom!])
         
         /** Auto layout for horizontal seperator */
         
@@ -207,12 +187,11 @@ class AvailableDestinationsTableViewController: UIViewController {
          trailing = NSLayoutConstraint(item: topHorizontalSeperatorView, attribute: .trailingMargin, relatedBy: .equal, toItem: headerView, attribute: .trailingMargin, multiplier: 1.0, constant: 0)
          top = NSLayoutConstraint(item: topHorizontalSeperatorView, attribute: .top, relatedBy: .equal, toItem: headerView, attribute: .top, multiplier: 1.0, constant: 0)
          height = NSLayoutConstraint(item: topHorizontalSeperatorView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1.0, constant: 2)
-        if section != 0{
+        if section != 0 {
             topHorizontalSeperatorView.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([leading!,trailing!,top!,height!])
-            headerView.addConstraints([leading!,trailing!,top!,height!])
+            NSLayoutConstraint.activate([leading!, trailing!, top!, height!])
+            headerView.addConstraints([leading!, trailing!, top!, height!])
         }
-        
         
         return headerView
     }

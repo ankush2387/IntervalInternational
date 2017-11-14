@@ -27,22 +27,22 @@ class OwnershipDetailWithFreeDepositTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
     }
-    //MARK:get cell
+    // MARK: get cell
     /**
     Configure Cell components
     - parameter No parameter :
     - returns : No return value
     */
-    func getCell(){
+    func getCell() {
         self.setPropertiesToCellElements()
     }
-    //MARK:set properties to elements of cell
+    // MARK: set properties to elements of cell
     /**
     Apply properties to cell components
     - parameter No parameter :
     - returns : No return value
     */
-    fileprivate func setPropertiesToCellElements(){
+    fileprivate func setPropertiesToCellElements() {
         dateLabel.textColor = UIColor(rgb: IUIKColorPalette.secondaryText.rawValue)
         weekNumberLabel.textColor = UIColor(rgb: IUIKColorPalette.secondaryText.rawValue)
         yearLabel.textColor = UIColor(rgb: IUIKColorPalette.active.rawValue)
@@ -53,7 +53,7 @@ class OwnershipDetailWithFreeDepositTableViewCell: UITableViewCell {
     - parameter No parameter:
     - returns : No value is return
     */
-    fileprivate func updateCellComponentsText(){
+    fileprivate func updateCellComponentsText() {
         depositForFreeButton.setTitle(Constant.ownershipViewController.ownershipDetailWithFreeDepositTableViewCell.depositForFreeButtonTitle, for: UIControlState())
     }
 

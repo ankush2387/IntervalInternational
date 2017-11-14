@@ -58,7 +58,6 @@ class InfoDetailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
     @IBAction func doneButtonPressed(_ sender: AnyObject) {
         
         self.dismiss(animated: true, completion: nil)
@@ -67,7 +66,7 @@ class InfoDetailViewController: UIViewController {
 }
 
 //***** extensiion class to define tableview datasource methods *****//
-extension InfoDetailViewController:UITableViewDelegate {
+extension InfoDetailViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
@@ -75,7 +74,7 @@ extension InfoDetailViewController:UITableViewDelegate {
     
 }
 
-extension InfoDetailViewController:UITableViewDataSource {
+extension InfoDetailViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let object = Constant.MyClassConstants.selectedGetawayAlertDestinationArray[0] as! NSArray
        // let count  = object as! Int

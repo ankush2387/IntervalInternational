@@ -13,14 +13,13 @@ import DarwinSDK
 //***** custom delegate method declaration *****//
 
 protocol ResortDetailsDelegate {
-    func tableViewSelected(_ index:Int)
+    func tableViewSelected(_ index: Int)
 }
 
-
-class ResortDetails: NSObject,UITableViewDataSource,UITableViewDelegate {
+class ResortDetails: NSObject, UITableViewDataSource, UITableViewDelegate {
     
     var delegate: ResortDetailsDelegate?
-    var unfavHandler : (Int) -> Void = {_ in }
+    var unfavHandler: (Int) -> Void = { _ in }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -39,7 +38,7 @@ class ResortDetails: NSObject,UITableViewDataSource,UITableViewDelegate {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.searchResultContentTableCell, for: indexPath) as! SearchResultContentTableCell
         
-        for layer in cell.resortNameGradientView.layer.sublayers!{
+        for layer in cell.resortNameGradientView.layer.sublayers! {
             if(layer.isKind(of: CAGradientLayer.self)) {
                 layer.removeFromSuperlayer()
             }
@@ -51,12 +50,11 @@ class ResortDetails: NSObject,UITableViewDataSource,UITableViewDelegate {
         cell.favoriteButton.isSelected = true
         cell.favoriteButton.tag = (indexPath as NSIndexPath).row
         
-        if (resortDetails.images.count>0){
+        if (resortDetails.images.count > 0) {
             let url = URL(string: Constant.MyClassConstants.favoritesResortArray[indexPath.row].images[Constant.MyClassConstants.favoritesResortArray[indexPath.row].images.count - 1].url!)
             
-            
             cell.resortImageView.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
-        }else{
+        } else {
         }
         cell.resortName.text = resortDetails.resortName
         let resortAddress = resortDetails.address!
@@ -64,7 +62,7 @@ class ResortDetails: NSObject,UITableViewDataSource,UITableViewDelegate {
         cell.resortCode.text = resortDetails.resortCode
         if let tier = resortDetails.tier {
             let tierImageName = Helper.getTierImageName(tier: tier.uppercased())
-            cell.tierImageView.image = UIImage(named:tierImageName)
+            cell.tierImageView.image = UIImage(named: tierImageName)
         }
         cell.selectionStyle = UITableViewCellSelectionStyle.none
         cell.delegate = self
@@ -82,10 +80,10 @@ class ResortDetails: NSObject,UITableViewDataSource,UITableViewDelegate {
         }
     }
 }
-extension ResortDetails:SearchResultContentTableCellDelegate {
-    func favoriteButtonClicked(_ sender:UIButton){
+extension ResortDetails: SearchResultContentTableCellDelegate {
+    func favoriteButtonClicked(_ sender: UIButton) {
         
-        if (sender.isSelected == false){
+        if (sender.isSelected == false) {
             
             intervalPrint(Constant.MyClassConstants.resortsArray[sender.tag].resortCode!)
             UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in
@@ -93,12 +91,10 @@ extension ResortDetails:SearchResultContentTableCellDelegate {
                 intervalPrint(response)
                 sender.isSelected = true
                 
-                
             }, onError: {(error) in
                 intervalPrint(error)
             })
-        }
-        else {
+        } else {
             sender.isSelected = false
             intervalPrint()
             unfavHandler(sender.tag)
@@ -106,7 +102,7 @@ extension ResortDetails:SearchResultContentTableCellDelegate {
 
     }
     
-    func unfavoriteButtonClicked(_ sender:UIButton){
+    func unfavoriteButtonClicked(_ sender: UIButton) {
         NotificationCenter.default.post(name: Notification.Name(rawValue: Constant.notificationNames.showUnfavorite), object: sender)
     }
 }

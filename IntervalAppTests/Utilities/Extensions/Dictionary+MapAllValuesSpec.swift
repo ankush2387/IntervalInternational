@@ -13,7 +13,7 @@ import Quick
 
 final class DictionaryMapAllValuesSpec: QuickSpec {
 
-    let sourceDictionary: [Int : Any] = [0: "A", 1: "B", 2: 2, 3: 3]
+    let sourceDictionary: [Int: Any] = [0: "A", 1: "B", 2: 2, 3: 3]
 
     override func spec() {
 
@@ -33,4 +33,3 @@ final class DictionaryMapAllValuesSpec: QuickSpec {
         }
     }
 }
-

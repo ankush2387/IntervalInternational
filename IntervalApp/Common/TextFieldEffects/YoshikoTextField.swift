@@ -133,7 +133,7 @@ import UIKit
         return CGRect(x: bounds.origin.x, y: bounds.origin.y + placeholderHeight, width: bounds.size.width, height: bounds.size.height - placeholderHeight)
     }
 
-    private var placeholderHeight : CGFloat {
+    private var placeholderHeight: CGFloat {
         return placeHolderInsets.y + placeholderFontFromFontAndPercentageOfOriginalSize(font: font!, percentageOfOriginalSize: placeholderFontScale).lineHeight
     }
     

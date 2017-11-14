@@ -12,7 +12,6 @@ import IntervalUIKit
 class UpComingTripsTableViewCell: UITableViewCell {
      //***** Outlets *****//
     @IBOutlet var vacationSearchCollectionView: UICollectionView!
-
     
     @IBOutlet weak var searchVacationButton: IUIKButton!
     @IBOutlet weak var vacationSearchContainerView: UIView!

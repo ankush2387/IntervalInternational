@@ -151,7 +151,7 @@ import UIKit
         var originX = textRect.origin.x
         switch textAlignment {
         case .center:
-            originX += textRect.size.width/2 - placeholderLabel.bounds.width/2
+            originX += textRect.size.width / 2 - placeholderLabel.bounds.width / 2
         case .right:
             originX += textRect.size.width - placeholderLabel.bounds.width
         default:
@@ -163,9 +163,9 @@ import UIKit
     
     // MARK: -
     
-    private func setAnchorPoint(_ anchorPoint:CGPoint, forView view:UIView) {
-        var newPoint:CGPoint = CGPoint(x: view.bounds.size.width * anchorPoint.x, y: view.bounds.size.height * anchorPoint.y)
-        var oldPoint:CGPoint = CGPoint(x: view.bounds.size.width * view.layer.anchorPoint.x, y: view.bounds.size.height * view.layer.anchorPoint.y)
+    private func setAnchorPoint(_ anchorPoint: CGPoint, forView view: UIView) {
+        var newPoint: CGPoint = CGPoint(x: view.bounds.size.width * anchorPoint.x, y: view.bounds.size.height * anchorPoint.y)
+        var oldPoint: CGPoint = CGPoint(x: view.bounds.size.width * view.layer.anchorPoint.x, y: view.bounds.size.height * view.layer.anchorPoint.y)
         
         newPoint = newPoint.applying(view.transform)
         oldPoint = oldPoint.applying(view.transform)
@@ -183,23 +183,23 @@ import UIKit
     }
     
     private func colorWithBrightnessFactor(_ color: UIColor, factor: CGFloat) -> UIColor {
-        var hue : CGFloat = 0
-        var saturation : CGFloat = 0
-        var brightness : CGFloat = 0
-        var alpha : CGFloat = 0
+        var hue: CGFloat = 0
+        var saturation: CGFloat = 0
+        var brightness: CGFloat = 0
+        var alpha: CGFloat = 0
         
         if color.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) {
             return UIColor(hue: hue, saturation: saturation, brightness: brightness * factor, alpha: alpha)
         } else {
-            return color;
+            return color
         }
     }
     
     private func rotationAndPerspectiveTransformForView(_ view: UIView) -> CATransform3D {
-        setAnchorPoint(CGPoint(x: 0.5, y: 1.0), forView:view)
+        setAnchorPoint(CGPoint(x: 0.5, y: 1.0), forView: view)
         
         var rotationAndPerspectiveTransform = CATransform3DIdentity
-        rotationAndPerspectiveTransform.m34 = 1.0/800
+        rotationAndPerspectiveTransform.m34 = 1.0 / 800
         let radians = ((-90) / 180.0 * CGFloat.pi)
         rotationAndPerspectiveTransform = CATransform3DRotate(rotationAndPerspectiveTransform, radians, 1.0, 0.0, 0.0)
         return rotationAndPerspectiveTransform

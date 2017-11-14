@@ -23,20 +23,18 @@ class ClubresortsViewController: UIViewController {
     */
     @IBAction func clubselectedIstapped(_ sender: AnyObject) {
         
-        guard let currentCheckedIndex = self.currentCheckedIndex else{
+        guard let currentCheckedIndex = self.currentCheckedIndex else {
             
             if (Constant.MyClassConstants.buttontitle == Constant.buttonId.bedroomselection) {
                 
                 Constant.MyClassConstants.savedBedroom = UnitSize.forDisplay[sender.tag].friendlyName()
                 
-            }
-            else if( Constant.MyClassConstants.buttontitle == Constant.buttonId.resortSelection){
+            } else if( Constant.MyClassConstants.buttontitle == Constant.buttonId.resortSelection) {
                 
                    Constant.MyClassConstants.savedClubFloatResort = Constant.MyClassConstants.clubFloatResorts[sender.tag].resortName!
                    Constant
                 .MyClassConstants.savedClubFloatResortCode = Constant.MyClassConstants.clubFloatResorts[sender.tag].resortCode!
             }
-            
 
             isbedroomSizeCheckboxchecked = true
             self.currentCheckedIndex = sender.tag
@@ -44,10 +42,9 @@ class ClubresortsViewController: UIViewController {
             self.navigationController?.popViewController(animated: true)
             return
         }
-        if currentCheckedIndex == sender.tag{
+        if currentCheckedIndex == sender.tag {
             isbedroomSizeCheckboxchecked = false
-        }
-        else{
+        } else {
             isbedroomSizeCheckboxchecked = true
             self.currentCheckedIndex = sender.tag
         }
@@ -56,24 +53,24 @@ class ClubresortsViewController: UIViewController {
     }
     
     /** Class Variables */
-    var clubresortArrayOfDictionary = [[String:String]]()
-    var currentCheckedIndex : Int?
-    var isbedroomSizeCheckboxchecked:Bool = false
+    var clubresortArrayOfDictionary = [[String: String]]()
+    var currentCheckedIndex: Int?
+    var isbedroomSizeCheckboxchecked: Bool = false
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = Constant.ControllerTitles.clubresortsViewController
         
-        var clubresortdictionary = [String:String]()
+        var clubresortdictionary = [String: String]()
         /** Dummy Data */
         clubresortdictionary.updateValue("Cibola Vista Resort and Spa • CIR", forKey: "clubresortname")
         clubresortdictionary.updateValue("Valid check-in days:Sun Sat", forKey: "clubresoravailabilty")
         clubresortArrayOfDictionary.append(clubresortdictionary)
         clubresortArrayOfDictionary.append(clubresortdictionary)
         // Do any additional setup after loading the view.
-        clubresortTableView.estimatedRowHeight  = 69
+        clubresortTableView.estimatedRowHeight = 69
         clubresortTableView.rowHeight = UITableViewAutomaticDimension
 
-        let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(ClubresortsViewController.menuBackButtonPressed(_:)))
+        let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(ClubresortsViewController.menuBackButtonPressed(_:)))
         menuButton.tintColor = UIColor.white
         
         self.navigationItem.leftBarButtonItem = menuButton
@@ -84,7 +81,7 @@ class ClubresortsViewController: UIViewController {
      - parameter sender : UIBarButton Reference
      - returns : No value is return
      */
-    func menuBackButtonPressed(_ sender:UIBarButtonItem) {
+    func menuBackButtonPressed(_ sender: UIBarButtonItem) {
         
         _ = self.navigationController?.popViewController(animated: true)
     }
@@ -99,7 +96,7 @@ class ClubresortsViewController: UIViewController {
     }
 }
 /** Extension for UITableViewDataSource */
-extension ClubresortsViewController:UITableViewDataSource{
+extension ClubresortsViewController: UITableViewDataSource {
     /** Implements UITableViewDataSource Methods */
     
     /** Number of Rows In Sections */
@@ -108,8 +105,7 @@ extension ClubresortsViewController:UITableViewDataSource{
         if (Constant.MyClassConstants.buttontitle == Constant.buttonId.bedroomselection) {
             
          return  UnitSize.forDisplay.count
-        }
-        else if( Constant.MyClassConstants.buttontitle == Constant.buttonId.resortSelection){
+        } else if( Constant.MyClassConstants.buttontitle == Constant.buttonId.resortSelection) {
             
             return Constant.MyClassConstants.clubFloatResorts.count
         }
@@ -119,32 +115,29 @@ extension ClubresortsViewController:UITableViewDataSource{
     /** Cell For Row At IndexPath */
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell  = tableView.dequeueReusableCell(withIdentifier: Constant.clubresortsViewController.clubresortcellIdentifier) as? ClubresortTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constant.clubresortsViewController.clubresortcellIdentifier) as? ClubresortTableViewCell
         
         cell?.clubResortCheckbox.tag = indexPath.row
         
         if (Constant.MyClassConstants.buttontitle == Constant.buttonId.bedroomselection) {
            
             cell?.clubresortNameLabel.text = "\(UnitSize.forDisplay[indexPath.row].friendlyName()) "
-            if currentCheckedIndex != nil{
-                cell?.getBedroomCell(index: currentCheckedIndex!, isChecked:isbedroomSizeCheckboxchecked)
+            if currentCheckedIndex != nil {
+                cell?.getBedroomCell(index: currentCheckedIndex!, isChecked: isbedroomSizeCheckboxchecked)
             }
            
-        }
-        else if( Constant.MyClassConstants.buttontitle == Constant.buttonId.resortSelection){
+        } else if( Constant.MyClassConstants.buttontitle == Constant.buttonId.resortSelection) {
             
             let resort = Constant.MyClassConstants.clubFloatResorts[indexPath.row]
 
-            if currentCheckedIndex != nil{
-                if (indexPath as NSIndexPath).row == currentCheckedIndex!{
+            if currentCheckedIndex != nil {
+                if (indexPath as NSIndexPath).row == currentCheckedIndex! {
                     
-                    cell?.getCell(index: currentCheckedIndex!, isChecked:isbedroomSizeCheckboxchecked)
-                }
-                else{
+                    cell?.getCell(index: currentCheckedIndex!, isChecked: isbedroomSizeCheckboxchecked)
+                } else {
                     cell?.getCell(index: (indexPath as NSIndexPath).row)
                 }
-            }
-            else{
+            } else {
                 cell?.getCell(index: (indexPath as NSIndexPath).row)
             }
             
@@ -152,11 +145,10 @@ extension ClubresortsViewController:UITableViewDataSource{
           
         }
         
-        
         return cell!
     }
 }
 /** Extension for UITableViewDelegate */
-extension ClubresortsViewController : UITableViewDelegate{
+extension ClubresortsViewController: UITableViewDelegate {
     
 }

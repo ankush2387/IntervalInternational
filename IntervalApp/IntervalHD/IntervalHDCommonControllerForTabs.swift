@@ -13,13 +13,11 @@ import SDWebImage
 
 class IntervalHDCommonControllerForTabs: UIViewController {
     
-    
     //***** Outlets *****//
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var videoTBLView: UITableView!
     
     var searchResultArray = [Video]()
-    
     
     override func viewWillAppear(_ animated: Bool) {
         
@@ -30,7 +28,7 @@ class IntervalHDCommonControllerForTabs: UIViewController {
                 //set SWRevealViewController's Delegate
                 rvc.delegate = self
                 //***** Add the hamburger menu *****//
-                let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action:#selector(SWRevealViewController.revealToggle(_:)))
+                let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action: #selector(SWRevealViewController.revealToggle(_:)))
                 menuButton.tintColor = UIColor.white
                 self.navigationItem.leftBarButtonItem = menuButton
                 
@@ -38,10 +36,9 @@ class IntervalHDCommonControllerForTabs: UIViewController {
                 self.view.addGestureRecognizer( rvc.panGestureRecognizer())
             }
             
-        }
-        else {
+        } else {
             
-            let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(menuBackButtonPressed))
+            let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(menuBackButtonPressed))
             menuButton.tintColor = UIColor.white
             self.navigationItem.leftBarButtonItem = menuButton
             
@@ -50,9 +47,8 @@ class IntervalHDCommonControllerForTabs: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         
-        
         self.searchBar.frame = CGRect(x: 0, y: 64, width: self.view.frame.width, height: 44)
-        self.videoTBLView.frame = CGRect(x: videoTBLView.frame.origin.x, y: 108, width: videoTBLView.frame.width, height:self.videoTBLView.frame.height)
+        self.videoTBLView.frame = CGRect(x: videoTBLView.frame.origin.x, y: 108, width: videoTBLView.frame.width, height: self.videoTBLView.frame.height)
       
     }
     
@@ -66,8 +62,8 @@ class IntervalHDCommonControllerForTabs: UIViewController {
         super.viewDidLoad()
         self.searchBar.delegate = self
         self.searchBar.placeholder = Constant.MyClassConstants.searchPlaceHolder
-        if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.magazinesFunctionalityCheck){
-        }else{
+        if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.magazinesFunctionalityCheck) {
+        } else {
             Helper.getVideos(searchBy: Constant.MyClassConstants.areaString, senderViewcontroller: self)
             Helper.getVideos(searchBy: Constant.MyClassConstants.resortsString, senderViewcontroller: self)
             Helper.getVideos(searchBy: Constant.MyClassConstants.tutorialsString, senderViewcontroller: self)
@@ -84,17 +80,15 @@ class IntervalHDCommonControllerForTabs: UIViewController {
         
     }
     
-    func reloadVideos(){
+    func reloadVideos() {
         videoTBLView.reloadData()
     }
-    
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    func playButtonPressedAtIndex(sender:IUIKButton) {
+    func playButtonPressedAtIndex(sender: IUIKButton) {
         let video = Constant.MyClassConstants.intervalHDDestinations![sender.tag]
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.intervalHDIphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.intervalHDPlayerViewController) as! IntervalHDPlayerViewController
@@ -103,11 +97,11 @@ class IntervalHDCommonControllerForTabs: UIViewController {
     }
     
     //***** Notification to hit API when system access token gets available. *****//
-    func getAllVideos(){
+    func getAllVideos() {
         
-        if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.magazinesFunctionalityCheck){
+        if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.magazinesFunctionalityCheck) {
             
-        }else{
+        } else {
             Helper.getVideos(searchBy: Constant.MyClassConstants.areaString, senderViewcontroller: self)
             Helper.getVideos(searchBy: Constant.MyClassConstants.resortsString, senderViewcontroller: self)
             Helper.getVideos(searchBy: Constant.MyClassConstants.tutorialsString, senderViewcontroller: self)
@@ -117,7 +111,7 @@ class IntervalHDCommonControllerForTabs: UIViewController {
 }
 
 //***** extension class to define tableview delegate methods *****//
-extension IntervalHDCommonControllerForTabs:UITableViewDelegate {
+extension IntervalHDCommonControllerForTabs: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         
@@ -131,34 +125,29 @@ extension IntervalHDCommonControllerForTabs:UITableViewDelegate {
 }
 
 //***** extension class to define tableview datasource methods *****//
-extension IntervalHDCommonControllerForTabs:UITableViewDataSource {
+extension IntervalHDCommonControllerForTabs: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
         if(self.searchResultArray.count > 0) {
             
             return self.searchResultArray.count
-        }
-        else {
+        } else {
             
             if((self.searchBar.text?.characters.count)! > 0) {
                 
                 return 0
-            }
-            else {
+            } else {
                 
                 if(tableView.tag == 1) {
-                    if(Constant.MyClassConstants.intervalHDDestinations!.count > 0){
+                    if(Constant.MyClassConstants.intervalHDDestinations!.count > 0) {
                         return Constant.MyClassConstants.intervalHDDestinations!.count
-                    }
-                    else {
+                    } else {
                         return 0
                     }
-                }
-                else if (tableView.tag == 2) {
+                } else if (tableView.tag == 2) {
                     return Constant.MyClassConstants.internalHDResorts!.count
-                }
-                else  {
+                } else {
                     return Constant.MyClassConstants.internalHDTutorials!.count
                 }
             }
@@ -188,19 +177,18 @@ extension IntervalHDCommonControllerForTabs:UITableViewDataSource {
         var video = Video()
         if(self.searchResultArray.count > 0) {
             video = self.searchResultArray[indexPath.section]
-        }
-        else {
-            if(tableView.tag == 1){
+        } else {
+            if(tableView.tag == 1) {
                 video = Constant.MyClassConstants.intervalHDDestinations![indexPath.section]
-            }else if(tableView.tag == 2){
+            } else if(tableView.tag == 2) {
                 video = Constant.MyClassConstants.internalHDResorts![indexPath.section]
-            }else{
+            } else {
                 video = Constant.MyClassConstants.internalHDTutorials![indexPath.section]
             }
         }
         
         cell.thumbnailimageView.backgroundColor = UIColor.lightGray
-        cell.thumbnailimageView.setImageWith(URL(string: video.images[0].url!), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
+        cell.thumbnailimageView.setImageWith(URL(string: video.images[0].url!), completed: { (image:UIImage?, error:Swift.Error?, _:SDImageCacheType, _:URL?) in
             if (error != nil) {
                 cell.thumbnailimageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                 cell.thumbnailimageView.contentMode = .center
@@ -223,11 +211,10 @@ extension IntervalHDCommonControllerForTabs:UITableViewDataSource {
         return 30
     }
     
-    
 }
 
 //***** Search bar delegate methods to handle the search bar actions *****//
-extension IntervalHDCommonControllerForTabs:UISearchBarDelegate {
+extension IntervalHDCommonControllerForTabs: UISearchBarDelegate {
     
     //**** Search bar controller delegate ****//
     
@@ -254,18 +241,15 @@ extension IntervalHDCommonControllerForTabs:UISearchBarDelegate {
         var videos = [Video]()
         if(self.videoTBLView.tag == 1) {
             videos = Constant.MyClassConstants.intervalHDDestinations!
-        }
-        else if(self.videoTBLView.tag == 2) {
+        } else if(self.videoTBLView.tag == 2) {
             videos = Constant.MyClassConstants.internalHDResorts!
-        }
-        else {
+        } else {
             videos = Constant.MyClassConstants.internalHDTutorials!
         }
         
-        self.searchResultArray = LookupClient.filterVideos(videos , searchText: searchBar.text!)
+        self.searchResultArray = LookupClient.filterVideos(videos, searchText: searchBar.text!)
         
         self.videoTBLView.reloadData()
         
     }
 }
-

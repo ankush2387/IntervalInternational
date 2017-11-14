@@ -9,7 +9,6 @@
 import UIKit
 import IntervalUIKit
 
-
 class FilterCell: UITableViewCell {
     
     //Outlets

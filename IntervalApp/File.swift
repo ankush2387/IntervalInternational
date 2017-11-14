@@ -11,8 +11,7 @@ import RealmSwift
 import DarwinSDK
 import DarwinSDK.Swift
 
-
-class RealmLocalStorage:Object {
+class RealmLocalStorage: Object {
     
     var resorts = List<ResortList>()
     var destinations = List<DestinationList>()
@@ -21,13 +20,13 @@ class RealmLocalStorage:Object {
     
 }
 
-class OpenWeeksStorage:Object {
+class OpenWeeksStorage: Object {
     var resorts = List<ResortList>()
     var openWeeks = List<TradeLocalData>()
     dynamic var membeshipNumber = ""
 }
 
-class DestinationList:Object {
+class DestinationList: Object {
     
     dynamic var destinationName = ""
     dynamic var destinationId = ""
@@ -36,7 +35,7 @@ class DestinationList:Object {
     dynamic var aoid = ""
 }
 
-class ResortList:Object {
+class ResortList: Object {
     
     dynamic var resortName = ""
     dynamic var resortCode = ""
@@ -47,11 +46,11 @@ class ResortList:Object {
     var units = InventoryUnit()
     var resortArray = List<ResortByMap>()
 }
-class ResortUnitDetails:Object {
+class ResortUnitDetails: Object {
     dynamic var kitchenType = ""
     dynamic var unitSize = ""
 }
-class ResortFloatDetails:Object{
+class ResortFloatDetails: Object {
     dynamic var reservationNumber = ""
     dynamic var unitNumber = ""
     dynamic var unitSize = ""
@@ -60,7 +59,7 @@ class ResortFloatDetails:Object{
     dynamic var showUnitNumber = true
 }
 
-class ResortByMap:Object {
+class ResortByMap: Object {
     
     dynamic var resortName = ""
     dynamic var resortCode = ""
@@ -70,19 +69,19 @@ class ResortByMap:Object {
     dynamic var territorrycode = ""
 }
 
-class AllAvailableDestination:Object {
+class AllAvailableDestination: Object {
     
      dynamic var destination = ""
 }
 
-class TradeLocalData:Object {
+class TradeLocalData: Object {
     
     var openWeeks = List<OpenWeeks>()
     var pProgram = List<rlmPointsProgram>()
     var deposits = List<Deposits>()
 }
 
-class rlmPointsProgram:Object {
+class rlmPointsProgram: Object {
     
     dynamic var relinquishmentId = ""
     dynamic var code = ""
@@ -90,7 +89,7 @@ class rlmPointsProgram:Object {
     dynamic var pointsSpent = 0
     
 }
-class OpenWeeks:Object {
+class OpenWeeks: Object {
     
     dynamic var relinquishmentID = ""
     dynamic var pointsProgramCode = ""
@@ -121,5 +120,3 @@ class Deposits: Object {
     var unitDetails = List<ResortUnitDetails>()
     var floatDetails = List<ResortFloatDetails>()
 }
-
-

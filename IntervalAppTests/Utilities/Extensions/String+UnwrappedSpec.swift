@@ -34,7 +34,7 @@ class String_UnwrappedSpec: QuickSpec {
             }
             
             it("Should return an unwrapped string") {
-                expect(stringWithValueOne.unwrappedString).to(equal("Hello World"))
+                expect(stringWithValueOne.unwrappedString) == "Hello World"
             }
         }
     }

@@ -13,13 +13,13 @@ import GoogleMaps
 class Constant: NSObject {
     
     //***** common function to get device orientation *****//
-    static var holdingTimer:Timer?
+    static var holdingTimer: Timer?
     static var holdingTime = 17
     static var decreaseValue = 1
     static var holdingResortForRemainingMinutes = "We are holding this unit for \(holdingTime) minutes".localized()
     
     struct RunningDevice {
-        static var deviceOrientation:UIDeviceOrientation?
+        static var deviceOrientation: UIDeviceOrientation?
         static var deviceIdiom = UIDevice().userInterfaceIdiom
     }
     
@@ -45,7 +45,7 @@ class Constant: NSObject {
         
     }
     
-    struct AdditionalUnitDetailsData  {
+    struct AdditionalUnitDetailsData {
         
         static var clubresort = ""
         static var reservationNumber = ""
@@ -64,17 +64,17 @@ class Constant: NSObject {
     
     struct RGBColorCode {
         
-        static var centerViewRgb = UIColor(red: 176.0/255.0, green: 215.0/255.0, blue: 115.0/255.0, alpha: 1.0)
+        static var centerViewRgb = UIColor(red: 176.0 / 255.0, green: 215.0 / 255.0, blue: 115.0 / 255.0, alpha: 1.0)
         
-        static var textFieldBorderRGB = UIColor(red: 241.0/255.0, green: 241.0/255.0, blue: 246.0/255.0, alpha: 1.0).cgColor
+        static var textFieldBorderRGB = UIColor(red: 241.0 / 255.0, green: 241.0 / 255.0, blue: 246.0 / 255.0, alpha: 1.0).cgColor
     }
     
     //GetawaySearchResultCardFormDetailData
     struct GetawaySearchResultCardFormDetailData {
         
-        static var countryListArray = ["Canada","USA","India","Austrelia","South Africa"]
+        static var countryListArray = ["Canada", "USA", "India", "Austrelia", "South Africa"]
         static var countryCodeArray: [String] = []
-        static var cardTypeArray = ["Visa","Master","Coral"]
+        static var cardTypeArray = ["Visa", "Master", "Coral"]
         static var textFieldChangedInSection = -1
         static var nameOnCard = ""
         static var cardNumber = ""
@@ -85,27 +85,27 @@ class Constant: NSObject {
         static var state = ""
         static var pinCode = ""
         static var cardType = ""
-        static var expDate:String? = nil
+        static var expDate: String?
         static var cvv = ""
         static var countryCode = ""
         static var stateCode = ""
     }
     
-    struct MyClassConstants{
+    struct MyClassConstants {
         static var isRunningOnIphone: Bool {
             return UIDevice.current.userInterfaceIdiom == .phone
         }
-        static var alertOriginationPoint:String!
+        static var alertOriginationPoint: String!
         static var depositPromotionNav = "DepositPromotionsNav"
         static var sorting = "Sorting"
         static var filterSearchResult = "Filter Search Result"
-        static var loginOriginationPoint:String!
-        static var vacationSearchResultHeaderLabel:String = ""
-        static var upcomingOriginationPoint : String!
-        static var loginType:String!
-        static var selectedDestinationNames:String = ""
+        static var loginOriginationPoint: String!
+        static var vacationSearchResultHeaderLabel: String = ""
+        static var upcomingOriginationPoint: String!
+        static var loginType: String!
+        static var selectedDestinationNames: String = ""
         static var addressStringForCardDetailSection = "Address"
-        static var destinationOrResortSelectedBy:String = ""
+        static var destinationOrResortSelectedBy: String = ""
         static var selectionType = -1
         static var searchOriginationPoint = "Default"
         static var searchForSegmentIndex = 0
@@ -120,7 +120,6 @@ class Constant: NSObject {
         static var flightCounter = 0
         static var carRentalCounter = 0
         static var isEvent2Ready = 0
-
         
         static var rentalSortingOptionArray = ["Resort Name:", "Resort Name:", "Price:", "Price:", "City:", "City:", "Resort Tier:", "Resort Tier:"]
         static var sortingSetValues = ["RESORT_NAME_ASC", "RESORT_NAME_DESC", "CITY_NAME_ASC", "CITY_NAME_DESC", "RESORT_TIER_LOW_TO_HIGH", "RESORT_TIER_HIGH_TO_LOW", "PRICE_LOW_TO_HIGH", "PRICE_HIGH_TO_LOW", "UNKNOWN"]
@@ -132,11 +131,9 @@ class Constant: NSObject {
         
         static var filteredIndex = 0
         static var sortingIndex = -1
-
         
         //Relinquishment available points program
         static var relinquishmentAvailablePointsProgram = 0
-        
       
         //global variable to hold stepper Adult current value
         static var stepperAdultCurrentValue = 2
@@ -157,11 +154,11 @@ class Constant: NSObject {
         
         //global variable to hold last Getaway Booking Process
         
-        static var getawayBookingLastStartedProcess:RentalProcess!
+        static var getawayBookingLastStartedProcess: RentalProcess!
         
         //global variable to hold last exchange getaway booking process
         
-        static var exchangeBookingLastStartedProcess:ExchangeProcess!
+        static var exchangeBookingLastStartedProcess: ExchangeProcess!
         
         //***** global variable that hold system access token *****//
         static var systemAccessToken: DarwinAccessToken? {
@@ -171,9 +168,8 @@ class Constant: NSObject {
         //***** global variable that identify the running functionality *****//
         static var runningFunctionality = ""
         
-        
         //***** global variable that identify which controller requested for login *****//
-        static var signInRequestedController:UIViewController!
+        static var signInRequestedController: UIViewController!
         
         //***** global variable that hold the collection view index *****//
         static var searchResultCollectionViewScrollToIndex = 0
@@ -186,16 +182,15 @@ class Constant: NSObject {
         static var isFromSearchResult = false
         
         //***** global variable that contains running device width from appdelegate method *****//
-        static var runningDeviceWidth:CGFloat? = UIScreen.main.bounds.width
-        static var runningDeviceHeight:CGFloat? = UIScreen.main.bounds.height
+        static var runningDeviceWidth: CGFloat? = UIScreen.main.bounds.width
+        static var runningDeviceHeight: CGFloat? = UIScreen.main.bounds.height
         
         //***** global variable to hold webview instance data *****//
-        static var requestedWebviewURL:String!
-        static var webviewTtile:String!
+        static var requestedWebviewURL: String!
+        static var webviewTtile: String!
         static var resortDirectoryTitle = "Resort Directory".localized()
         static var resortDirectoryCommonHearderText = "Choose Region".localized()
         static var selectedBedRoomSize = "All Bedroom Sizes".localized()
-
         
         //***** New creditcard screen constant string *****//
         static var newCardalertTitle = "New Creditcard Form".localized()
@@ -206,70 +201,67 @@ class Constant: NSObject {
         static var tdi = "TDI".localized()
         static var season = "Season".localized()
         static var certificateDetailsCellTitle = "Certificate Details".localized()
-
         
         //***** Vacation search screen constant string header array *****//
-        static var threeSegmentHeaderTextArray = ["Where do you want to go".localized(),"Check in closest to".localized(),"Who is travelling".localized()]
+        static var threeSegmentHeaderTextArray = ["Where do you want to go".localized(), "Check in closest to".localized(), "Who is travelling".localized()]
         
         //***** Who will be checking-In header text array *****//
-        static var whoWillBeCheckingInHeaderTextArray = ["From the list below, Who on your  membership might be checking-in?".localized(),"","Guest Name".localized(),"Guest Address","Guest Contact info".localized(),""]
+        static var whoWillBeCheckingInHeaderTextArray = ["From the list below, Who on your  membership might be checking-in?".localized(), "", "Guest Name".localized(), "Guest Address", "Guest Contact info".localized(), ""]
         
         //***** checkout screen table header footer string array *****//
-        static var checkOutScreenHeaderTextArray = ["","Promotions".localized(),"Exchange Options".localized(),"Add Trip Protection(Recommended)".localized(),"Your Booking Costs".localized(),"","","","Payment Method".localized(),"Confirmation Email".localized()]
-        static var checkOutScreenHeaderIPadTextArray = ["","Promotions".localized(),"Exchange Options".localized(),"Add Trip Protection(Recommended)".localized(),"Payment Method".localized(),"Confirmation Email".localized(),"","","",""]
-        
-        
+        static var checkOutScreenHeaderTextArray = ["", "Promotions".localized(), "Exchange Options".localized(), "Add Trip Protection(Recommended)".localized(), "Your Booking Costs".localized(), "", "", "", "Payment Method".localized(), "Confirmation Email".localized()]
+        static var checkOutScreenHeaderIPadTextArray = ["", "Promotions".localized(), "Exchange Options".localized(), "Add Trip Protection(Recommended)".localized(), "Payment Method".localized(), "Confirmation Email".localized(), "", "", "", ""]
         
         //***** Initializing plicy list table cell content array *****//
-        static var policyListTblCellContentArray = ["Terms & Conditions".localized(),"Privacy Policy".localized(),"Legal Information".localized(),"Contact Us".localized(),"Email Us".localized(),"Our Offices".localized(),"Interval World".localized(),"Version \(Helper.getBuildVersion())".localized()]
+        static var policyListTblCellContentArray = ["Terms & Conditions".localized(), "Privacy Policy".localized(), "Legal Information".localized(), "Contact Us".localized(), "Email Us".localized(), "Our Offices".localized(), "Interval World".localized(), "Version \(Helper.getBuildVersion())".localized()]
         
-        static var fourSegmentHeaderTextArray = ["Where do you want to go".localized(), "What do you want to trade".localized(), "Check in closest to".localized() ,"Who is travelling".localized()]
+        static var fourSegmentHeaderTextArray = ["Where do you want to go".localized(), "What do you want to trade".localized(), "Check in closest to".localized(), "Who is travelling".localized()]
         
          static var headerTextFlexchangeDestination = "Your selected Flexchange Destination".localized()
         
-        static var sectionHeaderArray = ["Destinations".localized(),"Resorts".localized()]
-        static var relinquishmentHeaderArray = ["Club Interval Gold Weeks".localized(),"","Club Points".localized(),"Interval Weeks".localized(),"Deposited".localized()]
+        static var sectionHeaderArray = ["Destinations".localized(), "Resorts".localized()]
+        static var relinquishmentHeaderArray = ["Club Interval Gold Weeks".localized(), "", "Club Points".localized(), "Interval Weeks".localized(), "Deposited".localized()]
         static var lockOffCapable = "Lock Off Capable".localized()
         
         static var membershipContactArray = [Contact]()
-        static var vacationSearchDestinationArray:NSMutableArray = []
+        static var vacationSearchDestinationArray: NSMutableArray = []
         static var calendarDatesArray = [CalendarItem]()
         static var totalBucketArray = [CalendarItem]()
-        static var calendarCount:Int!
-        static var realmStoredDestIdOrCodeArray:NSMutableArray = []
-        static var resortCodesArray : [String] = []
+        static var calendarCount: Int!
+        static var realmStoredDestIdOrCodeArray: NSMutableArray = []
+        static var resortCodesArray: [String] = []
         static var searchAvailabilityHeader = ""
         static var filterOptionsArray: [ResortDestination] = []
         static var areaWithAreaCode: [AreaInfo] = []
         static var selectedAreaCodeDictionary = NSMutableDictionary()
         static var selectedAreaCodeArray = NSMutableArray()
         
-        static var surroundingResortCodesArray : [String] = []
+        static var surroundingResortCodesArray: [String] = []
         static var resortsArray = [Resort]()
         static var regionArray = [Region]()
         static var regionAreaDictionary = NSMutableDictionary()
         static var favoritesResortArray = [Resort]()
-        static var favoritesResortCodeArray:NSMutableArray = []
+        static var favoritesResortCodeArray: NSMutableArray = []
         static var getawayAlertsArray = [RentalAlert]()
         static var dashBoardAlertsArray = [RentalAlert]()
         static var alertsDictionary = NSMutableDictionary()
         static var upcomingTripsArray = [UpcomingTrip]()
         static var transactionType = ""
-        static var activeAlertsArray:NSMutableArray = []
+        static var activeAlertsArray: NSMutableArray = []
         static var membershipdetails = [Membership]()
-        static var memberdetailsarray:NSMutableArray = []
+        static var memberdetailsarray: NSMutableArray = []
         static var memberNumber: String!
         
-        static var whereTogoContentArray:NSMutableArray = []
-        static var whatToTradeArray:NSMutableArray = []
-        static var floatRemovedArray:NSMutableArray = []
-        static var pointsArray:NSMutableArray = []
-        static var selectedGetawayAlertDestinationArray:NSMutableArray = []
+        static var whereTogoContentArray: NSMutableArray = []
+        static var whatToTradeArray: NSMutableArray = []
+        static var floatRemovedArray: NSMutableArray = []
+        static var pointsArray: NSMutableArray = []
+        static var selectedGetawayAlertDestinationArray: NSMutableArray = []
         static var alertSelectedResorts = [Resort]()
         static var alertSelectedDestination = [AreaOfInfluenceDestination]()
-        static var fromdatearray:NSMutableArray = []
-        static var todatearray:NSMutableArray = []
-        static var labelarray:NSMutableArray = []
+        static var fromdatearray: NSMutableArray = []
+        static var todatearray: NSMutableArray = []
+        static var labelarray: NSMutableArray = []
         
         static var googleMarkerArray = [GMSMarker]()
         
@@ -279,11 +271,11 @@ class Constant: NSObject {
         static let floatTitle = "Select one lock-off portion at a time".localized()
         static let bedroomTitle = "Choose Bedrooms".localized()
     
-        static var selectedIndex:Int!
-        static var vacationSearchContentPagerRunningIndex  = 0
+        static var selectedIndex: Int!
+        static var vacationSearchContentPagerRunningIndex = 0
         static var vacationSearchShowDate = Date()
-        static var alertWindowStartDate:Date!
-        static var alertWindowEndDate:Date!
+        static var alertWindowStartDate: Date!
+        static var alertWindowEndDate: Date!
         static var todaysDate = Date()
         static var dateAfterTwoYear = NSCalendar.current.date(byAdding: .month, value: 24, to: NSDate() as Date) //NSCalendar.currentCalendar.dateByAddingUnit(.Month, value: 24, toDate: NSDate(), options: [])!
         
@@ -293,43 +285,43 @@ class Constant: NSObject {
         static var signOutSelected = "signOutSelected"
         
         // intervalHD arrays
-        static var intervalHDDestinations:[Video]? = []
-        static var internalHDResorts:[Video]? = []
-        static var internalHDTutorials:[Video]? = []
-        static var magazinesArray:[Magazine]? = []
+        static var intervalHDDestinations: [Video]? = []
+        static var internalHDResorts: [Video]? = []
+        static var internalHDTutorials: [Video]? = []
+        static var magazinesArray: [Magazine]? = []
         
         // Pick destinations array
-        static var resorts : [Resort]? = []
-        static var destinations : [AreaOfInfluenceDestination]? = []
+        static var resorts: [Resort]? = []
+        static var destinations: [AreaOfInfluenceDestination]? = []
         static var allDestinations = "All Available Destinations".localized()
         
         static var redirect: (alertID: Int?, rentalAlert: RentalAlert?) = (nil, nil)
-        static var currentFromDate:Date!
-        static var currentToDate:Date!
+        static var currentFromDate: Date!
+        static var currentToDate: Date!
         static var checkInDates = [Date]()
         static var surroundingCheckInDates = [Date]()
         static var combinedCheckInDates = [Date]()
         static var totalWindow = 90
-        static var bedRoomSize = ["STUDIO","ONE_BEDROOM","TWO_BEDROOM","THREE_BEDROOM","FOUR_BEDROOM"]
-        static var alertSelectedUnitSizeArray:NSMutableArray = NSMutableArray()
-        static var topDeals : [RentalDeal] = []
-        static var flexExchangeDeals : [FlexExchangeDeal] = []
+        static var bedRoomSize = ["STUDIO", "ONE_BEDROOM", "TWO_BEDROOM", "THREE_BEDROOM", "FOUR_BEDROOM"]
+        static var alertSelectedUnitSizeArray: NSMutableArray = NSMutableArray()
+        static var topDeals: [RentalDeal] = []
+        static var flexExchangeDeals: [FlexExchangeDeal] = []
         static var resortDirectoryRegionArray = [Region]()
         static var resortDirectorySubRegionArray = [Region]()
         static var resortDirectoryAreaListArray = [Area]()
         static var resortDirectoryResortArray = [Resort]()
         static var viewController = UIViewController()
-        static var btnTag:Int! = -1
-        static var showAlert : Bool = false
-        static let arrayResortInfo = ["Resort Information","Amenities","Member Ratings","Travel Demand Index"]
-        static var backgroundImageUrl:String! = ""
-        static var resortDescriptionString:String! = ""
+        static var btnTag: Int! = -1
+        static var showAlert: Bool = false
+        static let arrayResortInfo = ["Resort Information", "Amenities", "Member Ratings", "Travel Demand Index"]
+        static var backgroundImageUrl: String! = ""
+        static var resortDescriptionString: String! = ""
         static var resortsDescriptionArray = Resort()
-        static var collectionViewScrolledIndex:Int = 0
-        static var imagesArray:NSMutableArray = []
-        static var bedRoomSizeSelectedIndexArray:NSMutableArray = []
+        static var collectionViewScrolledIndex: Int = 0
+        static var imagesArray: NSMutableArray = []
+        static var bedRoomSizeSelectedIndexArray: NSMutableArray = []
         static var alertSelectedBedroom = [String]()
-        static var unitNumberSelectedArray:NSMutableArray = []
+        static var unitNumberSelectedArray: NSMutableArray = []
         static var amenitiesDictionary = NSMutableDictionary()
         static var advisementsDictionary = NSMutableDictionary()
         static var imageSize = "LARGE"
@@ -358,12 +350,11 @@ class Constant: NSObject {
         static var seledtedSegmentGetaway = "Getaway"
         static var selectedSegmentExchange = "Exchange"
         
-        
         static var draw = "Draw".localized()
         static var clear = "Clear".localized()
         static var list = "List".localized()
         static var map = "Map".localized()
-        static var isFromNothingYet:Bool = false
+        static var isFromNothingYet: Bool = false
         
         static var createAlert = "CreateAlert"
         static var editAlert = "EditAlert"
@@ -375,8 +366,8 @@ class Constant: NSObject {
         static var right = "Right"
         static var left = "Left"
         
-        static var addResortSelectedIndex:NSMutableArray = []
-        static var collectionVwCurrentIndex:Int = 0
+        static var addResortSelectedIndex: NSMutableArray = []
+        static var collectionVwCurrentIndex: Int = 0
         
         static var childCounterString = "childCounter".localized()
         static var adultCounterString = "adultCounter".localized()
@@ -410,14 +401,14 @@ class Constant: NSObject {
         static var exchangeFees = [ExchangeFees]()
         static var memberCreditCardList = [Creditcard]()
         static var selectedCreditCard = [Creditcard]()
-        static var guestCertificate:GuestCertificate!
+        static var guestCertificate: GuestCertificate!
         static var allowedCurrencies = [String]()
         
         //Relinquishment selection date for float and avaialable tool
-        static var  relinquishmentAvalableToolSelectedDate:Date!
-        static var  relinquishmentFloatDetialSelectedDate:Date!
-        static var  relinquishmentFloatDetialMinDate:Date!
-        static var  relinquishmentFloatDetialMaxDate:Date!
+        static var  relinquishmentAvalableToolSelectedDate: Date!
+        static var  relinquishmentFloatDetialSelectedDate: Date!
+        static var  relinquishmentFloatDetialMinDate: Date!
+        static var  relinquishmentFloatDetialMaxDate: Date!
         static var  floatDetailsCalendarDateArray = [Date]()
         static var  floatDetailsCalendarWeekArray = NSMutableArray()
         static var relinquishmentFlaotWeek = "RelinquishmentFloatWeek"
@@ -438,10 +429,9 @@ class Constant: NSObject {
         static var  clubPointResortsArray = [Resort]()
         static var  userSelectedStringArray = [String]()
         
-        
-        static var onsiteString : String! = "Nearby" + "\n"
-        static var nearbyString : String!  = "On-Site" + "\n"
-        static var indexSlideButton : Int = 0
+        static var onsiteString: String! = "Nearby" + "\n"
+        static var nearbyString: String!  = "On-Site" + "\n"
+        static var indexSlideButton: Int = 0
         static var onsiteDictKey = "Onsite"
         static var nearbyDictKey = "Nearby"
         static var status = "true"
@@ -489,7 +479,7 @@ class Constant: NSObject {
         static var resortDirectoryVCTitle = "ResortDetailsVC"
         static var alertsResortCodeDictionary = NSMutableDictionary()
         static var alertsSearchDatesDictionary = NSMutableDictionary()
-        static var headerArray = ["Getaway Alerts".localized(),"My Upcoming Trips".localized()]
+        static var headerArray = ["Getaway Alerts".localized(), "My Upcoming Trips".localized()]
         
         static var transactionNumber = "021638132"
         static var pointMatrixDictionary = NSMutableDictionary()
@@ -562,7 +552,6 @@ class Constant: NSObject {
         
         //Keypath for picker
         static var keyTextColor = "textColor"
-        
 
         static var initialVacationSearch = VacationSearch()
 
@@ -575,11 +564,11 @@ class Constant: NSObject {
         
         // Search both check for rental and exchange
         
-        static var rentalHasNotAvailableCheckInDatesForInitial : Bool = false
-        static var exchangeHasNotAvailableCheckInDatesForInitial : Bool = false
+        static var rentalHasNotAvailableCheckInDatesForInitial: Bool = false
+        static var exchangeHasNotAvailableCheckInDatesForInitial: Bool = false
         
-        static var rentalHasNotAvailableCheckInDatesAfterSelectInterval : Bool = false
-        static var exchangeHasNotAvailableCheckInDatesAfterSelectInterval : Bool = false
+        static var rentalHasNotAvailableCheckInDatesAfterSelectInterval: Bool = false
+        static var exchangeHasNotAvailableCheckInDatesAfterSelectInterval: Bool = false
         static var searchBothExchange = false
         
         // Flex change
@@ -596,8 +585,6 @@ class Constant: NSObject {
         static var freeGuestCertificateTitle = "FREE GUEST CERTIFICATES".localized()
         static var isNoThanksFromRenewalAgain = false
         
-        
-        
         static var otherOptions = "Other Options".localized()
         static var renewNow = "Renew Now".localized()
         static var select = "Select".localized()
@@ -608,7 +595,6 @@ class Constant: NSObject {
         static var isChangeNoThanksButtonTitle = false
         
         static var isDismissWhoWillBeCheckin = false
-        
                 
         static var guestCertificateString = "Get a FREE Guest Certificate now and every time with Interval Platinum. Your Interval Platinum must be active through your travel dates to receive FREE Guest Certificates. To upgrade or renew, a".localized()
         
@@ -620,7 +606,7 @@ class Constant: NSObject {
     }
     
     // Enum to store resorts and destinations
-    enum ResortDestination{
+    enum ResortDestination {
         case Resort(ResortList)
         case Destination(DestinationList)
         case ResortList([ResortByMap])
@@ -628,7 +614,7 @@ class Constant: NSObject {
     }
     
     //Enum for not saved resort destinations
-    enum AlertResortDestination{
+    enum AlertResortDestination {
        case Resort(Resort)
        case Destination(AreaOfInfluenceDestination)
     }
@@ -642,7 +628,7 @@ class Constant: NSObject {
     struct CommonColor {
         static var greenColor = "Green"
         static var blueColor = "Blue"
-        static var headerGreenColor = UIColor(red: 112.0/255.0, green: 185.0/255.0, blue: 9.0/255.0, alpha: 1)
+        static var headerGreenColor = UIColor(red: 112.0 / 255.0, green: 185.0 / 255.0, blue: 9.0 / 255.0, alpha: 1)
     }
     
     struct CommonStringIdentifiers {
@@ -687,8 +673,7 @@ class Constant: NSObject {
     //***** common  structure to provide all webview url as string *****//
     struct WebUrls {
         
-        
-        static let privacyPolicyUrlArray = ["http://www.intervalworld.com/iimedia/pdf/iw/buyers-guide.pdf","http://www.intervalworld.com/web/cs?a=60&p=privacy-policy","http://www.intervalworld.com/web/cs?a=60&p=legal","http://www.intervalworld.com/web/cs?a=60&p=customer-service","http://www.intervalworld.com/web/cs?a=80","http://www.intervalworld.com/web/cs?a=60&p=offices","http://www.intervalworld.com"]
+        static let privacyPolicyUrlArray = ["http://www.intervalworld.com/iimedia/pdf/iw/buyers-guide.pdf", "http://www.intervalworld.com/web/cs?a=60&p=privacy-policy", "http://www.intervalworld.com/web/cs?a=60&p=legal", "http://www.intervalworld.com/web/cs?a=60&p=customer-service", "http://www.intervalworld.com/web/cs?a=80", "http://www.intervalworld.com/web/cs?a=60&p=offices", "http://www.intervalworld.com"]
         
         static var joinTodayURL = "https://www.intervalworld.com/web/my/account/createProfileOrJoin"
         static var loginHelpURL = "https://www.intervalworld.com/web/my/account/forgotSignInInfo"
@@ -952,7 +937,7 @@ class Constant: NSObject {
     
     //***** Common structure for custom cell identifiers ******//
     
-    struct cellIdentifiers{
+    struct cellIdentifiers {
         static var clubPointCell = "cell1"
         static var checkBoxCell = "cell2"
         static var featuredCell = "FeaturedCell"
@@ -1228,8 +1213,6 @@ class Constant: NSObject {
         
     }
     
-    
-    
     //***** common  structure to provide all detailScreenReusableIdentifiers *****//
     struct detailScreenReusableIdentifiers {
         
@@ -1339,7 +1322,6 @@ class Constant: NSObject {
     //***** Common structure for font names and type *****//
     
     struct fontName {
-        
         
         static var helveticaNeue = "HelveticaNeue"
         static var helveticaNeueMedium = "HelveticaNeue-Medium"
@@ -1538,7 +1520,6 @@ class Constant: NSObject {
             static let clubIntervalGoldpointLabelText = "Club Interval Gold points"
             static let availablePointsToolbuttonTitle = "Avalable Points Tool"
             
-            
         }
         //AvailablePointTableViewCell
         struct clubIntervalAvailableGoldPointTableViewCell {
@@ -1551,7 +1532,6 @@ class Constant: NSObject {
             static let clubInfoLabeltext = "Club"
             static let pointInfoLabelText = "Points"
         }
-        
     
         //OwnershipDetailWithFreeDepositTableViewCell
         struct ownershipDetailWithFreeDepositTableViewCell {
@@ -1576,7 +1556,7 @@ class Constant: NSObject {
         static let switchMembershipAlertMessage = "You have chosen to use a different membership account. Please note, benefit and exchange access may change. Would you like to continue?".localized()
         static let switchMembershipAlertTitle = "You are Switchinig Memberships".localized()
         //membershipDetailTableViewCell
-        struct membershipDetailTableViewCell{
+        struct membershipDetailTableViewCell {
             static let contactnameInfoLabelText = "Contact Name"
             static let activeLabelText = "Active"
             static let loginInfoLabelText = "Login ID"
@@ -1595,7 +1575,7 @@ class Constant: NSObject {
             
         }
         //ownerShipDetailTableViewCell
-        struct ownerShipDetailTableViewCell{
+        struct ownerShipDetailTableViewCell {
             
             static let unitdetailLabelText = "Unit"
             static let weekDetailLabelText = "Week"
@@ -1612,8 +1592,6 @@ class Constant: NSObject {
         static let exchange = "Exchange"
     }
     
-   
-    
     //***** Availabel Destination viewcontroller *****//
     struct availableDestinationsTableViewController {
         static let availableDestinationCountryOrContinentsTableViewCell = "continentsorcountrycell"
@@ -1621,7 +1599,7 @@ class Constant: NSObject {
     }
     //Properties of View
     struct viewProperties {
-        static let cornerRadious :CGFloat = 3
+        static let cornerRadious: CGFloat = 3
     }
     struct roomType {
         static let studio = "0BR"
@@ -1641,25 +1619,25 @@ class Constant: NSObject {
     static func startTimer() {
         
         self.holdingTime = 17
-        self.holdingTimer = Timer.scheduledTimer(timeInterval: 60.0, target: self, selector:  #selector(updateResortHoldingTimeLabel), userInfo: nil, repeats: true)
+        self.holdingTimer = Timer.scheduledTimer(timeInterval: 60.0, target: self, selector: #selector(updateResortHoldingTimeLabel), userInfo: nil, repeats: true)
     }
-    static func updateResortHoldingTimeLabel(){
+    static func updateResortHoldingTimeLabel() {
         holdingTime = holdingTime - decreaseValue
         self.holdingResortForRemainingMinutes = "We are holding this unit for \(holdingTime) minutes"
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
     }
     
-    static func getPointWeek(weektype:String) -> String{
+    static func getPointWeek(weektype: String) -> String {
         
         return "POINT WEEK"
     }
     
-    static func getFlotWeek(weekType:String) -> String{
+    static func getFlotWeek(weekType: String) -> String {
         
         return "FLOAT WEEK"
     }
     
-    static func  getWeekNumber(weekType:String) -> String {
+    static func  getWeekNumber(weekType: String) -> String {
         
         switch (weekType) {
             
@@ -1753,7 +1731,6 @@ class Constant: NSObject {
         case "FIXED_WEEK_30":
             return "30"
             
-            
         case "FIXED_WEEK_31":
             return "31"
             
@@ -1795,7 +1772,6 @@ class Constant: NSObject {
             
         case "FIXED_WEEK_44":
             return "44"
-            
             
         case "FIXED_WEEK_45":
             return "45"
@@ -2108,8 +2084,3 @@ class Constant: NSObject {
     }
 
 }
-
-
-
-
-

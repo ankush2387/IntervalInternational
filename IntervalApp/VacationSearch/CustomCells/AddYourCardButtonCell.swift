@@ -11,8 +11,6 @@ import IntervalUIKit
 
 class AddYourCardButtonCell: UITableViewCell {
     
-    
-    
     @IBOutlet weak var addYourCardButton: IUIKButton!
 
     override func awakeFromNib() {

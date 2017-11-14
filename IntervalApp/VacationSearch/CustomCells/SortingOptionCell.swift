@@ -9,9 +9,7 @@
 import UIKit
 import IntervalUIKit
 
-
 class SortingOptionCell: UITableViewCell {
-
     
     //Outlets
     

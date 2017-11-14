@@ -11,6 +11,6 @@ import Foundation
 
 UIApplicationMain(CommandLine.argc,
                   UnsafeMutableRawPointer(CommandLine.unsafeArgv).bindMemory(to: UnsafeMutablePointer<Int8>.self,
-                                                                             capacity:Int(CommandLine.argc)),
+                                                                             capacity: Int(CommandLine.argc)),
                                                                              NSStringFromClass(IntervalApplication.self),
                                                                              NSStringFromClass(AppDelegate.self))

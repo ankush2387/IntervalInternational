@@ -11,7 +11,7 @@ import DarwinSDK
 import LocalAuthentication
 import IntervalUIKit
 import LocalAuthentication
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+private func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     switch (lhs, rhs) {
     case let (l?, r?):
         return l < r
@@ -22,7 +22,7 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 }
 
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+private func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     switch (lhs, rhs) {
     case let (l?, r?):
         return l > r
@@ -31,13 +31,10 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 }
 
-
-
 //***** custom delegate method declaration *****//
 protocol SignInPreLoginViewControllerDelegate {
     func loginHelpClicked()
 }
-
 
 class SignInPreLoginViewController: UIViewController {
     
@@ -51,11 +48,11 @@ class SignInPreLoginViewController: UIViewController {
     @IBOutlet weak var tableActionSheet: UITableView!
     
     //***** Class variables *****//
-    var actionSheetTable : UITableView!
+    var actionSheetTable: UITableView!
     let tableViewController = UIViewController()
-    var delegate:SignInPreLoginViewControllerDelegate?
+    var delegate: SignInPreLoginViewControllerDelegate?
     var touchIdEnabled = false
-    var activeTF:UITextField!
+    var activeTF: UITextField!
     var scrollView = UIScrollView()
     
     override func viewWillAppear(_ animated: Bool) {
@@ -63,7 +60,7 @@ class SignInPreLoginViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden = true
     }
     
-    override func viewDidLoad(){
+    override func viewDidLoad() {
         super.viewDidLoad()
         
         //Omniture tracking call
@@ -73,7 +70,7 @@ class SignInPreLoginViewController: UIViewController {
         // omniture tracking with event 68
         
         let userInfo: [String: String] = [
-            Constant.omnitureEvars.eVar81 : Constant.omnitureCommonString.signInModal,
+            Constant.omnitureEvars.eVar81: Constant.omnitureCommonString.signInModal
         ]
         
         ADBMobile.trackAction(Constant.omnitureEvents.event68, data: userInfo)
@@ -87,9 +84,9 @@ class SignInPreLoginViewController: UIViewController {
         let authenticationContext = LAContext()
         
         //***** Checking touch id sensor feature on running device *****//
-        var hasTouchID:Bool = false
-        var error:NSError?
-        hasTouchID =  authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
+        var hasTouchID: Bool = false
+        var error: NSError?
+        hasTouchID = authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
         if(!(hasTouchID)) {
             
            /* self.touchIdImageView.isHidden = true
@@ -98,23 +95,22 @@ class SignInPreLoginViewController: UIViewController {
         }
         self.userIdTF.delegate = self
         self.passwordTF.delegate = self
-        if(self.viewActionSheet != nil){
+        if(self.viewActionSheet != nil) {
             self.viewActionSheet.backgroundColor = UIColor.black.withAlphaComponent(0.7)
         }
-        var fontSize:CGFloat
+        var fontSize: CGFloat
         if (UIDevice.current.userInterfaceIdiom == .pad) {
             fontSize = 25
-        }
-        else {
+        } else {
             fontSize = 15
         }
         
         //***** Creating and adding custom font with font size on placeholders fir textfield *****//
-        let userNamePlaceholder = NSAttributedString(string:Constant.textFieldTitles.usernamePlaceholder, attributes: [NSForegroundColorAttributeName : UIColor.darkGray, NSFontAttributeName : UIFont(name: Constant.fontName.helveticaNeue, size: fontSize)!])
+        let userNamePlaceholder = NSAttributedString(string: Constant.textFieldTitles.usernamePlaceholder, attributes: [NSForegroundColorAttributeName: UIColor.darkGray, NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeue, size: fontSize)!])
         self.userIdTF.attributedPlaceholder = userNamePlaceholder
         self.userIdTF.contentVerticalAlignment = UIControlContentVerticalAlignment.center
         
-        let passwordPlaceholder = NSAttributedString(string:Constant.textFieldTitles.passwordPlaceholder, attributes: [NSForegroundColorAttributeName : UIColor.darkGray, NSFontAttributeName : UIFont(name: Constant.fontName.helveticaNeue, size: fontSize)!])
+        let passwordPlaceholder = NSAttributedString(string: Constant.textFieldTitles.passwordPlaceholder, attributes: [NSForegroundColorAttributeName: UIColor.darkGray, NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeue, size: fontSize)!])
         self.passwordTF.attributedPlaceholder = passwordPlaceholder
         self.passwordTF.contentVerticalAlignment = UIControlContentVerticalAlignment.center
     }
@@ -128,14 +124,13 @@ class SignInPreLoginViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden = false
     }
     
-    func reloadView(){
+    func reloadView() {
         /*let vc = ResortDirectoryViewController()
         let favoritesVC = FevoritesResortController()
         self.dismiss(animated: true) { 
             favoritesVC.viewWillAppear(true)
         }*/
     }
-    
     
     func keyboardWillShow(_ sender: Notification) {
         
@@ -180,12 +175,11 @@ class SignInPreLoginViewController: UIViewController {
     @IBAction func signInButtonPressed(_ sender: AnyObject) {
         self.view.endEditing(true)
         if(userIdTF.text!.characters.count > 0 && passwordTF.text?.characters.count > 0 ) {
-            Helper.loginButtonPressed(sender: self, userName: userIdTF.text!, password: passwordTF.text!, completionHandler: { (success) in
+            Helper.loginButtonPressed(sender: self, userName: userIdTF.text!, password: passwordTF.text!, completionHandler: { (_) in
                 Constant.MyClassConstants.loginOriginationPoint = "Resort Directory - Sign In Modal"
                 Helper.accessTokenDidChange(sender: self)
             })
-        }
-        else {
+        } else {
             guard userIdTF.text?.characters.count > 0 else {
                 presentAlert(with: Constant.AlertPromtMessages.loginTitle, message: Constant.AlertMessages.emptyLoginIdMessage)
                 return
@@ -200,7 +194,7 @@ class SignInPreLoginViewController: UIViewController {
     }
     
     //***** Method to create action sheet for to show membership for ipad screen *****//
-    func createActionSheet(_ viewController:UIViewController) {
+    func createActionSheet(_ viewController: UIViewController) {
         
         if (UIDevice.current.userInterfaceIdiom == .pad) {
             tableActionSheet.register(UINib(nibName: Constant.customCellNibNames.actionSheetTblCell, bundle: nil), forCellReuseIdentifier: Constant.loginScreenReusableIdentifiers.CustomCell)
@@ -229,15 +223,13 @@ class SignInPreLoginViewController: UIViewController {
             self.touchIdImageView.image = UIImage(named: Constant.assetImageNames.TouchIdOn)
             enableTouchIdButtonAction()
             touchIdEnabled = true
-        }
-        else {
+        } else {
             
             sender.isSelected = false
             self.touchIdImageView.image = UIImage(named: Constant.assetImageNames.TouchIdOff)
             enableTouchIdTextLabel.textColor = UIColor.lightGray
             enableTouchIdButtonAction()
         }
-        
         
     }
     
@@ -246,14 +238,13 @@ class SignInPreLoginViewController: UIViewController {
         if(self.touchIdEnabled == false) {
             
             let userInfo: [String: String] = [
-                Constant.omnitureEvars.eVar81 : Constant.omnitureCommonString.signInModal
+                Constant.omnitureEvars.eVar81: Constant.omnitureCommonString.signInModal
             ]
             
             ADBMobile.trackAction(Constant.omnitureEvents.event81, data: userInfo)
             self.touchIdEnabled = true
             presentAlert(with: Constant.enableTouchIdMessages.authenticationFailedTitle, message: Constant.enableTouchIdMessages.onSuccessMessage)
-        }
-        else {
+        } else {
             self.touchIdEnabled = false
         }
     }
@@ -261,7 +252,7 @@ class SignInPreLoginViewController: UIViewController {
 }
 
 //***** extension class for uitextfield delegate methods definition *****//
-extension SignInPreLoginViewController:UITextFieldDelegate {
+extension SignInPreLoginViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         activeTF.resignFirstResponder()
@@ -275,12 +266,12 @@ extension SignInPreLoginViewController:UITextFieldDelegate {
 }
 
 //***** UITableview delegate methods definition here *****//
-extension SignInPreLoginViewController:UITableViewDelegate {
+extension SignInPreLoginViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if (UIDevice.current.userInterfaceIdiom == .pad) {
             return 44
-        }else{
+        } else {
             return 0
         }
     }
@@ -314,8 +305,7 @@ extension SignInPreLoginViewController:UITableViewDelegate {
 }
 
 //***** UITableview datasource methods definition here *****//
-extension SignInPreLoginViewController:UITableViewDataSource {
-    
+extension SignInPreLoginViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -328,8 +318,7 @@ extension SignInPreLoginViewController:UITableViewDataSource {
         
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
-    {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let contact = Session.sharedSession.contact
         let membership = contact?.memberships![indexPath.row]
@@ -344,5 +333,3 @@ extension SignInPreLoginViewController:UITableViewDataSource {
         
     }
 }
-
-

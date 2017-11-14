@@ -10,9 +10,9 @@ import UIKit
 
 class TotalCostCell: UITableViewCell {
     
-    @IBOutlet weak var priceLabel:UILabel!
-    @IBOutlet weak var periodLabel:UILabel!
-    @IBOutlet weak var fractionalPriceLabel:UILabel!
+    @IBOutlet weak var priceLabel: UILabel!
+    @IBOutlet weak var periodLabel: UILabel!
+    @IBOutlet weak var fractionalPriceLabel: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()

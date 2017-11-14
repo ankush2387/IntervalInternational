@@ -23,17 +23,17 @@ class AvailablePointsAsOfTableViewCell: UITableViewCell {
     - parameter No parameter:
     - returns : No value is return
     */
-    func getCell(){
+    func getCell() {
         setPropertiesToCellElements()
         updateCellComponetstext()
     }
-    //MARK:set properties to elements of cell
+    // MARK: set properties to elements of cell
     /**
     Apply properties to cell components
     - parameter No parameter :
     - returns : No return value
     */
-    fileprivate func setPropertiesToCellElements(){
+    fileprivate func setPropertiesToCellElements() {
         pointasOflabel.textColor = UIColor(rgb: IUIKColorPalette.secondaryText.rawValue)
          pointasOflabel.textColor = UIColor(rgb: IUIKColorPalette.primary1.rawValue)
     }
@@ -42,7 +42,7 @@ class AvailablePointsAsOfTableViewCell: UITableViewCell {
      - parameter No parameter :
      - returns : No return value
      */
-    fileprivate func updateCellComponetstext(){
+    fileprivate func updateCellComponetstext() {
         pointasOflabel.text = Constant.availablePointToolViewController.availablePointsAsOfTableViewCell.pointasOflabelText
     }
 

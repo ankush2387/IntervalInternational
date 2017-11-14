@@ -11,9 +11,9 @@ import UIKit
 class TransactionDetailsTableViewCell: UITableViewCell {
 
     @IBOutlet weak var travellingWithLabel: UILabel!
-    @IBOutlet weak var cabinNumber:UILabel!
-    @IBOutlet weak var cabinDetails:UILabel!
-    @IBOutlet weak var transactionDate:UILabel!
+    @IBOutlet weak var cabinNumber: UILabel!
+    @IBOutlet weak var cabinDetails: UILabel!
+    @IBOutlet weak var transactionDate: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

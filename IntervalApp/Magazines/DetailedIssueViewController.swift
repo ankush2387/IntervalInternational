@@ -10,11 +10,9 @@ import UIKit
 
 class DetailedIssueViewController: UIViewController {
     
-    
-    internal var issueUrl : String?
-    internal var magazinTitile:String!
-    @IBOutlet weak var webView:UIWebView?
-    
+    internal var issueUrl: String?
+    internal var magazinTitile: String!
+    @IBOutlet weak var webView: UIWebView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,10 +21,10 @@ class DetailedIssueViewController: UIViewController {
         
         //1. Load web site into my web view
         let myURL = NSURL(string: issueUrl!)
-        let myURLRequest:NSURLRequest = NSURLRequest(url: myURL! as URL);
+        let myURLRequest: NSURLRequest = NSURLRequest(url: myURL! as URL)
         webView!.loadRequest(myURLRequest as URLRequest)
         
-        let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(menuBackButtonPressed(sender:)))
+        let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(menuBackButtonPressed(sender:)))
         menuButton.tintColor = UIColor.white
         //self.tabBarController?.delegate = self
         self.navigationItem.leftBarButtonItem = menuButton
@@ -39,11 +37,10 @@ class DetailedIssueViewController: UIViewController {
         self.hideHudAsync()
     }
     
-    func menuBackButtonPressed(sender:UIBarButtonItem) {
+    func menuBackButtonPressed(sender: UIBarButtonItem) {
         
         _ = self.navigationController?.popViewController(animated: true)
     }
-
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -52,20 +49,17 @@ class DetailedIssueViewController: UIViewController {
     
 }
 
-extension DetailedIssueViewController:UIWebViewDelegate {
+extension DetailedIssueViewController: UIWebViewDelegate {
 	
-	func webViewDidStartLoad(_ webView: UIWebView)
-    {
+	func webViewDidStartLoad(_ webView: UIWebView) {
         showHudAsync()
     }
     
-    func webViewDidFinishLoad(_ webView: UIWebView)
-    {
+    func webViewDidFinishLoad(_ webView: UIWebView) {
         self.hideHudAsync()
     }
     
-     func webView(_ webView: UIWebView, didFailLoadWithError error: Error){
+     func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
         self.hideHudAsync()
     }
 }
-

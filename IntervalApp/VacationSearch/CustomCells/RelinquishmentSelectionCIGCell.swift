@@ -11,7 +11,6 @@ import IntervalUIKit
 
 class RelinquishmentSelectionCIGCell: UITableViewCell {
     
-    
     @IBOutlet weak var cigImageView: UIImageView!
     
     @IBOutlet weak var availablePointToolButton: IUIKButton!
@@ -19,10 +18,8 @@ class RelinquishmentSelectionCIGCell: UITableViewCell {
     @IBOutlet weak var addAvailablePointButton: IUIKButton!
     
     @IBOutlet weak var availablePointValueLabel: UILabel!
-    
   
     @IBOutlet weak var availablePointValueWidth: NSLayoutConstraint!
-    
   
     override func awakeFromNib() {
         super.awakeFromNib()
