@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HomeAlertTableViewCell: UITableViewCell {
+final class HomeAlertTableViewCell: UITableViewCell {
     
     //IBOutlets
     @IBOutlet weak var alertCollectinView: UICollectionView!

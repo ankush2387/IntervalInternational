@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HomeAlertCollectionCell: UICollectionViewCell {
+final class HomeAlertCollectionCell: UICollectionViewCell {
     
     //IBOutlets
     @IBOutlet weak var alertTitle: UILabel!

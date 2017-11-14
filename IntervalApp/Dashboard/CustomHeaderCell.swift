@@ -16,10 +16,6 @@ class CustomHeaderCell: UITableViewCell {
   @IBOutlet var headerLabel: UILabel!
   @IBOutlet weak var refreshAlertButton: IUIKButton!
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-      
-    }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

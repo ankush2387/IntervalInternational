@@ -227,12 +227,12 @@ public class Helper{
                 // Got an access token!  Save it for later use.
                 // Next, get the contact information.  See how many memberships this user has.
             },
-                                               onError:{ (error) in
-                                                sender.hideHudAsync()
-                                                
-                                                Logger.sharedInstance.warning(error.description)
-                                                sender.presentErrorAlert(UserFacingCommonError.generic)
-                                                completionHandler(false)
+           onError:{ (error) in
+            sender.hideHudAsync()
+            
+            Logger.sharedInstance.warning(error.description)
+            sender.presentErrorAlert(UserFacingCommonError.generic)
+            completionHandler(false)
             }
             )
         }
@@ -251,26 +251,24 @@ public class Helper{
             
             //***** Try to do the OAuth Request to obtain an access token *****//
             UserClient.getCurrentProfile(Session.sharedSession.userAccessToken,
-                                         onSuccess:{(contact) in
-                                            // Got an access token!  Save it for later use.
-                                            sender.hideHudAsync()
-                                            Session.sharedSession.contact = contact
-                                            //***** Next, get the contact information.  See how many memberships this user has. *****//
-                                            contactDidChange(sender: sender)
+
+             onSuccess:{(contact) in
+                // Got an access token!  Save it for later use.
+                sender.hideHudAsync()
+                Session.sharedSession.contact = contact
+                //***** Next, get the contact information.  See how many memberships this user has. *****//
+                contactDidChange(sender: sender)
             },
-                                         onError:{(error) in
-                                            sender.hideHudAsync()
-                                            Logger.sharedInstance.warning(error.description)
-                                            sender.presentErrorAlert(UserFacingCommonError.generic)
+             onError:{(error) in
+                sender.hideHudAsync()
+                Logger.sharedInstance.warning(error.description)
+                sender.presentErrorAlert(UserFacingCommonError.generic)
             })
-        }else{
+        }
+        else{
             sender.presentAlert(with: Constant.AlertErrorMessages.networkError, message: Constant.AlertMessages.networkErrorMessage)
-            
         }
     }
-    
-    
-    
     //***** functin called when we have found valid profileCurrent for user *****//
     static func contactDidChange(sender:UIViewController) {
         
@@ -2239,7 +2237,7 @@ public class Helper{
     }
 
     static func getAllAlerts(CompletionBlock: @escaping ((Error?) -> Void)) {
-        
+
         //***** Getaway Alerts API call after successfull login *****//
         RentalClient.getAlerts(Session.sharedSession.userAccessToken, onSuccess: { (response) in
             Constant.MyClassConstants.getawayAlertsArray.removeAll()
@@ -2249,9 +2247,7 @@ public class Helper{
             
         }) {[] (error) in
             CompletionBlock(error)
-
         }
     }
-    
 }
 
