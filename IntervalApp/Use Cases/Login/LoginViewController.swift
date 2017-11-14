@@ -53,7 +53,6 @@ final class LoginViewController: UIViewController {
         super.viewDidLoad()
         setUI()
         bindUI()
-        performTouchIDLoginIfEnabled()
         showOnboardingIfNewAppInstance()
         setSplashScreenAnimation()
     }
@@ -85,7 +84,7 @@ final class LoginViewController: UIViewController {
                                                                backgroundColor: splashScreenBackgroundColor)
 
         self.view.addSubview(simpleRevealingAppLaunchView)
-        simpleRevealingAppLaunchView.startAnimation()
+        simpleRevealingAppLaunchView.startAnimation(performTouchIDLoginIfEnabled)
     }
     
     private func login() {
@@ -152,6 +151,7 @@ final class LoginViewController: UIViewController {
     }
 
     private func showJoinTodayWebView() {
+        navigationController?.isNavigationBarHidden = false
         let webView = SimpleFileViewController(load: "https://www.intervalworld.com/web/my/account/createProfileOrJoin")
         show(webView, sender: self)
     }
