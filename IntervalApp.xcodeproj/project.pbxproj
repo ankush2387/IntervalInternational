@@ -116,6 +116,7 @@
 		3A623C671CF707A400389708 /* SideMenuLogoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A623C661CF707A400389708 /* SideMenuLogoCell.swift */; };
 		3A623C6A1CF728BC00389708 /* UIImageView+UIActivityIndicatorForSDWebImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A623C691CF728BC00389708 /* UIImageView+UIActivityIndicatorForSDWebImage.m */; };
 		3A645C0E1CF853180033EEB7 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A645C0D1CF853180033EEB7 /* Reachability.swift */; };
+		3A6DB3CD1FBB2D9B00D8100F /* HomeAlertCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6DB3CC1FBB2D9B00D8100F /* HomeAlertCollectionCell.swift */; };
 		3A733AC61CEF2A2E0068CF15 /* ImageWithNameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A733AC51CEF2A2E0068CF15 /* ImageWithNameCell.swift */; };
 		3A7858E61FB1B7170027E7EC /* Print+IntervalDebug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7858E51FB1B7160027E7EC /* Print+IntervalDebug.swift */; };
 		3A7858E81FB1B8120027E7EC /* CertificateDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7858E71FB1B8110027E7EC /* CertificateDetailsViewController.swift */; };
@@ -505,6 +506,7 @@
 		3A623C681CF728BC00389708 /* UIImageView+UIActivityIndicatorForSDWebImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+UIActivityIndicatorForSDWebImage.h"; sourceTree = "<group>"; };
 		3A623C691CF728BC00389708 /* UIImageView+UIActivityIndicatorForSDWebImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+UIActivityIndicatorForSDWebImage.m"; sourceTree = "<group>"; };
 		3A645C0D1CF853180033EEB7 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		3A6DB3CC1FBB2D9B00D8100F /* HomeAlertCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAlertCollectionCell.swift; sourceTree = "<group>"; };
 		3A733AC51CEF2A2E0068CF15 /* ImageWithNameCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageWithNameCell.swift; sourceTree = "<group>"; };
 		3A7858E51FB1B7160027E7EC /* Print+IntervalDebug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Print+IntervalDebug.swift"; sourceTree = "<group>"; };
 		3A7858E71FB1B8110027E7EC /* CertificateDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateDetailsViewController.swift; sourceTree = "<group>"; };
@@ -1650,6 +1652,7 @@
 		DC7EF4D61D709F0400E9E360 /* DashboardCells */ = {
 			isa = PBXGroup;
 			children = (
+				3A6DB3CC1FBB2D9B00D8100F /* HomeAlertCollectionCell.swift */,
 				DC27F7B61DB81B5D00AA374F /* HomeAlertTableViewCell.swift */,
 				DC7EF4D71D709F0400E9E360 /* UpComingTripsTableViewCell.swift */,
 				DC7EF4D81D709F0400E9E360 /* VacationCollectionViewCell.swift */,
@@ -2149,6 +2152,7 @@
 				3A9AFE651F597A3500BDDD6D /* FloatLabelTextField.swift in Sources */,
 				3C466B641F86884A002D43F7 /* AutoLogoutTimer.swift in Sources */,
 				3A591E101E82B1FA007FB4E8 /* TransactionDetailsTableViewCell.swift in Sources */,
+				3A6DB3CD1FBB2D9B00D8100F /* HomeAlertCollectionCell.swift in Sources */,
 				3A2F32421C80742300FCC111 /* UpComingTripCell.swift in Sources */,
 				3CA1FBE91F8562C1008148AB /* Logger.swift in Sources */,
 				618AEFCF1FA2C0D00097B423 /* ChargeSummaryTableViewCell.swift in Sources */,
