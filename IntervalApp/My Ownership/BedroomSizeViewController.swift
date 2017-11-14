@@ -395,7 +395,12 @@ extension BedroomSizeViewController: UITableViewDelegate {
                 
             }
             
-            for floatWeek in Constant.MyClassConstants.whatToTradeArray {
+
+            for floatWeek in Constant.MyClassConstants.whatToTradeArray{
+                
+                if (floatWeek as AnyObject).isKind(of: List<rlmPointsProgram>.self) {
+                    
+                } else {
                 let floatWeekTraversed = floatWeek as! OpenWeeks
                 if(floatWeekTraversed.isFloat && selectedRelinquismentId == floatWeekTraversed.relinquishmentID) {
                     if(Constant.MyClassConstants.unitNumberLockOff == floatWeekTraversed.floatDetails[0].unitNumber) {
@@ -414,7 +419,8 @@ extension BedroomSizeViewController: UITableViewDelegate {
                     }
                 }
             }
-            delegate?.floatLockOffDetails!(bedroomDetails: Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as! String)
+        }
+            delegate?.floatLockOffDetails!(bedroomDetails:Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as! String)
             self.dismiss(animated: false, completion: nil)
         }
     }

@@ -395,12 +395,23 @@ class WhoWillBeCheckingInViewController: UIViewController {
             self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
 
         } else {
-            if let openWeek = filterRelinquishments.openWeek {
-                Helper.getRelinquishmentDetails(resortCode: ((openWeek.resort?.resortCode)!!), viewController: self)
+
+            if let openWeek = filterRelinquishments.openWeek{
+                if let resortCode = openWeek.resort?.resortCode {
+                    Helper.getRelinquishmentDetails(resortCode: resortCode, viewController: self)
+                }
             }
             
-            if let deposits = filterRelinquishments.deposit {
-                Helper.getRelinquishmentDetails(resortCode: ((deposits.resort?.resortCode)!!), viewController: self)
+            if let deposits = filterRelinquishments.deposit{
+                if let resortCode = deposits.resort?.resortCode {
+                    Helper.getRelinquishmentDetails(resortCode: resortCode, viewController: self)
+                }
+            }
+            
+            if let clubPoints = filterRelinquishments.clubPoints {
+                if let resortCode = clubPoints.resort?.resortCode {
+                    Helper.getRelinquishmentDetails(resortCode: resortCode, viewController: self)
+                }
             }
             /*self.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: nil)*/
 
@@ -709,13 +720,23 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
                 cell.resortDetailsButton.tag = indexPath.row
                 cell.resortName?.text = Constant.MyClassConstants.selectedResort.resortName
                 cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.resortImage)
-            } else {
-                cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
+
+            }else{
+                if Constant.MyClassConstants.isCIGAvailable {
+                   cell.resortDetailsButton.isHidden = true
+                   cell.lblHeading.text = "CIG Points"
+                    if let availablePoints = Constant.MyClassConstants.exchangeViewResponse.relinquishment?.pointsProgram?.availablePoints {
+                        cell.resortName?.text = "\(availablePoints)"
+                    }
+                   
+                } else {
+                    cell.lblHeading.text = Constant.MyClassConstants.relinquishment
+                    cell.resortName?.text = Constant.MyClassConstants.selectedResort.resortName
+                    cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
+                }
                 cell.resortDetailsButton.tag = indexPath.row
-                cell.resortName?.text = Constant.MyClassConstants.selectedResort.resortName
                 cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.relinquishmentImage)
-                cell.lblHeading.text = "Relinquishment"
-                cell.resortName?.text = filterRelinquishments.openWeek?.resort?.resortName
+                
             }
             
             cell.selectionStyle = .none

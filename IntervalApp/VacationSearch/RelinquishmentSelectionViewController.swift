@@ -40,7 +40,6 @@ class RelinquishmentSelectionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         // omniture tracking with event 40
         let pageView: [String: String] = [
             Constant.omnitureEvars.eVar44: Constant.omnitureCommonString.vacationSearchRelinquishmentSelect
@@ -66,7 +65,7 @@ class RelinquishmentSelectionViewController: UIViewController {
                     if !Constant.MyClassConstants.relinquishmentIdArray.contains(relinquishmentId) {
                         pointOpenWeeksArray.append(fixed_week_type)
                     }
-                } else if fixed_week_type.pointsProgramCode != "" || fixed_week_type.weekNumber == Constant.CommonStringIdentifiers.floatWeek {
+                } else if fixed_week_type.pointsProgramCode != "" || fixed_week_type.weekNumber == Constant.CommonStringIdentifiers.floatWeek  {
                     
                     if let lockOffUnits = fixed_week_type.unit?.lockOffUnits {
                         let results = Constant.MyClassConstants.relinquishmentIdArray.map({ ($0 as AnyObject).contains(relinquishmentId) })
@@ -76,7 +75,12 @@ class RelinquishmentSelectionViewController: UIViewController {
                             if(fixed_week_type.weekNumber == Constant.CommonStringIdentifiers.floatWeek) {
                                 if(Constant.MyClassConstants.whatToTradeArray.count > 0) {
                                     
-                                    for traversedOpenWeek in Constant.MyClassConstants.whatToTradeArray {
+                                    for traversedOpenWeek in Constant.MyClassConstants.whatToTradeArray{
+                                        
+                                        if (traversedOpenWeek as AnyObject).isKind(of: List<rlmPointsProgram>.self) {
+    
+                                        } else {
+                                            
                                         let floatLockOffWeek = traversedOpenWeek as! OpenWeeks
                                         if(floatLockOffWeek.relinquishmentID == fixed_week_type.relinquishmentId) {
                                             Constant.MyClassConstants.saveLockOffDetailsArray.add("\(floatLockOffWeek.floatDetails[0].unitNumber),\(floatLockOffWeek.floatDetails[0].unitSize)")
@@ -114,8 +118,23 @@ class RelinquishmentSelectionViewController: UIViewController {
                         }
                     }
                 }
-            }
+                } else {
+                    if Constant.MyClassConstants.relinquishmentIdArray.contains(relinquishmentId) {
+                        self.intervalOpenWeeksArray.append(fixed_week_type)
+                    } else {
+                        if let lockOffUnits = fixed_week_type.unit?.lockOffUnits{
+                            
+                            let results = Constant.MyClassConstants.relinquishmentIdArray.map({ ($0 as AnyObject).contains(relinquishmentId)})
+                            let count = results.filter({ $0 == true }).count
+                            
+                            if count != lockOffUnits.count + 1 {
+                                self.intervalOpenWeeksArray.append(fixed_week_type)
+                            }
+                        }
+                    }
+                }
         }
+    }
         
         if let relinquishmentID = relinquishmentPointsProgramArray[0].relinquishmentId {
             if Constant.MyClassConstants.relinquishmentIdArray.contains(relinquishmentID) {
@@ -305,23 +324,20 @@ class RelinquishmentSelectionViewController: UIViewController {
             let membership = Session.sharedSession.selectedMembership
             let relinquishmentList = TradeLocalData()
             
-            let selectedOpenWeek = OpenWeeks()
-            if let weekNumber = Constant.MyClassConstants.relinquishmentSelectedWeek.weekNumber {
-                selectedOpenWeek.weekNumber = weekNumber
-            }
+            let selectedClubPoint = ClubPoints()
             if let relinquishmentId = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId {
-                selectedOpenWeek.relinquishmentID = relinquishmentId
+                selectedClubPoint.relinquishmentId = relinquishmentId
             }
-            if let relinquishmentYear = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentYear {
-                selectedOpenWeek.relinquishmentYear = relinquishmentYear
-            }
+            
+            selectedClubPoint.isPointsMatrix = false
+            selectedClubPoint.relinquishmentYear = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentYear ?? 0
             
             let resort = ResortList()
             if let resortName = Constant.MyClassConstants.relinquishmentSelectedWeek.resort?.resortName {
                 resort.resortName = resortName
             }
-            selectedOpenWeek.resort.append(resort)
-            relinquishmentList.openWeeks.append(selectedOpenWeek)
+            selectedClubPoint.resort.append(resort)
+            relinquishmentList.clubPoints.append(selectedClubPoint)
             storedata.openWeeks.append(relinquishmentList)
             if let memberNumber = membership?.memberNumber {
                 storedata.membeshipNumber = memberNumber
@@ -616,9 +632,9 @@ class RelinquishmentSelectionViewController: UIViewController {
             intervalPrint(Constant.MyClassConstants.selectedFloatWeek)
         }
     }
-    
-    func addDeposits(_ sender: IUIKButton) {
-        guard let relinquishmentId = Constant.MyClassConstants.relinquismentSelectedDeposit.relinquishmentId else { return }
+
+    func addDeposits(_ sender:IUIKButton) {
+        guard let relinquishmentId = relinquishmentDeposit[sender.tag].relinquishmentId else { return }
         Constant.MyClassConstants.relinquismentSelectedDeposit = relinquishmentDeposit[sender.tag]
         Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.relinquishmentSelectionViewController
         Constant.MyClassConstants.whatToTradeArray.add(Constant.MyClassConstants.relinquismentSelectedDeposit)

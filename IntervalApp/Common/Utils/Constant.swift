@@ -10,6 +10,8 @@ import UIKit
 import DarwinSDK
 import GoogleMaps
 
+var identifier : String = "Karnail singh"
+
 class Constant: NSObject {
     
     static var holdingTimer: Timer?
@@ -236,6 +238,7 @@ class Constant: NSObject {
         static var searchAvailabilityHeader = ""
         static var filterOptionsArray: [ResortDestination] = []
         static var areaWithAreaCode: [AreaInfo] = []
+        static var relinquishmentsArray: [RelinquishmentTypes] = []
         static var selectedAreaCodeDictionary = NSMutableDictionary()
         static var selectedAreaCodeArray = NSMutableArray()
         
@@ -606,6 +609,16 @@ class Constant: NSObject {
         static var certifcateCount = 0
         static var certificateArray = [AccommodationCertificate]()
         static var noFilterOptions = false
+        static var isCIGAvailable = false
+        static var isClubPointsAvailable = false
+    }
+    
+    // Enum to store openWeek types
+     enum RelinquishmentTypes {
+        case Deposit(Deposits)
+        case ClubPoints(ClubPoints)
+        case CIGPoints(rlmPointsProgram)
+        case FixedWeek(OpenWeeks)
     }
     
     enum selectedDestType {

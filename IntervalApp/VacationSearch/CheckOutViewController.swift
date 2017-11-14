@@ -694,9 +694,6 @@ class CheckOutViewController: UIViewController {
             } else if let depositResort = filterRelinquishments.deposit?.resort{
                 Helper.getRelinquishmentDetails(resortCode: (depositResort.resortCode), viewController: self)
             }
-            Helper.getRelinquishmentDetails(resortCode: ((filterRelinquishments.openWeek?.resort?.resortCode)!!), viewController: self)
-            /*self.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: nil)*/
-            
         }
     }
     
@@ -1023,12 +1020,20 @@ extension CheckOutViewController: UITableViewDataSource {
                 cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
                 cell.resortName?.text = Constant.MyClassConstants.selectedResort.resortName
                 cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.resortImage)
-            } else {
+            }else{
+                if Constant.MyClassConstants.isCIGAvailable {
+                    cell.resortDetailsButton.isHidden = true
+                    cell.lblHeading.text = "CIG Points"
+                    if let availablePoints = Constant.MyClassConstants.exchangeViewResponse.relinquishment?.pointsProgram?.availablePoints {
+                        cell.resortName?.text = "\(availablePoints)"
+                    }
+                } else {
                 cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
                 cell.resortName?.text = Constant.MyClassConstants.selectedResort.resortName
                 cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.relinquishmentImage)
                 cell.lblHeading.text = Constant.MyClassConstants.relinquishment
                 cell.resortName?.text = filterRelinquishments.openWeek?.resort?.resortName
+                }
             }
             //cell.resortDetailsButton.addTarget(self, action: #selector(self.resortDetailsClicked(_:)), for: .touchUpInside)
             cell.selectionStyle = .none

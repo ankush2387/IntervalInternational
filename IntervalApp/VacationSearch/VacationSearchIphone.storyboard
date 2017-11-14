@@ -2140,10 +2140,12 @@ transaction.</string>
                                                             <size key="customSize" width="375" height="80"/>
                                                             <connections>
                                                                 <outlet property="bedRoomType" destination="sPj-qU-VYt" id="2YP-s1-ZiH"/>
-                                                                <outlet property="clubPointsLabel" destination="wK7-il-ZAM" id="ksB-58-Kwl"/>
-                                                                <outlet property="clubPointsStackView" destination="lI3-Ug-eVC" id="oS7-Wj-mjU"/>
+                                                                <outlet property="exchangeImageView" destination="g5k-HH-XDm" id="Jck-Ad-swD"/>
                                                                 <outlet property="exchangeStackView" destination="ev1-Wv-ytS" id="9CV-8E-YCd"/>
                                                                 <outlet property="kitchenType" destination="ffI-0h-aWW" id="Kmb-H5-hP3"/>
+                                                                <outlet property="pointsCountLabel" destination="wK7-il-ZAM" id="5zi-HI-wdj"/>
+                                                                <outlet property="pointsStackView" destination="lI3-Ug-eVC" id="Xbh-oB-2jY"/>
+                                                                <outlet property="pointsTitleLabel" destination="Jfi-fy-3bN" id="QJM-5g-mDM"/>
                                                                 <outlet property="promotionsView" destination="ALN-mR-xqN" id="u0V-ol-UZ7"/>
                                                                 <outlet property="sleeps" destination="vEF-eC-OLt" id="xwc-0L-ZCI"/>
                                                             </connections>
@@ -2255,6 +2257,7 @@ transaction.</string>
                         <segue destination="ngh-TZ-XZu" kind="show" identifier="searchResultMapSegue" id="0zV-03-nGi"/>
                         <segue destination="7wx-gU-8rb" kind="presentation" identifier="sortingSegue" id="CF2-li-kLd"/>
                         <segue destination="5Av-tX-Kmt" kind="show" identifier="RenewelSegue" id="uC8-lh-iz0"/>
+                        <segue destination="yRQ-u3-f5x" kind="presentation" identifier="pointsInfoSegue" id="KRw-si-7MT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="U4c-hu-I43" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2683,7 +2686,94 @@ transaction.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xJR-iS-V2C" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="507.24637681159425" y="1346.7391304347827"/>
+            <point key="canvasLocation" x="161" y="1344"/>
+        </scene>
+        <!--Info Detail View Controller-->
+        <scene sceneID="eCb-ev-lxd">
+            <objects>
+                <viewController id="yRQ-u3-f5x" customClass="InfoDetailViewController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ILP-aY-i94"/>
+                        <viewControllerLayoutGuide type="bottom" id="Byr-de-kbn"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="HFl-cI-B7q">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UP9-kg-jGu">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8X8-eI-Hns">
+                                        <rect key="frame" x="275" y="0.0" width="100" height="64"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="100" id="KMo-NB-Ecx"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                        <state key="normal" title="Done">
+                                            <color key="titleColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="doneButtonPressed:" destination="yRQ-u3-f5x" eventType="touchUpInside" id="F5s-lz-Uow"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="8X8-eI-Hns" secondAttribute="bottom" id="Hxd-Bs-a9m"/>
+                                    <constraint firstAttribute="height" constant="64" id="JcX-iA-lkB"/>
+                                    <constraint firstAttribute="trailing" secondItem="8X8-eI-Hns" secondAttribute="trailing" id="R1T-ED-VjD"/>
+                                    <constraint firstItem="8X8-eI-Hns" firstAttribute="top" secondItem="UP9-kg-jGu" secondAttribute="top" id="o7p-eF-z9L"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ueZ-0B-1Vl">
+                                <rect key="frame" x="20" y="74" width="335" height="571"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not Enough Points" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zrq-O6-66V">
+                                        <rect key="frame" x="0.0" y="0.0" width="335" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="Lml-Qn-Y7L"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dPc-p8-hxF">
+                                        <rect key="frame" x="10" y="50" width="315" height="138"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="138" id="JeD-WB-EM8"/>
+                                        </constraints>
+                                        <string key="text">Ooops seems like you currently don't have enough points. You may have non points weeks which you can use for this Exchange. We also see that you have additional weeks which you can deposit in order to complete this exchange. You can visit our full site and deposit your available week(s).</string>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="dPc-p8-hxF" firstAttribute="leading" secondItem="ueZ-0B-1Vl" secondAttribute="leading" constant="10" id="4G4-5E-h0a"/>
+                                    <constraint firstItem="Zrq-O6-66V" firstAttribute="leading" secondItem="ueZ-0B-1Vl" secondAttribute="leading" id="4w1-na-jpi"/>
+                                    <constraint firstItem="dPc-p8-hxF" firstAttribute="top" secondItem="Zrq-O6-66V" secondAttribute="bottom" constant="10" id="ksC-Px-lxG"/>
+                                    <constraint firstItem="Zrq-O6-66V" firstAttribute="top" secondItem="ueZ-0B-1Vl" secondAttribute="top" id="le2-O3-7qf"/>
+                                    <constraint firstAttribute="trailing" secondItem="Zrq-O6-66V" secondAttribute="trailing" id="mOv-IL-8qQ"/>
+                                    <constraint firstAttribute="trailing" secondItem="dPc-p8-hxF" secondAttribute="trailing" constant="10" id="vz5-Z5-2Qb"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.94901960784313721" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="UP9-kg-jGu" firstAttribute="top" secondItem="HFl-cI-B7q" secondAttribute="top" id="5bx-TQ-lYW"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ueZ-0B-1Vl" secondAttribute="trailing" constant="4" id="Agy-t2-WDn"/>
+                            <constraint firstItem="UP9-kg-jGu" firstAttribute="leading" secondItem="HFl-cI-B7q" secondAttribute="leading" id="CIC-PS-dhT"/>
+                            <constraint firstItem="ueZ-0B-1Vl" firstAttribute="top" secondItem="UP9-kg-jGu" secondAttribute="bottom" constant="10" id="NDw-Af-wAE"/>
+                            <constraint firstItem="ueZ-0B-1Vl" firstAttribute="leading" secondItem="HFl-cI-B7q" secondAttribute="leadingMargin" constant="4" id="WCb-Tn-GHa"/>
+                            <constraint firstAttribute="trailing" secondItem="UP9-kg-jGu" secondAttribute="trailing" id="yKd-Xs-5tE"/>
+                            <constraint firstItem="Byr-de-kbn" firstAttribute="top" secondItem="ueZ-0B-1Vl" secondAttribute="bottom" constant="22" id="zci-uI-ZNd"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MmJ-Dm-dLD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3184.8000000000002" y="95.802098950524751"/>
         </scene>
         <!--Certificate Details View Controller-->
         <scene sceneID="78G-Jc-iCQ">
@@ -6680,7 +6770,7 @@ to confirm a larger unit.</string>
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.5568627451" blue="0.76078431369999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="2FU-MU-a1l" secondAttribute="trailing" constant="-16" id="44G-bL-3h4"/>
                             <constraint firstItem="2FU-MU-a1l" firstAttribute="top" secondItem="Cuh-fe-QlW" secondAttribute="bottom" constant="-1" id="Kbj-WR-mu7"/>

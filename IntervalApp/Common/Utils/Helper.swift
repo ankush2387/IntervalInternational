@@ -624,94 +624,109 @@ public class Helper {
     
     static func InitializeOpenWeeksFromLocalStorage () {
         
-        Constant.MyClassConstants.relinquishmentIdArray.removeAllObjects()
+        Constant.MyClassConstants.relinquishmentIdArray.removeAll()
         Constant.MyClassConstants.whatToTradeArray.removeAllObjects()
         Constant.MyClassConstants.idUnitsRelinquishmentDictionary.removeAllObjects()
         Constant.MyClassConstants.relinquishmentUnitsArray.removeAllObjects()
         Constant.MyClassConstants.floatRemovedArray.removeAllObjects()
         Constant.MyClassConstants.realmOpenWeeksID.removeAllObjects()
         
-        let realm = try! Realm()
-        let Membership = Session.sharedSession.selectedMembership
-        let SelectedMembershipNumber = Membership?.memberNumber
-        var requiredMemberNumber = ""
-        if let membernumber = SelectedMembershipNumber {
-            requiredMemberNumber = membernumber
-        }
-        let realmLocalStorage = realm.objects(OpenWeeksStorage.self).filter("membeshipNumber == '\(requiredMemberNumber)'")
-        if (realmLocalStorage.count > 0) {
-            for obj in realmLocalStorage {
-                let openWeeks = obj.openWeeks
-                for openWk in openWeeks {
-                    if openWk.openWeeks.count > 0 {
-                        
-                        for object in openWk.openWeeks {
+        do {
+            let realm = try Realm()
+            let Membership = Session.sharedSession.selectedMembership
+            let SelectedMembershipNumber = Membership?.memberNumber
+            var requiredMemberNumber = ""
+            if let membernumber = SelectedMembershipNumber {
+                requiredMemberNumber = membernumber
+            }
+            let realmLocalStorage = realm.objects(OpenWeeksStorage.self).filter("membeshipNumber == '\(requiredMemberNumber)'")
+            if (!realmLocalStorage.isEmpty) {
+                for obj in realmLocalStorage {
+                    let openWeeks = obj.openWeeks
+                    for openWk in openWeeks {
+                        if(!openWk.openWeeks.isEmpty){
                             
-                            Constant.MyClassConstants.realmOpenWeeksID.add(object.relinquishmentID)
-                            let tempDict = NSMutableDictionary()
-                            if object.isFloat {
-                                if object.isFloatRemoved {
-                                    Constant.MyClassConstants.floatRemovedArray.add(object)
-                                } else if object.floatDetails.count > 0 && !object.isFloatRemoved && object.isFromRelinquishment {
+                            for object in openWk.openWeeks {
+                                
+                                Constant.MyClassConstants.realmOpenWeeksID.add(object.relinquishmentID)
+                                let tempDict = NSMutableDictionary()
+                                if(object.isFloat){
+                                    if(object.isFloatRemoved){
+                                        Constant.MyClassConstants.floatRemovedArray.add(object)
+                                    }else if(!object.floatDetails.isEmpty && !object.isFloatRemoved && object.isFromRelinquishment){
+                                        Constant.MyClassConstants.whatToTradeArray.add(object)
+                                        if(!Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID)){
+                                            Constant.MyClassConstants.relinquishmentIdArray.append(object.relinquishmentID)
+                                        }
+                                    }
+                                }else{
                                     Constant.MyClassConstants.whatToTradeArray.add(object)
-                                    if !Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID) {
-                                        Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
+                                    if(!Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID)){
+                                        Constant.MyClassConstants.relinquishmentIdArray.append(object.relinquishmentID)
                                     }
                                 }
-                            } else {
-                                Constant.MyClassConstants.whatToTradeArray.add(object)
-                                if !Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID) {
-                                    Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
+                                Constant.MyClassConstants.idUnitsRelinquishmentDictionary.setValue(object.unitDetails, forKey: object.relinquishmentID)
+                                tempDict.setValue(object.unitDetails, forKey: object.relinquishmentID)
+                                if(!object.isFloatRemoved){
+                                    Constant.MyClassConstants.relinquishmentUnitsArray.add(tempDict)
                                 }
                             }
-                            Constant.MyClassConstants.idUnitsRelinquishmentDictionary.setValue(object.unitDetails, forKey: object.relinquishmentID)
-                            tempDict.setValue(object.unitDetails, forKey: object.relinquishmentID)
-                            if !object.isFloatRemoved {
-                                Constant.MyClassConstants.relinquishmentUnitsArray.add(tempDict)
-                            }
-                        }
-                        
-                    } else if openWk.deposits.count > 0 {
-                        for object in openWk.deposits {
                             
-                            Constant.MyClassConstants.realmOpenWeeksID.add(object.relinquishmentID)
-                            let tempDict = NSMutableDictionary()
-                            if object.isFloat {
-                                if object.isFloatRemoved {
-                                    Constant.MyClassConstants.floatRemovedArray.add(object)
-                                } else if object.floatDetails.count > 0 && !object.isFloatRemoved && object.isFromRelinquishment {
+                        } else if !openWk.deposits.isEmpty {
+                            for object in openWk.deposits {
+                                
+                                Constant.MyClassConstants.realmOpenWeeksID.add(object.relinquishmentID)
+                                let tempDict = NSMutableDictionary()
+                                if(object.isFloat){
+                                    if(object.isFloatRemoved){
+                                        Constant.MyClassConstants.floatRemovedArray.add(object)
+                                    }else if(object.floatDetails.count > 0 && !object.isFloatRemoved && object.isFromRelinquishment){
+                                        Constant.MyClassConstants.whatToTradeArray.add(object)
+                                        if(!Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID)){
+                                            Constant.MyClassConstants.relinquishmentIdArray.append(object.relinquishmentID)
+                                        }
+                                    }
+                                }else{
                                     Constant.MyClassConstants.whatToTradeArray.add(object)
-                                    if !Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID) {
-                                        Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
+                                    if(!Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID)){
+                                        Constant.MyClassConstants.relinquishmentIdArray.append(object.relinquishmentID)
                                     }
                                 }
-                            } else {
-                                Constant.MyClassConstants.whatToTradeArray.add(object)
-                                if !Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID) {
-                                    Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
+                                Constant.MyClassConstants.idUnitsRelinquishmentDictionary.setValue(object.unitDetails, forKey: object.relinquishmentID)
+                                tempDict.setValue(object.unitDetails, forKey: object.relinquishmentID)
+                                if(!object.isFloatRemoved){
+                                    Constant.MyClassConstants.relinquishmentUnitsArray.add(tempDict)
                                 }
                             }
-                            Constant.MyClassConstants.idUnitsRelinquishmentDictionary.setValue(object.unitDetails, forKey: object.relinquishmentID)
-                            tempDict.setValue(object.unitDetails, forKey: object.relinquishmentID)
-                            if !object.isFloatRemoved {
-                                Constant.MyClassConstants.relinquishmentUnitsArray.add(tempDict)
+                            
+                        } else if !openWk.clubPoints.isEmpty {
+                            for clubPoint in openWk.clubPoints{
+                                
+                                if(!Constant.MyClassConstants.relinquishmentIdArray.contains(clubPoint.relinquishmentId)){
+                                    Constant.MyClassConstants.relinquishmentIdArray.append(clubPoint.relinquishmentId)
+                                    Constant.MyClassConstants.relinquishmentsArray.append(.ClubPoints(clubPoint))
+                                    Constant.MyClassConstants.whatToTradeArray.add(openWk.clubPoints)
+                                }
                             }
+                            Constant.MyClassConstants.isClubPointsAvailable = true
+                            
+                        } else {
+                            
+                            Constant.MyClassConstants.whatToTradeArray.add(openWk.pProgram)
+                            if(!Constant.MyClassConstants.relinquishmentIdArray.contains(openWk.pProgram[0].relinquishmentId)){
+                                Constant.MyClassConstants.relinquishmentIdArray.append(openWk.pProgram[0].relinquishmentId)
+                            }
+                            Constant.MyClassConstants.relinquishmentAvailablePointsProgram = Int((openWk.pProgram[0].availablePoints))
+                            Constant.MyClassConstants.isCIGAvailable = true
                         }
-                        
-                    } else {
-                        
-                        Constant.MyClassConstants.whatToTradeArray.add(openWk.pProgram)
-                        if !Constant.MyClassConstants.relinquishmentIdArray.contains(openWk.pProgram[0].relinquishmentId) {
-                            Constant.MyClassConstants.relinquishmentIdArray.add(openWk.pProgram[0].relinquishmentId)
-                        }
-                        Constant.MyClassConstants.relinquishmentAvailablePointsProgram = Int((openWk.pProgram[0].availablePoints))
                     }
                 }
+            }else{
+                intervalPrint("No Data")
             }
-        } else {
-            intervalPrint("No Data")
+        } catch {
+            
         }
-        
     }
     
     //***** function that returns AreaOfInfluenceDestination list according to selected membership number that send to server for search dates API call *****//
@@ -1744,10 +1759,13 @@ public class Helper {
     }
     
     //Search both perform exchange search after rental
-    static func executeExchangeSearchDates(senderVC: UIViewController, vacationSearch: VacationSearch) {
+
+    static func executeExchangeSearchDates(senderVC:UIViewController, vacationSearch:VacationSearch) {
         
+        senderVC.showHudAsync()
         ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request: vacationSearch.exchangeSearch?.searchContext.request,
                                    onSuccess: { (response) in
+                                    senderVC.hideHudAsync()
                                     vacationSearch.exchangeSearch?.searchContext.response = response
                                     Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
                                     

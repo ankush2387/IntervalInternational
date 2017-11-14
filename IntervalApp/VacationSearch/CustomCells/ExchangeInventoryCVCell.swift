@@ -9,15 +9,25 @@
 import UIKit
 import DarwinSDK
 
+protocol ExchangeInventoryCVCellDelegate {
+    func infoIconPressed()
+}
+
 class ExchangeInventoryCVCell: UICollectionViewCell {
+    
+    //***** Custom cell delegate to access the delegate method *****//
+    var exchangeCellDelegate: ExchangeInventoryCVCellDelegate?
+    
     @IBOutlet weak var bedRoomType: UILabel!
     @IBOutlet weak var sleeps: UILabel!
     @IBOutlet weak var kitchenType: UILabel!
     
     @IBOutlet weak var promotionsView: UIView!
     @IBOutlet weak var exchangeStackView: UIStackView!
-    @IBOutlet weak var clubPointsStackView: UIStackView!
-    @IBOutlet weak var clubPointsLabel: UILabel!
+    @IBOutlet weak var pointsStackView: UIStackView!
+    @IBOutlet weak var pointsCountLabel: UILabel!
+    @IBOutlet weak var pointsTitleLabel: UILabel!
+    @IBOutlet weak var exchangeImageView: UIImageView!
     
     
     func setUpExchangeCell(invetoryItem: ExchangeInventory, indexPath: IndexPath) {
@@ -49,18 +59,31 @@ class ExchangeInventoryCVCell: UICollectionViewCell {
         }
         
         if unit.privateSleepCapacity > 0 {
-            
-            self.sleeps.text = totalSleepCapacity + String(unit.privateSleepCapacity) + Constant.CommonLocalisedString.privateString
-            
-        }
 
-        if invetoryItem.buckets[indexPath.row].pointsCost != 0 {
-            exchangeStackView.isHidden = true
-            clubPointsLabel.text = "\(invetoryItem.buckets[indexPath.row].pointsCost)"
-            
-        }else{
-            clubPointsStackView.isHidden = true
+            self.sleeps.text =  totalSleepCapacity + String(unit.privateSleepCapacity) + Constant.CommonLocalisedString.privateString
         }
+        
+        if invetoryItem.buckets[indexPath.row].pointsCost != invetoryItem.buckets[indexPath.row].memberPointsRequired {
+            pointsStackView.isHidden = true
+            exchangeStackView.isHidden = false
+            exchangeImageView.image = #imageLiteral(resourceName: "InfoIcon")
+            exchangeImageView.isUserInteractionEnabled = true
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapBlurButton))
+            exchangeImageView.addGestureRecognizer(tapGesture)
+        } else {
+            if invetoryItem.buckets[indexPath.row].pointsCost != 0 {
+                exchangeStackView.isHidden = true
+                pointsCountLabel.text = "\(invetoryItem.buckets[indexPath.row].pointsCost)"
+                if Constant.MyClassConstants.isCIGAvailable {
+                    pointsTitleLabel.text = "CIG Points"
+                } else if Constant.MyClassConstants.isClubPointsAvailable {
+                    pointsTitleLabel.text = "Club Points"
+                }
+            } else {
+                pointsStackView.isHidden = true
+            }
+        }
+    
         let promotions = invetoryItem.buckets[indexPath.item].promotions
         if (promotions.count) > 0 {
             for view in self.promotionsView.subviews {
@@ -90,5 +113,10 @@ class ExchangeInventoryCVCell: UICollectionViewCell {
                 yPosition += 15
             }
         }
+    }
+    
+    func tapBlurButton() {
+       //pointsInfoSegue
+        exchangeCellDelegate?.infoIconPressed()
     }
 }

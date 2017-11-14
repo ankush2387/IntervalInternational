@@ -291,7 +291,7 @@ class SearchResultViewController: UIViewController {
         let activeInterval = Constant.MyClassConstants.initialVacationSearch.resolveNextActiveIntervalFor(intervalStartDate: calendarItem.intervalStartDate, intervalEndDate: calendarItem.intervalEndDate)
         
         // Fetch CheckIn dates only in the active interval doesn't have CheckIn dates
-        if (activeInterval != nil && !(activeInterval?.hasCheckInDates())!) {
+        if (activeInterval != nil && activeInterval?.hasCheckInDates() == false) {
             
             // Execute Search Dates
             if (Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()) {
@@ -313,7 +313,7 @@ class SearchResultViewController: UIViewController {
                 Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
                 
                 self.searchResultColelctionView.reloadData()
-                   self.hideHudAsync()
+                self.hideHudAsync()
                 
             },
             onError: { (_) in
@@ -342,7 +342,7 @@ class SearchResultViewController: UIViewController {
                 if (!(activeInterval?.hasCheckInDates())!) {
                     Constant.MyClassConstants.rentalHasNotAvailableCheckInDatesAfterSelectInterval = true
                 }
-                
+                self.hideHudAsync()
                 // Run Exchange Search Dates
                 Helper.executeExchangeSearchDatesAfterSelectInterval(senderVC: self, datesCV: self.searchResultColelctionView)
                 
@@ -350,10 +350,10 @@ class SearchResultViewController: UIViewController {
                 },
                  onError: { (_) in
                     // Run Exchange Search Dates
+                    self.hideHudAsync()
                     Helper.executeExchangeSearchDatesAfterSelectInterval(senderVC: self, datesCV: self.searchResultColelctionView)
                 }
                 )
-                
             } else {
                 
                 // Update CheckInFrom and CheckInTo dates
@@ -378,11 +378,13 @@ class SearchResultViewController: UIViewController {
                     Constant.MyClassConstants.calendarDatesArray.removeAll()
                     
                     Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
-                    
+                    self.hideHudAsync()
                     self.searchResultColelctionView.reloadData()
                     
                 },
+
                onError: { (_) in
+                     self.hideHudAsync()
                      self.presentErrorAlert(UserFacingCommonError.generic)
                 }
                 )
@@ -571,6 +573,10 @@ class SearchResultViewController: UIViewController {
             
             if let pointsProgram = Constant.MyClassConstants.filterRelinquishments[0].pointsProgram {
                 processRequest.relinquishmentId = pointsProgram.relinquishmentId
+            }
+            
+            if let clubPoints = Constant.MyClassConstants.filterRelinquishments[0].clubPoints {
+                processRequest.relinquishmentId = clubPoints.relinquishmentId
             }
         }
     
@@ -890,7 +896,7 @@ extension SearchResultViewController: UICollectionViewDelegate {
             // Check for renewals no thanks
             Constant.MyClassConstants.noThanksForNonCore = false
             
-            if (indexPath as NSIndexPath).section == 0 {
+            if indexPath.section == 0 {
                 Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.vacationSearchFunctionalityCheck
                 Constant.MyClassConstants.isFromSearchResult = true
 
@@ -1324,6 +1330,7 @@ extension SearchResultViewController: UICollectionViewDataSource {
                     }
                     
                     let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
+                    cell.exchangeCellDelegate = self
                     cell.setUpExchangeCell(invetoryItem: inventoryItem, indexPath: indexPath)
                     return cell
                 }
@@ -1385,7 +1392,8 @@ extension SearchResultViewController: UICollectionViewDataSource {
                             return cell
                         } else {
                             let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
-                            cell.setUpExchangeCell(invetoryItem: (combinedExactSearchItems[collectionView.tag].exchangeAvailability?.inventory)!, indexPath: indexPath)
+                            cell.exchangeCellDelegate = self
+                            cell.setUpExchangeCell(invetoryItem: (combinedExactSearchItems[collectionView.tag].exchangeAvailability?.inventory)!, indexPath:indexPath)
                             return cell
                         }
                     } else {
@@ -1395,7 +1403,8 @@ extension SearchResultViewController: UICollectionViewDataSource {
                             return cell
                         } else {
                             let cell = self.getExchangeCollectionCell(indexPath: indexPath, collectionView: collectionView)
-                            cell.setUpExchangeCell(invetoryItem: (combinedSurroundingSearchItems[collectionView.tag].exchangeAvailability?.inventory)!, indexPath: indexPath)
+                            cell.exchangeCellDelegate = self
+                            cell.setUpExchangeCell(invetoryItem: (combinedSurroundingSearchItems[collectionView.tag].exchangeAvailability?.inventory)!, indexPath:indexPath)
                             return cell
                         }
                     }
@@ -1900,3 +1909,10 @@ extension SearchResultViewController: WhoWillBeCheckInDelegate {
         
     }
 }
+
+extension SearchResultViewController:ExchangeInventoryCVCellDelegate {
+    func infoIconPressed() {
+        self.performSegue(withIdentifier: "pointsInfoSegue", sender: self)
+    }
+}
+

@@ -9,6 +9,8 @@
 import UIKit
 import IntervalUIKit
 import DarwinSDK
+import Realm
+import RealmSwift
 
 class ClubPointSelectionViewController: UIViewController {
     /** Outlets */
@@ -31,6 +33,7 @@ class ClubPointSelectionViewController: UIViewController {
     @IBOutlet weak var secondTravelWindowConstraint: NSLayoutConstraint!
     @IBOutlet weak var firstTravelWindowConstraint: NSLayoutConstraint!
     @IBOutlet weak var lineBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!
     
     //@IBOutlet weak var travelingDetailLabel: UILabel!
     /** Class Variables */
@@ -52,9 +55,10 @@ class ClubPointSelectionViewController: UIViewController {
     @IBOutlet weak var insidesecondview: UIView!
     
     let infoImageView = UIImageView()
-    var labelsCollectionView: UICollectionView!
-    var clublabel: String = ""
-    var clubIntervalValuesCollectionView: UICollectionView!
+    var labelsCollectionView:UICollectionView!
+    var clublabel:String = ""
+    var clubIntervalValuesCollectionView:UICollectionView!
+    var clubPointsValue = "0"
    
     var testArr = [1]
     var firstCheckedCheckBoxTag = 0
@@ -116,8 +120,8 @@ class ClubPointSelectionViewController: UIViewController {
         
     }
     
-    //Function for done button click
-    @IBAction func doneButtonClicked(_ sender: IUIKButton) {
+    //MARK:- Function for done button click
+    @IBAction func doneButtonClicked(_ sender:IUIKButton) {
         
         guard let relinquishmentID = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId else {
          return }
@@ -134,16 +138,59 @@ class ClubPointSelectionViewController: UIViewController {
         intervalPrint(Constant.MyClassConstants.matrixDataArray)
         intervalPrint(segmentSelectedString)
         
-            let invenUnit:InventoryUnit = InventoryUnit()
-                invenUnit.unitSize = "STUDIO"
-                invenUnit.clubPoints = 30000
+        dictionaryForSegmentCheckBox.value(forKey: segmentSelectedString)
+        
+        let labelUnitArray:NSMutableArray = Constant.MyClassConstants.clubIntervalDictionary.value(forKey: Constant.MyClassConstants.labelarray[1] as! String)! as! NSMutableArray
+        
+           let invenUnit:InventoryUnit = InventoryUnit()
+           invenUnit.unitSize = "STUDIO"
+           let clubPoints = clubPointsValue.replacingOccurrences(of: ",", with: "")
+           invenUnit.clubPoints = Int(clubPoints) ?? 0
+        
                 pointMatrixType.unit = invenUnit
          ExchangeClient.updatePointsMatrixReservation(Session.sharedSession.userAccessToken, relinquishmentId: relinquishmentID, reservation: pointMatrixType, onSuccess: {(response) in
             intervalPrint(response)
             
          }, onError: { (error) in
-           intervalPrint(error)
+            
+            let storedata = OpenWeeksStorage()
+            let membership = Session.sharedSession.selectedMembership
+            let relinquishmentList = TradeLocalData()
+            
+            let selectedClubPoint = ClubPoints()
+            if let relinquishmentId = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId {
+                selectedClubPoint.relinquishmentId = relinquishmentId
+            }
+            
+            selectedClubPoint.isPointsMatrix = true
+            selectedClubPoint.relinquishmentYear = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentYear ?? 0
+            selectedClubPoint.pointsSpent = invenUnit.clubPoints
+            
+            let resort = ResortList()
+            if let resortName = Constant.MyClassConstants.relinquishmentSelectedWeek.resort?.resortName {
+                resort.resortName = resortName
+            }
+            selectedClubPoint.resort.append(resort)
+            relinquishmentList.clubPoints.append(selectedClubPoint)
+            storedata.openWeeks.append(relinquishmentList)
+            if let memberNumber = membership?.memberNumber {
+                storedata.membeshipNumber = memberNumber
+            }
+            
+            do {
+                let realm = try Realm()
+                try realm.write {
+                    realm.add(storedata)
+                }
+            } catch {
+                self.presentErrorAlert(UserFacingCommonError.generic)
+            }
          })
+        
+    }
+    
+    //MARK :- Save Club points to database
+    func saveSelectedClubPoints(){
         
     }
     
@@ -258,7 +305,8 @@ class ClubPointSelectionViewController: UIViewController {
     
     //***** Function to create collection view to show club points. *****//
     func createClubsCollectionView(){
-        self.clubPoinScrollVw.contentSize = CGSize(width: 0, height: ((Constant.MyClassConstants.clubIntervalDictionary.allKeys.count * 70) + 150))
+        self.clubPoinScrollVw.contentSize = CGSize(width: 0, height: ((Constant.MyClassConstants.clubIntervalDictionary.allKeys.count * 70) + 50))
+        scrollViewHeightConstraint.constant = self.clubPoinScrollVw.contentSize.height
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.minimumLineSpacing = 0.0
@@ -311,7 +359,7 @@ class ClubPointSelectionViewController: UIViewController {
         _ = self.navigationController?.popViewController(animated: true)
     }
     
-    //Function to map club interval points
+    //MARK:- Function to map club interval points
     
     func mapClubIntervalPoints(index: Int) {
 
@@ -451,8 +499,16 @@ class ClubPointSelectionViewController: UIViewController {
         let indexPath = IndexPath(item: sender.tag % 10, section: sender.tag / 10)
         Constant.MyClassConstants.checkBoxTag = sender.tag % 10
         let collectionVwCell = clubIntervalValuesCollectionView.cellForItem(at: indexPath)
+
         for collectionItem in (collectionVwCell?.contentView.subviews)! {
-            if(collectionItem.isKind(of: IUIKCheckbox.self)) {
+            
+            if(collectionItem.isKind(of: UILabel.self))
+            {
+                let pointsLabel = collectionItem as? UILabel
+                if let points = pointsLabel?.text {
+                    clubPointsValue = points
+                }
+            } else if collectionItem.isKind(of: IUIKCheckbox.self) {
                 let checkBox = collectionItem as! IUIKCheckbox
                 if(checkBox.checked) {
                     checkBox.checked = false
@@ -470,7 +526,6 @@ class ClubPointSelectionViewController: UIViewController {
                     } else {
                         secondCheckedCheckBoxTag = sender.tag
                     }
-                    //checkedCheckBoxTag = sender.tag
                 }
             }
         }
