@@ -27,7 +27,7 @@ class SearchResultContentTableCell: UITableViewCell {
     @IBOutlet weak var favoriteButton: UIButton!
     @IBOutlet weak var tierImageView: UIImageView!
     
-    var delegate:SearchResultContentTableCellDelegate?
+    var delegate: SearchResultContentTableCellDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -39,7 +39,6 @@ class SearchResultContentTableCell: UITableViewCell {
 //
 //        // Configure the view for the selected state
 //    }
-    
 
     @IBAction func feboriteButtonPressed(_ sender: UIButton) {
        self.delegate?.favoriteButtonClicked(sender)

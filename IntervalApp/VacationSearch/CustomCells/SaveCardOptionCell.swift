@@ -11,7 +11,6 @@ import IntervalUIKit
 
 class SaveCardOptionCell: UITableViewCell {
     
-    
     @IBOutlet weak var saveThisCardCheckBox: IUIKCheckbox!
 
     override func awakeFromNib() {

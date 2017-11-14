@@ -9,7 +9,6 @@
 import UIKit
 import IntervalUIKit
 class DepositedPointHistoryTableViewCell: UITableViewCell {
-
     
     @IBOutlet weak var pointsLabel: UILabel!
     @IBOutlet weak var expirationdateLabel: UILabel!

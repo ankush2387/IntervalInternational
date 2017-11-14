@@ -31,7 +31,7 @@ class FlexchangeSearchViewController: UIViewController {
         super.viewDidLoad()
         
         // Adding navigation back button
-        let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(FlexchangeSearchViewController.menuBackButtonPressed(_:)))
+        let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(FlexchangeSearchViewController.menuBackButtonPressed(_:)))
         menuButton.tintColor = UIColor.white
         self.navigationItem.leftBarButtonItem = menuButton
         
@@ -44,14 +44,13 @@ class FlexchangeSearchViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
-    func menuBackButtonPressed(_ sender:UIBarButtonItem) {
+    func menuBackButtonPressed(_ sender: UIBarButtonItem) {
      
         _ = self.navigationController?.popViewController(animated: true)
       
     }
     
-    func addRelinquishmentSectionButtonPressed(_ sender:IUIKButton) {
+    func addRelinquishmentSectionButtonPressed(_ sender: IUIKButton) {
         Constant.MyClassConstants.viewController = self
         showHudAsync()
         ExchangeClient.getMyUnits(Session.sharedSession.userAccessToken, onSuccess: { (Relinquishments) in
@@ -59,7 +58,7 @@ class FlexchangeSearchViewController: UIViewController {
             Constant.MyClassConstants.relinquishmentDeposits = Relinquishments.deposits
             Constant.MyClassConstants.relinquishmentOpenWeeks = Relinquishments.openWeeks
             
-            if(Relinquishments.pointsProgram != nil){
+            if(Relinquishments.pointsProgram != nil) {
                 Constant.MyClassConstants.relinquishmentProgram = Relinquishments.pointsProgram!
                 
                 if (Relinquishments.pointsProgram!.availablePoints != nil) {
@@ -75,7 +74,7 @@ class FlexchangeSearchViewController: UIViewController {
             self.navigationController?.transitioningDelegate = transitionManager
             self.navigationController!.pushViewController(viewController, animated: true)
             
-        }, onError: {(error) in
+        }, onError: {(_) in
             self.hideHudAsync()
         })
         
@@ -84,12 +83,12 @@ class FlexchangeSearchViewController: UIViewController {
     @IBAction func searchButtonPressed(_ sender: Any) {
         
         Helper.helperDelegate = self
-        if(Constant.MyClassConstants.relinquishmentIdArray.count == 0){
+        if(Constant.MyClassConstants.relinquishmentIdArray.count == 0) {
             
             presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
             self.hideHudAsync()
             
-        }else{
+        } else {
             
             showHudAsync()
             if Reachability.isConnectedToNetwork() == true {
@@ -125,24 +124,23 @@ class FlexchangeSearchViewController: UIViewController {
                         Helper.showNotAvailabilityResults()
                         self.hideHudAsync()
                         self.navigateToSearchResults()
-                    }else{
+                    } else {
                         Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                        Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate:  Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                        Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                     }
                     
-                }, onError: { (error) in
+                }, onError: { (_) in
                     
                     self.hideHudAsync()
                     self.presentErrorAlert(UserFacingCommonError.generic)
                 })
-                
                 
             }
             
         }
     }
     
-    func navigateToSearchResults(){
+    func navigateToSearchResults() {
         
         if (Constant.MyClassConstants.selectedAreaCodeArray.count > 0) {
             
@@ -162,21 +160,20 @@ class FlexchangeSearchViewController: UIViewController {
     
 }
 
-extension FlexchangeSearchViewController:UITableViewDelegate{
-    
+extension FlexchangeSearchViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         //***** return height for  row in each section of tableview *****//
-        if(indexPath.section == 0){
+        if(indexPath.section == 0) {
            
             return 80
             
-        }else if (indexPath.section == 1){
+        } else if (indexPath.section == 1) {
             
             return 80
             
-        } else{
+        } else {
             
             return 60
         }
@@ -184,7 +181,6 @@ extension FlexchangeSearchViewController:UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
         
                 let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.flexChangeTableView.frame.size.width, height: 50))
                 let headerTextLabel = UILabel(frame: CGRect(x: 15, y: 0, width: self.view.bounds.width, height: 50))
@@ -197,7 +193,7 @@ extension FlexchangeSearchViewController:UITableViewDelegate{
             headerView.addSubview(headerTextLabel)
             return headerView
          
-        }else if section == 0 {
+        } else if section == 0 {
             
             headerView.backgroundColor = IUIKColorPalette.tertiary1.color
             headerTextLabel.text = Constant.MyClassConstants.headerTextFlexchangeDestination
@@ -205,7 +201,7 @@ extension FlexchangeSearchViewController:UITableViewDelegate{
             headerView.addSubview(headerTextLabel)
             return headerView
             
-        }else{
+        } else {
             
             return nil
         }
@@ -213,15 +209,14 @@ extension FlexchangeSearchViewController:UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 1{
+        if section == 1 {
             
             return 50
-        }
-        else if section == 0{
+        } else if section == 0 {
             
             return 50
             
-        } else{
+        } else {
             
             return 0
         }
@@ -232,39 +227,35 @@ extension FlexchangeSearchViewController:UITableViewDelegate{
         if (indexPath.section == 1 && Constant.MyClassConstants.whatToTradeArray.count > 0) {
             if indexPath.row == Constant.MyClassConstants.whatToTradeArray.count {
                 return false
-            }else {
+            } else {
                 return true
             }
             
-        }else {
+        } else {
             return false
         }
     }
     
-    
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-        
-        let delete = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.delete) { (action,index) -> Void in
+        let delete = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.delete) { (_, index) -> Void in
             // var isFloat = true
             let storedData = Helper.getLocalStorageWherewanttoTrade()
             
             if(storedData.count > 0) {
                 
-                
                 let realm = try! Realm()
                 try! realm.write {
                     
-                    if((Constant.MyClassConstants.whatToTradeArray[indexPath.row] as AnyObject).isKind(of: OpenWeeks.self)){
+                    if((Constant.MyClassConstants.whatToTradeArray[indexPath.row] as AnyObject).isKind(of: OpenWeeks.self)) {
                         
                         var floatWeekIndex = -1
                         let dataSelected = Constant.MyClassConstants.whatToTradeArray[indexPath.row] as! OpenWeeks
-                        if(dataSelected.isFloat){
+                        if(dataSelected.isFloat) {
                             
-                            
-                            for (index,object) in storedData.enumerated(){
+                            for (index, object) in storedData.enumerated() {
                                 let openWk1 = object.openWeeks[0].openWeeks[0]
-                                if(openWk1.relinquishmentID == dataSelected.relinquishmentID){
+                                if(openWk1.relinquishmentID == dataSelected.relinquishmentID) {
                                     floatWeekIndex = index
                                 }
                             }
@@ -273,19 +264,19 @@ extension FlexchangeSearchViewController:UITableViewDelegate{
                             storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFloat = true
                             storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFromRelinquishment = false
                             
-                            if(Constant.MyClassConstants.whatToTradeArray.count > 0){
+                            if(Constant.MyClassConstants.whatToTradeArray.count > 0) {
                                 
                                 ADBMobile.trackAction(Constant.omnitureEvents.event43, data: nil)
                                 Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
                                 Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: indexPath.row)
                                 Constant.MyClassConstants.relinquishmentUnitsArray.removeObject(at: indexPath.row)
                             }
-                        }else{
+                        } else {
                             Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
                             Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: indexPath.row)
                             realm.delete(storedData[indexPath.row])
                         }
-                    }else{
+                    } else {
                         Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
                         Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: indexPath.row)
                         realm.delete(storedData[indexPath.row])
@@ -293,21 +284,19 @@ extension FlexchangeSearchViewController:UITableViewDelegate{
                     
                     tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
                     
-                    tableView.reloadSections(IndexSet(integer:(indexPath as NSIndexPath).section), with: .automatic)
+                    tableView.reloadSections(IndexSet(integer: (indexPath as NSIndexPath).section), with: .automatic)
                     Helper.InitializeOpenWeeksFromLocalStorage()
                 }
             }
         }
         
-        delete.backgroundColor = UIColor(red: 224/255.0, green: 96.0/255.0, blue: 84.0/255.0, alpha: 1.0)
+        delete.backgroundColor = UIColor(red: 224 / 255.0, green: 96.0 / 255.0, blue: 84.0 / 255.0, alpha: 1.0)
         return [delete]
     }
     
-    
 }
 
-
-extension FlexchangeSearchViewController:UITableViewDataSource{
+extension FlexchangeSearchViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 3
@@ -319,7 +308,7 @@ extension FlexchangeSearchViewController:UITableViewDataSource{
            
             return Constant.MyClassConstants.whatToTradeArray.count + 1
             
-        }else {
+        } else {
             
             return 1
         }
@@ -328,17 +317,16 @@ extension FlexchangeSearchViewController:UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if(indexPath.section == 0){
+        if(indexPath.section == 0) {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.flexChangeDestinationCell, for: indexPath) as! FlexchangeDestinationCell
             
             cell.lblFlexchangeDestination.text = selectedFlexchange?.name
             
             return cell
-        }else if(indexPath.section == 1){
+        } else if(indexPath.section == 1) {
             
             if((Constant.MyClassConstants.whatToTradeArray.count == 0 && Constant.MyClassConstants.pointsArray.count == 0) || (indexPath as NSIndexPath).row == (Constant.MyClassConstants.whatToTradeArray.count)) {
-                
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cellIdentifier, for: indexPath)
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
@@ -346,7 +334,7 @@ extension FlexchangeSearchViewController:UITableViewDataSource{
                     subview.removeFromSuperview()
                 }
                 
-                let addLocationButton = IUIKButton(frame: CGRect(x: cell.contentView.bounds.width/2 - (cell.contentView.bounds.width/5)/2, y: 15, width: cell.contentView.bounds.width/5, height: 30))
+                let addLocationButton = IUIKButton(frame: CGRect(x: cell.contentView.bounds.width / 2 - (cell.contentView.bounds.width / 5) / 2, y: 15, width: cell.contentView.bounds.width / 5, height: 30))
                 addLocationButton.setTitle(Constant.buttonTitles.add, for: UIControlState.normal)
                 addLocationButton.setTitleColor(IUIKColorPalette.primary3.color, for: UIControlState.normal)
                 addLocationButton.layer.borderColor = IUIKColorPalette.primary3.color.cgColor
@@ -357,76 +345,74 @@ extension FlexchangeSearchViewController:UITableViewDataSource{
                 cell.addSubview(addLocationButton)
                 cell.backgroundColor = UIColor.clear
                 return cell
-            }
-            else {
+            } else {
                 
                 let cell: WhereToGoContentCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.whereToGoContentCell, for: indexPath) as! WhereToGoContentCell
                 
                 if((indexPath as NSIndexPath).row == Constant.MyClassConstants.whatToTradeArray.count - 1) {
                     
                     cell.sepratorOr.isHidden = true
-                }
-                else {
+                } else {
                     
                     cell.sepratorOr.isHidden = false
                 }
                 let object = Constant.MyClassConstants.whatToTradeArray[indexPath.row]
-                if((object as AnyObject) .isKind(of: OpenWeek.self)){
+                if((object as AnyObject) .isKind(of: OpenWeek.self)) {
                     let weekNumber = Constant.getWeekNumber(weekType: ((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeek).weekNumber)!)
                     cell.whereTogoTextLabel.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeek).resort!.resortName!), \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeek).relinquishmentYear!) Week \(weekNumber)"
                     cell.bedroomLabel.isHidden = true
-                }else if((object as AnyObject).isKind(of: OpenWeeks.self)){
+                } else if((object as AnyObject).isKind(of: OpenWeeks.self)) {
                     let weekNumber = Constant.getWeekNumber(weekType: ((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).weekNumber))
                     intervalPrint((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff)
-                    if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff || (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isFloat){
+                    if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff || (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isFloat) {
                         cell.bedroomLabel.isHidden = false
                         
                         let resortList = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).unitDetails
-                        if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isFloat){
+                        if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isFloat) {
                             let floatDetails = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).floatDetails
-                            if(floatDetails[0].showUnitNumber){
+                            if(floatDetails[0].showUnitNumber) {
                                 cell.bedroomLabel.text = "\(floatDetails[0].unitSize), \(floatDetails[0].unitNumber), \(resortList[0].kitchenType)"
-                            }else{
+                            } else {
                                 cell.bedroomLabel.text = "\(floatDetails[0].unitSize), \(resortList[0].kitchenType)"
                             }
-                        }else{
+                        } else {
                             cell.bedroomLabel.text = "\(resortList[0].unitSize), \(resortList[0].kitchenType)"
                         }
-                    }else{
+                    } else {
                         cell.bedroomLabel.isHidden = true
                     }
-                    if(weekNumber != ""){
+                    if(weekNumber != "") {
                         cell.whereTogoTextLabel.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).resort[0].resortName)/ \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).relinquishmentYear), Wk\(weekNumber)"
-                    }else{
+                    } else {
                         cell.whereTogoTextLabel.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).resort[0].resortName)/ \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).relinquishmentYear)"
                     }
-                } else if((object as AnyObject) .isKind(of: Deposits.self)){
+                } else if((object as AnyObject) .isKind(of: Deposits.self)) {
                     //Deposits
                     let weekNumber = Constant.getWeekNumber(weekType: ((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).weekNumber))
                     
-                    if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isLockOff || (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isFloat){
+                    if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isLockOff || (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isFloat) {
                         cell.bedroomLabel.isHidden = false
                         
                         let resortList = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).unitDetails
 
                         intervalPrint((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).resort[0].resortName, resortList.count)
 
-                        if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isFloat){
+                        if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isFloat) {
                             let floatDetails = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).floatDetails
                             cell.bedroomLabel.text = "\(resortList[0].unitSize), \(floatDetails[0].unitNumber), \(resortList[0].kitchenType)"
-                        }else{
+                        } else {
                             cell.bedroomLabel.text = "\(resortList[0].unitSize), \(resortList[0].kitchenType)"
                         }
-                    }else{
+                    } else {
                         cell.bedroomLabel.isHidden = true
                     }
-                    if(weekNumber != ""){
+                    if(weekNumber != "") {
                         cell.whereTogoTextLabel.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).resort[0].resortName)/ \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).relinquishmentYear), Wk\(weekNumber)"
-                    }else{
+                    } else {
                         cell.whereTogoTextLabel.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).resort[0].resortName)/ \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).relinquishmentYear)"
                     }
                     
-                } else{
+                } else {
                     
                     let availablePointsNumber = Constant.MyClassConstants.relinquishmentAvailablePointsProgram as NSNumber
                     
@@ -444,10 +430,7 @@ extension FlexchangeSearchViewController:UITableViewDataSource{
                 return cell
             }
             
-            
-          
-            
-        }else {
+        } else {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.flexchangeSearchButtonCell, for: indexPath) as! SearchFlexchangeButtonCell
             
@@ -457,22 +440,17 @@ extension FlexchangeSearchViewController:UITableViewDataSource{
     
     }
     
-    
 }
 
-
-extension FlexchangeSearchViewController:HelperDelegate {
+extension FlexchangeSearchViewController: HelperDelegate {
     
     func resetCalendar() {
         
     }
-
  
-    func resortSearchComplete(){
+    func resortSearchComplete() {
         self.hideHudAsync()
         self.navigateToSearchResults()
     }
-    
 
 }
-

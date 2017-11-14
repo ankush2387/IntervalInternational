@@ -15,12 +15,11 @@ class CertificateInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let attributedString = NSMutableAttributedString.init(string: "Individuals under the age of 21 are not eligible to receive a Guest Certificate.")
-        attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.red, range: NSRange.init(location: 12, length: 36))
+        let attributedString = NSMutableAttributedString(string: "Individuals under the age of 21 are not eligible to receive a Guest Certificate.")
+        attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.red, range: NSRange(location: 12, length: 36))
        // messageLabel.attributedText = attributedString
         
     }
-
 
     @IBAction func doneButtonPressed(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
@@ -29,6 +28,5 @@ class CertificateInfoViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
 }

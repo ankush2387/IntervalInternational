@@ -11,9 +11,8 @@ import UIKit
 //***** custom delegate method declaration *****//
 protocol ResortCollectionViewCellDelegate {
     
-    func favoritesButtonSelectedAtIndex(_ index:Int)
+    func favoritesButtonSelectedAtIndex(_ index: Int)
 }
-
 
 class ResortCollectionViewCell: UICollectionViewCell {
     
@@ -26,18 +25,16 @@ class ResortCollectionViewCell: UICollectionViewCell {
     var delegate: ResortCollectionViewCellDelegate?
     
     override func awakeFromNib() {
-        
-        
        
         super.awakeFromNib()
           NotificationCenter.default.addObserver(self, selector: #selector(loginNotification), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
-        let height:NSLayoutConstraint = NSLayoutConstraint(item: pageControl, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 70)
+        let height: NSLayoutConstraint = NSLayoutConstraint(item: pageControl, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: 70)
         
         //self.pageControl = PageControl(activeImage: UIImage(named: "selected")!, inactiveImage: UIImage(named: "unselected")!)
         pageControl.addConstraint(height)
-        if(Constant.MyClassConstants.imagesArray.count>1){
+        if(Constant.MyClassConstants.imagesArray.count > 1) {
            pageControl.isHidden = true
-        }else{
+        } else {
             pageControl.isHidden = true
         }
         pageControl.numberOfPages = Constant.MyClassConstants.imagesArray.count
@@ -51,19 +48,17 @@ class ResortCollectionViewCell: UICollectionViewCell {
             
             if(Session.sharedSession.userAccessToken == nil) {
                 self.delegate?.favoritesButtonSelectedAtIndex(sender.tag)
-            }
-            else {
+            } else {
                
             }
-        }
-        else {
+        } else {
             
           favoriteButton.isSelected = false
         }
     }
 //***** method called when the added notification reloadFavoritesTab fired from other classes *****//
     func loginNotification() {
-        if(self.favoriteButton != nil){
+        if(self.favoriteButton != nil) {
          self.favoriteButton.isSelected = true
         }
     }

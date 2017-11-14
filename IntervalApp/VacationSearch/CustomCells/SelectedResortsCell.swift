@@ -10,7 +10,6 @@ import UIKit
 
 class SelectedResortsCell: UITableViewCell {
     
-    
     @IBOutlet weak var lblResortsName: UILabel!
 
     @IBOutlet weak var lblResortsCount: UILabel!

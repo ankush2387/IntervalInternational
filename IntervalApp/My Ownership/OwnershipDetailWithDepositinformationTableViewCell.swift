@@ -22,8 +22,6 @@ class OwnershipDetailWithDepositinformationTableViewCell: UITableViewCell {
     
     @IBOutlet weak var depositInformationlabel: UILabel!
     
-    
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -33,7 +31,7 @@ class OwnershipDetailWithDepositinformationTableViewCell: UITableViewCell {
     - parameter No parameter :
     - returns : No value is return
     */
-    func getCell(){
+    func getCell() {
         
     }
     /**
@@ -41,7 +39,7 @@ class OwnershipDetailWithDepositinformationTableViewCell: UITableViewCell {
      - parameter No parameter :
      - returns : No value is return
      */
-    fileprivate func updateCellComponents(){
+    fileprivate func updateCellComponents() {
         depositInformationlabel.text = Constant.ownershipViewController.ownershipDetailWithDepositinformationTableViewCell.depositedInfoLabelText
     }
     /**
@@ -49,7 +47,7 @@ class OwnershipDetailWithDepositinformationTableViewCell: UITableViewCell {
      - parameter No parameter :
      - returns : No value is return
      */
-    fileprivate func setCellComponentsProperties(){
+    fileprivate func setCellComponentsProperties() {
         depositedInfoLabel.textColor = UIColor.white
         depositedInfoLabel.backgroundColor = UIColor(rgb: IUIKColorPalette.active.rawValue)
         dateLabel.textColor = UIColor(rgb: IUIKColorPalette.secondaryText.rawValue)

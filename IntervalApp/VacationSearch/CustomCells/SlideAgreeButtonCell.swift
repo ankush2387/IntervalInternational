@@ -11,8 +11,6 @@ import IntervalUIKit
 
 class SlideAgreeButtonCell: UITableViewCell {
     
-    
-    
     @IBOutlet weak var sliderView: UIView!
     
     @IBOutlet weak var agreeAndPayButton: IUIKButton!

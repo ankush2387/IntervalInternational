@@ -23,9 +23,8 @@ class CertificateWhoIsTravelingController: UIViewController {
     
     //Function for Done button press action.
     @IBAction func doneButtonPressed(_ sender: AnyObject) {
-        let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.accomodationCertsDetailController) as! UINavigationController
-        
         
         let transition = CATransition()
         transition.duration = 0.4

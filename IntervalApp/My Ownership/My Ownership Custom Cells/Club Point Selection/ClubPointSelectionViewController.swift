@@ -14,9 +14,8 @@ class ClubPointSelectionViewController: UIViewController {
     
     @IBOutlet weak var travelingDetailLabel: UILabel!
     /** Class Variables */
-    var clubpointselectionPageViewController:UIPageViewController?
-    var testArr = [1,2,3,4,5,6]
-    
+    var clubpointselectionPageViewController: UIPageViewController?
+    var testArr = [1, 2, 3, 4, 5, 6]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,13 +28,13 @@ class ClubPointSelectionViewController: UIViewController {
         setupPageControl()
         addPageViewControllerWithAutoLayoutConstraint()
     }
-    //MARK:Text Attributes with font size
+    // MARK: Text Attributes with font size
     /**
         Create  a TextAttributes to change the font size of Segment controll text.
         - parameter fontsize: used to change font size
         - returns : TextAttributes.
     */
-    private func getTextAttributes(fontsize fontsize:CGFloat)->[String:NSObject]{
+    private func getTextAttributes(fontsize fontsize: CGFloat) -> [String: NSObject] {
         let segmentFontDescriptor = UIFontDescriptor.preferredFontDescriptorWithTextStyle(UIFontTextStyleCaption1)
         let font = UIFont(descriptor: segmentFontDescriptor, size: fontsize)
         
@@ -45,31 +44,29 @@ class ClubPointSelectionViewController: UIViewController {
         ]
         return normalTextAttributes
     }
-    //MARK:Instantiate clubpointselectionPageviewController
+    // MARK: Instantiate clubpointselectionPageviewController
     /**
         Create instance of pageViewController when horizontal scrolling is performed 
         - parameter No parameter :
         - returns : No value is return
     */
-    private func createClubpointselectionPageviewController(){
+    private func createClubpointselectionPageviewController() {
         let pageViewController = self.storyboard!.instantiateViewControllerWithIdentifier("clubpointselectionPageviewcontroller") as? UIPageViewController
         pageViewController?.dataSource = self
         
-        if testArr.count > 0{
+        if testArr.count > 0 {
             let firstController = getItemController(0)!
             let startingViewControllers: NSArray = [firstController]
             pageViewController!.setViewControllers(startingViewControllers as? [UIViewController], direction: UIPageViewControllerNavigationDirection.Forward, animated: false, completion: nil)
 
         }
         
-        
-        
         clubpointselectionPageViewController = pageViewController
         addChildViewController(clubpointselectionPageViewController!)
         self.view.addSubview(clubpointselectionPageViewController!.view)
         clubpointselectionPageViewController!.didMoveToParentViewController(self)
     }
-    //MARK:set page controll
+    // MARK: set page controll
     /**
         Set Pagecontroll properties on PageViewController
         - parameter No Parameter :
@@ -82,29 +79,28 @@ class ClubPointSelectionViewController: UIViewController {
         appearance.currentPageIndicatorTintColor = UIColor.greenColor()
         appearance.backgroundColor = UIColor.clearColor()
     }
-    
 
-    //MARK:Auto Layout for child view controller(page view controller)
+    // MARK: Auto Layout for child view controller(page view controller)
     /** 
     Add PageViewController as ChildViewController with AutoLayout Constraints
     - parameter No Parameter :
     - returns : No return value
     */
-    private func addPageViewControllerWithAutoLayoutConstraint(){
-        var leadeingconstraint :NSLayoutConstraint?
-        var trailingconstraint:NSLayoutConstraint?
-        var topconstraint:NSLayoutConstraint?
-        var bottomconstraint:NSLayoutConstraint?
+    private func addPageViewControllerWithAutoLayoutConstraint() {
+        var leadeingconstraint: NSLayoutConstraint?
+        var trailingconstraint: NSLayoutConstraint?
+        var topconstraint: NSLayoutConstraint?
+        var bottomconstraint: NSLayoutConstraint?
         
-        leadeingconstraint = NSLayoutConstraint(item: clubpointselectionPageViewController!.view, attribute:.LeadingMargin, relatedBy: .Equal, toItem: self.view, attribute: .Leading, multiplier: 1.0, constant: 0)
+        leadeingconstraint = NSLayoutConstraint(item: clubpointselectionPageViewController!.view, attribute: .LeadingMargin, relatedBy: .Equal, toItem: self.view, attribute: .Leading, multiplier: 1.0, constant: 0)
         trailingconstraint = NSLayoutConstraint(item: clubpointselectionPageViewController!.view, attribute: .TrailingMargin, relatedBy: .Equal, toItem: self.view, attribute: .TrailingMargin, multiplier: 1.0, constant: 20)
         topconstraint = NSLayoutConstraint(item: clubpointselectionPageViewController!.view, attribute: .Top, relatedBy: .Equal, toItem: travelingDetailLabel, attribute: .Bottom, multiplier: 1.0, constant: 8)
         bottomconstraint = NSLayoutConstraint(item: clubpointselectionPageViewController!.view, attribute: .Bottom, relatedBy: .Equal, toItem: self.view, attribute: .Bottom, multiplier: 1.0, constant: -50)
         clubpointselectionPageViewController!.view.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activateConstraints([leadeingconstraint!,trailingconstraint!,topconstraint!,bottomconstraint!])
-        self.view.addConstraints([leadeingconstraint!,trailingconstraint!,topconstraint!,bottomconstraint!])
+        NSLayoutConstraint.activateConstraints([leadeingconstraint!, trailingconstraint!, topconstraint!, bottomconstraint!])
+        self.view.addConstraints([leadeingconstraint!, trailingconstraint!, topconstraint!, bottomconstraint!])
     }
-    //MARK:initialise clubpoint page item view controller
+    // MARK: initialise clubpoint page item view controller
     /**
         Initialise View*/
     private func getItemController(itemIndex: Int) -> ClubPointPageItemViewController? {
@@ -124,7 +120,6 @@ class ClubPointSelectionViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
     /*
     // MARK: - Navigation
     
@@ -136,14 +131,14 @@ class ClubPointSelectionViewController: UIViewController {
     */
     
 }
-extension ClubPointSelectionViewController:UIPageViewControllerDataSource{
+extension ClubPointSelectionViewController: UIPageViewControllerDataSource {
     // MARK: - UIPageViewControllerDataSource
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
         let itemController = viewController as! ClubPointPageItemViewController
         
         if itemController.pageItemIndex > 0 {
-        return getItemController(itemController.pageItemIndex-1)
+        return getItemController(itemController.pageItemIndex - 1)
         }
         
         return nil
@@ -153,8 +148,8 @@ extension ClubPointSelectionViewController:UIPageViewControllerDataSource{
         
         let itemController = viewController as! ClubPointPageItemViewController
         
-        if itemController.pageItemIndex+1 < testArr.count {
-        return getItemController(itemController.pageItemIndex+1)
+        if itemController.pageItemIndex + 1 < testArr.count {
+        return getItemController(itemController.pageItemIndex + 1)
         }
         
         return nil
@@ -170,6 +165,5 @@ extension ClubPointSelectionViewController:UIPageViewControllerDataSource{
         return 0
         
     }
-
     
 }

@@ -10,7 +10,6 @@ import UIKit
 
 class GuestCertificatePriceCell: UITableViewCell {
     
-    
     @IBOutlet weak var certificatePriceLabel: UILabel!
     @IBOutlet weak var fractionValue: UILabel!
     @IBOutlet weak var infoButton: UIButton!

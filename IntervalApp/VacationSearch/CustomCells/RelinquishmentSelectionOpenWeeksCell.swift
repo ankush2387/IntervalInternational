@@ -12,7 +12,6 @@ import DarwinSDK
 
 class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
     
-    
     //IBOutlets
     @IBOutlet weak var dayAndDateLabel: UILabel!
     @IBOutlet weak var yearLabel: UILabel!
@@ -60,7 +59,7 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
         }
         
         if let unitSize = deposit.unit!.unitSize {
-            bedroomSizeAndKitchenClient.text = "\(Helper.getBedroomNumbers(bedroomType:unitSize))"
+            bedroomSizeAndKitchenClient.text = "\(Helper.getBedroomNumbers(bedroomType: unitSize))"
         }
         
         if let kitchenType = deposit.unit!.kitchenType {
@@ -78,9 +77,9 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
         if(deposit.checkInDate != nil) {
             
             let dateString = deposit.checkInDate
-            let date =  Helper.convertStringToDate(dateString: dateString!, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
+            let date = Helper.convertStringToDate(dateString: dateString!, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
             let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-            let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: date)
+            let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: date)
             let day = myComponents.day!
             var month = ""
             
@@ -91,22 +90,20 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
             }
             
             dayAndDateLabel.text = month.uppercased()
-        }
-        else {
+        } else {
             dayAndDateLabel.text = ""
         }
         
         if let weekNumber = deposit.weekNumber {
             totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: weekNumber))"
         }
-        
 
         let expirationDate = Helper.convertStringToDate(dateString: deposit.expirationDate!, format: "yyyy-MM-dd")
         let diff = getDaysDiff(expiration: expirationDate)
         
         if diff > 1 {
              expirationMessageLabel.text = "Expires in \(diff) days."
-        } else if diff == 1{
+        } else if diff == 1 {
              expirationMessageLabel.text = "Expires in \(diff) day."
         } else {
             expirationMessageLabel.text = "Expired."

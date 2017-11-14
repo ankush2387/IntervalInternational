@@ -19,7 +19,6 @@ class nonCoreProductView: UIView {
     @IBOutlet weak var nameLabelLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var expirationDateLabel: UILabel!
     @IBOutlet weak var expiresLabelLeadingConstraint: NSLayoutConstraint!
-
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -37,6 +36,5 @@ class nonCoreProductView: UIView {
         contentView.frame = self.bounds
         contentView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     }
-    
 
 }

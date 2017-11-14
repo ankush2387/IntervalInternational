@@ -82,7 +82,7 @@ final class LoginViewModel {
     // MARK: - Public functions
     func normalLogin() -> Promise<Void> {
         isLoggingIn.next(true)
-        return Promise { [unowned self] resolve, reject in
+        return Promise { [unowned self] _, reject in
             self.saveCredentials()
                 .then(self.login(userName: self.username.value.unwrappedString, password: self.password.value.unwrappedString))
                 .onError { _ in reject(UserFacingCommonError.generic) }
@@ -91,7 +91,7 @@ final class LoginViewModel {
     
     func touchIDLogin() -> Promise<Void> {
         isLoggingIn.next(true)
-        return Promise { [unowned self] resolve, reject in
+        return Promise { [unowned self] _, reject in
             if let userName = try? self.encryptedStore.getItem(for: Persistent.userName.key, ofType: String()),
                 let password = try? self.encryptedStore.getItem(for: Persistent.password.key, ofType: String()) {
                 self.login(userName: userName.unwrappedString, password: password.unwrappedString).onError { _ in reject(UserFacingCommonError.generic) }
@@ -102,7 +102,7 @@ final class LoginViewModel {
     }
     
     func didLoginUser() -> Promise<Void> {
-        return Promise { [unowned self] resolve, reject in
+        return Promise { [unowned self] _, reject in
             do {
                 try self.decryptedStore.save(item: true, for: Persistent.appHasPreviousLogin.key)
                 self.didLogin?()

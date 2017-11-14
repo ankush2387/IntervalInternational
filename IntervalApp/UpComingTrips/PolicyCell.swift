@@ -11,7 +11,7 @@ import UIKit
 class PolicyCell: UITableViewCell {
     
     @IBOutlet weak var purchasePolicyButton: UIButton!
-    @IBOutlet weak var policyLabel:UILabel!
+    @IBOutlet weak var policyLabel: UILabel!
     
     override func awakeFromNib() {
         

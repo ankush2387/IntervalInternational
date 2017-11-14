@@ -38,9 +38,8 @@ class ExchangeOrProtectionCell: UITableViewCell {
         self.callBack = callBack
         let cellTap = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
         cellContentView.addGestureRecognizer(cellTap)
-        let titleAttributes: [String : Any] = [NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue,
+        let titleAttributes: [String: Any] = [NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue,
                                                NSForegroundColorAttributeName: #colorLiteral(red: 0.3423708081, green: 0.5919493437, blue: 0.7394192815, alpha: 1)]
-        
         
         priceLabel.attributedText = NSAttributedString(string: priceLabel.text.unwrappedString, attributes: titleAttributes)
         priceView.subviews.forEach {

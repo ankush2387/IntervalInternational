@@ -24,8 +24,7 @@ class UpComingTripMapViewController: UIViewController, GMSMapViewDelegate {
         
         if presentedModally {
             setupNavigationForModalPresentation()
-        }
-        else {
+        } else {
             setupDoneButtonView()
         }
         self.setupMap()
@@ -34,7 +33,7 @@ class UpComingTripMapViewController: UIViewController, GMSMapViewDelegate {
     func setupDoneButtonView() {
         
         let doneButtonView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 64))
-            doneButtonView.backgroundColor = UIColor(red: 229.0/255.0, green: 231.0/255.0, blue: 228.0/255.0, alpha: 1.0)
+            doneButtonView.backgroundColor = UIColor(red: 229.0 / 255.0, green: 231.0 / 255.0, blue: 228.0 / 255.0, alpha: 1.0)
         let doneButton = UIButton(frame: CGRect(x: self.view.frame.size.width - 60, y: 7, width: 50, height: 50))
             doneButton.setTitleColor(IUIKColorPalette.primary1.color, for: .normal)
             doneButton.setTitle("Done", for: .normal)
@@ -45,7 +44,7 @@ class UpComingTripMapViewController: UIViewController, GMSMapViewDelegate {
     }
     func setupNavigationForModalPresentation() {
         // change Nav-bar tint color.
-        self.navigationController?.navigationBar.barTintColor = UIColor(red: 229.0/255.0, green: 231.0/255.0, blue: 228.0/255.0, alpha: 1.0)
+        self.navigationController?.navigationBar.barTintColor = UIColor(red: 229.0 / 255.0, green: 231.0 / 255.0, blue: 228.0 / 255.0, alpha: 1.0)
         
         //Nav-bar button
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(UpComingTripMapViewController.menuBackButtonPressed(_:)))
@@ -54,11 +53,11 @@ class UpComingTripMapViewController: UIViewController, GMSMapViewDelegate {
 
     }
     
-    func menuBackButtonPressed(_ sender:UIBarButtonItem) {
+    func menuBackButtonPressed(_ sender: UIBarButtonItem) {
         self.dismiss(animated: false, completion: nil)
         
     }
-    func doneButtonPressed(_ sender:UIButton) {
+    func doneButtonPressed(_ sender: UIButton) {
     navigationController?.view.layer.add(Helper.topToBottomTransition(), forKey: nil)
         self.navigationController?.popViewController(animated: true)
     }
@@ -85,21 +84,19 @@ class UpComingTripMapViewController: UIViewController, GMSMapViewDelegate {
 //        mapView.isMyLocationEnabled = true
 
         //create Marker
-        let  position = CLLocationCoordinate2DMake(latitude,longitude)
+        let  position = CLLocationCoordinate2DMake(latitude, longitude)
         let marker = GMSMarker()
         marker.position = position
         marker.title = resortName
         marker.snippet = cityName
         marker.isFlat = true
-        marker.icon = UIImage(named:Constant.assetImageNames.pinActiveImage)
+        marker.icon = UIImage(named: Constant.assetImageNames.pinActiveImage)
         marker.appearAnimation = GMSMarkerAnimation.pop
         marker.map = mapView
-        
 
         mapView.settings.zoomGestures = true
         mapView.delegate = self
         self.view.addSubview(mapView)
-        
         
     }
 }

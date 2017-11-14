@@ -20,7 +20,7 @@ class ClubresortTableViewCell: UITableViewCell {
     @IBOutlet weak var clubResortCheckbox: IUIKCheckbox!
     
     //Class Variables
-    var clubresortDictionary = [String:String]()
+    var clubresortDictionary = [String: String]()
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -30,29 +30,29 @@ class ClubresortTableViewCell: UITableViewCell {
     - parameter clubresortdictionary : Dictionary with String key and String Value
     - returns : No value is return
     */
-    func getCell(index:Int,isChecked:Bool = false){
+    func getCell(index: Int, isChecked: Bool = false) {
         //self.clubresortDictionary = clubresortdictionary
         clubResortCheckbox.tag = index
         clubResortCheckbox.checked = isChecked
         intervalPrint(Constant.MyClassConstants.savedBedroom)
-        if(isChecked || Constant.MyClassConstants.savedClubFloatResort == Constant.MyClassConstants.clubFloatResorts[index].resortName!){
+        if(isChecked || Constant.MyClassConstants.savedClubFloatResort == Constant.MyClassConstants.clubFloatResorts[index].resortName!) {
             clubresortNameLabel.textColor = UIColor.orange
             clubResortCheckbox.checked = true
-        }else{
+        } else {
             clubresortNameLabel.textColor = UIColor.black
             clubResortCheckbox.checked = false
         }
     }
     
-    func getBedroomCell(index:Int,isChecked:Bool = false){
+    func getBedroomCell(index: Int, isChecked: Bool = false) {
         //self.clubresortDictionary = clubresortdictionary
         clubResortCheckbox.tag = index
         clubResortCheckbox.checked = isChecked
         intervalPrint(Constant.MyClassConstants.savedBedroom)
-        if(isChecked || Constant.MyClassConstants.savedBedroom == UnitSize.forDisplay[index].rawValue){
+        if(isChecked || Constant.MyClassConstants.savedBedroom == UnitSize.forDisplay[index].rawValue) {
             clubresortNameLabel.textColor = UIColor.orange
             clubResortCheckbox.checked = true
-        }else{
+        } else {
             clubresortNameLabel.textColor = UIColor.black
             clubResortCheckbox.checked = false
         }
@@ -62,7 +62,7 @@ class ClubresortTableViewCell: UITableViewCell {
      - parameter No parameter :
      - returns : No return value
      */
-    fileprivate func setPropertiesToCellElements(){
+    fileprivate func setPropertiesToCellElements() {
         clubresortNameLabel.textColor = UIColor(rgb: IUIKColorPalette.primary1.rawValue)
         //clubresortAvailabilitylabel.textColor = UIColor(rgb: IUIKColorPalette.primary1.rawValue)
 
@@ -73,7 +73,7 @@ class ClubresortTableViewCell: UITableViewCell {
      - parameter No parameter :
      - returns : No value is return
      */
-    fileprivate func updateCellComponent(){
+    fileprivate func updateCellComponent() {
        /* if let clubresortname = clubresortDictionary["clubresortname"]{
             clubresortNameLabel.text = clubresortname
         }

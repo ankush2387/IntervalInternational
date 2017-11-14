@@ -20,27 +20,26 @@ class VacationOrResortTableViewCell: UITableViewCell {
     
     @IBOutlet weak var transparentMainView: UIView!
     
-    
     override func awakeFromNib() {
         super.awakeFromNib()
     }
-    //MARK:get cell
+    // MARK: get cell
     /**
     Configure Cell components
     - parameter No parameter :
     - returns : No return value
     */
-    func getCell(){
+    func getCell() {
         setPropertiesToCellElements()
         updateCellComponetstext()
     }
-    //MARK:set properties to elements of cell
+    // MARK: set properties to elements of cell
     /**
     Apply properties to cell components
     - parameter No parameter :
     - returns : No return value
     */
-    fileprivate func setPropertiesToCellElements(){
+    fileprivate func setPropertiesToCellElements() {
         vacationNameLabel.textColor = UIColor(rgb: IUIKColorPalette.primaryText.rawValue)
         vacationPlaceLabel.textColor = UIColor(rgb: IUIKColorPalette.secondaryText.rawValue)
         vacationPlaceCodeLabel.textColor = UIColor(rgb: IUIKColorPalette.secondaryB.rawValue)
@@ -54,7 +53,7 @@ class VacationOrResortTableViewCell: UITableViewCell {
      - parameter No parameter :
      - returns : No return value
      */
-    fileprivate func updateCellComponetstext(){
+    fileprivate func updateCellComponetstext() {
         
     }
     
@@ -63,9 +62,9 @@ class VacationOrResortTableViewCell: UITableViewCell {
         
         // Configure the view for the selected state
     }
-    fileprivate func removeSublayersFromViewLayer(_ view:UIView){
+    fileprivate func removeSublayersFromViewLayer(_ view: UIView) {
         for layer in view.layer.sublayers! {
-            if layer.isKind(of: CAGradientLayer.self){
+            if layer.isKind(of: CAGradientLayer.self) {
                 layer.removeFromSuperlayer()
             }
         }

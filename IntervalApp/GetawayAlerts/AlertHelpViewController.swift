@@ -23,9 +23,7 @@ class AlertHelpViewController: UIViewController {
     @IBOutlet var separatorViews: Array<UIView>?
     @IBOutlet weak var firstTopicBodyTopConstraint: NSLayoutConstraint!
     
-    
     var ishelpView = false
-    
     
     override func viewWillAppear(_ animated: Bool) {
         
@@ -66,9 +64,8 @@ class AlertHelpViewController: UIViewController {
         super.viewDidLoad()
 
         //Nav Bar Color
-        self.navigationController?.navigationBar.barTintColor = UIColor(red: 229.0/255.0, green: 231.0/255.0, blue: 228.0/255.0, alpha: 1.0)
+        self.navigationController?.navigationBar.barTintColor = UIColor(red: 229.0 / 255.0, green: 231.0 / 255.0, blue: 228.0 / 255.0, alpha: 1.0)
     }
-    
 
     @IBAction func didPressDoneButton(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)

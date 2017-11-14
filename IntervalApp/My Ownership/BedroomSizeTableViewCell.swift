@@ -21,13 +21,13 @@ class BedroomSizeTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
     }
-    //MARK:configure cell components
+    // MARK: configure cell components
     /**
         Configure Components of cell 
         - parameter bedroomSizeDetailDictionary: Dictionary with String key and String Value
         - returns :No return value.
     */
-    func getCell(_ bedroomSizeDetailDictionary:[String:String],index:Int,isChecked:Bool = false){
+    func getCell(_ bedroomSizeDetailDictionary: [String: String], index: Int, isChecked: Bool = false) {
         updateCell(bedroomSizeDetailDictionary)
         
     }
@@ -36,7 +36,7 @@ class BedroomSizeTableViewCell: UITableViewCell {
     - parameter bedroomSizeDetailDictionary: Dictionary with String key and String value.
     - returns : No value is return
     */
-    fileprivate func updateCell(_ bedroomSizeDetailDictionary : [String:String]){
+    fileprivate func updateCell(_ bedroomSizeDetailDictionary: [String: String]) {
         /** Update bedroom size label text */
         
         bedroomSizelabel.text = bedroomSizeDetailDictionary["size"] ?? "Test"

@@ -12,7 +12,6 @@ class UnitAndAdditionalAdvertisementTableViewCell: UITableViewCell {
 
     @IBOutlet weak var dropDownLabel: UILabel!
     
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

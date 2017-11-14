@@ -21,22 +21,21 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     //Class variables
     var requiredSectionIntTBLview = 2
     var whoWillBeCheckingInSelectedIndex = -1
-    var activeField:UITextField?
+    var activeField: UITextField?
     var moved: Bool = false
     var cellUsedFor = ""
     var proceedStatus = false
-    var pickerBaseView:UIView!
-    var pickerView:UIPickerView!
+    var pickerBaseView: UIView!
+    var pickerView: UIPickerView!
     var hideStatus = false
     var dropDownSelectionRow = -1
     var dropDownSelectionSection = -1
-    var holdingTimer:Timer!
+    var holdingTimer: Timer!
     var holdingTime = 17
     var decreaseValue = 1
     var selectedCountryIndex: Int?
     var isFromRenewals = false
     var renewalsArray = [Renewal()]
-    
     
     var filterRelinquishments = ExchangeRelinquishment()
     
@@ -50,10 +49,9 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         
         // omniture tracking with event 40
         let pageView: [String: String] = [
-            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.vacationSearchCheckingIn,
+            Constant.omnitureEvars.eVar44: Constant.omnitureCommonString.vacationSearchCheckingIn
             ]
         ADBMobile.trackAction(Constant.omnitureEvents.event40, data: pageView)
-        
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateResortHoldingTime), name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
         
@@ -63,18 +61,16 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         self.proceedToCheckoutButton.alpha = 0.5
         Constant.startTimer()
         self.title = Constant.ControllerTitles.whoWillBeCheckingInControllerTitle
-        let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(WhoWillBeCheckingInIPadViewController.menuBackButtonPressed(_:)))
+        let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(WhoWillBeCheckingInIPadViewController.menuBackButtonPressed(_:)))
         menuButton.tintColor = UIColor.white
         self.navigationItem.leftBarButtonItem = menuButton
-        
-        
     
         // omniture tracking with event 37
         let userInfo: [String: String] = [
-            Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch,
-            Constant.omnitureCommonString.products : Constant.MyClassConstants.selectedResort.resortCode!,
-            Constant.omnitureEvars.eVar37 : Helper.selectedSegment(index: Constant.MyClassConstants.searchForSegmentIndex),
-            Constant.omnitureEvars.eVar39 : "",
+            Constant.omnitureEvars.eVar41: Constant.omnitureCommonString.vactionSearch,
+            Constant.omnitureCommonString.products: Constant.MyClassConstants.selectedResort.resortCode!,
+            Constant.omnitureEvars.eVar37: Helper.selectedSegment(index: Constant.MyClassConstants.searchForSegmentIndex),
+            Constant.omnitureEvars.eVar39: ""
             ]
         
         ADBMobile.trackAction(Constant.omnitureEvents.event37, data: userInfo)
@@ -83,32 +79,27 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     
     //Function to display alert on timer time over
     
-    func showAlertForTimer(){
+    func showAlertForTimer() {
         self.presentAlert(with: "Holding time lost".localized(), message: "Oops You have lost your holding time for this resort!. Please try again".localized())
     }
     
-    
-    func validateUsername(str: String) -> Bool
-    {
-        do
-        {
+    func validateUsername(str: String) -> Bool {
+        do {
             let regex = try NSRegularExpression(pattern: "^[a-zA-Z\\_]{1,18}$", options: .caseInsensitive)
-            if regex.matches(in: str, options: [], range: NSMakeRange(0, str.characters.count)).count > 0 {return true}
-        }
-        catch {}
+            if regex.matches(in: str, options: [], range: NSMakeRange(0, str.characters.count)).count > 0 { return true }
+        } catch {}
         return false
     }
     
-    func isValidEmail(testStr:String) -> Bool {
+    func isValidEmail(testStr: String) -> Bool {
         
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
         
-        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
         return emailTest.evaluate(with: testStr)
     }
-
     
-    func guestFormCheckForDetails() ->Bool {
+    func guestFormCheckForDetails() -> Bool {
         
         if(Constant.GetawaySearchResultGuestFormDetailData.firstName != "" && Constant.GetawaySearchResultGuestFormDetailData.lastName != "" && Constant.GetawaySearchResultGuestFormDetailData.country != "" && Constant.GetawaySearchResultGuestFormDetailData.address1 != "" && Constant.GetawaySearchResultGuestFormDetailData.address2 != "" && Constant.GetawaySearchResultGuestFormDetailData.city != "" && Constant.GetawaySearchResultGuestFormDetailData.state != "" && Constant.GetawaySearchResultGuestFormDetailData.pinCode != "" && Constant.GetawaySearchResultGuestFormDetailData.email != "" && Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber != "" && Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber != "") {
             
@@ -116,15 +107,11 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                 
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.enableGuestFormCheckout), object: nil)
                 proceedStatus = true
-            }
-            else {
-                
+            } else {
                 
             }
             
-            
-        }
-        else {
+        } else {
             proceedStatus = false
         }
         
@@ -145,15 +132,14 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         textField.inputAccessoryView = keypadToolbar
     }
     
-    
     // Function to dismis current controller on back button pressed.
-    func menuBackButtonPressed(_ sender:UIBarButtonItem) {
+    func menuBackButtonPressed(_ sender: UIBarButtonItem) {
         
         showHudAsync()
-        if(Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
+        if(Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()) {
             Constant.holdingTimer?.invalidate()
             
-            ExchangeProcessClient.backToChooseExchange(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess:{(response) in
+            ExchangeProcessClient.backToChooseExchange(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess: {(_) in
                 
                 Constant.MyClassConstants.selectedCreditCard.removeAll()
                 self.hideHudAsync()
@@ -167,17 +153,15 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                     _ = self.navigationController?.popViewController(animated: true)
                 }
                 
-                
-            }, onError: {(error) in
+            }, onError: {(_) in
                 
                 self.hideHudAsync()
                 self.presentAlert(with: "Who will be checking in".localized(), message: Constant.AlertMessages.operationFailedMessage)
             })
-        }
-        else{
+        } else {
             
             Constant.holdingTimer?.invalidate()
-            RentalProcessClient.backToChooseRental(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, onSuccess:{(response) in
+            RentalProcessClient.backToChooseRental(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, onSuccess: {(_) in
             
             Constant.MyClassConstants.selectedCreditCard.removeAll()
             self.hideHudAsync()
@@ -190,9 +174,8 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             } else {
                 _ = self.navigationController?.popViewController(animated: true)
             }
-
             
-        }, onError: {(error) in
+        }, onError: {(_) in
             
             self.hideHudAsync()
             self.presentAlert(with: "Who will be checking in".localized(), message: Constant.AlertMessages.operationFailedMessage)
@@ -211,9 +194,9 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     //***** Notification for update timer.*****//
     func updateResortHoldingTime() {
     
-        if(Constant.holdingTime != 0){
+        if(Constant.holdingTime != 0) {
             self.resortHoldingTimeLabel.text = Constant.holdingResortForRemainingMinutes
-        }else{
+        } else {
             self.presentAlert(with: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage)
         }
 
@@ -225,7 +208,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     }
     
     // Function to identify selected contact from membership contact list with checkbox selection.
-    func checkBoxCheckedAtIndex(_ sender:IUIKCheckbox) {
+    func checkBoxCheckedAtIndex(_ sender: IUIKCheckbox) {
         self.whoWillBeCheckingInSelectedIndex = sender.tag
         if(sender.tag == Constant.MyClassConstants.membershipContactArray.count) {
             self.requiredSectionIntTBLview = 6
@@ -238,12 +221,11 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             LookupClient.getCountries(Constant.MyClassConstants.systemAccessToken!, onSuccess: { (response) in
                 Constant.GetawaySearchResultGuestFormDetailData.countryListArray = response
                 
-            }, onError: { (error) in
+            }, onError: { (_) in
 
             })
 
-        }
-        else {
+        } else {
             self.requiredSectionIntTBLview = 2
             checkingInUserIPadTableView.reloadData()
             self.proceedToCheckoutButton.isEnabled = true
@@ -253,7 +235,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     }
     
     //***** Function called when detail button is pressed. ******//
-    func resortDetailsClicked(_ sender:IUIKButton){
+    func resortDetailsClicked(_ sender: IUIKButton) {
         if sender.tag == 0 {
             self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
         } else {
@@ -265,15 +247,14 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     }
     
     //***** Function called when drop down is pressed. *****//
-    func dropDownButtonPressed(_ sender:IUIKButton) {
+    func dropDownButtonPressed(_ sender: IUIKButton) {
         self.dropDownSelectionRow = sender.tag
         self.dropDownSelectionSection = Int(sender.accessibilityValue!)!
         if(self.hideStatus == false) {
             self.hideStatus = true
             showPickerView()
             self.pickerView.reloadAllComponents()
-        }
-        else {
+        } else {
             self.hideStatus = false
             hidePickerView()
         }
@@ -302,7 +283,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         if(self.pickerBaseView == nil) {
             self.hideStatus = true
             self.createPickerView()
-        }else {
+        } else {
             self.hideStatus = true
             self.pickerBaseView.isHidden = false
         }
@@ -315,7 +296,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     }
     
     // Function to remove picker view on done button pressed.
-    func pickerDoneButtonPressed(_ sender:UIButton) {
+    func pickerDoneButtonPressed(_ sender: UIButton) {
         if dropDownSelectionRow == 0 {
             if let countryIndex = selectedCountryIndex {
                 if let countryCode = Constant.GetawaySearchResultGuestFormDetailData.countryListArray[countryIndex].countryCode {
@@ -337,7 +318,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     //***** Function for proceed to checkout button click. *****//
     @IBAction func proceedToCheckoutPressed(_ sender: AnyObject) {
         
-        if(Constant.MyClassConstants.noThanksForNonCore && self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count){
+        if(Constant.MyClassConstants.noThanksForNonCore && self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count) {
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
             viewController.delegate = self
@@ -346,9 +327,9 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             let transitionManager = TransitionManager()
             self.navigationController?.transitioningDelegate = transitionManager
             let navController = UINavigationController(rootViewController: viewController)
-            self.present(navController, animated:true, completion: nil)
-        }else{
-        if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
+            self.present(navController, animated: true, completion: nil)
+        } else {
+        if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()) {
         let exchangeProcessRequest = ExchangeProcessContinueToCheckoutRequest()
         
         if(self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count) {
@@ -359,13 +340,11 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             guest.lastName = Constant.GetawaySearchResultGuestFormDetailData.lastName
             guest.primaryTraveler = true
             
-            
             let guestAddress = Address()
             var address = [String]()
             address.append(Constant.GetawaySearchResultGuestFormDetailData.address1)
             address.append(Constant.GetawaySearchResultGuestFormDetailData.address2)
             guestAddress.addressLines = address
-            
             
             guestAddress.cityName = Constant.GetawaySearchResultGuestFormDetailData.city
             guestAddress.postalCode = Constant.GetawaySearchResultGuestFormDetailData.pinCode
@@ -387,8 +366,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             exchangeProcessRequest.guest = guest
             
             Constant.MyClassConstants.enableGuestCertificate = true
-        }
-        else{
+        } else {
             Constant.MyClassConstants.enableGuestCertificate = false
             
             /*let guest = Guest()
@@ -401,7 +379,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
              exchangeProcessRequest.guest = guest*/
         }
             
-            if(renewalsArray.count > 0){
+            if(renewalsArray.count > 0) {
                 exchangeProcessRequest.renewals = renewalsArray
             }
        
@@ -423,9 +401,9 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             DarwinSDK.logger.debug("Response is : \(String(describing: response.view?.fees)) , -------->\(response)")
             Constant.MyClassConstants.allowedCreditCardType = (response.view?.allowedCreditCardTypes)!
             Constant.MyClassConstants.exchangeFees = [(response.view?.fees)!]
-            if(Int((response.view?.fees?.shopExchange?.rentalPrice?.tax)!) != 0){
+            if(Int((response.view?.fees?.shopExchange?.rentalPrice?.tax)!) != 0) {
                 Constant.MyClassConstants.enableTaxes = true
-            }else{
+            } else {
                 Constant.MyClassConstants.enableTaxes = false
             }
             Constant.MyClassConstants.memberCreditCardList = (Session.sharedSession.contact?.creditcards)!
@@ -436,10 +414,10 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             let transitionManager = TransitionManager()
             self.navigationController?.transitioningDelegate = transitionManager
             self.navigationController!.pushViewController(viewController, animated: true)
-        }, onError: {(error) in
+        }, onError: {(_) in
             self.hideHudAsync()
         })
-        }else{
+        } else {
             let processRequest1 = RentalProcessPrepareContinueToCheckoutRequest()
             
             if(self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count) {
@@ -450,13 +428,11 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                 guest.lastName = Constant.GetawaySearchResultGuestFormDetailData.lastName
                 guest.primaryTraveler = true
                 
-                
                 let guestAddress = Address()
                 var address = [String]()
                 address.append(Constant.GetawaySearchResultGuestFormDetailData.address1)
                 address.append(Constant.GetawaySearchResultGuestFormDetailData.address2)
                 guestAddress.addressLines = address
-                
                 
                 guestAddress.cityName = Constant.GetawaySearchResultGuestFormDetailData.city
                 guestAddress.postalCode = Constant.GetawaySearchResultGuestFormDetailData.pinCode
@@ -480,7 +456,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                 Constant.MyClassConstants.enableGuestCertificate = true
             }
             
-            if(renewalsArray.count > 0){
+            if(renewalsArray.count > 0) {
                 processRequest1.renewals = renewalsArray
             }
             showHudAsync()
@@ -498,9 +474,9 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                 }
                 Constant.MyClassConstants.allowedCreditCardType = (response.view?.allowedCreditCardTypes)!
                 Constant.MyClassConstants.rentalFees = [(response.view?.fees)!]
-                if(Int((response.view?.fees?.rental?.rentalPrice?.tax)!) != 0){
+                if(Int((response.view?.fees?.rental?.rentalPrice?.tax)!) != 0) {
                     Constant.MyClassConstants.enableTaxes = true
-                }else{
+                } else {
                     Constant.MyClassConstants.enableTaxes = false
                 }
                 Constant.MyClassConstants.memberCreditCardList = (Session.sharedSession.contact?.creditcards)!
@@ -510,7 +486,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                 let transitionManager = TransitionManager()
                 self.navigationController?.transitioningDelegate = transitionManager
                 self.navigationController!.pushViewController(viewController, animated: true)
-            }, onError: {(error) in
+            }, onError: {(_) in
                 self.hideHudAsync()
                 self.presentErrorAlert(UserFacingCommonError.generic)
                 
@@ -530,14 +506,12 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
 
 //Extension class starts from here
 //Implementation of tableview delegate methods
-extension WhoWillBeCheckingInIPadViewController:UITableViewDelegate {
-    
-    
+extension WhoWillBeCheckingInIPadViewController: UITableViewDelegate {
     
 }
 
 //Implementation of tableview data source methods
-extension WhoWillBeCheckingInIPadViewController:UITableViewDataSource {
+extension WhoWillBeCheckingInIPadViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
@@ -549,41 +523,32 @@ extension WhoWillBeCheckingInIPadViewController:UITableViewDataSource {
         
         if(section == 0) {
             
-            if(Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()){
+            if(Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()) {
                 return 2
-            }
-                
-            else {
+            } else {
                 return 1
             }
-        }
-        else if(section == 1) {
+        } else if(section == 1) {
             return Constant.MyClassConstants.membershipContactArray.count + 1
-        }
-        else if(section == 2) {
+        } else if(section == 2) {
             
             return 1
-        }
-        else if(section == 3) {
+        } else if(section == 3) {
             return 2
-        }
-        else if(section == 4) {
+        } else if(section == 4) {
             return 6
-        }
-        else {
+        } else {
             
             return 3
         }
     }
-    
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         
         if(section == 0) {
             
             return 80
-        }
-        else {
+        } else {
             
             return 0
         }
@@ -604,8 +569,7 @@ extension WhoWillBeCheckingInIPadViewController:UITableViewDataSource {
             headerView.addSubview(headerLabel)
             
             return headerView
-        }
-        else {
+        } else {
             
             return nil
         }
@@ -616,9 +580,9 @@ extension WhoWillBeCheckingInIPadViewController:UITableViewDataSource {
         
         if(indexPath.section == 0) {
             return 80
-        }else if(indexPath.section >= 3) {
+        } else if(indexPath.section >= 3) {
             return 80
-        }else {
+        } else {
             return 120
         }
     }
@@ -638,29 +602,25 @@ extension WhoWillBeCheckingInIPadViewController:UITableViewDataSource {
                 cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.relinquishmentImage)
                  cell.resortName?.text = filterRelinquishments.openWeek?.resort?.resortName
             }
-
             
             cell.selectionStyle = .none
             
             return cell
-        }
-        else if(indexPath.section == 1) {
+        } else if(indexPath.section == 1) {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.checkingInUserListTBLcell, for: indexPath) as! CheckingInUserListTBLcell
             if(indexPath.row == Constant.MyClassConstants.membershipContactArray.count) {
                 cell.nameLabel.text = Constant.WhoWillBeCheckingInViewControllerCellIdentifiersAndHardCodedStrings.noneOfAboveContactString
-            }
-            else {
+            } else {
                 let contacts = Constant.MyClassConstants.membershipContactArray[indexPath.row]
                 cell.nameLabel.text = contacts.firstName?.capitalized
             }
             if(indexPath.row == whoWillBeCheckingInSelectedIndex) {
                 cell.checkBox.checked = true
-                cell.contentBorderView.layer.borderColor = UIColor(red: 224.0/255.0, green: 118.0/255.0, blue: 69.0/255.0, alpha: 1.0).cgColor
-            }
-            else {
+                cell.contentBorderView.layer.borderColor = UIColor(red: 224.0 / 255.0, green: 118.0 / 255.0, blue: 69.0 / 255.0, alpha: 1.0).cgColor
+            } else {
                 cell.checkBox.checked = false
-                cell.contentBorderView.layer.borderColor = UIColor(red: 233.0/255.0, green: 233.0/255.0, blue: 235.0/255.0, alpha: 1.0).cgColor
+                cell.contentBorderView.layer.borderColor = UIColor(red: 233.0 / 255.0, green: 233.0 / 255.0, blue: 235.0 / 255.0, alpha: 1.0).cgColor
             }
             cell.contentBorderView.layer.borderWidth = 2
             cell.contentBorderView.layer.cornerRadius = 7
@@ -668,21 +628,20 @@ extension WhoWillBeCheckingInIPadViewController:UITableViewDataSource {
             cell.checkBox.addTarget(self, action: #selector(WhoWillBeCheckingInIPadViewController.checkBoxCheckedAtIndex(_:)), for: .touchUpInside)
             cell.selectionStyle = .none
             return cell
-        }
-        else if(indexPath.section == 2) {
+        } else if(indexPath.section == 2) {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.guestCertificatePriceCell, for: indexPath) as! GuestCertificatePriceCell
             
             let guestPrices = Constant.MyClassConstants.guestCertificate.prices
             var memberTier = ""
-            if(Constant.MyClassConstants.isFromExchange){
-                if(Constant.MyClassConstants.exchangeFees.count > 0){
+            if(Constant.MyClassConstants.isFromExchange) {
+                if(Constant.MyClassConstants.exchangeFees.count > 0) {
                     memberTier = Constant.MyClassConstants.exchangeFees[0].memberTier!
-                }else{
+                } else {
                     memberTier = ""
                 }
                 
-            }else{
+            } else {
                 memberTier = Constant.MyClassConstants.rentalFees[0].memberTier!
             }
             
@@ -697,8 +656,7 @@ extension WhoWillBeCheckingInIPadViewController:UITableViewDataSource {
                     if((priceArray.last?.characters.count)! > 1) {
                         
                         cell.fractionValue.text = "\(priceArray.last!)"
-                    }
-                    else {
+                    } else {
                         
                         cell.fractionValue.text = "\(priceArray.last!)0"
                     }
@@ -708,8 +666,7 @@ extension WhoWillBeCheckingInIPadViewController:UITableViewDataSource {
             cell.infoButton.addTarget(self, action: #selector(showCertificateInfo), for: .touchUpInside)
             return cell
 
-        }
-        else if(indexPath.section == 3 || indexPath.section == 5) {
+        } else if(indexPath.section == 3 || indexPath.section == 5) {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.guestTextFieldCell, for: indexPath) as! GuestTextFieldCell
             cell.nameTF.text = ""
@@ -720,51 +677,42 @@ extension WhoWillBeCheckingInIPadViewController:UITableViewDataSource {
                     if(Constant.GetawaySearchResultGuestFormDetailData.firstName == "") {
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormFnamePlaceholder
                         
-                    }
-                    else {
+                    } else {
                         cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.firstName
                     }
-                }
-                else {
+                } else {
                     if(Constant.GetawaySearchResultGuestFormDetailData.lastName == "") {
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormLnamePlaceholder
                         
-                    }
-                    else {
+                    } else {
                         cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.lastName
                     }
                 }
                 
-            }
-            else {
+            } else {
                 
                 if(indexPath.row == 0) {
                     
                     if(Constant.GetawaySearchResultGuestFormDetailData.email == "") {
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormEmail
                         
-                    }
-                    else {
+                    } else {
                         cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.email
                     }
-                }
-                else if(indexPath.row == 1){
+                } else if(indexPath.row == 1) {
                     
                     if(Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber == "") {
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormHomePhoneNumber
                         
-                    }
-                    else {
+                    } else {
                         cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber
                     }
-                }
-                else {
+                } else {
                     
                     if(Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber == "") {
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormBusinessPhoneNumber
                         
-                    }
-                    else {
+                    } else {
                         cell.nameTF.text = Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber
                     }
                 }
@@ -773,77 +721,66 @@ extension WhoWillBeCheckingInIPadViewController:UITableViewDataSource {
             cell.nameTF.tag = indexPath.row
             self.cellUsedFor = Constant.MyClassConstants.guestString
             cell.nameTF.accessibilityValue = "\(indexPath.section)"
-            cell.borderView.layer.borderColor = UIColor(red: 233.0/255.0, green: 233.0/255.0, blue: 235.0/255.0, alpha: 1.0).cgColor
+            cell.borderView.layer.borderColor = UIColor(red: 233.0 / 255.0, green: 233.0 / 255.0, blue: 235.0 / 255.0, alpha: 1.0).cgColor
             cell.borderView.layer.borderWidth = 2
             cell.borderView.layer.cornerRadius = 5
             cell.selectionStyle = .none
             return cell
             
-            
-        }
-        else {
+        } else {
             
             if (indexPath.row == 0 || indexPath.row == 4) {
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.dropDownListCell, for: indexPath) as! DropDownListCell
                 if(indexPath.row == 0) {
                     
-                    
                     if(Constant.GetawaySearchResultGuestFormDetailData.country != "") {
                         
                         cell.selectedTextLabel.text = Constant.GetawaySearchResultGuestFormDetailData.country
-                    }
-                    else {
+                    } else {
                         
                         cell.selectedTextLabel.text = Constant.textFieldTitles.guestFormSelectCountryPlaceholder
                     }
                     
-                }
-                else {
+                } else {
                     
                     if(Constant.GetawaySearchResultGuestFormDetailData.state != "") {
                         
                         cell.selectedTextLabel.text = Constant.GetawaySearchResultGuestFormDetailData.state
-                    }
-                    else {
+                    } else {
                         
                         cell.selectedTextLabel.text = Constant.textFieldTitles.guestFormSelectState
                     }
-                    
                     
                 }
                 cell.dropDownButton.tag = indexPath.row
                 cell.dropDownButton.accessibilityValue = "\(indexPath.section)"
                 cell.dropDownButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.dropDownButtonPressed(_:)), for: .touchUpInside)
-                cell.borderView.layer.borderColor = UIColor(red: 233.0/255.0, green: 233.0/255.0, blue: 235.0/255.0, alpha: 1.0).cgColor
+                cell.borderView.layer.borderColor = UIColor(red: 233.0 / 255.0, green: 233.0 / 255.0, blue: 235.0 / 255.0, alpha: 1.0).cgColor
                 cell.borderView.layer.borderWidth = 2
                 cell.borderView.layer.cornerRadius = 5
                 cell.selectionStyle = .none
                 return cell
                 
-            }
-            else {
+            } else {
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.guestTextFieldCell, for: indexPath) as! GuestTextFieldCell
                 cell.nameTF.text = ""
                 cell.nameTF.delegate = self
                 if(indexPath.row == 1) {
                     cell.nameTF.placeholder = Constant.textFieldTitles.guestFormAddress1
-                }
-                else if(indexPath.row == 2) {
+                } else if(indexPath.row == 2) {
                     cell.nameTF.placeholder = Constant.textFieldTitles.guestFormAddress2
-                }
-                else if(indexPath.row == 3) {
+                } else if(indexPath.row == 3) {
                     cell.nameTF.placeholder = Constant.textFieldTitles.guestFormCity
-                }
-                else {
+                } else {
                     cell.nameTF.placeholder = Constant.textFieldTitles.guestFormPostalCode
                 }
                 
                 self.cellUsedFor = Constant.MyClassConstants.guestString
                 cell.nameTF.tag = indexPath.row
                 cell.nameTF.accessibilityValue = "\(indexPath.section)"
-                cell.borderView.layer.borderColor = UIColor(red: 233.0/255.0, green: 233.0/255.0, blue: 235.0/255.0, alpha: 1.0).cgColor
+                cell.borderView.layer.borderColor = UIColor(red: 233.0 / 255.0, green: 233.0 / 255.0, blue: 235.0 / 255.0, alpha: 1.0).cgColor
                 cell.borderView.layer.borderWidth = 2
                 cell.borderView.layer.cornerRadius = 5
                 cell.selectionStyle = .none
@@ -854,17 +791,15 @@ extension WhoWillBeCheckingInIPadViewController:UITableViewDataSource {
     }
 }
 
-
 // Extension class for implementing picker view delegate methods
 
-extension WhoWillBeCheckingInIPadViewController:UIPickerViewDelegate {
+extension WhoWillBeCheckingInIPadViewController: UIPickerViewDelegate {
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if(self.dropDownSelectionRow == 0) {
             
             return Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row].countryName
-        }
-        else {
+        } else {
             
             return Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name
         }
@@ -875,8 +810,7 @@ extension WhoWillBeCheckingInIPadViewController:UIPickerViewDelegate {
             guard let countryName = Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row].countryName else { return }
             Constant.GetawaySearchResultGuestFormDetailData.country = countryName
             selectedCountryIndex = row
-        }
-        else {
+        } else {
             guard let stateName = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name else { return }
             Constant.GetawaySearchResultGuestFormDetailData.state = stateName
         }
@@ -884,7 +818,7 @@ extension WhoWillBeCheckingInIPadViewController:UIPickerViewDelegate {
 }
 
 // Extension class for implementing picker view data source methods
-extension WhoWillBeCheckingInIPadViewController:UIPickerViewDataSource {
+extension WhoWillBeCheckingInIPadViewController: UIPickerViewDataSource {
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         
@@ -894,15 +828,13 @@ extension WhoWillBeCheckingInIPadViewController:UIPickerViewDataSource {
         
         if(self.dropDownSelectionRow == 0) {
             return Constant.GetawaySearchResultGuestFormDetailData.countryListArray.count
-        }
-        else {
+        } else {
             return Constant.GetawaySearchResultGuestFormDetailData.stateListArray.count
         }
     }
 }
 
-
-extension WhoWillBeCheckingInIPadViewController:UITextFieldDelegate{
+extension WhoWillBeCheckingInIPadViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.activeField?.resignFirstResponder()
@@ -927,91 +859,73 @@ extension WhoWillBeCheckingInIPadViewController:UITextFieldDelegate{
                     
                     if (range.length == 1 && string.characters.count == 0) {
                         Constant.GetawaySearchResultGuestFormDetailData.firstName.characters.removeLast()
-                    }
-                    else {
+                    } else {
                         Constant.GetawaySearchResultGuestFormDetailData.firstName = "\(textField.text!)\(string)"
                     }
                     
-                    let vfnm =  self.validateUsername(str: Constant.GetawaySearchResultGuestFormDetailData.firstName)
+                    let vfnm = self.validateUsername(str: Constant.GetawaySearchResultGuestFormDetailData.firstName)
                     if(vfnm || Constant.GetawaySearchResultGuestFormDetailData.firstName.characters.count == 0) {
                         
                         proceedStatus = true
-                        textField.superview?.layer.borderColor = UIColor(red: 233.0/255.0, green: 233.0/255.0, blue: 235.0/255.0, alpha: 1.0).cgColor
-                    }
-                    else {
+                        textField.superview?.layer.borderColor = UIColor(red: 233.0 / 255.0, green: 233.0 / 255.0, blue: 235.0 / 255.0, alpha: 1.0).cgColor
+                    } else {
                         
                         textField.superview?.layer.borderColor = UIColor.red.cgColor
                         proceedStatus = false
                     }
-                }
-                else {
-                    
+                } else {
                     
                     if (range.length == 1 && string.characters.count == 0) {
                         Constant.GetawaySearchResultGuestFormDetailData.lastName.characters.removeLast()
-                    }
-                    else {
+                    } else {
                         Constant.GetawaySearchResultGuestFormDetailData.lastName = "\(textField.text!)\(string)"
                     }
                     
-                    let vfnm =  self.validateUsername(str: Constant.GetawaySearchResultGuestFormDetailData.lastName)
+                    let vfnm = self.validateUsername(str: Constant.GetawaySearchResultGuestFormDetailData.lastName)
                     if(vfnm || Constant.GetawaySearchResultGuestFormDetailData.lastName.characters.count == 0) {
                         proceedStatus = true
-                        textField.superview?.layer.borderColor = UIColor(red: 233.0/255.0, green: 233.0/255.0, blue: 235.0/255.0, alpha: 1.0).cgColor
-                    }
-                    else {
+                        textField.superview?.layer.borderColor = UIColor(red: 233.0 / 255.0, green: 233.0 / 255.0, blue: 235.0 / 255.0, alpha: 1.0).cgColor
+                    } else {
                         
                         textField.superview?.layer.borderColor = UIColor.red.cgColor
                         proceedStatus = false
                     }
                     
                 }
-            }
-            else if(Int(textField.accessibilityValue!) == 4) {
+            } else if(Int(textField.accessibilityValue!) == 4) {
                 
                 if(textField.tag == 0) {
                     
-                    
-                }
-                else if(textField.tag == 1) {
+                } else if(textField.tag == 1) {
                     
                     if (range.length == 1 && string.characters.count == 0) {
                         Constant.GetawaySearchResultGuestFormDetailData.address1.characters.removeLast()
-                    }
-                    else {
+                    } else {
                         Constant.GetawaySearchResultGuestFormDetailData.address1 = "\(textField.text!)\(string)"
                     }
-                }
-                else if(textField.tag == 2) {
+                } else if(textField.tag == 2) {
                     
                     if (range.length == 1 && string.characters.count == 0) {
                         Constant.GetawaySearchResultGuestFormDetailData.address2.characters.removeLast()
-                    }
-                    else {
+                    } else {
                         
                         Constant.GetawaySearchResultGuestFormDetailData.address2 = "\(textField.text!)\(string)"
                     }
                     
-                }
-                else if(textField.tag == 3) {
+                } else if(textField.tag == 3) {
                     
                     if (range.length == 1 && string.characters.count == 0) {
                         Constant.GetawaySearchResultGuestFormDetailData.city.characters.removeLast()
-                    }
-                    else {
+                    } else {
                         Constant.GetawaySearchResultGuestFormDetailData.city = "\(textField.text!)\(string)"
                     }
-                }
-                else if(textField.tag == 4) {
+                } else if(textField.tag == 4) {
                     
-                }
-                else {
-                    
+                } else {
                     
                     if (range.length == 1 && string.characters.count == 0) {
                         Constant.GetawaySearchResultGuestFormDetailData.pinCode.characters.removeLast()
-                    }
-                    else {
+                    } else {
                         
                         Constant.GetawaySearchResultGuestFormDetailData.pinCode = "\(textField.text!)\(string)"
                     }
@@ -1019,24 +933,21 @@ extension WhoWillBeCheckingInIPadViewController:UITextFieldDelegate{
                     if(Constant.GetawaySearchResultGuestFormDetailData.pinCode.characters.count > 6) {
                         textField.superview?.layer.borderColor = UIColor.red.cgColor
                         proceedStatus = false
-                    }
-                    else {
+                    } else {
                         
-                        textField.superview?.layer.borderColor = UIColor(red: 233.0/255.0, green: 233.0/255.0, blue: 235.0/255.0, alpha: 1.0).cgColor
+                        textField.superview?.layer.borderColor = UIColor(red: 233.0 / 255.0, green: 233.0 / 255.0, blue: 235.0 / 255.0, alpha: 1.0).cgColor
                         proceedStatus = true
                         
                     }
                     
                 }
-            }
-            else {
+            } else {
                 
                 if(textField.tag == 0) {
                     
                     if (range.length == 1 && string.characters.count == 0) {
                         Constant.GetawaySearchResultGuestFormDetailData.email.characters.removeLast()
-                    }
-                    else {
+                    } else {
                         
                         Constant.GetawaySearchResultGuestFormDetailData.email = "\(textField.text!)\(string)"
                     }
@@ -1045,32 +956,27 @@ extension WhoWillBeCheckingInIPadViewController:UITextFieldDelegate{
                     
                     if(eml || Constant.GetawaySearchResultGuestFormDetailData.email.characters.count == 0) {
                         
-                        textField.superview?.layer.borderColor = UIColor(red: 233.0/255.0, green: 233.0/255.0, blue: 235.0/255.0, alpha: 1.0).cgColor
+                        textField.superview?.layer.borderColor = UIColor(red: 233.0 / 255.0, green: 233.0 / 255.0, blue: 235.0 / 255.0, alpha: 1.0).cgColor
                         proceedStatus = true
-                    }
-                    else {
+                    } else {
                         
                         textField.superview?.layer.borderColor = UIColor.red.cgColor
                         proceedStatus = false
                     }
                     
-                }
-                else if(textField.tag == 1) {
-                    
+                } else if(textField.tag == 1) {
                     
                     if (range.length == 1 && string.characters.count == 0) {
                         Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber.characters.removeLast()
-                    }
-                    else {
+                    } else {
                         Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber = "\(textField.text!)\(string)"
                         
                         if(Constant.GetawaySearchResultGuestFormDetailData.homePhoneNumber.characters.count > 9) {
                             
-                            textField.superview?.layer.borderColor = UIColor(red: 233.0/255.0, green: 233.0/255.0, blue: 235.0/255.0, alpha: 1.0).cgColor
+                            textField.superview?.layer.borderColor = UIColor(red: 233.0 / 255.0, green: 233.0 / 255.0, blue: 235.0 / 255.0, alpha: 1.0).cgColor
                             proceedStatus = true
                             
-                        }
-                        else {
+                        } else {
                             
                             textField.superview?.layer.borderColor = UIColor.red.cgColor
                             proceedStatus = false
@@ -1078,23 +984,19 @@ extension WhoWillBeCheckingInIPadViewController:UITextFieldDelegate{
                         }
                     }
                     
-                }
-                else {
-                    
+                } else {
                     
                     if (range.length == 1 && string.characters.count == 0) {
                         Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber.characters.removeLast()
-                    }
-                    else {
+                    } else {
                         Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber = "\(textField.text!)\(string)"
                         
                         if(Constant.GetawaySearchResultGuestFormDetailData.businessPhoneNumber.characters.count > 9) {
                             
-                            textField.superview?.layer.borderColor = UIColor(red: 233.0/255.0, green: 233.0/255.0, blue: 235.0/255.0, alpha: 1.0).cgColor
+                            textField.superview?.layer.borderColor = UIColor(red: 233.0 / 255.0, green: 233.0 / 255.0, blue: 235.0 / 255.0, alpha: 1.0).cgColor
                             proceedStatus = true
                             
-                        }
-                        else {
+                        } else {
                             
                             textField.superview?.layer.borderColor = UIColor.red.cgColor
                             proceedStatus = false
@@ -1110,37 +1012,30 @@ extension WhoWillBeCheckingInIPadViewController:UITextFieldDelegate{
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.enableGuestFormCheckout), object: nil)
             }
             return  true
-        }
-        else {
+        } else {
             if(Int(textField.accessibilityValue!) == 0) {
                 
                 if(textField.tag == 0) {
                     
                     Constant.GetawaySearchResultCardFormDetailData.nameOnCard = "\(textField.text!)\(string)"
-                }
-                else if(textField.tag == 1) {
+                } else if(textField.tag == 1) {
                     
                     Constant.GetawaySearchResultCardFormDetailData.cardNumber = "\(textField.text!)\(string)"
-                }
-                else {
+                } else {
                     
                     Constant.GetawaySearchResultCardFormDetailData.cvv = "\(textField.text!)\(string)"
                 }
-            }
-            else {
+            } else {
                 
                 if(textField.tag == 1) {
                     
                     Constant.GetawaySearchResultCardFormDetailData.address1 = "\(textField.text!)\(string)"
-                }
-                else if(textField.tag == 2) {
+                } else if(textField.tag == 2) {
                     
                     Constant.GetawaySearchResultCardFormDetailData.address2 = "\(textField.text!)\(string)"
-                }
-                else if(textField.tag == 3) {
+                } else if(textField.tag == 3) {
                     Constant.GetawaySearchResultCardFormDetailData.city = "\(textField.text!)\(string)"
-                }
-                else {
+                } else {
                     
                     Constant.GetawaySearchResultCardFormDetailData.pinCode = "\(textField.text!)\(string)"
                 }
@@ -1148,18 +1043,15 @@ extension WhoWillBeCheckingInIPadViewController:UITextFieldDelegate{
             return  true
         }
         
-        
     }
     func textFieldDidBeginEditing(_ textField: UITextField) {
         
         self.activeField = textField
         
-        
         if(Int(textField.accessibilityValue!) == 3) {
             
             textField.keyboardType = .default
-        }
-        else if(Int(textField.accessibilityValue!) == 4) {
+        } else if(Int(textField.accessibilityValue!) == 4) {
             
             if(textField.tag != 0 && textField.tag != 1 && textField.tag != 2 && textField.tag != 3 && textField.tag != 4) {
                 
@@ -1167,20 +1059,17 @@ extension WhoWillBeCheckingInIPadViewController:UITextFieldDelegate{
                 self.addDoneButtonOnNumpad(textField: textField)
             }
             
-        }
-        else {
+        } else {
             
             if(textField.tag == 0 ) {
                 
                 self.moved = true
                 textField.keyboardType = .default
-            }
-            else if(textField.tag == 1) {
+            } else if(textField.tag == 1) {
                 self.moved = true
                 textField.keyboardType = .numberPad
                 self.addDoneButtonOnNumpad(textField: textField)
-            }
-            else {
+            } else {
                 self.moved = true
                 textField.keyboardType = .numberPad
                 self.addDoneButtonOnNumpad(textField: textField)
@@ -1189,34 +1078,30 @@ extension WhoWillBeCheckingInIPadViewController:UITextFieldDelegate{
     }
     
 }
-//MARK:- Extension for renewals
-extension WhoWillBeCheckingInIPadViewController:RenewelViewControllerDelegate{
+// MARK: - Extension for renewals
+extension WhoWillBeCheckingInIPadViewController: RenewelViewControllerDelegate {
     
     func otherOptions(forceRenewals: ForceRenewals) {
         let button = UIButton()
         self.proceedToCheckoutPressed(button)
         
     }
-
     
-    
-    func dismissWhatToUse(renewalArray:[Renewal]) {
+    func dismissWhatToUse(renewalArray: [Renewal]) {
         
     }
     
-    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray:[Renewal]){
+    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray: [Renewal]) {
         self.renewalsArray = renewalArray
         Constant.MyClassConstants.noThanksForNonCore = false
         let button = UIButton()
         self.proceedToCheckoutPressed(button)
     }
     
-    func noThanks(){
+    func noThanks() {
         self.dismiss(animated: true, completion: nil)
         let button = UIButton()
         Constant.MyClassConstants.isDismissWhoWillBeCheckin = true
         self.proceedToCheckoutPressed(button)
     }
 }
-
-

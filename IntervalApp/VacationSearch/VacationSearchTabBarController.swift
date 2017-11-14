@@ -11,7 +11,7 @@ import Realm
 
 class VacationSearchTabBarController: UITabBarController {
 
-    var moreButton:UIBarButtonItem?
+    var moreButton: UIBarButtonItem?
     let vacationVC = VacationSearchViewController()
     
     override func viewDidLoad() {
@@ -33,15 +33,14 @@ class VacationSearchTabBarController: UITabBarController {
 
 //***** Extension class for tababar delegate method *****//
 
-extension VacationSearchTabBarController:UITabBarControllerDelegate {
+extension VacationSearchTabBarController: UITabBarControllerDelegate {
     
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         
         if(self.selectedIndex == 1) {
              self.title = Constant.ControllerTitles.vacationSearchTabBarController
             self.navigationItem.rightBarButtonItem = moreButton
-        }
-        else {
+        } else {
             self.navigationItem.rightBarButtonItem = nil
             self.title = Constant.ControllerTitles.accomodationCertsDetailController
         }

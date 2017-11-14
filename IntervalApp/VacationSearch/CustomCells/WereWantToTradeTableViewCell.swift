@@ -11,15 +11,15 @@ import IntervalUIKit
 import RealmSwift
 import DarwinSDK
 
-protocol WereWantToTradeTableViewCellDelegate{
+protocol WereWantToTradeTableViewCellDelegate {
     
-    func multipleResortInfoButtonPressedAtIndex(_ Index:Int)
+    func multipleResortInfoButtonPressedAtIndex(_ Index: Int)
     
 }
 
 class WereWantToTradeTableViewCell: UITableViewCell {
     
-    var delegate:WereWantToTradeTableViewCellDelegate?
+    var delegate: WereWantToTradeTableViewCellDelegate?
     var selectedIndex = -1
     
     @IBOutlet weak var btnAddItemToTrade: UIButton!
@@ -27,7 +27,6 @@ class WereWantToTradeTableViewCell: UITableViewCell {
     @IBOutlet weak var lblCellTitle: UILabel!
   
     @IBOutlet weak var deleteButton: IUIKButton!
-    
     
     var SegmentIndex = 0
     
@@ -39,7 +38,7 @@ class WereWantToTradeTableViewCell: UITableViewCell {
         collectionView.isPagingEnabled = true
     }
     
-    override func setSelected(_ selected: Bool, animated: Bool){
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         
         // Configure the view for the selected state
@@ -47,7 +46,7 @@ class WereWantToTradeTableViewCell: UITableViewCell {
     // collection view delegate and data sorce
     }
 
-extension WereWantToTradeTableViewCell:UICollectionViewDelegate {
+extension WereWantToTradeTableViewCell: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
@@ -55,8 +54,7 @@ extension WereWantToTradeTableViewCell:UICollectionViewDelegate {
             
             self.selectedIndex = -1
             collectionView.reloadData()
-        }
-        else {
+        } else {
             
             self.selectedIndex = indexPath.row
             collectionView.reloadData()
@@ -64,7 +62,7 @@ extension WereWantToTradeTableViewCell:UICollectionViewDelegate {
     }
 }
 
-extension WereWantToTradeTableViewCell:UICollectionViewDataSource {
+extension WereWantToTradeTableViewCell: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return Constant.MyClassConstants.whatToTradeArray.count
@@ -86,74 +84,64 @@ extension WereWantToTradeTableViewCell:UICollectionViewDataSource {
 //            return 1
 //        }
         
-        
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-      
-        
-
         
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.customCellNibNames.wereToGoTableViewCell, for: indexPath) as! WhereToGoCollectionViewCell
             
-            if(cell.lblTitle != nil){
-                
-                
+            if(cell.lblTitle != nil) {
                 
                 let object = Constant.MyClassConstants.whatToTradeArray[indexPath.row]
-                if((object as AnyObject) .isKind(of: OpenWeek.self)){
+                if((object as AnyObject) .isKind(of: OpenWeek.self)) {
                     
                     let weekNumber = Constant.getWeekNumber(weekType: ((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeek).weekNumber)!)
                     cell.lblTitle.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeek).resort!.resortName!), \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeek).relinquishmentYear!) Week \(weekNumber)"
                     
-                    
-                }
-                else if((object as AnyObject).isKind(of: OpenWeeks.self)) {
+                } else if((object as AnyObject).isKind(of: OpenWeeks.self)) {
                     
                     _ = Constant.getWeekNumber(weekType: ((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).weekNumber))
 
                     intervalPrint((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff)
-                    if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff || (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isFloat){
+                    if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isLockOff || (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isFloat) {
                         cell.bedroomNumber.isHidden = false
                         
                         let resortList = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).unitDetails
 
                         intervalPrint((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).resort[0].resortName, resortList.count)
 
-                        if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isFloat){
+                        if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).isFloat) {
                             let floatDetails = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).floatDetails
                             cell.bedroomNumber.text = "\(resortList[0].unitSize), \(floatDetails[0].unitNumber), \(resortList[0].kitchenType)"
-                        }else{
+                        } else {
                             cell.bedroomNumber.text = "\(resortList[0].unitSize), \(resortList[0].kitchenType)"
                         }
-                    }else{
+                    } else {
                         cell.bedroomNumber.isHidden = true
                     }
                     cell.lblTitle.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).resort[0].resortName), \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! OpenWeeks).relinquishmentYear)"
-                    
                     
                 } else if ((object as AnyObject).isKind(of: Deposits.self)) {
                     _ = Constant.getWeekNumber(weekType: ((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).weekNumber))
 
                     intervalPrint((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isLockOff)
-                    if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isLockOff || (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isFloat){
+                    if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isLockOff || (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isFloat) {
                         cell.bedroomNumber.isHidden = false
                         
                         let resortList = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).unitDetails
 
                         intervalPrint((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).resort[0].resortName, resortList.count)
 
-                        if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isFloat){
+                        if((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).isFloat) {
                             let floatDetails = (Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).floatDetails
                             cell.bedroomNumber.text = "\(resortList[0].unitSize), \(floatDetails[0].unitNumber), \(resortList[0].kitchenType)"
-                        }else{
+                        } else {
                             cell.bedroomNumber.text = "\(resortList[0].unitSize), \(resortList[0].kitchenType)"
                         }
-                    }else{
+                    } else {
                         cell.bedroomNumber.isHidden = true
                     }
                     cell.lblTitle.text = "\((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).resort[0].resortName), \((Constant.MyClassConstants.whatToTradeArray[(indexPath as NSIndexPath).row] as! Deposits).relinquishmentYear)"
-                }
-                else {
+                } else {
                     
                     let availablePointsNumber = Constant.MyClassConstants.relinquishmentAvailablePointsProgram as NSNumber
                     
@@ -169,12 +157,11 @@ extension WereWantToTradeTableViewCell:UICollectionViewDataSource {
                 
                 cell.deletebutton.isHidden = false
                 
-            }
-            else {
+            } else {
                 cell.deletebutton.isHidden = true
                 
             }
-            if(cell.subviews.count > 1){
+            if(cell.subviews.count > 1) {
                 cell.deletebutton.tag = indexPath.row
             }
             cell.delegate = self
@@ -183,8 +170,6 @@ extension WereWantToTradeTableViewCell:UICollectionViewDataSource {
             cell.layer.cornerRadius = 5
             cell.updateConstraintsIfNeeded()
             return cell
-            
-        
        
         }
     
@@ -194,7 +179,7 @@ extension WereWantToTradeTableViewCell:UICollectionViewDataSource {
 
 }
 
-extension WereWantToTradeTableViewCell:WhereToGoCollectionViewCellDelegate {
+extension WereWantToTradeTableViewCell: WhereToGoCollectionViewCellDelegate {
     
     func deleteButtonClickedAtIndex(_ Index: Int) {
 
@@ -202,25 +187,21 @@ extension WereWantToTradeTableViewCell:WhereToGoCollectionViewCellDelegate {
         
         if(storedData.count > 0) {
             
-            
             let realm = try! Realm()
             try! realm.write {
-
                 
-                if((Constant.MyClassConstants.whatToTradeArray[Index] as AnyObject).isKind(of: OpenWeeks.self)){
+                if((Constant.MyClassConstants.whatToTradeArray[Index] as AnyObject).isKind(of: OpenWeeks.self)) {
                     
                     var floatWeekIndex = -1
                     let dataSelected = Constant.MyClassConstants.whatToTradeArray[Index] as! OpenWeeks
-                    if(dataSelected.isFloat){
+                    if(dataSelected.isFloat) {
                         
-                        
-                        for (index,object) in storedData.enumerated(){
+                        for (index, object) in storedData.enumerated() {
                             let openWk1 = object.openWeeks[0].openWeeks[0]
-                            if(openWk1.relinquishmentID == dataSelected.relinquishmentID){
+                            if(openWk1.relinquishmentID == dataSelected.relinquishmentID) {
                                 floatWeekIndex = index
                             }
                         }
-                    
                 
                 //TODO - Jhon : once code is updated, review is this variables are neeeded, if not delete.
                 var isFloatRemoved: Bool?
@@ -231,11 +212,11 @@ extension WereWantToTradeTableViewCell:WhereToGoCollectionViewCellDelegate {
                 var unitNumber: String?
                 var unitSize: String?
                 
-                for openWk in Constant.MyClassConstants.whatToTradeArray{
-                    if ((openWk as AnyObject).isKind(of: OpenWeeks.self)){
+                for openWk in Constant.MyClassConstants.whatToTradeArray {
+                    if ((openWk as AnyObject).isKind(of: OpenWeeks.self)) {
                         var floatWeek = OpenWeeks()
                         let openWk1 = openWk as! OpenWeeks
-                        if(!openWk1.isFloatRemoved){
+                        if(!openWk1.isFloatRemoved) {
                             floatWeek = openWk1
                             isFloatRemoved = floatWeek.isFloatRemoved
                             relinquishmentId = floatWeek.relinquishmentID
@@ -247,21 +228,17 @@ extension WereWantToTradeTableViewCell:WhereToGoCollectionViewCellDelegate {
                             }
                             Constant.MyClassConstants.floatRemovedArray.removeAllObjects()
                             Constant.MyClassConstants.floatRemovedArray.add(floatWeek)
-                        }else{
+                        } else {
                             isFloat = false
                         }
                         
-                        
                     }
-                    
                     
                 }
                 //delete from local Storage
                 realm.delete(storedData[Index])
-                    
-                    
                 
-                if(Constant.MyClassConstants.whatToTradeArray.count > 0){
+                if(Constant.MyClassConstants.whatToTradeArray.count > 0) {
                     
                     ADBMobile.trackAction(Constant.omnitureEvents.event43, data: nil)
                     Constant.MyClassConstants.whatToTradeArray.removeObject(at: Index)
@@ -269,15 +246,12 @@ extension WereWantToTradeTableViewCell:WhereToGoCollectionViewCellDelegate {
                     Constant.MyClassConstants.relinquishmentUnitsArray.removeObject(at: Index)
                 }
                 
-                
                 let deletionIndexPath = IndexPath(item: Index, section: 0)
                 self.collectionView.deleteItems(at: [deletionIndexPath])
                 let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
                 DispatchQueue.main.asyncAfter(deadline: delayTime) {
                     
-                   
-                    
-                    if(!isFloatRemoved! && isFloat!){
+                    if(!isFloatRemoved! && isFloat!) {
                         //Realm local storage for selected relinquishment
                         let storedata = OpenWeeksStorage()
                         let Membership = Session.sharedSession.selectedMembership
@@ -298,13 +272,12 @@ extension WereWantToTradeTableViewCell:WhereToGoCollectionViewCellDelegate {
                         floatDetails.unitNumber = unitNumber!
                         floatDetails.unitSize = unitSize!
                         selectedOpenWeek.floatDetails.append(floatDetails)
-
                         
                         storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFloatRemoved = true
                         storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFloat = true
                         storedData[floatWeekIndex].openWeeks[0].openWeeks[0].isFromRelinquishment = false
 
-                        if(Constant.MyClassConstants.whatToTradeArray.count > 0){
+                        if(Constant.MyClassConstants.whatToTradeArray.count > 0) {
                             
                             ADBMobile.trackAction(Constant.omnitureEvents.event43, data: nil)
                             Constant.MyClassConstants.whatToTradeArray.removeObject(at: Index)
@@ -322,18 +295,16 @@ extension WereWantToTradeTableViewCell:WhereToGoCollectionViewCellDelegate {
                             realm.add(storedata)
 
                         }
-                    }else{
+                    } else {
                         Constant.MyClassConstants.whatToTradeArray.removeObject(at: Index)
                         Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: Index)
                         realm.delete(storedData[Index])
                     }
 
-                }else{
+                } else {
                     Constant.MyClassConstants.whatToTradeArray.removeObject(at: Index)
                     Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: Index)
                     realm.delete(storedData[Index])
-
-                
 
                 }
                 
@@ -341,7 +312,7 @@ extension WereWantToTradeTableViewCell:WhereToGoCollectionViewCellDelegate {
                 self.collectionView.deleteItems(at: [deletionIndexPath])
                 Helper.InitializeOpenWeeksFromLocalStorage()
             }
-                    }else{
+                    } else {
                         
                         Constant.MyClassConstants.whatToTradeArray.removeObject(at: Index)
                         Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: Index)
@@ -350,7 +321,7 @@ extension WereWantToTradeTableViewCell:WhereToGoCollectionViewCellDelegate {
                         self.collectionView.deleteItems(at: [deletionIndexPath])
                         Helper.InitializeOpenWeeksFromLocalStorage()
                     }
-                }else if((Constant.MyClassConstants.whatToTradeArray[Index] as AnyObject).isKind(of: Deposits.self)){
+                } else if((Constant.MyClassConstants.whatToTradeArray[Index] as AnyObject).isKind(of: Deposits.self)) {
                     Constant.MyClassConstants.whatToTradeArray.removeObject(at: Index)
                     realm.delete(storedData[Index])
                     let deletionIndexPath = IndexPath(item: Index, section: 0)
@@ -367,5 +338,3 @@ extension WereWantToTradeTableViewCell:WhereToGoCollectionViewCellDelegate {
     }
     
 }
-
-

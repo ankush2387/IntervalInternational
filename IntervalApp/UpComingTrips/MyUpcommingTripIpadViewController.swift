@@ -12,17 +12,16 @@ import SDWebImage
 import DarwinSDK
 import SVProgressHUD
 
-
 class MyUpcommingTripIpadViewController: UIViewController {
     
     //***** Outlets *****//
     @IBOutlet weak var upcommingTripTblView: UITableView!
-    @IBOutlet var conformationNumber:String?
-    @IBOutlet weak var leadingTableVwConstraint:NSLayoutConstraint!
-    @IBOutlet weak var trailingTableVwConstraint:NSLayoutConstraint!
+    @IBOutlet var conformationNumber: String?
+    @IBOutlet weak var leadingTableVwConstraint: NSLayoutConstraint!
+    @IBOutlet weak var trailingTableVwConstraint: NSLayoutConstraint!
     var orientationIsPortrait = true
     
-    override func viewWillLayoutSubviews(){
+    override func viewWillLayoutSubviews() {
         //Managing table view spacing for orientation changes.
         self.checkOrientation()
     }
@@ -52,7 +51,7 @@ class MyUpcommingTripIpadViewController: UIViewController {
             rvc.delegate = self
             
             //***** Add the hamburger menu *****//
-            let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action:#selector(SWRevealViewController.revealToggle(_:)))
+            let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action: #selector(SWRevealViewController.revealToggle(_:)))
             menuButton.tintColor = UIColor.white
             self.navigationItem.leftBarButtonItem = menuButton
             
@@ -64,12 +63,12 @@ class MyUpcommingTripIpadViewController: UIViewController {
     
     //***** Function to check if device is in portrait or landscape. *****//
     
-    func checkOrientation(){
-        if(UIDevice.current.orientation.isPortrait){
+    func checkOrientation() {
+        if(UIDevice.current.orientation.isPortrait) {
             orientationIsPortrait = true
             leadingTableVwConstraint.constant = 20
             trailingTableVwConstraint.constant = 20
-        }else{
+        } else {
             orientationIsPortrait = false
             leadingTableVwConstraint.constant = 0
             trailingTableVwConstraint.constant = 0
@@ -77,9 +76,8 @@ class MyUpcommingTripIpadViewController: UIViewController {
     }
 
     //***** Function called when view trip details button is pressed for upcoming trip. *****//
-
     
-    func viewTripDetailsPressed(_ sender:IUIKButton){
+    func viewTripDetailsPressed(_ sender: IUIKButton) {
         Constant.MyClassConstants.transactionNumber = "\(Constant.MyClassConstants.upcomingTripsArray[sender.tag - 1].exchangeNumber!)"
         
         showHudAsync()
@@ -87,8 +85,8 @@ class MyUpcommingTripIpadViewController: UIViewController {
             
             Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails = exchangeResponse
             self.hideHudAsync()
-            self.performSegue(withIdentifier:Constant.segueIdentifiers.detailSegue, sender:nil)
-        }) { (error) in
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.detailSegue, sender: nil)
+        }) { (_) in
             self.hideHudAsync()
             self.presentErrorAlert(UserFacingCommonError.generic)
         }
@@ -97,7 +95,7 @@ class MyUpcommingTripIpadViewController: UIViewController {
 
 //***** MARK: Extension classes starts from here *****//
 
-extension MyUpcommingTripIpadViewController:UITableViewDelegate {
+extension MyUpcommingTripIpadViewController: UITableViewDelegate {
     
     //***** UITableview delegate methods definition here *****//
     
@@ -118,8 +116,7 @@ extension MyUpcommingTripIpadViewController:UITableViewDelegate {
         if((indexPath as NSIndexPath).section == 0) {
             
             return tableView.frame.size.height
-        }
-        else {
+        } else {
             
             return 1200
         }
@@ -130,10 +127,9 @@ extension MyUpcommingTripIpadViewController:UITableViewDelegate {
         
     }
     
-    
 }
 
-extension MyUpcommingTripIpadViewController:UITableViewDataSource {
+extension MyUpcommingTripIpadViewController: UITableViewDataSource {
     
     //***** UITableview dataSource methods definition here *****//
     
@@ -143,19 +139,19 @@ extension MyUpcommingTripIpadViewController:UITableViewDataSource {
         for subviews in cell.subviews {
             subviews.removeFromSuperview()
         }
-        if(orientationIsPortrait){
+        if(orientationIsPortrait) {
             let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
             layout.minimumInteritemSpacing = 1.0
             layout.minimumLineSpacing = 1.0
             layout.scrollDirection = .vertical
-            let upcomingTableCollectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: cell.bounds.width, height: cell.frame.size.height-20 ), collectionViewLayout: layout)
+            let upcomingTableCollectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: cell.bounds.width, height: cell.frame.size.height - 20 ), collectionViewLayout: layout)
             upcomingTableCollectionView.backgroundColor = UIColor.white
             upcomingTableCollectionView.register(CustomCollectionCell.self, forCellWithReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cell)
             upcomingTableCollectionView.delegate = self
             upcomingTableCollectionView.dataSource = self
-            upcomingTableCollectionView.register(UINib(nibName:Constant.customCellNibNames.upcomingTrip, bundle: nil), forCellWithReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.secCell)
+            upcomingTableCollectionView.register(UINib(nibName: Constant.customCellNibNames.upcomingTrip, bundle: nil), forCellWithReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.secCell)
             cell.addSubview(upcomingTableCollectionView)
-        }else{
+        } else {
             let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
             layout.minimumInteritemSpacing = 80.0
             layout.minimumLineSpacing = 1.0
@@ -165,7 +161,7 @@ extension MyUpcommingTripIpadViewController:UITableViewDataSource {
             upcomingTableCollectionView.dataSource = self
             upcomingTableCollectionView.backgroundColor = UIColor.white
             upcomingTableCollectionView.register(CustomCollectionCell.self, forCellWithReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cell)
-            upcomingTableCollectionView.register(UINib(nibName:Constant.customCellNibNames.upcomingTrip, bundle: nil), forCellWithReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.secCell)
+            upcomingTableCollectionView.register(UINib(nibName: Constant.customCellNibNames.upcomingTrip, bundle: nil), forCellWithReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.secCell)
 
             cell.addSubview(upcomingTableCollectionView)
         }
@@ -188,7 +184,7 @@ extension MyUpcommingTripIpadViewController:UITableViewDataSource {
 
 //***** MARK: Extension classes starts from here *****//
 
-extension MyUpcommingTripIpadViewController:UICollectionViewDelegate {
+extension MyUpcommingTripIpadViewController: UICollectionViewDelegate {
     
     //***** Collection delegate methods definition here *****//
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -197,7 +193,7 @@ extension MyUpcommingTripIpadViewController:UICollectionViewDelegate {
     
 }
 
-extension MyUpcommingTripIpadViewController:UICollectionViewDelegateFlowLayout {
+extension MyUpcommingTripIpadViewController: UICollectionViewDelegateFlowLayout {
     
     //***** Collection delegate methods definition here *****//
     
@@ -206,23 +202,23 @@ extension MyUpcommingTripIpadViewController:UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if(orientationIsPortrait){
-            if(indexPath.item == 0){
+        if(orientationIsPortrait) {
+            if(indexPath.item == 0) {
                 return CGSize(width: collectionView.frame.size.width, height: 700.0)
-            }else{
+            } else {
                 return CGSize(width: collectionView.frame.size.width, height: 600.0)
             }
-        }else{
-            if(indexPath.item == 0){
+        } else {
+            if(indexPath.item == 0) {
                 return CGSize(width: 300.0, height: 400.0)
-            }else{
+            } else {
                 return CGSize(width: 500.0, height: 550.0)
             }
         }
     }
 }
 
-extension MyUpcommingTripIpadViewController:UICollectionViewDataSource {
+extension MyUpcommingTripIpadViewController: UICollectionViewDataSource {
     
     //***** Collection dataSource methods definition here *****//
     
@@ -236,17 +232,17 @@ extension MyUpcommingTripIpadViewController:UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        if (indexPath.item == 0){
+        if (indexPath.item == 0) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cell, for: indexPath) as! CustomCollectionCell
             
             let headerLabel = UILabel()
             let noTripsImage = UIImageView()
             let searchVacationButton = UIButton()
-            if(orientationIsPortrait){
+            if(orientationIsPortrait) {
                 headerLabel.frame = CGRect(x: 5, y: 325, width: cell.frame.size.width, height: 100)
                 noTripsImage.frame = CGRect(x: 0, y: 10, width: cell.frame.size.width, height: 320)
                 searchVacationButton.frame = CGRect(x: 0, y: 500, width: cell.frame.size.width, height: 60)
-            }else{
+            } else {
                 headerLabel.frame = CGRect(x: 300, y: 0, width: cell.frame.size.width - 20, height: 400)
                 noTripsImage.frame = CGRect(x: 300, y: -140, width: cell.frame.size.width, height: 320)
                 searchVacationButton.frame = CGRect(x: 300, y: 400, width: cell.frame.size.width, height: 60)
@@ -258,35 +254,35 @@ extension MyUpcommingTripIpadViewController:UICollectionViewDataSource {
             headerLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 25.0)
             noTripsImage.image = UIImage(named: Constant.MyClassConstants.noImage)
             searchVacationButton.setTitle(Constant.AlertPromtMessages.upcomingTripSearchVacationButtonMessage, for: UIControlState.normal)
-            searchVacationButton.backgroundColor =  UIColor(red: 255.0/255.0, green: 122.0/255.0, blue: 55.0/255.0, alpha: 1.0)
+            searchVacationButton.backgroundColor = UIColor(red: 255.0 / 255.0, green: 122.0 / 255.0, blue: 55.0 / 255.0, alpha: 1.0)
             searchVacationButton.setTitleColor(UIColor.white, for: UIControlState.normal)
             searchVacationButton.layer.cornerRadius = 5
             cell.addSubview(headerLabel)
             cell.addSubview(noTripsImage)
             cell.addSubview(searchVacationButton)
             return cell
-        }else{
+        } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.secCell, for: indexPath) as! UpcomingTripsCollectionViewCell
             
             let upcomingTrip = Constant.MyClassConstants.upcomingTripsArray[indexPath.row - 1]
             let imageUrls = upcomingTrip.resort!.images
             let imageUrl = (imageUrls[(imageUrls.count) - 1].url)! as String
             
-            cell.resortImageView.setImageWith(URL(string: imageUrl), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
+            cell.resortImageView.setImageWith(URL(string: imageUrl), completed: { (image:UIImage?, error:Error?, _:SDImageCacheType, _:URL?) in
                 if (error != nil) {
                     cell.resortImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                 }
             }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
 
             var type = ExchangeTransactionType.fromName(name: upcomingTrip.type!).rawValue
-            if(upcomingTrip.type == Constant.myUpcomingTripCommonString.rental){
+            if(upcomingTrip.type == Constant.myUpcomingTripCommonString.rental) {
                 
                  type = Constant.myUpcomingTripCommonString.getaway
                 
             }
             if (upcomingTrip.type == Constant.myUpcomingTripCommonString.shop) {
                 
-                 type  = Constant.myUpcomingTripCommonString.exchange
+                 type = Constant.myUpcomingTripCommonString.exchange
                
             }
             cell.resortType.text = type
@@ -295,23 +291,22 @@ extension MyUpcommingTripIpadViewController:UICollectionViewDataSource {
             cell.resortNameLabel.text = upcomingTrip.resort!.resortName
             cell.resortLocationLabel.text = "\(upcomingTrip.resort!.address!.cityName!), \(upcomingTrip.resort!.address!.countryCode!)"
             cell.resortCodeLabel.text = upcomingTrip.resort!.address!.countryCode!
-            let checkInDate = Helper.convertStringToDate(dateString:upcomingTrip.unit!.checkInDate!, format: Constant.MyClassConstants.dateFormat)
+            let checkInDate = Helper.convertStringToDate(dateString: upcomingTrip.unit!.checkInDate!, format: Constant.MyClassConstants.dateFormat)
             
             let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-            let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkInDate)
-            
+            let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkInDate)
             
             let formatedCheckInDate = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday!)) \(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)). \(myComponents.day!), \(myComponents.year!)"
             
             let checkOutDate = Helper.convertStringToDate(dateString: upcomingTrip.unit!.checkOutDate!, format: Constant.MyClassConstants.dateFormat)
             
-            let myComponents1 = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkOutDate)
+            let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkOutDate)
             
             let formatedCheckOutDate = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents1.weekday!)) \(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!)). \(myComponents1.day!), \(myComponents1.year!)"
             
             cell.tripDateLabel.text = "\(formatedCheckInDate) - \(formatedCheckOutDate)"
             
-            for layer in cell.resortNameBaseView.layer.sublayers!{
+            for layer in cell.resortNameBaseView.layer.sublayers! {
                 if(layer.isKind(of: CAGradientLayer.self)) {
                     layer.removeFromSuperlayer()
                 }
@@ -324,4 +319,3 @@ extension MyUpcommingTripIpadViewController:UICollectionViewDataSource {
         }
     }
 }
-

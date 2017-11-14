@@ -50,7 +50,7 @@ final class SettingsViewController: UIViewController {
     private func setMenuButton() {
         if let revealView = revealViewController() {
             revealView.delegate = self
-            let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.ic_menu),
+            let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.ic_menu),
                                              style: .plain,
                                              target: revealView,
                                              action: #selector(revealView.revealToggle(_:)))
@@ -79,7 +79,7 @@ final class SettingsViewController: UIViewController {
         Constant.MyClassConstants.getawayAlertsArray.removeAll()
         Constant.MyClassConstants.isLoginSuccessfull = false
         Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
-        NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.MyClassConstants.popToLoginView), object: nil)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.MyClassConstants.popToLoginView), object: nil)
     }
 }
 

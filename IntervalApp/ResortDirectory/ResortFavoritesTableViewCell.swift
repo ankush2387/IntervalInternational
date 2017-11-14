@@ -10,12 +10,11 @@ import UIKit
 import IntervalUIKit
 import DarwinSDK
 
-
 //***** Custom delegate method declaration *****//
 protocol ResortFavoritesTableViewCellDelegate {
     
-    func favoritesResortSelectedAtIndex(_ index:Int)
-    func showResortDetails(_ index:Int)
+    func favoritesResortSelectedAtIndex(_ index: Int)
+    func showResortDetails(_ index: Int)
 }
 
 class ResortFavoritesTableViewCell: UITableViewCell {
@@ -34,7 +33,7 @@ class ResortFavoritesTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         
-        if(favoritesCollectionView != nil){
+        if(favoritesCollectionView != nil) {
             
             favoritesCollectionView.delegate = self
             favoritesCollectionView.dataSource = self
@@ -51,16 +50,16 @@ class ResortFavoritesTableViewCell: UITableViewCell {
 }
 
 //***** Extension class to define collection view flow layout delegate methods *****//
-extension ResortFavoritesTableViewCell:UICollectionViewDelegateFlowLayout {
+extension ResortFavoritesTableViewCell: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        if(Constant.RunningDevice.deviceOrientation == UIDeviceOrientation.landscapeLeft){
+        if(Constant.RunningDevice.deviceOrientation == UIDeviceOrientation.landscapeLeft) {
             
-            return CGSize(width: (collectionView.frame.size.width-10)/2, height: (collectionView.frame.size.width-10)/2)
+            return CGSize(width: (collectionView.frame.size.width - 10) / 2, height: (collectionView.frame.size.width - 10) / 2)
             
-        }else{
-            return CGSize(width: (collectionView.frame.size.width-10)/2, height: (collectionView.frame.size.width-10)/2)
+        } else {
+            return CGSize(width: (collectionView.frame.size.width - 10) / 2, height: (collectionView.frame.size.width - 10) / 2)
         }
         
     }
@@ -68,7 +67,7 @@ extension ResortFavoritesTableViewCell:UICollectionViewDelegateFlowLayout {
 }
 
 //***** Extension class to define collection view delegate methods *****//
-extension ResortFavoritesTableViewCell:UICollectionViewDelegate {
+extension ResortFavoritesTableViewCell: UICollectionViewDelegate {
     
     //***** Collection delegate methods definition here *****//
     
@@ -80,7 +79,7 @@ extension ResortFavoritesTableViewCell:UICollectionViewDelegate {
 }
 
 //***** Extension class to define collection view  data source methods *****//
-extension ResortFavoritesTableViewCell:UICollectionViewDataSource {
+extension ResortFavoritesTableViewCell: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         
@@ -100,7 +99,7 @@ extension ResortFavoritesTableViewCell:UICollectionViewDataSource {
         if(resort.images.count > 0) {
             
             if let stringUrl = resort.images[2].url {
-                let url = URL(string:stringUrl)
+                let url = URL(string: stringUrl)
                 cell.resortImageView.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
             }
         }
@@ -111,7 +110,7 @@ extension ResortFavoritesTableViewCell:UICollectionViewDataSource {
                 layer.removeFromSuperlayer()
             }
         }
-        let frame = CGRect(x: 0, y: (collectionView.frame.size.width-10)/2-80, width: (collectionView.frame.size.width-10)/2, height: 80)
+        let frame = CGRect(x: 0, y: (collectionView.frame.size.width - 10) / 2 - 80, width: (collectionView.frame.size.width - 10) / 2, height: 80)
         cell.resortNameGradientView.frame = frame
         
         //cell.resortImageView.frame = cell.frame
@@ -122,18 +121,17 @@ extension ResortFavoritesTableViewCell:UICollectionViewDataSource {
         let status = Helper.isResrotFavorite(resortCode: resort.resortCode!)
         if(status) {
             cell.favoriteButton.isSelected = true
-        }
-        else {
+        } else {
             cell.favoriteButton.isSelected = false
         }
-        if(Constant.MyClassConstants.btnTag == (indexPath as NSIndexPath).row){
+        if(Constant.MyClassConstants.btnTag == (indexPath as NSIndexPath).row) {
             cell.favoriteButton.isSelected = true
         }
         cell.regionNameLabel.text = resort.resortName
         cell.regionResortCode.text = resort.resortCode
         let tierImage = Helper.getTierImageName(tier: resort.tier!.uppercased())
-        if(resort.tier != nil && cell.tierImageView != nil){
-            cell.tierImageView.image = UIImage(named:tierImage)
+        if(resort.tier != nil && cell.tierImageView != nil) {
+            cell.tierImageView.image = UIImage(named: tierImage)
         }
         if let city = resort.address?.cityName {
             
@@ -147,39 +145,35 @@ extension ResortFavoritesTableViewCell:UICollectionViewDataSource {
     }
 }
 
-
 /***** Extension for ResortDirectoryCollectionViewCellDelegate for favorite and unfavorite *****/
-extension ResortFavoritesTableViewCell:ResortDirectoryCollectionViewCellDelegate {
-    func favoriteCollectionButtonClicked(_ sender:UIButton) {
+extension ResortFavoritesTableViewCell: ResortDirectoryCollectionViewCellDelegate {
+    func favoriteCollectionButtonClicked(_ sender: UIButton) {
         
         sender.isSelected = false
         if((Session.sharedSession.userAccessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
             
-            if (sender.isSelected == false){
+            if (sender.isSelected == false) {
                 
-                UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode:  Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!, onSuccess: {(response) in
+                UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortDirectoryResortArray[sender.tag].resortCode!, onSuccess: {(response) in
                     
                     intervalPrint(response)
                     sender.isSelected = true
-                    
                     
                 }, onError: {(error) in
                     
                     intervalPrint(error)
                 })
-            }
-            else {
+            } else {
                 sender.isSelected = false
             }
 
-        }
-        else {
+        } else {
             
             Constant.MyClassConstants.btnTag = sender.tag
             self.delegate?.favoritesResortSelectedAtIndex(sender.tag)
         }
     }
-    func unfavoriteCollectionButtonClicked(_ sender:UIButton){
+    func unfavoriteCollectionButtonClicked(_ sender: UIButton) {
         
     }
 }

@@ -11,8 +11,8 @@ import UIKit
 class ResortInfoTableViewCell: UITableViewCell {
   
     //***** Outlets *****//
-    @IBOutlet weak var resortInfoLabel:UILabel!
-    @IBOutlet weak var resortInfoButton:UIButton!
+    @IBOutlet weak var resortInfoLabel: UILabel!
+    @IBOutlet weak var resortInfoButton: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -43,7 +43,7 @@ extension UIViewController {
 
         let alertViewController = UIAlertController(title: error.description.title,
                                                     message: error.description.body,
-                                                    preferredStyle:.alert)
+                                                    preferredStyle: .alert)
 
         alertViewController.addAction(UIAlertAction(title: "OK".localized(), style: .cancel))
 

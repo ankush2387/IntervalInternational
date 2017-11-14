@@ -12,7 +12,6 @@ import IntervalUIKit
 
 class WeatherViewController: UIViewController {
     
-    
     var resortWeather: ResortWeather?
     let selectedButtonTextColor = UIColor.black
     var resortName: String?
@@ -33,8 +32,7 @@ class WeatherViewController: UIViewController {
         super.viewDidLoad()
         if presentedModally {
             setupNavBarForModalPresentation()
-        }
-        else {
+        } else {
             setupDoneButtonView()
         }
 
@@ -42,7 +40,7 @@ class WeatherViewController: UIViewController {
         
     }
     override func viewDidDisappear(_ animated: Bool) {
-        if(Constant.RunningDevice.deviceIdiom == .phone){
+        if(Constant.RunningDevice.deviceIdiom == .phone) {
             self.navigationController?.isNavigationBarHidden = false
             self.tabBarController?.tabBar.isHidden = false
         }
@@ -51,7 +49,7 @@ class WeatherViewController: UIViewController {
     func setupDoneButtonView() {
         
         let doneButtonView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 64))
-        doneButtonView.backgroundColor = UIColor(red: 229.0/255.0, green: 231.0/255.0, blue: 228.0/255.0, alpha: 1.0)
+        doneButtonView.backgroundColor = UIColor(red: 229.0 / 255.0, green: 231.0 / 255.0, blue: 228.0 / 255.0, alpha: 1.0)
         let doneButton = UIButton(frame: CGRect(x: self.view.frame.size.width - 60, y: 7, width: 50, height: 50))
         doneButton.setTitleColor(IUIKColorPalette.primary1.color, for: .normal)
         doneButton.setTitle("Done", for: .normal)
@@ -61,7 +59,7 @@ class WeatherViewController: UIViewController {
         self.view.addSubview(doneButtonView)
     }
 
-    func doneButtonPressed(_ sender:UIButton) {
+    func doneButtonPressed(_ sender: UIButton) {
     self.navigationController?.view.layer.add(Helper.topToBottomTransition(), forKey: nil)
         self.navigationController?.popViewController(animated: true)
     }
@@ -72,20 +70,18 @@ class WeatherViewController: UIViewController {
     
     func setupNavBarForModalPresentation() {
         // change Nav-bar tint color.
-        
        
-        self.navigationController?.navigationBar.barTintColor = UIColor(red: 229.0/255.0, green: 231.0/255.0, blue: 228.0/255.0, alpha: 1.0)
+        self.navigationController?.navigationBar.barTintColor = UIColor(red: 229.0 / 255.0, green: 231.0 / 255.0, blue: 228.0 / 255.0, alpha: 1.0)
         
         //Nav-bar button
         
         let doneButtonView = UIView(frame: CGRect(x: self.view.frame.size.width - 100, y: 0, width: 100, height: 45))
-        doneButtonView.backgroundColor = UIColor(red: 229.0/255.0, green: 231.0/255.0, blue: 228.0/255.0, alpha: 1.0)
+        doneButtonView.backgroundColor = UIColor(red: 229.0 / 255.0, green: 231.0 / 255.0, blue: 228.0 / 255.0, alpha: 1.0)
         let doneButton = UIButton(frame: CGRect(x: doneButtonView.frame.size.width - 75, y: 5, width: 50, height: 45))
         doneButton.setTitleColor(IUIKColorPalette.primary1.color, for: .normal)
         doneButton.setTitle("Done", for: .normal)
         doneButton.addTarget(self, action: #selector(WeatherViewController.menuBackButtonPressed(_:)), for: .touchUpInside)
         doneButtonView.addSubview(doneButton)
-        
         
         self.navigationController?.navigationBar.addSubview(doneButtonView)
         
@@ -106,13 +102,11 @@ class WeatherViewController: UIViewController {
         self.navigationController?.navigationBar.isHidden = false
         weatherConditionLabel.text = resortWeather?.condition
         
-        let doneButton = UIBarButtonItem(image: UIImage(named:Constant.AlertPromtMessages.done), style: .plain, target: self, action:#selector(WeatherViewController.menuBackButtonPressed))
+        let doneButton = UIBarButtonItem(image: UIImage(named: Constant.AlertPromtMessages.done), style: .plain, target: self, action: #selector(WeatherViewController.menuBackButtonPressed))
         doneButton.tintColor = UIColor.blue
-        
         
         //doneButton.tintColor = UIColor(red: 0/255.0, green: 128.0/255.0, blue: 255.0/255.0, alpha: 1.0)
         self.navigationItem.rightBarButtonItem = doneButton
-
         
         self.displayFarenheit()
     
@@ -134,7 +128,6 @@ class WeatherViewController: UIViewController {
                 highTempeartureBars[i].progress = Float(progress!) / 100
                 i += 1
             }
-            
         
             for month in monthAvg {
                 let progress = month.low?.celsius
@@ -143,8 +136,8 @@ class WeatherViewController: UIViewController {
                 n += 1
             }
             
-            self.temperatureHighLabel.text = "\(Int(highAvg/12))°"
-            self.temperaureLowLabel.text = "\(Int(lowAvg/12))°"
+            self.temperatureHighLabel.text = "\(Int(highAvg / 12))°"
+            self.temperaureLowLabel.text = "\(Int(lowAvg / 12))°"
         }
     }
     
@@ -165,7 +158,6 @@ class WeatherViewController: UIViewController {
                 i += 1
             }
             
-            
             for month in monthAvg {
                 let progress = month.low?.fahrenheit
                 lowAvg += progress!
@@ -173,23 +165,23 @@ class WeatherViewController: UIViewController {
                 n += 1
             }
             
-            self.temperatureHighLabel.text = "\(Int(highAvg/12))°"
-            self.temperaureLowLabel.text = "\(Int(lowAvg/12))°"
+            self.temperatureHighLabel.text = "\(Int(highAvg / 12))°"
+            self.temperaureLowLabel.text = "\(Int(lowAvg / 12))°"
         }
     }
     
     @IBAction func didPressCelsiusButton(_ sender: Any) {
-        self.fahrenheitButton.setTitleColor(UIColor(red: 0/255, green: 122/255, blue: 255/255, alpha: 1.0), for: .normal)
+        self.fahrenheitButton.setTitleColor(UIColor(red: 0 / 255, green: 122 / 255, blue: 255 / 255, alpha: 1.0), for: .normal)
         self.celsiusButton.setTitleColor(selectedButtonTextColor, for: .normal)
         displayCelsius()
     }
     @IBAction func didPressFahrenheitButton(_ sender: Any) {
         self.fahrenheitButton.setTitleColor(selectedButtonTextColor, for: .normal)
-        self.celsiusButton.setTitleColor(UIColor(red: 0/255, green: 122/255, blue: 255/255, alpha: 1.0), for: .normal)
+        self.celsiusButton.setTitleColor(UIColor(red: 0 / 255, green: 122 / 255, blue: 255 / 255, alpha: 1.0), for: .normal)
         displayFarenheit()
     }
     
-    func menuBackButtonPressed(_ sender:UIBarButtonItem) {
+    func menuBackButtonPressed(_ sender: UIBarButtonItem) {
         self.dismiss(animated: true, completion: nil)
     }
 
@@ -221,7 +213,6 @@ extension UIViewController {
 
                 completionHandler(true)
             }
-            
             
         }) { (error) in
             completionHandler(false)

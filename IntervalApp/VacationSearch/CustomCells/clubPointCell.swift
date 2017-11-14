@@ -11,8 +11,6 @@ import IntervalUIKit
 
 class clubPointCell: UITableViewCell {
     
-    
-    
     @IBOutlet weak var yearLabel: UILabel!
 
     @IBOutlet weak var addButton: IUIKButton!

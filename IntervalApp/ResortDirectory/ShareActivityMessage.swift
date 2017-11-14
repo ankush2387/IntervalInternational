@@ -15,7 +15,6 @@ class ShareActivityMessage: NSObject, UIActivityItemSource {
     var subjectMessage: String?
     var isConfirmationDetails: Bool = false
     
-    
     func resortInformationMessage(resortName: String, address: String, description: String, resortCode: String) {
         //Resort Name Attributes
         let resortURL = URL(string: "https://www.intrvl.com/resort/\(resortCode)")
@@ -66,7 +65,7 @@ class ShareActivityMessage: NSObject, UIActivityItemSource {
         }
         //transaction Type
     
-        if var transactionType =  Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.exchangeTransactionType{
+        if var transactionType = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.exchangeTransactionType {
             transactionType = ExchangeTransactionType.fromName(name: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.exchangeTransactionType!).friendlyNameForUpcomingTrip()
             message.append("TransactionType: \(transactionType)\n")
         }
@@ -88,20 +87,17 @@ class ShareActivityMessage: NSObject, UIActivityItemSource {
         
         //format checkIn Date
         let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-        if (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkInDate) != nil{
-            let checkInDate = Helper.convertStringToDate(dateString:(Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkInDate)!, format: Constant.MyClassConstants.dateFormat)
-            let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkInDate)
+        if (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkInDate) != nil {
+            let checkInDate = Helper.convertStringToDate(dateString: (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkInDate)!, format: Constant.MyClassConstants.dateFormat)
+            let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkInDate)
             let formatedCheckInDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month ?? 0))/\(myComponents.day ?? 0)/\(myComponents.year ?? 0)"
             message.append("CheckIn: \(formatedCheckInDate)\n")
         }
-       
-        
-        
         
         //format CheckOut Date
-        if (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkOutDate) != nil{
+        if (Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkOutDate) != nil {
         let checkOutDate = Helper.convertStringToDate(dateString: Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.unit?.checkOutDate ?? "", format: Constant.MyClassConstants.dateFormat1)
-        let myComponents1 = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkOutDate)
+        let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkOutDate)
         let formatedCheckOutDate = "\(Helper.getMonthnameFromInt(monthNumber: myComponents1.month ?? 0))/\(myComponents1.day ?? 0)/\(myComponents1.year ?? 0)"
         message.append("CheckOut: \(formatedCheckOutDate)\n")
         }
@@ -130,7 +126,6 @@ class ShareActivityMessage: NSObject, UIActivityItemSource {
                         
             return self.messageStr
         }
-        
         
         //Message for Resort Directory Details
         if activityType == UIActivityType.mail {

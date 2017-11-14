@@ -9,8 +9,6 @@
 import UIKit
 import IntervalUIKit
 
-
-
 class GuestTextFieldCell: UITableViewCell {
     
     //Outlets
@@ -22,7 +20,6 @@ class GuestTextFieldCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
      
         // Initialization code
      
@@ -35,6 +32,3 @@ class GuestTextFieldCell: UITableViewCell {
     }
     
 }
-
-
-

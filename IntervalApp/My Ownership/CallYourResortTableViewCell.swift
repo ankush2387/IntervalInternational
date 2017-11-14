@@ -19,29 +19,29 @@ class CallYourResortTableViewCell: UITableViewCell {
         super.awakeFromNib()
        
     }
-    //MARK:get cell
+    // MARK: get cell
     /**
     Configure Cell components
     - parameter No parameter:
     - returns : No return value
     */
-    func getCell(){
+    func getCell() {
         setPropertiesTocellComponenet()
     }
-    //MARK:set properties to cell component
+    // MARK: set properties to cell component
     /**
     Apply Properties to cell components
     - parameter No parameter:
     - returns : No return value
     */
-    fileprivate func setPropertiesTocellComponenet(){
+    fileprivate func setPropertiesTocellComponenet() {
     }
     /**
      Update cell components text
      - parameter No parameter:
      - returns : No return value
      */
-    fileprivate func updateCellComponentsText(){
+    fileprivate func updateCellComponentsText() {
         callresortbutton.setTitle(Constant.floatDetailViewController.callYourResortTableViewCell.callresortbuttonTitle, for: UIControlState())
         donothaveresortLabel.text = Constant.floatDetailViewController.callYourResortTableViewCell.donothaveresortLabelText
     }

@@ -9,7 +9,6 @@
 import UIKit
 import DarwinSDK
 
-
 class MembershipIPadViewController: UIViewController {
     /** Outlets */
     @IBOutlet weak var tableView: UITableView!
@@ -27,7 +26,7 @@ class MembershipIPadViewController: UIViewController {
      - returns : No return value.
      */
     @IBAction func switchMemberShipButtonIsTapped(_ sender: UIButton) {
-        let actionSheet:UIAlertController = UIAlertController(title: "", message: "", preferredStyle: UIAlertControllerStyle.actionSheet)
+        let actionSheet: UIAlertController = UIAlertController(title: "", message: "", preferredStyle: UIAlertControllerStyle.actionSheet)
         
         let actionsheetViewController = UIViewController()
         let rect = CGRect(x: 0, y: 0, width: self.view.bounds.width - 20, height: 300)
@@ -45,21 +44,19 @@ class MembershipIPadViewController: UIViewController {
         actionsheetViewController.view.bringSubview(toFront: actionSheetTable)
         actionsheetViewController.view.isUserInteractionEnabled = true
         
-        
-        
         let attributedString = NSAttributedString(string: "Select Membership", attributes: [
-            NSFontAttributeName : UIFont.systemFont(ofSize: 20),
-            NSForegroundColorAttributeName : UIColor.black
+            NSFontAttributeName: UIFont.systemFont(ofSize: 20),
+            NSForegroundColorAttributeName: UIColor.black
             ])
         
-        let action:UIAlertAction = UIAlertAction(title: Constant.AlertPromtMessages.cancel, style: UIAlertActionStyle.cancel, handler: nil)
+        let action: UIAlertAction = UIAlertAction(title: Constant.AlertPromtMessages.cancel, style: UIAlertActionStyle.cancel, handler: nil)
         
         actionSheet.setValue(attributedString, forKey: "attributedTitle")
         actionSheet.setValue(actionsheetViewController, forKey: "contentViewController")
         actionSheet.addAction(action)
         
         actionSheet.popoverPresentationController?.sourceView = self.tableView
-        actionSheet.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.width/2+sender.bounds.width, y: sender.bounds.origin.y+sender.bounds.height, width: sender.bounds.width, height: 100)
+        actionSheet.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.width / 2 + sender.bounds.width, y: sender.bounds.origin.y + sender.bounds.height, width: sender.bounds.width, height: 100)
         // this is the center of the screen currently but it can be any point in the view
         
         self.present(actionSheet, animated: true, completion: nil)
@@ -93,26 +90,26 @@ class MembershipIPadViewController: UIViewController {
                 self.membershipProductsArray = products
             }
             self.hideHudAsync()
-            self.membershipProductsArray.sort{$0.coreProduct && !$1.coreProduct}
+            self.membershipProductsArray.sort { $0.coreProduct && !$1.coreProduct }
             self.tableView.reloadData()
-        }) { (error) in
+        }) { (_) in
             self.hideHudAsync()
         }
     }
     
-    //MARK:Display menu button
+    // MARK: Display menu button
     /**
      Display Hamburger menu
      - parameter  No parameter :
      - returns : No return Value
      */
-    fileprivate func displayMenuButton(){
+    fileprivate func displayMenuButton() {
         if let rvc = self.revealViewController() {
             //set SWRevealViewController's Delegate
             rvc.delegate = self
             
             //***** Add the hamburger menu *****//
-            let menuButton = UIBarButtonItem(image: UIImage(named:"ic_menu"), style: .plain, target: rvc, action:#selector(rvc.revealToggle(_:)))
+            let menuButton = UIBarButtonItem(image: UIImage(named: "ic_menu"), style: .plain, target: rvc, action: #selector(rvc.revealToggle(_:)))
             menuButton.tintColor = UIColor.white
             
             self.navigationItem.leftBarButtonItem = menuButton
@@ -120,7 +117,6 @@ class MembershipIPadViewController: UIViewController {
             //***** This line allows the user to swipe left-to-right to reveal the menu. We might want to comment this out if it becomes confusing. *****//
             self.view.addGestureRecognizer( rvc.panGestureRecognizer() )
         }
-        
         
     }
 
@@ -135,7 +131,7 @@ class MembershipIPadViewController: UIViewController {
         let context = Session.sharedSession
         
         UserClient.putSessionsUser(context.userAccessToken, member: context.selectedMembership!,
-            onSuccess:{
+            onSuccess: {
                                         
             //***** Done!  Segue to the Home page *****//
             
@@ -147,11 +143,11 @@ class MembershipIPadViewController: UIViewController {
                 
                 Constant.MyClassConstants.getawayAlertsArray = response
                 self.hideHudAsync()
-            }) { (error) in
+            }) { (_) in
                 self.hideHudAsync()
             }
         },
-            onError:{(error) in
+            onError: {(error) in
                 self.hideHudAsync()
                 Logger.sharedInstance.error("Could not set membership in Darwin API Session: \(error.description)")
                 self.presentAlert(with: Constant.AlertErrorMessages.loginFailed, message: "Please contact your servicing office.  Could not select membership \(String(describing: context.selectedMembership?.memberNumber))")
@@ -160,10 +156,10 @@ class MembershipIPadViewController: UIViewController {
     }
 }
 /** extension to implement table view datasource methods */
-extension MembershipIPadViewController:UITableViewDataSource{
+extension MembershipIPadViewController: UITableViewDataSource {
     /** Implement UITableView DataSource Methods */
     
-    //MARK:Number of section in Table View
+    // MARK: Number of section in Table View
     func numberOfSections(in tableView: UITableView) -> Int {
         if tableView.tag == 3 {
             return 1
@@ -171,7 +167,7 @@ extension MembershipIPadViewController:UITableViewDataSource{
         
         return numberOfSection
     }
-    //MARK:Number of Row in a section
+    // MARK: Number of Row in a section
     /** This function is used to return number of row in a section */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -184,7 +180,7 @@ extension MembershipIPadViewController:UITableViewDataSource{
             return numberOfRowInSection
         }
     }
-    //MARK:Cell for a row
+    // MARK: Cell for a row
     /** This function is used to return cell for a row */
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if(tableView.tag == 3) {
@@ -206,7 +202,6 @@ extension MembershipIPadViewController:UITableViewDataSource{
             } else {
                 cell.selectedImageView.image = UIImage(named: "Select-Off")
             }
-
 
             cell.delegate = self
             return cell
@@ -232,7 +227,7 @@ extension MembershipIPadViewController:UITableViewDataSource{
     /** This function is used to return title for header In section */
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         var title = ""
-        if section == 1 && tableView.tag != 3{
+        if section == 1 && tableView.tag != 3 {
             title = Constant.memberShipViewController.ownershipHeaderTitletext
             return title
         }
@@ -244,8 +239,7 @@ extension MembershipIPadViewController:UITableViewDataSource{
  
  extension for tableview delegate
  */
-extension MembershipIPadViewController:UITableViewDelegate
-{
+extension MembershipIPadViewController: UITableViewDelegate {
 	/** This function is used to return Height for footer In section */
 	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0.0001
@@ -255,13 +249,12 @@ extension MembershipIPadViewController:UITableViewDelegate
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 		if(tableView.tag == 3) {
 			return 70
-		}
-		else if (indexPath as NSIndexPath).section == 0{
+		} else if (indexPath as NSIndexPath).section == 0 {
             
             let extraViews = membershipProductsArray.count - 1
             return CGFloat((80 * extraViews) + 240)
 
-        } else{
+        } else {
             return 427
         }
 	}
@@ -284,7 +277,7 @@ extension MembershipIPadViewController:UITableViewDelegate
             
             //change previously selected image
             if let previousIndex = previousSelectedMembershipCellIndex {
-                if previousIndex != indexPath{
+                if previousIndex != indexPath {
                     let previousCell = tableView.cellForRow(at: previousIndex) as? ActionSheetTblCell
                     previousCell?.selectedImageView.image = UIImage(named: "Select-Off")
                 }
@@ -292,16 +285,16 @@ extension MembershipIPadViewController:UITableViewDelegate
 
 			let contact = Session.sharedSession.contact
 			let membership = contact?.memberships![indexPath.row]
-            if Constant.MyClassConstants.memberNumber != membership?.memberNumber{
+            if Constant.MyClassConstants.memberNumber != membership?.memberNumber {
                 self.dismiss(animated: true, completion: nil)
                 let alert = UIAlertController(title: Constant.memberShipViewController.switchMembershipAlertTitle, message: Constant.memberShipViewController.switchMembershipAlertMessage, preferredStyle: .actionSheet)
-                let actionYes = UIAlertAction(title: "Yes", style: .destructive, handler: { (response) in
+                let actionYes = UIAlertAction(title: "Yes", style: .destructive, handler: { (_) in
                     self.showHudAsync()
                     Session.sharedSession.selectedMembership = membership
                     self.membershipWasSelected()
                 })
                 
-                let actionCancel = UIAlertAction(title: "No", style: .default, handler: { (response) in
+                let actionCancel = UIAlertAction(title: "No", style: .default, handler: { (_) in
                     //cancel
                 })
                 
@@ -320,14 +313,12 @@ extension MembershipIPadViewController:UITableViewDelegate
 /*
  extension for actionsheet table delegate
  */
-extension MembershipIPadViewController:ActionSheetTblDelegate {
+extension MembershipIPadViewController: ActionSheetTblDelegate {
     
     func membershipSelectedAtIndex(_ index: Int) {
         
         self.dismiss(animated: true, completion: nil)
         
-        
     }
     
 }
-

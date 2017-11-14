@@ -51,7 +51,7 @@ final class PreLoginCoordinator {
             return
         }
 
-        let newVacationSearchSettings =  VacationSearchSettings()
+        let newVacationSearchSettings = VacationSearchSettings()
 
         let onSuccess = { [unowned self] (settings: Settings) in
             if case .some = settings.vacationSearch {

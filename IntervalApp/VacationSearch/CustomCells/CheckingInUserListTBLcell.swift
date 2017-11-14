@@ -11,7 +11,6 @@ import IntervalUIKit
 
 class CheckingInUserListTBLcell: UITableViewCell {
     
-    
     @IBOutlet weak var contentBorderView: UIView!
     @IBOutlet weak var checkBox: IUIKCheckbox!
     @IBOutlet weak var nameLabel: UILabel!

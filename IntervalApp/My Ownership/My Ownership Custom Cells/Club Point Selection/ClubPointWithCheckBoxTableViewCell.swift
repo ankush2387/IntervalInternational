@@ -28,7 +28,7 @@ class ClubPointWithCheckBoxTableViewCell: UITableViewCell {
      - parameter No Parameter:
      - returns : No value is return
      */
-    func getCell(ischeckbox ischeckbox:Bool = false,index:Int,checkBoxTagArray:Int){
+    func getCell(ischeckbox ischeckbox: Bool = false, index: Int, checkBoxTagArray: Int) {
         
         //if !ischeckbox{
         var indexPrefix = "1"
@@ -43,34 +43,30 @@ class ClubPointWithCheckBoxTableViewCell: UITableViewCell {
         setCellProperties(ischeckbox: ischeckbox, checkBoxTagArray: checkBoxTagArray)
         //}
         
-        
     }
-    private func setCellProperties(ischeckbox ischeckbox:Bool,checkBoxTagArray:Int){
+    private func setCellProperties(ischeckbox ischeckbox: Bool, checkBoxTagArray: Int) {
         let firstcheckbox = firstCheckBoxView as! IUIKCheckbox
         let secondcheckBox = secondCheckBoxView as! IUIKCheckbox
-        if checkBoxTagArray != 0{
+        if checkBoxTagArray != 0 {
             let checkBoxtag = checkBoxTagArray
-            if firstcheckbox.tag == checkBoxtag{
+            if firstcheckbox.tag == checkBoxtag {
                 secondcheckBox.checked = false
                 firstcheckbox.checked = true
                 setBackgroundColorAndBorderColorOfSuperView(isborder: true, subview: firstcheckbox)
                 setBackgroundColorAndBorderColorOfSuperView(isborder: false, subview: secondcheckBox)
-            }
-            else if secondcheckBox.tag == checkBoxtag{
+            } else if secondcheckBox.tag == checkBoxtag {
                 firstcheckbox.checked = false
                 secondcheckBox.checked = true
                 setBackgroundColorAndBorderColorOfSuperView(isborder: false, subview: firstcheckbox)
                 setBackgroundColorAndBorderColorOfSuperView(isborder: true, subview: secondcheckBox)
-            }
-            else{
+            } else {
                 secondcheckBox.checked = false
                 firstcheckbox.checked = false
                 setBackgroundColorAndBorderColorOfSuperView(isborder: false, subview: firstcheckbox)
                 setBackgroundColorAndBorderColorOfSuperView(isborder: false, subview: secondcheckBox)
             }
             
-        }
-        else{
+        } else {
             secondcheckBox.checked = false
             firstcheckbox.checked = false
             setBackgroundColorAndBorderColorOfSuperView(isborder: false, subview: firstcheckbox)
@@ -79,14 +75,13 @@ class ClubPointWithCheckBoxTableViewCell: UITableViewCell {
         
     }
     
-    private func setBackgroundColorAndBorderColorOfSuperView(isborder isborder:Bool,subview:IUIKCheckbox){
+    private func setBackgroundColorAndBorderColorOfSuperView(isborder isborder: Bool, subview: IUIKCheckbox) {
         
-        if isborder{
+        if isborder {
             subview.superview?.layer.borderColor = UIColor.redColor().CGColor
             subview.superview?.layer.borderWidth = 1
             subview.superview?.backgroundColor = UIColor.whiteColor()
-        }
-        else{
+        } else {
             subview.superview?.layer.borderColor = UIColor.clearColor().CGColor
             subview.superview?.layer.borderWidth = 0
             subview.superview?.backgroundColor = UIColor.clearColor()

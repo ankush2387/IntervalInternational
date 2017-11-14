@@ -20,20 +20,20 @@ class TriangeView: UIView {
     /** Draw Triangle shape using rectangle frame */
     override func draw(_ rect: CGRect) {
         
-        let ctx : CGContext = UIGraphicsGetCurrentContext()!
+        let ctx: CGContext = UIGraphicsGetCurrentContext()!
         
-        ctx.beginPath();
+        ctx.beginPath()
         //Start point
-        ctx.move   (to: CGPoint(x: rect.minX, y: rect.minY));
+        ctx.move   (to: CGPoint(x: rect.minX, y: rect.minY))
         //Draw a line
-        ctx.addLine(to: CGPoint(x: rect.midX, y: rect.maxY));
-        ctx.addLine(to: CGPoint(x: rect.maxX, y: rect.minY));
+        ctx.addLine(to: CGPoint(x: rect.midX, y: rect.maxY))
+        ctx.addLine(to: CGPoint(x: rect.maxX, y: rect.minY))
 
-        ctx.closePath();
+        ctx.closePath()
         //Set color of trangle
         let color = UIColor.white
         ctx.setFillColor(color.cgColor )
-        ctx.fillPath();
+        ctx.fillPath()
         
     }
 }

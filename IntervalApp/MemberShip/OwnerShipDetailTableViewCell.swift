@@ -27,29 +27,29 @@ class OwnerShipDetailTableViewCell: UITableViewCell {
         super.awakeFromNib()
     }
 
-    //MARK:get MembershipCell using informations
+    // MARK: get MembershipCell using informations
     /**
         Configure cell components.
     
         - parameter membershipDetailDictionary :  This dictionary is used to update label text.
         - returns : No value is returned.
     */
-    func getCell(ownership: Ownership){
+    func getCell(ownership: Ownership) {
         self.setPropertiesTocellElements()
         updateCell(ownership: ownership)
     }
-    //MARK:Update value according to server response
+    // MARK: Update value according to server response
     
     /**
         Update label text.
         - parameter membershipDetailDictionary : Dictionary with String key and String Value.
         - returns : No value is return.
     */
-    fileprivate func updateCell(ownership: Ownership){
+    fileprivate func updateCell(ownership: Ownership) {
         // update Label text
         placeNameLabel.text = ownership.resort?.resortName
         placeAddressLabel.text = ownership.resort?.address?.cityName
-        if let state = ownership.resort?.address?.territoryCode{
+        if let state = ownership.resort?.address?.territoryCode {
             placeAddressLabel.text?.append(", \(state)")
         }
         if let countryCode = ownership.resort?.address?.countryCode {
@@ -60,9 +60,9 @@ class OwnerShipDetailTableViewCell: UITableViewCell {
         bedroomDetailLabel.text = bedroomSize
 
         weekNumberLabel.text = ownership.weekNumber
-        if((ownership.resort?.images.count)! > 0){
+        if((ownership.resort?.images.count)! > 0) {
             let imageURLStr = ownership.resort?.images[1].url
-            ownerShipimageView.setImageWith(URL(string: imageURLStr!), completed: { (image:UIImage?, error:Swift.Error?, cacheType:SDImageCacheType, imageURL:URL?) in
+            ownerShipimageView.setImageWith(URL(string: imageURLStr!), completed: { (image:UIImage?, error:Swift.Error?, _:SDImageCacheType, _:URL?) in
                 if (error != nil) {
                     self.ownerShipimageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                 }
@@ -72,11 +72,11 @@ class OwnerShipDetailTableViewCell: UITableViewCell {
             
             weekNumberLabel.text = Constant.getPointWeek(weektype: ownership.weekNumber!)
             
-        }else if ownership.weekNumber == "FLOAT_WEEK"{
+        } else if ownership.weekNumber == "FLOAT_WEEK"{
             
             weekNumberLabel.text = Constant.getFlotWeek(weekType: ownership.weekNumber!)
            
-        }else{
+        } else {
            weekNumberLabel.text = "Week \(Constant.getWeekNumber(weekType: ownership.weekNumber!))"
         }
     
@@ -84,20 +84,20 @@ class OwnerShipDetailTableViewCell: UITableViewCell {
 
     }
     
-    //MARK:set commonPrperties to cell
+    // MARK: set commonPrperties to cell
     /** 
     Set  properties to Cell components
     - parameter No parameter:
     - returns : No return value
     */
-    fileprivate func setPropertiesTocellElements(){
+    fileprivate func setPropertiesTocellElements() {
         //Configure label TextColor
-        placeAddressLabel.textColor = UIColor(rgb:IUIKColorPalette.primaryText.rawValue)
-        placeCode.textColor = UIColor(rgb:IUIKColorPalette.secondaryB.rawValue)
-        unitdetailLabel.textColor = UIColor(rgb:IUIKColorPalette.secondaryText.rawValue)
-        weekDetailLabel.textColor = UIColor(rgb:IUIKColorPalette.secondaryText.rawValue)
-        bedroomDetailLabel.textColor = UIColor(rgb:IUIKColorPalette.primaryText.rawValue)
-        weekNumberLabel.textColor = UIColor(rgb:IUIKColorPalette.primaryText.rawValue)
+        placeAddressLabel.textColor = UIColor(rgb: IUIKColorPalette.primaryText.rawValue)
+        placeCode.textColor = UIColor(rgb: IUIKColorPalette.secondaryB.rawValue)
+        unitdetailLabel.textColor = UIColor(rgb: IUIKColorPalette.secondaryText.rawValue)
+        weekDetailLabel.textColor = UIColor(rgb: IUIKColorPalette.secondaryText.rawValue)
+        bedroomDetailLabel.textColor = UIColor(rgb: IUIKColorPalette.primaryText.rawValue)
+        weekNumberLabel.textColor = UIColor(rgb: IUIKColorPalette.primaryText.rawValue)
     }
     
     /*** override setSelected function */

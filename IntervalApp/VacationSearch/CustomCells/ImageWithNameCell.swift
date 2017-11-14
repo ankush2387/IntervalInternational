@@ -10,10 +10,9 @@ import UIKit
 
 protocol ImageWithNameCellDelegate {
     
-    func favratePressedAtIndex(_ Index:Int)
+    func favratePressedAtIndex(_ Index: Int)
     
 }
-
 
 class ImageWithNameCell: UITableViewCell {
     
@@ -25,7 +24,7 @@ class ImageWithNameCell: UITableViewCell {
     @IBOutlet weak var fevrateButton: UIButton!
     @IBOutlet weak var bottomViewForResortName: UIView!
     @IBOutlet weak var tierImageView: UIImageView!
-     var delegate:ImageWithNameCellDelegate?
+     var delegate: ImageWithNameCellDelegate?
     @IBAction func fevrateButtonPressed(_ sender: AnyObject) {
         
         self.delegate?.favratePressedAtIndex(sender.tag)

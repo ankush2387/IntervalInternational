@@ -13,7 +13,6 @@ class ClubPointWithCheckBoxTableViewCell: UITableViewCell {
     /** Outlets */
     @IBOutlet weak var pointLabel: UILabel!
     
-    
     @IBOutlet weak var firstCheckBoxView: UIView!
     
     @IBOutlet weak var secondCheckBoxView: UIView!
@@ -27,7 +26,7 @@ class ClubPointWithCheckBoxTableViewCell: UITableViewCell {
      - parameter No Parameter:
      - returns : No value is return
      */
-    func getCell(_ ischeckbox:Bool = false,index:Int,checkBoxTagArray:Int){
+    func getCell(_ ischeckbox: Bool = false, index: Int, checkBoxTagArray: Int) {
         
         //if !ischeckbox{
         var indexPrefix = "1"
@@ -36,14 +35,13 @@ class ClubPointWithCheckBoxTableViewCell: UITableViewCell {
         finalIndex = "\(indexPrefix)\(index)"
     }
     
-    fileprivate func setBackgroundColorAndBorderColorOfSuperView(_ isborder:Bool,subview:IUIKCheckbox){
+    fileprivate func setBackgroundColorAndBorderColorOfSuperView(_ isborder: Bool, subview: IUIKCheckbox) {
         
-        if isborder{
+        if isborder {
             subview.superview?.layer.borderColor = UIColor.red.cgColor
             subview.superview?.layer.borderWidth = 1
             subview.superview?.backgroundColor = UIColor.white
-        }
-        else{
+        } else {
             subview.superview?.layer.borderColor = UIColor.clear.cgColor
             subview.superview?.layer.borderWidth = 0
             subview.superview?.backgroundColor = UIColor.clear

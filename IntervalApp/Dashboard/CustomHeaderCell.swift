@@ -9,8 +9,6 @@
 import UIKit
 import IntervalUIKit
 
-
-
 class CustomHeaderCell: UITableViewCell {
   
   //***** Outlets *****//
@@ -20,9 +18,6 @@ class CustomHeaderCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        
-        
       
     }
 

@@ -24,7 +24,7 @@ extension ComputationHelperSpec: ComputationHelper {
             describe("When incrementing indexes within the range") {
                 it("should not overflow to first index zero") {
                     for index in indexesWithinRange {
-                        expect(self.rotate(index, within: range)).to(equal(index + 1))
+                        expect(self.rotate(index, within: range)) == index + 1
                     }
                 }
             }
@@ -32,7 +32,7 @@ extension ComputationHelperSpec: ComputationHelper {
             describe("When incrementing indexes outside the range") {
                 it("should overflow to first index zero") {
                     for index in indexesOutsideRange {
-                        expect(self.rotate(index, within: range)).to(equal(0))
+                        expect(self.rotate(index, within: range)) == 0
                     }
                 }
             }

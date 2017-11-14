@@ -117,7 +117,7 @@ import UIKit
     }
     
     private func rectForBorder(_ bounds: CGRect) -> CGRect {
-        var newRect:CGRect
+        var newRect: CGRect
         
         if isFirstResponder {
             newRect = CGRect(x: 0, y: bounds.size.height - font!.lineHeight + textFieldInsets.y - borderThickness.active, width: bounds.size.width, height: borderThickness.active)
@@ -133,7 +133,7 @@ import UIKit
         var originX = textRect.origin.x
         switch textAlignment {
         case .center:
-            originX += textRect.size.width/2 - placeholderLabel.bounds.width/2
+            originX += textRect.size.width / 2 - placeholderLabel.bounds.width / 2
         case .right:
             originX += textRect.size.width - placeholderLabel.bounds.width
         default:

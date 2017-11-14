@@ -16,7 +16,7 @@ class PaddingTextField: UITextField {
     
     override func textRect(forBounds bounds: CGRect) -> CGRect {
         return CGRect(x: bounds.origin.x + paddingLeft, y: bounds.origin.y,
-                          width: bounds.size.width - paddingLeft - paddingRight, height: bounds.size.height);
+                          width: bounds.size.width - paddingLeft - paddingRight, height: bounds.size.height)
     }
     
     override func editingRect(forBounds bounds: CGRect) -> CGRect {

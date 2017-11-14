@@ -16,7 +16,6 @@ extension UIViewController: SWRevealViewControllerDelegate {
         return true
     }
     
-    
     public func revealController(_ revealController: SWRevealViewController!, didMoveTo position: FrontViewPosition) {
         if position == FrontViewPosition.left {
             //hidden

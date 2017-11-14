@@ -13,9 +13,7 @@ import IntervalUIKit
 
 class MagazinesViewController: UIViewController {
     
-    
     @IBOutlet weak var magazinesTBLView: UITableView!
-    
     
     var magazine = Magazine()
     
@@ -31,7 +29,7 @@ class MagazinesViewController: UIViewController {
                 rvc.delegate = self
                 
                 //***** Add the hamburger menu *****//
-                let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action:#selector(SWRevealViewController.revealToggle(_:)))
+                let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action: #selector(SWRevealViewController.revealToggle(_:)))
                 menuButton.tintColor = UIColor.white
                 self.navigationItem.leftBarButtonItem = menuButton
                 
@@ -39,10 +37,9 @@ class MagazinesViewController: UIViewController {
                 self.view.addGestureRecognizer( rvc.panGestureRecognizer())
             }
             
-        }
-        else {
+        } else {
             
-            let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(menuBackButtonPressed))
+            let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(menuBackButtonPressed))
             menuButton.tintColor = UIColor.white
             self.navigationItem.leftBarButtonItem = menuButton
         }
@@ -56,23 +53,22 @@ class MagazinesViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(reloadMagazines), name: NSNotification.Name(rawValue: Constant.notificationNames.magazineAlertNotification), object: nil)
 //        NotificationCenter.default.addObserver(self, selector: #selector(getAllMagazines), name: NSNotification.Name(rawValue: Constant.notificationNames.accessTokenAlertNotification), object: nil)
         
-        
         // Do any additional setup after loading the view.
     }
     
     //reloadMagazines
-    func reloadMagazines(){
+    func reloadMagazines() {
         magazinesTBLView.reloadData()
     }
     
     //reload Magazines
-    func getAllMagazines(){
+    func getAllMagazines() {
         Helper.getMagazines(senderViewController: self)
     }
     
     //***** Method for back button *****//
     func menuBackButtonPressed() {
-        NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.MyClassConstants.popToLoginView), object: nil)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.MyClassConstants.popToLoginView), object: nil)
     }
     
     func playTapped() {
@@ -94,7 +90,7 @@ class MagazinesViewController: UIViewController {
 }
 
 //***** extension class to define tableview datasource methods *****//
-extension MagazinesViewController:UITableViewDataSource {
+extension MagazinesViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
@@ -129,16 +125,15 @@ extension MagazinesViewController:UITableViewDataSource {
         currentIssueView.numberOfLines = 2
         currentIssueView.textAlignment = NSTextAlignment.center
         currentIssueView.textColor = UIColor.white
-        currentIssueView.frame = CGRect(origin: CGPoint(x: 0,y :cell.contentView.bounds.height-150), size: CGSize(width: 70, height: 70))
+        currentIssueView.frame = CGRect(origin: CGPoint(x: 0, y: cell.contentView.bounds.height - 150), size: CGSize(width: 70, height: 70))
         currentIssueView.layer.cornerRadius = 35
         currentIssueView.clipsToBounds = true
         currentIssueView.backgroundColor = UIColor.orange
         cell.contentView.addSubview(currentIssueView)
         
-        if(indexPath.section != 0){
+        if(indexPath.section != 0) {
             currentIssueView.removeFromSuperview()
         }
-        
         
         cell.magazineImageView.backgroundColor = UIColor.lightGray
         cell.magazineImageView.setImageWith(NSURL(string: magazine.images[0].url!) as URL!, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
@@ -155,7 +150,6 @@ extension MagazinesViewController:UITableViewDataSource {
         //just return dummy text to overload this methods to show footer
         return " "
     }
-
     
      private func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         
@@ -174,7 +168,7 @@ extension MagazinesViewController:UITableViewDataSource {
     
 }
 
-extension MagazinesViewController : UITableViewDelegate{
+extension MagazinesViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         magazine = Constant.MyClassConstants.magazinesArray![indexPath.section]
@@ -182,5 +176,3 @@ extension MagazinesViewController : UITableViewDelegate{
     }
     
 }
-
-

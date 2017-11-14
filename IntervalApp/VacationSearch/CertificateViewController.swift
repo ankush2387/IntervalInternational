@@ -34,32 +34,32 @@ class CertificateViewController: UIViewController {
         self.getAccommodationCertificateSummary(sendertag: (sender as AnyObject).tag)
     }
     
-    func getAccommodationCertificateSummary(sendertag:Int) {
+    func getAccommodationCertificateSummary(sendertag: Int) {
        
         // show hud
         showHudAsync()
         let number = Constant.MyClassConstants.certificateArray[sendertag].certificateNumber! as NSNumber
         
-        let certificateNumber:String = number.stringValue
+        let certificateNumber: String = number.stringValue
        UserClient.getAccommodationCertificateSummary(Session.sharedSession.userAccessToken, certificateNumber: certificateNumber, onSuccess: { (response) in
         
             self.hideHudAsync()
             self.navigateToCertificateDetailsVC(response: response)
         
-        }, onError: { (error) in
+        }, onError: { (_) in
             self.hideHudAsync()
             })
     }
     
-    func navigateToCertificateDetailsVC(response: AccommodationCertificateSummary)  {
+    func navigateToCertificateDetailsVC(response: AccommodationCertificateSummary) {
         
         if (Constant.MyClassConstants.isRunningOnIphone) {
-            let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.certificateDetailsViewController) as! CertificateDetailsViewController
             viewController.certificateDetailsResponse = response
             self.present(viewController, animated: true, completion: nil)
         } else {
-            let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.certificateDetailsViewController) as! CertificateDetailsViewController
             viewController.certificateDetailsResponse = response
             self.present(viewController, animated: true, completion: nil)
@@ -74,12 +74,12 @@ class CertificateViewController: UIViewController {
     UserClient.getAccommodationCertificates(Session.sharedSession.userAccessToken, onSuccess: { (certificates) in
         self.hideHudAsync()
         Constant.MyClassConstants.certifcateCount = certificates.count
-        Constant.MyClassConstants.certificateArray =  certificates
+        Constant.MyClassConstants.certificateArray = certificates
         self.certificateTable.delegate = self
         self.certificateTable.dataSource = self
         self.certificateTable.reloadData()
         
-        }, onError: { (error) in
+        }, onError: { (_) in
             self.hideHudAsync()
         })
         
@@ -87,8 +87,8 @@ class CertificateViewController: UIViewController {
     
 }
 
-//MARK:- Tableview delegage
-extension CertificateViewController:UITableViewDelegate {
+// MARK: - Tableview delegage
+extension CertificateViewController: UITableViewDelegate {
     
     //***** UITableview delegate methods definition here *****//
     
@@ -98,8 +98,8 @@ extension CertificateViewController:UITableViewDelegate {
     }
 }
 
-//MARK:- Tableview datasource
-extension CertificateViewController:UITableViewDataSource {
+// MARK: - Tableview datasource
+extension CertificateViewController: UITableViewDataSource {
     
     //***** UITableview dataSource methods definition here *****//
     
@@ -112,8 +112,7 @@ extension CertificateViewController:UITableViewDataSource {
         return Constant.MyClassConstants.certifcateCount
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
-    {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.certificateScreenReusableIdentifiers.certificateCell, for: indexPath) as! CertificateCell
         cell.cellBaseView.layer.masksToBounds = true
         cell.cellBaseView.layer.cornerRadius = 5
@@ -123,7 +122,7 @@ extension CertificateViewController:UITableViewDataSource {
         let expireDateString = Constant.MyClassConstants.certificateArray[indexPath.row].expirationDate!
         let myStringArr = expireDateString.components(separatedBy: "-")
         
-        let expireDateFinalString = myStringArr.flatMap({$0}).joined(separator: "/")
+        let expireDateFinalString = myStringArr.flatMap({ $0 }).joined(separator: "/")
         
         cell.expireDate.text = "\(String(describing: Constant.MyClassConstants.certificateArray[indexPath.row].daysOut!)) Days, on \(String(describing: expireDateFinalString))"
         
@@ -139,18 +138,17 @@ extension CertificateViewController:UITableViewDataSource {
         let calendarToDate = Helper.convertStringToDate(dateString: (Constant.MyClassConstants.certificateArray[indexPath.row].travelWindow?.toDate)!, format: Constant.MyClassConstants.dateFormat)
         
         let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-        let startComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: calendarFromDate)
-        let endComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: calendarToDate)
+        let startComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: calendarFromDate)
+        let endComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: calendarToDate)
         let year = String(describing: startComponents.year!)
         let monthName = "\(Helper.getMonthnameFromInt(monthNumber: startComponents.month!))"
         cell.travelWindowStartDateLbl.text = "\(startComponents.day!)".uppercased()
-        cell.travelWindowStartDayLbl.text = "\(Helper.getWeekdayFromInt(weekDayNumber:startComponents.weekday!))"
+        cell.travelWindowStartDayLbl.text = "\(Helper.getWeekdayFromInt(weekDayNumber: startComponents.weekday!))"
         
         cell.travelWindowStartMonthYearLbl.text = "\(monthName) \(year)"
         
-        
         cell.travelWindowEndDateLbl.text = "\(endComponents.day!)"
-        cell.travelWindowEndDayLbl.text = "\(Helper.getWeekdayFromInt(weekDayNumber:endComponents.weekday!))"
+        cell.travelWindowEndDayLbl.text = "\(Helper.getWeekdayFromInt(weekDayNumber: endComponents.weekday!))"
         
         cell.travelWindowEndMonthYearLbl.text = "\(Helper.getMonthnameFromInt(monthNumber: endComponents.month!))  \(String(describing: endComponents.year!))"
         
@@ -166,4 +164,3 @@ extension CertificateViewController:UITableViewDataSource {
     }
     
 }
-

@@ -10,7 +10,6 @@ import UIKit
 
 class FlexchangeDestinationCell: UITableViewCell {
     
-    
     @IBOutlet weak var lblFlexchangeDestination: UILabel!
 
     override func awakeFromNib() {

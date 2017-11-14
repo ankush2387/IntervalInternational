@@ -12,45 +12,40 @@ import LocalAuthentication
 import SVProgressHUD
 import IntervalUIKit
 
-
-
-enum LoginType : String {
+enum LoginType: String {
     case StandardLogin    = "Standard"
     case TouchLogin    = "Touch ID"
    
 }
 
-
-class OldLoginViewController: UIViewController
-{
+class OldLoginViewController: UIViewController {
     //***** Outlets *****//
-    @IBOutlet weak var backgroundImageView : UIImageView!
-    @IBOutlet weak var tableView : UITableView!
-    @IBOutlet var joinTodayButton : UIButton!
-    @IBOutlet var privacyButton : UIButton!
-    var actionSheetTable : UITableView!
-    var activeField:UITextField!
+    @IBOutlet weak var backgroundImageView: UIImageView!
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet var joinTodayButton: UIButton!
+    @IBOutlet var privacyButton: UIButton!
+    var actionSheetTable: UITableView!
+    var activeField: UITextField!
     
     //***** Variables *****//
-    var commonUrl:String!
-    var webviewControllerTitle:String!
+    var commonUrl: String!
+    var webviewControllerTitle: String!
     var userName = ""
     var password = ""
     var touchIdButtonEnabled = false
     let tableViewController = UIViewController()
     
-    
-    open override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation{
+    open override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
         get {
             return UIInterfaceOrientation.portrait
         }
     }
     
-    open override var supportedInterfaceOrientations: UIInterfaceOrientationMask{
+    open override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.portrait
     }
     
-    open override var shouldAutorotate: Bool{
+    open override var shouldAutorotate: Bool {
         get {
             return false
         }
@@ -61,7 +56,7 @@ class OldLoginViewController: UIViewController
         
         // omniture tracking with event 40
         let pageView: [String: String] = [
-            Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.signIn
+            Constant.omnitureEvars.eVar44: Constant.omnitureCommonString.signIn
         ]
         ADBMobile.trackAction(Constant.omnitureEvents.event40, data: pageView)
         
@@ -157,11 +152,9 @@ class OldLoginViewController: UIViewController
         UserDefaults.standard.synchronize()
     }
     
-    
     //***** MARK: - Busisness Actions *****//
     //***** function to call service on login button pressed *****//
-    func loginButtonPressed(_ sender:AnyObject)
-    {
+    func loginButtonPressed(_ sender: AnyObject) {
         if(self.activeField != nil) {
             self.activeField.resignFirstResponder()
         }
@@ -169,7 +162,7 @@ class OldLoginViewController: UIViewController
         // if touch is enabled
         if(self.touchIdButtonEnabled == true) {
             guard self.userName.characters.count > 0 && self.password.characters.count > 0 else {
-                SimpleAlert.alert(self, title:Constant.AlertPromtMessages.loginTitle , message: Constant.AlertMessages.emptyLoginIdMessage)
+                SimpleAlert.alert(self, title: Constant.AlertPromtMessages.loginTitle, message: Constant.AlertMessages.emptyLoginIdMessage)
                 return
             }
             
@@ -180,58 +173,56 @@ class OldLoginViewController: UIViewController
             // touch disabled, perform standard login
         else {
             guard self.userName.characters.count > 0 else {
-                 SimpleAlert.alert(self, title:Constant.AlertPromtMessages.loginTitle , message: Constant.AlertMessages.emptyLoginIdMessage)
+                 SimpleAlert.alert(self, title: Constant.AlertPromtMessages.loginTitle, message: Constant.AlertMessages.emptyLoginIdMessage)
                 return
             }
             
             guard self.password.characters.count > 0 else {
-                SimpleAlert.alert(self, title:Constant.AlertPromtMessages.loginTitle , message: Constant.AlertMessages.emptyPasswordLoginMessage)
+                SimpleAlert.alert(self, title: Constant.AlertPromtMessages.loginTitle, message: Constant.AlertMessages.emptyPasswordLoginMessage)
                 return
             }
             
             let trimmedUsername = self.userName.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             let trimmedPassword = self.password.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             saveUsername(user: trimmedUsername)
-            performStandardLogin(trimmedUsername, password:trimmedPassword)
+            performStandardLogin(trimmedUsername, password: trimmedPassword)
         }
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?){
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let transitionManager = TransitionManager()
         self.navigationController?.transitioningDelegate = transitionManager
     }
     
     //***** function called when user resort directory button pressed *****//
-    func resortDirectoryButtonPressed(_ sender:IUIKButton) {
+    func resortDirectoryButtonPressed(_ sender: IUIKButton) {
         Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.resortFunctionalityCheck
         //sender.enabled = false
-        if(Constant.MyClassConstants.systemAccessToken?.token != nil){
+        if(Constant.MyClassConstants.systemAccessToken?.token != nil) {
             Helper.getResortDirectoryRegionList(viewController: self)
-        }else{
+        } else {
 //            Helper.getSystemAccessToken()
         }
     }
     // *****function called when user magazines button pressed *****//
-    func magazinesButtonPressed(_ sender:AnyObject) {
+    func magazinesButtonPressed(_ sender: AnyObject) {
     
-    if(Constant.MyClassConstants.systemAccessToken?.token != nil){
+    if(Constant.MyClassConstants.systemAccessToken?.token != nil) {
             self.performSegue(withIdentifier: Constant.segueIdentifiers.magazinesSegue, sender: nil)
-        }else{
+        } else {
 //            Helper.getSystemAccessToken()
         }
         
-      
-        
     }
     //***** function called when user favorites button pressed *****//
-    func favoritesButtonPressed(_ sender:AnyObject) {
+    func favoritesButtonPressed(_ sender: AnyObject) {
         
     }
     //***** function called when user intervalHD button pressed *****//
-    func intervalHDButtonPressed(_ sender:AnyObject) {
-        if(Constant.MyClassConstants.systemAccessToken?.token != nil){
+    func intervalHDButtonPressed(_ sender: AnyObject) {
+        if(Constant.MyClassConstants.systemAccessToken?.token != nil) {
             self.performSegue(withIdentifier: Constant.segueIdentifiers.intervalHDSegue, sender: nil)
-        }else{
+        } else {
 //            Helper.getSystemAccessToken()
         }
         
@@ -242,8 +233,7 @@ class OldLoginViewController: UIViewController
 
 // Extension to handler login responsibilities
 extension OldLoginViewController {
-    fileprivate func performStandardLogin(_ username:String, password:String)
-    {
+    fileprivate func performStandardLogin(_ username: String, password: String) {
         // login button pressed, confirm user sign-in
         Helper.loginButtonPressed(sender: self, userName: username, password: password, completionHandler: { (success) in
             if (success) {
@@ -252,15 +242,13 @@ extension OldLoginViewController {
                 // let the login process continue
                 Helper.accessTokenDidChange(sender: self)
                 
-            }
-            else {
+            } else {
                 
             }
         })
     }
     
-    fileprivate func performTouchLogin(_ username:String, password:String)
-    {
+    fileprivate func performTouchLogin(_ username: String, password: String) {
         // login button pressed, confirm user sign-in
 //        Helper.loginButtonPressed(sender: self, userName: username, password: password, completionHandler: { (success) in
 //            if (success)
@@ -289,8 +277,7 @@ extension OldLoginViewController {
 //        })
     }
     
-    fileprivate func performAutoTouchLogin()
-    {
+    fileprivate func performAutoTouchLogin() {
         // grab the saved credentials
 //        self.touchID.getAuthenticationInfo({ (authInfo) in
 //            if (authInfo != nil) {
@@ -317,36 +304,32 @@ extension OldLoginViewController {
     }
 }
 
-extension OldLoginViewController:UITextFieldDelegate {
+extension OldLoginViewController: UITextFieldDelegate {
     
-    func userNameDidChange(_ sender:UITextField) {
+    func userNameDidChange(_ sender: UITextField) {
         self.activeField = sender
         self.userName = sender.text!
     }
     
-    func passwordDidChange(_ sender:UITextField) {
+    func passwordDidChange(_ sender: UITextField) {
         self.activeField = sender
         self.password = sender.text!
     }
     
 }
 
-
-extension OldLoginViewController:UITableViewDelegate {
+extension OldLoginViewController: UITableViewDelegate {
     
     //***** UITableview delegate methods definition here *****//
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         if (indexPath as NSIndexPath).row == 0 {
             return 150
-        }
-        else if (indexPath as NSIndexPath).row == 1 {
+        } else if (indexPath as NSIndexPath).row == 1 {
             return 244
-        }
-        else if (indexPath as NSIndexPath).row == 2 {
+        } else if (indexPath as NSIndexPath).row == 2 {
             return 239
-        }
-        else {
+        } else {
             return 80
         }
         
@@ -354,7 +337,7 @@ extension OldLoginViewController:UITableViewDelegate {
     
 }
 
-extension OldLoginViewController:UITableViewDataSource {
+extension OldLoginViewController: UITableViewDataSource {
     
     //***** UITableview dataSource methods definition here *****//
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -365,15 +348,12 @@ extension OldLoginViewController:UITableViewDataSource {
         return 3
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
-    {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if (indexPath as NSIndexPath).row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.headerCell, for: indexPath) as UITableViewCell
             
-            
             return cell
-        }
-        else if (indexPath as NSIndexPath).row == 1 {
+        } else if (indexPath as NSIndexPath).row == 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.logoFormCell, for: indexPath) as! LoginFormTableViewCell
             
             //***** Setup the username *****//
@@ -408,8 +388,7 @@ extension OldLoginViewController:UITableViewDataSource {
             //***** setup touch id action *****//
             
             return cell
-        }
-        else if (indexPath as NSIndexPath).row == 2 {
+        } else if (indexPath as NSIndexPath).row == 2 {
             
             //***** setting resortDirectory and three other buttons touch up action events *****//
             
@@ -421,9 +400,7 @@ extension OldLoginViewController:UITableViewDataSource {
             cell.buildVersion.text = Helper.getBuildVersion()
             cell.buildVersion.textColor = UIColor.white
             return cell
-        }
-            
-        else {
+        } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.cell, for: indexPath) as UITableViewCell
             return cell
         }
@@ -431,7 +408,7 @@ extension OldLoginViewController:UITableViewDataSource {
     }
 }
 
-extension OldLoginViewController:LoginFormTableViewCellDelegate {
+extension OldLoginViewController: LoginFormTableViewCellDelegate {
     func enableTouchIdButtonAction(_ enable: Bool) {
         //
     }

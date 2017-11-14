@@ -17,12 +17,8 @@ class AvailableDestinationCountryOrContinentsTableViewCell: UITableViewCell {
     @IBOutlet weak var selectdDestinationCountLabel: UILabel?
     
     @IBOutlet weak var expandRegionButton: UIButton!
-    
-
    
     @IBOutlet weak var imgIconPlus: UIImageView?
-        
-    
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -37,11 +33,10 @@ class AvailableDestinationCountryOrContinentsTableViewCell: UITableViewCell {
     - returns : No value is return
     */
     
-    func getCell(_ index:Int,islistOfCountry:Bool = false,selectedPlaceDictionary:[Int:Bool] = [Int:Bool]()){
-        if islistOfCountry{
+    func getCell(_ index: Int, islistOfCountry: Bool = false, selectedPlaceDictionary: [Int: Bool] = [Int: Bool]()) {
+        if islistOfCountry {
             tooglebutton.setImage(UIImage(named: Constant.assetImageNames.upArrowImage), for: UIControlState())
-        }
-        else{
+        } else {
             tooglebutton.setImage(UIImage(named: Constant.assetImageNames.dropArrow), for: UIControlState())
 
         }
@@ -56,12 +51,12 @@ class AvailableDestinationCountryOrContinentsTableViewCell: UITableViewCell {
     - parameter No parameter:
     - returns : No value is return
     */
-    fileprivate func setPropertiesToCellComponents(){
+    fileprivate func setPropertiesToCellComponents() {
         //selectdDestinationCountLabel.layer.cornerRadius = selectdDestinationCountLabel.bounds.size.width/2
        // selectdDestinationCountLabel.layer.masksToBounds = true
        // selectdDestinationCountLabel.backgroundColor = UIColor(rgb:IUIKColorPalette.Alert.rawValue)
     }
-    func setDataForAllAvailableDestinations(index:Int){
+    func setDataForAllAvailableDestinations(index: Int) {
         guard let region = Constant.MyClassConstants.regionArray[index].regionName else {
             return
         }

@@ -22,13 +22,13 @@ class ResortDirectoryCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var regionNameLabel: UILabel!
     @IBOutlet weak var regionAreaLabel: UILabel!
     @IBOutlet weak var regionResortCode: UILabel!
-    @IBOutlet weak var resortImageView:UIImageView!
-    @IBOutlet weak var favoriteButton:IUIKButton!
-    @IBOutlet weak var resortNameGradientView:UIView!
-    @IBOutlet weak var tierImageView:UIImageView!
+    @IBOutlet weak var resortImageView: UIImageView!
+    @IBOutlet weak var favoriteButton: IUIKButton!
+    @IBOutlet weak var resortNameGradientView: UIView!
+    @IBOutlet weak var tierImageView: UIImageView!
     
     //***** class variables *****//
-    var delegate:ResortDirectoryCollectionViewCellDelegate?
+    var delegate: ResortDirectoryCollectionViewCellDelegate?
 
 //***** custom cell favorites button action implementation *****//
 @IBAction func feboriteButtonPressed(_ sender: UIButton) {
@@ -36,8 +36,7 @@ class ResortDirectoryCollectionViewCell: UICollectionViewCell {
         
         sender.isSelected = true
         self.delegate?.favoriteCollectionButtonClicked(sender)
-    }
-    else {
+    } else {
         
         sender.isSelected = false
         self.delegate?.unfavoriteCollectionButtonClicked(sender)

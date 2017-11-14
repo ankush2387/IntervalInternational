@@ -9,7 +9,6 @@
 import UIKit
 
 class SearchResultDateCell: UICollectionViewCell {
-    
 
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var dayNameLabel: UILabel!

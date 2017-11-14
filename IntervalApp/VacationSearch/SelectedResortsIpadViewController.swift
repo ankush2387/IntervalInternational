@@ -12,15 +12,15 @@ import IntervalUIKit
 
 class SelectedResortsIpadViewController: UIViewController {
     
-    //MARK:- clas  outlets
+    // MARK: - clas  outlets
     @IBOutlet weak var selectedResortsTableView: UITableView!
     
-    //MARK:- class varibles
+    // MARK: - class varibles
     var areaDictionary = NSMutableDictionary()
     var areasInRegionArray = [String]()
     var selectedCounter = 0
 
-    //MARK:- life cycle
+    // MARK: - life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -32,7 +32,7 @@ class SelectedResortsIpadViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    //MARK:- button events
+    // MARK: - button events
     @IBAction func doneButtonClicked(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -48,8 +48,8 @@ class SelectedResortsIpadViewController: UIViewController {
     */
 }
 
-//MARK:- table view datasource
-extension SelectedResortsIpadViewController:UITableViewDataSource {
+// MARK: - table view datasource
+extension SelectedResortsIpadViewController: UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
         
@@ -59,32 +59,30 @@ extension SelectedResortsIpadViewController:UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
        
-        let sectionArray : NSMutableArray
+        let sectionArray: NSMutableArray
         sectionArray = areaDictionary.allKeys as! NSMutableArray
         
-        if let areas = areaDictionary.value(forKey: sectionArray[section] as! String){
+        if let areas = areaDictionary.value(forKey: sectionArray[section] as! String) {
             
             let areasInRegionArray = areas
             return (areasInRegionArray as AnyObject).count
             
-        }else{
+        } else {
             
             return 0
         }
         
-        
     }
-    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.selectedResortsCell) as! SelectedResortsCell
         
         let dicKey = Array(areaDictionary)[indexPath.section].key
-        if let areas = areaDictionary.value(forKey: dicKey as! String){
+        if let areas = areaDictionary.value(forKey: dicKey as! String) {
             
-            let localArray:NSMutableArray = NSMutableArray()
+            let localArray: NSMutableArray = NSMutableArray()
             
-            for object in areas as! [String]{
+            for object in areas as! [String] {
                 
                 localArray.add(object)
             }
@@ -97,10 +95,10 @@ extension SelectedResortsIpadViewController:UITableViewDataSource {
     
 }
 
-//MARK:- table view delegate
-extension SelectedResortsIpadViewController:UITableViewDelegate {
+// MARK: - table view delegate
+extension SelectedResortsIpadViewController: UITableViewDelegate {
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)  {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
     }
     
@@ -113,16 +111,16 @@ extension SelectedResortsIpadViewController:UITableViewDelegate {
         if (editingStyle == UITableViewCellEditingStyle.delete) {
            
             let dicKey = Array(areaDictionary)[indexPath.section].key
-            if let areas = areaDictionary.value(forKey: dicKey as! String){
+            if let areas = areaDictionary.value(forKey: dicKey as! String) {
                 
-                let localArray:NSMutableArray = NSMutableArray()
-                for object in areas as! [String]{
+                let localArray: NSMutableArray = NSMutableArray()
+                for object in areas as! [String] {
                     
                     localArray.add(object)
                 }
                 
-                for value in Constant.MyClassConstants.selectedAreaCodeDictionary.allValues{
-                    if(value as! String == localArray[indexPath.row] as! String){
+                for value in Constant.MyClassConstants.selectedAreaCodeDictionary.allValues {
+                    if(value as! String == localArray[indexPath.row] as! String) {
                         let key = Constant.MyClassConstants.selectedAreaCodeDictionary.allKeys(for: value)
                         intervalPrint(key)
                         Constant.MyClassConstants.selectedAreaCodeDictionary.removeObject(forKey: "\(key[0])")
@@ -133,9 +131,9 @@ extension SelectedResortsIpadViewController:UITableViewDelegate {
                 }
                 localArray.removeObject(at: indexPath.row)
                 selectedCounter = -1
-                if(localArray.count > 0){
+                if(localArray.count > 0) {
                     areaDictionary.setValue(localArray, forKey: dicKey as! String)
-                }else{
+                } else {
                     areaDictionary.removeObject(forKey: dicKey as! String)
                 }
                 
@@ -158,9 +156,9 @@ extension SelectedResortsIpadViewController:UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        let view  = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 30))
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 30))
         
-        view.backgroundColor = UIColor.init(colorLiteralRed: 102/255.0, green: 102/255.0, blue: 102/255.0, alpha: 1.0)
+        view.backgroundColor = UIColor(colorLiteralRed: 102 / 255.0, green: 102 / 255.0, blue: 102 / 255.0, alpha: 1.0)
         
         // set shadow color
         
@@ -171,13 +169,13 @@ extension SelectedResortsIpadViewController:UITableViewDelegate {
         view.layer.shadowRadius = 2
         view.layer.shadowPath = UIBezierPath(rect: view.bounds).cgPath
         
-        let headerNameLabel = UILabel(frame: CGRect(x: 20, y: 0, width: view.frame.size.width-20, height: 30))
+        let headerNameLabel = UILabel(frame: CGRect(x: 20, y: 0, width: view.frame.size.width - 20, height: 30))
         
-        let headerArray : NSMutableArray
+        let headerArray: NSMutableArray
         headerArray = areaDictionary.allKeys as! NSMutableArray
         headerNameLabel.text = headerArray[section] as? String
         headerNameLabel.textColor = UIColor.lightGray
-        headerNameLabel.font = UIFont(name:Constant.fontName.helveticaNeue, size:15)
+        headerNameLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15)
         
         view.addSubview(headerNameLabel)
        

@@ -31,14 +31,13 @@ class RelinquishmentDetailsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
     @IBAction func onClickDone(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
     
 }
 
-extension RelinquishmentDetailsViewController:UITableViewDataSource, UITableViewDelegate {
+extension RelinquishmentDetailsViewController: UITableViewDataSource, UITableViewDelegate {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
@@ -50,8 +49,6 @@ extension RelinquishmentDetailsViewController:UITableViewDataSource, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let objRelinquishment = Constant.MyClassConstants.filterRelinquishments[0]
-
-        
         
         if (indexPath.section == 0) {
             
@@ -60,18 +57,15 @@ extension RelinquishmentDetailsViewController:UITableViewDataSource, UITableView
             cell.layer.borderColor = UIColor.lightGray.cgColor  // set cell border color here
             cell.layer.borderWidth = 2*/
             
-            if(resort != nil){
-                if (Constant.MyClassConstants.resortsArray[indexPath.section].images.count>0){
+            if(resort != nil) {
+                if (Constant.MyClassConstants.resortsArray[indexPath.section].images.count > 0) {
                     
-                    
-                    
-                    cell.resortImage.setImageWith(URL(string: Constant.MyClassConstants.imagesArray[(indexPath as NSIndexPath).row] as! String), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
+                    cell.resortImage.setImageWith(URL(string: Constant.MyClassConstants.imagesArray[(indexPath as NSIndexPath).row] as! String), completed: { (image:UIImage?, error:Error?, _:SDImageCacheType, _:URL?) in
                         if (error != nil) {
                             cell.resortImage.image = UIImage(named: Constant.MyClassConstants.noImage)
                         }
                     }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
-                }
-                else {
+                } else {
                     
                 }
             }
@@ -101,15 +95,14 @@ extension RelinquishmentDetailsViewController:UITableViewDataSource, UITableView
             cell.layer.borderWidth = 2*/
             
             let dateString = objRelinquishment.openWeek!.checkInDate
-            let date =  Helper.convertStringToDate(dateString: dateString!, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
+            let date = Helper.convertStringToDate(dateString: dateString!, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
             let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-            let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: date)
+            let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: date)
             let day = myComponents.day!
             var month = ""
             if(day < 10) {
                 month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) 0\(day)"
-            }
-            else {
+            } else {
                 month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \(day)"
             }
             
@@ -122,7 +115,7 @@ extension RelinquishmentDetailsViewController:UITableViewDataSource, UITableView
             
             cell.resortName.text = objRelinquishment.openWeek?.resort?.resortName!
            
-            cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType:(objRelinquishment.openWeek?.unit!.unitSize!)!))), \(Helper.getKitchenEnums(kitchenType:(objRelinquishment.openWeek?.unit!.kitchenType!)!))"
+            cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType: (objRelinquishment.openWeek?.unit!.unitSize!)!))), \(Helper.getKitchenEnums(kitchenType: (objRelinquishment.openWeek?.unit!.kitchenType!)!))"
             cell.totalSleepAndPrivate.text = "Sleeps \(String(describing: objRelinquishment.openWeek!.unit!.publicSleepCapacity)), \(String(describing: objRelinquishment.openWeek!.unit!.privateSleepCapacity)) Private"
 
             return cell

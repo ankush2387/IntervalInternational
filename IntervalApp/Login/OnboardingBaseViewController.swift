@@ -25,8 +25,6 @@ class OnboardingBaseViewController: UIPageViewController, UIPageViewControllerDa
                                 "Choose one or more resorts or destinations by name, or select resorts from the map.",
                                 "View your upcoming vacations all in one place with fast and easy access to your trip confirmation details. Share your reservation information with friends and family.", "Your finger is all you need to access your account. Sign in quickly and securely on phones and tablets that support fingerprint recognition."]
     
-
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -36,7 +34,6 @@ class OnboardingBaseViewController: UIPageViewController, UIPageViewControllerDa
         setViewControllers([cardVC], direction: .forward, animated: true, completion: nil)
         
     }
-    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -66,7 +63,7 @@ class OnboardingBaseViewController: UIPageViewController, UIPageViewControllerDa
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        let index  = viewController.view.tag
+        let index = viewController.view.tag
         
         if index == cardTopicTitles.count - 1 {
             return nil
@@ -76,7 +73,7 @@ class OnboardingBaseViewController: UIPageViewController, UIPageViewControllerDa
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-         let index  = viewController.view.tag
+         let index = viewController.view.tag
         if index == 0 {
             return nil
         } else {
@@ -85,4 +82,3 @@ class OnboardingBaseViewController: UIPageViewController, UIPageViewControllerDa
     }
 
 }
-

@@ -27,7 +27,7 @@ class ResortDetailCellTableViewCell: UITableViewCell {
     - parameter No Parameter:
     - returns : No value is return
     */
-    func getCell(){
+    func getCell() {
         setProperties()
         updateCellComponentsText()
     }
@@ -36,7 +36,7 @@ class ResortDetailCellTableViewCell: UITableViewCell {
     - parameter No parameter :
     - returns : No value is return
     */
-    private func setProperties(){
+    private func setProperties() {
         resortNameLabel.textColor = UIColor(rgb: IUIKColorPalette.PrimaryText.rawValue)
         resortPlaceLabel.textColor = UIColor(rgb: IUIKColorPalette.PrimaryText.rawValue)
 
@@ -47,7 +47,7 @@ class ResortDetailCellTableViewCell: UITableViewCell {
     - parameter No parameter:
     - returns : No value is return
     */
-    private func updateCellComponentsText(){
+    private func updateCellComponentsText() {
         resortNameLabel.text = "Hayat Vacation resorts"
         resortPlaceLabel.text = "Jupitar,FL"
         resortCodeLabel.text = "JBS"

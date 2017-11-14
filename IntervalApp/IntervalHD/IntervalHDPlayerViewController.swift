@@ -14,15 +14,13 @@ import IntervalUIKit
 class IntervalHDPlayerViewController: UIViewController {
     
     //***** class variables//
-    var video : Video?
-    var controller : BCOVPlaybackController?
-    @IBOutlet var videoContainerView:UIView!
-    var doneButton:IUIKButton!
-    var playerView:BCOVPUIPlayerView!
+    var video: Video?
+    var controller: BCOVPlaybackController?
+    @IBOutlet var videoContainerView: UIView!
+    var doneButton: IUIKButton!
+    var playerView: BCOVPUIPlayerView!
     var timer = Timer()
     //***** Outlets *****//
-    
-    
     
     // ** Customize these values with your own account information ** //
     
@@ -50,37 +48,35 @@ class IntervalHDPlayerViewController: UIViewController {
         
         // Create and configure Control View
         let controlsView = BCOVPUIBasicControlView.withVODLayout()
-        playerView = BCOVPUIPlayerView.init(playbackController: self.controller, options: options, controlsView: controlsView)!
+        playerView = BCOVPUIPlayerView(playbackController: self.controller, options: options, controlsView: controlsView)!
         
         playerView.delegate = self
         playerView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-        playerView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.height,height: UIScreen.main.bounds.size.width)
-        videoContainerView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.height,height: UIScreen.main.bounds.size.width)
+        playerView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.height, height: UIScreen.main.bounds.size.width)
+        videoContainerView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.height, height: UIScreen.main.bounds.size.width)
         videoContainerView.addSubview(playerView)
         
         requestContentFromPlaybackService()
     }
     
-    
-    override var shouldAutorotate : Bool {
+    override var shouldAutorotate: Bool {
         return false
     }
-    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         
-        return [UIInterfaceOrientationMask.landscapeLeft,UIInterfaceOrientationMask.landscapeRight]
+        return [UIInterfaceOrientationMask.landscapeLeft, UIInterfaceOrientationMask.landscapeRight]
         
     }
-    override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation{
+    override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
         
         return .landscapeLeft
         
     }
     
-    
     func requestContentFromPlaybackService() {
         
         playbackService?.findVideo(withVideoID: video?.externalRefId ?? "", parameters: nil) {
-            (video: BCOVVideo?, dict: [AnyHashable:Any]?, error: Error?) in
+            (video: BCOVVideo?, _: [AnyHashable: Any]?, _: Error?) in
             if let v = video {
                 self.controller?.setVideos([v] as NSFastEnumeration!)
             } else {
@@ -96,45 +92,43 @@ class IntervalHDPlayerViewController: UIViewController {
     
         if(UIDevice.current.userInterfaceIdiom == .phone) {
             
-            if(UIDevice.current.orientation == .portrait || UIDevice.current.orientation == .faceUp || UIDevice.current.orientation == .faceDown){
+            if(UIDevice.current.orientation == .portrait || UIDevice.current.orientation == .faceUp || UIDevice.current.orientation == .faceDown) {
                 
-                videoContainerView.frame = CGRect(x:0, y:0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+                videoContainerView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
                 
-                playerView.frame = CGRect(x: 0, y:0, width: UIScreen.main.bounds.width,height: UIScreen.main.bounds.height)
+                playerView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
                 
-            }else{
+            } else {
                 
-                videoContainerView.frame = CGRect(x:0, y:0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-                playerView.frame = CGRect(x: 0, y:0, width: UIScreen.main.bounds.width,height: UIScreen.main.bounds.height)
+                videoContainerView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+                playerView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
                 
             }
             
+        } else {
+            
+            videoContainerView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+            
+            playerView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+            
         }
-        else {
-            
-            videoContainerView.frame = CGRect(x:0, y:0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-            
-            playerView.frame = CGRect(x: 0, y:0, width: UIScreen.main.bounds.width,height: UIScreen.main.bounds.height)
-            
-        }
-        
         
         self.videoContainerView.backgroundColor = UIColor.blue
         self.view.addSubview(videoContainerView)
         createDoneButton()
-        if(self.controller != nil){
+        if(self.controller != nil) {
             self.controller!.play()
         }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         
-        videoContainerView = UIView(frame: CGRect(x:0, y:0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
+        videoContainerView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
         
     }
     
     //****** Function to create done button to dismiss the video screen. ******//
-    func createDoneButton(){
+    func createDoneButton() {
         
         doneButton = IUIKButton(frame: CGRect(x: UIScreen.main.bounds.width - 90, y: 20, width: 80, height: 40))
         
@@ -148,24 +142,23 @@ class IntervalHDPlayerViewController: UIViewController {
         self.videoContainerView.addSubview(doneButton)
         
     }
-    func doneButtonPressed(sender:IUIKButton) {
+    func doneButtonPressed(sender: IUIKButton) {
         self.navigationController?.isNavigationBarHidden = false
         self.dismiss(animated: true, completion: nil)
     }
     func showDoneButton() {
         
-        UIView.animate (withDuration: 0.2, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn ,animations: {
+        UIView.animate (withDuration: 0.2, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn, animations: {
             self.doneButton.frame = CGRect(x: UIScreen.main.bounds.width - 90, y: 20, width: 80, height: 40)
             
         }, completion: { _ in
             self.doneButton.isHidden = false
         })
         
-        
     }
     func hideDoneButton() {
         
-        UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn ,animations: {
+        UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn, animations: {
             self.doneButton.frame = CGRect(x: UIScreen.main.bounds.width - 90, y: -110, width: 80, height: 40)
             
         }, completion: { _ in
@@ -174,10 +167,10 @@ class IntervalHDPlayerViewController: UIViewController {
         
     }
 }
-extension IntervalHDPlayerViewController:BCOVPlaybackControllerDelegate {
+extension IntervalHDPlayerViewController: BCOVPlaybackControllerDelegate {
     
 }
-extension IntervalHDPlayerViewController:BCOVPUIPlayerViewDelegate {
+extension IntervalHDPlayerViewController: BCOVPUIPlayerViewDelegate {
     
     func playerView(_ playerView: BCOVPUIPlayerView!, controlsFadingViewDidFadeOut controlsFadingView: UIView!) {
         

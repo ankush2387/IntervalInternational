@@ -12,8 +12,8 @@ class ResortsTableViewCell: UITableViewCell {
     
     //***** Outlets *****//
     @IBOutlet weak var resortLocationName: UILabel!
-    @IBOutlet weak var resortCityName:UILabel!
-    @IBOutlet weak var resortCode:UILabel!
+    @IBOutlet weak var resortCityName: UILabel!
+    @IBOutlet weak var resortCode: UILabel!
     @IBOutlet weak var selectionButton: UIButton!
     
     @IBOutlet weak var addResortButton: UIButton!

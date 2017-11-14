@@ -8,8 +8,7 @@
 
 import Foundation
 import UIKit
-class TransitionManager: NSObject,UIViewControllerAnimatedTransitioning,UIViewControllerTransitioningDelegate
-{
+class TransitionManager: NSObject, UIViewControllerAnimatedTransitioning, UIViewControllerTransitioningDelegate {
     // MARK: UIViewControllerAnimatedTransitioning protocol methods
     
     // animate a change from one viewcontroller to another
@@ -40,12 +39,12 @@ class TransitionManager: NSObject,UIViewControllerAnimatedTransitioning,UIViewCo
         // for this example, just slid both fromView and toView to the left at the same time
         // meaning fromView is pushed off the screen and toView slides into view
         // we also use the block animation usingSpringWithDamping for a little bounce
-        UIView.animate(withDuration: duration, delay: 0.0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.8, options:UIViewAnimationOptions(), animations: {
+        UIView.animate(withDuration: duration, delay: 0.0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.8, options: UIViewAnimationOptions(), animations: {
             
             fromView.transform = offScreenLeft
             toView.transform = CGAffineTransform.identity
             
-        }, completion: { finished in
+        }, completion: { _ in
             
             // tell our transitionContext object that we've finished animating
             transitionContext.completeTransition(true)

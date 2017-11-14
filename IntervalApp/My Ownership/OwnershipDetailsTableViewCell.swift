@@ -9,20 +9,17 @@
 import UIKit
 
 class OwnershipDetailsTableViewCell: UITableViewCell {
-
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
-    //MARK:get cell
-    func getCell()
-    {
+    // MARK: get cell
+    func getCell() {
         self.setPropertiesToCellElements()
     }
-    //MARK:set properties to elements of cell
-    fileprivate func setPropertiesToCellElements()
-    {
+    // MARK: set properties to elements of cell
+    fileprivate func setPropertiesToCellElements() {
         // totalPointLabel.text = "65,000"
     }
 

@@ -10,32 +10,29 @@ import UIKit
 import DarwinSDK
 import IntervalUIKit
 
-class CommonMembership: NSObject,UITableViewDataSource, UITableViewDelegate{
+class CommonMembership: NSObject, UITableViewDataSource, UITableViewDelegate {
     
-    func numberOfSections(in tableView: UITableView) -> Int
-    {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if(tableView.tag == 100){
-            if((indexPath as NSIndexPath).row == 0){
+        if(tableView.tag == 100) {
+            if((indexPath as NSIndexPath).row == 0) {
                 return 150
-            }else{
+            } else {
                 return 50
             }
-        }else{
+        } else {
             return 70
         }
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
-    {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let contact = Session.sharedSession.contact
         return (contact?.memberships?.count)!
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
-    {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let contact = Session.sharedSession.contact
         let membership = contact?.memberships![indexPath.row]
         let nib: [Any]? = Bundle.main.loadNibNamed(Constant.customCellNibNames.actionSheetTblCell, owner: nil, options: nil)

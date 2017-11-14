@@ -14,7 +14,6 @@ class FloatSaveAndCancelButtonTableViewCell: UITableViewCell {
     
     @IBOutlet weak var cancelButton: UIButton!
     
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -24,7 +23,7 @@ class FloatSaveAndCancelButtonTableViewCell: UITableViewCell {
     - parameter No parameter:
     - returns : No value is return
     */
-    func getCell(){
+    func getCell() {
         
     }
     /**
@@ -32,7 +31,7 @@ class FloatSaveAndCancelButtonTableViewCell: UITableViewCell {
     - parameter No parameter:
     - returns : No value is return
     */
-    fileprivate func setPropertiesToCellComponents(){
+    fileprivate func setPropertiesToCellComponents() {
         saveFloatDetailButton.tintColor = UIColor.white
         saveFloatDetailButton.backgroundColor = UIColor(rgb: IUIKColorPalette.secondaryA.rawValue)
         cancelButton.tintColor = UIColor(rgb: IUIKColorPalette.primary1.rawValue)
@@ -44,7 +43,7 @@ class FloatSaveAndCancelButtonTableViewCell: UITableViewCell {
     - parameter No parameter:
     - returns : No value is return
     */
-    fileprivate func updateCellComponetsText(){
+    fileprivate func updateCellComponetsText() {
         saveFloatDetailButton.setTitle(Constant.floatDetailViewController.floatSaveAndCancelButtonTableViewCell.saveFloatDetailButtonTitle, for: UIControlState())
         cancelButton.setTitle(Constant.buttonTitles.cancel, for: UIControlState())
     }

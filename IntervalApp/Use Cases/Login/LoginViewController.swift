@@ -78,8 +78,8 @@ final class LoginViewController: UIViewController {
 
     private func setSplashScreenAnimation() {
         let initialIconSize = CGSize(width: 168, height: 44)
-        let splashScreenBackgroundColor = UIColor(red:0.24, green:0.51, blue:0.76, alpha:1.0)
-        let simpleRevealingAppLaunchView = SimpleRevealingAppLaunchView(iconImage:  #imageLiteral(resourceName: "Interval_Splash_Logo "),
+        let splashScreenBackgroundColor = UIColor(red: 0.24, green: 0.51, blue: 0.76, alpha: 1.0)
+        let simpleRevealingAppLaunchView = SimpleRevealingAppLaunchView(iconImage: #imageLiteral(resourceName: "Interval_Splash_Logo "),
                                                                iconInitialSize: initialIconSize,
                                                                backgroundColor: splashScreenBackgroundColor)
 
@@ -265,7 +265,7 @@ extension LoginViewController {
     func resortDirectoryButtonTapped() {
         Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.resortFunctionalityCheck
         let storyboardName = isRunningOnIphone ? Constant.storyboardNames.iphone : Constant.storyboardNames.resortDirectoryIpad
-        if let initialViewController = UIStoryboard(name:storyboardName, bundle: nil).instantiateInitialViewController() {
+        if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
             show(initialViewController, sender: self)
         }
     }
@@ -279,14 +279,14 @@ extension LoginViewController {
     
     func magazinesButtonTapped() {
         let storyboardName = isRunningOnIphone ? Constant.storyboardNames.magazinesIphone : Constant.storyboardNames.magazinesIpad
-        if let initialViewController = UIStoryboard(name:storyboardName, bundle: nil).instantiateInitialViewController() {
+        if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
             show(initialViewController, sender: self)
         }
     }
     
     func privacyButtonTapped() {
         let storyboardName = isRunningOnIphone ? Constant.storyboardNames.loginIPhone : Constant.storyboardNames.loginIPad
-        let storyboard = UIStoryboard(name:storyboardName, bundle: nil)
+        let storyboard = UIStoryboard(name: storyboardName, bundle: nil)
         let initialViewController = storyboard.instantiateViewController(withIdentifier: "PrivacyLegalViewController")
         navigationController?.pushViewController(initialViewController, animated: true)
     }

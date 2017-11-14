@@ -19,21 +19,18 @@ class MoreCell: UICollectionViewCell {
     
     @IBOutlet weak var lblHeader: UILabel!
     
-    
-    func setDateForBucket(index: Int, selectedIndex: Int, color: String){
+    func setDateForBucket(index: Int, selectedIndex: Int, color: String) {
         
         setUpCell(index: index, collectionViewSelectedIndex: selectedIndex, dateSelectionColor: color)
-
         
         let startDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.calendarDatesArray[index].intervalStartDate!, format: Constant.MyClassConstants.dateFormat)
         let endDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.calendarDatesArray[index].intervalEndDate!, format: Constant.MyClassConstants.dateFormat)
         
-        
-        intervalPrint(startDate,endDate)
+        intervalPrint(startDate, endDate)
         
         let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-        let startComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: startDate)
-        let endComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: endDate)
+        let startComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: startDate)
+        let endComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: endDate)
         let startYear = String(describing: startComponents.year!)
         let endYear = String(describing: endComponents.year!)
         
@@ -45,7 +42,7 @@ class MoreCell: UICollectionViewCell {
         
     }
     
-    func setUpCell(index:Int, collectionViewSelectedIndex: Int, dateSelectionColor:String){
+    func setUpCell(index: Int, collectionViewSelectedIndex: Int, dateSelectionColor: String) {
         self.layer.cornerRadius = 7
         self.layer.borderWidth = 2
         self.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor

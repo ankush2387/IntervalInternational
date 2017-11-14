@@ -9,13 +9,10 @@
 import UIKit
 
 class ResortBedroomDetailExchangeCell: UITableViewCell {
-
-    
     
     @IBOutlet weak var dayAndDateLabel: UILabel!
     @IBOutlet weak var yearlabel: UILabel!
     @IBOutlet weak var weekLabel: UILabel!
-    
     
     override func awakeFromNib() {
         super.awakeFromNib()

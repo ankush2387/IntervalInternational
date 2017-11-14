@@ -14,7 +14,6 @@ class FloatDetailsCheckIndateTableViewCell: UITableViewCell {
     
     @IBOutlet weak var checkInDateDetailLabel: UILabel!
     
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -25,7 +24,7 @@ class FloatDetailsCheckIndateTableViewCell: UITableViewCell {
     - parameter No parameter:
     - returns : No value is return
     */
-    func getCell(){
+    func getCell() {
         
     }
     /** 
@@ -33,8 +32,8 @@ class FloatDetailsCheckIndateTableViewCell: UITableViewCell {
     - parameter No parameter:
     - returns : No value is return
     */
-    fileprivate func setPropertiesToCellComponents(){
-        checkInDateInformationLabel.textColor = UIColor(rgb:IUIKColorPalette.secondaryText.rawValue)
+    fileprivate func setPropertiesToCellComponents() {
+        checkInDateInformationLabel.textColor = UIColor(rgb: IUIKColorPalette.secondaryText.rawValue)
         checkInDateDetailLabel.textColor = UIColor(rgb: IUIKColorPalette.primary1.rawValue)
         
     }
@@ -43,7 +42,7 @@ class FloatDetailsCheckIndateTableViewCell: UITableViewCell {
     - parameter No parameter:
     - returns : No value is return
     */
-    fileprivate func updateCellComponetsText(){
+    fileprivate func updateCellComponetsText() {
         checkInDateInformationLabel.text = Constant.floatDetailViewController.floatDetailsCheckIndateTableViewCell.checkInDateInformationLabelText
     }
     

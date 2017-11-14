@@ -16,7 +16,6 @@ class CaledarDateCell: UITableViewCell {
     @IBOutlet weak var dateMonthYearLabel: UILabel!
     @IBOutlet weak var calendarIconButton: UIButton!
     
-    
     @IBOutlet weak var checkInDayDateLabel: UILabel!
     @IBOutlet weak var checkInDayNameLabel: UILabel!
     @IBOutlet weak var checkInMonthYearLabel: UILabel!

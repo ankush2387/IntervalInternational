@@ -11,7 +11,6 @@ import IntervalUIKit
 
 class SelectPaymentMethodCell: UITableViewCell {
     
-    
     @IBOutlet weak var cardImageView: UIImageView!
     @IBOutlet weak var cardLastFourDigitNumber: UILabel!
     @IBOutlet weak var expireDate: UILabel!
@@ -28,7 +27,6 @@ class SelectPaymentMethodCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
         
     }
 

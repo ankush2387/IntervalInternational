@@ -11,16 +11,14 @@ import IntervalUIKit
 
 class RelinquishmentWhatToUseViewController: UIViewController {
     
-    
-    
     @IBOutlet weak var whatToUsetableview: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title  = Constant.ControllerTitles.choosewhattouse
+        self.title = Constant.ControllerTitles.choosewhattouse
         
-        let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(AccomodationCertsDetailController.menuBackButtonPressed(_:)))
+        let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(AccomodationCertsDetailController.menuBackButtonPressed(_:)))
         menuButton.tintColor = UIColor.white
         
         self.navigationItem.leftBarButtonItem = menuButton
@@ -33,17 +31,15 @@ class RelinquishmentWhatToUseViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-     func menuBackButtonPressed(_ sender:UIBarButtonItem) {
+     func menuBackButtonPressed(_ sender: UIBarButtonItem) {
         
          self.dismiss(animated: true, completion: nil)
     }
- 
   
     @IBAction func onDetailButtonClick(_ sender: Any) {
         
         self.performSegue(withIdentifier: Constant.segueIdentifiers.showDestinationResortsSegue, sender: nil)
     }
- 
 
 }
 
@@ -51,21 +47,19 @@ extension RelinquishmentWhatToUseViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if(section == 0){
+        if(section == 0) {
             
             return Constant.MyClassConstants.filterRelinquishments.count + 1
-        }
-        else{
+        } else {
             
             return 1
         }
-        
         
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if(indexPath.section == 0){
+        if(indexPath.section == 0) {
             
             if(indexPath.row == 0) {
                 
@@ -76,12 +70,10 @@ extension RelinquishmentWhatToUseViewController: UITableViewDataSource {
                     cell.borderView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
                 
                 return cell
-            }
-            else{
-                let exchange = Constant.MyClassConstants.filterRelinquishments[indexPath.row-1]
+            } else {
+                let exchange = Constant.MyClassConstants.filterRelinquishments[indexPath.row - 1]
                 
-                
-                if((exchange.openWeek) != nil){
+                if((exchange.openWeek) != nil) {
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell1, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
 //                    cell.contentView.layer.cornerRadius = 7
 //                    cell.resortDetailsView.layer.borderColor = UIColor.clear.cgColor
@@ -90,28 +82,26 @@ extension RelinquishmentWhatToUseViewController: UITableViewDataSource {
                     cell.resortName.text = exchange.openWeek?.resort?.resortName!
                     cell.yearLabel.text = "\(String(describing: (exchange.openWeek?.relinquishmentYear!)!))"
                     cell.totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: (exchange.openWeek?.weekNumber!)!))"
-                    cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType:(exchange.openWeek?.unit!.unitSize!)!))), \(Helper.getKitchenEnums(kitchenType:(exchange.openWeek?.unit!.kitchenType!)!))"
+                    cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType: (exchange.openWeek?.unit!.unitSize!)!))), \(Helper.getKitchenEnums(kitchenType: (exchange.openWeek?.unit!.kitchenType!)!))"
                     cell.totalSleepAndPrivate.text = "Sleeps \(String(describing: exchange.openWeek!.unit!.publicSleepCapacity)), \(String(describing: exchange.openWeek!.unit!.privateSleepCapacity)) Private"
                     let date = exchange.openWeek!.checkInDates
                     if(date.count > 0) {
                         
                         let dateString = date[0]
-                        let date =  Helper.convertStringToDate(dateString: dateString, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
+                        let date = Helper.convertStringToDate(dateString: dateString, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
                         let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                        let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: date)
+                        let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: date)
                         let day = myComponents.day!
                         var month = ""
                         if(day < 10) {
                             month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) 0\(day)"
-                        }
-                        else {
+                        } else {
                             month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \(day)"
                         }
                         
                         cell.dayAndDateLabel.text = month.uppercased()
                         
-                    }
-                    else {
+                    } else {
                         
                         cell.dayAndDateLabel.text = ""
                     }
@@ -120,33 +110,27 @@ extension RelinquishmentWhatToUseViewController: UITableViewDataSource {
                     cell.mainView.layer.borderWidth = 2
                     cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
                     return cell
-                }else{
+                } else {
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell0, for: indexPath) as! ExchangeCell0
                     cell.contentBackgroundView.layer.cornerRadius = 7
                     Helper.applyShadowOnUIView(view: cell.contentBackgroundView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 2)
                     cell.selectionStyle = UITableViewCellSelectionStyle.none
                     return cell
                 }
-
                
             }
 
-        }
-        
-        else{
+        } else {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.relinquishmentForExchange, for: indexPath) as UITableViewCell
             return cell
         }
         
-        
     }
     
 }
 
-
-
-extension RelinquishmentWhatToUseViewController: UITableViewDelegate{
+extension RelinquishmentWhatToUseViewController: UITableViewDelegate {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
@@ -161,36 +145,30 @@ extension RelinquishmentWhatToUseViewController: UITableViewDelegate{
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 20))
         let headerLabel = UILabel(frame: CGRect(x: 30, y: 0, width: tableView.bounds.width - 60, height: 30))
         
-        if(section == 0){
-            headerView.backgroundColor =  IUIKColorPalette.titleBackdrop.color
+        if(section == 0) {
+            headerView.backgroundColor = IUIKColorPalette.titleBackdrop.color
             headerLabel.text = "Exchange"// Header Name
             headerLabel.textColor = UIColor.darkGray
             headerView.addSubview(headerLabel)
             return headerView
-        }
-        else{
-            headerView.backgroundColor =  IUIKColorPalette.titleBackdrop.color
+        } else {
+            headerView.backgroundColor = IUIKColorPalette.titleBackdrop.color
             headerLabel.text = "Getaway"// Header Name
             headerLabel.textColor = UIColor.darkGray
             headerView.addSubview(headerLabel)
             return headerView
         }
         
-
-        
     }
-    
-
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         //***** return height for  row in each section of tableview *****//
         switch((indexPath as NSIndexPath).section) {
         case 0 :
-            if(indexPath.row == 0){
+            if(indexPath.row == 0) {
                 return 100
-            }
-            else{
+            } else {
                 return 120
             }
             
@@ -208,11 +186,5 @@ extension RelinquishmentWhatToUseViewController: UITableViewDelegate{
      func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 30
     }
-
-    
  
 }
-
-
-
-

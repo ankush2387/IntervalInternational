@@ -9,13 +9,10 @@
 import UIKit
 import IntervalUIKit
 
-
-
 //***** custom delegate method declaration *****//
 protocol ActionSheetTblDelegate {
-    func membershipSelectedAtIndex(_ index:Int)
+    func membershipSelectedAtIndex(_ index: Int)
 }
-
 
 class ActionSheetTblCell: UITableViewCell {
     
@@ -35,7 +32,6 @@ class ActionSheetTblCell: UITableViewCell {
         super.awakeFromNib()
         
     }
-
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
@@ -48,8 +44,7 @@ class ActionSheetTblCell: UITableViewCell {
         if(sender.isSelected == false) {
             sender.isSelected = true
         self.delegate?.membershipSelectedAtIndex(sender.tag)
-        }
-        else {
+        } else {
             
             sender.isSelected = false
         }

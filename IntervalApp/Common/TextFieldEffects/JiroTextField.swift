@@ -132,7 +132,7 @@ import UIKit
         if isFilled {
             return CGRect(origin: CGPoint(x: 0, y: placeholderLabel.frame.origin.y + placeholderLabel.font.lineHeight), size: CGSize(width: frame.width, height: frame.height))
         } else {
-            return CGRect(origin: CGPoint(x: 0, y: frame.height-thickness), size: CGSize(width: frame.width, height: thickness))
+            return CGRect(origin: CGPoint(x: 0, y: frame.height - thickness), size: CGSize(width: frame.width, height: thickness))
         }
     }
     
@@ -146,13 +146,13 @@ import UIKit
         var originX = textRect.origin.x
         switch self.textAlignment {
         case .center:
-            originX += textRect.size.width/2 - placeholderLabel.bounds.width/2
+            originX += textRect.size.width / 2 - placeholderLabel.bounds.width / 2
         case .right:
             originX += textRect.size.width - placeholderLabel.bounds.width
         default:
             break
         }
-        placeholderLabel.frame = CGRect(x: originX, y: textRect.size.height/2,
+        placeholderLabel.frame = CGRect(x: originX, y: textRect.size.height / 2,
             width: placeholderLabel.frame.size.width, height: placeholderLabel.frame.size.height)
     }
     

@@ -20,7 +20,6 @@ class CheckInCheckOutTableViewCell: UITableViewCell {
     
     @IBOutlet weak var checkoutDayLabel: UILabel!
     
-    
     @IBOutlet weak var checkoutDateDetailLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()

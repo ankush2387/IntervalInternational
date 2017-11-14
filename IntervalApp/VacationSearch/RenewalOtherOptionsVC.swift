@@ -12,7 +12,7 @@ import DarwinSDK
 
 //***** Custom delegate method declaration *****//
 protocol RenewalOtherOptionsVCDelegate {
-    func selectedRenewal(selectedRenewal:String, forceRenewals: ForceRenewals)
+    func selectedRenewal(selectedRenewal: String, forceRenewals: ForceRenewals)
 }
 
 class RenewalOtherOptionsVC: UIViewController {
@@ -20,20 +20,20 @@ class RenewalOtherOptionsVC: UIViewController {
     //***** Custom cell delegate to access the delegate method *****//
     var delegate: RenewalOtherOptionsVCDelegate?
     
-    //MARK:- clas  outlets
+    // MARK: - clas  outlets
     @IBOutlet weak var renewalOtherOptionsTableView: UITableView!
     
     // class variables
     var forceRenewals = ForceRenewals()
     
-    // MARK:- lifecycle
+    // MARK: - lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if(Constant.RunningDevice.deviceIdiom == .phone){
+        if(Constant.RunningDevice.deviceIdiom == .phone) {
             //Set title for table view
-            let headerLabel = UILabel(frame:CGRect(x: 0, y: 0, width: 375, height: 40))
+            let headerLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 375, height: 40))
             headerLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0)
             headerLabel.textAlignment = .center
             headerLabel.text = Constant.MyClassConstants.renewalsHeaderTitle
@@ -46,7 +46,6 @@ class RenewalOtherOptionsVC: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
     /*
     // MARK: - Navigation
@@ -88,16 +87,14 @@ class RenewalOtherOptionsVC: UIViewController {
                 }
             }
             
-            
         }
         self.dismiss(animated: true, completion: nil)
     }
     
 }
 
-
-//MARK:- table view datasource
-extension RenewalOtherOptionsVC:UITableViewDataSource {
+// MARK: - table view datasource
+extension RenewalOtherOptionsVC: UITableViewDataSource {
    
     func numberOfSections(in tableView: UITableView) -> Int {
         
@@ -136,10 +133,9 @@ extension RenewalOtherOptionsVC:UITableViewDataSource {
                         let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (forceRenewals.currencyCode)!)
                         
                         if (renewalComboProduct.isCoreProduct) {
-                            cell.renewelCoreImageView?.image = UIImage.init(named: renewalComboProduct.productCode!)
+                            cell.renewelCoreImageView?.image = UIImage(named: renewalComboProduct.productCode!)
                             
-                            
-                            let price = String(format:"%.0f", renewalComboProduct.price)
+                            let price = String(format: "%.0f", renewalComboProduct.price)
                             
                             priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                             
@@ -149,18 +145,16 @@ extension RenewalOtherOptionsVC:UITableViewDataSource {
                             
                             let range = (mainString as NSString).range(of: priceAndCurrency)
                             
-                            let attributeString = NSMutableAttributedString.init(string: mainString)
+                            let attributeString = NSMutableAttributedString(string: mainString)
                             
-                            attributeString.setAttributes([NSFontAttributeName : UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0))!
-                                , NSForegroundColorAttributeName : UIColor(red: 0.0/255.0, green: 201.0/255.0, blue: 11.0/255.0, alpha: 1.0)], range: range)
+                            attributeString.setAttributes([NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0))!, NSForegroundColorAttributeName: UIColor(red: 0.0 / 255.0, green: 201.0 / 255.0, blue: 11.0 / 255.0, alpha: 1.0)], range: range)
                             
                             cell.renewelLbl?.attributedText = attributeString
                             
-                            
                         } else {
-                            cell.renewelnonCoreImageView?.image = UIImage.init(named: renewalComboProduct.productCode!)
+                            cell.renewelnonCoreImageView?.image = UIImage(named: renewalComboProduct.productCode!)
                             
-                            let price = String(format:"%.0f", renewalComboProduct.price)
+                            let price = String(format: "%.0f", renewalComboProduct.price)
                             
                             priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                             
@@ -168,15 +162,13 @@ extension RenewalOtherOptionsVC:UITableViewDataSource {
                             
                             let mainString = Helper.returnIntervalMembershipStringWithDisplayName2(displayName: String(describing: renewalComboProduct.displayName!), price: priceAndCurrency, term: term)
                             
-                            
                             let range = (mainString as NSString).range(of: priceAndCurrency)
                             
-                            let attributeString = NSMutableAttributedString.init(string: mainString)
+                            let attributeString = NSMutableAttributedString(string: mainString)
                             
-                            attributeString.setAttributes([NSFontAttributeName : UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0))!
-                                , NSForegroundColorAttributeName : UIColor(red: 0.0/255.0, green: 201.0/255.0, blue: 11.0/255.0, alpha: 1.0)], range: range)
+                            attributeString.setAttributes([NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0))!, NSForegroundColorAttributeName: UIColor(red: 0.0 / 255.0, green: 201.0 / 255.0, blue: 11.0 / 255.0, alpha: 1.0)], range: range)
                             
-                            let nextLine = NSMutableAttributedString.init(string: "\n\n")
+                            let nextLine = NSMutableAttributedString(string: "\n\n")
                             
                             let attributedString = cell.renewelLbl?.attributedText
                             
@@ -191,28 +183,25 @@ extension RenewalOtherOptionsVC:UITableViewDataSource {
                             
                         }
                         
-                        
                     }
                 }
-                
                 
             }
         } else {
             
-            for coreProduct in (forceRenewals.products){
-                if coreProduct.term == 12{
-                    
+            for coreProduct in (forceRenewals.products) {
+                if coreProduct.term == 12 {
                  
                     // hide core and non core image here
                     cell.renewelCoreImageView?.isHidden = true
                     cell.renewelnonCoreImageView?.isHidden = true
                     
                     // show only non core image
-                    cell.renewelImageView?.image = UIImage.init(named: coreProduct.productCode!)
+                    cell.renewelImageView?.image = UIImage(named: coreProduct.productCode!)
                     
                     let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (forceRenewals.currencyCode)!)
                     
-                    let price = String(format:"%.0f", coreProduct.price)
+                    let price = String(format: "%.0f", coreProduct.price)
                     
                     priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                     
@@ -222,10 +211,9 @@ extension RenewalOtherOptionsVC:UITableViewDataSource {
                     
                     let range = (mainString as NSString).range(of: priceAndCurrency)
                     
-                    let attributeString = NSMutableAttributedString.init(string: mainString)
+                    let attributeString = NSMutableAttributedString(string: mainString)
                     
-                    attributeString.setAttributes([NSFontAttributeName : UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0))!
-                        , NSForegroundColorAttributeName : UIColor(red: 0.0/255.0, green: 201.0/255.0, blue: 11.0/255.0, alpha: 1.0)], range: range)
+                    attributeString.setAttributes([NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0))!, NSForegroundColorAttributeName: UIColor(red: 0.0 / 255.0, green: 201.0 / 255.0, blue: 11.0 / 255.0, alpha: 1.0)], range: range)
                     cell.renewelLbl?.attributedText = attributeString
                     
                     // set button select tag
@@ -240,11 +228,10 @@ extension RenewalOtherOptionsVC:UITableViewDataSource {
     
 }
 
-
-//MARK:- table view delegate
-extension RenewalOtherOptionsVC:UITableViewDelegate {
+// MARK: - table view delegate
+extension RenewalOtherOptionsVC: UITableViewDelegate {
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)  {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
     }
     
@@ -262,7 +249,7 @@ extension RenewalOtherOptionsVC:UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let view   = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 50))
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 50))
         
         view.backgroundColor = .clear
         
@@ -270,8 +257,4 @@ extension RenewalOtherOptionsVC:UITableViewDelegate {
         
     }
     
-    
 }
-
-
-

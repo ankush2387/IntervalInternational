@@ -30,10 +30,10 @@ class OwnershipFloatTableViewCell: UITableViewCell {
      - parameter No parameter:
      - returns : No value is return
      */
-    func getCell(isConstraintUpdate:Bool){
+    func getCell(isConstraintUpdate: Bool) {
         setCellComponentsProperties()
         updateCellComponents()
-        if isConstraintUpdate{
+        if isConstraintUpdate {
             mainViewBottomConstraint.constant = 10
             lowerHorizontalSeperator.isHidden = true
             upperHorizontalSeperator.isHidden = true
@@ -44,7 +44,7 @@ class OwnershipFloatTableViewCell: UITableViewCell {
      - parameter No parameter :
      - returns : No value is return
      */
-    fileprivate func updateCellComponents(){
+    fileprivate func updateCellComponents() {
         floatInfoLabel.text = Constant.ownershipViewController.ownershipFloatTableViewCell.floatInfoLabelText
     }
     /**
@@ -52,14 +52,13 @@ class OwnershipFloatTableViewCell: UITableViewCell {
      - parameter No parameter :
      - returns : No value is return
      */
-    fileprivate func setCellComponentsProperties(){
+    fileprivate func setCellComponentsProperties() {
         
         floatInfoLabel.textColor = UIColor(rgb: IUIKColorPalette.active.rawValue)
         yearLabel.textColor = UIColor(rgb: IUIKColorPalette.secondaryText.rawValue)
         Helper.applyShadowOnUIView(view: mainView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 1.0)
         
     }
-    
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

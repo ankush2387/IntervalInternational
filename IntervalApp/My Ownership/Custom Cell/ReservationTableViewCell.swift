@@ -7,7 +7,6 @@
 //
 import UIKit
 
-
 class ReservationTableViewCell: UITableViewCell {
     
     //Outlets
@@ -16,7 +15,7 @@ class ReservationTableViewCell: UITableViewCell {
     @IBOutlet var resortAttributeLabel: FloatLabelTextField!
     @IBOutlet var resortPlaceHolderLabel: UILabel!
     @IBOutlet var textFieldView: UIView!
-    @IBOutlet var viewButton:UIButton!
+    @IBOutlet var viewButton: UIButton!
     let placeholderArray = [Constant.textFieldTitles.reservationNumber, Constant.textFieldTitles.unitNumber, Constant.textFieldTitles.numberOfBedrooms, Constant.textFieldTitles.checkInDate]
 
     override func awakeFromNib() {
@@ -24,18 +23,18 @@ class ReservationTableViewCell: UITableViewCell {
         // Initialization code
     }
     
-    func getCell(){
+    func getCell() {
         setPropertiesTocellComponenet()
     }
-    //MARK:set properties to cell component
+    // MARK: set properties to cell component
     /**
      Apply Properties to cell components
      - parameter No parameter:
      - returns : No return value
      */
-    fileprivate func setPropertiesTocellComponenet(){
+    fileprivate func setPropertiesTocellComponenet() {
         
-        for (index,textField) in registrationTextFieldsCollection.enumerated(){
+        for (index, textField) in registrationTextFieldsCollection.enumerated() {
             textField.placeholder = placeholderArray[index]
             textField.layer.borderColor = UIColor.lightGray.cgColor
             let paddingViewLeft = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 15))
@@ -45,11 +44,10 @@ class ReservationTableViewCell: UITableViewCell {
             let paddingViewRight = UIView(frame: CGRect(x: textField.frame.size.width - 35, y: 0, width: 35, height: 15))
             textField.rightView = paddingViewRight
             textField.rightViewMode = .always
-            if(textField.tag == 3){
-                textField.text =   Constant.MyClassConstants.savedBedroom
+            if(textField.tag == 3) {
+                textField.text = Constant.MyClassConstants.savedBedroom
             }
         }
-        
     
     }
 

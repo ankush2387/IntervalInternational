@@ -9,7 +9,6 @@
 import UIKit
 
 class MagazineTableViewCell: UITableViewCell {
-
     
     //***** Outlets *****//
     @IBOutlet weak var magazineImageView: UIImageView!

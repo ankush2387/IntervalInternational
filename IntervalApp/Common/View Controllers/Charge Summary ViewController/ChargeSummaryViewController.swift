@@ -58,7 +58,7 @@ final class ChargeSummaryViewController: UIViewController {
         descriptionLabel.text = viewModel.descriptionTitle
         totalAmountTitleLabel.text = viewModel.totalTitle
         totalAmountValueLabel.attributedText = viewModel.attributedTotal
-        tableView.register(ChargeSummaryTableViewCell.nib,forCellReuseIdentifier: ChargeSummaryTableViewCell.identifier)
+        tableView.register(ChargeSummaryTableViewCell.nib, forCellReuseIdentifier: ChargeSummaryTableViewCell.identifier)
     }
 }
 

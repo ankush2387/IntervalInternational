@@ -42,45 +42,39 @@ class DestinationResortViewController: UIViewController {
 
 }
 //Extension for UITableViewDataSource 
-extension DestinationResortViewController : UITableViewDataSource{
+extension DestinationResortViewController: UITableViewDataSource {
     //Return Number of rows in a section
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 5
     }
     //Return cell for a row in section
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var resortdetailCell:ResortDetailCellTableViewCell?
-        let unitdetailCell:UnitdetailTableViewCell?
-        let advertisementCell:AdvertisementTableViewCell?
-        let unitAndAdditionaladvertisementCell:UnitAndAdditionalAdvertisementTableViewCell?
+        var resortdetailCell: ResortDetailCellTableViewCell?
+        let unitdetailCell: UnitdetailTableViewCell?
+        let advertisementCell: AdvertisementTableViewCell?
+        let unitAndAdditionaladvertisementCell: UnitAndAdditionalAdvertisementTableViewCell?
         
-        let checkIncheckoutDatecell : CheckInCheckOutTableViewCell?
+        let checkIncheckoutDatecell: CheckInCheckOutTableViewCell?
         
-        if indexPath.row == 0{
+        if indexPath.row == 0 {
             resortdetailCell = tableView.dequeueReusableCellWithIdentifier("resortdetailscell") as? ResortDetailCellTableViewCell
             resortdetailCell?.getCell()
             return resortdetailCell!
-        }
-        else if indexPath.row == 1{
+        } else if indexPath.row == 1 {
             
             checkIncheckoutDatecell = tableView.dequeueReusableCellWithIdentifier("checkincheckoutcell") as? CheckInCheckOutTableViewCell
             
-            
-            
             //
             return checkIncheckoutDatecell!
-        }
-        else if indexPath.row == 2{
+        } else if indexPath.row == 2 {
             unitdetailCell = tableView.dequeueReusableCellWithIdentifier("unitdeailcell") as? UnitdetailTableViewCell
            
             return unitdetailCell!
-        }
-        else if indexPath.row == 3{
+        } else if indexPath.row == 3 {
              advertisementCell = tableView.dequeueReusableCellWithIdentifier("advertisementcell") as? AdvertisementTableViewCell
 
             return advertisementCell!
-        }
-        else{
+        } else {
                         unitAndAdditionaladvertisementCell = tableView.dequeueReusableCellWithIdentifier("dropdowncell") as? UnitAndAdditionalAdvertisementTableViewCell
             return unitAndAdditionaladvertisementCell!
         }
@@ -88,7 +82,7 @@ extension DestinationResortViewController : UITableViewDataSource{
     }
     //Retrun Row Height
     func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        var height : CGFloat = 200
+        var height: CGFloat = 200
         switch indexPath.row {
         case 0:
             height = 113
@@ -107,6 +101,6 @@ extension DestinationResortViewController : UITableViewDataSource{
     }
 }
 //Extension for UITableViewDelegate
-extension DestinationResortViewController : UITableViewDelegate{
+extension DestinationResortViewController: UITableViewDelegate {
     
 }

@@ -10,11 +10,10 @@ import UIKit
 import XCGLogger
 import DarwinSDK
 
-
 //
 // Property List Keys
 //
-enum PlistKey : String {
+enum PlistKey: String {
     case DarwinClientKey    = "DarwinClientKey"
     case DarwinSecretKey    = "DarwinSecret"
     case LogLevel           = "LogLevel"
@@ -23,20 +22,18 @@ enum PlistKey : String {
     case BrightcovePolicyKey = "BrightcovePolicyKey"
 }
 
-
 //
 // Config
 // Provides methods to make it easier to read the Info.plist file.
 // You must define a dictionary keyed by "IntervalConfig".
 //
-class Config
-{
+class Config {
     static var sharedInstance = Config()
-    var interval : [String : AnyObject]
+    var interval: [String: AnyObject]
     
     init() {
         
-        self.interval = [ "" : "" as AnyObject ]
+        self.interval = [ "": "" as AnyObject ]
         
         if let path = Bundle.main.path(forResource: "Info", ofType: "plist") {
             if let plist = (NSDictionary(contentsOfFile: path) as? [String: AnyObject]) {
@@ -45,29 +42,23 @@ class Config
         }
     }
     
-    
-    
-    func get(_ key:PlistKey) -> String! {
+    func get(_ key: PlistKey) -> String! {
         return self.get(key, defaultValue: "")
     }
     
-    func get(_ key:PlistKey, defaultValue:String) -> String! {
+    func get(_ key: PlistKey, defaultValue: String) -> String! {
         
         if let value = self.interval[key.rawValue] {
             return value as! String
-        }
-        else {
+        } else {
             return defaultValue
         }
     }
     
-    
-    func getEnvironment() -> Environment
-    {
+    func getEnvironment() -> Environment {
         let envStr = self.get(.Environment, defaultValue: "info").lowercased()
         
-        switch envStr
-        {
+        switch envStr {
         case "dev", "development":
             return Environment.development
             
@@ -106,13 +97,10 @@ class Config
         }
     }
     
-    
-    func getLogLevel() -> XCGLogger.Level
-    {
+    func getLogLevel() -> XCGLogger.Level {
         let logLevelStr = self.get(.LogLevel, defaultValue: "info").lowercased()
         
-        switch logLevelStr
-        {
+        switch logLevelStr {
         case "debug":
             return XCGLogger.Level.debug
             
@@ -136,5 +124,3 @@ class Config
         }
     }
 }
-
-

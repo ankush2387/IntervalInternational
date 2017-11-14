@@ -10,10 +10,10 @@ import Foundation
 import UIKit
 
 @IBDesignable
-public class VerticalProgressView : UIView {
+public class VerticalProgressView: UIView {
     
-    @IBInspectable public var cornerRadius: CGFloat = 12;
-    @IBInspectable public var fillDoneColor : UIColor = UIColor.blue
+    @IBInspectable public var cornerRadius: CGFloat = 12
+    @IBInspectable public var fillDoneColor: UIColor = UIColor.blue
     //@IBInspectable public var fillUndoneColor: UIColor = UIColor(red: 0, green: 0, blue: 1, alpha: 0.1)
     //@IBInspectable var fillRestColor : UIColor = UIColor.whiteColor()
     @IBInspectable public var animationDuration: Double = 0.5
@@ -22,7 +22,7 @@ public class VerticalProgressView : UIView {
         get {
             return self.progressPriv
         }
-        set{
+        set {
             self.setProgress(progress: newValue, animated: self.animationDuration > 0.0)
         }
     }
@@ -44,8 +44,7 @@ public class VerticalProgressView : UIView {
     
     public override func prepareForInterfaceBuilder() {
         self.progressPriv = progress
-        if self.progressPriv < 0 { progressPriv = 0 }
-        else if(self.progressPriv > 1) { progressPriv = 1}
+        if self.progressPriv < 0 { progressPriv = 0 } else if(self.progressPriv > 1) { progressPriv = 1 }
     }
     
     override public func draw(_ rect: CGRect) {
@@ -55,11 +54,10 @@ public class VerticalProgressView : UIView {
         let y = self.frame.size.height - filledHeight
         self.filledView!.frame = CGRect(x: 0, y: y, width: rect.size.width, height: rect.size.height)
         
-        
     }
     
     //public - for possible inheritance and customization
-    public func setLayerProperties(){
+    public func setLayerProperties() {
         self.layer.cornerRadius = self.cornerRadius
         self.layer.masksToBounds = true
     }
@@ -73,7 +71,7 @@ public class VerticalProgressView : UIView {
     func setFilledPosition(position: CGFloat, animated: Bool) {
         if self.filledView == nil { return }
         //animated
-        let duration: TimeInterval = animated ? self.animationDuration : 0;
+        let duration: TimeInterval = animated ? self.animationDuration : 0
         CATransaction.begin()
         CATransaction.setAnimationDuration(duration)
         self.filledView!.frame.origin.y = position
@@ -81,15 +79,13 @@ public class VerticalProgressView : UIView {
   
     }
     
-    public func setProgress(progress: Float, animated: Bool){
+    public func setProgress(progress: Float, animated: Bool) {
         //bounds check
         var val = progress
-        if val < 0 { val = 0.0 }
-        else if val > 1 { val = 1 }
+        if val < 0 { val = 0.0 } else if val > 1 { val = 1 }
         self.progressPriv = val
         
          setFilledPosition(position: self.shouldHavePosition(), animated: animated)
     }
-    
     
 }

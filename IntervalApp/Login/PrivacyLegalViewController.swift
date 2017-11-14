@@ -10,13 +10,13 @@ import UIKit
 
 class PrivacyLegalViewController: UIViewController {
 
-    var url:String?
+    var url: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.title = Constant.ControllerTitles.privacyLegalViewController
-        let   doneButton = UIBarButtonItem(title: Constant.AlertPromtMessages.ok, style:.plain, target: self, action: #selector(PrivacyLegalViewController.donePressed(_:)))
+        let   doneButton = UIBarButtonItem(title: Constant.AlertPromtMessages.ok, style: .plain, target: self, action: #selector(PrivacyLegalViewController.donePressed(_:)))
         doneButton.tintColor = UIColor.white
         
         self.navigationItem.rightBarButtonItem = doneButton
@@ -35,20 +35,19 @@ class PrivacyLegalViewController: UIViewController {
     }
     
     //***** method to dismis current controller *****//
-    func donePressed(_ sender:UIBarButtonItem) {
+    func donePressed(_ sender: UIBarButtonItem) {
         
           self.dismiss(animated: true, completion: nil)
     }
 
 }
-extension  PrivacyLegalViewController:UITableViewDelegate {
+extension  PrivacyLegalViewController: UITableViewDelegate {
     
     //***** UITableview delegate methods definition here *****//
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if (UIDevice.current.userInterfaceIdiom == .pad){
+        if (UIDevice.current.userInterfaceIdiom == .pad) {
             return 80
-        }
-        else{
+        } else {
             return 40
         }
     }
@@ -68,7 +67,7 @@ extension  PrivacyLegalViewController:UITableViewDelegate {
     }
     
 }
-extension PrivacyLegalViewController:UITableViewDataSource {
+extension PrivacyLegalViewController: UITableViewDataSource {
     
     //***** UITableview dataSource methods definition here *****//
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -80,16 +79,13 @@ extension PrivacyLegalViewController:UITableViewDataSource {
         return Constant.MyClassConstants.policyListTblCellContentArray.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
-    {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.policyListTBLCell, for: indexPath) as! PolicyListTBLCell
         
         cell.policyListContentLabel.text = Constant.MyClassConstants.policyListTblCellContentArray[(indexPath as NSIndexPath).row]
         
         return cell
         
-        
     }
-    
     
 }
