@@ -75,7 +75,6 @@ class SearchResultViewController: UIViewController {
     
     func createSections() {
         let sections = Constant.MyClassConstants.initialVacationSearch.createSections()
-
         
         if sections.count == 0 {
             searchResultTableView.tableHeaderView = Helper.noResortView(senderView: self.view)
@@ -110,7 +109,7 @@ class SearchResultViewController: UIViewController {
                             }
                         }
                 } else {
-                    if(sections.count == 1) {
+                    if sections.count == 1 {
                         dateCellSelectionColor = Constant.CommonColor.greenColor
                     }
                     for surroundingResorts in (section.items)! {
@@ -225,7 +224,7 @@ class SearchResultViewController: UIViewController {
         
         self.collectionviewSelectedIndex = Constant.MyClassConstants.searchResultCollectionViewScrollToIndex
         
-        if(Session.sharedSession.userAccessToken != nil) {
+        if Session.sharedSession.userAccessToken != nil {
             showHudAsync()
             UserClient.getFavoriteResorts(Session.sharedSession.userAccessToken, onSuccess: { (response) in
                 Constant.MyClassConstants.favoritesResortArray.removeAll()
@@ -755,7 +754,7 @@ class SearchResultViewController: UIViewController {
             let transitionManager = TransitionManager()
             self.navigationController?.transitioningDelegate = transitionManager
             
-            if(response.view?.forceRenewals != nil) {
+            if response.view?.forceRenewals != nil {
                 // Navigate to Renewals Screen
                 let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
                 viewController.delegate = self
@@ -898,9 +897,9 @@ extension SearchResultViewController: UICollectionViewDelegate {
 
                 showHudAsync()
                 var resortCode = ""
-                if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Rental) {
+                if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Rental {
                     
-                    if(collectionView.superview?.superview?.tag == 0 && exactMatchResortsArray.count > 0) {
+                    if collectionView.superview?.superview?.tag == 0 && exactMatchResortsArray.count > 0 {
                        resortCode = exactMatchResortsArray[collectionView.tag].resortCode!
                     } else {
                         resortCode = surroundingMatchResortsArray[collectionView.tag].resortCode!
@@ -951,10 +950,10 @@ extension SearchResultViewController: UICollectionViewDelegate {
                 
                 // it is used in renewal screen to change the title of header
                 Constant.MyClassConstants.isChangeNoThanksButtonTitle = false
-                if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()) {
+                if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() {
                         selectedSection = (collectionView.superview?.superview?.tag)!
                         selectedRow = collectionView.tag
-                        if(collectionView.superview?.superview?.tag == 0) {
+                        if collectionView.superview?.superview?.tag == 0 {
                             Constant.MyClassConstants.selectedResort = self.exactMatchResortsArrayExchange[collectionView.tag].resort!
                             self.getFilterRelinquishments(selectedInventoryUnit: Inventory(), selectedIndex: indexPath.item, selectedExchangeInventory: self.exactMatchResortsArrayExchange[collectionView.tag].inventory!)
                         } else {
@@ -962,7 +961,7 @@ extension SearchResultViewController: UICollectionViewDelegate {
                             self.getFilterRelinquishments(selectedInventoryUnit: Inventory(), selectedIndex: indexPath.item, selectedExchangeInventory: self.surroundingMatchResortsArrayExchange[collectionView.tag].inventory!)
                         }
                     
-                } else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()) {
+                } else if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental() {
                     
                     showHudAsync()
                     
@@ -1232,7 +1231,7 @@ extension SearchResultViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        if(collectionView.tag == -1) {
+        if collectionView.tag == -1 {
             
             if (Constant.MyClassConstants.calendarDatesArray[indexPath.item].isInterval)! {
                 
