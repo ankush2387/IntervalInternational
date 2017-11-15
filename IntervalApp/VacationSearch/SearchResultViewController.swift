@@ -498,16 +498,12 @@ class SearchResultViewController: UIViewController {
             }
             
             Constant.MyClassConstants.selectedUnitIndex = selectedIndex
-            
-            if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Combined) {
+            if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Combined {
                 self.navigateToWhatToUseViewController()
-                //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
             } else {
-                if(Constant.MyClassConstants.filterRelinquishments.count > 1) {
-                    //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                if Constant.MyClassConstants.filterRelinquishments.count > 1 {
                     self.navigateToWhatToUseViewController()
-                } else if(response.count > 0 && response[0].destination?.upgradeCost != nil) {
-                    //self.performSegue(withIdentifier: Constant.segueIdentifiers.bookingSelectionSegue, sender: self)
+                } else if response.count > 0 && response[0].destination?.upgradeCost != nil {
                     self.navigateToWhatToUseViewController()
                 } else {
                     self.startProcess()
@@ -659,8 +655,8 @@ class SearchResultViewController: UIViewController {
     
     //funciton called when search result page sort by name button pressed
     @IBAction func filterByNameButtonPressed(_ sender: UIButton) {
-        
-        if(!Constant.MyClassConstants.noFilterOptions) {
+
+        if !Constant.MyClassConstants.noFilterOptions {
             sender.isEnabled = true
             if(Constant.MyClassConstants.filterOptionsArray.count > 1 || alertFilterOptionsArray.count > 1) {
                 let viewController = self.storyboard?.instantiateViewController(withIdentifier: Constant.storyboardControllerID.sortingViewController) as! SortingViewController

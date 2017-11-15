@@ -14,7 +14,7 @@ class AvailablePointCell: UITableViewCell {
     //Outlets
     
     @IBOutlet weak var availablePointValueLabel: UILabel!
-    @IBOutlet weak var mainView: UIView!
+    @IBOutlet weak var mainView: UIStackView!
    
     @IBOutlet weak var checkBOx: IUIKCheckbox!
     override func awakeFromNib() {

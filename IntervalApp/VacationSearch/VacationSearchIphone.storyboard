@@ -50,7 +50,7 @@
             <objects>
                 <navigationController id="5Av-tX-Kmt" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="WLW-RJ-QXK">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -88,7 +88,7 @@
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="310" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ONH-ON-53y">
-                                <rect key="frame" x="16" y="64" width="343" height="519"/>
+                                <rect key="frame" x="16" y="64" width="343" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="renewelCell" rowHeight="310" id="SGu-DM-qo4" customClass="RenewelCell" customModule="IntervalApp" customModuleProvider="target">
@@ -291,7 +291,7 @@ transaction.</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dPC-06-hhy">
-                                <rect key="frame" x="-4" y="17" width="383" height="49"/>
+                                <rect key="frame" x="-4" y="65" width="383" height="49"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Resort 1 of 7" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IdW-Ty-pEh">
                                         <rect key="frame" x="87" y="5" width="233" height="42"/>
@@ -354,7 +354,7 @@ transaction.</string>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Z7H-la-zBu">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="112" width="375" height="506"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="536" id="xAh-Ay-Djq"/>
@@ -825,7 +825,7 @@ transaction.</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9by-H5-vKV" userLabel="ChooseTravelWindowBaseView">
-                                <rect key="frame" x="-4" y="64" width="383" height="62"/>
+                                <rect key="frame" x="-4" y="68" width="383" height="62"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Choose Travel Window" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gRb-3i-3na">
                                         <rect key="frame" x="30" y="8" width="540" height="46"/>
@@ -841,7 +841,7 @@ transaction.</string>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cvg-jO-paU" userLabel="CollectionBaseView">
-                                <rect key="frame" x="-4" y="126" width="383" height="90"/>
+                                <rect key="frame" x="-4" y="130" width="383" height="90"/>
                                 <subviews>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Nyc-j5-NuX">
                                         <rect key="frame" x="0.0" y="0.0" width="383" height="73"/>
@@ -953,7 +953,7 @@ transaction.</string>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yw4-P4-RDd">
-                                <rect key="frame" x="-4" y="216" width="383" height="62"/>
+                                <rect key="frame" x="-4" y="220" width="383" height="62"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select up to 6 Destinations" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sgc-hd-26D">
                                         <rect key="frame" x="30" y="8" width="323" height="46"/>
@@ -972,7 +972,7 @@ transaction.</string>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="pN5-wQ-J8i">
-                                <rect key="frame" x="-4" y="279" width="383" height="388"/>
+                                <rect key="frame" x="-4" y="283" width="383" height="384"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EligibleDestinationCell" rowHeight="50" id="exy-kN-uRJ" customClass="EligibleDestinationCell" customModule="IntervalApp" customModuleProvider="target">
@@ -1063,7 +1063,7 @@ transaction.</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Who is travelling?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="932-Hk-odz">
-                                <rect key="frame" x="20" y="104" width="135" height="21"/>
+                                <rect key="frame" x="20" y="108" width="135" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="135" id="3rd-IS-Vjm"/>
                                     <constraint firstAttribute="height" constant="21" id="Dbz-Sm-RjP"/>
@@ -1073,7 +1073,7 @@ transaction.</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PrN-mr-VHG">
-                                <rect key="frame" x="20" y="133" width="335" height="85"/>
+                                <rect key="frame" x="20" y="137" width="335" height="85"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="85" id="nd6-3n-Ue5"/>
                                 </constraints>
@@ -1083,7 +1083,7 @@ transaction.</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lky-IS-QcZ">
-                                <rect key="frame" x="16" y="240" width="22" height="21"/>
+                                <rect key="frame" x="16" y="244" width="22" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="22" id="Lti-6q-Cqx"/>
                                     <constraint firstAttribute="height" constant="21" id="Zrj-wa-yYC"/>
@@ -1093,7 +1093,7 @@ transaction.</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jL6-v8-KER">
-                                <rect key="frame" x="16" y="295" width="22" height="21"/>
+                                <rect key="frame" x="16" y="299" width="22" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="22" id="IxU-AQ-lIL"/>
                                     <constraint firstAttribute="height" constant="21" id="tY0-hh-KVx"/>
@@ -1103,7 +1103,7 @@ transaction.</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minimumValue="1" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="aQh-uT-efU">
-                                <rect key="frame" x="261" y="236" width="94" height="29"/>
+                                <rect key="frame" x="261" y="240" width="94" height="29"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="94" id="3Ox-0T-vpx"/>
                                     <constraint firstAttribute="height" constant="29" id="hTe-Kc-GIr"/>
@@ -1111,7 +1111,7 @@ transaction.</string>
                                 <color key="tintColor" red="0.96078431369999995" green="0.49803921569999998" blue="0.14117647059999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </stepper>
                             <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="SIC-pA-tL7">
-                                <rect key="frame" x="261" y="291" width="94" height="29"/>
+                                <rect key="frame" x="261" y="295" width="94" height="29"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="29" id="Ags-EX-jwc"/>
                                     <constraint firstAttribute="width" constant="94" id="HWQ-B6-Hxq"/>
@@ -1119,7 +1119,7 @@ transaction.</string>
                                 <color key="tintColor" red="0.96078431369999995" green="0.49803921569999998" blue="0.14117647059999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </stepper>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Children" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qRX-jI-bbI">
-                                <rect key="frame" x="42" y="295" width="65" height="21"/>
+                                <rect key="frame" x="42" y="299" width="65" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="65" id="2oh-Se-19F"/>
                                     <constraint firstAttribute="height" constant="21" id="fQ3-3U-Jl8"/>
@@ -1129,7 +1129,7 @@ transaction.</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Age 0-16" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UHp-aN-ckR">
-                                <rect key="frame" x="261" y="328" width="94" height="21"/>
+                                <rect key="frame" x="261" y="332" width="94" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="KcA-Wx-JBe"/>
                                     <constraint firstAttribute="width" constant="94" id="Tmy-tQ-CYO"/>
@@ -1139,7 +1139,7 @@ transaction.</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Adults" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Iu-dB-hYL">
-                                <rect key="frame" x="42" y="240" width="55" height="21"/>
+                                <rect key="frame" x="42" y="244" width="55" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="03i-gi-4rr"/>
                                     <constraint firstAttribute="width" constant="55" id="Jgq-EW-SB3"/>
@@ -1198,7 +1198,7 @@ transaction.</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="xFv-St-dmK">
-                                <rect key="frame" x="20" y="78" width="335" height="29"/>
+                                <rect key="frame" x="20" y="82" width="335" height="29"/>
                                 <segments>
                                     <segment title="Search Both"/>
                                     <segment title="Getaways"/>
@@ -1210,7 +1210,7 @@ transaction.</string>
                                 </connections>
                             </segmentedControl>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="82" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ED2-H6-mjL">
-                                <rect key="frame" x="0.0" y="120" width="375" height="498"/>
+                                <rect key="frame" x="0.0" y="124" width="375" height="494"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="WhereToGoContentCell" rowHeight="45" id="dEL-aE-MxM" customClass="WhereToGoContentCell" customModule="IntervalApp" customModuleProvider="target">
@@ -1459,7 +1459,7 @@ transaction.</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" tag="-1" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="1aP-fE-BC0">
-                                <rect key="frame" x="0.0" y="64" width="376" height="70"/>
+                                <rect key="frame" x="0.0" y="68" width="376" height="70"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="70" id="eeH-Ul-kFp"/>
@@ -1549,7 +1549,7 @@ transaction.</string>
                                 </connections>
                             </collectionView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="50" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="l8b-fw-PuL">
-                                <rect key="frame" x="0.0" y="134" width="375" height="824"/>
+                                <rect key="frame" x="0.0" y="138" width="375" height="820"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="noAvailbilityCell" rowHeight="109" id="ZR5-Vb-FQE">
@@ -2873,7 +2873,7 @@ transaction.</string>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="hBB-OJ-Y0k" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="w8Z-0z-EGh">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -2974,7 +2974,7 @@ transaction.</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="77" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="DKR-U3-S42">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="4" width="375" height="663"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="detailcell" textLabel="Qdq-ev-xcy" rowHeight="77" style="IBUITableViewCellStyleDefault" id="Zvv-BQ-JV5">
@@ -3086,7 +3086,7 @@ transaction.</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="139" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="oYb-fY-jWc">
-                                <rect key="frame" x="0.0" y="64" width="375" height="786"/>
+                                <rect key="frame" x="0.0" y="68" width="375" height="782"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="RelinquishmentSelectionCIGCell" rowHeight="152" id="L01-oU-V1c" customClass="RelinquishmentSelectionCIGCell" customModule="IntervalApp" customModuleProvider="target">
@@ -3958,7 +3958,7 @@ transaction.</string>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="eMV-Px-Ad8" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Zma-bI-0pT">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -4166,30 +4166,29 @@ transaction.</string>
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Grf-qo-fXa">
-                                                    <rect key="frame" x="10" y="2" width="355" height="59"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cSV-3l-UzF">
+                                                    <rect key="frame" x="20" y="0.0" width="335" height="60"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7650" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rns-Iz-hFo">
-                                                            <rect key="frame" x="0.0" y="20" width="69" height="20"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="width" constant="69" id="3Tl-oI-Ng7"/>
+                                                                <constraint firstAttribute="width" constant="60" id="WJv-4P-mGn"/>
                                                             </constraints>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" red="0.96078431369999995" green="0.49803921569999998" blue="0.14117647059999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use Club Interval Gold Points" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ctf-dt-gf9">
-                                                            <rect key="frame" x="75" y="5" width="199.5" height="49"/>
+                                                            <rect key="frame" x="60" y="0.0" width="235" height="60"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1tL-xB-9Pk" customClass="IUIKCheckbox" customModule="IntervalUIKit">
-                                                            <rect key="frame" x="310" y="17" width="40" height="25"/>
+                                                            <rect key="frame" x="295" y="0.0" width="40" height="60"/>
                                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="height" constant="25" id="hRp-Si-yRD"/>
-                                                                <constraint firstAttribute="width" constant="40" id="zSc-Nm-Ytu"/>
+                                                                <constraint firstAttribute="width" constant="40" id="yeG-UW-8Xb"/>
                                                             </constraints>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="number" keyPath="checkmarkSize">
@@ -4205,31 +4204,26 @@ transaction.</string>
                                                             </userDefinedRuntimeAttributes>
                                                         </view>
                                                     </subviews>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstItem="ctf-dt-gf9" firstAttribute="top" secondItem="Grf-qo-fXa" secondAttribute="top" constant="5" id="4cn-JP-hJ4"/>
-                                                        <constraint firstAttribute="bottom" secondItem="Rns-Iz-hFo" secondAttribute="bottom" constant="19" id="4hG-pb-kIm"/>
-                                                        <constraint firstAttribute="bottom" secondItem="ctf-dt-gf9" secondAttribute="bottom" constant="5" id="Few-Nf-a7i"/>
-                                                        <constraint firstItem="1tL-xB-9Pk" firstAttribute="top" secondItem="Grf-qo-fXa" secondAttribute="top" constant="17" id="VJJ-ig-1xS"/>
-                                                        <constraint firstItem="ctf-dt-gf9" firstAttribute="leading" secondItem="Rns-Iz-hFo" secondAttribute="trailing" constant="6" id="clf-Pq-76A"/>
-                                                        <constraint firstAttribute="trailing" secondItem="1tL-xB-9Pk" secondAttribute="trailing" constant="5" id="clx-Ha-CJp"/>
-                                                        <constraint firstItem="Rns-Iz-hFo" firstAttribute="leading" secondItem="Grf-qo-fXa" secondAttribute="leading" id="kSV-xS-S87"/>
-                                                        <constraint firstAttribute="bottom" secondItem="1tL-xB-9Pk" secondAttribute="bottom" constant="18" id="p7l-NU-ksc"/>
-                                                        <constraint firstItem="Rns-Iz-hFo" firstAttribute="top" secondItem="Grf-qo-fXa" secondAttribute="top" constant="20" id="qXA-x3-pWm"/>
+                                                        <constraint firstItem="Rns-Iz-hFo" firstAttribute="leading" secondItem="cSV-3l-UzF" secondAttribute="leading" id="2s3-xJ-CsV"/>
+                                                        <constraint firstAttribute="height" constant="60" id="6F4-XN-Rlc"/>
+                                                        <constraint firstAttribute="trailing" secondItem="1tL-xB-9Pk" secondAttribute="trailing" id="7RD-lG-5d7"/>
+                                                        <constraint firstAttribute="width" constant="335" id="cct-ur-Xq7"/>
+                                                        <constraint firstItem="ctf-dt-gf9" firstAttribute="leading" secondItem="Rns-Iz-hFo" secondAttribute="trailing" id="g97-5Q-uwV"/>
                                                     </constraints>
-                                                </view>
+                                                </stackView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="Grf-qo-fXa" firstAttribute="top" secondItem="gf7-7X-va5" secondAttribute="top" constant="2" id="5am-t2-1vu"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="Grf-qo-fXa" secondAttribute="trailing" constant="2" id="KJ8-6z-Gf8"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="Grf-qo-fXa" secondAttribute="bottom" constant="2" id="vyy-jN-XEU"/>
-                                                <constraint firstItem="Grf-qo-fXa" firstAttribute="leading" secondItem="gf7-7X-va5" secondAttribute="leadingMargin" constant="2" id="zmv-tA-tUY"/>
+                                                <constraint firstItem="cSV-3l-UzF" firstAttribute="top" secondItem="gf7-7X-va5" secondAttribute="top" id="8fg-jg-GMx"/>
+                                                <constraint firstAttribute="bottom" secondItem="cSV-3l-UzF" secondAttribute="bottom" id="fD7-em-WJ1"/>
+                                                <constraint firstAttribute="trailing" secondItem="cSV-3l-UzF" secondAttribute="trailing" constant="20" id="izS-fA-Asc"/>
+                                                <constraint firstItem="cSV-3l-UzF" firstAttribute="leading" secondItem="gf7-7X-va5" secondAttribute="leading" constant="20" id="jWk-Zu-56p"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="availablePointValueLabel" destination="Rns-Iz-hFo" id="OuI-L6-ag6"/>
                                             <outlet property="checkBOx" destination="1tL-xB-9Pk" id="nVA-uV-mV6"/>
-                                            <outlet property="mainView" destination="Grf-qo-fXa" id="Fbn-pa-CEj"/>
+                                            <outlet property="mainView" destination="cSV-3l-UzF" id="koM-1L-Eb7"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ExchangeCell1" rowHeight="100" id="CGQ-55-EkQ" customClass="RelinquishmentSelectionOpenWeeksCell" customModule="IntervalApp" customModuleProvider="target">
@@ -4616,7 +4610,7 @@ to confirm a larger unit.</string>
                                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="40" id="1MY-YY-ZvM"/>
-                                                                <constraint firstAttribute="height" constant="28" id="GMe-gd-Ocp"/>
+                                                                <constraint firstAttribute="height" constant="50" id="GMe-gd-Ocp"/>
                                                             </constraints>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="color" keyPath="uncheckedFillColor">
@@ -4775,7 +4769,7 @@ to confirm a larger unit.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cDk-vF-urN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3481.884057971015" y="1459.2391304347827"/>
+            <point key="canvasLocation" x="3480.8000000000002" y="1458.6206896551726"/>
         </scene>
         <!--Check Out View Controller-->
         <scene sceneID="fEv-OX-dZh">
@@ -4790,7 +4784,7 @@ to confirm a larger unit.</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eyI-Ja-4LM">
-                                <rect key="frame" x="0.0" y="64" width="375" height="30"/>
+                                <rect key="frame" x="0.0" y="68" width="375" height="30"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We are holding this unit for 17 minutes" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gyt-xz-Xax">
                                         <rect key="frame" x="30" y="5" width="315" height="20"/>
@@ -4809,7 +4803,7 @@ to confirm a larger unit.</string>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="2SD-dQ-xGd">
-                                <rect key="frame" x="0.0" y="94" width="375" height="757"/>
+                                <rect key="frame" x="0.0" y="98" width="375" height="753"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ViewDetailsTBLcell" rowHeight="50" id="DWf-oN-P7G" customClass="ViewDetailsTBLcell" customModule="IntervalApp" customModuleProvider="target">
@@ -5457,7 +5451,7 @@ to confirm a larger unit.</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="uRa-c8-RDA">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="68" width="375" height="599"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="FlexchangeDestinationCell" rowHeight="83" id="HmQ-6r-2W8" customClass="FlexchangeDestinationCell" customModule="IntervalApp" customModuleProvider="target">
@@ -6125,7 +6119,7 @@ to confirm a larger unit.</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OS9-ri-HLY">
-                                <rect key="frame" x="16" y="84" width="343" height="53"/>
+                                <rect key="frame" x="16" y="88" width="343" height="53"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please Select One" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jhq-yd-H9X">
                                         <rect key="frame" x="27" y="0.0" width="316" height="53"/>
@@ -6148,7 +6142,7 @@ to confirm a larger unit.</string>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="63" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="J2G-Rb-MOQ">
-                                <rect key="frame" x="15" y="137" width="345" height="510"/>
+                                <rect key="frame" x="15" y="141" width="345" height="506"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PromotionCell" rowHeight="63" id="6sC-ch-ZrS" customClass="PromotionsCell" customModule="IntervalApp" customModuleProvider="target">
@@ -6253,7 +6247,7 @@ to confirm a larger unit.</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gest Certificate" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aMb-7k-p9p">
-                                <rect key="frame" x="16" y="84" width="343" height="27"/>
+                                <rect key="frame" x="16" y="108" width="343" height="27"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="27" id="ac1-EP-VVD"/>
                                 </constraints>
@@ -6262,13 +6256,13 @@ to confirm a larger unit.</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Individuals under the age of 21 are not eligible to receive a Guest Certificate." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="zll-Bc-Mdo">
-                                <rect key="frame" x="16" y="131" width="343" height="32.5"/>
+                                <rect key="frame" x="16" y="155" width="343" height="32.5"/>
                                 <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="14"/>
                                 <color key="textColor" red="0.1058823529" green="0.1058823529" blue="0.1137254902" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="20" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="fzT-aa-XVb">
-                                <rect key="frame" x="16" y="183.5" width="343" height="150"/>
+                                <rect key="frame" x="16" y="207.5" width="343" height="150"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="150" id="fHA-hH-fAS">
                                         <variation key="heightClass=regular-widthClass=regular" constant="100"/>
@@ -6340,7 +6334,7 @@ to confirm a larger unit.</string>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0yH-QX-dYW" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="HRh-g1-Okf">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -6358,7 +6352,7 @@ to confirm a larger unit.</string>
                 <navigationController storyboardIdentifier="AccomodationCertsDetailController" automaticallyAdjustsScrollViewInsets="NO" id="6AW-3c-VGG" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="r65-jV-lcs">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -6376,7 +6370,7 @@ to confirm a larger unit.</string>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Wnj-OU-Bqx" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="lsp-Nf-AIz">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -6401,7 +6395,7 @@ to confirm a larger unit.</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Bn-DB-e3E">
-                                <rect key="frame" x="0.0" y="64" width="375" height="30"/>
+                                <rect key="frame" x="0.0" y="68" width="375" height="30"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We are holding this unit for 17 Minutes" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bxS-sZ-kz5">
                                         <rect key="frame" x="30" y="5" width="315" height="21"/>
@@ -6422,7 +6416,7 @@ to confirm a larger unit.</string>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" tag="1" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Cuh-fe-QlW">
-                                <rect key="frame" x="0.0" y="94" width="375" height="424"/>
+                                <rect key="frame" x="0.0" y="98" width="375" height="420"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CheckingInUserListTBLcell" rowHeight="80" id="Wi7-Uz-SnU" customClass="CheckingInUserListTBLcell" customModule="IntervalApp" customModuleProvider="target">
@@ -6770,7 +6764,7 @@ to confirm a larger unit.</string>
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="2FU-MU-a1l" secondAttribute="trailing" constant="-16" id="44G-bL-3h4"/>
                             <constraint firstItem="2FU-MU-a1l" firstAttribute="top" secondItem="Cuh-fe-QlW" secondAttribute="bottom" constant="-1" id="Kbj-WR-mu7"/>
@@ -7615,7 +7609,7 @@ to confirm a larger unit.</string>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="QCd-cg-p7T" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="FDW-qy-gN2">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -7633,7 +7627,7 @@ to confirm a larger unit.</string>
                 <navigationController id="qIE-7i-him" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="84h-Ep-h1O"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="HPN-5h-mIu">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                 </navigationController>
@@ -7654,7 +7648,7 @@ to confirm a larger unit.</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qay-yD-mVm">
-                                <rect key="frame" x="0.0" y="65" width="375" height="50"/>
+                                <rect key="frame" x="0.0" y="69" width="375" height="50"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select at least one Destination" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lzu-sA-cEL">
                                         <rect key="frame" x="57" y="15" width="300" height="21"/>
@@ -7673,7 +7667,7 @@ to confirm a larger unit.</string>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="61" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="Ti4-j6-tNR">
-                                <rect key="frame" x="0.0" y="115" width="375" height="484"/>
+                                <rect key="frame" x="0.0" y="119" width="375" height="480"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="AvailableDestinationCountryOrContinentsTableViewCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="regionCell" rowHeight="60" id="6eA-Rl-6eq" customClass="AvailableDestinationCountryOrContinentsTableViewCell" customModule="IntervalApp" customModuleProvider="target">
@@ -7869,7 +7863,7 @@ to confirm a larger unit.</string>
             <objects>
                 <navigationController id="ngh-TZ-XZu" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="s8P-VH-HG7">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -7893,7 +7887,7 @@ to confirm a larger unit.</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x4D-lz-rme" customClass="GMSMapView">
-                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                                <rect key="frame" x="0.0" y="68" width="375" height="550"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
@@ -7924,7 +7918,7 @@ to confirm a larger unit.</string>
             <objects>
                 <navigationController id="7wx-gU-8rb" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Vfi-ic-Xub">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -8182,7 +8176,7 @@ to confirm a larger unit.</string>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="bmL-3i-9ap" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="biQ-JT-fNk">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -8200,7 +8194,7 @@ to confirm a larger unit.</string>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="UeM-gf-1oQ" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="vSk-wg-ocj">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -8218,7 +8212,7 @@ to confirm a larger unit.</string>
                 <navigationController storyboardIdentifier="DepositPromotionsNav" automaticallyAdjustsScrollViewInsets="NO" id="1g4-hf-v3R" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="A6D-xj-RBR">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -8236,7 +8230,7 @@ to confirm a larger unit.</string>
                 <navigationController storyboardIdentifier="GestCertificateInfo" automaticallyAdjustsScrollViewInsets="NO" id="z0g-mm-AET" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="n7E-OE-dLc">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -8468,8 +8462,8 @@ transaction.</string>
         <segue reference="kmp-5Q-mdc"/>
         <segue reference="Lp2-ch-oU8"/>
         <segue reference="Rpo-cQ-qF4"/>
-        <segue reference="4gU-cx-AAf"/>
-        <segue reference="MqC-fZ-7vm"/>
+        <segue reference="sGp-zH-9TZ"/>
+        <segue reference="Uce-OZ-bfJ"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
 </document>

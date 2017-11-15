@@ -889,16 +889,22 @@ extension VacationSearchViewController: UITableViewDataSource {
                             
                         } else if (object as AnyObject).isKind(of: List<ClubPoints>.self) {
                             if (object as? List<ClubPoints>)?[0].isPointsMatrix == true {
-                               let resortName = (Constant.MyClassConstants.whatToTradeArray[indexPath.row] as! ClubPoints).resort[0].resortName
-                                intervalPrint(resortName)
-                               cell.whereTogoTextLabel.text = "Resort Name \(resortName)"
+                                var resortNameWithYear = ""
+                                if let resortName = (object as? List<ClubPoints>)?[0].resort[0].resortName {
+                                    resortNameWithYear = "\(resortName)"
+                               }
+                                if let relinquishmentYear = (object as? List<ClubPoints>)?[0].relinquishmentYear {
+                                    resortNameWithYear = "\(resortNameWithYear)/\(relinquishmentYear)"
+
+                               }
+                                cell.whereTogoTextLabel.text = "\(resortNameWithYear)"
+                                
+                               
                             } else {
                                 let pointsSpent = (object as? ClubPoints)?.pointsSpent
                                 cell.whereTogoTextLabel.text = "Club Points upto \(String(describing: pointsSpent))"
                             }
                             cell.bedroomLabel.isHidden = true
-                            cell.selectionStyle = UITableViewCellSelectionStyle.none
-                            cell.backgroundColor = UIColor.clear
                             return cell
                         } else {
                             
@@ -1530,6 +1536,8 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                             
                             ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request, onSuccess: { (response) in
                                 sender.isEnabled = true
+                                
+                                self.createFilterOptions()
                                 Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
                                 Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                 // Get activeInterval (or initial search interval)
