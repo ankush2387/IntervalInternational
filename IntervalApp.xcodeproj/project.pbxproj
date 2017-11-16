@@ -226,6 +226,8 @@
 		3AF870251EA6429600056A14 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AF870231EA6429600056A14 /* libsqlite3.tbd */; };
 		3AFA86681DF305A300DCAECF /* CheckOutIPadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFA86671DF305A300DCAECF /* CheckOutIPadViewController.swift */; };
 		3C07573E1F979D78005D2DEB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3C07573D1F979D78005D2DEB /* GoogleService-Info.plist */; };
+		3C291A381FBCFCCE00F294FD /* MembershipSelectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C291A361FBCFCCE00F294FD /* MembershipSelectionTableViewCell.swift */; };
+		3C291A391FBCFCCE00F294FD /* MembershipSelectionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C291A371FBCFCCE00F294FD /* MembershipSelectionTableViewCell.xib */; };
 		3C2EABEA1FB21AFF00BD2B2D /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3C2EABE91FB21AFF00BD2B2D /* Settings.storyboard */; };
 		3C2EABEC1FB21DBE00BD2B2D /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2EABEB1FB21DBE00BD2B2D /* SettingsViewController.swift */; };
 		3C2EABF01FB244ED00BD2B2D /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2EABEF1FB244ED00BD2B2D /* SettingsViewModel.swift */; };
@@ -237,6 +239,7 @@
 		3C4F17291FA39204001EF71F /* Float+CurrencyFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4F17281FA39204001EF71F /* Float+CurrencyFormatter.swift */; };
 		3C4F172B1FA77056001EF71F /* EntityDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4F172A1FA77056001EF71F /* EntityDataSource.swift */; };
 		3C4F172D1FA7801C001EF71F /* CommonErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4F172C1FA7801C001EF71F /* CommonErrors.swift */; };
+		3C584A231FBCA63A00584831 /* UIViewController+SimpleActionSheetPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C584A221FBCA63A00584831 /* UIViewController+SimpleActionSheetPicker.swift */; };
 		3C58DD571F8D167F003C5791 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C58DD551F8D167F003C5791 /* LoginViewController.swift */; };
 		3C58DD5A1F8D2A46003C5791 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C58DD591F8D2A46003C5791 /* LoginViewModel.swift */; };
 		3C58DD5C1F8D2B32003C5791 /* LoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C58DD5B1F8D2B32003C5791 /* LoginCoordinator.swift */; };
@@ -618,6 +621,8 @@
 		3AFA86671DF305A300DCAECF /* CheckOutIPadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckOutIPadViewController.swift; sourceTree = "<group>"; };
 		3C07573D1F979D78005D2DEB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Firebase/GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		3C0757401F97ABB1005D2DEB /* IntervalApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = IntervalApp.entitlements; sourceTree = "<group>"; };
+		3C291A361FBCFCCE00F294FD /* MembershipSelectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MembershipSelectionTableViewCell.swift; sourceTree = "<group>"; };
+		3C291A371FBCFCCE00F294FD /* MembershipSelectionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MembershipSelectionTableViewCell.xib; sourceTree = "<group>"; };
 		3C2EABE91FB21AFF00BD2B2D /* Settings.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		3C2EABEB1FB21DBE00BD2B2D /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		3C2EABEF1FB244ED00BD2B2D /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
@@ -631,6 +636,7 @@
 		3C4F17281FA39204001EF71F /* Float+CurrencyFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Float+CurrencyFormatter.swift"; sourceTree = "<group>"; };
 		3C4F172A1FA77056001EF71F /* EntityDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityDataSource.swift; sourceTree = "<group>"; };
 		3C4F172C1FA7801C001EF71F /* CommonErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonErrors.swift; sourceTree = "<group>"; };
+		3C584A221FBCA63A00584831 /* UIViewController+SimpleActionSheetPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+SimpleActionSheetPicker.swift"; sourceTree = "<group>"; };
 		3C58DD551F8D167F003C5791 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		3C58DD591F8D2A46003C5791 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		3C58DD5B1F8D2B32003C5791 /* LoginCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCoordinator.swift; sourceTree = "<group>"; };
@@ -1076,6 +1082,7 @@
 		3AAA59F61C720F4500A5EA6D /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				3C291A311FBCEA0300F294FD /* TableViewCells */,
 				3C9186F31FA25DF200F484ED /* TypeAliases */,
 				61C0250A1F92CF8D003BFF55 /* View Controllers */,
 				6156D19F1F92659F00FAC4A0 /* Errors */,
@@ -1205,6 +1212,23 @@
 				3AB122CB1CD2859500204EB7 /* Localizable.strings */,
 			);
 			path = Localization;
+			sourceTree = "<group>";
+		};
+		3C1EA4241FBE1DCB00FB32CA /* MembershipSelection */ = {
+			isa = PBXGroup;
+			children = (
+				3C291A361FBCFCCE00F294FD /* MembershipSelectionTableViewCell.swift */,
+				3C291A371FBCFCCE00F294FD /* MembershipSelectionTableViewCell.xib */,
+			);
+			path = MembershipSelection;
+			sourceTree = "<group>";
+		};
+		3C291A311FBCEA0300F294FD /* TableViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				3C1EA4241FBE1DCB00FB32CA /* MembershipSelection */,
+			);
+			path = TableViewCells;
 			sourceTree = "<group>";
 		};
 		3C2EABE81FB21ADC00BD2B2D /* Settings */ = {
@@ -1686,6 +1710,7 @@
 				3C4F17281FA39204001EF71F /* Float+CurrencyFormatter.swift */,
 				61A420C01FA9819F00B06708 /* Data+EncryptionKey.swift */,
 				3A7858E51FB1B7160027E7EC /* Print+IntervalDebug.swift */,
+				3C584A221FBCA63A00584831 /* UIViewController+SimpleActionSheetPicker.swift */,
 			);
 			name = Extensions;
 			path = Utils;
@@ -1805,6 +1830,7 @@
 				3AB122CE1CD2859500204EB7 /* Localizable.strings in Resources */,
 				DC7EF50E1D709F8800E9E360 /* ResortDirectoryIPad.storyboard in Resources */,
 				3AAA5A481C720F4500A5EA6D /* VacationSearchIpad.storyboard in Resources */,
+				3C291A391FBCFCCE00F294FD /* MembershipSelectionTableViewCell.xib in Resources */,
 				3A932D571C8868DC004BF665 /* GuestCertificateCell.xib in Resources */,
 				3A932D5F1C886918004BF665 /* PolicyCell.xib in Resources */,
 				617517AF1FB2888A002A7609 /* LoginIPhone.storyboard in Resources */,
@@ -2192,6 +2218,7 @@
 				3AC5720D1E2A278E00969CF7 /* NotesCell.swift in Sources */,
 				3AAA5A3E1C720F4500A5EA6D /* ActionSheetTblCell.swift in Sources */,
 				3A3A012F1C99BD0B00B7EC37 /* BedroomSizeViewController.swift in Sources */,
+				3C584A231FBCA63A00584831 /* UIViewController+SimpleActionSheetPicker.swift in Sources */,
 				E94FB5EA1EF0609C00314C5D /* VerticalProgressView.swift in Sources */,
 				E9ED1B591F44B89A00794C53 /* CertificateInfoViewController.swift in Sources */,
 				3A3BE3ED1CA0441200CDE3AA /* MyOwnershipAvailablePointTooolTableViewCell.swift in Sources */,
@@ -2237,6 +2264,7 @@
 				3A06C0A51CA9385A009A9574 /* AvailableDestinationCountryOrContinentsTableViewCell.swift in Sources */,
 				3AAA5A2A1C720F4500A5EA6D /* Config.swift in Sources */,
 				3A18D7BA1DE05DEC00966472 /* AddDebitOrCreditCardViewController.swift in Sources */,
+				3C291A381FBCFCCE00F294FD /* MembershipSelectionTableViewCell.swift in Sources */,
 				61698B361F997DA4004BB6AF /* AppState.swift in Sources */,
 				617434731F8EFE89006292E0 /* String+Localization.swift in Sources */,
 				3A3A012E1C99BD0B00B7EC37 /* BedroomSizeTableViewCell.swift in Sources */,

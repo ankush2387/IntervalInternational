@@ -6,26 +6,35 @@
 //  Copyright © 2017 Interval International. All rights reserved.
 //
 
+import DarwinSDK
 import Foundation
 import IntervalUIKit
 import FirebaseMessaging
 
+// Lint bug, not reading class weak definition
+// swiftlint:disable class_delegate_protocol
 protocol LoginCoordinatorDelegate: class {
     func didLogin()
     func didError(message: String)
 }
 
+// swiftlint:disable line_length
 final class LoginCoordinator: ComputationHelper {
     
     // MARK: - Public properties
     weak var delegate: LoginCoordinatorDelegate?
     
+    // MARK: - Outlet properties (Must exist - Otherwise application should not run)
+    // swiftlint:disable implicitly_unwrapped_optional
+    private var viewModel: LoginViewModel!
+    private var loginViewController:LoginViewController!
+    
     // MARK: - Private properties
     private let configuration: Config
     private let sessionStore: Session
     private let backgroundImages: [UIImage]
+    private let clientAPIStore: ClientAPIStore
     private var messaging: Messaging
-    private var viewModel: LoginViewModel?
     private var backgroundImageIndex: Int {
         
         guard let index = try? decryptedStore.getItem(for: Persistent.backgroundImageIndex.key, ofType: Int()),
@@ -54,13 +63,15 @@ final class LoginCoordinator: ComputationHelper {
          decryptedStore: DecryptedItemDataStore,
          messaging: Messaging,
          configuration: Config,
-         sessionStore: Session) {
+         sessionStore: Session,
+         clientAPIStore: ClientAPIStore) {
         
         self.messaging = messaging
         self.sessionStore = sessionStore
         self.configuration = configuration
         self.encryptedStore = encryptedStore
         self.decryptedStore = decryptedStore
+        self.clientAPIStore = clientAPIStore
         self.backgroundImages = backgroundImages
     }
 
@@ -70,7 +81,8 @@ final class LoginCoordinator: ComputationHelper {
                   decryptedStore: UserDafaultsWrapper(),
                   messaging: Messaging.messaging(),
                   configuration: Config.sharedInstance,
-                  sessionStore: Session.sharedSession)
+                  sessionStore: Session.sharedSession,
+                  clientAPIStore: ClientAPI.sharedInstance)
     }
 
     // MARK: - Public functions
@@ -78,7 +90,7 @@ final class LoginCoordinator: ComputationHelper {
         
         let viewModel = LoginViewModel(backgroundImage: backgroundImages[backgroundImageIndex],
                                        sessionStore: Session.sharedSession,
-                                       clientAPIStore: ClientAPI.sharedInstance,
+                                       clientAPIStore: clientAPIStore,
                                        encryptedStore: encryptedStore,
                                        decryptedStore: UserDafaultsWrapper(),
                                        configuration: Config.sharedInstance,
@@ -93,7 +105,7 @@ final class LoginCoordinator: ComputationHelper {
                                                           description: "Exchange like never before! Exclusively on the App, you can now search for an exchange with different ownership interests at the same time.".localized(),
                                                           descriptionTextColor: IntervalThemeFactory.deviceTheme.secondaryTextColor,
                                                           iconNavigator: #imageLiteral(resourceName: "Active Segment"),
-                                                          screenColor: UIColor(red: 0.94, green: 0.98, blue: 1.00, alpha: 1.0))
+                                                          screenColor: #colorLiteral(red: 0.9412514567, green: 0.9814893603, blue: 0.9980912805, alpha: 1))
             
             let exchangeAndGetawayPage = SimpleOnboardingPageEntity(mainImage: #imageLiteral(resourceName: "EX+GA Illustration"),
                                                                     title: "Combined".localized(),
@@ -109,7 +121,7 @@ final class LoginCoordinator: ComputationHelper {
                                                               description: "Search first, then decide the best way to book your vacation. Search for an exchange using any or all of your available weeks or points - or book a Getaway. We'll show you options, the rest is up to you.".localized(),
                                                               descriptionTextColor: IntervalThemeFactory.deviceTheme.secondaryTextColor,
                                                               iconNavigator: #imageLiteral(resourceName: "Active Segment"),
-                                                              screenColor: UIColor(red: 0.94, green: 0.98, blue: 1.00, alpha: 1.0),
+                                                              screenColor: #colorLiteral(red: 0.9412514567, green: 0.9814893603, blue: 0.9980912805, alpha: 1),
                                                               titleFont: UIFont.boldSystemFont(ofSize: 30.0))
             
             let multipleDestinationsPage = SimpleOnboardingPageEntity(mainImage: #imageLiteral(resourceName: "Multi-Des Illustration"),
@@ -127,7 +139,7 @@ final class LoginCoordinator: ComputationHelper {
                                                                description: "View your upcoming vacations all in one place with fast and easy access to your trip confirmation details. Even share your reservation information with friends and family!".localized(),
                                                                descriptionTextColor: IntervalThemeFactory.deviceTheme.secondaryTextColor,
                                                                iconNavigator: #imageLiteral(resourceName: "Active Segment"),
-                                                               screenColor: UIColor(red: 0.94, green: 0.98, blue: 1.00, alpha: 1.0),
+                                                               screenColor: #colorLiteral(red: 0.9412514567, green: 0.9814893603, blue: 0.9980912805, alpha: 1),
                                                                titleFont: UIFont.boldSystemFont(ofSize: 30.0))
             
             let touchIDLoginPage = SimpleOnboardingPageEntity(mainImage: #imageLiteral(resourceName: "TouchID Illustration"),
@@ -153,7 +165,8 @@ final class LoginCoordinator: ComputationHelper {
 
         viewModel.didLogin = didLogin
         self.viewModel = viewModel
-        return LoginViewController(viewModel: viewModel, simpleOnboardingViewModel: simpleOnboardingViewModel)
+        loginViewController = LoginViewController(viewModel: viewModel, simpleOnboardingViewModel: simpleOnboardingViewModel)
+        return loginViewController
     }
 
     func clientTokenLoaded() {
@@ -181,7 +194,62 @@ final class LoginCoordinator: ComputationHelper {
             messaging.unsubscribe(fromTopic: oldNotificationTopic)
             messaging.subscribe(toTopic: newNotificationTopic)
         }
-        
+
+        guard let memberShips = sessionStore.contact?.memberships else {
+            loginViewController.presentErrorAlert(UserFacingCommonError.generic)
+            return
+        }
+
+        if viewModel.fetchedMoreThanOneMembership {
+            loginViewController.hideHudAsync()
+            var filteredMemberships: [Membership] = []
+            let cells = memberShips
+                .map { (membership: $0, product: $0.getProductWithHighestTier()) }
+                .flatMap { (membership: Membership, product: Product?) -> MembershipSelectionTableViewCell? in
+                    if let productCode = product?.productCode,
+                        let productName = product?.productName,
+                        let membershipNumber = membership.memberNumber,
+                        let image = UIImage(named: productCode) {
+                        let cell = MembershipSelectionTableViewCell()
+                        cell.setCell(membershipImage: image, membershipName: productName, membershipNumber: membershipNumber)
+                        filteredMemberships.append(membership)
+                        return cell
+                    }
+                    
+                    return nil
+                }
+            
+            let didCancel: CallBack = { [unowned self] in
+                self.sessionStore.signOut()
+            }
+            
+            let didSelect = { [unowned self] (index: Int) in
+                self.loginViewController.showHudAsync()
+                self.sessionStore.selectedMembership = filteredMemberships[index]
+                guard let membership = self.sessionStore.selectedMembership,
+                    let accessToken = self.sessionStore.userAccessToken,
+                    let delegate = self.delegate else {
+                    self.loginViewController.presentErrorAlert(UserFacingCommonError.generic)
+                    return
+                }
+                
+                self.clientAPIStore.writeSelected(membership: membership, for: accessToken)
+                    .then(delegate.didLogin)
+                    .onError { [unowned self] error in
+                        self.loginViewController.presentErrorAlert(UserFacingCommonError.custom(title: "Error".localized(),
+                                                                                                body: error.localizedDescription)) }
+            }
+            
+            let viewModel = SimpleActionSheetViewModel<MembershipSelectionTableViewCell>(cells: cells,
+                                                                                         heightForCells: 60,
+                                                                                         title: "Choose Membership".localized(),
+                                                                                         didCancel: didCancel,
+                                                                                         didSelectRow: didSelect)
+            
+            loginViewController.presentSimpleActionSheetPicker(viewModel: viewModel)
+            return
+        }
+
         delegate?.didLogin()
     }
 }

@@ -53,4 +53,10 @@ final class ClientAPI: ClientAPIStore {
             RentalClient.getAlert(accessToken, alertId: alertId, onSuccess: resolve, onError: reject)
         }
     }
+    
+    func writeSelected(membership: Membership, for accessToken: DarwinAccessToken) -> Promise<Void> {
+        return Promise { resolve, reject in
+           UserClient.putSessionsUser(accessToken, member: membership, onSuccess: resolve, onError: reject)
+        }
+    }
 }

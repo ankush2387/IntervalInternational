@@ -15,5 +15,6 @@ protocol ClientAPIStore {
     func readAppSettings(for accessToken: DarwinAccessToken) -> Promise<Settings>
     func readCurrentProfile(for accessToken: DarwinAccessToken) -> Promise<Contact>
     func readAccessToken(for userName: String, and password: String) -> Promise<DarwinAccessToken>
+    func writeSelected(membership: Membership, for accessToken: DarwinAccessToken) -> Promise<Void>
     func readRentalAlert(for accessToken: DarwinAccessToken, and alertId: Int64) -> Promise<RentalAlert>
 }

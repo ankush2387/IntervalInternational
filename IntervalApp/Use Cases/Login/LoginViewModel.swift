@@ -23,6 +23,7 @@ final class LoginViewModel {
     let clientTokenLoaded = Observable(false)
     let appSettings: Observable<AppSettings?>
     var didLogin: (() -> Void)?
+    var fetchedMoreThanOneMembership = false
     var touchIDEnabled: Bool {
         let touchIDEnabled = (try? encryptedStore.getItem(for: Persistent.touchIDEnabled.key, ofType: Bool()) ?? false) ?? false
         let appHasPreviousLogin = (try? decryptedStore.getItem(for: Persistent.appHasPreviousLogin.key, ofType: Bool()) ?? false) ?? false
@@ -83,9 +84,11 @@ final class LoginViewModel {
     func normalLogin() -> Promise<Void> {
         isLoggingIn.next(true)
         return Promise { [unowned self] _, reject in
+            let loginError = UserFacingCommonError.custom(title: "Error".localized(),
+                                                          body: "It appears we are not able to log you in. If the problem persists, please contact Interval International.".localized())
             self.saveCredentials()
                 .then(self.login(userName: self.username.value.unwrappedString, password: self.password.value.unwrappedString))
-                .onError { _ in reject(UserFacingCommonError.generic) }
+                .onError { _ in reject(loginError) }
         }
     }
     
@@ -115,8 +118,15 @@ final class LoginViewModel {
     func readCurrentProfileForAccessToken(accessToken: DarwinAccessToken) -> Promise<Void> {
         return Promise { [unowned self] resolve, reject in
             self.clientAPIStore.readCurrentProfile(for: accessToken)
-                .then {
-                    self.sessionStore.contact = $0
+                .then { user in
+                    
+                    guard let memberships = user.memberships, user.hasMembership() else {
+                        reject(CommonErrors.errorWithSpecificMessage("No active membership"))
+                        return
+                    }
+                    
+                    self.sessionStore.contact = user
+                    self.fetchedMoreThanOneMembership = memberships.count > 1
                     resolve()
                 }
                 .onError(reject)

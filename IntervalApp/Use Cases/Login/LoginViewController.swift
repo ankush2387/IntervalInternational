@@ -78,10 +78,9 @@ final class LoginViewController: UIViewController {
 
     private func setSplashScreenAnimation() {
         let initialIconSize = CGSize(width: 168, height: 44)
-        let splashScreenBackgroundColor = UIColor(red: 0.24, green: 0.51, blue: 0.76, alpha: 1.0)
         let simpleRevealingAppLaunchView = SimpleRevealingAppLaunchView(iconImage: #imageLiteral(resourceName: "Interval_Splash_Logo "),
                                                                iconInitialSize: initialIconSize,
-                                                               backgroundColor: splashScreenBackgroundColor)
+                                                               backgroundColor: #colorLiteral(red: 0.004279129673, green: 0.452577889, blue: 0.7227205634, alpha: 1))
 
         self.view.addSubview(simpleRevealingAppLaunchView)
         simpleRevealingAppLaunchView.startAnimation(performTouchIDLoginIfEnabled)
@@ -199,12 +198,6 @@ extension LoginViewController: ComputationHelper {
     
     private func update() {
         
-        struct UpdateError: ViewError {
-            var description: (title: String, body: String) {
-                return ("Error".localized(), "Unable to redirect to the App Store. Please open the App store updates tab to update.".localized())
-            }
-        }
-        
         guard let url = URL(string: "https://itunes.apple.com/us/app/interval-international/id388957867"),
             UIApplication.shared.canOpenURL(url) else {
                 
@@ -213,7 +206,8 @@ extension LoginViewController: ComputationHelper {
                     UIApplication.shared.canOpenURL(intervalAppsURL) {
                     NetworkHelper.open(intervalAppsURL)
                 } else {
-                    presentErrorAlert(UpdateError())
+                    presentErrorAlert(UserFacingCommonError.custom(title: "Error".localized(),
+                                                                   body: "Unable to redirect to the App Store. Please open the App store updates tab to update.".localized()))
                 }
                 
                 return
