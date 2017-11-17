@@ -392,7 +392,7 @@ extension ResortDirectoryViewController: UITableViewDelegate {
                 self.hideHudAsync()
             })
         } else if(tableView.tag == 3) {
-            
+            showHudAsync()
             if(Constant.MyClassConstants.systemAccessToken != nil) {
                 
                 resort = Constant.MyClassConstants.resortDirectoryResortArray[indexPath.row]
