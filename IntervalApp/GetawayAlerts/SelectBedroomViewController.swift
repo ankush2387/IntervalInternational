@@ -10,10 +10,10 @@ import UIKit
 import DarwinSDK
 
 class SelectBedroomViewController: UIViewController {
-
+    
     @IBOutlet weak private var bedroomSelectionTableView: UITableView!
     fileprivate var selectedBedroomArray = [String]()
-    fileprivate var localArrayToHoldSelection = NSMutableArray()
+    fileprivate var localArrayToHoldSelection = [Int]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,12 +27,12 @@ class SelectBedroomViewController: UIViewController {
             Constant.MyClassConstants.alertSelectedBedroom = []
         }
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-  
+    
     @IBAction func backButtonPressed(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
@@ -65,30 +65,27 @@ class SelectBedroomViewController: UIViewController {
                 Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.removeAllObjects()
                 
                 for index in localArrayToHoldSelection {
-                    if let Index = index as? Int {
-                        Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.add(Index)
-                    }
+                        Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.add(index)
                 }
                 
             } else {
                 var i = 0
                 var selectedBedroomsizes = ""
                 for index in localArrayToHoldSelection {
-                    if let Index = index as? Int {
                         if i < localArrayToHoldSelection.count - 1 {
-                            let friendlyName = UnitSize.forDisplay[Index].friendlyName()
+                            let friendlyName = UnitSize.forDisplay[index].friendlyName()
                             let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: friendlyName)
                             selectedBedroomsizes = selectedBedroomsizes.appending("\(bedroomSize), ")
                             i = i + 1
                         } else {
-                            let friendlyName = UnitSize.forDisplay[Index].friendlyName()
+                            let friendlyName = UnitSize.forDisplay[index].friendlyName()
                             let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: friendlyName)
-                            selectedBedroomsizes = selectedBedroomsizes.appending("\(bedroomSize)")
+                            selectedBedroomsizes = selectedBedroomsizes.appending("\(bedroomSize), ")
+                           
                         }
-                    }
                 }
                 Constant.MyClassConstants.selectedBedRoomSize = selectedBedroomsizes
-                Constant.MyClassConstants.bedRoomSizeSelectedIndexArray = localArrayToHoldSelection
+                Constant.MyClassConstants.bedRoomSizeSelectedIndexArray = NSMutableArray(array: localArrayToHoldSelection)
             }
         }
         dismiss(animated: true, completion: nil)
@@ -115,18 +112,16 @@ extension SelectBedroomViewController: UITableViewDataSource {
                 if Constant.MyClassConstants.alertSelectedBedroom.contains(bedRoomTitle) {
                     cell.checkedImageView.image = #imageLiteral(resourceName: "Checkmark-On")
                     selectedBedroomArray.append(bedRoomTitle)
-                    localArrayToHoldSelection.add(cell.tag)
+                    localArrayToHoldSelection.append(cell.tag)
                 } else {
                     cell.checkedImageView.image = #imageLiteral(resourceName: "Checkmark-Off")
                 }
             }
-       
+            
         } else {
             if let text = cell.bedroomTitleLabel.text {
                 selectedBedroomArray.append(text)
             }
-            
-            
         }
         
         return cell
@@ -138,46 +133,39 @@ extension SelectBedroomViewController: UITableViewDelegate {
         guard let cell = tableView.cellForRow(at: indexPath) as? BedroomTableViewCell else { return }
         let selectedImg = #imageLiteral(resourceName: "Checkmark-On")
         let unSelectedImg = #imageLiteral(resourceName: "Checkmark-Off")
-        
-        if cell.checkedImageView.image == selectedImg {
-            cell.checkedImageView.image = unSelectedImg
-            if let bedRoomTitleLabel = cell.bedroomTitleLabel.text {
-                updateSelectedBedroom(bedroom: bedRoomTitleLabel)
-            }
-        } else {
-            cell.checkedImageView.image = selectedImg
-            if let bedRoomTitleLabel = cell.bedroomTitleLabel.text {
-                selectedBedroomArray.append(bedRoomTitleLabel)
-            }
-        }
+        cell.checkedImageView.image = cell.checkedImageView.image == selectedImg ? unSelectedImg : selectedImg
+        updateSelectedBedroom(bedroom: cell.bedroomTitleLabel.text.unwrappedString)
         if localArrayToHoldSelection.count == 0 {
-            localArrayToHoldSelection.add(cell.tag)
-
+            localArrayToHoldSelection.append(cell.tag)
+            
         } else {
             var flag = true
             let tempArray: NSMutableArray = NSMutableArray()
-            for index in localArrayToHoldSelection where index as? Int == cell.tag {
-                    let objectAt = localArrayToHoldSelection.index(of: index)
-                    tempArray.add(objectAt)
-                    flag = false
+            for index in localArrayToHoldSelection where index == cell.tag {
+                let objectAt = localArrayToHoldSelection.index(of: index)
+                tempArray.add(objectAt as Any)
+                flag = false
             }
             let indexSet = NSMutableIndexSet()
+           
             for index in tempArray {
                 if let Index = index as? Int {
                     indexSet.add(Index)
                 }
                 
             }
-            localArrayToHoldSelection.removeObjects(at: indexSet as IndexSet)
+            for index in indexSet {
+                 localArrayToHoldSelection.remove(at: index)
+            }
             if flag {
-                localArrayToHoldSelection.add(cell.tag)
+                localArrayToHoldSelection.append(cell.tag)
             }
         }
     }
     
     fileprivate func updateSelectedBedroom(bedroom: String) {
         for (index, br) in selectedBedroomArray.enumerated() where bedroom == br {
-                selectedBedroomArray.remove(at: index)
+            selectedBedroomArray.remove(at: index)
         }
     }
 }
