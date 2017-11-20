@@ -60,7 +60,7 @@ class VacationSearchResultIPadController: UIViewController {
         UIView.animate(withDuration: 1, delay: 0, options: UIViewAnimationOptions(rawValue: 0), animations: {
             
             Constant.MyClassConstants.isShowAvailability = false
-            resortDetailTBLView.reloadData()
+            self.resortDetailTBLView.reloadData()
         }, completion: nil)
         
         timer.invalidate()
@@ -499,37 +499,6 @@ class VacationSearchResultIPadController: UIViewController {
     }
     
 }
-
-//Function to check whether more button should be enabled or disabled.
-func enableDisablePreviousMoreButtoniPad(_ position: String) -> Bool {
-    
-    let currentDate = Date()
-    var order = (Calendar.current as NSCalendar).compare(Constant.MyClassConstants.currentFromDate as Date, to: currentDate, toUnitGranularity: .hour)
-    if (position.isEqual(Constant.MyClassConstants.right)) {
-        let nextDate = (Calendar.current as NSCalendar).date(byAdding: .month, value: +24, to: Constant.MyClassConstants.currentFromDate as Date, options: [])!
-        order = (Calendar.current as NSCalendar).compare(currentDate, to: nextDate, toUnitGranularity: .hour)
-    }
-    
-    switch order {
-        
-    case .orderedDescending:
-        if (position == Constant.MyClassConstants.right) {
-            return false
-        } else {
-            return true
-        }
-    case .orderedAscending:
-        if (position == Constant.MyClassConstants.right) {
-            return true
-        } else {
-            return false
-        }
-        
-    case .orderedSame:
-        return false
-    }
-}
-
 // MARK: - Collection view FlowLayout Delegate
 extension VacationSearchResultIPadController: UICollectionViewDelegateFlowLayout {
     

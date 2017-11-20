@@ -413,25 +413,32 @@ class LoginIPadViewController: UIViewController {
         UserClient.putSessionsUser(context.userAccessToken, member: context.selectedMembership!,
            onSuccess:{
             //***** Favorites resort API call after successfull call *****//
-            Helper.getUserFavorites()
+            Helper.getUserFavorites{[unowned self] error in
+                if case .some = error {
+                    self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
+                }
+            }
             //***** Get upcoming trips for user API call after successfull call *****//
-            Helper.getUpcomingTripsForUser()
+            Helper.getUpcomingTripsForUser{[unowned self] error in
+                if case .some = error {
+                    self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
+                }
+            }
             //***** Getaway Alerts API call after successfull login *****//
             Helper.getAllAlerts {[unowned self] error in
                 if case .some = error {
                 self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
                 }
             }
-        }
-        Constant.MyClassConstants.isLoginSuccessfull = true
-        self.performSegue(withIdentifier: Constant.segueIdentifiers.dashboradSegueIdentifier, sender: nil)
-                                    
+            Constant.MyClassConstants.isLoginSuccessfull = true
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.dashboradSegueIdentifier, sender: nil)
         },
-           onError:{[unowned self](error) in
-            self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
+           onError:{[unowned self](_) in
+            self.presentErrorAlert(UserFacingCommonError.generic)
         }
         )
-    }    func callForIndividualAlert(_ alert: RentalAlert) {
+    }
+    func callForIndividualAlert(_ alert: RentalAlert) {
         Constant.MyClassConstants.activeAlertsArray.removeAllObjects()
         RentalClient.getAlert(Session.sharedSession.userAccessToken, alertId: alert.alertId!, onSuccess: { (response) in
             

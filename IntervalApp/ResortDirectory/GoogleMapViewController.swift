@@ -360,7 +360,8 @@ class GoogleMapViewController: UIViewController {
             
             sender.isSelected = true
             if(Constant.RunningDevice.deviceIdiom == .pad) {
-                self.navigationController?.dismiss(animated: true, completion: nil)
+                _ = self.navigationController?.popViewController(animated: true)
+                
             } else {
                 _ = self.navigationController?.popViewController(animated: true)
             }
@@ -599,11 +600,8 @@ class GoogleMapViewController: UIViewController {
     
     //***** This function called when navigation back button pressed *****//
     func menuBackButtonPressed(_ sender: UIBarButtonItem) {
-        if(Constant.MyClassConstants.runningFunctionality == "VacationSearch") {
+    
             self.navigationController?.popViewController(animated: true)
-        } else {
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.MyClassConstants.popToLoginView), object: nil)
-        }
     }
     //***** This function called when navigation back button pressed *****//
     func applyButtonPressed(_ sender: UIBarButtonItem) {
@@ -878,7 +876,12 @@ class GoogleMapViewController: UIViewController {
             if(Constant.MyClassConstants.systemAccessToken != nil) {
                 let selectedResort = Constant.MyClassConstants.resortsArray[self.currentIndex]
                 
-                Helper.getUserFavorites()
+                //***** Favorites resort API call after successfull call *****//
+                Helper.getUserFavorites{[unowned self] error in
+                    if case .some = error {
+                        self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
+                    }
+                }
                 Helper.getResortWithResortCode(code: selectedResort.resortCode!, viewcontroller: self)
             }
         }
@@ -1140,7 +1143,6 @@ class GoogleMapViewController: UIViewController {
             i = i + 1
         }
         Constant.MyClassConstants.googleMarkerArray.removeAll()
-        Constant.MyClassConstants.googleMarkerArray.removeAll()
         self.mapView.clear()
         self.displaySearchedResort()
         
@@ -1154,7 +1156,12 @@ class GoogleMapViewController: UIViewController {
         if(Constant.MyClassConstants.systemAccessToken != nil) {
             let selectedResort = Constant.MyClassConstants.resortsArray[self.currentIndex]
             
-            Helper.getUserFavorites()
+            //***** Favorites resort API call after successfull call *****//
+            Helper.getUserFavorites{[unowned self] error in
+                if case .some = error {
+                    self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
+                }
+            }
             Helper.getResortWithResortCode(code: selectedResort.resortCode!, viewcontroller: self)
         }
     }

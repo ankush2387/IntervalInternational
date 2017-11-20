@@ -236,19 +236,21 @@ class FloatDetailViewController: UIViewController {
         if(Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate == nil) {
             
         } else {
-        myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate)
-            let year = String(describing: myComponents.year!)
-            var  month = String(describing: myComponents.month!)
-            if(month.characters.count == 1) {
-                month = ("0").appending("\(month)")
-            }
-            let day = myComponents.day!
-            fixedWeekReservation.checkInDate = "\(year)-\(month)-\(day)"
-            if(Constant.MyClassConstants.floatDetailsCalendarDateArray.contains(Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate)) {
-                let index = Constant.MyClassConstants.floatDetailsCalendarDateArray.index(of: Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate)
+            if let fltDetailsSelectedDate = Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate {
+                myComponents = Calendar.current.dateComponents([.day, .weekday, .month, .year], from: fltDetailsSelectedDate)
+                let year = String(describing: myComponents.year!)
+                var  month = String(describing: myComponents.month!)
+                if(month.characters.count == 1) {
+                    month = ("0").appending("\(month)")
+                }
+                let day = myComponents.day!
+                    fixedWeekReservation.checkInDate = "\(year)-\(month)-\(day)"
+            if(Constant.MyClassConstants.floatDetailsCalendarDateArray.contains(fltDetailsSelectedDate)) {
+                let index = Constant.MyClassConstants.floatDetailsCalendarDateArray.index(of: fltDetailsSelectedDate)
                 fixedWeekReservation.weekNumber = String(describing: Constant.MyClassConstants.floatDetailsCalendarWeekArray[index!])
             }
         }
+    }
         if(atrributesRowArray.contains(Constant.MyClassConstants.resortReservationAttribute)) {
             fixedWeekReservation.reservationNumber = Constant.FloatDetails.reservationNumber
         }
@@ -541,10 +543,9 @@ extension FloatDetailViewController: UITableViewDataSource {
                 if(Constant.MyClassConstants.selectedFloatWeek.floatDetails.count > 0) {
                     registrationNumbercell.resortAttributeLabel.text = Constant.MyClassConstants.selectedFloatWeek.floatDetails[0].checkInDate
                 }
-                if(Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate != nil) {
+                if let selectedDate = Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate {
                     
-                    let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                    let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate)
+                    let myComponents = Calendar.current.dateComponents([.day, .weekday, .month, .year], from: selectedDate)
                     let year = String(describing: myComponents.year!)
                     
                     let weekDay = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday!))"

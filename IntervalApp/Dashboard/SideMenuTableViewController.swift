@@ -269,22 +269,13 @@ extension SideMenuTableViewController: UITableViewDataSource {
             cell.iconImageView.image = UIImage(named: smi.imageName)
             cell.customTextLabel.text = smi.menuTitle
             
-            if((indexPath as NSIndexPath).row == 5) {
+            if indexPath.row == 5 {
                 
                 let alertCounterLabel = UILabel()
-                var activeAlertsCount = 0
-                if(Constant.MyClassConstants.getawayAlertsArray.count > 0) {
-                    for activeAlert in Constant.MyClassConstants.activeAlertsArray {
-                        let getAwayAlert: RentalAlert = activeAlert as! RentalAlert
-                        if (getAwayAlert.enabled)! {
-                            activeAlertsCount = activeAlertsCount + 1
-                        }
-                    }
-                    if(activeAlertsCount > 0) {
-                        alertCounterLabel.text = String(activeAlertsCount)
-                    } else {
-                        alertCounterLabel.isHidden = true
-                    }
+               
+                if Constant.activeAlertCount > 0 {
+                   alertCounterLabel.text = "\(Constant.activeAlertCount)"
+                    alertCounterLabel.isHidden = false
                 } else {
                     alertCounterLabel.isHidden = true
                 }

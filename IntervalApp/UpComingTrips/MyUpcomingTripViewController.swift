@@ -50,10 +50,23 @@ class MyUpcomingTripViewController: UIViewController{
         ]
         ADBMobile.trackAction(Constant.omnitureEvents.event73, data: userInfo)
     }
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = false
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = true
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         //***** Dispose of any resources that can be recreated. *****//
+    }
+    func vacationSearchButtonPressed(_ sender:UIButton) {
+        let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+        let storyboardName = isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
+        if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
+            navigationController?.pushViewController(initialViewController, animated: true)
+        }
     }
 }
 
@@ -65,43 +78,39 @@ extension MyUpcomingTripViewController:UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        if UIDevice().userInterfaceIdiom == .pad {
+
+        if UIDevice().userInterfaceIdiom == .pad  {
             return 500
         } else {
-            if Constant.MyClassConstants.upcomingTripsArray.count == 0 {
+            if Constant.MyClassConstants.upcomingTripsArray.isEmpty {
                 return 300
-                
             } else {
                 return 435
             }
         }
     }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
     }
 }
+extension MyUpcomingTripViewController: UITableViewDataSource {
 
-extension MyUpcomingTripViewController:UITableViewDataSource {
     
     //***** UITableview dataSource methods definition here *****//
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if Constant.MyClassConstants.upcomingTripsArray.count == 0 {
-            
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.emptyUpcomingTrip, for: indexPath) as? UpComingTripCell else {
-                
-                return UITableViewCell()
-            }
-            cell.searchVacationButton.layer.cornerRadius = 5
-            cell.selectionStyle = .none
+        if Constant.MyClassConstants.upcomingTripsArray.isEmpty {
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.emptyUpcomingTrip, for: indexPath) as! UpComingTripCell
+             cell.searchVacationButton.layer.cornerRadius = 5
+            cell.searchVacationButton.addTarget(self, action: #selector(MyUpcomingTripViewController.vacationSearchButtonPressed(_:)), for: .touchUpInside)
+             cell.selectionStyle = .none
+
             return cell
             
             
         } else {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.upComingTripCell, for: indexPath) as? UpComingTripCell else {
-                
                 return UITableViewCell()
             }
             let upComingTrip = Constant.MyClassConstants.upcomingTripsArray[indexPath.section]
@@ -112,8 +121,9 @@ extension MyUpcomingTripViewController:UITableViewDataSource {
             if let exchangeStatus = upComingTrip.exchangeStatus {
                 cell.headerStatusLabel.text = exchangeStatus.localized()
             }
+
             if let tripType = upComingTrip.type {
-                
+
                 var type = ExchangeTransactionType.fromName(name: tripType).rawValue
                 if tripType == Constant.myUpcomingTripCommonString.rental {
                     type = Constant.myUpcomingTripCommonString.getaway

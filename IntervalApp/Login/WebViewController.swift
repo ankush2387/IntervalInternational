@@ -22,7 +22,7 @@ class WebViewController: UIViewController {
         webviewForOpenSites.delegate = self
         
         //1. Load web site into my web view
-        let myURL = URL(string: Constant.MyClassConstants.requestedWebviewURL!)
+        let myURL = URL(string: Constant.MyClassConstants.requestedWebviewURL)
         let myURLRequest: URLRequest = URLRequest(url: myURL!)
         webviewForOpenSites.loadRequest(myURLRequest)
     

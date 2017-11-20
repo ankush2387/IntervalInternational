@@ -32,11 +32,7 @@ class CreateActionSheet: UITableViewController {
             let rect = CGRect(x: 0, y: 0, width: self.view.bounds.width - 20, height: CGFloat(membership * 100))
             self.tableView.frame = rect
             let height:NSLayoutConstraint = NSLayoutConstraint(item: self.tableView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1, constant: CGFloat(membership * 70))
-<<<<<<< HEAD
             tableView.addConstraint(height)
-=======
-                tableView.addConstraint(height)
->>>>>>> MOBI-21: Alert UI modification and implementation
         }
         tableView.dataSource = dataSource
         tableView.delegate = dataSource
@@ -95,52 +91,64 @@ class CreateActionSheet: UITableViewController {
         //***** Update the API session for the current access token *****//
         let context = Session.sharedSession
         UserClient.putSessionsUser(context.userAccessToken, member: context.selectedMembership!,
-                                   onSuccess:{
-                                    self.hideHudAsync()
-                                    Constant.MyClassConstants.isLoginSuccessfull = true
-                                    
-                                    let Product = Session.sharedSession.selectedMembership?.getProductWithHighestTier()
-                                    
-                                    // omniture tracking with event 2
-                                    let userInfo: [String: String] = [
-                                        Constant.omnitureEvars.eVar1 : (Session.sharedSession.selectedMembership?.memberNumber!)!,
-                                        Constant.omnitureEvars.eVar3 : "\(String(describing: Product?.productCode!))-\(String(describing: Session.sharedSession.selectedMembership?.membershipTypeCode))",
-                                        Constant.omnitureEvars.eVar4 : "",
-                                        Constant.omnitureEvars.eVar5 : Constant.MyClassConstants.loginOriginationPoint,
-                                        Constant.omnitureEvars.eVar6 : "",
-                                        Constant.omnitureEvars.eVar7 : ""
-                                    ]
-                                    ADBMobile.trackAction(Constant.omnitureEvents.event2, data: userInfo)
-                                    
-                                    
-                                    //***** Done!  Segue to the Home page *****//
-                                    let contact = Session.sharedSession.contact
-                                    if(contact!.memberships!.count > 1) {
-                                        Constant.MyClassConstants.signInRequestedController.dismiss(animated: true, completion: nil)
-                                    }
-                                    if(Constant.MyClassConstants.signInRequestedController.isKind(of:SignInPreLoginViewController.self)) {
-                                        Constant.MyClassConstants.signInRequestedController.navigationController?.popViewController(animated: true)
-                                        // Constant.MyClassConstants.signInRequestedController.dismiss(animated: true, completion: {
-                                        
-                                        // })
-                                        
-                                        NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
-                                    }
-                                    else {
-                                        NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
-                                    }
-                                    
-                                    //***** Get upcoming trips for user *****//
-                                    Helper.getUpcomingTripsForUser()
-                                    
-                                    //Get user favorites.
-                                    Helper.getUserFavorites()
+           onSuccess:{[unowned self] in
+            self.hideHudAsync()
+            Constant.MyClassConstants.isLoginSuccessfull = true
+            
+            let Product = Session.sharedSession.selectedMembership?.getProductWithHighestTier()
+            
+            // omniture tracking with event 2
+            let userInfo: [String: String] = [
+                Constant.omnitureEvars.eVar1 : (Session.sharedSession.selectedMembership?.memberNumber!)!,
+                Constant.omnitureEvars.eVar3 : "\(String(describing: Product?.productCode!))-\(String(describing: Session.sharedSession.selectedMembership?.membershipTypeCode))",
+                Constant.omnitureEvars.eVar4 : "",
+                Constant.omnitureEvars.eVar5 : Constant.MyClassConstants.loginOriginationPoint,
+                Constant.omnitureEvars.eVar6 : "",
+                Constant.omnitureEvars.eVar7 : ""
+            ]
+            ADBMobile.trackAction(Constant.omnitureEvents.event2, data: userInfo)
+            
+            
+            //***** Done!  Segue to the Home page *****//
+           
+            if let memberships = Session.sharedSession.contact?.memberships {
+                if !memberships.isEmpty {
+                    if let controller = Constant.MyClassConstants.signInRequestedController {
+                        controller.dismiss(animated: true, completion: nil)
+                    }
+                }
+            }
+            if let controller = Constant.MyClassConstants.signInRequestedController {
+               if  controller.isKind(of:SignInPreLoginViewController.self) {
+                    controller.navigationController?.popViewController(animated: true)
+                    NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
+                }
+                else {
+                    NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
+                }
+            }
+            
+            //***** Favorites resort API call after successfull call *****//
+            Helper.getUserFavorites{[unowned self] error in
+                if case .some = error {
+                    self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
+                }
+            }
+            //***** Get upcoming trips for user API call after successfull call *****//
+            Helper.getUpcomingTripsForUser{[unowned self] error in
+                if case .some = error {
+                    self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
+                }
+            }
                                     
         },
-                                   onError:{(error) in
-                                    self.hideHudAsync()
-                                    Constant.MyClassConstants.signInRequestedController.dismiss(animated: true, completion: nil)
-                                    self.presentAlert(with: Constant.AlertErrorMessages.loginFailed, message: "\(Constant.AlertPromtMessages.membershipFailureMessage) \(String(describing: context.selectedMembership?.memberNumber))")
+           onError:{(error) in
+            self.hideHudAsync()
+            if let controller = Constant.MyClassConstants.signInRequestedController {
+                controller.dismiss(animated: true, completion: nil)
+            }
+            
+            self.presentAlert(with: Constant.AlertErrorMessages.loginFailed, message: "\(Constant.AlertPromtMessages.membershipFailureMessage) \(String(describing: context.selectedMembership?.memberNumber))")
         }
         )
     }
@@ -179,11 +187,7 @@ class CreateActionSheet: UITableViewController {
         if let alertID = alert.alertId {
             getawayAlert = Constant.MyClassConstants.alertsDictionary.value(forKey: String(describing: alertID)) as! RentalAlert
         }
-<<<<<<< HEAD
         
-=======
-       
->>>>>>> MOBI-21: Alert UI modification and implementation
         
         let searchResortRequest = RentalSearchDatesRequest()
         if let chkInTodate = getawayAlert.latestCheckInDate {
@@ -191,26 +195,15 @@ class CreateActionSheet: UITableViewController {
             searchResortRequest.checkInToDate = Helper.convertStringToDate(dateString:chkInTodate,format:Constant.MyClassConstants.dateFormat)
         }
         if let chkInFromdate = getawayAlert.earliestCheckInDate {
-<<<<<<< HEAD
             searchResortRequest.checkInFromDate = Helper.convertStringToDate(dateString:chkInFromdate,format:Constant.MyClassConstants.dateFormat)
         }
         
-=======
-             searchResortRequest.checkInFromDate = Helper.convertStringToDate(dateString:chkInFromdate,format:Constant.MyClassConstants.dateFormat)
-        }
-       
->>>>>>> MOBI-21: Alert UI modification and implementation
         searchResortRequest.resorts = getawayAlert.resorts
         searchResortRequest.destinations = getawayAlert.destinations
         Constant.MyClassConstants.dashBoardAlertsArray = Constant.MyClassConstants.getawayAlertsArray
         
         if Reachability.isConnectedToNetwork() == true {
             if Session.sharedSession.userAccessToken != nil {
-<<<<<<< HEAD
-=======
-
-            RentalClient.searchDates(Session.sharedSession.userAccessToken, request: searchResortRequest, onSuccess:{ (searchDates) in
->>>>>>> MOBI-21: Alert UI modification and implementation
                 
                 RentalClient.searchDates(Session.sharedSession.userAccessToken, request: searchResortRequest, onSuccess:{ (searchDates) in
                     
@@ -220,7 +213,6 @@ class CreateActionSheet: UITableViewController {
                         Constant.MyClassConstants.alertsResortCodeDictionary.setValue(searchDates.resortCodes, forKey: String(describing: alertID))
                         Constant.MyClassConstants.alertsSearchDatesDictionary.setValue(searchDates.checkInDates, forKey: String(describing: alertID))
                     }
-<<<<<<< HEAD
                     
                     if searchDates.checkInDates.count == 0 || alert.alertId == 123456  {
                         for (index,selectedAlert) in Constant.MyClassConstants.getawayAlertsArray.enumerated(){
@@ -248,41 +240,14 @@ class CreateActionSheet: UITableViewController {
                         if Constant.MyClassConstants.isEvent2Ready > 1  {
                             sendOmnitureTrackCallForEvent2()
                         }
-=======
-                }
-                else {
-                    if Constant.MyClassConstants.activeAlertsArray.count < 1 { //TODO - JHON: forcing alerts count to be one. fix when push notifications is working. 
-                        Constant.MyClassConstants.activeAlertsArray.add(alert)
-                    }
-                }
-                if self.activeAlertCount < Constant.MyClassConstants.getawayAlertsArray.count - 1 {
-                    self.activeAlertCount = self.activeAlertCount + 1
-                    self.getStatusForAllAlerts()
-                }else{
-//                    DispatchQueue.main.async {[weak self] in
-//                        guard let strongSelf = self else {return }
-//                        strongSelf.performSortingForMemberNumberWithViewResultAndNothingYet()
-//                    }
-                    self.performSortingForMemberNumberWithViewResultAndNothingYet()
-                    NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
-                    Constant.MyClassConstants.isEvent2Ready = Constant.MyClassConstants.isEvent2Ready + 1
-                    if Constant.MyClassConstants.isEvent2Ready > 1  {
-                        sendOmnitureTrackCallForEvent2()
->>>>>>> MOBI-21: Alert UI modification and implementation
                     }
                 })
                 { (error) in
                     
-<<<<<<< HEAD
                     Constant.MyClassConstants.isEvent2Ready = Constant.MyClassConstants.isEvent2Ready + 1
                     if Constant.MyClassConstants.isEvent2Ready > 1  {
                         sendOmnitureTrackCallForEvent2()
                     }
-=======
-                Constant.MyClassConstants.isEvent2Ready = Constant.MyClassConstants.isEvent2Ready + 1
-                if Constant.MyClassConstants.isEvent2Ready > 1  {
-                   sendOmnitureTrackCallForEvent2()
->>>>>>> MOBI-21: Alert UI modification and implementation
                 }
             }
         }
@@ -292,7 +257,7 @@ class CreateActionSheet: UITableViewController {
     }
     
     func performSortingForMemberNumberWithViewResultAndNothingYet() {
-        
+        Constant.activeAlertCount = 0
         var viewResultAletArray = [RentalAlert]()
         var nothingYetArray = [RentalAlert]()
         Constant.MyClassConstants.getawayAlertsArray.sort(by: { $0.alertId ?? 0 > $1.alertId ?? 0})
@@ -303,6 +268,7 @@ class CreateActionSheet: UITableViewController {
                     
                     if value.count > 0 {
                         viewResultAletArray.append(alert)
+                        Constant.activeAlertCount += 1
                     }
                     else {
                         nothingYetArray.append(alert)
@@ -315,11 +281,7 @@ class CreateActionSheet: UITableViewController {
         }
         Constant.MyClassConstants.getawayAlertsArray.removeAll()
         for alert in viewResultAletArray {
-<<<<<<< HEAD
             Constant.MyClassConstants.getawayAlertsArray.append(alert)
-=======
-           Constant.MyClassConstants.getawayAlertsArray.append(alert)
->>>>>>> MOBI-21: Alert UI modification and implementation
         }
         for alert in nothingYetArray {
             Constant.MyClassConstants.getawayAlertsArray.append(alert)
@@ -421,11 +383,5 @@ func sendOmnitureTrackCallForEvent2() {
     
     
     ADBMobile.trackAction(Constant.omnitureEvents.event2, data: userInfo as! [AnyHashable : Any])
-<<<<<<< HEAD
 }
-=======
-  }
-
->>>>>>> MOBI-21: Alert UI modification and implementation
-
 

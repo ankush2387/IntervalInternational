@@ -14,4 +14,7 @@ final class HomeAlertCollectionCell: UICollectionViewCell {
     @IBOutlet weak var alertTitle: UILabel!
     @IBOutlet weak var alertStatus: UILabel!
     @IBOutlet weak var alertDate: UILabel!
+    
+  
+
 }

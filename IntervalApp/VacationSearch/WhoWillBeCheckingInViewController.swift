@@ -750,8 +750,8 @@ extension WhoWillBeCheckingInViewController: UITableViewDataSource {
         } else if(indexPath.section == 2) {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.guestCertificatePriceCell, for: indexPath) as! GuestCertificatePriceCell
-            
-            let guestPrices = Constant.MyClassConstants.guestCertificate.prices
+            guard let guestPrices = Constant.MyClassConstants.guestCertificate?.prices else {return cell}
+               
             var memberTier = ""
             if(Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange) {
                 if(Constant.MyClassConstants.exchangeFees.count > 0) {

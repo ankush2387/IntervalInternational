@@ -57,10 +57,10 @@ extension  PrivacyLegalViewController: UITableViewDelegate {
         
         if((indexPath as NSIndexPath).row != 7) {
             
-            Constant.MyClassConstants.requestedWebviewURL = nil
-            Constant.MyClassConstants.webviewTtile = nil
-            Constant.MyClassConstants.requestedWebviewURL = Constant.WebUrls.privacyPolicyUrlArray[(indexPath as NSIndexPath).row]
-            Constant.MyClassConstants.webviewTtile = Constant.MyClassConstants.policyListTblCellContentArray[(indexPath as NSIndexPath).row]
+            Constant.MyClassConstants.requestedWebviewURL = ""
+            Constant.MyClassConstants.webviewTtile = ""
+            Constant.MyClassConstants.requestedWebviewURL = Constant.WebUrls.privacyPolicyUrlArray[indexPath .row]
+            Constant.MyClassConstants.webviewTtile = Constant.MyClassConstants.policyListTblCellContentArray[indexPath.row]
             self.performSegue(withIdentifier: Constant.segueIdentifiers.PolicyWebviewSegue, sender: nil)
             
         }
