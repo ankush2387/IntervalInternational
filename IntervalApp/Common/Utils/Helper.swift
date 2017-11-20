@@ -1559,6 +1559,21 @@ public class Helper {
             
         case "FOUR_BEDROOM":
             return "4"
+            
+        case "Studio":
+            return "Studio"
+            
+        case "One Bedroom":
+            return "1"
+            
+        case "Two Bedroom":
+            return "2"
+            
+        case "Three Bedroom":
+            return "3"
+            
+        case "Four Bedroom":
+            return "4"
         default:
             return ""
         }
