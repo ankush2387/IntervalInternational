@@ -329,26 +329,19 @@ extension RenewelViewController: UITableViewDataSource {
                         
                         cell.renewelCoreImageView?.isHidden = true
                         cell.renewelnonCoreImageView?.isHidden = true
-                        
-                        let currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: (forceRenewals.currencyCode)!)
-                        
-                        let price = String(format: "%.0f", crossSelling.price)
-                        
-                        priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
-                        
-                        
-                        // make attributed string
-                       let formattedString = Helper.returnStringWithPriceAndTerm(price: priceAndCurrency, term: term)
-                        
-                        let range = (formattedString as NSString).range(of: priceAndCurrency)
-                        
-                        let attributeString = NSMutableAttributedString(string: formattedString)
-                        
-                        attributeString.setAttributes([NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0))!, NSForegroundColorAttributeName: UIColor(red: 0.0 / 255.0, green: 201.0 / 255.0, blue: 11.0 / 255.0, alpha: 1.0)], range: range)
-                        
-                        cell.renewelLbl?.attributedText = attributeString
-                        cell.selectButton?.setTitle(Constant.MyClassConstants.renewNow, for: .normal)
-                        
+                        if let currencyCode = forceRenewals.currencyCode {
+                           let currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: currencyCode)
+                           let price = String(format: "%.0f", crossSelling.price)
+                           priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + currencyCode
+                            
+                            // make attributed string
+                            let formattedString = Helper.returnStringWithPriceAndTerm(price: priceAndCurrency, term: term)
+                            let range = (formattedString as NSString).range(of: priceAndCurrency)
+                            let attributeString = NSMutableAttributedString(string: formattedString)
+                            attributeString.setAttributes([NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0))!, NSForegroundColorAttributeName: UIColor(red: 0.0 / 255.0, green: 201.0 / 255.0, blue: 11.0 / 255.0, alpha: 1.0)], range: range)
+                            cell.renewelLbl?.attributedText = attributeString
+                            cell.selectButton?.setTitle(Constant.MyClassConstants.renewNow, for: .normal)
+                        }
                         break
                     }
                 }
@@ -369,8 +362,10 @@ extension RenewelViewController: UITableViewDataSource {
                             cell.renewelnonCoreImageView?.isHidden = false
                             
                             // currency code
-                            let currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: (forceRenewals.currencyCode)!)
-                            
+                            var currencyCodeWithSymbol: String = ""
+                            if let currencyCode = forceRenewals.currencyCode {
+                               currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: currencyCode)
+                            }
                             if (renewalComboProduct.isCoreProduct) {
                                 cell.renewelCoreImageView?.image = UIImage(named: renewalComboProduct.productCode!)
                                 
@@ -479,8 +474,10 @@ extension RenewelViewController: UITableViewDataSource {
                         cell.renewelCoreImageView?.isHidden = true
                         cell.renewelnonCoreImageView?.isHidden = true
                         
-                        let currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: (forceRenewals.currencyCode)!)
-                        
+                        var currencyCodeWithSymbol: String = ""
+                        if let currencyCode = forceRenewals.currencyCode {
+                            currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: currencyCode)
+                        }
                         let price = String(format: "%.0f", product.price)
                         
                         priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
@@ -516,9 +513,10 @@ extension RenewelViewController: UITableViewDataSource {
                         cell.renewelnonCoreImageView?.isHidden = false
                         
                         cell.renewelnonCoreImageView?.image = UIImage(named: nonCoreProduct.productCode!)
-                        
-                        let currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: (forceRenewals.currencyCode)!)
-                        
+                        var currencyCodeWithSymbol: String = ""
+                        if let currencyCode = forceRenewals.currencyCode {
+                            currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: currencyCode)
+                        }
                         let price = String(format: "%.0f", nonCoreProduct.price)
                         
                         priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
@@ -571,35 +569,35 @@ extension RenewelViewController: UITableViewDataSource {
                         // show core and non core image here
                         cell.renewelCoreImageView?.isHidden = true
                         cell.renewelnonCoreImageView?.isHidden = true
-                        
-                        let currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: (forceRenewals.currencyCode)!)
-
-                        
+                        var currencyCodeWithSymbol: String = ""
+                        if let currencyCode = forceRenewals.currencyCode {
+                             currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: currencyCode)
+                        }
                         let price = String(format: "%.0f", nonCoreProduct.price)
-                        
+
                         priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
-                        
+
                         // Create attributed string
                         var mainString = Helper.returnIntervalMembershipStringWithDisplayName3(displayName: String(describing: nonCoreProduct.displayName!), price: priceAndCurrency, term: term)
-                        
+
                         if(Constant.MyClassConstants.noThanksForNonCore) {
-                            
+
                             mainString = Helper.returnIntervalMembershipStringWithDisplayName4(displayName: String(describing: nonCoreProduct.displayName!), price: priceAndCurrency, term: term)
-                            
+
                         }
-                        
+
                         if(Constant.MyClassConstants.noThanksForNonCore) {
                             cell.selectButton?.setTitle(Constant.MyClassConstants.renewNow, for: .normal)
                         } else {
                             cell.selectButton?.setTitle(Constant.MyClassConstants.select, for: .normal)
                         }
-                        
+
                         let range = (mainString as NSString).range(of: priceAndCurrency)
-                        
+
                         let attributeString = NSMutableAttributedString(string: mainString)
-                        
+
                         attributeString.setAttributes([NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0))!, NSForegroundColorAttributeName: UIColor(red: 0.0 / 255.0, green: 201.0 / 255.0, blue: 11.0 / 255.0, alpha: 1.0)], range: range)
-                        
+
                         let combination = NSMutableAttributedString()
                         combination.append(attributeString)
                         cell.renewelLbl?.attributedText = combination

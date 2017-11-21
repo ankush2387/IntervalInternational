@@ -118,9 +118,8 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
         if indexPath.section == 0 {
             for comboProduct in (forceRenewals.comboProducts) {
                 
-                for renewalComboProduct in comboProduct.renewalComboProducts {
-                    if renewalComboProduct.term == 12 {
-                        
+                for renewalComboProduct in comboProduct.renewalComboProducts where renewalComboProduct.term == 12 {
+                   
                         //hide renewal image here
                         cell.renewelImageView?.isHidden = true
                         
@@ -130,9 +129,11 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
                         cell.renewelnonCoreImageView?.isHidden = false
                         
                         // currency code
-                        let currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: (forceRenewals.currencyCode)!)
-                        
-                        if (renewalComboProduct.isCoreProduct) {
+                        var currencyCodeWithSymbol: String = ""
+                        if let currencyCode = forceRenewals.currencyCode {
+                            currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: currencyCode)
+                        }
+                        if renewalComboProduct.isCoreProduct {
                             cell.renewelCoreImageView?.image = UIImage(named: renewalComboProduct.productCode!)
                             
                             let price = String(format: "%.0f", renewalComboProduct.price)
@@ -182,16 +183,12 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
                             break
                             
                         }
-                        
-                    }
                 }
-                
             }
         } else {
             
-            for coreProduct in (forceRenewals.products) {
-                if coreProduct.term == 12 {
-                 
+            for coreProduct in (forceRenewals.products) where coreProduct.term == 12 {
+            
                     // hide core and non core image here
                     cell.renewelCoreImageView?.isHidden = true
                     cell.renewelnonCoreImageView?.isHidden = true
@@ -219,7 +216,6 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
                     // set button select tag
                     cell.buttonSelect.tag = indexPath.section
                     break
-                }
             }
         }
         

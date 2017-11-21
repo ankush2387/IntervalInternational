@@ -33,21 +33,26 @@ class ExchangeOptionsCell: UITableViewCell {
     
     func setupCell(selectedEplus: Bool) {
         
-        if(Constant.MyClassConstants.exchangeFees.count > 0 && Constant.MyClassConstants.exchangeFees[0].eplus != nil) {
-            primaryPriceLabel.text = String(Int(Float((Constant.MyClassConstants.exchangeFees[0].eplus?.price)!)))
-            if(Constant.MyClassConstants.exchangeFees[0].eplus?.selected)! {
-                priceCheckBox.checked = true
-            } else {
-                priceCheckBox.checked = false
+        if Constant.MyClassConstants.exchangeFees.count > 0 && Constant.MyClassConstants.exchangeFees[0].eplus != nil {
+            if let eplus = Constant.MyClassConstants.exchangeFees[0].eplus?.price {
+                primaryPriceLabel.text = String(Int(Float(eplus)))
+                if(Constant.MyClassConstants.exchangeFees[0].eplus?.selected)! {
+                    priceCheckBox.checked = true
+                } else {
+                    priceCheckBox.checked = false
+                }
+                let priceString = "\(eplus)"
+                let priceArray = priceString.components(separatedBy: ".")
+                if (priceArray.last!.count) > 1 {
+                    fractionalPriceLabel.text = "\(priceArray.last!)"
+                } else {
+                    fractionalPriceLabel.text = "00"
+                }
             }
-            let priceString = "\(Constant.MyClassConstants.exchangeFees[0].eplus!.price)"
-            let priceArray = priceString.components(separatedBy: ".")
-            if((priceArray.last!.characters.count) > 1) {
-                fractionalPriceLabel.text = "\(priceArray.last!)"
-            } else {
-                fractionalPriceLabel.text = "00"
+            if let currencyCode = Constant.MyClassConstants.exchangeFees[0].currencyCode {
+                 currencyLabel.text = Helper.currencyCodeToSymbol(code:currencyCode)
             }
-            currencyLabel.text =  Helper.currencyCodeToSymbol(code: (Constant.MyClassConstants.exchangeFees[0].currencyCode)!)
+           
         }
         
     }
