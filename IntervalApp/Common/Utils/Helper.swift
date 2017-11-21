@@ -499,29 +499,28 @@ public class Helper {
     
     //***** function to get all local storage object on the basis of selected membership number *****//
     static func getLocalStorageWherewanttoGo() -> Results <RealmLocalStorage> {
-        
-        let realm = try! Realm()
-        let Membership = Session.sharedSession.selectedMembership
-        let SelectedMembershipNumber = Membership?.memberNumber
-        var requiredMemberNumber = ""
-        if let membernumber = SelectedMembershipNumber {
-            requiredMemberNumber = membernumber
-        }
-        let realmLocalStorage = realm.objects(RealmLocalStorage.self).filter("membeshipNumber == '\(requiredMemberNumber)'")
-        if realmLocalStorage.count > 0 {
-            return realmLocalStorage
-        } else {
-            
+
             let realm = try! Realm()
-            let allDest = realm.objects(AllAvailableDestination.self)
-            Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
-            for obj in allDest {
-                intervalPrint(obj.destination)
-                Constant.MyClassConstants.whereTogoContentArray.add(obj.destination)
+            let Membership = Session.sharedSession.selectedMembership
+            let SelectedMembershipNumber = Membership?.memberNumber
+            var requiredMemberNumber = ""
+            if let membernumber = SelectedMembershipNumber {
+                requiredMemberNumber = membernumber
             }
-            return realmLocalStorage
-        }
-        
+            let realmLocalStorage = realm.objects(RealmLocalStorage.self).filter("membeshipNumber == '\(requiredMemberNumber)'")
+            if(realmLocalStorage.count > 0) {
+                return realmLocalStorage
+            } else {
+                
+                let realm = try! Realm()
+                let allDest = realm.objects(AllAvailableDestination.self)
+                Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
+                for obj in allDest {
+                    intervalPrint(obj.destination)
+                    Constant.MyClassConstants.whereTogoContentArray.add(obj.destination)
+                }
+                return realmLocalStorage
+            }
     }
     static func getLocalStorageWherewanttoTrade() -> Results <OpenWeeksStorage> {
         
@@ -1255,7 +1254,6 @@ public class Helper {
                         viewcontroller.view.subviews.last?.frame = CGRect(x: 0, y: (viewcontroller.view.subviews.last?.frame.origin.y)!, width: (viewcontroller.view.subviews.last?.frame.size.width)!, height: (viewcontroller.view.subviews.last?.frame.size.height)!)
                         
                     }, completion: { _ in
-                        
                     })
                     
                 }
@@ -1676,14 +1674,12 @@ public class Helper {
                                     vacationSearch.rentalSearch?.inventory = response.resorts
                                     Constant.MyClassConstants.initialVacationSearch = vacationSearch
                                     showScrollingCalendar(vacationSearch:vacationSearch)
-                                    
-                                    showAvailabilityResults(vacationSearch:vacationSearch)
-                                    
-                                    //expectation.fulfill()
-                                    senderViewController.hideHudAsync()
+                                    showAvailabilityResults(vacationSearch: vacationSearch)
+
                                     if Constant.MyClassConstants.isFromSorting == false && Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType != VacationSearchType.Combined {
                                         helperDelegate?.resortSearchComplete()
                                     } else {
+                                        
                                         executeExchangeSearchDates(senderVC: senderViewController, vacationSearch: vacationSearch)
                                     }
                                     Constant.MyClassConstants.isFromSorting = false
@@ -1765,7 +1761,6 @@ public class Helper {
         senderVC.showHudAsync()
         ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request: vacationSearch.exchangeSearch?.searchContext.request,
                                    onSuccess: { (response) in
-                                    senderVC.hideHudAsync()
                                     vacationSearch.exchangeSearch?.searchContext.response = response
                                     Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
                                     

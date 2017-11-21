@@ -283,7 +283,7 @@ class OwnershipViewController: UIViewController {
             Helper.deleteObjectsFromLocalStorage()
             
             Constant.MyClassConstants.whatToTradeArray.add(Constant.MyClassConstants.relinquishmentProgram)
-            Constant.MyClassConstants.relinquishmentIdArray.add(Constant.MyClassConstants.relinquishmentProgram.relinquishmentId!)
+            Constant.MyClassConstants.relinquishmentIdArray.append(Constant.MyClassConstants.relinquishmentProgram.relinquishmentId!)
             //Realm local storage for selected relinquishment
             let storedata = OpenWeeksStorage()
             let Membership = Session.sharedSession.selectedMembership
@@ -332,7 +332,10 @@ class OwnershipViewController: UIViewController {
                 getUnitSize((relinquishmentOpenWeeksArray[senderTag - 1].unit?.lockOffUnits)!)
                 Constant.MyClassConstants.relinquishmentSelectedWeek = relinquishmentOpenWeeksArray[senderTag - 1]
                 Constant.MyClassConstants.whatToTradeArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek)
-                Constant.MyClassConstants.relinquishmentIdArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!)
+                if let relinquishmentId = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId {
+                    Constant.MyClassConstants.relinquishmentIdArray.append(relinquishmentId)
+                }
+                
                 
                 var mainStoryboard = UIStoryboard()
                 if(Constant.RunningDevice.deviceIdiom == .pad) {
@@ -351,7 +354,9 @@ class OwnershipViewController: UIViewController {
                 
                 Constant.MyClassConstants.relinquishmentSelectedWeek = relinquishmentOpenWeeksArray[senderTag - 1]
                 Constant.MyClassConstants.whatToTradeArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek)
-                Constant.MyClassConstants.relinquishmentIdArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!)
+                if let relinquishmentId = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId {
+                    Constant.MyClassConstants.relinquishmentIdArray.append(relinquishmentId)
+                }
                 
                 //Realm local storage for selected relinquishment
                 let storedata = OpenWeeksStorage()
@@ -428,7 +433,10 @@ class OwnershipViewController: UIViewController {
             Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.relinquishmentSelectionViewController
             Constant.MyClassConstants.relinquishmentSelectedWeek = intervalOpenWeeksArray[senderTag]
             Constant.MyClassConstants.whatToTradeArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek)
-            Constant.MyClassConstants.relinquishmentIdArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!)
+            if let relinquishmentId = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId {
+                Constant.MyClassConstants.relinquishmentIdArray.append(relinquishmentId)
+            }
+            
             
             //Realm local storage for selected relinquishment
             let storedata = OpenWeeksStorage()
@@ -460,14 +468,16 @@ class OwnershipViewController: UIViewController {
 
         showHudAsync()
         Constant.MyClassConstants.matrixDataArray.removeAllObjects()
-        DirectoryClient.getResortClubPointsChart(Session.sharedSession.userAccessToken, resortCode: (Constant.MyClassConstants.relinquishmentSelectedWeek.resort?.resortCode)!, onSuccess: { (ClubPointsChart) in
+        guard let resortCode = Constant.MyClassConstants.relinquishmentSelectedWeek.resort?.resortCode else { return }
+       
+        DirectoryClient.getResortClubPointsChart(Session.sharedSession.userAccessToken, resortCode: resortCode, onSuccess: { ClubPointsChart in
             
             Constant.MyClassConstants.selectionType = 1
             self.hideHudAsync()
             Constant.MyClassConstants.matrixType = ClubPointsChart.type!
             Constant.MyClassConstants.matrixDescription =
                 ClubPointsChart.matrices[0].description!
-            if(Constant.MyClassConstants.matrixDescription == Constant.MyClassConstants.matrixTypeSingle || Constant.MyClassConstants.matrixDescription == Constant.MyClassConstants.matrixTypeColor) {
+            if Constant.MyClassConstants.matrixDescription == Constant.MyClassConstants.matrixTypeSingle || Constant.MyClassConstants.matrixDescription == Constant.MyClassConstants.matrixTypeColor {
                 Constant.MyClassConstants.showSegment = false
             } else {
                 Constant.MyClassConstants.showSegment = true
@@ -479,22 +489,26 @@ class OwnershipViewController: UIViewController {
                     Constant.MyClassConstants.fromdatearray.add(grids.fromDate!)
                     Constant.MyClassConstants.todatearray.add(grids.toDate!)
                     
-                    for rows in grids.rows {
+                    for rows in grids.rows where rows.label != nil {
                         Constant.MyClassConstants.labelarray.add(rows.label!)
                     }
-                    let dictKey = "\(grids.fromDate!) - \(grids.toDate!)"
-                    pointsDictionary.setObject(grids.rows, forKey: String(describing: dictKey) as NSCopying)
+                    if let todate = grids.toDate {
+                        if let fromDate = grids.fromDate {
+                            let dictKey = "\(fromDate) - \(todate)"
+                            pointsDictionary.setObject(grids.rows, forKey: String(describing: dictKey) as NSCopying)
+                        }
+                    }
                 }
                 Constant.MyClassConstants.matrixDataArray.add(pointsDictionary)
             }
             
             let storyboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
-            let clubPointselectionViewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.clubPointSelectionViewController)as? ClubPointSelectionViewController
-            self.navigationController?.pushViewController(clubPointselectionViewController!, animated: true)
+            guard let clubPointselectionViewController = storyboard.instantiateViewController(withIdentifier: "ClubPointSelectionViewController") as? ClubPointSelectionViewController else { return }
+            self.navigationController?.pushViewController(clubPointselectionViewController, animated: true)
             
         }, onError: { (error) in
             self.hideHudAsync()
-            intervalPrint(error.description)
+            self.presentErrorAlert(UserFacingCommonError.serverError(error))
 
         })
     }
@@ -585,7 +599,10 @@ class OwnershipViewController: UIViewController {
         Constant.MyClassConstants.relinquismentSelectedDeposit = relinquishmentDeposit[senderTag]
         Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.relinquishmentSelectionViewController
         Constant.MyClassConstants.whatToTradeArray.add(Constant.MyClassConstants.relinquismentSelectedDeposit)
-        Constant.MyClassConstants.relinquishmentIdArray.add(Constant.MyClassConstants.relinquismentSelectedDeposit.relinquishmentId!)
+        if let relinquishmentId = Constant.MyClassConstants.relinquismentSelectedDeposit.relinquishmentId {
+            Constant.MyClassConstants.relinquishmentIdArray.append(relinquishmentId)
+        }
+        
         
         //Realm local storage for selected relinquishment
         let storedata = OpenWeeksStorage()

@@ -201,7 +201,6 @@ class CreateActionSheet: UITableViewController {
         
         if Reachability.isConnectedToNetwork() == true {
             if Session.sharedSession.userAccessToken != nil {
-                
                 RentalClient.searchDates(Session.sharedSession.userAccessToken, request: searchResortRequest, onSuccess: { (searchDates) in
                     
                     Constant.MyClassConstants.resortCodesArray = searchDates.resortCodes

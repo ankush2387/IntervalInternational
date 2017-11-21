@@ -6,25 +6,24 @@
 //  Copyright © 2017 Interval International. All rights reserved.
 //
 
-
 import UIKit
 import IntervalUIKit
 import SDWebImage
 import DarwinSDK
 import SVProgressHUD
 
-protocol WhoWillBeCheckInDelegate {
-    func navigateToWhoWillBeCheckIn(renewalArray:[Renewal])
+protocol WhoWillBeCheckInDelegate: class {
+    func navigateToWhoWillBeCheckIn(renewalArray: [Renewal], selectedRow: Int)
     
 }
 
 class WhatToUseViewController: UIViewController {
     
     //IBOutlets
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet fileprivate weak var tableView: UITableView!
     
-    //MARK:- Delegate
-    var delegate: WhoWillBeCheckInDelegate?
+    // MARK: - Delegate
+    weak var delegate: WhoWillBeCheckInDelegate?
     
     // Class variables
     var isCheckedBox = false
@@ -32,6 +31,7 @@ class WhatToUseViewController: UIViewController {
     var selectedUnitIndex = 0
     var selectedRow = -1
     var selectedRowSection = -1
+    var showInfoIcon = false
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -45,9 +45,9 @@ class WhatToUseViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        tableView.estimatedRowHeight = 75
         self.title = Constant.ControllerTitles.bookYourSelectionController
-        let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.backArrowNav), style: .plain, target: self, action:#selector(AccomodationCertsDetailController.menuBackButtonPressed(_:)))
+        let menuButton = UIBarButtonItem(image: #imageLiteral(resourceName: "BackArrowNav"), style: .plain, target: self, action:#selector(AccomodationCertsDetailController.menuBackButtonPressed(_:)))
         menuButton.tintColor = UIColor.white
         self.navigationItem.leftBarButtonItem = menuButton
     }
@@ -57,7 +57,7 @@ class WhatToUseViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func menuBackButtonPressed(_ sender:UIBarButtonItem) {
+    func menuBackButtonPressed(_ sender: UIBarButtonItem) {
         
         self.navigationController?.popViewController(animated: true)
         // self.dismiss(animated: true, completion: nil)
@@ -69,16 +69,21 @@ class WhatToUseViewController: UIViewController {
         self.selectedRow = sender.tag
         self.selectedRowSection = sender.accessibilityElements?.first as! Int
         
-        
         let indexPath = NSIndexPath(row: self.selectedRow, section: self.selectedRowSection)
         tableView.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.none)
+        
+        if Constant.MyClassConstants.filterRelinquishments[indexPath.row].pointsProgram != nil {
+            if showInfoIcon {
+                self.performSegue(withIdentifier: "pointsInfoSegue", sender: self)
+                selectedRow = -1
+            }
+        } else {
         //Start process request
         
         //Exchange process request parameters
         showHudAsync()
         let processResort = ExchangeProcess()
         processResort.holdUnitStartTimeInMillis = Constant.holdingTime
-        
         
         let processRequest = ExchangeProcessStartRequest()
         
@@ -104,9 +109,7 @@ class WhatToUseViewController: UIViewController {
             
             // store response
             Constant.MyClassConstants.exchangeProcessStartResponse = response
-            
-            self.selectedRow = -1
-            self.selectedRowSection = -1
+    
             let processResort = ExchangeProcess()
             processResort.processId = response.processId
             Constant.MyClassConstants.exchangeBookingLastStartedProcess = processResort
@@ -116,7 +119,7 @@ class WhatToUseViewController: UIViewController {
             Constant.MyClassConstants.onsiteArray.removeAllObjects()
             Constant.MyClassConstants.nearbyArray.removeAllObjects()
             
-            if let exchangeFees = response.view?.fees{
+            if let exchangeFees = response.view?.fees {
                 Constant.MyClassConstants.exchangeFees = [exchangeFees]
             }
             
@@ -131,16 +134,18 @@ class WhatToUseViewController: UIViewController {
                     Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending("\n")
                 }
             }
-            UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: {(Membership) in
+            UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: { membership in
                 
                 // Got an access token!  Save it for later use.
                 self.hideHudAsync()
-                Constant.MyClassConstants.membershipContactArray = Membership.contacts!
+                if let contacts = membership.contacts {
+                    Constant.MyClassConstants.membershipContactArray = contacts
+                }
                 
                 // check force renewals here
                 let forceRenewals = Constant.MyClassConstants.exchangeProcessStartResponse.view?.forceRenewals
                 
-                if (forceRenewals != nil) {
+                if forceRenewals != nil {
                     
                     if Constant.RunningDevice.deviceIdiom == .phone {
                         
@@ -171,49 +176,23 @@ class WhatToUseViewController: UIViewController {
                         return
                     }
                     
-                }
+                } else {
                 
-                var viewController = UIViewController()
                 if Constant.RunningDevice.deviceIdiom == .phone {
-                    viewController = WhoWillBeCheckingInViewController()
                     let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-                    viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
-                    
+                    guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInViewController") as? WhoWillBeCheckingInViewController else { return }
+                    viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[self.selectedRow]
+                    self.isCheckedBox = false
+                    self.navigationController?.pushViewController(viewController, animated: true)
                     
                 } else {
-                    viewController = WhoWillBeCheckingInIPadViewController()
-                    
                     let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-                    viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as! WhoWillBeCheckingInIPadViewController
+                    guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "whoWillBeCheckingInIpadViewController") as? WhoWillBeCheckingInIPadViewController else { return }
+                    viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[self.selectedRow]
+                    self.isCheckedBox = false
+                    self.navigationController?.pushViewController(viewController, animated: true)
                 }
-                
-                self.isCheckedBox = false
-                let transitionManager = TransitionManager()
-                self.navigationController?.transitioningDelegate = transitionManager
-                self.navigationController!.pushViewController(viewController, animated: true)
-                
-                if self.showUpgrade == true {
-                    if let cell = (sender as AnyObject).superview??.superview?.superview as? RelinquishmentSelectionOpenWeeksCellWithUpgrade {
-                        let indexPath = self.tableView.indexPath(for: cell)
-                        let objFilterRelinquishment = Constant.MyClassConstants.filterRelinquishments[(indexPath?.row)!]
-                        if Constant.RunningDevice.deviceIdiom == .phone {
-                            (viewController as! WhoWillBeCheckingInViewController).filterRelinquishments = objFilterRelinquishment
-                        } else {
-                            (viewController as! WhoWillBeCheckingInIPadViewController).filterRelinquishments = objFilterRelinquishment
-                        }
-                    }
-                    
-                } else {
-                    if let cell = (sender as AnyObject).superview??.superview?.superview as? RelinquishmentSelectionOpenWeeksCell {
-                        let indexPath = self.tableView.indexPath(for: cell)
-                        let objFilterRelinquishment = Constant.MyClassConstants.filterRelinquishments[(indexPath?.row)!]
-                        if Constant.RunningDevice.deviceIdiom == .phone {
-                            (viewController as! WhoWillBeCheckingInViewController).filterRelinquishments = objFilterRelinquishment
-                        } else {
-                            (viewController as! WhoWillBeCheckingInIPadViewController).filterRelinquishments = objFilterRelinquishment
-                        }
-                    }
-                }
+            }
             }, onError: { (error) in
                 
                 self.hideHudAsync()
@@ -231,17 +210,14 @@ class WhatToUseViewController: UIViewController {
             self.tableView.reloadData()
             self.presentErrorAlert(UserFacingCommonError.generic)
         })
-        
-        
     }
-    
+    }
     
     @IBAction func checkBoxGetawayPressed(_ sender: IUIKCheckbox) {
         
         Constant.MyClassConstants.searchBothExchange = false
         self.selectedRow = sender.tag
         self.selectedRowSection = sender.accessibilityElements?.first as! Int
-        
         
         let indexPath = NSIndexPath(row: self.selectedRow, section: self.selectedRowSection)
         tableView.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.none)
@@ -269,8 +245,8 @@ class WhatToUseViewController: UIViewController {
         let processRequest1 = RentalProcessStartRequest.init(resortCode: Constant.MyClassConstants.selectedResort.resortCode!, checkInDate: invent.checkInDate!, checkOutDate: invent.checkOutDate!, unitSize: UnitSize(rawValue: units[indexPath.item].unitSize!)!, kitchenType: KitchenType(rawValue: units[indexPath.item].kitchenType!)!)
         RentalProcessClient.start(Session.sharedSession.userAccessToken, process: processResort, request: processRequest1, onSuccess: {(response) in
             
-            self.selectedRow = -1
-            self.selectedRowSection = -1
+            self.selectedRow = 0
+            self.selectedRowSection = 0
             self.hideHudAsync()
             let processResort = RentalProcess()
             processResort.processId = response.processId
@@ -286,7 +262,6 @@ class WhatToUseViewController: UIViewController {
             Constant.MyClassConstants.onsiteArray.removeAllObjects()
             Constant.MyClassConstants.nearbyArray.removeAllObjects()
             
-            
             for amenity in (response.view?.resort?.amenities)!{
                 if amenity.nearby == false {
                     Constant.MyClassConstants.onsiteArray.add(amenity.amenityName!)
@@ -298,8 +273,6 @@ class WhatToUseViewController: UIViewController {
                     Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending("\n")
                 }
             }
-            
-            
             UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: {(Membership) in
                 
                 // Got an access token!  Save it for later use.
@@ -309,14 +282,11 @@ class WhatToUseViewController: UIViewController {
                 // check force renewals here
                 let forceRenewals = Constant.MyClassConstants.processStartResponse.view?.forceRenewals
                 
-                if (forceRenewals != nil) {
+                if forceRenewals != nil {
                     
                     if Constant.RunningDevice.deviceIdiom == .phone {
-                        
-                        //self.dismiss(animated: true, completion: nil)
+                    
                         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-                        let transitionManager = TransitionManager()
-                        self.navigationController?.transitioningDelegate = transitionManager
                         
                         // Navigate to Renewals Screen
                         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
@@ -340,12 +310,9 @@ class WhatToUseViewController: UIViewController {
                         return
                     }
                     
-                    // return  self.performSegue(withIdentifier: Constant.segueIdentifiers.showRenewelSegue, sender: nil)
-                    
-                    
                 } else {
                     if Constant.RunningDevice.deviceIdiom == .phone {
-                        let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                        let mainStoryboard: UIStoryboard = UIStoryboard(name:  Constant.storyboardNames.vacationSearchIphone, bundle: nil)
                         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
                         
                         let transitionManager = TransitionManager()
@@ -353,11 +320,11 @@ class WhatToUseViewController: UIViewController {
                         self.navigationController!.pushViewController(viewController, animated: true)
                     } else {
                         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-                        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as! WhoWillBeCheckingInIPadViewController
+                        guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInIpadViewController) as? WhoWillBeCheckingInIPadViewController else { return }
                         
                         let transitionManager = TransitionManager()
                         self.navigationController?.transitioningDelegate = transitionManager
-                        self.navigationController!.pushViewController(viewController, animated: true)
+                        self.navigationController?.pushViewController(viewController, animated: true)
                     }
                     
                 }
@@ -381,9 +348,7 @@ class WhatToUseViewController: UIViewController {
             self.presentErrorAlert(UserFacingCommonError.generic)
         })
         
-        
     }
-    
     
     func pushLikeModalViewController(controller : UIViewController)  {
         let transition = CATransition()
@@ -395,18 +360,22 @@ class WhatToUseViewController: UIViewController {
         self.navigationController?.pushViewController(controller, animated: false)
     }
     
-    
     @IBAction func onClickDetailsButton(_ sender: Any) {
         // set isFrom Search false
         Constant.MyClassConstants.isFromSearchResult = false
-        
-        Helper.getResortWithResortCode(code:Constant.MyClassConstants.selectedResort.resortCode! , viewcontroller:self)
-        //self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
+        showHudAsync()
+        if let resortCode = Constant.MyClassConstants.selectedResort.resortCode {
+            Helper.getResortWithResortCode(code:resortCode , viewcontroller:self)
+        }
+    }
+    
+    @IBAction func infoButtonClicked(_ sender: UIButton) {
+        self.performSegue(withIdentifier: "pointsInfoSegue", sender: nil)
     }
     
     // Function to get dynamic number of rows according to API response
     
-    func getNumberOfRows(){
+    func getNumberOfRows() {
         
     }
 }
@@ -420,6 +389,7 @@ extension WhatToUseViewController:UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let checkBox = IUIKCheckbox()
         checkBox.tag = indexPath.row
+        selectedRow = indexPath.row
         checkBox.accessibilityElements = [indexPath.section]
         
         if indexPath.section == 1 {
@@ -427,32 +397,33 @@ extension WhatToUseViewController:UITableViewDelegate {
         } else if indexPath.section == 2 {
             self.checkBoxGetawayPressed(checkBox)
         }
-        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         //***** Return height according to section cell requirement *****//
-        switch((indexPath as NSIndexPath).section) {
-        case 0 :
-            return 70
-        case 1:
-            if showUpgrade == true {
-                return 150
-            } else {
-                //                if UIDevice.current.userInterfaceIdiom == .pad {
-                //                    return 120
-                //                } else {
-                //                    return 120
-                //                }
-                return UITableViewAutomaticDimension
-            }
-            
-        case 2:
-            return 70
-        default :
-            return 70
-        }
+//        switch indexPath.section {
+//        case 0 :
+//            return 70
+//        case 1:
+//            if showUpgrade == true {
+//                return 150
+//            } else {
+//                //                if UIDevice.current.userInterfaceIdiom == .pad {
+//                //                    return 120
+//                //                } else {
+//                //                    return 120
+//                //                }
+//                return UITableViewAutomaticDimension
+//            }
+//
+//        case 2:
+//            return 70
+//        default :
+//            return 70
+//        }
+        return UITableViewAutomaticDimension
+        //return 150
     }
     
     //***** Implementing header and footer cell for all sections  *****//
@@ -470,27 +441,23 @@ extension WhatToUseViewController:UITableViewDelegate {
             headerView.addSubview(headerTextLabel)
             return headerView
             
-        }
-        else if section == 1 {
+        } else if section == 1 {
             headerView.backgroundColor = IUIKColorPalette.titleBackdrop.color
             headerTextLabel.text = Constant.HeaderViewConstantStrings.exchange
             headerTextLabel.textColor = UIColor.black
             headerView.addSubview(headerTextLabel)
             
-            
             let bottomLabel = UILabel(frame: CGRect(x: 15, y: 30, width: self.view.bounds.width - 30, height: 30))
             bottomLabel.textColor = UIColor.gray
             bottomLabel.text = "\(Constant.MyClassConstants.filterRelinquishments.count) of the \(Constant.MyClassConstants.whatToTradeArray.count) relquishments are avialable for exchange"
             return headerView
-        }
-        else {
+        } else {
             
             headerView.backgroundColor = IUIKColorPalette.titleBackdrop.color
             headerTextLabel.text = Constant.HeaderViewConstantStrings.getaways
             headerTextLabel.textColor = UIColor.black
             headerView.addSubview(headerTextLabel)
             return headerView
-            
         }
     }
     
@@ -499,7 +466,7 @@ extension WhatToUseViewController:UITableViewDelegate {
         if section != 0 {
             if section == 1 && Constant.MyClassConstants.filterRelinquishments.count == 0 {
                 return 0
-            } else if (section == 2 && Constant.MyClassConstants.selectedResort.resortCode == ""){
+            } else if section == 2 && Constant.MyClassConstants.selectedResort.resortCode == "" {
                 return 0
             }
             return 30
@@ -556,52 +523,54 @@ extension WhatToUseViewController:UITableViewDataSource {
         }
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
-    {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if indexPath.section == 0 {
             
             //***** Configure and return cell according to sections in tableview *****//
             
-            let cell: DestinationResortDetailCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.destinationResortDetailCell, for: indexPath) as! DestinationResortDetailCell
+            guard let cell: DestinationResortDetailCell = tableView.dequeueReusableCell(withIdentifier: "DestinationResortDetailCell", for: indexPath) as? DestinationResortDetailCell else { return UITableViewCell() }
             
-            cell.destinationImageView.image = UIImage(named: Constant.assetImageNames.resortImage)
+            cell.destinationImageView.image = #imageLiteral(resourceName: "RST_CO")
             
             if let resortName = Constant.MyClassConstants.selectedResort.resortName {
-                
                 cell.resortName.text = resortName
             }
             
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             return cell
-        }
-            
-        else if indexPath.section == 1 {
+        } else if indexPath.section == 1 {
             
             let exchange = Constant.MyClassConstants.filterRelinquishments[indexPath.row]
             
             if (exchange.pointsProgram) != nil {
                 
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell0, for: indexPath) as! AvailablePointCell
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: "ExchangeCell0", for: indexPath) as? AvailablePointCell else { return UITableViewCell() }
                 
+                cell.pointsInfoLabel.text = "Use Club Interval Gold Points"
                 cell.tag = indexPath.row
                 cell.checkBOx.tag = indexPath.row
                 cell.checkBOx.isUserInteractionEnabled = false
                 cell.checkBOx.accessibilityElements = [indexPath.section]
                 
-                let points:Int = (exchange.pointsProgram?.availablePoints)!
+                if let points = exchange.pointsProgram?.availablePoints {
+                    cell.availablePointValueLabel.text = String(points)
+                }
                 
-                cell.availablePointValueLabel.text = String(points)
+                if showInfoIcon {
+                    cell.infoButton.isHidden = false
+                    cell.checkBOx.isHidden = true
+                } else {
+                    cell.infoButton.isHidden = true
+                    cell.checkBOx.isHidden = false
+                }
                 
                 if self.selectedRow == indexPath.row && self.selectedRowSection == indexPath.section {
-                    
                     cell.mainView.layer.cornerRadius = 7
                     cell.mainView.layer.borderWidth = 2
                     cell.mainView.layer.borderColor = UIColor.orange.cgColor
                     cell.checkBOx.checked = true
-                }
-                else {
-                    
+                } else {
                     cell.mainView.layer.cornerRadius = 7
                     cell.mainView.layer.borderWidth = 2
                     cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
@@ -612,15 +581,16 @@ extension WhatToUseViewController:UITableViewDataSource {
                 
                 return cell
                 
-            }else if (exchange.clubPoints) != nil {
+            } else if (exchange.clubPoints) != nil {
                 
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell0, for: indexPath) as! AvailablePointCell
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell0, for: indexPath) as? AvailablePointCell else { return UITableViewCell() }
                 
                 cell.tag = indexPath.row
                 cell.checkBOx.tag = indexPath.row
                 cell.checkBOx.isUserInteractionEnabled = false
+                cell.pointsInfoLabel.text = exchange.clubPoints?.resort?.resortName
                 
-                guard let points:Int = exchange.clubPoints?.pointsSpent else {
+                guard let points = exchange.clubPoints?.pointsSpent else {
                     return cell
                 }
                 
@@ -634,8 +604,7 @@ extension WhatToUseViewController:UITableViewDataSource {
                     cell.mainView.layer.borderWidth = 2
                     cell.mainView.layer.borderColor = UIColor.orange.cgColor
                     cell.checkBOx.checked = true
-                }
-                else {
+                } else {
                     
                     cell.mainView.layer.cornerRadius = 7
                     cell.mainView.layer.borderWidth = 2
@@ -646,11 +615,11 @@ extension WhatToUseViewController:UITableViewDataSource {
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 return cell
                 
-            }else if (exchange.openWeek) != nil {
+            } else if (exchange.openWeek) != nil {
                 
                 if showUpgrade == true {
                     
-                    let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell2, for: indexPath) as! RelinquishmentSelectionOpenWeeksCellWithUpgrade
+                    guard let cell = tableView.dequeueReusableCell(withIdentifier: "ExchangeCell2", for: indexPath) as? RelinquishmentSelectionOpenWeeksCellWithUpgrade else { return UITableViewCell() }
                     cell.tag = indexPath.row
                     cell.checkBox.tag = indexPath.row
                     cell.checkBox.accessibilityElements = [indexPath.section]
@@ -661,8 +630,7 @@ extension WhatToUseViewController:UITableViewDataSource {
                         cell.mainView.layer.borderWidth = 2
                         cell.mainView.layer.borderColor = UIColor.orange.cgColor
                         cell.checkBox.checked = true
-                    }
-                    else {
+                    } else {
                         
                         cell.mainView.layer.cornerRadius = 7
                         cell.mainView.layer.borderWidth = 2
@@ -683,8 +651,7 @@ extension WhatToUseViewController:UITableViewDataSource {
                     var month = ""
                     if day < 10 {
                         month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) 0\(day)"
-                    }
-                    else {
+                    } else {
                         month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \(day)"
                     }
                     
@@ -744,105 +711,26 @@ extension WhatToUseViewController:UITableViewDataSource {
                     cell.selectionStyle = UITableViewCellSelectionStyle.none
                     return cell
                 }
-            }else if exchange.deposit != nil {
+            } else if let deposits = exchange.deposit {
                 
-                if showUpgrade == true {
-                    
-                    let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell2, for: indexPath) as! RelinquishmentSelectionOpenWeeksCellWithUpgrade
-                    cell.tag = indexPath.row
-                    cell.checkBox.isUserInteractionEnabled = false
-                    cell.checkBox.tag = indexPath.row
-                    cell.checkBox.accessibilityElements = [indexPath.section]
-                    if self.selectedRow == indexPath.row && self.selectedRowSection == indexPath.section {
-                        
-                        cell.mainView.layer.cornerRadius = 7
-                        cell.mainView.layer.borderWidth = 2
-                        cell.mainView.layer.borderColor = UIColor.orange.cgColor
-                        cell.checkBox.checked = true
-                    }
-                    else {
-                        
-                        cell.mainView.layer.cornerRadius = 7
-                        cell.mainView.layer.borderWidth = 2
-                        cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
-                        cell.checkBox.checked = false
-                    }
-                    
-                    cell.resortName.text = exchange.deposit?.resort?.resortName!
-                    cell.yearLabel.text = "\(String(describing: (exchange.deposit?.relinquishmentYear!)!))"
-                    cell.totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: (exchange.deposit?.weekNumber!)!))"
-                    cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType:(exchange.deposit?.unit!.unitSize!)!))), \(Helper.getKitchenEnums(kitchenType:(exchange.deposit?.unit!.kitchenType!)!))"
-                    cell.totalSleepAndPrivate.text = "Sleeps \(String(describing: exchange.deposit!.unit!.publicSleepCapacity)), \(String(describing: exchange.deposit!.unit!.privateSleepCapacity)) Private"
-                    let dateString = exchange.deposit!.checkInDate
-                    let date =  Helper.convertStringToDate(dateString: dateString!, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
-                    let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                    let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: date)
-                    let day = myComponents.day!
-                    var month = ""
-                    if day < 10 {
-                        month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) 0\(day)"
-                    }
-                    else {
-                        month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \(day)"
-                    }
-                    
-                    cell.dayAndDateLabel.text = month.uppercased()
-                    cell.selectionStyle = UITableViewCellSelectionStyle.none
-                    return cell
-                    
-                } else {
-                    
                     let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell1, for: indexPath) as! RelinquishmentSelectionOpenWeeksCell
-                    
                     cell.tag = indexPath.row
-                    cell.checkBox.tag = indexPath.row
-                    cell.checkBox.accessibilityElements = [indexPath.section]
-                    cell.checkBox.isUserInteractionEnabled = false
-                    if self.selectedRow == indexPath.row && self.selectedRowSection == indexPath.section {
-                        
-                        cell.mainView.layer.cornerRadius = 7
-                        cell.mainView.layer.borderWidth = 2
-                        cell.mainView.layer.borderColor = UIColor.orange.cgColor
-                        cell.checkBox.checked = true
-                    }
-                    else {
-                        
-                        cell.mainView.layer.cornerRadius = 7
-                        cell.mainView.layer.borderWidth = 2
-                        cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
-                        cell.checkBox.checked = false
-                    }
-                    
-                    cell.resortName.text = exchange.deposit?.resort?.resortName!
-                    cell.yearLabel.text = "\(String(describing: (exchange.deposit?.relinquishmentYear!)!))"
-                    cell.totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: (exchange.deposit?.weekNumber!)!))"
-                    cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType:(exchange.deposit?.unit!.unitSize!)!))), \(Helper.getKitchenEnums(kitchenType:(exchange.deposit?.unit!.kitchenType!)!))"
-                    cell.totalSleepAndPrivate.text = "Sleeps \(String(describing: exchange.deposit!.unit!.publicSleepCapacity)), \(String(describing: exchange.deposit!.unit!.privateSleepCapacity)) Private"
-                    let dateString = exchange.deposit!.checkInDate
-                    let date =  Helper.convertStringToDate(dateString: dateString!, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
-                    let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                    let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: date)
-                    let day = myComponents.day!
-                    var month = ""
-                    if day < 10 {
-                        month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) 0\(day)"
-                    }
-                    else {
-                        month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \(day)"
-                    }
-                    
-                    //display Promotion
-                    /*if let promotion = exchange.deposit?.promotion {
-                     cell.promLabel.text = promotion.offerName
-                     } else {
-                     cell.promLabel.isHidden = true
-                     cell.promImgView.isHidden = true
-                     }*/
-                    
-                    cell.dayAndDateLabel.text = month.uppercased()
-                    cell.selectionStyle = UITableViewCellSelectionStyle.none
-                    return cell
+                    cell.setupDepositedCell(deposit: deposits)
+                
+                if self.selectedRow == indexPath.row && self.selectedRowSection == indexPath.section {
+                    cell.mainView.layer.cornerRadius = 7
+                    cell.mainView.layer.borderWidth = 2
+                    cell.mainView.layer.borderColor = UIColor.orange.cgColor
+                    cell.checkBox.checked = true
+                } else {
+                    cell.mainView.layer.cornerRadius = 7
+                    cell.mainView.layer.borderWidth = 2
+                    cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
+                    cell.checkBox.checked = false
                 }
+                
+                    return cell
+
             } else {
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.exchangeCell0, for: indexPath) as! AvailablePointCell
@@ -860,8 +748,7 @@ extension WhatToUseViewController:UITableViewDataSource {
                     cell.mainView.layer.borderWidth = 2
                     cell.mainView.layer.borderColor = UIColor.orange.cgColor
                     cell.checkBOx.checked = true
-                }
-                else {
+                } else {
                     
                     cell.mainView.layer.cornerRadius = 7
                     cell.mainView.layer.borderWidth = 2
@@ -872,11 +759,10 @@ extension WhatToUseViewController:UITableViewDataSource {
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 return cell
             }
-        }
-        else {
+        } else {
             
             //***** Configure and return search vacation cell *****//
-            let cell:GetawayCell = tableView.dequeueReusableCell(withIdentifier: "GetawaysCell", for: indexPath) as! GetawayCell
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "GetawaysCell", for: indexPath) as? GetawayCell else { return UITableViewCell() }
             cell.tag = indexPath.row
             cell.checkbox.tag = indexPath.row
             cell.checkbox.accessibilityElements = [indexPath.section]
@@ -886,10 +772,7 @@ extension WhatToUseViewController:UITableViewDataSource {
                 cell.mainView.layer.borderWidth = 2
                 cell.mainView.layer.borderColor = UIColor.orange.cgColor
                 cell.checkbox.checked = true
-            }
-                
-            else {
-                
+            } else {
                 cell.mainView.layer.cornerRadius = 7
                 cell.mainView.layer.borderWidth = 2
                 cell.mainView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
@@ -898,30 +781,24 @@ extension WhatToUseViewController:UITableViewDataSource {
             
             cell.bedRoomType.text = Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].unitSize
             
-            if let roomSize = UnitSize(rawValue: (Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].unitSize)!) {
+            if let roomSize = (Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].unitSize) {
+                cell.bedRoomType.text = Helper.getBrEnums(brType: UnitSize(rawValue: roomSize)!.rawValue)
+            }
+            
+            if let kitchenSize = (Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].kitchenType) {
+                let kitchenType = KitchenType(rawValue: kitchenSize)
+                cell.kitchenType.text = Helper.getKitchenEnums(kitchenType: kitchenType!.rawValue)
+            }
+            
+            if let publicSleep = Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].publicSleepCapacity {
                 
-                cell.bedRoomType.text = Helper.getBrEnums(brType: roomSize.rawValue)
-                
-                if let kitchenSize = KitchenType(rawValue: (Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].kitchenType)!) {
-                    cell.kitchenType.text = Helper.getKitchenEnums(kitchenType: kitchenSize.rawValue)
+                if let privateSleep = Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].privateSleepCapacity {
+                    cell.sleeps.text = "\(publicSleep) Total, \(privateSleep) Private"
                 }
             }
-            
-            var totalSleepCapacity = String()
-            
-            if (Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].publicSleepCapacity)! > 0 {
-                
-                totalSleepCapacity =  String(describing: Constant.MyClassConstants.selectedResort.inventory!.units[Constant.MyClassConstants.selectedUnitIndex].publicSleepCapacity) + Constant.CommonLocalisedString.totalString
-                
+            if let price = Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].prices[0].price {
+                cell.getawayPrice.text = String(Int(price))
             }
-            
-            if (Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].privateSleepCapacity)! > 0 {
-                
-                cell.sleeps.text =  totalSleepCapacity + String(describing: Constant.MyClassConstants.selectedResort.inventory!.units[Constant.MyClassConstants.selectedUnitIndex].privateSleepCapacity) + Constant.CommonLocalisedString.privateString
-                
-            }
-            
-            cell.getawayPrice.text = String(Int((Constant.MyClassConstants.selectedResort.inventory?.units[Constant.MyClassConstants.selectedUnitIndex].prices[0].price)!))
             
             cell.selectionStyle = UITableViewCellSelectionStyle.none
             return cell
@@ -939,74 +816,53 @@ extension WhatToUseViewController:RenewelViewControllerDelegate {
     
     func selectedRenewalFromWhoWillBeCheckingIn(renewalArray:[Renewal]){
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
+        guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInViewController") as? WhoWillBeCheckingInViewController else { return }
         viewController.renewalsArray = renewalArray
-        
-        let transitionManager = TransitionManager()
-        self.navigationController?.transitioningDelegate = transitionManager
-        
-        //let navController = UINavigationController(rootViewController: viewController)
-        
-        //self.dismiss(animated: true, completion: nil)
-        //self.present(navController, animated: true, completion: nil)
-        self.navigationController!.pushViewController(viewController, animated: true)
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func noThanks(){
+    func noThanks() {
         self.dismiss(animated: true, completion: nil)
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
-        
-        let transitionManager = TransitionManager()
-        self.navigationController?.transitioningDelegate = transitionManager
-        
-        /*let navController = UINavigationController(rootViewController: viewController)
-         
-         self.present(viewController, animated:true, completion: nil)*/
+        guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInViewController") as? WhoWillBeCheckingInViewController else { return }
         self.navigationController!.pushViewController(viewController, animated: true)
         
     }
     
-    func dismissWhatToUse(renewalArray:[Renewal]) {
-        //self.dismiss(animated: true, completion: nil)
-        self.delegate?.navigateToWhoWillBeCheckIn(renewalArray: renewalArray)
+    func dismissWhatToUse(renewalArray: [Renewal]) {
+        self.dismiss(animated: true, completion: nil)
+        self.delegate?.navigateToWhoWillBeCheckIn(renewalArray: renewalArray, selectedRow: self.selectedRow)
     }
     
     func otherOptions(forceRenewals: ForceRenewals) {
         
         intervalPrint("other options")
         if Constant.RunningDevice.deviceIdiom == .phone {
+            
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-            
-            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.renewalOtherOptionsVC) as! RenewalOtherOptionsVC
+            guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "RenewalOtherOptionsVC") as? RenewalOtherOptionsVC else { return }
             viewController.delegate = self
-            
             viewController.forceRenewals = forceRenewals
             self.present(viewController, animated:true, completion: nil)
-            
             return
             
         } else {
             
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-            
-            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.renewalOtherOptionsVC) as! RenewalOtherOptionsVC
+            guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "RenewalOtherOptionsVC") as? RenewalOtherOptionsVC else { return }
             viewController.delegate = self
-            
             viewController.forceRenewals = forceRenewals
             self.present(viewController, animated:true, completion: nil)
-            
             return
             
         }
-        
     }
     
 }
 
 
 //Mark:- Delegate
-extension WhatToUseViewController:RenewalOtherOptionsVCDelegate{
+extension WhatToUseViewController:RenewalOtherOptionsVCDelegate {
     func selectedRenewal(selectedRenewal: String, forceRenewals: ForceRenewals) {
         var renewalArray = [Renewal]()
         renewalArray.removeAll()
@@ -1022,27 +878,21 @@ extension WhatToUseViewController:RenewalOtherOptionsVCDelegate{
             }
         } else {
             // Selected non core renewal
-            for renewal in forceRenewals.crossSelling{
-                if renewal.term == 12 {
+            for renewal in forceRenewals.crossSelling where renewal.term == 12 {
                     let renewalItem = Renewal()
                     renewalItem.id = renewal.id
                     renewalArray.append(renewalItem)
                     break
-                }
             }
         }
         
         // Selected single renewal from other options. Navigate to WhoWillBeCheckingIn screen
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.whoWillBeCheckingInViewController) as! WhoWillBeCheckingInViewController
-        
-        let transitionManager = TransitionManager()
-        self.navigationController?.transitioningDelegate = transitionManager
+        guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInViewController") as? WhoWillBeCheckingInViewController else { return }
+
         viewController.isFromRenewals = true
         viewController.renewalsArray = renewalArray
-        //let navController = UINavigationController(rootViewController: viewController)
         self.navigationController!.pushViewController(viewController, animated: true)
-        //self.present(navController, animated: true, completion: nil)
     }
 }
 

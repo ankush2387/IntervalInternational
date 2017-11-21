@@ -353,10 +353,13 @@ class CheckOutIPadViewController: UIViewController {
     //***** Function to update holding time for resort. *****//
     func updateResortHoldingTime() {
         
-        if(Constant.holdingTime != 0) {
+        if Constant.holdingTime != 0 {
             self.remainingResortHoldingTimeLabel.text = Constant.holdingResortForRemainingMinutes
         } else {
-            presentAlert(with: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage)
+            Constant.holdingTimer?.invalidate()
+            self.presentAlert(with: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage, hideCancelButton: false, cancelButtonTitle: "Cancel".localized(), acceptButtonTitle: "Ok".localized(), acceptButtonStyle: .default, cancelHandler: nil, acceptHandler: {
+                self.navigationController?.popViewController(animated: true)
+            })
         }
     }
     
@@ -763,28 +766,6 @@ extension CheckOutIPadViewController: UITableViewDataSource {
         case 2:
             switch section {
             case 1:
-                
-                /*if(Constant.MyClassConstants.enableTaxes || ( Constant.MyClassConstants.enableGuestCertificate && self.isTripProtectionEnabled)){
-                 if(eplusAdded){
-                 totalRowsInCost = 3 + renewalsArray.count
-                 return totalRowsInCost
-                 }else{
-                 totalRowsInCost = 2 + renewalsArray.count
-                 return totalRowsInCost
-                 
-                 }
-                 }else{
-                 if(eplusAdded){
-                 totalRowsInCost = 2 + renewalsArray.count
-                 return totalRowsInCost
-                 
-                 }else{
-                 totalRowsInCost = 1 + renewalsArray.count
-                 return totalRowsInCost
-                 
-                 }
-                 }*/
-                
                 totalRowsInCost = totalFeesArray.count
                 return totalRowsInCost
                 
@@ -1049,20 +1030,25 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                         
                     default:
                         
-                        let renewalIndex = indexPath.row - (totalRowsInCost - renewalsArray.count)
+                        var renewalIndex = 0
                         
                         cell.priceLabel.numberOfLines = 0
+                        if renewalsArray.count > 1 {
+                            renewalIndex = 1
+                            cell.priceLabel.text = "\(String(describing: renewalsArray[renewalIndex].displayName ?? "")) Package Renewal Fee"
+                        } else {
+                            cell.priceLabel.text = "\(String(describing: renewalsArray[renewalIndex].displayName ?? "")) Renewal Fee"
+                        }
                         cell.priceLabel.text = "\(String(describing: renewalsArray[renewalIndex].displayName!)) Renewal Fee"
                         
                         let priceString = "\(renewalsArray[renewalIndex].price)"
                         let priceArray = priceString.components(separatedBy: ".")
                         cell.primaryPriceLabel.text = priceArray.first
-                        if((priceArray.last?.characters.count)! > 1) {
+                        if (priceArray.last?.characters.count)! > 1 {
                             cell.fractionalPriceLabel.text = "\(String(describing: priceArray.last!))"
                         } else {
                             cell.fractionalPriceLabel.text = "00"
                         }
-                        
                     }
                 } else {
                     

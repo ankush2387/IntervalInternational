@@ -422,7 +422,7 @@ class Constant: NSObject {
         
         static var  onsiteArray = NSMutableArray()
         static var  nearbyArray = NSMutableArray()
-        static var  relinquishmentIdArray = NSMutableArray()
+        static var  relinquishmentIdArray = [String]()
         static var  relinquishmentUnitsArray = NSMutableArray()
         static var  idUnitsRelinquishmentDictionary = NSMutableDictionary()
         static var  userSelectedUnitsArray = NSMutableArray()
@@ -1643,6 +1643,7 @@ class Constant: NSObject {
         self.holdingTime = 17
         self.holdingTimer = Timer.scheduledTimer(timeInterval: 60.0, target: self, selector: #selector(updateResortHoldingTimeLabel), userInfo: nil, repeats: true)
     }
+    
     static func updateResortHoldingTimeLabel() {
         holdingTime = holdingTime - decreaseValue
         self.holdingResortForRemainingMinutes = "We are holding this unit for \(holdingTime) minutes"

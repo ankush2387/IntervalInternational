@@ -9,31 +9,31 @@
 import UIKit
 import DarwinSDK
 
-protocol ExchangeInventoryCVCellDelegate {
+protocol ExchangeInventoryCVCellDelegate: class {
     func infoIconPressed()
 }
 
 class ExchangeInventoryCVCell: UICollectionViewCell {
     
     //***** Custom cell delegate to access the delegate method *****//
-    var exchangeCellDelegate: ExchangeInventoryCVCellDelegate?
+    weak var exchangeCellDelegate: ExchangeInventoryCVCellDelegate?
     
-    @IBOutlet weak var bedRoomType: UILabel!
-    @IBOutlet weak var sleeps: UILabel!
-    @IBOutlet weak var kitchenType: UILabel!
+    @IBOutlet private weak var bedRoomType: UILabel!
+    @IBOutlet private weak var sleeps: UILabel!
+    @IBOutlet private weak var kitchenType: UILabel!
     
-    @IBOutlet weak var promotionsView: UIView!
-    @IBOutlet weak var exchangeStackView: UIStackView!
-    @IBOutlet weak var pointsStackView: UIStackView!
-    @IBOutlet weak var pointsCountLabel: UILabel!
-    @IBOutlet weak var pointsTitleLabel: UILabel!
-    @IBOutlet weak var exchangeImageView: UIImageView!
-    
+    @IBOutlet private weak var promotionsView: UIView!
+    @IBOutlet private weak var exchangeStackView: UIStackView!
+    @IBOutlet private weak var pointsStackView: UIStackView!
+    @IBOutlet private weak var pointsCountLabel: UILabel!
+    @IBOutlet private weak var pointsTitleLabel: UILabel!
+    @IBOutlet private weak var exchangeImageView: UIImageView!
+    @IBOutlet private weak var forwardNavArrow: UIImageView!
+    @IBOutlet private weak var exchangeTitleLabel: UILabel!
     
     func setUpExchangeCell(invetoryItem: ExchangeInventory, indexPath: IndexPath) {
-      
-        // for unit in (invetoryItem.inventory?.units)! {
-        let unit = (invetoryItem.buckets[indexPath.item].unit)!
+        
+        guard let unit = (invetoryItem.buckets[indexPath.item].unit) else { return }
         
         // bedroom details
         var bedRoomDetails = ""
@@ -60,16 +60,18 @@ class ExchangeInventoryCVCell: UICollectionViewCell {
         
         if unit.privateSleepCapacity > 0 {
 
-            self.sleeps.text =  totalSleepCapacity + String(unit.privateSleepCapacity) + Constant.CommonLocalisedString.privateString
+            self.sleeps.text = totalSleepCapacity + String(unit.privateSleepCapacity) + Constant.CommonLocalisedString.privateString
         }
         
-        if invetoryItem.buckets[indexPath.row].pointsCost != invetoryItem.buckets[indexPath.row].memberPointsRequired {
+        if Constant.MyClassConstants.isCIGAvailable && invetoryItem.buckets[indexPath.row].pointsCost != invetoryItem.buckets[indexPath.row].memberPointsRequired {
             pointsStackView.isHidden = true
             exchangeStackView.isHidden = false
             exchangeImageView.image = #imageLiteral(resourceName: "InfoIcon")
             exchangeImageView.isUserInteractionEnabled = true
+            exchangeTitleLabel.isHidden = true
+            forwardNavArrow.isHidden = true
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapBlurButton))
-            exchangeImageView.addGestureRecognizer(tapGesture)
+            self.addGestureRecognizer(tapGesture)
         } else {
             if invetoryItem.buckets[indexPath.row].pointsCost != 0 {
                 exchangeStackView.isHidden = true
@@ -96,17 +98,15 @@ class ExchangeInventoryCVCell: UICollectionViewCell {
                 let imgV = UIImageView(frame: CGRect(x: 10, y: yPosition, width: 15, height: 15))
                 imgV.image = UIImage(named: Constant.assetImageNames.promoImage)
                 let promLabel = UILabel(frame: CGRect(x: 30, y: yPosition, width: self.promotionsView.bounds.width, height: 15))
-                let attrStr = try! NSAttributedString(
+                let attrStr = try? NSAttributedString(
                     data: "\(promotion.offerContentFragment!)".data(using: String.Encoding.unicode, allowLossyConversion: true)!,
                     options: [ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType],
                     documentAttributes: nil)
-                
                 promLabel.attributedText = attrStr
-                //promLabel.text = promotion.offerName
                 promLabel.adjustsFontSizeToFitWidth = true
                 promLabel.minimumScaleFactor = 0.7
                 promLabel.numberOfLines = 0
-                promLabel.textColor = UIColor(red: 0, green: 119 / 255, blue: 190 / 255, alpha: 1)
+                promLabel.textColor = UIColor(hex: 0x0077BE)
                 promLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 12)
                 self.promotionsView.addSubview(imgV)
                 self.promotionsView.addSubview(promLabel)
@@ -116,7 +116,6 @@ class ExchangeInventoryCVCell: UICollectionViewCell {
     }
     
     func tapBlurButton() {
-       //pointsInfoSegue
         exchangeCellDelegate?.infoIconPressed()
     }
 }

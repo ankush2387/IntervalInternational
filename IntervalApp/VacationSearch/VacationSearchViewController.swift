@@ -626,17 +626,17 @@ extension VacationSearchViewController: UITableViewDelegate {
                                             
                                             ADBMobile.trackAction(Constant.omnitureEvents.event43, data: nil)
                                             Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
-                                            Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: indexPath.row)
+                                            Constant.MyClassConstants.relinquishmentIdArray.remove(at: indexPath.row)
                                             Constant.MyClassConstants.relinquishmentUnitsArray.removeObject(at: indexPath.row)
                                         }
                                     } else {
                                         Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
-                                        Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: indexPath.row)
+                                        Constant.MyClassConstants.relinquishmentIdArray.remove(at: indexPath.row)
                                         realm.delete(storedData[indexPath.row])
                                     }
                                 } else {
                                     Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
-                                    Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: indexPath.row)
+                                    Constant.MyClassConstants.relinquishmentIdArray.remove(at: indexPath.row)
                                     realm.delete(storedData[indexPath.row])
                                 }
 
@@ -898,7 +898,7 @@ extension VacationSearchViewController: UITableViewDataSource {
                             
                             guard let clubPoints = object as? List<ClubPoints> else { return cell }
                             
-                            if clubPoints[0].isPointsMatrix == true {
+                            if clubPoints[0].isPointsMatrix == false {
                                 let resortNameWithYear = "\(clubPoints[0].resort[0].resortName)/\(clubPoints[0].relinquishmentYear)"
                                 cell.whereTogoTextLabel.text = "\(resortNameWithYear)"
                             } else {

@@ -59,4 +59,11 @@ final class ClientAPI: ClientAPIStore {
            UserClient.putSessionsUser(accessToken, member: membership, onSuccess: resolve, onError: reject)
         }
     }
+
+    func searchDatesForRental(for accessToken: DarwinAccessToken, and request: RentalSearchDatesRequest) -> Promise<RentalSearchDatesResponse> {
+        return Promise { resolve, reject in
+        RentalClient.searchDates(accessToken, request: request, onSuccess: resolve, onError: reject)
+    }
+}
+
 }

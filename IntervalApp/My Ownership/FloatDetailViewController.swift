@@ -405,13 +405,17 @@ class FloatDetailViewController: UIViewController {
         relinquishmentList.openWeeks.append(selectedOpenWeek)
         storedata.openWeeks.append(relinquishmentList)
         storedata.membeshipNumber = Membership!.memberNumber!
-        let realm = try! Realm()
-        try! realm.write {
-            realm.add(storedata)
-            Constant.MyClassConstants.relinquishmentIdArray.add(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!)
-            //Pop to vacation search screen
-            popToVacationSearch()
-        }
+            let realm = try! Realm()
+    
+            try! realm.write {
+                realm.add(storedata)
+                if let relinquishmentId = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId {
+                    Constant.MyClassConstants.relinquishmentIdArray.append(relinquishmentId)
+                }
+                
+                //Pop to vacation search screen
+                popToVacationSearch()
+            }
     }
     
     //Function to pop to vacation search

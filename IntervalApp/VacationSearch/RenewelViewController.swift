@@ -120,28 +120,25 @@ class RenewelViewController: UIViewController {
     @IBAction func selectClicked(_ sender: UIButton) {
     
         renewalArray.removeAll()
-        if(sender.tag == 0 && isNonCombo) {
-            for renewal in forceRenewals.products {
-                if(renewal.term == 12) {
+        if sender.tag == 0 && isNonCombo {
+            for renewal in forceRenewals.products where renewal.term == 12 {
                     let renewalItem = Renewal()
                     renewalItem.id = renewal.id
                     renewalItem.productCode = renewal.productCode
                     renewalArray.append(renewalItem)
                     break
-                }
             }
-            for renewal in forceRenewals.crossSelling {
-                if(renewal.term == 12) {
+            for renewal in forceRenewals.crossSelling where renewal.term == 12 {
+                
                     let renewalItem = Renewal()
                     renewalItem.id = renewal.id
                     renewalItem.productCode = renewal.productCode
                     renewalArray.append(renewalItem)
                     break
-                }
             }
-        } else if(sender.tag == 1 && isNonCombo) {
-            for renewal in forceRenewals.products {
-                if(renewal.term == 12) {
+        } else if sender.tag == 1 && isNonCombo {
+            for renewal in forceRenewals.products where renewal.term == 12 {
+                
                     let renewalItem = Renewal()
                     renewalItem.id = renewal.id
                     renewalItem.productCode = renewal.productCode
@@ -149,46 +146,40 @@ class RenewelViewController: UIViewController {
                     
                     // show guest certificate
                     for renewal in forceRenewals.crossSelling {
-                        if (renewal.productCode == "PLT" && renewal.term == 12) {
+                        if renewal.productCode == "PLT" && renewal.term == 12 {
                             Constant.MyClassConstants.noThanksForNonCore = true
                         } else {
                             Constant.MyClassConstants.noThanksForNonCore = false
                         }
                     }
                    
-                }
             }
             
-        } else if(isCombo) {
+        } else if isCombo {
             for renewalComboArray in forceRenewals.comboProducts {
-                for renewals in renewalComboArray.renewalComboProducts {
-                    if(renewals.term == 12) {
+                for renewals in renewalComboArray.renewalComboProducts  where renewals.term == 12 {
                         let renewalItem = Renewal()
                         renewalItem.id = renewals.id
                         renewalItem.productCode = renewals.productCode
                         renewalArray.append(renewalItem)
-                    }
                 }
             }
         } else if(isNonCore) {
-            for renewal in forceRenewals.crossSelling {
-                if(renewal.term == 12) {
+            for renewal in forceRenewals.crossSelling where renewal.term == 12 {
                     let renewalItem = Renewal()
                     renewalItem.id = renewal.id
                     renewalItem.productCode = renewal.productCode
                     renewalArray.append(renewalItem)
                     
                     for renewal in forceRenewals.crossSelling {
-                        if (renewal.productCode == "PLT" && renewal.term == 12) {
+                        if renewal.productCode == "PLT" && renewal.term == 12 {
                             Constant.MyClassConstants.noThanksForNonCore = true
                         } else {
                             Constant.MyClassConstants.noThanksForNonCore = false
-                
                         }
                     }
                     
                     break
-                }
             }
         } else if(isCore) {
             for renewal in forceRenewals.products {
@@ -202,28 +193,22 @@ class RenewelViewController: UIViewController {
             }
         }
         
-        if(Constant.RunningDevice.deviceIdiom == .phone || Constant.RunningDevice.deviceIdiom == .pad) {
-            if(Constant.MyClassConstants.noThanksForNonCore) {
-                self.dismiss(animated: true, completion: nil)
-                
+        if Constant.RunningDevice.deviceIdiom == .phone || Constant.RunningDevice.deviceIdiom == .pad {
+            if Constant.MyClassConstants.noThanksForNonCore {
                 if Constant.MyClassConstants.isFromWhatToUse {
                     self.delegate?.dismissWhatToUse(renewalArray: renewalArray)
                 } else {
                     delegate?.selectedRenewalFromWhoWillBeCheckingIn(renewalArray: renewalArray)
-                    
                 }
-                
+                //self.dismiss(animated: true, completion: nil)
             } else {
-                
-                self.dismiss(animated: false, completion: nil)
-                
+                //self.dismiss(animated: false, completion: nil)
                 if Constant.MyClassConstants.isFromWhatToUse {
                     self.delegate?.dismissWhatToUse(renewalArray: renewalArray)
                 } else {
                     delegate?.selectedRenewalFromWhoWillBeCheckingIn(renewalArray: renewalArray)
                     
                 }
-
             }
         }
         
@@ -235,7 +220,7 @@ class RenewelViewController: UIViewController {
     
     @IBAction func onClickNoThanks(_ sender: UIButton) {
         
-        if(Constant.MyClassConstants.noThanksForNonCore) {
+        if Constant.MyClassConstants.noThanksForNonCore {
             self.dismiss(animated: true, completion: nil)
             Constant.MyClassConstants.noThanksForNonCore = false
             self.delegate?.noThanks()
@@ -245,11 +230,11 @@ class RenewelViewController: UIViewController {
                 self.dismiss(animated: false, completion: nil)
                 self.delegate?.otherOptions(forceRenewals: self.forceRenewals)
                 return
-            } else if(isNonCore) {
-                if(Constant.MyClassConstants.noThanksForNonCore) {
+            } else if isNonCore {
+                if Constant.MyClassConstants.noThanksForNonCore {
                     Constant.MyClassConstants.noThanksForNonCore = false
                 } else {
-                    if(Constant.MyClassConstants.isNoThanksFromRenewalAgain) {
+                    if Constant.MyClassConstants.isNoThanksFromRenewalAgain {
                         Constant.MyClassConstants.isNoThanksFromRenewalAgain = false
                         //self.dismiss(animated: true, completion: nil)
                         self.delegate?.noThanks()
@@ -258,7 +243,7 @@ class RenewelViewController: UIViewController {
                         
                         // show guest certificate
                         for renewal in forceRenewals.crossSelling {
-                            if (renewal.productCode == Constant.productCodeImageNames.platinum && renewal.term == 12) {
+                            if renewal.productCode == Constant.productCodeImageNames.platinum && renewal.term == 12 {
                                 Constant.MyClassConstants.noThanksForNonCore = true
                             } else {
                                 Constant.MyClassConstants.noThanksForNonCore = false
@@ -280,11 +265,6 @@ class RenewelViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        if(segue.destination.isKind(of: WhoWillBeCheckingInViewController.self)) {
-            
-            let whoWillBeCheckingInVwController = segue.destination as! WhoWillBeCheckingInViewController
-            whoWillBeCheckingInVwController.renewalsArray = renewalArray
-        }
     }
 
 }

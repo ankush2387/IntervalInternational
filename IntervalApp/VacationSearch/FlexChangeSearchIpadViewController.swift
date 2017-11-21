@@ -464,18 +464,18 @@ extension FlexChangeSearchIpadViewController: UITableViewDelegate {
                                         
                                         ADBMobile.trackAction(Constant.omnitureEvents.event43, data: nil)
                                         Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
-                                        Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: indexPath.row)
+                                        Constant.MyClassConstants.relinquishmentIdArray.remove(at: indexPath.row)
                                         Constant.MyClassConstants.relinquishmentUnitsArray.removeObject(at: indexPath.row)
                                     }
                                 } else {
                                     
                                     Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
-                                    Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: indexPath.row)
+                                    Constant.MyClassConstants.relinquishmentIdArray.remove(at: indexPath.row)
                                     realm.delete(storedData[indexPath.row])
                                 }
                             } else {
                                 Constant.MyClassConstants.whatToTradeArray.removeObject(at: indexPath.row)
-                                Constant.MyClassConstants.relinquishmentIdArray.removeObject(at: indexPath.row)
+                                Constant.MyClassConstants.relinquishmentIdArray.remove(at: indexPath.row)
                                 realm.delete(storedData[indexPath.row])
                             }
                             

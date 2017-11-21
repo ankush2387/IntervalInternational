@@ -101,9 +101,11 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
                 addButton.isHidden = true
             }
         }
+        
         //hide promotions
         promLabel.isHidden = true
         promImgView.isHidden = true
+        
     }
     
     func getDaysDiff(expiration: Date) -> Int {

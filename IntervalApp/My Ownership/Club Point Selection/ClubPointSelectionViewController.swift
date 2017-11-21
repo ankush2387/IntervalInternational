@@ -14,50 +14,42 @@ import RealmSwift
 
 class ClubPointSelectionViewController: UIViewController {
     /** Outlets */
-    @IBOutlet weak var clubPoinScrollVw: UIScrollView!
-    @IBOutlet weak var standardFlexChartSegment: UISegmentedControl!
-    
-    @IBOutlet weak var travelingDetailView: UIView!
-    @IBOutlet weak var secondView: UIView!
-    
-    @IBOutlet weak var secondtravelwindowbtn: IUIKButton!
-    @IBOutlet weak var firsttravelwindowbtn: IUIKButton!
-    
-    @IBOutlet weak var firstdiffrencelabel: UILabel!
-    
-    @IBOutlet weak var seconddiffrencelabel: UILabel!
-    
-    @IBOutlet weak var doneButton: IUIKButton!
-    @IBOutlet weak var pageControl: UIPageControl!
-    
-    @IBOutlet weak var secondTravelWindowConstraint: NSLayoutConstraint!
-    @IBOutlet weak var firstTravelWindowConstraint: NSLayoutConstraint!
-    @IBOutlet weak var lineBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var clubPoinScrollVw: UIScrollView!
+    @IBOutlet private weak var standardFlexChartSegment: UISegmentedControl!
+    @IBOutlet private weak var travelingDetailView: UIView!
+    @IBOutlet private weak var secondView: UIView!
+    @IBOutlet private weak var secondtravelwindowbtn: IUIKButton!
+    @IBOutlet private weak var firsttravelwindowbtn: IUIKButton!
+    @IBOutlet private weak var doneButton: IUIKButton!
+    @IBOutlet private weak var pageControl: UIPageControl!
+    @IBOutlet private weak var lineBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var scrollViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var firstTravelWindowConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var secondTravelWindowConstraint: NSLayoutConstraint!
     
     //@IBOutlet weak var travelingDetailLabel: UILabel!
     /** Class Variables */
     var clubpointselectionPageViewController: UIPageViewController?
     var clubIntervalDictionary = NSMutableDictionary()
-    @IBOutlet weak var clubsCollectionView: UICollectionView!
-    @IBOutlet weak var startdatefirstbtn: UILabel!
-    @IBOutlet weak var startmonthfirstbtn: UILabel!
-    @IBOutlet weak var enddatefirstbtn: UILabel!
-    @IBOutlet weak var endmonthfirstbtn: UILabel!
+    private weak var clubsCollectionView: UICollectionView!
+    @IBOutlet private weak var startdatefirstbtn: UILabel!
+    @IBOutlet private weak var startmonthfirstbtn: UILabel!
+    @IBOutlet private weak var enddatefirstbtn: UILabel!
+    @IBOutlet private weak var endmonthfirstbtn: UILabel!
     
-    @IBOutlet weak var startdatesecondbtn: UILabel!
-    @IBOutlet weak var startmonthsecondbtn: UILabel!
-    @IBOutlet weak var enddatesecondbtn: UILabel!
-    @IBOutlet weak var endmonthsecondbtn: UILabel!
+    @IBOutlet private weak var startdatesecondbtn: UILabel!
+    @IBOutlet private weak var startmonthsecondbtn: UILabel!
+    @IBOutlet private weak var enddatesecondbtn: UILabel!
+    @IBOutlet private weak var endmonthsecondbtn: UILabel!
     
-    @IBOutlet weak var indisefirstview: UIView!
+    @IBOutlet private weak var indisefirstview: UIView!
     
-    @IBOutlet weak var insidesecondview: UIView!
+    @IBOutlet private weak var insidesecondview: UIView!
     
     let infoImageView = UIImageView()
-    var labelsCollectionView:UICollectionView!
-    var clublabel:String = ""
-    var clubIntervalValuesCollectionView:UICollectionView!
+    var labelsCollectionView: UICollectionView!
+    var clublabel = ""
+    var clubIntervalValuesCollectionView: UICollectionView!
     var clubPointsValue = "0"
    
     var testArr = [1]
@@ -77,42 +69,39 @@ class ClubPointSelectionViewController: UIViewController {
         buttonSelectedString = Constant.MyClassConstants.segmentFirstString
         mapClubIntervalPoints(index: (sender as AnyObject).tag - 100)
         createClubsCollectionView()
+        travelingDetailView.backgroundColor = UIColor(hex: 0x008FC6)
+        indisefirstview.backgroundColor = UIColor(hex: 0x008FC6)
+        secondView.backgroundColor = UIColor(hex: 0xFFFFFF)
+        insidesecondview.backgroundColor = UIColor(hex: 0xFFFFFF)
+        startdatesecondbtn.textColor = UIColor(hex: 0x008FC6)
+        startmonthsecondbtn.textColor = UIColor(hex: 0x008FC6)
+        enddatesecondbtn.textColor = UIColor(hex: 0x008FC6)
+        endmonthsecondbtn.textColor = UIColor(hex: 0x008FC6)
         
-        //seconddiffrencelabel.textColor = UIColor(red: 0/255.0, green: 143/255.0, blue: 198/255.0, alpha: 1.0)
-        //firstdiffrencelabel.textColor = UIColor(red: 255/255.0, green: 255/255.0, blue: 255.0/255.0, alpha: 1.0)
-        travelingDetailView.backgroundColor = UIColor(red: 0 / 255.0, green: 143 / 255.0, blue: 198 / 255.0, alpha: 1.0)
-        indisefirstview.backgroundColor = UIColor(red: 0 / 255.0, green: 143 / 255.0, blue: 198 / 255.0, alpha: 1.0)
-        secondView.backgroundColor = UIColor(red: 255 / 255.0, green: 255 / 255.0, blue: 255.0 / 255.0, alpha: 1.0)
-        insidesecondview.backgroundColor = UIColor(red: 255 / 255.0, green: 255 / 255.0, blue: 255.0 / 255.0, alpha: 1.0)
-        startdatesecondbtn.textColor = UIColor(red: 0 / 255.0, green: 143 / 255.0, blue: 198 / 255.0, alpha: 1.0)
-        startmonthsecondbtn.textColor = UIColor(red: 0 / 255.0, green: 143 / 255.0, blue: 198 / 255.0, alpha: 1.0)
-        enddatesecondbtn.textColor = UIColor(red: 0 / 255.0, green: 143 / 255.0, blue: 198 / 255.0, alpha: 1.0)
-        endmonthsecondbtn.textColor = UIColor(red: 0 / 255.0, green: 143 / 255.0, blue: 198 / 255.0, alpha: 1.0)
-        
-        startdatefirstbtn.textColor = UIColor(red: 255 / 255.0, green: 255 / 255.0, blue: 255.0 / 255.0, alpha: 1.0)
-        startmonthfirstbtn.textColor = UIColor(red: 255 / 255.0, green: 255 / 255.0, blue: 255.0 / 255.0, alpha: 1.0)
-        enddatefirstbtn.textColor = UIColor(red: 255 / 255.0, green: 255 / 255.0, blue: 255.0 / 255.0, alpha: 1.0)
-        endmonthfirstbtn.textColor = UIColor(red: 255 / 255.0, green: 255 / 255.0, blue: 255.0 / 255.0, alpha: 1.0)
+        startdatefirstbtn.textColor = UIColor(hex: 0xFFFFFF)
+        startmonthfirstbtn.textColor = UIColor(hex: 0xFFFFFF)
+        enddatefirstbtn.textColor = UIColor(hex: 0xFFFFFF)
+        endmonthfirstbtn.textColor = UIColor(hex: 0xFFFFFF)
         
     }
     
     @IBAction func secondbuttonpressed(_ sender: Any) {
         
         buttonSelectedString = Constant.MyClassConstants.segmentSecondString
-        insidesecondview.backgroundColor = UIColor(red: 0 / 255.0, green: 143 / 255.0, blue: 198 / 255.0, alpha: 1.0)
-        secondView.backgroundColor = UIColor(red: 0 / 255.0, green: 143 / 255.0, blue: 198 / 255.0, alpha: 1.0)
-        startdatesecondbtn.textColor = UIColor(red: 255 / 255.0, green: 255 / 255.0, blue: 255.0 / 255.0, alpha: 1.0)
-        startmonthsecondbtn.textColor = UIColor(red: 255 / 255.0, green: 255 / 255.0, blue: 255.0 / 255.0, alpha: 1.0)
-        enddatesecondbtn.textColor = UIColor(red: 255 / 255.0, green: 255 / 255.0, blue: 255.0 / 255.0, alpha: 1.0)
-        endmonthsecondbtn.textColor = UIColor(red: 255 / 255.0, green: 255 / 255.0, blue: 255.0 / 255.0, alpha: 1.0)
+        insidesecondview.backgroundColor = UIColor(hex: 0x008FC6)
+        secondView.backgroundColor = UIColor(hex: 0x008FC6)
+        startdatesecondbtn.textColor = UIColor(hex: 0xFFFFFF)
+        startmonthsecondbtn.textColor = UIColor(hex: 0xFFFFFF)
+        enddatesecondbtn.textColor = UIColor(hex: 0xFFFFFF)
+        endmonthsecondbtn.textColor = UIColor(hex: 0xFFFFFF)
         
-        travelingDetailView.backgroundColor = UIColor(red: 255 / 255.0, green: 255 / 255.0, blue: 255.0 / 255.0, alpha: 1.0)
-        indisefirstview.backgroundColor = UIColor(red: 255 / 255.0, green: 255 / 255.0, blue: 255.0 / 255.0, alpha: 1.0)
+        travelingDetailView.backgroundColor = UIColor(hex: 0xFFFFFF)
+        indisefirstview.backgroundColor = UIColor(hex: 0xFFFFFF)
         
-        startdatefirstbtn.textColor = UIColor(red: 0 / 255.0, green: 143 / 255.0, blue: 198 / 255.0, alpha: 1.0)
-        startmonthfirstbtn.textColor = UIColor(red: 0 / 255.0, green: 143 / 255.0, blue: 198 / 255.0, alpha: 1.0)
-        enddatefirstbtn.textColor = UIColor(red: 0 / 255.0, green: 143 / 255.0, blue: 198 / 255.0, alpha: 1.0)
-        endmonthfirstbtn.textColor = UIColor(red: 0 / 255.0, green: 143 / 255.0, blue: 198 / 255.0, alpha: 1.0)
+        startdatefirstbtn.textColor = UIColor(hex: 0x008FC6)
+        startmonthfirstbtn.textColor = UIColor(hex: 0x008FC6)
+        enddatefirstbtn.textColor = UIColor(hex: 0x008FC6)
+        endmonthfirstbtn.textColor = UIColor(hex: 0x008FC6)
         
         mapClubIntervalPoints(index: (sender as AnyObject).tag - 100)
         
@@ -120,8 +109,8 @@ class ClubPointSelectionViewController: UIViewController {
         
     }
     
-    //MARK:- Function for done button click
-    @IBAction func doneButtonClicked(_ sender:IUIKButton) {
+    // MARK: - Function for done button click
+    @IBAction func doneButtonClicked(_ sender: IUIKButton) {
         
         guard let relinquishmentID = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId else {
          return }
@@ -134,15 +123,13 @@ class ClubPointSelectionViewController: UIViewController {
         pointMatrixType.fromDate = Constant.MyClassConstants.fromdatearray[0] as? String
         pointMatrixType.toDate = Constant.MyClassConstants.todatearray[0] as? String
         
-        let units = Constant.MyClassConstants.relinquishmentSelectedWeek.unit
+        _ = Constant.MyClassConstants.relinquishmentSelectedWeek.unit
         intervalPrint(Constant.MyClassConstants.matrixDataArray)
         intervalPrint(segmentSelectedString)
         
         dictionaryForSegmentCheckBox.value(forKey: segmentSelectedString)
         
-        let labelUnitArray:NSMutableArray = Constant.MyClassConstants.clubIntervalDictionary.value(forKey: Constant.MyClassConstants.labelarray[1] as! String)! as! NSMutableArray
-        
-           let invenUnit:InventoryUnit = InventoryUnit()
+           let invenUnit = InventoryUnit()
            invenUnit.unitSize = "STUDIO"
            let clubPoints = clubPointsValue.replacingOccurrences(of: ",", with: "")
            invenUnit.clubPoints = Int(clubPoints) ?? 0
@@ -151,75 +138,41 @@ class ClubPointSelectionViewController: UIViewController {
          ExchangeClient.updatePointsMatrixReservation(Session.sharedSession.userAccessToken, relinquishmentId: relinquishmentID, reservation: pointMatrixType, onSuccess: {(response) in
             intervalPrint(response)
             
-         }, onError: { (error) in
-            
-            let storedata = OpenWeeksStorage()
-            let membership = Session.sharedSession.selectedMembership
-            let relinquishmentList = TradeLocalData()
-            
-            let selectedClubPoint = ClubPoints()
-            if let relinquishmentId = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId {
-                selectedClubPoint.relinquishmentId = relinquishmentId
-            }
-            
-            selectedClubPoint.isPointsMatrix = true
-            selectedClubPoint.relinquishmentYear = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentYear ?? 0
-            selectedClubPoint.pointsSpent = invenUnit.clubPoints
-            
-            let resort = ResortList()
-            if let resortName = Constant.MyClassConstants.relinquishmentSelectedWeek.resort?.resortName {
-                resort.resortName = resortName
-            }
-            selectedClubPoint.resort.append(resort)
-            relinquishmentList.clubPoints.append(selectedClubPoint)
-            storedata.openWeeks.append(relinquishmentList)
-            if let memberNumber = membership?.memberNumber {
-                storedata.membeshipNumber = memberNumber
-            }
-            
-            do {
-                let realm = try Realm()
-                try realm.write {
-                    realm.add(storedata)
-                }
-            } catch {
-                self.presentErrorAlert(UserFacingCommonError.generic)
-            }
-         })
+         }, onError: { error in
+            self.presentErrorAlert(UserFacingCommonError.serverError(error))
+        })
         
     }
     
-    //MARK :- Save Club points to database
-    func saveSelectedClubPoints(){
+    // MARK: - Save Club points to database
+    func saveSelectedClubPoints() {
         
     }
     
     //*** Change frame layout while change iPad in Portrait and Landscape mode.***//
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        if(Constant.RunningDevice.deviceIdiom == .pad) {
+        if Constant.RunningDevice.deviceIdiom == .pad {
             frameChangeOnPortraitandLandscape()
         }
-        
     }
     
     func frameChangeOnPortraitandLandscape() {
         
-        if(UIDevice.current.orientation == .landscapeLeft || UIDevice.current.orientation == .landscapeRight) {
-            lineBottomConstraint.constant = 80
-            if(clubIntervalValuesCollectionView != nil || labelsCollectionView != nil) {
+        if UIDevice.current.orientation == .landscapeLeft || UIDevice.current.orientation == .landscapeRight {
+            //lineBottomConstraint.constant = 80
+            if clubIntervalValuesCollectionView != nil || labelsCollectionView != nil {
                 clubIntervalValuesCollectionView.collectionViewLayout.invalidateLayout()
                 labelsCollectionView.collectionViewLayout.invalidateLayout()
                 createClubsCollectionView()
             }
         } else {
-            lineBottomConstraint.constant = 355
-            if(clubIntervalValuesCollectionView != nil || labelsCollectionView != nil) {
+            //lineBottomConstraint.constant = 355
+            if clubIntervalValuesCollectionView != nil || labelsCollectionView != nil {
                 clubIntervalValuesCollectionView.collectionViewLayout.invalidateLayout()
                 labelsCollectionView.collectionViewLayout.invalidateLayout()
                 createClubsCollectionView()
             }
         }
-        
     }
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
@@ -227,7 +180,7 @@ class ClubPointSelectionViewController: UIViewController {
         let itemSpacing = 0
         let pageWidth = Float(itemWidth + itemSpacing)
         let targetXContentOffset = Float(targetContentOffset.pointee.x)
-        let contentWidth = Float(clubIntervalValuesCollectionView!.contentSize.width  )
+        let contentWidth = Float(clubIntervalValuesCollectionView.contentSize.width  )
         var newPage = Float(self.pageControl.currentPage)
         
         if velocity.x == 0 {
@@ -237,7 +190,7 @@ class ClubPointSelectionViewController: UIViewController {
             if newPage < 0 {
                 newPage = 0
             }
-            if (newPage > contentWidth / pageWidth) {
+            if newPage > contentWidth / pageWidth {
                 newPage = ceil(contentWidth / pageWidth) - 1.0
             }
         }
@@ -264,7 +217,7 @@ class ClubPointSelectionViewController: UIViewController {
         }
         Constant.MyClassConstants.pointMatrixDictionary.removeAllObjects()
         Constant.MyClassConstants.pointMatrixDictionary.addEntries(from: Constant.MyClassConstants.matrixDataArray[0] as! [AnyHashable: Any])
-        let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(ClubPointSelectionViewController.menuBackButtonPressed(_:)))
+        let menuButton = UIBarButtonItem(image: #imageLiteral(resourceName: "BackArrowNav"), style: .plain, target: self, action: #selector(ClubPointSelectionViewController.menuBackButtonPressed(_:)))
         menuButton.tintColor = UIColor.white
         self.navigationItem.leftBarButtonItem = menuButton
         
@@ -277,10 +230,10 @@ class ClubPointSelectionViewController: UIViewController {
         secondView.layer.borderColor = UIColor.lightGray.cgColor
         secondView.layer.cornerRadius = 5
         
-        if( Constant.MyClassConstants.showSegment == false) {
+        if Constant.MyClassConstants.showSegment == false {
             standardFlexChartSegment.isHidden = true
-            secondTravelWindowConstraint.constant = -30
-            firstTravelWindowConstraint.constant = -30
+            //secondTravelWindowConstraint.constant = -30
+            //firstTravelWindowConstraint.constant = -30
         } else {
             standardFlexChartSegment.isHidden = false
         }
@@ -298,13 +251,13 @@ class ClubPointSelectionViewController: UIViewController {
     }
     
     func viewWillAppear() {
-        if(Constant.RunningDevice.deviceIdiom == .pad) {
+        if Constant.RunningDevice.deviceIdiom == .pad {
             frameChangeOnPortraitandLandscape()
         }
     }
     
     //***** Function to create collection view to show club points. *****//
-    func createClubsCollectionView(){
+    func createClubsCollectionView() {
         self.clubPoinScrollVw.contentSize = CGSize(width: 0, height: ((Constant.MyClassConstants.clubIntervalDictionary.allKeys.count * 70) + 50))
         scrollViewHeightConstraint.constant = self.clubPoinScrollVw.contentSize.height
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -320,8 +273,9 @@ class ClubPointSelectionViewController: UIViewController {
         layout1.scrollDirection = .horizontal
         
         if clubIntervalValuesCollectionView == nil {
-            clubIntervalValuesCollectionView = UICollectionView(frame: CGRect(x: 80, y: 0, width: Int(UIScreen.main.bounds.width - 80) , height: (Constant.MyClassConstants.clubIntervalDictionary.allKeys.count * 70) + 150), collectionViewLayout: layout1)
-            clubIntervalValuesCollectionView.register(UINib(nibName:Constant.customCellNibNames.clubPointsCell, bundle: nil), forCellWithReuseIdentifier:Constant.loginScreenReusableIdentifiers.cell)
+            let frame = CGRect(x: 80, y: 0, width: Int(UIScreen.main.bounds.width - 80), height: (Constant.MyClassConstants.clubIntervalDictionary.allKeys.count * 70) + 150)
+            clubIntervalValuesCollectionView = UICollectionView(frame: frame, collectionViewLayout: layout1)
+            clubIntervalValuesCollectionView?.register(UINib(nibName:Constant.customCellNibNames.clubPointsCell, bundle: nil), forCellWithReuseIdentifier:Constant.loginScreenReusableIdentifiers.cell)
             
             clubIntervalValuesCollectionView.showsHorizontalScrollIndicator = false
             clubIntervalValuesCollectionView.register(UINib(nibName: Constant.customCellNibNames.checkCell, bundle: nil), forCellWithReuseIdentifier: Constant.reUsableIdentifiers.checkBoxCell)
@@ -333,12 +287,14 @@ class ClubPointSelectionViewController: UIViewController {
             clubIntervalValuesCollectionView.isScrollEnabled = true
             clubPoinScrollVw.addSubview(clubIntervalValuesCollectionView)
         } else {
-            clubIntervalValuesCollectionView.frame = CGRect(x: 80, y: 0, width: Int(UIScreen.main.bounds.width - 80) , height: (Constant.MyClassConstants.clubIntervalDictionary.allKeys.count * 70) + 150)
+            let frame = CGRect(x: 80, y: 0, width: Int(UIScreen.main.bounds.width - 80), height: (Constant.MyClassConstants.clubIntervalDictionary.allKeys.count * 70) + 150)
+            clubIntervalValuesCollectionView.frame = frame
             clubIntervalValuesCollectionView.reloadData()
         }
         
         if labelsCollectionView == nil {
-            labelsCollectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 80 , height: (Constant.MyClassConstants.clubIntervalDictionary.allKeys.count * 70) + 50), collectionViewLayout: layout)
+            let frame = CGRect(x: 0, y: 0, width: 80, height: (Constant.MyClassConstants.clubIntervalDictionary.allKeys.count * 70) + 50)
+            labelsCollectionView = UICollectionView(frame: frame, collectionViewLayout: layout)
             
             labelsCollectionView.register(UINib(nibName: Constant.customCellNibNames.clubPointsCell, bundle: nil), forCellWithReuseIdentifier: Constant.loginScreenReusableIdentifiers.cell)
             labelsCollectionView.register(UINib(nibName: Constant.customCellNibNames.headerCell, bundle: nil), forCellWithReuseIdentifier: Constant.reUsableIdentifiers.clubHeaderCell)
@@ -347,9 +303,11 @@ class ClubPointSelectionViewController: UIViewController {
             labelsCollectionView.delegate = self
             labelsCollectionView.dataSource = self
             labelsCollectionView.backgroundColor = UIColor.white
-            clubPoinScrollVw.addSubview(labelsCollectionView)
+            if let cv = labelsCollectionView {
+                clubPoinScrollVw.addSubview(cv)
+            }
         } else {
-            labelsCollectionView.frame = CGRect(x: 0, y: 0, width: 80 , height: (Constant.MyClassConstants.clubIntervalDictionary.allKeys.count * 70) + 50)
+            labelsCollectionView.frame = CGRect(x: 0, y: 0, width: 80, height: (Constant.MyClassConstants.clubIntervalDictionary.allKeys.count * 70) + 50)
             labelsCollectionView.reloadData()
         }
         
@@ -359,13 +317,13 @@ class ClubPointSelectionViewController: UIViewController {
         _ = self.navigationController?.popViewController(animated: true)
     }
     
-    //MARK:- Function to map club interval points
+    // MARK: - Function to map club interval points
     
     func mapClubIntervalPoints(index: Int) {
 
         intervalPrint(Constant.MyClassConstants.fromdatearray[0], Constant.MyClassConstants.fromdatearray[1])
         let dictKey = "\(Constant.MyClassConstants.fromdatearray[index]) - \(Constant.MyClassConstants.todatearray[index])"
-        let rowsForClubInterval = Constant.MyClassConstants.pointMatrixDictionary.object(forKey: dictKey) as! [ClubPointsMatrixGridRow]
+        guard let rowsForClubInterval = Constant.MyClassConstants.pointMatrixDictionary.object(forKey: dictKey) as? [ClubPointsMatrixGridRow] else { return }
         
         Constant.MyClassConstants.clubIntervalDictionary.removeAllObjects()
         for clubIntervalRow in rowsForClubInterval {
@@ -373,10 +331,16 @@ class ClubPointSelectionViewController: UIViewController {
             Constant.MyClassConstants.clubPointMatrixHeaderArray.removeAllObjects()
             for units in clubIntervalRow.units {
                 clubPointsArray.add(units.clubPoints)
-                let bedRoomString = Helper.getBedroomNumbers(bedroomType: units.unitSize!)
-                Constant.MyClassConstants.clubPointMatrixHeaderArray.add(bedRoomString)
+                if let unitSize = units.unitSize {
+                    let bedRoomString = Helper.getBedroomNumbers(bedroomType: unitSize)
+                    Constant.MyClassConstants.clubPointMatrixHeaderArray.add(bedRoomString)
+                }
+                
             }
-            Constant.MyClassConstants.clubIntervalDictionary.setObject(clubPointsArray, forKey: clubIntervalRow.label! as NSCopying)
+           
+            if let label = clubIntervalRow.label {
+                Constant.MyClassConstants.clubIntervalDictionary.setObject(clubPointsArray, forKey: label as NSCopying)
+            }
         }
         
         createClubsCollectionView()
@@ -386,10 +350,14 @@ class ClubPointSelectionViewController: UIViewController {
     func setDate() {
         
         let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-        let fromStartComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: Constant.MyClassConstants.todatearray[0] as! String, format: Constant.MyClassConstants.dateFormat) as Date)
-        let toStartComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: Constant.MyClassConstants.fromdatearray[0] as! String, format: Constant.MyClassConstants.dateFormat) as Date)
-        let fromEndComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: Constant.MyClassConstants.todatearray[1] as! String, format: Constant.MyClassConstants.dateFormat) as Date)
-        let toEndComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: Constant.MyClassConstants.fromdatearray[1] as! String, format: Constant.MyClassConstants.dateFormat) as Date)
+        guard let fromStartDateString = Constant.MyClassConstants.todatearray[0] as? String else { return }
+        guard let toStartDateString = Constant.MyClassConstants.fromdatearray[0] as? String else { return }
+        guard let fromEndDateString = Constant.MyClassConstants.todatearray[1] as? String else { return }
+        guard let toEndDateString = Constant.MyClassConstants.fromdatearray[1] as? String else { return }
+        let fromStartComponents = myCalendar.dateComponents([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: fromStartDateString, format: "yyyy-MM-dd"))
+        let toStartComponents = myCalendar.dateComponents([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: toStartDateString, format: "yyyy-MM-dd"))
+        let fromEndComponents = myCalendar.dateComponents([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: fromEndDateString, format: "yyyy-MM-dd"))
+        let toEndComponents = myCalendar.dateComponents([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: toEndDateString, format: Constant.MyClassConstants.dateFormat))
         
         startdatefirstbtn.text = String(describing: toStartComponents.day!)
         enddatefirstbtn.text = String(describing: fromStartComponents.day!)
@@ -397,16 +365,16 @@ class ClubPointSelectionViewController: UIViewController {
         startdatesecondbtn.text = String(describing: toEndComponents.day!)
         enddatesecondbtn.text = String(describing: fromEndComponents.day!)
         
-        if( startdatefirstbtn.text!.characters.count == 1) {
+        if startdatefirstbtn.text!.characters.count == 1 {
             startdatefirstbtn.text = "0\( startdatefirstbtn.text!)"
         }
-        if( startdatesecondbtn.text!.characters.count == 1) {
+        if startdatesecondbtn.text!.characters.count == 1 {
             startdatesecondbtn.text = "0\( startdatesecondbtn.text!)"
         }
-        if( enddatefirstbtn.text!.characters.count == 1) {
+        if enddatefirstbtn.text!.characters.count == 1 {
             enddatefirstbtn.text = "0\( enddatefirstbtn.text!)"
         }
-        if( enddatesecondbtn.text!.characters.count == 1) {
+        if enddatesecondbtn.text!.characters.count == 1 {
             enddatesecondbtn.text = "0\( enddatesecondbtn.text!)"
         }
         startmonthfirstbtn.text = "\(Helper.getMonthnameFromInt(monthNumber: toStartComponents.month!)) \(toStartComponents.year!)"
@@ -421,35 +389,20 @@ class ClubPointSelectionViewController: UIViewController {
         mapClubIntervalPoints(index: sender.tag - 100)
         let view1 = self.view.viewWithTag(100)
         let view2 = self.view.viewWithTag(101)
-        /*for subView in (view1?.superview?.subviews)!{
-         if(subView.isKind(of: UILabel.self)){
-         let subViewLabel = subView as! UILabel
-         subViewLabel.textColor = IUIKColorPalette.primary1.color
-         }
-         }
-         for subView in (view2?.superview?.subviews)!{
-         if(subView.isKind(of: UILabel.self)){
-         let subViewLabel = subView as! UILabel
-         subViewLabel.textColor = IUIKColorPalette.primary1.color
-         }
-         }
-         view1?.superview?.backgroundColor = UIColor.white
-         view2?.superview?.backgroundColor = UIColor.white*/
-        
-        if(sender.tag == 100) {
+        if sender.tag == 100 {
             travelingDetailView.backgroundColor = IUIKColorPalette.primary1.color
             startdatefirstbtn.textColor = UIColor.white
             startmonthfirstbtn.textColor = UIColor.white
             
             for subView in (view2?.superview?.subviews)! {
-                if(subView.isKind(of: UILabel.self)) {
+                if subView.isKind(of: UILabel.self) {
                     let subViewLabel = subView as! UILabel
                     subViewLabel.textColor = UIColor.white
                 }
             }
             
             for subView in (view1?.superview?.subviews)! {
-                if(subView.isKind(of: UILabel.self)) {
+                if subView.isKind(of: UILabel.self) {
                     let subViewLabel = subView as! UILabel
                     subViewLabel.textColor = IUIKColorPalette.primary1.color
                 }
@@ -469,27 +422,20 @@ class ClubPointSelectionViewController: UIViewController {
             endmonthsecondbtn.textColor = UIColor.white
             
             for subView in (view1?.superview?.subviews)! {
-                if(subView.isKind(of: UILabel.self)) {
+                if subView.isKind(of: UILabel.self) {
                     let subViewLabel = subView as! UILabel
                     subViewLabel.textColor = UIColor.white
                 }
             }
             
             for subView in (view2?.superview?.subviews)! {
-                if(subView.isKind(of: UILabel.self)) {
+                if subView.isKind(of: UILabel.self) {
                     let subViewLabel = subView as! UILabel
                     subViewLabel.textColor = IUIKColorPalette.primary1.color
                 }
             }
             secondView.backgroundColor = IUIKColorPalette.primary1.color
         }
-        /*sender.superview!.backgroundColor = IUIKColorPalette.primary1.color
-         for subView in (sender.superview!.subviews){
-         if(subView.isKind(of: UILabel.self)){
-         let subViewLabel = subView as! UILabel
-         subViewLabel.textColor = UIColor.white
-         }
-         }*/
         createClubsCollectionView()
     }
     
@@ -498,22 +444,20 @@ class ClubPointSelectionViewController: UIViewController {
         doneButton.isHidden = false
         let indexPath = IndexPath(item: sender.tag % 10, section: sender.tag / 10)
         Constant.MyClassConstants.checkBoxTag = sender.tag % 10
-        let collectionVwCell = clubIntervalValuesCollectionView.cellForItem(at: indexPath)
+        guard let collectionVwCell = clubIntervalValuesCollectionView.cellForItem(at: indexPath) else { return }
 
-        for collectionItem in (collectionVwCell?.contentView.subviews)! {
-            
-            if(collectionItem.isKind(of: UILabel.self))
-            {
+        for collectionItem in collectionVwCell.contentView.subviews {
+            if collectionItem.isKind(of: UILabel.self) {
                 let pointsLabel = collectionItem as? UILabel
                 if let points = pointsLabel?.text {
                     clubPointsValue = points
                 }
             } else if collectionItem.isKind(of: IUIKCheckbox.self) {
                 let checkBox = collectionItem as! IUIKCheckbox
-                if(checkBox.checked) {
+                if checkBox.checked {
                     checkBox.checked = false
                     doneButton.isHidden = true
-                    if(buttonSelectedString == "First") {
+                    if buttonSelectedString == "First" {
                         firstCheckedCheckBoxTag = 0
                     } else {
                         secondCheckedCheckBoxTag = 0
@@ -521,7 +465,7 @@ class ClubPointSelectionViewController: UIViewController {
                 } else {
                     checkBox.checked = true
                     doneButton.isHidden = false
-                    if(buttonSelectedString == "First") {
+                    if buttonSelectedString == "First" {
                         firstCheckedCheckBoxTag = sender.tag
                     } else {
                         secondCheckedCheckBoxTag = sender.tag
@@ -536,7 +480,7 @@ class ClubPointSelectionViewController: UIViewController {
     // Set checkbox according to segment control
     func setDictionaryForCheckBox() {
         let value = dictionaryForSegmentCheckBox[segmentSelectedString] == nil
-        if (value) {
+        if value {
             firstCheckedCheckBoxTag = 0
             secondCheckedCheckBoxTag = 0
         }
@@ -545,7 +489,7 @@ class ClubPointSelectionViewController: UIViewController {
         let dictionaryForCheckBox = NSMutableDictionary()
         dictionaryForCheckBox.setValue( tempTagCheckBoxFirst, forKey: Constant.MyClassConstants.segmentFirstString)
         dictionaryForCheckBox.setValue( tempTagCheckBoxSecond, forKey: Constant.MyClassConstants.segmentSecondString)
-        if(segmentSelectedString == Constant.MyClassConstants.segmentFirstString) {
+        if segmentSelectedString == Constant.MyClassConstants.segmentFirstString {
             
         }
         dictionaryForSegmentCheckBox.setValue(dictionaryForCheckBox, forKey: segmentSelectedString)
@@ -555,9 +499,9 @@ class ClubPointSelectionViewController: UIViewController {
     //Function called when segment control value change
     
     @IBAction func segmentControlValueChanged(_ sender: UISegmentedControl) {
-        if(sender.selectedSegmentIndex == 0) {
+        if sender.selectedSegmentIndex == 0 {
             segmentSelectedString = Constant.MyClassConstants.first
-        } else if(sender.selectedSegmentIndex == 1) {
+        } else if sender.selectedSegmentIndex == 1 {
             segmentSelectedString = Constant.MyClassConstants.segmentSecondString
         } else {
             segmentSelectedString = Constant.MyClassConstants.segmentThirdString
@@ -566,92 +510,6 @@ class ClubPointSelectionViewController: UIViewController {
         Constant.MyClassConstants.pointMatrixDictionary.addEntries(from: Constant.MyClassConstants.matrixDataArray[sender.selectedSegmentIndex] as! [AnyHashable: Any])
         self.mapClubIntervalPoints(index: 0)
         createClubsCollectionView()
-    }
-    
-    // MARK: Text Attributes with font size
-    /**
-     Create  a TextAttributes to change the font size of Segment controll text.
-     - parameter fontsize: used to change font size
-     - returns : TextAttributes.
-     */
-    fileprivate func getTextAttributes(_ fontsize: CGFloat) -> [String: NSObject] {
-        let segmentFontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyle.caption1)
-        let font = UIFont(descriptor: segmentFontDescriptor, size: fontsize)
-        
-        let normalTextAttributes = [
-            NSForegroundColorAttributeName: UIColor.red,
-            NSFontAttributeName: font
-        ]
-        return normalTextAttributes
-    }
-    // MARK: Instantiate clubpointselectionPageviewController
-    /**
-     Create instance of pageViewController when horizontal scrolling is performed
-     - parameter No parameter :
-     - returns : No value is return
-     */
-    fileprivate func createClubpointselectionPageviewController() {
-        let pageViewController = self.storyboard!.instantiateViewController(withIdentifier: Constant.storyboardControllerID.clubPointsSelectionViewController) as? UIPageViewController
-        pageViewController?.dataSource = self
-        
-        if testArr.count > 0 {
-            let firstController = getItemController(0)!
-            let startingViewControllers: NSArray = [firstController]
-            pageViewController!.setViewControllers(startingViewControllers as? [UIViewController], direction: UIPageViewControllerNavigationDirection.forward, animated: false, completion: nil)
-            
-        }
-        
-        clubpointselectionPageViewController = pageViewController
-        addChildViewController(clubpointselectionPageViewController!)
-        self.view.addSubview(clubpointselectionPageViewController!.view)
-        clubpointselectionPageViewController!.didMove(toParentViewController: self)
-    }
-    // MARK: set page controll
-    /**
-     Set Pagecontroll properties on PageViewController
-     - parameter No Parameter :
-     - returns : No return value
-     */
-    fileprivate func setupPageControl() {
-        let appearance = UIPageControl.appearance()
-        appearance.pageIndicatorTintColor = UIColor.gray
-        
-        appearance.currentPageIndicatorTintColor = UIColor.green
-        appearance.backgroundColor = UIColor.clear
-    }
-    
-    // MARK: Auto Layout for child view controller(page view controller)
-    /**
-     Add PageViewController as ChildViewController with AutoLayout Constraints
-     - parameter No Parameter :
-     - returns : No return value
-     */
-    fileprivate func addPageViewControllerWithAutoLayoutConstraint() {
-        var leadeingconstraint: NSLayoutConstraint?
-        var trailingconstraint: NSLayoutConstraint?
-        var topconstraint: NSLayoutConstraint?
-        var bottomconstraint: NSLayoutConstraint?
-        
-        leadeingconstraint = NSLayoutConstraint(item: clubpointselectionPageViewController!.view, attribute: .leadingMargin, relatedBy: .equal, toItem: self.view, attribute: .leading, multiplier: 1.0, constant: 0)
-        trailingconstraint = NSLayoutConstraint(item: clubpointselectionPageViewController!.view, attribute: .trailingMargin, relatedBy: .equal, toItem: self.view, attribute: .trailingMargin, multiplier: 1.0, constant: 20)
-        topconstraint = NSLayoutConstraint(item: clubpointselectionPageViewController!.view, attribute: .top, relatedBy: .equal, toItem: travelingDetailView, attribute: .bottom, multiplier: 1.0, constant: 8)
-        bottomconstraint = NSLayoutConstraint(item: clubpointselectionPageViewController!.view, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .bottom, multiplier: 1.0, constant: -50)
-        clubpointselectionPageViewController!.view.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([leadeingconstraint!, trailingconstraint!, topconstraint!, bottomconstraint!])
-        self.view.addConstraints([leadeingconstraint!, trailingconstraint!, topconstraint!, bottomconstraint!])
-    }
-    // MARK: initialise clubpoint page item view controller
-    /**
-     Initialise View*/
-    fileprivate func getItemController(_ itemIndex: Int) -> ClubPointPageItemViewController? {
-        
-        if itemIndex < testArr.count {
-            let pageItemController = self.storyboard!.instantiateViewController(withIdentifier: Constant.storyboardControllerID.clubPointViewController) as! ClubPointPageItemViewController
-            pageItemController.pageItemIndex = itemIndex
-            return pageItemController
-        }
-        
-        return nil
     }
     
     override func didReceiveMemoryWarning() {
@@ -670,47 +528,12 @@ class ClubPointSelectionViewController: UIViewController {
      */
     
 }
-extension ClubPointSelectionViewController: UIPageViewControllerDataSource {
-    // MARK: - UIPageViewControllerDataSource
-    
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        let itemController = viewController as! ClubPointPageItemViewController
-        
-        if itemController.pageItemIndex > 0 {
-            return getItemController(itemController.pageItemIndex - 1)
-        }
-        
-        return nil
-    }
-    
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        
-        let itemController = viewController as! ClubPointPageItemViewController
-        
-        if itemController.pageItemIndex + 1 < testArr.count {
-            return getItemController(itemController.pageItemIndex + 1)
-        }
-        
-        return nil
-    }
-    // MARK: - Page Indicator
-    
-    func presentationCount(for pageViewController: UIPageViewController) -> Int {
-        return testArr.count
-    }
-    
-    func presentationIndex(for pageViewController: UIPageViewController) -> Int {
-        
-        return 0
-        
-    }
-}
 
 extension ClubPointSelectionViewController: UICollectionViewDataSource {
-    // MARK - UICollectionViewDataSource
+    // MARK: - UICollectionViewDataSource
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        if(collectionView.tag == 70) {
+        if collectionView.tag == 70 {
             return 1
         } else {
             return Constant.MyClassConstants.clubPointMatrixHeaderArray.count + 1
@@ -723,15 +546,15 @@ extension ClubPointSelectionViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        if (collectionView.tag == 70) {
+        if collectionView.tag == 70 {
             if indexPath.row == 0 {
-                let dateCell: TdiCollectionViewCell = collectionView .dequeueReusableCell(withReuseIdentifier: Constant.cellIdentifiers.headerCell, for: indexPath) as! TdiCollectionViewCell
+                guard let dateCell = collectionView .dequeueReusableCell(withReuseIdentifier: "HeaderCell", for: indexPath) as? TdiCollectionViewCell else { return UICollectionViewCell() }
                 dateCell.backgroundColor = IUIKColorPalette.titleBackdrop.color
                 dateCell.contentLabel.textColor = UIColor.black
                 
                 dateCell.contentLabel.text = Constant.MyClassConstants.tdi
                 dateCell.contentLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
-                if(Constant.MyClassConstants.matrixDescription == Constant.MyClassConstants.matrixTypeColor) {
+                if Constant.MyClassConstants.matrixDescription == Constant.MyClassConstants.matrixTypeColor {
                     dateCell.contentLabel.text = Constant.MyClassConstants.season.capitalized
                 }
                 dateCell.addSubview(infoImageView)
@@ -739,7 +562,7 @@ extension ClubPointSelectionViewController: UICollectionViewDataSource {
                 
                 return dateCell
             } else {
-                let contentCell: TdiCollectionViewCell = collectionView .dequeueReusableCell(withReuseIdentifier: Constant.loginScreenReusableIdentifiers.cell, for: indexPath) as! TdiCollectionViewCell
+                guard let contentCell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as? TdiCollectionViewCell else { return UICollectionViewCell() }
                 contentCell.contentLabel.textColor = UIColor.black
                 contentCell.contentLabel.text = String(describing: Constant.MyClassConstants.labelarray[indexPath.row - 1])
                 if indexPath.row % 2 != 0 {
@@ -752,12 +575,12 @@ extension ClubPointSelectionViewController: UICollectionViewDataSource {
             }
         } else {
             if indexPath.row == 0 {
-                let dateCell: TdiCollectionViewCell = collectionView .dequeueReusableCell(withReuseIdentifier: Constant.loginScreenReusableIdentifiers.cell, for: indexPath) as! TdiCollectionViewCell
+                guard let dateCell = collectionView .dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as? TdiCollectionViewCell else { return UICollectionViewCell() }
                 dateCell.contentLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
                 dateCell.horizontalLineImage.isHidden = true
                 dateCell.contentLabel.textColor = UIColor.black
                 dateCell.lineImage.isHidden = false
-                if(indexPath.section == Constant.MyClassConstants.clubPointMatrixHeaderArray.count) {
+                if indexPath.section == Constant.MyClassConstants.clubPointMatrixHeaderArray.count {
                     dateCell.contentLabel.text = ""
                 } else {
                     dateCell.contentLabel.text = String(describing: Constant.MyClassConstants.clubPointMatrixHeaderArray[indexPath.section])
@@ -766,13 +589,13 @@ extension ClubPointSelectionViewController: UICollectionViewDataSource {
                 return dateCell
             } else {
                 
-                let contentCell: TdiCollectionViewCell = collectionView .dequeueReusableCell(withReuseIdentifier: Constant.cellIdentifiers.checkCell, for: indexPath) as! TdiCollectionViewCell
+                guard let contentCell = collectionView .dequeueReusableCell(withReuseIdentifier: "CheckCell", for: indexPath) as? TdiCollectionViewCell else { return UICollectionViewCell() }
                 contentCell.contentLabel.textColor = UIColor.black
                 contentCell.lineImage.isHidden = true
-                let labelUnitArray: NSMutableArray = Constant.MyClassConstants.clubIntervalDictionary.value(forKey: Constant.MyClassConstants.labelarray[indexPath.row - 1] as! String)! as! NSMutableArray
+                let labelUnitArray = Constant.MyClassConstants.clubIntervalDictionary.value(forKey: Constant.MyClassConstants.labelarray[indexPath.row - 1] as! String)! as! NSMutableArray
 
                 intervalPrint(labelUnitArray)
-                if(indexPath.section == Constant.MyClassConstants.clubPointMatrixHeaderArray.count) {
+                if indexPath.section == Constant.MyClassConstants.clubPointMatrixHeaderArray.count {
                     contentCell.checkBoxView.isHidden = true
                     contentCell.checkButton.isHidden = true
                     contentCell.contentLabel.text = ""
@@ -786,19 +609,20 @@ extension ClubPointSelectionViewController: UICollectionViewDataSource {
                     let formatter = numberFormatter
                     formatter.numberStyle = .decimal
                     formatter.maximumFractionDigits = 0
-                   contentCell.contentLabel.text = formatter.string(from: labelUnitArray[indexPath.section] as! NSNumber)
+                    let labelUnitNumber = labelUnitArray[indexPath.section] as? NSNumber ?? 0
+                   contentCell.contentLabel.text = formatter.string(from: labelUnitNumber)
                     
                 }
                 contentCell.checkButton.tag = Int("\(indexPath.section )\(indexPath.row)")!
                 contentCell.checkButton.addTarget(self, action: #selector(ClubPointSelectionViewController.checkBoxClicked(_:)), for: .touchUpInside)
                 contentCell.checkBoxView.backgroundColor = UIColor.brown
-                if(dictionaryForSegmentCheckBox.count > 0) {
+                if dictionaryForSegmentCheckBox.count > 0 {
                     let checkBoxDictionary: NSDictionary = dictionaryForSegmentCheckBox.value(forKey: segmentSelectedString) as! NSDictionary
                     
                     intervalPrint(checkBoxDictionary)
-                    if(contentCell.checkButton.tag == checkBoxDictionary.value(forKey: "First") as! Int && buttonSelectedString == "First") {
+                    if contentCell.checkButton.tag == checkBoxDictionary.value(forKey: "First") as! Int && buttonSelectedString == "First" {
                         contentCell.checkBoxView.checked = true
-                    } else if(contentCell.checkButton.tag == checkBoxDictionary.value(forKey: "Second") as! Int && buttonSelectedString == "Second") {
+                    } else if contentCell.checkButton.tag == checkBoxDictionary.value(forKey: "Second") as! Int && buttonSelectedString == "Second" {
                         contentCell.checkBoxView.checked = true
                     } else {
                         contentCell.checkBoxView.checked = false
@@ -833,15 +657,15 @@ extension ClubPointSelectionViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if(collectionView.tag == 70) {
-            if(indexPath.row == 0) {
+        if collectionView.tag == 70 {
+            if indexPath.row == 0 {
                 return CGSize(width: collectionView.frame.size.width, height: 50.0)
             } else {
                 return CGSize(width: collectionView.frame.size.width, height: 70.0)
             }
         } else {
-            if(indexPath.row == 0) {
-                if(Constant.RunningDevice.deviceIdiom == .phone) {
+            if indexPath.row == 0 {
+                if Constant.RunningDevice.deviceIdiom == .phone {
                     return CGSize(width: (collectionView.frame.size.width) / 2, height: 50.0)
                 } else {
                     
@@ -853,8 +677,8 @@ extension ClubPointSelectionViewController: UICollectionViewDelegateFlowLayout {
                     
                 }
             } else {
-                if(Constant.RunningDevice.deviceIdiom == .phone) {
-                    if(indexPath.row == 0) {
+                if Constant.RunningDevice.deviceIdiom == .phone {
+                    if indexPath.row == 0 {
                         return CGSize(width: (collectionView.frame.size.width) / 2, height: 50.0)
                     } else {
                         return CGSize(width: (collectionView.frame.size.width) / 2, height: 70.0)
