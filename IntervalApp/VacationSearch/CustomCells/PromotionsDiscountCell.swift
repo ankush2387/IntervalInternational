@@ -26,4 +26,11 @@ class PromotionsDiscountCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    func setPromotionPrice(with currencyDisplayes: String, and chargeAmount: Float) {
+        
+        if let attributedAmount = chargeAmount.currencyFormatter(for:currencyDisplayes) {
+            amountLabel.attributedText = attributedAmount
+        }
+    }
+    
 }

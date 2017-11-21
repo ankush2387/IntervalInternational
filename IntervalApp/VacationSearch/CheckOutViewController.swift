@@ -1227,8 +1227,9 @@ extension CheckOutViewController: UITableViewDataSource {
                 
                 return cell
             } else if(indexPath.section == 5) {
-                
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.exchangeOrProtectionCell, for: indexPath) as! ExchangeOrProtectionCell
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.exchangeOrProtectionCell, for: indexPath) as? ExchangeOrProtectionCell else {
+                    return UITableViewCell()
+                }
                 
                 if(!isHeightZero) {
                     for subviews in cell.subviews {
@@ -1365,8 +1366,9 @@ extension CheckOutViewController: UITableViewDataSource {
                 
             } else if(indexPath.section == 6) {
                 
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.exchangeOrProtectionCell, for: indexPath) as! ExchangeOrProtectionCell
-                
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.exchangeOrProtectionCell, for: indexPath) as? ExchangeOrProtectionCell else {
+                    return UITableViewCell()
+                }
                 if(!isHeightZero) {
                     for subviews in cell.subviews {
                         
@@ -1418,8 +1420,11 @@ extension CheckOutViewController: UITableViewDataSource {
                 
             } else if(indexPath.section == 7) {
                 
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.promotionsDiscountCell, for: indexPath) as! PromotionsDiscountCell
-                
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.promotionsDiscountCell, for: indexPath) as? PromotionsDiscountCell else {
+                    
+                    return UITableViewCell()
+                }
+
                 if(!isHeightZero) {
                     for subviews in cell.subviews {
                         
@@ -1428,14 +1433,7 @@ extension CheckOutViewController: UITableViewDataSource {
                     cell.discountLabel.text = recapSelectedPromotion
                     for promotion in Constant.MyClassConstants.recapPromotionsArray {
                         if promotion.offerName == recapSelectedPromotion {
-                            let priceStr = "\(promotion.amount)"
-                            let priceArray = priceStr.components(separatedBy: ".")
-                            cell.amountLabel.text = "\(Int(promotion.amount))"
-                            if((priceArray.last?.characters.count)! > 1) {
-                                cell.centsLabel.text = "\(priceArray.last!)"
-                            } else {
-                                cell.centsLabel.text = "\(priceArray.last!)0"
-                            }
+                            cell.setPromotionPrice(with: currencyCode, and: promotion.amount)
                         }
                     }
                 } else {
@@ -1449,7 +1447,10 @@ extension CheckOutViewController: UITableViewDataSource {
                 
             } else if(indexPath.section == 8) {
                 
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.totalCostCell, for: indexPath) as! TotalCostCell
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.totalCostCell, for: indexPath) as? TotalCostCell else {
+                    
+                    return UITableViewCell()
+                }
                 cell.selectionStyle = .none
                 if Constant.MyClassConstants.isFromExchange {
                     cell.setTotalPrice(with: currencyCode, and: (Constant.MyClassConstants.exchangeFees[0].total))
@@ -1462,7 +1463,10 @@ extension CheckOutViewController: UITableViewDataSource {
                 return cell
                 
             } else {
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.totalCostCell, for: indexPath) as! TotalCostCell
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.totalCostCell, for: indexPath) as? TotalCostCell else {
+                    
+                    return UITableViewCell()
+                }
                 if Constant.MyClassConstants.isFromExchange {
                      cell.setTotalPrice(with: currencyCode, and: (Constant.MyClassConstants.exchangeFees[0].total))
                 } else {
