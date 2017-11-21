@@ -1634,7 +1634,6 @@ public class Helper {
     
 
     static func currencyCodeToSymbol(code: String) -> String {
-        
         let currencyCode: String? = code
         let curr = Locale.availableIdentifiers.map { Locale(identifier: $0) }.filter { return currencyCode == $0.currencyCode }.map { ($0.identifier, $0.currencySymbol) }.flatMap { $0 }.first
         return (curr?.1?.description)!

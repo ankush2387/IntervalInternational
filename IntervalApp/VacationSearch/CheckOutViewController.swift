@@ -1451,69 +1451,27 @@ extension CheckOutViewController: UITableViewDataSource {
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.totalCostCell, for: indexPath) as! TotalCostCell
                 cell.selectionStyle = .none
-                if(Constant.MyClassConstants.isFromExchange) {
-                    cell.priceLabel.text = String(Int(Float(Constant.MyClassConstants.exchangeFees[0].total)))
+                if Constant.MyClassConstants.isFromExchange {
+                    cell.setTotalPrice(with: currencyCode, and: (Constant.MyClassConstants.exchangeFees[0].total))
                 } else {
                     cell.setTotalPrice(with: currencyCode, and: (Constant.MyClassConstants.rentalFees[0].total))
-               
-//                    cell.priceLabel.text = String(Int(Float(Constant.MyClassConstants.rentalFees[0].total)))
-                     var priceString = "\(Constant.MyClassConstants.rentalFees[0].total)"
-
-
-                      var targetString = String(Int(Float(Constant.MyClassConstants.rentalFees[0].total)))
                     if let total = recapFeesTotal {
-                        cell.priceLabel.text = String(Int(Float(total)))
-                        priceString = "\(total)"
-                        targetString = String(Int(Float(total)))
                         cell.setTotalPrice(with: currencyCode, and: total)
                     }
-//
-//                    var targetString = formattedprice!
-//
-//                    if let total = recapFeesTotal {
-//                        cell.priceLabel.text = String(Int(Float(total)))
-//                        priceString = "\(total)"
-//                        targetString = String(Int(Float(total)))
-//                    }
-//
-//                    let priceArray = priceString.components(separatedBy: ".")
-//
-//                    if((priceArray.last?.characters.count)! > 1) {
-//
-//                        cell.fractionalPriceLabel.text = "\(priceArray.last!)"
-//                    } else {
-//
-//                        cell.fractionalPriceLabel.text = "\(priceArray.last!)0"
-//                    }
-//
-//                    let font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 25.0)
-//
-//                    let width = widthForView(cell.priceLabel.text!, font: font!, height: cell.priceLabel.frame.size.height)
-//                    cell.priceLabel.frame.size.width = width + 5
-//
-//                    let range = NSMakeRange(0, targetString.characters.count)
-//
-//                    cell.priceLabel.attributedText = Helper.attributedString(from: targetString, nonBoldRange: range, font: font!)
-//
-//                    cell.periodLabel.frame.origin.x = cell.priceLabel.frame.origin.x + width
-//                    cell.fractionalPriceLabel.frame.origin.x = cell.periodLabel.frame.origin.x + cell.periodLabel.frame.size.width + 5
                 }
-                
                 return cell
                 
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.totalCostCell, for: indexPath) as! TotalCostCell
-                if(Constant.MyClassConstants.isFromExchange) {
-                    cell.priceLabel.text = String(Int(Float(Constant.MyClassConstants.exchangeFees[0].total)))
+                if Constant.MyClassConstants.isFromExchange {
+                     cell.setTotalPrice(with: currencyCode, and: (Constant.MyClassConstants.exchangeFees[0].total))
                 } else {
-                    cell.priceLabel.text = String(Int(Float(Constant.MyClassConstants.rentalFees[0].total)))
+                    cell.setTotalPrice(with: currencyCode, and: (Constant.MyClassConstants.rentalFees[0].total))
                 }
-                
                 if let total = recapFeesTotal {
-                    cell.priceLabel.text = String(Int(Float(total)))
+                    cell.setTotalPrice(with: currencyCode, and: total)
                     
                 }
-                
                 return cell
             }
         }
