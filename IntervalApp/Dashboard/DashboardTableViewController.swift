@@ -480,7 +480,7 @@ class DashboardTableViewController: UITableViewController {
             }
             else {
                 let alertController = UIAlertController(title: title, message: Constant.AlertErrorMessages.getawayAlertMessage, preferredStyle: .alert)
-                let startSearch = UIAlertAction(title: Constant.AlertPromtMessages.newSearch, style: .default) { (action:UIAlertAction!) in
+                let startSearch = UIAlertAction(title: Constant.AlertPromtMessages.newSearch, style: .default) { (_:UIAlertAction) in
                     
                     let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
                     let storyboardName = isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
@@ -489,7 +489,7 @@ class DashboardTableViewController: UITableViewController {
                     }
                 }
                 
-                let close = UIAlertAction(title: Constant.AlertPromtMessages.close, style: .default) { (action:UIAlertAction!) in
+                let close = UIAlertAction(title: Constant.AlertPromtMessages.close, style: .default) { (_:UIAlertAction) in
                     
                 }
                 

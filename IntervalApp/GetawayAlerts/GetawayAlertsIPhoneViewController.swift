@@ -20,16 +20,19 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     private var alertsResortCodeDictionary:NSMutableDictionary = [:]
     var alertStatusId = 0
     var alertFilterOptionsArray = [Constant.AlertResortDestination]()
-    var individualActivityIndicatorNeedToShow = true
+    var individualActivityIndicatorNeedToShow = false
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = false
+        
+        if Constant.needToReloadAlert {
+           Constant.needToReloadAlert = false
+           needToReloadAlerts()
+        }
+        
         //***** Adding notification to reload table when all alerts have been fetched *****//
         NotificationCenter.default.addObserver(self, selector: #selector(reloadAlertsTableView), name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
         //TODO-JHON: Forcing alertBadge to disappear, review after pushnotifications are working.
-        Constant.MyClassConstants.activeAlertsArray.removeAllObjects()
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
-        alertDisplayTableView.reloadData()
         
         if let alertID = Constant.MyClassConstants.redirect.alertID, let getAwayAlert = Constant.MyClassConstants.redirect.rentalAlert {
             
@@ -49,7 +52,6 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     }
     
     //***** Function for notification for all alerts *****//
-    
     func reloadAlertsTableView() {
         self.individualActivityIndicatorNeedToShow = false
         alertDisplayTableView.reloadData()
@@ -78,15 +80,13 @@ class GetawayAlertsIPhoneViewController: UIViewController {
             //***** This line allows the user to swipe left-to-right to reveal the menu. We might want to comment this out if it becomes confusing. *****//
             self.view.addGestureRecognizer( rvc.panGestureRecognizer() )
         }
+        alertDisplayTableView.reloadData()
     }
     
     override func viewWillDisappear(_ animated :Bool) {
         navigationController?.navigationBar.isHidden = true
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
     }
-    
-    
-    //**** Function for vacation search for an alert ****//
     
     //**** Function for more button action ****//
     func moreNavButtonPressed(sender :UIBarButtonItem) {
@@ -101,18 +101,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
         //***** Create and add the View my recent search *****//
         let searchAllMyAlertsNow: UIAlertAction = UIAlertAction(title:Constant.buttonTitles.searchAllMyAlertsNow, style: .default) { action -> Void in
             //Just dismiss the action sheet
-            self.individualActivityIndicatorNeedToShow = true
-            //Get all alerts
-            Helper.getAllAlerts { error in
-                if case .some = error {
-                    DispatchQueue.main.async {[weak self] in
-                        guard let strongSelf = self else {return}
-                        strongSelf.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
-                    }
-                    
-                }
-            }
-            self.alertDisplayTableView.reloadData()
+           self.needToReloadAlerts()
         }
         actionSheetController.addAction(searchAllMyAlertsNow)
         //***** Create and add the Reset my search *****//
@@ -140,7 +129,19 @@ class GetawayAlertsIPhoneViewController: UIViewController {
         self.present(actionSheetController, animated: true, completion: nil)
         
     }
-    
+    func needToReloadAlerts() {
+        individualActivityIndicatorNeedToShow = true
+        self.alertDisplayTableView.reloadData()
+        Helper.getAllAlerts { error in
+            if case .some = error {
+                DispatchQueue.main.async {[weak self] in
+                guard let strongSelf = self else { return }
+                    strongSelf.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
+                }
+            }
+        }
+       
+    }
     //***** Create a new alert button action. *****//
     @IBAction func createNewAlertButtonPressed(_ sender: AnyObject) {
         self.alertDisplayTableView.setEditing(false, animated: true)
@@ -170,7 +171,6 @@ class GetawayAlertsIPhoneViewController: UIViewController {
         let close = UIAlertAction(title: Constant.AlertPromtMessages.close, style: .default) { (_:UIAlertAction) in
             
         }
-        
         //Add Custom Actions to Alert viewController
         alertController.addAction(startSearch)
         alertController.addAction(close)
@@ -178,7 +178,6 @@ class GetawayAlertsIPhoneViewController: UIViewController {
         self.present(alertController, animated: true, completion:nil)
     }
 
-    
     //***** Function called when view results for an active alerts is clicked ****//
     func viewResultsClicked(_ sender:UIButton) {
         
@@ -213,19 +212,16 @@ class GetawayAlertsIPhoneViewController: UIViewController {
         if Constant.MyClassConstants.isRunningOnIphone {
             
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-            
-            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
-            viewController.alertFilterOptionsArray = alertFilterOptionsArray
-            self.navigationController?.pushViewController(viewController, animated: true)
-            
+            if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as? SearchResultViewController {
+                viewController.alertFilterOptionsArray = alertFilterOptionsArray
+                self.navigationController?.pushViewController(viewController, animated: true)
+            }
         } else {
-            
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-            
-            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! VacationSearchResultIPadController
-            viewController.alertFilterOptionsArray = alertFilterOptionsArray
-            self.navigationController?.pushViewController(viewController, animated: true)
-            
+            if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as? VacationSearchResultIPadController {
+                viewController.alertFilterOptionsArray = alertFilterOptionsArray
+                self.navigationController?.pushViewController(viewController, animated: true)
+            }
         }
     }
     
@@ -347,10 +343,11 @@ extension GetawayAlertsIPhoneViewController:UITableViewDelegate {
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
         let delete = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: Constant.buttonTitles.remove) { (action,index) -> Void in
-            
+            if let alertID = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId {
+            self.showHudAsync()
             //Remove Alert API call
-            RentalClient.removeAlert(Session.sharedSession.userAccessToken, alertId: Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId!, onSuccess: { () in
-                
+            RentalClient.removeAlert(Session.sharedSession.userAccessToken, alertId: alertID, onSuccess: { () in
+                self.hideHudAsync()
                 Constant.MyClassConstants.getawayAlertsArray.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
                 
@@ -358,10 +355,13 @@ extension GetawayAlertsIPhoneViewController:UITableViewDelegate {
                 DispatchQueue.main.asyncAfter(deadline: delayTime, execute: {
                     tableView.reloadSections(NSIndexSet(index:indexPath.section) as IndexSet, with: .automatic)
                 })
-            }) { error in
+            }) {[unowned self] error in
+                self.hideHudAsync()
                 self.presentErrorAlert(UserFacingCommonError.generic)
             }
-            
+            } else {
+                self.presentErrorAlert(UserFacingCommonError.generic)
+            }
         }
         delete.backgroundColor = UIColor(red: 224/255.0, green: 96.0/255.0, blue: 84.0/255.0, alpha: 1.0)
         
@@ -376,7 +376,7 @@ extension GetawayAlertsIPhoneViewController:UITableViewDelegate {
             
             let edit = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.edit) { (action,index) -> Void in
                 Constant.MyClassConstants.selectedBedRoomSize = "All Bedroom Sizes"
-                Constant.MyClassConstants.selectedGetawayAlertDestinationArray.removeAllObjects()
+                Constant.MyClassConstants.selectedGetawayAlertDestinationArray.removeAll()
                 
                 Constant.selectedAletToEdit = Constant.MyClassConstants.getawayAlertsArray[indexPath.row]
                 Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.removeAllObjects()
@@ -402,7 +402,7 @@ extension GetawayAlertsIPhoneViewController:UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constant.getawayScreenReusableIdentifiers.getawayAlertCell, for: indexPath as IndexPath) as! AlertTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.getawayScreenReusableIdentifiers.getawayAlertCell, for: indexPath as IndexPath) as? AlertTableViewCell else { return UITableViewCell() }
         cell.selectionStyle = UITableViewCellSelectionStyle.none
         cell.alertNameLabel.text = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].name
         

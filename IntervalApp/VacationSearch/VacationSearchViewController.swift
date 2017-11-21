@@ -548,8 +548,8 @@ extension VacationSearchViewController: UITableViewDelegate {
             
             let details = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.details) { (_, index) -> Void in
                 
-                let resortsArray: NSMutableArray = []
-                Constant.MyClassConstants.selectedGetawayAlertDestinationArray.removeAllObjects()
+                var resortsArray = [Resort]()
+                Constant.MyClassConstants.selectedGetawayAlertDestinationArray.removeAll()
                 
                 for resortsToShow in Constant.MyClassConstants.whereTogoContentArray[index.row] as! List<ResortByMap> {
                     
@@ -559,11 +559,10 @@ extension VacationSearchViewController: UITableViewDelegate {
                     resort.address?.cityName = resortsToShow.resortCityName
                     resort.address?.territoryCode = resortsToShow.territorrycode
                     
-                    resortsArray.add(resort)
+                    resortsArray.append(resort)
                     
                 }
-                
-                Constant.MyClassConstants.selectedGetawayAlertDestinationArray.add(resortsArray)
+                Constant.MyClassConstants.selectedGetawayAlertDestinationArray.append(Constant.selectedDestType.resorts(resortsArray))
                 
                 if Constant.RunningDevice.deviceIdiom == .pad {
                     

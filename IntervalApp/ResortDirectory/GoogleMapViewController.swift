@@ -313,10 +313,10 @@ class GoogleMapViewController: UIViewController {
                 Constant.MyClassConstants.resortsArray.removeAll()
                 Constant.MyClassConstants.resortsArray = response
                 Constant.MyClassConstants.googleMarkerArray.removeAll()
-                Constant.MyClassConstants.addResortSelectedIndex.removeAllObjects()
+                Constant.MyClassConstants.addResortSelectedIndex.removeAll()
                 var i = 0
                 for _ in response {
-                    Constant.MyClassConstants.addResortSelectedIndex.add(i)
+                    Constant.MyClassConstants.addResortSelectedIndex.append(i)
                     i = i + 1
                 }
                 self.navigationItem.rightBarButtonItem!.isEnabled = true
@@ -346,14 +346,13 @@ class GoogleMapViewController: UIViewController {
             if (senderButton.superview!.superview!.tag == 0) {
                 
                 let dict = Constant.MyClassConstants.destinations![sender.tag]
-                Constant.MyClassConstants.selectedGetawayAlertDestinationArray.add(dict)
+                Constant.MyClassConstants.selectedGetawayAlertDestinationArray.append(Constant.selectedDestType.destination(dict))
                 Constant.MyClassConstants.alertSelectedDestination.append(dict)
-                
                 Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(dict.destinationId!)
             } else {
                 
                 let dict = Constant.MyClassConstants.resorts![sender.tag]
-                Constant.MyClassConstants.selectedGetawayAlertDestinationArray.add(dict)
+                Constant.MyClassConstants.selectedGetawayAlertDestinationArray.append(Constant.selectedDestType.resort(dict))
                 Constant.MyClassConstants.alertSelectedResorts.append(dict)
                 Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(dict.resortCode!)
             }
@@ -460,7 +459,7 @@ class GoogleMapViewController: UIViewController {
                 
             }
             if(Constant.RunningDevice.deviceIdiom == .pad && !self.hideSideView && self.containerView != nil && self.containerView.isHidden == true) {
-                Constant.MyClassConstants.addResortSelectedIndex.removeAllObjects()
+                Constant.MyClassConstants.addResortSelectedIndex.removeAll()
                 self.alertView.isHidden = true
                 self.mapTableView.isHidden = false
                 self.mapTableView.reloadData()
@@ -537,11 +536,13 @@ class GoogleMapViewController: UIViewController {
     func addResortPressedAtIndex(sender: UIButton) {
         if(sender.isSelected == true) {
             sender.isSelected = false
-            let objectAt = Constant.MyClassConstants.addResortSelectedIndex.index(of: sender.tag)
-            Constant.MyClassConstants.addResortSelectedIndex.removeObject(at: objectAt)
+            if let index = Constant.MyClassConstants.addResortSelectedIndex.index(of: sender.tag) {
+               Constant.MyClassConstants.addResortSelectedIndex.remove(at: index)
+            }
+            
         } else {
             sender.isSelected = true
-            Constant.MyClassConstants.addResortSelectedIndex.add(sender.tag)
+            Constant.MyClassConstants.addResortSelectedIndex.append(sender.tag)
         }
         
         for selectedMarker in Constant.MyClassConstants.googleMarkerArray {
@@ -635,7 +636,7 @@ class GoogleMapViewController: UIViewController {
                 realm.add(storedata)
             }
             
-            if(Constant.RunningDevice.deviceIdiom == .phone) {
+            if Constant.RunningDevice.deviceIdiom == .phone {
                 _ = self.navigationController?.popViewController(animated: true)
             } else {
                 self.navigationController?.dismiss(animated: true, completion: nil)
@@ -643,12 +644,14 @@ class GoogleMapViewController: UIViewController {
             
         } else {
             
-            let selectedResortsArray: NSMutableArray = []
+            var selectedResortsArray = [Resort]()
             for index in  Constant.MyClassConstants.addResortSelectedIndex {
-                selectedResortsArray.add(Constant.MyClassConstants.resortsArray[index as! Int])
+                selectedResortsArray.append(Constant.MyClassConstants.resortsArray[index])
+                
             }
-            Constant.MyClassConstants.selectedGetawayAlertDestinationArray.add(selectedResortsArray)
-            if(Constant.RunningDevice.deviceIdiom == .phone) {
+        Constant.MyClassConstants.selectedGetawayAlertDestinationArray.append(Constant.selectedDestType.resorts(selectedResortsArray))
+            
+            if Constant.RunningDevice.deviceIdiom == .phone {
                 _ = self.navigationController?.popViewController(animated: true)
             } else {
                 self.navigationController?.popViewController(animated: true)
@@ -1135,11 +1138,11 @@ class GoogleMapViewController: UIViewController {
     //***** Method called when the added notification fired from other classes *****//
     func resortSelectedFromsearchResultWithlatlong() {
         
-        Constant.MyClassConstants.addResortSelectedIndex.removeAllObjects()
+        Constant.MyClassConstants.addResortSelectedIndex.removeAll()
         
         var i = 0
         for _ in Constant.MyClassConstants.resortsArray {
-            Constant.MyClassConstants.addResortSelectedIndex.add(i)
+            Constant.MyClassConstants.addResortSelectedIndex.append(i)
             i = i + 1
         }
         Constant.MyClassConstants.googleMarkerArray.removeAll()

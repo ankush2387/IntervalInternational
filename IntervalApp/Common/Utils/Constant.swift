@@ -10,12 +10,15 @@ import UIKit
 import DarwinSDK
 import GoogleMaps
 
+
+
 class Constant: NSObject {
     
     static var holdingTimer: Timer?
     static var holdingTime = 17
     static var decreaseValue = 1
     static var activeAlertCount = 0
+    static var needToReloadAlert = false
     static var selectedAletToEdit:RentalAlert?
     static var holdingResortForRemainingMinutes = "We are holding this unit for \(holdingTime) minutes".localized()
   
@@ -258,7 +261,7 @@ class Constant: NSObject {
         static var whatToTradeArray: NSMutableArray = []
         static var floatRemovedArray: NSMutableArray = []
         static var pointsArray: NSMutableArray = []
-        static var selectedGetawayAlertDestinationArray: NSMutableArray = []
+        static var selectedGetawayAlertDestinationArray = [selectedDestType]()
         static var alertSelectedResorts = [Resort]()
         static var alertSelectedDestination = [AreaOfInfluenceDestination]()
         static var fromdatearray: NSMutableArray = []
@@ -368,7 +371,7 @@ class Constant: NSObject {
         static var right = "Right"
         static var left = "Left"
         
-        static var addResortSelectedIndex: NSMutableArray = []
+        static var addResortSelectedIndex = [Int]()
         static var collectionVwCurrentIndex: Int = 0
         
         static var childCounterString = "childCounter".localized()
@@ -607,6 +610,11 @@ class Constant: NSObject {
         static var noFilterOptions = false
     }
     
+    enum selectedDestType {
+        case resort(Resort)
+        case destination(AreaOfInfluenceDestination)
+        case resorts([Resort])
+    }
     // Enum to store resorts and destinations
     enum ResortDestination {
         case Resort(ResortList)

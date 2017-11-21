@@ -12,7 +12,7 @@ import IntervalUIKit
 import FirebaseMessaging
 
 // Lint bug, not reading class weak definition
-// swiftlint:disable class_delegate_protocol
+
 protocol LoginCoordinatorDelegate: class {
     func didLogin()
     func didError(message: String)

@@ -65,7 +65,7 @@ class DashboardIPadTableViewController: UITableViewController {
             Helper.getFlexExchangeDeals(senderVC: self) { (success) in
                 if success {
                     DispatchQueue.main.async {[weak self] in
-                        guard let strongSelf = self else {return }
+                        guard let strongSelf = self else { return }
                         strongSelf.getNumberOfSections()
                     }
                     self.homeTableView.reloadData()
@@ -74,10 +74,6 @@ class DashboardIPadTableViewController: UITableViewController {
                     
                 }
             }
-            
-            //***** Set general Nav attributes *****//
-            
-            
             //***** Setup the hamburger menu.  This will reveal the side menu. *****//
             if let rvc = self.revealViewController() {
                 //set SWRevealViewController's Delegate
@@ -93,12 +89,9 @@ class DashboardIPadTableViewController: UITableViewController {
                 self.view.addGestureRecognizer( rvc.panGestureRecognizer() )
             }
         }
-        
-        
     }
-    
     //***** Function to calculate number of sections. *****//
-    func getNumberOfSections(){
+    func getNumberOfSections() {
         dashboardArray.removeAll()
         if !Constant.MyClassConstants.dashBoardAlertsArray.isEmpty {
             dashboardArray.append(Constant.dashboardTableScreenReusableIdentifiers.alert)
@@ -116,7 +109,7 @@ class DashboardIPadTableViewController: UITableViewController {
     }
     
     //***** Function called when notification for top 10 deals is fired. *****//
-    func reloadTopDestinations(){
+    func reloadTopDestinations() {
         hideHudAsync()
         showGetaways = true
         getNumberOfSections()
@@ -125,7 +118,7 @@ class DashboardIPadTableViewController: UITableViewController {
     
     //***** Function to show upcoming trip to user *****//
     
-    func reloadUpcomingTrip(){
+    func reloadUpcomingTrip() {
         hideHudAsync()
         let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.myUpcomingTripIpad, bundle: nil)
         if let resultController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.upcomingTripsViewController) as? UpComingTripDetailIPadViewController {
@@ -134,10 +127,8 @@ class DashboardIPadTableViewController: UITableViewController {
         }
         
     }
-    
-    
     //***** Function called when notification for getaway alerts is fired. *****//
-    func refreshAlert(){
+    func refreshAlert() {
         showAlertActivityIndicatorView = false
         getNumberOfSections()
         homeTableView.reloadData()
@@ -166,7 +157,6 @@ class DashboardIPadTableViewController: UITableViewController {
             }
         }
     }
-    
     //Mark:- Button Clicked
     func searchVacationButtonPressed(_ sender:IUIKButton) {
         
@@ -194,7 +184,7 @@ class DashboardIPadTableViewController: UITableViewController {
     
     func homeAlertSelected(indexPath:IndexPath) {
         
-        guard let alertID = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId else {return}
+        guard let alertID = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId else { return }
         if let value = Constant.MyClassConstants.alertsSearchDatesDictionary.value(forKey: String(describing: alertID)) as? NSArray {
             //unable to perform isEmpty with value
             if value.count > 0 {
@@ -238,7 +228,7 @@ class DashboardIPadTableViewController: UITableViewController {
                     }
                 }
                 
-                let close = UIAlertAction(title: Constant.AlertPromtMessages.close, style: .default) { (action:UIAlertAction!) in
+                let close = UIAlertAction(title: Constant.AlertPromtMessages.close, style: .default) { (_:UIAlertAction) in
                     
                 }
                 
@@ -269,7 +259,7 @@ class DashboardIPadTableViewController: UITableViewController {
             let dest = AreaOfInfluenceDestination()
             if let destinationName = destination.destinationName{
                 dest.destinationName = destinationName
-            }else{
+            } else {
                 dest.destinationName = "Cancun"
             }
             dest.aoiId = destination.aoiId
@@ -277,7 +267,7 @@ class DashboardIPadTableViewController: UITableViewController {
             alertFilterOptionsArray
                 .append(Constant.AlertResortDestination.Destination(dest))
         }
-        for resort in alert.resorts{
+        for resort in alert.resorts {
             let alertResort = Resort()
             alertResort.resortName = resort.resortName
             alertResort.resortCode = resort.resortCode
@@ -296,7 +286,7 @@ class DashboardIPadTableViewController: UITableViewController {
     }
     
     //Function for no results availability
-    func noResultsAvailability(){
+    func noResultsAvailability() {
         Constant.MyClassConstants.noAvailabilityView = true
         navigateToSearchResults()
         
@@ -315,7 +305,7 @@ class DashboardIPadTableViewController: UITableViewController {
             let destination = AreaOfInfluenceDestination()
             if let destinationName = alert.destinations[0].destinationName{
                 destination.destinationName  = destinationName
-            }else{
+            } else {
                 destination.destinationName  = "Cancun"
             }
             destination.destinationId = alert.destinations[0].destinationId
@@ -323,7 +313,7 @@ class DashboardIPadTableViewController: UITableViewController {
             searchCriteria.destination = destination
             Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
             
-        }else if !alert.resorts.isEmpty {
+        } else if !alert.resorts.isEmpty {
             Constant.MyClassConstants.initialVacationSearch.searchCriteria.resorts = alert.resorts
         }
     }
