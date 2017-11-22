@@ -16,7 +16,7 @@ class CertificateViewController: UIViewController {
     //class variables
     var certificateArray = [AccommodationCertificate]()
     
-    @IBOutlet weak var certificateTable: UITableView!
+    @IBOutlet weak private var certificateTable: UITableView!
     var certificateCount: Int = 0
     
     override func viewDidLoad() {
@@ -38,22 +38,24 @@ class CertificateViewController: UIViewController {
        
         // show hud
         showHudAsync()
-        let number = Constant.MyClassConstants.certificateArray[sendertag].certificateNumber! as NSNumber
-        
-        let certificateNumber: String = number.stringValue
-       UserClient.getAccommodationCertificateSummary(Session.sharedSession.userAccessToken, certificateNumber: certificateNumber, onSuccess: { (response) in
-        
-            self.hideHudAsync()
-            self.navigateToCertificateDetailsVC(response: response)
-        
-        }, onError: { (_) in
-            self.hideHudAsync()
+        if let certificateNumber = Constant.MyClassConstants.certificateArray[sendertag].certificateNumber {
+            
+            let number = certificateNumber as NSNumber
+            let certificateNumber: String = number.stringValue
+            UserClient.getAccommodationCertificateSummary(Session.sharedSession.userAccessToken, certificateNumber: certificateNumber, onSuccess: { (response) in
+                
+                self.hideHudAsync()
+                self.navigateToCertificateDetailsVC(response: response)
+                
+            }, onError: { (_) in
+                self.hideHudAsync()
             })
+        }
     }
     
     func navigateToCertificateDetailsVC(response: AccommodationCertificateSummary) {
         
-        if (Constant.MyClassConstants.isRunningOnIphone) {
+        if Constant.MyClassConstants.isRunningOnIphone {
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.certificateDetailsViewController) as! CertificateDetailsViewController
             viewController.certificateDetailsResponse = response
@@ -65,10 +67,10 @@ class CertificateViewController: UIViewController {
             self.present(viewController, animated: true, completion: nil)
             
         }
-    
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         //show hud
         showHudAsync()
     UserClient.getAccommodationCertificates(Session.sharedSession.userAccessToken, onSuccess: { (certificates) in
@@ -82,7 +84,6 @@ class CertificateViewController: UIViewController {
         }, onError: { (_) in
             self.hideHudAsync()
         })
-        
     }
     
 }
@@ -113,47 +114,53 @@ extension CertificateViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constant.certificateScreenReusableIdentifiers.certificateCell, for: indexPath) as! CertificateCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.certificateScreenReusableIdentifiers.certificateCell, for: indexPath) as? CertificateCell else {
+            
+            return UITableViewCell()
+        }
         cell.cellBaseView.layer.masksToBounds = true
         cell.cellBaseView.layer.cornerRadius = 5
+        if let certificateNumber = Constant.MyClassConstants.certificateArray[indexPath.row].certificateNumber {
+                  cell.certificateNumber.text = "#\(certificateNumber)".localized()
+        }
+        if let expiredDate = Constant.MyClassConstants.certificateArray[indexPath.row].expirationDate {
+            
+            let expireDateString = expiredDate
+            let myStringArr = expireDateString.components(separatedBy: "-")
+            
+            let expireDateFinalString = myStringArr.flatMap({ $0 }).joined(separator: "/")
+            if let daysOut = Constant.MyClassConstants.certificateArray[indexPath.row].daysOut {
+                cell.expireDate.text = "\(daysOut) Days, on \(expireDateFinalString)".localized()
+            }
+        }
         
-        cell.certificateNumber.text = "#\(Constant.MyClassConstants.certificateArray[indexPath.row].certificateNumber!)"
+        if let unitSize = Constant.MyClassConstants.certificateArray[indexPath.row].unit?.unitSize, let kitchenType = Constant.MyClassConstants.certificateArray[indexPath.row].unit?.kitchenType {
+            
+                cell.bedroomSize.text = "\((Helper.getBedroomNumbers(bedroomType: unitSize )) ), \((Helper.getKitchenEnums(kitchenType: kitchenType)))".localized()
+        }
         
-        let expireDateString = Constant.MyClassConstants.certificateArray[indexPath.row].expirationDate!
-        let myStringArr = expireDateString.components(separatedBy: "-")
-        
-        let expireDateFinalString = myStringArr.flatMap({ $0 }).joined(separator: "/")
-        
-        cell.expireDate.text = "\(String(describing: Constant.MyClassConstants.certificateArray[indexPath.row].daysOut!)) Days, on \(String(describing: expireDateFinalString))"
-        
-        cell.bedroomSize.text = "\((Helper.getBedroomNumbers(bedroomType: (Constant.MyClassConstants.certificateArray[indexPath.row].unit?.unitSize)! )) ), \((Helper.getKitchenEnums(kitchenType: (Constant.MyClassConstants.certificateArray[indexPath.row].unit?.kitchenType)!)))"
-        
-        let totalSleeps =  "Sleeps \(Constant.MyClassConstants.certificateArray[indexPath.row].unit?.publicSleepCapacity ?? 0) Total"
-        let privateSleeps = "\(Constant.MyClassConstants.certificateArray[indexPath.row].unit?.privateSleepCapacity ?? 0) Private"
-        
-        cell.totalSleeps.text = "\(totalSleeps), \(privateSleeps)"
-        
-        let calendarFromDate = Helper.convertStringToDate(dateString: (Constant.MyClassConstants.certificateArray[indexPath.row].travelWindow?.fromDate)!, format: Constant.MyClassConstants.dateFormat)
-        
-        let calendarToDate = Helper.convertStringToDate(dateString: (Constant.MyClassConstants.certificateArray[indexPath.row].travelWindow?.toDate)!, format: Constant.MyClassConstants.dateFormat)
-        
-        let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-        let startComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: calendarFromDate)
-        let endComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: calendarToDate)
-        let year = String(describing: startComponents.year!)
-        let monthName = "\(Helper.getMonthnameFromInt(monthNumber: startComponents.month!))"
-        cell.travelWindowStartDateLbl.text = "\(startComponents.day!)".uppercased()
-        cell.travelWindowStartDayLbl.text = "\(Helper.getWeekdayFromInt(weekDayNumber: startComponents.weekday!))"
-        
-        cell.travelWindowStartMonthYearLbl.text = "\(monthName) \(year)"
-        
-        cell.travelWindowEndDateLbl.text = "\(endComponents.day!)"
-        cell.travelWindowEndDayLbl.text = "\(Helper.getWeekdayFromInt(weekDayNumber: endComponents.weekday!))"
-        
-        cell.travelWindowEndMonthYearLbl.text = "\(Helper.getMonthnameFromInt(monthNumber: endComponents.month!))  \(String(describing: endComponents.year!))"
-        
-        cell.statusLbl.text = Constant.MyClassConstants.certificateArray[indexPath.row].certificateStatus
-        
+        if let fromDate = Constant.MyClassConstants.certificateArray[indexPath.row].travelWindow?.fromDate,
+            let toDate = Constant.MyClassConstants.certificateArray[indexPath.row].travelWindow?.toDate {
+            
+            let calendarFromDate = Helper.convertStringToDate(dateString: fromDate, format: Constant.MyClassConstants.dateFormat)
+            let calendarToDate = Helper.convertStringToDate(dateString: toDate, format: Constant.MyClassConstants.dateFormat)
+            let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
+            let startComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: calendarFromDate)
+            let endComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: calendarToDate)
+            if let year = startComponents.year, let month = startComponents.month, let day = startComponents.day, let weekDay = startComponents.weekday {
+                let monthName = "\(Helper.getMonthnameFromInt(monthNumber: month))"
+                cell.travelWindowStartDateLbl.text = "\(day)".uppercased()
+                cell.travelWindowStartDayLbl.text = "\(Helper.getWeekdayFromInt(weekDayNumber: weekDay))".localized()
+                cell.travelWindowStartMonthYearLbl.text = "\(monthName) \(year)".localized()
+            }
+            if let year = endComponents.year, let month = endComponents.month, let day = endComponents.day, let weekDay = endComponents.weekday {
+                cell.travelWindowEndDateLbl.text = "\(day)".localized()
+                cell.travelWindowEndDayLbl.text = "\(Helper.getWeekdayFromInt(weekDayNumber: weekDay))".localized()
+                cell.travelWindowEndMonthYearLbl.text = "\(Helper.getMonthnameFromInt(monthNumber: month))  \(year)".localized()
+            }
+        }
+
+        cell.statusLbl.text = Constant.MyClassConstants.certificateArray[indexPath.row].certificateStatus?.localized()
         Helper.applyShadowOnUIView(view: cell.cellBaseView, shadowcolor: UIColor.black, shadowopacity: 0.4, shadowradius: 1.0)
         cell.selectionStyle = UITableViewCellSelectionStyle.none
         
@@ -162,5 +169,4 @@ extension CertificateViewController: UITableViewDataSource {
         
         return cell
     }
-    
 }
