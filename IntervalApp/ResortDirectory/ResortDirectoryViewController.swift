@@ -391,14 +391,18 @@ extension ResortDirectoryViewController: UITableViewDelegate {
             }, onError: {(_) in
                 self.hideHudAsync()
             })
-        } else if(tableView.tag == 3) {
-            showHudAsync()
-            if(Constant.MyClassConstants.systemAccessToken != nil) {
-                
+        } else if tableView.tag == 3 {
+            
+            if Constant.MyClassConstants.systemAccessToken != nil {
                 resort = Constant.MyClassConstants.resortDirectoryResortArray[indexPath.row]
                 let selectedResort = Constant.MyClassConstants.resortDirectoryResortArray[indexPath.row]
-               
-                Helper.getUserFavorites()
+               showHudAsync()
+                //***** Favorites resort API call after successfull call *****//
+                Helper.getUserFavorites {[unowned self] error in
+                    if case .some = error {
+                        self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
+                    }
+                }
                 if(selectedResort.resortCode != nil) {
                     
                     Helper.getResortWithResortCode(code: selectedResort.resortCode!, viewcontroller: self)
@@ -632,7 +636,7 @@ extension ResortDirectoryViewController: ResortFavoritesTableViewCellDelegate {
         
         Constant.MyClassConstants.resortsDescriptionArray = Constant.MyClassConstants.resortDirectoryResortArray[index]
         
-        Constant.MyClassConstants.resortDescriptionString = Constant.MyClassConstants.resortDirectoryResortArray[index].description
+        Constant.MyClassConstants.resortDescriptionString = Constant.MyClassConstants.resortDirectoryResortArray[index].description ?? ""
         
         if(self.containerView != nil) {
             

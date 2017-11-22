@@ -411,38 +411,33 @@ class LoginIPadViewController: UIViewController {
         let context = Session.sharedSession
         
         UserClient.putSessionsUser(context.userAccessToken, member: context.selectedMembership!,
-        onSuccess: {
-        //***** Favorites resort API call after successfull call *****//
-        Helper.getUserFavorites()
-        //***** Get upcoming trips for user API call after successfull call *****//
-        Helper.getUpcomingTripsForUser()
-        //***** Getaway Alerts API call after successfull login *****//
-        RentalClient.getAlerts(Session.sharedSession.userAccessToken, onSuccess: { (response) in
-                                        
-            Constant.MyClassConstants.getawayAlertsArray = response
-                                        
-            //NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
-            
-            Constant.MyClassConstants.getawayAlertsArray = response
-            for alert in Constant.MyClassConstants.getawayAlertsArray {
-                self.callForIndividualAlert(alert)
+           onSuccess: {
+            //***** Favorites resort API call after successfull call *****//
+            Helper.getUserFavorites {[unowned self] error in
+                if case .some = error {
+                    self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
+                }
             }
-            self.getStatusForAllAlerts()
-                                        
-        }) { (_) in
-                                        
-    }
-                                    
-        Constant.MyClassConstants.isLoginSuccessfull = true
-        self.performSegue(withIdentifier: Constant.segueIdentifiers.dashboradSegueIdentifier, sender: nil)
-                                    
-    },
-            onError: {(_) in
-            SimpleAlert.alert(self, title: Constant.AlertErrorMessages.loginFailed, message: "\(Constant.AlertPromtMessages.membershipFailureMessage) \(String(describing: context.selectedMembership?.memberNumber))")
+            //***** Get upcoming trips for user API call after successfull call *****//
+            Helper.getUpcomingTripsForUser {[unowned self] error in
+                if case .some = error {
+                    self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
+                }
             }
+            //***** Getaway Alerts API call after successfull login *****//
+            Helper.getAllAlerts {[unowned self] error in
+                if case .some = error {
+                self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
+                }
+            }
+            Constant.MyClassConstants.isLoginSuccessfull = true
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.dashboradSegueIdentifier, sender: nil)
+        },
+           onError: {[unowned self](_) in
+            self.presentErrorAlert(UserFacingCommonError.generic)
+        }
         )
     }
-    
     func callForIndividualAlert(_ alert: RentalAlert) {
         Constant.MyClassConstants.activeAlertsArray.removeAllObjects()
         RentalClient.getAlert(Session.sharedSession.userAccessToken, alertId: alert.alertId!, onSuccess: { (response) in

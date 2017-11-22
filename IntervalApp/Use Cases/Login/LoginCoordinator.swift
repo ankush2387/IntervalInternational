@@ -11,14 +11,11 @@ import Foundation
 import IntervalUIKit
 import FirebaseMessaging
 
-// Lint bug, not reading class weak definition
-// swiftlint:disable class_delegate_protocol
 protocol LoginCoordinatorDelegate: class {
     func didLogin()
     func didError(message: String)
 }
 
-// swiftlint:disable line_length
 final class LoginCoordinator: ComputationHelper {
     
     // MARK: - Public properties
@@ -27,7 +24,7 @@ final class LoginCoordinator: ComputationHelper {
     // MARK: - Outlet properties (Must exist - Otherwise application should not run)
     // swiftlint:disable implicitly_unwrapped_optional
     private var viewModel: LoginViewModel!
-    private var loginViewController:LoginViewController!
+    private var loginViewController: LoginViewController!
     
     // MARK: - Private properties
     private let configuration: Config

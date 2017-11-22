@@ -29,7 +29,7 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
     var segmentTitle = ""
     var segmentIndex = 0
     var moreButton: UIBarButtonItem?
-    var value: Bool! = true
+    var value = true
     let defaults = UserDefaults.standard
     var rentalHasNotAvailableCheckInDates: Bool = false
     var exchangeHasNotAvailableCheckInDates: Bool = false
@@ -115,7 +115,7 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
     func getVacationSearchDetails() {
         
         if let selecteddate = defaults.object(forKey: Constant.MyClassConstants.selectedDate) {
-            if ((selecteddate as! Date).isLessThanDate(Constant.MyClassConstants.todaysDate as Date)) {
+            if (selecteddate as! Date).isLessThanDate(Constant.MyClassConstants.todaysDate as Date) {
                 Constant.MyClassConstants.vacationSearchShowDate = Constant.MyClassConstants.todaysDate
             } else {
                 Constant.MyClassConstants.vacationSearchShowDate = selecteddate as! Date
@@ -200,7 +200,7 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if (tableView.tag == 1) {
+        if tableView.tag == 1 {
             return 0
         } else {
             return 0
@@ -229,7 +229,7 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if (tableView.tag == 1) {
+        if tableView.tag == 1 {
             let cellIdentifier = Constant.customCellNibNames.featuredTableViewCell
             let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier)
             
@@ -374,7 +374,7 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
             Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
             let realm = try! Realm()
             let allDest = Helper.getLocalStorageWherewanttoGo()
-            if (allDest.count > 0) {
+            if allDest.count > 0 {
                 try! realm.write {
                     realm.deleteAll()
                 }
@@ -466,7 +466,7 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
             if Relinquishments.pointsProgram != nil {
                 Constant.MyClassConstants.relinquishmentProgram = Relinquishments.pointsProgram!
                 
-                if (Relinquishments.pointsProgram!.availablePoints != nil) {
+                if Relinquishments.pointsProgram!.availablePoints != nil {
                     Constant.MyClassConstants.relinquishmentAvailablePointsProgram = Relinquishments.pointsProgram!.availablePoints!
                 }
                 
@@ -489,7 +489,7 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
     
     @IBAction func featuredDestinationsPressed(_ sender: AnyObject) {
         
-        if (featuredDestinationsTopConstraint.constant == 50) {
+        if featuredDestinationsTopConstraint.constant == 50 {
             featuredDestinationsTopConstraint.constant = 870
         } else {
             
@@ -517,7 +517,7 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
                                     if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
                                         
                                         // We do not have available CheckInDates in Rental and Exchange
-                                        if (self.rentalHasNotAvailableCheckInDates) {
+                                        if self.rentalHasNotAvailableCheckInDates {
                                             Helper.showNotAvailabilityResults()
                                         }
                                         
@@ -752,7 +752,7 @@ extension VacationSearchIPadViewController: SearchTableViewCellDelegate {
             }
         } else {
             
-            if (segmentTitle == Constant.segmentControlItems.getaways && (Helper.getAllResortsFromLocalStorage().count > 0 || Constant.MyClassConstants.whereTogoContentArray.count > 0)) {
+            if segmentTitle == Constant.segmentControlItems.getaways && (Helper.getAllResortsFromLocalStorage().count > 0 || Constant.MyClassConstants.whereTogoContentArray.count > 0) {
                 
                 showHudAsync()
                 sender.isEnabled = false
@@ -1108,11 +1108,10 @@ extension VacationSearchIPadViewController: WereWantToGoTableViewCellDelegate {
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.infoDetailViewController) as! InfoDetailViewController
         viewController.selectedIndex = Index
         
-        let resortsArray: NSMutableArray = []
-        Constant.MyClassConstants.selectedGetawayAlertDestinationArray.removeAllObjects()
-        //outer loop for all object in where to go content array
-        
+        var resortsArray = [Resort]()
+        Constant.MyClassConstants.selectedGetawayAlertDestinationArray.removeAll()
         for object in Constant.MyClassConstants.whereTogoContentArray {
+            
             if ((object as AnyObject).isKind(of: List<ResortByMap>.self)) {
                 //internal loop for array of resorts at index
                 for resortsToShow in object as! List<ResortByMap> {
@@ -1123,12 +1122,12 @@ extension VacationSearchIPadViewController: WereWantToGoTableViewCellDelegate {
                     resort.address?.cityName = resortsToShow.resortCityName
                     resort.address?.territoryCode = resortsToShow.territorrycode
                     
-                    resortsArray.add(resort)
+                    resortsArray.append(resort)
                     
                 }
-                Constant.MyClassConstants.selectedGetawayAlertDestinationArray.add(resortsArray)
+                Constant.MyClassConstants.selectedGetawayAlertDestinationArray.append(Constant.selectedDestType.resorts(resortsArray))
             }
-            Constant.MyClassConstants.selectedGetawayAlertDestinationArray.add(object)
+            Constant.MyClassConstants.selectedGetawayAlertDestinationArray.append(Constant.selectedDestType.destination(object as! AreaOfInfluenceDestination))
         }
         
         navigationController!.present(viewController, animated: true, completion: nil)

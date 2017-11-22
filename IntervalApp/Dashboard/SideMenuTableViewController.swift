@@ -89,7 +89,7 @@ class SideMenuTableViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
         // omniture tracking with event 40
         let userInfo: [String: String] = [
             Constant.omnitureEvars.eVar44: Constant.omnitureCommonString.sideMenuAppeared
@@ -152,13 +152,13 @@ extension SideMenuTableViewController: UITableViewDelegate {
             
             Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
         }
-
+        
         if(smi.storyboardId?.characters.count != 0 && (indexPath as NSIndexPath).row != SideMenuTableViewController.SideMenuItems.count - 1) {
             
             Constant.MyClassConstants.upcomingOriginationPoint = Constant.omnitureCommonString.sideMenu
-                let mainStoryboard: UIStoryboard = UIStoryboard(name: smi.storyboardId!, bundle: nil)
-                let viewController = mainStoryboard.instantiateViewController(withIdentifier: smi.initialControllerName!) as! SWRevealViewController
-                navigationController?.pushViewController(viewController, animated: true)
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: smi.storyboardId!, bundle: nil)
+            let viewController = mainStoryboard.instantiateViewController(withIdentifier: smi.initialControllerName!) as! SWRevealViewController
+            navigationController?.pushViewController(viewController, animated: true)
         }
     }
     
@@ -269,22 +269,13 @@ extension SideMenuTableViewController: UITableViewDataSource {
             cell.iconImageView.image = UIImage(named: smi.imageName)
             cell.customTextLabel.text = smi.menuTitle
             
-            if((indexPath as NSIndexPath).row == 5) {
+            if indexPath.row == 5 {
                 
                 let alertCounterLabel = UILabel()
-                var activeAlertsCount = 0
-                if(Constant.MyClassConstants.getawayAlertsArray.count > 0) {
-                    for activeAlert in Constant.MyClassConstants.activeAlertsArray {
-                        let getAwayAlert: RentalAlert = activeAlert as! RentalAlert
-                        if (getAwayAlert.enabled)! {
-                            activeAlertsCount = activeAlertsCount + 1
-                        }
-                    }
-                    if(activeAlertsCount > 0) {
-                        alertCounterLabel.text = String(activeAlertsCount)
-                    } else {
-                        alertCounterLabel.isHidden = true
-                    }
+               
+                if Constant.activeAlertCount > 0 {
+                   alertCounterLabel.text = "\(Constant.activeAlertCount)"
+                    alertCounterLabel.isHidden = false
                 } else {
                     alertCounterLabel.isHidden = true
                 }

@@ -840,36 +840,9 @@ class SearchResultViewController: UIViewController {
         
                     Constant.MyClassConstants.btnTag = sender.tag
                     self.performSegue(withIdentifier: Constant.segueIdentifiers.preLoginSegue, sender: self)
-                }
-        
+        }
     }
     
-}
-
-func enableDisablePreviousMoreButton(_ position: NSString) -> Bool {
-    let currentDate = Date()
-    var order = (Calendar.current as NSCalendar).compare(Constant.MyClassConstants.currentFromDate as Date, to: currentDate, toUnitGranularity: .hour)
-    if (position.isEqual(to: Constant.MyClassConstants.right)) {
-        let nextDate = (Calendar.current as NSCalendar).date(byAdding: .month, value: +24, to: Constant.MyClassConstants.currentFromDate as Date, options: [])!
-        order = (Calendar.current as NSCalendar).compare(currentDate, to: nextDate, toUnitGranularity: .hour)
-    }
-    
-    switch order {
-    case .orderedDescending:
-        if (position.isEqual(to: Constant.MyClassConstants.right)) {
-            return false
-        } else {
-            return true
-        }
-    case .orderedAscending:
-        if (position.isEqual(to: Constant.MyClassConstants.right)) {
-            return true
-        } else {
-            return false
-        }
-    case .orderedSame:
-        return false
-    }
 }
 
 //***** MARK: Extension classes starts from here *****//

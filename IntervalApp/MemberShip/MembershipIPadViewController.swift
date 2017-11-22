@@ -19,7 +19,7 @@ class MembershipIPadViewController: UIViewController {
     fileprivate var ownershipArray = [Ownership]()
     fileprivate var membershipProductsArray = [Product]()
     fileprivate var contactInfo = Contact()
-
+    
     /**
      Show action sheet.
      - parameter sender: sender UIbutton reference.
@@ -45,8 +45,8 @@ class MembershipIPadViewController: UIViewController {
         actionsheetViewController.view.isUserInteractionEnabled = true
         
         let attributedString = NSAttributedString(string: "Select Membership", attributes: [
-            NSFontAttributeName: UIFont.systemFont(ofSize: 20),
-            NSForegroundColorAttributeName: UIColor.black
+            NSFontAttributeName : UIFont.systemFont(ofSize: 20),
+            NSForegroundColorAttributeName : UIColor.black
             ])
         
         let action: UIAlertAction = UIAlertAction(title: Constant.AlertPromtMessages.cancel, style: UIAlertActionStyle.cancel, handler: nil)
@@ -74,26 +74,25 @@ class MembershipIPadViewController: UIViewController {
         if let contact = Session.sharedSession.contact {
             self.contactInfo = contact
         }
-        
         if let memberships = contactInfo.memberships {
-             Constant.MyClassConstants.membershipdetails = memberships
+            Constant.MyClassConstants.membershipdetails = memberships
         }
-       
-        Constant.MyClassConstants.memberNumber = Session.sharedSession.selectedMembership?.memberNumber
-        
+        if let memberNo = Session.sharedSession.selectedMembership?.memberNumber {
+            Constant.MyClassConstants.memberNumber = memberNo
+        }
         UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: { (membership) in
             if let ownerships = membership.ownerships {
                 self.ownershipArray = ownerships
             }
-            
             if let products = membership.products {
                 self.membershipProductsArray = products
             }
             self.hideHudAsync()
             self.membershipProductsArray.sort { $0.coreProduct && !$1.coreProduct }
             self.tableView.reloadData()
-        }) { (_) in
+        }) {[unowned self] (error) in
             self.hideHudAsync()
+             self.presentAlert(with: "Membership Error".localized(), message:"Unable to get membership from server. Please try again!".localized())
         }
     }
     
@@ -109,7 +108,7 @@ class MembershipIPadViewController: UIViewController {
             rvc.delegate = self
             
             //***** Add the hamburger menu *****//
-            let menuButton = UIBarButtonItem(image: UIImage(named: "ic_menu"), style: .plain, target: rvc, action: #selector(rvc.revealToggle(_:)))
+            let menuButton = UIBarButtonItem(image: UIImage(named:"ic_menu"), style: .plain, target: rvc, action:#selector(rvc.revealToggle(_:)))
             menuButton.tintColor = UIColor.white
             
             self.navigationItem.leftBarButtonItem = menuButton
@@ -119,7 +118,7 @@ class MembershipIPadViewController: UIViewController {
         }
         
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -131,26 +130,22 @@ class MembershipIPadViewController: UIViewController {
         let context = Session.sharedSession
         
         UserClient.putSessionsUser(context.userAccessToken, member: context.selectedMembership!,
-            onSuccess: {
-                                        
+           onSuccess: {
             //***** Done!  Segue to the Home page *****//
-            
             self.dismiss(animated: true, completion: nil)
             self.getContactMembershipInfo()
-            
             //***** Getaway Alerts API call after successfull login *****//
-            RentalClient.getAlerts(Session.sharedSession.userAccessToken, onSuccess: { (response) in
-                
-                Constant.MyClassConstants.getawayAlertsArray = response
-                self.hideHudAsync()
-            }) { (_) in
-                self.hideHudAsync()
-            }
+            Helper.getAllAlerts {[unowned self] error in
+                if case .some = error {
+                    self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
+                    }
+                }
         },
-            onError: {(error) in
-                self.hideHudAsync()
-                Logger.sharedInstance.error("Could not set membership in Darwin API Session: \(error.description)")
-                self.presentAlert(with: Constant.AlertErrorMessages.loginFailed, message: "Please contact your servicing office.  Could not select membership \(String(describing: context.selectedMembership?.memberNumber))")
+       onError: {[unowned self](error) in
+        self.hideHudAsync()
+        Logger.sharedInstance.error("Could not set membership in Darwin API Session: \(error.description)")
+        self.presentAlert(with: Constant.AlertErrorMessages.loginFailed, message: "Please contact your servicing office.  Could not select membership \(String(describing: context.selectedMembership?.memberNumber))")
+
             }
         )
     }
@@ -184,7 +179,7 @@ extension MembershipIPadViewController: UITableViewDataSource {
     /** This function is used to return cell for a row */
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if(tableView.tag == 3) {
-
+            
             let contact = Session.sharedSession.contact
             let membership = contact?.memberships![indexPath.row]
             
@@ -202,7 +197,7 @@ extension MembershipIPadViewController: UITableViewDataSource {
             } else {
                 cell.selectedImageView.image = UIImage(named: "Select-Off")
             }
-
+            
             cell.delegate = self
             return cell
             
@@ -240,38 +235,38 @@ extension MembershipIPadViewController: UITableViewDataSource {
  extension for tableview delegate
  */
 extension MembershipIPadViewController: UITableViewDelegate {
-	/** This function is used to return Height for footer In section */
-	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    /** This function is used to return Height for footer In section */
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0.0001
     }
-	
- 	/** This function is used to return Height for a row at particular index In section */
-	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		if(tableView.tag == 3) {
-			return 70
-		} else if (indexPath as NSIndexPath).section == 0 {
+    
+    /** This function is used to return Height for a row at particular index In section */
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if(tableView.tag == 3) {
+            return 70
+        } else if (indexPath as NSIndexPath).section == 0 {
             
             let extraViews = membershipProductsArray.count - 1
             return CGFloat((80 * extraViews) + 240)
-
+            
         } else {
             return 427
         }
-	}
-	
-	/** This function is used to return Height for header In section */
-	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    }
+    
+    /** This function is used to return Height for header In section */
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 1 {
             return 30
         } else {
             return 30
         }
-	}
-	
-	//***** Custom cell delegate methods *****//
-	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		
-		if tableView.tag == 3 {
+    }
+    
+    //***** Custom cell delegate methods *****//
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if tableView.tag == 3 {
             guard let cell = tableView.cellForRow(at: indexPath) as? ActionSheetTblCell else { return }
             cell.selectedImageView.image = UIImage(named: "Select-On")
             
@@ -282,21 +277,19 @@ extension MembershipIPadViewController: UITableViewDelegate {
                     previousCell?.selectedImageView.image = UIImage(named: "Select-Off")
                 }
             }
-
-			let contact = Session.sharedSession.contact
-			let membership = contact?.memberships![indexPath.row]
+            
+            let contact = Session.sharedSession.contact
+            let membership = contact?.memberships![indexPath.row]
             if Constant.MyClassConstants.memberNumber != membership?.memberNumber {
                 self.dismiss(animated: true, completion: nil)
                 let alert = UIAlertController(title: Constant.memberShipViewController.switchMembershipAlertTitle, message: Constant.memberShipViewController.switchMembershipAlertMessage, preferredStyle: .actionSheet)
-                let actionYes = UIAlertAction(title: "Yes", style: .destructive, handler: { (_) in
+                let actionYes = UIAlertAction(title: "Yes", style: .destructive, handler: { (response) in
                     self.showHudAsync()
                     Session.sharedSession.selectedMembership = membership
                     self.membershipWasSelected()
                 })
                 
-                let actionCancel = UIAlertAction(title: "No", style: .default, handler: { (_) in
-                    //cancel
-                })
+                let actionCancel = UIAlertAction(title: "No", style: .default, handler:nil)
                 
                 alert.addAction(actionYes)
                 alert.addAction(actionCancel)
@@ -306,8 +299,8 @@ extension MembershipIPadViewController: UITableViewDelegate {
                 alert.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
                 self.present(alert, animated: true, completion: nil)
             }
-		}
-	}
+        }
+    }
 }
 
 /*
@@ -316,9 +309,6 @@ extension MembershipIPadViewController: UITableViewDelegate {
 extension MembershipIPadViewController: ActionSheetTblDelegate {
     
     func membershipSelectedAtIndex(_ index: Int) {
-        
-        self.dismiss(animated: true, completion: nil)
-        
+        dismiss(animated: true)
     }
-    
 }

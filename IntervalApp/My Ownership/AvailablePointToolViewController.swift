@@ -60,21 +60,21 @@ class AvailablePointToolViewController: UIViewController {
             Constant.MyClassConstants.relinquishmentAvalableToolSelectedDate = Date()
         }
         
-        let dateStr = Helper.convertDateToString(date: Constant.MyClassConstants.relinquishmentAvalableToolSelectedDate, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
-        
-        showHudAsync()
-
-        UserClient.getProgramAvailablePoints(Session.sharedSession.userAccessToken, date: dateStr, onSuccess: { (availablePoints) in
+        if let AblToolSelectdDate = Constant.MyClassConstants.relinquishmentAvalableToolSelectedDate {
             
-            self.hideHudAsync()
-            self.availablePoints = availablePoints
-            self.availablePointTableView.reloadData()
-        }, onError: { (error) in
-            
-            self.hideHudAsync()
-            intervalPrint(error)
-        })
-        
+          let dateStr = Helper.convertDateToString(date: AblToolSelectdDate, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
+            showHudAsync()
+            UserClient.getProgramAvailablePoints(Session.sharedSession.userAccessToken, date: dateStr, onSuccess: {[weak self] (availablePoints) in
+                guard let strongSelf = self else { return }
+                strongSelf.hideHudAsync()
+                strongSelf.availablePoints = availablePoints
+                strongSelf.availablePointTableView.reloadData()
+            }, onError: {[unowned self] (error) in
+                
+                self.hideHudAsync()
+                intervalPrint(error)
+            })
+        }
         self.availablePointTableView.reloadData()
     }
     
@@ -91,21 +91,27 @@ extension AvailablePointToolViewController: UITableViewDataSource {
     /** Cell for a Row */
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if (indexPath.section == 0) {
+        if indexPath.section == 0 {
             
-            if(indexPath.row == 0) {
+            if indexPath.row == 0 {
                 
-                let  cell = tableView.dequeueReusableCell(withIdentifier: Constant.availablePointToolViewController.pointToolDetailpointcellIdentifier) as! AvailablePointsAsOfTableViewCell
+                if let  cell = tableView.dequeueReusableCell(withIdentifier: Constant.availablePointToolViewController.pointToolDetailpointcellIdentifier) as? AvailablePointsAsOfTableViewCell {
+                    if let AblToolSelectedDate = Constant.MyClassConstants.relinquishmentAvalableToolSelectedDate {
+                        
+                        let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
+                        let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: AblToolSelectedDate)
+                        let year = String(describing: myComponents.year!)
+                        let weekDay = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday!))"
+                        let month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \( myComponents.day!)"
+                        
+                        cell.dateLabel.text = "\(weekDay), \(month) \(year)".localized()
+                    }
                 
-                let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: Constant.MyClassConstants.relinquishmentAvalableToolSelectedDate)
-                let year = String(describing: myComponents.year!)
-                let weekDay = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday!))"
-                let month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \( myComponents.day!)"
-                
-                cell.dateLabel.text = "\(weekDay), \(month) \(year)"
                 cell.selectionStyle = .none
                 return cell
+                } else {
+                    return UITableViewCell()
+                }
 
             } else {
                 
@@ -124,11 +130,11 @@ extension AvailablePointToolViewController: UITableViewDataSource {
             }
             
         } else {
-            if(indexPath.row == 0) {
+            if indexPath.row == 0 {
                 
                  let  cell = tableView.dequeueReusableCell(withIdentifier: Constant.availablePointToolViewController.headerCell) as! HeaderCell
                 return cell
-            } else if (indexPath.row == self.availablePoints.usage.count + 1) {
+            } else if indexPath.row == self.availablePoints.usage.count + 1 {
                 
                 let  Cell = tableView.dequeueReusableCell(withIdentifier: Constant.availablePointToolViewController.donebuttoncellIdentifier) as! FloatdetaildoneButtonTableViewCell
                 

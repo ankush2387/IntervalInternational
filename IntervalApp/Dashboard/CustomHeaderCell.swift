@@ -12,14 +12,9 @@ import IntervalUIKit
 class CustomHeaderCell: UITableViewCell {
   
   //***** Outlets *****//
-  @IBOutlet var alertCounterLabel: UILabel!
   @IBOutlet var headerDetailButton: IUIKButton!
   @IBOutlet var headerLabel: UILabel!
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-      
-    }
+  @IBOutlet weak var refreshAlertButton: IUIKButton!
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

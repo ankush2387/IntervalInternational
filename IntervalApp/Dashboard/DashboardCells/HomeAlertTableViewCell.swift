@@ -8,20 +8,12 @@
 
 import UIKit
 
-class HomeAlertTableViewCell: UITableViewCell {
+final class HomeAlertTableViewCell: UITableViewCell {
     
-    @IBOutlet var alertTitleLabel: UILabel!
-    @IBOutlet var alertDateLabel: UILabel!
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
+    //IBOutlets
+    @IBOutlet weak var alertCollectinView: UICollectionView!
+    @IBOutlet weak var activityIndicatorBseView: UIView!
+    @IBOutlet weak var activityIndicatorBackgroundView: UIView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
 }

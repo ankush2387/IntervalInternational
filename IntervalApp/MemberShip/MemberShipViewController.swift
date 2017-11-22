@@ -49,8 +49,9 @@ class MemberShipViewController: UIViewController {
         if let memberships = contactInfo.memberships {
             Constant.MyClassConstants.membershipdetails = memberships
         }
-
-        Constant.MyClassConstants.memberNumber = Session.sharedSession.selectedMembership?.memberNumber
+        if let memberNo = Session.sharedSession.selectedMembership?.memberNumber {
+            Constant.MyClassConstants.memberNumber = memberNo
+        }
         
         UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: { (membership) in
             if let ownerships = membership.ownerships {

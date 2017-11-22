@@ -12,12 +12,11 @@ import SVProgressHUD
 import DarwinSDK
 import SDWebImage
 
-class MyUpcomingTripViewController: UIViewController{
+class MyUpcomingTripViewController: UIViewController {
     
     //***** Outlets *****//
     @IBOutlet var myUpcommingTBL: UITableView!
-    @IBOutlet var conformationNumber:String?
-    
+    @IBOutlet var conformationNumber: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,7 +39,7 @@ class MyUpcomingTripViewController: UIViewController{
         }
         
         // Omniture tracking with event 73
-        let noTrips:Int? = Int(Constant.omnitureCommonString.noTrips)
+        let noTrips: Int? = Int(Constant.omnitureCommonString.noTrips)
         
         let userInfo: [String: String] = [
             Constant.omnitureEvars.eVar18 : "",
@@ -50,58 +49,64 @@ class MyUpcomingTripViewController: UIViewController{
         ]
         ADBMobile.trackAction(Constant.omnitureEvents.event73, data: userInfo)
     }
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = false
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = true
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         //***** Dispose of any resources that can be recreated. *****//
     }
+    func vacationSearchButtonPressed(_ sender: UIButton) {
+        let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+        let storyboardName = isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
+        if let initialViewController = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController() {
+            navigationController?.pushViewController(initialViewController, animated: true)
+        }
+    }
 }
 
 //***** MARK: Extension classes starts from here *****//
 
-extension MyUpcomingTripViewController:UITableViewDelegate {
+extension MyUpcomingTripViewController: UITableViewDelegate {
     
     //***** UITableview delegate methods definition here *****//
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
+
         if UIDevice().userInterfaceIdiom == .pad {
             return 500
         } else {
-            if Constant.MyClassConstants.upcomingTripsArray.count == 0 {
+            if Constant.MyClassConstants.upcomingTripsArray.isEmpty {
                 return 300
-                
             } else {
                 return 435
             }
         }
     }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
     }
 }
-
-extension MyUpcomingTripViewController:UITableViewDataSource {
+extension MyUpcomingTripViewController: UITableViewDataSource {
     
     //***** UITableview dataSource methods definition here *****//
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if Constant.MyClassConstants.upcomingTripsArray.count == 0 {
-            
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.emptyUpcomingTrip, for: indexPath) as? UpComingTripCell else {
-                
-                return UITableViewCell()
-            }
-            cell.searchVacationButton.layer.cornerRadius = 5
-            cell.selectionStyle = .none
+        if Constant.MyClassConstants.upcomingTripsArray.isEmpty {
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.emptyUpcomingTrip, for: indexPath) as! UpComingTripCell
+             cell.searchVacationButton.layer.cornerRadius = 5
+            cell.searchVacationButton.addTarget(self, action: #selector(MyUpcomingTripViewController.vacationSearchButtonPressed(_:)), for: .touchUpInside)
+             cell.selectionStyle = .none
+
             return cell
-            
             
         } else {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.upComingTripDetailControllerReusableIdentifiers.upComingTripCell, for: indexPath) as? UpComingTripCell else {
-                
                 return UITableViewCell()
             }
             let upComingTrip = Constant.MyClassConstants.upcomingTripsArray[indexPath.section]
@@ -112,8 +117,9 @@ extension MyUpcomingTripViewController:UITableViewDataSource {
             if let exchangeStatus = upComingTrip.exchangeStatus {
                 cell.headerStatusLabel.text = exchangeStatus.localized()
             }
+
             if let tripType = upComingTrip.type {
-                
+
                 var type = ExchangeTransactionType.fromName(name: tripType).rawValue
                 if tripType == Constant.myUpcomingTripCommonString.rental {
                     type = Constant.myUpcomingTripCommonString.getaway
@@ -126,7 +132,7 @@ extension MyUpcomingTripViewController:UITableViewDataSource {
             cell.resortImageView.backgroundColor = UIColor.lightGray
             var imgURL: String?
             if let imagesArray = upComingTrip.resort?.images {
-                for largeResortImage in imagesArray{
+                for largeResortImage in imagesArray {
                     if largeResortImage.size == Constant.MyClassConstants.imageSizeXL {
                         imgURL = largeResortImage.url
                     } else {
@@ -151,17 +157,17 @@ extension MyUpcomingTripViewController:UITableViewDataSource {
                 cell.resortNameLabel.text = resortName.localized()
             }
             cell.footerViewDetailedButton.contentHorizontalAlignment = .left
-            cell.footerViewDetailedButton.contentEdgeInsets = UIEdgeInsetsMake(0, 20, 0, 0)
-            if let checkInDate = upComingTrip.unit?.checkInDate, let checkOutDate =  upComingTrip.unit?.checkOutDate {
+            cell.footerViewDetailedButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
+            if let checkInDate = upComingTrip.unit?.checkInDate, let checkOutDate = upComingTrip.unit?.checkOutDate {
                 
                 let checkInDate = Helper.convertStringToDate(dateString:checkInDate, format: Constant.MyClassConstants.dateFormat)
                 let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkInDate)
-                if let weekday =  myComponents.weekday, let month = myComponents.month, let day = myComponents.day, let year = myComponents.year {
+                let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkInDate)
+                if let weekday = myComponents.weekday, let month = myComponents.month, let day = myComponents.day, let year = myComponents.year {
                     let formatedCheckInDate = "\(Helper.getWeekdayFromInt(weekDayNumber: weekday)) \(Helper.getMonthnameFromInt(monthNumber: month)). \(day), \(year)"
                     let checkOutDate = Helper.convertStringToDate(dateString: checkOutDate, format: Constant.MyClassConstants.dateFormat)
-                    let myComponents1 = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkOutDate)
-                    if let weekday =  myComponents1.weekday, let month = myComponents1.month, let day = myComponents1.day, let year = myComponents1.year {
+                    let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkOutDate)
+                    if let weekday = myComponents1.weekday, let month = myComponents1.month, let day = myComponents1.day, let year = myComponents1.year {
                         let formatedCheckOutDate = "\(Helper.getWeekdayFromInt(weekDayNumber: weekday)) \(Helper.getMonthnameFromInt(monthNumber: month)). \(day), \(year)"
                         cell.tripDateLabel.text = "\(formatedCheckInDate) - \(formatedCheckOutDate)".localized()
                     }
@@ -169,7 +175,7 @@ extension MyUpcomingTripViewController:UITableViewDataSource {
             }
             
             cell.selectionStyle = UITableViewCellSelectionStyle.none
-            for layer in cell.resortNameBaseView.layer.sublayers!{
+            for layer in cell.resortNameBaseView.layer.sublayers! {
                 if layer.isKind(of: CAGradientLayer.self) {
                     layer.removeFromSuperlayer()
                 }
@@ -196,12 +202,11 @@ extension MyUpcomingTripViewController:UITableViewDataSource {
         }
     }
     
-    @IBAction func viewTripDetailsClicked(_ sender:UIButton) {
+    @IBAction func viewTripDetailsClicked(_ sender: UIButton) {
         if let transactionNumber = Constant.MyClassConstants.upcomingTripsArray[sender.tag].exchangeNumber {
             Constant.MyClassConstants.transactionNumber = "\(transactionNumber)"
         }
-        if let transactionType = Constant.MyClassConstants.upcomingTripsArray[sender.tag].type
-        {
+        if let transactionType = Constant.MyClassConstants.upcomingTripsArray[sender.tag].type {
             Constant.MyClassConstants.transactionType = transactionType
         }
         showHudAsync()
@@ -232,5 +237,3 @@ extension MyUpcomingTripViewController:UITableViewDataSource {
         return 1
     }
 }
-
-

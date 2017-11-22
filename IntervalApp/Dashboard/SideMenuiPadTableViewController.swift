@@ -105,7 +105,7 @@ class SideMenuiPadTableViewController: UIViewController, UITableViewDataSource {
         Constant.MyClassConstants.isLoginSuccessfull = false
         Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PopToLoginView"), object: nil)
-      
+        
     }
     
     //***** Function called when notification for getaway alerts is fired. *****//
@@ -222,10 +222,11 @@ class SideMenuiPadTableViewController: UIViewController, UITableViewDataSource {
             cell.iconImageView.image = UIImage(named: smi.imageName)
             cell.customTextLabel.text = smi.menuTitle
             
-            if((indexPath as NSIndexPath).row == 5) {
+            if indexPath.row == 5 {
                 let alertCounterLabel = UILabel()
-                if(Constant.MyClassConstants.activeAlertsArray.count > 0) {
-                    alertCounterLabel.text = String(Constant.MyClassConstants.activeAlertsArray.count)
+                if Constant.activeAlertCount > 0 {
+                    alertCounterLabel.text = "\(Constant.activeAlertCount)"
+                    alertCounterLabel.isHidden = false
                 } else {
                     alertCounterLabel.isHidden = true
                 }
@@ -247,21 +248,16 @@ class SideMenuiPadTableViewController: UIViewController, UITableViewDataSource {
 extension SideMenuiPadTableViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        /*if((indexPath as NSIndexPath).row == 4){
-            let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.myUpcomingTripIpad, bundle: nil)
-            let resultController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.upcomingTripsViewController) as? UpComingTripDetailIPadViewController
-            let navController = UINavigationController(rootViewController: resultController!)
-            self.present(navController, animated:true, completion: nil)
-        }else*/ if((indexPath as NSIndexPath).row == 6) {
+         if indexPath.row == 6 {
             
             Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.favoritesFunctionalityCheck
             Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.favoritesFunctionalityCheck
             
-        } else if((indexPath as NSIndexPath).row == 8) {
+         } else if (indexPath as NSIndexPath).row == 8 {
             Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.resortFunctionalityCheck
-        } else if((indexPath as NSIndexPath).row == 3) {
+         } else if (indexPath as NSIndexPath).row == 3 {
             Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.vacationSearchFunctionalityCheck
-        } else {
+         } else {
             Constant.MyClassConstants.runningFunctionality = ""
             Constant.MyClassConstants.sideMenuOptionSelected = Constant.MyClassConstants.resortFunctionalityCheck
         }

@@ -62,15 +62,15 @@ class CreateAlertViewController: UIViewController {
         ADBMobile.trackAction(Constant.omnitureEvents.event50, data: userInfo)
         
         //**** Check for iPhone 4s and iPhone 5s to align travel window start and end date *****//
-        if(UIScreen.main.bounds.width == 320) {
+        if UIScreen.main.bounds.width == 320 {
             leadingStartDateConstraint.constant = 0
             leadingStartLabelConstraint.constant = 0
             leadingEndDateConstraint.constant = 0
             leadingEndLabelConstraint.constant = 0
             
         }
-        self.title = Constant.ControllerTitles.creategetawayAlertsViewController
-        Constant.MyClassConstants.selectedGetawayAlertDestinationArray.removeAllObjects()
+        title = Constant.ControllerTitles.creategetawayAlertsViewController
+        Constant.MyClassConstants.selectedGetawayAlertDestinationArray.removeAll()
         Constant.MyClassConstants.selectedBedRoomSize = Constant.MyClassConstants.bedroomSizes
         Constant.MyClassConstants.vacationSearchShowDate = Date()
         Constant.MyClassConstants.alertWindowStartDate = nil
@@ -92,7 +92,7 @@ class CreateAlertViewController: UIViewController {
             NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeueBold, size: 25)! // Note the !
         ]
         
-        if (Constant.RunningDevice.deviceIdiom == .phone) {
+        if Constant.RunningDevice.deviceIdiom == .phone {
             attributes = [
                 NSForegroundColorAttributeName: UIColor.lightGray,
                 NSFontAttributeName: UIFont(name: Constant.fontName.helveticaNeue, size: 15)! // Note the !
@@ -106,11 +106,11 @@ class CreateAlertViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         
         self.bedroomSize.text = Constant.MyClassConstants.selectedBedRoomSize
-        if(Constant.MyClassConstants.alertWindowStartDate != nil) {
+        if let srartDate = Constant.MyClassConstants.alertWindowStartDate {
             
             self.travelWindowEndDateSelectionButton.isEnabled = true
             let myCalendar = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
-            let myComponents = myCalendar.components([.day, .weekday, .month, .year], from: Constant.MyClassConstants.alertWindowStartDate as Date)
+            let myComponents = myCalendar.components([.day, .weekday, .month, .year], from: srartDate)
             
             self.startDateDayLabel.text = String(describing: myComponents.day!)
             self.startDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday!))"
@@ -120,26 +120,27 @@ class CreateAlertViewController: UIViewController {
             
             self.travelWindowEndDateSelectionButton.isEnabled = false
         }
-        if(Constant.MyClassConstants.alertWindowEndDate != nil) {
+        if let endDate = Constant.MyClassConstants.alertWindowEndDate {
             
-            if(Constant.MyClassConstants.alertWindowStartDate .isLessThanDate(Constant.MyClassConstants.alertWindowEndDate)) {
+            if let startDate = Constant.MyClassConstants.alertWindowStartDate {
+            if startDate.isLessThanDate(endDate) {
                 
                 let myCalendar1 = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
-                let myComponents1 = myCalendar1.components([.day, .weekday, .month, .year], from: Constant.MyClassConstants.alertWindowEndDate as Date)
+                let myComponents1 = myCalendar1.components([.day, .weekday, .month, .year], from: endDate)
                 self.endDateDayLabel.text = String(describing: myComponents1.day!)
                 self.endDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents1.weekday!))"
                 self.endDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!)) \(myComponents1.year!)"
             } else {
                 
                 let myCalendar1 = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
-                let myComponents1 = myCalendar1.components([.day, .weekday, .month, .year], from: Constant.MyClassConstants.alertWindowStartDate as Date)
+                let myComponents1 = myCalendar1.components([.day, .weekday, .month, .year], from: startDate)
                 self.endDateDayLabel.text = String(describing: myComponents1.day!)
                 self.endDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents1.weekday!))"
                 self.endDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!)) \(myComponents1.year!)"
             }
-            
         }
-        if(self.createAlertCollectionView != nil) {
+        }
+        if self.createAlertCollectionView != nil {
             self.createAlertCollectionView.reloadData()
         } else {
             self.createAlertTBLView.reloadData()
@@ -150,109 +151,105 @@ class CreateAlertViewController: UIViewController {
     func detailButtonPressed(sender: UIButton) {
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.getawayAlertsIpad, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.infoDetailViewController) as! InfoDetailViewController
-        viewController.selectedIndex = self.selectedIndex
-        self.navigationController!.present(viewController, animated: true, completion: nil)
+        if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.infoDetailViewController) as? InfoDetailViewController {
+            viewController.selectedIndex = self.selectedIndex
+            navigationController?.present(viewController, animated: true, completion: nil)
+        }
         
     }
     
     //***** function to create new alert *****//
     @IBAction func createAlertButtonPresseded(_ sender: AnyObject) {
         
-        let trimmedUsername = self.nameTextField.text!.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
-        if(trimmedUsername.characters.count != 0) {
+       let trimmedUsername = self.nameTextField.text!.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
+        guard let startDate = Constant.MyClassConstants.alertWindowStartDate else { return  presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages
+            .editAlertEmptyWidowStartDateMessage) }
+        guard let endDate = Constant.MyClassConstants.alertWindowEndDate else { return presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages
+            .editAlertEmptyWidowEndDateMessage) }
+        if !Constant.MyClassConstants.selectedGetawayAlertDestinationArray.isEmpty {
+            if !trimmedUsername.isEmpty {
+                        
+            showHudAsync()
+            let rentalAlert = RentalAlert()
+            rentalAlert.earliestCheckInDate = Helper.convertDateToString(date: startDate, format: Constant.MyClassConstants.dateFormat)
+            rentalAlert.latestCheckInDate = Helper.convertDateToString(date: endDate, format: Constant.MyClassConstants.dateFormat)
             
-            if(Constant.MyClassConstants.alertWindowStartDate != nil) {
+            rentalAlert.name = trimmedUsername
+            rentalAlert.enabled = true
+            intervalPrint(Constant.MyClassConstants.alertSelectedResorts)
+            rentalAlert.resorts = Constant.MyClassConstants.alertSelectedResorts
+            rentalAlert.destinations = Constant.MyClassConstants.alertSelectedDestination
+            rentalAlert.selections = []
+            
+            var unitsizearray = [UnitSize]()
+            if Constant.MyClassConstants.alertSelectedUnitSizeArray.count > 0 {
                 
-                if(Constant.MyClassConstants.alertWindowEndDate != nil) {
+                for selectedSize in Constant.MyClassConstants.alertSelectedUnitSizeArray {
                     
-                    if(Constant.MyClassConstants.selectedGetawayAlertDestinationArray.count > 0) {
-                        
-                        showHudAsync()
-                        let rentalAlert = RentalAlert()
-                        rentalAlert.earliestCheckInDate = Helper.convertDateToString(date: Constant.MyClassConstants.alertWindowStartDate, format: Constant.MyClassConstants.dateFormat)
-                        rentalAlert.latestCheckInDate = Helper.convertDateToString(date: Constant.MyClassConstants.alertWindowEndDate, format: Constant.MyClassConstants.dateFormat)
-                        
-                        rentalAlert.name = nameTextField.text!
-                        rentalAlert.enabled = true
-                        intervalPrint(Constant.MyClassConstants.alertSelectedResorts)
-                        rentalAlert.resorts = Constant.MyClassConstants.alertSelectedResorts
-                        rentalAlert.destinations = Constant.MyClassConstants.alertSelectedDestination
-                        rentalAlert.selections = []
-                        
-                        var unitsizearray = [UnitSize]()
-                        if(Constant.MyClassConstants.alertSelectedUnitSizeArray.count > 0) {
-                            
-                            for selectedSize in Constant.MyClassConstants.alertSelectedUnitSizeArray {
-                                
-                                let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: selectedSize as! String )
-                                self.anlyticsBedroomSize = self.anlyticsBedroomSize.appending(bedroomSize)
-                                let selectedUnitSize = UnitSize(rawValue: selectedSize as! String)
-                                unitsizearray.append(selectedUnitSize!)
-                            }
-                            rentalAlert.unitSizes = unitsizearray
-                        } else {
-                            
-                            for unitsize in Constant.MyClassConstants.bedRoomSize {
-                                let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: unitsize )
-                                self.anlyticsBedroomSize = self.anlyticsBedroomSize.appending("\(bedroomSize), ")
-                                let selectedUnitSize = UnitSize(rawValue: unitsize )
-                                unitsizearray.append(selectedUnitSize!)
-                            }
-                            rentalAlert.unitSizes = unitsizearray
-                        }
-                        
-                        RentalClient.createAlert(Session.sharedSession.userAccessToken, alert: rentalAlert, onSuccess: { (response) in
-                            var deststr: String = ""
-                            for dest in Constant.MyClassConstants.alertSelectedDestination {
-                                
-                                deststr = deststr.appending("\(dest.destinationName), ")
-                            }
-                            let userInfo: [String: Any] = [
-                                Constant.omnitureEvars.eVar43: " - \(Date())",
-                                Constant.omnitureCommonString.listItem: deststr,
-                                Constant.omnitureEvars.eVar41: Constant.omnitureCommonString.alert,
-                                Constant.omnitureEvars.eVar57: Constant.MyClassConstants.alertWindowStartDate,
-                                Constant.omnitureEvars.eVar58: Constant.MyClassConstants.alertWindowEndDate,
-                                Constant.omnitureEvars.eVar59: self.anlyticsBedroomSize,
-                                Constant.omnitureEvars.eVar60: Constant.MyClassConstants.alertOriginationPoint
-                            ]
-                            
-                            ADBMobile.trackAction(Constant.omnitureEvents.event52, data: userInfo)
-                            
-                            self.hideHudAsync()
-                            
-                            Constant.MyClassConstants.getawayAlertsArray.insert(rentalAlert, at: Constant.MyClassConstants.getawayAlertsArray.count)
-                            self.presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages.createAlertMessage)
-                            rentalAlert.alertId = response.alertId
-                            
-                        }) { (_) in
-                            
-                            self.hideHudAsync()
-                            self.presentErrorAlert(UserFacingCommonError.generic)
-                            
-                        }
-                    } else {
-                        self.presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages.editAlertdetinationrequiredMessage)
-                    }
-                    
-                } else {
-                    presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages
-                        .editAlertEmptyWidowEndDateMessage)
+                    let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: selectedSize as! String )
+                    self.anlyticsBedroomSize = self.anlyticsBedroomSize.appending(bedroomSize)
+                    let selectedUnitSize = UnitSize(rawValue: selectedSize as! String)
+                    unitsizearray.append(selectedUnitSize!)
                 }
+                rentalAlert.unitSizes = unitsizearray
             } else {
                 
-                presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages
-                    .editAlertEmptyWidowStartDateMessage)
-                
+                for unitsize in Constant.MyClassConstants.bedRoomSize {
+                    let bedroomSize = Helper.bedRoomSizeToStringInteger(bedRoomSize: unitsize )
+                    self.anlyticsBedroomSize = self.anlyticsBedroomSize.appending("\(bedroomSize), ")
+                    let selectedUnitSize = UnitSize(rawValue: unitsize )
+                    unitsizearray.append(selectedUnitSize!)
+                }
+                rentalAlert.unitSizes = unitsizearray
             }
             
+            RentalClient.createAlert(Session.sharedSession.userAccessToken, alert: rentalAlert, onSuccess: { (response) in
+                var deststr: String = ""
+                for dest in Constant.MyClassConstants.alertSelectedDestination {
+                    
+                    deststr = deststr.appending("\(dest.destinationName), ")
+                }
+                let userInfo: [String: Any] = [
+                    Constant.omnitureEvars.eVar43: " - \(Date())",
+                    Constant.omnitureCommonString.listItem: deststr,
+                    Constant.omnitureEvars.eVar41: Constant.omnitureCommonString.alert,
+                    Constant.omnitureEvars.eVar57: startDate,
+                    Constant.omnitureEvars.eVar58: endDate,
+                    Constant.omnitureEvars.eVar59: self.anlyticsBedroomSize,
+                    Constant.omnitureEvars.eVar60: Constant.MyClassConstants.alertOriginationPoint
+                ]
+                
+                ADBMobile.trackAction(Constant.omnitureEvents.event52, data: userInfo)
+                self.hideHudAsync()
+                Constant.MyClassConstants.getawayAlertsArray.insert(rentalAlert, at: Constant.MyClassConstants.getawayAlertsArray.count)
+                let alertController = UIAlertController(title: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages.createAlertMessage, preferredStyle: .alert)
+                
+                // Create OK button
+                let OKAction = UIAlertAction(title: "OK", style: .default) { (_:UIAlertAction) in
+                     Constant.needToReloadAlert = true
+                    self.dismiss(animated: true, completion: nil)
+                }
+                alertController.addAction(OKAction)
+                
+                // Present Dialog message
+                self.present(alertController, animated: true, completion:nil)
+                rentalAlert.alertId = response.alertId
+                
+            }) { (_) in
+                
+                self.hideHudAsync()
+                self.presentErrorAlert(UserFacingCommonError.generic)
+                
+            }
+          } else {
+                presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages
+                    .editAlertEmptyNameMessage)
+          }
         } else {
-            presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages
-                .editAlertEmptyNameMessage)
+            self.presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages.editAlertdetinationrequiredMessage)
         }
-        
-    }
+                    
+}
     
     //***** function to dismiss present view controller on back button pressed *****//
     func menuBackButtonPressed(sender: UIBarButtonItem) {
@@ -264,37 +261,37 @@ class CreateAlertViewController: UIViewController {
     @IBAction func travelStartDateCalendarIconPressed(_ sender: AnyObject) {
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as! CalendarViewController
-        viewController.requestedDateWindow = Constant.MyClassConstants.start
-        let transitionManager = TransitionManager()
-        self.navigationController?.transitioningDelegate = transitionManager
-        self.navigationController!.pushViewController(viewController, animated: true)
+        if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as? CalendarViewController {
+            viewController.requestedDateWindow = Constant.MyClassConstants.start
+            let transitionManager = TransitionManager()
+            navigationController?.transitioningDelegate = transitionManager
+            navigationController?.pushViewController(viewController, animated: true)
+        }
+       
     }
     
     //***** function to call calendar screen to select travel end date *****//
     @IBAction func travelEndDateCalendarIconPressed(_ sender: AnyObject) {
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as! CalendarViewController
-        viewController.requestedDateWindow = Constant.MyClassConstants.end
-        let transitionManager = TransitionManager()
-        self.navigationController?.transitioningDelegate = transitionManager
-        self.navigationController!.pushViewController(viewController, animated: true)
-        
+        if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as? CalendarViewController {
+            viewController.requestedDateWindow = Constant.MyClassConstants.end
+            let transitionManager = TransitionManager()
+            navigationController?.transitioningDelegate = transitionManager
+            navigationController?.pushViewController(viewController, animated: true)
+        }
     }
     
     //***** function to call bedroom size screen to select bedroom size *****//
     @IBAction func selectRoomSizePressed(_ sender: AnyObject) {
         
         Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.createAlertViewController
-        var mainStoryboard = UIStoryboard()
-        
-        mainStoryboard = UIStoryboard(name: Constant.storyboardNames.getawayAlertsIphone, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: "BedroomSizeNav") as! UINavigationController
-        
-        let transitionManager = TransitionManager()
-        self.navigationController?.transitioningDelegate = transitionManager
-        self.navigationController!.present(viewController, animated: true, completion: nil)
+        let mainStoryboard = UIStoryboard(name: Constant.storyboardNames.getawayAlertsIphone, bundle: nil)
+        if let viewController = mainStoryboard.instantiateViewController(withIdentifier: "BedroomSizeNav") as? UINavigationController {
+            let transitionManager = TransitionManager()
+            navigationController?.transitioningDelegate = transitionManager
+            navigationController?.present(viewController, animated: true, completion: nil)
+        }
         
     }
     
@@ -302,25 +299,14 @@ class CreateAlertViewController: UIViewController {
     @IBAction func addLocationPressed(_ sender: IUIKButton) {
         
         Constant.MyClassConstants.runningFunctionality = Constant.MyClassConstants.createAlert
-        if(Constant.RunningDevice.deviceIdiom == .pad) {
-            
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.resortDirectoryIpad, bundle: nil)
-            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortDirectoryVC) as! GoogleMapViewController
+        let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+        let storyboardName = isRunningOnIphone ? Constant.storyboardNames.iphone : Constant.storyboardNames.resortDirectoryIpad
+       let mainStoryboard: UIStoryboard = UIStoryboard(name: storyboardName, bundle: nil)
+       if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortDirectoryVC) as? GoogleMapViewController {
             viewController.sourceController = Constant.MyClassConstants.createAlert
-            
             let transitionManager = TransitionManager()
-            self.navigationController?.transitioningDelegate = transitionManager
-            self.navigationController!.pushViewController(viewController, animated: true)
-        } else {
-            
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
-            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortDirectoryVC) as! GoogleMapViewController
-            viewController.sourceController = Constant.MyClassConstants.createAlert
-            
-            let transitionManager = TransitionManager()
-            self.navigationController?.transitioningDelegate = transitionManager
-            self.navigationController!.pushViewController(viewController, animated: true)
-            
+            navigationController?.transitioningDelegate = transitionManager
+            navigationController?.pushViewController(viewController, animated: true)
         }
         
     }
@@ -347,12 +333,10 @@ extension CreateAlertViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        if(indexPath.row == selectedIndex) {
-            
+        if indexPath.row == selectedIndex {
             selectedIndex = -1
             collectionView.reloadData()
         } else {
-            
             self.selectedIndex = indexPath.row
             collectionView.reloadData()
         }
@@ -368,17 +352,22 @@ extension CreateAlertViewController: UICollectionViewDataSource {
         
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.customCellNibNames.wereToGoTableViewCell, for: indexPath as IndexPath) as! WhereToGoCollectionViewCell
-        if(indexPath.row == selectedIndex ) {
-            let object = Constant.MyClassConstants.selectedGetawayAlertDestinationArray[indexPath.row] as AnyObject
-            if(object.isKind(of: NSArray.self)) {
-                
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.customCellNibNames.wereToGoTableViewCell, for: indexPath as IndexPath) as? WhereToGoCollectionViewCell else { return UICollectionViewCell() }
+        if indexPath.row == selectedIndex {
+            
+            switch Constant.MyClassConstants.selectedGetawayAlertDestinationArray[indexPath.row] {
+            case .resorts(_):
                 cell.deletebutton.isHidden = false
                 cell.infobutton.isHidden = false
-            } else {
                 
+            case .resort(_):
                 cell.deletebutton.isHidden = false
                 cell.infobutton.isHidden = true
+                
+            case .destination(_):
+                cell.deletebutton.isHidden = false
+                cell.infobutton.isHidden = true
+                
             }
         } else {
             
@@ -386,47 +375,45 @@ extension CreateAlertViewController: UICollectionViewDataSource {
             cell.infobutton.isHidden = true
         }
         
-        let object = Constant.MyClassConstants.selectedGetawayAlertDestinationArray[indexPath.row] as AnyObject
-        if(object.isKind(of: Resort.self)) {
+        switch Constant.MyClassConstants.selectedGetawayAlertDestinationArray[indexPath.row] {
+        case .resort( let resort):
+           
+                var resortNm = ""
+                var resortCode = ""
+                if let restName = resort.resortName {
+                    resortNm = restName
+                }
+                if let restcode = resort.resortCode {
+                    resortCode = restcode
+                }
+                cell.lblTitle.text = "\(resortNm) (\(resortCode))".localized()
             
+        case .destination(let destination):
+            var name = ""
+            var trcode = ""
+            if let destName = destination.destinationName {
+                name = destName
+            }
+            if let terocode = destination.address?.territoryCode {
+                trcode = terocode
+            }
+            cell.lblTitle.text = "\(name), \(trcode)".localized()
+            
+        case .resorts(let resorts):
             var resortNm = ""
             var resortCode = ""
-            if let restName = (object as! Resort).resortName {
+            if let restName = resorts[0].resortName {
                 resortNm = restName
             }
-            
-            if let restcode = (object as! Resort).resortCode {
-                
+            if let restcode = resorts[0].resortCode {
                 resortCode = restcode
             }
-            cell.lblTitle.text = "\(resortNm) (\(resortCode))"
-            
-        } else if(object.isKind(of: NSArray.self)) {
-            
-            var resortNm = ""
-            var resortCode = ""
-            if let restName = (object.firstObject as! Resort).resortName {
-                resortNm = restName
+            var resortNameString = "\(resortNm) (\(resortCode))".localized()
+            if resorts.count > 1 {
+                resortNameString = resortNameString.appending(" and \(resorts.count - 1) more")
             }
             
-            if let restcode = (object.firstObject as! Resort).resortCode {
-                
-                resortCode = restcode
-            }
-            var resortNameString = "\(resortNm) (\(resortCode))"
-            if(object.count > 1) {
-                resortNameString = resortNameString.appending(" and \(object.count - 1) more")
-            }
-            
-            cell.lblTitle.text = resortNameString
-            
-        } else {
-            
-            let destName = (object as! AreaOfInfluenceDestination).destinationName
-            
-            let terocode = (object as! AreaOfInfluenceDestination).address!.territoryCode!
-            cell.lblTitle.text = "\(destName!), \(terocode)"
-            
+            cell.lblTitle.text = resortNameString.localized()
         }
         
         cell.deletebutton.tag = indexPath.row
@@ -451,12 +438,13 @@ extension CreateAlertViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
         let delete = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: Constant.buttonTitles.remove) { (_, index) -> Void in
-            if(Constant.MyClassConstants.selectedGetawayAlertDestinationArray.count > 0) {
+            if !Constant.MyClassConstants.selectedGetawayAlertDestinationArray.isEmpty {
                 
-                Constant.MyClassConstants.selectedGetawayAlertDestinationArray.removeObject(at: indexPath.row)
+                Constant.MyClassConstants.selectedGetawayAlertDestinationArray.remove(at: indexPath.row)
                 Constant.MyClassConstants.realmStoredDestIdOrCodeArray.removeObject(at: indexPath.row)
             }
             tableView.deleteRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
+            tableView.reloadData()
             let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC)))
             DispatchQueue.main.asyncAfter(deadline: delayTime, execute: {
                 tableView.reloadSections(NSIndexSet(index: indexPath.section) as IndexSet, with: .automatic)
@@ -467,32 +455,22 @@ extension CreateAlertViewController: UITableViewDelegate {
         
         let details = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.details) { (_, _) -> Void in
             
-            if(Constant.RunningDevice.deviceIdiom == .pad) {
-                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.getawayAlertsIpad, bundle: nil)
-                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.infoDetailViewController) as! InfoDetailViewController
+            let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+            let storyboardName = isRunningOnIphone ? Constant.storyboardNames.iphone : Constant.storyboardNames.resortDirectoryIpad
+           let mainStoryboard: UIStoryboard = UIStoryboard(name: storyboardName, bundle: nil)
+            if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.infoDetailViewController) as? InfoDetailViewController {
                 viewController.selectedIndex = indexPath.row
-                self.navigationController!.present(viewController, animated: true, completion: nil)
-            } else {
-                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.getawayAlertsIphone, bundle: nil)
-                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.infoDetailViewController) as! InfoDetailViewController
-                viewController.selectedIndex = indexPath.row
-                self.navigationController!.present(viewController, animated: true, completion: nil)
+                self.navigationController?.present(viewController, animated: true, completion: nil)
             }
         }
         details.backgroundColor = UIColor(red: 0 / 255.0, green: 119.0 / 255.0, blue: 190.0 / 255.0, alpha: 1.0)
         
-        if((Constant.MyClassConstants.selectedGetawayAlertDestinationArray[indexPath.row] as AnyObject) .isKind(of: NSMutableArray.self)) {
+        if (Constant.MyClassConstants.selectedGetawayAlertDestinationArray[indexPath.row] as AnyObject).isKind(of: NSMutableArray.self) {
             return [delete, details]
         } else {
             return [delete]
         }
-        
     }
-    
-    @nonobjc func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: IndexPath) {
-        
-    }
-    
 }
 
 extension CreateAlertViewController: UITableViewDataSource {
@@ -510,7 +488,7 @@ extension CreateAlertViewController: UITableViewDataSource {
         
         //***** adding custom add button to search destination or resort *****//
         
-        if(Constant.MyClassConstants.selectedGetawayAlertDestinationArray.count == 0 || indexPath.row == Constant.MyClassConstants.selectedGetawayAlertDestinationArray.count) {
+        if Constant.MyClassConstants.selectedGetawayAlertDestinationArray.count == 0 || indexPath.row == Constant.MyClassConstants.selectedGetawayAlertDestinationArray.count {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cellIdentifier, for: indexPath as IndexPath)
             cell.selectionStyle = UITableViewCellSelectionStyle.none
@@ -531,10 +509,10 @@ extension CreateAlertViewController: UITableViewDataSource {
             return cell
         } else {
             
-            let cell: WhereToGoContentCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.whereToGoContentCell, for: indexPath as IndexPath) as! WhereToGoContentCell
+            guard let cell: WhereToGoContentCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.whereToGoContentCell, for: indexPath ) as? WhereToGoContentCell else { return UITableViewCell() }
             
             //***** condition to check for show hide or and seprator on cell *****//
-            if(indexPath.row == Constant.MyClassConstants.selectedGetawayAlertDestinationArray.count - 1 || Constant.MyClassConstants.selectedGetawayAlertDestinationArray.count == 0) {
+            if indexPath.row == Constant.MyClassConstants.selectedGetawayAlertDestinationArray.count - 1 || Constant.MyClassConstants.selectedGetawayAlertDestinationArray.count == 0 {
                 
                 cell.sepratorOr.isHidden = true
                 cell.sepratorView.isHidden = true
@@ -543,48 +521,41 @@ extension CreateAlertViewController: UITableViewDataSource {
                 cell.sepratorOr.isHidden = false
                 cell.sepratorView.isHidden = false
             }
-            let object = Constant.MyClassConstants.selectedGetawayAlertDestinationArray[indexPath.row] as AnyObject
-            if(object.isKind(of: Resort.self)) {
-                
+            
+            switch Constant.MyClassConstants.selectedGetawayAlertDestinationArray[indexPath.row] {
+            case .resort(let resort):
                 var resortNm = ""
                 var resortCode = ""
-                if let restName = (object as! Resort).resortName {
+                if let restName = resort.resortName {
                     resortNm = restName
                 }
-                
-                if let restcode = (object as! Resort).resortCode {
-                    
+                if let restcode = resort.resortCode {
                     resortCode = restcode
                 }
                 cell.whereTogoTextLabel.text = "\(resortNm) (\(resortCode))"
                 
-            } else if(object.isKind(of: NSArray.self)) {
+            case .destination(let dest):
+                let destName = dest.destinationName ?? ""
+                let terocode = dest.address?.territoryCode ?? ""
+                cell.whereTogoTextLabel.text = "\(destName), \(String(describing: terocode))"
                 
+            case .resorts(let resorts):
                 var resortNm = ""
                 var resortCode = ""
-                if let restName = (object.firstObject as! Resort).resortName {
+                if let restName = resorts[0].resortName {
                     resortNm = restName
                 }
-                
-                if let restcode = (object.firstObject as! Resort).resortCode {
-                    
+                if let restcode = resorts[0].resortCode {
                     resortCode = restcode
                 }
                 var resortNameString = "\(resortNm) (\(resortCode))"
-                if(object.count > 1) {
-                    resortNameString = resortNameString.appending(" and \(object.count - 1) more")
+                if resorts.count > 1 {
+                    resortNameString = resortNameString.appending(" and \(resorts.count - 1) more")
                 }
                 cell.whereTogoTextLabel.text = resortNameString
-                
-            } else {
-                
-                let destName = (object as! AreaOfInfluenceDestination).destinationName!
-                
-                let terocode = (object as! AreaOfInfluenceDestination).address?.territoryCode ?? ""
-                cell.whereTogoTextLabel.text = "\(destName), \(String(describing: terocode))"
             }
+           
             cell.selectionStyle = UITableViewCellSelectionStyle.none
-            
             return cell
         }
         
@@ -598,8 +569,8 @@ extension CreateAlertViewController: WhereToGoCollectionViewCellDelegate {
     
     func deleteButtonClickedAtIndex(_ Index: Int) {
         
-        if(Constant.MyClassConstants.selectedGetawayAlertDestinationArray.count > 0) {
-            Constant.MyClassConstants.selectedGetawayAlertDestinationArray.removeObject(at: Index)
+        if !Constant.MyClassConstants.selectedGetawayAlertDestinationArray.isEmpty {
+            Constant.MyClassConstants.selectedGetawayAlertDestinationArray.remove(at: Index)
             selectedIndex = -1
         }
         let deletionIndexPath = IndexPath(item: Index, section: 0)
