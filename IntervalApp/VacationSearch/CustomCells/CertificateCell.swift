@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CertificateCell: UITableViewCell {
+final class CertificateCell: UITableViewCell {
     
     // Travel Window Outlets...
     @IBOutlet weak var travelWindowStartDateLbl: UILabel!
@@ -24,9 +24,4 @@ class CertificateCell: UITableViewCell {
     @IBOutlet weak var statusLbl: UILabel!
     @IBOutlet weak var certificateInfoButton: UIButton!
     
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
-    }
 }
