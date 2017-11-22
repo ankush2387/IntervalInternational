@@ -122,7 +122,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
         if Constant.RunningDevice.deviceIdiom == .pad {
             
             actionSheetController.popoverPresentationController?.sourceRect = CGRect(x:self.view.bounds.size.width,y:0, width:100, height:60)
-            actionSheetController.popoverPresentationController?.permittedArrowDirections = .up;
+            actionSheetController.popoverPresentationController?.permittedArrowDirections = .up
         }
         
         //Present the AlertController

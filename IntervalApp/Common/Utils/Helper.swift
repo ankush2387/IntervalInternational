@@ -70,7 +70,7 @@ public class Helper{
         case "Date":
             dateFormatter.dateFormat = "d"
             var dateFromString = dateFormatter.string(from: dateString as Date)
-            if(dateFromString.characters.count == 1){
+            if dateFromString.characters.count == 1 {
                 dateFromString = "0\(dateFromString)"
             }
             return dateFromString
@@ -213,7 +213,7 @@ public class Helper{
                 (accessToken) in
                 //we are redirected to the success block but the access token is nil we check it first
                 
-                if(accessToken.token != nil) {
+                if accessToken.token != nil {
                     // Next, get the contact information.  See how many memberships this user has.
                     Session.sharedSession.userAccessToken = accessToken
                     // let the caller UI know the status of the login
@@ -227,10 +227,8 @@ public class Helper{
                 // Got an access token!  Save it for later use.
                 // Next, get the contact information.  See how many memberships this user has.
             },
-           onError:{ (error) in
+           onError:{ _ in
             sender.hideHudAsync()
-            
-            Logger.sharedInstance.warning(error.description)
             sender.presentErrorAlert(UserFacingCommonError.generic)
             completionHandler(false)
             }
@@ -259,9 +257,8 @@ public class Helper{
                 //***** Next, get the contact information.  See how many memberships this user has. *****//
                 contactDidChange(sender: sender)
             },
-             onError:{(error) in
+             onError:{ _ in
                 sender.hideHudAsync()
-                Logger.sharedInstance.warning(error.description)
                 sender.presentErrorAlert(UserFacingCommonError.generic)
             })
         }
@@ -279,7 +276,7 @@ public class Helper{
                 
                 if contact.memberships!.count == 1 {
                     
-                    if(Constant.MyClassConstants.signInRequestedController is SignInPreLoginViewController ) {
+                    if Constant.MyClassConstants.signInRequestedController is SignInPreLoginViewController  {
                         
                         Session.sharedSession.selectedMembership = contact.memberships![0]
                         CreateActionSheet().membershipWasSelected()
@@ -296,16 +293,13 @@ public class Helper{
                     //***** TODO: Display Modal to allow the user to select a membership! *****//
                     if (UIDevice.current.userInterfaceIdiom == .pad) {
                         
-                        if(sender is SignInPreLoginViewController){
+                        if sender is SignInPreLoginViewController {
                             sender.perform(#selector(SignInPreLoginViewController.createActionSheet(_:)), with: nil, afterDelay: 0.0)
-                        }else{
-                            
                         }
-                        
                     }
                     else {
                         
-                        if(sender is SignInPreLoginViewController){
+                        if sender is SignInPreLoginViewController {
                             let userInfo: [String: String] = [
                                 Constant.omnitureEvars.eVar81 : Constant.omnitureCommonString.preloginChooseMemberShip
                             ]
@@ -327,7 +321,7 @@ public class Helper{
     
     //***** Common function for user Favorites resort API call after successfull call *****//
     static func getUserFavorites(CompletionBlock: @escaping ((Error?) -> Void)) {
-        if(Session.sharedSession.userAccessToken != nil){
+        if Session.sharedSession.userAccessToken != nil {
             UserClient.getFavoriteResorts(Session.sharedSession.userAccessToken, onSuccess: { (response) in
                 Constant.MyClassConstants.favoritesResortArray.removeAll()
                 for item in [response][0] {
@@ -342,7 +336,7 @@ public class Helper{
                 }
                 NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
             })
-            { (error) in
+            { error in
                 CompletionBlock(error)
             }
         }
@@ -359,7 +353,7 @@ public class Helper{
                 sendOmnitureTrackCallForEvent2()
             }
             NotificationCenter.default.post(name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: self)
-        }, onError: {(error) in
+        }, onError: { error in
             
             Constant.MyClassConstants.isEvent2Ready += 1
             if Constant.MyClassConstants.isEvent2Ready > 1  {
@@ -376,16 +370,14 @@ public class Helper{
         Constant.GetawaySearchResultGuestFormDetailData.countryCodeArray.removeAll()
         LookupClient.getCountries(Constant.MyClassConstants.systemAccessToken!, onSuccess: { (response) in
             
-            for country in (response ){
+            for country in (response ) {
                 Constant.GetawaySearchResultGuestFormDetailData.countryListArray.append(country)
                 Constant.GetawaySearchResultGuestFormDetailData.countryCodeArray.append(country.countryCode!)
             }
             viewController.hideHudAsync()
-            
-            
-        }) { (error) in
+        
+        }) { _ in
             viewController.hideHudAsync()
-            viewController.presentErrorAlert(UserFacingCommonError.generic)
             viewController.presentErrorAlert(UserFacingCommonError.generic)
         }
         
@@ -401,7 +393,7 @@ public class Helper{
                 Constant.GetawaySearchResultGuestFormDetailData.stateCodeArray.append(state.code!)
             }
             
-        }, onError: { (error) in
+        }, onError: {_ in
             viewController.hideHudAsync()
             viewController.presentErrorAlert(UserFacingCommonError.generic)
         })
@@ -421,7 +413,7 @@ public class Helper{
             
             for imgStr in imagesArray {
                 
-                if(imgStr.size == Constant.MyClassConstants.imageSize) {
+                if imgStr.size == Constant.MyClassConstants.imageSize {
                     
                     Constant.MyClassConstants.imagesArray.add(imgStr.url!)
                 }
@@ -431,7 +423,7 @@ public class Helper{
             
             viewController.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: self)
         })
-        { (error) in
+        { _ in
             viewController.hideHudAsync()
             viewController.presentErrorAlert(UserFacingCommonError.generic)
         }
@@ -453,7 +445,7 @@ public class Helper{
                 Constant.MyClassConstants.resortsArray = response.resorts
                 //DarwinSDK.logger.debug(response.resorts[0].promotions)
                 senderVC.hideHudAsync()
-                if(senderVC is VacationSearchViewController || senderVC is VacationSearchIPadViewController ) {
+                if senderVC is VacationSearchViewController || senderVC is VacationSearchIPadViewController {
                     
                     // omniture tracking with event 33
                     let userInfo: [String: Any] = [
@@ -473,7 +465,7 @@ public class Helper{
                     senderVC.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
                 }else if (senderVC is GetawayAlertsIPhoneViewController){
                     
-                    if(Constant.RunningDevice.deviceIdiom == .pad){
+                    if Constant.RunningDevice.deviceIdiom == .pad {
                         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
                         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! VacationSearchResultIPadController
                         
@@ -493,7 +485,7 @@ public class Helper{
                     
                     senderVC.hideHudAsync()
                 } else {
-                    if(Constant.RunningDevice.deviceIdiom == .pad){
+                    if Constant.RunningDevice.deviceIdiom == .pad {
                         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
                         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! VacationSearchResultIPadController
                         
@@ -512,10 +504,9 @@ public class Helper{
                     senderVC.hideHudAsync()
                 }
                 
-            }, onError: { (error) in
+            }, onError: { _ in
                 
                 senderVC.hideHudAsync()
-                
                 Constant.MyClassConstants.showAlert = true
                 senderVC.presentErrorAlert(UserFacingCommonError.generic)
             })
@@ -538,7 +529,7 @@ public class Helper{
             requiredMemberNumber = membernumber
         }
         let realmLocalStorage = realm.objects(RealmLocalStorage.self).filter("membeshipNumber == '\(requiredMemberNumber)'")
-        if(realmLocalStorage.count > 0) {
+        if realmLocalStorage.count > 0 {
             return realmLocalStorage
         }
         else {
@@ -618,7 +609,7 @@ public class Helper{
             for obj in realmLocalStorage {
                 let destination = obj.destinations
                 for destname in destination {
-                    if(destname.territorrycode == ""){
+                    if destname.territorrycode == "" {
                         Constant.MyClassConstants.whereTogoContentArray.add("\(destname.destinationName)")
                     }else{
                         Constant.MyClassConstants.whereTogoContentArray.add("\(destname.destinationName), \(destname.territorrycode)")
@@ -631,7 +622,7 @@ public class Helper{
                 }
                 let resort = obj.resorts
                 for resortname in resort {
-                    if(resortname.resortArray.count == 0) {
+                    if resortname.resortArray.count == 0 {
                         Constant.MyClassConstants.whereTogoContentArray.add(resortname.resortName)
                         Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(resortname.resortCode)
                         Constant.MyClassConstants.selectedDestinationNames = Constant.MyClassConstants.selectedDestinationNames.appending("\(resortname.resortCode) ,")
@@ -676,30 +667,30 @@ public class Helper{
             for obj in realmLocalStorage {
                 let openWeeks = obj.openWeeks
                 for openWk in openWeeks {
-                    if(openWk.openWeeks.count > 0){
+                    if openWk.openWeeks.count > 0 {
                         
                         for object in openWk.openWeeks {
                             
                             Constant.MyClassConstants.realmOpenWeeksID.add(object.relinquishmentID)
                             let tempDict = NSMutableDictionary()
-                            if(object.isFloat){
-                                if(object.isFloatRemoved){
+                            if object.isFloat {
+                                if object.isFloatRemoved {
                                     Constant.MyClassConstants.floatRemovedArray.add(object)
-                                }else if(object.floatDetails.count > 0 && !object.isFloatRemoved && object.isFromRelinquishment){
+                                }else if object.floatDetails.count > 0 && !object.isFloatRemoved && object.isFromRelinquishment {
                                     Constant.MyClassConstants.whatToTradeArray.add(object)
-                                    if(!Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID)){
+                                    if !Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID){
                                         Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
                                     }
                                 }
                             }else{
                                 Constant.MyClassConstants.whatToTradeArray.add(object)
-                                if(!Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID)){
+                                if !Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID){
                                     Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
                                 }
                             }
                             Constant.MyClassConstants.idUnitsRelinquishmentDictionary.setValue(object.unitDetails, forKey: object.relinquishmentID)
                             tempDict.setValue(object.unitDetails, forKey: object.relinquishmentID)
-                            if(!object.isFloatRemoved){
+                            if !object.isFloatRemoved {
                                 Constant.MyClassConstants.relinquishmentUnitsArray.add(tempDict)
                             }
                         }
@@ -709,24 +700,24 @@ public class Helper{
                             
                             Constant.MyClassConstants.realmOpenWeeksID.add(object.relinquishmentID)
                             let tempDict = NSMutableDictionary()
-                            if(object.isFloat){
-                                if(object.isFloatRemoved){
+                            if object.isFloat {
+                                if object.isFloatRemoved {
                                     Constant.MyClassConstants.floatRemovedArray.add(object)
-                                }else if(object.floatDetails.count > 0 && !object.isFloatRemoved && object.isFromRelinquishment){
+                                }else if object.floatDetails.count > 0 && !object.isFloatRemoved && object.isFromRelinquishment {
                                     Constant.MyClassConstants.whatToTradeArray.add(object)
-                                    if(!Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID)){
+                                    if !Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID){
                                         Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
                                     }
                                 }
                             }else{
                                 Constant.MyClassConstants.whatToTradeArray.add(object)
-                                if(!Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID)){
+                                if !Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID) {
                                     Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
                                 }
                             }
                             Constant.MyClassConstants.idUnitsRelinquishmentDictionary.setValue(object.unitDetails, forKey: object.relinquishmentID)
                             tempDict.setValue(object.unitDetails, forKey: object.relinquishmentID)
-                            if(!object.isFloatRemoved){
+                            if !object.isFloatRemoved {
                                 Constant.MyClassConstants.relinquishmentUnitsArray.add(tempDict)
                             }
                         }
@@ -734,7 +725,7 @@ public class Helper{
                     } else{
                         
                         Constant.MyClassConstants.whatToTradeArray.add(openWk.pProgram)
-                        if(!Constant.MyClassConstants.relinquishmentIdArray.contains(openWk.pProgram[0].relinquishmentId)){
+                        if !Constant.MyClassConstants.relinquishmentIdArray.contains(openWk.pProgram[0].relinquishmentId) {
                             Constant.MyClassConstants.relinquishmentIdArray.add(openWk.pProgram[0].relinquishmentId)
                         }
                         Constant.MyClassConstants.relinquishmentAvailablePointsProgram = Int((openWk.pProgram[0].availablePoints))
@@ -931,10 +922,9 @@ public class Helper{
             
             senderVC.hideHudAsync()
         },
-                                   onError: {(error) in
-                                    
-                                    senderVC.hideHudAsync()
-                                    senderVC.presentErrorAlert(UserFacingCommonError.generic)
+           onError: {_ in
+            senderVC.hideHudAsync()
+            senderVC.presentErrorAlert(UserFacingCommonError.generic)
                                     
         })
     }
@@ -944,7 +934,7 @@ public class Helper{
         ExchangeClient.getFlexExchangeDeals(Session.sharedSession.userAccessToken, onSuccess: { (response) in
             Constant.MyClassConstants.flexExchangeDeals = response
             success(true)
-        }) { (error) in
+        }) { _ in
             success(false)
             senderVC.presentErrorAlert(UserFacingCommonError.generic)
             
@@ -954,18 +944,18 @@ public class Helper{
     //***** common function that contains API call to get areas with access token *****//
     static func getResortDirectoryRegionList(viewController:UIViewController) {
         
-        if(Constant.MyClassConstants.systemAccessToken?.token != nil){
+        if Constant.MyClassConstants.systemAccessToken?.token != nil {
             
             viewController.showHudAsync()
             DirectoryClient.getRegions(Constant.MyClassConstants.systemAccessToken, onSuccess: {(response) in
                 Constant.MyClassConstants.resortDirectoryRegionArray = response
-                if(!(viewController is ResortDirectoryTabController)){
+                if !(viewController is ResortDirectoryTabController) {
                     viewController.performSegue(withIdentifier: Constant.segueIdentifiers.resortDirectorySegue, sender: self)
                 }
                 
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadRegionNotification), object: nil)
                 viewController.hideHudAsync()
-            },    onError: {(error) in
+            },    onError: {_ in
                 
                 viewController.hideHudAsync()
             })
@@ -984,11 +974,8 @@ public class Helper{
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadRegionNotification), object: nil)
             value = true
             
-        }, onError: {(error) in
-            
-            
+        }, onError: {_ in
             value = false
-            
         })
         return value
     }
@@ -997,7 +984,7 @@ public class Helper{
     static func isResrotFavorite(resortCode:String) -> Bool {
         var status = false
         
-        if(Constant.MyClassConstants.favoritesResortCodeArray.contains(resortCode)) {
+        if Constant.MyClassConstants.favoritesResortCodeArray.contains(resortCode) {
             
             status = true
         }
@@ -1011,7 +998,7 @@ public class Helper{
             Constant.MyClassConstants.resortsArray = response
             value = true
             
-        }) { (error) in
+        }) {_ in
             value = false
         }
         return value
@@ -1027,7 +1014,7 @@ public class Helper{
             senderViewController.performSegue(withIdentifier: Constant.floatDetailViewController.clubresortviewcontrollerIdentifier, sender: self)
             
             
-        }) { (error) in
+        }) {_ in
             
             senderViewController.hideHudAsync()
             senderViewController.presentErrorAlert(UserFacingCommonError.generic)
@@ -1039,7 +1026,7 @@ public class Helper{
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.floatViewController) as! FloatDetailViewController
         viewController.floatResortDetails = floatResortDetails
-        if(isFromLockOff){
+        if isFromLockOff {
             viewController.isFromLockOff = true
         }
         getOrderedSections(floatAttributesArray: viewController.floatAttributesArray, atrributesRowArray: viewController.atrributesRowArray)
@@ -1057,14 +1044,14 @@ public class Helper{
             floatAttributesArray.add(Constant.MyClassConstants.resortClubAttribute)
         }
         floatAttributesArray.add(Constant.MyClassConstants.resortAttributes)
-        if(Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.resortReservationAttribute)){
+        if Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.resortReservationAttribute){
             atrributesRowArray.add(Constant.MyClassConstants.resortReservationAttribute)
         }
-        if(Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.unitNumberAttribute)){
+        if Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.unitNumberAttribute) {
             atrributesRowArray.add(Constant.MyClassConstants.unitNumberAttribute)
         }
         atrributesRowArray.add(Constant.MyClassConstants.noOfBedroomAttribute)
-        if(Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.checkInDateAttribute)){
+        if Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.checkInDateAttribute) {
             atrributesRowArray.add(Constant.MyClassConstants.checkInDateAttribute)
         }
         
@@ -1078,7 +1065,7 @@ public class Helper{
             
             senderViewController.hideHudAsync()
             
-            if(resortCalendar.count > 0){
+            if resortCalendar.count > 0 {
                 Constant.MyClassConstants.relinquishmentFloatDetialMinDate = self.convertStringToDate(dateString: resortCalendar[0].checkInDate!, format: Constant.MyClassConstants.dateFormat)
                 Constant.MyClassConstants.relinquishmentFloatDetialMaxDate = self.convertStringToDate(dateString: (resortCalendar.last?.checkInDate!)!, format: Constant.MyClassConstants.dateFormat)
                 for calendarDetails in resortCalendar{
@@ -1087,7 +1074,7 @@ public class Helper{
                 }
                 
                 var mainStoryboard = UIStoryboard()
-                if(Constant.RunningDevice.deviceIdiom == .pad) {
+                if Constant.RunningDevice.deviceIdiom == .pad {
                     mainStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
                 }
                 else {
@@ -1102,10 +1089,9 @@ public class Helper{
                 senderViewController.presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.noDatesMessage)
             }
             
-        }) { (error) in
+        }) {_ in
             
             senderViewController.hideHudAsync()
-            
             senderViewController.presentErrorAlert(UserFacingCommonError.generic)
         }
     }
@@ -1190,7 +1176,7 @@ public class Helper{
         detailLabel.font = UIFont(name: "Helvetica",size: 12)
         noResortView.addSubview(detailLabel)
         
-        if(Constant.RunningDevice.deviceIdiom == .pad){
+        if Constant.RunningDevice.deviceIdiom == .pad {
             detailLabel.font = UIFont(name: "Helvetica", size:30)
             titleLabel.font = UIFont(name: "Helvetica", size:30)
         }
@@ -1255,16 +1241,16 @@ public class Helper{
             
             for imgStr in imagesArray {
                 intervalPrint(imgStr.url!)
-                if(imgStr.size == Constant.MyClassConstants.imageSize) {
+                if imgStr.size == Constant.MyClassConstants.imageSize {
                     Constant.MyClassConstants.imagesArray.add(imgStr.url!)
                 }
             }
-            if(Constant.RunningDevice.deviceIdiom == .pad) {
+            if Constant.RunningDevice.deviceIdiom == .pad {
                 
-                if(Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.isFromSearchBoth){
+                if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.isFromSearchBoth {
                     
                     var storyBoard = UIStoryboard()
-                    if(viewcontroller.isKind(of:WhatToUseViewController.self)) {
+                    if viewcontroller.isKind(of:WhatToUseViewController.self) {
                         storyBoard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
                         let viewController = storyBoard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortVC)
                         viewcontroller.navigationController!.view.layer.add(self.bottomToTopTransition(), forKey: kCATransition)
@@ -1304,13 +1290,10 @@ public class Helper{
             viewcontroller.hideHudAsync()
             
         })
-        { (error) in
+        {_ in
             viewcontroller.hideHudAsync()
-            
             viewcontroller.presentErrorAlert(UserFacingCommonError.generic)
         }
-        
-        
     }
     
     static func getBuildVersion() -> String {
@@ -1357,7 +1340,7 @@ public class Helper{
             categoryString = VideoCategory.Area
         }
         
-        if(Constant.MyClassConstants.systemAccessToken?.token != nil){
+        if Constant.MyClassConstants.systemAccessToken?.token != nil {
             
             LookupClient.getVideos(Constant.MyClassConstants.systemAccessToken!, category: categoryString, onSuccess: {(videos) in
                 
@@ -1380,7 +1363,7 @@ public class Helper{
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadVideosNotification), object: nil)
                 senderViewcontroller.hideHudAsync()
             },
-                                   onError: {(error) in
+                                   onError: {_ in
                                     senderViewcontroller.hideHudAsync()
             })
         }else{
@@ -1390,7 +1373,7 @@ public class Helper{
     
     //***** Function to get a list of magazines. *****//
     static func getMagazines(senderViewController:UIViewController){
-        if(Constant.MyClassConstants.systemAccessToken?.token != nil){
+        if Constant.MyClassConstants.systemAccessToken?.token != nil {
             
             LookupClient.getMagazines(Constant.MyClassConstants.systemAccessToken!,
                                       onSuccess: {(magazines) in
@@ -1400,7 +1383,7 @@ public class Helper{
                                         
                                         senderViewController.hideHudAsync()
             },
-                                      onError: {(error) in
+                                      onError: {_ in
                                         
                                         senderViewController.hideHudAsync()
             })
@@ -1477,13 +1460,9 @@ public class Helper{
     // function to return attributed string
     static func attributedString(from string: String, nonBoldRange: NSRange?, font:UIFont) -> NSAttributedString {
         let fontSize = UIFont.systemFontSize
-        let attrs = [
-            NSFontAttributeName: UIFont.boldSystemFont(ofSize: fontSize),
-            NSForegroundColorAttributeName: UIColor.black
-        ]
-        let nonBoldAttribute = [
-            NSFontAttributeName: font,
-            ]
+        let attrs = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: fontSize),
+            NSForegroundColorAttributeName: UIColor.black]
+        let nonBoldAttribute = [NSFontAttributeName: font,]
         let attrStr = NSMutableAttributedString(string: string, attributes: attrs)
         if let range = nonBoldRange {
             attrStr.setAttributes(nonBoldAttribute, range: range)
@@ -1496,9 +1475,7 @@ public class Helper{
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
-        
         let dateStr = dateFormatter.string(from: date)
-        
         return dateStr
     }
     // function to return date from dateString
@@ -1507,7 +1484,7 @@ public class Helper{
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
         var dateString1 = dateString
-        if(dateString1 == ""){
+        if dateString1 == "" {
             dateString1 = "2017-08-19"
         }
         let date = dateFormatter.date(from: dateString1)
@@ -1522,7 +1499,7 @@ public class Helper{
             Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails = exchangeResponse
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadTripDetailsNotification), object: nil)
             
-        }) { (error) in
+        }) { _ in
             senderViewController.hideHudAsync()
             senderViewController.presentErrorAlert(UserFacingCommonError.generic)
         }
@@ -1681,7 +1658,7 @@ public class Helper{
     //Method for navigating to another storyboard
     static func switchStoryBoard(storyBoardNameIphone:String, storyBoardNameIpad:String, senderViewController:UIViewController){
         var mainStoryboard = UIStoryboard()
-        if(Constant.RunningDevice.deviceIdiom == .pad) {
+        if Constant.RunningDevice.deviceIdiom == .pad {
             mainStoryboard = UIStoryboard(name: storyBoardNameIphone, bundle: nil)
         }
         else {
@@ -1732,18 +1709,18 @@ public class Helper{
                                     senderViewController.hideHudAsync()
                                     if Constant.MyClassConstants.isFromSorting == false && Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType != VacationSearchType.Combined {
                                         helperDelegate?.resortSearchComplete()
-                                    }else{
+                                    } else {
                                         executeExchangeSearchDates(senderVC: senderViewController, vacationSearch: vacationSearch)
                                     }
                                     Constant.MyClassConstants.isFromSorting = false
                                     Constant.MyClassConstants.noAvailabilityView = false
                                     
         },
-                                   onError:{ (error) in
-                                    Constant.MyClassConstants.noAvailabilityView = true
-                                    Constant.MyClassConstants.isFromSorting = false
-                                    senderViewController.hideHudAsync()
-                                    senderViewController.presentErrorAlert(UserFacingCommonError.generic)
+           onError:{_ in
+            Constant.MyClassConstants.noAvailabilityView = true
+            Constant.MyClassConstants.isFromSorting = false
+            senderViewController.hideHudAsync()
+            senderViewController.presentErrorAlert(UserFacingCommonError.generic)
         }
         )
     }
@@ -1781,11 +1758,11 @@ public class Helper{
             let activeInterval = vacationSearch.bookingWindow.getActiveInterval()
             vacationSearch.updateActiveInterval(activeInterval: activeInterval)
             Constant.MyClassConstants.initialVacationSearch = vacationSearch
-            if(senderViewController.isKind(of: VacationSearchResultIPadController.self) || senderViewController.isKind(of: SearchResultViewController.self)  || senderViewController.isKind(of: SortingViewController.self) || senderViewController.isKind(of:AllAvailableDestinationViewController.self) || senderViewController.isKind(of: AllAvailableDestinationsIpadViewController.self) || senderViewController.isKind(of: FlexChangeSearchIpadViewController.self) || senderViewController.isKind(of: FlexchangeSearchViewController.self)){
+            if senderViewController.isKind(of: VacationSearchResultIPadController.self) || senderViewController.isKind(of: SearchResultViewController.self)  || senderViewController.isKind(of: SortingViewController.self) || senderViewController.isKind(of:AllAvailableDestinationViewController.self) || senderViewController.isKind(of: AllAvailableDestinationsIpadViewController.self) || senderViewController.isKind(of: FlexChangeSearchIpadViewController.self) || senderViewController.isKind(of: FlexchangeSearchViewController.self) {
                 helperDelegate?.resortSearchComplete()
-            }else{
+            } else {
                 helperDelegate?.resetCalendar()
-                if(Constant.RunningDevice.deviceIdiom == .pad){
+                if Constant.RunningDevice.deviceIdiom == .pad {
                     let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
                     let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! VacationSearchResultIPadController
                     
@@ -1803,7 +1780,7 @@ public class Helper{
             }
             
         })
-        { (error) in
+        { _ in
             senderViewController.hideHudAsync()
             senderViewController.presentErrorAlert(UserFacingCommonError.generic)
         }
@@ -1840,7 +1817,7 @@ public class Helper{
                                         executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat) , senderViewController: senderVC, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                     }
         },
-                                   onError:{ (error) in
+                                   onError:{ _ in
                                     senderVC.presentErrorAlert(UserFacingCommonError.generic)
                                     
         }
@@ -1882,7 +1859,7 @@ public class Helper{
                                     }
                                     
         },
-                                   onError:{ (error) in
+                                   onError:{ _ in
                                     senderVC.presentErrorAlert(UserFacingCommonError.generic)
         }
         )
@@ -1912,7 +1889,7 @@ public class Helper{
                                             helperDelegate?.resortSearchComplete()
                                             
         },
-                                          onError:{ (error) in
+                                          onError:{ _ in
                                             senderVC.presentErrorAlert(UserFacingCommonError.generic)
         }
         )
@@ -2050,16 +2027,12 @@ public class Helper{
                 
                 intervalPrint("success")
                 viewcontroller.presentAlert(with: "Success", message: "The confirmation email has been sent.")
-            }, onError: { (error) in
-                intervalPrint(error)
+            }, onError: { _ in
                 viewcontroller.presentAlert(with: "Error", message: "The Confirmation could not be sent at the moment.")
             })
         }
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
-            //cancel, dismiss alert
-        }
-        
+        let cancelAction =  UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+      
         resendAlert.addAction(submitAction)
         resendAlert.addAction(cancelAction)
         
@@ -2240,7 +2213,7 @@ public class Helper{
             Constant.MyClassConstants.activeAlertsArray.removeAllObjects()
             CreateActionSheet().getStatusForAllAlerts()
             
-        }) {[] (error) in
+        }) { error in
             CompletionBlock(error)
         }
     }

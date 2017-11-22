@@ -142,7 +142,7 @@ class CreateActionSheet: UITableViewController {
             }
                                     
         },
-           onError:{(error) in
+           onError:{_ in
             self.hideHudAsync()
             if let controller = Constant.MyClassConstants.signInRequestedController {
                 controller.dismiss(animated: true, completion: nil)
@@ -165,7 +165,7 @@ class CreateActionSheet: UITableViewController {
             }
             
             
-        }) { (error) in
+        }) {_ in
             
             if self.activeAlertCount < Constant.MyClassConstants.getawayAlertsArray.count - 1 {
                 self.activeAlertCount = self.activeAlertCount + 1
@@ -185,7 +185,10 @@ class CreateActionSheet: UITableViewController {
         
         var getawayAlert = RentalAlert()
         if let alertID = alert.alertId {
-            getawayAlert = Constant.MyClassConstants.alertsDictionary.value(forKey: String(describing: alertID)) as! RentalAlert
+            if let alert = Constant.MyClassConstants.alertsDictionary.value(forKey: String(describing: alertID)) as? RentalAlert {
+                getawayAlert = alert
+            }
+            
         }
         
         
@@ -242,7 +245,7 @@ class CreateActionSheet: UITableViewController {
                         }
                     }
                 })
-                { (error) in
+                {_ in
                     
                     Constant.MyClassConstants.isEvent2Ready = Constant.MyClassConstants.isEvent2Ready + 1
                     if Constant.MyClassConstants.isEvent2Ready > 1  {
@@ -260,7 +263,7 @@ class CreateActionSheet: UITableViewController {
         Constant.activeAlertCount = 0
         var viewResultAletArray = [RentalAlert]()
         var nothingYetArray = [RentalAlert]()
-        Constant.MyClassConstants.getawayAlertsArray.sort(by: { $0.alertId ?? 0 > $1.alertId ?? 0})
+        Constant.MyClassConstants.getawayAlertsArray.sort { $0.alertId ?? 0 > $1.alertId ?? 0 }
         for alert in Constant.MyClassConstants.getawayAlertsArray {
             if let alertId = alert.alertId {
                 

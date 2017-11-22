@@ -232,7 +232,7 @@ class Constant: NSObject {
         static var vacationSearchDestinationArray: NSMutableArray = []
         static var calendarDatesArray = [CalendarItem]()
         static var totalBucketArray = [CalendarItem]()
-        static var calendarCount: Int = 0
+        static var calendarCount = 0
         static var realmStoredDestIdOrCodeArray: NSMutableArray = []
         static var resortCodesArray: [String] = []
         static var searchAvailabilityHeader = ""
@@ -276,7 +276,7 @@ class Constant: NSObject {
         static let floatTitle = "Select one lock-off portion at a time".localized()
         static let bedroomTitle = "Choose Bedrooms".localized()
     
-        static var selectedIndex: Int = 0
+        static var selectedIndex = 0
         static var vacationSearchContentPagerRunningIndex = 0
         static var vacationSearchShowDate = Date()
         static var alertWindowStartDate: Date?
@@ -316,13 +316,13 @@ class Constant: NSObject {
         static var resortDirectoryAreaListArray = [Area]()
         static var resortDirectoryResortArray = [Resort]()
         static var viewController = UIViewController()
-        static var btnTag: Int = -1
+        static var btnTag = -1
         static var showAlert: Bool = false
         static let arrayResortInfo = ["Resort Information", "Amenities", "Member Ratings", "Travel Demand Index"]
         static var backgroundImageUrl: String = ""
         static var resortDescriptionString: String = ""
         static var resortsDescriptionArray = Resort()
-        static var collectionViewScrolledIndex: Int = 0
+        static var collectionViewScrolledIndex = 0
         static var imagesArray: NSMutableArray = []
         static var bedRoomSizeSelectedIndexArray: NSMutableArray = []
         static var alertSelectedBedroom = [String]()
@@ -372,7 +372,7 @@ class Constant: NSObject {
         static var left = "Left"
         
         static var addResortSelectedIndex = [Int]()
-        static var collectionVwCurrentIndex: Int = 0
+        static var collectionVwCurrentIndex = 0
         
         static var childCounterString = "childCounter".localized()
         static var adultCounterString = "adultCounter".localized()
@@ -436,7 +436,7 @@ class Constant: NSObject {
         
         static var onsiteString: String = "Nearby" + "\n"
         static var nearbyString: String  = "On-Site" + "\n"
-        static var indexSlideButton: Int = 0
+        static var indexSlideButton = 0
         static var onsiteDictKey = "Onsite"
         static var nearbyDictKey = "Nearby"
         static var status = "true"

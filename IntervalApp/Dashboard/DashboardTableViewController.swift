@@ -58,7 +58,7 @@ class DashboardTableViewController: UITableViewController {
         Helper.getAllAlerts { error in
             if case .some = error {
                 DispatchQueue.main.async {[weak self] in
-                    guard let strongSelf = self else {return}
+                    guard let strongSelf = self else { return }
                     strongSelf.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
                 }
                 
@@ -294,7 +294,7 @@ class DashboardTableViewController: UITableViewController {
                     }
                 }
                 
-                if let tripDate = upcomingTrip.unit!.checkInDate {
+                if let tripDate = upcomingTrip.unit?.checkInDate {
                     let upcomingTripDate = Helper.convertStringToDate(dateString: tripDate, format: Constant.MyClassConstants.dateFormat)
                     cell.dayDateLabel.text = Helper.getWeekDay(dateString: upcomingTripDate, getValue: Constant.MyClassConstants.date)
                     
@@ -488,11 +488,7 @@ class DashboardTableViewController: UITableViewController {
                         self.navigationController?.pushViewController(initialViewController, animated: true)
                     }
                 }
-                
-                let close = UIAlertAction(title: Constant.AlertPromtMessages.close, style: .default) { (_:UIAlertAction) in
-                    
-                }
-                
+                let close = UIAlertAction(title: Constant.AlertPromtMessages.close, style: .default, handler: nil)
                 //Add Custom Actions to Alert viewController
                 alertController.addAction(startSearch)
                 alertController.addAction(close)
@@ -752,7 +748,10 @@ extension DashboardTableViewController:UICollectionViewDataSource {
             centerView.addSubview(unitLabel)
             
             let priceLabel = UILabel(frame: CGRect(x: 10, y: 35, width: centerView.frame.size.width - 20, height: 20))
-            priceLabel.text = "From $" + String(describing: topTenDeals.price!.fromPrice) + " Wk."
+            if let pricefrom = topTenDeals.price?.fromPrice {
+                 priceLabel.text = "From $ \(pricefrom) Wk."
+            }
+           
             priceLabel.numberOfLines = 2
             priceLabel.textAlignment = NSTextAlignment.center
             priceLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
@@ -947,8 +946,8 @@ extension UIViewController {
     // Function to get to date and from date for search dates API calling
     func getSearchDatesTop() -> (Date, Date){
         
-        var fromDate:Date!
-        var toDate:Date!
+        var fromDate:Date?
+        var toDate:Date?
         fromDate = Calendar.current.date(byAdding: .day, value: Constant.MyClassConstants.totalWindow/2, to: Constant.MyClassConstants.vacationSearchShowDate)
         
         if let fromdate = fromDate {
@@ -962,14 +961,17 @@ extension UIViewController {
             }
         }
         if let dateafteryear = Constant.MyClassConstants.dateAfterTwoYear {
-            if toDate.isGreaterThanDate(dateafteryear) {
-                
-                toDate = Constant.MyClassConstants.dateAfterTwoYear
-                fromDate = Calendar.current.date(byAdding: .day, value: -(Constant.MyClassConstants.totalWindow) + Helper.getDifferenceOfDatesAhead(), to: Constant.MyClassConstants.vacationSearchShowDate)
+            if let todate = toDate {
+                if todate.isGreaterThanDate(dateafteryear) {
+                    
+                    toDate = Constant.MyClassConstants.dateAfterTwoYear
+                    fromDate = Calendar.current.date(byAdding: .day, value: -(Constant.MyClassConstants.totalWindow) + Helper.getDifferenceOfDatesAhead(), to: Constant.MyClassConstants.vacationSearchShowDate)
+                }
             }
+            
         }
         Constant.MyClassConstants.currentFromDate = fromDate
         Constant.MyClassConstants.currentToDate = toDate
-        return(toDate,fromDate)
+        return(toDate ?? Date(),fromDate ?? Date())
     }
 }

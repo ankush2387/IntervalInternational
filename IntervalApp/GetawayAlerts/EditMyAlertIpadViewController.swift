@@ -173,7 +173,7 @@ class EditMyAlertIpadViewController: UIViewController {
     //***** function to dismiss present view controller on back button pressed *****//
     func menuBackButtonPressed(sender: UIBarButtonItem) {
         
-         self.dismiss(animated: true, completion: nil)
+         dismiss(animated: true)
         
     }
     //***** function to call calendar screen to select travel start date *****//
@@ -346,7 +346,7 @@ class EditMyAlertIpadViewController: UIViewController {
                     // Create OK button
                     let OKAction = UIAlertAction(title: "OK", style: .default) { (_:UIAlertAction) in
                         Constant.needToReloadAlert = true
-                        self.dismiss(animated: true, completion: nil)
+                        self.dismiss(animated: true)
                     }
                     alertController.addAction(OKAction)
                     self.present(alertController, animated: true, completion:nil)
@@ -452,7 +452,7 @@ extension EditMyAlertIpadViewController: UICollectionViewDataSource {
             if let restcode = resort.resortCode {
                 resortCode = restcode
             }
-            cell.lblTitle.text = "\(resortNm) (\(resortCode))"
+            cell.lblTitle.text = "\(resortNm) (\(resortCode))".localized()
             
         case .resorts(let resorts):
             var resortNm = ""
@@ -467,7 +467,7 @@ extension EditMyAlertIpadViewController: UICollectionViewDataSource {
             if resorts.count > 1 {
                 resortNameString = resortNameString.appending(" and \(resorts.count - 1) more")
             }
-            cell.lblTitle.text = resortNameString
+            cell.lblTitle.text = resortNameString.localized()
             
         case .destination(let dest):
             var destinationName = ""
@@ -481,7 +481,7 @@ extension EditMyAlertIpadViewController: UICollectionViewDataSource {
             }
             
             if !destinationName.isEmpty && !teritorycode.isEmpty {
-                cell.lblTitle.text = "\(destinationName), \(teritorycode)"
+                cell.lblTitle.text = "\(destinationName), \(teritorycode)".localized()
             } else {
                 if !destinationName.isEmpty {
                     cell.lblTitle.text = destinationName
@@ -566,7 +566,7 @@ extension EditMyAlertIpadViewController: UITableViewDataSource {
                 if let restcode = resort.resortCode {
                     resortCode = restcode
                 }
-                cell.whereTogoTextLabel.text = "\(resortNm) (\(resortCode))"
+                cell.whereTogoTextLabel.text = "\(resortNm) (\(resortCode))".localized()
                 
             case .resorts(let resorts):
                 var resortNm = ""
@@ -581,7 +581,7 @@ extension EditMyAlertIpadViewController: UITableViewDataSource {
                 if resorts.count > 1 {
                     resortNameString = resortNameString.appending(" and \(resorts.count - 1) more")
                 }
-                cell.whereTogoTextLabel.text = resortNameString
+                cell.whereTogoTextLabel.text = resortNameString.localized()
                 
             case .destination(let dest):
                 var destinationName = ""
@@ -594,7 +594,7 @@ extension EditMyAlertIpadViewController: UITableViewDataSource {
                     teritorycode = terocode
                 }
                 if !destinationName.isEmpty && !teritorycode.isEmpty {
-                    cell.whereTogoTextLabel.text = "\(destinationName), \(teritorycode)"
+                    cell.whereTogoTextLabel.text = "\(destinationName), \(teritorycode)".localized()
                 } else {
                     if !destinationName.isEmpty {
                         cell.whereTogoTextLabel.text = destinationName

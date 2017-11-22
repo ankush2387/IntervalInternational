@@ -246,7 +246,7 @@ class DashboardIPadTableViewController: UITableViewController {
         
         let searchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
         searchCriteria.checkInDate = Helper.convertStringToDate(dateString: checkInDate, format: Constant.MyClassConstants.dateFormat)
-        if let earliestCheckInDate = alert.earliestCheckInDate{
+        if let earliestCheckInDate = alert.earliestCheckInDate {
             searchCriteria.checkInFromDate = Helper.convertStringToDate(dateString: earliestCheckInDate, format: Constant.MyClassConstants.dateFormat)
         }
         if let latestCheckInDate = alert.latestCheckInDate{
@@ -260,7 +260,7 @@ class DashboardIPadTableViewController: UITableViewController {
             if let destinationName = destination.destinationName{
                 dest.destinationName = destinationName
             } else {
-                dest.destinationName = "Cancun"
+                dest.destinationName = "Cancun".localized()
             }
             dest.aoiId = destination.aoiId
             dest.destinationId = destination.destinationId
@@ -306,7 +306,7 @@ class DashboardIPadTableViewController: UITableViewController {
             if let destinationName = alert.destinations[0].destinationName{
                 destination.destinationName  = destinationName
             } else {
-                destination.destinationName  = "Cancun"
+                destination.destinationName  = "Cancun".localized()
             }
             destination.destinationId = alert.destinations[0].destinationId
             destination.aoiId = alert.destinations[0].aoiId

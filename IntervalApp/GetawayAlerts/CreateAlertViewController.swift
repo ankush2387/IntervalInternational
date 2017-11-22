@@ -167,7 +167,7 @@ class CreateAlertViewController: UIViewController {
             .editAlertEmptyWidowStartDateMessage) }
         guard let endDate = Constant.MyClassConstants.alertWindowEndDate else { return presentAlert(with: Constant.AlertPromtMessages.createAlertTitle, message: Constant.AlertMessages
             .editAlertEmptyWidowEndDateMessage) }
-        if Constant.MyClassConstants.selectedGetawayAlertDestinationArray.count > 0 {
+        if !Constant.MyClassConstants.selectedGetawayAlertDestinationArray.isEmpty {
             if !trimmedUsername.isEmpty {
                         
             showHudAsync()
@@ -387,7 +387,7 @@ extension CreateAlertViewController: UICollectionViewDataSource {
                 if let restcode = resort.resortCode {
                     resortCode = restcode
                 }
-                cell.lblTitle.text = "\(resortNm) (\(resortCode))"
+                cell.lblTitle.text = "\(resortNm) (\(resortCode))".localized()
             
         case .destination(let destination):
             var name = ""
@@ -398,7 +398,7 @@ extension CreateAlertViewController: UICollectionViewDataSource {
             if let terocode = destination.address?.territoryCode {
                 trcode = terocode
             }
-            cell.lblTitle.text = "\(name), \(trcode)"
+            cell.lblTitle.text = "\(name), \(trcode)".localized()
             
         case .resorts(let resorts):
             var resortNm = ""
@@ -409,12 +409,12 @@ extension CreateAlertViewController: UICollectionViewDataSource {
             if let restcode = resorts[0].resortCode {
                 resortCode = restcode
             }
-            var resortNameString = "\(resortNm) (\(resortCode))"
+            var resortNameString = "\(resortNm) (\(resortCode))".localized()
             if resorts.count > 1 {
                 resortNameString = resortNameString.appending(" and \(resorts.count - 1) more")
             }
             
-            cell.lblTitle.text = resortNameString
+            cell.lblTitle.text = resortNameString.localized()
         }
         
         cell.deletebutton.tag = indexPath.row
@@ -439,7 +439,7 @@ extension CreateAlertViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
         let delete = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: Constant.buttonTitles.remove) { (_, index) -> Void in
-            if Constant.MyClassConstants.selectedGetawayAlertDestinationArray.count > 0 {
+            if !Constant.MyClassConstants.selectedGetawayAlertDestinationArray.isEmpty {
                 
                 Constant.MyClassConstants.selectedGetawayAlertDestinationArray.remove(at: indexPath.row)
                 Constant.MyClassConstants.realmStoredDestIdOrCodeArray.removeObject(at: indexPath.row)
@@ -570,7 +570,7 @@ extension CreateAlertViewController: WhereToGoCollectionViewCellDelegate {
     
     func deleteButtonClickedAtIndex(_ Index: Int) {
         
-        if Constant.MyClassConstants.selectedGetawayAlertDestinationArray.count > 0 {
+        if !Constant.MyClassConstants.selectedGetawayAlertDestinationArray.isEmpty {
             Constant.MyClassConstants.selectedGetawayAlertDestinationArray.remove(at: Index)
             selectedIndex = -1
         }

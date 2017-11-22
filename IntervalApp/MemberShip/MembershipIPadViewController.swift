@@ -95,7 +95,7 @@ class MembershipIPadViewController: UIViewController {
             self.tableView.reloadData()
         }) {[unowned self] (error) in
             self.hideHudAsync()
-             self.presentAlert(with: "Membership Error".localized(), message:"Unable to get membership from server. Please try again!")
+             self.presentAlert(with: "Membership Error".localized(), message:"Unable to get membership from server. Please try again!".localized())
         }
     }
     
@@ -296,9 +296,7 @@ extension MembershipIPadViewController:UITableViewDelegate
                     self.membershipWasSelected()
                 })
                 
-                let actionCancel = UIAlertAction(title: "No", style: .default, handler: { (response) in
-                    //cancel
-                })
+                let actionCancel = UIAlertAction(title: "No", style: .default, handler:nil)
                 
                 alert.addAction(actionYes)
                 alert.addAction(actionCancel)
@@ -318,10 +316,6 @@ extension MembershipIPadViewController:UITableViewDelegate
 extension MembershipIPadViewController:ActionSheetTblDelegate {
     
     func membershipSelectedAtIndex(_ index: Int) {
-        
-        self.dismiss(animated: true, completion: nil)
-        
-        
+        dismiss(animated: true)
     }
-    
 }
