@@ -65,7 +65,7 @@ class AvailablePointToolViewController: UIViewController {
           let dateStr = Helper.convertDateToString(date: AblToolSelectdDate, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
             showHudAsync()
             UserClient.getProgramAvailablePoints(Session.sharedSession.userAccessToken, date: dateStr, onSuccess: {[weak self] (availablePoints) in
-                guard let strongSelf = self else {return}
+                guard let strongSelf = self else { return }
                 strongSelf.hideHudAsync()
                 strongSelf.availablePoints = availablePoints
                 strongSelf.availablePointTableView.reloadData()

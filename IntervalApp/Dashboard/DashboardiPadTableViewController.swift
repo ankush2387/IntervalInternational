@@ -16,7 +16,7 @@ class DashboardIPadTableViewController: UITableViewController {
     
     // class outlets
     @IBOutlet var homeTableView: UITableView!
-    @IBOutlet var homeTableCollectionView:UICollectionView!
+    @IBOutlet var homeTableCollectionView: UICollectionView!
     
     // class variables
     var dashboardArray = [String]()
@@ -135,7 +135,7 @@ class DashboardIPadTableViewController: UITableViewController {
     }
     
     //***** function to call alert list screen when view all alert button pressed *****//
-    func viewAllAlertButtonPressed(_ sender:IUIKButton) {
+    func viewAllAlertButtonPressed(_ sender: IUIKButton) {
         
         Constant.MyClassConstants.alertOriginationPoint = Constant.CommonStringIdentifiers.alertOriginationPoint
         let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
@@ -147,7 +147,7 @@ class DashboardIPadTableViewController: UITableViewController {
     }
     
     //***** function to call alert list screen when view all alert button pressed *****//
-    func refreshAlertButtonPressed(_ sender:IUIKButton) {
+    func refreshAlertButtonPressed(_ sender: IUIKButton) {
         
         showAlertActivityIndicatorView = true
         homeTableView.reloadData()
@@ -158,7 +158,7 @@ class DashboardIPadTableViewController: UITableViewController {
         }
     }
     //Mark:- Button Clicked
-    func searchVacationButtonPressed(_ sender:IUIKButton) {
+    func searchVacationButtonPressed(_ sender: IUIKButton) {
         
         Constant.MyClassConstants.searchOriginationPoint = Constant.omnitureCommonString.homeDashboard
         
@@ -170,10 +170,8 @@ class DashboardIPadTableViewController: UITableViewController {
         
     }
     
-    
-    
     //***** function to call trip list screen when view all trip button pressed *****//
-    func viewAllTripButtonPressed(_ sender:IUIKButton) {
+    func viewAllTripButtonPressed(_ sender: IUIKButton) {
         
         Constant.MyClassConstants.upcomingOriginationPoint = Constant.omnitureCommonString.homeDashboard
         let storyboardName = Constant.storyboardNames.myUpcomingTripIpad
@@ -182,7 +180,7 @@ class DashboardIPadTableViewController: UITableViewController {
         }
     }
     
-    func homeAlertSelected(indexPath:IndexPath) {
+    func homeAlertSelected(indexPath: IndexPath) {
         
         guard let alertID = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId else { return }
         if let value = Constant.MyClassConstants.alertsSearchDatesDictionary.value(forKey: String(describing: alertID)) as? NSArray {
@@ -195,7 +193,7 @@ class DashboardIPadTableViewController: UITableViewController {
                     let settings = Helper.createSettings()
                     Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
                     
-                    RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,onSuccess: { response in
+                    RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess: { response in
                         Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
                         // Get activeInterval
                         let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
@@ -203,7 +201,7 @@ class DashboardIPadTableViewController: UITableViewController {
                         Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                         Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                         // Check not available checkIn dates for the active interval
-                        if activeInterval?.fetchedBefore != nil && activeInterval?.hasCheckInDates() != nil{
+                        if activeInterval?.fetchedBefore != nil && activeInterval?.hasCheckInDates() != nil {
                             
                             if  let activeInterval = activeInterval {
                                 activeInterval.hasCheckInDates() ?self.rentalSearchAvailability(activeInterval: activeInterval) :self.noResultsAvailability()
@@ -211,15 +209,14 @@ class DashboardIPadTableViewController: UITableViewController {
                             
                         }
                     },
-                                             onError:{[unowned self] error in
+                                             onError: {[unowned self] error in
                                                 self.hideHudAsync()
                                                 self.presentErrorAlert(UserFacingCommonError.custom(title: "Error".localized(), body: error.localizedDescription))
                     })
                 }
-            }
-            else {
+            } else {
                 let alertController = UIAlertController(title: title, message: Constant.AlertErrorMessages.getawayAlertMessage, preferredStyle: .alert)
-                let startSearch = UIAlertAction(title: Constant.AlertPromtMessages.newSearch, style: .default) { (action:UIAlertAction!) in
+                let startSearch = UIAlertAction(title: Constant.AlertPromtMessages.newSearch, style: .default) { (action: UIAlertAction!) in
                     
                     let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
                     let storyboardName = isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
@@ -240,7 +237,7 @@ class DashboardIPadTableViewController: UITableViewController {
         }
     }
     
-    func createSearchCriteriaFor(alert:RentalAlert) -> VacationSearchCriteria {
+    func createSearchCriteriaFor(alert: RentalAlert) -> VacationSearchCriteria {
         // Split destinations and resorts to create multiples VacationSearchCriteria
         let checkInDate = alert.getCheckInDate()
         
@@ -249,15 +246,15 @@ class DashboardIPadTableViewController: UITableViewController {
         if let earliestCheckInDate = alert.earliestCheckInDate {
             searchCriteria.checkInFromDate = Helper.convertStringToDate(dateString: earliestCheckInDate, format: Constant.MyClassConstants.dateFormat)
         }
-        if let latestCheckInDate = alert.latestCheckInDate{
+        if let latestCheckInDate = alert.latestCheckInDate {
             searchCriteria.checkInToDate = Helper.convertStringToDate(dateString: latestCheckInDate, format: Constant.MyClassConstants.dateFormat)
         }
         getDestinationsResortsForAlert(alert:alert, searchCriteria: searchCriteria)
         alertFilterOptionsArray.removeAll()
         
-        for destination in alert.destinations{
+        for destination in alert.destinations {
             let dest = AreaOfInfluenceDestination()
-            if let destinationName = destination.destinationName{
+            if let destinationName = destination.destinationName {
                 dest.destinationName = destinationName
             } else {
                 dest.destinationName = "Cancun".localized()
@@ -277,10 +274,10 @@ class DashboardIPadTableViewController: UITableViewController {
         return searchCriteria
     }
     
-    func rentalSearchAvailability(activeInterval:BookingWindowInterval){
+    func rentalSearchAvailability(activeInterval: BookingWindowInterval) {
         Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
         Helper.helperDelegate = self
-        if let searchDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate{
+        if let searchDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate {
             Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate:  Helper.convertStringToDate(dateString: searchDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
         }
     }
@@ -300,11 +297,11 @@ class DashboardIPadTableViewController: UITableViewController {
         }
     }
     
-    func getDestinationsResortsForAlert(alert:RentalAlert, searchCriteria:VacationSearchCriteria){
+    func getDestinationsResortsForAlert(alert: RentalAlert, searchCriteria: VacationSearchCriteria) {
         if !alert.destinations.isEmpty {
             let destination = AreaOfInfluenceDestination()
-            if let destinationName = alert.destinations[0].destinationName{
-                destination.destinationName  = destinationName
+            if let destinationName = alert.destinations[0].destinationName {
+                destination.destinationName = destinationName
             } else {
                 destination.destinationName  = "Cancun".localized()
             }
@@ -393,7 +390,7 @@ class DashboardIPadTableViewController: UITableViewController {
             titleLabel.text = "Getaway Alerts".localized()
             titleLabel.textAlignment = NSTextAlignment.center
             titleLabel.sizeToFit()
-            titleLabel.frame = CGRect(x: 20, y: headerView.frame.height/2 - titleLabel.frame.height/2, width: titleLabel.frame.width, height: titleLabel.frame.height)
+            titleLabel.frame = CGRect(x: 20, y: headerView.frame.height / 2 - titleLabel.frame.height / 2, width: titleLabel.frame.width, height: titleLabel.frame.height)
             titleLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
             titleLabel.textColor = IUIKColorPalette.primaryText.color
             headerView.addSubview(titleLabel)
@@ -422,7 +419,7 @@ class DashboardIPadTableViewController: UITableViewController {
             titleLabel.text = "My Upcoming Trips".localized()
             titleLabel.textAlignment = NSTextAlignment.center
             titleLabel.sizeToFit()
-            titleLabel.frame = CGRect(x: 20, y: headerView.frame.height/2 - titleLabel.frame.height/2, width: titleLabel.frame.width, height: titleLabel.frame.height)
+            titleLabel.frame = CGRect(x: 20, y: headerView.frame.height / 2 - titleLabel.frame.height / 2, width: titleLabel.frame.width, height: titleLabel.frame.height)
             titleLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
             titleLabel.textColor = IUIKColorPalette.primaryText.color
             headerView.addSubview(titleLabel)
@@ -456,15 +453,13 @@ class DashboardIPadTableViewController: UITableViewController {
                     cell.activityIndicatorBackgroundView.layer.borderColor = UIColor.lightGray.cgColor
                     cell.activityIndicatorBackgroundView.layer.masksToBounds = true
                     cell.activityIndicator.startAnimating()
-                }
-                else {
+                } else {
                     cell.activityIndicatorBseView.isHidden = true
                     cell.activityIndicator.stopAnimating()
                     cell.alertCollectinView.reloadData()
                 }
                 return cell
-            }
-            else {
+            } else {
                 return UITableViewCell()
             }
             
@@ -481,11 +476,10 @@ class DashboardIPadTableViewController: UITableViewController {
                 cell.vacationSearchCollectionView.dataSource = self
                 cell.vacationSearchContainerView.layer.cornerRadius = 7
                 cell.vacationSearchContainerView.layer.borderWidth = 4
-                cell.vacationSearchContainerView.layer.borderColor = UIColor(red: 224.0/255.0, green: 118.0/255.0, blue: 69.0/255.0, alpha: 1.0).cgColor
+                cell.vacationSearchContainerView.layer.borderColor = UIColor(red: 224.0 / 255.0, green: 118.0 / 255.0, blue: 69.0 / 255.0, alpha: 1.0).cgColor
                 
                 return cell
-            }
-            else {
+            } else {
                 return UITableViewCell()
             }
         default:
@@ -501,24 +495,23 @@ class DashboardIPadTableViewController: UITableViewController {
                     let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: cell.contentView.frame.width - 20, height: 20))
                     resortImageNameLabel.text = Constant.segmentControlItems.flexchangeLabelText
                     resortImageNameLabel.textColor = UIColor.black
-                    resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
+                    resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
                     cell.addSubview(resortImageNameLabel)
-                }else{
+                } else {
                     let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: cell.contentView.frame.width - 20, height: 20))
                     resortImageNameLabel.text = Constant.segmentControlItems.getawaysLabelText
                     resortImageNameLabel.textColor = UIColor.black
-                    resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
+                    resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
                     cell.addSubview(resortImageNameLabel)
                     
                 }
-            }
-            else {
+            } else {
                 
                 let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: cell.contentView.frame.width - 20, height: 20))
                 resortImageNameLabel.text = Constant.segmentControlItems.flexchangeLabelText
                 
                 resortImageNameLabel.textColor = UIColor.black
-                resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
+                resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
                 cell.addSubview(resortImageNameLabel)
             }
             
@@ -529,7 +522,7 @@ class DashboardIPadTableViewController: UITableViewController {
             layout.itemSize = CGSize(width:280, height: 260 )
             layout.minimumLineSpacing = 20.0
             layout.scrollDirection = .horizontal
-            homeTableCollectionView = UICollectionView(frame: CGRect(x: 0, y: 40, width: self.view.bounds.width , height: 260 ), collectionViewLayout: layout)
+            homeTableCollectionView = UICollectionView(frame: CGRect(x: 0, y: 40, width: self.view.bounds.width, height: 260 ), collectionViewLayout: layout)
             
             homeTableCollectionView.register(CustomCollectionCell.self, forCellWithReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cell)
             homeTableCollectionView.backgroundColor = UIColor.clear
@@ -537,13 +530,12 @@ class DashboardIPadTableViewController: UITableViewController {
             homeTableCollectionView.dataSource = self
             if dashboardArray[indexPath.section] == Constant.dashboardTableScreenReusableIdentifiers.exchange {
                 homeTableCollectionView.tag = 1
-            }
-            else {
+            } else {
                 homeTableCollectionView.tag = 2
             }
             
             homeTableCollectionView.isScrollEnabled = true
-            cell.backgroundColor = UIColor(red: 240.0/255.0, green: 239.0/255.0, blue: 244.0/255.0, alpha: 1.0)
+            cell.backgroundColor = UIColor(red: 240.0 / 255.0, green: 239.0 / 255.0, blue: 244.0 / 255.0, alpha: 1.0)
             cell.addSubview(homeTableCollectionView)
             return cell
         }
@@ -551,8 +543,7 @@ class DashboardIPadTableViewController: UITableViewController {
     }
 }
 
-extension DashboardIPadTableViewController:UICollectionViewDelegate {
-    
+extension DashboardIPadTableViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
@@ -568,7 +559,6 @@ extension DashboardIPadTableViewController:UICollectionViewDelegate {
                 self.navigationController?.transitioningDelegate = transitionManager
                 self.navigationController?.pushViewController(viewController, animated: true)
             }
-            
             
         case 2:
             Helper.helperDelegate = self
@@ -589,7 +579,7 @@ extension DashboardIPadTableViewController:UICollectionViewDelegate {
     }
 }
 
-extension DashboardIPadTableViewController:UICollectionViewDataSource {
+extension DashboardIPadTableViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         switch collectionView.tag {
@@ -633,14 +623,13 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
             
             cell.addSubview(resortFlaxImageView)
             
-            
             let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: cell.contentView.frame.midY - 25, width: cell.contentView.frame.width - 20, height: 50))
             
             resortImageNameLabel.text = flexDeal.name
             resortImageNameLabel.numberOfLines = 2
             resortImageNameLabel.textAlignment = NSTextAlignment.center
             resortImageNameLabel.textColor = UIColor.white
-            resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 20)
+            resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 20)
             resortImageNameLabel.backgroundColor = UIColor.clear
             cell.addSubview(resortImageNameLabel)
             cell.layer.borderColor = UIColor.lightGray.cgColor
@@ -657,7 +646,7 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
             let topTenDeals = Constant.MyClassConstants.topDeals[indexPath.row]
             let resortFlaxImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: 220) )
             resortFlaxImageView.backgroundColor = UIColor.lightGray
-            let rentalDeal:RentalDeal = Constant.MyClassConstants.topDeals[indexPath.row]
+            let rentalDeal: RentalDeal = Constant.MyClassConstants.topDeals[indexPath.row]
             if let imageURL = rentalDeal.images.first?.url {
                 resortFlaxImageView.setImageWith(URL(string: imageURL), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
                     if (error != nil) {
@@ -668,7 +657,6 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
             
             cell.addSubview(resortFlaxImageView)
             
-            
             let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: cell.contentView.frame.height - 50, width: cell.contentView.frame.width - 20, height: 50))
             if let header = topTenDeals.header {
                 resortImageNameLabel.text = header
@@ -676,10 +664,9 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
             resortImageNameLabel.numberOfLines = 2
             resortImageNameLabel.textAlignment = NSTextAlignment.center
             resortImageNameLabel.textColor = UIColor.black
-            resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 20)
+            resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 20)
             resortImageNameLabel.backgroundColor = UIColor.clear
             cell.addSubview(resortImageNameLabel)
-            
             
             let centerView = UIView(frame: CGRect(x: 0, y: 0, width: 150, height: 75))
             centerView.center = resortFlaxImageView.center
@@ -689,7 +676,7 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
             unitLabel.text = topTenDeals.details
             unitLabel.numberOfLines = 2
             unitLabel.textAlignment = NSTextAlignment.center
-            unitLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 12)
+            unitLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 12)
             unitLabel.textColor = UIColor.white
             unitLabel.backgroundColor = UIColor.clear
             centerView.addSubview(unitLabel)
@@ -700,7 +687,7 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
             }
             priceLabel.numberOfLines = 2
             priceLabel.textAlignment = NSTextAlignment.center
-            priceLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
+            priceLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
             priceLabel.textColor = UIColor.white
             priceLabel.backgroundColor = UIColor.clear
             centerView.addSubview(priceLabel)
@@ -745,21 +732,19 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
                         if value.count > 0 {
                             cell.alertStatus.text = Constant.buttonTitles.viewResults
                             cell.alertStatus.textColor = UIColor.white
-                            cell.layer.borderColor = UIColor(red: 224.0/255.0, green: 118.0/255.0, blue: 69.0/255.0, alpha: 1.0).cgColor
-                            cell.backgroundColor = UIColor(red: 224.0/255.0, green: 118.0/255.0, blue: 69.0/255.0, alpha: 1.0)
-                        }
-                        else {
+                            cell.layer.borderColor = UIColor(red: 224.0 / 255.0, green: 118.0 / 255.0, blue: 69.0 / 255.0, alpha: 1.0).cgColor
+                            cell.backgroundColor = UIColor(red: 224.0 / 255.0, green: 118.0 / 255.0, blue: 69.0 / 255.0, alpha: 1.0)
+                        } else {
                             cell.alertStatus.text = Constant.buttonTitles.nothingYet
                             cell.alertStatus.textColor = UIColor.white
-                            cell.layer.borderColor = UIColor(red: 167.0/255.0, green: 167.0/255.0, blue: 170.0/255.0, alpha: 1.0).cgColor
-                            cell.backgroundColor = UIColor(red: 167.0/255.0, green: 167.0/255.0, blue: 170.0/255.0, alpha: 1.0)
+                            cell.layer.borderColor = UIColor(red: 167.0 / 255.0, green: 167.0 / 255.0, blue: 170.0 / 255.0, alpha: 1.0).cgColor
+                            cell.backgroundColor = UIColor(red: 167.0 / 255.0, green: 167.0 / 255.0, blue: 170.0 / 255.0, alpha: 1.0)
                         }
-                    }
-                    else {
+                    } else {
                         cell.alertStatus.text = Constant.buttonTitles.nothingYet
                         cell.alertStatus.textColor = UIColor.white
-                        cell.layer.borderColor = UIColor(red: 167.0/255.0, green: 167.0/255.0, blue: 170.0/255.0, alpha: 1.0).cgColor
-                        cell.backgroundColor = UIColor(red: 167.0/255.0, green: 167.0/255.0, blue: 170.0/255.0, alpha: 1.0)
+                        cell.layer.borderColor = UIColor(red: 167.0 / 255.0, green: 167.0 / 255.0, blue: 170.0 / 255.0, alpha: 1.0).cgColor
+                        cell.backgroundColor = UIColor(red: 167.0 / 255.0, green: 167.0 / 255.0, blue: 170.0 / 255.0, alpha: 1.0)
                     }
                 }
                 
@@ -767,8 +752,7 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
                 cell.layer.cornerRadius = 3
                 cell.layer.masksToBounds = true
                 return cell
-            }
-            else {
+            } else {
                 return UICollectionViewCell()
             }
         case 4:
@@ -790,10 +774,9 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
                     let checkInDate = Helper.convertStringToDate(dateString:unitCheckInDate, format: Constant.MyClassConstants.dateFormat1)
                     
                     let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                    let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkInDate)
+                    let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkInDate)
                     
                     formatedCheckInDate = "\(Helper.getWeekdayFromInt(weekDayNumber:myComponents.weekday ?? 0)) \(Helper.getMonthnameFromInt(monthNumber: myComponents.month ?? 0)). \(String(describing: myComponents.day)), \(myComponents.year ?? 0)"
-                    
                     
                 }
                 
@@ -801,7 +784,7 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
                     
                     let checkOutDate = Helper.convertStringToDate(dateString: unitCheckOutDate, format: Constant.MyClassConstants.dateFormat1)
                     let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                    let myComponents1 = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: checkOutDate)
+                    let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkOutDate)
                     
                     formatedCheckOutDate = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents1.weekday ?? 0)) \(Helper.getMonthnameFromInt(monthNumber: myComponents1.month ?? 0)). \(String(describing: myComponents1.day)), \(myComponents1.year ?? 0)"
                 }
@@ -815,12 +798,11 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
                             cell.iconImageView.contentMode = .center
                         }
                     }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
-                }
-                else{
+                } else {
                     cell.iconImageView.image = UIImage(named:Constant.MyClassConstants.noImage)
                 }
-                if cell.gradientView.layer.sublayers != nil  {
-                    for layer in cell.gradientView.layer.sublayers!{
+                if cell.gradientView.layer.sublayers != nil {
+                    for layer in cell.gradientView.layer.sublayers! {
                         if layer.isKind(of: CAGradientLayer.self) {
                             layer.removeFromSuperlayer()
                         }
@@ -834,8 +816,7 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
                 cell.layer.masksToBounds = true
                 
                 return cell
-            }
-            else {
+            } else {
                 return UICollectionViewCell()
             }
             
@@ -847,7 +828,7 @@ extension DashboardIPadTableViewController:UICollectionViewDataSource {
     }
 }
 
-extension DashboardIPadTableViewController:HelperDelegate{
+extension DashboardIPadTableViewController: HelperDelegate {
     func resortSearchComplete() {
         navigateToSearchResults()
     }

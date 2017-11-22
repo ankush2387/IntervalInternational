@@ -15,9 +15,9 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     //***** Outlets *****//
     @IBOutlet weak var alertDisplayTableView: UITableView!
     
-    private var alertsDictionary:NSMutableDictionary = [:]
-    var alertsSearchDates:NSMutableDictionary = [:]
-    private var alertsResortCodeDictionary:NSMutableDictionary = [:]
+    private var alertsDictionary: NSMutableDictionary = [:]
+    var alertsSearchDates: NSMutableDictionary = [:]
+    private var alertsResortCodeDictionary: NSMutableDictionary = [:]
     var alertStatusId = 0
     var alertFilterOptionsArray = [Constant.AlertResortDestination]()
     var individualActivityIndicatorNeedToShow = false
@@ -83,13 +83,13 @@ class GetawayAlertsIPhoneViewController: UIViewController {
         alertDisplayTableView.reloadData()
     }
     
-    override func viewWillDisappear(_ animated :Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = true
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
     }
     
     //**** Function for more button action ****//
-    func moreNavButtonPressed(sender :UIBarButtonItem) {
+    func moreNavButtonPressed(sender: UIBarButtonItem) {
         
         let actionSheetController: UIAlertController = UIAlertController(title:Constant.buttonTitles.getwayAlertOptions, message: "", preferredStyle: .actionSheet)
         
@@ -121,7 +121,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
         actionSheetController.popoverPresentationController?.sourceView = self.view
         if Constant.RunningDevice.deviceIdiom == .pad {
             
-            actionSheetController.popoverPresentationController?.sourceRect = CGRect(x:self.view.bounds.size.width,y:0, width:100, height:60)
+            actionSheetController.popoverPresentationController?.sourceRect = CGRect(x:self.view.bounds.size.width, y:0, width:100, height:60)
             actionSheetController.popoverPresentationController?.permittedArrowDirections = .up
         }
         
@@ -179,7 +179,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     }
 
     //***** Function called when view results for an active alerts is clicked ****//
-    func viewResultsClicked(_ sender:UIButton) {
+    func viewResultsClicked(_ sender: UIButton) {
         
         // This is not correct. I refactored this code but why is getawayAlertsArray and alertsDictionary the same object type?
         // Also why is SDK sending Int64? This forces an unsual casting. Also our numbers are small, they dont need so many bits.
@@ -198,10 +198,10 @@ class GetawayAlertsIPhoneViewController: UIViewController {
     }
     
     //Function for rental search availability
-    func rentalSearchAvailability(activeInterval:BookingWindowInterval) {
+    func rentalSearchAvailability(activeInterval: BookingWindowInterval) {
         Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
         Helper.helperDelegate = self
-        if let searchDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate{
+        if let searchDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate {
             Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate:  Helper.convertStringToDate(dateString: searchDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
         }
     }
@@ -225,7 +225,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
         }
     }
     
-    func createSearchCriteriaFor(alert :RentalAlert) -> VacationSearchCriteria {
+    func createSearchCriteriaFor(alert: RentalAlert) -> VacationSearchCriteria {
         // Split destinations and resorts to create multiples VacationSearchCriteria
         let checkInDate = alert.getCheckInDate()
         
@@ -240,11 +240,11 @@ class GetawayAlertsIPhoneViewController: UIViewController {
         getDestinationsResortsForAlert(alert:alert, searchCriteria: searchCriteria)
         alertFilterOptionsArray.removeAll()
         
-        for destination in alert.destinations{
+        for destination in alert.destinations {
             let dest = AreaOfInfluenceDestination()
             if let destinationName = destination.destinationName {
                 dest.destinationName = destinationName
-            }else {
+            } else {
                 dest.destinationName = "Cancun"
             }
             dest.aoiId = destination.aoiId
@@ -262,13 +262,13 @@ class GetawayAlertsIPhoneViewController: UIViewController {
         return searchCriteria
     }
     
-    //MARK:- Get data for an alert
-    func getDestinationsResortsForAlert(alert:RentalAlert, searchCriteria:VacationSearchCriteria){
+    // MARK: - Get data for an alert
+    func getDestinationsResortsForAlert(alert: RentalAlert, searchCriteria: VacationSearchCriteria) {
         if (alert.destinations.count) > 0 {
             let destination = AreaOfInfluenceDestination()
-            if let destinationName = alert.destinations[0].destinationName{
-                destination.destinationName  = destinationName
-            }else{
+            if let destinationName = alert.destinations[0].destinationName {
+                destination.destinationName = destinationName
+            } else {
                 destination.destinationName  = "Cancun"
             }
             destination.destinationId = alert.destinations[0].destinationId
@@ -276,7 +276,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
             searchCriteria.destination = destination
             Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
             
-        }else if (alert.resorts.count) > 0 {
+        } else if (alert.resorts.count) > 0 {
             Constant.MyClassConstants.initialVacationSearch.searchCriteria.resorts = alert.resorts
         }
     }
@@ -292,7 +292,7 @@ class GetawayAlertsIPhoneViewController: UIViewController {
         
         Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
         
-        RentalClient.searchDates(Session.sharedSession.userAccessToken,request:Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess : { [unowned self] response in
+        RentalClient.searchDates(Session.sharedSession.userAccessToken, request:Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess : { [unowned self] response in
             
             Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
             
@@ -305,13 +305,13 @@ class GetawayAlertsIPhoneViewController: UIViewController {
             Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
             
             // Check not available checkIn dates for the active interval
-            if let activeInterval = activeInterval, activeInterval.hasCheckInDates()  {
+            if let activeInterval = activeInterval, activeInterval.hasCheckInDates() {
                 self.rentalSearchAvailability(activeInterval: activeInterval)
             } else {
                 self.noResultsAvailability()
             }
             
-            },onError :{ [unowned self] error in
+            }, onError : { [unowned self] error in
                 self.presentErrorAlert(UserFacingCommonError.custom(title: "Error".localized(), body: error.localizedDescription))
             }
         )
@@ -323,16 +323,16 @@ class GetawayAlertsIPhoneViewController: UIViewController {
         Constant.MyClassConstants.searchResultCollectionViewScrollToIndex = 1
         
         showHudAsync()
-        let checkInDates:NSArray = self.alertsSearchDates.value(forKey: String(alertID)) as? NSArray ?? []
+        let checkInDates: NSArray = self.alertsSearchDates.value(forKey: String(alertID)) as? NSArray ?? []
         if checkInDates.count > 0 {
             Constant.MyClassConstants.currentFromDate = checkInDates[0] as? Date
-        }else {
-            Constant.MyClassConstants.currentFromDate =  Date()
+        } else {
+            Constant.MyClassConstants.currentFromDate = Date()
         }
     }
 }
 
-extension GetawayAlertsIPhoneViewController:UITableViewDelegate {
+extension GetawayAlertsIPhoneViewController: UITableViewDelegate {
     
     //***** UITableview delegate methods definition here. *****//
     
@@ -342,7 +342,7 @@ extension GetawayAlertsIPhoneViewController:UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-        let delete = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: Constant.buttonTitles.remove) { (action,index) -> Void in
+        let delete = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: Constant.buttonTitles.remove) { (action, index) -> Void in
             if let alertID = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId {
             self.showHudAsync()
             //Remove Alert API call
@@ -363,18 +363,18 @@ extension GetawayAlertsIPhoneViewController:UITableViewDelegate {
                 self.presentErrorAlert(UserFacingCommonError.generic)
             }
         }
-        delete.backgroundColor = UIColor(red: 224/255.0, green: 96.0/255.0, blue: 84.0/255.0, alpha: 1.0)
+        delete.backgroundColor = UIColor(red: 224 / 255.0, green: 96.0 / 255.0, blue: 84.0 / 255.0, alpha: 1.0)
         
         if Constant.MyClassConstants.getawayAlertsArray[indexPath.row].enabled == false {
-            let activate = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.activate) { (action,index) -> Void in
+            let activate = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.activate) { (action, index) -> Void in
                 
             }
-            activate.backgroundColor = UIColor(red: 0/255.0, green: 119.0/255.0, blue: 190.0/255.0, alpha: 1.0)
-            return [delete,activate]
+            activate.backgroundColor = UIColor(red: 0 / 255.0, green: 119.0 / 255.0, blue: 190.0 / 255.0, alpha: 1.0)
+            return [delete, activate]
             
-        }else {
+        } else {
             
-            let edit = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.edit) { (action,index) -> Void in
+            let edit = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.edit) { (action, index) -> Void in
                 Constant.MyClassConstants.selectedBedRoomSize = "All Bedroom Sizes"
                 Constant.MyClassConstants.selectedGetawayAlertDestinationArray.removeAll()
                 
@@ -384,13 +384,13 @@ extension GetawayAlertsIPhoneViewController:UITableViewDelegate {
                 self.performSegue(withIdentifier: Constant.segueIdentifiers.editAlertSegue, sender: self)
                 
             }
-            edit.backgroundColor = UIColor(red: 0/255.0, green: 119.0/255.0, blue: 190.0/255.0, alpha: 1.0)
-            return [delete,edit]
+            edit.backgroundColor = UIColor(red: 0 / 255.0, green: 119.0 / 255.0, blue: 190.0 / 255.0, alpha: 1.0)
+            return [delete, edit]
         }
     }
 }
 
-extension GetawayAlertsIPhoneViewController:UITableViewDataSource {
+extension GetawayAlertsIPhoneViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -400,13 +400,12 @@ extension GetawayAlertsIPhoneViewController:UITableViewDataSource {
         return Constant.MyClassConstants.getawayAlertsArray.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
-    {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.getawayScreenReusableIdentifiers.getawayAlertCell, for: indexPath as IndexPath) as? AlertTableViewCell else { return UITableViewCell() }
         cell.selectionStyle = UITableViewCellSelectionStyle.none
         cell.alertNameLabel.text = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].name
         
-        if let stringAlertFromDate = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].earliestCheckInDate{
+        if let stringAlertFromDate = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].earliestCheckInDate {
             let alertFromDate = Helper.convertStringToDate(dateString: stringAlertFromDate, format: Constant.MyClassConstants.dateFormat)
             let fromDate = (Helper.getWeekDay(dateString: alertFromDate, getValue: Constant.MyClassConstants.month)).appendingFormat(". ").appending(Helper.getWeekDay(dateString: alertFromDate, getValue: Constant.MyClassConstants.date)).appending(", ").appending(Helper.getWeekDay(dateString: alertFromDate, getValue: Constant.MyClassConstants.year))
             let alertToDate = Helper.convertStringToDate(dateString: Constant.MyClassConstants.getawayAlertsArray[indexPath.row].latestCheckInDate!, format: Constant.MyClassConstants.dateFormat)
@@ -419,24 +418,24 @@ extension GetawayAlertsIPhoneViewController:UITableViewDataSource {
         
         if Constant.MyClassConstants.getawayAlertsArray[indexPath.row].enabled == true {
             cell.alertStatusButton.isHidden = true
-            cell.alertStatusButton.backgroundColor = UIColor(red: 240.0/255.0, green: 111.0/255.0, blue: 54.0/255.0, alpha: 1.0)
+            cell.alertStatusButton.backgroundColor = UIColor(red: 240.0 / 255.0, green: 111.0 / 255.0, blue: 54.0 / 255.0, alpha: 1.0)
             cell.alertStatusButton.setTitleColor(UIColor.white, for: .normal)
             cell.activityIndicator.isHidden = false
             cell.activityIndicator.startAnimating()
-        }else {
+        } else {
             cell.alertStatusButton.isHidden = false
             cell.activityIndicator.isHidden = true
         }
         
         if !self.individualActivityIndicatorNeedToShow {
-            if let alertId = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId{
+            if let alertId = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId {
                 cell.alertStatusButton.tag = Int(alertId)
                 if let value = Constant.MyClassConstants.alertsSearchDatesDictionary.value(forKey: String(describing: alertId)) as? NSArray {
                     if value.count == 0 {
                         
                         cell.alertStatusButton.isHidden = false
                         cell.alertStatusButton.setTitle(Constant.buttonTitles.nothingYet, for: .normal)
-                        cell.alertStatusButton.backgroundColor = UIColor(red: 245.0/255.0, green: 245.0/255.0, blue: 245.0/255.0, alpha: 1.0)
+                        cell.alertStatusButton.backgroundColor = UIColor(red: 245.0 / 255.0, green: 245.0 / 255.0, blue: 245.0 / 255.0, alpha: 1.0)
                         cell.alertStatusButton.setTitleColor(UIColor.lightGray, for: .normal)
                         
                         cell.alertNameLabel.textColor = UIColor.black
@@ -453,12 +452,12 @@ extension GetawayAlertsIPhoneViewController:UITableViewDataSource {
                         cell.alertStatusButton.addTarget(self, action: #selector(self.viewResultsClicked(_:)), for: .touchUpInside)
                         cell.alertNameLabel.textColor = IUIKColorPalette.primaryB.color
                         cell.activityIndicator.isHidden = true
-                        cell.alertStatusButton.layer.borderColor = UIColor(red: 240.0/255.0, green: 111.0/255.0, blue: 54.0/255.0, alpha: 1.0).cgColor
+                        cell.alertStatusButton.layer.borderColor = UIColor(red: 240.0 / 255.0, green: 111.0 / 255.0, blue: 54.0 / 255.0, alpha: 1.0).cgColor
                     }
                 } else {
                     cell.alertStatusButton.isHidden = false
                     cell.alertStatusButton.setTitle(Constant.buttonTitles.nothingYet, for: .normal)
-                    cell.alertStatusButton.backgroundColor = UIColor(red: 245.0/255.0, green: 245.0/255.0, blue: 245.0/255.0, alpha: 1.0)
+                    cell.alertStatusButton.backgroundColor = UIColor(red: 245.0 / 255.0, green: 245.0 / 255.0, blue: 245.0 / 255.0, alpha: 1.0)
                     cell.alertStatusButton.setTitleColor(UIColor.lightGray, for: .normal)
                     
                     cell.alertNameLabel.textColor = UIColor.black
@@ -478,7 +477,7 @@ extension GetawayAlertsIPhoneViewController:UITableViewDataSource {
     }
 }
 
-extension GetawayAlertsIPhoneViewController:HelperDelegate {
+extension GetawayAlertsIPhoneViewController: HelperDelegate {
     func resortSearchComplete() {
         hideHudAsync()
         // Check if not has availability in the desired check-In date.

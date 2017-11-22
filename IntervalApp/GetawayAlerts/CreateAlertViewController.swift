@@ -122,7 +122,7 @@ class CreateAlertViewController: UIViewController {
         }
         if let endDate = Constant.MyClassConstants.alertWindowEndDate {
             
-            if let startDate =  Constant.MyClassConstants.alertWindowStartDate {
+            if let startDate = Constant.MyClassConstants.alertWindowStartDate {
             if startDate.isLessThanDate(endDate) {
                 
                 let myCalendar1 = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
@@ -155,7 +155,6 @@ class CreateAlertViewController: UIViewController {
             viewController.selectedIndex = self.selectedIndex
             navigationController?.present(viewController, animated: true, completion: nil)
         }
-       
         
     }
     

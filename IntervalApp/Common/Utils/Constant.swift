@@ -10,8 +10,6 @@ import UIKit
 import DarwinSDK
 import GoogleMaps
 
-
-
 class Constant: NSObject {
     
     static var holdingTimer: Timer?
@@ -19,7 +17,7 @@ class Constant: NSObject {
     static var decreaseValue = 1
     static var activeAlertCount = 0
     static var needToReloadAlert = false
-    static var selectedAletToEdit:RentalAlert?
+    static var selectedAletToEdit: RentalAlert?
     static var holdingResortForRemainingMinutes = "We are holding this unit for \(holdingTime) minutes".localized()
   
       //***** common function to get device orientation *****//

@@ -21,9 +21,9 @@ import RealmSwift
     func resetCalendar()
 }
 
-public class Helper{
+public class Helper {
     
-    static var progressBarBackgroundView:UIView!
+    static var progressBarBackgroundView: UIView!
     static var window: UIWindow?
     
     static var helperDelegate: HelperDelegate?
@@ -34,21 +34,21 @@ public class Helper{
      - returns : No value is return
      */
     
-    static func applyShadowOnUIView(view:UIView,shadowcolor:UIColor,shadowopacity:Float,shadowoffset:CGSize = CGSize.zero,shadowradius:CGFloat) {
+    static func applyShadowOnUIView(view: UIView, shadowcolor: UIColor, shadowopacity: Float, shadowoffset: CGSize = CGSize.zero, shadowradius: CGFloat) {
         
         view.layer.shadowColor = shadowcolor.cgColor
         view.layer.shadowOpacity = shadowopacity
         view.layer.shadowOffset = shadowoffset
         view.layer.shadowRadius = shadowradius
-        view.layer.masksToBounds = false;
-        view.clipsToBounds = false;
+        view.layer.masksToBounds = false
+        view.clipsToBounds = false
     }
     /**
      Apply Border on View
      - parameter :
      - returns : No value is return
      */
-    static func applyBorderarroundView(view:UIView,bordercolor:UIColor,borderwidth:CGFloat,cornerradious:CGFloat) {
+    static func applyBorderarroundView(view: UIView, bordercolor: UIColor, borderwidth: CGFloat, cornerradious: CGFloat) {
         
         view.layer.borderColor = bordercolor.cgColor
         view.layer.borderWidth = borderwidth
@@ -59,7 +59,7 @@ public class Helper{
      - parameter view,cornerradious : view is UIView reference,cornerradious is CGFloat
      - returns : No value is returned
      */
-    static func applyCornerRadious(view:UIView,cornerradious:CGFloat = 1){
+    static func applyCornerRadious(view: UIView, cornerradious: CGFloat = 1) {
         view.layer.cornerRadius = cornerradious
     }
     
@@ -95,7 +95,7 @@ public class Helper{
     }
     
     //***** common  function that  takes weekday as int value and return weekday name *****//
-    static  func getWeekdayFromInt(weekDayNumber:Int) -> String {
+    static  func getWeekdayFromInt(weekDayNumber: Int) -> String {
         
         switch(weekDayNumber) {
             
@@ -119,7 +119,7 @@ public class Helper{
     }
     
     //***** common  function that  takes month as int value and return month  name *****//
-    static func getMonthnameFromInt(monthNumber:Int) -> String {
+    static func getMonthnameFromInt(monthNumber: Int) -> String {
         
         switch(monthNumber) {
             
@@ -153,8 +153,7 @@ public class Helper{
     }
     
     //***** common  function that  takes UIView and color to and gradient view on passed view *****//
-    static func addLinearGradientToView(view: UIView, colour: UIColor, transparntToOpaque: Bool, vertical: Bool)
-    {
+    static func addLinearGradientToView(view: UIView, colour: UIColor, transparntToOpaque: Bool, vertical: Bool) {
         let gradient = CAGradientLayer()
         let gradientFrame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height)
         gradient.frame = gradientFrame
@@ -168,17 +167,14 @@ public class Helper{
             UIColor.clear.cgColor
         ]
         
-        
-        if transparntToOpaque == true
-        {
-            gradient.locations = [-0.2,0.25,0.50,0.75]
+        if transparntToOpaque == true {
+            gradient.locations = [-0.2, 0.25, 0.50, 0.75]
             
         }
         
-        if vertical == true
-        {
-            gradient.startPoint =  CGPoint(x:1.0, y: 0.5)
-            gradient.endPoint =  CGPoint(x: 0.5, y: 1.0)
+        if vertical == true {
+            gradient.startPoint = CGPoint(x:1.0, y: 0.5)
+            gradient.endPoint = CGPoint(x: 0.5, y: 1.0)
         }
         
         gradient.colors = colours
@@ -186,12 +182,12 @@ public class Helper{
     }
     
     // function for float week gredient color view
-    static func addGredientColorOnFloatSavedCell(view:UIView) {
+    static func addGredientColorOnFloatSavedCell(view: UIView) {
         
         let gradient = CAGradientLayer()
         gradient.frame = view.bounds
         
-        let colours = [UIColor(red: 175.0/255.0, green: 215.0/255.0, blue: 100.0/255.0, alpha: 1.0).cgColor, UIColor.white.cgColor]
+        let colours = [UIColor(red: 175.0 / 255.0, green: 215.0 / 255.0, blue: 100.0 / 255.0, alpha: 1.0).cgColor, UIColor.white.cgColor]
         
         gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
         gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
@@ -202,14 +198,13 @@ public class Helper{
     }
     
     //***** common function that contains signIn API call with user name and password *****//
-    static func loginButtonPressed(sender:UIViewController, userName:String, password:String, completionHandler:@escaping (_ success:Bool)->())
-    {
+    static func loginButtonPressed(sender: UIViewController, userName: String, password: String, completionHandler:@escaping (_ success: Bool) -> Void) {
         Constant.MyClassConstants.signInRequestedController = sender
         if Reachability.isConnectedToNetwork() == true {
             Logger.sharedInstance.debug("Attempting oauth with \(userName) and \(password)")
             
             // Try to do the OAuth Request to obtain an access token
-            AuthProviderClient.getAccessToken( userName, password: password,onSuccess:{
+            AuthProviderClient.getAccessToken( userName, password: password, onSuccess: {
                 (accessToken) in
                 //we are redirected to the success block but the access token is nil we check it first
                 
@@ -218,8 +213,7 @@ public class Helper{
                     Session.sharedSession.userAccessToken = accessToken
                     // let the caller UI know the status of the login
                     completionHandler(true)
-                }
-                else {
+                } else {
                     sender.hideHudAsync()
                     sender.presentAlert(with: Constant.AlertErrorMessages.tryAgainError, message: Constant.AlertErrorMessages.loginFailedError)
                     completionHandler(false)
@@ -227,47 +221,45 @@ public class Helper{
                 // Got an access token!  Save it for later use.
                 // Next, get the contact information.  See how many memberships this user has.
             },
-           onError:{ _ in
+           onError: { _ in
             sender.hideHudAsync()
             sender.presentErrorAlert(UserFacingCommonError.generic)
             completionHandler(false)
             }
             )
-        }
-        else{
+        } else {
             sender.presentErrorAlert(UserFacingCommonError.noNetConnection)
             completionHandler(false)
         }
     }
     
     //***** function to get profile when we have found valid access token from server *****//
-    static func accessTokenDidChange(sender: UIViewController){
+    static func accessTokenDidChange(sender: UIViewController) {
         
-        if Reachability.isConnectedToNetwork() == true{
+        if Reachability.isConnectedToNetwork() == true {
             
             Logger.sharedInstance.debug("Attempting to get user info")
             
             //***** Try to do the OAuth Request to obtain an access token *****//
             UserClient.getCurrentProfile(Session.sharedSession.userAccessToken,
 
-             onSuccess:{(contact) in
+             onSuccess: {(contact) in
                 // Got an access token!  Save it for later use.
                 sender.hideHudAsync()
                 Session.sharedSession.contact = contact
                 //***** Next, get the contact information.  See how many memberships this user has. *****//
                 contactDidChange(sender: sender)
             },
-             onError:{ _ in
+             onError: { _ in
                 sender.hideHudAsync()
                 sender.presentErrorAlert(UserFacingCommonError.generic)
             })
-        }
-        else{
+        } else {
             sender.presentAlert(with: Constant.AlertErrorMessages.networkError, message: Constant.AlertMessages.networkErrorMessage)
         }
     }
     //***** functin called when we have found valid profileCurrent for user *****//
-    static func contactDidChange(sender:UIViewController) {
+    static func contactDidChange(sender: UIViewController) {
         
         //***** If this contact has more than one membership, then show the Choose Member form.Otherwise, select the default (only) membership and continue.  There must always be at lease one membership. *****//
         if let contact = Session.sharedSession.contact {
@@ -276,19 +268,17 @@ public class Helper{
                 
                 if contact.memberships!.count == 1 {
                     
-                    if Constant.MyClassConstants.signInRequestedController is SignInPreLoginViewController  {
+                    if Constant.MyClassConstants.signInRequestedController is SignInPreLoginViewController {
                         
                         Session.sharedSession.selectedMembership = contact.memberships![0]
                         CreateActionSheet().membershipWasSelected()
                         
-                    }
-                    else {
+                    } else {
                         
                         Session.sharedSession.selectedMembership = contact.memberships![0]
                         CreateActionSheet().membershipWasSelected()
                     }
-                }
-                else {
+                } else {
                     
                     //***** TODO: Display Modal to allow the user to select a membership! *****//
                     if (UIDevice.current.userInterfaceIdiom == .pad) {
@@ -296,8 +286,7 @@ public class Helper{
                         if sender is SignInPreLoginViewController {
                             sender.perform(#selector(SignInPreLoginViewController.createActionSheet(_:)), with: nil, afterDelay: 0.0)
                         }
-                    }
-                    else {
+                    } else {
                         
                         if sender is SignInPreLoginViewController {
                             let userInfo: [String: String] = [
@@ -310,8 +299,7 @@ public class Helper{
                         
                     }
                 }
-            }
-            else {
+            } else {
                 
                 Logger.sharedInstance.error("The contact \(contact.contactId) has no membership information!")
                 sender.presentAlert(with: Constant.AlertErrorMessages.loginFailed, message: Constant.AlertMessages.noMembershipMessage)
@@ -326,7 +314,7 @@ public class Helper{
                 Constant.MyClassConstants.favoritesResortArray.removeAll()
                 for item in [response][0] {
                     if let resortFav = item as? ResortFavorite {
-                        if let resort = resortFav.resort{
+                        if let resort = resortFav.resort {
                             let code = resort.resortCode
                             Constant.MyClassConstants.favoritesResortCodeArray.add(code ?? "")
                             Constant.MyClassConstants.favoritesResortArray.append(resort)
@@ -335,8 +323,7 @@ public class Helper{
                     
                 }
                 NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
-            })
-            { error in
+            }) { error in
                 CompletionBlock(error)
             }
         }
@@ -356,7 +343,7 @@ public class Helper{
         }, onError: { error in
             
             Constant.MyClassConstants.isEvent2Ready += 1
-            if Constant.MyClassConstants.isEvent2Ready > 1  {
+            if Constant.MyClassConstants.isEvent2Ready > 1 {
                 sendOmnitureTrackCallForEvent2()
             }
             CompletionBlock(error)
@@ -364,7 +351,7 @@ public class Helper{
     }
     
     // get Countries
-    static func getCountry(viewController:UIViewController) {
+    static func getCountry(viewController: UIViewController) {
         
         Constant.GetawaySearchResultGuestFormDetailData.countryListArray.removeAll()
         Constant.GetawaySearchResultGuestFormDetailData.countryCodeArray.removeAll()
@@ -383,12 +370,12 @@ public class Helper{
         
     }
     
-    static func getStates(country:String, viewController:UIViewController) {
+    static func getStates(country: String, viewController: UIViewController) {
         
         Constant.GetawaySearchResultGuestFormDetailData.stateListArray.removeAll()
         LookupClient.getStates(Constant.MyClassConstants.systemAccessToken!, countryCode: country, onSuccess: { (response) in
             viewController.hideHudAsync()
-            for state in response{
+            for state in response {
                 Constant.GetawaySearchResultGuestFormDetailData.stateListArray.append(state)
                 Constant.GetawaySearchResultGuestFormDetailData.stateCodeArray.append(state.code!)
             }
@@ -400,10 +387,8 @@ public class Helper{
         
     }
     
-    
     //Relinquishment details
-    static func getRelinquishmentDetails(resortCode:String?, viewController:UIViewController) {
-        
+    static func getRelinquishmentDetails(resortCode: String?, viewController: UIViewController) {
         
         DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode!, onSuccess: { (response) in
             
@@ -422,17 +407,15 @@ public class Helper{
             viewController.hideHudAsync()
             
             viewController.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: self)
-        })
-        { _ in
+        }) { _ in
             viewController.hideHudAsync()
             viewController.presentErrorAlert(UserFacingCommonError.generic)
         }
         
     }
     
-    
     //***** common function that contains API call for  searchResorts with todate and resort code *****//
-    static func resortDetailsClicked(toDate: NSDate, senderVC : UIViewController) {
+    static func resortDetailsClicked(toDate: NSDate, senderVC: UIViewController) {
         
         if Reachability.isConnectedToNetwork() == true {
             let searchResortRequest = RentalSearchResortsRequest()
@@ -461,9 +444,8 @@ public class Helper{
                     
                     ADBMobile.trackAction(Constant.omnitureEvents.event33, data: userInfo)
                     
-                    
                     senderVC.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
-                }else if (senderVC is GetawayAlertsIPhoneViewController){
+                } else if (senderVC is GetawayAlertsIPhoneViewController) {
                     
                     if Constant.RunningDevice.deviceIdiom == .pad {
                         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
@@ -472,7 +454,7 @@ public class Helper{
                         let transitionManager = TransitionManager()
                         senderVC.navigationController?.transitioningDelegate = transitionManager
                         senderVC.navigationController!.pushViewController(viewController, animated: true)
-                    }else{
+                    } else {
                         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
                         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
                         
@@ -481,7 +463,6 @@ public class Helper{
                         
                         senderVC.navigationController!.pushViewController(viewController, animated: true)
                     }
-                    
                     
                     senderVC.hideHudAsync()
                 } else {
@@ -492,7 +473,7 @@ public class Helper{
                         let transitionManager = TransitionManager()
                         senderVC.navigationController?.transitioningDelegate = transitionManager
                         senderVC.navigationController!.pushViewController(viewController, animated: true)
-                    }else{
+                    } else {
                         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
                         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
                         
@@ -510,8 +491,7 @@ public class Helper{
                 Constant.MyClassConstants.showAlert = true
                 senderVC.presentErrorAlert(UserFacingCommonError.generic)
             })
-        }
-        else {
+        } else {
             senderVC.hideHudAsync()
             senderVC.presentErrorAlert(UserFacingCommonError.noNetConnection)
         }
@@ -531,8 +511,7 @@ public class Helper{
         let realmLocalStorage = realm.objects(RealmLocalStorage.self).filter("membeshipNumber == '\(requiredMemberNumber)'")
         if realmLocalStorage.count > 0 {
             return realmLocalStorage
-        }
-        else {
+        } else {
             
             let realm = try! Realm()
             let allDest = realm.objects(AllAvailableDestination.self)
@@ -560,7 +539,7 @@ public class Helper{
         
     }
     //***** function to get all destination class objects from Realm storage *****//
-    static func getLocalStorageAllDest() -> Results<AllAvailableDestination>{
+    static func getLocalStorageAllDest() -> Results<AllAvailableDestination> {
         
         let realm = try! Realm()
         let allDest = realm.objects(AllAvailableDestination.self)
@@ -611,7 +590,7 @@ public class Helper{
                 for destname in destination {
                     if destname.territorrycode == "" {
                         Constant.MyClassConstants.whereTogoContentArray.add("\(destname.destinationName)")
-                    }else{
+                    } else {
                         Constant.MyClassConstants.whereTogoContentArray.add("\(destname.destinationName), \(destname.territorrycode)")
                     }
                     
@@ -626,15 +605,13 @@ public class Helper{
                         Constant.MyClassConstants.whereTogoContentArray.add(resortname.resortName)
                         Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(resortname.resortCode)
                         Constant.MyClassConstants.selectedDestinationNames = Constant.MyClassConstants.selectedDestinationNames.appending("\(resortname.resortCode) ,")
-                    }
-                    else {
+                    } else {
                         Constant.MyClassConstants.whereTogoContentArray.add(resortname.resortArray)
                         Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(resortname.resortArray[0].resortCode)
                     }
                 }
             }
-        }
-        else {
+        } else {
             
             let realm = try! Realm()
             let allDest = realm.objects(AllAvailableDestination.self)
@@ -676,15 +653,15 @@ public class Helper{
                             if object.isFloat {
                                 if object.isFloatRemoved {
                                     Constant.MyClassConstants.floatRemovedArray.add(object)
-                                }else if object.floatDetails.count > 0 && !object.isFloatRemoved && object.isFromRelinquishment {
+                                } else if object.floatDetails.count > 0 && !object.isFloatRemoved && object.isFromRelinquishment {
                                     Constant.MyClassConstants.whatToTradeArray.add(object)
-                                    if !Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID){
+                                    if !Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID) {
                                         Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
                                     }
                                 }
-                            }else{
+                            } else {
                                 Constant.MyClassConstants.whatToTradeArray.add(object)
-                                if !Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID){
+                                if !Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID) {
                                     Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
                                 }
                             }
@@ -703,13 +680,13 @@ public class Helper{
                             if object.isFloat {
                                 if object.isFloatRemoved {
                                     Constant.MyClassConstants.floatRemovedArray.add(object)
-                                }else if object.floatDetails.count > 0 && !object.isFloatRemoved && object.isFromRelinquishment {
+                                } else if object.floatDetails.count > 0 && !object.isFloatRemoved && object.isFromRelinquishment {
                                     Constant.MyClassConstants.whatToTradeArray.add(object)
-                                    if !Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID){
+                                    if !Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID) {
                                         Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
                                     }
                                 }
-                            }else{
+                            } else {
                                 Constant.MyClassConstants.whatToTradeArray.add(object)
                                 if !Constant.MyClassConstants.relinquishmentIdArray.contains(object.relinquishmentID) {
                                     Constant.MyClassConstants.relinquishmentIdArray.add(object.relinquishmentID)
@@ -722,7 +699,7 @@ public class Helper{
                             }
                         }
                         
-                    } else{
+                    } else {
                         
                         Constant.MyClassConstants.whatToTradeArray.add(openWk.pProgram)
                         if !Constant.MyClassConstants.relinquishmentIdArray.contains(openWk.pProgram[0].relinquishmentId) {
@@ -732,7 +709,7 @@ public class Helper{
                     }
                 }
             }
-        }else{
+        } else {
             intervalPrint("No Data")
         }
         
@@ -755,7 +732,7 @@ public class Helper{
             
             for obj in realmLocalStorage {
                 let destinations = obj.destinations
-                for destination in destinations  {
+                for destination in destinations {
                     let dest = AreaOfInfluenceDestination()
                     dest.aoiId = destination.aoid
                     dest.address?.countryCode = destination.countryCode
@@ -769,7 +746,7 @@ public class Helper{
         return influenceDestList
     }
     //***** function that returns Resort list according to selected membership number that send to server for search dates API call *****//
-    static func getAllResortsFromLocalStorage() -> [Resort]  {
+    static func getAllResortsFromLocalStorage() -> [Resort] {
         
         var influenceResortList = [Resort]()
         
@@ -785,7 +762,7 @@ public class Helper{
             
             for obj in realmLocalStorage {
                 let resorts = obj.resorts
-                for resot in resorts  {
+                for resot in resorts {
                     let reosrt = Resort()
                     reosrt.resortName = resot.resortName
                     reosrt.resortCode = resot.resortCode
@@ -802,7 +779,7 @@ public class Helper{
     }
     
     //***** function to return unitsize bedroom type in short form from full name *****//
-    static func getBrEnums(brType:String) -> String {
+    static func getBrEnums(brType: String) -> String {
         
         switch brType {
             
@@ -821,7 +798,7 @@ public class Helper{
         }
     }
     //***** function to return unitsize kitchen type in lower case with space form server kitchen type *****//
-    static func getKitchenEnums(kitchenType:String) -> String {
+    static func getKitchenEnums(kitchenType: String) -> String {
         
         switch kitchenType {
             
@@ -836,7 +813,7 @@ public class Helper{
         }
     }
     //***** function to return unitsize kitchen type in lower case with space form server kitchen type *****//
-    static func getBedroomNumbers(bedroomType:String) -> String {
+    static func getBedroomNumbers(bedroomType: String) -> String {
         
         switch bedroomType {
             
@@ -855,16 +832,15 @@ public class Helper{
         }
     }
     
-    static func getSearchDates() ->(Date, Date){
+    static func getSearchDates() -> (Date, Date) {
         
-        var fromDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: -(Constant.MyClassConstants.totalWindow/2), to: Constant.MyClassConstants.vacationSearchShowDate, options: [])!
+        var fromDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: -(Constant.MyClassConstants.totalWindow / 2), to: Constant.MyClassConstants.vacationSearchShowDate, options: [])!
         
-        var toDate:Date!
+        var toDate: Date!
         if (fromDate.isGreaterThanDate(Constant.MyClassConstants.todaysDate)) {
             
-            toDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: (Constant.MyClassConstants.totalWindow/2), to: Constant.MyClassConstants.vacationSearchShowDate, options: [])!
-        }
-        else {
+            toDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: (Constant.MyClassConstants.totalWindow / 2), to: Constant.MyClassConstants.vacationSearchShowDate, options: [])!
+        } else {
             _ = Helper.getDifferenceOfDates()
             fromDate = Constant.MyClassConstants.todaysDate
             toDate = (Calendar.current as NSCalendar).date(byAdding: .day, value: (Constant.MyClassConstants.totalWindow) + Helper.getDifferenceOfDates(), to: Constant.MyClassConstants.vacationSearchShowDate as Date, options: [])!
@@ -877,12 +853,12 @@ public class Helper{
         }
         Constant.MyClassConstants.currentFromDate = fromDate
         Constant.MyClassConstants.currentToDate = toDate
-        return(toDate,fromDate)
+        return(toDate, fromDate)
         
     }
     
     //***** common function that returns date difference between todate and fromdate *****//
-    static func getDifferenceOfDates() -> Int{
+    static func getDifferenceOfDates() -> Int {
         
         let cal = NSCalendar.current
         
@@ -894,7 +870,7 @@ public class Helper{
         return returnDate.day!
     }
     
-    static func getUpcommingcheckinDatesDiffrence(date:Date) -> Int{
+    static func getUpcommingcheckinDatesDiffrence(date: Date) -> Int {
         
         let cal = NSCalendar.current
         
@@ -903,7 +879,7 @@ public class Helper{
         return returnDate.day!
     }
     //***** common function that returns date difference for two years between todate and fromdate *****//
-    static func getDifferenceOfDatesAhead() -> Int{
+    static func getDifferenceOfDatesAhead() -> Int {
         let cal = NSCalendar.current
         
         let returnDate = cal.dateComponents(Set<Calendar.Component>([.day]), from: Constant.MyClassConstants.vacationSearchShowDate as Date, to: Constant.MyClassConstants.dateAfterTwoYear!)
@@ -912,11 +888,11 @@ public class Helper{
     }
     
     //***** common function that contains API call for top 10 deals *****//
-    static func getTopDeals(senderVC : UIViewController){
+    static func getTopDeals(senderVC: UIViewController) {
         
         senderVC.showHudAsync()
         
-        RentalClient.getTop10Deals(Session.sharedSession.userAccessToken,onSuccess: {(response) in
+        RentalClient.getTop10Deals(Session.sharedSession.userAccessToken, onSuccess: {(response) in
             Constant.MyClassConstants.topDeals = response
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.refreshTableNotification), object: nil)
             
@@ -930,7 +906,7 @@ public class Helper{
     }
     
     //***** common function that contains API call for flex exchange deals *****/
-    static func getFlexExchangeDeals(senderVC: UIViewController, success: @escaping((Bool) -> ())) {
+    static func getFlexExchangeDeals(senderVC: UIViewController, success: @escaping((Bool) -> Void)) {
         ExchangeClient.getFlexExchangeDeals(Session.sharedSession.userAccessToken, onSuccess: { (response) in
             Constant.MyClassConstants.flexExchangeDeals = response
             success(true)
@@ -942,7 +918,7 @@ public class Helper{
     }
     
     //***** common function that contains API call to get areas with access token *****//
-    static func getResortDirectoryRegionList(viewController:UIViewController) {
+    static func getResortDirectoryRegionList(viewController: UIViewController) {
         
         if Constant.MyClassConstants.systemAccessToken?.token != nil {
             
@@ -955,7 +931,7 @@ public class Helper{
                 
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadRegionNotification), object: nil)
                 viewController.hideHudAsync()
-            },    onError: {_ in
+            }, onError: {_ in
                 
                 viewController.hideHudAsync()
             })
@@ -963,9 +939,9 @@ public class Helper{
     }
     
     //***** common function that contains API call to get resorts with area code *****//
-    static func getResortByAreaRequest(areaCode:Int) -> Bool {
+    static func getResortByAreaRequest(areaCode: Int) -> Bool {
         
-        var value:Bool = false
+        var value: Bool = false
         // let getResortByareaRequest = getResortByAreaRequest(areaCode: areaCode)
         
         DirectoryClient.getResortsByArea(Session.sharedSession.userAccessToken, areaCode: areaCode, onSuccess: {(response) in
@@ -981,7 +957,7 @@ public class Helper{
     }
     
     //***** Function to check is resrt is favorites or not *****//
-    static func isResrotFavorite(resortCode:String) -> Bool {
+    static func isResrotFavorite(resortCode: String) -> Bool {
         var status = false
         
         if Constant.MyClassConstants.favoritesResortCodeArray.contains(resortCode) {
@@ -992,8 +968,8 @@ public class Helper{
     }
     /***** Function to get resort directory region list *****/
     
-    static func getResortsWithLatLongForShowingOnMap(request:GeoArea) -> Bool {
-        var value:Bool = false
+    static func getResortsWithLatLongForShowingOnMap(request: GeoArea) -> Bool {
+        var value: Bool = false
         DirectoryClient.getResortsWithinGeoArea(Session.sharedSession.clientAccessToken, geoArea: request, onSuccess: { (response) in
             Constant.MyClassConstants.resortsArray = response
             value = true
@@ -1006,13 +982,12 @@ public class Helper{
     
     /***** Get club resort API call for float details ******/
     
-    static func getResortsByClubFloatDetails(resortCode:String, senderViewController:UIViewController, floatResortDetails:Resort){
+    static func getResortsByClubFloatDetails(resortCode: String, senderViewController: UIViewController, floatResortDetails: Resort) {
         
         DirectoryClient.getResortsByClub(Session.sharedSession.userAccessToken, clubCode: resortCode, onSuccess: { (_ resorts: [Resort]) in
             senderViewController.hideHudAsync()
             Constant.MyClassConstants.clubFloatResorts = resorts
             senderViewController.performSegue(withIdentifier: Constant.floatDetailViewController.clubresortviewcontrollerIdentifier, sender: self)
-            
             
         }) {_ in
             
@@ -1022,7 +997,7 @@ public class Helper{
     }
     
     // Switch to FloatDetailViewController
-    static func navigateToViewController(senderViewController:UIViewController, floatResortDetails:Resort, isFromLockOff:Bool){
+    static func navigateToViewController(senderViewController: UIViewController, floatResortDetails: Resort, isFromLockOff: Bool) {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.floatViewController) as! FloatDetailViewController
         viewController.floatResortDetails = floatResortDetails
@@ -1036,15 +1011,15 @@ public class Helper{
     }
     
     //Function to get ordered sections
-    static func getOrderedSections(floatAttributesArray:NSMutableArray, atrributesRowArray:NSMutableArray){
+    static func getOrderedSections(floatAttributesArray: NSMutableArray, atrributesRowArray: NSMutableArray) {
         
         floatAttributesArray.add(Constant.MyClassConstants.callResortAttribute)
         floatAttributesArray.add(Constant.MyClassConstants.resortDetailsAttribute)
-        if (Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.resortClubAttribute)){
+        if (Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.resortClubAttribute)) {
             floatAttributesArray.add(Constant.MyClassConstants.resortClubAttribute)
         }
         floatAttributesArray.add(Constant.MyClassConstants.resortAttributes)
-        if Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.resortReservationAttribute){
+        if Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.resortReservationAttribute) {
             atrributesRowArray.add(Constant.MyClassConstants.resortReservationAttribute)
         }
         if Constant.MyClassConstants.relinquishmentSelectedWeek.reservationAttributes.contains(Constant.MyClassConstants.unitNumberAttribute) {
@@ -1059,7 +1034,7 @@ public class Helper{
     }
     
     /***** Get check-in dates API to show in calendar ******/
-    static func getCheckInDatesForCalendar(senderViewController:UIViewController, resortCode:String, relinquishmentYear:Int){
+    static func getCheckInDatesForCalendar(senderViewController: UIViewController, resortCode: String, relinquishmentYear: Int) {
         
         DirectoryClient.getResortCalendars(Session.sharedSession.userAccessToken, resortCode: resortCode, year: relinquishmentYear, onSuccess: { (resortCalendar: [ResortCalendar]) in
             
@@ -1068,7 +1043,7 @@ public class Helper{
             if resortCalendar.count > 0 {
                 Constant.MyClassConstants.relinquishmentFloatDetialMinDate = self.convertStringToDate(dateString: resortCalendar[0].checkInDate!, format: Constant.MyClassConstants.dateFormat)
                 Constant.MyClassConstants.relinquishmentFloatDetialMaxDate = self.convertStringToDate(dateString: (resortCalendar.last?.checkInDate!)!, format: Constant.MyClassConstants.dateFormat)
-                for calendarDetails in resortCalendar{
+                for calendarDetails in resortCalendar {
                     Constant.MyClassConstants.floatDetailsCalendarDateArray.append((Helper.convertStringToDate(dateString: calendarDetails.checkInDate!, format: Constant.MyClassConstants.dateFormat)))
                     Constant.MyClassConstants.floatDetailsCalendarWeekArray.add(calendarDetails.weekNumber!)
                 }
@@ -1076,8 +1051,7 @@ public class Helper{
                 var mainStoryboard = UIStoryboard()
                 if Constant.RunningDevice.deviceIdiom == .pad {
                     mainStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-                }
-                else {
+                } else {
                     mainStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
                 }
                 let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as! CalendarViewController
@@ -1085,7 +1059,7 @@ public class Helper{
                 let transitionManager = TransitionManager()
                 senderViewController.navigationController?.transitioningDelegate = transitionManager
                 senderViewController.navigationController?.pushViewController(viewController, animated: true)
-            }else{
+            } else {
                 senderViewController.presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.noDatesMessage)
             }
             
@@ -1097,12 +1071,12 @@ public class Helper{
     }
     
     /***** common function for adding uivew as a pop up with some mesage *****/
-    static func displayEmptyFavoritesMessage(requestedView:UIView) -> UIView {
+    static func displayEmptyFavoritesMessage(requestedView: UIView) -> UIView {
         let messageView = UIView()
         
-        messageView.frame = CGRect(x: 20, y: 84, width: requestedView.frame.width-40, height: requestedView.frame.height/2 + 50)
+        messageView.frame = CGRect(x: 20, y: 84, width: requestedView.frame.width - 40, height: requestedView.frame.height / 2 + 50)
         messageView.layer.cornerRadius = 7
-        messageView.backgroundColor = UIColor(red: 244.0/255.0, green: 244.0/255.0, blue: 244.0/255.0, alpha: 1.0)
+        messageView.backgroundColor = UIColor(red: 244.0 / 255.0, green: 244.0 / 255.0, blue: 244.0 / 255.0, alpha: 1.0)
         let messageLabel1 = UILabel()
         
         messageLabel1.frame = CGRect(x: 20, y: 20, width: messageView.frame.width - 40, height: 50)
@@ -1118,7 +1092,7 @@ public class Helper{
         messageView.addSubview(messageLabel2)
         
         let brokenHeartImageView = UIImageView()
-        brokenHeartImageView.frame = CGRect(x: messageView.frame.width/2 - 25, y: 130, width: 40, height: 40)
+        brokenHeartImageView.frame = CGRect(x: messageView.frame.width / 2 - 25, y: 130, width: 40, height: 40)
         brokenHeartImageView.image = UIImage(named: "FavoritesIcon")
         messageView.addSubview(brokenHeartImageView)
         
@@ -1139,7 +1113,7 @@ public class Helper{
         return messageView
     }
     /***** common function for adding uivew as a pop up with some mesage *****/
-    static func noResortView(senderView: UIView) -> UIView{
+    static func noResortView(senderView: UIView) -> UIView {
         
         let noResortView = UIView()
         let titleView = UIView()
@@ -1147,33 +1121,31 @@ public class Helper{
         let detailView = UIView()
         let detailLabel = UILabel()
         
-        
         noResortView.frame = CGRect(x: 0, y: 150, width: (UIScreen.main.bounds.width), height: Constant.MyClassConstants.runningDeviceHeight!/3)
-        noResortView.backgroundColor = UIColor(red: 209.0/255.0, green: 226.0/255.0, blue: 237.0/255.0, alpha: 1.0)
+        noResortView.backgroundColor = UIColor(red: 209.0 / 255.0, green: 226.0 / 255.0, blue: 237.0 / 255.0, alpha: 1.0)
         senderView.addSubview(noResortView)
         
-        titleView.frame = CGRect(x: 0, y: 0, width: noResortView.frame.size.width, height: noResortView.frame.size.height/5)
+        titleView.frame = CGRect(x: 0, y: 0, width: noResortView.frame.size.width, height: noResortView.frame.size.height / 5)
         titleView.backgroundColor = UIColor.darkGray
         noResortView.addSubview(titleView)
         
-        titleLabel.frame = CGRect(x: 0, y: 0, width: noResortView.frame.size.width, height: noResortView.frame.size.height/5)
+        titleLabel.frame = CGRect(x: 0, y: 0, width: noResortView.frame.size.width, height: noResortView.frame.size.height / 5)
         titleLabel.text = "No match found. Please select another date."
         titleLabel.textAlignment = NSTextAlignment.center
         titleLabel.textColor = UIColor.white
-        titleLabel.font = UIFont(name: "Helvetica",size: 12)
+        titleLabel.font = UIFont(name: "Helvetica", size: 12)
         noResortView.addSubview(titleLabel)
         
-        detailView.frame = CGRect(x: 0, y: noResortView.frame.size.height/4, width: noResortView.frame.size.width, height: 3*(noResortView.frame.size.height/4))
-        detailView.backgroundColor = UIColor(red: 209.0/255.0, green: 226.0/255.0, blue: 237.0/255.0, alpha: 1.0)
+        detailView.frame = CGRect(x: 0, y: noResortView.frame.size.height / 4, width: noResortView.frame.size.width, height: 3 * (noResortView.frame.size.height / 4))
+        detailView.backgroundColor = UIColor(red: 209.0 / 255.0, green: 226.0 / 255.0, blue: 237.0 / 255.0, alpha: 1.0)
         
         noResortView.addSubview(detailView)
         
-        
-        detailLabel.frame = CGRect(x: 10, y: noResortView.frame.size.height/4, width: noResortView.frame.size.width - 20, height: 3*(noResortView.frame.size.height/4))
+        detailLabel.frame = CGRect(x: 10, y: noResortView.frame.size.height / 4, width: noResortView.frame.size.width - 20, height: 3 * (noResortView.frame.size.height / 4))
         detailLabel.numberOfLines = 0
         detailLabel.text = "We were unable to find any availability for the travel dates you requested. Please check other available dates by scrolling above."
         detailLabel.textColor = UIColor.gray
-        detailLabel.font = UIFont(name: "Helvetica",size: 12)
+        detailLabel.font = UIFont(name: "Helvetica", size: 12)
         noResortView.addSubview(detailLabel)
         
         if Constant.RunningDevice.deviceIdiom == .pad {
@@ -1185,7 +1157,7 @@ public class Helper{
     }
     
     /***** common function name mapping of tier with swich case *****/
-    static func getTierImageName(tier:String) -> String{
+    static func getTierImageName(tier: String) -> String {
         switch tier {
         case  "SELECT":
             return "Resort_Select"
@@ -1208,7 +1180,7 @@ public class Helper{
     
     //****** Function to get the resort rating category ******//
     
-    static func getRatingCategory(category:String) -> String{
+    static func getRatingCategory(category: String) -> String {
         switch category {
         case "OVERALL":
             return "Overall"
@@ -1229,9 +1201,8 @@ public class Helper{
         }
     }
     
-    
     /***** common function for API call to get resort with resort code *****/
-    static func getResortWithResortCode(code:String , viewcontroller:UIViewController) {
+    static func getResortWithResortCode(code: String, viewcontroller: UIViewController) {
         
         DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: code, onSuccess: { (response) in
             
@@ -1259,14 +1230,13 @@ public class Helper{
                         
                     }
                     
-                }
-                else{
+                } else {
                     
                     let containerVC = viewcontroller.childViewControllers[0] as! ResortDetailsViewController
                     containerVC.senderViewController = Constant.MyClassConstants.searchResult
                     containerVC.viewWillAppear(true)
                     
-                    UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn ,animations: {
+                    UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn, animations: {
                         
                         viewcontroller.view.subviews.last?.frame = CGRect(x: 0, y: (viewcontroller.view.subviews.last?.frame.origin.y)!, width: (viewcontroller.view.subviews.last?.frame.size.width)!, height: (viewcontroller.view.subviews.last?.frame.size.height)!)
                         
@@ -1274,11 +1244,9 @@ public class Helper{
                         
                     })
                     
-                    
                 }
                 
-            }
-            else {
+            } else {
                 
                 let storyBoard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
                 let viewController = storyBoard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortVC) as! ResortDetailsViewController
@@ -1289,15 +1257,14 @@ public class Helper{
             
             viewcontroller.hideHudAsync()
             
-        })
-        {_ in
+        }) {_ in
             viewcontroller.hideHudAsync()
             viewcontroller.presentErrorAlert(UserFacingCommonError.generic)
         }
     }
     
     static func getBuildVersion() -> String {
-        let nsObject:AnyObject? = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as AnyObject?
+        let nsObject: AnyObject? = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as AnyObject?
         let version = nsObject as! String
         
         var buildVersion = "Version \(version)"
@@ -1307,7 +1274,7 @@ public class Helper{
         }
         
         if (Config.sharedInstance.getEnvironment() != Environment.production && Config.sharedInstance.getEnvironment() != Environment.production_dns) {
-            let env = Config.sharedInstance.get(.Environment, defaultValue: "NONE").uppercased();
+            let env = Config.sharedInstance.get(.Environment, defaultValue: "NONE").uppercased()
             buildVersion += " (\(env))"
         }
         
@@ -1315,7 +1282,7 @@ public class Helper{
     }
     
     //***** function to return date from date components ***** //
-    static func dateFromDateComponents(year:Int, month:Int, day:Int) -> NSDate {
+    static func dateFromDateComponents(year: Int, month: Int, day: Int) -> NSDate {
         let c = NSDateComponents()
         c.year = year
         c.month = month
@@ -1327,10 +1294,9 @@ public class Helper{
     }
     
     //***** Function to get interval HD Videos *****//
-    static func getVideos(searchBy:String, senderViewcontroller:UIViewController){
+    static func getVideos(searchBy: String, senderViewcontroller: UIViewController) {
         
-        
-        var categoryString:VideoCategory
+        var categoryString: VideoCategory
         switch searchBy {
         case Constant.MyClassConstants.resortsString:
             categoryString = VideoCategory.Resort
@@ -1343,7 +1309,6 @@ public class Helper{
         if Constant.MyClassConstants.systemAccessToken?.token != nil {
             
             LookupClient.getVideos(Constant.MyClassConstants.systemAccessToken!, category: categoryString, onSuccess: {(videos) in
-                
                 
                 switch searchBy {
                     
@@ -1366,13 +1331,13 @@ public class Helper{
                                    onError: {_ in
                                     senderViewcontroller.hideHudAsync()
             })
-        }else{
+        } else {
             
         }
     }
     
     //***** Function to get a list of magazines. *****//
-    static func getMagazines(senderViewController:UIViewController){
+    static func getMagazines(senderViewController: UIViewController) {
         if Constant.MyClassConstants.systemAccessToken?.token != nil {
             
             LookupClient.getMagazines(Constant.MyClassConstants.systemAccessToken!,
@@ -1391,7 +1356,7 @@ public class Helper{
     }
     
     // function to return credit card code by mapping with specific name
-    static func cardTypeCodeMapping(cardType:String) -> String{
+    static func cardTypeCodeMapping(cardType: String) -> String {
         switch cardType {
         case "MC":
             return "Master card"
@@ -1413,7 +1378,7 @@ public class Helper{
     }
     
     // function for card name mappping with code and return code
-    static func cardNameMapping(cardName:String) -> String{
+    static func cardNameMapping(cardName: String) -> String {
         switch cardName {
         case "MASTER CARD":
             return "MC"
@@ -1435,7 +1400,7 @@ public class Helper{
     }
     
     //function for credit card image mapping
-    static func cardImageMapping(cardType:String) -> String{
+    static func cardImageMapping(cardType: String) -> String {
         switch cardType {
         case "MC":
             return "MasterCard_CO"
@@ -1456,13 +1421,12 @@ public class Helper{
         }
     }
     
-    
     // function to return attributed string
-    static func attributedString(from string: String, nonBoldRange: NSRange?, font:UIFont) -> NSAttributedString {
+    static func attributedString(from string: String, nonBoldRange: NSRange?, font: UIFont) -> NSAttributedString {
         let fontSize = UIFont.systemFontSize
         let attrs = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: fontSize),
             NSForegroundColorAttributeName: UIColor.black]
-        let nonBoldAttribute = [NSFontAttributeName: font,]
+        let nonBoldAttribute = [NSFontAttributeName: font ]
         let attrStr = NSMutableAttributedString(string: string, attributes: attrs)
         if let range = nonBoldRange {
             attrStr.setAttributes(nonBoldAttribute, range: range)
@@ -1471,7 +1435,7 @@ public class Helper{
     }
     
     // function to return date string from date
-    static func convertDateToString(date:Date,format:String) -> String {
+    static func convertDateToString(date: Date, format: String) -> String {
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
@@ -1479,7 +1443,7 @@ public class Helper{
         return dateStr
     }
     // function to return date from dateString
-    static func convertStringToDate(dateString:String,format:String) -> Date {
+    static func convertStringToDate(dateString: String, format: String) -> Date {
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
@@ -1492,7 +1456,7 @@ public class Helper{
         return date!
     }
     // Function to get trip details
-    static func getTripDetails(senderViewController: UIViewController){
+    static func getTripDetails(senderViewController: UIViewController) {
         senderViewController.showHudAsync()
         ExchangeClient.getExchangeTripDetails(Session.sharedSession.userAccessToken, confirmationNumber: Constant.MyClassConstants.transactionNumber, onSuccess: { (exchangeResponse) in
             senderViewController.hideHudAsync()
@@ -1505,12 +1469,12 @@ public class Helper{
         }
     }
     //Common function to add notifications.
-    static func addNotifications(notificationNames: NSArray, senderVC : UIViewController){
+    static func addNotifications(notificationNames: NSArray, senderVC: UIViewController) {
         
     }
     
     // mapping function to return unit details header string with space
-    static func getMappedStringForDetailedHeaderSection(sectonHeader:String) -> String {
+    static func getMappedStringForDetailedHeaderSection(sectonHeader: String) -> String {
         
         switch sectonHeader {
         case "SLEEPING_ACCOMMODATIONS":
@@ -1528,7 +1492,6 @@ public class Helper{
         default:
             return ""
         }
-        
         
     }
     static func removeStoredGuestFormDetials() {
@@ -1548,7 +1511,7 @@ public class Helper{
     }
     
     //function to map bedroom size into integer string
-    static func bedRoomSizeToStringInteger(bedRoomSize:String) -> String{
+    static func bedRoomSizeToStringInteger(bedRoomSize: String) -> String {
         switch bedRoomSize {
         case "STUDIO":
             return "0"
@@ -1583,7 +1546,7 @@ public class Helper{
             return ""
         }
     }
-    static func selectedSegment(index:Int) -> String {
+    static func selectedSegment(index: Int) -> String {
         
         switch index {
         case 0:
@@ -1598,9 +1561,8 @@ public class Helper{
             return ""
         }
         
-        
     }
-    static func omnitureSegmentSearchType(index:Int) -> String {
+    static func omnitureSegmentSearchType(index: Int) -> String {
         
         switch index {
         case 0:
@@ -1615,10 +1577,9 @@ public class Helper{
             return ""
         }
         
-        
     }
     
-    static func returnFilteredValue(filteredValue:String) -> String {
+    static func returnFilteredValue(filteredValue: String) -> String {
         
         var selectedvalue = filteredValue.uppercased()
         
@@ -1644,7 +1605,7 @@ public class Helper{
         
     }
     
-    static func trackOmnitureCallForPageView(name:String) {
+    static func trackOmnitureCallForPageView(name: String) {
         
         // omniture tracking with event 40
         let userInfo: [String: String] = [
@@ -1656,12 +1617,11 @@ public class Helper{
     }
     
     //Method for navigating to another storyboard
-    static func switchStoryBoard(storyBoardNameIphone:String, storyBoardNameIpad:String, senderViewController:UIViewController){
+    static func switchStoryBoard(storyBoardNameIphone: String, storyBoardNameIpad: String, senderViewController: UIViewController) {
         var mainStoryboard = UIStoryboard()
         if Constant.RunningDevice.deviceIdiom == .pad {
             mainStoryboard = UIStoryboard(name: storyBoardNameIphone, bundle: nil)
-        }
-        else {
+        } else {
             mainStoryboard = UIStoryboard(name: storyBoardNameIpad, bundle: nil)
         }
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.bedroomSizeViewController) as! BedroomSizeViewController
@@ -1672,10 +1632,10 @@ public class Helper{
         senderViewController.navigationController!.present(viewController, animated: true, completion: nil)
     }
     
-    static func currencyCodetoSymbol(code:String)->String{
+    static func currencyCodetoSymbol(code: String) -> String {
         
-        let currencyCode : String? = code
-        let curr = Locale.availableIdentifiers.map{ Locale(identifier: $0)}.filter { return currencyCode == $0.currencyCode }.map { ($0.identifier, $0.currencySymbol) }.flatMap {$0}.first
+        let currencyCode: String? = code
+        let curr = Locale.availableIdentifiers.map { Locale(identifier: $0) }.filter { return currencyCode == $0.currencyCode }.map { ($0.identifier, $0.currencySymbol) }.flatMap { $0 }.first
         return (curr?.1?.description)!
     }
     
@@ -1686,7 +1646,7 @@ public class Helper{
     /*
      * Execute Rental Search Availability
      */
-    static func executeRentalSearchAvailability(activeInterval:BookingWindowInterval!, checkInDate:Date!, senderViewController:UIViewController, vacationSearch:VacationSearch) {
+    static func executeRentalSearchAvailability(activeInterval: BookingWindowInterval!, checkInDate: Date!, senderViewController: UIViewController, vacationSearch: VacationSearch) {
         DarwinSDK.logger.error("----- Waiting for search availability ... -----")
         
         let request = RentalSearchResortsRequest()
@@ -1716,7 +1676,7 @@ public class Helper{
                                     Constant.MyClassConstants.noAvailabilityView = false
                                     
         },
-           onError:{_ in
+           onError: {_ in
             Constant.MyClassConstants.noAvailabilityView = true
             Constant.MyClassConstants.isFromSorting = false
             senderViewController.hideHudAsync()
@@ -1725,14 +1685,11 @@ public class Helper{
         )
     }
     
-    
-    
-    
     /*
      * Execute Exchange Search Availability
      */
     
-    static func executeExchangeSearchAvailability(activeInterval: BookingWindowInterval!, checkInDate:Date!, senderViewController:UIViewController, vacationSearch:VacationSearch) {
+    static func executeExchangeSearchAvailability(activeInterval: BookingWindowInterval!, checkInDate: Date!, senderViewController: UIViewController, vacationSearch: VacationSearch) {
         
         let request = ExchangeSearchAvailabilityRequest()
         request.checkInDate = checkInDate
@@ -1748,7 +1705,7 @@ public class Helper{
             
             //Added resorts for resort detail screen
             Constant.MyClassConstants.resortsArray.removeAll()
-            for resorts in searchAvailabilityResponse{
+            for resorts in searchAvailabilityResponse {
                 Constant.MyClassConstants.resortsArray.append(resorts.resort!)
             }
             
@@ -1758,7 +1715,7 @@ public class Helper{
             let activeInterval = vacationSearch.bookingWindow.getActiveInterval()
             vacationSearch.updateActiveInterval(activeInterval: activeInterval)
             Constant.MyClassConstants.initialVacationSearch = vacationSearch
-            if senderViewController.isKind(of: VacationSearchResultIPadController.self) || senderViewController.isKind(of: SearchResultViewController.self)  || senderViewController.isKind(of: SortingViewController.self) || senderViewController.isKind(of:AllAvailableDestinationViewController.self) || senderViewController.isKind(of: AllAvailableDestinationsIpadViewController.self) || senderViewController.isKind(of: FlexChangeSearchIpadViewController.self) || senderViewController.isKind(of: FlexchangeSearchViewController.self) {
+            if senderViewController.isKind(of: VacationSearchResultIPadController.self) || senderViewController.isKind(of: SearchResultViewController.self) || senderViewController.isKind(of: SortingViewController.self) || senderViewController.isKind(of:AllAvailableDestinationViewController.self) || senderViewController.isKind(of: AllAvailableDestinationsIpadViewController.self) || senderViewController.isKind(of: FlexChangeSearchIpadViewController.self) || senderViewController.isKind(of: FlexchangeSearchViewController.self) {
                 helperDelegate?.resortSearchComplete()
             } else {
                 helperDelegate?.resetCalendar()
@@ -1769,7 +1726,7 @@ public class Helper{
                     let transitionManager = TransitionManager()
                     senderViewController.navigationController?.transitioningDelegate = transitionManager
                     senderViewController.navigationController?.pushViewController(viewController, animated: true)
-                }else{
+                } else {
                     let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
                     let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
                     
@@ -1779,16 +1736,14 @@ public class Helper{
                 }
             }
             
-        })
-        { _ in
+        }) { _ in
             senderViewController.hideHudAsync()
             senderViewController.presentErrorAlert(UserFacingCommonError.generic)
         }
     }
     
     //Search both perform exchange search after rental
-    static func executeExchangeSearchDates(senderVC:UIViewController, vacationSearch:VacationSearch) {
-        
+    static func executeExchangeSearchDates(senderVC: UIViewController, vacationSearch: VacationSearch) {
         
         ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request: vacationSearch.exchangeSearch?.searchContext.request,
                                    onSuccess: { (response) in
@@ -1814,10 +1769,10 @@ public class Helper{
                                         
                                     } else {
                                         vacationSearch.resolveCheckInDateForInitialSearch()
-                                        executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat) , senderViewController: senderVC, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                        executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: vacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: senderVC, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                     }
         },
-                                   onError:{ _ in
+                                   onError: { _ in
                                     senderVC.presentErrorAlert(UserFacingCommonError.generic)
                                     
         }
@@ -1828,7 +1783,7 @@ public class Helper{
     /*
      * Execute Exchange Search Dates After Select Interval
      */
-    static func executeExchangeSearchDatesAfterSelectInterval(senderVC:UIViewController, datesCV:UICollectionView) {
+    static func executeExchangeSearchDatesAfterSelectInterval(senderVC: UIViewController, datesCV: UICollectionView) {
         ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request,
                                    onSuccess: { (response) in
                                     Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
@@ -1859,7 +1814,7 @@ public class Helper{
                                     }
                                     
         },
-                                   onError:{ _ in
+                                   onError: { _ in
                                     senderVC.presentErrorAlert(UserFacingCommonError.generic)
         }
         )
@@ -1868,7 +1823,7 @@ public class Helper{
     /*
      * Execute Exchnage Search Availability After Select CheckInDate
      */
-    static func executeExchangeSearchAvailabilityAfterSelectCheckInDate(activeInterval:BookingWindowInterval!, checkInDate:Date!, searchCriteria:VacationSearchCriteria, senderVC:UIViewController) {
+    static func executeExchangeSearchAvailabilityAfterSelectCheckInDate(activeInterval: BookingWindowInterval!, checkInDate: Date!, searchCriteria: VacationSearchCriteria, senderVC: UIViewController) {
         DarwinSDK.logger.error("----- Exchange - Waiting for search availability ... -----")
         
         let request = ExchangeSearchAvailabilityRequest()
@@ -1889,7 +1844,7 @@ public class Helper{
                                             helperDelegate?.resortSearchComplete()
                                             
         },
-                                          onError:{ _ in
+                                          onError: { _ in
                                             senderVC.presentErrorAlert(UserFacingCommonError.generic)
         }
         )
@@ -1900,7 +1855,7 @@ public class Helper{
         DarwinSDK.logger.info("Show the Not Availability Screen.")
     }
     
-    static func showScrollingCalendar(vacationSearch:VacationSearch) {
+    static func showScrollingCalendar(vacationSearch: VacationSearch) {
         DarwinSDK.logger.info("-- Create Calendar based on Booking Window Intervals --")
         Constant.MyClassConstants.totalBucketArray.removeAll()
         
@@ -1946,7 +1901,7 @@ public class Helper{
         DarwinSDK.logger.info("NEAREST CHECK-IN DATE SELECTED - We found availability close to your desired Check-in Date")
     }
     
-    static func showAvailabilityResults(vacationSearch:VacationSearch) {
+    static func showAvailabilityResults(vacationSearch: VacationSearch) {
         DarwinSDK.logger.info("-- Create Sections --")
         
         let sections = vacationSearch.createSections()
@@ -1956,7 +1911,7 @@ public class Helper{
         
     }
     
-    static func showAvailabilityBucketExchange(inventoryItem:ExchangeInventory!) {
+    static func showAvailabilityBucketExchange(inventoryItem: ExchangeInventory!) {
         //DarwinSDK.logger.info("\(String(describing: resolveResortInfo(inventoryItem)))")
         
         for bucket in inventoryItem.buckets {
@@ -1964,7 +1919,7 @@ public class Helper{
         }
     }
     
-    static func showAvailabilityBucket(inventoryItem:Resort!) {
+    static func showAvailabilityBucket(inventoryItem: Resort!) {
         //DarwinSDK.logger.info("\(String(describing: resolveResortInfo(inventoryItem)))")
         
         for unit in (inventoryItem.inventory?.units)! {
@@ -1972,7 +1927,7 @@ public class Helper{
         }
     }
     
-    static func resolveDestinationInfo(destination:AreaOfInfluenceDestination) -> String {
+    static func resolveDestinationInfo(destination: AreaOfInfluenceDestination) -> String {
         var info = String()
         info.append(destination.destinationName)
         
@@ -1994,7 +1949,7 @@ public class Helper{
         return info
     }
     
-    static func resolveUnitInfo(unit:InventoryUnit) -> String {
+    static func resolveUnitInfo(unit: InventoryUnit) -> String {
         var info = String()
         info.append("    ")
         info.append(unit.unitSize!)
@@ -2031,7 +1986,7 @@ public class Helper{
                 viewcontroller.presentAlert(with: "Error", message: "The Confirmation could not be sent at the moment.")
             })
         }
-        let cancelAction =  UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
       
         resendAlert.addAction(submitAction)
         resendAlert.addAction(cancelAction)
@@ -2041,7 +1996,7 @@ public class Helper{
     }
     
     //***** function to return vacation search screen segment type string to display in UI *****//
-    static func vacationSearchTypeSegemtStringToDisplay(vacationSearchType:String) -> String {
+    static func vacationSearchTypeSegemtStringToDisplay(vacationSearchType: String) -> String {
         
         switch vacationSearchType {
             
@@ -2058,7 +2013,7 @@ public class Helper{
     }
     
     // search criteria
-    static func createSearchCriteriaFor(deal:FlexExchangeDeal) -> VacationSearchCriteria {
+    static func createSearchCriteriaFor(deal: FlexExchangeDeal) -> VacationSearchCriteria {
         let travelParty = TravelParty()
         travelParty.adults = 2
         travelParty.children = 0
@@ -2080,14 +2035,14 @@ public class Helper{
         return searchCriteria
     }
     
-    static func travelPartyInfo(adults:Int, children:Int) -> TravelParty {
+    static func travelPartyInfo(adults: Int, children: Int) -> TravelParty {
         let travelParty = TravelParty()
         travelParty.adults = adults
         travelParty.children = children
         return travelParty
     }
     
-    static func createSearchCriteriaForRentalDeal(deal:RentalDeal) -> VacationSearchCriteria {
+    static func createSearchCriteriaForRentalDeal(deal: RentalDeal) -> VacationSearchCriteria {
         let area = Area()
         area.areaCode = deal.areaCodes[0]
         area.areaName = deal.header
@@ -2099,71 +2054,64 @@ public class Helper{
         return searchCriteria
     }
     
-    
-    static func returnStringWithPriceAndTerm(price:String, term:String) -> String {
+    static func returnStringWithPriceAndTerm(price: String, term: String) -> String {
         
         let mainString = "Get a FREE Guest Certificate now and every time with Interval Platinum. Your Interval Platinum must be active through your travel dates to receive FREE Guest Certificates. To upgrade or renew, a \(term) Interval Platinum fee of  membership fee of \n\(price)\n will be included with this transaction."
         
         return mainString
     }
     
-    
-    static func returnIntervalMembershipString(price:String, term:String) -> String {
+    static func returnIntervalMembershipString(price: String, term: String) -> String {
         
         let mainString = "Your interval membership expires before your travel date.To continue, a \(term) membership fee of \n\(price)\nwill be included with this transaction."
         
         return mainString
     }
     
-    
-    static func returnIntervalMembershipStringWithDisplayName(displayName:String, price:String, term:String) -> String {
+    static func returnIntervalMembershipStringWithDisplayName(displayName: String, price: String, term: String) -> String {
         
         let mainString = "In addition, to keep your \(displayName) benefits, a \(term) membership fee of \n\(price)\nwill be included with this transaction."
         
         return mainString
     }
     
-    static func returnIntervalMembershipStringWithDisplayName1(displayName:String, price:String, term:String) -> String {
+    static func returnIntervalMembershipStringWithDisplayName1(displayName: String, price: String, term: String) -> String {
         
         let mainString = "In addition, your \(displayName) membership expires before your travel date. To continue booking your Getaway at the current discounted rate, a \(term) membership fee of \n\(price)\nwill be included with this transaction."
         
         return mainString
     }
     
-    
-    static func returnIntervalMembershipStringWithDisplayName2(displayName:String, price:String, term:String) -> String {
+    static func returnIntervalMembershipStringWithDisplayName2(displayName: String, price: String, term: String) -> String {
         
         let mainString = "In addition, your \(displayName) membership expires before your travel date. To keep your Interval Platinum benefits, a \(term) membership fee of \n\(price)\nwill be included with this transaction."
         
         return mainString
     }
     
-    
-    static func returnIntervalMembershipStringWithDisplayName3(displayName:String, price:String, term:String) -> String {
+    static func returnIntervalMembershipStringWithDisplayName3(displayName: String, price: String, term: String) -> String {
         
         let mainString = "Your \(displayName) membership expires before your travel date. To continue booking your Getaway at the current discounted rate, a \(term) \(displayName) membership fee of \n\(price)\nwill be included with this transaction."
         
         return mainString
     }
     
-    
-    static func returnIntervalMembershipStringWithDisplayName4(displayName:String, price:String, term:String) -> String {
+    static func returnIntervalMembershipStringWithDisplayName4(displayName: String, price: String, term: String) -> String {
         
         let mainString = "Get a FREE Guest Certificate now and every time with \(displayName). Your Interval Platinum must be active through your travel dates to receive FREE Guest Certificates. To upgrade or renew, a \(term) \(displayName) fee of \n\(price)\nwill be included with this transaction."
         
         return mainString
     }
     
-    static func returnIntervalMembershipStringWithDisplayName5(displayName:String, price:String, term:String) -> String {
+    static func returnIntervalMembershipStringWithDisplayName5(displayName: String, price: String, term: String) -> String {
         
         let mainString = "Your \(displayName) membership expires before your travel date. To keep your Interval Platinum benefits, a \(term) membership fee of \n\(price)\nwill be included with this transaction."
         
         return mainString
     }
     
-    
     //function to return renewal type name
-    static func renewalType(type:Int) -> String{
+    static func renewalType(type: Int) -> String {
         switch type {
         case 0:
             return "Core"
@@ -2182,7 +2130,7 @@ public class Helper{
         }
     }
     // function to create custom bottom to top transition and return to caller
-    static func bottomToTopTransition()-> CATransition {
+    static func bottomToTopTransition() -> CATransition {
         
         let transition = CATransition()
         transition.duration = 0.4
@@ -2193,7 +2141,7 @@ public class Helper{
         return transition
     }
     // function to create custom top to bottom transition and return to caller
-    static func topToBottomTransition()-> CATransition {
+    static func topToBottomTransition() -> CATransition {
         
         let transition = CATransition()
         transition.duration = 0.4
@@ -2218,4 +2166,3 @@ public class Helper{
         }
     }
 }
-

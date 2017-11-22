@@ -215,7 +215,7 @@ extension CalendarViewController: FSCalendarDelegateAppearance {
             }
 
          } else {
-            var startDT : Date
+            var startDT: Date
             if let startDate = Constant.MyClassConstants.alertWindowStartDate {
                 startDT = startDate
             } else {
@@ -242,7 +242,7 @@ extension CalendarViewController: FSCalendarDelegateAppearance {
                 return UIColor.lightGray
             }
         } else {
-            var startDT : Date
+            var startDT: Date
             if let startDate = Constant.MyClassConstants.alertWindowStartDate {
                 startDT = startDate
             } else {

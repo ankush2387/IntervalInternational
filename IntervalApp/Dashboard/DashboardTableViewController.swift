@@ -16,11 +16,11 @@ class DashboardTableViewController: UITableViewController {
     
     //***** Outlets *****//
     @IBOutlet var segmentedControl: UISegmentedControl!
-    @IBOutlet var homeTableCollectionView:UICollectionView!
+    @IBOutlet var homeTableCollectionView: UICollectionView!
     @IBOutlet var homeTableView: UITableView!
     
     //***** Variables *****//
-    var segmentSelectedIndex:Int = 0
+    var segmentSelectedIndex: Int = 0
     var showAlertActivityIndicatorView = true
     var noUpcomingTrip = false
     var showGetaways = true
@@ -80,7 +80,7 @@ class DashboardTableViewController: UITableViewController {
         Helper.getFlexExchangeDeals(senderVC: self) { (success) in
             if success {
                 DispatchQueue.main.async {[weak self] in
-                    guard let strongSelf = self else {return }
+                    guard let strongSelf = self else { return }
                     strongSelf.getNumberOfSections()
                     strongSelf.homeTableView.reloadData()
                 }
@@ -104,7 +104,7 @@ class DashboardTableViewController: UITableViewController {
     }
     
     //***** Function to calculate number of sections. *****//
-    func getNumberOfSections(){
+    func getNumberOfSections() {
         dashboardArray.removeAll()
         if Constant.MyClassConstants.dashBoardAlertsArray.count > 0 {
             dashboardArray.append(Constant.dashboardTableScreenReusableIdentifiers.alert)
@@ -129,7 +129,7 @@ class DashboardTableViewController: UITableViewController {
     }
     
     //***** Function called when notification for upcoming trips details is fired. *****//
-    func reloadUpcomingTrip(){
+    func reloadUpcomingTrip() {
         if Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.confirmationNumber != nil {
             let mainStoryboard: UIStoryboard = UIStoryboard(name:Constant.storyboardNames.myUpcomingTripIphone, bundle: nil)
             if let resultController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.upcomingTripsViewController) as? UpComingTripDetailController {
@@ -141,14 +141,14 @@ class DashboardTableViewController: UITableViewController {
     }
     
     //***** Function called when notification for getaway alerts is fired. *****//
-    func reloadAlertCollectionView(){
+    func reloadAlertCollectionView() {
         showAlertActivityIndicatorView = false
         getNumberOfSections()
         homeTableView.reloadData()
     }
     
     //***** Function called when notification for top 10 deals is fired. *****//
-    func reloadTopDestinations(){
+    func reloadTopDestinations() {
         getNumberOfSections()
         homeTableView.reloadData()
     }
@@ -190,8 +190,7 @@ class DashboardTableViewController: UITableViewController {
                 headerCell.headerDetailButton.addTarget(self, action: #selector(DashboardTableViewController.viewAllAlertButtonPressed(_:)), for: .touchUpInside)
                 headerCell.refreshAlertButton.addTarget(self, action: #selector(DashboardTableViewController.refreshAlertButtonPressed(_:)), for: .touchUpInside)
                 return headerCell
-            }
-            else {return nil}
+            } else { return nil }
             
         case Constant.dashboardTableScreenReusableIdentifiers.upcoming :
             if let  headerCell = tableView.dequeueReusableCell(withIdentifier: Constant.dashboardTableScreenReusableIdentifiers.headerCell) as? CustomHeaderCell {
@@ -200,8 +199,7 @@ class DashboardTableViewController: UITableViewController {
                 headerCell.headerDetailButton.addTarget(self, action: #selector(DashboardTableViewController.viewAllTripButtonPressed(_:)), for: .touchUpInside)
                 headerCell.refreshAlertButton.isHidden = true
                 return headerCell
-            }
-            else {return nil}
+            } else { return nil }
             
         case Constant.dashboardTableScreenReusableIdentifiers.search :
             if let  headerCell = tableView.dequeueReusableCell(withIdentifier: Constant.dashboardTableScreenReusableIdentifiers.headerCell) as? CustomHeaderCell {
@@ -209,22 +207,20 @@ class DashboardTableViewController: UITableViewController {
                 headerCell.headerDetailButton.isHidden = true
                 headerCell.refreshAlertButton.isHidden = true
                 return headerCell
-            }
-            else {return nil}
+            } else { return nil }
             
         default :
             if let  headerCell = tableView.dequeueReusableCell(withIdentifier: Constant.dashboardTableScreenReusableIdentifiers.headerCell) as? CustomHeaderCell {
                 headerCell.headerLabel.text = nil
                 return headerCell
-            }
-            else {return nil}
+            } else { return nil }
         }
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if dashboardArray[section] == Constant.dashboardTableScreenReusableIdentifiers.getaway || dashboardArray[section] == Constant.dashboardTableScreenReusableIdentifiers.exchange {
             return 0
-        }else{
+        } else {
             return 50
         }
     }
@@ -255,7 +251,7 @@ class DashboardTableViewController: UITableViewController {
         
     }
     
-    func getTableViewContents(_ indexPath:IndexPath, type:String) -> UITableViewCell{
+    func getTableViewContents(_ indexPath: IndexPath, type: String) -> UITableViewCell {
         
         switch type {
         case Constant.dashboardTableScreenReusableIdentifiers.alert :
@@ -271,21 +267,18 @@ class DashboardTableViewController: UITableViewController {
                     cell.activityIndicatorBackgroundView.layer.borderColor = UIColor.lightGray.cgColor
                     cell.activityIndicatorBackgroundView.layer.masksToBounds = true
                     cell.activityIndicator.startAnimating()
-                }
-                else {
+                } else {
                     cell.activityIndicatorBseView.isHidden = true
                     cell.activityIndicator.stopAnimating()
                     cell.alertCollectinView.reloadData()
                 }
                 
                 return cell
-            }
-            else {return UITableViewCell()}
-            
+            } else { return UITableViewCell() }
             
         case Constant.dashboardTableScreenReusableIdentifiers.upcoming :
             if let cell = tableView.dequeueReusableCell(withIdentifier: Constant.dashboardTableScreenReusableIdentifiers.sectionCell, for: indexPath) as? UpcomingTripSegmentCell {
-                let upcomingTrip  =  Constant.MyClassConstants.upcomingTripsArray[indexPath.row]
+                let upcomingTrip = Constant.MyClassConstants.upcomingTripsArray[indexPath.row]
                 if let resort = upcomingTrip.resort {
                     cell.resortNameLabel.text = resort.resortName
                     
@@ -305,8 +298,7 @@ class DashboardTableViewController: UITableViewController {
                 
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 return cell
-            }
-            else {return UITableViewCell()}
+            } else { return UITableViewCell() }
             
         case Constant.dashboardTableScreenReusableIdentifiers.search :
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cellIdentifier, for: indexPath)
@@ -317,7 +309,7 @@ class DashboardTableViewController: UITableViewController {
             
             let searchVacation = IUIKButton()
             searchVacation.frame = CGRect(x: 10, y: 10, width: self.view.frame.width - 20, height: 50)
-            searchVacation.backgroundColor =  UIColor(red: 240/255.0, green: 111/255.0, blue: 54/255.0, alpha: 1.0)
+            searchVacation.backgroundColor = UIColor(red: 240 / 255.0, green: 111 / 255.0, blue: 54 / 255.0, alpha: 1.0)
             searchVacation.setTitle(Constant.buttonTitles.searchVacation, for: UIControlState.normal)
             searchVacation.addTarget(self, action:#selector(DashboardTableViewController.searchVactionPressed(_:)), for:UIControlEvents.touchUpInside)
             searchVacation.layer.cornerRadius = 4
@@ -334,30 +326,28 @@ class DashboardTableViewController: UITableViewController {
             //header for top ten deals
             if type == Constant.dashboardTableScreenReusableIdentifiers.exchange {
                 
-                if !showExchange  {
+                if !showExchange {
                     let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: cell.contentView.frame.width - 20, height: 20))
                     resortImageNameLabel.text = Constant.segmentControlItems.getawaysLabelText
                     
                     resortImageNameLabel.textColor = UIColor.black
-                    resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
+                    resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
                     cell.addSubview(resortImageNameLabel)
-                }
-                else{
+                } else {
                     let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: cell.contentView.frame.width - 20, height: 20))
                     resortImageNameLabel.text = Constant.segmentControlItems.flexchangeLabelText
                     resortImageNameLabel.textColor = UIColor.black
-                    resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
+                    resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
                     cell.addSubview(resortImageNameLabel)
                     
                 }
-            }
-            else {
+            } else {
                 
                 let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: cell.contentView.frame.width - 20, height: 20))
                 resortImageNameLabel.text = Constant.segmentControlItems.getawaysLabelText
                 
                 resortImageNameLabel.textColor = UIColor.black
-                resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
+                resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
                 cell.addSubview(resortImageNameLabel)
             }
             
@@ -376,13 +366,12 @@ class DashboardTableViewController: UITableViewController {
             homeTableCollectionView.dataSource = self
             if type == Constant.dashboardTableScreenReusableIdentifiers.exchange {
                 homeTableCollectionView.tag = 1
-            }
-            else {
+            } else {
                 homeTableCollectionView.tag = 2
             }
             
             homeTableCollectionView.isScrollEnabled = true
-            cell.backgroundColor = UIColor(red: 240.0/255.0, green: 239.0/255.0, blue: 244.0/255.0, alpha: 1.0)
+            cell.backgroundColor = UIColor(red: 240.0 / 255.0, green: 239.0 / 255.0, blue: 244.0 / 255.0, alpha: 1.0)
             cell.addSubview(homeTableCollectionView)
             
             return cell
@@ -394,14 +383,13 @@ class DashboardTableViewController: UITableViewController {
         if sender.selectedSegmentIndex == 0 {
             segmentSelectedIndex = sender.selectedSegmentIndex
             homeTableView.reloadData()
-        }
-        else {
+        } else {
             segmentSelectedIndex = sender.selectedSegmentIndex
             homeTableView.reloadData()
         }
     }
     //***** View all alerts button pressed *****//
-    func viewAllAlertButtonPressed(_ sender:IUIKButton){
+    func viewAllAlertButtonPressed(_ sender: IUIKButton) {
         Constant.MyClassConstants.alertOriginationPoint = Constant.CommonStringIdentifiers.alertOriginationPoint
         let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
         let storyboardName = isRunningOnIphone ? Constant.storyboardNames.getawayAlertsIphone : Constant.storyboardNames.getawayAlertsIpad
@@ -412,7 +400,7 @@ class DashboardTableViewController: UITableViewController {
         
     }
     //***** Refresh alert button action *****//
-    func refreshAlertButtonPressed(_ sender:IUIKButton) {
+    func refreshAlertButtonPressed(_ sender: IUIKButton) {
         
         showAlertActivityIndicatorView = true
         Helper.getAllAlerts {[unowned self] error in
@@ -424,7 +412,7 @@ class DashboardTableViewController: UITableViewController {
     }
     
     //***** View all trip button action *****//
-    func viewAllTripButtonPressed(_ sender:IUIKButton) {
+    func viewAllTripButtonPressed(_ sender: IUIKButton) {
         
         Constant.MyClassConstants.upcomingOriginationPoint = Constant.omnitureCommonString.homeDashboard
         let storyboardName = Constant.storyboardNames.myUpcomingTripIphone
@@ -434,8 +422,8 @@ class DashboardTableViewController: UITableViewController {
         
     }
     //***** Search vacation button action *****//
-    //MARK: - Button Events
-    func  searchVactionPressed(_ sender:AnyObject) {
+    // MARK: - Button Events
+    func  searchVactionPressed(_ sender: AnyObject) {
         
         Constant.MyClassConstants.searchOriginationPoint = Constant.omnitureCommonString.homeDashboard
         
@@ -446,9 +434,9 @@ class DashboardTableViewController: UITableViewController {
         }
     }
     
-    func homeAlertSelected(indexPath:IndexPath) {
+    func homeAlertSelected(indexPath: IndexPath) {
         
-        guard let alertID = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId else {return }
+        guard let alertID = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId else { return }
         if let value = Constant.MyClassConstants.alertsSearchDatesDictionary.value(forKey: String(describing: alertID)) as? NSArray {
             
             if value.count > 0 {
@@ -458,7 +446,7 @@ class DashboardTableViewController: UITableViewController {
                     let searchCriteria = createSearchCriteriaFor(alert: getawayAlert)
                     let settings = Helper.createSettings()
                     Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
-                    RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request,onSuccess: {[unowned self] response in
+                    RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess: {[unowned self] response in
                         Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
                         // Get activeInterval
                         let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
@@ -466,19 +454,18 @@ class DashboardTableViewController: UITableViewController {
                         Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                         Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                         // Check not available checkIn dates for the active interval
-                        if activeInterval?.fetchedBefore != nil && activeInterval?.hasCheckInDates() != nil{
+                        if activeInterval?.fetchedBefore != nil && activeInterval?.hasCheckInDates() != nil {
                             if let activeInterval = activeInterval {
                                 activeInterval.hasCheckInDates() ?self.rentalSearchAvailability(activeInterval: activeInterval) :self.noResultsAvailability()
                             }
                         }
                         },
-                                             onError:{ [unowned self] error in
+                                             onError: { [unowned self] error in
                                                 self.hideHudAsync()
                                                 self.presentErrorAlert(UserFacingCommonError.custom(title: "Error".localized(), body: error.localizedDescription))
                     })
                 }
-            }
-            else {
+            } else {
                 let alertController = UIAlertController(title: title, message: Constant.AlertErrorMessages.getawayAlertMessage, preferredStyle: .alert)
                 let startSearch = UIAlertAction(title: Constant.AlertPromtMessages.newSearch, style: .default) { (_:UIAlertAction) in
                     
@@ -498,14 +485,14 @@ class DashboardTableViewController: UITableViewController {
     }
     
     //Function for no results availability
-    func noResultsAvailability(){
+    func noResultsAvailability() {
         Constant.MyClassConstants.noAvailabilityView = true
         navigateToSearchResults()
         
     }
     
     //Function for navigating to search results
-    func navigateToSearchResults(){
+    func navigateToSearchResults() {
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as? SearchResultViewController {
@@ -513,37 +500,36 @@ class DashboardTableViewController: UITableViewController {
             self.navigationController?.pushViewController(viewController, animated: true)
         }
         
-        
     }
     //Function for rental search availability
-    func rentalSearchAvailability(activeInterval:BookingWindowInterval){
+    func rentalSearchAvailability(activeInterval: BookingWindowInterval) {
         Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
         Helper.helperDelegate = self
-        if let searchDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate{
+        if let searchDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate {
             Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate:  Helper.convertStringToDate(dateString: searchDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
         }
     }
     
-    func createSearchCriteriaFor(alert:RentalAlert) -> VacationSearchCriteria {
+    func createSearchCriteriaFor(alert: RentalAlert) -> VacationSearchCriteria {
         // Split destinations and resorts to create multiples VacationSearchCriteria
         let checkInDate = alert.getCheckInDate()
         
         let searchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Rental)
         searchCriteria.checkInDate = Helper.convertStringToDate(dateString: checkInDate, format: Constant.MyClassConstants.dateFormat)
-        if let earliestCheckInDate = alert.earliestCheckInDate{
+        if let earliestCheckInDate = alert.earliestCheckInDate {
             searchCriteria.checkInFromDate = Helper.convertStringToDate(dateString: earliestCheckInDate, format: Constant.MyClassConstants.dateFormat)
         }
-        if let latestCheckInDate = alert.latestCheckInDate{
+        if let latestCheckInDate = alert.latestCheckInDate {
             searchCriteria.checkInToDate = Helper.convertStringToDate(dateString: latestCheckInDate, format: Constant.MyClassConstants.dateFormat)
         }
         getDestinationsResortsForAlert(alert:alert, searchCriteria: searchCriteria)
         alertFilterOptionsArray.removeAll()
         
-        for destination in alert.destinations{
+        for destination in alert.destinations {
             let dest = AreaOfInfluenceDestination()
-            if let destinationName = destination.destinationName{
+            if let destinationName = destination.destinationName {
                 dest.destinationName = destinationName
-            }else{
+            } else {
                 dest.destinationName = "Cancun"
             }
             dest.aoiId = destination.aoiId
@@ -551,7 +537,7 @@ class DashboardTableViewController: UITableViewController {
             alertFilterOptionsArray
                 .append(Constant.AlertResortDestination.Destination(dest))
         }
-        for resort in alert.resorts{
+        for resort in alert.resorts {
             let alertResort = Resort()
             alertResort.resortName = resort.resortName
             alertResort.resortCode = resort.resortCode
@@ -561,12 +547,12 @@ class DashboardTableViewController: UITableViewController {
         return searchCriteria
     }
     
-    func getDestinationsResortsForAlert(alert:RentalAlert, searchCriteria:VacationSearchCriteria){
+    func getDestinationsResortsForAlert(alert: RentalAlert, searchCriteria: VacationSearchCriteria) {
         if (alert.destinations.count) > 0 {
             let destination = AreaOfInfluenceDestination()
-            if let destinationName = alert.destinations[0].destinationName{
-                destination.destinationName  = destinationName
-            }else{
+            if let destinationName = alert.destinations[0].destinationName {
+                destination.destinationName = destinationName
+            } else {
                 destination.destinationName  = "Cancun"
             }
             destination.destinationId = alert.destinations[0].destinationId
@@ -574,14 +560,14 @@ class DashboardTableViewController: UITableViewController {
             searchCriteria.destination = destination
             Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
             
-        }else if (alert.resorts.count) > 0 {
+        } else if (alert.resorts.count) > 0 {
             Constant.MyClassConstants.initialVacationSearch.searchCriteria.resorts = alert.resorts
         }
     }
 }
 //***** MARK: Extension classes starts from here *****//
-extension DashboardTableViewController:HelperDelegate {
-    func resortSearchComplete(){
+extension DashboardTableViewController: HelperDelegate {
+    func resortSearchComplete() {
         hideHudAsync()
         // Check if not has availability in the desired check-In date.
         if Constant.MyClassConstants.initialVacationSearch.searchCheckInDate != Helper.convertDateToString(date: Constant.MyClassConstants.vacationSearchShowDate, format: Constant.MyClassConstants.dateFormat) {
@@ -596,12 +582,12 @@ extension DashboardTableViewController:HelperDelegate {
         }
         
     }
-    func resetCalendar(){
+    func resetCalendar() {
         Constant.MyClassConstants.calendarDatesArray.removeAll()
         Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
     }
 }
-extension DashboardTableViewController:UICollectionViewDelegate {
+extension DashboardTableViewController: UICollectionViewDelegate {
     
     //***** UITableview delegate methods definition here *****//
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -625,7 +611,7 @@ extension DashboardTableViewController:UICollectionViewDelegate {
     
 }
 
-extension DashboardTableViewController:UICollectionViewDataSource {
+extension DashboardTableViewController: UICollectionViewDataSource {
     
     //***** UITableview dataSource methods definition here *****//
     
@@ -664,7 +650,6 @@ extension DashboardTableViewController:UICollectionViewDataSource {
             let resortFlaxImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: 180) )
             resortFlaxImageView.backgroundColor = UIColor.lightGray
             
-            
             if let imgURL = flexDeal.images.first?.url {
                 resortFlaxImageView.setImageWith(URL(string: imgURL ), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
                     if (error != nil) {
@@ -685,7 +670,7 @@ extension DashboardTableViewController:UICollectionViewDataSource {
             resortImageNameLabel.numberOfLines = 2
             resortImageNameLabel.textAlignment = NSTextAlignment.center
             resortImageNameLabel.textColor = UIColor.black
-            resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 16)
+            resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 16)
             resortImageNameLabel.backgroundColor = UIColor.clear
             cell.addSubview(resortImageNameLabel)
             cell.layer.borderColor = UIColor.lightGray.cgColor
@@ -704,7 +689,7 @@ extension DashboardTableViewController:UICollectionViewDataSource {
             let topTenDeals = Constant.MyClassConstants.topDeals[indexPath.row]
             let resortFlaxImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: 180) )
             resortFlaxImageView.backgroundColor = UIColor.lightGray
-            let rentalDeal:RentalDeal = Constant.MyClassConstants.topDeals[indexPath.row]
+            let rentalDeal: RentalDeal = Constant.MyClassConstants.topDeals[indexPath.row]
             
             if let imgURL = rentalDeal.images.first?.url {
                 resortFlaxImageView.setImageWith(URL(string: imgURL ), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
@@ -720,7 +705,6 @@ extension DashboardTableViewController:UICollectionViewDataSource {
             
             cell.addSubview(resortFlaxImageView)
             
-            
             let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: cell.contentView.frame.height - 50, width: cell.contentView.frame.width - 20, height: 60))
             if let header = topTenDeals.header {
                 resortImageNameLabel.text = header
@@ -729,10 +713,9 @@ extension DashboardTableViewController:UICollectionViewDataSource {
             resortImageNameLabel.backgroundColor = UIColor.orange
             resortImageNameLabel.textAlignment = NSTextAlignment.center
             resortImageNameLabel.textColor = UIColor.black
-            resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 16)
+            resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 16)
             resortImageNameLabel.backgroundColor = UIColor.clear
             cell.addSubview(resortImageNameLabel)
-            
             
             let centerView = UIView(frame: CGRect(x: 0, y: 0, width: 150, height: 75))
             centerView.center = resortFlaxImageView.center
@@ -742,7 +725,7 @@ extension DashboardTableViewController:UICollectionViewDataSource {
             unitLabel.text = topTenDeals.details
             unitLabel.numberOfLines = 2
             unitLabel.textAlignment = NSTextAlignment.center
-            unitLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 12)
+            unitLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 12)
             unitLabel.textColor = UIColor.white
             unitLabel.backgroundColor = UIColor.clear
             centerView.addSubview(unitLabel)
@@ -754,7 +737,7 @@ extension DashboardTableViewController:UICollectionViewDataSource {
            
             priceLabel.numberOfLines = 2
             priceLabel.textAlignment = NSTextAlignment.center
-            priceLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium,size: 15)
+            priceLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
             priceLabel.textColor = UIColor.white
             priceLabel.backgroundColor = UIColor.clear
             centerView.addSubview(priceLabel)
@@ -798,21 +781,19 @@ extension DashboardTableViewController:UICollectionViewDataSource {
                         if checkInDates.count > 0 {
                             cell.alertStatus.text = Constant.buttonTitles.viewResults
                             cell.alertStatus.textColor = UIColor.white
-                            cell.layer.borderColor = UIColor(red: 224.0/255.0, green: 118.0/255.0, blue: 69.0/255.0, alpha: 1.0).cgColor
-                            cell.backgroundColor = UIColor(red: 224.0/255.0, green: 118.0/255.0, blue: 69.0/255.0, alpha: 1.0)
-                        }
-                        else {
+                            cell.layer.borderColor = UIColor(red: 224.0 / 255.0, green: 118.0 / 255.0, blue: 69.0 / 255.0, alpha: 1.0).cgColor
+                            cell.backgroundColor = UIColor(red: 224.0 / 255.0, green: 118.0 / 255.0, blue: 69.0 / 255.0, alpha: 1.0)
+                        } else {
                             cell.alertStatus.text = Constant.buttonTitles.nothingYet
                             cell.alertStatus.textColor = UIColor.white
-                            cell.layer.borderColor = UIColor(red: 167.0/255.0, green: 167.0/255.0, blue: 170.0/255.0, alpha: 1.0).cgColor
-                            cell.backgroundColor = UIColor(red: 167.0/255.0, green: 167.0/255.0, blue: 170.0/255.0, alpha: 1.0)
+                            cell.layer.borderColor = UIColor(red: 167.0 / 255.0, green: 167.0 / 255.0, blue: 170.0 / 255.0, alpha: 1.0).cgColor
+                            cell.backgroundColor = UIColor(red: 167.0 / 255.0, green: 167.0 / 255.0, blue: 170.0 / 255.0, alpha: 1.0)
                         }
-                    }
-                    else {
+                    } else {
                         cell.alertStatus.text = Constant.buttonTitles.nothingYet
                         cell.alertStatus.textColor = UIColor.white
-                        cell.layer.borderColor = UIColor(red: 167.0/255.0, green: 167.0/255.0, blue: 170.0/255.0, alpha: 1.0).cgColor
-                        cell.backgroundColor = UIColor(red: 167.0/255.0, green: 167.0/255.0, blue: 170.0/255.0, alpha: 1.0)
+                        cell.layer.borderColor = UIColor(red: 167.0 / 255.0, green: 167.0 / 255.0, blue: 170.0 / 255.0, alpha: 1.0).cgColor
+                        cell.backgroundColor = UIColor(red: 167.0 / 255.0, green: 167.0 / 255.0, blue: 170.0 / 255.0, alpha: 1.0)
                     }
                 }
                 
@@ -820,8 +801,7 @@ extension DashboardTableViewController:UICollectionViewDataSource {
                 cell.layer.cornerRadius = 3
                 cell.layer.masksToBounds = true
                 return cell
-            }
-            else {return UICollectionViewCell()}
+            } else { return UICollectionViewCell() }
             
         default :
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cell, for: indexPath)
@@ -861,7 +841,7 @@ extension UIViewController {
         if Reachability.isConnectedToNetwork() == true {
             ADBMobile.trackAction(Constant.omnitureEvents.event9, data: nil)
             showHudAsync()
-            RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess:{[unowned self] (response) in
+            RentalClient.searchDates(Session.sharedSession.userAccessToken, request: Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.request, onSuccess: {[unowned self] (response) in
                 
                 ADBMobile.trackAction(Constant.omnitureEvents.event18, data: nil)
                 // omniture tracking with event 9
@@ -879,11 +859,10 @@ extension UIViewController {
                     Constant.omnitureEvars.eVar45: "\(Constant.MyClassConstants.vacationSearchShowDate)-\(Date())",
                     Constant.omnitureEvars.eVar47: "\(Constant.MyClassConstants.checkInDates.count)" ,
                     Constant.omnitureEvars.eVar53: "\(Constant.MyClassConstants.resortsArray.count)",
-                    Constant.omnitureEvars.eVar61:Constant.MyClassConstants.searchOriginationPoint,
+                    Constant.omnitureEvars.eVar61:Constant.MyClassConstants.searchOriginationPoint
                     ]
                 
                 ADBMobile.trackAction(Constant.omnitureEvents.event9, data: userInfo)
-                
                 
                 Constant.MyClassConstants.initialVacationSearch.rentalSearch?.searchContext.response = response
                 
@@ -907,15 +886,14 @@ extension UIViewController {
                 } else {
                     
                     Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                    let initialSearchCheckInDate = Helper.convertStringToDate(dateString:Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!,format:Constant.MyClassConstants.dateFormat)
+                    let initialSearchCheckInDate = Helper.convertStringToDate(dateString:Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format:Constant.MyClassConstants.dateFormat)
                     Constant.MyClassConstants.checkInDates = response.checkInDates
                     //sender.isEnabled = true
                     Helper.helperDelegate = self as? HelperDelegate
                     self.hideHudAsync()
                     Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                 }
-                })
-            {[unowned self] error in
+                }) {[unowned self] error in
                 self.hideHudAsync()
                 self.presentErrorAlert(UserFacingCommonError.custom(title: "Error".localized(), body: error.localizedDescription))
             }
@@ -937,24 +915,23 @@ extension UIViewController {
         }
     }
     
-    func navigateToSearchResultsScreen(){
+    func navigateToSearchResultsScreen() {
         let storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController)
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     // Function to get to date and from date for search dates API calling
-    func getSearchDatesTop() -> (Date, Date){
+    func getSearchDatesTop() -> (Date, Date) {
         
-        var fromDate:Date?
-        var toDate:Date?
-        fromDate = Calendar.current.date(byAdding: .day, value: Constant.MyClassConstants.totalWindow/2, to: Constant.MyClassConstants.vacationSearchShowDate)
+        var fromDate: Date?
+        var toDate: Date?
+        fromDate = Calendar.current.date(byAdding: .day, value: Constant.MyClassConstants.totalWindow / 2, to: Constant.MyClassConstants.vacationSearchShowDate)
         
         if let fromdate = fromDate {
             if fromdate.isGreaterThanDate(Constant.MyClassConstants.todaysDate) {
-                toDate = Calendar.current.date(byAdding: .day, value: (Constant.MyClassConstants.totalWindow/2), to: Constant.MyClassConstants.vacationSearchShowDate)
-            }
-            else {
+                toDate = Calendar.current.date(byAdding: .day, value: (Constant.MyClassConstants.totalWindow / 2), to: Constant.MyClassConstants.vacationSearchShowDate)
+            } else {
                 _ = Helper.getDifferenceOfDates()
                 fromDate = Constant.MyClassConstants.todaysDate
                 toDate = Calendar.current.date(byAdding: .day, value: (Constant.MyClassConstants.totalWindow) + Helper.getDifferenceOfDates(), to: Constant.MyClassConstants.vacationSearchShowDate)
@@ -972,6 +949,6 @@ extension UIViewController {
         }
         Constant.MyClassConstants.currentFromDate = fromDate
         Constant.MyClassConstants.currentToDate = toDate
-        return(toDate ?? Date(),fromDate ?? Date())
+        return(toDate ?? Date(), fromDate ?? Date())
     }
 }

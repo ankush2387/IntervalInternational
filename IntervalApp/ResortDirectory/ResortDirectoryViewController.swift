@@ -398,7 +398,7 @@ extension ResortDirectoryViewController: UITableViewDelegate {
                 let selectedResort = Constant.MyClassConstants.resortDirectoryResortArray[indexPath.row]
                showHudAsync()
                 //***** Favorites resort API call after successfull call *****//
-                Helper.getUserFavorites{[unowned self] error in
+                Helper.getUserFavorites {[unowned self] error in
                     if case .some = error {
                         self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
                     }

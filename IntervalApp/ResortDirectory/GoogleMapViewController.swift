@@ -294,7 +294,7 @@ class GoogleMapViewController: UIViewController {
                 }
                 self.navigationItem.rightBarButtonItem!.isEnabled = true
                 Constant.MyClassConstants.googleMarkerArray.removeAll()
-                if Constant.MyClassConstants.resortsArray.count > 0 {
+                if !Constant.MyClassConstants.resortsArray.isEmpty {
                     
                     self.mapView.clear()
                     self.displaySearchedResort()
@@ -304,8 +304,9 @@ class GoogleMapViewController: UIViewController {
                 }
                 
                 self.hideHudAsync()
-            }) { (_) in
+            }) {[unowned self] error in
                 self.hideHudAsync()
+                self.presentAlert(with: "Error".localized(), message: error.localizedDescription)
             }
         }
     }
@@ -318,16 +319,20 @@ class GoogleMapViewController: UIViewController {
             
             if senderButton.superview!.superview!.tag == 0 {
                 
-                let dict = Constant.MyClassConstants.destinations![sender.tag]
-                Constant.MyClassConstants.selectedGetawayAlertDestinationArray.append(Constant.selectedDestType.destination(dict))
-                Constant.MyClassConstants.alertSelectedDestination.append(dict)
-                Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(dict.destinationId!)
+                let dict = Constant.MyClassConstants.destinations?[sender.tag]
+                if let dictValue = dict {
+                Constant.MyClassConstants.selectedGetawayAlertDestinationArray.append(Constant.selectedDestType.destination(dictValue))
+                    Constant.MyClassConstants.alertSelectedDestination.append(dictValue)
+                    Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(dictValue.destinationId ?? "")
+                }
             } else {
                 
-                let dict = Constant.MyClassConstants.resorts![sender.tag]
-                Constant.MyClassConstants.selectedGetawayAlertDestinationArray.append(Constant.selectedDestType.resort(dict))
-                Constant.MyClassConstants.alertSelectedResorts.append(dict)
-                Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(dict.resortCode!)
+                let dict = Constant.MyClassConstants.resorts?[sender.tag]
+                if let dictValue = dict {
+                Constant.MyClassConstants.selectedGetawayAlertDestinationArray.append(Constant.selectedDestType.resort(dictValue))
+                    Constant.MyClassConstants.alertSelectedResorts.append(dictValue)
+                    Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(dictValue.resortCode ?? "")
+                }
             }
             sender.isSelected = true
             _ = self.navigationController?.popViewController(animated: true)
@@ -335,41 +340,42 @@ class GoogleMapViewController: UIViewController {
         } else {
             
             let senderButton = sender
-            let realm = try! Realm()
             if senderButton.superview!.superview!.tag == 0 {
-                if Constant.MyClassConstants.destinations!.count > 0 {
-                    let dict = Constant.MyClassConstants.destinations![sender.tag]
-                    var areaOfInfluenceArray = [AreaOfInfluenceDestination]()
-                    areaOfInfluenceArray.append(dict)
-                    
-                    //Realm local storage for selected destination
-                    let storedata = RealmLocalStorage()
-                    let Membership = Session.sharedSession.selectedMembership
-                    let desList = DestinationList()
-                    desList.aoid = dict.aoiId
-                    desList.countryCode = (dict.address?.countryCode)!
-                    desList.destinationId = dict.destinationId
-                    desList.destinationName = dict.destinationName
-                    
-                    if let teriCode = dict.address?.territoryCode {
-                        desList.territorrycode = teriCode
-                    } else {
-                        desList.territorrycode = ""
+                
+                if  !Constant.MyClassConstants.destinations!.isEmpty {
+                    let dict = Constant.MyClassConstants.destinations?[sender.tag]
+                    if let dictValue = dict {
+                        var areaOfInfluenceArray = [AreaOfInfluenceDestination]()
+                        areaOfInfluenceArray.append(dictValue)
+                        //Realm local storage for selected destination
+                        let storedata = RealmLocalStorage()
+                        let Membership = Session.sharedSession.selectedMembership
+                        let desList = DestinationList()
+                        desList.aoid = dictValue.aoiId
+                        desList.countryCode = dictValue.address?.countryCode ?? ""
+                        desList.destinationId = dictValue.destinationId
+                        desList.destinationName = dictValue.destinationName
+                        
+                        if let teriCode = dictValue.address?.territoryCode {
+                            desList.territorrycode = teriCode
+                        } else {
+                            desList.territorrycode = ""
+                        }
+                        storedata.destinations.append(desList)
+                        storedata.membeshipNumber = Membership?.memberNumber ?? ""
+                        Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(dictValue.destinationId)
+                        
+                        let realm = try! Realm()
+                        try! realm.write {
+                            realm.add(storedata)
+                        }
+                        
+                        let allDest = Helper.getLocalStorageAllDest()
+                        if allDest.count > 0 {
+                            Constant.MyClassConstants.whereTogoContentArray.removeObject(at: 0)
+                            Helper.deleteObjectFromAllDest()
+                        }
                     }
-                    storedata.destinations.append(desList)
-                    storedata.membeshipNumber = Membership!.memberNumber!
-                    Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(dict.destinationId)
-                    let realm = try! Realm()
-                    try! realm.write {
-                        realm.add(storedata)
-                    }
-                    
-                    let allDest = Helper.getLocalStorageAllDest()
-                    if allDest.count > 0 {
-                        Constant.MyClassConstants.whereTogoContentArray.removeObject(at: 0)
-                        Helper.deleteObjectFromAllDest()
-                    }
-                    
                 } else {
                     let allDest = Helper.getLocalStorageAllDest()
                     if allDest.count > 0 {
@@ -394,6 +400,7 @@ class GoogleMapViewController: UIViewController {
                 Constant.MyClassConstants.realmStoredDestIdOrCodeArray.add(dict.resortCode ?? "")
                 storedata.resorts.append(resortList)
                 storedata.membeshipNumber = Membership?.memberNumber ?? ""
+                let realm = try! Realm()
                 try! realm.write {
                     realm.add(storedata)
                 }
@@ -857,7 +864,7 @@ class GoogleMapViewController: UIViewController {
                 let selectedResort = Constant.MyClassConstants.resortsArray[self.currentIndex]
                 
                 //***** Favorites resort API call after successfull call *****//
-                Helper.getUserFavorites{[unowned self] error in
+                Helper.getUserFavorites {[unowned self] error in
                     if case .some = error {
                         self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
                     }
@@ -1137,7 +1144,7 @@ class GoogleMapViewController: UIViewController {
             let selectedResort = Constant.MyClassConstants.resortsArray[self.currentIndex]
             
             //***** Favorites resort API call after successfull call *****//
-            Helper.getUserFavorites{[unowned self] error in
+            Helper.getUserFavorites {[unowned self] error in
                 if case .some = error {
                     self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
                 }
@@ -1347,7 +1354,7 @@ extension GoogleMapViewController: UICollectionViewDataSource {
             let imagesArray = resort.images
             for imgStr in imagesArray {
                 if imgStr.size == Constant.MyClassConstants.imageSize {
-                    url = URL(string: imgStr.url!)!
+                    url = URL(string: imgStr.url ?? "")
                     break
                 }
             }
@@ -1496,9 +1503,9 @@ extension GoogleMapViewController: UITableViewDelegate {
                 }
                 if indexPath.section == 1 {
                     
-                    let selectedResort = Constant.MyClassConstants.resorts![indexPath.row]
+                    let selectedResort = Constant.MyClassConstants.resorts?[indexPath.row]
                     
-                    Helper.getResortWithResortCode(code: selectedResort.resortCode!, viewcontroller: self)
+                    Helper.getResortWithResortCode(code: selectedResort?.resortCode ?? "", viewcontroller: self)
                     self.googleMapSearchBar.text = ""
                     self.hidePopUpView()
                 } else {
@@ -1546,13 +1553,13 @@ extension GoogleMapViewController: UITableViewDataSource {
                 if Constant.MyClassConstants.destinations?.count == nil {
                     return 0
                 } else {
-                    return (Constant.MyClassConstants.destinations?.count)!
+                    return Constant.MyClassConstants.destinations?.count ?? 0
                 }
             } else {
                 if Constant.MyClassConstants.resorts?.count == nil {
                     return 0
                 } else {
-                    return (Constant.MyClassConstants.resorts?.count)!
+                    return  Constant.MyClassConstants.resorts?.count ?? 0
                 }
             }
             
@@ -1570,9 +1577,9 @@ extension GoogleMapViewController: UITableViewDataSource {
     private func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if tableView.tag == 1 {
             
-            if section == 0 && (Constant.MyClassConstants.destinations?.count)! > 0 {
+            if section == 0 && Constant.MyClassConstants.destinations!.count > 0 {
                 return 30
-            } else if section == 1 && (Constant.MyClassConstants.resorts?.count)! > 0 {
+            } else if section == 1 && Constant.MyClassConstants.resorts!.count > 0 {
                 
                 return 30
             } else {
@@ -1599,21 +1606,22 @@ extension GoogleMapViewController: UITableViewDataSource {
             
             if indexPath.section == 0 {
                 
-                let cell: ResortDestinationCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.destinationCell, for: indexPath as IndexPath) as! ResortDestinationCell
+                guard let cell: ResortDestinationCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.destinationCell, for: indexPath as IndexPath) as? ResortDestinationCell else { return UITableViewCell() }
                 if self.sourceController != Constant.MyClassConstants.createAlert && self.sourceController != Constant.MyClassConstants.editAlert && self.sourceController != Constant.MyClassConstants.vacationSearch {
                     
                     cell.addDestinationButton.isHidden = true
                     cell.destinationMapIcon.isHidden = true
                 } else {
                     
-                    let dicValue = Constant.MyClassConstants.destinations![indexPath.row]
-                    if Constant.MyClassConstants.realmStoredDestIdOrCodeArray.contains(dicValue.destinationId!) {
+                    if let dicValue = Constant.MyClassConstants.destinations?[indexPath.row] {
+                    if Constant.MyClassConstants.realmStoredDestIdOrCodeArray.contains(dicValue.destinationId ?? "") {
                         cell.addDestinationButton.isEnabled = false
                     } else {
                         cell.addDestinationButton.isEnabled = true
                     }
                     
                     cell.destinationMapIcon.isHidden = false
+                  }
                 }
                 cell.addDestinationButton.tag = indexPath.row
                 cell.destinationMapIcon.tag = indexPath.row
@@ -1633,7 +1641,7 @@ extension GoogleMapViewController: UITableViewDataSource {
                 return cell
                 
             } else {
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.resortCell, for: indexPath as IndexPath) as! ResortsTableViewCell
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.resortCell, for: indexPath as IndexPath) as? ResortsTableViewCell else { return UITableViewCell() }
                 
                 if self.sourceController != Constant.MyClassConstants.createAlert && self.sourceController != Constant.MyClassConstants.editAlert && self.sourceController != Constant.MyClassConstants.vacationSearch {
                     
@@ -1641,7 +1649,7 @@ extension GoogleMapViewController: UITableViewDataSource {
                     cell.showMapButton.isHidden = true
                 } else {
                     let dicValue = Constant.MyClassConstants.resorts![indexPath.row]
-                    if Constant.MyClassConstants.realmStoredDestIdOrCodeArray.contains(dicValue.resortCode!) {
+                    if Constant.MyClassConstants.realmStoredDestIdOrCodeArray.contains(dicValue.resortCode ?? "") {
                         cell.addResortButton.isEnabled = false
                     } else {
                         cell.addResortButton.isEnabled = true
@@ -1655,18 +1663,18 @@ extension GoogleMapViewController: UITableViewDataSource {
                 cell.addResortButton.tag = indexPath.row
                 cell.showMapButton.addTarget(self, action: #selector(resortShowMapPressedAtIndex(sender:)), for: .touchUpInside)
                 cell.addResortButton.addTarget(self, action: #selector(destinationSelectedAtIndex(sender:)), for: .touchUpInside)
-                let dicValue = Constant.MyClassConstants.resorts![indexPath.row]
-                cell.resortLocationName.text = dicValue.resortName
+                let dicValue = Constant.MyClassConstants.resorts?[indexPath.row]
+                cell.resortLocationName.text = dicValue?.resortName
                 
-                cell.resortCityName.text = dicValue.address?.cityName
-                cell.resortCode.text = String(utf8String: dicValue.resortCode!)!
+                cell.resortCityName.text = dicValue?.address?.cityName
+                cell.resortCode.text =  dicValue?.resortCode ?? ""
                 return cell
             }
             
         } else {
             
             let resortDetails = Constant.MyClassConstants.resortsArray[indexPath.row]
-            let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.searchResultContentTableCell, for: indexPath as IndexPath) as! SearchResultContentTableCell
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.searchResultContentTableCell, for: indexPath as IndexPath) as? SearchResultContentTableCell else { return UITableViewCell() }
             
             for layer in cell.resortNameGradientView.layer.sublayers! {
                 if layer.isKind(of: CAGradientLayer.self) {
@@ -1674,7 +1682,7 @@ extension GoogleMapViewController: UITableViewDataSource {
                 }
             }
             var frame = CGRect(x: 0, y: 0, width: Constant.MyClassConstants.runningDeviceWidth!, height: cell.resortNameGradientView.frame.size.height)
-            if Constant.RunningDevice.deviceIdiom == .pad  {
+            if Constant.RunningDevice.deviceIdiom == .pad {
                 frame = CGRect(x: 0, y: 0, width: Constant.MyClassConstants.runningDeviceWidth! * 0.4 + 100, height: cell.resortNameGradientView.frame.size.height)
             }
             cell.resortNameGradientView.frame = frame

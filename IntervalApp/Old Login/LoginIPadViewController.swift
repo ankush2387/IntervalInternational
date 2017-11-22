@@ -411,15 +411,15 @@ class LoginIPadViewController: UIViewController {
         let context = Session.sharedSession
         
         UserClient.putSessionsUser(context.userAccessToken, member: context.selectedMembership!,
-           onSuccess:{
+           onSuccess: {
             //***** Favorites resort API call after successfull call *****//
-            Helper.getUserFavorites{[unowned self] error in
+            Helper.getUserFavorites {[unowned self] error in
                 if case .some = error {
                     self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
                 }
             }
             //***** Get upcoming trips for user API call after successfull call *****//
-            Helper.getUpcomingTripsForUser{[unowned self] error in
+            Helper.getUpcomingTripsForUser {[unowned self] error in
                 if case .some = error {
                     self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
                 }
@@ -433,7 +433,7 @@ class LoginIPadViewController: UIViewController {
             Constant.MyClassConstants.isLoginSuccessfull = true
             self.performSegue(withIdentifier: Constant.segueIdentifiers.dashboradSegueIdentifier, sender: nil)
         },
-           onError:{[unowned self](_) in
+           onError: {[unowned self](_) in
             self.presentErrorAlert(UserFacingCommonError.generic)
         }
         )

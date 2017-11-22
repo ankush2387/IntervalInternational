@@ -17,4 +17,3 @@ final class HomeAlertTableViewCell: UITableViewCell {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
 }
-
