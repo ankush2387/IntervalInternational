@@ -90,22 +90,22 @@ class AddDebitOrCreditCardViewController: UIViewController {
         
         isKeyBoardOpen = true
         
-        if self.moved {
+        if moved {
             let info = aNotification.userInfo as! [String: AnyObject],
             kbSize = (info[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue.size,
             contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: kbSize.height, right: 0)
             
-            self.cardDetailTBLview.contentInset = contentInsets
-            self.cardDetailTBLview.scrollIndicatorInsets = contentInsets
+            cardDetailTBLview.contentInset = contentInsets
+            cardDetailTBLview.scrollIndicatorInsets = contentInsets
             
             // If active text field is hidden by keyboard, scroll it so it's visible
             // Your app might not need or want this behavior.
-            var aRect = self.view.frame
+            var aRect = view.frame
             aRect.size.height -= kbSize.height
             
             if !aRect.contains(activeField!.frame.origin) {
                 
-                self.cardDetailTBLview.scrollRectToVisible(activeField!.frame, animated: true)
+                cardDetailTBLview.scrollRectToVisible(activeField!.frame, animated: true)
                 
             }
         }
@@ -114,11 +114,11 @@ class AddDebitOrCreditCardViewController: UIViewController {
     func keyboardWillBeHidden(aNotification: NSNotification) {
         isKeyBoardOpen = false
         
-        if self.moved {
-            self.moved = false
+        if moved {
+            moved = false
             let contentInsets = UIEdgeInsets.zero
-            self.cardDetailTBLview.contentInset = contentInsets
-            self.cardDetailTBLview.scrollIndicatorInsets = contentInsets
+            cardDetailTBLview.contentInset = contentInsets
+            cardDetailTBLview.scrollIndicatorInsets = contentInsets
         }
     }
 
@@ -225,12 +225,12 @@ class AddDebitOrCreditCardViewController: UIViewController {
     // function to enable and disable save this card option with checkbox
     func saveNewCreditCardPressed(_ sender: IUIKCheckbox) {
         
-        if self.saveCardCheckBoxChecked == false {
+        if saveCardCheckBoxChecked == false {
             
-            self.saveCardCheckBoxChecked = true
+            saveCardCheckBoxChecked = true
         } else {
             
-            self.saveCardCheckBoxChecked = false
+            saveCardCheckBoxChecked = false
         }
     }
     
@@ -241,9 +241,9 @@ class AddDebitOrCreditCardViewController: UIViewController {
     //function called when picker view done button pressed.
     func dropDownButtonPressed(_ sender: IUIKButton) {
         
-        self.dropDownSelectionRow = sender.tag
-        self.dropDownSelectionSection = Int(sender.accessibilityValue!)!
-        if self.dropDownSelectionSection == 0 && self.dropDownSelectionRow == 3 {
+        dropDownSelectionRow = sender.tag
+        dropDownSelectionSection = Int(sender.accessibilityValue!)!
+        if dropDownSelectionSection == 0 && dropDownSelectionRow == 3 {
             
             if self.hideStatus == false {
                 
@@ -284,14 +284,14 @@ class AddDebitOrCreditCardViewController: UIViewController {
         doneButton.contentHorizontalAlignment = .right
         doneButton.addTarget(self, action: #selector(AddDebitOrCreditCardViewController.pickerDoneButtonPressed(_:)), for: .touchUpInside)
         
-        self.datePickerView = UIDatePicker(frame: CGRect(x: 0, y: 50, width: pickerBaseView.frame.size.width, height: pickerBaseView.frame.size.height - 60))
-        self.datePickerView.datePickerMode = .date
-        self.datePickerView.setValue(UIColor.white, forKeyPath: Constant.MyClassConstants.keyTextColor)
-        self.datePickerView.addTarget(self, action: #selector(AddDebitOrCreditCardViewController.dateSelectedFromDatePicker(_:)), for: UIControlEvents.valueChanged)
-        self.pickerBaseView.addSubview(doneButton)
-        self.pickerBaseView.addSubview(datePickerView)
+        datePickerView = UIDatePicker(frame: CGRect(x: 0, y: 50, width: pickerBaseView.frame.size.width, height: pickerBaseView.frame.size.height - 60))
+        datePickerView.datePickerMode = .date
+        datePickerView.setValue(UIColor.white, forKeyPath: Constant.MyClassConstants.keyTextColor)
+        datePickerView.addTarget(self, action: #selector(AddDebitOrCreditCardViewController.dateSelectedFromDatePicker(_:)), for: UIControlEvents.valueChanged)
+        pickerBaseView.addSubview(doneButton)
+        pickerBaseView.addSubview(datePickerView)
         
-        self.view.addSubview(pickerBaseView)
+        view.addSubview(pickerBaseView)
     }
     
     // function to create picker view when drop down button pressed.
@@ -305,12 +305,12 @@ class AddDebitOrCreditCardViewController: UIViewController {
         
         pickerView = UIPickerView(frame: CGRect(x: 0, y: 50, width: pickerBaseView.frame.size.width, height: pickerBaseView.frame.size.height - 60))
         pickerView.setValue(UIColor.white, forKeyPath: Constant.MyClassConstants.keyTextColor)
-        self.pickerBaseView.addSubview(doneButton)
-        self.pickerBaseView.addSubview(pickerView)
+        pickerBaseView.addSubview(doneButton)
+        pickerBaseView.addSubview(pickerView)
         pickerView.delegate = self
         pickerView.dataSource = self
         
-        self.view.addSubview(pickerBaseView)
+        view.addSubview(pickerBaseView)
     }
     
     // function to create picker view when drop down button pressed.
@@ -324,7 +324,7 @@ class AddDebitOrCreditCardViewController: UIViewController {
     func hideDatePickerView() {
         
         self.hideStatus = false
-        self.pickerBaseView.isHidden = true
+        pickerBaseView.isHidden = true
     }
     
     //function to show picker view.
@@ -337,21 +337,21 @@ class AddDebitOrCreditCardViewController: UIViewController {
     //function to hide picker view.
     func hidePickerView() {
         self.hideStatus = false
-        self.pickerBaseView.isHidden = true
+        pickerBaseView.isHidden = true
     }
     
     //function called when picker view done button pressed.
     func pickerDoneButtonPressed(_ sender: UIButton) {
         
         self.hideStatus = false
-        self.pickerBaseView.isHidden = true
+        pickerBaseView.isHidden = true
         if datePickerView != nil {
             
             //Constant.GetawaySearchResultCardFormDetailData.expDate = datePickerView.date
         }
        
-        let indexPath = NSIndexPath(row: self.dropDownSelectionRow, section: self.dropDownSelectionSection)
-        self.cardDetailTBLview.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
+        let indexPath = NSIndexPath(row: dropDownSelectionRow, section: dropDownSelectionSection)
+        cardDetailTBLview.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
     }
 
     //function to dismiss current controller on cancel button pressed.
@@ -387,7 +387,7 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
-        return self.requiredSectionIntTBLview
+        return requiredSectionIntTBLview
         
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -532,7 +532,7 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
                 
                   let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.saveCardOptionCell, for: indexPath) as! SaveCardOptionCell
                 
-                if self.saveCardCheckBoxChecked == false {
+                if saveCardCheckBoxChecked == false {
                     
                     cell.saveThisCardCheckBox.checked = false
                 } else {
@@ -554,7 +554,6 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
                         cell.selectedTextLabel.text = Constant.textFieldTitles.expirationDate
                     } else {
                         
-                    
                         let dateFormatter = DateFormatter()
                         dateFormatter.dateStyle = DateFormatter.Style.short
                         
@@ -724,9 +723,9 @@ extension AddDebitOrCreditCardViewController: UIPickerViewDelegate {
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         
-        if self.dropDownSelectionSection == 0 {
+        if dropDownSelectionSection == 0 {
            
-            if self.dropDownSelectionRow == 3 {
+            if dropDownSelectionRow == 3 {
                 
                 switch component {
                 case 0:
@@ -744,7 +743,7 @@ extension AddDebitOrCreditCardViewController: UIPickerViewDelegate {
             
         } else {
             
-            if self.dropDownSelectionRow == 0 {
+            if dropDownSelectionRow == 0 {
                 return Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row].countryName
             } else {
                 return Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name
@@ -754,9 +753,9 @@ extension AddDebitOrCreditCardViewController: UIPickerViewDelegate {
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
-        if self.dropDownSelectionSection == 0 {
+        if dropDownSelectionSection == 0 {
             
-            if self.dropDownSelectionRow == 3 {
+            if dropDownSelectionRow == 3 {
                 
                 let month = months[pickerView.selectedRow(inComponent: 0)]
                 let year = years[pickerView.selectedRow(inComponent: 1)]
@@ -764,7 +763,7 @@ extension AddDebitOrCreditCardViewController: UIPickerViewDelegate {
                 intervalPrint(expiryDate)
                 Constant.GetawaySearchResultCardFormDetailData.expDate = expiryDate
                 
-            } else if self.dropDownSelectionRow == 2 {
+            } else if dropDownSelectionRow == 2 {
                 
                 let cardType = Constant.MyClassConstants.allowedCreditCardType[row]
                 Constant.GetawaySearchResultCardFormDetailData.cardType = cardType.name!
@@ -774,7 +773,7 @@ extension AddDebitOrCreditCardViewController: UIPickerViewDelegate {
             }
         } else {
             
-             if self.dropDownSelectionRow == 0 {
+             if dropDownSelectionRow == 0 {
 
                  Constant.GetawaySearchResultCardFormDetailData.country = Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row].countryName!
                 Constant.GetawaySearchResultCardFormDetailData.countryCode = Constant.GetawaySearchResultGuestFormDetailData.countryCodeArray[row]
@@ -795,7 +794,7 @@ extension AddDebitOrCreditCardViewController: UIPickerViewDataSource {
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         
-        if self.dropDownSelectionRow == 3 {
+        if dropDownSelectionRow == 3 {
             
             return 2
             
@@ -806,9 +805,9 @@ extension AddDebitOrCreditCardViewController: UIPickerViewDataSource {
     }
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         
-        if self.dropDownSelectionSection == 0 {
+        if dropDownSelectionSection == 0 {
             
-            if self.dropDownSelectionRow == 3 {
+            if dropDownSelectionRow == 3 {
                 switch component {
                     
                 case 0 :
@@ -825,7 +824,7 @@ extension AddDebitOrCreditCardViewController: UIPickerViewDataSource {
             
         } else {
             
-            if self.dropDownSelectionRow == 0 {
+            if dropDownSelectionRow == 0 {
                 return Constant.GetawaySearchResultGuestFormDetailData.countryListArray.count
             } else {
                 return Constant.GetawaySearchResultGuestFormDetailData.stateListArray.count
@@ -852,7 +851,8 @@ extension AddDebitOrCreditCardViewController: UITextFieldDelegate {
         if range.length == 1 && string.characters.count == 0 {
             intervalPrint("backspace tapped")
         }
-        if (Int(textField.accessibilityValue!) == 0) {
+        
+        if Int(textField.accessibilityValue!) == 0 {
                 
                 if textField.tag == 0 {
                     
@@ -921,10 +921,8 @@ extension AddDebitOrCreditCardViewController: UITextFieldDelegate {
         
     func textFieldDidBeginEditing(_ textField: UITextField) {
         
-        self.activeField = textField
-        
-        self.moved = true
-        
+        activeField = textField
+        moved = true
         if (Int(textField.accessibilityValue!) == 0) {
             if textField.tag == 0 {
                textField.keyboardType = .default
@@ -937,7 +935,7 @@ extension AddDebitOrCreditCardViewController: UITextFieldDelegate {
             
             if textField.tag == 5 {
                 textField.keyboardType = .numberPad
-                self.addDoneButtonOnNumpad(textField: textField)
+                addDoneButtonOnNumpad(textField: textField)
             } else {
                 textField.keyboardType = .default
             }

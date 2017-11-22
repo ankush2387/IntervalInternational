@@ -31,7 +31,7 @@ class RenewalOtherOptionsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if(Constant.RunningDevice.deviceIdiom == .phone) {
+        if Constant.RunningDevice.deviceIdiom == .phone {
             //Set title for table view
             let headerLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 375, height: 40))
             headerLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0)
@@ -47,16 +47,6 @@ class RenewalOtherOptionsVC: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-    
     // MARK: - Button Clicked
     
     @IBAction func cancelClicked(_ sender: UIButton) {
@@ -195,11 +185,11 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
                     
                     // show only non core image
                     cell.renewelImageView?.image = UIImage(named: coreProduct.productCode!)
-                    
-                    let currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: (forceRenewals.currencyCode)!)
-                    
+                    var currencyCodeWithSymbol: String = ""
+                    if let currencyCode = forceRenewals.currencyCode {
+                          currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: currencyCode)
+                    }
                     let price = String(format: "%.0f", coreProduct.price)
-                    
                     priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                     
                     // formatted string
@@ -218,10 +208,8 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
                     break
             }
         }
-        
         return cell
     }
-    
 }
 
 // MARK: - table view delegate

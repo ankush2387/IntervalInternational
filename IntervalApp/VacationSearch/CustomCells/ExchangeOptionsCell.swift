@@ -31,29 +31,27 @@ class ExchangeOptionsCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    func setTotalPrice(with currencyDisplayes: String, and chargeAmount: Float) {
+
+        if let attributedAmount = chargeAmount.currencyFormatter(for:currencyDisplayes) {
+            primaryPriceLabel.attributedText = attributedAmount
+        }
+    }
     func setupCell(selectedEplus: Bool) {
         
-        if Constant.MyClassConstants.exchangeFees.count > 0 && Constant.MyClassConstants.exchangeFees[0].eplus != nil {
-            if let eplus = Constant.MyClassConstants.exchangeFees[0].eplus?.price {
-                primaryPriceLabel.text = String(Int(Float(eplus)))
-                if(Constant.MyClassConstants.exchangeFees[0].eplus?.selected)! {
-                    priceCheckBox.checked = true
-                } else {
-                    priceCheckBox.checked = false
-                }
-                let priceString = "\(eplus)"
-                let priceArray = priceString.components(separatedBy: ".")
-                if (priceArray.last!.count) > 1 {
-                    fractionalPriceLabel.text = "\(priceArray.last!)"
-                } else {
-                    fractionalPriceLabel.text = "00"
+        if let currencyCode = Constant.MyClassConstants.exchangeFees[0].currencyCode {
+            if Constant.MyClassConstants.exchangeFees.count > 0 && Constant.MyClassConstants.exchangeFees[0].eplus != nil {
+                if let eplus = Constant.MyClassConstants.exchangeFees[0].eplus?.price {
+                    if let selectedTrue = Constant.MyClassConstants.exchangeFees[0].eplus?.selected {
+                        if selectedTrue {
+                            priceCheckBox.checked = true
+                        } else {
+                            priceCheckBox.checked = false
+                        }
+                    }
+                   setTotalPrice(with: currencyCode, and: eplus)
                 }
             }
-            if let currencyCode = Constant.MyClassConstants.exchangeFees[0].currencyCode {
-                 currencyLabel.text = Helper.currencyCodeToSymbol(code:currencyCode)
-            }
-           
         }
-        
     }
 }
