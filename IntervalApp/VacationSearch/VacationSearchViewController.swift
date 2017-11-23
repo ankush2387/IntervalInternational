@@ -1480,7 +1480,7 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                                                     
                                                     // Check not available checkIn dates for the active interval
                                                     self.createFilterOptions()
-                                                    (activeInterval.hasCheckInDates()) ? self.rentalSearchAvailability(activeInterval: activeInterval, vacationSearch:vacationSearch) : self.noAvailabilityResults()
+                                                    (activeInterval.hasCheckInDates()) ? self.rentalSearchAvailability(activeInterval: activeInterval, vacationSearch:vacationSearch) : self.noAvailabilityResults(vacationSearch: vacationSearch)
                                                     
                         },
                                                  onError: { (_) in
@@ -1510,7 +1510,7 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                         
                         let exchangeSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Exchange)
                         
-                        exchangeSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
+                        exchangeSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray
                         exchangeSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                         exchangeSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
                         exchangeSearchCriteria.searchType = VacationSearchType.Exchange
@@ -1536,7 +1536,7 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                                 vacationSearch.updateActiveInterval(activeInterval: activeInterval)
                                 
                                 // Check not available checkIn dates for the active interval
-                                activeInterval.hasCheckInDates() ? self.exchangeSearchAvailability(activeInterval: activeInterval, vacationSearch: vacationSearch) : self.noAvailabilityResults()
+                                activeInterval.hasCheckInDates() ? self.exchangeSearchAvailability(activeInterval: activeInterval, vacationSearch: vacationSearch) : self.noAvailabilityResults(vacationSearch: vacationSearch)
                                 
                             }, onError: { _ in
                                 sender.isEnabled = true
@@ -1627,8 +1627,9 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
     
     // Function to present with no availability
 
-    func noAvailabilityResults() {
+    func noAvailabilityResults(vacationSearch: VacationSearch) {
         hideHudAsync()
+        Constant.MyClassConstants.initialVacationSearch = vacationSearch
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
         self.navigationController?.pushViewController(viewController, animated: true)

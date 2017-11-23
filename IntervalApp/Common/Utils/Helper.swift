@@ -1715,8 +1715,8 @@ public class Helper {
             
             //Added resorts for resort detail screen
             Constant.MyClassConstants.resortsArray.removeAll()
-            for resorts in searchAvailabilityResponse{
-                if let resort = resorts.resort{
+            for resorts in searchAvailabilityResponse {
+                if let resort = resorts.resort {
                     Constant.MyClassConstants.resortsArray.append(resort)
                 }
             }
@@ -1740,7 +1740,7 @@ public class Helper {
                     senderViewController.navigationController?.pushViewController(viewController, animated: true)
                 } else {
                     let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-                    let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
+                    guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as? SearchResultViewController else { return }
                     
                     let transitionManager = TransitionManager()
                     senderViewController.navigationController?.transitioningDelegate = transitionManager

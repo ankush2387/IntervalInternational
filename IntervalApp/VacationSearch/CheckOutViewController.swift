@@ -434,7 +434,6 @@ class CheckOutViewController: UIViewController {
             self.showHudAsync()
             //Creating Request to recap with Promotion
             
-            
             if Constant.MyClassConstants.isFromExchange {
                 let processResort = ExchangeProcess()
                 processResort.currentStep = ProcessStep.Recap
@@ -513,7 +512,7 @@ class CheckOutViewController: UIViewController {
     }
     
     //***** Function called when cross button is clicked in email text field. *****//
-    func inputClearPressed(_ sender:UIButton) {
+    func inputClearPressed(_ sender: UIButton) {
         
         self.emailTextToEnter = ""
         self.showUpdateEmail = true
@@ -566,7 +565,7 @@ class CheckOutViewController: UIViewController {
         
         showHudAsync()
         if Constant.MyClassConstants.searchBothExchange || Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() {
-            ExchangeProcessClient.backToChooseExchange(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess: {(response) in
+            ExchangeProcessClient.backToChooseExchange(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, onSuccess: { _  in
                 self.hideHudAsync()
             }, onError: { [weak self] _ in
                 self?.hideHudAsync()
@@ -854,7 +853,7 @@ extension CheckOutViewController:UITableViewDataSource {
             } else {
                 return 50
             }
-        case 4,8,9 :
+        case 4, 8, 9 :
             return 50
         default :
             return 0
@@ -910,25 +909,30 @@ extension CheckOutViewController:UITableViewDataSource {
             guard let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0) else { return 0 }
             if indexPath.row == (Constant.MyClassConstants.generalAdvisementsArray.count) {
                 return 30
+            } else if indexPath.row != (Constant.MyClassConstants.generalAdvisementsArray.count) + 1 {
+                guard let description = Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description else { return 0 }
+                let height = heightForView(description, font: font, width: Constant.MyClassConstants.runningDeviceWidth! - 10)
+                return height + 60
             } else {
-                var index = indexPath.row
-                if indexPath.row != (Constant.MyClassConstants.generalAdvisementsArray.count) + 1 {
-                    index = Constant.MyClassConstants.additionalAdvisementsArray.count
-                }
-                guard let description = Constant.MyClassConstants.additionalAdvisementsArray[index].description else { return 0 }
+                guard let description = Constant.MyClassConstants.additionalAdvisementsArray.last?.description else { return 0 }
                 let height = heightForView(description, font: font, width: view.frame.size.width - 20)
                 return height + 60
             }
+            
         case 2, 9 :
             if isDepositPromotionAvailable && indexPath.row == 0 {
                 return 80
             }
             return 60
         case 3 :
+            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
             guard Constant.MyClassConstants.exchangeFees[0].eplus != nil else { return 0 }
              return 130
+            } else {
+                return 0
+            }
         case 4 :
-            if Constant.MyClassConstants.isFromExchange {
+            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                 guard let _ = Constant.MyClassConstants.exchangeFees[0].insurance?.insuranceOfferHTML else {
                     showInsurance = false
                     return 0
@@ -944,7 +948,7 @@ extension CheckOutViewController:UITableViewDataSource {
                 return 420
             }
         case 5 :
-            if indexPath.section == 5 && !Constant.MyClassConstants.isFromExchange && Constant.MyClassConstants.isFromExchange && !Constant.MyClassConstants.enableTaxes && !eplusAdded{
+            if !Constant.MyClassConstants.isFromExchange && Constant.MyClassConstants.isFromExchange && !Constant.MyClassConstants.enableTaxes && !eplusAdded{
                 isHeightZero = true
                 return 0
             } else {
@@ -968,6 +972,7 @@ extension CheckOutViewController:UITableViewDataSource {
             
         case 8 :
             return 60
+            
         case 10 :
             if self.showUpdateEmail {
                 return 130
@@ -981,9 +986,9 @@ extension CheckOutViewController:UITableViewDataSource {
             } else {
                 return 0
             }
+            
         case 12 :
             return 100
-            
             
         default :
             return 130
@@ -1286,15 +1291,14 @@ extension CheckOutViewController:UITableViewDataSource {
                     cell.primaryPriceLabel.text = "\(guestPrice)"
                 }
                 
-                let font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 16.0)
+                guard let font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 16.0) else { return cell }
                 
-                let width = widthForView(cell.primaryPriceLabel.text!, font: font!, height: cell.priceLabel.frame.size.height)
+                let width = widthForView(cell.primaryPriceLabel.text!, font: font, height: cell.priceLabel.frame.size.height)
                 cell.primaryPriceLabel.frame.size.width = width + 5
                 
-                let targetString = cell.primaryPriceLabel.text
-                let range = NSMakeRange(0, (targetString?.characters.count)!)
-                
-                cell.primaryPriceLabel.attributedText = Helper.attributedString(from: targetString!, nonBoldRange: range, font: font!)
+                guard let targetString = cell.primaryPriceLabel.text else { return cell }
+                let range = NSMakeRange(0, targetString.characters.count)
+                cell.primaryPriceLabel.attributedText = Helper.attributedString(from: targetString, nonBoldRange: range, font: font)
                 cell.periodLabel.frame.origin.x = cell.primaryPriceLabel.frame.origin.x + width
                 cell.fractionalPriceLabel.frame.origin.x = cell.periodLabel.frame.origin.x + cell.periodLabel.frame.size.width + 5
                 
@@ -1398,7 +1402,7 @@ extension CheckOutViewController:UITableViewDataSource {
             return cell
             
         case 11 :
-            let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.agreeToFeesCell, for: indexPath) as! SlideTableViewCell
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.agreeToFeesCell, for: indexPath) as? SlideTableViewCell else { return UITableViewCell() }
             cell.agreeButton?.dragPointWidth = 70
             cell.agreeButton?.tag = indexPath.section
             cell.agreeButton?.accessibilityValue = String(indexPath.section)
@@ -1480,7 +1484,7 @@ extension CheckOutViewController:UIWebViewDelegate {
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
-        
+        self.hideHudAsync()
     }
     
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error){
