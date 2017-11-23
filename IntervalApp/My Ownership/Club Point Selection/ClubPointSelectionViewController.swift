@@ -60,7 +60,7 @@ class ClubPointSelectionViewController: UIViewController {
     var dictionaryForSegmentCheckBox = NSMutableDictionary()
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        //lastContentOffset = scrollView.contentOffset;
+   
     }
     
     //***Action event for change value for clubpoint according to button pressed.***//
@@ -167,7 +167,6 @@ class ClubPointSelectionViewController: UIViewController {
                 createClubsCollectionView()
             }
         } else {
-            //lineBottomConstraint.constant = 355
             if clubIntervalValuesCollectionView != nil || labelsCollectionView != nil {
                 clubIntervalValuesCollectionView.collectionViewLayout.invalidateLayout()
                 labelsCollectionView.collectionViewLayout.invalidateLayout()
@@ -233,8 +232,6 @@ class ClubPointSelectionViewController: UIViewController {
         
         if Constant.MyClassConstants.showSegment == false {
             standardFlexChartSegment.isHidden = true
-            //secondTravelWindowConstraint.constant = -30
-            //firstTravelWindowConstraint.constant = -30
         } else {
             standardFlexChartSegment.isHidden = false
         }
@@ -386,7 +383,6 @@ class ClubPointSelectionViewController: UIViewController {
     
     //Function for button toDate and FromDate click action
     @IBAction func loadClubData(_ sender: UIButton) {
-        //checkedCheckBoxTag = 0
         mapClubIntervalPoints(index: sender.tag - 100)
         let view1 = self.view.viewWithTag(100)
         let view2 = self.view.viewWithTag(101)

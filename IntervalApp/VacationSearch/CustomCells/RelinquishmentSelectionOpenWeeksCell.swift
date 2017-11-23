@@ -33,6 +33,19 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var checkBox: IUIKCheckbox!
     
+    static let identifier = "FloatSavedCell"
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+
+        // Configure the view for the selected state
+    }
+    
     func setupDepositedCell(deposit: Deposit) {
         
         if let resortName = deposit.resort?.resortName {

@@ -373,7 +373,7 @@ class CheckOutViewController: UIViewController {
                 totalFeesArray.add(upgradeCost)
             }
             
-            if Constant.MyClassConstants.exchangeFees[0].renewals.isEmpty == false {
+            if !Constant.MyClassConstants.exchangeFees[0].renewals.isEmpty {
                     totalFeesArray.add(Constant.MyClassConstants.renewals)
             }
             
@@ -534,7 +534,6 @@ class CheckOutViewController: UIViewController {
         }
         self.checkoutOptionTBLview.reloadData()
     }
-    
     
     //***** Function to calculate dynamic height. ******//
     
@@ -913,11 +912,11 @@ extension CheckOutViewController:UITableViewDataSource {
                 return 30
             } else {
                 var index = indexPath.row
-                if indexPath.row == (Constant.MyClassConstants.generalAdvisementsArray.count) + 1 {
+                if indexPath.row != (Constant.MyClassConstants.generalAdvisementsArray.count) + 1 {
                     index = Constant.MyClassConstants.additionalAdvisementsArray.count
                 }
                 guard let description = Constant.MyClassConstants.additionalAdvisementsArray[index].description else { return 0 }
-                let height = heightForView(description , font: font, width: view.frame.size.width - 20)
+                let height = heightForView(description, font: font, width: view.frame.size.width - 20)
                 return height + 60
             }
         case 2, 9 :
@@ -926,12 +925,8 @@ extension CheckOutViewController:UITableViewDataSource {
             }
             return 60
         case 3 :
-            if !Constant.MyClassConstants.isFromExchange {
-                return 0
-            } else {
-                guard let _ = Constant.MyClassConstants.exchangeFees[0].eplus else { return 0 }
-                return 130
-            }
+            guard Constant.MyClassConstants.exchangeFees[0].eplus != nil else { return 0 }
+             return 130
         case 4 :
             if Constant.MyClassConstants.isFromExchange {
                 guard let _ = Constant.MyClassConstants.exchangeFees[0].insurance?.insuranceOfferHTML else {

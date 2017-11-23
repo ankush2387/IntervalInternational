@@ -389,7 +389,7 @@ extension VacationSearchViewController: UICollectionViewDataSource {
                 centerView.backgroundColor = UIColor(red: 176.0 / 255.0, green: 215.0 / 255.0, blue: 115.0 / 255.0, alpha: 1.0)
                 
                 let unitLabel = UILabel(frame: CGRect(x: 10, y: 15, width: centerView.frame.size.width - 20, height: 25))
-                unitLabel.text = deal.details
+                unitLabel.text = deal.details?.localized()
                 unitLabel.numberOfLines = 2
                 unitLabel.textAlignment = NSTextAlignment.center
                 unitLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 12)
@@ -841,7 +841,7 @@ extension VacationSearchViewController: UITableViewDataSource {
                                 cell.whereTogoTextLabel.text = "\(String(describing: cell.whereTogoTextLabel.text)), \(relinquishmentYear)"
                             }
                             if let weekNumber = openWk.weekNumber {
-                                cell.whereTogoTextLabel.text = "\(String(describing: cell.whereTogoTextLabel.text)), Week \(weekNumber)"
+                                cell.whereTogoTextLabel.text = "\(String(describing: cell.whereTogoTextLabel.text)), Week \(weekNumber)".localized()
                             }
                             cell.bedroomLabel.isHidden = true
                         } else if object.isKind(of: OpenWeeks.self) {
@@ -864,8 +864,8 @@ extension VacationSearchViewController: UITableViewDataSource {
                             } else {
                                 cell.bedroomLabel.isHidden = true
                             }
-                            if weekNumber != ""{
-                                cell.whereTogoTextLabel.text = "\(openWk.resort[0].resortName)/ \(openWk.relinquishmentYear), Wk\(weekNumber)"
+                            if weekNumber != "" {
+                                cell.whereTogoTextLabel.text = "\(openWk.resort[0].resortName)/ \(openWk.relinquishmentYear), Wk\(weekNumber)".localized()
                             } else {
                                 cell.whereTogoTextLabel.text = "\(openWk.resort[0].resortName)/ \(openWk.relinquishmentYear)"
                             }
@@ -889,7 +889,7 @@ extension VacationSearchViewController: UITableViewDataSource {
                                 cell.bedroomLabel.isHidden = true
                             }
                             if weekNumber != "" {
-                                cell.whereTogoTextLabel.text = "\(deposits.resort[0].resortName)/ \(deposits.relinquishmentYear), Wk\(weekNumber)"
+                                cell.whereTogoTextLabel.text = "\(deposits.resort[0].resortName)/ \(deposits.relinquishmentYear), Wk\(weekNumber)".localized()
                             } else {
                                 cell.whereTogoTextLabel.text = "\(deposits.resort[0].resortName)/ \(deposits.relinquishmentYear)"
                             }
@@ -903,7 +903,7 @@ extension VacationSearchViewController: UITableViewDataSource {
                                 cell.whereTogoTextLabel.text = "\(resortNameWithYear)"
                             } else {
                                 let pointsSpent = clubPoints[0].pointsSpent
-                                cell.whereTogoTextLabel.text = "Club Points upto \(String(describing: pointsSpent))"
+                                cell.whereTogoTextLabel.text = "Club Points upto \(String(describing: pointsSpent))".localized()
                             }
                             cell.bedroomLabel.isHidden = true
                             return cell
@@ -948,7 +948,7 @@ extension VacationSearchViewController: UITableViewDataSource {
                     }
                 }
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
-                cell.calendarIconButton!.addTarget(self, action: #selector(VacationSearchIPadViewController.calendarIconClicked(_:)), for: .touchUpInside)
+                cell.calendarIconButton.addTarget(self, action: #selector(VacationSearchIPadViewController.calendarIconClicked(_:)), for: .touchUpInside)
                 cell.backgroundColor = UIColor.clear
                 return cell
             } else if indexPath.section == 3 {

@@ -49,6 +49,7 @@ class SearchResultViewController: UIViewController {
     var onlySurroundingsFound = false
     var showInfoIcon = false
     var vacationSearch = Constant.MyClassConstants.initialVacationSearch
+    static let whoWillBeCheckingInViewController = "WhoWillBeCheckingInViewController"
     
     // MARK: - Timer to show availability header
     func runTimer() {
@@ -735,7 +736,7 @@ class SearchResultViewController: UIViewController {
                 self.present(viewController, animated: true, completion: nil)
             } else {
                 // Navigate to Who Will Be Checking in Screen
-                guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInViewController") as? WhoWillBeCheckingInViewController else { return }
+                guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: SearchResultViewController.whoWillBeCheckingInViewController) as? WhoWillBeCheckingInViewController else { return }
                 self.navigationController?.pushViewController(viewController, animated: true)
             }
             
@@ -1828,7 +1829,7 @@ extension SearchResultViewController: RenewelViewControllerDelegate {
     func dismissWhatToUse(renewalArray: [Renewal]) {
         self.dismiss(animated: false, completion: nil)
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-        guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInViewController") as? WhoWillBeCheckingInViewController else { return }
+        guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: SearchResultViewController.whoWillBeCheckingInViewController) as? WhoWillBeCheckingInViewController else { return }
         viewController.renewalsArray = renewalArray
         intervalPrint("_______>self.selectedRow,\(self.selectedRow)")
         viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[self.selectedRow]
@@ -1838,7 +1839,7 @@ extension SearchResultViewController: RenewelViewControllerDelegate {
      func selectedRenewalFromWhoWillBeCheckingIn(renewalArray: [Renewal]) {
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-        guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInViewController") as? WhoWillBeCheckingInViewController else { return }
+        guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: SearchResultViewController.whoWillBeCheckingInViewController) as? WhoWillBeCheckingInViewController else { return }
         viewController.renewalsArray = renewalArray
         
         let transitionManager = TransitionManager()
@@ -1849,7 +1850,7 @@ extension SearchResultViewController: RenewelViewControllerDelegate {
     func noThanks() {
         self.dismiss(animated: true, completion: nil)
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-        guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInViewController") as? WhoWillBeCheckingInViewController else { return }
+        guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: SearchResultViewController.whoWillBeCheckingInViewController) as? WhoWillBeCheckingInViewController else { return }
         
         let transitionManager = TransitionManager()
         self.navigationController?.transitioningDelegate = transitionManager
@@ -1921,7 +1922,7 @@ extension SearchResultViewController: RenewalOtherOptionsVCDelegate {
         
         // Selected single renewal from other options. Navigate to WhoWillBeCheckingIn screen
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-        guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInViewController") as? WhoWillBeCheckingInViewController else { return }
+        guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: SearchResultViewController.whoWillBeCheckingInViewController) as? WhoWillBeCheckingInViewController else { return }
         
         let transitionManager = TransitionManager()
         self.navigationController?.transitioningDelegate = transitionManager
@@ -1934,7 +1935,7 @@ extension SearchResultViewController: RenewalOtherOptionsVCDelegate {
 extension SearchResultViewController: WhoWillBeCheckInDelegate {
     func navigateToWhoWillBeCheckIn(renewalArray: [Renewal], selectedRow: Int) {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-        guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInViewController") as? WhoWillBeCheckingInViewController else { return }
+        guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: SearchResultViewController.whoWillBeCheckingInViewController) as? WhoWillBeCheckingInViewController else { return }
         viewController.renewalsArray = renewalArray
         viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[selectedRow]
         self.navigationController?.pushViewController(viewController, animated: true)

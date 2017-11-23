@@ -96,22 +96,22 @@ public class Helper {
     //***** common  function that  takes weekday as int value and return weekday name *****//
     static  func getWeekdayFromInt(weekDayNumber: Int) -> String {
         
-        switch(weekDayNumber) {
+        switch weekDayNumber {
             
         case 1:
-            return "Sunday"
+            return "Sunday".localized()
         case 2:
-            return "Monday"
+            return "Monday".localized()
         case 3:
-            return "Tuesday"
+            return "Tuesday".localized()
         case 4:
-            return "Wednesday"
+            return "Wednesday".localized()
         case 5:
-            return "Thursday"
+            return "Thursday".localized()
         case 6:
-            return "Friday"
+            return "Friday".localized()
         case 7:
-            return "Saturday"
+            return "Saturday".localized()
         default:
             return ""
         }

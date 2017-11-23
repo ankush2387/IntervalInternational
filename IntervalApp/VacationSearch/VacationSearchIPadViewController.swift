@@ -504,13 +504,13 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
                                     Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
                                     
                                     // Get activeInterval
-                                    let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
+                                    guard let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval() else { return }
                                     
                                     // Update active interval
                                     Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                                     
                                     // Check not available checkIn dates for the active interval
-                                    if (activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())! {
+                                    if activeInterval.fetchedBefore && !activeInterval.hasCheckInDates() {
                                         
                                         // We do not have available CheckInDates in Rental and Exchange
                                         if self.rentalHasNotAvailableCheckInDates {
@@ -519,7 +519,9 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
                                         
                                     } else {
                                         Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                                        Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                        if let searchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate {
+                                            Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: searchCheckInDate, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                                        }
                                     }
                                     
                                     //expectation.fulfill()
@@ -1012,6 +1014,8 @@ extension VacationSearchIPadViewController: UICollectionViewDataSource {
                     if error != nil {
                         resortFlaxImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                         resortFlaxImageView.contentMode = .center
+                    } else {
+                        resortFlaxImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                     }
                 }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
             } else {

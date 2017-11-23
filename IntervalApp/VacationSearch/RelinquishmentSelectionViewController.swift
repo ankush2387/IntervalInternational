@@ -860,7 +860,7 @@ extension RelinquishmentSelectionViewController: UITableViewDataSource {
                     intervalPrint(openWeek.relinquishmentId!, Constant.MyClassConstants.realmOpenWeeksID)
                     if Constant.MyClassConstants.realmOpenWeeksID.contains(openWeek.relinquishmentId!) && openWeek.unit?.lockOffUnits.count == 0 {
                         
-                        guard let  cell = tableView.dequeueReusableCell(withIdentifier: "FloatSavedCell", for: indexPath) as? RelinquishmentSelectionOpenWeeksCell else { return UITableViewCell() }
+                        guard let  cell = tableView.dequeueReusableCell(withIdentifier: RelinquishmentSelectionOpenWeeksCell.identifier, for: indexPath) as? RelinquishmentSelectionOpenWeeksCell else { return UITableViewCell() }
                         
                         if cell.savedView.layer.sublayers != nil {
                             for layer in cell.savedView.layer.sublayers! {

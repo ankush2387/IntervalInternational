@@ -315,7 +315,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
         }
         self.dropDownSelectionRow = sender.tag
         self.dropDownSelectionSection = Int(sender.accessibilityValue!)!
-        if self.hideStatus == false {
+        if !self.hideStatus {
             
             self.hideStatus = true
             showPickerView()
