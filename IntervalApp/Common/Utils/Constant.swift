@@ -10,8 +10,6 @@ import UIKit
 import DarwinSDK
 import GoogleMaps
 
-var identifier : String = "Karnail singh"
-
 class Constant: NSObject {
     
     static var holdingTimer: Timer?

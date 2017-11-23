@@ -200,6 +200,7 @@ class CreateActionSheet: UITableViewController {
         Constant.MyClassConstants.dashBoardAlertsArray = Constant.MyClassConstants.getawayAlertsArray
         
         if Reachability.isConnectedToNetwork() == true {
+
             if Session.sharedSession.userAccessToken != nil {
                 RentalClient.searchDates(Session.sharedSession.userAccessToken, request: searchResortRequest, onSuccess: { (searchDates) in
                     
@@ -219,6 +220,7 @@ class CreateActionSheet: UITableViewController {
                     } else {
                         if Constant.MyClassConstants.activeAlertsArray.count < 1 { //TODO - JHON: forcing alerts count to be one. fix when push notifications is working.
                             Constant.MyClassConstants.activeAlertsArray.add(alert)
+
                         }
                     }
                     if self.activeAlertCount < Constant.MyClassConstants.getawayAlertsArray.count - 1 {

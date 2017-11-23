@@ -606,10 +606,10 @@ class RelinquishmentSelectionViewController: UIViewController {
             self.navigationController!.present(viewController, animated: true, completion: nil)
         } else {
             
-            if relinquishmentOpenWeeksArray.isEmpty == false {
+            if !relinquishmentOpenWeeksArray.isEmpty {
                 Constant.MyClassConstants.relinquishmentSelectedWeek = relinquishmentOpenWeeksArray[sender.tag - 1]
                 Helper.navigateToViewController(senderViewController: self, floatResortDetails: relinquishmentOpenWeeksArray[sender.tag - 1].resort!, isFromLockOff: false)
-            } else if(intervalOpenWeeksArray.count > 0) {
+            } else if intervalOpenWeeksArray.count > 0 {
                 Constant.MyClassConstants.relinquishmentSelectedWeek = intervalOpenWeeksArray[sender.tag - 1]
                 Helper.navigateToViewController(senderViewController: self, floatResortDetails: intervalOpenWeeksArray[sender.tag - 1].resort!, isFromLockOff: false)
             } else {

@@ -363,7 +363,7 @@ extension FlexchangeSearchViewController: UITableViewDataSource {
                         cell.whereTogoTextLabel.text = "\(String(describing: cell.whereTogoTextLabel.text)), \(relinquishmentYear)"
                     }
                     if let weekNumber = openWk.weekNumber {
-                        cell.whereTogoTextLabel.text = "\(String(describing: cell.whereTogoTextLabel.text)), Week \(weekNumber)"
+                        cell.whereTogoTextLabel.text = "\(String(describing: cell.whereTogoTextLabel.text)), Week \(weekNumber)".localized()
                     }
                     cell.bedroomLabel.isHidden = true
                 } else if object.isKind(of: OpenWeeks.self) {
@@ -387,7 +387,7 @@ extension FlexchangeSearchViewController: UITableViewDataSource {
                         cell.bedroomLabel.isHidden = true
                     }
                     if weekNumber != ""{
-                        cell.whereTogoTextLabel.text = "\(openWk.resort[0].resortName)/ \(openWk.relinquishmentYear), Wk\(weekNumber)"
+                        cell.whereTogoTextLabel.text = "\(openWk.resort[0].resortName)/ \(openWk.relinquishmentYear), Wk\(weekNumber)".localized()
                     } else {
                         cell.whereTogoTextLabel.text = "\(openWk.resort[0].resortName)/ \(openWk.relinquishmentYear)"
                     }
@@ -411,7 +411,7 @@ extension FlexchangeSearchViewController: UITableViewDataSource {
                         cell.bedroomLabel.isHidden = true
                     }
                     if weekNumber != "" {
-                        cell.whereTogoTextLabel.text = "\(deposits.resort[0].resortName)/ \(deposits.relinquishmentYear), Wk\(weekNumber)"
+                        cell.whereTogoTextLabel.text = "\(deposits.resort[0].resortName)/ \(deposits.relinquishmentYear), Wk\(weekNumber)".localized()
                     } else {
                         cell.whereTogoTextLabel.text = "\(deposits.resort[0].resortName)/ \(deposits.relinquishmentYear)"
                     }
@@ -425,7 +425,7 @@ extension FlexchangeSearchViewController: UITableViewDataSource {
                         cell.whereTogoTextLabel.text = "\(resortNameWithYear)"
                     } else {
                         let pointsSpent = clubPoints[0].pointsSpent
-                        cell.whereTogoTextLabel.text = "Club Points upto \(String(describing: pointsSpent))"
+                        cell.whereTogoTextLabel.text = "Club Points upto \(String(describing: pointsSpent))".localized()
                     }
                     cell.bedroomLabel.isHidden = true
                     return cell
@@ -437,7 +437,7 @@ extension FlexchangeSearchViewController: UITableViewDataSource {
                     numberFormatter.numberStyle = .decimal
                     
                     if let availablePoints = numberFormatter.string(from: availablePointsNumber) {
-                        cell.whereTogoTextLabel.text = "\(Constant.getDynamicString.clubInterValPointsUpTo) \(availablePoints)"
+                        cell.whereTogoTextLabel.text = "\(Constant.getDynamicString.clubInterValPointsUpTo) \(availablePoints)".localized()
                     }
                     
                     cell.bedroomLabel.isHidden = true

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PointsInfoViewController: UIViewController {
+final class PointsInfoViewController: UIViewController {
     //***** Dismiss progress bar if back button is pressed. *****//
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
@@ -25,7 +25,7 @@ class PointsInfoViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-     @IBAction func doneClicked(_ sender: UIButton) {
+     @IBAction private func doneClicked(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }
 

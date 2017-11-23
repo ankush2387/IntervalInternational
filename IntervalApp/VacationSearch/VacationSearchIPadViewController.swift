@@ -800,10 +800,6 @@ extension VacationSearchIPadViewController: SearchTableViewCellDelegate {
                             .onError { _ in
                                 self.presentErrorAlert(UserFacingCommonError.generic)
                             }
-                            
-                            .finally { _ in
-                                
-                        }
                     }
                 } else {
                     sender.isEnabled = true

@@ -200,9 +200,7 @@ class RenewelViewController: UIViewController {
                 } else {
                     delegate?.selectedRenewalFromWhoWillBeCheckingIn(renewalArray: renewalArray)
                 }
-                //self.dismiss(animated: true, completion: nil)
             } else {
-                //self.dismiss(animated: false, completion: nil)
                 if Constant.MyClassConstants.isFromWhatToUse {
                     self.delegate?.dismissWhatToUse(renewalArray: renewalArray)
                 } else {

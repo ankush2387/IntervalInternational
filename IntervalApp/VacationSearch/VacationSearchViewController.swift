@@ -252,7 +252,7 @@ class VacationSearchViewController: UIViewController {
                 self.navigationController?.pushViewController(viewController, animated: true)
             }
                    
-        }, onError: {(_) in
+        }, onError: { _ in
             self.hideHudAsync()
         })
         
@@ -274,7 +274,7 @@ class VacationSearchViewController: UIViewController {
     
 }
 
-// MARK: Extension classes starts from here
+// MARK: - Extension classes starts from here
 
 extension VacationSearchViewController: UICollectionViewDelegate {
     
@@ -1403,7 +1403,7 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                             Constant.MyClassConstants.isFromRentalAllAvailable = true
                         }
                         
-                    }, onError: { (_) in
+                    }, onError: { _ in
                         self.presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
                         self.hideHudAsync()
                         sender.isEnabled = true
@@ -1435,7 +1435,7 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                         Constant.MyClassConstants.isFromRentalAllAvailable = false
                         self.performSegue(withIdentifier: Constant.segueIdentifiers.allAvailableDestinations, sender: self)
                         
-                    }, onError: { (_) in
+                    }, onError: { _ in
                         self.hideHudAsync()
                         self.presentErrorAlert(UserFacingCommonError.generic)
                         
@@ -1538,7 +1538,7 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                                 // Check not available checkIn dates for the active interval
                                 activeInterval.hasCheckInDates() ? self.exchangeSearchAvailability(activeInterval: activeInterval, vacationSearch: vacationSearch) : self.noAvailabilityResults()
                                 
-                            }, onError: { (_) in
+                            }, onError: { _ in
                                 sender.isEnabled = true
                                 self.hideHudAsync()
                                 self.presentErrorAlert(UserFacingCommonError.generic)

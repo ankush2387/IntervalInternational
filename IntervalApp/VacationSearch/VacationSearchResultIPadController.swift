@@ -108,8 +108,10 @@ class VacationSearchResultIPadController: UIViewController {
                 if section.exactMatch == nil || section.exactMatch == true {
                     dateCellSelectionColor = Constant.CommonColor.blueColor
                     guard let items = section.items else { return }
-                    for exactResorts in items where exactResorts.exchangeAvailability != nil {
-                        exchangeExactMatchResortsArray.append(exactResorts.exchangeAvailability!)
+                    for exactResorts in items {
+                        if let exchangeAvailability = exactResorts.exchangeAvailability {
+                            exchangeExactMatchResortsArray.append(exchangeAvailability)
+                        }
                     }
                 } else {
                     if sections.count == 1 {

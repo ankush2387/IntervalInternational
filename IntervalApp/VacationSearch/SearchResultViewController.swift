@@ -34,7 +34,6 @@ class SearchResultViewController: UIViewController {
     var selectedRow = 0
     var timer = Timer()
     var bucketIndex = 0
-    //var vacationSearch = VacationSearch()
     var exactMatchResortsArray = [Resort]()
     var surroundingMatchResortsArray = [Resort]()
     var surroundingMatchResortsArrayExchange = [ExchangeAvailability]()

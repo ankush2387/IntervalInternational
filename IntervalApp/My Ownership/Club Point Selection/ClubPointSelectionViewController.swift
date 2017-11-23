@@ -71,6 +71,7 @@ class ClubPointSelectionViewController: UIViewController {
         createClubsCollectionView()
         travelingDetailView.backgroundColor = UIColor(hex: 0x008FC6)
         indisefirstview.backgroundColor = UIColor(hex: 0x008FC6)
+        indisefirstview.backgroundColor = UIColor(red:0.00, green:1.00, blue:0.34, alpha:1.0)
         secondView.backgroundColor = UIColor(hex: 0xFFFFFF)
         insidesecondview.backgroundColor = UIColor(hex: 0xFFFFFF)
         startdatesecondbtn.textColor = UIColor(hex: 0x008FC6)

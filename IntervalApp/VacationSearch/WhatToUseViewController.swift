@@ -193,22 +193,22 @@ class WhatToUseViewController: UIViewController {
                     self.navigationController?.pushViewController(viewController, animated: true)
                 }
             }
-            }, onError: { (error) in
+            }, onError: { [weak self] error in
                 
-                self.hideHudAsync()
-                self.selectedRow = -1
-                self.selectedRowSection = -1
-                self.tableView.reloadData()
-                self.presentErrorAlert(UserFacingCommonError.generic)
+                self?.hideHudAsync()
+                self?.selectedRow = -1
+                self?.selectedRowSection = -1
+                self?.tableView.reloadData()
+                self?.presentErrorAlert(UserFacingCommonError.serverError(error))
                 
             })
             
-        }, onError: {(error) in
-            self.hideHudAsync()
-            self.selectedRow = -1
-            self.selectedRowSection = -1
-            self.tableView.reloadData()
-            self.presentErrorAlert(UserFacingCommonError.generic)
+        }, onError: { [weak self] error in
+            self?.hideHudAsync()
+            self?.selectedRow = -1
+            self?.selectedRowSection = -1
+            self?.tableView.reloadData()
+            self?.presentErrorAlert(UserFacingCommonError.serverError(error))
         })
     }
     }
@@ -329,28 +329,28 @@ class WhatToUseViewController: UIViewController {
                     
                 }
                 
-            }, onError: { (error) in
+            }, onError: { [weak self] error in
                 
-                self.hideHudAsync()
-                self.selectedRow = -1
-                self.selectedRowSection = -1
-                self.tableView.reloadData()
-                self.presentErrorAlert(UserFacingCommonError.generic)
+                self?.hideHudAsync()
+                self?.selectedRow = -1
+                self?.selectedRowSection = -1
+                self?.tableView.reloadData()
+                self?.presentErrorAlert(UserFacingCommonError.serverError(error))
                 
             })
             
-        }, onError: {(error) in
+        }, onError: { [weak self] error in
             
-            self.selectedRow = -1
-            self.selectedRowSection = -1
-            self.tableView.reloadData()
-            self.hideHudAsync()
-            self.presentErrorAlert(UserFacingCommonError.generic)
+            self?.selectedRow = -1
+            self?.selectedRowSection = -1
+            self?.tableView.reloadData()
+            self?.hideHudAsync()
+            self?.presentErrorAlert(UserFacingCommonError.serverError(error))
         })
         
     }
     
-    func pushLikeModalViewController(controller : UIViewController)  {
+    func pushLikeModalViewController(controller : UIViewController) {
         let transition = CATransition()
         transition.duration = 0.2
         transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
@@ -400,30 +400,7 @@ extension WhatToUseViewController:UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
-        //***** Return height according to section cell requirement *****//
-//        switch indexPath.section {
-//        case 0 :
-//            return 70
-//        case 1:
-//            if showUpgrade == true {
-//                return 150
-//            } else {
-//                //                if UIDevice.current.userInterfaceIdiom == .pad {
-//                //                    return 120
-//                //                } else {
-//                //                    return 120
-//                //                }
-//                return UITableViewAutomaticDimension
-//            }
-//
-//        case 2:
-//            return 70
-//        default :
-//            return 70
-//        }
         return UITableViewAutomaticDimension
-        //return 150
     }
     
     //***** Implementing header and footer cell for all sections  *****//
@@ -808,13 +785,12 @@ extension WhatToUseViewController:UITableViewDataSource {
     }
 }
 
-
-//MARK:- Delegate Methods
+// MARK : - Delegate Methods
 
 // Implementing custom delegate method definition
 extension WhatToUseViewController:RenewelViewControllerDelegate {
     
-    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray:[Renewal]){
+    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray: [Renewal]){
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInViewController") as? WhoWillBeCheckingInViewController else { return }
         viewController.renewalsArray = renewalArray

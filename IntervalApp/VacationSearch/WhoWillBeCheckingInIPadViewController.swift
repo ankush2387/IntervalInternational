@@ -40,6 +40,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     var filterRelinquishments = ExchangeRelinquishment()
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         NotificationCenter.default.addObserver(self, selector: #selector(showAlertForTimer), name: NSNotification.Name(rawValue: "showAlert"), object: nil)
     }
     
@@ -61,7 +62,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         self.proceedToCheckoutButton.alpha = 0.5
         Constant.startTimer()
         self.title = Constant.ControllerTitles.whoWillBeCheckingInControllerTitle
-        let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(WhoWillBeCheckingInIPadViewController.menuBackButtonPressed(_:)))
+        let menuButton = UIBarButtonItem(image: #imageLiteral(resourceName: "BackArrowNav"), style: .plain, target: self, action: #selector(WhoWillBeCheckingInIPadViewController.menuBackButtonPressed(_:)))
         menuButton.tintColor = UIColor.white
         self.navigationItem.leftBarButtonItem = menuButton
         
@@ -153,10 +154,10 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                     _ = self.navigationController?.popViewController(animated: true)
                 }
                 
-            }, onError: {(_) in
+            }, onError: { [weak self] _ in
                 
-                self.hideHudAsync()
-                self.presentAlert(with: "Who will be checking in".localized(), message: Constant.AlertMessages.operationFailedMessage)
+                self?.hideHudAsync()
+                self?.presentAlert(with: "Who will be checking in".localized(), message: Constant.AlertMessages.operationFailedMessage)
             })
         } else {
             
@@ -175,10 +176,10 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                     _ = self.navigationController?.popViewController(animated: true)
                 }
                 
-            }, onError: {(_) in
+            }, onError: { [weak self] _ in
                 
-                self.hideHudAsync()
-                self.presentAlert(with: "Who will be checking in".localized(), message: Constant.AlertMessages.operationFailedMessage)
+                self?.hideHudAsync()
+                self?.presentAlert(with: "Who will be checking in".localized(), message: Constant.AlertMessages.operationFailedMessage)
             })
         }
         
@@ -220,12 +221,12 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             checkingInUserIPadTableView.scrollToRow(at: indexPath as IndexPath, at: .top, animated: true)
             self.proceedToCheckoutButton.isEnabled = false
             self.proceedToCheckoutButton.alpha = 0.5
-            
-            LookupClient.getCountries(Constant.MyClassConstants.systemAccessToken!, onSuccess: { (response) in
+            guard let systemAccessToken = Constant.MyClassConstants.systemAccessToken else { return }
+            LookupClient.getCountries(systemAccessToken, onSuccess: { (response) in
                 Constant.GetawaySearchResultGuestFormDetailData.countryListArray = response
                 
-            }, onError: { (_) in
-                
+            }, onError: { [weak self] _ in
+                self?.presentErrorAlert(UserFacingCommonError.generic)
             })
             
         } else {
@@ -305,8 +306,8 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                 if let countryCode = Constant.GetawaySearchResultGuestFormDetailData.countryListArray[countryIndex].countryCode {
                     LookupClient.getStates(Constant.MyClassConstants.systemAccessToken!, countryCode: countryCode, onSuccess: { (response) in
                         Constant.GetawaySearchResultGuestFormDetailData.stateListArray = response
-                    }, onError: { (error) in
-                        intervalPrint(error)
+                    }, onError: { [weak self] _ in
+                        self?.presentErrorAlert(UserFacingCommonError.generic)
                     })
                 }
             }
@@ -400,25 +401,33 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                         Constant.MyClassConstants.recapViewPromotionCodeArray = promotions
                     }
                     
-                    DarwinSDK.logger.debug("Promo codes are : \(String(describing: response.view?.promoCodes))")
-                    DarwinSDK.logger.debug("Response is : \(String(describing: response.view?.fees)) , -------->\(response)")
-                    Constant.MyClassConstants.allowedCreditCardType = (response.view?.allowedCreditCardTypes)!
-                    Constant.MyClassConstants.exchangeFees = [(response.view?.fees)!]
-                    if Int((response.view?.fees?.shopExchange?.rentalPrice?.tax)!) != 0 {
+                    if let allowedCreditTypes = response.view?.allowedCreditCardTypes {
+                        Constant.MyClassConstants.allowedCreditCardType = allowedCreditTypes
+                    }
+   
+                    if let exchangeFees = response.view?.fees {
+                        Constant.MyClassConstants.exchangeFees = [exchangeFees]
+                    }
+                    
+                    if Int((response.view?.fees?.shopExchange?.rentalPrice?.tax) ?? 0) != 0 {
                         Constant.MyClassConstants.enableTaxes = true
                     } else {
                         Constant.MyClassConstants.enableTaxes = false
                     }
-                    Constant.MyClassConstants.memberCreditCardList = (Session.sharedSession.contact?.creditcards)!
+                    if let creditCards = Session.sharedSession.contact?.creditcards {
+                        Constant.MyClassConstants.memberCreditCardList = creditCards
+                    }
+                    
                     let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-                    let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.checkOutViewController) as! CheckOutIPadViewController
+                    guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.checkOutViewController) as? CheckOutIPadViewController else { return }
                     viewController.filterRelinquishments = self.filterRelinquishments
                     
                     let transitionManager = TransitionManager()
                     self.navigationController?.transitioningDelegate = transitionManager
                     self.navigationController!.pushViewController(viewController, animated: true)
-                }, onError: {(_) in
-                    self.hideHudAsync()
+                }, onError: { [weak self] error in
+                    self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                    self?.hideHudAsync()
                 })
             } else {
                 let processRequest1 = RentalProcessPrepareContinueToCheckoutRequest()
@@ -489,9 +498,9 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                     let transitionManager = TransitionManager()
                     self.navigationController?.transitioningDelegate = transitionManager
                     self.navigationController!.pushViewController(viewController, animated: true)
-                }, onError: {(_) in
-                    self.hideHudAsync()
-                    self.presentErrorAlert(UserFacingCommonError.generic)
+                }, onError: {[weak self] error in
+                    self?.hideHudAsync()
+                    self?.presentErrorAlert(UserFacingCommonError.serverError(error))
                     
                 })
             }
@@ -620,7 +629,7 @@ extension WhoWillBeCheckingInIPadViewController: UITableViewDataSource {
             }
             if indexPath.row == whoWillBeCheckingInSelectedIndex {
                 cell.checkBox.checked = true
-                cell.contentBorderView.layer.borderColor = UIColor(red: 224.0 / 255.0, green: 118.0 / 255.0, blue: 69.0 / 255.0, alpha: 1.0).cgColor
+                cell.contentBorderView.layer.borderColor = #colorLiteral(red: 0.8784313725, green: 0.462745098, blue: 0.2705882353, alpha: 1).cgColor
             } else {
                 cell.checkBox.checked = false
                 cell.contentBorderView.layer.borderColor = IUIKColorPalette.titleBackdrop.color.cgColor
@@ -648,9 +657,7 @@ extension WhoWillBeCheckingInIPadViewController: UITableViewDataSource {
                 memberTier = Constant.MyClassConstants.rentalFees[0].memberTier!
             }
             
-            for price in guestPrices {
-                
-                if price.productCode == memberTier {
+            for price in guestPrices where price.productCode == memberTier {
                     
                     let floatPriceString = "\(price.price)"
                     let priceArray = floatPriceString.components(separatedBy: ".")
@@ -661,7 +668,6 @@ extension WhoWillBeCheckingInIPadViewController: UITableViewDataSource {
                     } else {
                         cell.fractionValue.text = "\(priceArray.last!)0"
                     }
-                }
             }
             
             cell.infoButton.addTarget(self, action: #selector(showCertificateInfo), for: .touchUpInside)
@@ -722,7 +728,7 @@ extension WhoWillBeCheckingInIPadViewController: UITableViewDataSource {
             cell.nameTF.tag = indexPath.row
             self.cellUsedFor = Constant.MyClassConstants.guestString
             cell.nameTF.accessibilityValue = "\(indexPath.section)"
-            cell.borderView.layer.borderColor = UIColor(red: 233.0 / 255.0, green: 233.0 / 255.0, blue: 235.0 / 255.0, alpha: 1.0).cgColor
+            cell.borderView.layer.borderColor = #colorLiteral(red: 0.9137254902, green: 0.9137254902, blue: 0.9215686275, alpha: 1).cgColor
             cell.borderView.layer.borderWidth = 2
             cell.borderView.layer.cornerRadius = 5
             cell.selectionStyle = .none
@@ -781,7 +787,7 @@ extension WhoWillBeCheckingInIPadViewController: UITableViewDataSource {
                 self.cellUsedFor = Constant.MyClassConstants.guestString
                 cell.nameTF.tag = indexPath.row
                 cell.nameTF.accessibilityValue = "\(indexPath.section)"
-                cell.borderView.layer.borderColor = UIColor(red: 233.0 / 255.0, green: 233.0 / 255.0, blue: 235.0 / 255.0, alpha: 1.0).cgColor
+                cell.borderView.layer.borderColor = #colorLiteral(red: 0.9137254902, green: 0.9137254902, blue: 0.9215686275, alpha: 1).cgColor
                 cell.borderView.layer.borderWidth = 2
                 cell.borderView.layer.cornerRadius = 5
                 cell.selectionStyle = .none
@@ -868,7 +874,7 @@ extension WhoWillBeCheckingInIPadViewController: UITextFieldDelegate {
                     if vfnm || Constant.GetawaySearchResultGuestFormDetailData.firstName.characters.count == 0 {
                         
                         proceedStatus = true
-                        textField.superview?.layer.borderColor = UIColor(red: 233.0 / 255.0, green: 233.0 / 255.0, blue: 235.0 / 255.0, alpha: 1.0).cgColor
+                        textField.superview?.layer.borderColor = #colorLiteral(red: 0.9137254902, green: 0.9137254902, blue: 0.9215686275, alpha: 1).cgColor
                     } else {
                         
                         textField.superview?.layer.borderColor = UIColor.red.cgColor
@@ -885,7 +891,7 @@ extension WhoWillBeCheckingInIPadViewController: UITextFieldDelegate {
                     let vfnm = self.validateUsername(str: Constant.GetawaySearchResultGuestFormDetailData.lastName)
                     if vfnm || Constant.GetawaySearchResultGuestFormDetailData.lastName.characters.count == 0 {
                         proceedStatus = true
-                        textField.superview?.layer.borderColor = UIColor(red: 233.0 / 255.0, green: 233.0 / 255.0, blue: 235.0 / 255.0, alpha: 1.0).cgColor
+                        textField.superview?.layer.borderColor = #colorLiteral(red: 0.9137254902, green: 0.9137254902, blue: 0.9215686275, alpha: 1) .cgColor
                     } else {
                         
                         textField.superview?.layer.borderColor = UIColor.red.cgColor
@@ -936,7 +942,7 @@ extension WhoWillBeCheckingInIPadViewController: UITextFieldDelegate {
                         proceedStatus = false
                     } else {
                         
-                        textField.superview?.layer.borderColor = UIColor(red: 233.0 / 255.0, green: 233.0 / 255.0, blue: 235.0 / 255.0, alpha: 1.0).cgColor
+                        textField.superview?.layer.borderColor = #colorLiteral(red: 0.9137254902, green: 0.9137254902, blue: 0.9215686275, alpha: 1).cgColor
                         proceedStatus = true
                         
                     }
@@ -957,7 +963,7 @@ extension WhoWillBeCheckingInIPadViewController: UITextFieldDelegate {
                     
                     if eml || Constant.GetawaySearchResultGuestFormDetailData.email.characters.count == 0 {
                         
-                        textField.superview?.layer.borderColor = UIColor(red: 233.0 / 255.0, green: 233.0 / 255.0, blue: 235.0 / 255.0, alpha: 1.0).cgColor
+                        textField.superview?.layer.borderColor = #colorLiteral(red: 0.9137254902, green: 0.9137254902, blue: 0.9215686275, alpha: 1).cgColor
                         proceedStatus = true
                     } else {
                         

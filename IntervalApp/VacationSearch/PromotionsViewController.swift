@@ -81,7 +81,6 @@ extension PromotionsViewController: UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "PromotionCell", for: indexPath) as? PromotionsCell else { return UITableViewCell() }
             let promotion = promotionsArray[indexPath.row]
             cell.selectionStyle = .none
-            ()
             cell.promotionTextLabel.text = promotion.offerName
 
             if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
