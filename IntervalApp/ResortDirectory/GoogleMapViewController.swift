@@ -410,12 +410,7 @@ class GoogleMapViewController: UIViewController {
                 }
             }
             sender.isSelected = true
-            if Constant.RunningDevice.deviceIdiom == .pad {
-                self.navigationController?.dismiss(animated: true, completion: nil)
-            } else {
                 _ = self.navigationController?.popViewController(animated: true)
-            }
-            
         }
         
     }

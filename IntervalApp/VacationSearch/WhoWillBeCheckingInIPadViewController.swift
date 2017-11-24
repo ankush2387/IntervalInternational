@@ -243,9 +243,24 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
         if sender.tag == 0 {
             self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
         } else {
-            Helper.getRelinquishmentDetails(resortCode: ((filterRelinquishments.openWeek?.resort?.resortCode)!!), viewController: self)
             
-            /*self.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: nil)*/
+            if let openWeek = filterRelinquishments.openWeek {
+                if let resortCode = openWeek.resort?.resortCode {
+                    Helper.getRelinquishmentDetails(resortCode: resortCode, viewController: self)
+                }
+            }
+            
+            if let deposits = filterRelinquishments.deposit {
+                if let resortCode = deposits.resort?.resortCode {
+                    Helper.getRelinquishmentDetails(resortCode: resortCode, viewController: self)
+                }
+            }
+            
+            if let clubPoints = filterRelinquishments.clubPoints {
+                if let resortCode = clubPoints.resort?.resortCode {
+                    Helper.getRelinquishmentDetails(resortCode: resortCode, viewController: self)
+                }
+            }
         }
         
     }

@@ -14,7 +14,6 @@ import SVProgressHUD
 
 protocol WhoWillBeCheckInDelegate: class {
     func navigateToWhoWillBeCheckIn(renewalArray: [Renewal], selectedRow: Int)
-    
 }
 
 class WhatToUseViewController: UIViewController {
@@ -122,18 +121,21 @@ class WhatToUseViewController: UIViewController {
             if let exchangeFees = response.view?.fees {
                 Constant.MyClassConstants.exchangeFees = [exchangeFees]
             }
-            
-            for amenity in (response.view?.destination?.resort?.amenities)!{
+            if let resortAmenities = response.view?.destination?.resort?.amenities {
+            for amenity in resortAmenities {
+                if let amentityName = amenity.amenityName {
                 if amenity.nearby == false {
-                    Constant.MyClassConstants.onsiteArray.add(amenity.amenityName!)
-                    Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending(amenity.amenityName!)
+                     Constant.MyClassConstants.onsiteArray.add(amentityName)
+                    Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending(amentityName)
                     Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending("\n")
                 } else {
                     Constant.MyClassConstants.nearbyArray.add(amenity.amenityName!)
                     Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending(amenity.amenityName!)
                     Constant.MyClassConstants.nearbyString = Constant.MyClassConstants.nearbyString.appending("\n")
                 }
-            }
+              }
+           }
+        }
             UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: { membership in
                 
                 // Got an access token!  Save it for later use.
@@ -187,7 +189,7 @@ class WhatToUseViewController: UIViewController {
                     
                 } else {
                     let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-                    guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "whoWillBeCheckingInIpadViewController") as? WhoWillBeCheckingInIPadViewController else { return }
+                    guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInIPadViewController") as? WhoWillBeCheckingInIPadViewController else { return }
                     viewController.filterRelinquishments = Constant.MyClassConstants.filterRelinquishments[self.selectedRow]
                     self.isCheckedBox = false
                     self.navigationController?.pushViewController(viewController, animated: true)

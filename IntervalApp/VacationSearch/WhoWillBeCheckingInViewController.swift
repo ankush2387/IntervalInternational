@@ -411,8 +411,6 @@ class WhoWillBeCheckingInViewController: UIViewController {
                     Helper.getRelinquishmentDetails(resortCode: resortCode, viewController: self)
                 }
             }
-            /*self.performSegue(withIdentifier: Constant.segueIdentifiers.showRelinguishmentsDetailsSegue, sender: nil)*/
-
         }
         
     }
