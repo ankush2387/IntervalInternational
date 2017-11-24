@@ -11,11 +11,10 @@ import RealmSwift
 import DarwinSDK
 import DarwinSDK.Swift
 
-final class RealmLocalStorage: Object {
+class RealmLocalStorage: Object {
     
     var resorts = List<ResortList>()
     var destinations = List<DestinationList>()
-    //var openWeeks = List<TradeLocalData>()
     dynamic var membeshipNumber = ""
     
 }

@@ -6907,6 +6907,7 @@
                                                         <constraint firstItem="FSn-i5-qBL" firstAttribute="top" secondItem="7mu-hh-Vek" secondAttribute="top" id="Ouk-di-SWk"/>
                                                         <constraint firstItem="FSn-i5-qBL" firstAttribute="leading" secondItem="4g3-da-93F" secondAttribute="trailing" constant="6" id="WvK-fM-vQo"/>
                                                         <constraint firstAttribute="bottom" secondItem="4g3-da-93F" secondAttribute="bottom" constant="15" id="e36-XU-2i4"/>
+                                                        <constraint firstAttribute="height" constant="50" id="elN-iq-OkF"/>
                                                         <constraint firstAttribute="trailing" secondItem="qJp-jv-EJB" secondAttribute="trailing" constant="5" id="x7u-nt-EDg"/>
                                                         <constraint firstItem="4g3-da-93F" firstAttribute="leading" secondItem="7mu-hh-Vek" secondAttribute="leading" id="z4I-Hu-MMz"/>
                                                     </constraints>
@@ -7110,6 +7111,7 @@ Units Upgrade with this selection.</string>
                                                         <constraint firstAttribute="bottom" secondItem="5y0-pY-maM" secondAttribute="bottom" constant="5" id="CmX-DB-QLA"/>
                                                         <constraint firstItem="29w-gn-zMD" firstAttribute="centerY" secondItem="xA1-FQ-0l8" secondAttribute="centerY" id="Ofa-89-51d"/>
                                                         <constraint firstAttribute="trailing" secondItem="29w-gn-zMD" secondAttribute="trailing" constant="3" id="Rws-xS-sdT"/>
+                                                        <constraint firstAttribute="height" constant="130" id="W7f-kw-qKz"/>
                                                         <constraint firstItem="Kpg-gw-K1h" firstAttribute="top" secondItem="ntx-Jm-zOg" secondAttribute="bottom" constant="5" id="Wf4-aG-mws"/>
                                                         <constraint firstItem="5y0-pY-maM" firstAttribute="leading" secondItem="eaG-tG-CWg" secondAttribute="leading" constant="7" id="Xkd-j2-fbG"/>
                                                         <constraint firstItem="ntx-Jm-zOg" firstAttribute="leading" secondItem="Yz2-Ec-FiE" secondAttribute="trailing" id="bPm-QJ-Ysh"/>
@@ -7222,17 +7224,26 @@ Units Upgrade with this selection.</string>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NkY-st-KAw">
+                                                                    <rect key="frame" x="4" y="56" width="42" height="10"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
                                                             </subviews>
                                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="60" id="1zq-c6-Web"/>
+                                                                <constraint firstItem="NkY-st-KAw" firstAttribute="leading" secondItem="Gdm-CW-cTi" secondAttribute="leading" constant="4" id="5JI-J8-jDu"/>
                                                                 <constraint firstItem="ndF-a0-ivl" firstAttribute="leading" secondItem="Gdm-CW-cTi" secondAttribute="leading" constant="4" id="KS3-Cw-v3P"/>
                                                                 <constraint firstAttribute="trailing" secondItem="ndF-a0-ivl" secondAttribute="trailing" id="ROr-eu-EUJ"/>
                                                                 <constraint firstAttribute="trailing" secondItem="UXJ-mL-jbw" secondAttribute="trailing" constant="8" id="XAP-WO-sjh"/>
                                                                 <constraint firstItem="a8H-YG-1hR" firstAttribute="leading" secondItem="Gdm-CW-cTi" secondAttribute="leading" constant="4" id="bLj-Vj-GqE"/>
                                                                 <constraint firstAttribute="trailing" secondItem="a8H-YG-1hR" secondAttribute="trailing" id="gcS-4T-SfY"/>
                                                                 <constraint firstItem="UXJ-mL-jbw" firstAttribute="top" secondItem="ndF-a0-ivl" secondAttribute="bottom" constant="-3" id="iAY-HG-Fy9"/>
+                                                                <constraint firstItem="NkY-st-KAw" firstAttribute="top" secondItem="a8H-YG-1hR" secondAttribute="bottom" id="q1h-hp-4ca"/>
                                                                 <constraint firstItem="a8H-YG-1hR" firstAttribute="top" secondItem="UXJ-mL-jbw" secondAttribute="bottom" constant="-5" id="t4w-yA-RaI"/>
+                                                                <constraint firstAttribute="bottom" secondItem="NkY-st-KAw" secondAttribute="bottom" constant="-6" id="tbJ-X8-nWN"/>
                                                                 <constraint firstItem="ndF-a0-ivl" firstAttribute="top" secondItem="Gdm-CW-cTi" secondAttribute="top" id="uO9-gV-X6L"/>
                                                                 <constraint firstItem="UXJ-mL-jbw" firstAttribute="leading" secondItem="Gdm-CW-cTi" secondAttribute="leading" constant="4" id="upS-tk-KOa"/>
                                                                 <constraint firstAttribute="bottom" secondItem="a8H-YG-1hR" secondAttribute="bottom" constant="4" id="wUz-nt-eGX"/>
@@ -7291,6 +7302,7 @@ Units Upgrade with this selection.</string>
                                                         <constraint firstItem="Gdm-CW-cTi" firstAttribute="top" secondItem="KnN-I7-3wV" secondAttribute="top" constant="5" id="X4F-07-Sf0"/>
                                                         <constraint firstItem="Ey9-oL-bnv" firstAttribute="top" secondItem="KnN-I7-3wV" secondAttribute="top" constant="5" id="ndW-T8-urB"/>
                                                         <constraint firstItem="BzF-Bv-K76" firstAttribute="leading" secondItem="KQJ-AF-HtB" secondAttribute="trailing" constant="5" id="oDi-sI-J74"/>
+                                                        <constraint firstAttribute="height" constant="100" id="v83-vH-YbM"/>
                                                         <constraint firstItem="BzF-Bv-K76" firstAttribute="top" secondItem="Gdm-CW-cTi" secondAttribute="bottom" constant="6" id="vGc-u0-fdo"/>
                                                     </constraints>
                                                 </view>
@@ -7306,6 +7318,7 @@ Units Upgrade with this selection.</string>
                                             <outlet property="bedroomSizeAndKitchenClient" destination="UXJ-mL-jbw" id="Wff-MJ-04y"/>
                                             <outlet property="checkBox" destination="Ey9-oL-bnv" id="wt7-vh-Rqd"/>
                                             <outlet property="dayAndDateLabel" destination="cHD-cG-kGg" id="np2-vg-YWA"/>
+                                            <outlet property="expirationMessageLabel" destination="NkY-st-KAw" id="Z90-Hw-U3x"/>
                                             <outlet property="mainView" destination="KnN-I7-3wV" id="Yh2-rm-DdN"/>
                                             <outlet property="promImgView" destination="KQJ-AF-HtB" id="SRl-61-NTF"/>
                                             <outlet property="promLabel" destination="BzF-Bv-K76" id="zDX-rT-OVA"/>
@@ -7540,6 +7553,7 @@ Units Upgrade with this selection.</string>
                                                         <constraint firstItem="Quo-c6-3Ud" firstAttribute="leading" secondItem="Rl6-BU-nbA" secondAttribute="trailing" constant="1" id="Dsp-Ko-kGF"/>
                                                         <constraint firstAttribute="bottom" secondItem="Rl6-BU-nbA" secondAttribute="bottom" constant="5" id="NBS-8B-GQB"/>
                                                         <constraint firstAttribute="trailing" secondItem="Quo-c6-3Ud" secondAttribute="trailing" id="OYZ-Yd-BLl"/>
+                                                        <constraint firstAttribute="height" constant="50" id="isg-9X-2zk"/>
                                                         <constraint firstItem="sH6-cd-CFy" firstAttribute="top" secondItem="vTe-MA-Sx0" secondAttribute="top" constant="5" id="mXW-qa-ysx"/>
                                                         <constraint firstItem="Quo-c6-3Ud" firstAttribute="centerY" secondItem="vTe-MA-Sx0" secondAttribute="centerY" id="mYf-eB-wYX"/>
                                                         <constraint firstItem="sH6-cd-CFy" firstAttribute="leading" secondItem="eqP-Fv-k1Q" secondAttribute="trailing" constant="1" id="rC2-ge-mwJ"/>
@@ -7589,7 +7603,7 @@ Units Upgrade with this selection.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S0U-Hp-yc6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2982" y="1145"/>
+            <point key="canvasLocation" x="2981.25" y="1144.921875"/>
         </scene>
         <!--Renewel View Controller-->
         <scene sceneID="DJy-E0-8EP">
@@ -10634,9 +10648,9 @@ Units Upgrade with this selection.</string>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="bm5-1w-IwW"/>
-        <segue reference="m4o-mh-cv9"/>
+        <segue reference="0aK-Ez-4ka"/>
         <segue reference="5di-wX-yoy"/>
-        <segue reference="qcI-7D-UcK"/>
+        <segue reference="7Np-Hq-iWu"/>
         <segue reference="oBk-pI-NY0"/>
         <segue reference="hgo-Jq-z8A"/>
     </inferredMetricsTieBreakers>

@@ -68,7 +68,9 @@ class SearchResultViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         Constant.MyClassConstants.calendarDatesArray.removeAll()
         Constant.MyClassConstants.calendarDatesArray = Constant.MyClassConstants.totalBucketArray
-       
+        createSections()
+        self.searchResultColelctionView.reloadData()
+        self.searchResultTableView.reloadData()
     }
     
     func createSections() {
@@ -222,10 +224,6 @@ class SearchResultViewController: UIViewController {
                 self.hideHudAsync()
             }
         }
-        
-        createSections()
-        self.searchResultColelctionView.reloadData()
-        self.searchResultTableView.reloadData()
     }
     
     override func didReceiveMemoryWarning() {

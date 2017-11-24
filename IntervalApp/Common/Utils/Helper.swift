@@ -1002,7 +1002,7 @@ public class Helper {
             Constant.MyClassConstants.clubFloatResorts = resorts
             senderViewController.performSegue(withIdentifier: Constant.floatDetailViewController.clubresortviewcontrollerIdentifier, sender: self)
             
-        }) {_ in
+        }) { _ in
             
             senderViewController.hideHudAsync()
             senderViewController.presentErrorAlert(UserFacingCommonError.generic)
@@ -1704,9 +1704,8 @@ public class Helper {
         let request = ExchangeSearchAvailabilityRequest()
         request.checkInDate = checkInDate
         request.resortCodes = activeInterval.resortCodes!
-        request.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
-        // request.travelParty = Constant.MyClassConstants.travelPartyInfo
-        request.travelParty = Helper.travelPartyInfo(adults: 2, children: 0)
+        request.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray
+        request.travelParty = Constant.MyClassConstants.travelPartyInfo
         
         ExchangeClient.searchAvailability(Session.sharedSession.userAccessToken, request: request, onSuccess: { (searchAvailabilityResponse) in
             

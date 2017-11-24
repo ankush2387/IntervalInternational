@@ -1449,7 +1449,7 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                 showHudAsync()
                 sender.isEnabled = false
                 
-                if Reachability.isConnectedToNetwork() == true {
+                if Reachability.isConnectedToNetwork() {
                     let storedData = Helper.getLocalStorageWherewanttoGo()
                     
                     if storedData.count > 0 {
@@ -1479,7 +1479,6 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                                                     Helper.showScrollingCalendar(vacationSearch: vacationSearch)
                                                     
                                                     // Check not available checkIn dates for the active interval
-                                                    self.createFilterOptions()
                                                     (activeInterval.hasCheckInDates()) ? self.rentalSearchAvailability(activeInterval: activeInterval, vacationSearch:vacationSearch) : self.noAvailabilityResults(vacationSearch: vacationSearch)
                                                     
                         },
@@ -1526,7 +1525,6 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                             ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request:vacationSearch.exchangeSearch?.searchContext.request, onSuccess: { response in
                                 
                                 sender.isEnabled = true
-                                self.createFilterOptions()
                                 vacationSearch.exchangeSearch?.searchContext.response = response
                                 Helper.showScrollingCalendar(vacationSearch: vacationSearch)
                                 // Get activeInterval (or initial search interval)
@@ -1534,6 +1532,9 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                                 
                                 // Update active interval
                                 vacationSearch.updateActiveInterval(activeInterval: activeInterval)
+                               
+                               if !response.checkInDates.isEmpty { vacationSearch.resolveCheckInDateForInitialSearch()
+                                }
                                 
                                 // Check not available checkIn dates for the active interval
                                 activeInterval.hasCheckInDates() ? self.exchangeSearchAvailability(activeInterval: activeInterval, vacationSearch: vacationSearch) : self.noAvailabilityResults(vacationSearch: vacationSearch)
@@ -1553,6 +1554,7 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                 
                 Constant.MyClassConstants.isFromExchange = true
             } else {
+                
                 if segmentTitle == Constant.segmentControlItems.getaways {
                     presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
                 } else if segmentTitle == Constant.segmentControlItems.exchange {
@@ -1562,20 +1564,22 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                         presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
                     }
                 } else {
-                    
+
                     if Constant.MyClassConstants.relinquishmentIdArray.count == 0 {
                         sender.isEnabled = true
                         presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.tradeItemMessage)
                     } else if Helper.getAllDestinationFromLocalStorage().count == 0 && Helper.getAllResortsFromLocalStorage().count == 0 {
                         presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
                     } else {
+                        
+                        //MARK : - Search Both Vacation Search
                         showHudAsync()
                         let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Combined)
                         let storedData = Helper.getLocalStorageWherewanttoGo()
                         
                         if storedData.count > 0 {
                             getSavedDestinationsResorts(storedData: storedData, searchCriteria: rentalSearchCriteria)
-                            rentalSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
+                            rentalSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray
                             rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                             rentalSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
                             rentalSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
@@ -1591,15 +1595,13 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                                 vacationSearch.updateActiveInterval(activeInterval: activeInterval)
                                 Helper.helperDelegate = self
                                 Helper.showScrollingCalendar(vacationSearch: vacationSearch)
+                                
                                 // Check not available checkIn dates for the active interval
                                 if !activeInterval.hasCheckInDates() {
                                     self.rentalHasNotAvailableCheckInDates = true
                                     Helper.executeExchangeSearchDates(senderVC: self, vacationSearch: vacationSearch)
-                                    
                                 } else {
-                                    if response.checkInDates.count > 0 {
-                                        vacationSearch.resolveCheckInDateForInitialSearch()
-                                    }
+                                    vacationSearch.resolveCheckInDateForInitialSearch()
                                     if let vacationSearchInitialDate = vacationSearch.searchCheckInDate {
                                         let checkInDate = Helper.convertStringToDate(dateString: vacationSearchInitialDate, format: Constant.MyClassConstants.dateFormat)
                                         Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: checkInDate, senderViewController: self, vacationSearch: vacationSearch)
@@ -1608,13 +1610,15 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                                     } else if Constant.MyClassConstants.initialVacationSearch.rentalSearch != nil && response.surroundingCheckInDates.count > 0 {
                                         
                                         Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate:response.surroundingCheckInDates[0], senderViewController: self, vacationSearch: vacationSearch)
+                                    } else {
+                                        self.hideHudAsync()
                                     }
                                 }
                                 Constant.MyClassConstants.checkInDates = response.checkInDates
-                                sender.isEnabled = true
+                                    sender.isEnabled = true
                                 Constant.MyClassConstants.isFromSearchBoth = true
                                 
-                            }) { (_) in
+                            }) { _ in
                                 self.hideHudAsync()
                                 self.presentErrorAlert(UserFacingCommonError.generic)
                             }
@@ -1637,9 +1641,10 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
     
     // Function for rental search availability
     
-    func rentalSearchAvailability(activeInterval: BookingWindowInterval, vacationSearch: VacationSearch) {
+    func rentalSearchAvailability(
+        activeInterval: BookingWindowInterval,
+        vacationSearch: VacationSearch) {
                                 vacationSearch.resolveCheckInDateForInitialSearch()
-                                self.hideHudAsync()
                                 if let initialSearchCheckInDate = vacationSearch.searchCheckInDate {
                                     let searchDate = Helper.convertStringToDate(dateString: initialSearchCheckInDate, format: Constant.MyClassConstants.dateFormat)
                                     Helper.helperDelegate = self
@@ -1734,6 +1739,7 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                 }
             }
         }
+        createFilterOptions()
     }
 }
 
@@ -1747,7 +1753,6 @@ extension VacationSearchViewController: HelperDelegate {
         if Constant.MyClassConstants.initialVacationSearch.searchCheckInDate != userSelectedCheckInDate {
             Helper.showNearestCheckInDateSelectedMessage()
         }
-        createFilterOptions()
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as! SearchResultViewController
         navigationController?.pushViewController(viewController, animated: true)

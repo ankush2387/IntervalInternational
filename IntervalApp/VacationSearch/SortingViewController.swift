@@ -169,7 +169,7 @@ class SortingViewController: UIViewController {
                     if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental()) {
                         rentalSearchCriteria.area = area
                         
-                    } else if(Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange()) {
+                    } else if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() {
                         exchangeSearchCriteria.area = area
                         
                     } else {
@@ -219,7 +219,7 @@ class SortingViewController: UIViewController {
                         self.dismiss(animated: true, completion: nil)
                     } else {
                     
-                    if(response.checkInDates.count > 0) {
+                    if response.checkInDates.count > 0 {
                         Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: response.checkInDates[0], senderViewController: self, vacationSearch: vacationSearchFilter)
                     } else {
                         Helper.executeRentalSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: initialSearchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: vacationSearchFilter)
@@ -244,7 +244,7 @@ class SortingViewController: UIViewController {
                 ExchangeClient.searchDates(Session.sharedSession.userAccessToken, request: vacationSearchFilter.exchangeSearch?.searchContext.request, onSuccess: { (response) in
                     
                     vacationSearchFilter.exchangeSearch?.searchContext.response = response
-                    let activeInterval = vacationSearchFilter.bookingWindow.getActiveInterval()
+                    guard let activeInterval = vacationSearchFilter.bookingWindow.getActiveInterval() else { return }
                     
                     // Update active interval
                     vacationSearchFilter.updateActiveInterval(activeInterval: activeInterval)
@@ -255,7 +255,7 @@ class SortingViewController: UIViewController {
                     Helper.helperDelegate = self
                     
                     // Check not available checkIn dates for the active interval
-                    if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                    if activeInterval.fetchedBefore && !activeInterval.hasCheckInDates() {
                         self.hideHudAsync()
                         Helper.showNotAvailabilityResults()
                         self.dismiss(animated: true, completion: nil)
@@ -269,15 +269,15 @@ class SortingViewController: UIViewController {
                         }
                     }
                     
-                }) { (_) in
+                }) { _ in
                     self.hideHudAsync()
                     self.presentErrorAlert(UserFacingCommonError.generic)
                 }
                 
             } else {
                 
-                Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.relinquishmentsIds = (Constant.MyClassConstants.relinquishmentIdArray as? [String])!
-                bothSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as? [String]
+                Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.request.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray
+                bothSearchCriteria.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray
                 bothSearchCriteria.travelParty = Constant.MyClassConstants.travelPartyInfo
                 bothSearchCriteria.checkInDate = Constant.MyClassConstants.vacationSearchShowDate
                 Helper.helperDelegate = self
@@ -388,7 +388,7 @@ extension SortingViewController: UITableViewDelegate {
         
         // set selected value here from array.
         if self.isFilterClicked {
-            if(alertFilterOptionsArray.count > 0) {
+            if !alertFilterOptionsArray.isEmpty {
                 switch alertFilterOptionsArray[indexPath.row] {
                 case .Destination( _):
                     
