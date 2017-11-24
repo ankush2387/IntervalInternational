@@ -90,7 +90,7 @@ class IntervalHDPlayerViewController: UIViewController {
         
         UIApplication.shared.statusBarOrientation = .landscapeLeft
     
-        if(UIDevice.current.userInterfaceIdiom == .phone) {
+        if UIDevice.current.userInterfaceIdiom == .phone {
             
             if(UIDevice.current.orientation == .portrait || UIDevice.current.orientation == .faceUp || UIDevice.current.orientation == .faceDown) {
                 
@@ -116,8 +116,8 @@ class IntervalHDPlayerViewController: UIViewController {
         self.videoContainerView.backgroundColor = UIColor.blue
         self.view.addSubview(videoContainerView)
         createDoneButton()
-        if(self.controller != nil) {
-            self.controller!.play()
+        if let controller = controller {
+            controller.play()
         }
     }
     

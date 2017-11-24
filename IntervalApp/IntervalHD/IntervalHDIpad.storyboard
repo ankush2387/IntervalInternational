@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="5Qw-5F-3BO">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="5Qw-5F-3BO">
     <device id="ipad12_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="HelveticaNeue.ttc">
+            <string>HelveticaNeue</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--IntervalHD Tab Controller-->
         <scene sceneID="qrj-1T-axS">
@@ -31,7 +36,7 @@
             </objects>
             <point key="canvasLocation" x="922.5" y="350.25"/>
         </scene>
-        <!--Destinations-->
+        <!--IntervalHD Ipad Controller-->
         <scene sceneID="Uw3-3M-gCx">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="kLG-9Q-eYr" customClass="IntervalHDIpadController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -78,11 +83,11 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="T2h-74-qCU">
-                                                    <rect key="frame" x="0.0" y="0.0" width="252" height="143"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="252" height="151"/>
                                                     <color key="backgroundColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Resort Name" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xG2-ez-kOC">
-                                                    <rect key="frame" x="8" y="147" width="244" height="41"/>
+                                                    <rect key="frame" x="0.0" y="155" width="260" height="41"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="41" id="jRU-wQ-wwG"/>
                                                     </constraints>
@@ -101,7 +106,7 @@
                                                     </variation>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nBn-M5-bhv" customClass="IUIKButton" customModule="IntervalUIKit">
-                                                    <rect key="frame" x="101" y="46.5" width="50" height="50"/>
+                                                    <rect key="frame" x="101" y="50.5" width="50" height="50"/>
                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="50" id="aTR-00-UwZ"/>
@@ -261,7 +266,7 @@
                             </mask>
                         </variation>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Destinations" id="msi-La-owd"/>
+                    <tabBarItem key="tabBarItem" title="" image="RD_Map_Grey" selectedImage="RD_Map_Blue" id="msi-La-owd"/>
                     <navigationItem key="navigationItem" id="klL-Ku-xVf"/>
                     <connections>
                         <outlet property="videoCollectionView" destination="mIH-Wy-n5f" id="I65-Qv-kYs"/>
@@ -272,7 +277,7 @@
             </objects>
             <point key="canvasLocation" x="899.25" y="-364.5"/>
         </scene>
-        <!--Tutorials-->
+        <!--IntervalHD Ipad Controller-->
         <scene sceneID="dcB-x9-7y3">
             <objects>
                 <viewController id="Xjc-UD-EU2" customClass="IntervalHDIpadController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -319,7 +324,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Y6Y-XU-q5e">
-                                                    <rect key="frame" x="0.0" y="0.0" width="252" height="143"/>
+                                                    <rect key="frame" x="-8" y="-8" width="268" height="159"/>
                                                     <color key="backgroundColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TAW-TF-Q1R" customClass="IUIKButton" customModule="IntervalUIKit">
@@ -352,7 +357,7 @@
                                                     </variation>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Resort Name" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MEp-U6-GnU">
-                                                    <rect key="frame" x="8" y="147" width="236" height="41"/>
+                                                    <rect key="frame" x="0.0" y="155" width="252" height="41"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="41" id="zqa-eL-nrz"/>
                                                     </constraints>
@@ -473,7 +478,7 @@
                             </mask>
                         </variation>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Tutorials" id="JTi-FS-q2p"/>
+                    <tabBarItem key="tabBarItem" title="" image="RD_Fav_Grey" selectedImage="RD_Fav_Blue" id="JTi-FS-q2p"/>
                     <connections>
                         <outlet property="videoCollectionView" destination="hVR-JE-Zk9" id="hrs-Zj-sBl"/>
                         <outlet property="videoSeaarchBar" destination="8eb-27-HDk" id="KJc-0S-dIO"/>
@@ -483,7 +488,7 @@
             </objects>
             <point key="canvasLocation" x="1609.5" y="360"/>
         </scene>
-        <!--Resorts-->
+        <!--IntervalHD Ipad Controller-->
         <scene sceneID="hnQ-0X-9vO">
             <objects>
                 <viewController id="up4-XI-mb0" customClass="IntervalHDIpadController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -513,7 +518,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OKa-lo-5YS">
-                                                    <rect key="frame" x="0.0" y="0.0" width="252" height="143"/>
+                                                    <rect key="frame" x="-8" y="-8" width="268" height="159"/>
                                                     <color key="backgroundColor" red="0.0" green="0.46666666670000001" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pvj-B3-anZ" customClass="IUIKButton" customModule="IntervalUIKit">
@@ -546,7 +551,7 @@
                                                     </variation>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Resort Name" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QyH-u3-Q6o">
-                                                    <rect key="frame" x="8" y="147" width="236" height="41"/>
+                                                    <rect key="frame" x="0.0" y="155" width="252" height="41"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="41" id="9Dm-GW-QTC"/>
                                                     </constraints>
@@ -684,7 +689,7 @@
                             </mask>
                         </variation>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Resorts" id="KQq-i4-dPl"/>
+                    <tabBarItem key="tabBarItem" title="" image="RD_List_Grey" selectedImage="RD_List_Blue" id="KQq-i4-dPl"/>
                     <connections>
                         <outlet property="videoCollectionView" destination="26A-uA-WQ3" id="wcT-Mr-FLU"/>
                         <outlet property="videoSeaarchBar" destination="Qkw-wE-VFf" id="fVr-fe-p2L"/>
@@ -718,7 +723,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="QpY-ev-Gcn" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="rr2-vA-PQF">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="1024" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -772,7 +777,7 @@
                                         <rect key="frame" x="0.0" y="28" width="600" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3Wg-Vk-1v9" id="zg6-Xf-dz4">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="89"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="89.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -780,7 +785,7 @@
                                         <rect key="frame" x="0.0" y="118" width="600" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="U3K-V1-9dV" id="rdo-kJ-gqL">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="59"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="59.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -809,6 +814,14 @@
             <point key="canvasLocation" x="-452.25" y="652.5"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="RD_Fav_Blue" width="30" height="30"/>
+        <image name="RD_Fav_Grey" width="30" height="30"/>
+        <image name="RD_List_Blue" width="30" height="30"/>
+        <image name="RD_List_Grey" width="30" height="30"/>
+        <image name="RD_Map_Blue" width="30" height="30"/>
+        <image name="RD_Map_Grey" width="30" height="30"/>
+    </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Okt-tY-vOn"/>
     </inferredMetricsTieBreakers>

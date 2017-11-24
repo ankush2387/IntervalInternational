@@ -1667,7 +1667,7 @@ extension GoogleMapViewController: UITableViewDataSource {
                 cell.resortLocationName.text = dicValue?.resortName
                 
                 cell.resortCityName.text = dicValue?.address?.cityName
-                cell.resortCode.text =  dicValue?.resortCode ?? ""
+                cell.resortCode.text = dicValue?.resortCode ?? ""
                 return cell
             }
             

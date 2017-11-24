@@ -97,7 +97,7 @@ extension MagazinesIPadViewController: UICollectionViewDelegate {
     //***** Collection delegate methods definition here *****//
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        magazine = Constant.MyClassConstants.magazinesArray![indexPath.item]
+        magazine = Constant.MyClassConstants.magazinesArray[indexPath.item]
         self.performSegue(withIdentifier: Constant.segueIdentifiers.showIssueSegue, sender: self)
         
     }
@@ -132,14 +132,14 @@ extension MagazinesIPadViewController: UICollectionViewDataSource {
         return 1
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return (Constant.MyClassConstants.magazinesArray?.count)!
+        return Constant.MyClassConstants.magazinesArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.IntervalHDReusableIdentifiers.magazinesCell, for: indexPath as IndexPath) as! MagazineCollectionViewCell
         
-        let magazine = Constant.MyClassConstants.magazinesArray![indexPath.item]
+        let magazine = Constant.MyClassConstants.magazinesArray[indexPath.item]
         cell.currentIssueView.layer.masksToBounds = true
         cell.currentIssueView.layer.cornerRadius = 35
         if(indexPath.row != 0) {
