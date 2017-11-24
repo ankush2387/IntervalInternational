@@ -11,13 +11,10 @@ import DarwinSDK
 import SVProgressHUD
 
 class MemberShipViewController: UIViewController {
-    /** Outlets */
+    
+    //** Outlets
     @IBOutlet weak var tableView: UITableView!
-    /**
-        Show action sheet.
-        - parameter sender: sender UIbutton reference.
-        - returns : No return value.
-    */
+
     @IBAction func switchMemberShipButtonIsTapped(_ sender: UIButton) {
         CreateActionSheet()
     }
@@ -33,9 +30,7 @@ class MemberShipViewController: UIViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        
-        self.title = Constant.ControllerTitles.memberShipViewController
-        
+        title = Constant.ControllerTitles.memberShipViewController
         self.displayMenuButton()
         getContactMembershipInfo()
     }
@@ -53,7 +48,7 @@ class MemberShipViewController: UIViewController {
             Constant.MyClassConstants.memberNumber = memberNo
         }
         
-        UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: { (membership) in
+    UserClient.getCurrentMembership(Session.sharedSession.userAccessToken, onSuccess: { (membership) in
             if let ownerships = membership.ownerships {
                 self.ownershipArray = ownerships
             }
@@ -75,9 +70,9 @@ class MemberShipViewController: UIViewController {
             
             self.tableView.reloadData()
             self.hideHudAsync()
-        }) { (error) in
+        }) {[unowned self] error in
             self.hideHudAsync()
-            intervalPrint(error)
+            self.presentErrorAlert(UserFacingCommonError.custom(title: "Error".localized(), body: error.localizedDescription))
         }
     }
     
@@ -112,11 +107,9 @@ class MemberShipViewController: UIViewController {
         //***** Update the API session for the current access token *****//
         let context = Session.sharedSession
         
-        UserClient.putSessionsUser(context.userAccessToken, member: context.selectedMembership!,
-                                    onSuccess: {
+        UserClient.putSessionsUser(context.userAccessToken, member: context.selectedMembership!,onSuccess: {
                                         
             //***** Done!  Segue to the Home page *****//
-                                        
             self.dismiss(animated: true, completion: nil)
             self.getContactMembershipInfo()
             },
@@ -140,13 +133,9 @@ class MemberShipViewController: UIViewController {
         
         let actionsheetViewController = UIViewController()
         var rect = CGRect(x: 0, y: 0, width: self.view.bounds.width - 20, height: CGFloat((Session.sharedSession.contact?.memberships?.count)! * 70))
-        
-//        let rect1 = CGRectMake(0, 0, self.view.bounds.width - 20, CGFloat(self.view.bounds.height/2))
-        
+    
         actionsheetViewController.preferredContentSize = rect.size
-        
         let actionSheetTable = UITableView(frame: rect)
-        
         actionSheetTable.register(UINib(nibName: Constant.customCellNibNames.actionSheetTblCell, bundle: nil), forCellReuseIdentifier: Constant.loginScreenReusableIdentifiers.CustomCell)
         actionSheetTable.delegate = self
         actionSheetTable.dataSource = self
@@ -184,14 +173,13 @@ extension MemberShipViewController: UITableViewDataSource {
         if tableView.tag == 3 {
             return 1
         }
-
         return numberOfSection
     }
     // MARK: Number of Row in a section
     /** This function is used to return number of row in a section */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         if(tableView.tag == 3) {
-            
             let contact = Session.sharedSession.contact
             return (contact?.memberships?.count)!
             
@@ -253,7 +241,6 @@ extension MemberShipViewController: UITableViewDataSource {
             title = Constant.memberShipViewController.ownershipHeaderTitletext
             return title
         }
-        
         return nil
     }
 }

@@ -26,25 +26,12 @@ class OwnerShipDetailTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
     }
-
     // MARK: get MembershipCell using informations
-    /**
-        Configure cell components.
-    
-        - parameter membershipDetailDictionary :  This dictionary is used to update label text.
-        - returns : No value is returned.
-    */
     func getCell(ownership: Ownership) {
         self.setPropertiesTocellElements()
         updateCell(ownership: ownership)
     }
     // MARK: Update value according to server response
-    
-    /**
-        Update label text.
-        - parameter membershipDetailDictionary : Dictionary with String key and String Value.
-        - returns : No value is return.
-    */
     fileprivate func updateCell(ownership: Ownership) {
         // update Label text
         placeNameLabel.text = ownership.resort?.resortName
@@ -58,7 +45,6 @@ class OwnerShipDetailTableViewCell: UITableViewCell {
         placeCode.text = ownership.resort?.resortCode
         let bedroomSize = Helper.getBedroomNumbers(bedroomType: (ownership.unit?.unitSize)!)
         bedroomDetailLabel.text = bedroomSize
-
         weekNumberLabel.text = ownership.weekNumber
         if((ownership.resort?.images.count)! > 0) {
             let imageURLStr = ownership.resort?.images[1].url
@@ -75,21 +61,13 @@ class OwnerShipDetailTableViewCell: UITableViewCell {
         } else if ownership.weekNumber == "FLOAT_WEEK"{
             
             weekNumberLabel.text = Constant.getFlotWeek(weekType: ownership.weekNumber!)
-           
         } else {
            weekNumberLabel.text = "Week \(Constant.getWeekNumber(weekType: ownership.weekNumber!))"
         }
-    
-        }
-
     }
+}
     
     // MARK: set commonPrperties to cell
-    /** 
-    Set  properties to Cell components
-    - parameter No parameter:
-    - returns : No return value
-    */
     fileprivate func setPropertiesTocellElements() {
         //Configure label TextColor
         placeAddressLabel.textColor = UIColor(rgb: IUIKColorPalette.primaryText.rawValue)
