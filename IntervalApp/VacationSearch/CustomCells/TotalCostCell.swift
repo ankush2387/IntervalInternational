@@ -14,7 +14,7 @@ class TotalCostCell: UITableViewCell {
     @IBOutlet weak var periodLabel: UILabel!
     @IBOutlet weak var fractionalPriceLabel: UILabel!
     @IBOutlet weak var currencyCodeLabel: UILabel!
-    @IBOutlet weak var amountLabel: UILabel!
+    @IBOutlet weak private var amountLabel: UILabel!
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

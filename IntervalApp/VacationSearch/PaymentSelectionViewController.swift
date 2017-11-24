@@ -122,11 +122,11 @@ class PaymentSelectionViewController: UIViewController {
             
             alert.addAction(UIAlertAction(title: Constant.AlertPromtMessages.done, style: .default, handler: { [weak alert] (_) in
                 
-                if (cvv?.text?.characters.count)! == 0 {
+                if cvv?.text?.count == 0 {
                     cvv?.layer.borderColor = UIColor.red.cgColor
                     return
                 }
-                if (expiryDate?.text?.characters.count)! == 0 {
+                if expiryDate?.text?.count == 0 {
                     expiryDate?.layer.borderColor = UIColor.red.cgColor
                     return
                 }
@@ -178,7 +178,8 @@ class PaymentSelectionViewController: UIViewController {
         } else {
         
         //1. Create the alert controller.
-        let alert = UIAlertController(title: Constant.PaymentSelectionControllerCellIdentifiersAndHardCodedStrings.cvvAlertTitle, message: "\(cardType!) Ending in \(lastFourDigitCardNumber)", preferredStyle: .alert)
+        let alert = UIAlertController(title: Constant.PaymentSelectionControllerCellIdentifiersAndHardCodedStrings.cvvAlertTitle,
+                                      message: "\(cardType!) Ending in \(lastFourDigitCardNumber)", preferredStyle: .alert)
         
         //2. Add the text field. You can configure it however you need.
         alert.addTextField { (textField) in

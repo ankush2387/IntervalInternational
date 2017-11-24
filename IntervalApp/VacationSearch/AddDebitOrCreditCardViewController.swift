@@ -63,8 +63,6 @@ class AddDebitOrCreditCardViewController: UIViewController {
             }
         }
         self.years = years
-        intervalPrint(years)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateResortHoldingTime), name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
@@ -74,6 +72,7 @@ class AddDebitOrCreditCardViewController: UIViewController {
     }
     
     override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(true)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
     }
     
@@ -246,28 +245,21 @@ class AddDebitOrCreditCardViewController: UIViewController {
         if dropDownSelectionSection == 0 && dropDownSelectionRow == 3 {
             
             if self.hideStatus == false {
-                
                 self.hideStatus = true
-               // showDatePickerView()
                 showPickerView()
 
             } else {
-                
                 self.hideStatus = false
-                //hideDatePickerView()
                 hidePickerView()
-                
             }
 
         } else {
           
             if self.hideStatus == false {
-                
                 self.hideStatus = true
                 showPickerView()
                 self.pickerView.reloadAllComponents()
             } else {
-                
                 self.hideStatus = false
                 hidePickerView()
             }
@@ -278,7 +270,7 @@ class AddDebitOrCreditCardViewController: UIViewController {
     func createDatePicker() {
         
         pickerBaseView = UIView(frame: CGRect(x: 0, y: self.view.frame.size.height - 200, width: self.view.frame.size.width, height: 200))
-        pickerBaseView.backgroundColor = IUIKColorPalette.primary1.color
+        pickerBaseView?.backgroundColor = IUIKColorPalette.primary1.color
         let doneButton = UIButton(frame: CGRect(x: 0, y: 5, width: pickerBaseView.frame.size.width - 20, height: 50))
         doneButton.setTitle(Constant.AlertPromtMessages.done, for: .normal)
         doneButton.contentHorizontalAlignment = .right
@@ -851,8 +843,8 @@ extension AddDebitOrCreditCardViewController: UITextFieldDelegate {
         if range.length == 1 && string.characters.count == 0 {
             intervalPrint("backspace tapped")
         }
-        
-        if Int(textField.accessibilityValue!) == 0 {
+       
+        if Int(textField.accessibilityValue.unwrappedString) == 0 {
                 
                 if textField.tag == 0 {
                     
@@ -910,9 +902,7 @@ extension AddDebitOrCreditCardViewController: UITextFieldDelegate {
                         Constant.GetawaySearchResultCardFormDetailData.pinCode.characters.removeLast()
                     } else {
                        Constant.GetawaySearchResultCardFormDetailData.pinCode = "\(textField.text!)\(string)"
-                        
                     }
-                    
                 }
             }
         
@@ -923,7 +913,7 @@ extension AddDebitOrCreditCardViewController: UITextFieldDelegate {
         
         activeField = textField
         moved = true
-        if (Int(textField.accessibilityValue!) == 0) {
+        if Int(textField.accessibilityValue.unwrappedString) == 0 {
             if textField.tag == 0 {
                textField.keyboardType = .default
             } else {
