@@ -122,6 +122,7 @@ class PaymentSelectionViewController: UIViewController {
             
             alert.addAction(UIAlertAction(title: Constant.AlertPromtMessages.done, style: .default, handler: { [weak alert] (_) in
                 
+
                 if cvv?.text?.count == 0 {
                     cvv?.layer.borderColor = UIColor.red.cgColor
                     return
@@ -178,6 +179,7 @@ class PaymentSelectionViewController: UIViewController {
         } else {
         
         //1. Create the alert controller.
+
         let alert = UIAlertController(title: Constant.PaymentSelectionControllerCellIdentifiersAndHardCodedStrings.cvvAlertTitle,
                                       message: "\(cardType!) Ending in \(lastFourDigitCardNumber)", preferredStyle: .alert)
         

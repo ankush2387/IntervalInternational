@@ -247,14 +247,14 @@ class AddDebitOrCreditCardViewController: UIViewController {
             if self.hideStatus == false {
                 self.hideStatus = true
                 showPickerView()
-
+                
             } else {
                 self.hideStatus = false
                 hidePickerView()
             }
-
+            
         } else {
-          
+            
             if self.hideStatus == false {
                 self.hideStatus = true
                 showPickerView()
@@ -843,9 +843,9 @@ extension AddDebitOrCreditCardViewController: UITextFieldDelegate {
         if range.length == 1 && string.characters.count == 0 {
             intervalPrint("backspace tapped")
         }
-       
-        if Int(textField.accessibilityValue.unwrappedString) == 0 {
-                
+
+        
+        if Int(textField.accessibilityValue!) == 0 {
                 if textField.tag == 0 {
                     
                     if range.length == 1 && string.characters.count == 0 {
@@ -913,7 +913,9 @@ extension AddDebitOrCreditCardViewController: UITextFieldDelegate {
         
         activeField = textField
         moved = true
-        if Int(textField.accessibilityValue.unwrappedString) == 0 {
+
+        if (Int(textField.accessibilityValue!) == 0) {
+
             if textField.tag == 0 {
                textField.keyboardType = .default
             } else {

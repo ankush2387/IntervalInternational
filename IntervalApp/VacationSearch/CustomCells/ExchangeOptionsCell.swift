@@ -23,6 +23,7 @@ class ExchangeOptionsCell: UITableViewCell {
             primaryPriceLabel.attributedText = attributedAmount
         }
     }
+
     func setupCell(selectedEplus: Bool) {
         
         if let currencyCode = Constant.MyClassConstants.exchangeFees[0].currencyCode {
