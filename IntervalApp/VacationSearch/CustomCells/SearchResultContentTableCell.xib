@@ -1,25 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="HelveticaNeue.ttc">
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue-Medium</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SearchResultContentTableCell" rowHeight="262" id="KGk-i7-Jjw" customClass="SearchResultContentTableCell" customModule="IntervalApp" customModuleProvider="target">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SearchResultContentTableCell" rowHeight="275" id="KGk-i7-Jjw" customClass="SearchResultContentTableCell" customModule="IntervalApp" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="375" height="275"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
                 <rect key="frame" x="0.0" y="0.0" width="375" height="274.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NoImageIcon" translatesAutoresizingMaskIntoConstraints="NO" id="KUP-W3-GXo">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NoImageIcon" translatesAutoresizingMaskIntoConstraints="NO" id="KUP-W3-GXo">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="275"/>
                         <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -27,7 +33,7 @@
                         </constraints>
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ea5-Ej-GtY" userLabel="FavoriteButton">
-                        <rect key="frame" x="300" y="10" width="50" height="50"/>
+                        <rect key="frame" x="292" y="13" width="50" height="50"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="50" id="aSs-sI-yg5"/>
@@ -97,27 +103,17 @@
                             <constraint firstItem="RN3-ta-baG" firstAttribute="leading" secondItem="XGG-s8-LLQ" secondAttribute="leading" id="xBH-LL-IYD"/>
                         </constraints>
                     </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pBA-tX-YAb">
-                        <rect key="frame" x="20" y="274" width="355" height="1"/>
-                        <color key="backgroundColor" red="0.84313725490000002" green="0.84313725490000002" blue="0.85490196080000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="1" id="BZw-9c-7Vf"/>
-                        </constraints>
-                    </view>
                 </subviews>
                 <constraints>
                     <constraint firstItem="KUP-W3-GXo" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="33s-jP-d2D"/>
                     <constraint firstAttribute="trailing" secondItem="bd8-V0-I66" secondAttribute="trailing" id="5ao-C8-rML"/>
                     <constraint firstAttribute="trailing" secondItem="KUP-W3-GXo" secondAttribute="trailing" id="G2l-rq-PLB"/>
                     <constraint firstAttribute="bottom" secondItem="KUP-W3-GXo" secondAttribute="bottom" id="OOE-QR-JGk"/>
-                    <constraint firstItem="pBA-tX-YAb" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="QJv-rx-mCd"/>
                     <constraint firstItem="bd8-V0-I66" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="UKF-dc-zdA"/>
                     <constraint firstAttribute="trailingMargin" secondItem="ea5-Ej-GtY" secondAttribute="trailing" constant="17" id="XXU-HQ-sO0"/>
-                    <constraint firstAttribute="bottom" secondItem="pBA-tX-YAb" secondAttribute="bottom" id="bqE-A6-IAr"/>
-                    <constraint firstAttribute="bottom" secondItem="bd8-V0-I66" secondAttribute="bottom" constant="-0.5" id="ffn-Qk-PIU"/>
+                    <constraint firstAttribute="bottom" secondItem="bd8-V0-I66" secondAttribute="bottom" id="ffn-Qk-PIU"/>
                     <constraint firstItem="KUP-W3-GXo" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="jAf-G7-wRC"/>
                     <constraint firstItem="ea5-Ej-GtY" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="2" id="wCH-8b-nAV"/>
-                    <constraint firstAttribute="trailing" secondItem="pBA-tX-YAb" secondAttribute="trailing" id="y65-yA-vUw"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
