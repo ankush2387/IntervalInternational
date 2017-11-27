@@ -65,7 +65,7 @@ class MembershipIPadViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.displayMenuButton()
-        self.title = Constant.ControllerTitles.memberShipViewController
+        title = Constant.ControllerTitles.memberShipViewController
         getContactMembershipInfo()
     }
     
@@ -90,7 +90,7 @@ class MembershipIPadViewController: UIViewController {
             self.hideHudAsync()
             self.membershipProductsArray.sort { $0.coreProduct && !$1.coreProduct }
             self.tableView.reloadData()
-        }) {[unowned self] (error) in
+        }) {[unowned self] _ in
             self.hideHudAsync()
              self.presentAlert(with: "Membership Error".localized(), message:"Unable to get membership from server. Please try again!".localized())
         }
@@ -141,9 +141,8 @@ class MembershipIPadViewController: UIViewController {
                     }
                 }
         },
-       onError: {[unowned self](error) in
+       onError: {[unowned self] _ in
         self.hideHudAsync()
-        Logger.sharedInstance.error("Could not set membership in Darwin API Session: \(error.description)")
         self.presentAlert(with: Constant.AlertErrorMessages.loginFailed, message: "Please contact your servicing office.  Could not select membership \(String(describing: context.selectedMembership?.memberNumber))")
 
             }
@@ -156,34 +155,41 @@ extension MembershipIPadViewController: UITableViewDataSource {
     
     // MARK: Number of section in Table View
     func numberOfSections(in tableView: UITableView) -> Int {
-        if tableView.tag == 3 {
+        switch tableView.tag {
+        case 3:
             return 1
+        default:
+            return numberOfSection
         }
-        
-        return numberOfSection
     }
     // MARK: Number of Row in a section
     /** This function is used to return number of row in a section */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if(tableView.tag == 3) {
-            let contact = Session.sharedSession.contact
-            return (contact?.memberships?.count)!
-        } else if section == 1 {
-            return ownershipArray.count
-        } else {
-            return numberOfRowInSection
+        switch tableView.tag {
+        case 3:
+            return Session.sharedSession.contact?.memberships?.count ?? 0
+        default:
+            if section == 1 {
+                return ownershipArray.count
+            } else {
+                return numberOfRowInSection
+            }
+            
         }
     }
     // MARK: Cell for a row
     /** This function is used to return cell for a row */
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if(tableView.tag == 3) {
+        switch tableView.tag {
+        case 3:
             
-            let contact = Session.sharedSession.contact
-            let membership = contact?.memberships![indexPath.row]
+            guard let cell: ActionSheetTblCell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.CustomCell, for: indexPath) as? ActionSheetTblCell else { return UITableViewCell() }
+            var membership: Membership?
+            if let memberShips = Session.sharedSession.contact?.memberships {
+                membership = memberShips[indexPath.row]
+            }
             
-            let cell: ActionSheetTblCell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.CustomCell, for: indexPath) as! ActionSheetTblCell
             cell.memberImageView.image = UIImage(named: "")
             cell.membershipTextLabel.text = "Member No"
             cell.membershipNumber.text = membership?.memberNumber
@@ -197,27 +203,29 @@ extension MembershipIPadViewController: UITableViewDataSource {
             } else {
                 cell.selectedImageView.image = UIImage(named: "Select-Off")
             }
-            
             cell.delegate = self
             return cell
-            
-        } else if (indexPath as NSIndexPath).section == 1 {
+          
+        default:
+            if indexPath.section == 1 {
             guard let ownershipCell = tableView.dequeueReusableCell(withIdentifier: Constant.memberShipViewController.ownershipDetailCellIdentifier) as? OwnerShipDetailTableViewCell else { return UITableViewCell() }
             let ownership = ownershipArray[indexPath.row]
             ownershipCell.getCell(ownership: ownership)
             return ownershipCell
         } else {
             guard let membershipCell = tableView.dequeueReusableCell(withIdentifier: Constant.memberShipViewController.membershipDetailCellIdentifier) as? MemberShipDetailTableViewCell else { return UITableViewCell() }
-            let contact = Session.sharedSession.contact
-            if contact!.memberships!.count == 1 {
-                membershipCell.switchMembershipButton.isHidden = true
-                membershipCell.activememberOutOfTotalMemberLabel.isHidden = true
-            }
+                if let memberShips = Session.sharedSession.contact?.memberships {
+                    if memberShips.count == 1 {
+                        membershipCell.switchMembershipButton.isHidden = true
+                        membershipCell.activememberOutOfTotalMemberLabel.isHidden = true
+                    }
+                }
+            
             membershipCell.getCell(contactInfo: self.contactInfo, products: membershipProductsArray)
             return membershipCell
         }
-        
     }
+}
     
     /** This function is used to return title for header In section */
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -226,7 +234,6 @@ extension MembershipIPadViewController: UITableViewDataSource {
             title = Constant.memberShipViewController.ownershipHeaderTitletext
             return title
         }
-        
         return nil
     }
 }
@@ -242,25 +249,22 @@ extension MembershipIPadViewController: UITableViewDelegate {
     
     /** This function is used to return Height for a row at particular index In section */
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if(tableView.tag == 3) {
+        switch tableView.tag {
+        case 3:
             return 70
-        } else if (indexPath as NSIndexPath).section == 0 {
-            
-            let extraViews = membershipProductsArray.count - 1
-            return CGFloat((80 * extraViews) + 240)
-            
-        } else {
-            return 427
+        default:
+            if indexPath.section == 0 {
+                let extraViews = membershipProductsArray.count - 1
+                return CGFloat((80 * extraViews) + 240)
+            } else {
+                return 427
+            }
         }
     }
     
     /** This function is used to return Height for header In section */
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 1 {
-            return 30
-        } else {
-            return 30
-        }
+        return 30
     }
     
     //***** Custom cell delegate methods *****//
@@ -277,9 +281,10 @@ extension MembershipIPadViewController: UITableViewDelegate {
                     previousCell?.selectedImageView.image = UIImage(named: "Select-Off")
                 }
             }
-            
-            let contact = Session.sharedSession.contact
-            let membership = contact?.memberships![indexPath.row]
+            var membership: Membership?
+            if let memberShips = Session.sharedSession.contact?.memberships {
+                membership = memberShips[indexPath.row]
+            }
             if Constant.MyClassConstants.memberNumber != membership?.memberNumber {
                 self.dismiss(animated: true, completion: nil)
                 let alert = UIAlertController(title: Constant.memberShipViewController.switchMembershipAlertTitle, message: Constant.memberShipViewController.switchMembershipAlertMessage, preferredStyle: .actionSheet)

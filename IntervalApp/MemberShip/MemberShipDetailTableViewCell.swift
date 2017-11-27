@@ -130,23 +130,22 @@ class MemberShipDetailTableViewCell: UITableViewCell {
             if count > 1 {
                 prodView.triangleView.isHidden = true
             }
-            
-            var dateString = ""
-            if let expDate = prod.expirationDate {
-                dateString = Helper.convertDateToString(date: expDate, format: Constant.MyClassConstants.dateFormat)
+            if prod.billingEntity == "CORP" {
+                prodView.expirationDateLabel.text = ""
+            } else {
+                var dateString = ""
+                if let expDate = prod.expirationDate {
+                    dateString = Helper.convertDateToString(date: expDate, format: Constant.MyClassConstants.dateFormat)
+                }
+                prodView.expirationDateLabel.text = dateString
             }
-
-            prodView.expirationDateLabel.text = dateString
             prodView.productNameLabel.text = prod.productName
-            prodView.frame = CGRect(x: 5, y: yPosition, width: Int(productExternalView.frame.width - 10), height: height)
+            prodView.frame = CGRect(x:5, y: yPosition, width: Int(productExternalView.frame.width - 10), height: height)
             productExternalView.addSubview(prodView)
-        
             yPosition += height
             count += 1
         }
-        
-        productExternalView.layer.cornerRadius = 4
-        
+        productExternalView.layer.cornerRadius = 7
     }
     // MARK: set commonPrperties to cell
     /**
