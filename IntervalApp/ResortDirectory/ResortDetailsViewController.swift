@@ -647,8 +647,9 @@ extension ResortDetailsViewController: UITableViewDelegate {
         } else {
             
             if((indexPath as NSIndexPath).section == 2) {
-                
-                self.performSegue(withIdentifier: Constant.segueIdentifiers.detailMapSegue, sender: nil)
+                let detailMapViewController = DetailMapViewController()
+                detailMapViewController.hidesBottomBarWhenPushed = true
+                self.navigationController?.pushViewController(detailMapViewController, animated: true)
             }
         }
     }
