@@ -25,12 +25,10 @@ class DetailMapViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = menuButton
         
         self.createMap()
-        
+    
     }
     func menuBackButtonPressed(_ sender: UIBarButtonItem) {
-        
-        self.dismiss(animated: true, completion: nil)
-        
+        navigationController?.popViewController(animated: true)
     }
     func createMap() {
         
