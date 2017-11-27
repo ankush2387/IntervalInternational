@@ -23,7 +23,6 @@ import RealmSwift
 
 public class Helper {
     
-    static var progressBarBackgroundView: UIView!
     static var window: UIWindow?
     
     static var helperDelegate: HelperDelegate?
@@ -1313,23 +1312,23 @@ public class Helper {
                 switch searchBy {
                     
                 case Constant.MyClassConstants.resortsString:
-                    Constant.MyClassConstants.internalHDResorts?.removeAll()
-                    Constant.MyClassConstants.internalHDResorts! = videos
+                    Constant.MyClassConstants.intervalHDResorts.removeAll()
+                    Constant.MyClassConstants.intervalHDResorts = videos
                     
                 case Constant.MyClassConstants.tutorialsString:
-                    Constant.MyClassConstants.internalHDTutorials?.removeAll()
-                    Constant.MyClassConstants.internalHDTutorials = videos
+                    Constant.MyClassConstants.intervalHDTutorials.removeAll()
+                    Constant.MyClassConstants.intervalHDTutorials = videos
                     
                 default:
-                    Constant.MyClassConstants.intervalHDDestinations?.removeAll()
-                    Constant.MyClassConstants.intervalHDDestinations! = videos
+                    Constant.MyClassConstants.intervalHDDestinations.removeAll()
+                    Constant.MyClassConstants.intervalHDDestinations = videos
                 }
                 
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.reloadVideosNotification), object: nil)
                 senderViewcontroller.hideHudAsync()
             },
-                                   onError: {_ in
-                                    senderViewcontroller.hideHudAsync()
+                   onError: {_ in
+                    senderViewcontroller.hideHudAsync()
             })
         } else {
             

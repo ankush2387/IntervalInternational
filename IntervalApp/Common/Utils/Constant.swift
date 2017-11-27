@@ -288,10 +288,10 @@ class Constant: NSObject {
         static var signOutSelected = "signOutSelected"
         
         // intervalHD arrays
-        static var intervalHDDestinations: [Video]? = []
-        static var internalHDResorts: [Video]? = []
-        static var internalHDTutorials: [Video]? = []
-        static var magazinesArray: [Magazine]? = []
+        static var intervalHDDestinations = [Video]()
+        static var intervalHDResorts = [Video]()
+        static var intervalHDTutorials = [Video]()
+        static var magazinesArray = [Magazine]()
         
         // Pick destinations array
         static var resorts: [Resort]? = []

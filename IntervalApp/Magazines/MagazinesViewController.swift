@@ -22,7 +22,7 @@ class MagazinesViewController: UIViewController {
         self.title = Constant.ControllerTitles.magazinesControllerTitle
         
         //***** Handle hamburgur menu button for prelogin and post login case *****//
-        if((Session.sharedSession.userAccessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
+        if(Session.sharedSession.userAccessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull {
             
             if let rvc = self.revealViewController() {
                 //set SWRevealViewController's Delegate
@@ -45,15 +45,12 @@ class MagazinesViewController: UIViewController {
         }
         
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         showHudAsync()
         Helper.getMagazines(senderViewController: self)
         NotificationCenter.default.addObserver(self, selector: #selector(reloadMagazines), name: NSNotification.Name(rawValue: Constant.notificationNames.magazineAlertNotification), object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(getAllMagazines), name: NSNotification.Name(rawValue: Constant.notificationNames.accessTokenAlertNotification), object: nil)
-        
-        // Do any additional setup after loading the view.
     }
     
     //reloadMagazines
@@ -71,9 +68,6 @@ class MagazinesViewController: UIViewController {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.MyClassConstants.popToLoginView), object: nil)
     }
     
-    func playTapped() {
-        
-    }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         let detailedVC = segue.destination as! DetailedIssueViewController
@@ -88,13 +82,12 @@ class MagazinesViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 }
-
 //***** extension class to define tableview datasource methods *****//
 extension MagazinesViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
-        return (Constant.MyClassConstants.magazinesArray!.count)
+        return Constant.MyClassConstants.magazinesArray.count
     }
     
     @objc(tableView:heightForRowAtIndexPath:) func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -110,7 +103,7 @@ extension MagazinesViewController: UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.IntervalHDReusableIdentifiers.magazinesCell, for: indexPath as IndexPath) as! MagazineTableViewCell
        
-        magazine = Constant.MyClassConstants.magazinesArray![indexPath.section]
+        magazine = Constant.MyClassConstants.magazinesArray[indexPath.section]
         
         //adding show on magazines list view
         cell.shadowView.layer.shadowColor = IUIKColorPalette.altState.color.cgColor
@@ -156,22 +149,17 @@ extension MagazinesViewController: UITableViewDataSource {
         //***** configure footerview for each section to show header labels *****//
         let  footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 30))
         footerView.backgroundColor = UIColor.white
-        
         return footerView
-
     }
-    
      private func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-       
         return 30
     }
-    
 }
 
 extension MagazinesViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        magazine = Constant.MyClassConstants.magazinesArray![indexPath.section]
+        magazine = Constant.MyClassConstants.magazinesArray[indexPath.section]
         self.performSegue(withIdentifier: Constant.segueIdentifiers.showIssueSegue, sender: self)
     }
     
