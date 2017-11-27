@@ -99,14 +99,13 @@ class MemberShipViewController: UIViewController {
         
         //***** Update the API session for the current access token *****//
         let context = Session.sharedSession
-        UserClient.putSessionsUser(context.userAccessToken, member: context.selectedMembership!,onSuccess: {
+        UserClient.putSessionsUser(context.userAccessToken, member: context.selectedMembership!, onSuccess: {
                                         
             //***** Done!  Segue to the Home page *****//
             self.dismiss(animated: true, completion: nil)
             self.getContactMembershipInfo()
             },
-        onError: { error in
-            Logger.sharedInstance.error("Could not set membership in Darwin API Session: \(error.description)")
+        onError: {_ in
             self.presentAlert(with: Constant.AlertErrorMessages.loginFailed, message: "Please contact your servicing office.  Could not select membership \(String(describing: context.selectedMembership?.memberNumber))")
             }
         )
@@ -260,8 +259,7 @@ extension MemberShipViewController: UITableViewDelegate {
             if indexPath.section == 0 {
                 let extraViews = membershipProductsArray.count - 1
                 return CGFloat((80 * extraViews) + 440)
-            }
-            else {
+            } else {
                return 332
             }
         }
@@ -281,7 +279,7 @@ extension MemberShipViewController: UITableViewDelegate {
                     previousCell?.selectedImageView.image = UIImage(named: "Select-Off")
                 }
             }
-            var membership:Membership?
+            var membership: Membership?
             if let memberShips = Session.sharedSession.contact?.memberships {
                 membership = memberShips[indexPath.row]
             }

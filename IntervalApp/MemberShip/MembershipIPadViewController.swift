@@ -90,7 +90,7 @@ class MembershipIPadViewController: UIViewController {
             self.hideHudAsync()
             self.membershipProductsArray.sort { $0.coreProduct && !$1.coreProduct }
             self.tableView.reloadData()
-        }) {[unowned self] error in
+        }) {[unowned self] _ in
             self.hideHudAsync()
              self.presentAlert(with: "Membership Error".localized(), message:"Unable to get membership from server. Please try again!".localized())
         }
@@ -141,9 +141,8 @@ class MembershipIPadViewController: UIViewController {
                     }
                 }
         },
-       onError: {[unowned self] error in
+       onError: {[unowned self] _ in
         self.hideHudAsync()
-        Logger.sharedInstance.error("Could not set membership in Darwin API Session: \(error.description)")
         self.presentAlert(with: Constant.AlertErrorMessages.loginFailed, message: "Please contact your servicing office.  Could not select membership \(String(describing: context.selectedMembership?.memberNumber))")
 
             }
@@ -186,7 +185,7 @@ extension MembershipIPadViewController: UITableViewDataSource {
         case 3:
             
             guard let cell: ActionSheetTblCell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.CustomCell, for: indexPath) as? ActionSheetTblCell else { return UITableViewCell() }
-            var membership:Membership?
+            var membership: Membership?
             if let memberShips = Session.sharedSession.contact?.memberships {
                 membership = memberShips[indexPath.row]
             }
@@ -282,7 +281,7 @@ extension MembershipIPadViewController: UITableViewDelegate {
                     previousCell?.selectedImageView.image = UIImage(named: "Select-Off")
                 }
             }
-            var membership:Membership?
+            var membership: Membership?
             if let memberShips = Session.sharedSession.contact?.memberships {
                 membership = memberShips[indexPath.row]
             }
