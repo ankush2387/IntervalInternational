@@ -2784,7 +2784,7 @@ transaction.</string>
                                         <rect key="frame" x="0.0" y="28" width="375" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oSN-ih-PeL" id="zZb-fK-UIm">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="89.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -2792,7 +2792,7 @@ transaction.</string>
                                         <rect key="frame" x="0.0" y="118" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qNT-SI-vkM" id="r3x-cO-4hS">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -4913,31 +4913,9 @@ to confirm a larger unit.</string>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W7Q-QH-rQ9">
                                                     <rect key="frame" x="224" y="90" width="72" height="32"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="$" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xBm-4L-JBN">
-                                                            <rect key="frame" x="4" y="0.0" width="15" height="21"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                                            <color key="textColor" red="0.96862745100000003" green="0.41176470590000003" blue="0.19215686269999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="99" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y0s-Tx-Jch">
-                                                            <rect key="frame" x="14" y="1" width="38" height="27"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="30"/>
-                                                            <color key="textColor" red="0.96862745100000003" green="0.41176470590000003" blue="0.19215686269999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yy9-dr-4xD">
-                                                            <rect key="frame" x="55" y="1" width="22" height="20"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                                            <color key="textColor" red="0.96862745100000003" green="0.41176470590000003" blue="0.19215686269999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="79L-ao-wES">
-                                                            <rect key="frame" x="50" y="5" width="6" height="27"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y0s-Tx-Jch">
+                                                            <rect key="frame" x="0.0" y="1" width="72" height="27"/>
+                                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="21"/>
                                                             <color key="textColor" red="0.96862745100000003" green="0.41176470590000003" blue="0.19215686269999999" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
@@ -4945,7 +4923,11 @@ to confirm a larger unit.</string>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="32" id="1Ud-xf-P24"/>
+                                                        <constraint firstItem="Y0s-Tx-Jch" firstAttribute="leading" secondItem="W7Q-QH-rQ9" secondAttribute="leading" id="6H9-iM-C36"/>
                                                         <constraint firstAttribute="width" constant="72" id="AHc-9a-aSy"/>
+                                                        <constraint firstAttribute="bottom" secondItem="Y0s-Tx-Jch" secondAttribute="bottom" constant="4" id="c3v-0L-yk4"/>
+                                                        <constraint firstAttribute="trailing" secondItem="Y0s-Tx-Jch" secondAttribute="trailing" id="t1y-7b-uCw"/>
+                                                        <constraint firstItem="Y0s-Tx-Jch" firstAttribute="top" secondItem="W7Q-QH-rQ9" secondAttribute="top" constant="1" id="uT6-oI-5we"/>
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ks0-JR-YM1" customClass="IUIKCheckbox" customModule="IntervalUIKit">
@@ -4985,9 +4967,6 @@ to confirm a larger unit.</string>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="currencyLabel" destination="xBm-4L-JBN" id="oXP-Eg-w1H"/>
-                                            <outlet property="fractionalPriceLabel" destination="yy9-dr-4xD" id="VR7-Ke-MS3"/>
-                                            <outlet property="periodLabel" destination="79L-ao-wES" id="YsI-aA-4u6"/>
                                             <outlet property="priceCheckBox" destination="Ks0-JR-YM1" id="cIH-w4-7Uq"/>
                                             <outlet property="priceView" destination="W7Q-QH-rQ9" id="fPe-pz-Hj6"/>
                                             <outlet property="primaryPriceLabel" destination="Y0s-Tx-Jch" id="tKg-QO-LTR"/>
@@ -5236,7 +5215,7 @@ to confirm a larger unit.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4U8-Y9-NTh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5857" y="1332"/>
+            <point key="canvasLocation" x="5856.8000000000002" y="1331.3343328335834"/>
         </scene>
         <!--Confirmation-->
         <scene sceneID="eRM-Oz-aVQ">
@@ -8364,8 +8343,8 @@ transaction.</string>
         <image name="sanci_main01_r" width="1200" height="550"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="xan-e8-tse"/>
-        <segue reference="Gma-QI-cCT"/>
+        <segue reference="4Eo-F1-CbC"/>
+        <segue reference="kmp-5Q-mdc"/>
         <segue reference="Lp2-ch-oU8"/>
         <segue reference="Rpo-cQ-qF4"/>
         <segue reference="4gU-cx-AAf"/>

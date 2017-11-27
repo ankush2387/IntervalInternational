@@ -31,7 +31,7 @@ class RenewalOtherOptionsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if(Constant.RunningDevice.deviceIdiom == .phone) {
+        if Constant.RunningDevice.deviceIdiom == .phone {
             //Set title for table view
             let headerLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 375, height: 40))
             headerLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0)
@@ -47,16 +47,6 @@ class RenewalOtherOptionsVC: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-    
     // MARK: - Button Clicked
     
     @IBAction func cancelClicked(_ sender: UIButton) {
@@ -118,9 +108,8 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
         if indexPath.section == 0 {
             for comboProduct in (forceRenewals.comboProducts) {
                 
-                for renewalComboProduct in comboProduct.renewalComboProducts {
-                    if renewalComboProduct.term == 12 {
-                        
+                for renewalComboProduct in comboProduct.renewalComboProducts where renewalComboProduct.term == 12 {
+                   
                         //hide renewal image here
                         cell.renewelImageView?.isHidden = true
                         
@@ -130,9 +119,11 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
                         cell.renewelnonCoreImageView?.isHidden = false
                         
                         // currency code
-                        let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (forceRenewals.currencyCode)!)
-                        
-                        if (renewalComboProduct.isCoreProduct) {
+                        var currencyCodeWithSymbol: String = ""
+                        if let currencyCode = forceRenewals.currencyCode {
+                            currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: currencyCode)
+                        }
+                        if renewalComboProduct.isCoreProduct {
                             cell.renewelCoreImageView?.image = UIImage(named: renewalComboProduct.productCode!)
                             
                             let price = String(format: "%.0f", renewalComboProduct.price)
@@ -182,27 +173,23 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
                             break
                             
                         }
-                        
-                    }
                 }
-                
             }
         } else {
             
-            for coreProduct in (forceRenewals.products) {
-                if coreProduct.term == 12 {
-                 
+            for coreProduct in (forceRenewals.products) where coreProduct.term == 12 {
+            
                     // hide core and non core image here
                     cell.renewelCoreImageView?.isHidden = true
                     cell.renewelnonCoreImageView?.isHidden = true
                     
                     // show only non core image
                     cell.renewelImageView?.image = UIImage(named: coreProduct.productCode!)
-                    
-                    let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: (forceRenewals.currencyCode)!)
-                    
+                    var currencyCodeWithSymbol: String = ""
+                    if let currencyCode = forceRenewals.currencyCode {
+                          currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: currencyCode)
+                    }
                     let price = String(format: "%.0f", coreProduct.price)
-                    
                     priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + (forceRenewals.currencyCode)!
                     
                     // formatted string
@@ -219,13 +206,10 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
                     // set button select tag
                     cell.buttonSelect.tag = indexPath.section
                     break
-                }
             }
         }
-        
         return cell
     }
-    
 }
 
 // MARK: - table view delegate

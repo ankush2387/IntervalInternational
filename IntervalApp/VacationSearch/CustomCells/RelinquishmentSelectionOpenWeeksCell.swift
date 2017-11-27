@@ -33,48 +33,37 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var checkBox: IUIKCheckbox!
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-    
     func setupDepositedCell(deposit: Deposit) {
         
         if let resortName = deposit.resort?.resortName {
-            self.resortName.text = resortName
+           self.resortName.text = resortName.localized()
         }
         
         if let resortCode = deposit.resort?.resortCode {
-            resortName.text?.append("-\(resortCode)")
+            resortName.text?.append("-\(resortCode)".localized())
         }
         
         if let relinquishmentYear = deposit.relinquishmentYear {
-            yearLabel.text = "\(relinquishmentYear)"
+            yearLabel.text = "\(relinquishmentYear)".localized()
         }
         
         if let unitSize = deposit.unit!.unitSize {
-            bedroomSizeAndKitchenClient.text = "\(Helper.getBedroomNumbers(bedroomType: unitSize))"
+            bedroomSizeAndKitchenClient.text = "\(Helper.getBedroomNumbers(bedroomType: unitSize))".localized()
         }
         
         if let kitchenType = deposit.unit!.kitchenType {
-            bedroomSizeAndKitchenClient.text?.append(", \(Helper.getKitchenEnums(kitchenType: kitchenType))")
+            bedroomSizeAndKitchenClient.text?.append(", \(Helper.getKitchenEnums(kitchenType: kitchenType))".localized())
         }
         
         if let sleepCapacity = deposit.unit?.publicSleepCapacity {
-            totalSleepAndPrivate.text = "Sleeps \(sleepCapacity) total"
+            totalSleepAndPrivate.text = "Sleeps \(sleepCapacity) total".localized()
         }
         
         if let privateSleepCap = deposit.unit?.privateSleepCapacity {
-            totalSleepAndPrivate.text?.append(", \(privateSleepCap) Private")
+            totalSleepAndPrivate.text?.append(", \(privateSleepCap) Private".localized())
         }
         
-        if(deposit.checkInDate != nil) {
+        if deposit.checkInDate != nil {
             
             let dateString = deposit.checkInDate
             let date = Helper.convertStringToDate(dateString: dateString!, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
@@ -82,33 +71,36 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
             let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: date)
             let day = myComponents.day!
             var month = ""
-            
-            if(day < 10) {
-                month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) 0\(day)"
-            } else {
-                month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \(day)"
+            if let monthNumber = myComponents.month {
+                if day < 10 {
+                    month = "\(Helper.getMonthnameFromInt(monthNumber: monthNumber)) 0\(day)"
+                } else {
+                    month = "\(Helper.getMonthnameFromInt(monthNumber: monthNumber)) \(day)"
+                }
             }
-            
             dayAndDateLabel.text = month.uppercased()
         } else {
             dayAndDateLabel.text = ""
         }
         
         if let weekNumber = deposit.weekNumber {
-            totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: weekNumber))"
+            totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: weekNumber))".localized()
         }
-
-        let expirationDate = Helper.convertStringToDate(dateString: deposit.expirationDate!, format: "yyyy-MM-dd")
-        let diff = getDaysDiff(expiration: expirationDate)
-        
-        if diff > 1 {
-             expirationMessageLabel.text = "Expires in \(diff) days."
-        } else if diff == 1 {
-             expirationMessageLabel.text = "Expires in \(diff) day."
-        } else {
-            expirationMessageLabel.text = "Expired."
+        if let expiredDate = deposit.expirationDate {
+            let expirationDate = Helper.convertStringToDate(dateString: expiredDate, format: "yyyy-MM-dd")
+            let diff = getDaysDiff(expiration: expirationDate)
+            
+            if diff > 0 {
+                expirationMessageLabel.text = "Expires in \(diff) days.".localized()
+                addButton.isHidden = false
+            } else if diff == 0 {
+                expirationMessageLabel.text = "Expiring today".localized()
+                addButton.isHidden = false
+            } else {
+                expirationMessageLabel.text = "Expired on \(expiredDate)".localized()
+                addButton.isHidden = true
+            }
         }
-       
         //hide promotions
         promLabel.isHidden = true
         promImgView.isHidden = true
@@ -116,8 +108,7 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
     
     func getDaysDiff(expiration: Date) -> Int {
         let cal = NSCalendar.current
-        let returnDate = cal.dateComponents(Set<Calendar.Component>([.day]), from: Constant.MyClassConstants.todaysDate as Date, to: expiration as! Date)
+        let returnDate = cal.dateComponents(Set<Calendar.Component>([.day]), from: Constant.MyClassConstants.todaysDate as Date, to: expiration )
         return returnDate.day!
     }
-
 }

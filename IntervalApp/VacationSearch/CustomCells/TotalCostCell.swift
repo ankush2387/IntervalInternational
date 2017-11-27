@@ -13,16 +13,17 @@ class TotalCostCell: UITableViewCell {
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var periodLabel: UILabel!
     @IBOutlet weak var fractionalPriceLabel: UILabel!
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
+    @IBOutlet weak var currencyCodeLabel: UILabel!
+    @IBOutlet weak private var amountLabel: UILabel!
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+        
     }
-    
+    func setTotalPrice(with currencyDisplayes: String, and chargeAmount: Float) {
+        
+        if let attributedAmount = chargeAmount.currencyFormatter(for:currencyDisplayes) {
+            amountLabel.attributedText = attributedAmount
+        }
+    }
 }

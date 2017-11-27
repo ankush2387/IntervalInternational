@@ -1116,7 +1116,7 @@ class Constant: NSObject {
     }
     
     //***** common  structure to provide all Payment Selection View Controller CellIdentifiers And HardCoded Strings *****//
-    struct PaymentSelectionViewControllerCellIdentifiersAndHardCodedStrings {
+    struct PaymentSelectionControllerCellIdentifiersAndHardCodedStrings {
         
         static var cvvAlertTitle = "Please enter the credit card CVV code".localized()
         static var cvvandExpiryDateAlertTitle = "Your card is expired. Please enter your credit card CVV code and the new expiration date.".localized()
