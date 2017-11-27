@@ -28,11 +28,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="7dr-bC-vYG">
-                                <rect key="frame" x="0.0" y="64" width="375" height="56"/>
+                                <rect key="frame" x="0.0" y="68" width="375" height="56"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
                             <tableView clipsSubviews="YES" tag="1" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="250" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="x9E-xv-mc1">
-                                <rect key="frame" x="20" y="120" width="335" height="498"/>
+                                <rect key="frame" x="20" y="124" width="335" height="494"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="VideoTBLCell" rowHeight="250" id="vXH-wD-3TA" customClass="VideoTBLCell" customModule="IntervalApp" customModuleProvider="target">
@@ -123,7 +123,7 @@
                             <constraint firstItem="Dd0-OV-SDK" firstAttribute="top" secondItem="x9E-xv-mc1" secondAttribute="bottom" id="ytx-mO-2l7"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="RD_Map_Grey" selectedImage="RD_Map_Blue" id="WM8-dy-SqF"/>
+                    <tabBarItem key="tabBarItem" title="" image="ic_public" selectedImage="ic_public" id="WM8-dy-SqF"/>
                     <navigationItem key="navigationItem" id="FsA-AE-flr"/>
                     <connections>
                         <outlet property="searchBar" destination="7dr-bC-vYG" id="fqj-FT-gjq"/>
@@ -147,11 +147,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="hDf-nZ-5Y4">
-                                <rect key="frame" x="-4" y="65" width="383" height="56"/>
+                                <rect key="frame" x="-4" y="69" width="383" height="56"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
                             <tableView clipsSubviews="YES" tag="2" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="250" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="sPD-7o-4KS">
-                                <rect key="frame" x="20" y="121" width="335" height="498"/>
+                                <rect key="frame" x="20" y="125" width="335" height="494"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="VideoTBLCell" rowHeight="250" id="MgH-sF-MHE" customClass="VideoTBLCell" customModule="IntervalApp" customModuleProvider="target">
@@ -240,7 +240,7 @@
                             <constraint firstAttribute="leadingMargin" secondItem="sPD-7o-4KS" secondAttribute="leading" constant="-4" id="rPj-W6-dlf"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="RD_List_Grey" selectedImage="RD_List_Blue" id="7Dj-Vu-6KC"/>
+                    <tabBarItem key="tabBarItem" title="" image="ic_store" selectedImage="ic_store" id="7Dj-Vu-6KC"/>
                     <connections>
                         <outlet property="searchBar" destination="hDf-nZ-5Y4" id="d5d-mi-mUz"/>
                         <outlet property="videoTBLView" destination="sPD-7o-4KS" id="NHj-89-fbY"/>
@@ -281,11 +281,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="ntx-3A-GXs">
-                                <rect key="frame" x="-4" y="64" width="383" height="56"/>
+                                <rect key="frame" x="-4" y="68" width="383" height="56"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
                             <tableView clipsSubviews="YES" tag="3" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="250" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qax-zD-nEN">
-                                <rect key="frame" x="20" y="120" width="335" height="498"/>
+                                <rect key="frame" x="20" y="124" width="335" height="494"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="VideoTBLCell" rowHeight="250" id="y66-Nr-One" customClass="VideoTBLCell" customModule="IntervalApp" customModuleProvider="target">
@@ -374,7 +374,7 @@
                             <constraint firstItem="ntx-3A-GXs" firstAttribute="leading" secondItem="nO2-UD-vCE" secondAttribute="leadingMargin" constant="-20" id="yPU-T7-zUc"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="RD_Fav_Grey" selectedImage="RD_Fav_Blue" id="vHW-wj-MKq"/>
+                    <tabBarItem key="tabBarItem" title="" image="ic_live_tv" selectedImage="ic_live_tv" id="vHW-wj-MKq"/>
                     <connections>
                         <outlet property="searchBar" destination="ntx-3A-GXs" id="mqx-Fz-WFS"/>
                         <outlet property="videoTBLView" destination="qax-zD-nEN" id="H7c-YF-Yxc"/>
@@ -390,7 +390,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Yfz-gf-943" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="luD-EC-YnL">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -503,12 +503,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="RD_Fav_Blue" width="30" height="30"/>
-        <image name="RD_Fav_Grey" width="30" height="30"/>
-        <image name="RD_List_Blue" width="30" height="30"/>
-        <image name="RD_List_Grey" width="30" height="30"/>
-        <image name="RD_Map_Blue" width="30" height="30"/>
-        <image name="RD_Map_Grey" width="30" height="30"/>
+        <image name="ic_live_tv" width="24" height="24"/>
+        <image name="ic_public" width="48" height="48"/>
+        <image name="ic_store" width="24" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="mxi-au-r8r"/>

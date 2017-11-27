@@ -176,7 +176,7 @@ extension IntervalHDIpadController: UICollectionViewDataSource {
                 cell.thumbnailImageView.contentMode = .center
 			}
 		}, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
-		
+		cell.thumbnailImageView.contentMode = .scaleToFill
 		cell.nameLabel.text = video.name
         cell.playButton.tag = indexPath.row
         cell.playButton.addTarget(self, action: #selector(self.playButtonPressedAtIndex(_:)), for: .touchUpInside)
