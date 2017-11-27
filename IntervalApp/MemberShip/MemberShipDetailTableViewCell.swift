@@ -140,15 +140,12 @@ class MemberShipDetailTableViewCell: UITableViewCell {
                 prodView.expirationDateLabel.text = dateString
             }
             prodView.productNameLabel.text = prod.productName
-            prodView.frame = CGRect(x: 5, y: yPosition, width: Int(productExternalView.frame.width - 10), height: height)
+            prodView.frame = CGRect(x:5, y: yPosition, width: Int(productExternalView.frame.width - 10), height: height)
             productExternalView.addSubview(prodView)
-        
             yPosition += height
             count += 1
         }
-        
-        productExternalView.layer.cornerRadius = 4
-        
+        productExternalView.layer.cornerRadius = 7
     }
     // MARK: set commonPrperties to cell
     /**

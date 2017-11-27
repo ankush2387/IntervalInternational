@@ -207,27 +207,27 @@
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T5s-oh-EAP">
-                                                    <rect key="frame" x="18" y="339" width="564" height="80"/>
+                                                    <rect key="frame" x="10" y="339" width="580" height="80"/>
                                                     <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="80" id="QlI-c9-O3t"/>
+                                                        <constraint firstAttribute="height" constant="80" id="kEq-26-h13"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="T5s-oh-EAP" firstAttribute="leading" secondItem="gSa-gH-lvv" secondAttribute="leadingMargin" constant="10" id="2jg-Qy-NjC"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="T5s-oh-EAP" secondAttribute="trailing" constant="10" id="9hA-RK-94S"/>
+                                                <constraint firstItem="T5s-oh-EAP" firstAttribute="leading" secondItem="gSa-gH-lvv" secondAttribute="leading" constant="10" id="CyG-nS-Wcr"/>
+                                                <constraint firstItem="T5s-oh-EAP" firstAttribute="top" secondItem="9FR-eQ-hfc" secondAttribute="bottom" constant="8" id="IrG-JC-d5p"/>
                                                 <constraint firstAttribute="trailing" secondItem="aNA-jV-DBL" secondAttribute="trailing" constant="10" id="LVP-ks-MJe"/>
                                                 <constraint firstAttribute="trailing" secondItem="9FR-eQ-hfc" secondAttribute="trailing" constant="10" id="S1N-DZ-yEp"/>
                                                 <constraint firstItem="9FR-eQ-hfc" firstAttribute="leading" secondItem="gSa-gH-lvv" secondAttribute="leading" constant="10" id="X6f-bR-jpF"/>
                                                 <constraint firstItem="aNA-jV-DBL" firstAttribute="top" secondItem="gSa-gH-lvv" secondAttribute="topMargin" id="e5i-Jc-nrq"/>
                                                 <constraint firstItem="aNA-jV-DBL" firstAttribute="leading" secondItem="gSa-gH-lvv" secondAttribute="leading" constant="10" id="hM0-ES-MVk"/>
-                                                <constraint firstItem="T5s-oh-EAP" firstAttribute="top" secondItem="9FR-eQ-hfc" secondAttribute="bottom" constant="8" id="ncJ-kR-ub6"/>
+                                                <constraint firstAttribute="trailing" secondItem="T5s-oh-EAP" secondAttribute="trailing" constant="10" id="r55-yd-UWL"/>
                                                 <constraint firstItem="9FR-eQ-hfc" firstAttribute="top" secondItem="aNA-jV-DBL" secondAttribute="bottom" constant="8" id="srB-Xq-chn"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="ExternalViewHeightConstraint" destination="QlI-c9-O3t" id="HQM-mT-Ige"/>
+                                            <outlet property="ExternalViewHeightConstraint" destination="kEq-26-h13" id="EKM-0w-V6C"/>
                                             <outlet property="activeLabel" destination="taz-43-uwk" id="zNn-1x-obH"/>
                                             <outlet property="activememberOutOfTotalMemberLabel" destination="6no-ez-6Bq" id="2yc-z1-isj"/>
                                             <outlet property="contactInfoMainView" destination="9FR-eQ-hfc" id="Qm8-1X-iGf"/>
