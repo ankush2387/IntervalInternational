@@ -582,7 +582,7 @@ extension ResortDirectoryViewController: UITableViewDataSource {
             cell.resortName.text = resort.resortName
             cell.favoriteButton.addTarget(self, action: #selector(favoriteButtonClicked(_:)), for: .touchUpInside)
             
-            //cell.resortCountry.text = resort.address?.cityName!
+            cell.resortCountry.text = [resort.address?.cityName, resort.address?.territoryCode.unwrappedString.stateForTerritoryCode].flatMap { $0 }.joined(separator: ", ")
             cell.resortCode.text = resort.resortCode
             return cell
             
