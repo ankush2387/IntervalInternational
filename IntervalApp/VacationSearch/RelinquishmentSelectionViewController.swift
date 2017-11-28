@@ -881,11 +881,11 @@ extension RelinquishmentSelectionViewController: UITableViewDataSource {
                             cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType: openWeek.unit!.unitSize!))), \(Helper.getKitchenEnums(kitchenType: openWeek.unit!.kitchenType!))"
                             cell.totalSleepAndPrivate.text = "Sleeps \(openWeek.unit!.publicSleepCapacity), \(openWeek.unit!.privateSleepCapacity) Private"
                             if(indexPath.section == 1) {
-                                cell.addButton.tag = indexPath.row + indexPath.section
+                                cell.addButton?.tag = indexPath.row + indexPath.section
                             } else {
-                                cell.addButton.tag = indexPath.row + 1
+                                cell.addButton?.tag = indexPath.row + 1
                             }
-                            cell.addButton.addTarget(self, action: #selector(RelinquishmentSelectionViewController.addClubFloatWeek(_:)), for: .touchUpInside)
+                            cell.addButton?.addTarget(self, action: #selector(RelinquishmentSelectionViewController.addClubFloatWeek(_:)), for: .touchUpInside)
                             
                             //display promotion
                             if relinquishmentOpenWeeksArray.count > 0 {
@@ -921,11 +921,11 @@ extension RelinquishmentSelectionViewController: UITableViewDataSource {
                                     cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType: openWeek.unit!.unitSize!))), \(Helper.getKitchenEnums(kitchenType: openWeek.unit!.kitchenType!))"
                                     cell.totalSleepAndPrivate.text = "Sleeps \(openWeek.unit!.publicSleepCapacity), \(openWeek.unit!.privateSleepCapacity) Private"
                                     if(indexPath.section == 1) {
-                                        cell.addButton.tag = indexPath.row + indexPath.section
+                                        cell.addButton?.tag = indexPath.row + indexPath.section
                                     } else {
-                                        cell.addButton.tag = indexPath.row + 1
+                                        cell.addButton?.tag = indexPath.row + 1
                                     }
-                                    cell.addButton.addTarget(self, action: #selector(RelinquishmentSelectionViewController.addClubFloatWeek(_:)), for: .touchUpInside)
+                                    cell.addButton?.addTarget(self, action: #selector(RelinquishmentSelectionViewController.addClubFloatWeek(_:)), for: .touchUpInside)
                                 }
                             }
                             
@@ -947,9 +947,9 @@ extension RelinquishmentSelectionViewController: UITableViewDataSource {
                         cell.resortName.text = "\(openWeek.resort!.resortName!)/\(openWeek.resort!.resortCode!)"
                         cell.totalWeekLabel.text = "\(openWeek.relinquishmentYear!)"
                         if(indexPath.section == 1) {
-                            cell.addButton.tag = indexPath.row + indexPath.section
+                            cell.addButton?.tag = indexPath.row + indexPath.section
                         } else {
-                            cell.addButton.tag = indexPath.row + 1
+                            cell.addButton?.tag = indexPath.row + 1
                         }
                         if((openWeek.unit?.lockOffUnits.count)! > 0) {
                             cell.bedroomSizeAndKitchenClient.isHidden = false
@@ -957,7 +957,7 @@ extension RelinquishmentSelectionViewController: UITableViewDataSource {
                         } else {
                             cell.bedroomSizeAndKitchenClient.isHidden = true
                         }
-                        cell.addButton.addTarget(self, action: #selector(RelinquishmentSelectionViewController.addClubFloatWeek(_:)), for: .touchUpInside)
+                        cell.addButton?.addTarget(self, action: #selector(RelinquishmentSelectionViewController.addClubFloatWeek(_:)), for: .touchUpInside)
                         
                         //display promotion
                         if relinquishmentOpenWeeksArray.count > 0 {
@@ -1007,12 +1007,12 @@ extension RelinquishmentSelectionViewController: UITableViewDataSource {
                         cell.dayAndDateLabel.text = ""
                     }
                     cell.totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: openWeek.weekNumber!))"
-                    cell.addButton.tag = indexPath.row + 1
+                    cell.addButton?.tag = indexPath.row + 1
                     if((openWeek.unit?.lockOffUnits.count)! > 0) {
                         cell.bedroomSizeAndKitchenClient.text = Constant.MyClassConstants.lockOffCapable
                         cell.totalSleepAndPrivate.text = ""
                     }
-                    cell.addButton.addTarget(self, action: #selector(RelinquishmentSelectionViewController.addAvailablePoinButtonPressed(_:)), for: .touchUpInside)
+                    cell.addButton?.addTarget(self, action: #selector(RelinquishmentSelectionViewController.addAvailablePoinButtonPressed(_:)), for: .touchUpInside)
                     
                     //display promotion
                     if relinquishmentOpenWeeksArray.count > 0 {
@@ -1048,12 +1048,12 @@ extension RelinquishmentSelectionViewController: UITableViewDataSource {
                     intervalWeekCell.totalSleepAndPrivate.text = ""
                 }
                 if(indexPath.section == 1) {
-                    intervalWeekCell.addButton.tag = indexPath.row + indexPath.section
-                    intervalWeekCell.addButton.addTarget(self, action: #selector(RelinquishmentSelectionViewController.addAvailablePoinButtonPressed(_:)), for: .touchUpInside)
+                    intervalWeekCell.addButton?.tag = indexPath.row + indexPath.section
+                    intervalWeekCell.addButton?.addTarget(self, action: #selector(RelinquishmentSelectionViewController.addAvailablePoinButtonPressed(_:)), for: .touchUpInside)
                 } else {
                     
-                    intervalWeekCell.addButton.tag = indexPath.row
-                    intervalWeekCell.addButton.addTarget(self, action: #selector(RelinquishmentSelectionViewController.addIntervalWeekButtonPressed(_:)), for: .touchUpInside)
+                    intervalWeekCell.addButton?.tag = indexPath.row
+                    intervalWeekCell.addButton?.addTarget(self, action: #selector(RelinquishmentSelectionViewController.addIntervalWeekButtonPressed(_:)), for: .touchUpInside)
                 }
                 intervalWeekCell.yearLabel.text = "\(openWeek.relinquishmentYear!)"
                 let date = openWeek.checkInDates
@@ -1080,7 +1080,7 @@ extension RelinquishmentSelectionViewController: UITableViewDataSource {
                 intervalWeekCell.totalWeekLabel.text = "Week \(Constant.getWeekNumber(weekType: openWeek.weekNumber!))"
                 
                 intervalWeekCell.selectionStyle = UITableViewCellSelectionStyle.none
-                intervalWeekCell.addButton.addTarget(self, action: #selector(RelinquishmentSelectionViewController.addIntervalWeekButtonPressed(_:)), for: .touchUpInside)
+                intervalWeekCell.addButton?.addTarget(self, action: #selector(RelinquishmentSelectionViewController.addIntervalWeekButtonPressed(_:)), for: .touchUpInside)
                 
                 //display promotion
                 if intervalOpenWeeksArray.count > 0 {
@@ -1105,10 +1105,8 @@ extension RelinquishmentSelectionViewController: UITableViewDataSource {
             if let cell = tableView.dequeueReusableCell(withIdentifier: "DepositedCell", for: indexPath) as? RelinquishmentSelectionOpenWeeksCell {
                 let deposit = relinquishmentDeposit[indexPath.row] as Deposit
                 cell.setupDepositedCell(deposit: deposit)
-                cell.addButton.tag = indexPath.row
-                cell.addButton.addTarget(self, action: #selector(self.addDeposits(_:)), for: .touchUpInside)
-                
-                //                cell.addButton.addTarget(self, action:  #selector(RelinquishmentSelectionViewController.addIntervalWeekButtonPressed(_:)), for: .touchUpInside)
+                cell.addButton?.tag = indexPath.row
+                cell.addButton?.addTarget(self, action: #selector(self.addDeposits(_:)), for: .touchUpInside)
                 return cell
             }
             
@@ -1121,8 +1119,8 @@ extension RelinquishmentSelectionViewController: UITableViewDataSource {
             
             cell.nameLabel.text = openWeek.resort?.resortName!
             cell.yearLabel.text = "\(String(describing: openWeek.relinquishmentYear!))"
-            cell.addButton.tag = indexPath.row
-            cell.addButton.addTarget(self, action: #selector(RelinquishmentSelectionViewController.addClubPointButtonPressed(_:)), for: .touchUpInside)
+            cell.addButton?.tag = indexPath.row
+            cell.addButton?.addTarget(self, action: #selector(RelinquishmentSelectionViewController.addClubPointButtonPressed(_:)), for: .touchUpInside)
             
             return cell
         }

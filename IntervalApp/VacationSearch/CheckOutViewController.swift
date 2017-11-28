@@ -1338,11 +1338,15 @@ extension CheckOutViewController:UITableViewDataSource {
             
         case 8 :
             
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.totalCostCell, for: indexPath) as! TotalCostCell
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.totalCostCell, for: indexPath) as? TotalCostCell else { return UITableViewCell() }
                 cell.selectionStyle = .none
 
                 if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-                    cell.priceLabel.text = String(Int(Float(Constant.MyClassConstants.exchangeFees[0].total)))
+                    
+                    cell.setTotalPrice(with: currencyCode, and: (Constant.MyClassConstants.exchangeFees[0].total))
+                    if let total = recapFeesTotal {
+                        cell.setTotalPrice(with: currencyCode, and: total)
+                    }
                 } else {
                     cell.setTotalPrice(with: currencyCode, and: (Constant.MyClassConstants.rentalFees[0].total))
                     if let total = recapFeesTotal {

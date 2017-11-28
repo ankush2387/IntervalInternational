@@ -23,7 +23,7 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
     @IBOutlet weak var resortName: UILabel!
     @IBOutlet weak var dayandDateLabel: UIView!
     
-    @IBOutlet weak var addButton: IUIKButton!
+    @IBOutlet weak var addButton: IUIKButton?
     @IBOutlet weak var savedView: UILabel!
  
     @IBOutlet weak var promLabel: UILabel!
@@ -105,13 +105,13 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
             
             if diff > 0 {
                 expirationMessageLabel.text = "Expires in \(diff) days.".localized()
-                addButton.isHidden = false
+                addButton?.isHidden = false
             } else if diff == 0 {
                 expirationMessageLabel.text = "Expiring today".localized()
-                addButton.isHidden = false
+                addButton?.isHidden = false
             } else {
                 expirationMessageLabel.text = "Expired on \(expiredDate)".localized()
-                addButton.isHidden = true
+                addButton?.isHidden = true
             }
         }
         

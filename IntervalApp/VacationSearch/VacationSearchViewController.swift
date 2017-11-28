@@ -1572,7 +1572,7 @@ extension VacationSearchViewController: SearchTableViewCellDelegate {
                         presentAlert(with: Constant.AlertErrorMessages.errorString, message: Constant.AlertMessages.searchVacationMessage)
                     } else {
                         
-                        //MARK : - Search Both Vacation Search
+                        // MARK: - Search Both Vacation Search
                         showHudAsync()
                         let rentalSearchCriteria = VacationSearchCriteria(searchType: VacationSearchType.Combined)
                         let storedData = Helper.getLocalStorageWherewanttoGo()
