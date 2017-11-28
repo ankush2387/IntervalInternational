@@ -86,7 +86,7 @@ class IntervalHDCommonControllerForTabs: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     func playButtonPressedAtIndex(sender: IUIKButton) {
-        let video = Constant.MyClassConstants.intervalHDDestinations[sender.tag]
+        let video = searchResultArray[sender.tag]
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.intervalHDIphone, bundle: nil)
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.intervalHDPlayerViewController) as! IntervalHDPlayerViewController
         viewController.video = video
@@ -133,12 +133,14 @@ extension IntervalHDCommonControllerForTabs: UITableViewDataSource {
             } else {
                 switch tableView.tag {
                 case 1:
-                    return Constant.MyClassConstants.intervalHDDestinations.count
+                    searchResultArray = Constant.MyClassConstants.intervalHDDestinations
                 case 2:
-                     return Constant.MyClassConstants.intervalHDResorts.count
+                    searchResultArray = Constant.MyClassConstants.intervalHDResorts
                 default:
-                    return Constant.MyClassConstants.intervalHDTutorials.count
+                    searchResultArray = Constant.MyClassConstants.intervalHDTutorials
                 }
+
+                return searchResultArray.count
             }
         }
     }
