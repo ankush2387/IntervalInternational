@@ -916,9 +916,19 @@ extension UIViewController {
     }
     
     func navigateToSearchResultsScreen() {
-        let storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-        let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController)
-        self.navigationController?.pushViewController(viewController, animated: true)
+        var isRunningOnIphone: Bool {
+            return UIDevice.current.userInterfaceIdiom == .phone
+        }
+        if isRunningOnIphone {
+            let storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+            let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController)
+            self.navigationController?.pushViewController(viewController, animated: true)
+        } else {
+            let storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+            let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController)
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
+
     }
     
     // Function to get to date and from date for search dates API calling

@@ -835,28 +835,26 @@ extension WhatToUseViewController:RenewelViewControllerDelegate {
             
         }
     }
-    
 }
 
-
-//Mark:- Delegate
+//Mark :- Delegate
 extension WhatToUseViewController:RenewalOtherOptionsVCDelegate {
     func selectedRenewal(selectedRenewal: String, forceRenewals: ForceRenewals) {
         var renewalArray = [Renewal]()
         renewalArray.removeAll()
         if selectedRenewal == "Core" {
             // Selected core renewal
-            for renewal in forceRenewals.products{
-                if renewal.term == 12 {
+            let lowestTerm = forceRenewals.products[0].term
+            for renewal in forceRenewals.products where renewal.term == lowestTerm {
                     let renewalItem = Renewal()
                     renewalItem.id = renewal.id
                     renewalArray.append(renewalItem)
                     break
-                }
             }
         } else {
             // Selected non core renewal
-            for renewal in forceRenewals.crossSelling where renewal.term == 12 {
+            let lowestTerm = forceRenewals.crossSelling[0].term
+            for renewal in forceRenewals.crossSelling where renewal.term == lowestTerm {
                     let renewalItem = Renewal()
                     renewalItem.id = renewal.id
                     renewalArray.append(renewalItem)

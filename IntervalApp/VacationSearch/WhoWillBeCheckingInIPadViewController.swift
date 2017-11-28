@@ -348,7 +348,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
             let navController = UINavigationController(rootViewController: viewController)
             self.present(navController, animated: true, completion: nil)
         } else {
-            if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() {
+            if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() || Constant.MyClassConstants.searchBothExchange {
                 let exchangeProcessRequest = ExchangeProcessContinueToCheckoutRequest()
                 
                 if self.whoWillBeCheckingInSelectedIndex == Constant.MyClassConstants.membershipContactArray.count {
@@ -506,9 +506,9 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                     } else {
                         Constant.MyClassConstants.enableTaxes = false
                     }
-                    Constant.MyClassConstants.memberCreditCardList = (Session.sharedSession.contact?.creditcards)!
+                    Constant.MyClassConstants.memberCreditCardList =  Session.sharedSession.contact?.creditcards ?? []
                     let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-                    let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.checkOutViewController) as! CheckOutIPadViewController
+                    guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.checkOutViewController) as? CheckOutIPadViewController else { return }
                     
                     let transitionManager = TransitionManager()
                     self.navigationController?.transitioningDelegate = transitionManager
@@ -618,19 +618,7 @@ extension WhoWillBeCheckingInIPadViewController: UITableViewDataSource {
         if indexPath.section == 0 {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.viewDetailsTBLcell, for: indexPath) as! ViewDetailsTBLcell
-            cell.resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInIPadViewController.resortDetailsClicked(_:)), for: .touchUpInside)
-            if indexPath.row == 0 {
-                cell.resortDetailsButton.tag = indexPath.row
-                cell.lblHeading.text = "Resort Detail"
-                cell.resortName?.text = Constant.MyClassConstants.selectedResort.resortName
-            } else {
-                cell.resortDetailsButton.tag = indexPath.row
-                cell.lblHeading.text = "Relinquishment"
-                cell.resortImageView?.image = UIImage(named: Constant.assetImageNames.relinquishmentImage)
-                cell.resortName?.text = filterRelinquishments.openWeek?.resort?.resortName
-            }
-            
-            cell.selectionStyle = .none
+            cell.setUpDetailsCell(indexPath: indexPath, filterRelinquishments: filterRelinquishments)
             
             return cell
         } else if indexPath.section == 1 {

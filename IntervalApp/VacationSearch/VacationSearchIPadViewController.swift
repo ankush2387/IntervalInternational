@@ -1198,7 +1198,7 @@ extension VacationSearchIPadViewController: WereWantToGoTableViewCellDelegate {
     
 }
 
-// MARK : Extension for Helper
+// MARK:- Extension for Helper
 extension VacationSearchIPadViewController: HelperDelegate {
     func resortSearchComplete() {
         hideHudAsync()

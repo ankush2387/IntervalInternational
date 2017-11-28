@@ -60,8 +60,9 @@ class RenewalOtherOptionsVC: UIViewController {
         } else { // non core select clicked
             
             // show guest certificate
+            let lowestTerm = forceRenewals.crossSelling[0].term
             for renewal in forceRenewals.crossSelling {
-                if (renewal.productCode == Constant.productCodeImageNames.platinum && renewal.term == 12) {
+                if renewal.productCode == Constant.productCodeImageNames.platinum && renewal.term == lowestTerm {
                     Constant.MyClassConstants.isChangeNoThanksButtonTitle = true
                     Constant.MyClassConstants.noThanksForNonCore = true
              self.dismiss(animated: true, completion: nil)
@@ -107,9 +108,10 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
         
         if indexPath.section == 0 {
             for comboProduct in (forceRenewals.comboProducts) {
-                
-                for renewalComboProduct in comboProduct.renewalComboProducts where renewalComboProduct.term == 12 {
-                   
+                let lowestTerm = comboProduct.renewalComboProducts[0].term
+                for renewalComboProduct in comboProduct.renewalComboProducts {
+                    if renewalComboProduct.term == lowestTerm {
+                        
                         //hide renewal image here
                         cell.renewelImageView?.isHidden = true
                         
@@ -177,8 +179,10 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
             }
         } else {
             
-            for coreProduct in (forceRenewals.products) where coreProduct.term == 12 {
-            
+            let lowestTerm = forceRenewals.products[0].term
+            for coreProduct in (forceRenewals.products) {
+                if coreProduct.term == lowestTerm {
+                 
                     // hide core and non core image here
                     cell.renewelCoreImageView?.isHidden = true
                     cell.renewelnonCoreImageView?.isHidden = true

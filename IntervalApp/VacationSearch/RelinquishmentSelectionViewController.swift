@@ -72,13 +72,16 @@ class RelinquishmentSelectionViewController: UIViewController {
                         let count = results.filter({ $0 == true }).count
                         if count != lockOffUnits.count + 1 {
                             
-                            if(fixed_week_type.weekNumber == Constant.CommonStringIdentifiers.floatWeek) {
-                                if(Constant.MyClassConstants.whatToTradeArray.count > 0) {
+                            if fixed_week_type.weekNumber == Constant.CommonStringIdentifiers.floatWeek {
+                                if Constant.MyClassConstants.whatToTradeArray.count > 0 {
                                     
-                                    for traversedOpenWeek in Constant.MyClassConstants.whatToTradeArray{
+                                    for traversedOpenWeek in Constant.MyClassConstants.whatToTradeArray {
+                                    let relinquishment = traversedOpenWeek as AnyObject
                                         
-                                        if (traversedOpenWeek as AnyObject).isKind(of: List<rlmPointsProgram>.self) {
+                                        if relinquishment.isKind(of: List<rlmPointsProgram>.self) {
     
+                                        } else if relinquishment.isKind(of: Deposits.self) {
+                                            
                                         } else {
                                             
                                         let floatLockOffWeek = traversedOpenWeek as! OpenWeeks

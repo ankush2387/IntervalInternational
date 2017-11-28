@@ -422,7 +422,7 @@ class SearchResultViewController: UIViewController {
         showHudAsync()
         let exchangeSearchDateRequest = ExchangeFilterRelinquishmentsRequest()
         exchangeSearchDateRequest.travelParty = Constant.MyClassConstants.travelPartyInfo
-        exchangeSearchDateRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray as! [String]
+        exchangeSearchDateRequest.relinquishmentsIds = Constant.MyClassConstants.relinquishmentIdArray
         
         let exchangeDestination = ExchangeDestination()
         let resort = Resort()
@@ -1835,7 +1835,7 @@ extension SearchResultViewController: RenewelViewControllerDelegate {
     }
   
      func selectedRenewalFromWhoWillBeCheckingIn(renewalArray: [Renewal]) {
-        
+        self.dismiss(animated: false, completion: nil)
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: SearchResultViewController.whoWillBeCheckingInViewController) as? WhoWillBeCheckingInViewController else { return }
         viewController.renewalsArray = renewalArray
@@ -1890,7 +1890,8 @@ extension SearchResultViewController: RenewalOtherOptionsVCDelegate {
         renewalArray.removeAll()
         if selectedRenewal == Helper.renewalType(type: 0) {
             // Selected core renewal
-            for renewal in forceRenewals.products where renewal.term == 12 {
+            let lowestTerm = forceRenewals.products[0].term
+            for renewal in forceRenewals.products where renewal.term == lowestTerm {
                     let renewalItem = Renewal()
                     renewalItem.id = renewal.id
                     renewalItem.productCode = renewal.productCode
@@ -1901,7 +1902,8 @@ extension SearchResultViewController: RenewalOtherOptionsVCDelegate {
             // Selected combo renewal
             
             for comboProduct in (forceRenewals.comboProducts) {
-                for renewalComboProduct in comboProduct.renewalComboProducts where renewalComboProduct.term == 12 {
+                let comboLowestTerm = comboProduct.renewalComboProducts[0].term
+                for renewalComboProduct in comboProduct.renewalComboProducts where renewalComboProduct.term == comboLowestTerm {
                         let renewalItem = Renewal()
                         renewalItem.id = renewalComboProduct.id
                         renewalItem.productCode = renewalComboProduct.productCode
@@ -1910,7 +1912,8 @@ extension SearchResultViewController: RenewalOtherOptionsVCDelegate {
             }
         } else {
             // Selected non core renewal
-            for renewal in forceRenewals.crossSelling where renewal.term == 12 {
+            let lowestTerm = forceRenewals.crossSelling[0].term
+            for renewal in forceRenewals.crossSelling where renewal.term == lowestTerm {
                     let renewalItem = Renewal()
                     renewalItem.id = renewal.id
                     renewalArray.append(renewalItem)

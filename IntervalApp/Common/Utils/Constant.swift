@@ -609,6 +609,7 @@ class Constant: NSObject {
         static var noFilterOptions = false
         static var isCIGAvailable = false
         static var isClubPointsAvailable = false
+        static var lowestTerm = 12
     }
     
     // Enum to store openWeek types

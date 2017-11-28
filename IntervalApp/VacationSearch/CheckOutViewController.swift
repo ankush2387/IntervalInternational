@@ -632,7 +632,7 @@ class CheckOutViewController: UIViewController {
                 self.hideHudAsync()
                 
             }, onError: { [weak self] error in
-                Constant.MyClassConstants.exchangeFees.last!.insurance?.selected = !shouldAddTripProtection
+            Constant.MyClassConstants.exchangeFees.last?.insurance?.selected = !shouldAddTripProtection
                 self?.tripRequestInProcess = false
                 self?.isTripProtectionEnabled = false
                 self?.checkoutOptionTBLview.reloadData()
@@ -667,7 +667,6 @@ class CheckOutViewController: UIViewController {
     
     //***** Function called when detail button is pressed. ******//
     func resortDetailsClicked(_ sender: IUIKButton) {
-        //self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
         if sender.tag == 0 {
             self.performSegue(withIdentifier: Constant.segueIdentifiers.showResortDetailsSegue, sender: nil)
             
