@@ -36,14 +36,14 @@ class ResortDirectoryResortCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        if(resortCollectionView != nil) {
+        if resortCollectionView != nil {
             
             resortCollectionView.delegate = self
             resortCollectionView.dataSource = self
             resortCollectionView.isPagingEnabled = true
         }
         
-        if(fevoriteButton != nil) {
+        if fevoriteButton != nil {
             self.bringSubview(toFront: fevoriteButton)
         }
 
@@ -69,7 +69,7 @@ class ResortDirectoryResortCell: UITableViewCell {
 //***** method called when the added notification reloadFavoritesTab fired from other classes *****//
     func loginNotification() {
         
-        if(self.fevoriteButton != nil) {
+        if self.fevoriteButton != nil {
             
             self.fevoriteButton.isSelected = true
         }
@@ -90,18 +90,16 @@ extension ResortDirectoryResortCell: UICollectionViewDataSource {
         return Constant.MyClassConstants.imagesArray.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.customCellNibNames.whereToGoTableViewCell, for: indexPath) as! ResortCollectionViewCell
-		
-        if((indexPath as NSIndexPath).row % 2 == 0) {
-        }
-		if(Constant.MyClassConstants.imagesArray.count > 0) {
-			cell.imgView.setImageWith(URL(string: Constant.MyClassConstants.imagesArray[(indexPath as NSIndexPath).row] as! String), completed: { (image:UIImage?, error:Error?, _:SDImageCacheType, _:URL?) in
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.customCellNibNames.whereToGoTableViewCell, for: indexPath) as? ResortCollectionViewCell else { return UICollectionViewCell() }
+        cell.imgView.contentMode = .scaleAspectFit
+		if Constant.MyClassConstants.imagesArray.count > 0 {
+			cell.imgView.setImageWith(URL(string: Constant.MyClassConstants.imagesArray[indexPath.row] as! String), completed: { (image:UIImage?, error:Error?, _:SDImageCacheType, _:URL?) in
 				if (error != nil) {
 					cell.imgView.image = UIImage(named: Constant.MyClassConstants.noImage)
 				}
 				}, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
 		}
-        cell.pageControl.currentPage = (indexPath as NSIndexPath).row
+        cell.pageControl.currentPage = indexPath.row
         cell.delegate = self
         return cell
     }
