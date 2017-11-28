@@ -1,0 +1,34 @@
+{
+  "name": "DarwinSDK",
+  "platforms": {
+    "ios": "10.0"
+  },
+  "summary": "DarwinSDK is an iOS library for the Interval International Darwin API",
+  "requires_arc": true,
+  "version": "1.1.3-SNAPSHOT",
+  "license": {
+    "type": "Copyright (c) Interval International",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "Interval International": "II-MobileDevelopers@intervalintl.com"
+  },
+  "homepage": "https://bitbucket.org/intervalintl/darwinsdk-ios",
+  "source": {
+    "git": "https://bitbucket.org/intervalintl/darwinsdk-ios.git"
+  },
+  "frameworks": "UIKit",
+  "dependencies": {
+    "Alamofire": [
+
+    ],
+    "SwiftyJSON": [
+
+    ],
+    "XCGLogger": [
+
+    ]
+  },
+  "source_files": "DarwinSDK/**/*.{swift}",
+  "resources": "DarwinSDK/**/*.{png,jpeg,jpg,storyboard,xib}"
+}

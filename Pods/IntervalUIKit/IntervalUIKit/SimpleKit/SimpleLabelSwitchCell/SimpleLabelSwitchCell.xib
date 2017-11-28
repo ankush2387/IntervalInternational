@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="47" id="lBn-5U-blk" customClass="SimpleLabelSwitchCell" customModule="IntervalApp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="47"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lBn-5U-blk" id="Zze-qc-rYB">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="46.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GMK-V9-HhR">
+                        <rect key="frame" x="251" y="8" width="51" height="31"/>
+                    </switch>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Leave a message?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l0z-eC-IXv">
+                        <rect key="frame" x="20" y="14" width="125" height="18"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <color key="textColor" red="0.2470588235" green="0.2470588235" blue="0.2470588235" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Yes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kpQ-MF-mXY">
+                        <rect key="frame" x="218.5" y="14" width="24.5" height="18"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="GMK-V9-HhR" firstAttribute="leading" secondItem="kpQ-MF-mXY" secondAttribute="trailing" constant="8" id="0wh-Xs-jUe"/>
+                    <constraint firstItem="l0z-eC-IXv" firstAttribute="leading" secondItem="Zze-qc-rYB" secondAttribute="leading" constant="20" id="55F-3L-fqg"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="GMK-V9-HhR" secondAttribute="bottom" constant="8" id="Ale-3i-Rez"/>
+                    <constraint firstItem="kpQ-MF-mXY" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="l0z-eC-IXv" secondAttribute="trailing" constant="8" id="IAT-dN-W61"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="l0z-eC-IXv" secondAttribute="bottom" constant="8" id="UK9-HR-pjg"/>
+                    <constraint firstItem="kpQ-MF-mXY" firstAttribute="centerY" secondItem="l0z-eC-IXv" secondAttribute="centerY" id="VY1-bu-BqY"/>
+                    <constraint firstItem="l0z-eC-IXv" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Zze-qc-rYB" secondAttribute="top" constant="8" id="cg1-CG-nbn"/>
+                    <constraint firstAttribute="trailing" secondItem="GMK-V9-HhR" secondAttribute="trailing" constant="20" id="gVn-xn-aU3"/>
+                    <constraint firstItem="l0z-eC-IXv" firstAttribute="centerY" secondItem="Zze-qc-rYB" secondAttribute="centerY" id="wQv-bS-WgK"/>
+                    <constraint firstItem="GMK-V9-HhR" firstAttribute="top" secondItem="Zze-qc-rYB" secondAttribute="top" constant="8" id="yZU-oI-Ker"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="enableSwitch" destination="GMK-V9-HhR" id="6ex-dp-A3w"/>
+                <outlet property="mainLabel" destination="l0z-eC-IXv" id="ah4-oI-hdb"/>
+                <outlet property="secondaryLabel" destination="kpQ-MF-mXY" id="v2d-0c-Yga"/>
+            </connections>
+            <point key="canvasLocation" x="139" y="277.5"/>
+        </tableViewCell>
+    </objects>
+</document>

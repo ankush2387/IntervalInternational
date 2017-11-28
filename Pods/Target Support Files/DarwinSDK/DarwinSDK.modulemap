@@ -1,0 +1,6 @@
+framework module DarwinSDK {
+  umbrella header "DarwinSDK-umbrella.h"
+
+  export *
+  module * { export * }
+}
