@@ -139,7 +139,11 @@ class MemberShipDetailTableViewCell: UITableViewCell {
                 }
                 prodView.expirationDateLabel.text = dateString
             }
-            prodView.productNameLabel.text = prod.productName
+            if let name = prod.productName?.capitalized {
+                    prodView.productNameLabel.text = "\(name) Membership".localized()
+                     prodView.productNameLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 20)
+            }
+            prodView.productNameLabel.textColor = UIColor.black
             prodView.frame = CGRect(x:5, y: yPosition, width: Int(productExternalView.frame.width - 10), height: height)
             productExternalView.addSubview(prodView)
             yPosition += height
