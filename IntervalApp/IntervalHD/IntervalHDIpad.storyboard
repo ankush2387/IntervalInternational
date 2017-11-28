@@ -36,7 +36,7 @@
             </objects>
             <point key="canvasLocation" x="922.5" y="350.25"/>
         </scene>
-        <!--IntervalHD Ipad Controller-->
+        <!--Destinations-->
         <scene sceneID="Uw3-3M-gCx">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="kLG-9Q-eYr" customClass="IntervalHDIpadController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -226,7 +226,7 @@
                             </mask>
                         </variation>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="ic_public" selectedImage="ic_public" id="msi-La-owd"/>
+                    <tabBarItem key="tabBarItem" title="Destinations" image="ic_public" selectedImage="ic_public" id="msi-La-owd"/>
                     <navigationItem key="navigationItem" id="klL-Ku-xVf"/>
                     <connections>
                         <outlet property="videoCollectionView" destination="mIH-Wy-n5f" id="I65-Qv-kYs"/>
@@ -237,7 +237,7 @@
             </objects>
             <point key="canvasLocation" x="899.25" y="-364.5"/>
         </scene>
-        <!--IntervalHD Ipad Controller-->
+        <!--Tutorials-->
         <scene sceneID="dcB-x9-7y3">
             <objects>
                 <viewController id="Xjc-UD-EU2" customClass="IntervalHDIpadController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -414,7 +414,7 @@
                             </mask>
                         </variation>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="ic_live_tv" selectedImage="ic_live_tv" id="JTi-FS-q2p"/>
+                    <tabBarItem key="tabBarItem" title="Tutorials" image="ic_live_tv" selectedImage="ic_live_tv" id="JTi-FS-q2p"/>
                     <connections>
                         <outlet property="videoCollectionView" destination="hVR-JE-Zk9" id="hrs-Zj-sBl"/>
                         <outlet property="videoSeaarchBar" destination="8eb-27-HDk" id="KJc-0S-dIO"/>
@@ -424,7 +424,7 @@
             </objects>
             <point key="canvasLocation" x="1609.5" y="360"/>
         </scene>
-        <!--IntervalHD Ipad Controller-->
+        <!--Resorts-->
         <scene sceneID="hnQ-0X-9vO">
             <objects>
                 <viewController id="up4-XI-mb0" customClass="IntervalHDIpadController" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -602,7 +602,7 @@
                             </mask>
                         </variation>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="ic_store" selectedImage="ic_store" id="KQq-i4-dPl"/>
+                    <tabBarItem key="tabBarItem" title="Resorts" image="ic_store" selectedImage="ic_store" id="KQq-i4-dPl"/>
                     <connections>
                         <outlet property="videoCollectionView" destination="26A-uA-WQ3" id="wcT-Mr-FLU"/>
                         <outlet property="videoSeaarchBar" destination="Qkw-wE-VFf" id="fVr-fe-p2L"/>

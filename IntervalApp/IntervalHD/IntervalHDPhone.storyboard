@@ -15,7 +15,7 @@
         </array>
     </customFonts>
     <scenes>
-        <!--IntervalHD Common Controller For Tabs-->
+        <!--Destinations-->
         <scene sceneID="HUq-xk-RIq">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="4Z2-Aw-Hm3" customClass="IntervalHDCommonControllerForTabs" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -123,7 +123,7 @@
                             <constraint firstItem="Dd0-OV-SDK" firstAttribute="top" secondItem="x9E-xv-mc1" secondAttribute="bottom" id="ytx-mO-2l7"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="ic_public" selectedImage="ic_public" id="WM8-dy-SqF"/>
+                    <tabBarItem key="tabBarItem" title="Destinations" image="ic_public" selectedImage="ic_public" id="WM8-dy-SqF"/>
                     <navigationItem key="navigationItem" id="FsA-AE-flr"/>
                     <connections>
                         <outlet property="searchBar" destination="7dr-bC-vYG" id="fqj-FT-gjq"/>
@@ -134,7 +134,7 @@
             </objects>
             <point key="canvasLocation" x="1867" y="-61"/>
         </scene>
-        <!--IntervalHD Common Controller For Tabs-->
+        <!--Resorts-->
         <scene sceneID="oHm-Nn-4Ib">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="sRa-VC-t9t" customClass="IntervalHDCommonControllerForTabs" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -240,7 +240,7 @@
                             <constraint firstAttribute="leadingMargin" secondItem="sPD-7o-4KS" secondAttribute="leading" constant="-4" id="rPj-W6-dlf"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="ic_store" selectedImage="ic_store" id="7Dj-Vu-6KC"/>
+                    <tabBarItem key="tabBarItem" title="Resorts" image="ic_store" selectedImage="ic_store" id="7Dj-Vu-6KC"/>
                     <connections>
                         <outlet property="searchBar" destination="hDf-nZ-5Y4" id="d5d-mi-mUz"/>
                         <outlet property="videoTBLView" destination="sPD-7o-4KS" id="NHj-89-fbY"/>
@@ -268,7 +268,7 @@
             </objects>
             <point key="canvasLocation" x="1866.4000000000001" y="1279.6101949025488"/>
         </scene>
-        <!--IntervalHD Common Controller For Tabs-->
+        <!--Tutorials-->
         <scene sceneID="4nO-Ts-7jJ">
             <objects>
                 <viewController id="7nh-d6-LqP" customClass="IntervalHDCommonControllerForTabs" customModule="IntervalApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -374,7 +374,7 @@
                             <constraint firstItem="ntx-3A-GXs" firstAttribute="leading" secondItem="nO2-UD-vCE" secondAttribute="leadingMargin" constant="-20" id="yPU-T7-zUc"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="ic_live_tv" selectedImage="ic_live_tv" id="vHW-wj-MKq"/>
+                    <tabBarItem key="tabBarItem" title="Tutorials" image="ic_live_tv" selectedImage="ic_live_tv" id="vHW-wj-MKq"/>
                     <connections>
                         <outlet property="searchBar" destination="ntx-3A-GXs" id="mqx-Fz-WFS"/>
                         <outlet property="videoTBLView" destination="qax-zD-nEN" id="H7c-YF-Yxc"/>
@@ -504,7 +504,7 @@
     </scenes>
     <resources>
         <image name="ic_live_tv" width="24" height="24"/>
-        <image name="ic_public" width="48" height="48"/>
+        <image name="ic_public" width="24" height="24"/>
         <image name="ic_store" width="24" height="24"/>
     </resources>
     <inferredMetricsTieBreakers>
