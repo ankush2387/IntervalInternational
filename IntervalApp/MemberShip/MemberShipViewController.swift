@@ -145,7 +145,6 @@ class MemberShipViewController: UIViewController {
         actionSheetTable.reloadData()
         self.present(actionSheet, animated: true, completion: nil)
     }
-    
 }
 /** extension to implement table view datasource methods */
 extension MemberShipViewController: UITableViewDataSource {
@@ -214,15 +213,18 @@ extension MemberShipViewController: UITableViewDataSource {
                 return membershipCell
             }
         }
-        
     }
-    
-    /** This function is used to return title for header In section */
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        var title = ""
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
         if section == 1 && tableView.tag != 3 {
-            title = Constant.memberShipViewController.ownershipHeaderTitletext
-            return title
+            let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 30))
+            let titleLabel = UILabel(frame: CGRect(x: 20, y: 5, width: headerView.frame.size.width - 40, height: 20))
+            titleLabel.text = "Ownerships".localized()
+            titleLabel.textColor = UIColor.darkGray
+            titleLabel.font = UIFont(name: Constant.fontName.helveticaNeueBold, size: 18)
+            headerView.addSubview(titleLabel)
+            headerView.backgroundColor = UIColor(red: 245.0/255.0, green: 245.0/255.0, blue: 246.0/255.0, alpha: 1.0)
+            return headerView
         }
         return nil
     }

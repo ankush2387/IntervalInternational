@@ -42,29 +42,33 @@ class OwnerShipDetailTableViewCell: UITableViewCell {
         if let countryCode = ownership.resort?.address?.countryCode {
             placeAddressLabel.text?.append(", \(countryCode)")
         }
-        placeCode.text = ownership.resort?.resortCode
+        placeCode.text = ownership.resort?.resortCode?.localized()
         let bedroomSize = Helper.getBedroomNumbers(bedroomType: (ownership.unit?.unitSize)!)
-        bedroomDetailLabel.text = bedroomSize
-        weekNumberLabel.text = ownership.weekNumber
-        if((ownership.resort?.images.count)! > 0) {
-            let imageURLStr = ownership.resort?.images[1].url
-            ownerShipimageView.setImageWith(URL(string: imageURLStr!), completed: { (image:UIImage?, error:Swift.Error?, _:SDImageCacheType, _:URL?) in
+        bedroomDetailLabel.text = bedroomSize.localized()
+        weekNumberLabel.text = ownership.weekNumber?.localized()
+        if let images = ownership.resort?.images {
+            var imageURLStr = ""
+            if images.count > 1 {
+                 imageURLStr = images[1].url ?? ""
+            } else {
+                 imageURLStr = images[0].url ?? ""
+            }
+            ownerShipimageView.setImageWith(URL(string: imageURLStr), completed: { (image:UIImage?, error:Swift.Error?, _:SDImageCacheType, _:URL?) in
                 if (error != nil) {
                     self.ownerShipimageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                 }
             }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
-
-        if ownership.weekNumber == "POINTS_WEEK" {
-            
-            weekNumberLabel.text = Constant.getPointWeek(weektype: ownership.weekNumber!)
-            
-        } else if ownership.weekNumber == "FLOAT_WEEK"{
-            
-            weekNumberLabel.text = Constant.getFlotWeek(weekType: ownership.weekNumber!)
-        } else {
-           weekNumberLabel.text = "Week \(Constant.getWeekNumber(weekType: ownership.weekNumber!))"
         }
-    }
+        if let weekNumber = ownership.weekNumber {
+            switch weekNumber {
+            case "POINTS_WEEK":
+                weekNumberLabel.text = "\(Constant.getPointWeek(weektype: ownership.weekNumber ?? ""))".localized()
+            case "FLOAT_WEEK":
+                weekNumberLabel.text = "\(Constant.getFlotWeek(weekType: ownership.weekNumber ?? ""))".localized()
+            default:
+                weekNumberLabel.text = "\(Constant.getWeekNumber(weekType: ownership.weekNumber ?? ""))".localized()
+            }
+        }
 }
     
     // MARK: set commonPrperties to cell
