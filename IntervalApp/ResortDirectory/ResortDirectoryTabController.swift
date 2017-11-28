@@ -68,12 +68,19 @@ class ResortDirectoryTabController: UITabBarController {
         if(Constant.RunningDevice.deviceIdiom == .phone) {
             UITabBar.appearance().barTintColor = IUIKColorPalette.titleBackdrop.color
             UITabBar.appearance().selectionIndicatorImage = UIImage().makeImageWithColorAndSize(UIColor.white, size: CGSize(width: UIScreen.main.bounds.width / 3, height: tabBar.frame.height))
-            
         }
-    }
-    override func viewDidAppear(_ animated: Bool) {
         
+        setUI()
     }
+    
+    private func setUI() {
+    
+        tabBar.items?.forEach { $0.title = nil }
+        tabBar.items?[0].image = #imageLiteral(resourceName: "RD_Map_Blue")
+        tabBar.items?[1].image = #imageLiteral(resourceName: "RD_List_Blue")
+        tabBar.items?[2].image = #imageLiteral(resourceName: "RD_Fav_Blue")
+    }
+
     
     //***** Remove added notifications. *****//
     override func viewWillDisappear(_ animated: Bool) {
