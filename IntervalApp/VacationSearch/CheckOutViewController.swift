@@ -93,7 +93,8 @@ class CheckOutViewController: UIViewController {
             guard let curCode = Constant.MyClassConstants.exchangeFees[0].currencyCode else { return }
             currencyCode = Helper.currencyCodeToSymbol(code: curCode)
             
-        } else {
+        }
+        }else {
             for advisement in (Constant.MyClassConstants.viewResponse.resort?.advisements)! {
                 
                 if advisement.title == Constant.MyClassConstants.additionalAdv {
@@ -702,8 +703,8 @@ class CheckOutViewController: UIViewController {
             self?.checkoutOptionTBLview.reloadData()
         })
     }
-    
 }
+    
 
 // MARK: - Table View Delegate
 extension CheckOutViewController:UITableViewDelegate {
@@ -1215,7 +1216,7 @@ extension CheckOutViewController:UITableViewDataSource {
                         
                     default:
                         
-                        let renewalIndex = indexPath.row - (totalRowsInCost - renewalsArray.count)
+                        var renewalIndex = 0
                         cell.currencyLabel.text = currencyCode
                         cell.priceLabel.numberOfLines = 0
                         if renewalsArray.count > 1 {

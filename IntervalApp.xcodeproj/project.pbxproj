@@ -203,7 +203,6 @@
 		3ACC27931DDDBDA40057B809 /* PaymentSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACC27921DDDBDA40057B809 /* PaymentSelectionViewController.swift */; };
 		3ACC27951DDDC2BA0057B809 /* SelectPaymentMethodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACC27941DDDC2BA0057B809 /* SelectPaymentMethodCell.swift */; };
 		3ACC27971DDDCB270057B809 /* AddNewCreditCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACC27961DDDCB270057B809 /* AddNewCreditCardCell.swift */; };
-		3AD0A7D31FBD9F8900C3BA63 /* UIColor+RGB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD0A7D21FBD9F8900C3BA63 /* UIColor+RGB.swift */; };
 		3AD822CA1F3A046A00CD68C6 /* AvailabilityCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD822C91F3A046A00CD68C6 /* AvailabilityCollectionViewCell.swift */; };
 		3ADA43AA1CA56603003F5373 /* CertificateWhoIsTravelingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADA43A91CA56603003F5373 /* CertificateWhoIsTravelingController.swift */; };
 		3AE0D8681E4B38B500FFF635 /* ResortDestinationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE0D8671E4B38B500FFF635 /* ResortDestinationCell.swift */; };
@@ -598,7 +597,6 @@
 		3ACC27921DDDBDA40057B809 /* PaymentSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentSelectionViewController.swift; sourceTree = "<group>"; };
 		3ACC27941DDDC2BA0057B809 /* SelectPaymentMethodCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectPaymentMethodCell.swift; sourceTree = "<group>"; };
 		3ACC27961DDDCB270057B809 /* AddNewCreditCardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddNewCreditCardCell.swift; sourceTree = "<group>"; };
-		3AD0A7D21FBD9F8900C3BA63 /* UIColor+RGB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+RGB.swift"; sourceTree = "<group>"; };
 		3AD822C91F3A046A00CD68C6 /* AvailabilityCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvailabilityCollectionViewCell.swift; sourceTree = "<group>"; };
 		3ADA43A91CA56603003F5373 /* CertificateWhoIsTravelingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CertificateWhoIsTravelingController.swift; sourceTree = "<group>"; };
 		3AE0D8671E4B38B500FFF635 /* ResortDestinationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResortDestinationCell.swift; sourceTree = "<group>"; };
@@ -1719,7 +1717,6 @@
 				61A420C01FA9819F00B06708 /* Data+EncryptionKey.swift */,
 				3A7858E51FB1B7160027E7EC /* Print+IntervalDebug.swift */,
 				3C584A221FBCA63A00584831 /* UIViewController+SimpleActionSheetPicker.swift */,
-				3AD0A7D21FBD9F8900C3BA63 /* UIColor+RGB.swift */,
 			);
 			name = Extensions;
 			path = Utils;
@@ -2170,7 +2167,6 @@
 				3ACC27951DDDC2BA0057B809 /* SelectPaymentMethodCell.swift in Sources */,
 				3A31F26B1CA1547A0028C68F /* VacationOrResortTableViewCell.swift in Sources */,
 				DC7EF4DA1D709F0400E9E360 /* UpComingTripsTableViewCell.swift in Sources */,
-				3AD0A7D31FBD9F8900C3BA63 /* UIColor+RGB.swift in Sources */,
 				617434771F8F0E5A006292E0 /* UIViewController+UIAlertController.swift in Sources */,
 				DC7BA8331DB911D600BB0C3B /* DetailedIssueViewController.swift in Sources */,
 				08E3BCF61F2A30F80021F2BC /* RelinquishmentDetailsViewController.swift in Sources */,

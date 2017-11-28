@@ -69,40 +69,40 @@ class ClubPointSelectionViewController: UIViewController {
         buttonSelectedString = Constant.MyClassConstants.segmentFirstString
         mapClubIntervalPoints(index: (sender as AnyObject).tag - 100)
         createClubsCollectionView()
-        travelingDetailView.backgroundColor = UIColor(hex: 0x008FC6)
-        indisefirstview.backgroundColor = UIColor(hex: 0x008FC6)
+        travelingDetailView.backgroundColor = #colorLiteral(red: 0, green: 0.5607843137, blue: 0.7764705882, alpha: 1)
+        indisefirstview.backgroundColor = #colorLiteral(red: 0, green: 0.5607843137, blue: 0.7764705882, alpha: 1)
         indisefirstview.backgroundColor = UIColor(red:0.00, green:1.00, blue:0.34, alpha:1.0)
-        secondView.backgroundColor = UIColor(hex: 0xFFFFFF)
-        insidesecondview.backgroundColor = UIColor(hex: 0xFFFFFF)
-        startdatesecondbtn.textColor = UIColor(hex: 0x008FC6)
-        startmonthsecondbtn.textColor = UIColor(hex: 0x008FC6)
-        enddatesecondbtn.textColor = UIColor(hex: 0x008FC6)
-        endmonthsecondbtn.textColor = UIColor(hex: 0x008FC6)
+        secondView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        insidesecondview.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        startdatesecondbtn.textColor = #colorLiteral(red: 0, green: 0.5607843137, blue: 0.7764705882, alpha: 1)
+        startmonthsecondbtn.textColor = #colorLiteral(red: 0, green: 0.5607843137, blue: 0.7764705882, alpha: 1)
+        enddatesecondbtn.textColor = #colorLiteral(red: 0, green: 0.5607843137, blue: 0.7764705882, alpha: 1)
+        endmonthsecondbtn.textColor = #colorLiteral(red: 0, green: 0.5607843137, blue: 0.7764705882, alpha: 1)
         
-        startdatefirstbtn.textColor = UIColor(hex: 0xFFFFFF)
-        startmonthfirstbtn.textColor = UIColor(hex: 0xFFFFFF)
-        enddatefirstbtn.textColor = UIColor(hex: 0xFFFFFF)
-        endmonthfirstbtn.textColor = UIColor(hex: 0xFFFFFF)
+        startdatefirstbtn.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        startmonthfirstbtn.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        enddatefirstbtn.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        endmonthfirstbtn.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         
     }
     
     @IBAction func secondbuttonpressed(_ sender: Any) {
         
         buttonSelectedString = Constant.MyClassConstants.segmentSecondString
-        insidesecondview.backgroundColor = UIColor(hex: 0x008FC6)
-        secondView.backgroundColor = UIColor(hex: 0x008FC6)
-        startdatesecondbtn.textColor = UIColor(hex: 0xFFFFFF)
-        startmonthsecondbtn.textColor = UIColor(hex: 0xFFFFFF)
-        enddatesecondbtn.textColor = UIColor(hex: 0xFFFFFF)
-        endmonthsecondbtn.textColor = UIColor(hex: 0xFFFFFF)
+        insidesecondview.backgroundColor = #colorLiteral(red: 0, green: 0.5607843137, blue: 0.7764705882, alpha: 1)
+        secondView.backgroundColor = #colorLiteral(red: 0, green: 0.5607843137, blue: 0.7764705882, alpha: 1)
+        startdatesecondbtn.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        startmonthsecondbtn.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        enddatesecondbtn.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        endmonthsecondbtn.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         
-        travelingDetailView.backgroundColor = UIColor(hex: 0xFFFFFF)
-        indisefirstview.backgroundColor = UIColor(hex: 0xFFFFFF)
+        travelingDetailView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        indisefirstview.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         
-        startdatefirstbtn.textColor = UIColor(hex: 0x008FC6)
-        startmonthfirstbtn.textColor = UIColor(hex: 0x008FC6)
-        enddatefirstbtn.textColor = UIColor(hex: 0x008FC6)
-        endmonthfirstbtn.textColor = UIColor(hex: 0x008FC6)
+        startdatefirstbtn.textColor = #colorLiteral(red: 0, green: 0.5607843137, blue: 0.7764705882, alpha: 1)
+        startmonthfirstbtn.textColor = #colorLiteral(red: 0, green: 0.5607843137, blue: 0.7764705882, alpha: 1)
+        enddatefirstbtn.textColor = #colorLiteral(red: 0, green: 0.5607843137, blue: 0.7764705882, alpha: 1)
+        endmonthfirstbtn.textColor = #colorLiteral(red: 0, green: 0.5607843137, blue: 0.7764705882, alpha: 1)
         
         mapClubIntervalPoints(index: (sender as AnyObject).tag - 100)
         

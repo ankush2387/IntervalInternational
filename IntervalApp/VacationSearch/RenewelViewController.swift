@@ -307,7 +307,7 @@ extension RenewelViewController: UITableViewDataSource {
                         cell.renewelnonCoreImageView?.isHidden = true
                     
                     if let currencyCode = forceRenewals.currencyCode {
-                        let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: currencyCode)
+                        let currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: currencyCode)
                         
                         let price = String(format: "%.0f", crossSelling.price)
                         
@@ -346,7 +346,7 @@ extension RenewelViewController: UITableViewDataSource {
                             // currency code
                         if let currencyCode = forceRenewals.currencyCode {
                             
-                            let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: currencyCode)
+                            let currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: currencyCode)
 
                             if (renewalComboProduct.isCoreProduct) {
                                 if let productCode = renewalComboProduct.productCode {
@@ -465,7 +465,7 @@ extension RenewelViewController: UITableViewDataSource {
                     cell.renewelCoreImageView?.isHidden = true
                     cell.renewelnonCoreImageView?.isHidden = true
                     if let currencyCode = forceRenewals.currencyCode {
-                    let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: currencyCode)
+                    let currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: currencyCode)
                     
                     let price = String(format: "%.0f", product.price)
                     
@@ -504,7 +504,7 @@ extension RenewelViewController: UITableViewDataSource {
                         cell.renewelnonCoreImageView?.image = UIImage(named: productCode)
                     }
                     if let currencyCode = forceRenewals.currencyCode {
-                        let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: currencyCode)
+                        let currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: currencyCode)
                         let price = String(format: "%.0f", nonCoreProduct.price)
                         
                         priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + currencyCode
@@ -566,7 +566,7 @@ extension RenewelViewController: UITableViewDataSource {
                         cell.renewelCoreImageView?.isHidden = true
                         cell.renewelnonCoreImageView?.isHidden = true
                     if let currencyCode = forceRenewals.currencyCode {
-                        let currencyCodeWithSymbol = Helper.currencyCodetoSymbol(code: currencyCode)
+                        let currencyCodeWithSymbol = Helper.currencyCodeToSymbol(code: currencyCode)
                         
                         let price = String(format: "%.0f", nonCoreProduct.price)
                         

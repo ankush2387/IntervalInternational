@@ -109,9 +109,7 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
         if indexPath.section == 0 {
             for comboProduct in (forceRenewals.comboProducts) {
                 let lowestTerm = comboProduct.renewalComboProducts[0].term
-                for renewalComboProduct in comboProduct.renewalComboProducts {
-                    if renewalComboProduct.term == lowestTerm {
-                        
+                for renewalComboProduct in comboProduct.renewalComboProducts where renewalComboProduct.term == lowestTerm {
                         //hide renewal image here
                         cell.renewelImageView?.isHidden = true
                         
@@ -175,9 +173,10 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
                             break
                             
                         }
-                }
             }
-        } else {
+        }
+            return cell
+        }else {
             
             let lowestTerm = forceRenewals.products[0].term
             for coreProduct in (forceRenewals.products) {
@@ -214,6 +213,7 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
         }
         return cell
     }
+}
 }
 
 // MARK: - table view delegate

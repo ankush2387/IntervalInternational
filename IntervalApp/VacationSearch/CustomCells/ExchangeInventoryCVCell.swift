@@ -106,7 +106,7 @@ class ExchangeInventoryCVCell: UICollectionViewCell {
                 promLabel.adjustsFontSizeToFitWidth = true
                 promLabel.minimumScaleFactor = 0.7
                 promLabel.numberOfLines = 0
-                promLabel.textColor = UIColor(hex: 0x0077BE)
+                promLabel.textColor = #colorLiteral(red: 0, green: 0.4666666667, blue: 0.7450980392, alpha: 1)
                 promLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 12)
                 self.promotionsView.addSubview(imgV)
                 self.promotionsView.addSubview(promLabel)
