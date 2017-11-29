@@ -63,7 +63,7 @@ class ResortDetailsViewController: UIViewController {
             //self.navigationController?.isNavigationBarHidden = true
             //self.tabBarController?.tabBar.isHidden = true
             
-            if(Constant.RunningDevice.deviceIdiom == .phone) {
+            if Constant.RunningDevice.deviceIdiom == .phone {
                 self.navigationController?.isNavigationBarHidden = true
                 self.tabBarController?.tabBar.isHidden = true
             }
@@ -73,11 +73,11 @@ class ResortDetailsViewController: UIViewController {
                 // Notification to perform vacation search after user pre-login
         NotificationCenter.default.addObserver(self, selector: #selector(showVacationSearch), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
         
-        if(self.headerTextForShowingResortCounter != nil) {
+        if self.headerTextForShowingResortCounter != nil {
             
             self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
         }
-        if(Constant.MyClassConstants.resortsDescriptionArray.amenities.count > 0) {
+        if Constant.MyClassConstants.resortsDescriptionArray.amenities.count > 0 {
             
             Constant.MyClassConstants.amenitiesDictionary.removeAllObjects()
             
@@ -86,7 +86,7 @@ class ResortDetailsViewController: UIViewController {
             intervalPrint(Constant.MyClassConstants.resortsDescriptionArray.amenities.count)
             for amenity in Constant.MyClassConstants.resortsDescriptionArray.amenities {
                 
-                if(amenity.nearby == true) {
+                if amenity.nearby == true {
                     
                     nearbyArray.add(amenity.amenityName!)
                     amenityOnsiteString = amenityOnsiteString + "\n" + "  " + amenity.amenityName!
@@ -109,7 +109,7 @@ class ResortDetailsViewController: UIViewController {
         super.viewDidLoad()
         
         // omniture tracking with event 35
-        if(Constant.MyClassConstants.resortsDescriptionArray.resortCode != nil) {
+        if Constant.MyClassConstants.resortsDescriptionArray.resortCode != nil {
             let userInfo: [String: String] = [
                 Constant.omnitureCommonString.productItem: Constant.MyClassConstants.resortsDescriptionArray.resortCode!,
                 Constant.omnitureEvars.eVar41: Constant.omnitureCommonString.vactionSearch
@@ -128,14 +128,14 @@ class ResortDetailsViewController: UIViewController {
     override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
         tableViewResorts.reloadData()
         for collView in self.tableViewResorts.subviews {
-            if(collView .isKind(of: UICollectionView.self)) {
+            if collView .isKind(of: UICollectionView.self) {
                 
             }
         }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        if(Constant.RunningDevice.deviceIdiom == .phone) {
+        if Constant.RunningDevice.deviceIdiom == .phone {
             self.navigationController?.isNavigationBarHidden = false
             self.tabBarController?.tabBar.isHidden = false
         }
@@ -151,9 +151,6 @@ class ResortDetailsViewController: UIViewController {
         if self.startIndex < Constant.MyClassConstants.vacationSearchContentPagerRunningIndex && arrayRunningIndex > 0 {
             
             Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = Constant.MyClassConstants.vacationSearchContentPagerRunningIndex - 1
-            if(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex == 1) {
-                //sender.isEnabled = false
-            }
             self.arrayRunningIndex = arrayRunningIndex - 1
             Constant.MyClassConstants.resortsDescriptionArray = self.resortDescriptionArrayContainer[ self.arrayRunningIndex] as! Resort
             Constant.MyClassConstants.imagesArray.removeAllObjects()
@@ -216,9 +213,9 @@ class ResortDetailsViewController: UIViewController {
     //***** Function call for next resort button *****//
     @IBAction func nextResortButtonPressed(_ sender: UIButton) {
         
-        if(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex < Constant.MyClassConstants.resortsArray.count) {
+        if Constant.MyClassConstants.vacationSearchContentPagerRunningIndex < Constant.MyClassConstants.resortsArray.count {
             
-            if(self.resortDescriptionArrayContainer.count - 1 < Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) {
+            if self.resortDescriptionArrayContainer.count - 1 < Constant.MyClassConstants.vacationSearchContentPagerRunningIndex {
                 self.arrayRunningIndex = arrayRunningIndex + 1
                 let resortCode = Constant.MyClassConstants.resortsArray[Constant.MyClassConstants.vacationSearchContentPagerRunningIndex].resortCode
                 
@@ -231,17 +228,13 @@ class ResortDetailsViewController: UIViewController {
                     Constant.MyClassConstants.imagesArray.removeAllObjects()
                     let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
                     for imgStr in imagesArray {
-                        if(imgStr.size == Constant.MyClassConstants.imageSize) {
-                            
-                            Constant.MyClassConstants.imagesArray.add(imgStr.url!)
+                        if imgStr.size == Constant.MyClassConstants.imageSize {
+                            if let imgURL = imgStr.url {
+                            Constant.MyClassConstants.imagesArray.add(imgURL)
+                            }
                         }
                     }
                     Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = Constant.MyClassConstants.vacationSearchContentPagerRunningIndex + 1
-                    if(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex == Constant.MyClassConstants.resortsArray.count) {
-                        //sender.isEnabled = false
-                    } else {
-                        //sender.isEnabled = true
-                    }
                     self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
                     self.hideHudAsync()
                     self.tableViewResorts.reloadData()
@@ -252,27 +245,23 @@ class ResortDetailsViewController: UIViewController {
                     ]
                     
                     ADBMobile.trackAction(Constant.omnitureEvents.event35, data: userInfo)
-                }) { error in
-                    self.hideHudAsync()
-                    self.presentErrorAlert(UserFacingCommonError.serverError(error))
+                }) { [weak self] error in
+                    self?.hideHudAsync()
+                    self?.presentErrorAlert(UserFacingCommonError.serverError(error))
                 }
                 
             } else {
                 Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = Constant.MyClassConstants.vacationSearchContentPagerRunningIndex + 1
-                if(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex == Constant.MyClassConstants.resortsArray.count) {
-                    //sender.isEnabled = false
-                } else {
-                    //sender.isEnabled = true
-                }
                 self.arrayRunningIndex = arrayRunningIndex + 1
                 
                 Constant.MyClassConstants.resortsDescriptionArray = self.resortDescriptionArrayContainer[ self.arrayRunningIndex] as! Resort
                 Constant.MyClassConstants.imagesArray.removeAllObjects()
                 let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
                 for imgStr in imagesArray {
-                    if(imgStr.size == Constant.MyClassConstants.imageSize) {
-                        
-                        Constant.MyClassConstants.imagesArray.add(imgStr.url!)
+                    if imgStr.size == Constant.MyClassConstants.imageSize {
+                        if let imgURL = imgStr.url {
+                        Constant.MyClassConstants.imagesArray.add(imgURL)
+                        }
                     }
                 }
                 self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
@@ -285,11 +274,11 @@ class ResortDetailsViewController: UIViewController {
     //***** Function call for Done button *****//
     
     @IBAction func doneButtonClicked(_ sender: AnyObject) {
-        if(UIDevice().userInterfaceIdiom == .pad) {
+        if UIDevice().userInterfaceIdiom == .pad {
             
-            if(Constant.MyClassConstants.isFromExchange) {
+            if Constant.MyClassConstants.isFromExchange {
                 
-                if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.vacationSearchFunctionalityCheck) {
+                if Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.vacationSearchFunctionalityCheck {
                     
                     self.dismiss(animated: true, completion: nil)
                     
@@ -303,8 +292,7 @@ class ResortDetailsViewController: UIViewController {
             
         } else {
 
-            if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.vacationSearchFunctionalityCheck) {
-                
+            if Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.vacationSearchFunctionalityCheck {
                 self.dismiss(animated: true, completion: nil)
             } else {
                 navigationController?.view.layer.add(Helper.topToBottomTransition(), forKey: nil)
@@ -320,12 +308,14 @@ class ResortDetailsViewController: UIViewController {
     //***** Function call for search button pressed. *****//
     
     func searchVacationClicked() {
-        if((Session.sharedSession.userAccessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
-            let realm = try! Realm()
+        if Session.sharedSession.userAccessToken != nil && Constant.MyClassConstants.isLoginSuccessfull {
+            do {
+                
+            let realm = try? Realm()
             let allDest = Helper.getLocalStorageWherewanttoGo()
-            if (allDest.count > 0) {
-                try! realm.write {
-                    realm.deleteAll()
+            if !allDest.isEmpty {
+                try realm?.write {
+                    realm?.deleteAll()
                 }
             }
             let allavailabledest = AllAvailableDestination()
@@ -335,7 +325,7 @@ class ResortDetailsViewController: UIViewController {
             
             //realm local storage for selected resort
             let storedata = RealmLocalStorage()
-            let Membership = Session.sharedSession.selectedMembership
+            guard let membership = Session.sharedSession.selectedMembership else { return }
             let resortList = ResortList()
             if let cityName = (address?.cityName) {
                 resortList.resortCityName = cityName
@@ -344,19 +334,25 @@ class ResortDetailsViewController: UIViewController {
                 resortList.resortCode = resortCode
                 resortList.resortName = "\(dict.resortName!) - \(dict.resortCode!)"
             }
-            resortList.thumbnailurl = dict.images[0].url!
+            if let url = dict.images[0].url {
+            resortList.thumbnailurl = url
+            }
             
             if let territoryCode = (address?.territoryCode) {
                 resortList.territorrycode = territoryCode
             }
             
             storedata.resorts.append(resortList)
-            storedata.membeshipNumber = Membership!.memberNumber!
-            try! realm.write {
-                realm.add(storedata)
+            storedata.membeshipNumber = membership.memberNumber ?? ""
+            
+            try realm?.write {
+                realm?.add(storedata)
+            }
+            } catch {
+                
             }
             var storyboard = UIStoryboard()
-            if(Constant.RunningDevice.deviceIdiom == .pad) {
+            if Constant.RunningDevice.deviceIdiom == .pad {
                 storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
             } else {
                 storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
@@ -365,7 +361,7 @@ class ResortDetailsViewController: UIViewController {
         } else {
             var storyboard = UIStoryboard()
             var viewController = UIViewController()
-            if(Constant.RunningDevice.deviceIdiom == .pad) {
+            if Constant.RunningDevice.deviceIdiom == .pad {
                 storyboard = UIStoryboard(name: Constant.storyboardNames.resortDirectoryIpad, bundle: nil)
                 viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginViewControlleriPad)
             } else {
@@ -391,7 +387,7 @@ class ResortDetailsViewController: UIViewController {
         
         let shareActivityViewController = UIActivityViewController(activityItems: [message, resortImage, resortURL], applicationActivities: nil)
         
-        if(UIDevice().userInterfaceIdiom == .pad) {
+        if UIDevice().userInterfaceIdiom == .pad {
             //ipad has to present as Popover
             shareActivityViewController.modalPresentationStyle = .popover
             if let presenter = shareActivityViewController.popoverPresentationController {
@@ -488,7 +484,7 @@ class ResortDetailsViewController: UIViewController {
         //Added a delay to present vacation search view controller.
         
         //Changed line self.senderViewController == Constant.MyClassConstants.searchResult
-        if(Constant.MyClassConstants.loginOriginationPoint == "Resort Directory - Sign In Modal") {
+        if Constant.MyClassConstants.loginOriginationPoint == "Resort Directory - Sign In Modal" {
             Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(searchVacationClicked), userInfo: nil, repeats: false)
         }
     }
@@ -534,13 +530,13 @@ extension ResortDetailsViewController: UITableViewDelegate {
     //***** UITableview delegate methods definition here *****//
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         
-        if(section == 3) {
+        if section == 3 {
             return 44
         }
         return 0
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if (tableView.tag == 1) {
+        if tableView.tag == 1 {
             return 50
         } else {
             switch indexPath.section {
@@ -548,11 +544,11 @@ extension ResortDetailsViewController: UITableViewDelegate {
                 return tableView.frame.size.width / 2 + 100
             case 1:
                 
-                if(Constant.MyClassConstants.resortsDescriptionArray.description != nil) {
-                    if((Constant.MyClassConstants.resortsDescriptionArray.description?.characters.count)! > 0) {
+                if let description =  Constant.MyClassConstants.resortsDescriptionArray.description {
+                    if description.isEmpty {
                         
                         var height: CGFloat
-                        if(Constant.RunningDevice.deviceIdiom == .pad) {
+                        if Constant.RunningDevice.deviceIdiom == .pad {
                             let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0)
                             height = heightForView(Constant.MyClassConstants.resortsDescriptionArray.description!, font: font!, width: (Constant.MyClassConstants.runningDeviceWidth!/2) - 40)
                             return height + 60
@@ -568,7 +564,7 @@ extension ResortDetailsViewController: UITableViewDelegate {
                     return 0
                 }
             case 2:
-                if(Constant.RunningDevice.deviceIdiom == .pad) {
+                if Constant.RunningDevice.deviceIdiom == .pad {
                     
                     return 0
                 } else {
@@ -581,11 +577,11 @@ extension ResortDetailsViewController: UITableViewDelegate {
                     if isOpen && indexPath.row > 0 {
                         
                         let count = nearbyArray.count + onsiteArray.count
-                        if(count > 0) {
+                        if count > 0 {
                             if indexPath.section == 3 {
                                 return 50
                             } else if indexPath.section == 4 {
-                                if(count == 1) {
+                                if count == 1 {
                                     return CGFloat (count * 20 + 60)
                                 } else {
                                     return CGFloat (count * 20 + 120)
@@ -721,10 +717,10 @@ extension ResortDetailsViewController: UITableViewDataSource {
     
     //***** UITableview dataSource methods definition here *****//
     func numberOfSections(in tableView: UITableView) -> Int {
-        if(tableView.tag == 1) {
+        if tableView.tag == 1 {
             return 1
         } else {
-            if(senderViewController == Constant.MyClassConstants.searchResult) {
+            if senderViewController == Constant.MyClassConstants.searchResult {
                 return 8
             } else {
                 return 7
@@ -734,32 +730,32 @@ extension ResortDetailsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // Check if table is action sheet
-        if(tableView.tag == 1) {
+        if tableView.tag == 1 {
             return 5
         } else {
-            if(Constant.MyClassConstants.resortsDescriptionArray.resortName != nil) {
+            if Constant.MyClassConstants.resortsDescriptionArray.resortName != nil {
                 
-                if (section >= 3) {
+                if section >= 3 {
                     if let isOpen = tappedButtonDictionary[section] {
                         if isOpen {
-                            if(section == 5) {
+                            if section == 5 {
                                 var resortCategory: [ResortRatingCategory]
-                                if(Constant.MyClassConstants.resortsDescriptionArray.rating?.categories != nil) {
+                                if Constant.MyClassConstants.resortsDescriptionArray.rating?.categories != nil {
                                     resortCategory = (Constant.MyClassConstants.resortsDescriptionArray.rating?.categories)!
                                     return resortCategory.count + 1
                                 } else {
                                     return 1
                                 }
                                 
-                            } else if(section == 3) {
-                                if(Constant.MyClassConstants.resortsDescriptionArray.nearestAiport?.name != nil) {
+                            } else if section == 3 {
+                                if Constant.MyClassConstants.resortsDescriptionArray.nearestAiport?.name != nil {
                                     
                                     return 2
                                 } else {
                                     
                                     return 1
                                 }
-                            } else if(section == 6) {
+                            } else if section == 6 {
                                 if Constant.MyClassConstants.resortsDescriptionArray.tdiUrl != nil {
                                     return 2
                                 } else {
@@ -776,7 +772,7 @@ extension ResortDetailsViewController: UITableViewDataSource {
                         return 1
                     }
                 } else if (section == 0) {
-                    if(Constant.MyClassConstants.resortsDescriptionArray.resortName != nil) {
+                    if Constant.MyClassConstants.resortsDescriptionArray.resortName != nil {
                         return 1
                     } else {
                         return 0
