@@ -176,7 +176,7 @@ class DashboardTableViewController: UITableViewController {
         case Constant.dashboardTableScreenReusableIdentifiers.alert :
             return 100
         case Constant.dashboardTableScreenReusableIdentifiers.search:
-            return 70
+            return 110
         default :
             return 290
         }
@@ -312,9 +312,10 @@ class DashboardTableViewController: UITableViewController {
             }
             
             let searchVacation = IUIKButton()
-            searchVacation.frame = CGRect(x: 10, y: 10, width: self.view.frame.width - 20, height: 50)
-            searchVacation.backgroundColor = UIColor(red: 240 / 255.0, green: 111 / 255.0, blue: 54 / 255.0, alpha: 1.0)
+            searchVacation.frame = CGRect(x: 20, y: 20, width: self.view.frame.width - 40, height: 70)
+            searchVacation.backgroundColor = UIColor(red: 224 / 255.0, green: 118 / 255.0, blue: 69 / 255.0, alpha: 1.0)
             searchVacation.setTitle(Constant.buttonTitles.searchVacation, for: UIControlState.normal)
+            searchVacation.titleLabel?.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 22)
             searchVacation.addTarget(self, action:#selector(DashboardTableViewController.searchVactionPressed(_:)), for:UIControlEvents.touchUpInside)
             searchVacation.layer.cornerRadius = 4
             cell.addSubview(searchVacation)
