@@ -1,0 +1,28 @@
+{
+  "name": "IntervalUIKit",
+  "platforms": {
+    "ios": "9.0"
+  },
+  "summary": "User Interface classes for Interval applications",
+  "requires_arc": true,
+  "version": "3.4.0",
+  "authors": {
+    "Interval International": "support@intervalintl.com"
+  },
+  "homepage": "https://bitbucket.org/intervalintl/intervaluikit-ios",
+  "source": {
+    "git": "https://bitbucket.org/intervalintl/intervaluikit-ios.git",
+    "tag": "3.4.0"
+  },
+  "frameworks": "UIKit",
+  "source_files": "IntervalUIKit/**/*.{swift}",
+  "resources": "IntervalUIKit/**/*.{storyboard,xib,xcassets}",
+  "dependencies": {
+    "Bond": [
+      "6.3.0"
+    ],
+    "ReactiveKit": [
+      "3.6.2"
+    ]
+  }
+}

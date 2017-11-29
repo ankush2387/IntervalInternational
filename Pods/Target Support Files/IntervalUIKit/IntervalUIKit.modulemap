@@ -1,0 +1,6 @@
+framework module IntervalUIKit {
+  umbrella header "IntervalUIKit-umbrella.h"
+
+  export *
+  module * { export * }
+}

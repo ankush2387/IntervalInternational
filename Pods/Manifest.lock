@@ -1,0 +1,206 @@
+PODS:
+  - Alamofire (4.0.0)
+  - Appsee (2.3.5)
+  - Bond (6.3.0):
+    - Diff (~> 0.5.3)
+    - ReactiveKit (~> 3.6.2)
+  - Brightcove-Player-SDK (5.3.4):
+    - Brightcove-Player-SDK/default (= 5.3.4)
+  - Brightcove-Player-SDK/default (5.3.4)
+  - CVCalendar (1.3.1)
+  - DarwinSDK (1.1.3-SNAPSHOT):
+    - Alamofire
+    - SwiftyJSON
+    - XCGLogger
+  - Diff (0.5.3)
+  - Firebase/Core (4.3.0):
+    - FirebaseAnalytics (= 4.0.4)
+    - FirebaseCore (= 4.0.8)
+  - Firebase/Messaging (4.3.0):
+    - Firebase/Core
+    - FirebaseMessaging (= 2.0.4)
+  - FirebaseAnalytics (4.0.4):
+    - FirebaseCore (~> 4.0)
+    - FirebaseInstanceID (~> 2.0)
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+    - nanopb (~> 0.3)
+  - FirebaseCore (4.0.8):
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+    - nanopb (~> 0.3)
+  - FirebaseInstanceID (2.0.4)
+  - FirebaseMessaging (2.0.4):
+    - FirebaseAnalytics (~> 4.0)
+    - FirebaseCore (~> 4.0)
+    - FirebaseInstanceID (~> 2.0)
+    - GoogleToolboxForMac/Logger (~> 2.1)
+    - Protobuf (~> 3.1)
+  - FSCalendar (2.1.1)
+  - GoogleMaps (2.2.0):
+    - GoogleMaps/Maps (= 2.2.0)
+  - GoogleMaps/Base (2.2.0)
+  - GoogleMaps/Maps (2.2.0):
+    - GoogleMaps/Base
+  - GoogleToolboxForMac/Defines (2.1.1)
+  - GoogleToolboxForMac/Logger (2.1.1):
+    - GoogleToolboxForMac/Defines (= 2.1.1)
+  - GoogleToolboxForMac/NSData+zlib (2.1.1):
+    - GoogleToolboxForMac/Defines (= 2.1.1)
+  - HexColors (4.0.0)
+  - HockeySDK/AllFeaturesLib (5.0.0)
+  - IntervalUIKit (3.4.0):
+    - Bond (= 6.3.0)
+    - ReactiveKit (= 3.6.2)
+  - nanopb (0.3.8):
+    - nanopb/decode (= 0.3.8)
+    - nanopb/encode (= 0.3.8)
+  - nanopb/decode (0.3.8)
+  - nanopb/encode (0.3.8)
+  - Nimble (7.0.2)
+  - PPTopMostController (0.0.1)
+  - Protobuf (3.4.0)
+  - Quick (1.2.0)
+  - ReactiveKit (3.6.2)
+  - Realm (2.8.3):
+    - Realm/Headers (= 2.8.3)
+  - Realm/Headers (2.8.3)
+  - RealmSwift (2.8.3):
+    - Realm (= 2.8.3)
+  - RMessage (2.1.5):
+    - HexColors (~> 4.0)
+    - PPTopMostController
+  - SDWebImage (3.8.2):
+    - SDWebImage/Core (= 3.8.2)
+  - SDWebImage/Core (3.8.2)
+  - SVProgressHUD (2.2.1)
+  - SwiftLint (0.22.0)
+  - SwiftyJSON (3.1.4)
+  - thenPromise (2.2.4)
+  - TPKeyboardAvoiding (1.3.1)
+  - XCGLogger (4.0.0):
+    - XCGLogger/Core (= 4.0.0)
+  - XCGLogger/Core (4.0.0)
+
+DEPENDENCIES:
+  - Alamofire (from `https://github.com/Alamofire/Alamofire.git`, tag `4.0.0`)
+  - Appsee (~> 2.3.5)
+  - Bond (from `https://github.com/ReactiveKit/Bond.git`, tag `6.3.0`)
+  - Brightcove-Player-SDK (~> 5.3.4)
+  - CVCalendar (from `https://github.com/Mozharovsky/CVCalendar`, tag `1.4.0`)
+  - DarwinSDK (from `https://bitbucket.iilg.com/scm/iimob/darwin-sdk-ios.git`, branch `develop`)
+  - Firebase/Core (~> 4.3.0)
+  - Firebase/Messaging (~> 4.3.0)
+  - FSCalendar (~> 2.1.1)
+  - GoogleMaps (~> 2.2.0)
+  - HockeySDK/AllFeaturesLib
+  - IntervalUIKit (from `https://bitbucket.iilg.com/scm/iimob/interval-uikit-ios.git`, commit `54a3661f`)
+  - Nimble
+  - Quick
+  - ReactiveKit (from `https://github.com/ReactiveKit/ReactiveKit.git`, tag `v3.6.2`)
+  - Realm (~> 2.8.3)
+  - RealmSwift (~> 2.8.3)
+  - RMessage (~> 2.1.5)
+  - SDWebImage (from `https://github.com/rs/SDWebImage.git`, tag `3.8.2`)
+  - SVProgressHUD (~> 2.2.1)
+  - SwiftLint (~> 0.22.0)
+  - SwiftyJSON (~> 3.1.4)
+  - thenPromise (from `https://github.com/freshOS/then.git`, tag `2.2.5`)
+  - TPKeyboardAvoiding (~> 1.3.1)
+  - XCGLogger (from `https://github.com/DaveWoodCom/XCGLogger.git`, branch `swift_3.0`)
+
+EXTERNAL SOURCES:
+  Alamofire:
+    :git: https://github.com/Alamofire/Alamofire.git
+    :tag: 4.0.0
+  Bond:
+    :git: https://github.com/ReactiveKit/Bond.git
+    :tag: 6.3.0
+  CVCalendar:
+    :git: https://github.com/Mozharovsky/CVCalendar
+    :tag: 1.4.0
+  DarwinSDK:
+    :branch: develop
+    :git: https://bitbucket.iilg.com/scm/iimob/darwin-sdk-ios.git
+  IntervalUIKit:
+    :commit: 54a3661f
+    :git: https://bitbucket.iilg.com/scm/iimob/interval-uikit-ios.git
+  ReactiveKit:
+    :git: https://github.com/ReactiveKit/ReactiveKit.git
+    :tag: v3.6.2
+  SDWebImage:
+    :git: https://github.com/rs/SDWebImage.git
+    :tag: 3.8.2
+  thenPromise:
+    :git: https://github.com/freshOS/then.git
+    :tag: 2.2.5
+  XCGLogger:
+    :branch: swift_3.0
+    :git: https://github.com/DaveWoodCom/XCGLogger.git
+
+CHECKOUT OPTIONS:
+  Alamofire:
+    :git: https://github.com/Alamofire/Alamofire.git
+    :tag: 4.0.0
+  Bond:
+    :git: https://github.com/ReactiveKit/Bond.git
+    :tag: 6.3.0
+  CVCalendar:
+    :git: https://github.com/Mozharovsky/CVCalendar
+    :tag: 1.4.0
+  DarwinSDK:
+    :commit: 907947e38d9904e176d3a3bd51e34f37091900b9
+    :git: https://bitbucket.iilg.com/scm/iimob/darwin-sdk-ios.git
+  IntervalUIKit:
+    :commit: 54a3661f
+    :git: https://bitbucket.iilg.com/scm/iimob/interval-uikit-ios.git
+  ReactiveKit:
+    :git: https://github.com/ReactiveKit/ReactiveKit.git
+    :tag: v3.6.2
+  SDWebImage:
+    :git: https://github.com/rs/SDWebImage.git
+    :tag: 3.8.2
+  thenPromise:
+    :git: https://github.com/freshOS/then.git
+    :tag: 2.2.5
+  XCGLogger:
+    :commit: 2fd27c92eb102bcf09f3176a230e42e38cacd4a2
+    :git: https://github.com/DaveWoodCom/XCGLogger.git
+
+SPEC CHECKSUMS:
+  Alamofire: fef59f00388f267e52d9b432aa5d93dc97190f14
+  Appsee: 7643d74bad4921c4df40e6977c756909365bd851
+  Bond: 2e90c5bf07f1ad80e5aaf9eb75d2e82ca9b5ef77
+  Brightcove-Player-SDK: 797417ba9ca513d079df6844515a05498e3639d8
+  CVCalendar: 7ed8a9cb7cd62c9fffc05ac92201d82b93e1546a
+  DarwinSDK: a5a94dea8f91432563d039daabff7467440138c6
+  Diff: befa1d19c32726b2b36ce915d98793e2fbde8dcc
+  Firebase: 83283761a1ef6dc9846e03d08059f51421afbd65
+  FirebaseAnalytics: 722b53c7b32bfc7806b06e0093a2f5180d4f2c5a
+  FirebaseCore: 69b1a5ac5f857ba6d5fd9d5fe794f4786dd5e579
+  FirebaseInstanceID: 70c2b877e9338971b2429ea5a4293df6961aa44e
+  FirebaseMessaging: 3dd86bfda2acb680b05c97f3f8ac566e9bb87b2a
+  FSCalendar: 04dc531f06fbde8a8e5b7394e9d4edebd45a591f
+  GoogleMaps: 104c418d61ab8a05dff06ed0784c25ea9d37da45
+  GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
+  HexColors: 5f95843ef89aff6a72e1fd3a8ebabf205cc43379
+  HockeySDK: 82bf8dcbe1af3c87c24dc98924fcf2e2ba5be8c4
+  IntervalUIKit: 55a98072dc802ff4403364d9308d99ce6b8c809a
+  nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
+  Nimble: bfe1f814edabba69ff145cb1283e04ed636a67f2
+  PPTopMostController: 4e6f1e5f8c645bdcc74cd837a20f607ff262c048
+  Protobuf: 03eef2ee0b674770735cf79d9c4d3659cf6908e8
+  Quick: 58d203b1c5e27fff7229c4c1ae445ad7069a7a08
+  ReactiveKit: f64f056f4170dd7ea8d1b4857a502f9324a2b8bf
+  Realm: 3601ef091c8c499a31101d8563b991e75546cdce
+  RealmSwift: 8183818515471b01a99abdd2970f8e4fd52b6f4a
+  RMessage: 31d44bd26a8f353f987d2e7194f3e9ffb203cbf2
+  SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
+  SVProgressHUD: db27c54e6e18bc903341661fc9feb55e04905cc4
+  SwiftLint: 1134786caedd2caab0560d2f36b76414a5a56808
+  SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
+  thenPromise: 325c42488b01988d65f7c3645ee371ad324c6a21
+  TPKeyboardAvoiding: 0d6af20e95e2850f4c621841225b59ec7d8dd852
+  XCGLogger: 38063ea89b4c8b23232d18efd2e12eb0005f3ea4
+
+PODFILE CHECKSUM: f7d5aeac07694a8a3b4e0d5ec0ac9c99e8843b46
+
+COCOAPODS: 1.2.1
