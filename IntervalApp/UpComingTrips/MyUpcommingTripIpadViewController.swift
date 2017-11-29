@@ -15,35 +15,35 @@ import SVProgressHUD
 class MyUpcommingTripIpadViewController: UIViewController {
     
     //***** Outlets *****//
-    @IBOutlet weak var upcommingTripTblView: UITableView!
-    @IBOutlet var conformationNumber: String?
+    @IBOutlet weak private var upcommingTripTblView: UITableView!
+    @IBOutlet private var conformationNumber: String?
     @IBOutlet weak var leadingTableVwConstraint: NSLayoutConstraint!
     @IBOutlet weak var trailingTableVwConstraint: NSLayoutConstraint!
     var orientationIsPortrait = true
     
     override func viewWillLayoutSubviews() {
         //Managing table view spacing for orientation changes.
-        self.checkOrientation()
+        checkOrientation()
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        self.checkOrientation()
+        checkOrientation()
         upcommingTripTblView.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.checkOrientation()
+        checkOrientation()
         upcommingTripTblView.reloadData()
     }
     
     override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
-        self.checkOrientation()
+        checkOrientation()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         upcommingTripTblView.isScrollEnabled = false
-        self.title = Constant.ControllerTitles.myUpcomingTripViewController
+        title = Constant.ControllerTitles.myUpcomingTripViewController
         
         //***** Setup the hamburger menu.  This will reveal the side menu. *****//
         if let rvc = self.revealViewController() {
@@ -56,15 +56,15 @@ class MyUpcommingTripIpadViewController: UIViewController {
             self.navigationItem.leftBarButtonItem = menuButton
             
             //***** This line allows the user to swipe left-to-right to reveal the menu. We might want to comment this out if it becomes confusing. *****//
-            self.view.addGestureRecognizer( rvc.panGestureRecognizer())
-            self.upcommingTripTblView.reloadData()
+            view.addGestureRecognizer( rvc.panGestureRecognizer())
+            upcommingTripTblView.reloadData()
         }
     }
     
     //***** Function to check if device is in portrait or landscape. *****//
     
     func checkOrientation() {
-        if(UIDevice.current.orientation.isPortrait) {
+        if UIDevice.current.orientation.isPortrait {
             orientationIsPortrait = true
             leadingTableVwConstraint.constant = 20
             trailingTableVwConstraint.constant = 20
@@ -113,7 +113,7 @@ extension MyUpcommingTripIpadViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        if((indexPath as NSIndexPath).section == 0) {
+        if (indexPath as NSIndexPath).section == 0 {
             
             return tableView.frame.size.height
         } else {
@@ -139,7 +139,7 @@ extension MyUpcommingTripIpadViewController: UITableViewDataSource {
         for subviews in cell.subviews {
             subviews.removeFromSuperview()
         }
-        if(orientationIsPortrait) {
+        if orientationIsPortrait {
             let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
             layout.minimumInteritemSpacing = 1.0
             layout.minimumLineSpacing = 1.0
@@ -202,14 +202,18 @@ extension MyUpcommingTripIpadViewController: UICollectionViewDelegateFlowLayout 
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if(orientationIsPortrait) {
-            if(indexPath.item == 0) {
-                return CGSize(width: collectionView.frame.size.width, height: 700.0)
+        if orientationIsPortrait {
+            if indexPath.item == 0 {
+                if Constant.MyClassConstants.upcomingTripsArray.isEmpty {
+                  return CGSize(width: collectionView.frame.size.width, height: 700.0)
+                } else {
+                    return CGSize(width: collectionView.frame.size.width, height: 0)
+                }
             } else {
                 return CGSize(width: collectionView.frame.size.width, height: 600.0)
             }
         } else {
-            if(indexPath.item == 0) {
+            if indexPath.item == 0 {
                 return CGSize(width: 300.0, height: 400.0)
             } else {
                 return CGSize(width: 500.0, height: 550.0)
@@ -227,60 +231,70 @@ extension MyUpcommingTripIpadViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return Constant.MyClassConstants.upcomingTripsArray.count + 1
+        
+        if Constant.MyClassConstants.upcomingTripsArray.isEmpty {
+            return 1
+        } else {
+            return Constant.MyClassConstants.upcomingTripsArray.count + 1
+        }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        if (indexPath.item == 0) {
+        if indexPath.item == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cell, for: indexPath) as! CustomCollectionCell
-            
-            let headerLabel = UILabel()
-            let noTripsImage = UIImageView()
-            let searchVacationButton = UIButton()
-            if(orientationIsPortrait) {
-                headerLabel.frame = CGRect(x: 5, y: 325, width: cell.frame.size.width, height: 100)
-                noTripsImage.frame = CGRect(x: 0, y: 10, width: cell.frame.size.width, height: 320)
-                searchVacationButton.frame = CGRect(x: 0, y: 500, width: cell.frame.size.width, height: 60)
-            } else {
-                headerLabel.frame = CGRect(x: 300, y: 0, width: cell.frame.size.width - 20, height: 400)
-                noTripsImage.frame = CGRect(x: 300, y: -140, width: cell.frame.size.width, height: 320)
-                searchVacationButton.frame = CGRect(x: 300, y: 400, width: cell.frame.size.width, height: 60)
-
+            if Constant.MyClassConstants.upcomingTripsArray.isEmpty {
+                let headerLabel = UILabel()
+                let noTripsImage = UIImageView()
+                let searchVacationButton = UIButton()
+                if orientationIsPortrait {
+                    headerLabel.frame = CGRect(x: 5, y: 325, width: cell.frame.size.width, height: 100)
+                    noTripsImage.frame = CGRect(x: 0, y: 10, width: cell.frame.size.width, height: 320)
+                    searchVacationButton.frame = CGRect(x: 0, y: 500, width: cell.frame.size.width, height: 60)
+                } else {
+                    headerLabel.frame = CGRect(x: 300, y: 0, width: cell.frame.size.width - 20, height: 400)
+                    noTripsImage.frame = CGRect(x: 300, y: -140, width: cell.frame.size.width, height: 320)
+                    searchVacationButton.frame = CGRect(x: 300, y: 400, width: cell.frame.size.width, height: 60)
+                    
+                }
+                headerLabel.numberOfLines = 0
+                headerLabel.text = Constant.AlertPromtMessages.upcomingTripMessage
+                headerLabel.textColor = UIColor.lightGray
+                headerLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 25.0)
+                noTripsImage.image = UIImage(named: Constant.MyClassConstants.noImage)
+                searchVacationButton.setTitle(Constant.AlertPromtMessages.upcomingTripSearchVacationButtonMessage, for: UIControlState.normal)
+                searchVacationButton.backgroundColor = UIColor(red: 255.0 / 255.0, green: 122.0 / 255.0, blue: 55.0 / 255.0, alpha: 1.0)
+                searchVacationButton.setTitleColor(UIColor.white, for: UIControlState.normal)
+                searchVacationButton.layer.cornerRadius = 5
+                cell.addSubview(headerLabel)
+                cell.addSubview(noTripsImage)
+                cell.addSubview(searchVacationButton)
+                return cell
             }
-            headerLabel.numberOfLines = 0
-            headerLabel.text = Constant.AlertPromtMessages.upcomingTripMessage
-            headerLabel.textColor = UIColor.lightGray
-            headerLabel.font = UIFont(name: Constant.fontName.helveticaNeue, size: 25.0)
-            noTripsImage.image = UIImage(named: Constant.MyClassConstants.noImage)
-            searchVacationButton.setTitle(Constant.AlertPromtMessages.upcomingTripSearchVacationButtonMessage, for: UIControlState.normal)
-            searchVacationButton.backgroundColor = UIColor(red: 255.0 / 255.0, green: 122.0 / 255.0, blue: 55.0 / 255.0, alpha: 1.0)
-            searchVacationButton.setTitleColor(UIColor.white, for: UIControlState.normal)
-            searchVacationButton.layer.cornerRadius = 5
-            cell.addSubview(headerLabel)
-            cell.addSubview(noTripsImage)
-            cell.addSubview(searchVacationButton)
             return cell
         } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.secCell, for: indexPath) as! UpcomingTripsCollectionViewCell
-            
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.secCell, for: indexPath) as? UpcomingTripsCollectionViewCell else {
+                
+                return UICollectionViewCell()
+            }
             let upcomingTrip = Constant.MyClassConstants.upcomingTripsArray[indexPath.row - 1]
             let imageUrls = upcomingTrip.resort!.images
             let imageUrl = (imageUrls[(imageUrls.count) - 1].url)! as String
             
             cell.resortImageView.setImageWith(URL(string: imageUrl), completed: { (image:UIImage?, error:Error?, _:SDImageCacheType, _:URL?) in
-                if (error != nil) {
+                if error != nil {
                     cell.resortImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                 }
             }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
-
+ 
             var type = ExchangeTransactionType.fromName(name: upcomingTrip.type!).rawValue
-            if(upcomingTrip.type == Constant.myUpcomingTripCommonString.rental) {
+            if upcomingTrip.type == Constant.myUpcomingTripCommonString.rental {
                 
                  type = Constant.myUpcomingTripCommonString.getaway
                 
             }
-            if (upcomingTrip.type == Constant.myUpcomingTripCommonString.shop) {
+            if upcomingTrip.type == Constant.myUpcomingTripCommonString.shop {
                 
                  type = Constant.myUpcomingTripCommonString.exchange
                
@@ -289,25 +303,25 @@ extension MyUpcommingTripIpadViewController: UICollectionViewDataSource {
             cell.headerLabel.text = "Confirmation #\(upcomingTrip.exchangeNumber!)"
             cell.headerStatusLabel.text = upcomingTrip.exchangeStatus!
             cell.resortNameLabel.text = upcomingTrip.resort!.resortName
-            cell.resortLocationLabel.text = "\(upcomingTrip.resort!.address!.cityName!), \(upcomingTrip.resort!.address!.countryCode!)"
             cell.resortCodeLabel.text = upcomingTrip.resort!.address!.countryCode!
             let checkInDate = Helper.convertStringToDate(dateString: upcomingTrip.unit!.checkInDate!, format: Constant.MyClassConstants.dateFormat)
             
             let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
             let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkInDate)
             
-            let formatedCheckInDate = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday!)) \(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)). \(myComponents.day!), \(myComponents.year!)"
-            
-            let checkOutDate = Helper.convertStringToDate(dateString: upcomingTrip.unit!.checkOutDate!, format: Constant.MyClassConstants.dateFormat)
-            
-            let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkOutDate)
-            
-            let formatedCheckOutDate = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents1.weekday!)) \(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!)). \(myComponents1.day!), \(myComponents1.year!)"
-            
-            cell.tripDateLabel.text = "\(formatedCheckInDate) - \(formatedCheckOutDate)"
-            
+            if let weekday = myComponents.weekday, let month =  myComponents.month, let day = myComponents.day, let year = myComponents.year {
+                let formatedCheckInDate = "\(Helper.getWeekdayFromInt(weekDayNumber: weekday)) \(Helper.getMonthnameFromInt(monthNumber: month)). \(day), \(year)"
+                let checkOutDate = Helper.convertStringToDate(dateString: upcomingTrip.unit!.checkOutDate!, format: Constant.MyClassConstants.dateFormat)
+                
+                let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkOutDate)
+                if let weekday = myComponents1.weekday, let month =  myComponents1.month, let day = myComponents1.day, let year = myComponents1.year {
+                    let formatedCheckOutDate = "\(Helper.getWeekdayFromInt(weekDayNumber: weekday)) \(Helper.getMonthnameFromInt(monthNumber: month)). \(day), \(year)"
+                    
+                    cell.tripDateLabel.text = "\(formatedCheckInDate) - \(formatedCheckOutDate)"
+                }
+            }
             for layer in cell.resortNameBaseView.layer.sublayers! {
-                if(layer.isKind(of: CAGradientLayer.self)) {
+                if layer.isKind(of: CAGradientLayer.self) {
                     layer.removeFromSuperlayer()
                 }
             }
@@ -315,6 +329,21 @@ extension MyUpcommingTripIpadViewController: UICollectionViewDataSource {
             cell.backgroundColor = UIColor.white
             cell.footerViewDetailedButton.tag = indexPath.row
             cell.footerViewDetailedButton.addTarget(self, action: #selector(MyUpcommingTripIpadViewController.viewTripDetailsPressed(_:)), for: UIControlEvents.touchUpInside)
+            guard let addressDetails = upcomingTrip.resort?.address else {
+                return cell
+            }
+            var resortAddress = [String]()
+            if let city = addressDetails.cityName {
+                resortAddress.append(city)
+            }
+            if let state = addressDetails.territoryCode {
+                resortAddress.append(state)
+            }
+            if let countryCode = addressDetails.countryCode {
+                resortAddress.append(countryCode)
+            }
+            cell.resortLocationLabel.text = resortAddress.joined(separator: ", ").localized()
+            
             return cell
         }
     }

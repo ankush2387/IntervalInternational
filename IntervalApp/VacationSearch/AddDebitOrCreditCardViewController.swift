@@ -201,7 +201,9 @@ class AddDebitOrCreditCardViewController: UIViewController {
                     self.hideHudAsync()
                     Constant.MyClassConstants.selectedCreditCard.removeAll()
                     newCreditCard.creditcardId = 0
-                    newCreditCard.cardNumber = response.cardToken!
+                    if let cardToken = response.cardToken {
+                       newCreditCard.cardNumber = cardToken
+                    }
                     Constant.MyClassConstants.selectedCreditCard.append(newCreditCard)
                     self.resetCreditCardDetails()
                     self.dismiss(animated: false, completion: nil)
@@ -210,7 +212,6 @@ class AddDebitOrCreditCardViewController: UIViewController {
                     }, onError: {(_) in
                         self.presentErrorAlert(UserFacingCommonError.generic)
                         self.hideHudAsync()
-                       
                 })
             } else {
                 self.presentAlert(with: Constant.MyClassConstants.newCardalertTitle, message: Constant.MyClassConstants.newCardalertMess)
@@ -244,23 +245,23 @@ class AddDebitOrCreditCardViewController: UIViewController {
         dropDownSelectionSection = Int(sender.accessibilityValue!)!
         if dropDownSelectionSection == 0 && dropDownSelectionRow == 3 {
             
-            if self.hideStatus == false {
-                self.hideStatus = true
+            if hideStatus == false {
+                hideStatus = true
                 showPickerView()
                 
             } else {
-                self.hideStatus = false
+                hideStatus = false
                 hidePickerView()
             }
             
         } else {
             
-            if self.hideStatus == false {
-                self.hideStatus = true
+            if hideStatus == false {
+                hideStatus = true
                 showPickerView()
                 self.pickerView.reloadAllComponents()
             } else {
-                self.hideStatus = false
+                hideStatus = false
                 hidePickerView()
             }
         }
@@ -290,7 +291,7 @@ class AddDebitOrCreditCardViewController: UIViewController {
     func createPickerView() {
         
         pickerBaseView = UIView(frame: CGRect(x: 0, y: self.view.frame.size.height - 200, width: self.view.frame.size.width, height: 200))
-        self.pickerBaseView.backgroundColor = IUIKColorPalette.primary1.color
+        pickerBaseView.backgroundColor = IUIKColorPalette.primary1.color
         let doneButton = UIButton(frame: CGRect(x: pickerBaseView.frame.size.width - 60, y: 5, width: 50, height: 50))
         doneButton.setTitle(Constant.AlertPromtMessages.done, for: .normal)
         doneButton.addTarget(self, action: #selector(AddDebitOrCreditCardViewController.pickerDoneButtonPressed(_:)), for: .touchUpInside)
@@ -308,34 +309,34 @@ class AddDebitOrCreditCardViewController: UIViewController {
     // function to create picker view when drop down button pressed.
     func showDatePickerView() {
 
-        self.hideStatus = true
-        self.createDatePicker()
+        hideStatus = true
+        createDatePicker()
     }
     
     //function to hide date picker view.
     func hideDatePickerView() {
         
-        self.hideStatus = false
+        hideStatus = false
         pickerBaseView.isHidden = true
     }
     
     //function to show picker view.
     func showPickerView() {
-        self.activeField?.resignFirstResponder()
-        self.hideStatus = true
-        self.createPickerView()
+        activeField?.resignFirstResponder()
+        hideStatus = true
+        createPickerView()
     }
     
     //function to hide picker view.
     func hidePickerView() {
-        self.hideStatus = false
+        hideStatus = false
         pickerBaseView.isHidden = true
     }
     
     //function called when picker view done button pressed.
     func pickerDoneButtonPressed(_ sender: UIButton) {
         
-        self.hideStatus = false
+        hideStatus = false
         pickerBaseView.isHidden = true
         if datePickerView != nil {
             
@@ -385,7 +386,6 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if section == 0 {
-            
             return 6
         } else {
             return 7
@@ -395,10 +395,8 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         
         if section == 0 {
-            
             return 40
         } else {
-            
             return 20
         }
     }
@@ -427,52 +425,45 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
     
     @objc(tableView:heightForRowAtIndexPath:) func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            
-            if indexPath.section == 0 {
-                
-                if indexPath.row == 5 {
-                    
+          if UIDevice.current.userInterfaceIdiom == .pad {
+          
+            switch indexPath.section {
+             case 0 :
+                switch indexPath.row {
+                case 5:
                     return 80
-                } else if indexPath.row == 0 {
+                case 0:
                     return 90
-                } else {
+                default :
                     return 60
                 }
-            } else {
-                
-                if indexPath.row == 6 {
-                    
+            default:
+                switch indexPath.row {
+                case 6 :
                     return 80
-                } else {
-                    
+                default:
                     return 60
                 }
-                
             }
+
         } else {
-            if indexPath.section == 0 {
-                
-                if indexPath.row == 5 {
-                    
-                    return 60
-                } else if indexPath.row == 0 {
-                    
-                    return 75
-                } else {
-                    
-                    return 50
-                }
-            } else {
-                
-                if indexPath.row == 6 {
-                    
+            switch indexPath.section {
+            case 0 :
+                switch indexPath.row {
+                case 5:
+                    return 80
+                case 0:
                     return 70
-                } else {
-                    
+                default :
                     return 50
                 }
-                
+            default:
+                switch indexPath.row {
+                case 6 :
+                    return 70
+                default:
+                    return 50
+                }
             }
         }
     }
@@ -483,12 +474,15 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
             
             if indexPath.row == 0 || indexPath.row == 1 || indexPath.row == 4 {
                 
-                  let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.guestTextFieldCell, for: indexPath) as! GuestTextFieldCell
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.guestTextFieldCell, for: indexPath) as? GuestTextFieldCell else {
+                    
+                    return UITableViewCell()
+                }
                 cell.nameTF.delegate = self
                 cell.nameTF.text = ""
                 if indexPath.row == 0 {
                     
-                    if Constant.GetawaySearchResultCardFormDetailData.nameOnCard == "" {
+                    if !Constant.GetawaySearchResultCardFormDetailData.nameOnCard.isEmpty {
                         cell.nameTF.placeholder = Constant.textFieldTitles.nameOnCard
                     } else {
                         
@@ -496,7 +490,7 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
                     }
                 } else if indexPath.row == 1 {
                     
-                     if Constant.GetawaySearchResultCardFormDetailData.cardNumber == "" {
+                     if Constant.GetawaySearchResultCardFormDetailData.cardNumber.isEmpty {
                         cell.nameTF.placeholder = Constant.textFieldTitles.cardNumber
                      } else {
                         
@@ -505,7 +499,7 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
                     
                 } else {
                    
-                     if Constant.GetawaySearchResultCardFormDetailData.cvv == "" {
+                     if Constant.GetawaySearchResultCardFormDetailData.cvv.isEmpty {
                         cell.nameTF.placeholder = Constant.textFieldTitles.cvv
                     } else {
                         
@@ -522,30 +516,25 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
                 return cell
             } else if indexPath.row == 5 {
                 
-                  let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.saveCardOptionCell, for: indexPath) as! SaveCardOptionCell
-                
-                if saveCardCheckBoxChecked == false {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.saveCardOptionCell, for: indexPath) as? SaveCardOptionCell else {
                     
-                    cell.saveThisCardCheckBox.checked = false
-                } else {
-                    
-                    cell.saveThisCardCheckBox.checked = true
+                    return UITableViewCell()
                 }
-
+                cell.saveThisCardCheckBox.checked = saveCardCheckBoxChecked
                 cell.saveThisCardCheckBox.addTarget(self, action: #selector(AddDebitOrCreditCardViewController.saveNewCreditCardPressed(_:)), for: .touchUpInside)
                 
                 return cell
             } else {
                 
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.dropDownListCell, for: indexPath) as! DropDownListCell
-                
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.dropDownListCell, for: indexPath) as? DropDownListCell else {
+                    
+                    return UITableViewCell()
+                }
                 if indexPath.row == 3 {
                     
                     if Constant.GetawaySearchResultCardFormDetailData.expDate == nil {
-                        
                         cell.selectedTextLabel.text = Constant.textFieldTitles.expirationDate
                     } else {
-                        
                         let dateFormatter = DateFormatter()
                         dateFormatter.dateStyle = DateFormatter.Style.short
                         
@@ -556,7 +545,7 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
 
                 } else {
                     
-                    if Constant.GetawaySearchResultCardFormDetailData.cardType == "" {
+                    if Constant.GetawaySearchResultCardFormDetailData.cardType.isEmpty {
                         cell.selectedTextLabel.text = Constant.textFieldTitles.type
                     } else {
                         
@@ -580,25 +569,25 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
             
             if indexPath.row == 0 || indexPath.row == 4 {
                 
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.dropDownListCell, for: indexPath) as! DropDownListCell
-                
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.dropDownListCell, for: indexPath) as? DropDownListCell else {
+                    return UITableViewCell()
+                }
                 if indexPath.row == 0 {
                     //country name
                     
-                    if Constant.GetawaySearchResultCardFormDetailData.country == "" {
+                    if Constant.GetawaySearchResultCardFormDetailData.country.isEmpty {
                         cell.selectedTextLabel.text = Constant.textFieldTitles.guestFormSelectCountryPlaceholder
                     } else {
-                        if let address = Session.sharedSession.contact?.addresses![0] {
+                        if let address = Session.sharedSession.contact?.addresses?[0] {
                             cell.selectedTextLabel.text = address.countryCode
                             
                         } else {
                             cell.selectedTextLabel.text = Constant.GetawaySearchResultCardFormDetailData.country
-                            
                         }
                     }
                 } else {
                     //state name
-                    if Constant.GetawaySearchResultCardFormDetailData.state == "" {
+                    if Constant.GetawaySearchResultCardFormDetailData.state.isEmpty {
                         
                         cell.selectedTextLabel.text = Constant.textFieldTitles.guestFormSelectState
                     } else {
@@ -619,19 +608,22 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
                 
             } else if indexPath.row == 6 {
                 
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.addYourCardButtonCell, for: indexPath) as! AddYourCardButtonCell
-                
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.addYourCardButtonCell, for: indexPath) as? AddYourCardButtonCell else {
+                    return UITableViewCell()
+                }
                 cell.addYourCardButton.addTarget(self, action: #selector(AddDebitOrCreditCardViewController.addCardButtonPressed(_:)), for: .touchUpInside)
                 return cell
             } else {
                 
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.guestTextFieldCell, for: indexPath) as! GuestTextFieldCell
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.guestTextFieldCell, for: indexPath) as? GuestTextFieldCell else {
+                    return UITableViewCell()
+                }
                 cell.nameTF.delegate = self
                 cell.nameTF.text = ""
                 if indexPath.row == 1 {
                     
                     //address line 1 info
-                    if Constant.GetawaySearchResultCardFormDetailData.address1 == "" {
+                    if Constant.GetawaySearchResultCardFormDetailData.address1.isEmpty {
                         
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormAddress1
                     } else {
@@ -650,24 +642,20 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
                 } else if indexPath.row == 2 {
                     //address line2 info
                     
-                    if Constant.GetawaySearchResultCardFormDetailData.address2 == "" {
+                    if Constant.GetawaySearchResultCardFormDetailData.address2.isEmpty {
                         
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormAddress2
                     } else {
                         if let addressLine2 = Session.sharedSession.contact?.addresses![0].addressLines[1] {
                             cell.nameTF.text = addressLine2
-                            
                         } else {
                             cell.nameTF.text = Constant.GetawaySearchResultCardFormDetailData.address2
-                            
                         }
-                        
                     }
-                    
                 } else if indexPath.row == 3 {
                     
                     // city name info
-                    if Constant.GetawaySearchResultCardFormDetailData.city == "" {
+                    if Constant.GetawaySearchResultCardFormDetailData.city.isEmpty {
                         
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormCity
                     } else {
@@ -682,7 +670,7 @@ extension AddDebitOrCreditCardViewController: UITableViewDataSource {
                 } else {
                     
                     //postal code info
-                    if Constant.GetawaySearchResultCardFormDetailData.pinCode == "" {
+                    if Constant.GetawaySearchResultCardFormDetailData.pinCode.isEmpty {
                         
                         cell.nameTF.placeholder = Constant.textFieldTitles.guestFormPostalCode
                     } else {
@@ -767,16 +755,16 @@ extension AddDebitOrCreditCardViewController: UIPickerViewDelegate {
             
              if dropDownSelectionRow == 0 {
 
-                 Constant.GetawaySearchResultCardFormDetailData.country = Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row].countryName!
+                if let countryName = Constant.GetawaySearchResultGuestFormDetailData.countryListArray[row].countryName {
+                   Constant.GetawaySearchResultCardFormDetailData.country = countryName
+                }
                 Constant.GetawaySearchResultCardFormDetailData.countryCode = Constant.GetawaySearchResultGuestFormDetailData.countryCodeArray[row]
                 
                 Helper.getStates(country: Constant.GetawaySearchResultCardFormDetailData.countryCode, viewController: self)
              } else {
                 guard let stateName = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name else { return }
                 Constant.GetawaySearchResultCardFormDetailData.state = stateName
-
             }
-            
         }
     }
 }
@@ -830,12 +818,12 @@ extension AddDebitOrCreditCardViewController: UIPickerViewDataSource {
 extension AddDebitOrCreditCardViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.activeField?.resignFirstResponder()
+        activeField?.resignFirstResponder()
         
         return true
     }
     func textFieldDidEndEditing(_ textField: UITextField) {
-        self.activeField?.resignFirstResponder()
+        activeField?.resignFirstResponder()
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
@@ -850,7 +838,9 @@ extension AddDebitOrCreditCardViewController: UITextFieldDelegate {
                     if range.length == 1 && string.characters.count == 0 {
                         Constant.GetawaySearchResultCardFormDetailData.nameOnCard.characters.removeLast()
                     } else {
-                        Constant.GetawaySearchResultCardFormDetailData.nameOnCard = "\(textField.text!)\(string)"
+                        if let textfieldText = textField.text {
+                          Constant.GetawaySearchResultCardFormDetailData.nameOnCard = "\(textfieldText)\(string)"
+                        }
                     }
 
                 } else if textField.tag == 1 {
@@ -858,7 +848,9 @@ extension AddDebitOrCreditCardViewController: UITextFieldDelegate {
                     if range.length == 1 && string.characters.count == 0 {
                         Constant.GetawaySearchResultCardFormDetailData.cardNumber.characters.removeLast()
                     } else {
-                        Constant.GetawaySearchResultCardFormDetailData.cardNumber = "\(textField.text!)\(string)"
+                        if let textfieldText = textField.text {
+                            Constant.GetawaySearchResultCardFormDetailData.cardNumber = "\(textfieldText)\(string)"
+                        }
                     }
                     
                 } else {
@@ -866,7 +858,9 @@ extension AddDebitOrCreditCardViewController: UITextFieldDelegate {
                     if range.length == 1 && string.characters.count == 0 {
                         Constant.GetawaySearchResultCardFormDetailData.cvv.characters.removeLast()
                     } else {
-                        Constant.GetawaySearchResultCardFormDetailData.cvv = "\(textField.text!)\(string)"
+                        if let textfieldText = textField.text {
+                         Constant.GetawaySearchResultCardFormDetailData.cvv = "\(textfieldText)\(string)"
+                        }
                     }
             }
         } else {
@@ -876,7 +870,7 @@ extension AddDebitOrCreditCardViewController: UITextFieldDelegate {
                     if range.length == 1 && string.characters.count == 0 {
                         Constant.GetawaySearchResultCardFormDetailData.address1.characters.removeLast()
                     } else {
-                        Constant.GetawaySearchResultCardFormDetailData.address1 = "\(textField.text!)\(string)"
+                        Constant.GetawaySearchResultCardFormDetailData.address1 = "\(textField.text ?? "")\(string)"
                     }
                     
                 } else if textField.tag == 2 {
@@ -884,7 +878,7 @@ extension AddDebitOrCreditCardViewController: UITextFieldDelegate {
                     if range.length == 1 && string.characters.count == 0 {
                         Constant.GetawaySearchResultCardFormDetailData.address2.characters.removeLast()
                     } else {
-                        Constant.GetawaySearchResultCardFormDetailData.address2 = "\(textField.text!)\(string)"
+                        Constant.GetawaySearchResultCardFormDetailData.address2 = "\(textField.text ?? "")\(string)"
 
                     }
                     
@@ -893,14 +887,14 @@ extension AddDebitOrCreditCardViewController: UITextFieldDelegate {
                     if range.length == 1 && string.characters.count == 0 {
                         Constant.GetawaySearchResultCardFormDetailData.city.characters.removeLast()
                     } else {
-                        Constant.GetawaySearchResultCardFormDetailData.city = "\(textField.text!)\(string)"
+                        Constant.GetawaySearchResultCardFormDetailData.city = "\(textField.text ?? "")\(string)"
                     }
                 } else {
                     
                     if range.length == 1 && string.characters.count == 0 {
                         Constant.GetawaySearchResultCardFormDetailData.pinCode.characters.removeLast()
                     } else {
-                       Constant.GetawaySearchResultCardFormDetailData.pinCode = "\(textField.text!)\(string)"
+                       Constant.GetawaySearchResultCardFormDetailData.pinCode = "\(textField.text ?? "")\(string)"
                     }
                 }
             }
@@ -919,7 +913,7 @@ extension AddDebitOrCreditCardViewController: UITextFieldDelegate {
                textField.keyboardType = .default
             } else {
                 textField.keyboardType = .numberPad
-                self.addDoneButtonOnNumpad(textField: textField)
+                addDoneButtonOnNumpad(textField: textField)
             }
             
         } else {

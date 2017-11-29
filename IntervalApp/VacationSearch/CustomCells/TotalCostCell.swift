@@ -16,10 +16,6 @@ class TotalCostCell: UITableViewCell {
     @IBOutlet weak var currencyCodeLabel: UILabel!
     @IBOutlet weak private var amountLabel: UILabel!
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-    }
     func setTotalPrice(with currencyDisplayes: String, and chargeAmount: Float) {
         
         if let attributedAmount = chargeAmount.currencyFormatter(for:currencyDisplayes) {

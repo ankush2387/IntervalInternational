@@ -60,7 +60,7 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
             yearLabel.text = "\(relinquishmentYear)".localized()
         }
         
-        if let unitSize = deposit.unit!.unitSize {
+        if let unitSize = deposit.unit?.unitSize {
             bedroomSizeAndKitchenClient.text = "\(Helper.getBedroomNumbers(bedroomType: unitSize))".localized()
         }
         
