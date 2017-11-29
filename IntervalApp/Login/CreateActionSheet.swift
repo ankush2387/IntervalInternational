@@ -227,10 +227,6 @@ class CreateActionSheet: UITableViewController {
                         self.activeAlertCount = self.activeAlertCount + 1
                         self.getStatusForAllAlerts()
                     } else {
-                        //                    DispatchQueue.main.async {[weak self] in
-                        //                        guard let strongSelf = self else {return }
-                        //                        strongSelf.performSortingForMemberNumberWithViewResultAndNothingYet()
-                        //                    }
                         self.performSortingForMemberNumberWithViewResultAndNothingYet()
                         NotificationCenter.default.post(name:NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
                         Constant.MyClassConstants.isEvent2Ready = Constant.MyClassConstants.isEvent2Ready + 1

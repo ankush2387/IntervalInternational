@@ -500,7 +500,8 @@ public class Helper {
     //***** function to get all local storage object on the basis of selected membership number *****//
     static func getLocalStorageWherewanttoGo() -> Results <RealmLocalStorage> {
 
-            let realm = try! Realm()
+        do{
+            let realm = try? Realm()
             let Membership = Session.sharedSession.selectedMembership
             let SelectedMembershipNumber = Membership?.memberNumber
             var requiredMemberNumber = ""
@@ -508,11 +509,11 @@ public class Helper {
                 requiredMemberNumber = membernumber
             }
             let realmLocalStorage = realm.objects(RealmLocalStorage.self).filter("membeshipNumber == '\(requiredMemberNumber)'")
-            if(realmLocalStorage.count > 0) {
+            if !realmLocalStorage.isEmpty {
                 return realmLocalStorage
             } else {
                 
-                let realm = try! Realm()
+                let realm = try? Realm()
                 let allDest = realm.objects(AllAvailableDestination.self)
                 Constant.MyClassConstants.whereTogoContentArray.removeAllObjects()
                 for obj in allDest {
@@ -521,6 +522,9 @@ public class Helper {
                 }
                 return realmLocalStorage
             }
+        } catch {
+            
+        }
     }
     static func getLocalStorageWherewanttoTrade() -> Results <OpenWeeksStorage> {
         

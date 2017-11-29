@@ -814,7 +814,7 @@ extension VacationSearchIPadViewController: SearchTableViewCellDelegate {
                         let vacationSearch = VacationSearch(Session.sharedSession.appSettings, rentalSearchCriteria)
                         guard let accessToken = Session.sharedSession.userAccessToken else { return }
                         guard let rentalSearchRequest = vacationSearch.rentalSearch?.searchContext.request else { return }
-                        ClientAPI.sharedInstance.searchDatesForRental(for: accessToken, and: rentalSearchRequest)
+                        ClientAPI.sharedInstance.readDates(for: accessToken, and: rentalSearchRequest)
                             
                             .then { [unowned self] searchDates in
                                 

@@ -60,7 +60,7 @@ final class ClientAPI: ClientAPIStore {
         }
     }
 
-    func searchDatesForRental(for accessToken: DarwinAccessToken, and request: RentalSearchDatesRequest) -> Promise<RentalSearchDatesResponse> {
+    func readDates(for accessToken: DarwinAccessToken, and request: RentalSearchDatesRequest) -> Promise<RentalSearchDatesResponse> {
         return Promise { resolve, reject in
         RentalClient.searchDates(accessToken, request: request, onSuccess: resolve, onError: reject)
     }
