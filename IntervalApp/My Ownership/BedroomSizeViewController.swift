@@ -374,7 +374,7 @@ extension BedroomSizeViewController: UITableViewDelegate {
                 
             }
             
-            for floatWeek in Constant.MyClassConstants.whatToTradeArray{
+            for floatWeek in Constant.MyClassConstants.whatToTradeArray {
                 
                 if !(floatWeek as AnyObject).isKind(of: List<rlmPointsProgram>.self) {
                     guard let floatWeekTraversed = floatWeek as? OpenWeeks else { return }

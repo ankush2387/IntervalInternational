@@ -506,7 +506,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
                     } else {
                         Constant.MyClassConstants.enableTaxes = false
                     }
-                    Constant.MyClassConstants.memberCreditCardList =  Session.sharedSession.contact?.creditcards ?? []
+                    Constant.MyClassConstants.memberCreditCardList = Session.sharedSession.contact?.creditcards ?? []
                     let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
                     guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.checkOutViewController) as? CheckOutIPadViewController else { return }
                     
@@ -1115,4 +1115,3 @@ extension WhoWillBeCheckingInIPadViewController: RenewelViewControllerDelegate {
         self.proceedToCheckoutPressed(button)
     }
 }
-

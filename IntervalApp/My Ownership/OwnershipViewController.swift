@@ -336,7 +336,6 @@ class OwnershipViewController: UIViewController {
                     Constant.MyClassConstants.relinquishmentIdArray.append(relinquishmentId)
                 }
                 
-                
                 var mainStoryboard = UIStoryboard()
                 if(Constant.RunningDevice.deviceIdiom == .pad) {
                     mainStoryboard = UIStoryboard(name: Constant.storyboardNames.ownershipIpad, bundle: nil)
@@ -436,7 +435,6 @@ class OwnershipViewController: UIViewController {
             if let relinquishmentId = Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId {
                 Constant.MyClassConstants.relinquishmentIdArray.append(relinquishmentId)
             }
-            
             
             //Realm local storage for selected relinquishment
             let storedata = OpenWeeksStorage()
@@ -602,7 +600,6 @@ class OwnershipViewController: UIViewController {
         if let relinquishmentId = Constant.MyClassConstants.relinquismentSelectedDeposit.relinquishmentId {
             Constant.MyClassConstants.relinquishmentIdArray.append(relinquishmentId)
         }
-        
         
         //Realm local storage for selected relinquishment
         let storedata = OpenWeeksStorage()

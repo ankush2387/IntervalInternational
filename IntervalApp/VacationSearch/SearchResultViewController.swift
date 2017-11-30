@@ -399,7 +399,6 @@ class SearchResultViewController: UIViewController {
                                         if let searchCheckInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate {
                                             Helper.executeExchangeSearchAvailabilityAfterSelectCheckInDate(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: searchCheckInDate, format: Constant.MyClassConstants.dateFormat), searchCriteria: Constant.MyClassConstants.initialVacationSearch.searchCriteria, senderVC: self)
                                         }
-                                      
                                         
             },
                                        onError: { (_) in
@@ -1429,7 +1428,7 @@ extension SearchResultViewController: UICollectionViewDataSource {
         let sectionsInSearchResult = Constant.MyClassConstants.initialVacationSearch.createSections()
         if sectionsInSearchResult.count > 0 {
                     for sections in sectionsInSearchResult {
-                        if (sections.exactMatch == nil || sections.exactMatch == true) && section == 0  {
+                        if (sections.exactMatch == nil || sections.exactMatch == true) && section == 0 {
                             headerLabel.text = Constant.CommonLocalisedString.exactString + Constant.MyClassConstants.vacationSearchResultHeaderLabel
                             headerView.backgroundColor = Constant.CommonColor.headerGreenColor
                             break
@@ -1473,14 +1472,14 @@ extension SearchResultViewController: UITableViewDelegate {
                     if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() {
                         if self.exactMatchResortsArrayExchange.count > 0 {
                             if let totalUnits = self.exactMatchResortsArrayExchange[index].inventory?.buckets.count {
-                                return CGFloat(totalUnits*80 + 270 + 10)
+                                return CGFloat(totalUnits * 80 + 270 + 10)
                             } else {
                                 return 0
                             }
                             
                         } else {
                             if let totalUnits = self.surroundingMatchResortsArrayExchange[index].inventory?.buckets.count {
-                            return CGFloat(totalUnits*80 + 270 + 10)
+                            return CGFloat(totalUnits * 80 + 270 + 10)
                             } else {
                                 return 0
                             }
@@ -1548,7 +1547,7 @@ extension SearchResultViewController: UITableViewDelegate {
                     } else if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isRental() {
                         if exactMatchResortsArray.count > 0 {
                             if let totalUnits = self.exactMatchResortsArray[indexPath.row].inventory?.units.count {
-                            return CGFloat(totalUnits*80 + 270 + 10)
+                            return CGFloat(totalUnits * 80 + 270 + 10)
                             } else {
                                 return 0
                             }
@@ -1943,7 +1942,7 @@ extension SearchResultViewController: WhoWillBeCheckInDelegate {
     }
 }
 
-extension SearchResultViewController:ExchangeInventoryCVCellDelegate {
+extension SearchResultViewController: ExchangeInventoryCVCellDelegate {
     func infoIconPressed() {
         self.performSegue(withIdentifier: "pointsInfoSegue", sender: self)
     }

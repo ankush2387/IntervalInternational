@@ -304,7 +304,6 @@ class ResortDetailsViewController: UIViewController {
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: Constant.notificationNames.closeButtonClickedNotification), object: nil)
             
         } else {
-            
 
             if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.vacationSearchFunctionalityCheck) {
                 

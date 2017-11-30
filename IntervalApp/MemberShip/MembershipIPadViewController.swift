@@ -240,7 +240,7 @@ extension MembershipIPadViewController: UITableViewDataSource {
             titleLabel.textColor = UIColor.darkGray
             titleLabel.font = UIFont(name: Constant.fontName.helveticaNeueBold, size: 18)
             headerView.addSubview(titleLabel)
-            headerView.backgroundColor = UIColor(red: 245.0/255.0, green: 245.0/255.0, blue: 246.0/255.0, alpha: 1.0)
+            headerView.backgroundColor = UIColor(red: 245.0 / 255.0, green: 245.0 / 255.0, blue: 246.0 / 255.0, alpha: 1.0)
             return headerView
         }
         return nil

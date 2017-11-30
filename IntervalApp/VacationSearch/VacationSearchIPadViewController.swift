@@ -908,11 +908,11 @@ extension VacationSearchIPadViewController: SearchTableViewCellDelegate {
                                 if activeInterval.fetchedBefore && !activeInterval.hasCheckInDates() {
                                     self.hideHudAsync()
                                     Helper.showNotAvailabilityResults()
-                                }else {
+                                } else {
                                     Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
                                     if let checkInDate = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate {
                                         
-                                    let initialSearchCheckInDate =  Helper.convertStringToDate(dateString: checkInDate, format: Constant.MyClassConstants.dateFormat)
+                                    let initialSearchCheckInDate = Helper.convertStringToDate(dateString: checkInDate, format: Constant.MyClassConstants.dateFormat)
                                     
                                     Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: initialSearchCheckInDate, senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                                     }
@@ -1198,7 +1198,7 @@ extension VacationSearchIPadViewController: WereWantToGoTableViewCellDelegate {
     
 }
 
-// MARK:- Extension for Helper
+// MARK: - Extension for Helper
 extension VacationSearchIPadViewController: HelperDelegate {
     func resortSearchComplete() {
         hideHudAsync()

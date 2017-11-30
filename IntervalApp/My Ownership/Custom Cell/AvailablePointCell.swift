@@ -20,5 +20,4 @@ class AvailablePointCell: UITableViewCell {
     @IBOutlet weak var checkBOx: IUIKCheckbox!
     @IBOutlet weak var infoButton: UIButton!
 
-
 }

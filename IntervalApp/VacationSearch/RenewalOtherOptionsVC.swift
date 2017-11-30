@@ -176,7 +176,7 @@ extension RenewalOtherOptionsVC: UITableViewDataSource {
             }
         }
             return cell
-        }else {
+        } else {
             
             let lowestTerm = forceRenewals.products[0].term
             for coreProduct in (forceRenewals.products) {

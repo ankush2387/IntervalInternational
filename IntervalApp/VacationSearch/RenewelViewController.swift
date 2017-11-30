@@ -356,7 +356,6 @@ extension RenewelViewController: UITableViewDataSource {
                                 let price = String(format: "%.0f", renewalComboProduct.price)
                                 
                                 priceAndCurrency = currencyCodeWithSymbol + "\(price)" + " " + currencyCode
-                              
                                 
                                 //formatted string
                                 let formattedString = Helper.returnIntervalMembershipString(price: priceAndCurrency, term: term)
@@ -583,7 +582,6 @@ extension RenewelViewController: UITableViewDataSource {
                         }
                         
                         let range = (mainString as NSString).range(of: priceAndCurrency)
-                        
                         
                         let attributeString = NSMutableAttributedString(string: mainString)
                         if let font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: CGFloat(20.0)) {

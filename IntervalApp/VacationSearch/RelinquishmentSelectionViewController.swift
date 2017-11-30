@@ -127,7 +127,7 @@ class RelinquishmentSelectionViewController: UIViewController {
                     } else {
                         if let lockOffUnits = fixed_week_type.unit?.lockOffUnits {
                             
-                            let results = Constant.MyClassConstants.relinquishmentIdArray.map( { ($0 as AnyObject).contains(relinquishmentId)})
+                            let results = Constant.MyClassConstants.relinquishmentIdArray.map({ ($0 as AnyObject).contains(relinquishmentId) })
                             let count = results.filter({ $0 == true }).count
                             
                             if count != lockOffUnits.count + 1 {
@@ -855,7 +855,7 @@ extension RelinquishmentSelectionViewController: UITableViewDataSource {
         } else if indexPath.section == 1 || indexPath.section == 3 {
             
             var openWeek: OpenWeek!
-            if indexPath.section == 1  {
+            if indexPath.section == 1 {
                 
                 openWeek = relinquishmentOpenWeeksArray[indexPath.row]
                 

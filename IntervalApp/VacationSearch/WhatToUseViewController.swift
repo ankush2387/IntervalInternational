@@ -264,7 +264,7 @@ class WhatToUseViewController: UIViewController {
             Constant.MyClassConstants.onsiteArray.removeAllObjects()
             Constant.MyClassConstants.nearbyArray.removeAllObjects()
             
-            for amenity in (response.view?.resort?.amenities)!{
+            for amenity in (response.view?.resort?.amenities)! {
                 if amenity.nearby == false {
                     Constant.MyClassConstants.onsiteArray.add(amenity.amenityName!)
                     Constant.MyClassConstants.onsiteString = Constant.MyClassConstants.onsiteString.appending(amenity.amenityName!)
@@ -352,7 +352,7 @@ class WhatToUseViewController: UIViewController {
         
     }
     
-    func pushLikeModalViewController(controller : UIViewController) {
+    func pushLikeModalViewController(controller: UIViewController) {
         let transition = CATransition()
         transition.duration = 0.2
         transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
@@ -367,7 +367,7 @@ class WhatToUseViewController: UIViewController {
         Constant.MyClassConstants.isFromSearchResult = false
         showHudAsync()
         if let resortCode = Constant.MyClassConstants.selectedResort.resortCode {
-            Helper.getResortWithResortCode(code:resortCode , viewcontroller:self)
+            Helper.getResortWithResortCode(code:resortCode, viewcontroller:self)
         }
     }
     
@@ -384,7 +384,7 @@ class WhatToUseViewController: UIViewController {
 
 //***** MARK: Extension classes starts from here *****//
 
-extension WhatToUseViewController:UITableViewDelegate {
+extension WhatToUseViewController: UITableViewDelegate {
     
     //***** UITableview delegate methods definition here *****//
     
@@ -473,7 +473,7 @@ extension WhatToUseViewController:UITableViewDelegate {
     
 }
 
-extension WhatToUseViewController:UITableViewDataSource {
+extension WhatToUseViewController: UITableViewDataSource {
     
     //***** UITableview dataSource methods definition here *****//
     
@@ -623,9 +623,9 @@ extension WhatToUseViewController:UITableViewDataSource {
                     cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType:(exchange.openWeek?.unit!.unitSize!)!))), \(Helper.getKitchenEnums(kitchenType:(exchange.openWeek?.unit!.kitchenType!)!))"
                     cell.totalSleepAndPrivate.text = "Sleeps \(String(describing: exchange.openWeek!.unit!.publicSleepCapacity)), \(String(describing: exchange.openWeek!.unit!.privateSleepCapacity)) Private"
                     let dateString = exchange.openWeek!.checkInDate
-                    let date =  Helper.convertStringToDate(dateString: dateString!, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
+                    let date = Helper.convertStringToDate(dateString: dateString!, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
                     let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                    let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: date)
+                    let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: date)
                     let day = myComponents.day!
                     var month = ""
                     if day < 10 {
@@ -651,8 +651,7 @@ extension WhatToUseViewController:UITableViewDataSource {
                         cell.mainView.layer.borderWidth = 2
                         cell.mainView.layer.borderColor = UIColor.orange.cgColor
                         cell.checkBox.checked = true
-                    }
-                    else {
+                    } else {
                         
                         cell.mainView.layer.cornerRadius = 7
                         cell.mainView.layer.borderWidth = 2
@@ -666,15 +665,14 @@ extension WhatToUseViewController:UITableViewDataSource {
                     cell.bedroomSizeAndKitchenClient.text = "\(String(describing: Helper.getBedroomNumbers(bedroomType:(exchange.openWeek?.unit!.unitSize!)!))), \(Helper.getKitchenEnums(kitchenType:(exchange.openWeek?.unit!.kitchenType!)!))"
                     cell.totalSleepAndPrivate.text = "Sleeps \(String(describing: exchange.openWeek!.unit!.publicSleepCapacity)), \(String(describing: exchange.openWeek!.unit!.privateSleepCapacity)) Private"
                     let dateString = exchange.openWeek!.checkInDate
-                    let date =  Helper.convertStringToDate(dateString: dateString!, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
+                    let date = Helper.convertStringToDate(dateString: dateString!, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
                     let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                    let myComponents = (myCalendar as NSCalendar).components([.day,.weekday,.month,.year], from: date)
+                    let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: date)
                     let day = myComponents.day!
                     var month = ""
                     if day < 10 {
                         month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) 0\(day)"
-                    }
-                    else {
+                    } else {
                         month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \(day)"
                     }
                     
@@ -790,9 +788,9 @@ extension WhatToUseViewController:UITableViewDataSource {
 // MARK : - Delegate Methods
 
 // Implementing custom delegate method definition
-extension WhatToUseViewController:RenewelViewControllerDelegate {
+extension WhatToUseViewController: RenewelViewControllerDelegate {
     
-    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray: [Renewal]){
+    func selectedRenewalFromWhoWillBeCheckingIn(renewalArray: [Renewal]) {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         guard let viewController = mainStoryboard.instantiateViewController(withIdentifier: "WhoWillBeCheckingInViewController") as? WhoWillBeCheckingInViewController else { return }
         viewController.renewalsArray = renewalArray
@@ -838,7 +836,7 @@ extension WhatToUseViewController:RenewelViewControllerDelegate {
 }
 
 //Mark :- Delegate
-extension WhatToUseViewController:RenewalOtherOptionsVCDelegate {
+extension WhatToUseViewController: RenewalOtherOptionsVCDelegate {
     func selectedRenewal(selectedRenewal: String, forceRenewals: ForceRenewals) {
         var renewalArray = [Renewal]()
         renewalArray.removeAll()
@@ -871,4 +869,3 @@ extension WhatToUseViewController:RenewalOtherOptionsVCDelegate {
         self.navigationController!.pushViewController(viewController, animated: true)
     }
 }
-

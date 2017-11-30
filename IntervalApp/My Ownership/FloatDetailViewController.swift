@@ -541,7 +541,7 @@ extension FloatDetailViewController: UITableViewDataSource {
                 if let selectedDate = Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate {
                     
                     let myComponents = Calendar.current.dateComponents([.day, .weekday, .month, .year], from: selectedDate)
-                    if let year = myComponents.year, let weekDayComp =  myComponents.weekday, let monthComp = myComponents.month,  let dayComp = myComponents.day {
+                    if let year = myComponents.year, let weekDayComp = myComponents.weekday, let monthComp = myComponents.month, let dayComp = myComponents.day {
                         
                         let weekDay = "\(Helper.getWeekdayFromInt(weekDayNumber: weekDayComp))"
                         let month =   "\(Helper.getMonthnameFromInt(monthNumber: monthComp))"

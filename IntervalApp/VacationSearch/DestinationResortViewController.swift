@@ -144,7 +144,7 @@ extension DestinationResortViewController: UITableViewDataSource {
                
             } else {
                 let font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0)
-                if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange{
+                if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                     height = heightForView((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[0].description)!, font: font!, width: Constant.MyClassConstants.runningDeviceWidth! - 40)
                     return height + 60
                 } else {
@@ -169,7 +169,7 @@ extension DestinationResortViewController: UITableViewDataSource {
                 
             } else if(indexPath.row == 1 && indexPath.section == 5) {
                 
-                if Constant.MyClassConstants.isFromExchange ||  Constant.MyClassConstants.searchBothExchange {
+                if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                     
                     if((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements.count)! > 1) {
                     let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0)
@@ -221,7 +221,7 @@ extension DestinationResortViewController: UITableViewDataSource {
 
             var url = URL(string: "")
             var imagesArray = [Image]()
-            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange{
+            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                  imagesArray = (Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.images)!
             } else {
                  imagesArray = (Constant.MyClassConstants.viewResponse.resort?.images)!
@@ -369,7 +369,7 @@ extension DestinationResortViewController: UITableViewDataSource {
                     cell.infoLabel.text = Constant.MyClassConstants.nearbyString.appending("\n\n").appending(Constant.MyClassConstants.onsiteString)
                 } else {
                     
-                    if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange{
+                    if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                         if (Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements.count)! > 1 {
                             
                             cell.infoLabel.text = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[1].description

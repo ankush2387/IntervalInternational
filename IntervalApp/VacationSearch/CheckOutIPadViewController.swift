@@ -1301,7 +1301,7 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                     tapRecognizer.delegate = self
                     cellWebView.addGestureRecognizer(tapRecognizer)
                     if showInsurance && !Constant.MyClassConstants.isFromExchange {
-                        if let str =  Constant.MyClassConstants.rentalFees[indexPath.row].insurance?.insuranceOfferHTML {
+                        if let str = Constant.MyClassConstants.rentalFees[indexPath.row].insurance?.insuranceOfferHTML {
                              cellWebView.loadHTMLString(str, baseURL: nil)
                         }
                        

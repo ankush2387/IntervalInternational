@@ -14,7 +14,7 @@ import SVProgressHUD
 class CheckOutViewController: UIViewController {
     
     //Outlets
-    @IBOutlet fileprivate weak var checkoutOptionTBLview:UITableView!
+    @IBOutlet fileprivate weak var checkoutOptionTBLview: UITableView!
     @IBOutlet private weak var remainingResortHoldingTimeLable: UILabel!
     fileprivate var tappedButtonDictionary = [Int:Bool]()
     
@@ -94,7 +94,7 @@ class CheckOutViewController: UIViewController {
             currencyCode = Helper.currencyCodeToSymbol(code: curCode)
             
         }
-        }else {
+        } else {
             for advisement in (Constant.MyClassConstants.viewResponse.resort?.advisements)! {
                 
                 if advisement.title == Constant.MyClassConstants.additionalAdv {
@@ -147,7 +147,7 @@ class CheckOutViewController: UIViewController {
             Constant.omnitureEvars.eVar39: "",
             Constant.omnitureEvars.eVar49: "",
             Constant.omnitureEvars.eVar52: "\(creditCardsCount > 0 ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no)",
-            Constant.omnitureEvars.eVar72: "\(self.showInsurance ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no)",
+            Constant.omnitureEvars.eVar72: "\(self.showInsurance ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no)"
         ]
         ADBMobile.trackAction(Constant.omnitureEvents.event37, data: userInfo)
         
@@ -243,7 +243,6 @@ class CheckOutViewController: UIViewController {
                         self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
                     }, onError: { [weak self] error in
                         self?.hideHudAsync()
-                        
                         
                         imageSlider.isHidden = false
                         self?.isAgreed = false
@@ -342,7 +341,6 @@ class CheckOutViewController: UIViewController {
         }
     }
     
-    
     func checkPromotionsAvailable() {
         if Constant.MyClassConstants.filterRelinquishments.count > 0 {
             if let  _ = Constant.MyClassConstants.filterRelinquishments[0].openWeek?.promotion {
@@ -386,8 +384,8 @@ class CheckOutViewController: UIViewController {
                 totalFeesArray.add(Constant.MyClassConstants.taxesTitle)
             }
             
-            if Constant.MyClassConstants.rentalFees[0].renewals.count > 0{
-                for _ in Constant.MyClassConstants.rentalFees[0].renewals{
+            if Constant.MyClassConstants.rentalFees[0].renewals.count > 0 {
+                for _ in Constant.MyClassConstants.rentalFees[0].renewals {
                     totalFeesArray.add(Constant.MyClassConstants.renewals)
                 }
             }
@@ -421,7 +419,7 @@ class CheckOutViewController: UIViewController {
         return emailTest.evaluate(with: testStr)
     }
     
-    func checkBoxCheckedAtIndex(_ sender:IUIKCheckbox) {
+    func checkBoxCheckedAtIndex(_ sender: IUIKCheckbox) {
         
         self.promotionSelectedIndex = sender.tag
         Constant.MyClassConstants.isPromotionsEnabled = true
@@ -523,8 +521,8 @@ class CheckOutViewController: UIViewController {
     
     //Used to expand and contract sections
     func toggleButtonIsTapped(_ sender: UIButton) {
-        if let tag = tappedButtonDictionary[sender.tag]{
-            if tag{
+        if let tag = tappedButtonDictionary[sender.tag] {
+            if tag {
                 tappedButtonDictionary.updateValue(!tag, forKey: sender.tag)
             } else {
                 tappedButtonDictionary.updateValue(!tag, forKey: sender.tag)
@@ -537,7 +535,7 @@ class CheckOutViewController: UIViewController {
     
     //***** Function to calculate dynamic height. ******//
     
-    func heightForView(_ text:String, font:UIFont, width:CGFloat) -> CGFloat {
+    func heightForView(_ text: String, font: UIFont, width: CGFloat) -> CGFloat {
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: width, height: CGFloat.greatestFiniteMagnitude))
         label.numberOfLines = 0
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
@@ -602,7 +600,7 @@ class CheckOutViewController: UIViewController {
                 Constant.MyClassConstants.checkoutInsurencePurchased = Constant.AlertPromtMessages.yes
                 self.addTripProtection(shouldAddTripProtection: true)
                 
-            }else if str == "false" && !self.tripRequestInProcess {
+            } else if str == "false" && !self.tripRequestInProcess {
                 self.tripRequestInProcess = true
                 self.isTripProtectionEnabled = false
                 Constant.MyClassConstants.checkoutInsurencePurchased = Constant.AlertPromtMessages.no
@@ -704,10 +702,9 @@ class CheckOutViewController: UIViewController {
         })
     }
 }
-    
 
 // MARK: - Table View Delegate
-extension CheckOutViewController:UITableViewDelegate {
+extension CheckOutViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
@@ -724,8 +721,7 @@ extension CheckOutViewController:UITableViewDelegate {
                         
                         self.hideHudAsync()
                         self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
-                    }
-                    else {
+                    } else {
                         
                         let selectedCard = Constant.MyClassConstants.selectedCreditCard[0]
                         if selectedCard.creditcardId == 0 {
@@ -750,7 +746,7 @@ extension CheckOutViewController:UITableViewDelegate {
 }
 
 // MARK: - Table View Data Source
-extension CheckOutViewController:UITableViewDataSource {
+extension CheckOutViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return self.requiredSectionIntTBLview
@@ -767,7 +763,7 @@ extension CheckOutViewController:UITableViewDataSource {
             }
         case 1:
             var advisementCount = 0
-            if let isOpen = tappedButtonDictionary[section]{
+            if let isOpen = tappedButtonDictionary[section] {
                 if isOpen {
                     advisementCount = Constant.MyClassConstants.additionalAdvisementsArray.count + Constant.MyClassConstants.generalAdvisementsArray.count + 1
                     return advisementCount
@@ -870,7 +866,7 @@ extension CheckOutViewController:UITableViewDataSource {
             headerView.backgroundColor = IUIKColorPalette.titleBackdrop.color
             let headerLabel = UILabel()
             headerLabel.frame = CGRect(x: 20, y: 10, width: checkoutOptionTBLview.frame.size.width - 40, height: 30)
-            headerLabel.text  = Constant.MyClassConstants.checkOutScreenHeaderTextArray[section]
+            headerLabel.text = Constant.MyClassConstants.checkOutScreenHeaderTextArray[section]
             headerView.addSubview(headerLabel)
             headerView.backgroundColor = IUIKColorPalette.primary1.color
             headerLabel.textColor = UIColor.white
@@ -948,7 +944,7 @@ extension CheckOutViewController:UITableViewDataSource {
                 return 420
             }
         case 5 :
-            if !Constant.MyClassConstants.isFromExchange && Constant.MyClassConstants.isFromExchange && !Constant.MyClassConstants.enableTaxes && !eplusAdded{
+            if !Constant.MyClassConstants.isFromExchange && Constant.MyClassConstants.isFromExchange && !Constant.MyClassConstants.enableTaxes && !eplusAdded {
                 isHeightZero = true
                 return 0
             } else {
@@ -1128,7 +1124,6 @@ extension CheckOutViewController:UITableViewDataSource {
                         
                         subviews.isHidden = false
                     }
-                    
 
                     switch totalFeesArray[indexPath.row] as! String {
                     case Constant.MyClassConstants.exchangeFeeTitle:
@@ -1138,13 +1133,12 @@ extension CheckOutViewController:UITableViewDataSource {
                         let priceString = "\(Constant.MyClassConstants.exchangeFees[0].shopExchange!.rentalPrice!.price)"
                         let priceArray = priceString.components(separatedBy: ".")
                         intervalPrint(priceArray.last!)
-                        if priceArray.last!.characters.count > 1  {
+                        if priceArray.last!.characters.count > 1 {
                             cell.fractionalPriceLabel.text = "\(priceArray.last!)"
                         } else {
                             cell.fractionalPriceLabel.text = "00"
                         }
                         cell.currencyLabel.text = currencyCode
-                        
                         
                     case Constant.MyClassConstants.getawayFee:
                         
@@ -1394,8 +1388,7 @@ extension CheckOutViewController:UITableViewDataSource {
             if self.showUpdateEmail {
                 cell.updateEmailOnOffSwitch.isHidden = false
                 cell.updateProfileTextLabel.isHidden = false
-            }
-            else {
+            } else {
                 cell.updateEmailOnOffSwitch.isHidden = true
                 cell.updateProfileTextLabel.isHidden = true
             }
@@ -1413,13 +1406,13 @@ extension CheckOutViewController:UITableViewDataSource {
             cell.feesTitleLabel.text = Constant.AlertMessages.feesPaymentMessage
             
             if isAgreed {
-                cell.agreeLabel.backgroundColor = UIColor(colorLiteralRed: 170/255, green: 202/255, blue: 92/255, alpha: 1.0)
-                cell.agreeLabel.layer.borderColor = UIColor(colorLiteralRed: 170/255, green: 202/255, blue: 92/255, alpha: 1.0).cgColor
+                cell.agreeLabel.backgroundColor = UIColor(colorLiteralRed: 170 / 255, green: 202 / 255, blue: 92 / 255, alpha: 1.0)
+                cell.agreeLabel.layer.borderColor = UIColor(colorLiteralRed: 170 / 255, green: 202 / 255, blue: 92 / 255, alpha: 1.0).cgColor
                 cell.agreeLabel.text = Constant.AlertMessages.agreeToFeesMessage
                 cell.agreeLabel.textColor = UIColor.white
             } else {
                 cell.agreeLabel.backgroundColor = UIColor.white
-                cell.agreeLabel.textColor = UIColor(colorLiteralRed: 248/255, green: 107/255, blue: 63/255, alpha: 1.0)
+                cell.agreeLabel.textColor = UIColor(colorLiteralRed: 248 / 255, green: 107 / 255, blue: 63 / 255, alpha: 1.0)
                 cell.agreeLabel.layer.borderColor = #colorLiteral(red: 0.9725490196, green: 0.4196078431, blue: 0.2470588235, alpha: 1).cgColor
                 cell.agreeLabel.text = Constant.AlertMessages.feesAlertMessage
             }
@@ -1433,21 +1426,21 @@ extension CheckOutViewController:UITableViewDataSource {
             cell.agreeButton?.dragPointWidth = 70
             cell.agreeButton?.tag = indexPath.section
             if isAgreed {
-                cell.agreeLabel.backgroundColor = UIColor(colorLiteralRed: 170/255, green: 202/255, blue: 92/255, alpha: 1.0)
-                cell.agreeLabel.layer.borderColor = UIColor(colorLiteralRed: 170/255, green: 202/255, blue: 92/255, alpha: 1.0).cgColor
+                cell.agreeLabel.backgroundColor = UIColor(colorLiteralRed: 170 / 255, green: 202 / 255, blue: 92 / 255, alpha: 1.0)
+                cell.agreeLabel.layer.borderColor = UIColor(colorLiteralRed: 170 / 255, green: 202 / 255, blue: 92 / 255, alpha: 1.0).cgColor
                 cell.agreeLabel.text = Constant.MyClassConstants.verifying
                 cell.agreeLabel.textColor = UIColor.white
             } else if showLoader {
                 showLoader = false
                 cell.activityIndicator.isHidden = false
                 cell.agreeLabel.text = Constant.MyClassConstants.verifying
-                cell.agreeLabel.backgroundColor = UIColor(colorLiteralRed: 255/255, green: 117/255, blue: 58/255, alpha: 1.0)
+                cell.agreeLabel.backgroundColor = UIColor(colorLiteralRed: 255 / 255, green: 117 / 255, blue: 58 / 255, alpha: 1.0)
                 cell.agreeLabel.textColor = UIColor.white
-            }else if isAgreedToFees {
+            } else if isAgreedToFees {
                 cell.agreeLabel.backgroundColor = UIColor.white
-                cell.agreeLabel.layer.borderColor = UIColor(colorLiteralRed: 255/255, green: 117/255, blue: 58/255, alpha: 1.0).cgColor
+                cell.agreeLabel.layer.borderColor = UIColor(colorLiteralRed: 255 / 255, green: 117 / 255, blue: 58 / 255, alpha: 1.0).cgColor
                 cell.agreeLabel.text = Constant.AlertMessages.agreePayMessage
-                cell.agreeLabel.textColor = UIColor(colorLiteralRed: 255/255, green: 117/255, blue: 58/255, alpha: 1.0)
+                cell.agreeLabel.textColor = UIColor(colorLiteralRed: 255 / 255, green: 117 / 255, blue: 58 / 255, alpha: 1.0)
                 cell.agreeButton?.imageName = UIImage(named:Constant.assetImageNames.swipeArrowOrgImage)!
             } else {
                 cell.agreeLabel.text = Constant.AlertMessages.agreePayMessage
@@ -1464,8 +1457,8 @@ extension CheckOutViewController:UITableViewDataSource {
     }
 }
 
-//MARK:- Gesture Recognizer Delegate
-extension CheckOutViewController:UIGestureRecognizerDelegate{
+// MARK: - Gesture Recognizer Delegate
+extension CheckOutViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
@@ -1481,7 +1474,7 @@ extension CheckOutViewController:UIGestureRecognizerDelegate{
 }
 
 // MARK: - Web View Delegate
-extension CheckOutViewController:UIWebViewDelegate {
+extension CheckOutViewController: UIWebViewDelegate {
     
     func webViewDidStartLoad(_ webView: UIWebView) {
         showHudAsync()
@@ -1491,13 +1484,13 @@ extension CheckOutViewController:UIWebViewDelegate {
         self.hideHudAsync()
     }
     
-    func webView(_ webView: UIWebView, didFailLoadWithError error: Error){
+    func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
         self.hideHudAsync()
     }
 }
 
-//MARK:- Text Field Delegate
-extension CheckOutViewController:UITextFieldDelegate {
+// MARK: - Text Field Delegate
+extension CheckOutViewController: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
@@ -1515,7 +1508,5 @@ extension CheckOutViewController:UITextFieldDelegate {
     }
     func textFieldDidEndEditing(_ textField: UITextField) {
         
-        
     }
 }
-

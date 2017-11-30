@@ -121,7 +121,6 @@ class PaymentSelectionViewController: UIViewController {
             alert.addAction(UIAlertAction(title: Constant.AlertPromtMessages.cancel, style: .default, handler: nil))
             
             alert.addAction(UIAlertAction(title: Constant.AlertPromtMessages.done, style: .default, handler: { [weak alert] (_) in
-                
 
                 if cvv?.text?.count == 0 {
                     cvv?.layer.borderColor = UIColor.red.cgColor

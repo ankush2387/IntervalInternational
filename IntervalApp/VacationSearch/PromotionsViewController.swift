@@ -42,7 +42,7 @@ extension PromotionsViewController: UITableViewDelegate {
         promotionsTableView.reloadData()
         if indexPath.section == 0 {
             Constant.MyClassConstants.isPromotionsEnabled = true
-            if Constant.MyClassConstants.isFromExchange ||  Constant.MyClassConstants.searchBothExchange {
+            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                 Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName = promotionsArray[indexPath.row].offerName
             } else {
                Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName = promotionsArray[indexPath.row].offerName

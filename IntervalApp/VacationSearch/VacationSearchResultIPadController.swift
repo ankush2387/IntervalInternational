@@ -722,7 +722,7 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
                 Constant.MyClassConstants.selectedUnitIndex = indexPath.item
                 if collectionView.superview?.superview?.tag == 0 && combinedExactSearchItems.isEmpty == false {
                     
-                    if let combinedExchange =  combinedExactSearchItems[collectionView.tag].exchangeAvailability {
+                    if let combinedExchange = combinedExactSearchItems[collectionView.tag].exchangeAvailability {
                         if let resort = combinedExchange.resort {
                             Constant.MyClassConstants.selectedResort = resort
                         }
@@ -743,7 +743,6 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
                         if let rentalAvailability = combinedExactSearchItems[collectionView.tag].rentalAvailability {
                             Constant.MyClassConstants.selectedResort = rentalAvailability
                         }
-                        
                         
                         if combinedExactSearchItems[collectionView.tag].hasRentalAvailability() && combinedExactSearchItems[collectionView.tag].hasExchangeAvailability() {
                             
