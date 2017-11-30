@@ -150,7 +150,8 @@ class CheckOutViewController: UIViewController {
             Constant.omnitureEvars.eVar72: "\(self.showInsurance ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no)"
         ]
         ADBMobile.trackAction(Constant.omnitureEvents.event37, data: userInfo)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
     }
     
     //**** Remove added observers ****//
@@ -158,6 +159,14 @@ class CheckOutViewController: UIViewController {
         super.viewDidDisappear(true)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.changeSliderStatus), object: nil)
+    }
+    
+    func keyboardWasShown(aNotification: NSNotification) {
+       KeyboardHandler.keyboardWasShown(aNotification: aNotification, adjustScrollView: checkoutOptionTBLview)
+    }
+    
+    func keyboardWillBeHidden(aNotification: NSNotification) {
+      KeyboardHandler.keyboardWillBeHidden(aNotification: aNotification, adjustScrollView: checkoutOptionTBLview)
     }
     
     //***** Function called when notification for slide to agree button is fired. *****//

@@ -10,6 +10,7 @@
 		087A87561E9519E2009B1387 /* TdiTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087A87551E9519E2009B1387 /* TdiTableViewCell.swift */; };
 		087A87581E951A17009B1387 /* TdiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087A87571E951A17009B1387 /* TdiCollectionViewCell.swift */; };
 		087A875A1E951A2D009B1387 /* UnitSizeTdiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087A87591E951A2D009B1387 /* UnitSizeTdiCollectionViewCell.swift */; };
+		087DC9E91FD0248200579AC1 /* KeyboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087DC9E81FD0248200579AC1 /* KeyboardHandler.swift */; };
 		0887C9791F6A80ED007F57C3 /* FlexchangeDestinationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0887C9781F6A80ED007F57C3 /* FlexchangeDestinationCell.swift */; };
 		0887C97B1F6A99F5007F57C3 /* SearchFlexchangeButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0887C97A1F6A99F5007F57C3 /* SearchFlexchangeButtonCell.swift */; };
 		089416711F72D93A00F03229 /* SelectBedroomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089416701F72D93A00F03229 /* SelectBedroomViewController.swift */; };
@@ -399,6 +400,7 @@
 		087A87551E9519E2009B1387 /* TdiTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TdiTableViewCell.swift; sourceTree = "<group>"; };
 		087A87571E951A17009B1387 /* TdiCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TdiCollectionViewCell.swift; sourceTree = "<group>"; };
 		087A87591E951A2D009B1387 /* UnitSizeTdiCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitSizeTdiCollectionViewCell.swift; sourceTree = "<group>"; };
+		087DC9E81FD0248200579AC1 /* KeyboardHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardHandler.swift; sourceTree = "<group>"; };
 		0887C9781F6A80ED007F57C3 /* FlexchangeDestinationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlexchangeDestinationCell.swift; sourceTree = "<group>"; };
 		0887C97A1F6A99F5007F57C3 /* SearchFlexchangeButtonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchFlexchangeButtonCell.swift; sourceTree = "<group>"; };
 		089416701F72D93A00F03229 /* SelectBedroomViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectBedroomViewController.swift; sourceTree = "<group>"; };
@@ -800,6 +802,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		087DC9E71FD023DF00579AC1 /* KeyboardUtilityHandler */ = {
+			isa = PBXGroup;
+			children = (
+				087DC9E81FD0248200579AC1 /* KeyboardHandler.swift */,
+			);
+			path = KeyboardUtilityHandler;
+			sourceTree = "<group>";
+		};
 		08A46FCC1E9265E1002DC306 /* Adobe Analytics */ = {
 			isa = PBXGroup;
 			children = (
@@ -1086,6 +1096,7 @@
 		3AAA59F61C720F4500A5EA6D /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				087DC9E71FD023DF00579AC1 /* KeyboardUtilityHandler */,
 				3C291A311FBCEA0300F294FD /* TableViewCells */,
 				3C9186F31FA25DF200F484ED /* TypeAliases */,
 				61C0250A1F92CF8D003BFF55 /* View Controllers */,
@@ -2096,6 +2107,7 @@
 				E9573D1F1F3CFA3A00656C99 /* nonCoreProductView.swift in Sources */,
 				3A3A013D1C99BD0B00B7EC37 /* FloatdetaildoneButtonTableViewCell.swift in Sources */,
 				3AAA5A331C720F4500A5EA6D /* MemberCell.swift in Sources */,
+				087DC9E91FD0248200579AC1 /* KeyboardHandler.swift in Sources */,
 				E9057F931F02DDBA00E20047 /* ShareActivityMessage.swift in Sources */,
 				3AAA5A371C720F4500A5EA6D /* SideMenuTableViewController.swift in Sources */,
 				3A623C6A1CF728BC00389708 /* UIImageView+UIActivityIndicatorForSDWebImage.m in Sources */,
