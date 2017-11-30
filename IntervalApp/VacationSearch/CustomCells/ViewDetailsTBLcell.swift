@@ -8,6 +8,7 @@
 
 import UIKit
 import IntervalUIKit
+import DarwinSDK
 
 class ViewDetailsTBLcell: UITableViewCell {
 
@@ -29,6 +30,38 @@ class ViewDetailsTBLcell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    func setUpDetailsCell (indexPath: IndexPath, filterRelinquishments: ExchangeRelinquishment) {
+        resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInIPadViewController.resortDetailsClicked(_:)), for: .touchUpInside)
+        if indexPath.row == 0 {
+            resortDetailsButton.tag = indexPath.row
+            lblHeading.text = "Resort Detail"
+            resortName?.text = Constant.MyClassConstants.selectedResort.resortName
+        } else {
+            lblHeading.text = Constant.MyClassConstants.relinquishment
+            if let clubPoint = filterRelinquishments.clubPoints {
+                resortName?.text = clubPoint.resort?.resortName
+            } else if let openWeek = filterRelinquishments.openWeek {
+                resortName?.text = openWeek.resort?.resortName
+            } else if let deposits = filterRelinquishments.deposit {
+                resortName?.text = deposits.resort?.resortName
+            } else if filterRelinquishments.pointsProgram != nil {
+                if Constant.MyClassConstants.isCIGAvailable {
+                    resortDetailsButton.isHidden = true
+                    lblHeading.text = "CIG Points"
+                    if let availablePoints = Constant.MyClassConstants.exchangeViewResponse.relinquishment?.pointsProgram?.availablePoints {
+                        resortName?.text = "\(availablePoints)"
+                    }
+                }
+            }
+            resortDetailsButton.addTarget(self, action: #selector(WhoWillBeCheckingInViewController.resortDetailsClicked(_:)), for: .touchUpInside)
+            resortDetailsButton.tag = indexPath.row
+            resortImageView?.image = #imageLiteral(resourceName: "EXG_CO")
+        }
+        
+        selectionStyle = .none
+        
     }
 
 }

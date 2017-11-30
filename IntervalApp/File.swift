@@ -15,18 +15,17 @@ class RealmLocalStorage: Object {
     
     var resorts = List<ResortList>()
     var destinations = List<DestinationList>()
-    //var openWeeks = List<TradeLocalData>()
     dynamic var membeshipNumber = ""
     
 }
 
-class OpenWeeksStorage: Object {
+final class OpenWeeksStorage: Object {
     var resorts = List<ResortList>()
     var openWeeks = List<TradeLocalData>()
-    dynamic var membeshipNumber = ""
+    var membeshipNumber = ""
 }
 
-class DestinationList: Object {
+final class DestinationList: Object {
     
     dynamic var destinationName = ""
     dynamic var destinationId = ""
@@ -35,7 +34,7 @@ class DestinationList: Object {
     dynamic var aoid = ""
 }
 
-class ResortList: Object {
+final class ResortList: Object {
     
     dynamic var resortName = ""
     dynamic var resortCode = ""
@@ -46,11 +45,11 @@ class ResortList: Object {
     var units = InventoryUnit()
     var resortArray = List<ResortByMap>()
 }
-class ResortUnitDetails: Object {
+final class ResortUnitDetails: Object {
     dynamic var kitchenType = ""
     dynamic var unitSize = ""
 }
-class ResortFloatDetails: Object {
+final class ResortFloatDetails: Object {
     dynamic var reservationNumber = ""
     dynamic var unitNumber = ""
     dynamic var unitSize = ""
@@ -59,7 +58,7 @@ class ResortFloatDetails: Object {
     dynamic var showUnitNumber = true
 }
 
-class ResortByMap: Object {
+final class ResortByMap: Object {
     
     dynamic var resortName = ""
     dynamic var resortCode = ""
@@ -69,19 +68,20 @@ class ResortByMap: Object {
     dynamic var territorrycode = ""
 }
 
-class AllAvailableDestination: Object {
+final class AllAvailableDestination: Object {
     
      dynamic var destination = ""
 }
 
-class TradeLocalData: Object {
+final class TradeLocalData: Object {
     
     var openWeeks = List<OpenWeeks>()
     var pProgram = List<rlmPointsProgram>()
     var deposits = List<Deposits>()
+    var clubPoints = List<ClubPoints>()
 }
 
-class rlmPointsProgram: Object {
+final class rlmPointsProgram: Object {
     
     dynamic var relinquishmentId = ""
     dynamic var code = ""
@@ -89,7 +89,7 @@ class rlmPointsProgram: Object {
     dynamic var pointsSpent = 0
     
 }
-class OpenWeeks: Object {
+final class OpenWeeks: Object {
     
     dynamic var relinquishmentID = ""
     dynamic var pointsProgramCode = ""
@@ -106,7 +106,7 @@ class OpenWeeks: Object {
     //dynamic var units = [InventoryUnit]()
 }
 
-class Deposits: Object {
+final class Deposits: Object {
     dynamic var relinquishmentID = ""
     dynamic var pointsProgramCode = ""
     dynamic var exchangeStatus = ""
@@ -119,4 +119,12 @@ class Deposits: Object {
     var resort = List<ResortList>()
     var unitDetails = List<ResortUnitDetails>()
     var floatDetails = List<ResortFloatDetails>()
+}
+
+final class ClubPoints: Object {
+    dynamic var relinquishmentId = ""
+    var resort = List<ResortList>()
+    dynamic var pointsSpent = 0
+    dynamic var isPointsMatrix = false
+    dynamic var relinquishmentYear = 0
 }

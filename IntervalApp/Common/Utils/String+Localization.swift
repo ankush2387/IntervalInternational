@@ -64,7 +64,6 @@ private let state = [ "AK": "Alaska",
                       "WV": "West Virginia",
                       "WY": "Wyoming"]
 
-
 extension String {
     
     var stateForTerritoryCode: String? {

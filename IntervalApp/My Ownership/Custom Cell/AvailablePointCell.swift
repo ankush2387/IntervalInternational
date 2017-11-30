@@ -14,18 +14,10 @@ class AvailablePointCell: UITableViewCell {
     //Outlets
     
     @IBOutlet weak var availablePointValueLabel: UILabel!
+    @IBOutlet weak var pointsInfoLabel: UILabel!
     @IBOutlet weak var mainView: UIView!
    
     @IBOutlet weak var checkBOx: IUIKCheckbox!
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
+    @IBOutlet weak var infoButton: UIButton!
 
 }

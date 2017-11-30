@@ -30,6 +30,8 @@ class DashboardTableViewController: UITableViewController {
     var isRunningOnIphone: Bool {
         return UIDevice.current.userInterfaceIdiom == .phone
     }
+    var showSearchResults = false
+    
     override func viewWillAppear(_ animated: Bool) {
         //***** Adding notification to reload alert badge *****//
         self.navigationController?.navigationBar.isHidden = false
@@ -43,7 +45,9 @@ class DashboardTableViewController: UITableViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        self.navigationController?.navigationBar.isHidden = true
+        showSearchResults ? (navigationController?.navigationBar.isHidden = false) :
+            (navigationController?.navigationBar.isHidden = true)
+        
         //***** Removing notification to reload alert badge *****//
         NotificationCenter.default
             .removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
@@ -425,6 +429,7 @@ class DashboardTableViewController: UITableViewController {
     // MARK: - Button Events
     func  searchVactionPressed(_ sender: AnyObject) {
         
+        showSearchResults = false
         Constant.MyClassConstants.searchOriginationPoint = Constant.omnitureCommonString.homeDashboard
         
         let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
@@ -467,6 +472,7 @@ class DashboardTableViewController: UITableViewController {
                 }
             } else {
                 let alertController = UIAlertController(title: title, message: Constant.AlertErrorMessages.getawayAlertMessage, preferredStyle: .alert)
+                showSearchResults = true
                 let startSearch = UIAlertAction(title: Constant.AlertPromtMessages.newSearch, style: .default) { (_:UIAlertAction) in
                     
                     let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
@@ -493,7 +499,7 @@ class DashboardTableViewController: UITableViewController {
     
     //Function for navigating to search results
     func navigateToSearchResults() {
-        
+        showSearchResults = false
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
         if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as? SearchResultViewController {
             viewController.alertFilterOptionsArray = alertFilterOptionsArray
@@ -599,6 +605,7 @@ extension DashboardTableViewController: UICollectionViewDelegate {
             flexchangeSelected(selectedIndexPath: indexPath)
             
         case 2:
+            showSearchResults = true
             topTenGetawaySelected(selectedIndexPath: indexPath)
             
         case 3:
@@ -916,9 +923,19 @@ extension UIViewController {
     }
     
     func navigateToSearchResultsScreen() {
-        let storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-        let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController)
-        self.navigationController?.pushViewController(viewController, animated: true)
+        var isRunningOnIphone: Bool {
+            return UIDevice.current.userInterfaceIdiom == .phone
+        }
+        if isRunningOnIphone {
+            let storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+            let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController)
+            self.navigationController?.pushViewController(viewController, animated: true)
+        } else {
+            let storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+            let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController)
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
+
     }
     
     // Function to get to date and from date for search dates API calling

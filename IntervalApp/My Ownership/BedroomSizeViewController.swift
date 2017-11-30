@@ -36,12 +36,12 @@ class BedroomSizeViewController: UIViewController {
     //internal var userSelectedUnitsArray = [String]()
     
     //***** function to determine the selection of bedroom size *****//
-    @IBAction func bedroomSizeCheckboxIsTapped(_ sender: AnyObject) {
+    @IBAction private func bedroomSizeCheckboxIsTapped(_ sender: AnyObject) {
         
         let checkBox: IUIKCheckbox = sender as! IUIKCheckbox
        
         self.selectionChanged = true
-        if(self.localArrayToHoldSelection.count == 0) {
+        if self.localArrayToHoldSelection.count == 0 {
             self.localArrayToHoldSelection.add(sender.tag)
             checkBox.isSelected = true
             doneButton.isEnabled = true
@@ -50,7 +50,7 @@ class BedroomSizeViewController: UIViewController {
             let tempArray: NSMutableArray = NSMutableArray()
             for index in self.localArrayToHoldSelection {
                 
-                if(index as! Int == checkBox.tag) {
+                if index as! Int == checkBox.tag {
                     
                     let objectAt = self.localArrayToHoldSelection.index(of: index)
                     tempArray.add(objectAt)
@@ -63,41 +63,26 @@ class BedroomSizeViewController: UIViewController {
                 indexSet.add(index as! Int)
             }
             self.localArrayToHoldSelection.removeObjects(at: indexSet as IndexSet)
-            if(flag) {
+            if flag {
                 self.localArrayToHoldSelection.add(sender.tag)
                 checkBox.isSelected = true
             }
         }
-        if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController) {
+        if Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController {
             //self.changeLabelColor(checkBox: checkBox)
         }
     }
     
-    // Function to change label colors on checkbox selection
-//    func changeLabelColor(checkBox:IUIKCheckbox){
-//        
-//        let checkedLabel = self.view.viewWithTag(checkBox.tag%10 + 100) as! UILabel
-//        let unitLabel = self.view.viewWithTag(checkBox.tag%10 + 10) as! UILabel
-//        if(checkBox.checked){
-//            checkedLabel.textColor = IUIKColorPalette.secondaryB.color
-//            unitLabel.textColor = IUIKColorPalette.secondaryB.color
-//        }else{
-//            checkedLabel.textColor = UIColor.black
-//            unitLabel.textColor = UIColor.black
-//        }
-//    }
-    
     //*** Change frame layout while change iPad in Portrait and Landscape mode.***//
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        if(Constant.RunningDevice.deviceIdiom == .pad) {
+        if Constant.RunningDevice.deviceIdiom == .pad {
             frameChangeOnPortraitandLandscape()
         }
-        
     }
     
     func frameChangeOnPortraitandLandscape() {
         
-        if(UIDevice.current.orientation == .landscapeLeft || UIDevice.current.orientation == .landscapeRight) {
+        if UIDevice.current.orientation == .landscapeLeft || UIDevice.current.orientation == .landscapeRight {
             
         }
         
@@ -114,12 +99,12 @@ class BedroomSizeViewController: UIViewController {
         self.getSaveUnitDetails()
         
         self.bedroomSizeTableView.estimatedRowHeight = 60
-        if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController) {
+        if Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController {
             self.titleLabel.text = Constant.MyClassConstants.relinquishmentTitle
-        } else if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController) {
+        } else if Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController {
             self.titleLabel.text = Constant.MyClassConstants.bedroomTitle
         } else {
-            if(Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count == 0) {
+            if Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count == 0 {
                 Constant.MyClassConstants.bedRoomSizeSelectedIndexArray = [0, 1, 2, 3, 4]
                 self.localArrayToHoldSelection = [0, 1, 2, 3, 4]
             } else {
@@ -129,7 +114,7 @@ class BedroomSizeViewController: UIViewController {
             }
             self.titleLabel.text = Constant.MyClassConstants.bedroomTitle
         }
-        if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController) {
+        if Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController {
             
             doneButton.isEnabled = false
             // omniture tracking with event 40
@@ -138,7 +123,7 @@ class BedroomSizeViewController: UIViewController {
                 ]
             ADBMobile.trackAction(Constant.omnitureEvents.event40, data: userInfo)
             
-        } else if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController) {
+        } else if Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController {
             
             // omniture tracking with event 40
             let pageView: [String: String] = [
@@ -156,10 +141,6 @@ class BedroomSizeViewController: UIViewController {
      - returns : No value is return
      */
     
-    override func viewWillAppear(_ animated: Bool) {
-
-    }
-    
     func getSelectedUnitAndRelinquismentID() {
         
         if let unit = Constant.MyClassConstants.relinquishmentSelectedWeek.unit {
@@ -175,7 +156,7 @@ class BedroomSizeViewController: UIViewController {
 
     }
     
-    @IBAction func closeButtonPressed(_ sender: AnyObject) {
+    @IBAction private func closeButtonPressed(_ sender: AnyObject) {
         
         self.dismiss(animated: true, completion: nil)
     }
@@ -196,18 +177,18 @@ class BedroomSizeViewController: UIViewController {
     
     //***** function to dismis the current controller and  pass the selected data in previous controller *****//
     
-    @IBAction func doneButtonPressed(_ sender: AnyObject) {
+    @IBAction private func doneButtonPressed(_ sender: AnyObject) {
         
-        if(localArrayToHoldSelection.count != 0) {
+        if localArrayToHoldSelection.count != 0 {
             if isOnwershipSelection {
                 Helper.deleteObjectsFromLocalStorage()
             }
-            if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController) {
+            if Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController {
                 delegate?.doneButtonClicked(selectedUnitsArray: localArrayToHoldSelection)
             } else {
-                if(self.selectionChanged ) {
+                if selectionChanged {
                     
-                    if(localArrayToHoldSelection.count == 5) {
+                    if localArrayToHoldSelection.count == 5 {
                         Constant.MyClassConstants.selectedBedRoomSize = Constant.MyClassConstants.allBedrommSizes
                         Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.removeAllObjects()
                         
@@ -221,7 +202,7 @@ class BedroomSizeViewController: UIViewController {
                         for index in localArrayToHoldSelection {
                             
                             Constant.MyClassConstants.alertSelectedUnitSizeArray.add(Constant.MyClassConstants.bedRoomSize[index as! Int])
-                            if(i < localArrayToHoldSelection.count - 1) {
+                            if i < localArrayToHoldSelection.count - 1 {
                                 
                                 let friendlyName = UnitSize.forDisplay[index as! Int].friendlyName()
                                 
@@ -239,7 +220,7 @@ class BedroomSizeViewController: UIViewController {
                         Constant.MyClassConstants.bedRoomSizeSelectedIndexArray = self.localArrayToHoldSelection
                     }
                 }
-                if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController) {
+                if Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController {
                     delegate?.doneButtonClicked(selectedUnitsArray: localArrayToHoldSelection)
                 }
                 self.dismiss(animated: true, completion: nil)
@@ -262,7 +243,7 @@ extension BedroomSizeViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController || Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController) {
+        if Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController || Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController {
             return Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count
         } else {
             return Constant.MyClassConstants.bedRoomSize.count
@@ -273,13 +254,13 @@ extension BedroomSizeViewController: UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: Constant.bedroomSizeViewController.bedroomsizeCellIdentifier) as? BedroomSizeTableViewCell
         
-        if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController || Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController) {
+        if Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController || Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController {
             
             cell?.backgroundCellView.layer.borderColor = UIColor.white.cgColor
             cell?.bedroomSizelabel.text = Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as? String
             cell?.checkBoxButton.tag = indexPath.row + 1000
             intervalPrint(Constant.MyClassConstants.userSelectedStringArray)
-            if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController) {
+            if Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController {
                 cell?.checkBoxButton.isHidden = true
             } else {
                 cell?.checkBoxButton.isHidden = false
@@ -306,8 +287,8 @@ extension BedroomSizeViewController: UITableViewDataSource {
             }
             cell?.unitSizeLabel.text = unitDetails
             let unitNumber = unitDetails.components(separatedBy: ",")
-            if(Constant.MyClassConstants.userSelectedStringArray.contains(Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as! String)) {
-                if((unitNumber[0] == Constant.MyClassConstants.unitNumberSelectedArray[indexPath.row] as! String)) {
+            if Constant.MyClassConstants.userSelectedStringArray.contains(Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as! String) {
+                if unitNumber[0] == Constant.MyClassConstants.unitNumberSelectedArray[indexPath.row] as! String {
                     localArrayToHoldSelection.add(cell?.checkBoxButton.tag as Any)
                     doneButton.isEnabled = true
                     cell?.bedroomSizelabel.textColor = IUIKColorPalette.secondaryB.color
@@ -321,7 +302,7 @@ extension BedroomSizeViewController: UITableViewDataSource {
                 let setUnitSize = cell?.bedroomSizelabel.text?.components(separatedBy: ",")[0]
                 let setUnitNumber = cell?.unitSizeLabel.text?.components(separatedBy: ",")[0]
                 for selectedUnitDetails in Constant.MyClassConstants.saveLockOffDetailsArray {
-                    if((selectedUnitDetails as! String).components(separatedBy: ",")[0] == setUnitNumber && (selectedUnitDetails as! String).components(separatedBy: ",")[1] == setUnitSize && Constant.MyClassConstants.realmOpenWeeksID.contains(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!)) {
+                    if (selectedUnitDetails as! String).components(separatedBy: ",")[0] == setUnitNumber && (selectedUnitDetails as! String).components(separatedBy: ",")[1] == setUnitSize && Constant.MyClassConstants.realmOpenWeeksID.contains(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!) {
                         cell?.backgroundCellView.layer.borderColor = UIColor.orange.cgColor
                         cell?.unitSizeLabel.textColor = IUIKColorPalette.secondaryB.color
                         cell?.bedroomSizelabel.textColor = IUIKColorPalette.secondaryB.color
@@ -331,15 +312,15 @@ extension BedroomSizeViewController: UITableViewDataSource {
             return cell!
             
         } else {
-            if (Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count != 0) {
+            if Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count != 0 {
                 var match = false
                 for index in Constant.MyClassConstants.bedRoomSizeSelectedIndexArray {
-                    if((indexPath as NSIndexPath).row == index as! Int) {
+                    if indexPath.row == index as! Int {
                         match = true
                         break
                     }
                 }
-                if(match) {
+                if match {
                     
                     cell?.bedroomSizelabel.text = "\(UnitSize.forDisplay[indexPath.row].friendlyName())"
                     cell?.checkBoxButton.checked = true
@@ -374,16 +355,14 @@ extension BedroomSizeViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let tableCell = tableView.cellForRow(at: indexPath) as! BedroomSizeTableViewCell
-        //tableCell.backgroundCellView.layer.borderColor = IUIKColorPalette.secondaryB.color.cgColor
-       // tableCell.bedroomSizelabel.textColor = IUIKColorPalette.secondaryB.color
-       // tableCell.unitSizeLabel.textColor = IUIKColorPalette.secondaryB.color
-        if(Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController) {
+       
+        if Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController {
             let selectedBedroom = Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as! String
             Constant.MyClassConstants.selectedBedRoomSize = selectedBedroom
             let unitArray = selectedBedroom.components(separatedBy: ",")
             Constant.MyClassConstants.savedBedroom = unitArray[0]
-            if(indexPath.row < Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count - 1 ) {
+            intervalPrint(indexPath.row)
+            if indexPath.row < Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count - 1 {
                 if let unitNUmber = selectedUnit.lockOffUnits[indexPath.row].unitNumber {
                     Constant.MyClassConstants.unitNumberLockOff = "\(unitNUmber)"
                 }
@@ -396,9 +375,11 @@ extension BedroomSizeViewController: UITableViewDelegate {
             }
             
             for floatWeek in Constant.MyClassConstants.whatToTradeArray {
-                let floatWeekTraversed = floatWeek as! OpenWeeks
-                if(floatWeekTraversed.isFloat && selectedRelinquismentId == floatWeekTraversed.relinquishmentID) {
-                    if(Constant.MyClassConstants.unitNumberLockOff == floatWeekTraversed.floatDetails[0].unitNumber) {
+                
+                if !(floatWeek as AnyObject).isKind(of: List<rlmPointsProgram>.self) {
+                    guard let floatWeekTraversed = floatWeek as? OpenWeeks else { return }
+                if floatWeekTraversed.isFloat && selectedRelinquismentId == floatWeekTraversed.relinquishmentID {
+                    if Constant.MyClassConstants.unitNumberLockOff == floatWeekTraversed.floatDetails[0].unitNumber {
                         Constant.MyClassConstants.selectedFloatWeek = floatWeekTraversed
                         Constant.MyClassConstants.savedClubFloatResort = floatWeekTraversed.floatDetails[0].clubResortDetails
                     }
@@ -407,14 +388,15 @@ extension BedroomSizeViewController: UITableViewDelegate {
             }
             for floatWeek in Constant.MyClassConstants.floatRemovedArray {
                 let floatWeekTraversed = floatWeek as! OpenWeeks
-                if(floatWeekTraversed.isFloatRemoved && selectedRelinquismentId == floatWeekTraversed.relinquishmentID) {
-                    if(Constant.MyClassConstants.unitNumberLockOff == floatWeekTraversed.floatDetails[0].unitNumber) {
+                if floatWeekTraversed.isFloatRemoved && selectedRelinquismentId == floatWeekTraversed.relinquishmentID {
+                    if Constant.MyClassConstants.unitNumberLockOff == floatWeekTraversed.floatDetails[0].unitNumber {
                         Constant.MyClassConstants.selectedFloatWeek = floatWeekTraversed
                         Constant.MyClassConstants.savedClubFloatResort = floatWeekTraversed.floatDetails[0].clubResortDetails
                     }
                 }
             }
-            delegate?.floatLockOffDetails!(bedroomDetails: Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as! String)
+        }
+            delegate?.floatLockOffDetails!(bedroomDetails:Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as! String)
             self.dismiss(animated: false, completion: nil)
         }
     }

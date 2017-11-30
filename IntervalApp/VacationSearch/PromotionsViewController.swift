@@ -42,7 +42,7 @@ extension PromotionsViewController: UITableViewDelegate {
         promotionsTableView.reloadData()
         if indexPath.section == 0 {
             Constant.MyClassConstants.isPromotionsEnabled = true
-            if(Constant.MyClassConstants.isFromExchange) {
+            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                 Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName = promotionsArray[indexPath.row].offerName
             } else {
                Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName = promotionsArray[indexPath.row].offerName
@@ -50,10 +50,10 @@ extension PromotionsViewController: UITableViewDelegate {
 
         } else {
             Constant.MyClassConstants.isPromotionsEnabled = false
-            if(Constant.MyClassConstants.isFromExchange) {
-               Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName = "No Thanks"
+            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
+               Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName = "No Thanks".localized()
             } else {
-                Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName = "No Thanks"
+                Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName = "No Thanks".localized()
             }
         }
         self.dismiss(animated: true, completion: nil)
@@ -78,19 +78,19 @@ extension PromotionsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "PromotionCell", for: indexPath) as! PromotionsCell
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "PromotionCell", for: indexPath) as? PromotionsCell else { return UITableViewCell() }
             let promotion = promotionsArray[indexPath.row]
             cell.selectionStyle = .none
-            
             cell.promotionTextLabel.text = promotion.offerName
-            if(Constant.MyClassConstants.isFromExchange) {
-                if (cell.promotionTextLabel.text == Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName) {
+
+            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
+                if cell.promotionTextLabel.text == Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName {
                     cell.promotionSelectionCheckBox.checked = true
                 } else {
                     cell.promotionSelectionCheckBox.checked = false
                 }
             } else {
-                if (cell.promotionTextLabel.text == Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName) {
+                if cell.promotionTextLabel.text == Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName {
                     cell.promotionSelectionCheckBox.checked = true
                 } else {
                     cell.promotionSelectionCheckBox.checked = false
@@ -101,12 +101,13 @@ extension PromotionsViewController: UITableViewDataSource {
             cell.promotionSelectionCheckBox.addTarget(self, action: #selector(PromotionsViewController.promotionCellSelected), for: .touchUpInside)
             return cell
         } else {
-            let cell = promotionsTableView.dequeueReusableCell(withIdentifier: "PromotionCell", for: indexPath) as! PromotionsCell
-            cell.promotionTextLabel.text = "No Thanks"
+           guard let cell = promotionsTableView.dequeueReusableCell(withIdentifier: "PromotionCell", for: indexPath) as? PromotionsCell else { return UITableViewCell() }
+            cell.promotionTextLabel.text = "No Thanks".localized()
             cell.selectionStyle = .none
-            if(Constant.MyClassConstants.isFromExchange) {
+
+            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                 
-                if (cell.promotionTextLabel.text == Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName) {
+                if cell.promotionTextLabel.text == Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName {
                     cell.promotionSelectionCheckBox.checked = true
                 } else {
                     cell.promotionSelectionCheckBox.checked = false
@@ -114,12 +115,11 @@ extension PromotionsViewController: UITableViewDataSource {
                 
             } else {
                 
-                if (cell.promotionTextLabel.text == Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName) {
+                if cell.promotionTextLabel.text == Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName {
                     cell.promotionSelectionCheckBox.checked = true
                 } else {
                     cell.promotionSelectionCheckBox.checked = false
                 }
-                
             }
             cell.promotionSelectionCheckBox.isUserInteractionEnabled = false
             return cell

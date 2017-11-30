@@ -23,7 +23,7 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
     @IBOutlet weak var resortName: UILabel!
     @IBOutlet weak var dayandDateLabel: UIView!
     
-    @IBOutlet weak var addButton: IUIKButton!
+    @IBOutlet weak var addButton: IUIKButton?
     @IBOutlet weak var savedView: UILabel!
  
     @IBOutlet weak var promLabel: UILabel!
@@ -32,6 +32,19 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
     
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var checkBox: IUIKCheckbox!
+    
+    static let identifier = "FloatSavedCell"
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+
+        // Configure the view for the selected state
+    }
     
     func setupDepositedCell(deposit: Deposit) {
         
@@ -92,18 +105,20 @@ class RelinquishmentSelectionOpenWeeksCell: UITableViewCell {
             
             if diff > 0 {
                 expirationMessageLabel.text = "Expires in \(diff) days.".localized()
-                addButton.isHidden = false
+                addButton?.isHidden = false
             } else if diff == 0 {
                 expirationMessageLabel.text = "Expiring today".localized()
-                addButton.isHidden = false
+                addButton?.isHidden = false
             } else {
                 expirationMessageLabel.text = "Expired on \(expiredDate)".localized()
-                addButton.isHidden = true
+                addButton?.isHidden = true
             }
         }
+        
         //hide promotions
         promLabel.isHidden = true
         promImgView.isHidden = true
+        
     }
     
     func getDaysDiff(expiration: Date) -> Int {

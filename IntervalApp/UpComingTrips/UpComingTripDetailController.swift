@@ -434,7 +434,6 @@ extension UpComingTripDetailController: UITableViewDataSource {
                 }
             }
             Helper.addLinearGradientToView(view: cell.resortNameBaseView, colour: UIColor.white, transparntToOpaque: true, vertical: false)
-            
             cell.showMapDetailButton.addTarget(self, action: #selector(UpComingTripDetailController.showMapDetail), for: .touchUpInside)
             cell.showWeatherDetailButton.addTarget(self, action: #selector(UpComingTripDetailController.showWeatherDetail), for: .touchUpInside)
             guard let addressDetails = Constant.upComingTripDetailControllerReusableIdentifiers.exchangeDetails.destination?.resort?.address else {
@@ -452,7 +451,6 @@ extension UpComingTripDetailController: UITableViewDataSource {
                 resortAddress.append(countryCode)
             }
             cell.resortLocationLabel.text = resortAddress.joined(separator: ",")
-            
             return cell
         } else if indexPath.section == 1 {
             

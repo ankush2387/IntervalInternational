@@ -214,6 +214,7 @@
 		3AEF710B1DDF1B3400FA076D /* AdvisementsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEF710A1DDF1B3400FA076D /* AdvisementsTableViewCell.swift */; };
 		3AEF710E1DDF513D00FA076D /* SlideAgreeButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEF710C1DDF513D00FA076D /* SlideAgreeButtonCell.swift */; };
 		3AEF710F1DDF513D00FA076D /* SlideAgreeButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AEF710D1DDF513D00FA076D /* SlideAgreeButtonCell.xib */; };
+		3AF0AA551FBB08DA000C682A /* PointsInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF0AA541FBB08DA000C682A /* PointsInfoViewController.swift */; };
 		3AF1700F1E96A5840021F393 /* ClubPointsCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF1700E1E96A5840021F393 /* ClubPointsCollectionViewLayout.swift */; };
 		3AF4AFD31CD35CC100554506 /* MembershipIPadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF4AFD21CD35CC100554506 /* MembershipIPadViewController.swift */; };
 		3AF4AFD51CD35D4300554506 /* DashboardiPadTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF4AFD41CD35D4300554506 /* DashboardiPadTableViewController.swift */; };
@@ -607,6 +608,7 @@
 		3AEF710A1DDF1B3400FA076D /* AdvisementsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvisementsTableViewCell.swift; sourceTree = "<group>"; };
 		3AEF710C1DDF513D00FA076D /* SlideAgreeButtonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideAgreeButtonCell.swift; sourceTree = "<group>"; };
 		3AEF710D1DDF513D00FA076D /* SlideAgreeButtonCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SlideAgreeButtonCell.xib; sourceTree = "<group>"; };
+		3AF0AA541FBB08DA000C682A /* PointsInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointsInfoViewController.swift; sourceTree = "<group>"; };
 		3AF1700E1E96A5840021F393 /* ClubPointsCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClubPointsCollectionViewLayout.swift; sourceTree = "<group>"; };
 		3AF4AFD21CD35CC100554506 /* MembershipIPadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MembershipIPadViewController.swift; sourceTree = "<group>"; };
 		3AF4AFD41CD35D4300554506 /* DashboardiPadTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardiPadTableViewController.swift; sourceTree = "<group>"; };
@@ -1178,6 +1180,7 @@
 				08A4D4311F69A51B00C63CDC /* FlexchangeSearchViewController.swift */,
 				3AB122B01CD283AF00204EB7 /* VacationSearchIPadViewController.swift */,
 				3A5AFDDE1F5ED1CD00A44138 /* AllAvailableDestinationsIpadViewController.swift */,
+				3AF0AA541FBB08DA000C682A /* PointsInfoViewController.swift */,
 				3AAA5A201C720F4500A5EA6D /* VacationSearchTabBarController.swift */,
 				08E3BCF51F2A30F80021F2BC /* RelinquishmentDetailsViewController.swift */,
 				3AAA5A211C720F4500A5EA6D /* VacationSearchViewController.swift */,
@@ -2015,7 +2018,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		898F2FAB33CE1A7C1D3949A9 /* [CP] Check Pods Manifest.lock */ = {
@@ -2033,7 +2036,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		9D8DA19124728AE252BF8557 /* [CP] Embed Pods Frameworks */ = {
@@ -2343,6 +2346,7 @@
 				DC7EF4CC1D709E9600E9E360 /* ClubPointTableViewCell.swift in Sources */,
 				DC7EF4EA1D709F2000E9E360 /* RelinquishmentSearchViewController.swift in Sources */,
 				DC7EF4E01D709F1200E9E360 /* ActionSheetMemberShipCell.swift in Sources */,
+				3AF0AA551FBB08DA000C682A /* PointsInfoViewController.swift in Sources */,
 				3A3D56831DD339DE00922FA9 /* GuestTextFieldCell.swift in Sources */,
 				3A892F521CD3902F00AE6F45 /* WhereToGoContentCell.swift in Sources */,
 				3C4F172B1FA77056001EF71F /* EntityDataSource.swift in Sources */,

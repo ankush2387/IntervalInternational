@@ -236,6 +236,7 @@ class Constant: NSObject {
         static var searchAvailabilityHeader = ""
         static var filterOptionsArray: [ResortDestination] = []
         static var areaWithAreaCode: [AreaInfo] = []
+        static var relinquishmentsArray: [RelinquishmentTypes] = []
         static var selectedAreaCodeDictionary = NSMutableDictionary()
         static var selectedAreaCodeArray = NSMutableArray()
         
@@ -419,7 +420,7 @@ class Constant: NSObject {
         
         static var  onsiteArray = NSMutableArray()
         static var  nearbyArray = NSMutableArray()
-        static var  relinquishmentIdArray = NSMutableArray()
+        static var  relinquishmentIdArray = [String]()
         static var  relinquishmentUnitsArray = NSMutableArray()
         static var  idUnitsRelinquishmentDictionary = NSMutableDictionary()
         static var  userSelectedUnitsArray = NSMutableArray()
@@ -606,6 +607,17 @@ class Constant: NSObject {
         static var certifcateCount = 0
         static var certificateArray = [AccommodationCertificate]()
         static var noFilterOptions = false
+        static var isCIGAvailable = false
+        static var isClubPointsAvailable = false
+        static var lowestTerm = 12
+    }
+    
+    // Enum to store openWeek types
+     enum RelinquishmentTypes {
+        case Deposit(Deposits)
+        case ClubPoints(ClubPoints)
+        case CIGPoints(rlmPointsProgram)
+        case FixedWeek(OpenWeeks)
     }
     
     enum selectedDestType {
@@ -1630,6 +1642,7 @@ class Constant: NSObject {
         self.holdingTime = 17
         self.holdingTimer = Timer.scheduledTimer(timeInterval: 60.0, target: self, selector: #selector(updateResortHoldingTimeLabel), userInfo: nil, repeats: true)
     }
+    
     static func updateResortHoldingTimeLabel() {
         holdingTime = holdingTime - decreaseValue
         self.holdingResortForRemainingMinutes = "We are holding this unit for \(holdingTime) minutes"

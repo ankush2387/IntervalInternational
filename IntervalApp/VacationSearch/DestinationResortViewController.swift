@@ -133,7 +133,7 @@ extension DestinationResortViewController: UITableViewDataSource {
             var height: CGFloat
             if(Constant.RunningDevice.deviceIdiom == .pad) {
                 let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0)
-                if Constant.MyClassConstants.isFromExchange {
+                if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                     height = heightForView((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[0].description)!, font: font!, width: (Constant.MyClassConstants.runningDeviceWidth!/2) - 100)
                     return height
                     
@@ -144,7 +144,7 @@ extension DestinationResortViewController: UITableViewDataSource {
                
             } else {
                 let font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0)
-                if Constant.MyClassConstants.isFromExchange {
+                if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                     height = heightForView((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[0].description)!, font: font!, width: Constant.MyClassConstants.runningDeviceWidth! - 40)
                     return height + 60
                 } else {
@@ -169,7 +169,7 @@ extension DestinationResortViewController: UITableViewDataSource {
                 
             } else if(indexPath.row == 1 && indexPath.section == 5) {
                 
-                if (Constant.MyClassConstants.isFromExchange) {
+                if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                     
                     if((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements.count)! > 1) {
                     let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0)
@@ -221,7 +221,7 @@ extension DestinationResortViewController: UITableViewDataSource {
 
             var url = URL(string: "")
             var imagesArray = [Image]()
-            if Constant.MyClassConstants.isFromExchange {
+            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                  imagesArray = (Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.images)!
             } else {
                  imagesArray = (Constant.MyClassConstants.viewResponse.resort?.images)!
@@ -236,7 +236,7 @@ extension DestinationResortViewController: UITableViewDataSource {
             }
             cell.resortImageView?.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
             
-            if Constant.MyClassConstants.isFromExchange {
+            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                 cell.resortName?.text = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.resortName
                 cell.resortAddress?.text = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.address?.cityName?.appending(", ").appending((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.address?.territoryCode!)!)
                 cell.resortCode?.text = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.resortCode
@@ -255,7 +255,7 @@ extension DestinationResortViewController: UITableViewDataSource {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat
            
-            if Constant.MyClassConstants.isFromExchange { // for exchange process
+            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange { // for exchange process
                 if let checkInDate = dateFormatter.date(from: (Constant.MyClassConstants.exchangeViewResponse.destination?.unit?.checkInDate)!) {
                     //creating calendar date components to get date components sepratelly
                     let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkInDate)
@@ -306,7 +306,7 @@ extension DestinationResortViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.unitDetailsCell1, for: indexPath) as! UnitDetailCell
             // for exchange
             
-            if Constant.MyClassConstants.isFromExchange {
+            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                 
                 if let roomSize = UnitSize(rawValue: (Constant.MyClassConstants.exchangeViewResponse.destination?.unit?.unitSize!)!) {
                     
@@ -341,7 +341,7 @@ extension DestinationResortViewController: UITableViewDataSource {
         } else if(indexPath.section == 3) {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.advisementCell, for: indexPath) as! AdvisementsTableViewCell
-            if Constant.MyClassConstants.isFromExchange {
+            if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                 cell.advisementsLabel.text = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[0].description
             } else {
                 cell.advisementsLabel.text = Constant.MyClassConstants.viewResponse.resort?.advisements[0].description
@@ -369,7 +369,7 @@ extension DestinationResortViewController: UITableViewDataSource {
                     cell.infoLabel.text = Constant.MyClassConstants.nearbyString.appending("\n\n").appending(Constant.MyClassConstants.onsiteString)
                 } else {
                     
-                    if(Constant.MyClassConstants.isFromExchange) {
+                    if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                         if (Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements.count)! > 1 {
                             
                             cell.infoLabel.text = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[1].description

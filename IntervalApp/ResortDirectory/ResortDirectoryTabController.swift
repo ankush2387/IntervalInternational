@@ -80,7 +80,6 @@ class ResortDirectoryTabController: UITabBarController {
         tabBar.items?[1].image = #imageLiteral(resourceName: "RD_List_Blue")
         tabBar.items?[2].image = #imageLiteral(resourceName: "RD_Fav_Blue")
     }
-
     
     //***** Remove added notifications. *****//
     override func viewWillDisappear(_ animated: Bool) {
