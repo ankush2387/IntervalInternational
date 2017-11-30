@@ -98,7 +98,7 @@ class DashboardTableViewController: UITableViewController {
             
             //***** Add the hamburger menu *****//
             let menuButton = UIBarButtonItem(image: UIImage(named:Constant.assetImageNames.ic_menu), style: .plain, target: rvc, action:#selector(SWRevealViewController.revealToggle(_:)))
-            menuButton.tintColor = UIColor.white
+            menuButton.tintColor = .white
             
             self.navigationItem.leftBarButtonItem = menuButton
             
@@ -176,7 +176,7 @@ class DashboardTableViewController: UITableViewController {
         case Constant.dashboardTableScreenReusableIdentifiers.alert :
             return 100
         case Constant.dashboardTableScreenReusableIdentifiers.search:
-            return 70
+            return 110
         default :
             return 290
         }
@@ -307,17 +307,23 @@ class DashboardTableViewController: UITableViewController {
         case Constant.dashboardTableScreenReusableIdentifiers.search :
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cellIdentifier, for: indexPath)
             cell.selectionStyle = UITableViewCellSelectionStyle.none
-            for subview in cell.subviews {
-                subview.removeFromSuperview()
-            }
             
             let searchVacation = IUIKButton()
-            searchVacation.frame = CGRect(x: 10, y: 10, width: self.view.frame.width - 20, height: 50)
-            searchVacation.backgroundColor = UIColor(red: 240 / 255.0, green: 111 / 255.0, blue: 54 / 255.0, alpha: 1.0)
+              searchVacation.backgroundColor = UIColor(red: 224 / 255.0, green: 118 / 255.0, blue: 69 / 255.0, alpha: 1.0)
             searchVacation.setTitle(Constant.buttonTitles.searchVacation, for: UIControlState.normal)
+            searchVacation.titleLabel?.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 22)
             searchVacation.addTarget(self, action:#selector(DashboardTableViewController.searchVactionPressed(_:)), for:UIControlEvents.touchUpInside)
+            cell.contentView.addSubview(searchVacation)
             searchVacation.layer.cornerRadius = 4
-            cell.addSubview(searchVacation)
+            searchVacation.translatesAutoresizingMaskIntoConstraints = false
+            
+            cell.contentView.addConstraint(NSLayoutConstraint(item: searchVacation, attribute: .leadingMargin, relatedBy: .equal, toItem: cell.contentView, attribute: .leadingMargin, multiplier: 1.0, constant: 20))
+          
+            cell.contentView.addConstraint( NSLayoutConstraint(item: searchVacation, attribute: .trailingMargin, relatedBy: .equal, toItem: cell.contentView, attribute:.trailingMargin, multiplier: 1.0, constant: -20))
+            
+            cell.contentView.addConstraint(NSLayoutConstraint(item: searchVacation, attribute: .top, relatedBy: .equal, toItem: cell.contentView, attribute: .top, multiplier: 1.0, constant: 20))
+            cell.contentView.addConstraint(NSLayoutConstraint(item: searchVacation, attribute: .bottom, relatedBy: .equal, toItem: cell.contentView, attribute: .bottom, multiplier: 1.0, constant: -20))
+
             return cell
             
         default :
@@ -326,7 +332,9 @@ class DashboardTableViewController: UITableViewController {
             for subview in cell.subviews {
                 subview.removeFromSuperview()
             }
-            
+            let seprator = UIView(frame:CGRect(x: 0, y: 0, width: cell.frame.size.width, height: 1))
+            seprator.backgroundColor = .lightGray
+            cell.addSubview(seprator)
             //header for top ten deals
             if type == Constant.dashboardTableScreenReusableIdentifiers.exchange {
                 
@@ -334,13 +342,13 @@ class DashboardTableViewController: UITableViewController {
                     let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: cell.contentView.frame.width - 20, height: 20))
                     resortImageNameLabel.text = Constant.segmentControlItems.getawaysLabelText
                     
-                    resortImageNameLabel.textColor = UIColor.black
+                    resortImageNameLabel.textColor = .black
                     resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
                     cell.addSubview(resortImageNameLabel)
                 } else {
                     let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: cell.contentView.frame.width - 20, height: 20))
                     resortImageNameLabel.text = Constant.segmentControlItems.flexchangeLabelText
-                    resortImageNameLabel.textColor = UIColor.black
+                    resortImageNameLabel.textColor = .black
                     resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
                     cell.addSubview(resortImageNameLabel)
                     
@@ -350,7 +358,7 @@ class DashboardTableViewController: UITableViewController {
                 let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: 10, width: cell.contentView.frame.width - 20, height: 20))
                 resortImageNameLabel.text = Constant.segmentControlItems.getawaysLabelText
                 
-                resortImageNameLabel.textColor = UIColor.black
+                resortImageNameLabel.textColor = .black
                 resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
                 cell.addSubview(resortImageNameLabel)
             }
@@ -365,7 +373,7 @@ class DashboardTableViewController: UITableViewController {
             homeTableCollectionView = UICollectionView(frame: CGRect(x: 0, y: 40, width: self.view.bounds.width, height: 230 ), collectionViewLayout: layout)
             
             homeTableCollectionView.register(CustomCollectionCell.self, forCellWithReuseIdentifier: Constant.dashboardTableScreenReusableIdentifiers.cell)
-            homeTableCollectionView.backgroundColor = UIColor.clear
+            homeTableCollectionView.backgroundColor = .clear
             homeTableCollectionView.delegate = self
             homeTableCollectionView.dataSource = self
             if type == Constant.dashboardTableScreenReusableIdentifiers.exchange {
@@ -655,7 +663,7 @@ extension DashboardTableViewController: UICollectionViewDataSource {
             }
             let flexDeal = Constant.MyClassConstants.flexExchangeDeals[indexPath.row]
             let resortFlaxImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: 180) )
-            resortFlaxImageView.backgroundColor = UIColor.lightGray
+            resortFlaxImageView.backgroundColor = .lightGray
             
             if let imgURL = flexDeal.images.first?.url {
                 resortFlaxImageView.setImageWith(URL(string: imgURL ), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
@@ -676,9 +684,9 @@ extension DashboardTableViewController: UICollectionViewDataSource {
             resortImageNameLabel.text = flexDeal.name
             resortImageNameLabel.numberOfLines = 2
             resortImageNameLabel.textAlignment = NSTextAlignment.center
-            resortImageNameLabel.textColor = UIColor.black
+            resortImageNameLabel.textColor = .black
             resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 16)
-            resortImageNameLabel.backgroundColor = UIColor.clear
+            resortImageNameLabel.backgroundColor = .clear
             cell.addSubview(resortImageNameLabel)
             cell.layer.borderColor = UIColor.lightGray.cgColor
             cell.layer.borderWidth = 1.0
@@ -695,7 +703,7 @@ extension DashboardTableViewController: UICollectionViewDataSource {
             }
             let topTenDeals = Constant.MyClassConstants.topDeals[indexPath.row]
             let resortFlaxImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: 180) )
-            resortFlaxImageView.backgroundColor = UIColor.lightGray
+            resortFlaxImageView.backgroundColor = .lightGray
             let rentalDeal: RentalDeal = Constant.MyClassConstants.topDeals[indexPath.row]
             
             if let imgURL = rentalDeal.images.first?.url {
@@ -717,11 +725,11 @@ extension DashboardTableViewController: UICollectionViewDataSource {
                 resortImageNameLabel.text = header
             }
             resortImageNameLabel.numberOfLines = 2
-            resortImageNameLabel.backgroundColor = UIColor.orange
+            resortImageNameLabel.backgroundColor = .orange
             resortImageNameLabel.textAlignment = NSTextAlignment.center
-            resortImageNameLabel.textColor = UIColor.black
+            resortImageNameLabel.textColor = .black
             resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 16)
-            resortImageNameLabel.backgroundColor = UIColor.clear
+            resortImageNameLabel.backgroundColor = .clear
             cell.addSubview(resortImageNameLabel)
             
             let centerView = UIView(frame: CGRect(x: 0, y: 0, width: 150, height: 75))
@@ -733,8 +741,8 @@ extension DashboardTableViewController: UICollectionViewDataSource {
             unitLabel.numberOfLines = 2
             unitLabel.textAlignment = NSTextAlignment.center
             unitLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 12)
-            unitLabel.textColor = UIColor.white
-            unitLabel.backgroundColor = UIColor.clear
+            unitLabel.textColor = .white
+            unitLabel.backgroundColor = .clear
             centerView.addSubview(unitLabel)
             
             let priceLabel = UILabel(frame: CGRect(x: 10, y: 35, width: centerView.frame.size.width - 20, height: 20))
@@ -745,8 +753,8 @@ extension DashboardTableViewController: UICollectionViewDataSource {
             priceLabel.numberOfLines = 2
             priceLabel.textAlignment = NSTextAlignment.center
             priceLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
-            priceLabel.textColor = UIColor.white
-            priceLabel.backgroundColor = UIColor.clear
+            priceLabel.textColor = .white
+            priceLabel.backgroundColor = .clear
             centerView.addSubview(priceLabel)
             
             cell.layer.borderColor = UIColor.lightGray.cgColor
@@ -787,7 +795,7 @@ extension DashboardTableViewController: UICollectionViewDataSource {
                         
                         if checkInDates.count > 0 {
                             cell.alertStatus.text = Constant.buttonTitles.viewResults
-                            cell.alertStatus.textColor = UIColor.white
+                            cell.alertStatus.textColor = .white
                             cell.layer.borderColor = UIColor(red: 224.0 / 255.0, green: 118.0 / 255.0, blue: 69.0 / 255.0, alpha: 1.0).cgColor
                             cell.backgroundColor = UIColor(red: 224.0 / 255.0, green: 118.0 / 255.0, blue: 69.0 / 255.0, alpha: 1.0)
                         } else {

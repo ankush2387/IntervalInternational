@@ -82,7 +82,7 @@ class MemberShipViewController: UIViewController {
             
             //***** Add the hamburger menu *****//
             let menuButton = UIBarButtonItem(image: UIImage(named: "ic_menu"), style: .plain, target: rvc, action: #selector(rvc.revealToggle(_:)))
-            menuButton.tintColor = UIColor.white
+            menuButton.tintColor = .white
             
             self.navigationItem.leftBarButtonItem = menuButton
             
@@ -218,12 +218,13 @@ extension MemberShipViewController: UITableViewDataSource {
         
         if section == 1 && tableView.tag != 3 {
             let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
-            let seprator = UIView(frame:CGRect(x: 0, y: 0, width: headerView.frame.size.width, height: 1))
-                seprator.backgroundColor = UIColor.lightGray
-                headerView.addSubview(seprator)
+            
+            let seprator = UIView(frame: CGRect(x: 0, y: 0, width: headerView.frame.size.width, height: 1))
+            seprator.backgroundColor = .lightGray
+            headerView.addSubview(seprator)
             let titleLabel = UILabel(frame: CGRect(x: 20, y: 10, width: headerView.frame.size.width - 40, height: 20))
             titleLabel.text = "Ownerships".localized()
-            titleLabel.textColor = UIColor.darkGray
+            titleLabel.textColor = .darkGray
             titleLabel.font = UIFont(name: Constant.fontName.helveticaNeueBold, size: 18)
             headerView.addSubview(titleLabel)
             headerView.backgroundColor = UIColor(red: 245.0 / 255.0, green: 245.0 / 255.0, blue: 246.0 / 255.0, alpha: 1.0)
