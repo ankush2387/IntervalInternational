@@ -11,6 +11,7 @@ import SwiftyJSON
 
 open class ClubPoints {
 
+    open var relinquishmentId : String?
     open var resort : Resort?
     open var pointsSpent : Int?
     
@@ -20,6 +21,8 @@ open class ClubPoints {
     public convenience init(json:JSON){
         self.init()
 
+        self.relinquishmentId = json["relinquishmentId"].string ?? ""
+        
         if json["resort"].exists() {
             let resortJson:JSON = json["resort"]
             self.resort = Resort(summaryJSON:resortJson)
