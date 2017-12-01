@@ -39,7 +39,6 @@ class CheckOutViewController: UIViewController {
     var showInsurance = false
     var eplusAdded = false
     var destinationPromotionSelected = false
-    //var recapPromotionsArray = [Promotion]()
     var recapSelectedPromotion: String?
     var recapFeesTotal: Float?
     var filterRelinquishments = ExchangeRelinquishment()
@@ -76,7 +75,7 @@ class CheckOutViewController: UIViewController {
                 }
             }
             
-            if Constant.MyClassConstants.exchangeFees.count > 0 {
+            if !Constant.MyClassConstants.exchangeFees.isEmpty {
                 
                 if let insurance = Constant.MyClassConstants.exchangeFees[0].insurance {
                     if let isInsuranceSelected = insurance.selected {
@@ -174,15 +173,11 @@ class CheckOutViewController: UIViewController {
             let jsStringAccept = "document.getElementById('WASCInsuranceOfferOption0').checked == true;"
             let jsStringReject = "document.getElementById('WASCInsuranceOfferOption1').checked == true;"
             
-            var strAccept = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringAccept)!
-            var strReject = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringReject)!
-            
-            if !isTripProtectionEnabled {
-                strAccept = "true"
-                strReject = "true"
-            }
+            let strAccept = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringAccept)
+            let strReject = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringReject)
             
             if (isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && (strAccept == "true" || strReject == "true") && Constant.MyClassConstants.selectedCreditCard.count > 0 {
+                
                 showHudAsync()
                 
                 imageSlider.isHidden = true
@@ -190,13 +185,18 @@ class CheckOutViewController: UIViewController {
                 self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                 if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                     
+                    if Constant.MyClassConstants.recapPromotionsArray.count > 0 && Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName == "" {
+                        imageSlider.isHidden = false
+                        self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.promotionsMessage)
+                    } else {
+          
                     let continueToPayRequest = ExchangeProcessContinueToPayRequest()
                     continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last!
                     continueToPayRequest.confirmationDelivery = confirmationDelivery
                     continueToPayRequest.acceptTermsAndConditions = true
                     continueToPayRequest.acknowledgeAndAgreeResortFees = true
                     
-                    ExchangeProcessClient.continueToPay(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { (response) in
+                    ExchangeProcessClient.continueToPay(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { response in
                         
                         Constant.MyClassConstants.exchangeBookingLastStartedProcess = nil
                         Constant.MyClassConstants.exchangeContinueToPayResponse = response
@@ -219,7 +219,13 @@ class CheckOutViewController: UIViewController {
                         self?.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                         self?.presentErrorAlert(UserFacingCommonError.serverError(error))
                     })
+                    }
                 } else {
+                    
+                    if (Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName == nil || Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName == "") {
+                        imageSlider.isHidden = false
+                        self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.promotionsMessage)
+                    } else {
                     
                     let continueToPayRequest = RentalProcessRecapContinueToPayRequest()
                     continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last!
@@ -227,7 +233,7 @@ class CheckOutViewController: UIViewController {
                     continueToPayRequest.acceptTermsAndConditions = true
                     continueToPayRequest.acknowledgeAndAgreeResortFees = true
                     
-                    RentalProcessClient.continueToPay(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { (response) in
+                    RentalProcessClient.continueToPay(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { response in
                         
                         Constant.MyClassConstants.getawayBookingLastStartedProcess = nil
                         Constant.MyClassConstants.continueToPayResponse = response
@@ -251,6 +257,7 @@ class CheckOutViewController: UIViewController {
                         self?.presentErrorAlert(UserFacingCommonError.serverError(error))
                     })
                 }
+              }
             } else if !isAgreedToFees && Constant.MyClassConstants.hasAdditionalCharges {
                 let indexPath = NSIndexPath(row: 0, section: 8)
                 checkoutOptionTBLview.scrollToRow(at: indexPath as IndexPath, at: .top, animated: true)
@@ -261,10 +268,10 @@ class CheckOutViewController: UIViewController {
                 checkoutOptionTBLview.scrollToRow(at: indexPath as IndexPath, at: .top, animated: true)
                 imageSlider.isHidden = false
                 self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.insuranceSelectionMessage)
-            } else if (Constant.MyClassConstants.isFromExchange && Constant.MyClassConstants.recapPromotionsArray.count > 0 && Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName == "") {
+            } else if (Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange) && Constant.MyClassConstants.recapPromotionsArray.count > 0 && Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName == "" {
                 imageSlider.isHidden = false
                 self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.promotionsMessage)
-            } else if !Constant.MyClassConstants.isFromExchange && (Constant.MyClassConstants.rentalFees[0].rental!.selectedOfferName == nil || Constant.MyClassConstants.rentalFees[0].rental!.selectedOfferName == "") {
+            } else if !Constant.MyClassConstants.isFromExchange && (Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName == nil || Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName == "") {
                 imageSlider.isHidden = true
                 self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.promotionsMessage)
             } else {
@@ -622,7 +629,7 @@ class CheckOutViewController: UIViewController {
             exchangeRecalculateRequest.fees = Constant.MyClassConstants.exchangeFees.last!
             showHudAsync()
             ExchangeProcessClient.recalculateFees(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: exchangeRecalculateRequest, onSuccess: {
-                (response) in
+                response in
                 
                 self.tripRequestInProcess = false
                 Constant.MyClassConstants.exchangeContinueToCheckoutResponse = response
