@@ -50,7 +50,7 @@ class OwnerShipDetailTableViewCell: UITableViewCell {
             var imageURLStr = ""
             if images.count > 1 {
                  imageURLStr = images[1].url ?? ""
-            } else {
+            } else if !images.isEmpty {
                  imageURLStr = images[0].url ?? ""
             }
             ownerShipimageView.setImageWith(URL(string: imageURLStr), completed: { (image:UIImage?, error:Swift.Error?, _:SDImageCacheType, _:URL?) in
