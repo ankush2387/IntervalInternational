@@ -196,7 +196,7 @@ class WhoWillBeCheckingInIPadViewController: UIViewController {
     func updateResortHoldingTime() {
         
         if Constant.holdingTime != 0 {
-            self.resortHoldingTimeLabel.text = Constant.holdingResortForRemainingMinutes
+            self.resortHoldingTimeLabel.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
         } else {
             Constant.holdingTimer?.invalidate()
             self.presentAlert(with: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage, hideCancelButton: false, cancelButtonTitle: "Cancel".localized(), acceptButtonTitle: "Ok".localized(), acceptButtonStyle: .default, cancelHandler: nil, acceptHandler: {

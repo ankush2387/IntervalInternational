@@ -47,6 +47,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        resortHoldingTimeLabel.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
         Constant.GetawaySearchResultGuestFormDetailData.firstName = ""
         Constant.GetawaySearchResultGuestFormDetailData.lastName = ""
         Constant.GetawaySearchResultGuestFormDetailData.country = ""
@@ -207,7 +208,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
     //***** Notification for update timer.*****//
     func updateResortHoldingTime() {
         if Constant.holdingTime != 0 {
-            self.resortHoldingTimeLabel.text = Constant.holdingResortForRemainingMinutes
+            resortHoldingTimeLabel.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
         } else {
             Constant.holdingTimer?.invalidate()
             self.presentAlert(with: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage, hideCancelButton: false, cancelButtonTitle: "Cancel".localized(), acceptButtonTitle: "Ok".localized(), acceptButtonStyle: .default, cancelHandler: nil, acceptHandler: {
