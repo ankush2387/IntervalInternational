@@ -10,13 +10,13 @@
 		087A87561E9519E2009B1387 /* TdiTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087A87551E9519E2009B1387 /* TdiTableViewCell.swift */; };
 		087A87581E951A17009B1387 /* TdiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087A87571E951A17009B1387 /* TdiCollectionViewCell.swift */; };
 		087A875A1E951A2D009B1387 /* UnitSizeTdiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087A87591E951A2D009B1387 /* UnitSizeTdiCollectionViewCell.swift */; };
-		087DC9E91FD0248200579AC1 /* KeyboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087DC9E81FD0248200579AC1 /* KeyboardHandler.swift */; };
 		0887C9791F6A80ED007F57C3 /* FlexchangeDestinationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0887C9781F6A80ED007F57C3 /* FlexchangeDestinationCell.swift */; };
 		0887C97B1F6A99F5007F57C3 /* SearchFlexchangeButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0887C97A1F6A99F5007F57C3 /* SearchFlexchangeButtonCell.swift */; };
 		089416711F72D93A00F03229 /* SelectBedroomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089416701F72D93A00F03229 /* SelectBedroomViewController.swift */; };
 		089416731F72D94300F03229 /* BedroomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089416721F72D94300F03229 /* BedroomTableViewCell.swift */; };
 		0895D7141E966F0D004EAA91 /* ContainerContentTBLviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0895D7131E966F0D004EAA91 /* ContainerContentTBLviewController.swift */; };
 		08A4D4321F69A51B00C63CDC /* FlexchangeSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A4D4311F69A51B00C63CDC /* FlexchangeSearchViewController.swift */; };
+		08B10A231FD18311008C737F /* Seprator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B10A221FD18311008C737F /* Seprator.swift */; };
 		08E3BCF61F2A30F80021F2BC /* RelinquishmentDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E3BCF51F2A30F80021F2BC /* RelinquishmentDetailsViewController.swift */; };
 		08E3BCF81F2A31330021F2BC /* RelinquishmentDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E3BCF71F2A31330021F2BC /* RelinquishmentDetailsCell.swift */; };
 		3A0326221C8EE684000758E3 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0326211C8EE684000758E3 /* CalendarViewController.swift */; };
@@ -400,13 +400,13 @@
 		087A87551E9519E2009B1387 /* TdiTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TdiTableViewCell.swift; sourceTree = "<group>"; };
 		087A87571E951A17009B1387 /* TdiCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TdiCollectionViewCell.swift; sourceTree = "<group>"; };
 		087A87591E951A2D009B1387 /* UnitSizeTdiCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitSizeTdiCollectionViewCell.swift; sourceTree = "<group>"; };
-		087DC9E81FD0248200579AC1 /* KeyboardHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardHandler.swift; sourceTree = "<group>"; };
 		0887C9781F6A80ED007F57C3 /* FlexchangeDestinationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlexchangeDestinationCell.swift; sourceTree = "<group>"; };
 		0887C97A1F6A99F5007F57C3 /* SearchFlexchangeButtonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchFlexchangeButtonCell.swift; sourceTree = "<group>"; };
 		089416701F72D93A00F03229 /* SelectBedroomViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectBedroomViewController.swift; sourceTree = "<group>"; };
 		089416721F72D94300F03229 /* BedroomTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BedroomTableViewCell.swift; sourceTree = "<group>"; };
 		0895D7131E966F0D004EAA91 /* ContainerContentTBLviewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerContentTBLviewController.swift; sourceTree = "<group>"; };
 		08A4D4311F69A51B00C63CDC /* FlexchangeSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlexchangeSearchViewController.swift; sourceTree = "<group>"; };
+		08B10A221FD18311008C737F /* Seprator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Seprator.swift; sourceTree = "<group>"; };
 		08E3BCF51F2A30F80021F2BC /* RelinquishmentDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentDetailsViewController.swift; sourceTree = "<group>"; };
 		08E3BCF71F2A31330021F2BC /* RelinquishmentDetailsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelinquishmentDetailsCell.swift; sourceTree = "<group>"; };
 		26D24CAA1C4015290008EF39 /* IntervalApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IntervalApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -802,14 +802,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		087DC9E71FD023DF00579AC1 /* KeyboardUtilityHandler */ = {
-			isa = PBXGroup;
-			children = (
-				087DC9E81FD0248200579AC1 /* KeyboardHandler.swift */,
-			);
-			path = KeyboardUtilityHandler;
-			sourceTree = "<group>";
-		};
 		08A46FCC1E9265E1002DC306 /* Adobe Analytics */ = {
 			isa = PBXGroup;
 			children = (
@@ -1096,7 +1088,6 @@
 		3AAA59F61C720F4500A5EA6D /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				087DC9E71FD023DF00579AC1 /* KeyboardUtilityHandler */,
 				3C291A311FBCEA0300F294FD /* TableViewCells */,
 				3C9186F31FA25DF200F484ED /* TypeAliases */,
 				61C0250A1F92CF8D003BFF55 /* View Controllers */,
@@ -1130,6 +1121,7 @@
 				3A623C691CF728BC00389708 /* UIImageView+UIActivityIndicatorForSDWebImage.m */,
 				3A9983DA1DE72A5A00CE44A5 /* MMSlidingButton.swift */,
 				3A9AFE641F597A3500BDDD6D /* FloatLabelTextField.swift */,
+				08B10A221FD18311008C737F /* Seprator.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -2107,7 +2099,6 @@
 				E9573D1F1F3CFA3A00656C99 /* nonCoreProductView.swift in Sources */,
 				3A3A013D1C99BD0B00B7EC37 /* FloatdetaildoneButtonTableViewCell.swift in Sources */,
 				3AAA5A331C720F4500A5EA6D /* MemberCell.swift in Sources */,
-				087DC9E91FD0248200579AC1 /* KeyboardHandler.swift in Sources */,
 				E9057F931F02DDBA00E20047 /* ShareActivityMessage.swift in Sources */,
 				3AAA5A371C720F4500A5EA6D /* SideMenuTableViewController.swift in Sources */,
 				3A623C6A1CF728BC00389708 /* UIImageView+UIActivityIndicatorForSDWebImage.m in Sources */,
@@ -2138,6 +2129,7 @@
 				3A3A01361C99BD0B00B7EC37 /* ClubpointTableViewCell.swift in Sources */,
 				3A2C728B1DDB2D8500BBF40B /* ExchangeOptionsCell.swift in Sources */,
 				3C4F172D1FA7801C001EF71F /* CommonErrors.swift in Sources */,
+				08B10A231FD18311008C737F /* Seprator.swift in Sources */,
 				3A7F44A71F17768800F4DD18 /* WhatToUseViewController.swift in Sources */,
 				E932C7601EE07FB70083E871 /* UpComingTripMapViewController.swift in Sources */,
 				DC27F7CB1DB8278000AA374F /* CustomTableViewCell.swift in Sources */,

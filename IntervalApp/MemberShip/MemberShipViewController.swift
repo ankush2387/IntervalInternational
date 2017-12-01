@@ -218,10 +218,8 @@ extension MemberShipViewController: UITableViewDataSource {
         
         if section == 1 && tableView.tag != 3 {
             let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
-            
-            let seprator = UIView(frame: CGRect(x: 0, y: 0, width: headerView.frame.size.width, height: 1))
-            seprator.backgroundColor = .lightGray
-            headerView.addSubview(seprator)
+            let seprator = Seprator(x: 0, y: 0, width: headerView.frame.size.width, height: 1)
+                headerView.addSubview(seprator)
             let titleLabel = UILabel(frame: CGRect(x: 20, y: 10, width: headerView.frame.size.width - 40, height: 20))
             titleLabel.text = "Ownerships".localized()
             titleLabel.textColor = .darkGray
