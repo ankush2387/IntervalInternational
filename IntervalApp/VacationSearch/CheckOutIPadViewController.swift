@@ -882,16 +882,16 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                     let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0)
                     var height: CGFloat
                     if(Constant.RunningDevice.deviceIdiom == .pad) {
-                        height = heightForView((Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description)!, font: font!, width: (Constant.MyClassConstants.runningDeviceWidth!/2) - 10)
+                        height = heightForView((Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description)!, font: font!, width: (Constant.MyClassConstants.runningDeviceWidth/2) - 10)
                         return height + 50
                     } else {
-                        height = heightForView((Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description)!, font: font!, width: Constant.MyClassConstants.runningDeviceWidth! - 10)
+                        height = heightForView((Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description)!, font: font!, width: Constant.MyClassConstants.runningDeviceWidth - 10)
                         return height + 50
                     }
                 } else {
                     let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0)
                     var height: CGFloat
-                    height = heightForView((Constant.MyClassConstants.additionalAdvisementsArray.last?.description)!, font: font!, width: Constant.MyClassConstants.runningDeviceWidth! - 20)
+                    height = heightForView((Constant.MyClassConstants.additionalAdvisementsArray.last?.description)!, font: font!, width: Constant.MyClassConstants.runningDeviceWidth - 20)
                     return height + 50
                 }
             case 2:

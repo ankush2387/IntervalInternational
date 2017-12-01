@@ -43,7 +43,7 @@ class ResortDetails: NSObject, UITableViewDataSource, UITableViewDelegate {
                 layer.removeFromSuperlayer()
             }
         }
-        let frame = CGRect(x: 0, y: 0, width: Constant.MyClassConstants.runningDeviceWidth! + 300, height: cell.resortNameGradientView.frame.size.height)
+        let frame = CGRect(x: 0, y: 0, width: Constant.MyClassConstants.runningDeviceWidth + 300, height: cell.resortNameGradientView.frame.size.height)
         cell.resortNameGradientView.frame = frame
         Helper.addLinearGradientToView(view: cell.resortNameGradientView, colour: UIColor.white, transparntToOpaque: true, vertical: false)
         cell.backgroundColor = IUIKColorPalette.contentBackground.color

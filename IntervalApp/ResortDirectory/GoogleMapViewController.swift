@@ -594,7 +594,7 @@ class GoogleMapViewController: UIViewController {
             
             for index in  Constant.MyClassConstants.addResortSelectedIndex {
                 
-                let object = Constant.MyClassConstants.resortsArray[index as! Int]
+                let object = Constant.MyClassConstants.resortsArray[index]
                 let resortbyMap = ResortByMap()
                 
                 resortbyMap.resortCode = object.resortCode!
@@ -1676,9 +1676,9 @@ extension GoogleMapViewController: UITableViewDataSource {
                     layer.removeFromSuperlayer()
                 }
             }
-            var frame = CGRect(x: 0, y: 0, width: Constant.MyClassConstants.runningDeviceWidth!, height: cell.resortNameGradientView.frame.size.height)
+            var frame = CGRect(x: 0, y: 0, width: Constant.MyClassConstants.runningDeviceWidth, height: cell.resortNameGradientView.frame.size.height)
             if Constant.RunningDevice.deviceIdiom == .pad {
-                frame = CGRect(x: 0, y: 0, width: Constant.MyClassConstants.runningDeviceWidth! * 0.4 + 100, height: cell.resortNameGradientView.frame.size.height)
+                frame = CGRect(x: 0, y: 0, width: Constant.MyClassConstants.runningDeviceWidth * 0.4 + 100, height: cell.resortNameGradientView.frame.size.height)
             }
             cell.resortNameGradientView.frame = frame
             Helper.addLinearGradientToView(view: cell.resortNameGradientView, colour: UIColor.white, transparntToOpaque: true, vertical: false)

@@ -515,7 +515,7 @@ extension ResortDirectoryViewController: UITableViewDataSource {
                     }
                 }
                 cell.backgroundNameView.backgroundColor = UIColor.clear
-                let frame = CGRect(x: 0, y: 0, width: Constant.MyClassConstants.runningDeviceWidth! + 300, height: cell.backgroundNameView.frame.size.height)
+                let frame = CGRect(x: 0, y: 0, width: Constant.MyClassConstants.runningDeviceWidth + 300, height: cell.backgroundNameView.frame.size.height)
                 cell.backgroundNameView.frame = frame
                 Helper.addLinearGradientToView(view: cell.backgroundNameView, colour: UIColor.white, transparntToOpaque: true, vertical: false)
                 cell.resortAreaName.frame = frame
@@ -554,7 +554,7 @@ extension ResortDirectoryViewController: UITableViewDataSource {
                     layer.removeFromSuperlayer()
                 }
             }
-            let frame = CGRect(x: 0, y: 0, width: Constant.MyClassConstants.runningDeviceWidth! + 300, height: cell.resortNameGradientView.frame.size.height)
+            let frame = CGRect(x: 0, y: 0, width: Constant.MyClassConstants.runningDeviceWidth + 300, height: cell.resortNameGradientView.frame.size.height)
             cell.resortNameGradientView.frame = frame
             Helper.addLinearGradientToView(view: cell.resortNameGradientView, colour: UIColor.white, transparntToOpaque: true, vertical: false)
             cell.backgroundColor = IUIKColorPalette.contentBackground.color

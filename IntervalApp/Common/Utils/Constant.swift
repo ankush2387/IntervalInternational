@@ -185,8 +185,8 @@ class Constant: NSObject {
         static var isFromSearchResult = false
         
         //***** global variable that contains running device width from appdelegate method *****//
-        static var runningDeviceWidth: CGFloat? = UIScreen.main.bounds.width
-        static var runningDeviceHeight: CGFloat? = UIScreen.main.bounds.height
+        static var runningDeviceWidth = UIScreen.main.bounds.width
+        static var runningDeviceHeight = UIScreen.main.bounds.height
         
         //***** global variable to hold webview instance data *****//
         static var requestedWebviewURL: String = ""
