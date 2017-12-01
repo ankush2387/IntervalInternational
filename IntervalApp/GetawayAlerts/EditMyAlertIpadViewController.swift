@@ -47,6 +47,8 @@ class EditMyAlertIpadViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //set return key on Keyboard to DONE
+        nameTextField.returnKeyType = .done
         Constant.MyClassConstants.selectedGetawayAlertDestinationArray.removeAll()
         if let alert = Constant.selectedAletToEdit {
             if let altId = alert.alertId {
@@ -134,11 +136,11 @@ class EditMyAlertIpadViewController: UIViewController {
         
         if let startDate = Constant.MyClassConstants.alertWindowStartDate {
             self.travelWindowEndDateSelectionButton.isEnabled = true
-            let myCalendar = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
-            let myComponents = myCalendar.components([.day, .weekday, .month, .year], from: startDate)
-            self.startDateDayLabel.text = String(describing: myComponents.day!)
-            self.startDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday!))"
-            self.startDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \(myComponents.year!)"
+            let calendar = Calendar.current
+            let anchorComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: startDate)
+            self.startDateDayLabel.text = "\(anchorComponents.day ?? 0)".localized()
+            self.startDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: anchorComponents.weekday ?? 0))".localized()
+            self.startDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: anchorComponents.month ?? 0)) \(anchorComponents.year ?? 0)".localized()
             
         } else {
             
@@ -148,18 +150,18 @@ class EditMyAlertIpadViewController: UIViewController {
             if let startDate = Constant.MyClassConstants.alertWindowStartDate {
                 if endDate.isGreaterThanDate(startDate) {
                 
-                let myCalendar1 = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
-                let myComponents1 = myCalendar1.components([.day, .weekday, .month, .year], from: endDate)
-                self.endDateDayLabel.text = String(describing: myComponents1.day!)
-                self.endDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents1.weekday!))"
-                self.endDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!)) \(myComponents1.year!)"
+                let calendar = Calendar.current
+                let anchorComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: endDate)
+                self.endDateDayLabel.text = "\(anchorComponents.day ?? 0)"
+                self.endDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: anchorComponents.weekday ?? 0))".localized()
+                self.endDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: anchorComponents.month ?? 0)) \(anchorComponents.year ?? 0)".localized()
             } else {
                 
-                let myCalendar1 = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
-                let myComponents1 = myCalendar1.components([.day, .weekday, .month, .year], from: startDate)
-                self.endDateDayLabel.text = String(describing: myComponents1.day!)
-                self.endDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents1.weekday!))"
-                self.endDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: myComponents1.month!)) \(myComponents1.year!)"
+                let calendar = Calendar.current
+                let anchorComponents = calendar.dateComponents([.day, .weekday, .month, .year], from: startDate)
+                self.endDateDayLabel.text = "\(anchorComponents.day ?? 0)".localized()
+                self.endDateDayNameLabel.text = "\(Helper.getWeekdayFromInt(weekDayNumber: anchorComponents.weekday ?? 0))".localized()
+                self.endDateMonthYearLabel.text = "\(Helper.getMonthnameFromInt(monthNumber: anchorComponents.month ?? 0)) \(anchorComponents.year ?? 0)".localized()
             }
           }
         }
@@ -178,45 +180,28 @@ class EditMyAlertIpadViewController: UIViewController {
     }
     //***** function to call calendar screen to select travel start date *****//
     @IBAction func travelStartDateCalendarIconPressed(_ sender: AnyObject) {
-        if Constant.RunningDevice.deviceIdiom == .pad {
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as! CalendarViewController
-            viewController.requestedDateWindow = Constant.MyClassConstants.start
-            let transitionManager = TransitionManager()
-            self.navigationController?.transitioningDelegate = transitionManager
-            self.navigationController?.pushViewController(viewController, animated: true)
-        } else {
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as! CalendarViewController
+        
+        let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+        let storyboardName = isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: storyboardName, bundle: nil)
+        if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as? CalendarViewController {
             viewController.requestedDateWindow = Constant.MyClassConstants.start
             let transitionManager = TransitionManager()
             self.navigationController?.transitioningDelegate = transitionManager
             self.navigationController?.pushViewController(viewController, animated: true)
         }
-        
     }
-    
     //***** function to call calendar screen to select travel end date *****//
     @IBAction func travelEndDateCalendarIconPressed(_ sender: AnyObject) {
         
-        if Constant.RunningDevice.deviceIdiom == .phone {
-            
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as! CalendarViewController
+        let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+        let storyboardName = isRunningOnIphone ? Constant.storyboardNames.vacationSearchIphone : Constant.storyboardNames.vacationSearchIPad
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: storyboardName, bundle: nil)
+        if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as? CalendarViewController {
             viewController.requestedDateWindow = Constant.MyClassConstants.end
             let transitionManager = TransitionManager()
             self.navigationController?.transitioningDelegate = transitionManager
-            self.navigationController!.pushViewController(viewController, animated: true)
-            
-        } else {
-            
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as! CalendarViewController
-            viewController.requestedDateWindow = Constant.MyClassConstants.end
-            let transitionManager = TransitionManager()
-            self.navigationController?.transitioningDelegate = transitionManager
-            self.navigationController!.pushViewController(viewController, animated: true)
-            
+            self.navigationController?.pushViewController(viewController, animated: true)
         }
     }
     
@@ -226,38 +211,24 @@ class EditMyAlertIpadViewController: UIViewController {
         var mainStoryboard = UIStoryboard()
         
         mainStoryboard = UIStoryboard(name: Constant.storyboardNames.getawayAlertsIphone, bundle: nil)
-        let viewController = mainStoryboard.instantiateViewController(withIdentifier: "BedroomSizeNav") as! UINavigationController
-        
-        let transitionManager = TransitionManager()
-        self.navigationController?.transitioningDelegate = transitionManager
-        self.navigationController!.present(viewController, animated: true, completion: nil)
-        
+        if let viewController = mainStoryboard.instantiateViewController(withIdentifier: "BedroomSizeNav") as? UINavigationController {
+            let transitionManager = TransitionManager()
+            self.navigationController?.transitioningDelegate = transitionManager
+            self.navigationController?.present(viewController, animated: true, completion: nil)
+        }
     }
-    
     //***** function to call search destination  screen to search destination by name *****//
     @IBAction func addLocationPressed(_ sender: AnyObject) {
         
-        if Constant.RunningDevice.deviceIdiom == .pad {
-            
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.resortDirectoryIpad, bundle: nil)
-            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortDirectoryVC) as! GoogleMapViewController
+        let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+        let storyboardName = isRunningOnIphone ? Constant.storyboardNames.iphone : Constant.storyboardNames.resortDirectoryIpad
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: storyboardName, bundle: nil)
+        if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortDirectoryVC) as? GoogleMapViewController {
             viewController.sourceController = Constant.MyClassConstants.createAlert
-            
             let transitionManager = TransitionManager()
             self.navigationController?.transitioningDelegate = transitionManager
-            self.navigationController!.pushViewController(viewController, animated: true)
-            
-        } else {
-            
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
-            let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.MyClassConstants.resortDirectoryVC) as! GoogleMapViewController
-            viewController.sourceController = Constant.MyClassConstants.createAlert
-            
-            let transitionManager = TransitionManager()
-            self.navigationController?.transitioningDelegate = transitionManager
-            self.navigationController!.pushViewController(viewController, animated: true)
+            self.navigationController?.pushViewController(viewController, animated: true)
         }
-        
     }
     
     @IBAction func SaveMyAlertButtonPressed(_ sender: AnyObject) {
@@ -380,41 +351,33 @@ class EditMyAlertIpadViewController: UIViewController {
         let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.infoDetailViewController) as! InfoDetailViewController
         viewController.selectedIndex = self.selectedIndex
         self.navigationController!.present(viewController, animated: true, completion: nil)
-        
     }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 }
-
 //***** extensiion class to define tableview delegate methods *****//
 extension EditMyAlertIpadViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
         return true
     }
-    
 }
-
 //***** extensiion class to define collectionview delegate methods *****//
 extension EditMyAlertIpadViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if indexPath.row == selectedIndex {
-            
             selectedIndex = -1
             collectionView.reloadData()
         } else {
-            
             self.selectedIndex = indexPath.row
             collectionView.reloadData()
         }
     }
-    
 }
 
 extension EditMyAlertIpadViewController: UICollectionViewDataSource {
@@ -632,16 +595,12 @@ extension EditMyAlertIpadViewController: UITableViewDataSource {
         
         let details = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: Constant.buttonTitles.details) { (_, _) -> Void in
             
-            if Constant.RunningDevice.deviceIdiom == .pad {
-                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.getawayAlertsIpad, bundle: nil)
-                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.infoDetailViewController) as! InfoDetailViewController
+            let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
+            let storyboardName = isRunningOnIphone ? Constant.storyboardNames.getawayAlertsIphone : Constant.storyboardNames.getawayAlertsIpad
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: storyboardName, bundle: nil)
+            if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.infoDetailViewController) as? InfoDetailViewController {
                 viewController.selectedIndex = indexPath.row
-                self.navigationController!.present(viewController, animated: true, completion: nil)
-            } else {
-                let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.getawayAlertsIphone, bundle: nil)
-                let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.infoDetailViewController) as! InfoDetailViewController
-                viewController.selectedIndex = indexPath.row
-                self.navigationController!.present(viewController, animated: true, completion: nil)
+                self.navigationController?.present(viewController, animated: true, completion: nil)
             }
         }
         details.backgroundColor = UIColor(red: 0 / 255.0, green: 119.0 / 255.0, blue: 190.0 / 255.0, alpha: 1.0)
