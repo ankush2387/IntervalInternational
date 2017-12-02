@@ -1651,12 +1651,12 @@ class Constant: NSObject {
     
     static func getPointWeek(weektype: String) -> String {
         
-        return "POINT WEEK"
+        return "Point Week"
     }
     
     static func getFlotWeek(weekType: String) -> String {
         
-        return "FLOAT WEEK"
+        return "Float Week"
     }
     
     static func  getWeekNumber(weekType: String) -> String {
