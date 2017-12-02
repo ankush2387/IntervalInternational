@@ -49,8 +49,6 @@ class FevoritesResortController: UIViewController {
         }
     }
     override func viewWillLayoutSubviews() {
-        Constant.MyClassConstants.runningDeviceWidth = 1024
-        Constant.MyClassConstants.runningDeviceHeight = 768
         self.mapView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
     }
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

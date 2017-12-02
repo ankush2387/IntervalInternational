@@ -54,7 +54,7 @@ extension FeaturedDestinationsTableViewCell: UICollectionViewDataSource {
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize {
-        return CGSize(width: Constant.MyClassConstants.runningDeviceWidth/2, height: collectionView.frame.height / 2 - 0.5)
+        return CGSize(width: collectionView.frame.size.width / 2, height: collectionView.frame.height / 2 - 0.5)
     }
 
 }

@@ -591,12 +591,13 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
             DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode, onSuccess: { (response) in
                 
                 Constant.MyClassConstants.resortsDescriptionArray = response
-                Constant.MyClassConstants.imagesArray.removeAllObjects()
+                Constant.MyClassConstants.imagesArray.removeAll()
                 let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
                 for imgStr in imagesArray {
                     if imgStr.size!.caseInsensitiveCompare(Constant.MyClassConstants.imageSize) == ComparisonResult.orderedSame {
-                        
-                        Constant.MyClassConstants.imagesArray.add(imgStr.url!)
+                        if let url = imgStr.url {
+                        Constant.MyClassConstants.imagesArray.append(url)
+                        }
                     }
                 }
                 

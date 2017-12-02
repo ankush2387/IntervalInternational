@@ -20,7 +20,7 @@ class ResortDirectoryResortCell: UITableViewCell {
     
     //***** Outlets *****//
     @IBOutlet weak var resortImageView: UIImageView!
-    @IBOutlet weak var fevoriteButton: IUIKButton!
+    @IBOutlet weak var favoriteButton: IUIKButton!
     @IBOutlet weak var resortNameGradientView: UIView!
     @IBOutlet weak var resortCode: UILabel!
     @IBOutlet weak var resortAddress: UILabel!
@@ -36,17 +36,16 @@ class ResortDirectoryResortCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        if resortCollectionView != nil {
+        if case .some = resortCollectionView {
             
             resortCollectionView.delegate = self
             resortCollectionView.dataSource = self
             resortCollectionView.isPagingEnabled = true
         }
         
-        if fevoriteButton != nil {
-            self.bringSubview(toFront: fevoriteButton)
+        if case .some = favoriteButton {
+            self.bringSubview(toFront: favoriteButton)
         }
-
     }
 
     func getCell(resortDetails: Resort) {
@@ -69,9 +68,9 @@ class ResortDirectoryResortCell: UITableViewCell {
 //***** method called when the added notification reloadFavoritesTab fired from other classes *****//
     func loginNotification() {
         
-        if self.fevoriteButton != nil {
+        if self.favoriteButton != nil {
             
-            self.fevoriteButton.isSelected = true
+            self.favoriteButton.isSelected = true
         }
     }
 }
@@ -92,8 +91,8 @@ extension ResortDirectoryResortCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.customCellNibNames.whereToGoTableViewCell, for: indexPath) as? ResortCollectionViewCell else { return UICollectionViewCell() }
         cell.imgView.contentMode = .scaleAspectFit
-		if Constant.MyClassConstants.imagesArray.count > 0 {
-			cell.imgView.setImageWith(URL(string: Constant.MyClassConstants.imagesArray[indexPath.row] as! String), completed: { (image:UIImage?, error:Error?, _:SDImageCacheType, _:URL?) in
+		if !Constant.MyClassConstants.imagesArray.isEmpty {
+			cell.imgView.setImageWith(URL(string: Constant.MyClassConstants.imagesArray[indexPath.row]), completed: { (image:UIImage?, error:Error?, _:SDImageCacheType, _:URL?) in
 				if (error != nil) {
 					cell.imgView.image = UIImage(named: Constant.MyClassConstants.noImage)
 				}

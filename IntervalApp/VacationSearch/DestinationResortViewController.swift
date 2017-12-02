@@ -134,23 +134,24 @@ extension DestinationResortViewController: UITableViewDataSource {
             if(Constant.RunningDevice.deviceIdiom == .pad) {
                 let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0)
                 if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-                    height = heightForView((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[0].description)!, font: font!, width: (Constant.MyClassConstants.runningDeviceWidth/2) - 100)
+                    height = heightForView((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[0].description)!, font: font!, width: (view.frame.size.width / 2) - 100)
                     return height
                     
                 } else {
-                    height = heightForView((Constant.MyClassConstants.viewResponse.resort?.advisements[0].description)!, font: font!, width: (Constant.MyClassConstants.runningDeviceWidth/2) - 100)
+                    height = heightForView((Constant.MyClassConstants.viewResponse.resort?.advisements[0].description)!, font: font!, width: (view.frame.size.width / 2) - 100)
                     return height
                 }
                
             } else {
-                let font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0)
+                guard let font = UIFont(name: Constant.fontName.helveticaNeue, size: 15.0) else { return 60 }
                 if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
-                    height = heightForView((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[0].description)!, font: font!, width: Constant.MyClassConstants.runningDeviceWidth - 40)
+                    guard let description = Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[0].description else { return 60 }
+                    height = heightForView((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[0].description)!, font: font, width: view.frame.size.width - 40)
                     return height + 60
                 } else {
-                    height = heightForView((Constant.MyClassConstants.viewResponse.resort?.advisements[0].description)!, font: font!, width: Constant.MyClassConstants.runningDeviceWidth - 40)
+                    guard let description = Constant.MyClassConstants.viewResponse.resort?.advisements[0].description else { return 60 }
+                    height = heightForView(description, font: font, width: view.frame.size.width - 40)
                     return height + 60
-                    
                 }
                
             }
@@ -175,10 +176,10 @@ extension DestinationResortViewController: UITableViewDataSource {
                     let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0)
                     var height: CGFloat
                     if(Constant.RunningDevice.deviceIdiom == .pad) {
-                        height = heightForView((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[1].description)!, font: font!, width: (Constant.MyClassConstants.runningDeviceWidth/2) - 100)
+                        height = heightForView((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[1].description)!, font: font!, width: (view.frame.size.width / 2) - 100)
                         return height
                     } else {
-                        height = heightForView((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[1].description)!, font: font!, width: Constant.MyClassConstants.runningDeviceWidth)
+                        height = heightForView((Constant.MyClassConstants.exchangeViewResponse.destination?.resort?.advisements[1].description)!, font: font!, width: view.frame.size.width)
                         return height + 20
                     }
                     } else {
@@ -189,10 +190,10 @@ extension DestinationResortViewController: UITableViewDataSource {
                     var height: CGFloat
                     if((Constant.MyClassConstants.viewResponse.resort?.advisements.count)! > 0) {
                     if(Constant.RunningDevice.deviceIdiom == .pad) {
-                        height = heightForView((Constant.MyClassConstants.viewResponse.resort?.advisements[1].description)!, font: font!, width: (Constant.MyClassConstants.runningDeviceWidth/2) - 100)
+                        height = heightForView((Constant.MyClassConstants.viewResponse.resort?.advisements[1].description)!, font: font!, width: (view.frame.size.width / 2) - 100)
                         return height
                     } else {
-                        height = heightForView((Constant.MyClassConstants.viewResponse.resort?.advisements[1].description)!, font: font!, width: Constant.MyClassConstants.runningDeviceWidth)
+                        height = heightForView((Constant.MyClassConstants.viewResponse.resort?.advisements[1].description)!, font: font!, width: view.frame.size.width)
                         return height + 20
                     }
                     } else {

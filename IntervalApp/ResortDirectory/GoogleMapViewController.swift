@@ -136,9 +136,6 @@ class GoogleMapViewController: UIViewController {
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        
-        Constant.MyClassConstants.runningDeviceHeight = self.view.bounds.height
-        Constant.MyClassConstants.runningDeviceHeight = self.view.bounds.width
         getScreenFrameForOrientation()
     }
     
@@ -1676,9 +1673,9 @@ extension GoogleMapViewController: UITableViewDataSource {
                     layer.removeFromSuperlayer()
                 }
             }
-            var frame = CGRect(x: 0, y: 0, width: Constant.MyClassConstants.runningDeviceWidth, height: cell.resortNameGradientView.frame.size.height)
+            var frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: cell.resortNameGradientView.frame.size.height)
             if Constant.RunningDevice.deviceIdiom == .pad {
-                frame = CGRect(x: 0, y: 0, width: Constant.MyClassConstants.runningDeviceWidth * 0.4 + 100, height: cell.resortNameGradientView.frame.size.height)
+                frame = CGRect(x: 0, y: 0, width: view.frame.size.width * 0.4 + 100, height: cell.resortNameGradientView.frame.size.height)
             }
             cell.resortNameGradientView.frame = frame
             Helper.addLinearGradientToView(view: cell.resortNameGradientView, colour: UIColor.white, transparntToOpaque: true, vertical: false)

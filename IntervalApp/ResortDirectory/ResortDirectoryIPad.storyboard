@@ -2034,7 +2034,7 @@
                                             </variation>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="fevoriteButton" destination="oMu-nA-nxY" id="eMr-1D-frW"/>
+                                            <outlet property="favoriteButton" destination="oMu-nA-nxY" id="1w6-4L-lxP"/>
                                             <outlet property="resortAddress" destination="pro-qd-aoD" id="AbR-nF-rNi"/>
                                             <outlet property="resortCode" destination="LXn-T4-mRU" id="XhN-pa-bI1"/>
                                             <outlet property="resortCollectionView" destination="9nf-Ez-aJt" id="g2b-eC-Jas"/>

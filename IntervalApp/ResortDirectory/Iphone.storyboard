@@ -609,7 +609,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jbk-J9-c8S">
-                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                                <rect key="frame" x="0.0" y="68" width="375" height="550"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To view or use this feature, you will need to sign in to your Interval account." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D1q-3X-BLw">
                                         <rect key="frame" x="20" y="180" width="335" height="83"/>
@@ -656,10 +656,10 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SPc-sT-sQe">
-                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                                <rect key="frame" x="0.0" y="68" width="375" height="550"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" tag="6" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="h1E-IW-lx6">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="550"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableView>
                                 </subviews>
@@ -709,7 +709,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" tag="3" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="250" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="zOG-Hk-iJz">
-                                <rect key="frame" x="-4" y="64" width="383" height="554"/>
+                                <rect key="frame" x="-4" y="68" width="383" height="550"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <outlet property="dataSource" destination="4Xs-2Q-FlG" id="fMI-54-6ZH"/>
@@ -832,18 +832,16 @@
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <subviews>
                                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SPa-UO-Vxg">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="383" height="208"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                                                                         <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     </imageView>
                                                                 </subviews>
                                                             </view>
                                                             <constraints>
                                                                 <constraint firstItem="SPa-UO-Vxg" firstAttribute="top" secondItem="o0G-8b-Rat" secondAttribute="top" id="6t7-tf-L0G"/>
-                                                                <constraint firstAttribute="trailingMargin" secondItem="SPa-UO-Vxg" secondAttribute="trailing" constant="-8" id="E6a-b3-Ywa"/>
                                                                 <constraint firstItem="SPa-UO-Vxg" firstAttribute="centerX" secondItem="o0G-8b-Rat" secondAttribute="centerX" id="FlP-aG-xvT"/>
                                                                 <constraint firstItem="SPa-UO-Vxg" firstAttribute="centerY" secondItem="o0G-8b-Rat" secondAttribute="centerY" id="Tux-3B-Wsr"/>
                                                                 <constraint firstItem="SPa-UO-Vxg" firstAttribute="leading" secondItem="o0G-8b-Rat" secondAttribute="leading" id="WhI-ey-AzZ"/>
-                                                                <constraint firstAttribute="bottomMargin" secondItem="SPa-UO-Vxg" secondAttribute="bottom" constant="-8" id="p4u-Oz-V5z"/>
                                                             </constraints>
                                                             <size key="customSize" width="375" height="200"/>
                                                             <connections>
@@ -994,7 +992,7 @@
                                             </mask>
                                         </variation>
                                         <connections>
-                                            <outlet property="fevoriteButton" destination="Hze-16-cVi" id="XeA-eR-OeE"/>
+                                            <outlet property="favoriteButton" destination="Hze-16-cVi" id="J3p-FB-Hfy"/>
                                             <outlet property="resortAddress" destination="6Yn-Eb-1NU" id="9uZ-90-2LS"/>
                                             <outlet property="resortCode" destination="oCm-Hm-h6I" id="wAI-hk-0oz"/>
                                             <outlet property="resortCollectionView" destination="YLM-m0-RHH" id="zsq-ci-v2L"/>
@@ -1470,7 +1468,7 @@
                     <tabBarItem key="tabBarItem" tag="1" title="List" id="dGZ-Jv-rdU"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="qoS-eY-8yu">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -1489,7 +1487,7 @@
                     <tabBarItem key="tabBarItem" tag="2" title="Favorites" id="i2t-5Q-fUh"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="YE2-xg-5Hn">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -1508,7 +1506,7 @@
                     <tabBarItem key="tabBarItem" title="Map" id="Xsj-Rz-NIu"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="p9X-Zd-7Lv">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -1526,7 +1524,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Gpr-6e-otx" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="99W-AA-Yhy">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -1544,7 +1542,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Cjl-8R-lMq" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="hAB-Xu-QPN">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
