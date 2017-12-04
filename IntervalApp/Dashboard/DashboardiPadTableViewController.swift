@@ -183,10 +183,10 @@ class DashboardIPadTableViewController: UITableViewController {
     func homeAlertSelected(indexPath: IndexPath) {
         
         guard let alertID = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId else { return }
-        if let value = Constant.MyClassConstants.alertsSearchDatesDictionary.value(forKey: String(describing: alertID)) as? NSArray {
+        if let value = Constant.MyClassConstants.alertsSearchDatesDictionary.value(forKey: String(alertID)) as? NSArray {
             //unable to perform isEmpty with value
             if value.count > 0 {
-                if let  getawayAlert = Constant.MyClassConstants.alertsDictionary.value(forKey: String(describing: alertID)) as? RentalAlert {
+                if let  getawayAlert = Constant.MyClassConstants.alertsDictionary.value(forKey: String(alertID)) as? RentalAlert {
                     
                     showHudAsync()
                     let searchCriteria = createSearchCriteriaFor(alert: getawayAlert)
@@ -611,7 +611,7 @@ extension DashboardIPadTableViewController: UICollectionViewDataSource {
             resortFlaxImageView.backgroundColor = UIColor.lightGray
             if let imageURL = flexDeal.images.first?.url {
                 resortFlaxImageView.setImageWith(URL(string: imageURL), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
-                    if (error != nil) {
+                    if error != nil {
                         resortFlaxImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                         resortFlaxImageView.contentMode = .center
                     }
@@ -649,14 +649,12 @@ extension DashboardIPadTableViewController: UICollectionViewDataSource {
             let rentalDeal: RentalDeal = Constant.MyClassConstants.topDeals[indexPath.row]
             if let imageURL = rentalDeal.images.first?.url {
                 resortFlaxImageView.setImageWith(URL(string: imageURL), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
-                    if (error != nil) {
+                    if error != nil {
                         resortFlaxImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                     }
                 }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
             }
-            
             cell.addSubview(resortFlaxImageView)
-            
             let resortImageNameLabel = UILabel(frame: CGRect(x: 10, y: cell.contentView.frame.height - 50, width: cell.contentView.frame.width - 20, height: 50))
             if let header = topTenDeals.header {
                 resortImageNameLabel.text = header
@@ -683,7 +681,7 @@ extension DashboardIPadTableViewController: UICollectionViewDataSource {
             
             let priceLabel = UILabel(frame: CGRect(x: 10, y: 35, width: centerView.frame.size.width - 20, height: 20))
             if let price = topTenDeals.price {
-                priceLabel.text = "From $" + String(describing: price.fromPrice) + " Wk.".localized()
+                priceLabel.text = "From $" + String(price.fromPrice) + " Wk.".localized()
             }
             priceLabel.numberOfLines = 2
             priceLabel.textAlignment = NSTextAlignment.center
@@ -727,7 +725,7 @@ extension DashboardIPadTableViewController: UICollectionViewDataSource {
                 cell.alertDate.text = dateRange
                 
                 if let alertID = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId {
-                    if let value = Constant.MyClassConstants.alertsSearchDatesDictionary.value(forKey: String(describing: alertID)) as? NSArray {
+                    if let value = Constant.MyClassConstants.alertsSearchDatesDictionary.value(forKey: String(alertID)) as? NSArray {
                         //unable to check isEmpty with value
                         if value.count > 0 {
                             cell.alertStatus.text = Constant.buttonTitles.viewResults
@@ -762,7 +760,7 @@ extension DashboardIPadTableViewController: UICollectionViewDataSource {
                     cell.resortTitleLabel.text = resort.resortName
                     
                     if let address = resort.address {
-                        cell.resortAddressLabel.text = "\(String(describing: address.cityName)), \(String(describing: address.countryCode))".localized()
+                        cell.resortAddressLabel.text = "\(address.cityName ?? ""), \(address.territoryCode ?? "") \(address.countryCode ?? "")".localized()
                         cell.resortCodeLabel.text = address.countryCode?.localized()
                     }
                     
@@ -776,7 +774,7 @@ extension DashboardIPadTableViewController: UICollectionViewDataSource {
                     let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
                     let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkInDate)
                     
-                    formatedCheckInDate = "\(Helper.getWeekdayFromInt(weekDayNumber:myComponents.weekday ?? 0)) \(Helper.getMonthnameFromInt(monthNumber: myComponents.month ?? 0)). \(String(describing: myComponents.day)), \(myComponents.year ?? 0)"
+                    formatedCheckInDate = "\(Helper.getWeekdayFromInt(weekDayNumber:myComponents.weekday ?? 0)) \(Helper.getMonthnameFromInt(monthNumber: myComponents.month ?? 0)). \(myComponents.day ?? 0), \(myComponents.year ?? 0)"
                     
                 }
                 
@@ -786,14 +784,14 @@ extension DashboardIPadTableViewController: UICollectionViewDataSource {
                     let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
                     let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkOutDate)
                     
-                    formatedCheckOutDate = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents1.weekday ?? 0)) \(Helper.getMonthnameFromInt(monthNumber: myComponents1.month ?? 0)). \(String(describing: myComponents1.day)), \(myComponents1.year ?? 0)"
+                    formatedCheckOutDate = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents1.weekday ?? 0)) \(Helper.getMonthnameFromInt(monthNumber: myComponents1.month ?? 0)). \(myComponents1.day ?? 0), \(myComponents1.year ?? 0)"
                 }
                 
                 cell.resortAvailabilityLabel.text = "\(formatedCheckInDate) - \(formatedCheckOutDate)"
                 
                 if let imageUrl = upcomingTrip.resort?.images.first?.url {
                     cell.iconImageView.setImageWith(URL(string: imageUrl), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
-                        if (error != nil) {
+                        if error != nil {
                             cell.iconImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                             cell.iconImageView.contentMode = .center
                         }

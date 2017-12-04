@@ -27,7 +27,7 @@ class ExchangeOptionsCell: UITableViewCell {
     func setupCell(selectedEplus: Bool) {
         
         if let currencyCode = Constant.MyClassConstants.exchangeFees[0].currencyCode {
-            if Constant.MyClassConstants.exchangeFees.count > 0 && Constant.MyClassConstants.exchangeFees[0].eplus != nil {
+            if Constant.MyClassConstants.exchangeFees.isEmpty && Constant.MyClassConstants.exchangeFees[0].eplus != nil {
                 if let eplus = Constant.MyClassConstants.exchangeFees[0].eplus?.price, let selectedTrue = Constant.MyClassConstants.exchangeFees[0].eplus?.selected {
                     priceCheckBox.checked = selectedTrue
                     setTotalPrice(with: currencyCode, and: eplus)

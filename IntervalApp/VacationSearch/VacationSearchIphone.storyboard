@@ -4820,7 +4820,7 @@ to confirm a larger unit.</string>
                                     <constraint firstAttribute="trailing" secondItem="Gyt-xz-Xax" secondAttribute="trailing" constant="30" id="b3L-pj-eNd"/>
                                 </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="2SD-dQ-xGd">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="2SD-dQ-xGd" customClass="TPKeyboardAvoidingTableView">
                                 <rect key="frame" x="0.0" y="94" width="375" height="757"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>

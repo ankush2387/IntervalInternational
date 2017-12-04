@@ -10,6 +10,8 @@ import UIKit
 import IntervalUIKit
 import DarwinSDK
 import SVProgressHUD
+import TPKeyboardAvoiding
+import TPKeyboardAvoiding.UIScrollView_TPKeyboardAvoidingAdditions
 
 class CheckOutViewController: UIViewController {
     
@@ -150,7 +152,6 @@ class CheckOutViewController: UIViewController {
             Constant.omnitureEvars.eVar72: "\(self.showInsurance ? Constant.AlertPromtMessages.yes : Constant.AlertPromtMessages.no)"
         ]
         ADBMobile.trackAction(Constant.omnitureEvents.event37, data: userInfo)
-        
     }
     
     //**** Remove added observers ****//

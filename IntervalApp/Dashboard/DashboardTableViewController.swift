@@ -33,6 +33,7 @@ class DashboardTableViewController: UITableViewController {
     var showSearchResults = false
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         //***** Adding notification to reload alert badge *****//
         self.navigationController?.navigationBar.isHidden = false
         NotificationCenter.default.addObserver(self, selector: #selector(reloadAlertCollectionView), name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
@@ -45,6 +46,7 @@ class DashboardTableViewController: UITableViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         showSearchResults ? (navigationController?.navigationBar.isHidden = false) :
             (navigationController?.navigationBar.isHidden = true)
         
@@ -75,7 +77,7 @@ class DashboardTableViewController: UITableViewController {
             
             // omniture tracking with event40
             let userInfo: [String: String] = [
-                Constant.omnitureEvars.eVar44 : Constant.omnitureCommonString.homeDashboard
+                Constant.omnitureEvars.eVar44: Constant.omnitureCommonString.homeDashboard
             ]
             
             ADBMobile.trackState( Constant.omnitureEvents.event40, data: userInfo)
@@ -110,20 +112,20 @@ class DashboardTableViewController: UITableViewController {
     //***** Function to calculate number of sections. *****//
     func getNumberOfSections() {
         dashboardArray.removeAll()
-        if Constant.MyClassConstants.dashBoardAlertsArray.count > 0 {
+        if !Constant.MyClassConstants.dashBoardAlertsArray.isEmpty {
             dashboardArray.append(Constant.dashboardTableScreenReusableIdentifiers.alert)
         }
-        if Constant.MyClassConstants.upcomingTripsArray.count > 0 {
+        if !Constant.MyClassConstants.upcomingTripsArray.isEmpty {
             dashboardArray.append(Constant.dashboardTableScreenReusableIdentifiers.upcoming)
         }
         if showExchange && showGetaways {
             dashboardArray.append(Constant.dashboardTableScreenReusableIdentifiers.search)
             
-            if Constant.MyClassConstants.flexExchangeDeals.count > 0 {
+            if !Constant.MyClassConstants.flexExchangeDeals.isEmpty {
                 dashboardArray.append(Constant.dashboardTableScreenReusableIdentifiers.exchange)
             }
             
-            if (Constant.MyClassConstants.topDeals.count) > 0 {
+            if !Constant.MyClassConstants.topDeals.isEmpty {
                 dashboardArray.append(Constant.dashboardTableScreenReusableIdentifiers.getaway)
             }
         }
@@ -240,7 +242,7 @@ class DashboardTableViewController: UITableViewController {
         switch dashboardArray[section] {
             
         case Constant.dashboardTableScreenReusableIdentifiers.alert:
-            return Constant.MyClassConstants.getawayAlertsArray.count > 0 ? 1 : 0
+            return !Constant.MyClassConstants.getawayAlertsArray.isEmpty ? 1 : 0
         case Constant.dashboardTableScreenReusableIdentifiers.upcoming :
             return Constant.MyClassConstants.upcomingTripsArray.count <= 2 ? Constant.MyClassConstants.upcomingTripsArray.count : 2
         default:
@@ -264,7 +266,6 @@ class DashboardTableViewController: UITableViewController {
                 cell.alertCollectinView.delegate = self
                 cell.alertCollectinView.dataSource = self
                 if showAlertActivityIndicatorView {
-                    
                     cell.activityIndicatorBseView.isHidden = false
                     cell.activityIndicatorBackgroundView.layer.borderWidth = 2
                     cell.activityIndicatorBackgroundView.layer.cornerRadius = 10
@@ -287,7 +288,7 @@ class DashboardTableViewController: UITableViewController {
                     cell.resortNameLabel.text = resort.resortName
                     
                     if let address = resort.address {
-                        cell.resortLocationLabel.text = "\(String(describing: address.cityName)), \(String(describing: address.territoryCode)) \(String(describing: address.countryCode))".localized()
+                        cell.resortLocationLabel.text = "\(address.cityName ?? ""), \(address.territoryCode ?? "") \(address.countryCode ?? "")".localized()
                     }
                 }
                 
@@ -332,8 +333,7 @@ class DashboardTableViewController: UITableViewController {
             for subview in cell.subviews {
                 subview.removeFromSuperview()
             }
-            let seprator = UIView(frame:CGRect(x: 0, y: 0, width: cell.frame.size.width, height: 1))
-            seprator.backgroundColor = .lightGray
+            let seprator = Seprator(x: 0, y: 0, width: cell.frame.size.width, height: 1)
             cell.addSubview(seprator)
             //header for top ten deals
             if type == Constant.dashboardTableScreenReusableIdentifiers.exchange {
@@ -351,7 +351,6 @@ class DashboardTableViewController: UITableViewController {
                     resortImageNameLabel.textColor = .black
                     resortImageNameLabel.font = UIFont(name: Constant.fontName.helveticaNeueMedium, size: 15)
                     cell.addSubview(resortImageNameLabel)
-                    
                 }
             } else {
                 
@@ -450,11 +449,11 @@ class DashboardTableViewController: UITableViewController {
     func homeAlertSelected(indexPath: IndexPath) {
         
         guard let alertID = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId else { return }
-        if let value = Constant.MyClassConstants.alertsSearchDatesDictionary.value(forKey: String(describing: alertID)) as? NSArray {
+        if let value = Constant.MyClassConstants.alertsSearchDatesDictionary.value(forKey: String(alertID)) as? NSArray {
             
             if value.count > 0 {
                 
-                if let  getawayAlert = Constant.MyClassConstants.alertsDictionary.value(forKey: String(describing: alertID)) as? RentalAlert {
+                if let  getawayAlert = Constant.MyClassConstants.alertsDictionary.value(forKey: String(alertID)) as? RentalAlert {
                     showHudAsync()
                     let searchCriteria = createSearchCriteriaFor(alert: getawayAlert)
                     let settings = Helper.createSettings()
@@ -562,7 +561,7 @@ class DashboardTableViewController: UITableViewController {
     }
     
     func getDestinationsResortsForAlert(alert: RentalAlert, searchCriteria: VacationSearchCriteria) {
-        if (alert.destinations.count) > 0 {
+        if !alert.destinations.isEmpty {
             let destination = AreaOfInfluenceDestination()
             if let destinationName = alert.destinations[0].destinationName {
                 destination.destinationName = destinationName
@@ -574,7 +573,7 @@ class DashboardTableViewController: UITableViewController {
             searchCriteria.destination = destination
             Constant.MyClassConstants.vacationSearchResultHeaderLabel = destination.destinationName
             
-        } else if (alert.resorts.count) > 0 {
+        } else if !alert.resorts.isEmpty {
             Constant.MyClassConstants.initialVacationSearch.searchCriteria.resorts = alert.resorts
         }
     }
@@ -667,7 +666,7 @@ extension DashboardTableViewController: UICollectionViewDataSource {
             
             if let imgURL = flexDeal.images.first?.url {
                 resortFlaxImageView.setImageWith(URL(string: imgURL ), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
-                    if (error != nil) {
+                    if error != nil {
                         resortFlaxImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                         resortFlaxImageView.contentMode = .center
                     }
@@ -708,7 +707,7 @@ extension DashboardTableViewController: UICollectionViewDataSource {
             
             if let imgURL = rentalDeal.images.first?.url {
                 resortFlaxImageView.setImageWith(URL(string: imgURL ), completed: { (image:UIImage?, error:Error?, cacheType:SDImageCacheType, imageURL:URL?) in
-                    if (error != nil) {
+                    if error != nil {
                         resortFlaxImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                         resortFlaxImageView.contentMode = .center
                     }
@@ -790,7 +789,7 @@ extension DashboardTableViewController: UICollectionViewDataSource {
                 cell.alertDate.text = dateRange
                 
                 if let alertID = Constant.MyClassConstants.getawayAlertsArray[indexPath.row].alertId {
-                    let value = Constant.MyClassConstants.alertsSearchDatesDictionary.value(forKey: String(describing: alertID)) as? NSArray
+                    let value = Constant.MyClassConstants.alertsSearchDatesDictionary.value(forKey: String( alertID)) as? NSArray
                     if let checkInDates = value {
                         
                         if checkInDates.count > 0 {
@@ -862,19 +861,19 @@ extension UIViewController {
                 // omniture tracking with event 9
                 let userInfo: [String: Any] = [
                     Constant.omnitureCommonString.listItem: Constant.MyClassConstants.selectedDestinationNames,
-                    Constant.omnitureEvars.eVar41 : Constant.omnitureCommonString.vactionSearch,
-                    Constant.omnitureEvars.eVar19 : Constant.MyClassConstants.vacationSearchShowDate,
-                    Constant.omnitureEvars.eVar23 : Constant.omnitureCommonString.primaryAlternateDateAvailable,
-                    Constant.omnitureEvars.eVar26 : "",
+                    Constant.omnitureEvars.eVar41: Constant.omnitureCommonString.vactionSearch,
+                    Constant.omnitureEvars.eVar19: Constant.MyClassConstants.vacationSearchShowDate,
+                    Constant.omnitureEvars.eVar23: Constant.omnitureCommonString.primaryAlternateDateAvailable,
+                    Constant.omnitureEvars.eVar26: "",
                     Constant.omnitureEvars.eVar28: "" ,
                     Constant.omnitureEvars.eVar33: "" ,
                     Constant.omnitureEvars.eVar34: "" ,
-                    Constant.omnitureEvars.eVar36:"\(Helper.omnitureSegmentSearchType(index:  Constant.MyClassConstants.searchForSegmentIndex))-\(Constant.MyClassConstants.resortsArray.count)" ,
+                    Constant.omnitureEvars.eVar36: "\(Helper.omnitureSegmentSearchType(index:  Constant.MyClassConstants.searchForSegmentIndex))-\(Constant.MyClassConstants.resortsArray.count)" ,
                     Constant.omnitureEvars.eVar39: "" ,
                     Constant.omnitureEvars.eVar45: "\(Constant.MyClassConstants.vacationSearchShowDate)-\(Date())",
                     Constant.omnitureEvars.eVar47: "\(Constant.MyClassConstants.checkInDates.count)" ,
                     Constant.omnitureEvars.eVar53: "\(Constant.MyClassConstants.resortsArray.count)",
-                    Constant.omnitureEvars.eVar61:Constant.MyClassConstants.searchOriginationPoint
+                    Constant.omnitureEvars.eVar61: Constant.MyClassConstants.searchOriginationPoint
                     ]
                 
                 ADBMobile.trackAction(Constant.omnitureEvents.event9, data: userInfo)
@@ -967,7 +966,9 @@ extension UIViewController {
                 if todate.isGreaterThanDate(dateafteryear) {
                     
                     toDate = Constant.MyClassConstants.dateAfterTwoYear
-                    fromDate = Calendar.current.date(byAdding: .day, value: -(Constant.MyClassConstants.totalWindow) + Helper.getDifferenceOfDatesAhead(), to: Constant.MyClassConstants.vacationSearchShowDate)
+                    fromDate = Calendar.current.date(byAdding: .day,
+                                                     value: -(Constant.MyClassConstants.totalWindow) + Helper.getDifferenceOfDatesAhead(),
+                                                     to: Constant.MyClassConstants.vacationSearchShowDate)
                 }
             }
             
