@@ -43,7 +43,7 @@ class OwnerShipDetailTableViewCell: UITableViewCell {
             placeAddressLabel.text?.append(", \(countryCode)")
         }
         placeCode.text = ownership.resort?.resortCode?.localized()
-        let bedroomSize = Helper.getBedroomNumbers(bedroomType: (ownership.unit?.unitSize)!)
+        let bedroomSize = Helper.getBedroomNumbers(bedroomType: ownership.unit?.unitSize ?? "")
         bedroomDetailLabel.text = bedroomSize.localized()
         weekNumberLabel.text = ownership.weekNumber?.localized()
         if let images = ownership.resort?.images {
@@ -54,7 +54,7 @@ class OwnerShipDetailTableViewCell: UITableViewCell {
                  imageURLStr = images[0].url ?? ""
             }
             ownerShipimageView.setImageWith(URL(string: imageURLStr), completed: { (image:UIImage?, error:Swift.Error?, _:SDImageCacheType, _:URL?) in
-                if (error != nil) {
+                if error != nil {
                     self.ownerShipimageView.image = UIImage(named: Constant.MyClassConstants.noImage)
                 }
             }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
