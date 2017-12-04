@@ -24,6 +24,7 @@ class ConfirmationViewController: UIViewController {
     var moreButton: UIBarButtonItem?
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         NotificationCenter.default.addObserver(self, selector: #selector(showTripDetails), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadTripDetailsNotification), object: nil)
     }
     

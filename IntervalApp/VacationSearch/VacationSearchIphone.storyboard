@@ -385,39 +385,17 @@ transaction.</string>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <subviews>
                                                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NoImageIcon" translatesAutoresizingMaskIntoConstraints="NO" id="oL6-xx-O0X">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="383" height="208"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                                                                         <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     </imageView>
                                                                 </subviews>
                                                             </view>
                                                             <constraints>
-                                                                <constraint firstItem="oL6-xx-O0X" firstAttribute="top" secondItem="CI9-Cy-ZJu" secondAttribute="topMargin" constant="-8" id="DzI-3t-SdV"/>
                                                                 <constraint firstItem="oL6-xx-O0X" firstAttribute="leading" secondItem="CI9-Cy-ZJu" secondAttribute="leading" id="EL2-oH-1an"/>
                                                                 <constraint firstItem="oL6-xx-O0X" firstAttribute="top" secondItem="CI9-Cy-ZJu" secondAttribute="top" id="GcE-5T-t1B"/>
-                                                                <constraint firstAttribute="bottom" secondItem="oL6-xx-O0X" secondAttribute="bottom" id="JWI-tf-DJr"/>
-                                                                <constraint firstItem="oL6-xx-O0X" firstAttribute="leading" secondItem="CI9-Cy-ZJu" secondAttribute="leading" id="KX4-3u-cja"/>
-                                                                <constraint firstAttribute="trailingMargin" secondItem="oL6-xx-O0X" secondAttribute="trailing" constant="-8" id="NW7-At-h4E"/>
-                                                                <constraint firstItem="oL6-xx-O0X" firstAttribute="top" secondItem="CI9-Cy-ZJu" secondAttribute="top" id="PNQ-Sh-cx7"/>
-                                                                <constraint firstItem="oL6-xx-O0X" firstAttribute="leading" secondItem="CI9-Cy-ZJu" secondAttribute="leadingMargin" constant="-8" id="cih-ZS-G1L"/>
                                                                 <constraint firstItem="oL6-xx-O0X" firstAttribute="centerX" secondItem="CI9-Cy-ZJu" secondAttribute="centerX" id="dBh-61-m32"/>
-                                                                <constraint firstAttribute="bottomMargin" secondItem="oL6-xx-O0X" secondAttribute="bottom" constant="-8" id="iSH-iM-Euc"/>
                                                                 <constraint firstItem="oL6-xx-O0X" firstAttribute="centerY" secondItem="CI9-Cy-ZJu" secondAttribute="centerY" id="j6y-TI-6mc"/>
-                                                                <constraint firstAttribute="trailingMargin" secondItem="oL6-xx-O0X" secondAttribute="trailing" constant="-8" id="neb-Fi-DPz"/>
-                                                                <constraint firstAttribute="bottomMargin" secondItem="oL6-xx-O0X" secondAttribute="bottom" constant="-8" id="oGy-qx-slT"/>
-                                                                <constraint firstAttribute="trailing" secondItem="oL6-xx-O0X" secondAttribute="trailing" id="yEn-X2-Mig"/>
                                                             </constraints>
-                                                            <variation key="default">
-                                                                <mask key="constraints">
-                                                                    <exclude reference="DzI-3t-SdV"/>
-                                                                    <exclude reference="JWI-tf-DJr"/>
-                                                                    <exclude reference="KX4-3u-cja"/>
-                                                                    <exclude reference="NW7-At-h4E"/>
-                                                                    <exclude reference="PNQ-Sh-cx7"/>
-                                                                    <exclude reference="cih-ZS-G1L"/>
-                                                                    <exclude reference="iSH-iM-Euc"/>
-                                                                    <exclude reference="yEn-X2-Mig"/>
-                                                                </mask>
-                                                            </variation>
                                                             <connections>
                                                                 <outlet property="imgView" destination="oL6-xx-O0X" id="Rvp-nb-7YU"/>
                                                                 <outlet property="pageControl" destination="lUT-BP-A2b" id="dhz-7e-8GV"/>
@@ -3039,7 +3017,7 @@ transaction.</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1op-Vt-ofl" customClass="FSCalendar">
-                                <rect key="frame" x="6" y="84" width="363" height="400"/>
+                                <rect key="frame" x="6" y="64" width="363" height="400"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="400" id="00p-8U-9Sb">
@@ -5343,14 +5321,14 @@ to confirm a larger unit.</string>
                         <outlet property="checkoutOptionTBLview" destination="2SD-dQ-xGd" id="a2t-yG-XFO"/>
                         <outlet property="remainingResortHoldingTimeLable" destination="Gyt-xz-Xax" id="IMn-yd-g04"/>
                         <segue destination="zRd-2y-rpH" kind="presentation" identifier="selectPaymentSegue" id="RuK-h0-FoC"/>
-                        <segue destination="3Xq-nI-ftE" kind="presentation" identifier="confirmationSegue" id="AkA-sj-7lg"/>
+                        <segue destination="3Xq-nI-ftE" kind="show" identifier="confirmationSegue" id="AkA-sj-7lg"/>
                         <segue destination="uNV-hq-jgj" kind="presentation" identifier="showResortDetails" id="4Eo-F1-CbC"/>
                         <segue destination="Vv5-WS-R5T" kind="presentation" identifier="showRelinguishmentsDetails" id="kmp-5Q-mdc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4U8-Y9-NTh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5856.8000000000002" y="1331.3343328335834"/>
+            <point key="canvasLocation" x="5857" y="1005"/>
         </scene>
         <!--Confirmation-->
         <scene sceneID="eRM-Oz-aVQ">
@@ -8482,7 +8460,7 @@ transaction.</string>
         <segue reference="kmp-5Q-mdc"/>
         <segue reference="Lp2-ch-oU8"/>
         <segue reference="KRw-si-7MT"/>
-        <segue reference="Rpo-cQ-qF4"/>
+        <segue reference="u0k-hc-uRI"/>
         <segue reference="4gU-cx-AAf"/>
         <segue reference="Uce-OZ-bfJ"/>
     </inferredMetricsTieBreakers>
