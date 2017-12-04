@@ -252,24 +252,24 @@ extension BedroomSizeViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constant.bedroomSizeViewController.bedroomsizeCellIdentifier) as? BedroomSizeTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.bedroomSizeViewController.bedroomsizeCellIdentifier) as? BedroomSizeTableViewCell else { return UITableViewCell() }
         
         if Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.relinquishmentSelectionViewController || Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController {
             
-            cell?.backgroundCellView.layer.borderColor = UIColor.white.cgColor
-            cell?.bedroomSizelabel.text = Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as? String
-            cell?.checkBoxButton.tag = indexPath.row + 1000
+            cell.backgroundCellView.layer.borderColor = UIColor.white.cgColor
+            cell.bedroomSizelabel.text = Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as? String
+            cell.checkBoxButton.tag = indexPath.row + 1000
             intervalPrint(Constant.MyClassConstants.userSelectedStringArray)
             if Constant.ControllerTitles.selectedControllerTitle == Constant.storyboardControllerID.floatViewController {
-                cell?.checkBoxButton.isHidden = true
+                cell.checkBoxButton.isHidden = true
             } else {
-                cell?.checkBoxButton.isHidden = false
+                cell.checkBoxButton.isHidden = false
             }
-            cell?.selectionStyle = UITableViewCellSelectionStyle.none
-            cell?.bedroomSizelabel.tag = indexPath.row + 100
-            cell?.unitSizeLabel.tag = indexPath.row + 10
+            cell.selectionStyle = UITableViewCellSelectionStyle.none
+            cell.bedroomSizelabel.tag = indexPath.row + 100
+            cell.unitSizeLabel.tag = indexPath.row + 10
             var unitDetails = ""
-            if(indexPath.row < Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count - 1 ) {
+            if indexPath.row < Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count - 1 || Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count == 1 {
                 
                 if selectedUnit.lockOffUnits.count > 0 {
                     
@@ -285,31 +285,31 @@ extension BedroomSizeViewController: UITableViewDataSource {
                     unitDetails.append(", \(String(describing: Helper.getKitchenEnums(kitchenType: kitchenType)))")
                 }
             }
-            cell?.unitSizeLabel.text = unitDetails
+            cell.unitSizeLabel.text = unitDetails
             let unitNumber = unitDetails.components(separatedBy: ",")
             if Constant.MyClassConstants.userSelectedStringArray.contains(Constant.MyClassConstants.bedRoomSizeSelectedIndexArray[indexPath.row] as! String) {
                 if unitNumber[0] == Constant.MyClassConstants.unitNumberSelectedArray[indexPath.row] as! String {
-                    localArrayToHoldSelection.add(cell?.checkBoxButton.tag as Any)
+                    localArrayToHoldSelection.add(cell.checkBoxButton.tag as Any)
                     doneButton.isEnabled = true
-                    cell?.bedroomSizelabel.textColor = IUIKColorPalette.secondaryB.color
-                    cell?.unitSizeLabel.textColor = IUIKColorPalette.secondaryB.color
-                    cell?.checkBoxButton.checked = true
+                    cell.bedroomSizelabel.textColor = IUIKColorPalette.secondaryB.color
+                    cell.unitSizeLabel.textColor = IUIKColorPalette.secondaryB.color
+                    cell.checkBoxButton.checked = true
                 }
             } else {
-                cell?.checkBoxButton.checked = false
+                cell.checkBoxButton.checked = false
             }
             intervalPrint(Constant.MyClassConstants.unitNumberSelectedArray)
-                let setUnitSize = cell?.bedroomSizelabel.text?.components(separatedBy: ",")[0]
-                let setUnitNumber = cell?.unitSizeLabel.text?.components(separatedBy: ",")[0]
+                let setUnitSize = cell.bedroomSizelabel.text?.components(separatedBy: ",")[0]
+                let setUnitNumber = cell.unitSizeLabel.text?.components(separatedBy: ",")[0]
                 for selectedUnitDetails in Constant.MyClassConstants.saveLockOffDetailsArray {
                     if (selectedUnitDetails as! String).components(separatedBy: ",")[0] == setUnitNumber && (selectedUnitDetails as! String).components(separatedBy: ",")[1] == setUnitSize && Constant.MyClassConstants.realmOpenWeeksID.contains(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!) {
-                        cell?.backgroundCellView.layer.borderColor = UIColor.orange.cgColor
-                        cell?.unitSizeLabel.textColor = IUIKColorPalette.secondaryB.color
-                        cell?.bedroomSizelabel.textColor = IUIKColorPalette.secondaryB.color
-                        cell?.infoSavedLabel.isHidden = false
+                        cell.backgroundCellView.layer.borderColor = UIColor.orange.cgColor
+                        cell.unitSizeLabel.textColor = IUIKColorPalette.secondaryB.color
+                        cell.bedroomSizelabel.textColor = IUIKColorPalette.secondaryB.color
+                        cell.infoSavedLabel.isHidden = false
                     }
                 }
-            return cell!
+            return cell
             
         } else {
             if Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.count != 0 {
@@ -322,26 +322,26 @@ extension BedroomSizeViewController: UITableViewDataSource {
                 }
                 if match {
                     
-                    cell?.bedroomSizelabel.text = "\(UnitSize.forDisplay[indexPath.row].friendlyName())"
-                    cell?.checkBoxButton.checked = true
-                    cell?.checkBoxButton.tag = indexPath.row
+                    cell.bedroomSizelabel.text = "\(UnitSize.forDisplay[indexPath.row].friendlyName())"
+                    cell.checkBoxButton.checked = true
+                    cell.checkBoxButton.tag = indexPath.row
                     
                 } else {
                     
-                    cell?.bedroomSizelabel.text = "\(UnitSize.forDisplay[indexPath.row].friendlyName())"
-                    cell?.checkBoxButton.checked = false
-                    cell?.checkBoxButton.tag = indexPath.row
+                    cell.bedroomSizelabel.text = "\(UnitSize.forDisplay[indexPath.row].friendlyName())"
+                    cell.checkBoxButton.checked = false
+                    cell.checkBoxButton.tag = indexPath.row
                 }
                 
             } else {
                 
-                cell?.bedroomSizelabel.text = "\(UnitSize.forDisplay[indexPath.row].friendlyName())"
-                cell?.checkBoxButton.checked = true
-                cell?.checkBoxButton.tag = indexPath.row
+                cell.bedroomSizelabel.text = "\(UnitSize.forDisplay[indexPath.row].friendlyName())"
+                cell.checkBoxButton.checked = true
+                cell.checkBoxButton.tag = indexPath.row
                 
             }
-            cell?.selectionStyle = UITableViewCellSelectionStyle.none
-            return cell!
+            cell.selectionStyle = UITableViewCellSelectionStyle.none
+            return cell
             
         }
     }

@@ -103,7 +103,8 @@ class RelinquishmentSelectionViewController: UIViewController {
                             relinquishmentOpenWeeksArray.append(fixed_week_type)
                             
                         }
-                    } else if !Constant.MyClassConstants.relinquishmentIdArray.contains(relinquishmentId) {
+                    }
+                        if !Constant.MyClassConstants.relinquishmentIdArray.contains(relinquishmentId) {
                         relinquishmentOpenWeeksArray.append(fixed_week_type)
                     }
                 } else {
@@ -241,8 +242,13 @@ class RelinquishmentSelectionViewController: UIViewController {
         if (intervalOpenWeeksArray[sender.tag].unit?.lockOffUnits.count)! > 0 {
             Constant.ControllerTitles.bedroomSizeViewController = Constant.MyClassConstants.relinquishmentTitle
             Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.relinquishmentSelectionViewController
-            masterUnitSize = "\(Helper.getBedroomNumbers(bedroomType: (intervalOpenWeeksArray[sender.tag].unit!.unitSize)!)), Sleeps \(String(describing: intervalOpenWeeksArray[sender.tag].unit!.publicSleepCapacity))"
-            masterUnitNumber = intervalOpenWeeksArray[sender.tag].unit!.unitNumber!
+            if let unitSize = intervalOpenWeeksArray[sender.tag].unit?.unitSize, let sleeps = intervalOpenWeeksArray[sender.tag].unit?.publicSleepCapacity {
+                masterUnitSize = "\(Helper.getBedroomNumbers(bedroomType: unitSize)), Sleeps \(unitSize)"
+            }
+            
+            if let unitNumber = intervalOpenWeeksArray[sender.tag].unit?.unitNumber {
+            masterUnitNumber = unitNumber
+            }
             
             let results = Constant.MyClassConstants.relinquishmentIdArray.map({ ($0 as AnyObject).contains(intervalOpenWeeksArray[sender.tag].relinquishmentId!) })
             
@@ -465,11 +471,19 @@ class RelinquishmentSelectionViewController: UIViewController {
             }
             
         } else {
-            if (relinquishmentOpenWeeksArray[sender.tag - 1].unit?.lockOffUnits.count)! > 0 {
+            if !(relinquishmentOpenWeeksArray[sender.tag - 1].unit?.lockOffUnits.isEmpty)! {
                 guard let relinquishmentId = relinquishmentOpenWeeksArray[sender.tag - 1].relinquishmentId else { return }
                 Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.relinquishmentSelectionViewController
-                masterUnitSize = "\(Helper.getBedroomNumbers(bedroomType: (relinquishmentOpenWeeksArray[sender.tag - 1].unit!.unitSize)!)), \(Helper.getKitchenEnums(kitchenType: (relinquishmentOpenWeeksArray[sender.tag - 1].unit!.kitchenType)!)) Sleeps \(String(describing: relinquishmentOpenWeeksArray[sender.tag - 1].unit!.publicSleepCapacity))"
-                masterUnitNumber = relinquishmentOpenWeeksArray[sender.tag - 1].unit!.unitNumber!
+                masterUnitSize = ""
+                masterUnitNumber = ""
+                
+                if let unitSize = relinquishmentOpenWeeksArray[sender.tag - 1].unit?.unitSize, let sleeps = relinquishmentOpenWeeksArray[sender.tag - 1].unit?.publicSleepCapacity, unitSize != "UNKNOWN" {
+                    masterUnitSize = "\(Helper.getBedroomNumbers(bedroomType: unitSize)), Sleeps \(sleeps)"
+                }
+                
+                if let unitNumber = relinquishmentOpenWeeksArray[sender.tag - 1].unit?.unitNumber, !unitNumber.isEmpty {
+                    masterUnitNumber = unitNumber
+                }
                 
                 let results = Constant.MyClassConstants.relinquishmentIdArray.map({ ($0 as AnyObject).contains(relinquishmentId) })
                 
@@ -568,7 +582,10 @@ class RelinquishmentSelectionViewController: UIViewController {
         if((Constant.MyClassConstants.relinquishmentSelectedWeek.unit?.lockOffUnits.count)! > 0) {
             Constant.ControllerTitles.bedroomSizeViewController = Constant.MyClassConstants.relinquishmentTitle
             Constant.ControllerTitles.selectedControllerTitle = Constant.storyboardControllerID.relinquishmentSelectionViewController
-            masterUnitSize = "\(Helper.getBedroomNumbers(bedroomType: (Constant.MyClassConstants.relinquishmentSelectedWeek.unit!.unitSize)!)), Sleeps \(String(describing: Constant.MyClassConstants.relinquishmentSelectedWeek.unit!.publicSleepCapacity))"
+            masterUnitSize = ""
+            if let unitSize = Constant.MyClassConstants.relinquishmentSelectedWeek.unit?.unitSize, let sleeps = Constant.MyClassConstants.relinquishmentSelectedWeek.unit?.publicSleepCapacity {
+                masterUnitSize = "\(Helper.getBedroomNumbers(bedroomType: unitSize)), Sleeps \(sleeps)"
+            }
             
             let results = Constant.MyClassConstants.relinquishmentIdArray.map({ ($0 as AnyObject).contains(Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId!) })
             
@@ -703,8 +720,12 @@ class RelinquishmentSelectionViewController: UIViewController {
                 Constant.MyClassConstants.unitNumberSelectedArray.add(unitNumber)
             }
         }
-        Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.add(masterUnitSize)
+        if masterUnitSize != "" {
+            Constant.MyClassConstants.bedRoomSizeSelectedIndexArray.add(masterUnitSize)
+        }
+        if masterUnitNumber != "" {
         Constant.MyClassConstants.unitNumberSelectedArray.add(masterUnitNumber)
+        }
     }
 }
 
@@ -715,8 +736,8 @@ extension RelinquishmentSelectionViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         //Height for deposit cells
         if indexPath.section == 4 {
-            let windowHeight = self.view.window?.bounds.height
-            if Float(windowHeight!) <= 568.0 {
+            guard let windowHeight = self.view.window?.bounds.height else { return 0 }
+            if Float(windowHeight) <= 568.0 {
                 //height for devices with smaller screen (iPhone 5s and beyond)
                 return 135
             } else {
@@ -725,8 +746,8 @@ extension RelinquishmentSelectionViewController: UITableViewDelegate {
             }
         }
         
-        if (indexPath as NSIndexPath).row == 0 {
-            if (indexPath as NSIndexPath).section == 0 {
+        if indexPath.row == 0 {
+            if indexPath.section == 0 {
                 return UITableViewAutomaticDimension
             }
             return cellHeight
