@@ -73,7 +73,7 @@ class ResortDetails: NSObject, UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView.tag == 5 || tableView.tag == 6 {
             if Constant.MyClassConstants.systemAccessToken != nil {
-                self.delegate?.tableViewSelected(indexPath.row)
+                delegate?.tableViewSelected(indexPath.row)
             }
         }
     }

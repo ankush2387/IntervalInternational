@@ -40,7 +40,7 @@ class ResortDetailsViewController: UIViewController {
     //***** Class private Variables *****//
     fileprivate var startIndex = 0
     fileprivate var arrayRunningIndex = 0
-    fileprivate var resortDescriptionArrayContainer = [Resort()]
+    fileprivate var resortDescriptionArrayContainer = [Resort]()
     fileprivate var placeSelectionMainDictionary = [Int: [Int: Bool]]()
     fileprivate var tappedButtonDictionary = [Int: Bool]()
     fileprivate let moreNavArray = ["Share via email", "Share via text", "Tweet", "Facebook", "Pinterest"]
@@ -305,11 +305,11 @@ class ResortDetailsViewController: UIViewController {
         if Session.sharedSession.userAccessToken != nil && Constant.MyClassConstants.isLoginSuccessfull {
             do {
                 
-            let realm = try? Realm()
+            let realm = try Realm()
             let allDest = Helper.getLocalStorageWherewanttoGo()
             if !allDest.isEmpty {
-                try realm?.write {
-                    realm?.deleteAll()
+                try realm.write {
+                    realm.deleteAll()
                 }
             }
             let allavailabledest = AllAvailableDestination()
@@ -339,20 +339,22 @@ class ResortDetailsViewController: UIViewController {
             storedata.resorts.append(resortList)
             storedata.membeshipNumber = membership.memberNumber ?? ""
             
-            try realm?.write {
-                realm?.add(storedata)
+                try realm.write {
+                    realm.add(storedata)
             }
-            } catch {
                 
+                var storyboard = UIStoryboard()
+                if Constant.RunningDevice.deviceIdiom == .pad {
+                    storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                } else {
+                    storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                }
+                guard let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as? SWRevealViewController else { return }
+                self.present(viewController, animated: true, completion: nil)
+            } catch {
+                presentErrorAlert(UserFacingCommonError.generic)
             }
-            var storyboard = UIStoryboard()
-            if Constant.RunningDevice.deviceIdiom == .pad {
-                storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-            } else {
-                storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
-            }
-            guard let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as? SWRevealViewController else { return }
-            self.present(viewController, animated: true, completion: nil)
+           
         } else {
             var storyboard = UIStoryboard()
             var viewController = UIViewController()
@@ -578,7 +580,7 @@ extension ResortDetailsViewController: UITableViewDelegate {
                 let detailMapViewController = DetailMapViewController()
                 detailMapViewController.hidesBottomBarWhenPushed = true
                 self.navigationController?.pushViewController(detailMapViewController, animated: true)
-            case let x where x >= 3 :
+            case let indexedSection where indexedSection >= 3 :
                 let button = UIButton()
                 button.tag = indexPath.section
                 toggleButtonIsTapped(button)
@@ -679,7 +681,7 @@ extension ResortDetailsViewController: UITableViewDataSource {
                     } else {
                         return 0
                     }
-                case let x where x >= 3 :
+                case let indexedSection where indexedSection >= 3 :
                     if let isOpen = tappedButtonDictionary[section] {
                         if isOpen {
                             switch section {
