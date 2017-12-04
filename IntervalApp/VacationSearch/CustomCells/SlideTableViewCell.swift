@@ -16,6 +16,7 @@ class SlideTableViewCell: UITableViewCell {
     @IBOutlet weak var agreeButton: MMSlidingButton?
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
+    @IBOutlet weak var allInclusiveSelectedCheckBox: UIImageView!
     override func awakeFromNib() {
         super.awakeFromNib()
         agreeLabel.layer.borderColor = UIColor.orange.cgColor

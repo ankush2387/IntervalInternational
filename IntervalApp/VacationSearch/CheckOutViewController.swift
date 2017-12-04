@@ -277,9 +277,12 @@ class CheckOutViewController: UIViewController {
                 self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.insuranceSelectionMessage)
             } else if (Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange) && !Constant.MyClassConstants.recapPromotionsArray.isEmpty && Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName == "" {
                 imageSlider.isHidden = false
+                checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                 self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.promotionsMessage)
+
             } else if !Constant.MyClassConstants.isFromExchange && (Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName == nil || Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName == "") {
                 imageSlider.isHidden = true
+            self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                 self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.promotionsMessage)
             } else {
                 let indexPath = IndexPath(row: 0, section: 6)
@@ -291,10 +294,9 @@ class CheckOutViewController: UIViewController {
         } else {
             isAgreedToFees = true
             imageSlider.isHidden = true
-            self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
+            self.checkoutOptionTBLview.reloadSections([11,12], with:.automatic)
         }
     }
-    
     //***** Function called when notification top show trip details is fired. *****//
     func showTripDetails(notification: NSNotification) {
         self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
@@ -1337,13 +1339,18 @@ extension CheckOutViewController: UITableViewDataSource {
             cell.agreeButton?.tag = indexPath.section
             cell.agreeButton?.accessibilityValue = String(indexPath.section)
             cell.feesTitleLabel.text = Constant.AlertMessages.feesPaymentMessage
-            
-            if isAgreed {
+           
+            if isAgreedToFees {
                 cell.agreeLabel.backgroundColor = UIColor(colorLiteralRed: 170 / 255, green: 202 / 255, blue: 92 / 255, alpha: 1.0)
                 cell.agreeLabel.layer.borderColor = UIColor(colorLiteralRed: 170 / 255, green: 202 / 255, blue: 92 / 255, alpha: 1.0).cgColor
                 cell.agreeLabel.text = Constant.AlertMessages.agreeToFeesMessage
                 cell.agreeLabel.textColor = UIColor.white
+                cell.allInclusiveSelectedCheckBox.isHidden = false
             } else {
+                if let image = UIImage(named: Constant.assetImageNames.swipeArrowOrgImage) {
+                   cell.agreeButton?.imageName = image
+                }
+                cell.allInclusiveSelectedCheckBox.isHidden = true
                 cell.agreeLabel.backgroundColor = UIColor.white
                 cell.agreeLabel.textColor = UIColor(colorLiteralRed: 248 / 255, green: 107 / 255, blue: 63 / 255, alpha: 1.0)
                 cell.agreeLabel.layer.borderColor = #colorLiteral(red: 0.9725490196, green: 0.4196078431, blue: 0.2470588235, alpha: 1).cgColor
@@ -1358,6 +1365,7 @@ extension CheckOutViewController: UITableViewDataSource {
             cell.feesTitleLabel.text = Constant.AlertMessages.termsConditionMessage
             cell.agreeButton?.dragPointWidth = 70
             cell.agreeButton?.tag = indexPath.section
+            cell.allInclusiveSelectedCheckBox.isHidden = true
             if isAgreed {
                 cell.agreeLabel.backgroundColor = UIColor(colorLiteralRed: 170 / 255, green: 202 / 255, blue: 92 / 255, alpha: 1.0)
                 cell.agreeLabel.layer.borderColor = UIColor(colorLiteralRed: 170 / 255, green: 202 / 255, blue: 92 / 255, alpha: 1.0).cgColor
@@ -1370,12 +1378,18 @@ extension CheckOutViewController: UITableViewDataSource {
                 cell.agreeLabel.backgroundColor = UIColor(colorLiteralRed: 255 / 255, green: 117 / 255, blue: 58 / 255, alpha: 1.0)
                 cell.agreeLabel.textColor = UIColor.white
             } else if isAgreedToFees {
+                if let image = UIImage(named: Constant.assetImageNames.swipeArrowOrgImage) {
+                    cell.agreeButton?.imageName = image
+                }
                 cell.agreeLabel.backgroundColor = UIColor.white
                 cell.agreeLabel.layer.borderColor = UIColor(colorLiteralRed: 255 / 255, green: 117 / 255, blue: 58 / 255, alpha: 1.0).cgColor
                 cell.agreeLabel.text = Constant.AlertMessages.agreePayMessage
                 cell.agreeLabel.textColor = UIColor(colorLiteralRed: 255 / 255, green: 117 / 255, blue: 58 / 255, alpha: 1.0)
                 cell.agreeButton?.imageName = UIImage(named:Constant.assetImageNames.swipeArrowOrgImage)!
             } else {
+                if let image = UIImage(named: Constant.assetImageNames.swipeArrowGryImage) {
+                    cell.agreeButton?.imageName = image
+                }
                 cell.agreeLabel.text = Constant.AlertMessages.agreePayMessage
                 cell.agreeLabel.backgroundColor = UIColor.white
                 cell.agreeLabel.layer.borderColor = UIColor.lightGray.cgColor
