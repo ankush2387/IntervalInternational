@@ -55,7 +55,7 @@ class RelinquishmentSelectionViewController: UIViewController {
         verifyDepositsToDisplay()
         
         //Array to get details of unit details saved by user for lock-off capable.
-        Constant.MyClassConstants.saveLockOffDetailsArray.removeAllObjects()
+        Constant.MyClassConstants.saveLockOffDetailsArray.removeAll()
         
         for fixed_week_type in Constant.MyClassConstants.relinquishmentOpenWeeks {
             if let relinquishmentId = fixed_week_type.relinquishmentId {
@@ -86,7 +86,7 @@ class RelinquishmentSelectionViewController: UIViewController {
                                             
                                         let floatLockOffWeek = traversedOpenWeek as! OpenWeeks
                                         if(floatLockOffWeek.relinquishmentID == fixed_week_type.relinquishmentId) {
-                                            Constant.MyClassConstants.saveLockOffDetailsArray.add("\(floatLockOffWeek.floatDetails[0].unitNumber),\(floatLockOffWeek.floatDetails[0].unitSize)")
+                                            Constant.MyClassConstants.saveLockOffDetailsArray.append("\(floatLockOffWeek.floatDetails[0].unitNumber),\(floatLockOffWeek.floatDetails[0].unitSize)")
                                         }
                                     }
                                 }
@@ -96,7 +96,7 @@ class RelinquishmentSelectionViewController: UIViewController {
                                 for traversedOpenWeek in Constant.MyClassConstants.floatRemovedArray {
                                     let floatLockOffWeek = traversedOpenWeek as! OpenWeeks
                                     if floatLockOffWeek.relinquishmentID == fixed_week_type.relinquishmentId {
-                                        Constant.MyClassConstants.saveLockOffDetailsArray.add("\(floatLockOffWeek.floatDetails[0].unitNumber),\(floatLockOffWeek.floatDetails[0].unitSize)")
+                                        Constant.MyClassConstants.saveLockOffDetailsArray.append("\(floatLockOffWeek.floatDetails[0].unitNumber),\(floatLockOffWeek.floatDetails[0].unitSize)")
                                     }
                                 }
                             }

@@ -521,7 +521,7 @@ class Constant: NSObject {
         //Float week to store information for editing
         static var selectedFloatWeek = OpenWeeks()
         static var unitNumberLockOff = ""
-        static var saveLockOffDetailsArray = NSMutableArray()
+        static var saveLockOffDetailsArray = [String]()
         
         //Header for search results
         static var searchResultHeader = "Nearest Check-in Date selected.\nWe found availibility close to your desired date.".localized()
