@@ -128,7 +128,7 @@ class CreateActionSheet: UITableViewController {
             //***** Favorites resort API call after successfull call *****//
             Helper.getUserFavorites {[weak self] error in
                 if case .some = error {
-                    self.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
+                    self?.presentAlert(with: "Error".localized(), message: error?.localizedDescription ?? "")
                 }
             }
             //***** Get upcoming trips for user API call after successfull call *****//
