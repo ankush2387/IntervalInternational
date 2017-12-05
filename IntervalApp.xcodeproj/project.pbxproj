@@ -2524,6 +2524,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Aylwing Olivas (BK2HSFRB8Y)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Aylwing Olivas (BK2HSFRB8Y)";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 25;
 				DEVELOPMENT_TEAM = 4CR2ZD7GRK;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2547,6 +2548,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
@@ -2561,6 +2563,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Aylwing Olivas (BK2HSFRB8Y)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Aylwing Olivas (BK2HSFRB8Y)";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 25;
 				DEVELOPMENT_TEAM = 4CR2ZD7GRK;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2584,6 +2587,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};

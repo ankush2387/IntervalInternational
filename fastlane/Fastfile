@@ -17,6 +17,7 @@ default_platform :ios
 
 desc "Builds development target and uploads to HockeyApp"
 lane :development do
+increment_build_number(xcodeproj: "/Users/aolivas/interval-app-ios/IntervalApp.xcodeproj")
 scan(scheme: "IntervalApp")
 gym(
 workspace: "IntervalApp.xcworkspace",
