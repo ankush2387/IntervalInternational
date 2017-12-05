@@ -77,7 +77,6 @@ class Constant: NSObject {
         
         static var countryListArray = ["Canada", "USA", "India", "Austrelia", "South Africa"]
         static var countryCodeArray: [String] = []
-        static var cardTypeArray = ["Visa", "Master", "Coral"]
         static var textFieldChangedInSection = -1
         static var nameOnCard = ""
         static var cardNumber = ""
@@ -88,7 +87,7 @@ class Constant: NSObject {
         static var state = ""
         static var pinCode = ""
         static var cardType = ""
-        static var expDate: String?
+        static var expDate = ""
         static var cvv = ""
         static var countryCode = ""
         static var stateCode = ""
@@ -194,7 +193,7 @@ class Constant: NSObject {
         //***** New creditcard screen constant string *****//
         static var newCardalertTitle = "New Creditcard Form".localized()
         static var newCardalertMess = "Card already exist.".localized()
-        static var alertReqFieldMsg = "All fields are mandatory".localized()
+        static var alertReqFieldMsg = "Please fill mandatory fields!".localized()
         static var noResultError = "No Result".localized()
         static var tryAgainError = "Try Again".localized()
         static var tdi = "TDI".localized()
