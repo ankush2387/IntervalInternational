@@ -185,6 +185,42 @@ public class Helper {
         }
     }
     
+    
+    //***** common  function that  takes month as int value and return month full spelled name name *****//
+    static func getMonthFullSpelledFromInt(monthNumber: Int) -> String {
+        
+        switch(monthNumber) {
+            
+        case 1:
+            return "January"
+        case 2:
+            return "February"
+        case 3:
+            return "March"
+        case 4:
+            return "April"
+        case 5:
+            return "May"
+        case 6:
+            return "Jun"
+        case 7:
+            return "July"
+        case 8:
+            return "August"
+        case 9:
+            return "September"
+        case 10:
+            return "October"
+        case 11:
+            return "November"
+        case 12:
+            return "December"
+        default:
+            return ""
+        }
+    }
+    
+    
     //***** common  function that  takes UIView and color to and gradient view on passed view *****//
     static func addLinearGradientToView(view: UIView, colour: UIColor, transparntToOpaque: Bool, vertical: Bool) {
         let gradient = CAGradientLayer()

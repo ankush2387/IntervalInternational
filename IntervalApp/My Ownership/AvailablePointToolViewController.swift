@@ -176,6 +176,7 @@ extension AvailablePointToolViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
        let returnValue = (section == 0) ? 2 : self.availablePoints.usage.count + 2
         return returnValue
+
     }
 }
 /** Extension for UITableVieWDelegate */
@@ -192,6 +193,7 @@ extension AvailablePointToolViewController: UITableViewDelegate {
                 return 90
             }
         } else {
+
             if indexPath.row == self.availablePoints.usage.count + 1 {
                 return 90
             } else {
@@ -237,7 +239,6 @@ extension AvailablePointToolViewController: UITableViewDelegate {
             let transitionManager = TransitionManager()
             navigationController?.transitioningDelegate = transitionManager
             navigationController?.pushViewController(viewController, animated: true)
-            
         }
     }
 }
