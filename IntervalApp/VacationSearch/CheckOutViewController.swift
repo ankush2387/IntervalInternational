@@ -294,7 +294,7 @@ class CheckOutViewController: UIViewController {
         } else {
             isAgreedToFees = true
             imageSlider.isHidden = true
-            self.checkoutOptionTBLview.reloadSections([11,12], with:.automatic)
+            self.checkoutOptionTBLview.reloadSections([11, 12], with:.automatic)
         }
     }
     //***** Function called when notification top show trip details is fired. *****//
@@ -728,33 +728,8 @@ extension CheckOutViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.section == 9 {
-            
-            showHudAsync()
-            guard let userAccessToken = Session.sharedSession.userAccessToken else { return }
-            UserClient.getCreditCards(userAccessToken, onSuccess: { response in
-                
-                Constant.MyClassConstants.memberCreditCardList = response
-                DispatchQueue.main.async(execute: {
-                    
-                    if Constant.MyClassConstants.selectedCreditCard.isEmpty {
-                        self.hideHudAsync()
-                        self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
-                    } else {
-                        let selectedCard = Constant.MyClassConstants.selectedCreditCard[0]
-                        if selectedCard.creditcardId == 0 {
-                            Constant.MyClassConstants.memberCreditCardList.append(selectedCard)
-                            self.hideHudAsync()
-                            self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
-                        } else {
-                            self.hideHudAsync()
-                            self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
-                        }
-                    }
-                })
-            }, onError: { [weak self] error in
-                self?.hideHudAsync()
-                self?.presentErrorAlert(UserFacingCommonError.serverError(error))
-            })
+            self.performSegue(withIdentifier: Constant.segueIdentifiers.selectPaymentMethodSegue, sender: nil)
+
         }
     }
     
