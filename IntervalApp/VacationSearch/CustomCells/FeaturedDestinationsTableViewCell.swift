@@ -38,14 +38,14 @@ extension FeaturedDestinationsTableViewCell: UICollectionViewDataSource {
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let deal = Constant.MyClassConstants.topDeals[indexPath.row]
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.cellIdentifiers.featuredCell, for: indexPath) as! FeaturedDestinationsCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constant.cellIdentifiers.featuredCell, for: indexPath) as? FeaturedDestinationsCell else { return UICollectionViewCell() }
         cell.titleLabelDestination.text = deal.header
         cell.priceLabelDestination.text = "From " + String(describing: deal.price?.fromPrice) + " Wk."
         cell.unitLabelDestination.text = deal.details
         
         if let imageURL = deal.images.first?.url {
             cell.imageViewDestination.setImageWith(URL(string: imageURL), completed: { (image:UIImage?, error:Error?, _:SDImageCacheType, _:URL?) in
-                if (error != nil) {
+                if case .some = error {
                     cell.imageViewDestination.image = UIImage(named: Constant.MyClassConstants.noImage)
                 }
             }, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)

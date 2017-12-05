@@ -872,9 +872,13 @@ extension SearchResultViewController: UICollectionViewDelegate {
                 if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Rental {
                     
                     if collectionView.superview?.superview?.tag == 0 && exactMatchResortsArray.count > 0 {
-                       resortCode = exactMatchResortsArray[collectionView.tag].resortCode!
+                        if let code = exactMatchResortsArray[collectionView.tag].resortCode {
+                            resortCode = code
+                        }
                     } else {
-                        resortCode = surroundingMatchResortsArray[collectionView.tag].resortCode!
+                        if let code = surroundingMatchResortsArray[collectionView.tag].resortCode {
+                            resortCode = code
+                        }
                     }
                   
                 } else if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() {

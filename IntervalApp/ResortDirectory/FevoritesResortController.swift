@@ -53,19 +53,19 @@ class FevoritesResortController: UIViewController {
     }
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         if Constant.RunningDevice.deviceIdiom == .pad && resortTableView != nil {
-            if(self.containerView != nil) {
+            if self.containerView != nil {
                 self.containerView.isHidden = true
-                if(self.emptyFavoritesMessageView != nil) {
+                if self.emptyFavoritesMessageView != nil {
                     self.emptyFavoritesMessageView.isHidden = false
                     self.backgroundView.isHidden = true
                     
                     var count = 0
                     for subView in self.view.subviews {
-                        if (subView .isKind(of: GMSMapView.self)) {
+                        if subView .isKind(of: GMSMapView.self) {
                             count = count + 1
                         }
                     }
-                    if(count == 0) {
+                    if count == 0 {
                         createMapWithMarkers()
                     }
                 }
@@ -76,7 +76,7 @@ class FevoritesResortController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         
-        if(Session.sharedSession.userAccessToken != nil) {
+        if Session.sharedSession.userAccessToken != nil {
             showHudAsync()
             UserClient.getFavoriteResorts(Session.sharedSession.userAccessToken, onSuccess: { (response) in
                 Constant.MyClassConstants.favoritesResortArray.removeAll()
@@ -104,33 +104,33 @@ class FevoritesResortController: UIViewController {
     }
     
     fileprivate func setupView() {
-        if(Session.sharedSession.userAccessToken == nil) {
+        if Session.sharedSession.userAccessToken == nil {
             self.hideHudAsync()
             self.signInView.isHidden = false
             self.resortTableBaseView.isHidden = true
         } else {
             
             self.resortTableBaseView.isHidden = true
-            if(self.resortTableBaseView != nil) {
+            if self.resortTableBaseView != nil {
                 
                 self.resortTableBaseView.isHidden = false
             }
             
             self.signInView.isHidden = true
-            if(UIDevice().userInterfaceIdiom == .pad) {
+            if UIDevice().userInterfaceIdiom == .pad {
                 createMapWithMarkers()
             }
-            if(Constant.MyClassConstants.favoritesResortArray.count > 0) {
+            if Constant.MyClassConstants.favoritesResortArray.count > 0 {
                 
                 self.resortTableView.reloadData()
-                if(self.emptyFavoritesMessageView != nil) {
+                if self.emptyFavoritesMessageView != nil {
                     self.emptyFavoritesMessageView.removeFromSuperview()
                 }
                 
             } else {
                 
-                if(UIDevice().userInterfaceIdiom == .pad) {
-                    if(Constant.MyClassConstants.favoritesResortArray.count == 0) {
+                if UIDevice().userInterfaceIdiom == .pad {
+                    if Constant.MyClassConstants.favoritesResortArray.count == 0 {
                         backgroundView.frame = CGRect(x: 0, y: 0, width: self.resortTableView.frame.size.width - 20, height: UIScreen.main.bounds.height)
                         backgroundView.backgroundColor = UIColor.white
                         self.view.addSubview(backgroundView)
@@ -141,7 +141,7 @@ class FevoritesResortController: UIViewController {
                         self.emptyFavoritesMessageView = Helper.displayEmptyFavoritesMessage(requestedView: messageView)
                         backgroundView.addSubview(self.emptyFavoritesMessageView)
                         
-                        if(self.containerView != nil) {
+                        if self.containerView != nil {
                             self.containerView.isHidden = true
                         }
                     }
@@ -155,7 +155,7 @@ class FevoritesResortController: UIViewController {
         self.navigationItem.title = Constant.ControllerTitles.favoritesViewController
         
         //***** Condition for maintaining the back button and hamberger menu according to logged in or pre login *****//
-        if((Session.sharedSession.userAccessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
+        if (Session.sharedSession.userAccessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull {
             if let rvc = self.revealViewController() {
                 //set SWRevealViewController's Delegate
                 rvc.delegate = self
@@ -175,7 +175,7 @@ class FevoritesResortController: UIViewController {
             self.navigationItem.leftBarButtonItem = menuButton
         }
         
-        if(UIDevice().userInterfaceIdiom == .pad) {
+        if UIDevice().userInterfaceIdiom == .pad {
             createMapWithMarkers()
         }
         
@@ -197,7 +197,7 @@ class FevoritesResortController: UIViewController {
     //****** Function to create map for iPad with markers *****//
     
     func createMapWithMarkers() {
-        if(Constant.MyClassConstants.favoritesResortArray.count == 0) {
+        if Constant.MyClassConstants.favoritesResortArray.count == 0 {
             let camera = GMSCameraPosition.camera(withLatitude: 4.739001, longitude: -74.059616, zoom: 17)
             let mapframe = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height - 64 - 49)
             let myGSMMap = GMSMapView.map(withFrame: mapframe, camera: camera)
@@ -212,7 +212,7 @@ class FevoritesResortController: UIViewController {
             resortTableBaseView.addSubview(mapView)
             self.backgroundView.isHidden = false
             
-        } else if(Constant.MyClassConstants.favoritesResortArray.count > 0) {
+        } else if Constant.MyClassConstants.favoritesResortArray.count > 0 {
             backgroundView.isHidden = true
             camera = GMSCameraPosition.camera(withLatitude: (Constant.MyClassConstants.favoritesResortArray.last!.coordinates?.latitude)!, longitude: (Constant.MyClassConstants.favoritesResortArray.last!.coordinates?.longitude)!, zoom: 12)
             
@@ -250,7 +250,7 @@ class FevoritesResortController: UIViewController {
             mapView.settings.allowScrollGesturesDuringRotateOrZoom = false
             mapView.animate(toZoom: 12.0)
             
-            if(self.resortTableBaseView != nil && self.resortTableBaseView.isHidden == false) {
+            if self.resortTableBaseView != nil && self.resortTableBaseView.isHidden == false {
                 resortTableBaseView.backgroundColor = UIColor.clear
                 resortTableBaseView.bringSubview(toFront: self.resortTableView)
             }
@@ -268,7 +268,7 @@ class FevoritesResortController: UIViewController {
     }
     override func viewWillDisappear(_ animated: Bool) {
         
-        if(self.emptyFavoritesMessageView != nil) {
+        if self.emptyFavoritesMessageView != nil {
             self.emptyFavoritesMessageView.removeFromSuperview()
         }
     }
@@ -324,7 +324,7 @@ class FevoritesResortController: UIViewController {
             
         })
         
-        if(Constant.RunningDevice.deviceIdiom == .pad) {
+        if Constant.RunningDevice.deviceIdiom == .pad {
             for marker in Constant.MyClassConstants.googleMarkerArray {
                 Constant.MyClassConstants.googleMarkerArray.remove(at: Constant.MyClassConstants.googleMarkerArray.index(of: marker)!)
                 createMapWithMarkers()
@@ -334,7 +334,7 @@ class FevoritesResortController: UIViewController {
         let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
         DispatchQueue.main.asyncAfter(deadline: delayTime) {
             
-            if(Constant.MyClassConstants.favoritesResortArray.count > 0) {
+            if Constant.MyClassConstants.favoritesResortArray.count > 0 {
                 
                 indexPath = IndexPath(row: (rowNumber) - 1, section: 0)
                 
@@ -371,12 +371,12 @@ extension FevoritesResortController: GMSMapViewDelegate {
     //***** this method called when map marker selected *****//
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
         
-        if(UIDevice.current.userInterfaceIdiom == .pad) {
+        if UIDevice.current.userInterfaceIdiom == .pad {
             
             if (Constant.MyClassConstants.googleMarkerArray.count == 0) {
                 
             } else {
-                if(self.containerView != nil) {
+                if self.containerView != nil {
                 self.containerView.isHidden = false
                 self.view.bringSubview(toFront: self.containerView)
                 }
@@ -388,7 +388,7 @@ extension FevoritesResortController: GMSMapViewDelegate {
                 containerVC.senderViewController = Constant.MyClassConstants.searchResult
                 containerVC.viewWillAppear(true)
                 
-                if(self.containerView != nil) {
+                if self.containerView != nil {
                 UIView.animate (withDuration: 0.5, delay: 0.1, options: UIViewAnimationOptions.curveEaseIn, animations: {
                     
                     self.containerView.frame = CGRect(x: 0, y: 64, width: self.containerView.frame.size.width, height: self.containerView.frame.size.height)
@@ -407,7 +407,7 @@ extension FevoritesResortController: GMSMapViewDelegate {
 extension FevoritesResortController: ResortDetailsDelegate {
     
     func tableViewSelected(_ index: Int) {
-        if(Constant.RunningDevice.deviceIdiom == .pad) {
+        if Constant.RunningDevice.deviceIdiom == .pad {
             self.containerView.isHidden = false
             let selectedResort = Constant.MyClassConstants.favoritesResortArray[index]
             Helper.getResortWithResortCode(code: selectedResort.resortCode!, viewcontroller: self)

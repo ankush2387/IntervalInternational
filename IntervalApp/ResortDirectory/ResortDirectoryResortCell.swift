@@ -60,12 +60,12 @@ class ResortDirectoryResortCell: UITableViewCell {
      */
     fileprivate func setPropertiesTocellComponenet(resort: Resort) {
         Helper.addLinearGradientToView(view: resortNameGradientView, colour: UIColor.white, transparntToOpaque: true, vertical: true)
-        if let resortName = resort.resortName {
-            resortName.text = resortName
+        if let name = resort.resortName {
+            resortName.text = name
         }
         resortAddress.text = resort.address?.cityName
-        if let resortCode = resort.resortCode {
-            resortCode.text = resortCode
+        if let code = resort.resortCode {
+            resortCode.text = code
         }
     }
 
