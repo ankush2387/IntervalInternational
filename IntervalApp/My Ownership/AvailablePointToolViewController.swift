@@ -22,29 +22,28 @@ class AvailablePointToolViewController: UIViewController {
      - returns : No value is returned
      */
     @IBAction func doneButtonIsTapped(_ sender: UIButton) {
-        _ = self.navigationController?.popViewController(animated: true)
+        _ = navigationController?.popViewController(animated: true)
     }
     
     var availablePoints = AvailablePoints()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.title = Constant.ControllerTitles.availablePointToolViewController
+        Constant.MyClassConstants.relinquishmentAvalableToolSelectedDate = nil
+        title = Constant.ControllerTitles.availablePointToolViewController
         let menuButton = UIBarButtonItem(image: UIImage(named: Constant.assetImageNames.backArrowNav), style: .plain, target: self, action: #selector(menuBackButtonPressed(_:)))
         menuButton.tintColor = UIColor.white
         
-        self.navigationItem.leftBarButtonItem = menuButton
-
+        navigationItem.leftBarButtonItem = menuButton
     }
     /**
-    Pop up current viewcontroller from Navigation stack
-    - parameter sender : UIBarButton Reference
-    - returns : No value is return
-    */
+     Pop up current viewcontroller from Navigation stack
+     - parameter sender : UIBarButton Reference
+     - returns : No value is return
+     */
     func menuBackButtonPressed(_ sender: UIBarButtonItem) {
         
-        _ = self.navigationController?.popViewController(animated: true)
+        _ = navigationController?.popViewController(animated: true)
     }
     
     override func didReceiveMemoryWarning() {
@@ -53,8 +52,8 @@ class AvailablePointToolViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         
-        if(Constant.MyClassConstants.relinquishmentAvalableToolSelectedDate == nil) {
-                        
+        if Constant.MyClassConstants.relinquishmentAvalableToolSelectedDate == nil {
+            
             presentAlert(with: Constant.ControllerTitles.availablePointToolViewController, message: Constant.AlertMessages.availablePointToolDefaultSelectedDateAlert)
             
             Constant.MyClassConstants.relinquishmentAvalableToolSelectedDate = Date()
@@ -62,20 +61,22 @@ class AvailablePointToolViewController: UIViewController {
         
         if let AblToolSelectdDate = Constant.MyClassConstants.relinquishmentAvalableToolSelectedDate {
             
-          let dateStr = Helper.convertDateToString(date: AblToolSelectdDate, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
+            let dateStr = Helper.convertDateToString(date: AblToolSelectdDate, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat)
             showHudAsync()
             UserClient.getProgramAvailablePoints(Session.sharedSession.userAccessToken, date: dateStr, onSuccess: {[weak self] (availablePoints) in
                 guard let strongSelf = self else { return }
                 strongSelf.hideHudAsync()
+                self?.availablePointTableView.delegate = self
+                self?.availablePointTableView.dataSource = self
                 strongSelf.availablePoints = availablePoints
                 strongSelf.availablePointTableView.reloadData()
-            }, onError: {[unowned self] (error) in
-                
-                self.hideHudAsync()
-                intervalPrint(error)
+                }, onError: {[unowned self] (error) in
+                    
+                    self.hideHudAsync()
+                    intervalPrint(error)
             })
         }
-        self.availablePointTableView.reloadData()
+        availablePointTableView.reloadData()
     }
     
 }
@@ -100,31 +101,31 @@ extension AvailablePointToolViewController: UITableViewDataSource {
                         
                         let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
                         let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: AblToolSelectedDate)
-                        let year = String(describing: myComponents.year!)
-                        let weekDay = "\(Helper.getWeekdayFromInt(weekDayNumber: myComponents.weekday!))"
-                        let month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \( myComponents.day!)"
-                        
-                        cell.dateLabel.text = "\(weekDay), \(month) \(year)".localized()
+                        if let weekday = myComponents.weekday, let month = myComponents.month, let year = myComponents.year, let day = myComponents.day {
+                            let year = String(describing: year)
+                            let weekDay = "\(Helper.getWeekdayFromInt(weekDayNumber: weekday))"
+                            let month = "\(Helper.getMonthFullSpelledFromInt(monthNumber: month)) \( day)"
+                            cell.dateLabel.text = "\(weekDay), \(month), \(year)".localized()
+                        }
                     }
-                
-                cell.selectionStyle = .none
-                return cell
+                    
+                    cell.selectionStyle = .none
+                    return cell
                 } else {
                     return UITableViewCell()
                 }
-
+                
             } else {
                 
-                let  cell = tableView.dequeueReusableCell(withIdentifier: Constant.availablePointToolViewController.availablePointCell) as! AvailablePointCell
-                
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.availablePointToolViewController.availablePointCell, for: indexPath) as? AvailablePointCell else {
+                    
+                    return UITableViewCell()
+                }
                 let availablePointsNumber = self.availablePoints.availablePoints! as NSNumber
-                
                 let numberFormatter = NumberFormatter()
                 numberFormatter.numberStyle = .decimal
-                
-                let availablePoints = numberFormatter.string(from: availablePointsNumber)
-                
-                cell.availablePointValueLabel.text = availablePoints
+                                let availablePoints = numberFormatter.string(from: availablePointsNumber)
+                cell.availablePointValueLabel.text = availablePoints?.localized()
                 
                 return cell
             }
@@ -132,38 +133,44 @@ extension AvailablePointToolViewController: UITableViewDataSource {
         } else {
             if indexPath.row == 0 {
                 
-                 let  cell = tableView.dequeueReusableCell(withIdentifier: Constant.availablePointToolViewController.headerCell) as! HeaderCell
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.availablePointToolViewController.headerCell, for: indexPath) as? HeaderCell else {
+                    
+                    return UITableViewCell()
+                }
                 return cell
-            } else if indexPath.row == self.availablePoints.usage.count + 1 {
+            } else if indexPath.row == availablePoints.usage.count + 1 {
                 
-                let  Cell = tableView.dequeueReusableCell(withIdentifier: Constant.availablePointToolViewController.donebuttoncellIdentifier) as! FloatdetaildoneButtonTableViewCell
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.availablePointToolViewController.donebuttoncellIdentifier, for: indexPath) as? FloatdetaildoneButtonTableViewCell else {
+                    
+                    return UITableViewCell()
+                }
+                cell.donebutton.layer.cornerRadius = 7
                 
-                    Cell.donebutton.layer.cornerRadius = 7
+                return cell
                 
-                    return Cell
-
             } else {
                 
-                let  cell = tableView.dequeueReusableCell(withIdentifier: Constant.availablePointToolViewController.depositedpointhistorycellIdentifier) as! DepositedPointHistoryTableViewCell
-                
-                let programPointsUsage = self.availablePoints.usage
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.availablePointToolViewController.depositedpointhistorycellIdentifier, for: indexPath) as? DepositedPointHistoryTableViewCell else {
+                    
+                    return UITableViewCell()
+                }
+                let programPointsUsage = availablePoints.usage
                 let usage = programPointsUsage[indexPath.row - 1]
-                
                 let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: usage.expirationDate!, format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat))
-                let year = String(describing: myComponents.year!)
-                let month = "\(Helper.getMonthnameFromInt(monthNumber: myComponents.month!)) \( myComponents.day!)"
-                
-                cell.pointsLabel.text = String(usage.points!)
-                cell.expirationdateLabel.text = "\(month) \(year)"
-                cell.depositstatusLabel.text = usage.pointsType?.capitalized
-                
+                let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: Helper.convertStringToDate(dateString: usage.expirationDate ?? "", format: Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.yyyymmddDateFormat))
+                if let year = myComponents.year, let month = myComponents.month, let day = myComponents.day {
+                    let year = String(describing: year)
+                    let month = "\(Helper.getMonthFullSpelledFromInt(monthNumber: month)) \(day)"
+                    if let points = usage.points {
+                        cell.pointsLabel.text = String(points).localized()
+                    }
+                    cell.expirationdateLabel.text = "\(month) \(year)".localized()
+                    cell.depositstatusLabel.text = usage.pointsType?.capitalized
+                }
                 return cell
-
+                
             }
-            
         }
-      
     }
     /** Number of Rows in a Section */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -171,71 +178,70 @@ extension AvailablePointToolViewController: UITableViewDataSource {
         if section == 0 {
             return 2
         } else {
-            return self.availablePoints.usage.count + 2
+            return availablePoints.usage.count + 2
         }
     }
 }
 /** Extension for UITableVieWDelegate */
 extension AvailablePointToolViewController: UITableViewDelegate {
-		
-	/** Height for a Row at Index Path */
-	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		
-		if (indexPath.section == 0) {
-            if(indexPath.row == 0) {
+    
+    /** Height for a Row at Index Path */
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        if indexPath.section == 0 {
+            if indexPath.row == 0 {
                 
                 return 70
             } else {
                 return 90
             }
-		} else {
-            if(indexPath.row == self.availablePoints.usage.count + 1) {
+        } else {
+            if indexPath.row == availablePoints.usage.count + 1 {
                 return 90
             } else {
                 return 40
             }
             
         }
-    
-	}
-	/** Height for Header In Section */
-	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		if section == 0 {
-			return 0
-		} else {
-			return 50
-		}
-		
-	}
-	/** View For Header Section */
-	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-		if section == 0 {
-			return nil
-		} else {
+        
+    }
+    /** Height for Header In Section */
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return 0
+        } else {
+            return 50
+        }
+        
+    }
+    /** View For Header Section */
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if section == 0 {
+            return nil
+        } else {
             
-            let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.availablePointTableView.frame.size.width, height: 50))
-            
-            let headerStringLabel = UILabel(frame: CGRect(x: 5, y: 5, width: self.availablePointTableView.frame.size.width, height: 40))
-                headerStringLabel.text = Constant.availablePointToolViewController.depositedPointHistoryinformationLabelText
+            let headerView = UIView(frame: CGRect(x: 0, y: 0, width: availablePointTableView.frame.size.width, height: 50))
+            let headerStringLabel = UILabel(frame: CGRect(x: 5, y: 5, width: availablePointTableView.frame.size.width, height: 40))
+            headerStringLabel.text = Constant.availablePointToolViewController.depositedPointHistoryinformationLabelText.localized()
             headerView.backgroundColor = IUIKColorPalette.titleBackdrop.color
             headerView.addSubview(headerStringLabel)
-                
-			return headerView
-		}
-		
-	}
+            
+            return headerView
+        }
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if(indexPath.section == 0 && indexPath.row == 0) {
-           
+        if indexPath.section == 0 && indexPath.row == 0 {
+            
             let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
             let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.calendarViewController) as! CalendarViewController
             viewController.requestedController = Constant.MyClassConstants.relinquishment
             
             let transitionManager = TransitionManager()
-            self.navigationController?.transitioningDelegate = transitionManager
-            self.navigationController!.pushViewController(viewController, animated: true)
-
+            navigationController?.transitioningDelegate = transitionManager
+            navigationController!.pushViewController(viewController, animated: true)
+            
         }
     }
 }
