@@ -589,9 +589,9 @@ class SearchResultViewController: UIViewController {
                     self.navigationController?.pushViewController(viewController, animated: true)
                     
                 }
-            }, onError: { (_) in
-                self.hideHudAsync()
-                self.presentErrorAlert(UserFacingCommonError.generic)
+            }, onError: { [weak self] error in
+                self?.hideHudAsync()
+                self?.presentErrorAlert(UserFacingCommonError.serverError(error))
                 
             })
             
@@ -885,17 +885,21 @@ extension SearchResultViewController: UICollectionViewDelegate {
                     }
                 } else {
                     if collectionView.superview?.superview?.tag == 0 && combinedExactSearchItems.count > 0 {
-                        if combinedExactSearchItems[collectionView.tag].rentalAvailability != nil {
-                            resortCode = (combinedExactSearchItems[collectionView.tag].rentalAvailability!.resortCode!)
+                        if let combinedExact = combinedExactSearchItems[collectionView.tag].rentalAvailability, let code = combinedExact.resortCode {
+                            resortCode = code
                         } else {
-                            resortCode = (combinedExactSearchItems[collectionView.tag].exchangeAvailability?.resort?.resortCode!)!
+                            if let code = combinedExactSearchItems[collectionView.tag].exchangeAvailability?.resort?.resortCode {
+                            resortCode = code
+                            }
                         }
                         
                     } else {
-                        if combinedSurroundingSearchItems[indexPath.section].rentalAvailability != nil {
-                            resortCode = (combinedSurroundingSearchItems[indexPath.section].rentalAvailability!.resortCode!)
+                        if let combinedSurroundings = combinedSurroundingSearchItems[indexPath.section].rentalAvailability, let code = combinedSurroundings.resortCode {
+                            resortCode = code
                         } else {
-                            resortCode = (combinedSurroundingSearchItems[indexPath.section].exchangeAvailability?.resort?.resortCode!)!
+                            if let code = combinedSurroundingSearchItems[indexPath.section].exchangeAvailability?.resort?.resortCode {
+                                resortCode = code
+                            }
                         }
                     }
                 }

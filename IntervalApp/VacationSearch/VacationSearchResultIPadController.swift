@@ -572,18 +572,22 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
             } else {
                 
                 if collectionView.superview?.superview?.tag == 0 && combinedExactSearchItems.count > 0 {
-                    if combinedExactSearchItems[indexPath.section].rentalAvailability != nil {
-                        resortCode = (combinedExactSearchItems[indexPath.section].rentalAvailability!.resortCode!)
+                    if let combinedExactItems = combinedExactSearchItems[indexPath.section].rentalAvailability, let code = combinedExactItems.resortCode {
+                        resortCode = code
                     } else {
-                        resortCode = (combinedExactSearchItems[indexPath.section].exchangeAvailability?.resort?.resortCode!)!
+                        if let code = combinedExactSearchItems[indexPath.section].exchangeAvailability?.resort?.resortCode {
+                        resortCode = code
+                        }
                     }
                     
                 } else {
                     
-                    if combinedSurroundingSearchItems[indexPath.section].rentalAvailability != nil {
-                        resortCode = (combinedSurroundingSearchItems[indexPath.section].rentalAvailability!.resortCode!)
+                    if let combinedSurroundings = combinedSurroundingSearchItems[indexPath.section].rentalAvailability, let code = combinedSurroundings.resortCode {
+                        resortCode = code
                     } else {
-                        resortCode = (combinedSurroundingSearchItems[indexPath.section].exchangeAvailability?.resort?.resortCode!)!
+                        if let code = combinedSurroundingSearchItems[indexPath.section].exchangeAvailability?.resort?.resortCode {
+                        resortCode = code
+                        }
                     }
                 }
             }

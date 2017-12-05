@@ -44,7 +44,7 @@ class MembershipIPadViewController: UIViewController {
         actionsheetViewController.view.bringSubview(toFront: actionSheetTable)
         actionsheetViewController.view.isUserInteractionEnabled = true
         
-        let attributedString = NSAttributedString(string: "Select Membership", attributes: [NSFontAttributeName : UIFont(name: Constant.fontName.helveticaNeueBold, size: 20),NSForegroundColorAttributeName :UIColor.black])
+        let attributedString = NSAttributedString(string: "Select Membership", attributes: [NSFontAttributeName : UIFont(name: Constant.fontName.helveticaNeueBold, size: 20), NSForegroundColorAttributeName :UIColor.black])
         
         let action: UIAlertAction = UIAlertAction(title: Constant.AlertPromtMessages.cancel, style: UIAlertActionStyle.cancel, handler: nil)
         

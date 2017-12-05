@@ -52,7 +52,7 @@ class FevoritesResortController: UIViewController {
         self.mapView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
     }
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        if(Constant.RunningDevice.deviceIdiom == .pad && resortTableView != nil) {
+        if Constant.RunningDevice.deviceIdiom == .pad && resortTableView != nil {
             if(self.containerView != nil) {
                 self.containerView.isHidden = true
                 if(self.emptyFavoritesMessageView != nil) {

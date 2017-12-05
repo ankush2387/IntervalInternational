@@ -56,8 +56,9 @@ class ResortDetails: NSObject, UITableViewDataSource, UITableViewDelegate {
             }
         }
         cell.resortName.text = resortDetails.resortName
-        let resortAddress = resortDetails.address!
-        cell.resortCountry.text = resortAddress.cityName
+        if let cityName = resortDetails.address?.cityName {
+        cell.resortCountry.text = cityName
+        }
         cell.resortCode.text = resortDetails.resortCode
         if let tier = resortDetails.tier {
             let tierImageName = Helper.getTierImageName(tier: tier.uppercased())

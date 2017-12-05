@@ -60,9 +60,13 @@ class ResortDirectoryResortCell: UITableViewCell {
      */
     fileprivate func setPropertiesTocellComponenet(resort: Resort) {
         Helper.addLinearGradientToView(view: resortNameGradientView, colour: UIColor.white, transparntToOpaque: true, vertical: true)
-        resortName.text = resort.resortName!
+        if let resortName = resort.resortName {
+            resortName.text = resortName
+        }
         resortAddress.text = resort.address?.cityName
-        resortCode.text = resort.resortCode!
+        if let resortCode = resort.resortCode {
+            resortCode.text = resortCode
+        }
     }
 
 //***** method called when the added notification reloadFavoritesTab fired from other classes *****//
