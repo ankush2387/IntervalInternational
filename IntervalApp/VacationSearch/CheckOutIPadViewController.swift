@@ -775,7 +775,7 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                 return totalRowsInCost
                 
             case 2:
-                if(self.isTripProtectionEnabled && Constant.MyClassConstants.enableGuestCertificate) {
+                if self.isTripProtectionEnabled && Constant.MyClassConstants.enableGuestCertificate {
                     return 2
                     
                 } else if(!self.isTripProtectionEnabled && !Constant.MyClassConstants.enableGuestCertificate) {
@@ -796,7 +796,7 @@ extension CheckOutIPadViewController: UITableViewDataSource {
         case 3:
             switch section {
             case 0:
-                if(Constant.MyClassConstants.isFromExchange) {
+                if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
                     return 2
                 } else {
                     return 1
@@ -804,7 +804,7 @@ extension CheckOutIPadViewController: UITableViewDataSource {
             case 1:
                 var advisementCount: Int = 0
                 if let isOpen = tappedButtonDictionary[section] {
-                    if(isOpen) {
+                    if isOpen {
                         advisementCount = Constant.MyClassConstants.additionalAdvisementsArray.count + Constant.MyClassConstants.generalAdvisementsArray.count + 1
                         return advisementCount
                     } else {
@@ -826,11 +826,16 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                     numberOfCells += 1
                 }
                 return numberOfCells
+            case 3:
+                if eplusAdded {
+                    return 1
+                } else {
+                    return 0
+                }
             case 4 :
                 
-                if(!showInsurance) {
+                if !showInsurance {
                     return 0
-                    
                 } else {
                     return 1
                 }
@@ -955,7 +960,7 @@ extension CheckOutIPadViewController: UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if(tableView.tag == 2) {
+        if tableView.tag == 2 {
             switch indexPath.section {
                 
             case 0:
@@ -966,7 +971,7 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                 
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.exchangeOrProtectionCell, for: indexPath) as? ExchangeOrProtectionCell else { return UITableViewCell() }
                 
-                if(!isHeightZero) {
+                if !isHeightZero {
                     for subviews in cell.subviews {
                         
                         subviews.isHidden = false
@@ -1012,9 +1017,13 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                         let cellTapped: CallBack = { [unowned self] in
                             if let taxBreakdown = Constant.MyClassConstants.continueToCheckoutResponse.view?.fees?.rental?.rentalPrice?.taxBreakdown {
                                 
-                                let dataSet = taxBreakdown
-                                    .filter { !$0.description.unwrappedString.isEmpty }
-                                    .map { ($0.description.unwrappedString, $0.amount) }
+                                let dataSet = taxBreakdown.flatMap { taxBreakdownInstance -> (String, Float)? in
+                                    if taxBreakdownInstance.description != nil {
+                                        return (taxBreakdownInstance.description.unwrappedString, taxBreakdownInstance.amount)
+                                    }
+                                    
+                                    return nil
+                                }
                                 
                                 let viewModel = ChargeSummaryViewModel(charge: dataSet,
                                                                        headerTitle: "Detailed Tax Information".localized(),
@@ -1060,7 +1069,7 @@ extension CheckOutIPadViewController: UITableViewDataSource {
                 
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.exchangeOrProtectionCell, for: indexPath) as? ExchangeOrProtectionCell else { return UITableViewCell() }
                 
-                if(!isHeightZero) {
+                if !isHeightZero {
                     for subviews in cell.subviews {
                         
                         subviews.isHidden = false
