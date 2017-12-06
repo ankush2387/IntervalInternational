@@ -18,7 +18,7 @@ class Constant: NSObject {
     static var activeAlertCount = 0
     static var needToReloadAlert = false
     static var selectedAletToEdit: RentalAlert?
-    static var holdingResortForRemainingMinutes = "We are holding this unit for \(holdingTime) minutes".localized()
+    
   
       //***** common function to get device orientation *****//
     struct RunningDevice {
@@ -1641,7 +1641,6 @@ class Constant: NSObject {
     
     static func updateResortHoldingTimeLabel() {
         holdingTime = holdingTime - decreaseValue
-        self.holdingResortForRemainingMinutes = "We are holding this unit for \(holdingTime) minutes"
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
     }
     

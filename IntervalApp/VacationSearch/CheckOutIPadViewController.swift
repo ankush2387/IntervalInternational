@@ -168,7 +168,7 @@ class CheckOutIPadViewController: UIViewController {
         }
         
         //Register custom cell xib with tableview
-        self.remainingResortHoldingTimeLabel.text = Constant.holdingResortForRemainingMinutes
+        remainingResortHoldingTimeLabel.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
         
         self.bookingTableView.register(UINib(nibName: Constant.customCellNibNames.totalCostCell, bundle: nil), forCellReuseIdentifier: Constant.customCellNibNames.totalCostCell)
         self.bookingTableView.register(UINib(nibName: Constant.customCellNibNames.promotionsDiscountCell, bundle: nil), forCellReuseIdentifier: Constant.customCellNibNames.promotionsDiscountCell)
@@ -361,7 +361,7 @@ class CheckOutIPadViewController: UIViewController {
     func updateResortHoldingTime() {
         
         if Constant.holdingTime != 0 {
-            self.remainingResortHoldingTimeLabel.text = Constant.holdingResortForRemainingMinutes
+            remainingResortHoldingTimeLabel.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
         } else {
             Constant.holdingTimer?.invalidate()
             self.presentAlert(with: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage, hideCancelButton: false, cancelButtonTitle: "Cancel".localized(), acceptButtonTitle: "Ok".localized(), acceptButtonStyle: .default, cancelHandler: nil, acceptHandler: {

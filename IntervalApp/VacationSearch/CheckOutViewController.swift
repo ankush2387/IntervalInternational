@@ -289,6 +289,7 @@ class CheckOutViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         
         super.viewWillAppear(true)
+        remainingResortHoldingTimeLable.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
         self.emailTextToEnter = (Session.sharedSession.contact?.emailAddress)!
         self.checkoutOptionTBLview.reloadData()
         if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
@@ -333,7 +334,7 @@ class CheckOutViewController: UIViewController {
     func updateResortHoldingTime() {
         
         if Constant.holdingTime != 0 {
-            self.remainingResortHoldingTimeLable.text = Constant.holdingResortForRemainingMinutes
+            remainingResortHoldingTimeLable.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
         } else {
             Constant.holdingTimer?.invalidate()
             self.presentAlert(with: Constant.AlertMessages.holdingTimeLostTitle, message: Constant.AlertMessages.holdingTimeLostMessage, hideCancelButton: false, cancelButtonTitle: "Cancel".localized(), acceptButtonTitle: "Ok".localized(), acceptButtonStyle: .default, cancelHandler: nil, acceptHandler: {
