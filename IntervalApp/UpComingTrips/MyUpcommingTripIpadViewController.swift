@@ -309,12 +309,12 @@ extension MyUpcommingTripIpadViewController: UICollectionViewDataSource {
             let myCalendar = Calendar(identifier: Calendar.Identifier.gregorian)
             let myComponents = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkInDate)
             
-            if let weekday = myComponents.weekday, let month =  myComponents.month, let day = myComponents.day, let year = myComponents.year {
+            if let weekday = myComponents.weekday, let month = myComponents.month, let day = myComponents.day, let year = myComponents.year {
                 let formatedCheckInDate = "\(Helper.getWeekdayFromInt(weekDayNumber: weekday)) \(Helper.getMonthnameFromInt(monthNumber: month)). \(day), \(year)"
                 let checkOutDate = Helper.convertStringToDate(dateString: upcomingTrip.unit!.checkOutDate!, format: Constant.MyClassConstants.dateFormat)
                 
                 let myComponents1 = (myCalendar as NSCalendar).components([.day, .weekday, .month, .year], from: checkOutDate)
-                if let weekday = myComponents1.weekday, let month =  myComponents1.month, let day = myComponents1.day, let year = myComponents1.year {
+                if let weekday = myComponents1.weekday, let month = myComponents1.month, let day = myComponents1.day, let year = myComponents1.year {
                     let formatedCheckOutDate = "\(Helper.getWeekdayFromInt(weekDayNumber: weekday)) \(Helper.getMonthnameFromInt(monthNumber: month)). \(day), \(year)"
                     
                     cell.tripDateLabel.text = "\(formatedCheckInDate) - \(formatedCheckOutDate)"

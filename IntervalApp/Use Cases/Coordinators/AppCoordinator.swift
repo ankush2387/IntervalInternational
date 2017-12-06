@@ -54,9 +54,6 @@ final class AppCoordinator {
         
         setDelegates()
         
-        // TODO: This needs to be removed; When you see this think code smell.
-        Constant.MyClassConstants.runningDeviceWidth = UIScreen.main.bounds.width
-        
         // TODO: This needs to be replaced with a UI Widget Framework to not perform inconsistent global UI changes
         IUIKitManager.updateAppearance()
         

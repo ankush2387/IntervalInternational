@@ -908,7 +908,7 @@ extension CheckOutViewController: UITableViewDataSource {
                 return 30
             } else if indexPath.row != (Constant.MyClassConstants.generalAdvisementsArray.count) + 1 {
                 guard let description = Constant.MyClassConstants.generalAdvisementsArray[indexPath.row].description else { return 0 }
-                let height = heightForView(description, font: font, width: Constant.MyClassConstants.runningDeviceWidth! - 10)
+                let height = heightForView(description, font: font, width: view.frame.size.width - 10)
                 return height + 60
             } else {
                 guard let description = Constant.MyClassConstants.additionalAdvisementsArray.last?.description else { return 0 }

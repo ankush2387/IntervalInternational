@@ -392,14 +392,15 @@ public class Helper {
         DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode!, onSuccess: { (response) in
             
             Constant.MyClassConstants.resortsDescriptionArray = response
-            Constant.MyClassConstants.imagesArray.removeAllObjects()
+            Constant.MyClassConstants.imagesArray.removeAll()
             let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
             
             for imgStr in imagesArray {
                 
                 if imgStr.size == Constant.MyClassConstants.imageSize {
-                    
-                    Constant.MyClassConstants.imagesArray.add(imgStr.url!)
+                    if let url = imgStr.url {
+                        Constant.MyClassConstants.imagesArray.append(url)
+                    }
                 }
             }
             
@@ -1140,7 +1141,7 @@ public class Helper {
         let detailView = UIView()
         let detailLabel = UILabel()
         
-        noResortView.frame = CGRect(x: 0, y: 150, width: (UIScreen.main.bounds.width), height: Constant.MyClassConstants.runningDeviceHeight!/3)
+        noResortView.frame = CGRect(x: 0, y: 150, width: UIScreen.main.bounds.height, height: UIScreen.main.bounds.width / 3)
         noResortView.backgroundColor = UIColor(red: 209.0 / 255.0, green: 226.0 / 255.0, blue: 237.0 / 255.0, alpha: 1.0)
         senderView.addSubview(noResortView)
         
@@ -1149,7 +1150,7 @@ public class Helper {
         noResortView.addSubview(titleView)
         
         titleLabel.frame = CGRect(x: 0, y: 0, width: noResortView.frame.size.width, height: noResortView.frame.size.height / 5)
-        titleLabel.text = "No match found. Please select another date."
+        titleLabel.text = "No match found. Please select another date.".localized()
         titleLabel.textAlignment = NSTextAlignment.center
         titleLabel.textColor = UIColor.white
         titleLabel.font = UIFont(name: "Helvetica", size: 12)
@@ -1226,13 +1227,15 @@ public class Helper {
         DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: code, onSuccess: { (response) in
             
             Constant.MyClassConstants.resortsDescriptionArray = response
-            Constant.MyClassConstants.imagesArray.removeAllObjects()
+            Constant.MyClassConstants.imagesArray.removeAll()
             let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
             
             for imgStr in imagesArray {
                 intervalPrint(imgStr.url!)
                 if imgStr.size == Constant.MyClassConstants.imageSize {
-                    Constant.MyClassConstants.imagesArray.add(imgStr.url!)
+                    if let url = imgStr.url {
+                        Constant.MyClassConstants.imagesArray.append(url)
+                    }
                 }
             }
             if Constant.RunningDevice.deviceIdiom == .pad {

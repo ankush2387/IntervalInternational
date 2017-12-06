@@ -36,29 +36,29 @@ class ResortDetails: NSObject, UITableViewDataSource, UITableViewDelegate {
         
         let resortDetails = Constant.MyClassConstants.favoritesResortArray[indexPath.row]
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.searchResultContentTableCell, for: indexPath) as! SearchResultContentTableCell
-        
-        for layer in cell.resortNameGradientView.layer.sublayers! {
-            if(layer.isKind(of: CAGradientLayer.self)) {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.searchResultContentTableCell, for: indexPath) as? SearchResultContentTableCell else { return UITableViewCell() }
+        guard let sublayers = cell.resortNameGradientView.layer.sublayers else { return UITableViewCell() }
+        for layer in sublayers {
+            if layer.isKind(of: CAGradientLayer.self) {
                 layer.removeFromSuperlayer()
             }
         }
-        let frame = CGRect(x: 0, y: 0, width: Constant.MyClassConstants.runningDeviceWidth! + 300, height: cell.resortNameGradientView.frame.size.height)
+        let frame = CGRect(x: 0, y: 0, width: cell.frame.size.width + 300, height: cell.resortNameGradientView.frame.size.height)
         cell.resortNameGradientView.frame = frame
         Helper.addLinearGradientToView(view: cell.resortNameGradientView, colour: UIColor.white, transparntToOpaque: true, vertical: false)
         cell.backgroundColor = IUIKColorPalette.contentBackground.color
         cell.favoriteButton.isSelected = true
-        cell.favoriteButton.tag = (indexPath as NSIndexPath).row
-        
-        if (resortDetails.images.count > 0) {
-            let url = URL(string: Constant.MyClassConstants.favoritesResortArray[indexPath.row].images[Constant.MyClassConstants.favoritesResortArray[indexPath.row].images.count - 1].url!)
-            
-            cell.resortImageView.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
-        } else {
+        cell.favoriteButton.tag = indexPath.row
+        for imgStr in resortDetails.images where imgStr.size == Constant.MyClassConstants.imageSize {
+            if let url = imgStr.url {
+                let url = URL(string: url)
+                cell.resortImageView.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+            }
         }
         cell.resortName.text = resortDetails.resortName
-        let resortAddress = resortDetails.address!
-        cell.resortCountry.text = resortAddress.cityName
+        if let cityName = resortDetails.address?.cityName {
+        cell.resortCountry.text = cityName
+        }
         cell.resortCode.text = resortDetails.resortCode
         if let tier = resortDetails.tier {
             let tierImageName = Helper.getTierImageName(tier: tier.uppercased())
@@ -72,10 +72,9 @@ class ResortDetails: NSObject, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if (tableView.tag == 5 || tableView.tag == 6) {
-            if(Constant.MyClassConstants.systemAccessToken != nil) {
-                
-                self.delegate?.tableViewSelected((indexPath as NSIndexPath).row)
+        if tableView.tag == 5 || tableView.tag == 6 {
+            if Constant.MyClassConstants.systemAccessToken != nil {
+                delegate?.tableViewSelected(indexPath.row)
             }
         }
     }
@@ -83,7 +82,7 @@ class ResortDetails: NSObject, UITableViewDataSource, UITableViewDelegate {
 extension ResortDetails: SearchResultContentTableCellDelegate {
     func favoriteButtonClicked(_ sender: UIButton) {
         
-        if (sender.isSelected == false) {
+        if sender.isSelected == false {
             
             intervalPrint(Constant.MyClassConstants.resortsArray[sender.tag].resortCode!)
             UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsArray[sender.tag].resortCode!, onSuccess: {(response) in

@@ -572,18 +572,22 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
             } else {
                 
                 if collectionView.superview?.superview?.tag == 0 && combinedExactSearchItems.count > 0 {
-                    if combinedExactSearchItems[indexPath.section].rentalAvailability != nil {
-                        resortCode = (combinedExactSearchItems[indexPath.section].rentalAvailability!.resortCode!)
+                    if let combinedExactItems = combinedExactSearchItems[indexPath.section].rentalAvailability, let code = combinedExactItems.resortCode {
+                        resortCode = code
                     } else {
-                        resortCode = (combinedExactSearchItems[indexPath.section].exchangeAvailability?.resort?.resortCode!)!
+                        if let code = combinedExactSearchItems[indexPath.section].exchangeAvailability?.resort?.resortCode {
+                        resortCode = code
+                        }
                     }
                     
                 } else {
                     
-                    if combinedSurroundingSearchItems[indexPath.section].rentalAvailability != nil {
-                        resortCode = (combinedSurroundingSearchItems[indexPath.section].rentalAvailability!.resortCode!)
+                    if let combinedSurroundings = combinedSurroundingSearchItems[indexPath.section].rentalAvailability, let code = combinedSurroundings.resortCode {
+                        resortCode = code
                     } else {
-                        resortCode = (combinedSurroundingSearchItems[indexPath.section].exchangeAvailability?.resort?.resortCode!)!
+                        if let code = combinedSurroundingSearchItems[indexPath.section].exchangeAvailability?.resort?.resortCode {
+                        resortCode = code
+                        }
                     }
                 }
             }
@@ -591,12 +595,13 @@ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPat
             DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode, onSuccess: { (response) in
                 
                 Constant.MyClassConstants.resortsDescriptionArray = response
-                Constant.MyClassConstants.imagesArray.removeAllObjects()
+                Constant.MyClassConstants.imagesArray.removeAll()
                 let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
                 for imgStr in imagesArray {
                     if imgStr.size!.caseInsensitiveCompare(Constant.MyClassConstants.imageSize) == ComparisonResult.orderedSame {
-                        
-                        Constant.MyClassConstants.imagesArray.add(imgStr.url!)
+                        if let url = imgStr.url {
+                        Constant.MyClassConstants.imagesArray.append(url)
+                        }
                     }
                 }
                 

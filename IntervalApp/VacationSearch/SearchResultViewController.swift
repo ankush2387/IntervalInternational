@@ -589,9 +589,9 @@ class SearchResultViewController: UIViewController {
                     self.navigationController?.pushViewController(viewController, animated: true)
                     
                 }
-            }, onError: { (_) in
-                self.hideHudAsync()
-                self.presentErrorAlert(UserFacingCommonError.generic)
+            }, onError: { [weak self] error in
+                self?.hideHudAsync()
+                self?.presentErrorAlert(UserFacingCommonError.serverError(error))
                 
             })
             
@@ -872,9 +872,13 @@ extension SearchResultViewController: UICollectionViewDelegate {
                 if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType == VacationSearchType.Rental {
                     
                     if collectionView.superview?.superview?.tag == 0 && exactMatchResortsArray.count > 0 {
-                       resortCode = exactMatchResortsArray[collectionView.tag].resortCode!
+                        if let code = exactMatchResortsArray[collectionView.tag].resortCode {
+                            resortCode = code
+                        }
                     } else {
-                        resortCode = surroundingMatchResortsArray[collectionView.tag].resortCode!
+                        if let code = surroundingMatchResortsArray[collectionView.tag].resortCode {
+                            resortCode = code
+                        }
                     }
                   
                 } else if Constant.MyClassConstants.initialVacationSearch.searchCriteria.searchType.isExchange() {
@@ -885,17 +889,21 @@ extension SearchResultViewController: UICollectionViewDelegate {
                     }
                 } else {
                     if collectionView.superview?.superview?.tag == 0 && combinedExactSearchItems.count > 0 {
-                        if combinedExactSearchItems[collectionView.tag].rentalAvailability != nil {
-                            resortCode = (combinedExactSearchItems[collectionView.tag].rentalAvailability!.resortCode!)
+                        if let combinedExact = combinedExactSearchItems[collectionView.tag].rentalAvailability, let code = combinedExact.resortCode {
+                            resortCode = code
                         } else {
-                            resortCode = (combinedExactSearchItems[collectionView.tag].exchangeAvailability?.resort?.resortCode!)!
+                            if let code = combinedExactSearchItems[collectionView.tag].exchangeAvailability?.resort?.resortCode {
+                            resortCode = code
+                            }
                         }
                         
                     } else {
-                        if combinedSurroundingSearchItems[indexPath.section].rentalAvailability != nil {
-                            resortCode = (combinedSurroundingSearchItems[indexPath.section].rentalAvailability!.resortCode!)
+                        if let combinedSurroundings = combinedSurroundingSearchItems[indexPath.section].rentalAvailability, let code = combinedSurroundings.resortCode {
+                            resortCode = code
                         } else {
-                            resortCode = (combinedSurroundingSearchItems[indexPath.section].exchangeAvailability?.resort?.resortCode!)!
+                            if let code = combinedSurroundingSearchItems[indexPath.section].exchangeAvailability?.resort?.resortCode {
+                                resortCode = code
+                            }
                         }
                     }
                 }
@@ -903,12 +911,13 @@ extension SearchResultViewController: UICollectionViewDelegate {
                 DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode, onSuccess: { (response) in
                     
                     Constant.MyClassConstants.resortsDescriptionArray = response
-                    Constant.MyClassConstants.imagesArray.removeAllObjects()
+                    Constant.MyClassConstants.imagesArray.removeAll()
                     let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
                     for imgStr in imagesArray {
                         if imgStr.size!.caseInsensitiveCompare(Constant.MyClassConstants.imageSize) == ComparisonResult.orderedSame {
-                            
-                            Constant.MyClassConstants.imagesArray.add(imgStr.url!)
+                            if let url = imgStr.url {
+                            Constant.MyClassConstants.imagesArray.append(url)
+                            }
                         }
                     }
                     Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = collectionView.tag + 1

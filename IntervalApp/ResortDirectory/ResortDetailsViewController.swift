@@ -27,20 +27,20 @@ class ResortDetailsViewController: UIViewController {
     @IBOutlet weak var forwordButton: UIButton?
     //***** Class Variables *****//
     var bounds = GMSCoordinateBounds()
-    var actionSheetTable: UITableView!
+    var actionSheetTable = UITableView()
     var tableViewController = UIViewController()
     var mapView = GMSMapView()
     var locationManager = CLLocationManager()
     var nearbyArray: NSMutableArray = []
     var onsiteArray: NSMutableArray = []
-    var amenityOnsiteString: String! = "Nearby" + "\n"
-    var amenityNearbyString: String!  = "On-Site" + "\n"
+    var amenityOnsiteString = "Nearby" + "\n"
+    var amenityNearbyString = "On-Site" + "\n"
     var presentViewModally = false
     
     //***** Class private Variables *****//
     fileprivate var startIndex = 0
     fileprivate var arrayRunningIndex = 0
-    fileprivate var resortDescriptionArrayContainer: NSMutableArray = []
+    fileprivate var resortDescriptionArrayContainer = [Resort]()
     fileprivate var placeSelectionMainDictionary = [Int: [Int: Bool]]()
     fileprivate var tappedButtonDictionary = [Int: Bool]()
     fileprivate let moreNavArray = ["Share via email", "Share via text", "Tweet", "Facebook", "Pinterest"]
@@ -52,7 +52,7 @@ class ResortDetailsViewController: UIViewController {
         
         if !Constant.MyClassConstants.isFromSearchResult {
              self.cancelButton?.setTitle("Done", for: .normal)
-            if (Constant.MyClassConstants.isFromExchange && Constant.RunningDevice.deviceIdiom == .phone) {
+            if Constant.MyClassConstants.isFromExchange && Constant.RunningDevice.deviceIdiom == .phone {
                 self.previousButton?.isHidden = true
                 self.forwordButton?.isHidden = true
                 self.headerTextForShowingResortCounter?.isHidden = true
@@ -60,24 +60,21 @@ class ResortDetailsViewController: UIViewController {
             self.previousButton?.isHidden = true
             self.forwordButton?.isHidden = true
             self.headerTextForShowingResortCounter?.isHidden = true
-            //self.navigationController?.isNavigationBarHidden = true
-            //self.tabBarController?.tabBar.isHidden = true
             
-            if(Constant.RunningDevice.deviceIdiom == .phone) {
+            if Constant.RunningDevice.deviceIdiom == .phone {
                 self.navigationController?.isNavigationBarHidden = true
                 self.tabBarController?.tabBar.isHidden = true
             }
 
-        } else {
         }
-                // Notification to perform vacation search after user pre-login
+        // Notification to perform vacation search after user pre-login
         NotificationCenter.default.addObserver(self, selector: #selector(showVacationSearch), name: NSNotification.Name(rawValue: Constant.notificationNames.reloadFavoritesTabNotification), object: nil)
         
-        if(self.headerTextForShowingResortCounter != nil) {
+        if self.headerTextForShowingResortCounter != nil {
             
             self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
         }
-        if(Constant.MyClassConstants.resortsDescriptionArray.amenities.count > 0) {
+        if !Constant.MyClassConstants.resortsDescriptionArray.amenities.isEmpty {
             
             Constant.MyClassConstants.amenitiesDictionary.removeAllObjects()
             
@@ -85,17 +82,18 @@ class ResortDetailsViewController: UIViewController {
             onsiteArray.removeAllObjects()
             intervalPrint(Constant.MyClassConstants.resortsDescriptionArray.amenities.count)
             for amenity in Constant.MyClassConstants.resortsDescriptionArray.amenities {
-                
-                if(amenity.nearby == true) {
-                    
-                    nearbyArray.add(amenity.amenityName!)
-                    amenityOnsiteString = amenityOnsiteString + "\n" + "  " + amenity.amenityName!
-                    
-                } else {
-                    
-                    onsiteArray.add(amenity.amenityName!)
-                    amenityNearbyString = amenityNearbyString + "\n" + "  " + amenity.amenityName!
-                    
+                if let amenityName = amenity.amenityName {
+                    if amenity.nearby == true {
+                        
+                        nearbyArray.add(amenityName)
+                        amenityOnsiteString = amenityOnsiteString + "\n" + "  " + amenityName
+                        
+                    } else {
+                        
+                        onsiteArray.add(amenityName)
+                        amenityNearbyString = amenityNearbyString + "\n" + "  " + amenityName
+                        
+                    }
                 }
                 Constant.MyClassConstants.amenitiesDictionary.setValue(nearbyArray, forKey: Constant.MyClassConstants.nearbyDictKey)
                 Constant.MyClassConstants.amenitiesDictionary.setValue(onsiteArray, forKey: Constant.MyClassConstants.onsiteDictKey)
@@ -109,16 +107,16 @@ class ResortDetailsViewController: UIViewController {
         super.viewDidLoad()
         
         // omniture tracking with event 35
-        if(Constant.MyClassConstants.resortsDescriptionArray.resortCode != nil) {
+        if let resortCode = Constant.MyClassConstants.resortsDescriptionArray.resortCode {
             let userInfo: [String: String] = [
-                Constant.omnitureCommonString.productItem: Constant.MyClassConstants.resortsDescriptionArray.resortCode!,
+                Constant.omnitureCommonString.productItem: resortCode,
                 Constant.omnitureEvars.eVar41: Constant.omnitureCommonString.vactionSearch
             ]
             
             ADBMobile.trackAction(Constant.omnitureEvents.event35, data: userInfo)
         }
         self.startIndex = Constant.MyClassConstants.vacationSearchContentPagerRunningIndex
-        self.resortDescriptionArrayContainer.add(Constant.MyClassConstants.resortsDescriptionArray)
+        self.resortDescriptionArrayContainer.append(Constant.MyClassConstants.resortsDescriptionArray)
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -128,14 +126,14 @@ class ResortDetailsViewController: UIViewController {
     override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
         tableViewResorts.reloadData()
         for collView in self.tableViewResorts.subviews {
-            if(collView .isKind(of: UICollectionView.self)) {
+            if collView .isKind(of: UICollectionView.self) {
                 
             }
         }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        if(Constant.RunningDevice.deviceIdiom == .phone) {
+        if Constant.RunningDevice.deviceIdiom == .phone {
             self.navigationController?.isNavigationBarHidden = false
             self.tabBarController?.tabBar.isHidden = false
         }
@@ -148,69 +146,57 @@ class ResortDetailsViewController: UIViewController {
     
     //***** Function call for previous resort button *****//
     @IBAction func previousResortButtonPressed(_ sender: UIButton) {
-        if(self.startIndex < Constant.MyClassConstants.vacationSearchContentPagerRunningIndex && arrayRunningIndex > 0) {
+        if self.startIndex < Constant.MyClassConstants.vacationSearchContentPagerRunningIndex && arrayRunningIndex > 0 {
             
             Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = Constant.MyClassConstants.vacationSearchContentPagerRunningIndex - 1
-            if(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex == 1) {
-                //sender.isEnabled = false
-            }
             self.arrayRunningIndex = arrayRunningIndex - 1
-            Constant.MyClassConstants.resortsDescriptionArray = self.resortDescriptionArrayContainer[ self.arrayRunningIndex] as! Resort
-            Constant.MyClassConstants.imagesArray.removeAllObjects()
+            Constant.MyClassConstants.resortsDescriptionArray = self.resortDescriptionArrayContainer[ self.arrayRunningIndex]
+            Constant.MyClassConstants.imagesArray.removeAll()
             let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
-            for imgStr in imagesArray {
-                if(imgStr.size == Constant.MyClassConstants.imageSize) {
-                    
-                    Constant.MyClassConstants.imagesArray.add(imgStr.url!)
+            for imgStr in imagesArray where imgStr.size == Constant.MyClassConstants.imageSize {
+                if let imgUrl = imgStr.url {
+                    Constant.MyClassConstants.imagesArray.append(imgUrl)
                 }
             }
             self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
             
             self.tableViewResorts.reloadData()
             // omniture tracking with event 35
-            let userInfo: [String: String] = [
-                Constant.omnitureCommonString.productItem: Constant.MyClassConstants.resortsDescriptionArray.resortCode!,
-                Constant.omnitureEvars.eVar41: Constant.omnitureCommonString.vactionSearch
-            ]
-            
-            ADBMobile.trackAction(Constant.omnitureEvents.event35, data: userInfo)
-        } else {
-            if(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex == 1) {
-                //sender.isEnabled = false
-            } else {
-                //sender.isEnabled = true
+            if let resortCode = Constant.MyClassConstants.resortsDescriptionArray.resortCode {
+                let userInfo: [String: String] = [
+                    Constant.omnitureCommonString.productItem: resortCode,
+                    Constant.omnitureEvars.eVar41: Constant.omnitureCommonString.vactionSearch
+                ]
+                
+                ADBMobile.trackAction(Constant.omnitureEvents.event35, data: userInfo)
             }
-            if(startIndex > 1) {
+        } else {
+            if startIndex > 1 {
                 Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = Constant.MyClassConstants.vacationSearchContentPagerRunningIndex - 1
-                //sender.isEnabled = true
                 self.startIndex = startIndex - 1
                 
                 showHudAsync()
-                //Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = Constant.MyClassConstants.vacationSearchContentPagerRunningIndex - 1
                 
-                let resortCode = Constant.MyClassConstants.resortsArray[Constant.MyClassConstants.vacationSearchContentPagerRunningIndex - 1].resortCode
+                guard let resortCode = Constant.MyClassConstants.resortsArray[Constant.MyClassConstants.vacationSearchContentPagerRunningIndex - 1].resortCode else { return }
                 
-                DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode!, onSuccess: { response in
+                DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode, onSuccess: { response in
                     
                     self.resortDescriptionArrayContainer.insert(response, at: 0)
                     Constant.MyClassConstants.resortsDescriptionArray = response
-                    Constant.MyClassConstants.imagesArray.removeAllObjects()
+                    Constant.MyClassConstants.imagesArray.removeAll()
                     let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
-                    for imgStr in imagesArray {
-                        if(imgStr.size == Constant.MyClassConstants.imageSize) {
-                            
-                            Constant.MyClassConstants.imagesArray.add(imgStr.url!)
+                    for imgStr in imagesArray where imgStr.size == Constant.MyClassConstants.imageSize {
+                        if let imgUrl = imgStr.url {
+                            Constant.MyClassConstants.imagesArray.append(imgUrl)
                         }
                     }
                     self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
                     self.hideHudAsync()
                     self.tableViewResorts.reloadData()
-                }) { error in
-                    self.hideHudAsync()
-                    self.presentErrorAlert(UserFacingCommonError.serverError(error))
+                }) { [weak self] error in
+                    self?.hideHudAsync()
+                    self?.presentErrorAlert(UserFacingCommonError.serverError(error))
                 }
-            } else {
-                //sender.isEnabled = false
             }
         }
     }
@@ -218,63 +204,58 @@ class ResortDetailsViewController: UIViewController {
     //***** Function call for next resort button *****//
     @IBAction func nextResortButtonPressed(_ sender: UIButton) {
         
-        if(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex < Constant.MyClassConstants.resortsArray.count) {
+        if Constant.MyClassConstants.vacationSearchContentPagerRunningIndex < Constant.MyClassConstants.resortsArray.count {
             
-            if(self.resortDescriptionArrayContainer.count - 1 < Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) {
+            if self.resortDescriptionArrayContainer.count - 1 < Constant.MyClassConstants.vacationSearchContentPagerRunningIndex {
                 self.arrayRunningIndex = arrayRunningIndex + 1
-                let resortCode = Constant.MyClassConstants.resortsArray[Constant.MyClassConstants.vacationSearchContentPagerRunningIndex].resortCode
+                guard let resortCode = Constant.MyClassConstants.resortsArray[Constant.MyClassConstants.vacationSearchContentPagerRunningIndex].resortCode else { return }
                 
                 showHudAsync()
                 
-                DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode!, onSuccess: { (response) in
+                DirectoryClient.getResortDetails(Constant.MyClassConstants.systemAccessToken, resortCode: resortCode, onSuccess: { response in
                     
-                    self.resortDescriptionArrayContainer.add(response)
+                    self.resortDescriptionArrayContainer.append(response)
                     Constant.MyClassConstants.resortsDescriptionArray = response
-                    Constant.MyClassConstants.imagesArray.removeAllObjects()
+                    Constant.MyClassConstants.imagesArray.removeAll()
                     let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
                     for imgStr in imagesArray {
-                        if(imgStr.size == Constant.MyClassConstants.imageSize) {
-                            
-                            Constant.MyClassConstants.imagesArray.add(imgStr.url!)
+                        if imgStr.size == Constant.MyClassConstants.imageSize {
+                            if let imgURL = imgStr.url {
+                            Constant.MyClassConstants.imagesArray.append(imgURL)
+                            }
                         }
                     }
                     Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = Constant.MyClassConstants.vacationSearchContentPagerRunningIndex + 1
-                    if(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex == Constant.MyClassConstants.resortsArray.count) {
-                        //sender.isEnabled = false
-                    } else {
-                        //sender.isEnabled = true
-                    }
                     self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
                     self.hideHudAsync()
                     self.tableViewResorts.reloadData()
+                    
+                    if let resortCode = Constant.MyClassConstants.resortsDescriptionArray.resortCode {
                     // omniture tracking with event 35
                     let userInfo: [String: String] = [
-                        Constant.omnitureCommonString.productItem: Constant.MyClassConstants.resortsDescriptionArray.resortCode!,
+                        Constant.omnitureCommonString.productItem: resortCode,
                         Constant.omnitureEvars.eVar41: Constant.omnitureCommonString.vactionSearch
                     ]
                     
                     ADBMobile.trackAction(Constant.omnitureEvents.event35, data: userInfo)
-                }) { error in
+                    }
+                }) { [unowned self] error in
                     self.hideHudAsync()
                     self.presentErrorAlert(UserFacingCommonError.serverError(error))
                 }
                 
             } else {
                 Constant.MyClassConstants.vacationSearchContentPagerRunningIndex = Constant.MyClassConstants.vacationSearchContentPagerRunningIndex + 1
-                if(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex == Constant.MyClassConstants.resortsArray.count) {
-                    //sender.isEnabled = false
-                } else {
-                    //sender.isEnabled = true
-                }
                 self.arrayRunningIndex = arrayRunningIndex + 1
                 
-                Constant.MyClassConstants.resortsDescriptionArray = self.resortDescriptionArrayContainer[ self.arrayRunningIndex] as! Resort
-                Constant.MyClassConstants.imagesArray.removeAllObjects()
+                Constant.MyClassConstants.resortsDescriptionArray = self.resortDescriptionArrayContainer[ self.arrayRunningIndex]
+                Constant.MyClassConstants.imagesArray.removeAll()
                 let imagesArray = Constant.MyClassConstants.resortsDescriptionArray.images
                 for imgStr in imagesArray {
-                    if(imgStr.size == Constant.MyClassConstants.imageSize) {
-                        
-                        Constant.MyClassConstants.imagesArray.add(imgStr.url!)
+                    if imgStr.size == Constant.MyClassConstants.imageSize {
+                        if let imgURL = imgStr.url {
+                        Constant.MyClassConstants.imagesArray.append(imgURL)
+                        }
                     }
                 }
                 self.headerTextForShowingResortCounter?.text = "Resort \(Constant.MyClassConstants.vacationSearchContentPagerRunningIndex) of  \(Constant.MyClassConstants.resortsArray.count)"
@@ -287,11 +268,11 @@ class ResortDetailsViewController: UIViewController {
     //***** Function call for Done button *****//
     
     @IBAction func doneButtonClicked(_ sender: AnyObject) {
-        if(UIDevice().userInterfaceIdiom == .pad) {
+        if UIDevice().userInterfaceIdiom == .pad {
             
-            if(Constant.MyClassConstants.isFromExchange) {
+            if Constant.MyClassConstants.isFromExchange {
                 
-                if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.vacationSearchFunctionalityCheck) {
+                if Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.vacationSearchFunctionalityCheck {
                     
                     self.dismiss(animated: true, completion: nil)
                     
@@ -305,8 +286,7 @@ class ResortDetailsViewController: UIViewController {
             
         } else {
 
-            if(Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.vacationSearchFunctionalityCheck) {
-                
+            if Constant.MyClassConstants.runningFunctionality == Constant.MyClassConstants.vacationSearchFunctionalityCheck {
                 self.dismiss(animated: true, completion: nil)
             } else {
                 navigationController?.view.layer.add(Helper.topToBottomTransition(), forKey: nil)
@@ -322,11 +302,13 @@ class ResortDetailsViewController: UIViewController {
     //***** Function call for search button pressed. *****//
     
     func searchVacationClicked() {
-        if((Session.sharedSession.userAccessToken) != nil && Constant.MyClassConstants.isLoginSuccessfull) {
-            let realm = try! Realm()
+        if Session.sharedSession.userAccessToken != nil && Constant.MyClassConstants.isLoginSuccessfull {
+            do {
+                
+            let realm = try Realm()
             let allDest = Helper.getLocalStorageWherewanttoGo()
-            if (allDest.count > 0) {
-                try! realm.write {
+            if !allDest.isEmpty {
+                try realm.write {
                     realm.deleteAll()
                 }
             }
@@ -337,37 +319,46 @@ class ResortDetailsViewController: UIViewController {
             
             //realm local storage for selected resort
             let storedata = RealmLocalStorage()
-            let Membership = Session.sharedSession.selectedMembership
+            guard let membership = Session.sharedSession.selectedMembership else { return }
             let resortList = ResortList()
             if let cityName = (address?.cityName) {
                 resortList.resortCityName = cityName
             }
-            if let resortCode = dict.resortCode {
+                if let resortName = dict.resortName, let resortCode = dict.resortCode {
                 resortList.resortCode = resortCode
-                resortList.resortName = "\(dict.resortName!) - \(dict.resortCode!)"
+                resortList.resortName = "\(resortName) - \(resortCode)"
             }
-            resortList.thumbnailurl = dict.images[0].url!
+            if let url = dict.images[0].url {
+            resortList.thumbnailurl = url
+            }
             
             if let territoryCode = (address?.territoryCode) {
                 resortList.territorrycode = territoryCode
             }
             
             storedata.resorts.append(resortList)
-            storedata.membeshipNumber = Membership!.memberNumber!
-            try! realm.write {
-                realm.add(storedata)
+            storedata.membeshipNumber = membership.memberNumber ?? ""
+            
+                try realm.write {
+                    realm.add(storedata)
             }
-            var storyboard = UIStoryboard()
-            if(Constant.RunningDevice.deviceIdiom == .pad) {
-                storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
-            } else {
-                storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                
+                var storyboard = UIStoryboard()
+                if Constant.RunningDevice.deviceIdiom == .pad {
+                    storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
+                } else {
+                    storyboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIphone, bundle: nil)
+                }
+                guard let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as? SWRevealViewController else { return }
+                self.present(viewController, animated: true, completion: nil)
+            } catch {
+                presentErrorAlert(UserFacingCommonError.generic)
             }
-            self.present((storyboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.revialViewController) as? SWRevealViewController)!, animated: true, completion: nil)
+           
         } else {
             var storyboard = UIStoryboard()
             var viewController = UIViewController()
-            if(Constant.RunningDevice.deviceIdiom == .pad) {
+            if Constant.RunningDevice.deviceIdiom == .pad {
                 storyboard = UIStoryboard(name: Constant.storyboardNames.resortDirectoryIpad, bundle: nil)
                 viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginViewControlleriPad)
             } else {
@@ -389,17 +380,19 @@ class ResortDetailsViewController: UIViewController {
         message.resortInformationMessage(resortName: name, address: address, description: description, resortCode: resortCode)
         let resortImage = ShareActivityImage()
         let resortURL = ShareActivityURL(activityURL: resortCode)
-        resortImage.getResrtImage(strURL: Constant.MyClassConstants.imagesArray[0] as! String)
+        resortImage.getResrtImage(strURL: Constant.MyClassConstants.imagesArray[0])
         
         let shareActivityViewController = UIActivityViewController(activityItems: [message, resortImage, resortURL], applicationActivities: nil)
         
-        if(UIDevice().userInterfaceIdiom == .pad) {
+        if UIDevice().userInterfaceIdiom == .pad {
             //ipad has to present as Popover
             shareActivityViewController.modalPresentationStyle = .popover
             if let presenter = shareActivityViewController.popoverPresentationController {
-                let pView = sender as! UIView
+                let pView = sender as? UIView
                 presenter.sourceView = pView
-                presenter.sourceRect = pView.bounds
+                if let bounds = pView?.bounds {
+                presenter.sourceRect = bounds
+                }
             }
         }
         
@@ -409,17 +402,11 @@ class ResortDetailsViewController: UIViewController {
     //Used to expand and contract sections
     @IBAction func toggleButtonIsTapped(_ sender: UIButton) {
         if let tag = tappedButtonDictionary[sender.tag] {
-            if tag {
-                tappedButtonDictionary.updateValue(!tag, forKey: sender.tag)
-            } else {
-                tappedButtonDictionary.updateValue(!tag, forKey: sender.tag)
-            }
-            
+            tappedButtonDictionary.updateValue(!tag, forKey: sender.tag)
         } else {
             tappedButtonDictionary.updateValue(true, forKey: sender.tag)
         }
         self.tableViewResorts.reloadSections(IndexSet(integer: sender.tag), with: .automatic)
-        
     }
     //Function for forward button
     @IBAction func forwardButtonClicked(_ sender: AnyObject) {
@@ -441,56 +428,13 @@ class ResortDetailsViewController: UIViewController {
         return label.frame.height
     }
     
-    func createActionSheetForSharing(_ viewController: UIViewController) {
-        
-        if (UIDevice.current.userInterfaceIdiom == .pad) {
-            //            tableActionSheet.registerNib(UINib(nibName: Constant.customCellNibNames.actionSheetTblCell, bundle: nil), forCellReuseIdentifier: Constant.loginScreenReusableIdentifiers.CustomCell)
-            //            self.view.addSubview(self.viewActionSheet)
-            //            self.viewActionSheet.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)
-            //            self.viewActionSheet.hidden = false
-        } else {
-            
-            let rect = CGRect(x: 0, y: 0, width: self.view.bounds.width - 20, height: CGFloat(5 * 50))
-            self.tableViewController.preferredContentSize = rect.size
-            
-            self.actionSheetTable = UITableView(frame: rect)
-            
-            actionSheetTable.register(UINib(nibName: Constant.customCellNibNames.actionSheetTblCell, bundle: nil), forCellReuseIdentifier: Constant.loginScreenReusableIdentifiers.CustomCell)
-            self.actionSheetTable.delegate = self
-            self.actionSheetTable.dataSource = self
-            self.actionSheetTable.separatorStyle = UITableViewCellSeparatorStyle.none
-            self.actionSheetTable.isUserInteractionEnabled = true
-            self.actionSheetTable.allowsSelection = true
-            self.actionSheetTable.tag = 1
-            
-            tableViewController.view.addSubview(self.actionSheetTable)
-            tableViewController.view.bringSubview(toFront: self.actionSheetTable)
-            tableViewController.view.isUserInteractionEnabled = true
-            
-            let actionSheet: UIAlertController = UIAlertController(title: "", message: "", preferredStyle: UIAlertControllerStyle.actionSheet)
-            
-            let attributedString = NSAttributedString(string: Constant.actionSheetAttributedString.sharingOptions, attributes: [
-                NSFontAttributeName: UIFont.systemFont(ofSize: 20),
-                NSForegroundColorAttributeName: UIColor.black
-                ])
-            
-            let action: UIAlertAction = UIAlertAction(title: Constant.AlertPromtMessages.cancel, style: UIAlertActionStyle.cancel, handler: nil)
-            
-            actionSheet.setValue(attributedString, forKey: Constant.actionSheetAttributedString.attributedTitle)
-            actionSheet.setValue(tableViewController, forKey: Constant.actionSheetAttributedString.contentViewController)
-            actionSheet.addAction(action)
-            
-            self.present(actionSheet, animated: true, completion: nil)
-        }
-    }
-    
     /***** Function to call vacation search after pre login *****/
     
     func showVacationSearch() {
         //Added a delay to present vacation search view controller.
         
         //Changed line self.senderViewController == Constant.MyClassConstants.searchResult
-        if(Constant.MyClassConstants.loginOriginationPoint == "Resort Directory - Sign In Modal") {
+        if Constant.MyClassConstants.loginOriginationPoint == "Resort Directory - Sign In Modal" {
             Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(searchVacationClicked), userInfo: nil, repeats: false)
         }
     }
@@ -519,48 +463,41 @@ class ResortDetailsViewController: UIViewController {
         }
     }
     
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
 }
 //****** Extension for resort details table view****//
 extension ResortDetailsViewController: UITableViewDelegate {
     
     //***** UITableview delegate methods definition here *****//
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        
-        if(section == 3) {
+        if section == 3 {
             return 44
         }
         return 0
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if (tableView.tag == 1) {
+        if tableView.tag == 1 {
             return 50
         } else {
-            switch ((indexPath as NSIndexPath).section) {
+            switch indexPath.section {
             case 0:
                 return tableView.frame.size.width / 2 + 100
             case 1:
                 
-                if(Constant.MyClassConstants.resortsDescriptionArray.description != nil) {
-                    if((Constant.MyClassConstants.resortsDescriptionArray.description?.characters.count)! > 0) {
+                if let description = Constant.MyClassConstants.resortsDescriptionArray.description {
+                    if description.isEmpty {
                         
-                        var height: CGFloat
-                        if(Constant.RunningDevice.deviceIdiom == .pad) {
-                            let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0)
-                            height = heightForView(Constant.MyClassConstants.resortsDescriptionArray.description!, font: font!, width: (Constant.MyClassConstants.runningDeviceWidth!/2) - 40)
+                        var height: CGFloat = 0.0
+                        if Constant.RunningDevice.deviceIdiom == .pad {
+                            guard let font = UIFont(name: Constant.fontName.helveticaNeue, size: 16.0) else { return 0 }
+                            if let description = Constant.MyClassConstants.resortsDescriptionArray.description {
+                                height = heightForView(description, font: font, width: (view.frame.size.width / 2) - 40)
+                            }
                             return height + 60
                         } else {
-                            let font = UIFont(name: Constant.fontName.helveticaNeue, size: 14.0)
-                            height = heightForView(Constant.MyClassConstants.resortsDescriptionArray.description!, font: font!, width: Constant.MyClassConstants.runningDeviceWidth! - 40)
+                            guard let font = UIFont(name: Constant.fontName.helveticaNeue, size: 14.0) else { return 0 }
+                            if let description = Constant.MyClassConstants.resortsDescriptionArray.description {
+                                height = heightForView(description, font: font, width: view.frame.size.width - 40)
+                            }
                             return height + 40
                         }
                     } else {
@@ -570,56 +507,50 @@ extension ResortDetailsViewController: UITableViewDelegate {
                     return 0
                 }
             case 2:
-                if(Constant.RunningDevice.deviceIdiom == .pad) {
-                    
+                if Constant.RunningDevice.deviceIdiom == .pad {
                     return 0
                 } else {
-                    
                     return 200
                 }
                 
             default:
-                if let isOpen = tappedButtonDictionary[(indexPath as NSIndexPath).section] {
-                    if isOpen && (indexPath as NSIndexPath).row > 0 {
-                        
-                        let count = nearbyArray.count + onsiteArray.count
-                        if(count > 0) {
-                            if((indexPath as NSIndexPath).section == 3) {
-                                return 50
-                            } else if((indexPath as NSIndexPath).section == 4) {
-                                if(count == 1) {
-                                    return CGFloat (count * 20 + 60)
-                                } else {
-                                    return CGFloat (count * 20 + 120)
-                                }
-                            } else if((indexPath as NSIndexPath).section == 5) {
-                                return 80
+                if let isOpen = tappedButtonDictionary[indexPath.section] {
+                    if isOpen && indexPath.row > 0 {
+                        switch indexPath.section {
+                        case 3 :
+                            return 50
+                        case 4 :
+                            let count = nearbyArray.count + onsiteArray.count
+                            if count > 0 {
+                            if count == 1 {
+                                return CGFloat (count * 20 + 60)
                             } else {
-                                return 600
+                                return CGFloat (count * 20 + 120)
                             }
-                            
-                        } else {
-                            return 60
+                            } else { return 60 }
+                        case 5 :
+                            return 80
+                        default :
+                            return 600
                         }
                     } else {
                         return 60
                     }
                 } else {
-                    if(indexPath.row == 0) {
+                    if indexPath.row == 0 {
                         return 60
                     } else {
                         return 0
                     }
                 }
-                
             }
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Check if table is action sheet
-        if(tableView.tag == 1) {
-            switch (indexPath as NSIndexPath).row {
+        if tableView.tag == 1 {
+            switch indexPath.row {
             case 0:
                 let mailComposeViewController = configuredMailComposeViewController()
                 if MFMailComposeViewController.canSendMail() {
@@ -633,41 +564,46 @@ extension ResortDetailsViewController: UITableViewDelegate {
             case 1:
                 let txtComposeViewController = configuredMessageComposeViewController()
                 if MFMessageComposeViewController.canSendText() {
-                    
                     self.dismiss(animated: true, completion: {
                         self.present(txtComposeViewController, animated: true, completion: nil)
                     })
                 } else {
-                    presentAlert(with: "Could Not Send Text Message", message: "This device is not able/configured to send Text Messages.")
+                    presentAlert(with: "Could Not Send Text Message".localized(), message: "This device is not able/configured to send Text Messages.".localized())
                 }
                 break
             default:
                 break
             }
         } else {
-            
-            if((indexPath as NSIndexPath).section == 2) {
+            switch indexPath.section {
+            case 2 :
                 let detailMapViewController = DetailMapViewController()
                 detailMapViewController.hidesBottomBarWhenPushed = true
                 self.navigationController?.pushViewController(detailMapViewController, animated: true)
+            case let indexedSection where indexedSection >= 3 :
+                let button = UIButton()
+                button.tag = indexPath.section
+                toggleButtonIsTapped(button)
+            default :
+                break
             }
         }
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let viewHeader = UIView(frame: CGRect(x: 0, y: 0, width: Constant.MyClassConstants.runningDeviceWidth!, height: 44))
+        let viewHeader = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 44))
         viewHeader.backgroundColor = IUIKColorPalette.titleBackdrop.color
         
-        let lineTop = UIView(frame: CGRect(x: 0, y: 0, width: Constant.MyClassConstants.runningDeviceWidth!, height: 1))
+        let lineTop = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 1))
         lineTop.backgroundColor = UIColor.lightGray
         viewHeader.addSubview(lineTop)
         
-        let lineBottom = UIView(frame: CGRect(x: 0, y: 43, width: Constant.MyClassConstants.runningDeviceWidth!, height: 1))
+        let lineBottom = UIView(frame: CGRect(x: 0, y: 43, width: view.frame.size.width, height: 1))
         lineBottom.backgroundColor = UIColor.lightGray
         viewHeader.addSubview(lineBottom)
         
-        let labelHeader = UILabel(frame: CGRect(x: 20, y: 0, width: Constant.MyClassConstants.runningDeviceWidth!-40, height: 44))
-        labelHeader.text = "Resort Info"
+        let labelHeader = UILabel(frame: CGRect(x: 20, y: 0, width: view.frame.size.width - 40, height: 44))
+        labelHeader.text = "Resort Info".localized()
         labelHeader.font = UIFont(name: Constant.fontName.helveticaNeue, size: 15)
         labelHeader.textColor = UIColor.black
         viewHeader.addSubview(labelHeader)
@@ -690,9 +626,6 @@ extension ResortDetailsViewController: UITableViewDelegate {
         }
         body = body + "</body></html>"
         mailComposerVC.setMessageBody(body, isHTML: true)
-        
-        //mailComposerVC.setMessageBody("Have a look at this resort!", isHTML: false)
-        
         return mailComposerVC
     }
     
@@ -714,7 +647,7 @@ extension ResortDetailsViewController: UITableViewDelegate {
     }
     
     func showSendMailErrorAlert() {
-        presentAlert(with: "Could Not Send Email", message: "Your device could not send e-mail.  Please check e-mail configuration and try again.")
+        presentAlert(with: "Could Not Send Email".localized(), message: "Your device could not send e-mail.  Please check e-mail configuration and try again.".localized())
     }
     
 }
@@ -723,10 +656,10 @@ extension ResortDetailsViewController: UITableViewDataSource {
     
     //***** UITableview dataSource methods definition here *****//
     func numberOfSections(in tableView: UITableView) -> Int {
-        if(tableView.tag == 1) {
+        if tableView.tag == 1 {
             return 1
         } else {
-            if(senderViewController == Constant.MyClassConstants.searchResult) {
+            if senderViewController == Constant.MyClassConstants.searchResult {
                 return 8
             } else {
                 return 7
@@ -736,54 +669,52 @@ extension ResortDetailsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // Check if table is action sheet
-        if(tableView.tag == 1) {
+        if tableView.tag == 1 {
             return 5
         } else {
-            if(Constant.MyClassConstants.resortsDescriptionArray.resortName != nil) {
+            if Constant.MyClassConstants.resortsDescriptionArray.resortName != nil {
                 
-                if (section >= 3) {
+                switch section {
+                case 0 :
+                    if Constant.MyClassConstants.resortsDescriptionArray.resortName != nil {
+                        return 1
+                    } else {
+                        return 0
+                    }
+                case let indexedSection where indexedSection >= 3 :
                     if let isOpen = tappedButtonDictionary[section] {
                         if isOpen {
-                            if(section == 5) {
-                                var resortCategory: [ResortRatingCategory]
-                                if(Constant.MyClassConstants.resortsDescriptionArray.rating?.categories != nil) {
-                                    resortCategory = (Constant.MyClassConstants.resortsDescriptionArray.rating?.categories)!
+                            switch section {
+                            case 3 :
+                                if Constant.MyClassConstants.resortsDescriptionArray.nearestAiport?.name != nil {
+                                    return 2
+                                } else {
+                                    return 1
+                                }
+                            case 5 :
+                                
+                                if let resortCategory = Constant.MyClassConstants.resortsDescriptionArray.rating?.categories {
                                     return resortCategory.count + 1
                                 } else {
                                     return 1
                                 }
-                                
-                            } else if(section == 3) {
-                                if(Constant.MyClassConstants.resortsDescriptionArray.nearestAiport?.name != nil) {
-                                    
-                                    return 2
-                                } else {
-                                    
-                                    return 1
-                                }
-                            } else if(section == 6) {
+                            case 6 :
                                 if Constant.MyClassConstants.resortsDescriptionArray.tdiUrl != nil {
                                     return 2
                                 } else {
                                     return 1
                                 }
-                            } else {
+                            default :
                                 return 2
+                                
                             }
-                            
                         } else {
                             return 1
                         }
                     } else {
                         return 1
                     }
-                } else if (section == 0) {
-                    if(Constant.MyClassConstants.resortsDescriptionArray.resortName != nil) {
-                        return 1
-                    } else {
-                        return 0
-                    }
-                } else {
+                default :
                     return 1
                 }
             } else {
@@ -794,13 +725,13 @@ extension ResortDetailsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Check if table is action sheet
-        if(tableView.tag == 1) {
+        if tableView.tag == 1 {
             tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constant.vacationSearchScreenReusableIdentifiers.actionSheetCell)
             
             let cell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.actionSheetCell, for: indexPath)
             let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 49))
             
-            titleLabel.text = moreNavArray[(indexPath as NSIndexPath).row]
+            titleLabel.text = moreNavArray[indexPath.row]
             titleLabel.textAlignment = NSTextAlignment.center
             cell.contentView.addSubview(titleLabel)
             
@@ -811,20 +742,24 @@ extension ResortDetailsViewController: UITableViewDataSource {
             return cell
         } else {
             
-            switch (indexPath as NSIndexPath).section {
+            switch indexPath.section {
             case 0 :
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.resortDirectoryResortCell, for: indexPath) as! ResortDirectoryResortCell
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.resortDirectoryResortCell, for: indexPath) as? ResortDirectoryResortCell else { return UITableViewCell () }
                 
-                for layer in cell.resortNameGradientView.layer.sublayers! {
-                    if(layer.isKind(of: CAGradientLayer.self)) {
-                        layer.removeFromSuperlayer()
+                if let subLayers = cell.resortNameGradientView.layer.sublayers {
+                    for layer in subLayers {
+                        if layer.isKind(of: CAGradientLayer.self) {
+                            layer.removeFromSuperlayer()
+                        }
                     }
                 }
-                let status = Helper.isResrotFavorite(resortCode: Constant.MyClassConstants.resortsDescriptionArray.resortCode!)
-                if(status) {
-                    cell.fevoriteButton.isSelected = true
+                if let resortCode = Constant.MyClassConstants.resortsDescriptionArray.resortCode {
+                let status = Helper.isResrotFavorite(resortCode: resortCode)
+                if status {
+                    cell.favoriteButton.isSelected = true
                 } else {
-                    cell.fevoriteButton.isSelected = false
+                    cell.favoriteButton.isSelected = false
+                }
                 }
                 cell.resortNameGradientView.backgroundColor = UIColor.clear
                 let frame = CGRect(x: 0, y: 300 - 68, width: cell.frame.size.width + 200, height: cell.resortNameGradientView.frame.size.height)
@@ -835,24 +770,26 @@ extension ResortDetailsViewController: UITableViewDataSource {
                 cell.resortName.text = Constant.MyClassConstants.resortsDescriptionArray.resortName
                 cell.resortAddress.text = Constant.MyClassConstants.resortsDescriptionArray.address?.cityName
                 cell.resortCode.text = Constant.MyClassConstants.resortsDescriptionArray.resortCode
-                let imageStr = Helper.getTierImageName(tier: Constant.MyClassConstants.resortsDescriptionArray.tier!.uppercased())
-                cell.tierImageView.image = UIImage(named: imageStr)
-                cell.fevoriteButton.addTarget(self, action: #selector(favoritesButtonClicked(_:)), for: .touchUpInside)
+                if let tier = Constant.MyClassConstants.resortsDescriptionArray.tier {
+                    let imageStr = Helper.getTierImageName(tier:tier.uppercased())
+                    cell.tierImageView.image = UIImage(named: imageStr)
+                }
+                cell.favoriteButton.addTarget(self, action: #selector(favoritesButtonClicked(_:)), for: .touchUpInside)
                 cell.backgroundColor = UIColor.clear
                 cell.showResortWeatherbutton?.addTarget(self, action: #selector(self.showWeatherButtonPressed), for: .touchUpInside)
                 cell.showResortLocationButton?.addTarget(self, action: #selector(self.showLocationButtonPressed), for: .touchUpInside)
                 return cell
             case 2 :
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.mapTableViewCell, for: indexPath)
-                let camera = GMSCameraPosition.camera(withLatitude: (Constant.MyClassConstants.resortsDescriptionArray.coordinates?.latitude)!, longitude: (Constant.MyClassConstants.resortsDescriptionArray.coordinates?.longitude)!, zoom: 15)
-                let mapframe = CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.contentView.frame.height)
-                
-                mapView = GMSMapView.map(withFrame: mapframe, camera: camera)
-                mapView.isUserInteractionEnabled = false
-                mapView.isMyLocationEnabled = true
-                if (Constant.MyClassConstants.resortsDescriptionArray.coordinates?.latitude) != nil {
+                if let latitude = Constant.MyClassConstants.resortsDescriptionArray.coordinates?.latitude, let longitude = Constant.MyClassConstants.resortsDescriptionArray.coordinates?.longitude {
+                    let camera = GMSCameraPosition.camera(withLatitude: latitude, longitude: longitude, zoom: 15)
+                    let mapframe = CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.contentView.frame.height)
                     
-                    let  position = CLLocationCoordinate2DMake((Constant.MyClassConstants.resortsDescriptionArray.coordinates?.latitude)!, (Constant.MyClassConstants.resortsDescriptionArray.coordinates?.longitude)!)
+                    mapView = GMSMapView.map(withFrame: mapframe, camera: camera)
+                    mapView.isUserInteractionEnabled = false
+                    mapView.isMyLocationEnabled = true
+            
+                    let  position = CLLocationCoordinate2DMake(latitude, longitude)
                     let marker = GMSMarker()
                     marker.position = position
                     
@@ -861,15 +798,16 @@ extension ResortDetailsViewController: UITableViewDataSource {
                     marker.appearAnimation = GMSMarkerAnimation.pop
                     marker.map = mapView
                 }
+                
                 mapView.settings.myLocationButton = false
                 cell.contentView.addSubview(mapView)
                 return cell
             case 1 :
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.CustomCell, for: indexPath) as! ResortDirectoryResortCell
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.CustomCell, for: indexPath) as? ResortDirectoryResortCell else { return UITableViewCell() }
                 cell.resortName.text = Constant.MyClassConstants.resortsDescriptionArray.description
                 return cell
             case 7:
-                let cell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.vacationSearchCell, for: indexPath) as! ResortDirectoryResortCell
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.loginScreenReusableIdentifiers.vacationSearchCell, for: indexPath) as? ResortDirectoryResortCell else { return UITableViewCell() }
                 cell.searchVacationButton?.addTarget(self, action: #selector(searchVacationClicked), for: .touchUpInside)
                 return cell
             default :
@@ -877,179 +815,168 @@ extension ResortDetailsViewController: UITableViewDataSource {
                 var availableCountryCell: AvailableDestinationPlaceTableViewCell?
                 let ratingTableViewCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.ratingCell)
                 
-                availabledestionCountryOrContinentsCell?.countryOrContinentLabel.text = Constant.MyClassConstants.arrayResortInfo[(indexPath as NSIndexPath).section - 3]
+                availabledestionCountryOrContinentsCell?.countryOrContinentLabel.text = Constant.MyClassConstants.arrayResortInfo[indexPath.section - 3]
                 availabledestionCountryOrContinentsCell?.isUserInteractionEnabled = false
                 availableCountryCell?.isUserInteractionEnabled = false
                 
-                if let isOpen = tappedButtonDictionary[(indexPath as NSIndexPath).section] {
-                    availabledestionCountryOrContinentsCell?.countryOrContinentLabel.text = Constant.MyClassConstants.arrayResortInfo[(indexPath as NSIndexPath).section - 3]
-                    if isOpen && (indexPath as NSIndexPath).row > 0 {
-                        
-                        if ((indexPath as NSIndexPath).section == 6) {
-                            
-                            if((indexPath as NSIndexPath).row > 0) {
+                if let isOpen = tappedButtonDictionary[indexPath.section] {
+                    availabledestionCountryOrContinentsCell?.countryOrContinentLabel.text = Constant.MyClassConstants.arrayResortInfo[indexPath.section - 3]
+                    if isOpen && indexPath.row > 0 {
+                        switch indexPath.section {
+                        case 6 :
+                            if indexPath.row > 0 {
                                 availableCountryCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.tdiCell) as? AvailableDestinationPlaceTableViewCell
                             }
+                        case 5 :
+                        if indexPath.row > 0 {
+                            availableCountryCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.ratingCell) as? AvailableDestinationPlaceTableViewCell
                             
-                        } else if ((indexPath as NSIndexPath).section == 5) {
-                            if((indexPath as NSIndexPath).row > 0) {
-                                availableCountryCell = tableView.dequeueReusableCell(withIdentifier: Constant.vacationSearchScreenReusableIdentifiers.ratingCell) as? AvailableDestinationPlaceTableViewCell
-                                
-                            }
-                        } else {
-                            availableCountryCell = tableView.dequeueReusableCell(withIdentifier: Constant.availableDestinationsTableViewController.availableDestinationPlaceTableViewCell) as? AvailableDestinationPlaceTableViewCell
                         }
+                        default :
+                        availableCountryCell = tableView.dequeueReusableCell(withIdentifier: Constant.availableDestinationsTableViewController.availableDestinationPlaceTableViewCell) as? AvailableDestinationPlaceTableViewCell
+                    }
                         
-                        if let _ = placeSelectionMainDictionary[(indexPath as NSIndexPath).section] {
-                            availableCountryCell?.getCell(indexPath, selectedPlaceDictionary: placeSelectionMainDictionary[(indexPath as NSIndexPath).section]!)
+                    switch indexPath.section {
+                    case 3 :
+                        availableCountryCell?.infoLabel.isHidden = false
+                        if let airportName = Constant.MyClassConstants.resortsDescriptionArray.nearestAiport?.name {
+                            var airportArray = [String]()
+                            let airportAdress = "Nearest Airport" + "\n" + airportName + "/"
+                            airportArray.append(airportAdress)
+                            if let airportCode = Constant.MyClassConstants.resortsDescriptionArray.nearestAiport?.code {
+                                airportArray.append(airportCode)
+                            }
+                            if let miles = Constant.MyClassConstants.resortsDescriptionArray.nearestAiport?.distanceInMiles {
+                                airportArray.append("\(miles) Miles")
+                            }
+                            if let kms = Constant.MyClassConstants.resortsDescriptionArray.nearestAiport?.distanceInKilometers {
+                                airportArray.append("\(kms) KM")
+                            }
+                            availableCountryCell?.infoLabel.text = airportArray.joined(separator: "").localized()
                         } else {
-                            availableCountryCell?.getCell(indexPath)
+                            availableCountryCell?.infoLabel.text = ""
                         }
+                    case 4 :
+                        availableCountryCell?.infoLabel.isHidden = false
+                        availableCountryCell?.infoLabel.numberOfLines = 0
+                        if nearbyArray.count > 0 {
+                            availableCountryCell?.infoLabel.text = amenityOnsiteString + "\n" + "\n" + " " + amenityNearbyString
+                        } else {
+                            availableCountryCell?.infoLabel.text = amenityNearbyString
+                        }
+                    case 5 :
+                    if let resortCategory = Constant.MyClassConstants.resortsDescriptionArray.rating?.categories, let categoryCode = resortCategory[indexPath.row - 1].categoryCode {
+                        availableCountryCell?.infoLabel.text = Helper.getRatingCategory(category: categoryCode ?? "") + "\n" + " \(resortCategory[indexPath.row - 1].rating)"
                         
-                        if((indexPath as NSIndexPath).section == 3) {
-                            availableCountryCell?.infoLabel.isHidden = false
-                            
-                            if(Constant.MyClassConstants.resortsDescriptionArray.nearestAiport?.name != nil) {
-                                var airportAdress = "Nearest Airport" + "\n" + (Constant.MyClassConstants.resortsDescriptionArray.nearestAiport?.name)! + "/"
-                                airportAdress = airportAdress + (Constant.MyClassConstants.resortsDescriptionArray.nearestAiport?.code)! + " /\(Constant.MyClassConstants.resortsDescriptionArray.nearestAiport!.distanceInMiles) Miles /\(Constant.MyClassConstants.resortsDescriptionArray.nearestAiport!.distanceInKilometers) KM"
-                                availableCountryCell?.infoLabel.text = airportAdress
-                            } else {
-                                availableCountryCell?.infoLabel.text = ""
-                            }
-                            
-                        } else if((indexPath as NSIndexPath).section == 4) {
-                            availableCountryCell?.infoLabel.isHidden = false
-                            availableCountryCell?.infoLabel.numberOfLines = 0
-                            if(nearbyArray.count > 0) {
-                                availableCountryCell?.infoLabel.text = amenityOnsiteString + " " + amenityNearbyString
-                            } else {
-                                availableCountryCell?.infoLabel.text = amenityNearbyString
-                            }
-                        } else if ((indexPath as NSIndexPath).section == 6) {
-                            availableCountryCell?.tdiImageView.backgroundColor = UIColor.lightGray
-                            if(Constant.MyClassConstants.resortsDescriptionArray.tdiUrl!.characters.count != 0) {
-                                let url = URL(string: Constant.MyClassConstants.resortsDescriptionArray.tdiUrl!)
-                                availableCountryCell?.tdiImageView.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
-                            } else {
-                                availableCountryCell?.tdiImageView.image = UIImage(named: Constant.MyClassConstants.noImage)
-                            }
-                        } else if((indexPath as NSIndexPath).section == 5) {
-                            var resortCategory: [ResortRatingCategory]
-                            resortCategory = (Constant.MyClassConstants.resortsDescriptionArray.rating?.categories)!
-                            
-                            availableCountryCell?.infoLabel.text = Helper.getRatingCategory(category: resortCategory[indexPath.row - 1].categoryCode!!) + "\n" + " \(resortCategory[indexPath.row - 1].rating)"
-                            
-                            let resortRating = "\(resortCategory[indexPath.row - 1].rating)"
-                            let ratingArray = resortRating.components(separatedBy: ".")
-                            var image_X: CGFloat = 25.0
-                            for _ in 0..<resortCategory[indexPath.row - 1].rating {
-                                let imgVwRating = UIImageView()
-                                imgVwRating.backgroundColor = UIColor.orange
-                                imgVwRating.frame = CGRect(x: image_X, y: 50, width: 10, height: 10)
-                                imgVwRating.layer.cornerRadius = 5
-                                availableCountryCell?.contentView.addSubview(imgVwRating)
-                                image_X = image_X + 15
-                                
-                            }
-                            if((ratingArray.last!.characters.count) > 1) {
-                                let imgVwRating = UIImageView()
-                                imgVwRating.backgroundColor = UIColor.orange
-                                imgVwRating.frame = CGRect(x: image_X, y: 50, width: 20, height: 20)
-                                imgVwRating.layer.cornerRadius = 10
-                                availableCountryCell?.contentView.addSubview(imgVwRating)
-                                image_X = image_X + 25
-                            }
-                            
-                        } else {
-                            var resortCategory: [ResortRatingCategory]
-                            resortCategory = (Constant.MyClassConstants.resortsDescriptionArray.rating?.categories)!
-                            
-                            availableCountryCell?.infoLabel.text = Helper.getRatingCategory(category: resortCategory[indexPath.row - 1].categoryCode!!) + "\n" + " \(resortCategory[indexPath.row - 1].rating)"
-                            
-                            var image_X: CGFloat = 0.0
-                            for _ in 0..<resortCategory[indexPath.row - 1].rating {
-                                let imgVwRating = availableCountryCell?.tdiImageView
-                                imgVwRating!.backgroundColor = UIColor.orange
-                                imgVwRating!.frame = CGRect(x: image_X, y: 20, width: 20, height: 20)
-                                ratingTableViewCell!.contentView.addSubview(imgVwRating!)
-                                image_X = image_X + 30
-                                
-                            }
-                            //return ratingTableViewCell!
+                        let resortRating = "\(resortCategory[indexPath.row - 1].rating)"
+                        let ratingArray = resortRating.components(separatedBy: ".")
+                        var image_X: CGFloat = 35.0
+                        for _ in 0..<resortCategory[indexPath.row - 1].rating {
+                            let imgVwRating = UIImageView()
+                            imgVwRating.backgroundColor = UIColor.orange
+                            imgVwRating.frame = CGRect(x: image_X, y: 50, width: 10, height: 10)
+                            imgVwRating.layer.cornerRadius = 5
+                            availableCountryCell?.contentView.addSubview(imgVwRating)
+                            image_X = image_X + 15
                             
                         }
-                        return availableCountryCell!
+                        if let rating = ratingArray.last?.characters.count, rating > 1 {
+                            let imgVwRating = UIImageView()
+                            imgVwRating.backgroundColor = UIColor.orange
+                            imgVwRating.frame = CGRect(x: image_X, y: 50, width: 20, height: 20)
+                            imgVwRating.layer.cornerRadius = 10
+                            availableCountryCell?.contentView.addSubview(imgVwRating)
+                            image_X = image_X + 25
+                        }
+                        }
+                        case 6 :
+                        availableCountryCell?.tdiImageView.backgroundColor = UIColor.lightGray
+                        if let urlString = Constant.MyClassConstants.resortsDescriptionArray.tdiUrl {
+                            let url = URL(string: urlString)
+                            availableCountryCell?.tdiImageView.setImageWith(url, usingActivityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+                        } else {
+                            availableCountryCell?.tdiImageView.image = #imageLiteral(resourceName: "NoImageIcon")
+                        }
+                        default :
+
+                            if let resortCategory = Constant.MyClassConstants.resortsDescriptionArray.rating?.categories {
+                                if let categoryCode = resortCategory[indexPath.row - 1].categoryCode {
+                                    availableCountryCell?.infoLabel.text = Helper.getRatingCategory(category: categoryCode ?? "") + "\n" + " \(resortCategory[indexPath.row - 1].rating)"
+                                }
+                                var image_X: CGFloat = 0.0
+                                for _ in 0..<resortCategory[indexPath.row - 1].rating {
+                                    if let imgVwRating = availableCountryCell?.tdiImageView {
+                                        imgVwRating.backgroundColor = UIColor.orange
+                                        imgVwRating.frame = CGRect(x: image_X, y: 20, width: 20, height: 20)
+                                        ratingTableViewCell?.contentView.addSubview(imgVwRating)
+                                        image_X = image_X + 30
+                                    }
+                                }
+                            }
+                        }
+                        return availableCountryCell ?? UITableViewCell()
                     } else {
-                        availabledestionCountryOrContinentsCell = tableView.dequeueReusableCell(withIdentifier: Constant.availableDestinationsTableViewController.availableDestinationCountryOrContinentsTableViewCell) as? AvailableDestinationCountryOrContinentsTableViewCell
-                        availabledestionCountryOrContinentsCell?.countryOrContinentLabel.text = Constant.MyClassConstants.arrayResortInfo[(indexPath as NSIndexPath).section - 3]
-                        if let selectedPlacedictionary = placeSelectionMainDictionary[(indexPath as NSIndexPath).section] {
-                            availabledestionCountryOrContinentsCell?.getCell((indexPath as NSIndexPath).section, islistOfCountry: isOpen, selectedPlaceDictionary: selectedPlacedictionary)
+                        guard let availabledestionCountryOrContinentsCell = tableView.dequeueReusableCell(withIdentifier: Constant.availableDestinationsTableViewController.availableDestinationCountryOrContinentsTableViewCell) as? AvailableDestinationCountryOrContinentsTableViewCell else { return UITableViewCell() }
+                        availabledestionCountryOrContinentsCell.countryOrContinentLabel.text = Constant.MyClassConstants.arrayResortInfo[indexPath.section - 3]
+                        if let selectedPlacedictionary = placeSelectionMainDictionary[indexPath.section] {
+                            availabledestionCountryOrContinentsCell.getCell(indexPath.section, islistOfCountry: isOpen, selectedPlaceDictionary: selectedPlacedictionary)
                         } else {
-                            availabledestionCountryOrContinentsCell?.getCell((indexPath as NSIndexPath).section, islistOfCountry: isOpen)
+                            availabledestionCountryOrContinentsCell.getCell(indexPath.section, islistOfCountry: isOpen)
                         }
                         
-                        return availabledestionCountryOrContinentsCell!
+                        return availabledestionCountryOrContinentsCell
                     }
                 } else {
-                    availabledestionCountryOrContinentsCell = tableView.dequeueReusableCell(withIdentifier: Constant.availableDestinationsTableViewController.availableDestinationCountryOrContinentsTableViewCell) as? AvailableDestinationCountryOrContinentsTableViewCell
+                    guard let availabledestionCountryOrContinentsCell = tableView.dequeueReusableCell(withIdentifier: Constant.availableDestinationsTableViewController.availableDestinationCountryOrContinentsTableViewCell) as? AvailableDestinationCountryOrContinentsTableViewCell else { return UITableViewCell() }
                     
-                    availabledestionCountryOrContinentsCell?.getCell((indexPath as NSIndexPath).section)
-                    availabledestionCountryOrContinentsCell?.countryOrContinentLabel.text = Constant.MyClassConstants.arrayResortInfo[(indexPath as NSIndexPath).section - 3]
-                    
-                    return availabledestionCountryOrContinentsCell!
-                    
+                    availabledestionCountryOrContinentsCell.getCell(indexPath.section)
+                    availabledestionCountryOrContinentsCell.countryOrContinentLabel.text = Constant.MyClassConstants.arrayResortInfo[indexPath.section - 3]
+                    return availabledestionCountryOrContinentsCell
                 }
             }
         }
     }
     
     func favoritesButtonClicked(_ sender: IUIKButton) {
-        
-        if(Session.sharedSession.userAccessToken != nil) {
-            
-            if (sender.isSelected == false) {
+        guard let resortCode = Constant.MyClassConstants.resortsDescriptionArray.resortCode else { return }
+        if Session.sharedSession.userAccessToken != nil {
+            if sender.isSelected == false {
                 
                 showHudAsync()
                 
-                UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsDescriptionArray.resortCode!, onSuccess: {(_) in
-                    
+                UserClient.addFavoriteResort(Session.sharedSession.userAccessToken, resortCode: resortCode, onSuccess: {(_) in
                     self.hideHudAsync()
                     sender.isSelected = true
-                    Constant.MyClassConstants.favoritesResortCodeArray.add(Constant.MyClassConstants.resortsDescriptionArray.resortCode!)
+                    Constant.MyClassConstants.favoritesResortCodeArray.add(resortCode)
                     self.tableViewResorts.reloadData()
                     ADBMobile.trackAction(Constant.omnitureEvents.event48, data: nil)
-                }, onError: {(error) in
-                    self.hideHudAsync()
-                    intervalPrint(error)
+                }, onError: {[weak self] error in
+                    self?.hideHudAsync()
+                    self?.presentErrorAlert(UserFacingCommonError.serverError(error))
                 })
             } else {
                 showHudAsync()
-                
-                UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: Constant.MyClassConstants.resortsDescriptionArray.resortCode!, onSuccess: {(_) in
-                    
+                UserClient.removeFavoriteResort(Session.sharedSession.userAccessToken, resortCode: resortCode, onSuccess: {(_) in
                     sender.isSelected = false
                     self.hideHudAsync()
-                    Constant.MyClassConstants.favoritesResortCodeArray.remove(Constant.MyClassConstants.resortsDescriptionArray.resortCode!)
+                    Constant.MyClassConstants.favoritesResortCodeArray.remove(resortCode)
                     self.tableViewResorts.reloadData()
                     ADBMobile.trackAction(Constant.omnitureEvents.event51, data: nil)
-                }, onError: {(error) in
-                    self.hideHudAsync()
-                    intervalPrint(error)
+                }, onError: {[weak self] error in
+                    self?.hideHudAsync()
+                    self?.presentErrorAlert(UserFacingCommonError.serverError(error))
                 })
-                
             }
             
         } else {
-            if(Constant.RunningDevice.deviceIdiom == .pad) {
+            if Constant.RunningDevice.deviceIdiom == .pad {
                 let storyboard = UIStoryboard(name: Constant.storyboardNames.resortDirectoryIpad, bundle: nil)
                 let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginViewControlleriPad)
                 self.navigationController?.pushViewController(viewController, animated: true)
             } else {
                 let storyboard = UIStoryboard(name: Constant.storyboardNames.iphone, bundle: nil)
                 let viewController = storyboard.instantiateViewController(withIdentifier: Constant.storyboardNames.signInPreLoginController)
-                //self.present(viewController, animated: true, completion: nil)
                 self.navigationController?.pushViewController(viewController, animated: true)
-                
             }
         }
         
@@ -1058,8 +985,7 @@ extension ResortDetailsViewController: UITableViewDataSource {
 extension ResortDetailsViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        if (status == CLAuthorizationStatus.authorizedWhenInUse) {
-            
+        if status == CLAuthorizationStatus.authorizedWhenInUse {
             self.mapView.isMyLocationEnabled = true
             self.mapView.settings.myLocationButton = false
             locationManager.startUpdatingLocation()
@@ -1068,16 +994,15 @@ extension ResortDetailsViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let newLocation = locations.last
         let northWestCoordinates = Coordinates()
-        northWestCoordinates.latitude = (newLocation?.coordinate.latitude)!
-        northWestCoordinates.longitude = (newLocation?.coordinate.longitude)!
+        if let latitude = newLocation?.coordinate.latitude, let longitude = newLocation?.coordinate.longitude {
+            northWestCoordinates.latitude = latitude
+            northWestCoordinates.longitude = longitude
+        }
         let rectRequest = GeoArea(northWestCoordinates, northWestCoordinates)
         let result = Helper.getResortsWithLatLongForShowingOnMap(request: rectRequest)
-        if(result) {
-            
-        } else {
+        if !result {
             locationManager.stopUpdatingLocation()
         }
-        
     }
     
 }
