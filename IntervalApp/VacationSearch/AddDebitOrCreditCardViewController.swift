@@ -40,10 +40,15 @@ class AddDebitOrCreditCardViewController: UIViewController {
     var months: [String]!
     var years: [Int]!
     var selectedrow: Int = 0
+    var expServerDate = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        if let contact = Session.sharedSession.contact {
+            var name = ""
+            name = "\(contact.firstName ?? "") \(contact.lastName ?? "")"
+            Constant.GetawaySearchResultCardFormDetailData.nameOnCard = name
+        }
         //address from contact list
         if let address = Session.sharedSession.contact?.addresses {
             if !address.isEmpty {
@@ -180,7 +185,25 @@ class AddDebitOrCreditCardViewController: UIViewController {
                 let newCreditCard = Creditcard()
                 newCreditCard.cardHolderName = Constant.GetawaySearchResultCardFormDetailData.nameOnCard
                 newCreditCard.cardNumber = Constant.GetawaySearchResultCardFormDetailData.cardNumber
-                newCreditCard.expirationDate = Constant.GetawaySearchResultCardFormDetailData.expDate
+                //creating date component with new exp date
+                let dateComp = expServerDate.components(separatedBy: "-")
+                var year = ""
+                var month = ""
+                if dateComp.count > 1 {
+                     year = dateComp[0]
+                    month = dateComp[1]
+                }
+                
+                var dateComponents = DateComponents()
+                dateComponents.year = Int(year)
+                dateComponents.month = Int(month)
+                dateComponents.day = 01
+                let date = Calendar.current.date(from: dateComponents)
+                let dateFor = DateFormatter()
+                dateFor.dateFormat = Constant.destinationResortViewControllerCellIdentifiersAndHardCodedStrings.dateTimeFormat
+                let expString: String = dateFor.string(from: date ?? Date())
+                debugPrint(expString)
+                newCreditCard.expirationDate = expString
                 newCreditCard.cvv = Constant.GetawaySearchResultCardFormDetailData.cvv
                 
                 let billingAdrs = Address()
@@ -243,11 +266,7 @@ class AddDebitOrCreditCardViewController: UIViewController {
         }
     }
     
-    func dateSelectedFromDatePicker(_ sender: UIDatePicker) {
-        
-    }
-    
-    //function called when picker view done button pressed.
+    //function called when drop down button pressed
     func dropDownButtonPressed(_ sender: IUIKButton) {
         
         dropDownSelectionRow = sender.tag
@@ -276,26 +295,6 @@ class AddDebitOrCreditCardViewController: UIViewController {
         }
     }
     
-    // function to create date picker view when drop down button pressed.
-    func createDatePicker() {
-        
-        pickerBaseView = UIView(frame: CGRect(x: 0, y: self.view.frame.size.height - 200, width: self.view.frame.size.width, height: 200))
-        pickerBaseView?.backgroundColor = IUIKColorPalette.primary1.color
-        let doneButton = UIButton(frame: CGRect(x: 0, y: 5, width: pickerBaseView.frame.size.width - 20, height: 50))
-        doneButton.setTitle(Constant.AlertPromtMessages.done, for: .normal)
-        doneButton.contentHorizontalAlignment = .right
-        doneButton.addTarget(self, action: #selector(AddDebitOrCreditCardViewController.pickerDoneButtonPressed(_:)), for: .touchUpInside)
-        
-        datePickerView = UIDatePicker(frame: CGRect(x: 0, y: 50, width: pickerBaseView.frame.size.width, height: pickerBaseView.frame.size.height - 60))
-        datePickerView.datePickerMode = .date
-        datePickerView.setValue(UIColor.white, forKeyPath: Constant.MyClassConstants.keyTextColor)
-        datePickerView.addTarget(self, action: #selector(AddDebitOrCreditCardViewController.dateSelectedFromDatePicker(_:)), for: UIControlEvents.valueChanged)
-        pickerBaseView.addSubview(doneButton)
-        pickerBaseView.addSubview(datePickerView)
-        
-        view.addSubview(pickerBaseView)
-    }
-    
     // function to create picker view when drop down button pressed.
     func createPickerView() {
         
@@ -313,20 +312,6 @@ class AddDebitOrCreditCardViewController: UIViewController {
         pickerView.dataSource = self
         
         view.addSubview(pickerBaseView)
-    }
-    
-    // function to create picker view when drop down button pressed.
-    func showDatePickerView() {
-
-        hideStatus = true
-        createDatePicker()
-    }
-    
-    //function to hide date picker view.
-    func hideDatePickerView() {
-        
-        hideStatus = false
-        pickerBaseView.isHidden = true
     }
     
     //function to show picker view.
@@ -347,11 +332,6 @@ class AddDebitOrCreditCardViewController: UIViewController {
         
         hideStatus = false
         pickerBaseView.isHidden = true
-        if datePickerView != nil {
-            
-            //Constant.GetawaySearchResultCardFormDetailData.expDate = datePickerView.date
-        }
-       
         let indexPath = NSIndexPath(row: dropDownSelectionRow, section: dropDownSelectionSection)
         cardDetailTBLview.reloadRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
     }
@@ -714,7 +694,7 @@ extension AddDebitOrCreditCardViewController: UIPickerViewDelegate {
                 let month = months[pickerView.selectedRow(inComponent: 0)]
                 let year = years[pickerView.selectedRow(inComponent: 1)]
                 let expiryDate = "\(year), \(month)"
-                intervalPrint(expiryDate)
+                expServerDate = "\(year)-\(Helper.getMonthNumberFromMonthName(month:month))"
                 Constant.GetawaySearchResultCardFormDetailData.expDate = expiryDate
                 
             } else if dropDownSelectionRow == 2 {
@@ -738,6 +718,7 @@ extension AddDebitOrCreditCardViewController: UIPickerViewDelegate {
              } else {
                 guard let stateName = Constant.GetawaySearchResultGuestFormDetailData.stateListArray[row].name else { return }
                 Constant.GetawaySearchResultCardFormDetailData.state = stateName
+                Constant.GetawaySearchResultCardFormDetailData.stateCode = Constant.GetawaySearchResultGuestFormDetailData.stateCodeArray[row]
             }
         }
     }

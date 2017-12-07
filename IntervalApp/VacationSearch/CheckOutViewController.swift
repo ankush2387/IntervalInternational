@@ -48,6 +48,7 @@ class CheckOutViewController: UIViewController {
     var totalFeesArray = NSMutableArray()
     var currencyCode: String = ""
     static let checkoutPromotionCell = "CheckoutPromotionCell"
+    var isPromotionApplied = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -178,7 +179,13 @@ class CheckOutViewController: UIViewController {
             let strAccept = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringAccept)
             let strReject = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringReject)
             
-            if (isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && (strAccept == "true" || strReject == "true") && !Constant.MyClassConstants.selectedCreditCard.isEmpty {
+            if !isTripProtectionEnabled {
+                strAccept = "true"
+                strReject = "true"
+            }
+            
+            if (isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && (strAccept == "true" || strReject == "true") && !Constant.MyClassConstants.selectedCreditCard.isEmpty && isPromotionApplied {
+
                 showHudAsync()
                 imageSlider.isHidden = true
                 
@@ -275,14 +282,10 @@ class CheckOutViewController: UIViewController {
                 checkoutOptionTBLview.scrollToRow(at: indexPath, at: .top, animated: true)
                 imageSlider.isHidden = false
                 self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.insuranceSelectionMessage)
-            } else if (Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange) && !Constant.MyClassConstants.recapPromotionsArray.isEmpty && Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName == "" {
+
+            } else if !isPromotionApplied {
                 imageSlider.isHidden = false
                 checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
-                self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.promotionsMessage)
-
-            } else if !Constant.MyClassConstants.isFromExchange && (Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName == nil || Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName == "") {
-                imageSlider.isHidden = true
-            self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                 self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.promotionsMessage)
             } else {
                 let indexPath = IndexPath(row: 0, section: 6)
@@ -303,12 +306,14 @@ class CheckOutViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
         super.viewWillAppear(true)
+
         remainingResortHoldingTimeLable.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
+
         navigationController?.isNavigationBarHidden = false
         emailTextToEnter = Session.sharedSession.contact?.emailAddress ?? ""
         checkoutOptionTBLview.reloadData()
+
         if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
             if let selectedPromotion = Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName {
                 self.recapSelectedPromotion = selectedPromotion
@@ -346,6 +351,10 @@ class CheckOutViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(changeLabelStatus), name: NSNotification.Name(rawValue: Constant.notificationNames.changeSliderStatus), object: nil)
         
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        navigationController?.navigationBar.isHidden = true
     }
     
     func updateResortHoldingTime() {
@@ -1052,6 +1061,7 @@ extension CheckOutViewController: UITableViewDataSource {
                 if cell.promotionSelectionCheckBox.isHidden {
                     cell.forwardArrowButton.addTarget(self, action: #selector(CheckOutViewController.checkBoxCheckedAtIndex(_:)), for: .touchUpInside)
                 } else {
+                    isPromotionApplied = true
                     cell.promotionSelectionCheckBox.addTarget(self, action: #selector(CheckOutViewController.checkBoxCheckedAtIndex(_:)), for: .touchUpInside)
                 }
                 
@@ -1096,7 +1106,6 @@ extension CheckOutViewController: UITableViewDataSource {
             return cell
             
         case 5 :
-            
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constant.customCellNibNames.exchangeOrProtectionCell, for: indexPath) as? ExchangeOrProtectionCell else { return UITableViewCell() }
                 
                 if !isHeightZero {
@@ -1224,7 +1233,6 @@ extension CheckOutViewController: UITableViewDataSource {
                 
                 if !isHeightZero {
                     for subviews in cell.subviews {
-                        
                         subviews.isHidden = false
                     }
                     cell.discountLabel.text = recapSelectedPromotion

@@ -60,7 +60,7 @@ class SearchResultViewController: UIViewController {
     }
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(true)
-        navigationController?.navigationBar.isHidden = true
+        //navigationController?.navigationBar.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -732,6 +732,7 @@ class SearchResultViewController: UIViewController {
                 // Navigate to Renewals Screen
                 let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.RenewelViewController) as! RenewelViewController
                 viewController.delegate = self
+                //self.navigationController?.pushViewController(viewController, animated: true)
                 self.present(viewController, animated: true, completion: nil)
             } else {
                 // Navigate to Who Will Be Checking in Screen

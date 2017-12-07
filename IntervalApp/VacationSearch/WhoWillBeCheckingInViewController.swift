@@ -47,7 +47,9 @@ class WhoWillBeCheckingInViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+
         resortHoldingTimeLabel.text = "We are holding this unit for \(Constant.holdingTime) minutes".localized()
+        navigationController?.navigationBar.isHidden = false
         Constant.GetawaySearchResultGuestFormDetailData.firstName = ""
         Constant.GetawaySearchResultGuestFormDetailData.lastName = ""
         Constant.GetawaySearchResultGuestFormDetailData.country = ""
@@ -104,6 +106,7 @@ class WhoWillBeCheckingInViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
+        navigationController?.navigationBar.isHidden = true
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.updateResortHoldingTime), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.enableGuestFormCheckout), object: nil)
     }
