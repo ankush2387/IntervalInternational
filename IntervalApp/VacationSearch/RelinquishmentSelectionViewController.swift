@@ -29,10 +29,13 @@ class RelinquishmentSelectionViewController: UIViewController {
     @IBOutlet weak var relinquishmentTableview: UITableView!
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        navigationController?.isNavigationBarHidden = false
         Helper.InitializeOpenWeeksFromLocalStorage()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         Constant.MyClassConstants.savedBedroom = ""
         Constant.MyClassConstants.relinquishmentFloatDetialSelectedDate = nil
         Constant.MyClassConstants.savedClubFloatResort = ""
@@ -638,14 +641,14 @@ class RelinquishmentSelectionViewController: UIViewController {
             
             for floatWeek in Constant.MyClassConstants.whatToTradeArray {
                 
-                let floatWeekTraversed = floatWeek as! OpenWeeks
+                guard let floatWeekTraversed = floatWeek as? OpenWeeks else { return }
                 if floatWeekTraversed.isFloat && Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId! == floatWeekTraversed.relinquishmentID {
                     Constant.MyClassConstants.selectedFloatWeek = floatWeekTraversed
                     Constant.MyClassConstants.savedClubFloatResort = floatWeekTraversed.floatDetails[0].clubResortDetails
                 }
             }
             for floatWeek in Constant.MyClassConstants.floatRemovedArray {
-                let floatWeekTraversed = floatWeek as! OpenWeeks
+                guard let floatWeekTraversed = floatWeek as? OpenWeeks else { return }
                 if floatWeekTraversed.isFloatRemoved && Constant.MyClassConstants.relinquishmentSelectedWeek.relinquishmentId! == floatWeekTraversed.relinquishmentID {
                     Constant.MyClassConstants.selectedFloatWeek = floatWeekTraversed
                     Constant.MyClassConstants.savedClubFloatResort = floatWeekTraversed.floatDetails[0].clubResortDetails
