@@ -155,7 +155,7 @@ public class Helper {
     //***** common  function that  takes month as int value and return month full spelled name name *****//
     static func getMonthFullSpelledFromInt(monthNumber: Int) -> String {
         
-        switch(monthNumber) {
+        switch monthNumber {
             
         case 1:
             return "January"

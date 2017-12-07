@@ -174,12 +174,8 @@ extension AvailablePointToolViewController: UITableViewDataSource {
     }
     /** Number of Rows in a Section */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        if section == 0 {
-            return 2
-        } else {
-            return availablePoints.usage.count + 2
-        }
+       let returnValue = (section == 0) ? 2 : self.availablePoints.usage.count + 2
+        return returnValue
     }
 }
 /** Extension for UITableVieWDelegate */
@@ -196,7 +192,7 @@ extension AvailablePointToolViewController: UITableViewDelegate {
                 return 90
             }
         } else {
-            if indexPath.row == availablePoints.usage.count + 1 {
+            if indexPath.row == self.availablePoints.usage.count + 1 {
                 return 90
             } else {
                 return 40
@@ -240,7 +236,7 @@ extension AvailablePointToolViewController: UITableViewDelegate {
             
             let transitionManager = TransitionManager()
             navigationController?.transitioningDelegate = transitionManager
-            navigationController!.pushViewController(viewController, animated: true)
+            navigationController?.pushViewController(viewController, animated: true)
             
         }
     }
