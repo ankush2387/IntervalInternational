@@ -120,37 +120,36 @@ public class Helper {
     //***** common  function that  takes month as int value and return month  name *****//
     static func getMonthnameFromInt(monthNumber: Int) -> String {
         
-        switch(monthNumber) {
+        switch monthNumber {
             
         case 1:
-            return "Jan"
+            return "Jan".localized()
         case 2:
-            return "Feb"
+            return "Feb".localized()
         case 3:
-            return "Mar"
+            return "Mar".localized()
         case 4:
-            return "Apr"
+            return "Apr".localized()
         case 5:
-            return "May"
+            return "May".localized()
         case 6:
-            return "Jun"
+            return "Jun".localized()
         case 7:
-            return "Jul"
+            return "Jul".localized()
         case 8:
-            return "Aug"
+            return "Aug".localized()
         case 9:
-            return "Sep"
+            return "Sep".localized()
         case 10:
-            return "Oct"
+            return "Oct".localized()
         case 11:
-            return "Nov"
+            return "Nov".localized()
         case 12:
-            return "Dec"
+            return "Dec".localized()
         default:
             return ""
         }
     }
-    
     
     //***** common  function that  takes month as int value and return month full spelled name name *****//
     static func getMonthFullSpelledFromInt(monthNumber: Int) -> String {
@@ -158,34 +157,33 @@ public class Helper {
         switch monthNumber {
             
         case 1:
-            return "January"
+            return "January".localized()
         case 2:
-            return "February"
+            return "February".localized()
         case 3:
-            return "March"
+            return "March".localized()
         case 4:
-            return "April"
+            return "April".localized()
         case 5:
-            return "May"
+            return "May".localized()
         case 6:
-            return "Jun"
+            return "Jun".localized()
         case 7:
-            return "July"
+            return "July".localized()
         case 8:
-            return "August"
+            return "August".localized()
         case 9:
-            return "September"
+            return "September".localized()
         case 10:
-            return "October"
+            return "October".localized()
         case 11:
-            return "November"
+            return "November".localized()
         case 12:
-            return "December"
+            return "December".localized()
         default:
             return ""
         }
     }
-    
     
     //***** common  function that  takes UIView and color to and gradient view on passed view *****//
     static func addLinearGradientToView(view: UIView, colour: UIColor, transparntToOpaque: Bool, vertical: Bool) {
