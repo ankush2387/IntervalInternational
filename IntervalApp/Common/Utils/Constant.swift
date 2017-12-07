@@ -101,7 +101,7 @@ class Constant: NSObject {
         static var alertOriginationPoint: String = ""
         static var depositPromotionNav = "DepositPromotionsNav"
         static var sorting = "Sorting"
-        static var filterSearchResult = "Filter Search Result"
+        static var filterSearchResult = "Filter Search Result".localized()
         static var loginOriginationPoint: String = ""
         static var vacationSearchResultHeaderLabel: String = ""
         static var upcomingOriginationPoint: String = ""
@@ -124,13 +124,13 @@ class Constant: NSObject {
         static var carRentalCounter = 0
         static var isEvent2Ready = 0
         
-        static var rentalSortingOptionArray = ["Resort Name:", "Resort Name:", "Price:", "Price:", "City:", "City:", "Resort Tier:", "Resort Tier:"]
-        static var sortingSetValues = ["RESORT_NAME_ASC", "RESORT_NAME_DESC", "CITY_NAME_ASC", "CITY_NAME_DESC", "RESORT_TIER_LOW_TO_HIGH", "RESORT_TIER_HIGH_TO_LOW", "PRICE_LOW_TO_HIGH", "PRICE_HIGH_TO_LOW", "UNKNOWN"]
+        static var rentalSortingOptionArray = ["Recommended","Resort Name:", "Resort Name:", "Price:", "Price:", "City:", "City:", "Resort Tier:", "Resort Tier:"]
+        static var sortingSetValues = ["DEFAULT", "RESORT_NAME_ASC", "RESORT_NAME_DESC", "CITY_NAME_ASC", "CITY_NAME_DESC", "RESORT_TIER_LOW_TO_HIGH", "RESORT_TIER_HIGH_TO_LOW", "PRICE_LOW_TO_HIGH", "PRICE_HIGH_TO_LOW", "UNKNOWN"]
         
-        static var rentalSortingRangeArray = ["A - Z", "Z - A", "Low - High", "High - Low", "A - Z", "Z - A", "Low - High", "High - Low"]
+        static var rentalSortingRangeArray = ["Default", "A - Z", "Z - A", "Low - High", "High - Low", "A - Z", "Z - A", "Low - High", "High - Low"]
         
-        static var exchangeSortingOptionArray = ["Resort Name:", "Resort Name:", "City:", "City:", "Resort Tier:", "Resort Tier:"]
-        static var exchangeSortingRangeArray = ["A - Z", "Z - A", "A - Z", "Z - A", "Low - High", "High - Low"]
+        static var exchangeSortingOptionArray = ["Default", "Resort Name:", "Resort Name:", "City:", "City:", "Resort Tier:", "Resort Tier:"]
+        static var exchangeSortingRangeArray = ["Default", "A - Z", "Z - A", "A - Z", "Z - A", "Low - High", "High - Low"]
         
         static var filteredIndex = 0
         static var sortingIndex = -1
