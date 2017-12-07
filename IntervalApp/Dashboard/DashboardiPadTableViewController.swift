@@ -25,6 +25,7 @@ class DashboardIPadTableViewController: UITableViewController {
     var childCounter = 0
     var adultCounter = 2
     var showAlertActivityIndicatorView = true
+    var showSearchResults = false
     var alertFilterOptionsArray = [Constant.AlertResortDestination]()
     
     override func viewWillAppear(_ animated: Bool) {
@@ -41,7 +42,8 @@ class DashboardIPadTableViewController: UITableViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         //***** Remove added notifications. *****//
-        self.navigationController?.navigationBar.isHidden = true
+        showSearchResults ? (navigationController?.navigationBar.isHidden = false) :
+            (navigationController?.navigationBar.isHidden = true)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: Constant.notificationNames.getawayAlertsNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue:Constant.notificationNames.refreshTableNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue:Constant.notificationNames.reloadTripDetailsNotification), object: nil)
@@ -159,7 +161,7 @@ class DashboardIPadTableViewController: UITableViewController {
     }
     //Mark:- Button Clicked
     func searchVacationButtonPressed(_ sender: IUIKButton) {
-        
+        showSearchResults = false
         Constant.MyClassConstants.searchOriginationPoint = Constant.omnitureCommonString.homeDashboard
         
         let isRunningOnIpad = UIDevice.current.userInterfaceIdiom == .pad
@@ -216,6 +218,7 @@ class DashboardIPadTableViewController: UITableViewController {
                 }
             } else {
                 let alertController = UIAlertController(title: title, message: Constant.AlertErrorMessages.getawayAlertMessage, preferredStyle: .alert)
+                showSearchResults = true
                 let startSearch = UIAlertAction(title: Constant.AlertPromtMessages.newSearch, style: .default) { (action: UIAlertAction!) in
                     
                     let isRunningOnIphone = UIDevice.current.userInterfaceIdiom == .phone
@@ -289,7 +292,7 @@ class DashboardIPadTableViewController: UITableViewController {
         
     }
     func navigateToSearchResults() {
-        
+        showSearchResults = false
         let mainStoryboard: UIStoryboard = UIStoryboard(name: Constant.storyboardNames.vacationSearchIPad, bundle: nil)
         if let viewController = mainStoryboard.instantiateViewController(withIdentifier: Constant.storyboardControllerID.vacationSearchController) as? VacationSearchResultIPadController {
             viewController.alertFilterOptionsArray = alertFilterOptionsArray
@@ -529,9 +532,9 @@ class DashboardIPadTableViewController: UITableViewController {
             homeTableCollectionView.delegate = self
             homeTableCollectionView.dataSource = self
             if dashboardArray[indexPath.section] == Constant.dashboardTableScreenReusableIdentifiers.exchange {
-                homeTableCollectionView.tag = 1
-            } else {
                 homeTableCollectionView.tag = 2
+            } else {
+                homeTableCollectionView.tag = 1
             }
             
             homeTableCollectionView.isScrollEnabled = true
@@ -555,12 +558,10 @@ extension DashboardIPadTableViewController: UICollectionViewDelegate {
                 Constant.MyClassConstants.viewController = self
                 Constant.MyClassConstants.travelPartyInfo = Helper.travelPartyInfo(adults: 2, children: 0)
                 viewController.selectedFlexchange = Constant.MyClassConstants.flexExchangeDeals[indexPath.row]
-                let transitionManager = TransitionManager()
-                self.navigationController?.transitioningDelegate = transitionManager
                 self.navigationController?.pushViewController(viewController, animated: true)
             }
-            
         case 2:
+            showSearchResults = true
             Helper.helperDelegate = self
             topTenGetawaySelected(selectedIndexPath: indexPath)
             

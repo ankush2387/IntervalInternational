@@ -273,9 +273,9 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
             homeTableCollectionView.delegate = self
             homeTableCollectionView.dataSource = self
             if indexPath.section == 0 {
-                homeTableCollectionView.tag = 1
-            } else {
                 homeTableCollectionView.tag = 2
+            } else {
+                homeTableCollectionView.tag = 1
             }
             
             homeTableCollectionView.isScrollEnabled = true
@@ -485,12 +485,12 @@ class VacationSearchIPadViewController: UIViewController, UITableViewDelegate, U
     
     @IBAction func featuredDestinationsPressed(_ sender: AnyObject) {
         
-        if featuredDestinationsTopConstraint.constant == 50 {
-            featuredDestinationsTopConstraint.constant = 870
+        if featuredDestinationsTopConstraint.constant == 20 {
+            featuredDestinationsTopConstraint.constant = view.frame.size.height - 200
         } else {
             
             Helper.getTopDeals(senderVC: self)
-            featuredDestinationsTopConstraint.constant = 50
+            featuredDestinationsTopConstraint.constant = 20
         }
         UIView.animate(withDuration: 0.3, animations: {
             self.view.layoutIfNeeded()

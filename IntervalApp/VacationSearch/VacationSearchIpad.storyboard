@@ -1499,7 +1499,7 @@
                                 </connections>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qav-WX-Ho5">
-                                <rect key="frame" x="0.0" y="866" width="768" height="109"/>
+                                <rect key="frame" x="0.0" y="900" width="768" height="1024"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zdf-V0-YYS">
                                         <rect key="frame" x="0.0" y="0.0" width="768" height="40"/>
@@ -1515,7 +1515,7 @@
                                         </connections>
                                     </button>
                                     <tableView clipsSubviews="YES" tag="1" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="3x8-UN-nOl">
-                                        <rect key="frame" x="0.0" y="40" width="768" height="69"/>
+                                        <rect key="frame" x="0.0" y="40" width="768" height="984"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FeaturedTableCell" rowHeight="500" id="IFS-G6-43n" customClass="WereWantToGoTableViewCell" customModule="IntervalApp" customModuleProvider="target">
@@ -1576,7 +1576,7 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="Qav-WX-Ho5" firstAttribute="top" secondItem="xrk-gZ-bcu" secondAttribute="bottom" constant="766" id="06k-my-c2c"/>
+                            <constraint firstItem="Qav-WX-Ho5" firstAttribute="top" secondItem="xrk-gZ-bcu" secondAttribute="bottom" constant="830" id="06k-my-c2c"/>
                             <constraint firstItem="LAg-BZ-YMZ" firstAttribute="leading" secondItem="3vx-OD-1TN" secondAttribute="leadingMargin" constant="-20" id="EmT-kD-cLH"/>
                             <constraint firstItem="qVV-Bt-V3j" firstAttribute="top" secondItem="LAg-BZ-YMZ" secondAttribute="bottom" id="LVJ-lJ-Tp4">
                                 <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
@@ -1585,7 +1585,6 @@
                             <constraint firstItem="xrk-gZ-bcu" firstAttribute="centerX" secondItem="3vx-OD-1TN" secondAttribute="centerX" constant="0.5" id="N7U-2A-uy8"/>
                             <constraint firstItem="LAg-BZ-YMZ" firstAttribute="top" secondItem="xrk-gZ-bcu" secondAttribute="bottom" constant="14" id="Oua-kG-SDM"/>
                             <constraint firstItem="Qav-WX-Ho5" firstAttribute="height" secondItem="3vx-OD-1TN" secondAttribute="height" id="cNj-3i-9Kf"/>
-                            <constraint firstItem="qVV-Bt-V3j" firstAttribute="top" secondItem="Qav-WX-Ho5" secondAttribute="bottom" id="gQP-J3-DEg"/>
                             <constraint firstItem="Qav-WX-Ho5" firstAttribute="leading" secondItem="3vx-OD-1TN" secondAttribute="leading" id="q3a-73-n4f"/>
                             <constraint firstAttribute="trailingMargin" secondItem="LAg-BZ-YMZ" secondAttribute="trailing" constant="-20" id="wK7-Fi-GcZ"/>
                             <constraint firstItem="xrk-gZ-bcu" firstAttribute="top" secondItem="PpY-pF-cWW" secondAttribute="bottom" constant="8" id="zW8-2g-hGh"/>
@@ -3802,7 +3801,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" tag="3" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="162" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="o3u-FW-zKw">
-                                <rect key="frame" x="257" y="144" width="511" height="1356"/>
+                                <rect key="frame" x="257" y="104" width="511" height="1396"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="AdvisementsCell" rowHeight="130" id="DSb-kc-ntH" customClass="AdvisementsCell" customModule="IntervalApp" customModuleProvider="target">
@@ -4147,9 +4146,6 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="currencyLabel" destination="gLi-JC-8d1" id="Usa-by-sRL"/>
-                                            <outlet property="fractionalPriceLabel" destination="sL2-sG-B74" id="joQ-Rx-aUE"/>
-                                            <outlet property="periodLabel" destination="FJP-pJ-rva" id="fFy-yA-Uvh"/>
                                             <outlet property="priceCheckBox" destination="lj9-fQ-9kk" id="c4O-f7-prT"/>
                                             <outlet property="priceView" destination="rLN-EM-189" id="M1m-sp-2SO"/>
                                             <outlet property="primaryPriceLabel" destination="Mdl-kJ-vcI" id="NQ3-SJ-lwf"/>
@@ -4365,7 +4361,7 @@
                                 </connections>
                             </tableView>
                             <tableView clipsSubviews="YES" tag="2" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="86" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="xDm-wA-Sn0">
-                                <rect key="frame" x="0.0" y="144" width="256" height="1356"/>
+                                <rect key="frame" x="0.0" y="104" width="256" height="1396"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="256" id="ChJ-jK-Bvx"/>
@@ -4488,7 +4484,7 @@
                                 </connections>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pYT-Wx-onD">
-                                <rect key="frame" x="0.0" y="104" width="768" height="40"/>
+                                <rect key="frame" x="0.0" y="64" width="768" height="40"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We are holding this Unit, 17 minutes remaining." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tpR-pK-iSB">
                                         <rect key="frame" x="0.0" y="10" width="768" height="20"/>

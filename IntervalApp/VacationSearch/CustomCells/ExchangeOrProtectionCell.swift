@@ -21,11 +21,6 @@ class ExchangeOrProtectionCell: UITableViewCell {
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var additionalPriceLabel: UILabel!
     @IBOutlet weak var primaryPriceLabel: UILabel!
-    @IBOutlet weak var fractionalPriceLabel: UILabel!
-    @IBOutlet weak var additionalPrimaryPriceLabel: UILabel!
-    @IBOutlet weak var additionalFractionalPriceLabel: UILabel!
-    @IBOutlet weak var periodLabel: UILabel!
-    @IBOutlet weak var currencyLabel: UILabel!
     @IBOutlet weak var priceView: UIView!
     @IBOutlet weak var cellContentView: UIView!
     
@@ -46,6 +41,13 @@ class ExchangeOrProtectionCell: UITableViewCell {
             if let label = $0 as? UILabel {
                 label.textColor = #colorLiteral(red: 0.3423708081, green: 0.5919493437, blue: 0.7394192815, alpha: 1)
             }
+        }
+    }
+    
+    func setTotalPrice(with currencyDisplayes: String, and chargeAmount: Float) {
+        
+        if let attributedAmount = chargeAmount.currencyFormatter(for:currencyDisplayes) {
+            primaryPriceLabel.attributedText = attributedAmount
         }
     }
     

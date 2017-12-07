@@ -114,10 +114,11 @@ class FlexChangeSearchIpadViewController: UIViewController {
             let deal = FlexExchangeDeal()
             
             deal.name = selectedFlexchange?.name
-            deal.areaCode = (selectedFlexchange?.areaCode)!
+            if let areaCode = selectedFlexchange?.areaCode {
+                deal.areaCode = areaCode
+            }
             
             let searchCriteria = Helper.createSearchCriteriaFor(deal: deal)
-            
             let settings = Helper.createSettings()
             
             Constant.MyClassConstants.initialVacationSearch = VacationSearch(settings, searchCriteria)
@@ -128,26 +129,28 @@ class FlexChangeSearchIpadViewController: UIViewController {
                 Constant.MyClassConstants.initialVacationSearch.exchangeSearch?.searchContext.response = response
                 Helper.showScrollingCalendar(vacationSearch: Constant.MyClassConstants.initialVacationSearch)
                 // Get activeInterval (or initial search interval)
-                let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval()
+                guard let activeInterval = Constant.MyClassConstants.initialVacationSearch.bookingWindow.getActiveInterval() else { return }
                 
                 // Update active interval
                 Constant.MyClassConstants.initialVacationSearch.updateActiveInterval(activeInterval: activeInterval)
                 
                 // Check not available checkIn dates for the active interval
-                if ((activeInterval?.fetchedBefore)! && !(activeInterval?.hasCheckInDates())!) {
+                if activeInterval.fetchedBefore && !activeInterval.hasCheckInDates() {
                     Helper.showNotAvailabilityResults()
-                    //self.performSegue(withIdentifier: Constant.segueIdentifiers.searchResultSegue, sender: self)
                     self.navigateToSearchResults()
                     
                 } else {
-                    
                     Constant.MyClassConstants.initialVacationSearch.resolveCheckInDateForInitialSearch()
-                    Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: Constant.MyClassConstants.initialVacationSearch.searchCheckInDate!, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                    if let date = Constant.MyClassConstants.initialVacationSearch.searchCheckInDate {
+                    Helper.executeExchangeSearchAvailability(activeInterval: activeInterval, checkInDate: Helper.convertStringToDate(dateString: date, format: Constant.MyClassConstants.dateFormat), senderViewController: self, vacationSearch: Constant.MyClassConstants.initialVacationSearch)
+                    } else {
+                        self.hideHudAsync()
+                    }
                 }
                 
-            }, onError: { (_) in
-                self.hideHudAsync()
-                self.presentErrorAlert(UserFacingCommonError.generic)
+            }, onError: { [weak self] error in
+                self?.hideHudAsync()
+                self?.presentErrorAlert(UserFacingCommonError.serverError(error))
             })
             
         }
