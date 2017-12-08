@@ -45,9 +45,7 @@ class AddDebitOrCreditCardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         if let contact = Session.sharedSession.contact {
-            var name = ""
-            name = "\(contact.firstName ?? "") \(contact.lastName ?? "")"
-            Constant.GetawaySearchResultCardFormDetailData.nameOnCard = name
+            Constant.GetawaySearchResultCardFormDetailData.nameOnCard = "\(contact.firstName.unwrappedString) \(contact.lastName.unwrappedString)"
         }
         //address from contact list
         if let address = Session.sharedSession.contact?.addresses {

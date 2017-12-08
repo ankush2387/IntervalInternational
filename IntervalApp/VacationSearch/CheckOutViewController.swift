@@ -178,99 +178,80 @@ class CheckOutViewController: UIViewController {
             
             let strAccept = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringAccept)
             let strReject = self.cellWebView.stringByEvaluatingJavaScript(from: jsStringReject)
-            
-            if !isTripProtectionEnabled {
-                strAccept = "true"
-                strReject = "true"
-            }
-            
+         
             if (isAgreedToFees || !Constant.MyClassConstants.hasAdditionalCharges) && (strAccept == "true" || strReject == "true") && !Constant.MyClassConstants.selectedCreditCard.isEmpty && isPromotionApplied {
 
                 showHudAsync()
                 imageSlider.isHidden = true
                 
                 if Constant.MyClassConstants.isFromExchange || Constant.MyClassConstants.searchBothExchange {
+                    showLoader = true
+                    self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                     
-                    if !Constant.MyClassConstants.recapPromotionsArray.isEmpty && Constant.MyClassConstants.exchangeFees[0].shopExchange?.selectedOfferName == "" {
-                        hideHudAsync()
-                        imageSlider.isHidden = false
-                        self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.promotionsMessage)
-                    } else {
+                    let continueToPayRequest = ExchangeProcessContinueToPayRequest()
+                    continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last!
+                    continueToPayRequest.confirmationDelivery = confirmationDelivery
+                    continueToPayRequest.acceptTermsAndConditions = true
+                    continueToPayRequest.acknowledgeAndAgreeResortFees = true
+                    
+                    ExchangeProcessClient.continueToPay(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { response in
                         
-                        showLoader = true
+                        Constant.MyClassConstants.exchangeBookingLastStartedProcess = nil
+                        Constant.MyClassConstants.exchangeContinueToPayResponse = response
+                        let selectedCard = Constant.MyClassConstants.selectedCreditCard
+                        if selectedCard[0].saveCardIndicator == true {
+                            Session.sharedSession.contact?.creditcards?.append(selectedCard[0])
+                        }
+                        Constant.MyClassConstants.selectedCreditCard.removeAll()
+                        Helper.removeStoredGuestFormDetials()
+                        self.isAgreed = true
+                        self.hideHudAsync()
                         self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
+                        Constant.MyClassConstants.transactionNumber = (response.view?.fees?.shopExchange?.confirmationNumber)!
+                        self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
                         
-                        let continueToPayRequest = ExchangeProcessContinueToPayRequest()
-                        continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last!
-                        continueToPayRequest.confirmationDelivery = confirmationDelivery
-                        continueToPayRequest.acceptTermsAndConditions = true
-                        continueToPayRequest.acknowledgeAndAgreeResortFees = true
-                        
-                        ExchangeProcessClient.continueToPay(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.exchangeBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { response in
-                            
-                            Constant.MyClassConstants.exchangeBookingLastStartedProcess = nil
-                            Constant.MyClassConstants.exchangeContinueToPayResponse = response
-                            let selectedCard = Constant.MyClassConstants.selectedCreditCard
-                            if selectedCard[0].saveCardIndicator == true {
-                                Session.sharedSession.contact?.creditcards?.append(selectedCard[0])
-                            }
-                            Constant.MyClassConstants.selectedCreditCard.removeAll()
-                            Helper.removeStoredGuestFormDetials()
-                            self.isAgreed = true
-                            self.hideHudAsync()
-                            self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
-                            Constant.MyClassConstants.transactionNumber = (response.view?.fees?.shopExchange?.confirmationNumber)!
-                            self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
-                            
-                        }, onError: { [weak self] error in
-                            self?.hideHudAsync()
-                            imageSlider.isHidden = false
-                            self?.isAgreed = false
-                            self?.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
-                            self?.presentErrorAlert(UserFacingCommonError.serverError(error))
-                        })
-                    }
+                    }, onError: { [weak self] error in
+                        self?.hideHudAsync()
+                        imageSlider.isHidden = false
+                        self?.isAgreed = false
+                        self?.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
+                        self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                    })
+                    
                 } else {
+                    showLoader = true
+                    self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
                     
-                    if Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName == nil || Constant.MyClassConstants.rentalFees[0].rental?.selectedOfferName == "" {
-                        hideHudAsync()
-                        imageSlider.isHidden = false
-                        self.presentAlert(with: Constant.AlertPromtMessages.failureTitle, message: Constant.AlertMessages.promotionsMessage)
-                    } else {
+                    let continueToPayRequest = RentalProcessRecapContinueToPayRequest()
+                    continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last!
+                    continueToPayRequest.confirmationDelivery = confirmationDelivery
+                    continueToPayRequest.acceptTermsAndConditions = true
+                    continueToPayRequest.acknowledgeAndAgreeResortFees = true
+                    
+                    RentalProcessClient.continueToPay(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { response in
                         
-                        showLoader = true
+                        Constant.MyClassConstants.getawayBookingLastStartedProcess = nil
+                        Constant.MyClassConstants.continueToPayResponse = response
+                        let selectedCard = Constant.MyClassConstants.selectedCreditCard
+                        if selectedCard[0].saveCardIndicator == true {
+                            Session.sharedSession.contact?.creditcards?.append(selectedCard[0])
+                        }
+                        Constant.MyClassConstants.selectedCreditCard.removeAll()
+                        Helper.removeStoredGuestFormDetials()
+                        self.isAgreed = true
+                        self.hideHudAsync()
+                        Constant.MyClassConstants.transactionNumber = response.view?.fees?.rental?.confirmationNumber ?? ""
                         self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
+                        self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
+                    }, onError: { [weak self] error in
+                        self?.hideHudAsync()
                         
-                        let continueToPayRequest = RentalProcessRecapContinueToPayRequest()
-                        continueToPayRequest.creditCard = Constant.MyClassConstants.selectedCreditCard.last!
-                        continueToPayRequest.confirmationDelivery = confirmationDelivery
-                        continueToPayRequest.acceptTermsAndConditions = true
-                        continueToPayRequest.acknowledgeAndAgreeResortFees = true
-                        
-                        RentalProcessClient.continueToPay(Session.sharedSession.userAccessToken, process: Constant.MyClassConstants.getawayBookingLastStartedProcess, request: continueToPayRequest, onSuccess: { response in
-                            
-                            Constant.MyClassConstants.getawayBookingLastStartedProcess = nil
-                            Constant.MyClassConstants.continueToPayResponse = response
-                            let selectedCard = Constant.MyClassConstants.selectedCreditCard
-                            if selectedCard[0].saveCardIndicator == true {
-                                Session.sharedSession.contact?.creditcards?.append(selectedCard[0])
-                            }
-                            Constant.MyClassConstants.selectedCreditCard.removeAll()
-                            Helper.removeStoredGuestFormDetials()
-                            self.isAgreed = true
-                            self.hideHudAsync()
-                            Constant.MyClassConstants.transactionNumber = response.view?.fees?.rental?.confirmationNumber ?? ""
-                            self.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
-                            self.performSegue(withIdentifier: Constant.segueIdentifiers.confirmationScreenSegue, sender: nil)
-                        }, onError: { [weak self] error in
-                            self?.hideHudAsync()
-                            
-                            imageSlider.isHidden = false
-                            self?.isAgreed = false
-                            self?.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
-                            self?.presentErrorAlert(UserFacingCommonError.serverError(error))
-                        })
-                    }
+                        imageSlider.isHidden = false
+                        self?.isAgreed = false
+                        self?.checkoutOptionTBLview.reloadSections(IndexSet(integer: Constant.MyClassConstants.indexSlideButton), with:.automatic)
+                        self?.presentErrorAlert(UserFacingCommonError.serverError(error))
+                    })
+                    
               }
             } else if !isAgreedToFees && Constant.MyClassConstants.hasAdditionalCharges {
                 let indexPath = IndexPath(row: 0, section: 8)
